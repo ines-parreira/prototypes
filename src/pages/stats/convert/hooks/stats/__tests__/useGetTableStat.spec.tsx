@@ -22,7 +22,7 @@ describe('useGetTableStat', () => {
         isError: false,
     } as UseQueryResult
 
-    const hookArgs: [string, string[], string, string, string] = [
+    const hookArgs: [string, string[] | null, string, string, string] = [
         'shopify:slow-formulas-for-sale',
         ['campaign1', 'campaign2'],
         '2023-02-01T00:00:00-08:00',
@@ -179,5 +179,20 @@ describe('useGetTableStat', () => {
         // assert
         expect(usePostReportingMock.mock.calls).toMatchSnapshot()
         expect(result.current).toMatchSnapshot()
+    })
+
+    it('should not call query if campaignIds is null', () => {
+        // arrange
+        const args: typeof hookArgs = [...hookArgs]
+        args[1] = null
+
+        // act
+        const {result} = renderHook(() => useGetTableStat(...args))
+
+        // assert
+        usePostReportingMock.mock.calls.map((call) => {
+            expect(call[1]?.enabled).toBe(false)
+        })
+        expect(result.current.data).toMatchObject({})
     })
 })

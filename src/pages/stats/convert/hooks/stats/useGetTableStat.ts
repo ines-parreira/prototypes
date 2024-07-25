@@ -30,7 +30,7 @@ export type GetTableQuery = {
 
 export const useGetTableStat = (
     namespacedShopName: string,
-    campaignIds: string[],
+    campaignIds: string[] | null,
     startDate: string,
     endDate: string,
     timezone: string
@@ -38,7 +38,7 @@ export const useGetTableStat = (
     const attrs: CubeFilterParams = useMemo(
         () => ({
             shopName: namespacedShopName,
-            campaignIds,
+            campaignIds: campaignIds || [],
             startDate,
             endDate,
             timezone,
@@ -65,19 +65,19 @@ export const useGetTableStat = (
 
     const eventsPerformance = usePostReporting<[CubeData], CubeData>(
         eventsQuery,
-        OVERRIDES
+        {...OVERRIDES, enabled: campaignIds !== null}
     )
     const ordersPerformance = usePostReporting<[CubeData], CubeData>(
         ordersQuery,
-        OVERRIDES
+        {...OVERRIDES, enabled: campaignIds !== null}
     )
     const eventsOrdersPerformance = usePostReporting<[CubeData], CubeData>(
         eventsOrdersQuery,
-        OVERRIDES
+        {...OVERRIDES, enabled: campaignIds !== null}
     )
     const storeTotal = usePostReporting<[CubeMetric], CubeMetric>(
         storeTotalQuery,
-        {select: getMetricFromCubeData}
+        {select: getMetricFromCubeData, enabled: campaignIds !== null}
     )
 
     const data = useMemo(() => {

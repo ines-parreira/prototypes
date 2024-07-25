@@ -7,12 +7,16 @@ import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderCon
 
 export const campaignSalesDrillDownQueryFactory = (
     shopName: string,
+    selectedCampaignIds: string[],
     filters: LegacyStatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<ConvertOrderConversionCube> => {
     const filterParams: CubeFilterParams = {
-        campaignIds: filters.campaigns,
+        campaignIds:
+            selectedCampaignIds.length > 0
+                ? selectedCampaignIds
+                : filters.campaigns,
         startDate: filters.period.start_datetime,
         endDate: filters.period.end_datetime,
         shopName,

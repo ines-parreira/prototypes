@@ -29,7 +29,7 @@ export type GetRevenueShareChartQuery = {
 
 export const useGetRevenueShareChart = (
     namespacedShopName: string,
-    campaignIds: string[],
+    campaignIds: string[] | null,
     startDate: string,
     endDate: string,
     timezone: string,
@@ -38,7 +38,7 @@ export const useGetRevenueShareChart = (
     const attrs: CubeFilterParams = useMemo(
         () => ({
             shopName: namespacedShopName,
-            campaignIds,
+            campaignIds: campaignIds || [],
             startDate,
             endDate,
             granularity: timeGranularity,
@@ -62,12 +62,12 @@ export const useGetRevenueShareChart = (
 
     const revenueShareChart = usePostReporting<[CubeData], CubeData>(
         revenueShareChartQuery,
-        OVERRIDES
+        {...OVERRIDES, enabled: campaignIds !== null}
     )
-    const revenue = usePostReporting<[CubeData], CubeData>(
-        revenueQuery,
-        OVERRIDES
-    )
+    const revenue = usePostReporting<[CubeData], CubeData>(revenueQuery, {
+        ...OVERRIDES,
+        enabled: campaignIds !== null,
+    })
 
     const data = useMemo(() => {
         const revenueData = transformToRevenueByDate(revenue.data)
@@ -85,6 +85,6 @@ export const useGetRevenueShareChart = (
     return {
         isFetching: revenueShareChart.isFetching,
         isError: revenueShareChart.isError,
-        data: data,
+        data: campaignIds === null ? [] : data,
     }
 }

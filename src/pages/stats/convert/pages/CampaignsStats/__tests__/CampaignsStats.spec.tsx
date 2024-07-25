@@ -43,6 +43,8 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 
+jest.mock('hooks/reporting/useCleanStatsFilters')
+
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)

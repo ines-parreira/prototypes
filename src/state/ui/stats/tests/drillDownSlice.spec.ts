@@ -304,6 +304,7 @@ describe('drillDownSlice', () => {
                 metricData: {
                     metricName: ConvertMetric.CampaignSalesCount,
                     shopName: 'candy-shop',
+                    selectedCampaignIds: [],
                     context: context,
                 },
             }

@@ -24,8 +24,12 @@ import {CampaignTableContentCell} from '../../types/CampaignTableContentCell'
 import {useGetNamespacedShopNameForStore} from '../../hooks/useGetNamespacedShopNameForStore'
 
 export const CampaignPerformanceTable = () => {
-    const {campaigns, selectedIntegrations, selectedCampaigns, selectedPeriod} =
-        useCampaignStatsFilters()
+    const {
+        campaigns,
+        selectedIntegrations,
+        selectedCampaignIds,
+        selectedPeriod,
+    } = useCampaignStatsFilters()
 
     const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
         useParams<ConvertRouteParams>()
@@ -54,10 +58,12 @@ export const CampaignPerformanceTable = () => {
     const [offset, setOffset] = useState(0)
 
     const campaignIds = useMemo(() => {
-        return selectedCampaigns.length > 0
-            ? selectedCampaigns
-            : campaigns.map((campaign) => campaign.id)
-    }, [campaigns, selectedCampaigns])
+        // no filter is selected, use all campaigns
+        if (selectedCampaignIds !== null && !selectedCampaignIds.length) {
+            return campaigns.map((campaign) => campaign.id)
+        }
+        return selectedCampaignIds
+    }, [campaigns, selectedCampaignIds])
 
     const {isFetching, data} = useGetTableStat(
         namespacedShopName,
@@ -69,7 +75,7 @@ export const CampaignPerformanceTable = () => {
 
     const rows = useMemo<CampaignTableContentCell[]>(() => {
         const selectedCampaigns = campaigns.filter((campaign) =>
-            campaignIds.includes(campaign.id)
+            campaignIds?.includes(campaign.id)
         )
 
         return selectedCampaigns.map((campaign) => ({

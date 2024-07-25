@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {useGetCurrencyForStore} from 'pages/stats/convert/hooks/useGetCurrencyForStore'
 import MetricCard from 'pages/stats/MetricCard'
@@ -54,9 +54,8 @@ const METRICS = {
 
 export const CampaignTotalsStat = () => {
     const {
-        campaigns,
         selectedIntegrations,
-        selectedCampaigns,
+        selectedCampaignIds,
         selectedPeriod,
         channelConnectionExternalIds,
     } = useCampaignStatsFilters()
@@ -68,14 +67,9 @@ export const CampaignTotalsStat = () => {
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
 
-    const allCampaignIds = useMemo(() => {
-        return campaigns.map((campaign) => campaign.id)
-    }, [campaigns])
-
     const {isFetching, isError, data} = useGetTotalsStat(
         namespacedShopName,
-        selectedCampaigns,
-        allCampaignIds,
+        selectedCampaignIds,
         currency,
         selectedPeriod.start_datetime,
         selectedPeriod.end_datetime,
@@ -98,7 +92,7 @@ export const CampaignTotalsStat = () => {
                             <BigNumberMetric className={css.metric}>
                                 {data?.revenue}
                             </BigNumberMetric>
-                            {data?.gmv && (
+                            {data?.gmv && data.gmv !== '0' && (
                                 <span
                                     className={css.subText}
                                 >{`from total store revenue: ${data.gmv}`}</span>
@@ -153,6 +147,7 @@ export const CampaignTotalsStat = () => {
                                 title: METRICS.campaignSalesCount.title,
                                 metricName: ConvertMetric.CampaignSalesCount,
                                 shopName: namespacedShopName,
+                                selectedCampaignIds: selectedCampaignIds || [],
                                 context: {
                                     channel_connection_external_ids:
                                         channelConnectionExternalIds,

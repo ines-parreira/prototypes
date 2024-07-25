@@ -6,6 +6,7 @@ import {CursorMeta} from 'models/api/types'
 export enum FilterKey {
     Agents = 'agents',
     Campaigns = 'campaigns',
+    CampaignStatuses = 'campaignStatuses',
     Channels = 'channels',
     HelpCenters = 'helpCenters',
     Integrations = 'integrations',
@@ -35,6 +36,7 @@ export type LegacyStatsFilters = {
     [FilterKey.LocaleCodes]?: string[]
     [FilterKey.Channels]?: ChannelIdentifier[]
     [FilterKey.Campaigns]?: string[]
+    [FilterKey.CampaignStatuses]?: string[]
     [FilterKey.Score]?: string[]
     [FilterKey.SlaPolicies]?: string[]
 }
@@ -60,6 +62,7 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.LocaleCodes]?: WithLogicalOperator<string>
     [FilterKey.Channels]?: WithLogicalOperator<ChannelIdentifier>
     [FilterKey.Campaigns]?: WithLogicalOperator<string>
+    [FilterKey.CampaignStatuses]?: WithLogicalOperator<string>
     [FilterKey.Score]?: WithLogicalOperator<string>
     [FilterKey.SlaPolicies]?: WithLogicalOperator<string>
 }

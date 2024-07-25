@@ -18,7 +18,7 @@ describe('useGetTotalsStat', () => {
         isError: false,
     } as UseQueryResult
 
-    const hookArgs: [string, string[], string, string, string] = [
+    const hookArgs: [string, string[] | null, string, string, string] = [
         'shopify:square-wheels-company',
         ['campaign1', 'campaign2'],
         '2023-01-01T00:00:00-08:00',
@@ -71,6 +71,18 @@ describe('useGetTotalsStat', () => {
         const {result} = renderHook(() => useGetRevenueShareChart(...hookArgs))
 
         expect(result.current.isError).toBe(true)
+    })
+
+    it('should not call query if campaignIds is null', () => {
+        const args: typeof hookArgs = [...hookArgs]
+        args[1] = null
+
+        const {result} = renderHook(() => useGetRevenueShareChart(...args))
+
+        usePostReportingMock.mock.calls.map((call) => {
+            expect(call[1]?.enabled).toBe(false)
+        })
+        expect(result.current.data).toMatchObject({})
     })
 
     it('should return prepared data for totals section', () => {

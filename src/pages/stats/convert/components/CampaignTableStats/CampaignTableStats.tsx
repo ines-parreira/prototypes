@@ -140,7 +140,8 @@ export const CampaignTableStats = ({
                             >
                                 creating
                             </Link>
-                            a campaign for this store!
+                            a campaign for this store or update your filter
+                            criteria!
                         </BodyCell>
                     </TableBodyRow>
                 )

@@ -1,4 +1,6 @@
 import _get from 'lodash/get'
+import _mapValues from 'lodash/mapValues'
+import _keyBy from 'lodash/keyBy'
 import {CubeMetric} from 'pages/stats/convert/clients/types'
 
 export const getMetricValue = (
@@ -8,4 +10,11 @@ export const getMetricValue = (
     parser = parseFloat
 ): number => {
     return parser(_get(data, metricName, defaultValue) || defaultValue) || 0
+}
+
+export const getDefaultsForMetricKeys = <T extends Record<any, any>>(
+    metrics: T
+): Record<T[keyof T], string> => {
+    const metricNames = Object.values(metrics)
+    return _mapValues(_keyBy(metricNames), () => '0')
 }

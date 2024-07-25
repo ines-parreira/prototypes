@@ -177,6 +177,7 @@ describe('stats selectors', () => {
                 localeCodes: undefined,
                 score: undefined,
                 campaigns: undefined,
+                campaignStatuses: undefined,
                 slaPolicies: undefined,
             })
         })
@@ -213,6 +214,7 @@ describe('stats selectors', () => {
                 localeCodes: undefined,
                 score: undefined,
                 campaigns: undefined,
+                campaignStatuses: undefined,
                 slaPolicies: undefined,
             })
         })
@@ -240,6 +242,7 @@ describe('stats selectors', () => {
                 localeCodes: undefined,
                 score: undefined,
                 campaigns: undefined,
+                campaignStatuses: undefined,
                 slaPolicies: undefined,
             })
         })

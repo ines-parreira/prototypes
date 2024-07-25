@@ -8,7 +8,9 @@ interface FilterContextSchema {
     campaigns: CampaignPreview[]
     integrations: Integration[]
     isStorePreSelected: boolean
+    selectedCampaignIds: string[] | null
     selectedCampaigns: string[]
+    selectedCampaignStatuses: string[]
     selectedIntegrations: number[]
     selectedPeriod: {
         end_datetime: string
@@ -17,13 +19,16 @@ interface FilterContextSchema {
     channelConnectionExternalIds: string[]
     onChangeIntegration: (integrationIds: Value[]) => void
     onChangeCampaigns: (integrationIds: Value[]) => void
+    onChangeCampaignsByStatus: (statuses: Value[]) => void
 }
 
 export const FiltersContext = createContext<FilterContextSchema>({
     campaigns: [],
     integrations: [],
     isStorePreSelected: false,
+    selectedCampaignIds: [],
     selectedCampaigns: [],
+    selectedCampaignStatuses: [],
     selectedIntegrations: [],
     selectedPeriod: {
         end_datetime: '',
@@ -32,4 +37,5 @@ export const FiltersContext = createContext<FilterContextSchema>({
     channelConnectionExternalIds: [],
     onChangeIntegration: () => null,
     onChangeCampaigns: () => null,
+    onChangeCampaignsByStatus: () => null,
 })

@@ -1,4 +1,7 @@
-import {getMetricValue} from 'pages/stats/convert/services/utils'
+import {
+    getDefaultsForMetricKeys,
+    getMetricValue,
+} from 'pages/stats/convert/services/utils'
 
 describe('getMetricValue', () => {
     const data = {
@@ -43,5 +46,21 @@ describe('getMetricValue', () => {
 
         // assert
         expect(value).toStrictEqual(12.34)
+    })
+})
+
+describe('getDefaultsForMetricKeys', () => {
+    it('should return object with default values', () => {
+        const metrics = {
+            a: 'metricA',
+            b: 'metricB',
+        }
+
+        const result = getDefaultsForMetricKeys(metrics)
+
+        expect(result).toStrictEqual({
+            metricA: '0',
+            metricB: '0',
+        })
     })
 })

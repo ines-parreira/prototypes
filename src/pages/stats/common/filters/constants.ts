@@ -25,6 +25,7 @@ export const FilterLabels: Record<FilterKey, string> = {
     [FilterKey.LocaleCodes]: 'Locale Code',
     [FilterKey.Channels]: 'Channel',
     [FilterKey.Campaigns]: 'Campaign',
+    [FilterKey.CampaignStatuses]: 'Campaign Status',
     [FilterKey.Score]: 'Score',
     [FilterKey.SlaPolicies]: 'Sla Policy',
 }

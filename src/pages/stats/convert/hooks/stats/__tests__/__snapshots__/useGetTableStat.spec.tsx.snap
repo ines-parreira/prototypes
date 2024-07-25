@@ -41,6 +41,7 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
       },
     ],
     {
+      "enabled": true,
       "select": [Function],
     },
   ],
@@ -82,6 +83,7 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
       },
     ],
     {
+      "enabled": true,
       "select": [Function],
     },
   ],
@@ -118,6 +120,7 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
       },
     ],
     {
+      "enabled": true,
       "select": [Function],
     },
   ],
@@ -149,6 +152,7 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
       },
     ],
     {
+      "enabled": true,
       "select": [Function],
     },
   ],
@@ -247,6 +251,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
       },
     ],
     {
+      "enabled": true,
       "select": [Function],
     },
   ],
@@ -288,6 +293,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
       },
     ],
     {
+      "enabled": true,
       "select": [Function],
     },
   ],
@@ -324,6 +330,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
       },
     ],
     {
+      "enabled": true,
       "select": [Function],
     },
   ],
@@ -355,6 +362,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
       },
     ],
     {
+      "enabled": true,
       "select": [Function],
     },
   ],

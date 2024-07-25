@@ -2,6 +2,7 @@ import React from 'react'
 
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 
+import {CampaignStatusMultiSelect} from 'pages/stats/convert/components/CampaignStatusMultiSelect'
 import {useCampaignStatsFilters} from '../../hooks/useCampaignStatsFilters'
 
 import {CampaignMultiSelect} from '../../components/CampaignMultiSelect'
@@ -15,9 +16,11 @@ export const RevenueFilters = () => {
         integrations,
         isStorePreSelected,
         selectedCampaigns,
+        selectedCampaignStatuses,
         selectedIntegrations,
         selectedPeriod,
         onChangeCampaigns,
+        onChangeCampaignsByStatus,
         onChangeIntegration,
     } = useCampaignStatsFilters()
 
@@ -39,6 +42,13 @@ export const RevenueFilters = () => {
                     campaigns={campaigns}
                     selected={selectedCampaigns}
                     onChangeItem={onChangeCampaigns}
+                />
+            </div>
+
+            <div className={css.filterItem}>
+                <CampaignStatusMultiSelect
+                    selected={selectedCampaignStatuses}
+                    onChangeItem={onChangeCampaignsByStatus}
                 />
             </div>
 

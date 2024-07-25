@@ -32,6 +32,8 @@ const useGetCampaignsForStoreMock =
         typeof useGetCampaignsForStore
     >
 
+jest.mock('hooks/reporting/useCleanStatsFilters')
+
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(() => ({
         CONVERT_ROUTE_PARAM_NAME: '1',

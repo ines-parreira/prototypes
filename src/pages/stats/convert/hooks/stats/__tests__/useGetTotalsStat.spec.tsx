@@ -18,23 +18,15 @@ describe('useGetTotalsStat', () => {
         isError: false,
     } as UseQueryResult
 
-    const hookArgs: [
-        string,
-        string[],
-        string[],
-        string,
-        string,
-        string,
-        string
-    ] = [
-        'shopify:slow-formulas-for-sale',
-        ['campaign231', 'campaign232'],
-        ['campaign231', 'campaign232', 'campaign233'],
-        'EUR',
-        '2023-01-01T00:00:00-08:00',
-        '2023-02-01T00:00:00-08:00',
-        'America/Los_Angeles',
-    ]
+    const hookArgs: [string, string[] | null, string, string, string, string] =
+        [
+            'shopify:slow-formulas-for-sale',
+            ['campaign231', 'campaign232'],
+            'EUR',
+            '2023-01-01T00:00:00-08:00',
+            '2023-02-01T00:00:00-08:00',
+            'America/Los_Angeles',
+        ]
 
     const campaignEventsTotalsData = {
         [CampaignOrderEventsMeasure.impressions]: '1000',
@@ -75,6 +67,25 @@ describe('useGetTotalsStat', () => {
         const {result} = renderHook(() => useGetTotalsStat(...hookArgs))
 
         expect(result.current.isError).toBe(true)
+    })
+
+    it('should not call query if campaignIds is null', () => {
+        const args: typeof hookArgs = [...hookArgs]
+        args[1] = null
+
+        const {result} = renderHook(() => useGetTotalsStat(...args))
+
+        usePostReportingMock.mock.calls.map((call) => {
+            expect(call[1]?.enabled).toBe(false)
+        })
+        expect(result.current.data).toMatchObject({
+            campaignSalesCount: '0',
+            engagement: '0',
+            gmv: '0',
+            impressions: '0',
+            influencedRevenueShare: '0',
+            revenue: '0',
+        })
     })
 
     it('should return prepared data for totals section', () => {

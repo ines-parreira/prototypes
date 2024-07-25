@@ -19,7 +19,7 @@ const hint = `Impact of campaigns on your store revenue, by day, calculated as:
 Campaign revenue / Total store revenue`
 
 export const CampaignRevenueShareStat = () => {
-    const {selectedIntegrations, selectedCampaigns, selectedPeriod} =
+    const {selectedIntegrations, selectedCampaignIds, selectedPeriod} =
         useCampaignStatsFilters()
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
@@ -29,7 +29,7 @@ export const CampaignRevenueShareStat = () => {
 
     const {isFetching, isError, data} = useGetRevenueShareChart(
         namespacedShopName,
-        selectedCampaigns,
+        selectedCampaignIds,
         selectedPeriod.start_datetime,
         selectedPeriod.end_datetime,
         userTimezone

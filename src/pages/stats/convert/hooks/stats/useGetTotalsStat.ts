@@ -14,6 +14,8 @@ import {
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {CampaignsTotals} from 'pages/stats/convert/services/types'
 import {usePostReporting} from 'models/reporting/queries'
+import {CampaignsTotalsMetricNames} from 'pages/stats/convert/services/constants'
+import {getDefaultsForMetricKeys} from 'pages/stats/convert/services/utils'
 
 const OVERRIDES = {
     select: getMetricFromCubeData,
@@ -27,8 +29,7 @@ export type GetTotalsQuery = {
 
 export const useGetTotalsStat = (
     namespacedShopName: string,
-    campaignIds: string[],
-    allCampaignIds: string[],
+    campaignIds: string[] | null,
     currency: string,
     startDate: string,
     endDate: string,
@@ -37,7 +38,7 @@ export const useGetTotalsStat = (
     const attrs: CubeFilterParams = useMemo(
         () => ({
             shopName: namespacedShopName,
-            campaignIds,
+            campaignIds: campaignIds || [],
             startDate,
             endDate,
             timezone,
@@ -60,15 +61,15 @@ export const useGetTotalsStat = (
 
     const eventsTotals = usePostReporting<[CubeMetric], CubeMetric>(
         campaignEventsTotalsQuery,
-        OVERRIDES
+        {...OVERRIDES, enabled: campaignIds !== null}
     )
     const orderTotals = usePostReporting<[CubeMetric], CubeMetric>(
         campaignOrderTotalsQuery,
-        OVERRIDES
+        {...OVERRIDES, enabled: campaignIds !== null}
     )
     const storeTotal = usePostReporting<[CubeMetric], CubeMetric>(
         storeTotalQuery,
-        OVERRIDES
+        {...OVERRIDES, enabled: campaignIds !== null}
     )
 
     const data = useMemo(() => {
@@ -90,6 +91,9 @@ export const useGetTotalsStat = (
             storeTotal.isFetching,
         isError:
             eventsTotals.isError || orderTotals.isError || storeTotal.isError,
-        data: data,
+        data:
+            campaignIds === null
+                ? getDefaultsForMetricKeys(CampaignsTotalsMetricNames)
+                : data,
     }
 }

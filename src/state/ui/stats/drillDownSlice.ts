@@ -110,6 +110,7 @@ export type SlaMetrics = {
 export type ConvertMetrics = {
     metricName: ConvertMetric
     shopName: string
+    selectedCampaignIds: string[]
     context: ConvertJobContext
 } & CommonMetrics
 

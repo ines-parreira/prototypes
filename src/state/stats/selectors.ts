@@ -114,6 +114,7 @@ export const getPageStatsFilters = createSelector(
             localeCodes,
             score,
             campaigns,
+            campaignStatuses,
             slaPolicies,
         } = statsFilters
         return {
@@ -128,6 +129,7 @@ export const getPageStatsFilters = createSelector(
             localeCodes,
             score,
             campaigns,
+            campaignStatuses,
             slaPolicies,
         }
     }

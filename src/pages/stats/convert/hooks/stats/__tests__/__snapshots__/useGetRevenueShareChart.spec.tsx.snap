@@ -54,6 +54,7 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
       },
     ],
     {
+      "enabled": true,
       "select": [Function],
     },
   ],
@@ -101,6 +102,7 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
       },
     ],
     {
+      "enabled": true,
       "select": [Function],
     },
   ],
