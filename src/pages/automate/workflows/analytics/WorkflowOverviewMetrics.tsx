@@ -129,7 +129,7 @@ export const WorkflowOverviewMetrics = ({
                             css.metricLabelTicket
                         )}
                     >
-                        Ticket created
+                        Tickets created
                     </span>
                     <span className={css.metricValue}>
                         {displayMetric(

@@ -459,7 +459,7 @@ export class TableStat extends Component<
                         >
                             {workflowMode === 'edit'
                                 ? 'Edit flow'
-                                : 'Analyze flow'}
+                                : 'Analyze Flow'}
                         </Link>
                     </div>
                 )

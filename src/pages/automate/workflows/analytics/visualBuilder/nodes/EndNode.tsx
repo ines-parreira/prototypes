@@ -105,7 +105,7 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                         className={css.nodeMetric}
                         id={`end-node-${nodeId}-metric-ticket`}
                     >
-                        <span className={css.metricLabel}>Ticket</span>
+                        <span className={css.metricLabel}>Tickets</span>
                         <span className={css.metricValue}>
                             {displayMetric(
                                 metricByNodeId?.ticketsCreated,
