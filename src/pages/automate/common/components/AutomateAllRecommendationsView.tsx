@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
+import {Card} from '@gorgias/analytics-ui-kit'
 import StatsPage from 'pages/stats/StatsPage'
 import {ShopifyIntegration} from 'models/integration/types'
 import {HelpCenter} from 'models/helpCenter/types'
@@ -16,6 +17,7 @@ import {
 } from './TopQuestions/TopQuestionsSection'
 import css from './AutomateAllRecommendationsView.less'
 import {useViewedOnPage} from './TopQuestions/useViewedOnPage'
+import {useHasEmailToStoreConnection} from './TopQuestions/useHasEmailToStoreConnection'
 
 const ITEMS_PER_PAGE = 15
 
@@ -28,14 +30,15 @@ type AutomateAllRecommendationsViewProps = {
     helpCenterFilter: TopQuestionsSectionProps['helpCenterFilter']
 }
 
-const AutomateAllRecommendationsView = ({
+const AutomateAllRecommendationsContent = ({
     selectedStore,
-    storeFilter,
     selectedHelpCenter,
-    helpCenterFilter,
     currentPage,
     onPageChange,
-}: AutomateAllRecommendationsViewProps) => {
+}: Pick<
+    AutomateAllRecommendationsViewProps,
+    'selectedStore' | 'selectedHelpCenter' | 'currentPage' | 'onPageChange'
+>) => {
     const [statusFilter, setStatusFilter] = useState<AllRecommendationsStatus>(
         AllRecommendationsStatus.NotCreated
     )
@@ -60,6 +63,54 @@ const AutomateAllRecommendationsView = ({
         selectedHelpCenter.id,
         batchDatetime ? moment(batchDatetime).toDate() : new Date(),
         'all-recommendations'
+    )
+
+    return (
+        <AutomateAllRecommendationsCard
+            paginatedItems={paginatedItems}
+            isLoading={isLoading}
+            itemsCount={itemsCount}
+            totalItemsCount={totalItemsCount}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            currentPage={currentPage}
+            onPageChange={onPageChange}
+            displayNewBadge={!viewedOnPage && totalItemsCount > 0}
+            helpCenterId={selectedHelpCenter.id}
+        />
+    )
+}
+
+const AutomateConnectEmailToStoreSection = () => (
+    <Card className={css.emptySectionCard}>
+        <div className={css.emptySectionTitle}>
+            Top questions from customers
+        </div>
+        <div className={css.emptySection}>
+            <div className={css.connectToEmail}>
+                This store must be connected to an email to receive
+                recommendations.
+            </div>
+            <div className={css.link}>
+                <Link to={'/app/settings/channels/email'} target="_blank">
+                    Connect store to email
+                </Link>
+            </div>
+        </div>
+    </Card>
+)
+
+const AutomateAllRecommendationsView = ({
+    selectedStore,
+    storeFilter,
+    selectedHelpCenter,
+    helpCenterFilter,
+    currentPage,
+    onPageChange,
+}: AutomateAllRecommendationsViewProps) => {
+    const isMultiStore = storeFilter && storeFilter.options.length > 1
+    const hasEmailToStoreConnection = useHasEmailToStoreConnection(
+        selectedStore?.id
     )
 
     return (
@@ -94,18 +145,16 @@ const AutomateAllRecommendationsView = ({
                     <div className={css.titleText}>All Recommendations</div>
                     in the last 90 days
                 </div>
-                <AutomateAllRecommendationsCard
-                    paginatedItems={paginatedItems}
-                    isLoading={isLoading}
-                    itemsCount={itemsCount}
-                    totalItemsCount={totalItemsCount}
-                    statusFilter={statusFilter}
-                    setStatusFilter={setStatusFilter}
-                    currentPage={currentPage}
-                    onPageChange={onPageChange}
-                    displayNewBadge={!viewedOnPage && totalItemsCount > 0}
-                    helpCenterId={selectedHelpCenter.id}
-                />
+                {isMultiStore && !hasEmailToStoreConnection ? (
+                    <AutomateConnectEmailToStoreSection />
+                ) : (
+                    <AutomateAllRecommendationsContent
+                        selectedStore={selectedStore}
+                        selectedHelpCenter={selectedHelpCenter}
+                        currentPage={currentPage}
+                        onPageChange={onPageChange}
+                    />
+                )}
             </div>
         </StatsPage>
     )

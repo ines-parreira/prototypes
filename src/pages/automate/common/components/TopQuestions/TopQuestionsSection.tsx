@@ -249,12 +249,8 @@ export const TopQuestionsSectionConnectStoreToEmail = ({
                 recommendations.
             </div>
 
-            <div>
-                <Link
-                    className={css.link}
-                    to={'/app/settings/channels/email'}
-                    target="_blank"
-                >
+            <div className={css.link}>
+                <Link to={'/app/settings/channels/email'} target="_blank">
                     Connect store to email
                 </Link>
             </div>

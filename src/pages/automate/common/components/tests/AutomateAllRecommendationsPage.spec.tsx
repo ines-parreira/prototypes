@@ -14,6 +14,7 @@ import {useTopQuestionsFilters} from '../TopQuestions/useTopQuestionsFilters'
 import AutomateAllRecommendationsPage from '../AutomateAllRecommendationsPage'
 import {useAIArticleRecommendationItems} from '../../hooks/useAIArticleRecommendationItems'
 import {useLocalStorageTopQuestions} from '../../hooks/useLocalStorageTopQuestions'
+import {useHasEmailToStoreConnection} from '../TopQuestions/useHasEmailToStoreConnection'
 
 const storeFilter = {
     options: [
@@ -105,6 +106,11 @@ const mockUseAIArticleRecommendationItems = assumeMock(
 jest.mock('../../hooks/useLocalStorageTopQuestions')
 const mockUseLocalStorageTopQuestions = assumeMock(useLocalStorageTopQuestions)
 
+jest.mock('../TopQuestions/useHasEmailToStoreConnection')
+const mockUseHasEmailToStoreConnection = assumeMock(
+    useHasEmailToStoreConnection
+)
+
 describe('<AutomateAllRecommendationsPage />', () => {
     const history = createMemoryHistory()
     const defaultState = {
@@ -157,6 +163,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
             ]),
             addViewedOnPage: jest.fn(),
         })
+        mockUseHasEmailToStoreConnection.mockReturnValue(true)
         jest.spyOn(history, 'push')
     })
 
@@ -177,6 +184,18 @@ describe('<AutomateAllRecommendationsPage />', () => {
         const {container} = renderComponent()
 
         expect(container.firstChild).toBeNull()
+    })
+
+    it('return empty state section when selected store has no connection to email', () => {
+        mockUseHasEmailToStoreConnection.mockReturnValue(false)
+
+        renderComponent()
+
+        expect(
+            screen.getByText(
+                'This store must be connected to an email to receive recommendations.'
+            )
+        ).toBeInTheDocument()
     })
 
     it('renders AutomateAllRecommendationsPage correctly', () => {

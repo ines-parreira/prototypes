@@ -52,4 +52,36 @@
         .heading-page-semibold();
         margin-right: @layout-spacing-xs;
     }
+
+    .emptySectionCard {
+        padding: @layout-spacing-s;
+        padding-bottom: 0;
+        display: flex;
+        flex-direction: column;
+        row-gap: @layout-spacing-xs;
+    }
+
+    .emptySectionTitle {
+        .heading-subsection-semibold();
+    }
+
+    .emptySection {
+        padding: @layout-spacing-m;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+    }
+
+    .connectToEmail {
+        .heading-subsection-semibold();
+        color: var(--neutral-grey-5);
+    }
+
+    .link {
+        .component-button-medium();
+        padding: 6px 0;
+    }
 }
