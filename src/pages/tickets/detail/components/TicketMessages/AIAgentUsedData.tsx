@@ -44,6 +44,10 @@ const AIAgentUsedData = ({messageId}: Props) => {
             }
         }, [data, messageId])
 
+    if (!orders && !actions && !knowledge && !guidance) {
+        return null
+    }
+
     return (
         <div className={css.container}>
             <div className={css.title}>

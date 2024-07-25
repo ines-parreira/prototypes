@@ -1,4 +1,4 @@
-import React, {useEffect, CSSProperties} from 'react'
+import React, {useEffect, CSSProperties, useMemo} from 'react'
 import {fromJS} from 'immutable'
 import {Collapse} from 'reactstrap'
 import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
@@ -9,7 +9,7 @@ import css from './SuggestionBody.less'
 import {SuggestionStates} from './InTicketSuggestion'
 
 type Props = {
-    __html?: string
+    text?: string | React.ReactNode
     actions?: MacroAction[]
     ticketId: number
     state: SuggestionStates
@@ -21,7 +21,7 @@ type Props = {
 const PREVIEW_HEIGHT = 175
 
 export default function SuggestionBody({
-    __html,
+    text,
     actions,
     ticketId,
     state,
@@ -55,6 +55,17 @@ export default function SuggestionBody({
               }
             : {}
 
+    const content = useMemo(() => {
+        if (!text) {
+            return '(No reply will be sent)'
+        }
+
+        if (typeof text === 'string')
+            return <div dangerouslySetInnerHTML={{__html: text}} />
+
+        return text
+    }, [text])
+
     return (
         <Collapse
             className={css.container}
@@ -62,13 +73,7 @@ export default function SuggestionBody({
             style={style}
         >
             <div ref={innerRef}>
-                <div className={css.text}>
-                    {__html ? (
-                        <div dangerouslySetInnerHTML={{__html}} />
-                    ) : (
-                        '(No reply will be sent)'
-                    )}
-                </div>
+                <div className={css.text}>{content}</div>
                 {isAIAgentDraftMessage && !!messageId && (
                     <AIAgentUsedData messageId={messageId} />
                 )}

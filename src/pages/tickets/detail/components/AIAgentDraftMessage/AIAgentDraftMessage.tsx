@@ -11,7 +11,10 @@ import {
     updateTicketMessage,
 } from 'state/ticket/actions'
 import {TicketMessage} from 'models/ticket/types'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import InTicketSuggestion from '../RuleSuggestion/InTicketSuggestion'
+
+import css from './AIAgentDraftMessage.less'
 
 export type Props = {
     ticketId: number
@@ -19,7 +22,7 @@ export type Props = {
 }
 
 const AIAgentDraftMessage = ({ticketId, message}: Props) => {
-    const {data} = useGetAiAgentFeedback()
+    const {data, isLoading} = useGetAiAgentFeedback()
     const dispatch = useAppDispatch()
     const [hideMessage, setHideMessage] = useState(false)
 
@@ -65,6 +68,31 @@ const AIAgentDraftMessage = ({ticketId, message}: Props) => {
                 )
             }
         }
+    }
+
+    if (isLoading) {
+        return (
+            <InTicketSuggestion
+                isAIAgentDraftMessage
+                ticketId={ticketId}
+                messageId={message.id}
+                actionsContent={<></>}
+                infoContent={
+                    <div className={css.skeletonWrapper}>
+                        <Skeleton height={20} width="60%" />
+                        <Skeleton height={20} width="40%" />
+                    </div>
+                }
+                text={
+                    <div className={css.skeletonWrapper}>
+                        {new Array(10).fill(null).map((_, index) => (
+                            <Skeleton key={index} height={20} width="100%" />
+                        ))}
+                    </div>
+                }
+                hideExpandButton
+            />
+        )
     }
 
     if (!feedback || !draftMessage || hideMessage) {

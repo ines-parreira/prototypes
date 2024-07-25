@@ -13,13 +13,14 @@ import css from './InTicketSuggestion.less'
 
 type Props = {
     ticketId: number
-    text?: string
+    text?: string | React.ReactNode
     macroActions?: MacroAction[]
     isCollapsed?: boolean
     actionsContent: React.ReactNode
     infoContent: React.ReactNode
     isAIAgentDraftMessage?: boolean
     messageId?: number
+    hideExpandButton?: boolean
 }
 
 export type SuggestionStates = 'collapse' | 'expand' | 'preview' | null
@@ -33,6 +34,7 @@ export default function InTicketSuggestion({
     infoContent,
     isAIAgentDraftMessage = false,
     messageId,
+    hideExpandButton = false,
 }: Props) {
     const dispatch = useAppDispatch()
     const [suggestionState, setSuggestionState] =
@@ -80,7 +82,7 @@ export default function InTicketSuggestion({
             <SuggestionBody
                 state={suggestionState}
                 actions={macroActions}
-                __html={text}
+                text={text}
                 ticketId={ticketId}
                 setSuggestionState={setSuggestionState}
                 isAIAgentDraftMessage={isAIAgentDraftMessage}
@@ -92,6 +94,7 @@ export default function InTicketSuggestion({
                     onClick={() => setSuggestionState('expand')}
                     isAIAgentDraftMessage={isAIAgentDraftMessage}
                     gradientStart={headerHeight}
+                    hideExpandButton={hideExpandButton}
                 />
             ) : null}
         </InTicketSuggestionContainer>
@@ -102,10 +105,12 @@ function FadeLayer({
     gradientStart,
     isAIAgentDraftMessage,
     onClick,
+    hideExpandButton,
 }: {
     gradientStart: number
     isAIAgentDraftMessage: boolean
     onClick: () => void
+    hideExpandButton: boolean
 }) {
     return (
         <div
@@ -114,15 +119,17 @@ function FadeLayer({
             }}
             className={css.fadeLayer}
         >
-            <div onClick={onClick} className={css.expandButton}>
-                <Button
-                    fillStyle="ghost"
-                    intent={isAIAgentDraftMessage ? `primary` : `secondary`}
-                >
-                    Expand
-                    <i className="material-icons-round">expand_more</i>
-                </Button>
-            </div>
+            {!hideExpandButton && (
+                <div onClick={onClick} className={css.expandButton}>
+                    <Button
+                        fillStyle="ghost"
+                        intent={isAIAgentDraftMessage ? `primary` : `secondary`}
+                    >
+                        Expand
+                        <i className="material-icons-round">expand_more</i>
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }
