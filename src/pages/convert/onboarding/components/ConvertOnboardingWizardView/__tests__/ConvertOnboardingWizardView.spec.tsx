@@ -4,6 +4,8 @@ import routerDom, {BrowserRouter, useParams} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {channelConnection} from 'fixtures/channelConnection'
@@ -23,6 +25,7 @@ import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/Na
 import ConvertOnboardingWizardView from '../ConvertOnboardingWizardView'
 
 const mockStore = configureMockStore()
+const queryClient = mockQueryClient()
 
 jest.mock('pages/convert/channelConnections/hooks/useUpdateChannelConnection')
 const useUpdateChannelConnectionMock = assumeMock(useUpdateChannelConnection)
@@ -40,6 +43,15 @@ const useGetConvertBundleMock = assumeMock(useGetConvertBundle)
 
 jest.mock('pages/convert/bundles/hooks/useInstallBundle')
 const useInstallBundleMock = assumeMock(useInstallBundle)
+
+jest.mock(
+    'pages/convert/onboarding/components/ConvertSimplifiedEditorModal',
+    () => {
+        return jest.fn(() => {
+            return <div data-testid="mock-simplified-editor-modal" />
+        })
+    }
+)
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -89,7 +101,9 @@ describe('ConvertOnboardingWizardView', () => {
         const {getByText} = render(
             <BrowserRouter>
                 <Provider store={mockStore(defaultState)}>
-                    <ConvertOnboardingWizardView />
+                    <QueryClientProvider client={queryClient}>
+                        <ConvertOnboardingWizardView />
+                    </QueryClientProvider>
                 </Provider>
             </BrowserRouter>
         )
@@ -121,7 +135,9 @@ describe('ConvertOnboardingWizardView', () => {
         render(
             <BrowserRouter>
                 <Provider store={mockStore(defaultState)}>
-                    <ConvertOnboardingWizardView />
+                    <QueryClientProvider client={queryClient}>
+                        <ConvertOnboardingWizardView />
+                    </QueryClientProvider>
                 </Provider>
             </BrowserRouter>
         )

@@ -1,7 +1,6 @@
 import React, {useMemo, useState} from 'react'
 import {Map} from 'immutable'
 
-import {Link} from 'react-router-dom'
 import Button from 'pages/common/components/button/Button'
 
 import {
@@ -12,7 +11,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
 
-import {useIsConvertSimplifiedEditorEnabled} from 'pages/convert/common/hooks/useIsConvertSimplifiedEditorEnabled'
 import ConvertSimplifiedEditorModal from 'pages/convert/onboarding/components/ConvertSimplifiedEditorModal'
 
 import css from './ConvertOnboardingCampaignTemplate.less'
@@ -47,7 +45,6 @@ const ConvertOnboardingCampaignTemplate = ({
     selected,
 }: Props) => {
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
-    const isSimplifiedEditorEnabled = useIsConvertSimplifiedEditorEnabled()
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
@@ -105,36 +102,22 @@ const ConvertOnboardingCampaignTemplate = ({
                 </div>
 
                 <div className={css.button}>
-                    {!isSimplifiedEditorEnabled ? (
-                        <Link
-                            to={`/app/convert/${integration.get(
-                                'id'
-                            )}/setup/wizard/${template.slug}`}
-                        >
-                            <Button intent="primary" fillStyle="ghost">
-                                Customize
-                            </Button>
-                        </Link>
-                    ) : (
-                        <Button
-                            intent="primary"
-                            fillStyle="ghost"
-                            onClick={openModal}
-                        >
-                            Customize
-                        </Button>
-                    )}
+                    <Button
+                        intent="primary"
+                        fillStyle="ghost"
+                        onClick={openModal}
+                    >
+                        Customize
+                    </Button>
                 </div>
             </div>
-            {isSimplifiedEditorEnabled && (
-                <ConvertSimplifiedEditorModal
-                    estimatedRevenue={estimatedRevenue}
-                    template={template}
-                    integration={integration}
-                    isOpen={isModalOpen}
-                    onClose={onClose}
-                />
-            )}
+            <ConvertSimplifiedEditorModal
+                estimatedRevenue={estimatedRevenue}
+                template={template}
+                integration={integration}
+                isOpen={isModalOpen}
+                onClose={onClose}
+            />
         </div>
     )
 }

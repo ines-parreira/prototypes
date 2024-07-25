@@ -4,6 +4,8 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
 import {account} from 'fixtures/account'
 import {RootState, StoreDispatch} from 'state/types'
@@ -12,11 +14,21 @@ import {PlanName} from 'utils/paywalls'
 import ConvertOnboardingCampaignTemplate from '../ConvertOnboardingCampaignTemplate'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const queryClient = mockQueryClient()
 
 const defaultState: Partial<RootState> = {
     currentAccount: fromJS(account),
     billing: fromJS(billingState),
 }
+
+jest.mock(
+    'pages/convert/onboarding/components/ConvertSimplifiedEditorModal',
+    () => {
+        return jest.fn(() => {
+            return <div data-testid="mock-simplified-editor-modal" />
+        })
+    }
+)
 
 const integration = fromJS({
     id: '1',
@@ -44,11 +56,13 @@ describe('ConvertOnboardingCampaignTemplate', () => {
     it('renders campaign template correctly', () => {
         const {getByText, getByAltText} = render(
             <Provider store={mockStore(defaultState)}>
-                <ConvertOnboardingCampaignTemplate
-                    template={template as CampaignTemplate}
-                    integration={integration}
-                    selected={true}
-                />
+                <QueryClientProvider client={queryClient}>
+                    <ConvertOnboardingCampaignTemplate
+                        template={template as CampaignTemplate}
+                        integration={integration}
+                        selected={true}
+                    />
+                </QueryClientProvider>
             </Provider>
         )
 

@@ -4,6 +4,8 @@ import {fromJS, Map} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {assumeMock} from 'utils/testing'
@@ -15,6 +17,14 @@ import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import WizardCampaignsStep from '../WizardCampaignsStep'
 
+jest.mock(
+    'pages/convert/onboarding/components/ConvertSimplifiedEditorModal',
+    () => {
+        return jest.fn(() => {
+            return <div data-testid="mock-simplified-editor-modal" />
+        })
+    }
+)
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection
@@ -23,6 +33,7 @@ const useGetOrCreateChannelConnectionMock = assumeMock(
 jest.mock('models/convert/campaign/queries')
 const useListCampaignMock = assumeMock(useListCampaigns)
 
+const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const defaultState: Partial<RootState> = {
@@ -50,7 +61,9 @@ describe('WizardCampaignsStep', () => {
     test('renders correctly with campaign templates', () => {
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
-                <WizardCampaignsStep integration={integration} />
+                <QueryClientProvider client={queryClient}>
+                    <WizardCampaignsStep integration={integration} />
+                </QueryClientProvider>
             </Provider>
         )
 
