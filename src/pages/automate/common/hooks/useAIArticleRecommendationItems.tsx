@@ -1,7 +1,7 @@
 import {useMemo} from 'react'
 import {AIArticle, LocaleCode} from 'models/helpCenter/types'
-import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
 import {sortAIArticlesByTicketsCount} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/AIArticlesLibraryUtils'
+import {useTopQuestionsArticles} from '../components/TopQuestions/useTopQuestionsArticles'
 
 export enum AllRecommendationsStatus {
     All = 'all',
@@ -18,6 +18,7 @@ export type AIArticleRecommendationItem = {
         | 'publish'
         | 'saveAsDraft'
         | 'dismissFromTopQuestions'
+    createArticle: () => Promise<void>
 }
 
 const filterAIArticleStatusByReviewAction = (
@@ -44,7 +45,7 @@ const filterAIArticleStatusByReviewAction = (
 
 type Props = {
     helpCenterId: number
-    storeIntegrationId: number | null
+    storeIntegrationId: number
     locale: LocaleCode
     statusFilter: AllRecommendationsStatus
     currentPage: number
@@ -63,11 +64,11 @@ export const useAIArticleRecommendationItems = ({
         throw new Error('Current page must be greater than or equal to 1')
     }
 
-    const {fetchedArticles, isLoading} = useConditionalGetAIArticles({
-        helpCenterId,
-        storeIntegrationId,
-        locale,
-    })
+    const {
+        articles: fetchedArticles,
+        createArticle,
+        isLoading,
+    } = useTopQuestionsArticles(storeIntegrationId, helpCenterId, locale)
 
     const sortedFetchedArticles = useMemo(() => {
         if (!fetchedArticles) return []
@@ -85,8 +86,9 @@ export const useAIArticleRecommendationItems = ({
             templateKey: article.key,
             ticketsCount: article.related_tickets_count ?? 0,
             reviewAction: article.review_action,
+            createArticle: () => createArticle(article.key),
         }))
-    }, [sortedFetchedArticles, statusFilter])
+    }, [sortedFetchedArticles, statusFilter, createArticle])
 
     return useMemo(() => {
         const startIndex = (currentPage - 1) * itemsPerPage
@@ -96,9 +98,10 @@ export const useAIArticleRecommendationItems = ({
             itemsCount: recommendationsItems.length,
             totalItemsCount: fetchedArticles?.length || 0,
             isLoading,
-            batchDatetime: fetchedArticles
-                ? fetchedArticles[0].batch_datetime
-                : undefined,
+            batchDatetime:
+                fetchedArticles.length > 0
+                    ? fetchedArticles[0].batch_datetime
+                    : undefined,
         }
     }, [
         currentPage,

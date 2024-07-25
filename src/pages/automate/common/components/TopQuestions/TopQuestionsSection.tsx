@@ -23,8 +23,8 @@ type TopQuestion = {
 export type TopQuestionsSectionProps = {
     newQuestionsCount?: number
     topQuestions: TopQuestion[]
-    onCreateArticle: (templateKey: string) => void
-    onDismiss: (templateKey: string) => void
+    onCreateArticle: (templateKey: string) => Promise<void>
+    onDismiss: (templateKey: string) => Promise<void>
     helpCenterFilter?: {
         options: {name: string; helpCenterId: number}[]
         setSelectedHelpCenterId: (helpCenterId: number) => void

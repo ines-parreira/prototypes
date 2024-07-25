@@ -1,7 +1,6 @@
-import React, {useMemo} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import moment from 'moment'
-import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
 import {ShopifyIntegration} from 'models/integration/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {useTopQuestionsFilters} from './useTopQuestionsFilters'
@@ -18,6 +17,7 @@ import {
 import {filteredSortedTopQuestionsFromFetchedArticles} from './utils'
 import {useHasEmailToStoreConnection} from './useHasEmailToStoreConnection'
 import {useViewedOnPage} from './useViewedOnPage'
+import {useTopQuestionsArticles} from './useTopQuestionsArticles'
 
 type TopQuestionsSectionWithFiltersProps = {
     selectedStore: ShopifyIntegration
@@ -32,18 +32,19 @@ const TopQuestionsSectionWithFilters = ({
     storeFilter,
     helpCenterFilter,
 }: TopQuestionsSectionWithFiltersProps) => {
-    const {fetchedArticles, isLoading} = useConditionalGetAIArticles({
-        helpCenterId: selectedHelpCenter.id,
-        storeIntegrationId: selectedStore.id,
-        locale: selectedHelpCenter?.default_locale || 'en-US',
-    })
+    const {articles, isLoading, dismissArticle, createArticle} =
+        useTopQuestionsArticles(
+            selectedStore.id,
+            selectedHelpCenter.id,
+            selectedHelpCenter.default_locale || 'en-US'
+        )
 
     const batchDatetime = useMemo(
         () =>
-            !isLoading && fetchedArticles
-                ? moment(fetchedArticles[0].batch_datetime).toDate()
+            !isLoading && articles.length > 0
+                ? moment(articles[0].batch_datetime).toDate()
                 : new Date(),
-        [fetchedArticles, isLoading]
+        [articles, isLoading]
     )
 
     const viewedOnPage = useViewedOnPage(
@@ -53,19 +54,49 @@ const TopQuestionsSectionWithFilters = ({
         'automate-overview'
     )
 
-    const topQuestions = useMemo(
-        () => filteredSortedTopQuestionsFromFetchedArticles(fetchedArticles),
-        [fetchedArticles]
-    )
+    const [topQuestions, setTopQuestions] = useState<
+        TopQuestionsSectionProps['topQuestions']
+    >([])
+
+    useEffect(() => {
+        if (!isLoading && articles) {
+            setTopQuestions(
+                filteredSortedTopQuestionsFromFetchedArticles(articles)
+            )
+        }
+    }, [isLoading, articles])
 
     const newQuestionsCount = viewedOnPage ? undefined : topQuestions.length
 
     const isSingleStore = !storeFilter || storeFilter.options.length < 2
 
-    // TODO: this is a placeholder for when we have create article & dismiss article actions
-    // we need to remember that the merchant has interacted with the top questions section so that,
-    // if there are less than 4 top questions, we keep showing them, not just hide them
-    const wasJustReviewed = false
+    const [wasJustReviewed, setWasJustReviewed] = useState(false)
+
+    const onCreateArticle = useCallback(
+        async (templateKey: string) => {
+            try {
+                await createArticle(templateKey)
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setWasJustReviewed(true)
+            }
+        },
+        [createArticle]
+    )
+
+    const onDismiss = useCallback(
+        async (templateKey: string) => {
+            try {
+                await dismissArticle(templateKey)
+
+                setWasJustReviewed(true)
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        [dismissArticle]
+    )
 
     if (isSingleStore) {
         if (isLoading || (topQuestions.length < 4 && !wasJustReviewed)) {
@@ -90,8 +121,8 @@ const TopQuestionsSectionWithFilters = ({
                 <TopQuestionsSection
                     newQuestionsCount={newQuestionsCount}
                     topQuestions={topQuestions}
-                    onCreateArticle={() => {}}
-                    onDismiss={() => {}}
+                    onCreateArticle={onCreateArticle}
+                    onDismiss={onDismiss}
                     storeFilter={storeFilter}
                     helpCenterFilter={helpCenterFilter}
                     storeIntegrationId={selectedStore.id}
@@ -145,8 +176,8 @@ const TopQuestionsSectionWithFilters = ({
             <TopQuestionsSection
                 newQuestionsCount={newQuestionsCount}
                 topQuestions={topQuestions}
-                onCreateArticle={() => {}}
-                onDismiss={() => {}}
+                onCreateArticle={onCreateArticle}
+                onDismiss={onDismiss}
                 storeFilter={storeFilter}
                 helpCenterFilter={helpCenterFilter}
                 storeIntegrationId={selectedStore.id}

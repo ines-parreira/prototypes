@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {Meta, StoryObj} from '@storybook/react'
-import {action} from '@storybook/addon-actions'
 
 import {
     TopQuestionCard as TopQuestionCardComponent,
@@ -24,8 +23,8 @@ export const TopQuestionCard: Story = {
     render: (args) => (
         <TopQuestionCardComponent
             {...args}
-            onDismiss={action('onDismiss')}
-            onCreateArticle={action('onCreateArticle')}
+            onDismiss={() => Promise.resolve()}
+            onCreateArticle={() => Promise.resolve()}
         />
     ),
 }

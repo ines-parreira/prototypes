@@ -66,8 +66,8 @@ export const TopQuestionsSection: Story = {
         <Renderer>
             <TopQuestionsSectionComponent
                 {...args}
-                onDismiss={action('onDismiss')}
-                onCreateArticle={action('onCreateArticle')}
+                onDismiss={() => Promise.resolve()}
+                onCreateArticle={() => Promise.resolve()}
             />
         </Renderer>
     ),
@@ -79,8 +79,8 @@ export const TopQuestionsSectionLessThan4: Story = {
             <TopQuestionsSectionComponent
                 {...args}
                 topQuestions={args.topQuestions.slice(0, 2)}
-                onDismiss={action('onDismiss')}
-                onCreateArticle={action('onCreateArticle')}
+                onDismiss={() => Promise.resolve()}
+                onCreateArticle={() => Promise.resolve()}
             />
         </Renderer>
     ),
@@ -92,8 +92,8 @@ export const TopQuestionsSectionWide: Story = {
             <div style={{width: '1600px'}}>
                 <TopQuestionsSectionComponent
                     {...args}
-                    onDismiss={action('onDismiss')}
-                    onCreateArticle={action('onCreateArticle')}
+                    onDismiss={() => Promise.resolve()}
+                    onCreateArticle={() => Promise.resolve()}
                 />
             </div>
         </MemoryRouter>
@@ -107,8 +107,8 @@ export const TopQuestionsSectionWideLessThan4: Story = {
                 <TopQuestionsSectionComponent
                     {...args}
                     topQuestions={args.topQuestions.slice(0, 2)}
-                    onDismiss={action('onDismiss')}
-                    onCreateArticle={action('onCreateArticle')}
+                    onDismiss={() => Promise.resolve()}
+                    onCreateArticle={() => Promise.resolve()}
                 />
             </div>
         </MemoryRouter>
@@ -121,8 +121,8 @@ export const TopQuestionsSectionNew: Story = {
             <TopQuestionsSectionComponent
                 {...args}
                 newQuestionsCount={12}
-                onDismiss={action('onDismiss')}
-                onCreateArticle={action('onCreateArticle')}
+                onDismiss={() => Promise.resolve()}
+                onCreateArticle={() => Promise.resolve()}
             />
         </Renderer>
     ),
@@ -167,8 +167,8 @@ export const TopQuestionsSectionWithShopFilter: Story = {
         <Renderer>
             <TopQuestionsSectionComponent
                 {...args}
-                onDismiss={action('onDismiss')}
-                onCreateArticle={action('onCreateArticle')}
+                onDismiss={() => Promise.resolve()}
+                onCreateArticle={() => Promise.resolve()}
             />
         </Renderer>
     ),
@@ -213,8 +213,8 @@ export const TopQuestionsSectionWithHelpCenterFilter: Story = {
         <Renderer>
             <TopQuestionsSectionComponent
                 {...args}
-                onDismiss={action('onDismiss')}
-                onCreateArticle={action('onCreateArticle')}
+                onDismiss={() => Promise.resolve()}
+                onCreateArticle={() => Promise.resolve()}
             />
         </Renderer>
     ),
@@ -240,8 +240,8 @@ export const TopQuestionsSectionWithAllFilters: Story = {
         <Renderer>
             <TopQuestionsSectionComponent
                 {...args}
-                onDismiss={action('onDismiss')}
-                onCreateArticle={action('onCreateArticle')}
+                onDismiss={() => Promise.resolve()}
+                onCreateArticle={() => Promise.resolve()}
             />
         </Renderer>
     ),

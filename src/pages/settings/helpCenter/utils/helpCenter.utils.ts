@@ -1,6 +1,6 @@
 import {isDevelopment} from 'utils/environment'
 import {
-    AILibraryArticleItem,
+    AIArticle,
     ARTICLE_TEMPLATES_KEYS,
     Article,
     ArticleTemplateKey,
@@ -288,7 +288,7 @@ export const mapHelpCenterArticleItemToArticle = (
 }
 
 type AILibraryArticleItemParams = {
-    article: AILibraryArticleItem
+    article: AIArticle
     locale: LocaleCode
     categoryId?: number | null
     visibilityStatus?: 'PUBLIC' | 'UNLISTED'
@@ -297,7 +297,7 @@ type AILibraryArticleItemParams = {
 
 export const mapAILibraryArticleItemToArticle = (
     params: AILibraryArticleItemParams
-) => {
+): CreateArticleDto | null => {
     const {article, locale, categoryId, visibilityStatus, publish} = params
 
     if (!article.title || !article.html_content) return null

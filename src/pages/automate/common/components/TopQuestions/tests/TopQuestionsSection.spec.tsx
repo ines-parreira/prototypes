@@ -8,8 +8,8 @@ describe('<TopQuestionsSection />', () => {
     it('renders top questions', () => {
         const setSelectedHelpCenterId = jest.fn()
         const setSelectedShopIntegrationId = jest.fn()
-        const onCreateArticle = jest.fn()
-        const onDismiss = jest.fn()
+        const onCreateArticle = jest.fn().mockReturnValue(Promise.resolve())
+        const onDismiss = jest.fn().mockReturnValue(Promise.resolve())
 
         const {container} = render(
             <TopQuestionsSection

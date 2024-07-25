@@ -61,12 +61,22 @@
     }
 
     .createArticle {
-        width: 93px;
         height: 32px;
         line-height: 32px;
         cursor: pointer;
 
         color: var(--main-primary);
+    }
+
+    .creatingArticle {
+        .component-button-medium();
+        color: var(--neutral-grey-3);
+        height: 32px;
+        line-height: 32px;
+
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
     }
 
     .dismiss {

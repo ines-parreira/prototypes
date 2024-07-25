@@ -13,6 +13,7 @@ import {NumberedPagination} from 'pages/common/components/Paginations'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
+import Spinner from 'pages/common/components/Spinner'
 import {AIArticleRecommendationItem} from '../hooks/useAIArticleRecommendationItems'
 import {useAIArticlePublishedPreviewUrl} from '../hooks/useAIArticlePublishedPreviewUrl'
 import {AllRecomendationsColumn} from './AutomateAllRecommendationsCard'
@@ -119,16 +120,36 @@ const ArticleTitle = ({
 }
 
 const ArticleStatus = ({
+    createArticle,
     reviewAction,
-}: Pick<AIArticleRecommendationItem, 'reviewAction'>) =>
-    reviewAction === 'publish' || reviewAction === 'saveAsDraft' ? (
+}: Pick<AIArticleRecommendationItem, 'reviewAction' | 'createArticle'>) => {
+    const [isCreating, setIsCreating] = React.useState(false)
+
+    return reviewAction === 'publish' || reviewAction === 'saveAsDraft' ? (
         <span className={css.articleStatusWithIcon}>
             <i className="material-icons">check_circle</i>
             {' Created'}
         </span>
+    ) : isCreating ? (
+        <div className={css.creatingArticle}>
+            <Spinner color="gloom" width={16} />
+            Creating...
+        </div>
     ) : (
-        <span className={css.articleStatus}>Create Article</span>
+        <span
+            className={css.articleStatus}
+            onClick={async () => {
+                if (!isCreating) {
+                    setIsCreating(true)
+                    await createArticle()
+                    setIsCreating(false)
+                }
+            }}
+        >
+            Create Article
+        </span>
     )
+}
 
 const AutomateAllRecommendationsTable = ({
     isLoading,
@@ -233,6 +254,9 @@ const AutomateAllRecommendationsTable = ({
                                           <ArticleStatus
                                               reviewAction={
                                                   article.reviewAction
+                                              }
+                                              createArticle={
+                                                  article.createArticle
                                               }
                                           />
                                       </BodyCell>

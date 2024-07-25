@@ -102,24 +102,28 @@ const articles: AIArticleRecommendationItem[] = [
         title: 'How can I ensure my apartment number is included on the shipping label?',
         templateKey: 'ai_article1',
         ticketsCount: 439,
+        createArticle: () => Promise.resolve(),
         reviewAction: 'saveAsDraft',
     },
     {
         title: "What should I do if my package is marked as delivered but I haven't received it?",
         templateKey: 'ai_article2',
         ticketsCount: 287,
+        createArticle: () => Promise.resolve(),
         reviewAction: 'publish',
     },
     {
         title: 'Are new customers eligible for any discounts?',
         templateKey: 'ai_article3',
         ticketsCount: 184,
+        createArticle: () => Promise.resolve(),
         reviewAction: 'archive',
     },
     {
         title: 'What happens if I did not request to cancel my order but received a cancellation notice directly after I pass my order?',
         templateKey: 'ai_article4',
         ticketsCount: 112,
+        createArticle: () => Promise.resolve(),
     },
 ]
 

@@ -2,13 +2,14 @@ import React, {ReactNode} from 'react'
 
 import classNames from 'classnames'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import Spinner from 'pages/common/components/Spinner'
 import css from './TopQuestionCard.less'
 
 type Props = {
     ticketsCount: number
     title: string
-    onCreateArticle: () => void
-    onDismiss: () => void
+    onCreateArticle: () => Promise<void>
+    onDismiss: () => Promise<void>
 }
 
 const Header = ({children}: {children: ReactNode}) => (
@@ -31,17 +32,48 @@ const Title = ({title}: Pick<Props, 'title'>) => (
     </div>
 )
 
-const CreateArticle = ({onCreateArticle}: Pick<Props, 'onCreateArticle'>) => (
-    <div onClick={onCreateArticle} className={css.createArticle}>
-        <span>Create Article</span>
-    </div>
-)
+const CreateArticle = ({onCreateArticle}: Pick<Props, 'onCreateArticle'>) => {
+    const [isCreating, setIsCreating] = React.useState(false)
 
-const Dismiss = ({onDismiss}: Pick<Props, 'onDismiss'>) => (
-    <div onClick={onDismiss} className={css.dismiss}>
-        <i className="material-icons">close</i>
-    </div>
-)
+    return isCreating ? (
+        <div className={css.creatingArticle}>
+            <Spinner color="gloom" width={20} />
+            Creating...
+        </div>
+    ) : (
+        <div
+            onClick={() => {
+                if (!isCreating) {
+                    setIsCreating(true)
+                    void onCreateArticle().finally(() => setIsCreating(false))
+                }
+            }}
+            className={css.createArticle}
+        >
+            <span>Create Article</span>
+        </div>
+    )
+}
+
+const Dismiss = ({onDismiss}: Pick<Props, 'onDismiss'>) => {
+    const [isDismissing, setIsDismissing] = React.useState(false)
+
+    return (
+        <div
+            onClick={() => {
+                if (!isDismissing) {
+                    setIsDismissing(true)
+                    void onDismiss().finally(() => {
+                        setIsDismissing(false)
+                    })
+                }
+            }}
+            className={css.dismiss}
+        >
+            <i className="material-icons">close</i>
+        </div>
+    )
+}
 
 export const TopQuestionCard = ({
     onCreateArticle,

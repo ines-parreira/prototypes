@@ -1,15 +1,18 @@
 import {useCreateArticle} from 'models/helpCenter/queries'
-import {AILibraryArticleItem, HelpCenter} from 'models/helpCenter/types'
+import {AIArticle, LocaleCode} from 'models/helpCenter/types'
 import {mapAILibraryArticleItemToArticle} from '../utils/helpCenter.utils'
 
-export const useCreateAIArticle = (helpCenter: HelpCenter) => {
+export const useCreateAIArticle = (
+    helpCenterId: number,
+    locale: LocaleCode
+) => {
     const {
         mutateAsync: createArticleMutateAsync,
         isLoading: isCreateArticleLoading,
     } = useCreateArticle()
 
     type createArticleProps = {
-        articleTemplate: AILibraryArticleItem
+        articleTemplate: AIArticle
         visibilityStatus: 'PUBLIC' | 'UNLISTED'
         categoryId: number | null
         publish: boolean
@@ -23,7 +26,7 @@ export const useCreateAIArticle = (helpCenter: HelpCenter) => {
     }: createArticleProps) => {
         const payload = mapAILibraryArticleItemToArticle({
             article: articleTemplate,
-            locale: helpCenter.default_locale,
+            locale,
             visibilityStatus,
             categoryId,
             publish,
@@ -35,7 +38,7 @@ export const useCreateAIArticle = (helpCenter: HelpCenter) => {
 
         return createArticleMutateAsync([
             undefined,
-            {help_center_id: helpCenter.id},
+            {help_center_id: helpCenterId},
             payload,
         ])
     }

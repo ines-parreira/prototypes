@@ -38,7 +38,10 @@ const useAILibraryActions = (
             | 'dismissFromTopQuestions'
     ) => void
 ) => {
-    const {createArticle} = useCreateAIArticle(helpCenter)
+    const {createArticle} = useCreateAIArticle(
+        helpCenter.id,
+        helpCenter.default_locale
+    )
     const queryClient = useQueryClient()
     const appDispatch = useAppDispatch()
 
