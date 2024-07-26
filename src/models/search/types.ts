@@ -1,4 +1,5 @@
 import {CancelToken} from 'axios'
+import {isObject} from 'lodash'
 
 import {
     ApiListResponse,
@@ -82,6 +83,28 @@ export const isTicket = (
 ): item is PickedTicketWithHighlights => {
     return 'channel' in item
 }
+
+//
+// TODO: @anddon move this to the SDK
+
+export const isUserSearchResult = (
+    input: unknown
+): input is UserSearchResult => {
+    return (
+        isObject(input) &&
+        'id' in input &&
+        'address' in input &&
+        'customer' in input &&
+        isObject(input.customer) &&
+        'id' in input.customer &&
+        'name' in input.customer &&
+        typeof input.id === 'number' &&
+        typeof input.address === 'string' &&
+        typeof input.customer.id === 'number' &&
+        typeof input.customer.name === 'string'
+    )
+}
+
 export type TicketHighlights = {
     id?: string[]
     subject?: string[]

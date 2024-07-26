@@ -9,8 +9,8 @@ import {Provider} from 'react-redux'
 import React, {ComponentProps, createRef} from 'react'
 import {fromJS} from 'immutable'
 import {
-    TransferCallBodyReceiverType,
-    TransferCallBodyType,
+    VoiceCallTransferReceiverType,
+    VoiceCallTransferType,
     useTransferCall,
     useListUsers,
 } from '@gorgias/api-queries'
@@ -284,8 +284,8 @@ describe('CallTransferDropdown', () => {
         fireEvent.click(screen.getByRole('button', {name: /transfer call/i}))
         expect(mockMutate).toHaveBeenCalledWith({
             data: {
-                type: TransferCallBodyType.Cold,
-                receiver_type: TransferCallBodyReceiverType.Agent,
+                type: VoiceCallTransferType.Cold,
+                receiver_type: VoiceCallTransferReceiverType.Agent,
                 receiver_id: 1,
                 call_sid: 'fake-call-sid',
             },

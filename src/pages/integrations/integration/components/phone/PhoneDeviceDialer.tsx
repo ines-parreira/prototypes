@@ -1,6 +1,6 @@
 import React, {createRef, useCallback, useState} from 'react'
-import {debounce} from 'lodash'
-import {SearchBodyType, useSearch} from '@gorgias/api-queries'
+import {debounce, isArray} from 'lodash'
+import {SearchType, useSearch} from '@gorgias/api-queries'
 import {isValidPhoneNumber} from 'libphonenumber-js'
 import PhoneNumberInput, {
     PhoneNumberInputHandle,
@@ -9,7 +9,7 @@ import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {UserSearchResult} from 'models/search/types'
+import {UserSearchResult, isUserSearchResult} from 'models/search/types'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -48,7 +48,10 @@ export default function PhoneDeviceDialer({onCallInitiated}: Props) {
         selectedIntegration,
     })
 
-    const customers = data?.data.data
+    const customers = isArray(data?.data.data)
+        ? data?.data.data.filter(isUserSearchResult)
+        : []
+
     const isSearchTypeCustomer = /[a-zA-Z]/.test(inputValue)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,7 +59,7 @@ export default function PhoneDeviceDialer({onCallInitiated}: Props) {
         debounce((input: string) => {
             void searchCustomers({
                 data: {
-                    type: SearchBodyType.CustomerChannelPhone,
+                    type: SearchType.CustomerChannelPhone,
                     query: input,
                 },
             })

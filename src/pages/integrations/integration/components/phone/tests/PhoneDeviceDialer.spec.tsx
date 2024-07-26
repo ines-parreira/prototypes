@@ -1,6 +1,6 @@
 import {screen, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
-import {SearchBodyType, useSearch} from '@gorgias/api-queries'
+import {SearchType, useSearch} from '@gorgias/api-queries'
 import {isValidPhoneNumber} from 'libphonenumber-js'
 import {Provider} from 'react-redux'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
@@ -202,7 +202,7 @@ describe('PhoneDeviceDialer', () => {
         await waitFor(() => {
             expect(searchCustomersMock).toHaveBeenCalledWith({
                 data: {
-                    type: SearchBodyType.CustomerChannelPhone,
+                    type: SearchType.CustomerChannelPhone,
                     query: '1234567890',
                 },
             })

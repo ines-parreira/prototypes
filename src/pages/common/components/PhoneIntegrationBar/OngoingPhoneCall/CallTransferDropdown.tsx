@@ -2,8 +2,8 @@ import React, {ComponentProps, useState} from 'react'
 import {get} from 'lodash'
 import {
     ListUsersRelationshipsItem,
-    TransferCallBodyReceiverType,
-    TransferCallBodyType,
+    VoiceCallTransferReceiverType,
+    VoiceCallTransferType,
     useListUsers,
     useTransferCall,
 } from '@gorgias/api-queries'
@@ -102,8 +102,8 @@ export default function CallTransferDropdown({
 
         transferCall({
             data: {
-                type: TransferCallBodyType.Cold,
-                receiver_type: TransferCallBodyReceiverType.Agent,
+                type: VoiceCallTransferType.Cold,
+                receiver_type: VoiceCallTransferReceiverType.Agent,
                 receiver_id: selectedAgent,
                 call_sid: getCallSid(call),
             },
