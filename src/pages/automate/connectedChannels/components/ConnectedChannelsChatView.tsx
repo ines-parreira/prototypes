@@ -12,6 +12,7 @@ import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat
 import {FlowsSettings} from './FlowsSettings'
 import css from './ConnectedChannelsChatView.less'
 import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
+import {FeatureSettings} from './FeatureSettings'
 
 export const ConnectedChannelsChatView = () => {
     const {shopType, shopName} = useParams<{
@@ -81,6 +82,31 @@ export const ConnectedChannelsChatView = () => {
                 )}
                 configurations={workflowConfigurations ?? []}
                 automationSettingsWorkflows={automationSettingsWorkflows}
+            />
+
+            <FeatureSettings
+                title="Quick Responses"
+                label="Enable Quick Responses"
+                labelSubtitle="Display up to 6 Flows or Quick Responses on your Chat to proactively resolve top customer requests."
+                enabled={true}
+                externalLinkUrl={`/app/automation/${shopType}/${shopName}/flows/quick-responses`}
+            />
+
+            <FeatureSettings
+                title="Order Management"
+                label="Enable Order Management"
+                labelSubtitle="Allow customers to track and manage their orders directly within your Chat."
+                enabled={true}
+                externalLinkUrl={`/app/automation/${shopType}/${shopName}/order-management`}
+            />
+
+            <FeatureSettings
+                title="Article Recommendation"
+                label="Enable Article Recommendation"
+                subtitle="Requires an active Help Center with published articles"
+                labelSubtitle="Automatically send Help Center articles in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
+                enabled={true}
+                externalLinkUrl={`/app/automation/${shopType}/${shopName}/article-recommendation`}
             />
         </div>
     )
