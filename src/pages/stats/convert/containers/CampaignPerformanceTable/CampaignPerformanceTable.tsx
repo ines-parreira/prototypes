@@ -12,6 +12,9 @@ import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {ConvertRouteParams} from 'pages/convert/common/types'
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import {getIntegrationByIdAndType} from 'state/integrations/selectors'
+import {ConvertMetric} from 'state/ui/stats/types'
+import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 import {useCampaignStatsFilters} from '../../hooks/useCampaignStatsFilters'
 import {useGetChatForStore} from '../../hooks/useGetChatForStore'
 import {useGetCurrencyForStore} from '../../hooks/useGetCurrencyForStore'
@@ -29,6 +32,7 @@ export const CampaignPerformanceTable = () => {
         selectedIntegrations,
         selectedCampaignIds,
         selectedPeriod,
+        channelConnectionExternalIds,
     } = useCampaignStatsFilters()
 
     const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
@@ -83,8 +87,30 @@ export const CampaignPerformanceTable = () => {
             chatIntegration: chatIntegration,
             currency,
             metrics: _get(data, campaign.id, {}),
+            drillDownMetricData: {
+                [ConvertMetric.CampaignSalesCount]: {
+                    title: CAMPAIGN_TABLE_COLUMN_TITLES[
+                        CampaignTableKeys.Conversions
+                    ],
+                    metricName: ConvertMetric.CampaignSalesCount,
+                    shopName: namespacedShopName,
+                    selectedCampaignIds: [campaign.id],
+                    context: {
+                        channel_connection_external_ids:
+                            channelConnectionExternalIds,
+                    },
+                },
+            },
         }))
-    }, [campaigns, campaignIds, chatIntegration, currency, data])
+    }, [
+        campaigns,
+        campaignIds,
+        chatIntegration,
+        currency,
+        data,
+        namespacedShopName,
+        channelConnectionExternalIds,
+    ])
 
     const handleClickNextPage = () => {
         let nextValue = offset + ITEMS_PER_PAGE

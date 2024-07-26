@@ -11,11 +11,21 @@ import {
     CampaignPreview,
     InferredCampaignStatus,
 } from 'models/convert/campaign/types'
+import {ConvertMetric} from 'state/ui/stats/types'
+import {assumeMock} from 'utils/testing'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {setMetricData} from 'state/ui/stats/drillDownSlice'
 import {CampaignTableCell} from '../CampaignTableCell'
 
+jest.mock('hooks/useAppDispatch')
+const dispatchMock = jest.fn()
+const useAppDispatchMock = assumeMock(useAppDispatch)
+useAppDispatchMock.mockReturnValue(dispatchMock)
+
 describe('<CampaignTableCell />', () => {
+    const campaignId = '1234'
     const campaign = {
-        id: '1234',
+        id: campaignId,
         message_html: 'test',
         message_text: 'test',
         name: 'Test campaign',
@@ -33,6 +43,17 @@ describe('<CampaignTableCell />', () => {
             id: '1234',
             name: 'Test integration',
         } as unknown as GorgiasChatIntegration,
+        drillDownMetricData: {
+            [ConvertMetric.CampaignSalesCount]: {
+                title: 'Orders',
+                metricName: ConvertMetric.CampaignSalesCount,
+                shopName: 'shopify:best-shop',
+                selectedCampaignIds: [campaign.id],
+                context: {
+                    channel_connection_external_ids: ['1234'],
+                },
+            },
+        },
     } as CampaignTableContentCell
 
     it.each([
@@ -130,5 +151,34 @@ describe('<CampaignTableCell />', () => {
         )
 
         await findByText(expectedLabel)
+    })
+
+    it('should render drilldown modal on Orders click', async () => {
+        const {findByText} = render(
+            <CampaignTableCell
+                column={
+                    {
+                        key: CampaignTableKeys.Conversions,
+                    } as CampaignTableColumn
+                }
+                cell={{
+                    ...cell,
+                    campaign,
+                }}
+                data="10"
+            />
+        )
+
+        const ordersCount = await findByText('10')
+        ordersCount.click()
+
+        expect(dispatchMock).toHaveBeenCalledWith(
+            setMetricData(
+                expect.objectContaining({
+                    metricName: ConvertMetric.CampaignSalesCount,
+                    selectedCampaignIds: [campaignId],
+                })
+            )
+        )
     })
 })

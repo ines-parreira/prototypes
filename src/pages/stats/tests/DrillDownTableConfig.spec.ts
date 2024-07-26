@@ -6,6 +6,7 @@ import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/Cha
 import {
     AgentsMetrics,
     ChannelsMetrics,
+    ConvertMetrics,
     DrillDownMetric,
     SlaMetrics,
 } from 'state/ui/stats/drillDownSlice'
@@ -26,11 +27,15 @@ import {
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
+import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 
 jest.mock(
     'models/reporting/queryFactories/support-performance/customerSatisfaction'
 )
 jest.mock('models/reporting/queryFactories/voice/voiceCall')
+jest.mock(
+    'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
+)
 const customerSatisfactionQueryFactoryMock = assumeMock(
     customerSatisfactionMetricDrillDownQueryFactory
 )
@@ -41,6 +46,9 @@ const waitingTimeCallsListQueryFactoryMock = assumeMock(
     waitingTimeCallsListQueryFactory
 )
 const voiceCallListQueryFactoryMock = assumeMock(voiceCallListQueryFactory)
+const campaignSalesDrillDownQueryFactoryMock = assumeMock(
+    campaignSalesDrillDownQueryFactory
+)
 
 const periodStart = moment()
 const periodEnd = periodStart.add(7, 'days')
@@ -279,4 +287,27 @@ describe('getDrillDownQuery', () => {
             expect(voiceCallListQueryFactoryMock).toHaveBeenCalled()
         }
     )
+
+    it('should be populated with shopName and selectedCampaignIds filter', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: LegacyStatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric = convertMetrics[0] as ConvertMetrics
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(campaignSalesDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            drillDownMetric.shopName,
+            drillDownMetric.selectedCampaignIds,
+            statsFilters,
+            timezone,
+            undefined
+        )
+    })
 })

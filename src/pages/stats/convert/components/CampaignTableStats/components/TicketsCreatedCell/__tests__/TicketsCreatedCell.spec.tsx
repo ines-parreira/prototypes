@@ -27,7 +27,7 @@ describe('<TicketsCreatedCell />', () => {
         metrics: {
             conversionRate: 0.5,
         },
-    } as CampaignTableContentCell
+    } as unknown as CampaignTableContentCell
 
     let historySpy: jest.SpyInstance
 

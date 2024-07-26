@@ -17,7 +17,7 @@ import {formatNumber} from 'pages/stats/common/utils'
 
 import Badge, {BadgeColor} from 'gorgias-design-system/Badge/Badge'
 import {InferredCampaignStatus} from 'models/convert/campaign/types'
-import {TotalRevenueCell} from '../TotalRevenueCell'
+import {OrdersCell} from 'pages/stats/convert/components/CampaignTableStats/components/OrdersCell'
 import {TicketsCreatedCell} from '../TicketsCreatedCell'
 
 import css from '../../CampaignTableStats.less'
@@ -63,8 +63,8 @@ export const CampaignTableCell = ({
         )
     }
 
-    if (column.key === CampaignTableKeys.TotalRevenue) {
-        return <TotalRevenueCell {...bodyCellProps} cell={cell} data={data} />
+    if (column.key === CampaignTableKeys.Conversions) {
+        return <OrdersCell {...bodyCellProps} cell={cell} data={data} />
     }
 
     if (column.key === CampaignTableKeys.TicketsCreated) {

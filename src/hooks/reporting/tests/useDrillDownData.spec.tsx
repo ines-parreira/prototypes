@@ -537,14 +537,14 @@ describe('DrillDownData hooks', () => {
     describe('useDrillDownData', () => {
         const metricDimension = OrderConversionDimension.orderId
         const idField = OrderConversionDimension.customerId
+        const campaignId = '14a8cca6-057f-4e2f-a588-ad435ecbe195'
         const exampleRow = {
             [idField]: '1323',
             [OrderConversionDimension.orderId]: 12,
             [OrderConversionDimension.orderAmount]: '777',
             [OrderConversionDimension.orderCurrency]: 'USD',
             [OrderConversionDimension.orderProductIds]: ['prodId1', 'prodId2'],
-            [OrderConversionDimension.campaignId]:
-                '14a8cca6-057f-4e2f-a588-ad435ecbe195',
+            [OrderConversionDimension.campaignId]: campaignId,
             [OrderConversionDimension.createdDatatime]:
                 '2023-04-07T00:00:00.000',
         }
