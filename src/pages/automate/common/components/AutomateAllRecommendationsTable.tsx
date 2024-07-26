@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import {Tooltip} from '@gorgias/ui-kit'
-import cn from 'classnames'
 import {Link} from 'react-router-dom'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -76,10 +75,9 @@ const OpenCreatedArticleIcon = ({
                     href={publishedPreviewUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className={css.createdArticleIcon}
                 >
-                    <i className={cn('material-icons', css.createdArticleIcon)}>
-                        open_in_new
-                    </i>
+                    <i className="material-icons">open_in_new</i>
                 </a>
             ) : (
                 <Link
@@ -89,10 +87,9 @@ const OpenCreatedArticleIcon = ({
                     }}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className={css.createdArticleIcon}
                 >
-                    <i className={cn('material-icons', css.createdArticleIcon)}>
-                        open_in_new
-                    </i>
+                    <i className="material-icons">open_in_new</i>
                 </Link>
             )}
         </>
@@ -109,7 +106,7 @@ const ArticleTitle = ({
     'reviewAction' | 'title' | 'templateKey'
 > & {helpCenterId: number}) => {
     return (
-        <>
+        <div className={css.articleTitle}>
             <span className={css.textTruncate}>{title}</span>
             {reviewAction && reviewAction === 'archive' && <ArchiveBadge />}
             {(reviewAction === 'publish' || reviewAction === 'saveAsDraft') && (
@@ -119,7 +116,7 @@ const ArticleTitle = ({
                     helpCenterId={helpCenterId}
                 />
             )}
-        </>
+        </div>
     )
 }
 
@@ -132,7 +129,7 @@ const ArticleStatus = ({
     return reviewAction === 'publish' || reviewAction === 'saveAsDraft' ? (
         <span className={css.articleStatusWithIcon}>
             <i className="material-icons">check_circle</i>
-            {' Created'}
+            Created
         </span>
     ) : isCreating ? (
         <div className={css.creatingArticle}>

@@ -49,6 +49,12 @@
         cursor: default;
     }
 
+    .articleTitle {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
     .textTruncate {
         .body-semibold();
         white-space: nowrap;
@@ -57,8 +63,13 @@
     }
 
     .createdArticleIcon {
-        font-size: @layout-spacing-s;
-        color: var(--neutral-grey-5);
+        display: flex;
+        align-items: center;
+
+        i {
+            font-size: @layout-spacing-s;
+            color: var(--neutral-grey-5);
+        }
     }
 
     .articleStatus {
@@ -68,7 +79,11 @@
     }
 
     .articleStatusWithIcon {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
         .component-button-small();
+        color: var(--neutral-grey-5);
         i {
             font-size: @layout-spacing-s;
             color: var(--feedback-success);
