@@ -3,11 +3,14 @@ import {Map} from 'immutable'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {toJS} from 'utils'
 import {ONBOARDING_CAMPAIGN_TEMPLATES_LIST} from 'pages/convert/campaigns/templates'
-import {Campaign, CampaignListOptions} from 'models/convert/campaign/types'
+import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import {CampaignListOptions} from 'models/convert/campaign/types'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import ConvertOnboardingCampaignTemplate from 'pages/convert/onboarding/components/ConvertOnboardingCampaignTemplate'
+
 import css from './WizardCampaignsStep.less'
 
 type Props = {
@@ -33,13 +36,22 @@ const WizardCampaignsStep = ({integration}: Props) => {
         enabled: !!campaignListOptions.channelConnectionId,
     })
 
-    const isSelected = (template: CampaignTemplate, campaigns?: Campaign[]) =>
-        !!campaigns &&
+    const isSelected = (template: CampaignTemplate, campaigns: Campaign[]) =>
         campaigns.some(
             (c) =>
                 c.template_id === template.slug &&
                 c.status === CampaignStatus.Active
         )
+
+    const allCampaigns = useMemo(() => {
+        return (campaigns || []) as Campaign[]
+    }, [campaigns])
+
+    const findCampaign = (
+        template: CampaignTemplate,
+        campaigns: Campaign[]
+    ): Campaign | undefined =>
+        campaigns.find((c) => c.template_id === template.slug)
 
     return (
         <>
@@ -58,7 +70,8 @@ const WizardCampaignsStep = ({integration}: Props) => {
                         key={template.slug}
                         template={template}
                         integration={integration}
-                        selected={isSelected(template, campaigns)}
+                        selected={isSelected(template, allCampaigns)}
+                        campaign={findCampaign(template, allCampaigns)}
                     />
                 ))}
             </div>

@@ -61,6 +61,7 @@ describe('ConvertOnboardingCampaignTemplate', () => {
                         template={template as CampaignTemplate}
                         integration={integration}
                         selected={true}
+                        campaign={undefined}
                     />
                 </QueryClientProvider>
             </Provider>

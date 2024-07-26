@@ -2,6 +2,7 @@ import React, {useMemo, useState} from 'react'
 import {Map} from 'immutable'
 
 import Button from 'pages/common/components/button/Button'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 
 import {
     CampaignTemplate,
@@ -10,7 +11,6 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
-
 import ConvertSimplifiedEditorModal from 'pages/convert/onboarding/components/ConvertSimplifiedEditorModal'
 
 import css from './ConvertOnboardingCampaignTemplate.less'
@@ -18,6 +18,7 @@ import css from './ConvertOnboardingCampaignTemplate.less'
 type Props = {
     template: CampaignTemplate
     selected: boolean
+    campaign: Campaign | undefined
     integration: Map<any, any>
 }
 
@@ -42,10 +43,10 @@ const campaignLabelStyles: Record<
 const ConvertOnboardingCampaignTemplate = ({
     template,
     integration,
+    campaign,
     selected,
 }: Props) => {
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
-
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
     const onClose = () => {
@@ -112,6 +113,7 @@ const ConvertOnboardingCampaignTemplate = ({
                 </div>
             </div>
             <ConvertSimplifiedEditorModal
+                campaign={campaign}
                 estimatedRevenue={estimatedRevenue}
                 template={template}
                 integration={integration}

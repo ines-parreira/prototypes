@@ -43,6 +43,9 @@ import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transf
 import {transformAttachmentsToDiscountOffers} from 'pages/convert/campaigns/utils/transformAttachmentsToDiscountOffers'
 import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
+
+import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
+
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
 import {GorgiasChatIntegration} from 'models/integration/types'
@@ -51,13 +54,21 @@ import css from './ConvertSimplifiedEditorModal.less'
 type Props = {
     isOpen: boolean
     template: CampaignTemplate
+    campaign: Campaign | undefined
     integration: Map<any, any>
     estimatedRevenue: any
     onClose: () => void
 }
 
 const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
-    const {isOpen, onClose, template, estimatedRevenue, integration} = props
+    const {
+        isOpen,
+        onClose,
+        template,
+        estimatedRevenue,
+        integration,
+        campaign: existingCampaign,
+    } = props
 
     const gorgiasChatIntegration = integration.toJS() as GorgiasChatIntegration
 
@@ -75,10 +86,32 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
         gorgiasChatIntegration
     )
     const {mutateAsync: createCampaign} = useCreateCampaign()
+    const {mutateAsync: updateCampaign} = useUpdateCampaign()
 
     const defaultLanguage = useMemo<string>(() => {
         return getPrimaryLanguageFromChatConfig(gorgiasChatIntegration.meta)
     }, [gorgiasChatIntegration])
+
+    const loadAttachments = (campaign: Campaign) => {
+        let attachments: any[] = []
+
+        if (
+            Array.isArray(campaign.attachments) &&
+            campaign.attachments.length > 0
+        ) {
+            attachments = transformCampaignAttachmentsToDetails(
+                campaign.attachments
+            )
+        }
+
+        void dispatch(
+            setNewMessageForChatCampaign({
+                channel: TicketChannel.Chat,
+                sourceType: TicketMessageSourceType.Chat,
+                attachments: fromJS(attachments),
+            })
+        )
+    }
 
     useEffect(() => {
         // After opening the modal, build campaigns. This will solve issue with reusing trigger IDs
@@ -86,31 +119,19 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
             return
         }
 
+        if (existingCampaign) {
+            setCampaign(existingCampaign)
+            loadAttachments(existingCampaign)
+            return
+        }
+
         template
             .getConfiguration(storeIntegration, integration)
             .then((draftCampaign) => {
-                let attachments: any[] = []
-
                 draftCampaign.language = defaultLanguage
 
                 setCampaign(draftCampaign as Campaign)
-
-                if (
-                    Array.isArray(draftCampaign.attachments) &&
-                    draftCampaign.attachments.length > 0
-                ) {
-                    attachments = transformCampaignAttachmentsToDetails(
-                        draftCampaign.attachments
-                    )
-                }
-
-                void dispatch(
-                    setNewMessageForChatCampaign({
-                        channel: TicketChannel.Chat,
-                        sourceType: TicketMessageSourceType.Chat,
-                        attachments: fromJS(attachments),
-                    })
-                )
+                loadAttachments(draftCampaign as Campaign)
             })
             .catch((e) => {
                 console.error(e)
@@ -142,7 +163,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
     const chatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]
 
-    const updateCampaign = (data: Campaign) => {
+    const updateCampaignData = (data: Campaign) => {
         setCampaign(data)
     }
 
@@ -162,17 +183,28 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
             shopifyProducts: shopifyProducts,
             discountOffers: discountOffers,
             isActive: activate,
-            isEditMode: false,
+            isEditMode: !!campaign?.id,
         })
 
         try {
-            await createCampaign([
-                undefined,
-                {
-                    ...toJS(payload),
-                    channel_connection_id: channelConnection.id,
-                },
-            ])
+            if (!campaign?.id) {
+                await createCampaign([
+                    undefined,
+                    {
+                        ...toJS(payload),
+                        channel_connection_id: channelConnection.id,
+                    },
+                ])
+            } else {
+                await updateCampaign([
+                    undefined,
+                    {
+                        campaign_id: campaign.id,
+                        channelConnectionId: channelConnection.id,
+                    },
+                    toJS(payload),
+                ])
+            }
         } finally {
             setIsLoading(false)
         }
@@ -209,7 +241,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
                         <div className={css.editor}>
                             <SimpleCampaignEditor
                                 campaign={campaign}
-                                onCampaignUpdate={updateCampaign}
+                                onCampaignUpdate={updateCampaignData}
                                 isConvertSubscriber={isConvertSubscriber}
                                 integration={integration}
                                 shopifyIntegration={storeIntegration}

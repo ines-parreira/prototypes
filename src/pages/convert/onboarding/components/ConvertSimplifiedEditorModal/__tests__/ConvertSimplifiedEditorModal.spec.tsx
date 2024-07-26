@@ -8,8 +8,11 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {useCreateCampaign} from 'models/convert/campaign/queries'
-
+import {
+    useCreateCampaign,
+    useUpdateCampaign,
+} from 'models/convert/campaign/queries'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {channelConnection} from 'fixtures/channelConnection'
@@ -20,6 +23,7 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {assumeMock} from 'utils/testing'
+import {getLDClient} from 'utils/launchDarkly'
 
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
@@ -31,11 +35,16 @@ jest.mock('pages/common/forms/RichField/RichFieldEditor')
 
 jest.mock('models/convert/campaign/queries')
 const useCreateCampaignMock = assumeMock(useCreateCampaign)
+const useUpdateCampaignMock = assumeMock(useUpdateCampaign)
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection
 )
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({})
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -71,9 +80,15 @@ describe('<ConvertSimplifiedEditorModal />', () => {
                 mutateAsync: jest.fn(),
             } as unknown as ReturnType<typeof useCreateCampaign>
         })
+
+        useUpdateCampaignMock.mockImplementation(() => {
+            return {
+                mutateAsync: jest.fn(),
+            } as unknown as ReturnType<typeof useUpdateCampaign>
+        })
     })
 
-    it('renders', async () => {
+    it('renders a template', async () => {
         const {getByText} = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(defaultState)}>
@@ -83,6 +98,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
                         template={CART_ABANDONMENT}
                         estimatedRevenue={'estimated revenue'}
                         onClose={jest.fn()}
+                        campaign={undefined}
                     />
                 </Provider>
             </QueryClientProvider>
@@ -90,6 +106,35 @@ describe('<ConvertSimplifiedEditorModal />', () => {
 
         await waitFor(() => {
             expect(getByText('Prevent Cart Abandonment')).toBeTruthy()
+            expect(getByText(/Do you have any questions/)).toBeTruthy()
+        })
+    })
+
+    it('renders a existing campaign', async () => {
+        const campaign = {
+            id: '1',
+            message_text: 'Lorem Ipsum',
+            message_html: '<p>Lorem Ipsum</p>',
+        } as Campaign
+
+        const {getByText} = render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <ConvertSimplifiedEditorModal
+                        isOpen={true}
+                        integration={integration}
+                        template={CART_ABANDONMENT}
+                        estimatedRevenue={'estimated revenue'}
+                        onClose={jest.fn()}
+                        campaign={campaign}
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        await waitFor(() => {
+            expect(getByText('Prevent Cart Abandonment')).toBeTruthy() // There is no option to edit name
+            expect(getByText('Lorem Ipsum')).toBeTruthy()
         })
     })
 })
