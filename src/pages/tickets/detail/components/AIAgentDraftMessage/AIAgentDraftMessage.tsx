@@ -28,12 +28,12 @@ const AIAgentDraftMessage = ({ticketId, message}: Props) => {
 
     const feedback = data?.data
 
-    const draftMessage = useMemo(
-        () =>
-            feedback?.messages.find((m) => m.messageId === message.id)
-                ?.draftMessage,
+    const feedbackMessage = useMemo(
+        () => feedback?.messages.find((m) => m.messageId === message.id),
         [feedback, message]
     )
+
+    const draftMessage = feedbackMessage?.draftMessage
 
     const handleCopyToEditor = () => {
         void dispatch(
@@ -116,7 +116,7 @@ const AIAgentDraftMessage = ({ticketId, message}: Props) => {
             infoContent={
                 <div
                     dangerouslySetInnerHTML={{
-                        __html: feedback.messages[0].summary,
+                        __html: feedbackMessage.summary,
                     }}
                 />
             }
