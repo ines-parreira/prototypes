@@ -26,6 +26,7 @@ export type StoreConfigurationResponse = {
 
 export type StoreConfiguration = {
     deactivatedDatetime: string | null
+    trialModeActivatedDatetime: string | null
     storeName: string
 
     helpCenterId: number | null
@@ -54,6 +55,7 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'helpCenterId'
     | 'monitoredEmailIntegrations'
     | 'deactivatedDatetime'
+    | 'trialModeActivatedDatetime'
     | 'customToneOfVoiceGuidance'
     | 'signature'
 >

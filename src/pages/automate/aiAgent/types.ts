@@ -10,6 +10,7 @@ export type NonNullFields<T, K extends keyof T> = T &
 
 export type FormValues = {
     deactivatedDatetime: string | null | undefined
+    trialModeActivatedDatetime: string | null
     ticketSampleRate: number | null
     silentHandover: boolean | null
     monitoredEmailIntegrations: {id: number; email: string}[] | null

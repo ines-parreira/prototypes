@@ -10,6 +10,7 @@ export enum FeatureFlagKey {
     AiAgentNewConfigurationPage = 'ai-agent-new-configuration-page',
     AiAgentSkipSampleRate = 'ai-agent-skip-sample-rate',
     AiAgentPlaygroundPredefinedMessages = 'ai-agent-playground-predefined-messages',
+    AiAgentTrialMode = 'ai-agent-trial-mode-allowed',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
     AnalyticsNewChannelsReport = 'analytics-new-channels-report',
     AnalyticsAutoQA = 'analytics-auto-qa',

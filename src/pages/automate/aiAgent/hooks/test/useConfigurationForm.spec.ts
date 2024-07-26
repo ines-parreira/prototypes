@@ -10,6 +10,7 @@ const INITIAL_FORM_VALUES: FormValues = {
     toneOfVoice: null,
     customToneOfVoiceGuidance: null,
     deactivatedDatetime: undefined,
+    trialModeActivatedDatetime: null,
     excludedTopics: null,
     helpCenterId: null,
     monitoredEmailIntegrations: null,

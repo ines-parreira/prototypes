@@ -11,6 +11,8 @@ import {Link} from 'react-router-dom'
 import _get from 'lodash/get'
 import {List} from 'immutable'
 import {Label} from '@gorgias/ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {reportError} from 'utils/errors'
 import {StoreConfiguration, Tag} from 'models/aiAgent/types'
 import {Value} from 'pages/common/forms/SelectField/types'
@@ -34,6 +36,7 @@ import Button from 'pages/common/components/button/Button'
 import TextArea from 'pages/common/forms/TextArea'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {SegmentEvent, logEvent} from 'common/segment'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import {
     useConfigurationForm,
     validateConfigurationFormValues,
@@ -63,6 +66,7 @@ import {
 } from './StoreConfigForm.utils'
 
 const INITIAL_FORM_VALUES = {
+    trialModeActivatedDatetime: null,
     deactivatedDatetime: new Date().toISOString(),
     silentHandover: false,
     monitoredEmailIntegrations: [],
@@ -86,6 +90,7 @@ export const StoreConfigForm = ({
     accountDomain,
     storeConfiguration,
 }: Props) => {
+    const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
     const faqHelpCenters = useAppSelector(getHelpCenterFAQList)
     const dispatch = useAppDispatch()
     const isCreate = storeConfiguration === undefined
@@ -275,6 +280,18 @@ export const StoreConfigForm = ({
             : INITIAL_FORM_VALUES.deactivatedDatetime
     )
 
+    const aiAgentMode = useMemo(() => {
+        if (isAIAgentToggled) {
+            if (formValues.trialModeActivatedDatetime === null) {
+                return 'enabled'
+            }
+
+            return 'trial'
+        }
+
+        return 'disabled'
+    }, [isAIAgentToggled, formValues.trialModeActivatedDatetime])
+
     const isHandoffToggled = isHandoffEnabled(
         formValues.silentHandover !== null
             ? formValues.silentHandover
@@ -323,29 +340,92 @@ export const StoreConfigForm = ({
                 <section>
                     <h2 className={css.sectionHeader}>General settings</h2>
                     <div className={css.formGroup}>
-                        <ToggleInput
-                            isToggled={isAIAgentToggled}
-                            darkenCaption
-                            onClick={() => {
-                                updateValue(
-                                    'deactivatedDatetime',
-                                    isAIAgentToggled
-                                        ? new Date().toISOString()
-                                        : null
-                                )
+                        {trialModeAvailable ? (
+                            <RadioFieldSet
+                                name="ai-agent-trial-mode"
+                                options={[
+                                    {
+                                        caption:
+                                            'When enabled, you can find tickets handled by AI Agent in your ticket views.',
+                                        label: 'Enable AI Agent for email',
+                                        value: 'enabled',
+                                    },
+                                    {
+                                        caption:
+                                            'When enabled, you can find drafts from AI Agent in Gorgias Tips on your tickets. Also available in your ticket views.',
+                                        label: 'Enable Trial Mode for email',
+                                        value: 'trial',
+                                    },
+                                    {
+                                        caption:
+                                            'When disabled, none of your tickets will be handled by AI Agent.',
+                                        label: 'Disabled',
+                                        value: 'disabled',
+                                    },
+                                ]}
+                                selectedValue={aiAgentMode}
+                                onChange={(value) => {
+                                    switch (value) {
+                                        case 'enabled':
+                                            updateValue(
+                                                'deactivatedDatetime',
+                                                null
+                                            )
+                                            updateValue(
+                                                'trialModeActivatedDatetime',
+                                                null
+                                            )
+                                            break
 
-                                if (isAIAgentToggled) {
-                                    logEvent(
-                                        SegmentEvent.AiAgentConfigurationDisabled
+                                        case 'trial':
+                                            updateValue(
+                                                'deactivatedDatetime',
+                                                null
+                                            )
+                                            updateValue(
+                                                'trialModeActivatedDatetime',
+                                                new Date().toISOString()
+                                            )
+                                            break
+
+                                        case 'disabled':
+                                            updateValue(
+                                                'deactivatedDatetime',
+                                                new Date().toISOString()
+                                            )
+                                            updateValue(
+                                                'trialModeActivatedDatetime',
+                                                null
+                                            )
+                                            break
+                                    }
+                                }}
+                            />
+                        ) : (
+                            <ToggleInput
+                                isToggled={isAIAgentToggled}
+                                darkenCaption
+                                onClick={() => {
+                                    updateValue(
+                                        'deactivatedDatetime',
+                                        isAIAgentToggled
+                                            ? new Date().toISOString()
+                                            : null
                                     )
-                                }
-                            }}
-                            caption="When enabled, you can find tickets handled by AI Agent in your ticket views."
-                            name={toggleAiAgentId}
-                            dataCanduId="ai-agent-configuration-toggle"
-                        >
-                            Enable AI Agent for email
-                        </ToggleInput>
+
+                                    if (isAIAgentToggled) {
+                                        logEvent(
+                                            SegmentEvent.AiAgentConfigurationDisabled
+                                        )
+                                    }
+                                }}
+                                caption="When enabled, you can find tickets handled by AI Agent in your ticket views."
+                                name={toggleAiAgentId}
+                                dataCanduId="ai-agent-configuration-toggle"
+                            >
+                                Enable AI Agent for email
+                            </ToggleInput>
+                        )}
                     </div>
 
                     <div className={css.formGroup}>

@@ -17,6 +17,7 @@ export const DEFAULT_AI_AGENT_ENABLED_RATE = 50
 export const DEFAULT_FORM_VALUES: FormValues = {
     // Since null is a valid value for that field, we need to explicitly set it to undefined
     deactivatedDatetime: undefined,
+    trialModeActivatedDatetime: null,
     ticketSampleRate: null,
     silentHandover: null,
     monitoredEmailIntegrations: null,

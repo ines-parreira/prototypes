@@ -93,6 +93,7 @@ const createStoreConfigurationFromFormValues = (
         helpCenterId,
         ticketSampleRate,
         deactivatedDatetime,
+        trialModeActivatedDatetime,
         monitoredEmailIntegrations,
         ...restOfFormValues
     } = formValues
@@ -118,6 +119,7 @@ const createStoreConfigurationFromFormValues = (
         ...monitoredEmailIntegrationDetails,
         ...dirtyFormValues,
         deactivatedDatetime: deactivatedDatetime as string | null,
+        trialModeActivatedDatetime,
         customToneOfVoiceGuidance:
             formValues.toneOfVoice === ToneOfVoice.Custom
                 ? formValues.customToneOfVoiceGuidance

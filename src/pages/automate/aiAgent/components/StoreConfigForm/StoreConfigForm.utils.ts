@@ -13,6 +13,7 @@ export const getStoreConfigurationFromFormValues = (
     const {
         helpCenterId,
         deactivatedDatetime,
+        trialModeActivatedDatetime,
         monitoredEmailIntegrations,
         ...restOfFormValues
     } = formValues
@@ -30,6 +31,7 @@ export const getStoreConfigurationFromFormValues = (
         ...monitoredEmailIntegrationDetails,
         ...dirtyFormValues,
         deactivatedDatetime: deactivatedDatetime as string | null,
+        trialModeActivatedDatetime: trialModeActivatedDatetime,
         customToneOfVoiceGuidance:
             formValues.toneOfVoice === ToneOfVoice.Custom
                 ? formValues.customToneOfVoiceGuidance
@@ -43,6 +45,7 @@ export const getFormValuesFromStoreConfiguration = (
     storeConfig: StoreConfiguration
 ): FormValues => ({
     deactivatedDatetime: storeConfig.deactivatedDatetime,
+    trialModeActivatedDatetime: storeConfig.trialModeActivatedDatetime,
     silentHandover: storeConfig.silentHandover,
     ticketSampleRate: null, // deprecated
     monitoredEmailIntegrations: storeConfig.monitoredEmailIntegrations,
