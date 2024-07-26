@@ -26,7 +26,11 @@ const ConnectedChannelsViewContainer = () => {
     if (isNewChannelsViewEnabled) {
         return <ConnectedChannelsView />
     }
-    return <DEPRECATED_ConnectedChannelsView />
+
+    if (isNewChannelsViewEnabled === false) {
+        return <DEPRECATED_ConnectedChannelsView />
+    }
+    return null
 }
 
 export default ConnectedChannelsViewContainer

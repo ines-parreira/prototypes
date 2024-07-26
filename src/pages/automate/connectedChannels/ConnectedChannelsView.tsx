@@ -1,11 +1,16 @@
 import React from 'react'
-import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom'
-import {Container} from 'reactstrap'
-import AutomateView from '../common/components/AutomateView'
+import {
+    NavLink,
+    Route,
+    Switch,
+    useParams,
+    useRouteMatch,
+} from 'react-router-dom'
+import PageHeader from 'pages/common/components/PageHeader'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import {AVAILABLE_CHANNELS, CHANNELS} from '../common/components/constants'
-
-import css from './ConnectedChannelsView.less'
 import {ConnectedChannelsChatView} from './components/ConnectedChannelsChatView'
+import css from './ConnectedChannelsView.less'
 
 export const ConnectedChannelsView = () => {
     const {shopType, shopName} = useParams<{
@@ -14,55 +19,63 @@ export const ConnectedChannelsView = () => {
     }>()
     const baseUrl = `/app/automation/${shopType}/${shopName}/connected-channels`
 
+    const headerNavbarItems = [
+        {
+            title: AVAILABLE_CHANNELS.CHAT,
+            route: baseUrl,
+        },
+        {
+            title: AVAILABLE_CHANNELS.HELP_CENTER,
+            route: `${baseUrl}/help-center`,
+        },
+        {
+            title: AVAILABLE_CHANNELS.CONTACT_FORM,
+            route: `${baseUrl}/contact-form`,
+        },
+        {
+            title: AVAILABLE_CHANNELS.EMAIL,
+            route: `${baseUrl}/email`,
+        },
+    ]
+
     const {path} = useRouteMatch()
 
     return (
-        <AutomateView
-            title={CHANNELS}
-            isLoading={false}
-            headerNavbarItems={[
-                {
-                    title: AVAILABLE_CHANNELS.CHAT,
-                    route: baseUrl,
-                },
-                {
-                    title: AVAILABLE_CHANNELS.HELP_CENTER,
-                    route: `${baseUrl}/help-center`,
-                },
-                {
-                    title: AVAILABLE_CHANNELS.CONTACT_FORM,
-                    route: `${baseUrl}/contact-form`,
-                },
-                {
-                    title: AVAILABLE_CHANNELS.EMAIL,
-                    route: `${baseUrl}/email`,
-                },
-            ]}
-        >
-            <Container fluid className={css.pageContainer}>
-                <Switch>
-                    <Route
-                        path={path}
-                        exact
-                        component={() => <ConnectedChannelsChatView />}
-                    />
-                    <Route
-                        path={`${path}/help-center`}
-                        component={() => <>Help Center</>}
-                        exact
-                    />
-                    <Route
-                        path={`${path}/contact-form`}
-                        component={() => <>Contact Form</>}
-                        exact
-                    />
-                    <Route
-                        path={`${path}/email`}
-                        component={() => <>Email</>}
-                        exact
-                    />
-                </Switch>
-            </Container>
-        </AutomateView>
+        <div className={css.pageContainer}>
+            <div className={css.pageHeader}>
+                <PageHeader title={CHANNELS} />
+
+                <SecondaryNavbar>
+                    {headerNavbarItems.map(({route, title}) => (
+                        <NavLink key={route} to={route} exact={true}>
+                            {title}
+                        </NavLink>
+                    ))}
+                </SecondaryNavbar>
+            </div>
+
+            <Switch>
+                <Route
+                    path={path}
+                    exact
+                    component={() => <ConnectedChannelsChatView />}
+                />
+                <Route
+                    path={`${path}/help-center`}
+                    component={() => <>Help Center</>}
+                    exact
+                />
+                <Route
+                    path={`${path}/contact-form`}
+                    component={() => <>Contact Form</>}
+                    exact
+                />
+                <Route
+                    path={`${path}/email`}
+                    component={() => <>Email</>}
+                    exact
+                />
+            </Switch>
+        </div>
     )
 }

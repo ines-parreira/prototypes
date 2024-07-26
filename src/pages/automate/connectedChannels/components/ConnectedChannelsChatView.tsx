@@ -9,6 +9,8 @@ import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
+import Spinner from 'pages/common/components/Spinner'
+import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import {FlowsSettings} from './FlowsSettings'
 import css from './ConnectedChannelsChatView.less'
 import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
@@ -20,10 +22,11 @@ export const ConnectedChannelsChatView = () => {
         shopName: string
     }>()
 
-    const {selfServiceConfiguration} = useSelfServiceConfiguration(
-        shopType,
-        shopName
-    )
+    const {
+        selfServiceConfiguration,
+        storeIntegration,
+        isFetchPending: isSelfServiceConfigurationFetchPending,
+    } = useSelfServiceConfiguration(shopType, shopName)
     const {data: workflowConfigurations = []} = useGetWorkflowConfigurations()
 
     const channels = useSelfServiceChannels(shopType, shopName)
@@ -44,9 +47,12 @@ export const ConnectedChannelsChatView = () => {
             (channel) => channel.value.meta.app_id === selectedChannel
         ) ?? chatChannels[0]
 
-    const {applicationsAutomationSettings} = useApplicationsAutomationSettings([
-        selectedChannel ?? '',
-    ])
+    const {applicationsAutomationSettings, isFetchPending} =
+        useApplicationsAutomationSettings(
+            chatChannels
+                .map((c) => c.value.meta?.app_id)
+                .filter((c): c is string => !!c)
+        )
 
     const automationSettingsWorkflows = useMemo(() => {
         if (!selectedChannel) return []
@@ -59,55 +65,72 @@ export const ConnectedChannelsChatView = () => {
 
     if (chatChannels.length === 0) return null
 
+    if (isFetchPending || isSelfServiceConfigurationFetchPending) {
+        return (
+            <div className={css.loadingContainer}>
+                <Spinner color="dark" className={css.spinner} />
+            </div>
+        )
+    }
     return (
         <div className={classNames('full-width', css.container)}>
-            <CurrentlyViewingDropdown
-                onConnect={noop}
-                channelType="chat"
-                channels={chatChannels}
-                value={selectedChannel ?? ''}
-                label={currentChannel.value.name}
-                onSelectedChannelChange={setSelectedChannel}
-                renderOption={(channel) => ({
-                    label: channel.value.name,
-                    value: channel.value.meta.app_id ?? channel.value.name,
-                })}
-            />
-            <FlowsSettings
-                workflowEntrypoints={
-                    selfServiceConfiguration?.workflowsEntrypoints
-                }
-                primaryLanguage={getPrimaryLanguageFromChatConfig(
-                    currentChannel.value.meta
-                )}
-                configurations={workflowConfigurations ?? []}
-                automationSettingsWorkflows={automationSettingsWorkflows}
-            />
+            <div className={css.settingsContainer}>
+                <CurrentlyViewingDropdown
+                    onConnect={noop}
+                    channelType="chat"
+                    channels={chatChannels}
+                    value={selectedChannel ?? ''}
+                    label={currentChannel.value.name}
+                    onSelectedChannelChange={setSelectedChannel}
+                    renderOption={(channel) => ({
+                        label: channel.value.name,
+                        value: channel.value.meta.app_id ?? channel.value.name,
+                    })}
+                />
+                <FlowsSettings
+                    workflowEntrypoints={
+                        selfServiceConfiguration?.workflowsEntrypoints
+                    }
+                    primaryLanguage={getPrimaryLanguageFromChatConfig(
+                        currentChannel.value.meta
+                    )}
+                    configurations={workflowConfigurations ?? []}
+                    automationSettingsWorkflows={automationSettingsWorkflows}
+                />
 
-            <FeatureSettings
-                title="Quick Responses"
-                label="Enable Quick Responses"
-                labelSubtitle="Display up to 6 Flows or Quick Responses on your Chat to proactively resolve top customer requests."
-                enabled={true}
-                externalLinkUrl={`/app/automation/${shopType}/${shopName}/flows/quick-responses`}
-            />
+                <FeatureSettings
+                    title="Quick Responses"
+                    label="Enable Quick Responses"
+                    labelSubtitle="Display up to 6 Flows or Quick Responses on your Chat to proactively resolve top customer requests."
+                    enabled={true}
+                    externalLinkUrl={`/app/automation/${shopType}/${shopName}/flows/quick-responses`}
+                />
 
-            <FeatureSettings
-                title="Order Management"
-                label="Enable Order Management"
-                labelSubtitle="Allow customers to track and manage their orders directly within your Chat."
-                enabled={true}
-                externalLinkUrl={`/app/automation/${shopType}/${shopName}/order-management`}
-            />
+                <FeatureSettings
+                    title="Order Management"
+                    label="Enable Order Management"
+                    labelSubtitle="Allow customers to track and manage their orders directly within your Chat."
+                    enabled={true}
+                    externalLinkUrl={`/app/automation/${shopType}/${shopName}/order-management`}
+                />
 
-            <FeatureSettings
-                title="Article Recommendation"
-                label="Enable Article Recommendation"
-                subtitle="Requires an active Help Center with published articles"
-                labelSubtitle="Automatically send Help Center articles in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
-                enabled={true}
-                externalLinkUrl={`/app/automation/${shopType}/${shopName}/article-recommendation`}
-            />
+                <FeatureSettings
+                    title="Article Recommendation"
+                    label="Enable Article Recommendation"
+                    subtitle="Requires an active Help Center with published articles"
+                    labelSubtitle="Automatically send Help Center articles in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
+                    enabled={true}
+                    externalLinkUrl={`/app/automation/${shopType}/${shopName}/article-recommendation`}
+                />
+            </div>
+
+            {selfServiceConfiguration && (
+                <ConnectedChannelsPreview
+                    channel={currentChannel}
+                    selfServiceConfiguration={selfServiceConfiguration}
+                    storeIntegration={storeIntegration}
+                />
+            )}
         </div>
     )
 }

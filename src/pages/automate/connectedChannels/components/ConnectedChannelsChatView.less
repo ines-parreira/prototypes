@@ -3,8 +3,29 @@
 
 :local {
     .container {
+        flex: 1 1 auto;
+        display: grid;
+        grid-template-columns: minmax(480px, 1000px) 1fr;
+        overflow: hidden;
+        overflow-x: auto;
+    }
+
+    .loadingContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    .spinner {
+        width: 68px;
+    }
+
+    .settingsContainer {
         display: flex;
         flex-direction: column;
+        padding: @layout-spacing-m;
         gap: @layout-spacing-xl;
+        overflow: auto;
     }
 }
