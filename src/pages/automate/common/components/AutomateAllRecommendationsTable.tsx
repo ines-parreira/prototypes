@@ -60,6 +60,8 @@ const OpenCreatedArticleIcon = ({
         return helpCenters.find((helpCenter) => helpCenter.id === helpCenterId)
     }, [helpCenterId, helpCenters])
 
+    const isHelpCenterLive = !Boolean(helpCenter?.deactivated_datetime)
+
     const {url: publishedPreviewUrl, article} = useAIArticlePublishedPreviewUrl(
         helpCenter,
         templateKey
@@ -67,7 +69,9 @@ const OpenCreatedArticleIcon = ({
 
     return (
         <>
-            {reviewAction === 'publish' ? (
+            {isHelpCenterLive &&
+            reviewAction === 'publish' &&
+            publishedPreviewUrl ? (
                 <a
                     href={publishedPreviewUrl}
                     target="_blank"
