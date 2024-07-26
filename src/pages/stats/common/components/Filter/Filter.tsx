@@ -126,6 +126,9 @@ const Filter = ({
                 <DropdownBody>
                     {filterOptionGroups.map((filterOption, index) => (
                         <DropdownSection
+                            className={classNames({
+                                [css.noTitle]: filterOption.title !== undefined,
+                            })}
                             key={filterOption.title || `section_${index}`}
                             title={filterOption.title}
                         >

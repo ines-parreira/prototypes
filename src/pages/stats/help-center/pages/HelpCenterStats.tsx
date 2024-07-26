@@ -22,22 +22,25 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {DEFAULT_LOCALE} from 'pages/stats/common/utils'
 import {useHelpCenterAIArticlesLibrary} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 import {useHasAccessToAILibrary} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
-import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
-import {PerformanceByArticle} from '../components/PerformanceByArticle/PerformanceByArticle'
-import SearchResultDonut from '../components/SearchResultDonut/SearchResultDonut'
-import SearchTermsTable from '../components/SearchTermsTable/SearchTermsTable'
-import NoSearchTable from '../components/NoSearchTable/NoSearchTable'
-import HelpCenterFilter from '../components/HelpCenterFilter/HelpCenterFilter'
-import {useStatsFilters} from '../hooks/useStatsFilters'
-import PeriodStatsFilter from '../../common/filters/DEPRECATED_PeriodStatsFilter'
-import HelpCenterStatsLoading from '../components/HelpCenterStatsLoading/HelpCenterStatsLoading'
-import {HelpCenterStatsFilters, isHelpCenterStatsFiltersValid} from '../types'
-import HelpCenterOverviewSection from '../components/HelpCenterOverviewSection/HelpCenterOverviewSection'
-import UnpublishedHelpCenterAlert from '../components/UnpublishedHelpCenterAlert/UnpublishedHelpCenterAlert'
-import {HelpCenterStatsEmptyState} from '../components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState'
-import HelpCenterStatsLanguageFilter from '../components/HelpCenterStatsLanguageFilter/HelpCenterStatsLanguageFilter'
-import PartialDataAlert from '../components/PartialDataAlert/PartialDataAlert'
-import AIBanner from '../components/AIBanner'
+import ArticleViewsGraph from 'pages/stats/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
+import {PerformanceByArticle} from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
+import SearchResultDonut from 'pages/stats/help-center/components/SearchResultDonut/SearchResultDonut'
+import SearchTermsTable from 'pages/stats/help-center/components/SearchTermsTable/SearchTermsTable'
+import NoSearchTable from 'pages/stats/help-center/components/NoSearchTable/NoSearchTable'
+import DEPRECATED_HelpCenterFilter from 'pages/stats/common/filters/DEPRECATED_HelpCenterFilter/DEPRECATED_HelpCenterFilter'
+import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
+import HelpCenterStatsLoading from 'pages/stats/help-center/components/HelpCenterStatsLoading/HelpCenterStatsLoading'
+import {
+    HelpCenterStatsFilters,
+    isHelpCenterStatsFiltersValid,
+} from 'pages/stats/help-center/types'
+import HelpCenterOverviewSection from 'pages/stats/help-center/components/HelpCenterOverviewSection/HelpCenterOverviewSection'
+import UnpublishedHelpCenterAlert from 'pages/stats/help-center/components/UnpublishedHelpCenterAlert/UnpublishedHelpCenterAlert'
+import {HelpCenterStatsEmptyState} from 'pages/stats/help-center/components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState'
+import HelpCenterStatsLanguageFilter from 'pages/stats/help-center/components/HelpCenterStatsLanguageFilter/HelpCenterStatsLanguageFilter'
+import PartialDataAlert from 'pages/stats/help-center/components/PartialDataAlert/PartialDataAlert'
+import AIBanner from 'pages/stats/help-center/components/AIBanner'
+import {useStatsFilters} from 'pages/stats/help-center/hooks/useStatsFilters'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 
@@ -121,7 +124,7 @@ const HelpCenterStatsComponent = ({
                         </DashboardGridCell>
                     )}
                     <DashboardGridCell>
-                        <HelpCenterFilter
+                        <DEPRECATED_HelpCenterFilter
                             selectedHelpCenter={selectedHelpCenter}
                             helpCenters={helpCenters}
                             setSelectedHelpCenter={setStatsFilters}

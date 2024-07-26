@@ -4,16 +4,16 @@ import {Provider} from 'react-redux'
 import userEvent from '@testing-library/user-event'
 import {mockStore} from 'utils/testing'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import HelpCenterFilter from './HelpCenterFilter'
+import DEPRECATED_HelpCenterFilter from './DEPRECATED_HelpCenterFilter'
 
 const helpCenters = getHelpCentersResponseFixture.data
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof HelpCenterFilter>>
+    props: Partial<ComponentProps<typeof DEPRECATED_HelpCenterFilter>>
 ) => {
     render(
         <Provider store={mockStore({} as any)}>
-            <HelpCenterFilter
+            <DEPRECATED_HelpCenterFilter
                 helpCenters={[]}
                 selectedHelpCenter={helpCenters[0]}
                 setSelectedHelpCenter={jest.fn}
