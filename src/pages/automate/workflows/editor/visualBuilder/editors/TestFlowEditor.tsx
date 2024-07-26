@@ -344,20 +344,11 @@ export const TestFlowEditor = ({
                                             window.WebSocket = function() {}
 
                                             GorgiasChat.init().then(() => {
+                                                GorgiasChat.hideOnMobile(false);
+                                                GorgiasChat.hideOutsideBusinessHours(false);
                                                 GorgiasChat.open();
                                                 gorgiasChatConfiguration.selfServiceConfiguration = {
                                                     ...gorgiasChatConfiguration.selfServiceConfiguration,
-                                                    application: {
-                                                        ...gorgiasChatConfiguration.selfServiceConfiguration?.application,
-                                                        config: {
-                                                            ...gorgiasChatConfiguration.selfServiceConfiguration?.application?.config,
-                                                            preferences: {
-                                                                ...gorgiasChatConfiguration.selfServiceConfiguration?.application?.config?.preferences,
-                                                                hideOutsideBusinessHours: false,
-                                                                hideOnMobile: false,
-                                                            },
-                                                        }
-                                                    },
                                                     deleted: false,
                                                     enabled: true,
                                                     workflows_entrypoints: [${JSON.stringify(
