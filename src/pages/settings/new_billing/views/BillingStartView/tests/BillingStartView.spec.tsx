@@ -1,20 +1,9 @@
+import LD from 'launchdarkly-react-client-sdk'
+
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-
-import {resetLDMocks, mockFlags} from 'jest-launchdarkly-mock'
 import {screen} from '@testing-library/react'
-import {RootState, StoreDispatch} from 'state/types'
-import {
-    CONVERT_PRODUCT_ID,
-    convertPlan1,
-    HELPDESK_PRODUCT_ID,
-    legacyBasicHelpdeskPlan,
-    products,
-    SMS_PRODUCT_ID,
-    smsPlan1,
-} from 'fixtures/productPrices'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {
     BILLING_BASE_PATH,
@@ -27,24 +16,12 @@ import {
     convertStatusOkWarningUpgrade,
 } from 'fixtures/convert'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    storeWithActiveSubscriptionWithConvert,
+    storeWithActiveSubscriptionWithPhone,
+    storeWithCanceledSubscription,
+} from 'pages/settings/new_billing/fixtures'
 import BillingStartView from '../BillingStartView'
-import {account} from '../../../../../../fixtures/account'
-
-const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
-
-const store = mockedStore({
-    currentAccount: fromJS({
-        ...account,
-        current_subscription: {
-            ...account.current_subscription,
-            products: {
-                [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.price_id,
-                [CONVERT_PRODUCT_ID]: convertPlan1.price_id,
-            },
-        },
-    }),
-    billing: fromJS({invoices: [], products, currentProductsUsage: {}}),
-})
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -68,7 +45,7 @@ jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
 const WrappedBillingStartView = () => (
-    <Provider store={store}>
+    <Provider store={storeWithActiveSubscriptionWithConvert}>
         <BillingStartView />
     </Provider>
 )
@@ -81,7 +58,76 @@ describe('BillingStartView', () => {
 
         expect(container).toMatchSnapshot()
     })
-    describe('Convert limit benner', () => {
+
+    describe('When customer has no active subscription ', () => {
+        it('should only show the "Usage & Plans" and "Payment History" tabs', () => {
+            renderWithRouter(
+                <Provider store={storeWithCanceledSubscription}>
+                    <BillingStartView />
+                </Provider>,
+                {
+                    route: BILLING_BASE_PATH,
+                }
+            )
+            expect(
+                screen.getByText(/You don't have any active subscriptions/i)
+            ).toBeInTheDocument()
+
+            expect(screen.getByText(/Usage & Plans/i)).toBeInTheDocument()
+
+            expect(screen.getByText(/Payment History/i)).toBeInTheDocument()
+
+            expect(
+                screen.queryByText(/Payment Information/i)
+            ).not.toBeInTheDocument()
+
+            expect(
+                screen.queryByText(/Gorgias Internal/i)
+            ).not.toBeInTheDocument()
+
+            screen.debug()
+        })
+
+        it('should show the "Gorgias internal" tab if user is impersonated AND feature flag is ON', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.InternalBillingInterface]: true,
+            }))
+
+            window.USER_IMPERSONATED = true
+
+            renderWithRouter(
+                <Provider store={storeWithCanceledSubscription}>
+                    <BillingStartView />
+                </Provider>,
+                {
+                    route: BILLING_BASE_PATH,
+                }
+            )
+            expect(screen.getByText(/Gorgias Internal/i)).toBeInTheDocument()
+        })
+
+        it('should NOT show the "Gorgias internal" tab if user is NOT impersonated AND feature flag is ON', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.InternalBillingInterface]: true,
+            }))
+
+            window.USER_IMPERSONATED = null
+
+            renderWithRouter(
+                <Provider store={storeWithCanceledSubscription}>
+                    <BillingStartView />
+                </Provider>,
+                {
+                    route: BILLING_BASE_PATH,
+                }
+            )
+            expect(
+                screen.queryByText(/Gorgias Internal/i)
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Convert limit banner', () => {
         const limitReachedText = "You've reached the limit for your Convert"
         const upgradeText = 'you will be auto-upgraded'
         const warningText = 'campaigns will stop being displayed'
@@ -149,21 +195,6 @@ describe('BillingStartView', () => {
     })
 
     describe('PaymentInformation phone self-serve cadence change ', () => {
-        const phoneUserStore = mockedStore({
-            currentAccount: fromJS({
-                ...account,
-                current_subscription: {
-                    ...account.current_subscription,
-                    products: {
-                        [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.price_id,
-                        [CONVERT_PRODUCT_ID]: convertPlan1.price_id,
-                        [SMS_PRODUCT_ID]: smsPlan1.price_id,
-                    },
-                },
-            }),
-            billing: fromJS({invoices: [], products, currentProductsUsage: {}}),
-        })
-
         beforeEach(() => {
             resetLDMocks()
             mockFlags({
@@ -176,7 +207,7 @@ describe('BillingStartView', () => {
                 [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
             })
             renderWithRouter(
-                <Provider store={phoneUserStore}>
+                <Provider store={storeWithActiveSubscriptionWithPhone}>
                     <BillingStartView />
                 </Provider>,
                 {
@@ -196,7 +227,7 @@ describe('BillingStartView', () => {
                 [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
             })
             renderWithRouter(
-                <Provider store={phoneUserStore}>
+                <Provider store={storeWithActiveSubscriptionWithPhone}>
                     <BillingStartView />
                 </Provider>,
                 {

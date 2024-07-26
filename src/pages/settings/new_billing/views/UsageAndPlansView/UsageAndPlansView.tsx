@@ -222,9 +222,14 @@ const UsageAndPlansView = ({
                 </div>
                 <div className={css.generalInfoItem}>
                     <span>
-                        Billed {isIntervalMonthly ? <>monthly</> : <>yearly</>}
+                        Billed{' '}
+                        {isIntervalMonthly || isCurrentSubscriptionCanceled ? (
+                            <>monthly</>
+                        ) : (
+                            <>yearly</>
+                        )}
                     </span>
-                    {isSubscribedToHelpdeskStarter ? (
+                    {isCurrentSubscriptionCanceled ? null : isSubscribedToHelpdeskStarter ? (
                         <div>
                             <span
                                 className={css.disabledText}

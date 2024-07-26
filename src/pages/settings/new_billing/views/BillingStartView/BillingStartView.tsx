@@ -371,8 +371,9 @@ const BillingStartView = () => {
     return (
         <div className="full-width">
             <PageHeader title="Billing" />
-            {isCurrentSubscriptionCanceled ? null : (
+            {
                 <SecondaryNavbar>
+                    {/* Only show the 'Gorgias Internal' tab when user is impersonated and feature flag is ON*/}
                     {window.USER_IMPERSONATED && isInternalUIEnabled ? (
                         <NavLink to={BILLING_INTERNAL_PATH}>
                             Gorgias Internal
@@ -393,16 +394,20 @@ const BillingStartView = () => {
                     >
                         Usage & Plans
                     </NavLink>
-                    <NavLink to={BILLING_PAYMENT_PATH}>
-                        Payment Information
-                    </NavLink>
+                    {/* Hide the 'Payment Information' tab when no active subscription, so that customer first select a plan before setting a payment method*/}
+                    {isCurrentSubscriptionCanceled ? null : (
+                        <NavLink to={BILLING_PAYMENT_PATH}>
+                            Payment Information
+                        </NavLink>
+                    )}
+                    {/* Hide the 'Payment History' tab when customer pays via Shopify*/}
                     {!isPaymentShopify && (
                         <NavLink to={BILLING_PAYMENTS_HISTORY_PATH}>
                             Payment History
                         </NavLink>
                     )}
                 </SecondaryNavbar>
-            )}
+            }
             <Container fluid className={css.mainContainer}>
                 {isUsageFetched ? (
                     <Switch>

@@ -1,12 +1,12 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import * as uiKit from '@gorgias/ui-kit'
 
 import {QueryClientProvider} from '@tanstack/react-query'
-import {resetLDMocks, mockFlags} from 'jest-launchdarkly-mock'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     AUTOMATION_PRODUCT_ID,
@@ -32,6 +32,7 @@ import {ProductCardProps} from 'pages/settings/new_billing/components/ProductCar
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP} from 'pages/settings/new_billing/constants'
+import {storeWithCanceledSubscription} from 'pages/settings/new_billing/fixtures'
 
 // Mock ui-kit as an ES module to enable spying
 jest.mock('@gorgias/ui-kit', () => {
@@ -567,6 +568,26 @@ describe('UsageAndPlansView', () => {
             },
             {}
         )
+    })
+
+    it('should not be possible to update plan frequency when there is no active subscription', () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={storeWithCanceledSubscription}>
+                    <UsageAndPlansView
+                        contactBilling={jest.fn()}
+                        periodEnd="2021-01-01"
+                        currentUsage={null}
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        expect(
+            screen.queryByRole('button', {name: /Update/i})
+        ).not.toBeInTheDocument()
+
+        expect(screen.queryByText(/Billed monthly/i)).toBeInTheDocument()
     })
 
     it('should render with the Subscribe button disabled for trialing users', () => {

@@ -68,7 +68,8 @@ exports[`BillingStartView should render a BillingStartView component and load th
             class="generalInfoItem"
           >
             <span>
-              Billed 
+              Billed
+               
               yearly
             </span>
             <a
