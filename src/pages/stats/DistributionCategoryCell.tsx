@@ -1,10 +1,12 @@
 import React, {PropsWithRef} from 'react'
 
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+
+import GaugeAddon from 'pages/stats/GaugeAddon'
+
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
-import GaugeCellAddon from 'pages/common/components/table/addons/GaugeCellAddon'
 import {
     TICKET_CUSTOM_FIELDS_API_SEPARATOR,
     TICKET_CUSTOM_FIELDS_NEW_SEPARATOR,
@@ -31,8 +33,9 @@ export const DistributionCategoryCell = ({
 
     return (
         <BodyCell {...props}>
-            <GaugeCellAddon progress={progress} color={cellColor} />
-            <TruncateCellContent content={content} />
+            <GaugeAddon progress={progress} color={cellColor}>
+                <TruncateCellContent content={content} />
+            </GaugeAddon>
         </BodyCell>
     )
 }

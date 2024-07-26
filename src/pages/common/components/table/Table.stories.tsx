@@ -1,6 +1,8 @@
 import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
+import GaugeAddon from 'pages/stats/GaugeAddon'
+
 import {OrderDirection} from 'models/api/types'
 import HeaderCell from './cells/HeaderCell'
 import HeaderCellProperty from './cells/HeaderCellProperty'
@@ -9,7 +11,6 @@ import TableWrapper from './TableWrapper'
 import TableHead from './TableHead'
 import TableBody from './TableBody'
 import TableBodyRow from './TableBodyRow'
-import GaugeCellAddon from './addons/GaugeCellAddon'
 
 const tableColumns = [
     {
@@ -33,6 +34,9 @@ const tableColumns = [
 const storyConfig: Meta = {
     title: 'General/Table/Example',
     component: TableWrapper,
+    parameters: {
+        chromatic: {disableSnapshot: false},
+    },
 }
 
 const SimpleTable: Story<ComponentProps<typeof TableWrapper>> = (props) => (
@@ -102,23 +106,22 @@ const TableWithGauges: Story<ComponentProps<typeof TableWrapper>> = (props) => (
                 <TableBodyRow key={rowIndex}>
                     {tableColumns.map((_, index) => (
                         <BodyCell key={index}>
-                            {index === 0 && (
-                                <GaugeCellAddon
-                                    progress={Math.floor(
-                                        Math.random() * 100 + 1
-                                    )}
-                                    color="#EAF1FF"
-                                />
-                            )}
-                            Lorem ipsum dolor sit.
+                            <GaugeAddon
+                                progress={Math.floor(Math.random() * 100 + 1)}
+                                color="#EAF1FF"
+                                show={index === 0}
+                            >
+                                Lorem ipsum dolor sit.
+                            </GaugeAddon>
                         </BodyCell>
                     ))}
                 </TableBodyRow>
             ))}
             <TableBodyRow>
                 <BodyCell key="summary">
-                    <GaugeCellAddon progress={75} color="#EDEAFF" />
-                    Lorem ipsum dolor sit.
+                    <GaugeAddon progress={75} color="#EDEAFF">
+                        Lorem ipsum dolor dolor sit.
+                    </GaugeAddon>
                 </BodyCell>
             </TableBodyRow>
         </TableBody>

@@ -7,7 +7,8 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import GaugeCellAddon from 'pages/common/components/table/addons/GaugeCellAddon'
+import GaugeAddon from 'pages/stats/GaugeAddon'
+
 import {
     NOT_AVAILABLE_PLACEHOLDER,
     formatMetricValue,
@@ -129,13 +130,14 @@ export const TicketDistributionTable = ({
                         {outsideTopTotal ? (
                             <TableBodyRow>
                                 <BodyCell justifyContent="left">
-                                    <GaugeCellAddon
+                                    <GaugeAddon
                                         progress={
                                             outsideTopTotalGaugePercentage
                                         }
                                         color={OUTSIDE_TOP_DATA.color}
-                                    />
-                                    {OUTSIDE_TOP_DATA.title}
+                                    >
+                                        {OUTSIDE_TOP_DATA.title}
+                                    </GaugeAddon>
                                 </BodyCell>
                                 <BodyCell justifyContent="right" width={100}>
                                     {formatMetricValue(
