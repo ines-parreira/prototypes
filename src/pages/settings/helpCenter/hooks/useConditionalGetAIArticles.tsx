@@ -2,6 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useEffect, useState} from 'react'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {LocaleCode} from 'models/helpCenter/types'
+import {doNotRetry40XErrorsHandler} from 'api/utils'
 import {
     useGetAIArticlesByHelpCenter,
     useGetAIArticlesByHelpCenterAndStore,
@@ -53,6 +54,7 @@ export const useConditionalGetAIArticles = ({
         isAIArticlesForMultiStoreEnabled,
         {
             refetchOnWindowFocus: false,
+            retry: doNotRetry40XErrorsHandler,
         }
     )
 
@@ -65,6 +67,7 @@ export const useConditionalGetAIArticles = ({
         isAIArticlesForMultiStoreEnabled,
         {
             refetchOnWindowFocus: false,
+            retry: doNotRetry40XErrorsHandler,
         }
     )
 

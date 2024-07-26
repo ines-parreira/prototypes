@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 import {ShopifyIntegration} from 'models/integration/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {useTopQuestionsStoresWithHelpCenters} from './useTopQuestionsStoresWithHelpCenters'
@@ -62,7 +62,7 @@ export const useTopQuestionsFilters = ({
         [isLoading, storesWithHelpCenters]
     )
 
-    const [selectedStore, setSelectedStore] = useState<
+    const [selectedStore, setSelectedStoreRaw] = useState<
         ShopifyIntegration | undefined
     >(undefined)
 
@@ -83,30 +83,13 @@ export const useTopQuestionsFilters = ({
             )
 
             if (initialStoreAndHelpCenter) {
-                setSelectedStore(initialStoreAndHelpCenter.initialStore)
+                setSelectedStoreRaw(initialStoreAndHelpCenter.initialStore)
                 setSelectedHelpCenter(
                     initialStoreAndHelpCenter.initialHelpCenter
                 )
             }
 
             return
-        }
-
-        const selectedStoreWithHelpCenters = storesWithHelpCenters.find(
-            ({store}) => store.id === selectedStore.id
-        )
-
-        if (selectedStoreWithHelpCenters) {
-            const isNotOneOfStoreHelpCenters =
-                !selectedStoreWithHelpCenters.helpCenters.some(
-                    ({id}) => id === selectedHelpCenter.id
-                )
-
-            if (isNotOneOfStoreHelpCenters) {
-                setSelectedHelpCenter(
-                    selectedStoreWithHelpCenters.helpCenters[0]
-                )
-            }
         }
     }, [
         isLoading,
@@ -116,6 +99,40 @@ export const useTopQuestionsFilters = ({
         selectedHelpCenter,
         storesWithHelpCenters,
     ])
+
+    const setSelectedStore: React.Dispatch<
+        React.SetStateAction<ShopifyIntegration | undefined>
+    > = useCallback(
+        (setter) => {
+            const newSelectedStore =
+                typeof setter === 'function' ? setter(selectedStore) : setter
+
+            const selectedStoreWithHelpCenters = storesWithHelpCenters.find(
+                ({store}) => store.id === newSelectedStore?.id
+            )
+
+            if (selectedStoreWithHelpCenters) {
+                const isNotOneOfStoreHelpCenters =
+                    !selectedStoreWithHelpCenters.helpCenters.some(
+                        ({id}) => id === selectedHelpCenter?.id
+                    )
+
+                if (isNotOneOfStoreHelpCenters) {
+                    setSelectedHelpCenter(
+                        selectedStoreWithHelpCenters.helpCenters[0]
+                    )
+                }
+            }
+            return setSelectedStoreRaw(newSelectedStore)
+        },
+        [
+            selectedStore,
+            setSelectedHelpCenter,
+            setSelectedStoreRaw,
+            storesWithHelpCenters,
+            selectedHelpCenter,
+        ]
+    )
 
     const storeFilter = useMemo(
         () =>
