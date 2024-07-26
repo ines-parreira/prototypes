@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import classNames from 'classnames'
 
@@ -29,9 +29,13 @@ const MIN_AUTOMATED_INTERACTIONS = 20
 
 type Props = {
     filters: StatsFilters
+    isAutomateTopQuestionsEnabled: boolean
 }
 
-const AutomateLandingPageDashboardV2 = ({filters}: Props) => {
+const AutomateLandingPageDashboardV2 = ({
+    filters,
+    isAutomateTopQuestionsEnabled,
+}: Props) => {
     const moneySavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET
     )
@@ -41,6 +45,10 @@ const AutomateLandingPageDashboardV2 = ({filters}: Props) => {
     const history = useHistory()
 
     const [isTipsVisible, setIsTipVisible] = useState(true)
+
+    useEffect(() => {
+        setIsTipVisible(!isAutomateTopQuestionsEnabled)
+    }, [isAutomateTopQuestionsEnabled])
 
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
@@ -85,7 +93,7 @@ const AutomateLandingPageDashboardV2 = ({filters}: Props) => {
                                 in the last 28 days
                             </span>
                             <TipsToggle
-                                isVisible={true}
+                                isVisible={isTipsVisible}
                                 onClick={() => setIsTipVisible((prev) => !prev)}
                             />
                         </div>

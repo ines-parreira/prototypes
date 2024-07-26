@@ -29,7 +29,12 @@ const AutomateLandingPage = () => {
             title={isImprovedNavigationEnabled ? 'Overview' : 'Automate'}
             headerCanduId="header-my-automate"
         >
-            <AutomateLandingPageDashboardV2 filters={filters} />
+            <AutomateLandingPageDashboardV2
+                filters={filters}
+                isAutomateTopQuestionsEnabled={
+                    isAutomateTopQuestionsEnabled === true
+                }
+            />
 
             {isAutomateTopQuestionsEnabled && (
                 <AutomateLandingPageTopQuestions />
