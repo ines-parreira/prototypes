@@ -310,16 +310,6 @@ export const CampaignDetailsForm = ({
 
             if (key === 'message') {
                 const content = (payload as EditorState).getCurrentContent()
-                const lastChange = (payload as EditorState).getLastChangeType()
-
-                /**
-                 *      `handleChangeMessage` is called when the component
-                 *  is initialized so we need to check if there were any
-                 *  actions performed on the editor.
-                 */
-                if (lastChange === undefined) {
-                    return
-                }
 
                 setCampaignData(
                     produce((draft) => {
