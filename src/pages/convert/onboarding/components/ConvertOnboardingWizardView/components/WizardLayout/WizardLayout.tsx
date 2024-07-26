@@ -2,6 +2,7 @@ import React, {useCallback, useContext, useMemo, useState} from 'react'
 import classnames from 'classnames'
 import {Container} from 'reactstrap'
 import {Map} from 'immutable'
+import {useQueryClient} from '@tanstack/react-query'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -22,6 +23,15 @@ import {
     BundleInstallationMethod,
 } from 'models/convert/bundle/types'
 import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
+import {ONBOARDING_CAMPAIGN_TEMPLATES_LIST} from 'pages/convert/campaigns/templates'
+import {
+    campaignKeys,
+    useCreateCampaign,
+    useListCampaigns,
+} from 'models/convert/campaign/queries'
+import {reportError} from 'utils/errors'
+import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
+import {GorgiasChatIntegration} from 'models/integration/types'
 import WizardFooter from '../WizardFooter'
 import WizardCampaignsStep from '../WizardCampaignsStep'
 import WizardInstallStep from '../WizardInstallStep'
@@ -42,12 +52,25 @@ const WizardLayout = ({
 }: Props) => {
     const wizardContext = useContext(WizardContext)
     const {goToPreviousStep, goToNextStep} = useNavigateWizardSteps()
+    const queryClient = useQueryClient()
     const updateChannelConnection = useUpdateChannelConnection()
+
+    const chatIntegration = integration.toJS() as GorgiasChatIntegration
+
+    const createCampaign = useCreateCampaign()
+    const {data: campaigns} = useListCampaigns(
+        {
+            channelConnectionId: channelConnection?.id,
+        },
+        {
+            enabled: !!channelConnection,
+        }
+    )
 
     const chatIntegrationId = integration.get('id') as number
 
     const isManualMethodRequired = useIsManualInstallationMethodRequired(
-        integration.toJS(),
+        chatIntegration,
         storeIntegration.toJS()
     )
 
@@ -79,18 +102,73 @@ const WizardLayout = ({
         return 'Finish Setup'
     }, [installationMethod, wizardContext?.activeStep])
 
+    const uncreatedCampaigns = useMemo(() => {
+        if (!campaigns) return ONBOARDING_CAMPAIGN_TEMPLATES_LIST
+
+        return ONBOARDING_CAMPAIGN_TEMPLATES_LIST.filter(
+            (template) =>
+                !campaigns.some(
+                    (campaign) => campaign.template_id === template.slug
+                )
+        )
+    }, [campaigns])
+
     // Callbacks
     const handleFinishSetup = useCallback(async () => {
         if (updateChannelConnection.isLoading) return
 
         if (!!channelConnection) {
+            try {
+                await Promise.all(
+                    uncreatedCampaigns.map(async (campaign) => {
+                        const data = await campaign.getConfiguration(
+                            storeIntegration,
+                            integration
+                        )
+                        await createCampaign.mutateAsync([
+                            undefined,
+                            {
+                                ...data,
+                                language: getPrimaryLanguageFromChatConfig(
+                                    chatIntegration.meta
+                                ),
+                                channel_connection_id: channelConnection.id,
+                            },
+                        ])
+                    })
+                )
+            } catch (e) {
+                // do not block the onboarding process if there is an error in creating default campaigns
+                reportError(e, {
+                    tags: {
+                        section: 'convert-onboarding',
+                        team: 'convert',
+                    },
+                })
+            }
+
+            await queryClient.invalidateQueries({
+                queryKey: campaignKeys.list({
+                    channelConnectionId: channelConnection.id,
+                }),
+            })
+
             await updateChannelConnection.mutateAsync([
                 undefined,
                 {channel_connection_id: channelConnection.id},
                 {is_onboarded: true},
             ])
         }
-    }, [channelConnection, updateChannelConnection])
+    }, [
+        channelConnection,
+        chatIntegration,
+        createCampaign,
+        integration,
+        queryClient,
+        storeIntegration,
+        uncreatedCampaigns,
+        updateChannelConnection,
+    ])
 
     const handleNextStep = useCallback(async () => {
         if (wizardContext?.nextStep) {

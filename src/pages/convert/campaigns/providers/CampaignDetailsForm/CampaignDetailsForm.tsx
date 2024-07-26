@@ -13,15 +13,16 @@ import {sanitizeHtmlDefault} from 'utils/html'
 
 import {User} from 'config/types/user'
 import {
+    getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
-    getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatAvatarSettings,
+    GorgiasChatIntegration,
 } from 'models/integration/types'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -37,7 +38,6 @@ import Accordion from 'pages/common/components/accordion/Accordion'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {Language} from 'constants/languages'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
@@ -138,9 +138,9 @@ export const CampaignDetailsForm = ({
     const attachments = useAppSelector(getNewMessageAttachments)
 
     const defaultLanguage = useMemo<string>(() => {
-        const meta = (integration.get('meta') as Map<string, string>)?.toJS()
-        if (!meta) return Language.EnglishUs
-        return getPrimaryLanguageFromChatConfig(meta)
+        return getPrimaryLanguageFromChatConfig(
+            (integration.toJS() as GorgiasChatIntegration).meta
+        )
     }, [integration])
 
     const [showContentWarning, setShowContentWarning] = useState<boolean>(false)

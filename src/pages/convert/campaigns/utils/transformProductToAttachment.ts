@@ -1,5 +1,7 @@
+import {AttachmentEnum} from 'common/types'
 import {CampaignProduct} from '../types/CampaignProduct'
 
+import {CampaignAttachment} from '../types/CampaignAttachment'
 import {attachUtmToCampaignProduct} from './attachUtmParams'
 
 export function transformProductToAttachment(
@@ -9,9 +11,9 @@ export function transformProductToAttachment(
         currency?: string
     },
     isConvertSubscriber: boolean
-) {
+): CampaignAttachment {
     return {
-        contentType: 'application/productCard',
+        contentType: AttachmentEnum.Product,
         url: product.featured_image,
         name: product.title,
         size: 0,

@@ -1,9 +1,9 @@
 import {Map} from 'immutable'
 import {IntegrationDataItem} from 'models/integration/types'
-import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
 import {Product} from 'constants/integrations/types/shopify'
 import {getIconFromUrl} from 'utils'
 import {CampaignAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {AttachmentEnum} from 'common/types'
 
 export const transformProductToCampaignAttachment = (
     result: IntegrationDataItem<Product>,
@@ -19,7 +19,7 @@ export const transformProductToCampaignAttachment = (
     return {
         url: result.data?.image?.src || getIconFromUrl(shopifyPlaceholderImage),
         name: result.data?.title,
-        contentType: ShopifyProductCardContentType,
+        contentType: AttachmentEnum.Product,
         size: 0,
         extra: {
             price: parseFloat(result.data?.variants[0].price),

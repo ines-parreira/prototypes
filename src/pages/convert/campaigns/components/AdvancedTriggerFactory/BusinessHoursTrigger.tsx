@@ -4,12 +4,15 @@ import Button from 'pages/common/components/button/Button'
 import {Value} from 'pages/common/forms/SelectField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
+import {
+    CampaignTriggerBusinessHoursValuesEnum,
+    isBusinessHoursValue,
+} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
 import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
 
 import {BUSINESS_HOURS_VALUES} from '../../constants/triggerValueLabels'
 import {TRIGGERS_CONFIG} from '../../constants/triggers'
 import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
-import {isBusinessHoursValue} from '../../types/enums/CampaignTriggerBusinessHoursValues.enum'
 import css from './style.less'
 
 type Props = AdvancedTriggerBaseProps
@@ -19,9 +22,10 @@ export const BusinessHoursTrigger = ({
     trigger,
     onUpdateTrigger,
 }: Props): JSX.Element => {
-    const defaultValue =
-        trigger.value ??
-        TRIGGERS_CONFIG[CampaignTriggerType.BusinessHours].defaults.value
+    const defaultValue: CampaignTriggerBusinessHoursValuesEnum = trigger.value
+        ? trigger.value.toString()
+        : TRIGGERS_CONFIG[CampaignTriggerType.BusinessHours].defaults.value
+
     const [innerValue, setInnerValue] = useState<Value>(defaultValue)
 
     const handleChangeValue = (value: Value) => {

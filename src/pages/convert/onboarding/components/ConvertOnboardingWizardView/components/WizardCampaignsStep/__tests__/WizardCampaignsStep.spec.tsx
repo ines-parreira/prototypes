@@ -25,6 +25,7 @@ jest.mock(
         })
     }
 )
+
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection

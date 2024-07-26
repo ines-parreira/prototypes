@@ -17,4 +17,3 @@ export type CampaignValue =
     | number
     | boolean
     | PurchasedProductValue[]
-    | undefined

@@ -66,7 +66,7 @@ describe('<CampaignDetailsFactory />', () => {
 
     beforeEach(() => {
         useParamsMock.mockReturnValue({
-            integrationId: '8', // Gorgias chat
+            id: '8', // Gorgias chat
             campaignId: '1',
         })
         useGetOrCreateChannelConnectionMock.mockReturnValue({

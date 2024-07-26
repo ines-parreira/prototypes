@@ -53,7 +53,7 @@ export const OrdersCountTrigger = ({
     const handleBlurValue = () => {
         onUpdateTrigger(id, {
             ...trigger,
-            value: innerValue,
+            value: toInteger(innerValue),
         })
     }
 

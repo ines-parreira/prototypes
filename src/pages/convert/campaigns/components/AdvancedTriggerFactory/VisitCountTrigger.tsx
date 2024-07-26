@@ -50,7 +50,7 @@ export const VisitCountTrigger = ({
     const handleBlurValue = () => {
         onUpdateTrigger(id, {
             ...trigger,
-            value: innerValue,
+            value: toInteger(innerValue),
         })
     }
 

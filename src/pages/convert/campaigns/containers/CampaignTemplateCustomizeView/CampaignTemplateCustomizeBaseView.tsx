@@ -24,7 +24,6 @@ import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
-import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
 import {
     CampaignListOptions as CampaignListOptionsParams,
     CampaignUpdatePayload,
@@ -34,6 +33,8 @@ import {CampaignDetailsHeader} from 'pages/convert/campaigns/components/Campaign
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
+import {GorgiasChatIntegration} from 'models/integration/types'
 
 type OwnProps = {
     backUrl: string
@@ -62,6 +63,8 @@ const CampaignTemplateCustomizeBaseView = ({
     const chatIntegration = useAppSelector(
         getIntegrationById(chatIntegrationId)
     )
+    const gorgiasChatIntegration =
+        chatIntegration.toJS() as GorgiasChatIntegration
 
     const storeIntegration = useAppSelector(
         getIntegrationById(
@@ -70,14 +73,12 @@ const CampaignTemplateCustomizeBaseView = ({
     )
 
     const {channelConnection, isLoading} = useGetOrCreateChannelConnection(
-        toJS(chatIntegration)
+        gorgiasChatIntegration
     )
 
     const defaultLanguage = useMemo<string>(() => {
-        return getPrimaryLanguageFromChatConfig(
-            (chatIntegration.get('meta') as Map<string, string>).toJS()
-        )
-    }, [chatIntegration])
+        return getPrimaryLanguageFromChatConfig(gorgiasChatIntegration.meta)
+    }, [gorgiasChatIntegration])
 
     const campaignListOptions = useMemo(
         () =>

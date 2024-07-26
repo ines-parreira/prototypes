@@ -23,9 +23,9 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 
 import {
+    getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
-    getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 
@@ -45,6 +45,7 @@ import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/uti
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
+import {GorgiasChatIntegration} from 'models/integration/types'
 import css from './ConvertSimplifiedEditorModal.less'
 
 type Props = {
@@ -58,6 +59,8 @@ type Props = {
 const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
     const {isOpen, onClose, template, estimatedRevenue, integration} = props
 
+    const gorgiasChatIntegration = integration.toJS() as GorgiasChatIntegration
+
     const [campaign, setCampaign] = useState<Campaign>()
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -69,15 +72,13 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
     )
     const attachments = useAppSelector(getNewMessageAttachments)
     const {channelConnection} = useGetOrCreateChannelConnection(
-        toJS(integration)
+        gorgiasChatIntegration
     )
     const {mutateAsync: createCampaign} = useCreateCampaign()
 
     const defaultLanguage = useMemo<string>(() => {
-        return getPrimaryLanguageFromChatConfig(
-            (integration.get('meta') as Map<string, string>).toJS()
-        )
-    }, [integration])
+        return getPrimaryLanguageFromChatConfig(gorgiasChatIntegration.meta)
+    }, [gorgiasChatIntegration])
 
     useEffect(() => {
         // After opening the modal, build campaigns. This will solve issue with reusing trigger IDs

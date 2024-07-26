@@ -11,7 +11,7 @@ export interface AttachmentPosition {
 export interface CampaignProductAttachment {
     url?: string
     name: string
-    contentType: string
+    contentType: AttachmentEnum.Product
     size: number
     extra: object & {
         price: number

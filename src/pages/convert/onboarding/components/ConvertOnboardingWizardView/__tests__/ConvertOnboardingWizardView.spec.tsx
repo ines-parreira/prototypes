@@ -12,7 +12,10 @@ import {channelConnection} from 'fixtures/channelConnection'
 import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
 import history from 'pages/history'
 import {campaign} from 'fixtures/campaign'
-import {useListCampaigns} from 'models/convert/campaign/queries'
+import {
+    useCreateCampaign,
+    useListCampaigns,
+} from 'models/convert/campaign/queries'
 import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import {
     convertBundle,
@@ -22,10 +25,12 @@ import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import {CampaignConfigurationBuilder} from 'pages/convert/campaigns/templates/constructor'
 import ConvertOnboardingWizardView from '../ConvertOnboardingWizardView'
 
-const mockStore = configureMockStore()
 const queryClient = mockQueryClient()
+
+const mockStore = configureMockStore()
 
 jest.mock('pages/convert/channelConnections/hooks/useUpdateChannelConnection')
 const useUpdateChannelConnectionMock = assumeMock(useUpdateChannelConnection)
@@ -37,6 +42,7 @@ const useGetOrCreateChannelConnectionMock = assumeMock(
 
 jest.mock('models/convert/campaign/queries')
 const useListCampaignMock = assumeMock(useListCampaigns)
+const useCreateCampaignMock = assumeMock(useCreateCampaign)
 
 jest.mock('pages/convert/bundles/hooks/useGetConvertBundle')
 const useGetConvertBundleMock = assumeMock(useGetConvertBundle)
@@ -53,6 +59,8 @@ jest.mock(
     }
 )
 
+jest.mock('pages/convert/campaigns/templates/constructor')
+
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     ...(jest.requireActual('react-router-dom') as typeof routerDom),
@@ -63,7 +71,7 @@ const defaultState = {
     currentAccount: fromJS(account),
     billing: fromJS(billingState),
     integrations: fromJS({
-        integrations: [{id: 123, type: 'gorgias_chat'}],
+        integrations: [{id: 123, type: 'gorgias_chat', meta: {}}],
     }),
 }
 
@@ -74,9 +82,16 @@ describe('ConvertOnboardingWizardView', () => {
             isLoading: false,
         })
         useInstallBundleMock.mockImplementation(installBundleMockImplementation)
+        ;(
+            CampaignConfigurationBuilder.prototype
+                .attachProductCards as jest.Mock
+        ).mockImplementation(jest.fn())
+        ;(
+            CampaignConfigurationBuilder.getOrCreateDiscountCode as jest.Mock
+        ).mockImplementation(jest.fn())
     })
 
-    it('updated channel connection on finish setup', () => {
+    it('updated channel connection on finish setup', async () => {
         ;(useParams as jest.Mock).mockReturnValue({id: '123'})
         useGetOrCreateChannelConnectionMock.mockReturnValue({
             channelConnection: {
@@ -98,6 +113,13 @@ describe('ConvertOnboardingWizardView', () => {
             } as unknown as ReturnType<typeof useUpdateChannelConnection>
         })
 
+        const mutateCreateCampaignMock = jest.fn()
+        useCreateCampaignMock.mockImplementation(() => {
+            return {
+                mutateAsync: mutateCreateCampaignMock,
+            } as unknown as ReturnType<typeof useCreateCampaign>
+        })
+
         const {getByText} = render(
             <BrowserRouter>
                 <Provider store={mockStore(defaultState)}>
@@ -111,15 +133,19 @@ describe('ConvertOnboardingWizardView', () => {
         const finishSetupButton = getByText('Finish Setup')
         fireEvent.click(finishSetupButton)
 
-        expect(mutateUpdateMock).toHaveBeenCalledWith([
-            undefined,
-            {
-                channel_connection_id: channelConnection.id,
-            },
-            {
-                is_onboarded: true,
-            },
-        ])
+        await waitFor(() => {
+            expect(mutateUpdateMock).toHaveBeenCalledWith([
+                undefined,
+                {
+                    channel_connection_id: channelConnection.id,
+                },
+                {
+                    is_onboarded: true,
+                },
+            ])
+        })
+
+        expect(mutateCreateCampaignMock).toHaveBeenCalledTimes(3)
     })
     it('redirects to campaigns page after setup if channel is onboarded', async () => {
         ;(useParams as jest.Mock).mockReturnValue({id: '123'})
@@ -129,6 +155,13 @@ describe('ConvertOnboardingWizardView', () => {
                 is_onboarded: true,
             },
         } as any)
+
+        const mutateCampaignCreateMock = jest.fn()
+        useCreateCampaignMock.mockImplementation(() => {
+            return {
+                mutateAsync: mutateCampaignCreateMock,
+            } as unknown as ReturnType<typeof useCreateCampaign>
+        })
 
         const spy = jest.spyOn(history, 'push')
 

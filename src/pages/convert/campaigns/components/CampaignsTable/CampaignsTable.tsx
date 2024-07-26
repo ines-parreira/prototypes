@@ -30,6 +30,7 @@ import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightC
 import useLocalStorage from 'hooks/useLocalStorage'
 import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
 import {useGetActiveCampaignsCount} from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
+import {GorgiasChatIntegration} from 'models/integration/types'
 import {isActiveStatus} from '../../types/enums/CampaignStatus.enum'
 import {SortingKeys, useSortedCampaigns} from '../../hooks/useSortedCampaigns'
 
@@ -127,7 +128,7 @@ export const CampaignsTable = ({
 
     const defaultLanguage = useMemo<string>(() => {
         return getPrimaryLanguageFromChatConfig(
-            (integration.get('meta') as Map<string, string>).toJS()
+            (integration.toJS() as GorgiasChatIntegration).meta
         )
     }, [integration])
 
