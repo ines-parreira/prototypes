@@ -6,7 +6,7 @@ import VoiceCallAgentLabel from '../VoiceCallAgentLabel/VoiceCallAgentLabel'
 
 jest.mock('pages/common/utils/labels', () => ({
     AgentLabel: (props: ComponentProps<typeof AgentLabel>) => (
-        <p className={props.semibold ? 'semibold' : ''}>
+        <p className={props.semibold ? 'semibold' : ''} id={props.id}>
             AgentLabel {props.name}
         </p>
     ),

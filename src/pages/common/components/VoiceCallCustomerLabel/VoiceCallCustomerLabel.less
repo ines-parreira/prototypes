@@ -2,5 +2,13 @@
     .name {
         font-weight: 600;
         display: inline-block;
+
+        & > span {
+            display: inline-block;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            width: 100%;
+        }
     }
 }

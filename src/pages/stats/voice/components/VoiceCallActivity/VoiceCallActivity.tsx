@@ -24,11 +24,18 @@ const InboundVoiceCallActivity = ({voiceCall}: Props) => {
                 <VoiceCallCustomerLabel
                     customerId={voiceCall.customerId}
                     phoneNumber={voiceCall.phoneNumberSource}
+                    className={classNames(css.customerLabel, {
+                        [css.hasAgent]: !!voiceCall.agentId,
+                    })}
                 />
             ) : (
                 <CustomerLabel customer={voiceCall.phoneNumberSource} />
             )}
-            {isFinalVoiceCallStatus(voiceCall.status) ? 'called' : 'calling'}
+            <div>
+                {isFinalVoiceCallStatus(voiceCall.status)
+                    ? 'called'
+                    : 'calling'}
+            </div>
 
             {voiceCall.agentId && (
                 <div className={css.agent}>
@@ -65,11 +72,16 @@ const OutboundVoiceCallActivity = ({voiceCall}: Props) => {
                     />
                 )}
             </span>
-            {isFinalVoiceCallStatus(voiceCall.status) ? 'called' : 'calling'}
+            <div>
+                {isFinalVoiceCallStatus(voiceCall.status)
+                    ? 'called'
+                    : 'calling'}
+            </div>
             {voiceCall.customerId ? (
                 <VoiceCallCustomerLabel
                     customerId={voiceCall.customerId}
                     phoneNumber={voiceCall.phoneNumberDestination}
+                    className={css.customerLabel}
                 />
             ) : (
                 <CustomerLabel customer={voiceCall.phoneNumberDestination} />

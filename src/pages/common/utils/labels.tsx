@@ -43,6 +43,7 @@ export function AgentLabel({
     semibold,
     isAIAgent = false,
     badgeColor,
+    id,
 }: {
     className?: string
     maxWidth?: string
@@ -53,11 +54,12 @@ export function AgentLabel({
     semibold?: boolean
     isAIAgent?: boolean
     badgeColor?: string
+    id?: string
 }) {
     const showAvatar = shouldDisplayAvatar || profilePictureUrl
 
     return (
-        <div className={classnames(css.AgentLabel, className)}>
+        <div className={classnames(css.AgentLabel, className)} id={id}>
             {showAvatar ? (
                 <Avatar
                     name={name}
