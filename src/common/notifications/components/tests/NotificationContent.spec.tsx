@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from '@testing-library/react'
 
 import {notification} from 'common/notifications/fixtures/fixtures'
-import {Notification, PayloadWithSender} from 'common/notifications/types'
+import {Notification} from 'common/notifications/types'
 
 import NotificationContent from '../NotificationContent'
 
@@ -10,10 +10,12 @@ describe('<NotificationContent />', () => {
     it('should not return anything if there is no ticket in notification payload', () => {
         const {container} = render(
             <NotificationContent
-                notification={{
-                    ...notification,
-                    payload: {} as unknown as PayloadWithSender,
-                }}
+                notification={
+                    {
+                        ...notification,
+                        payload: {},
+                    } as Notification
+                }
             />
         )
 
@@ -53,7 +55,10 @@ describe('<NotificationContent />', () => {
             <NotificationContent
                 notification={{
                     ...notification,
-                    payload: {ticket: notification.payload.ticket},
+                    payload: {
+                        ticket: notification.payload.ticket,
+                        sender: null,
+                    },
                     type: 'ticket.assigned',
                 }}
             />

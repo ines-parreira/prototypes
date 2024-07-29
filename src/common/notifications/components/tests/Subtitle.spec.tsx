@@ -24,6 +24,7 @@ describe('<Subtitle />', () => {
                     type: 'ticket.snooze-expired',
                     payload: {
                         ticket: notification.payload.ticket,
+                        sender: null,
                     },
                 }}
             />

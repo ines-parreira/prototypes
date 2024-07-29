@@ -10,9 +10,10 @@ type Props = {
 
 export default function Subtitle({notification}: Props) {
     const senderInfo = useMemo(() => {
-        if (!('sender' in notification.payload)) return null
-
         const {sender} = notification.payload
+
+        if (!sender) return null
+
         return (
             <>
                 {' '}

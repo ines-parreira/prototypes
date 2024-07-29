@@ -36,6 +36,7 @@ type NotificationBase = {
 
 export type DefaultPayload = {
     ticket: Ticket
+    sender: null
 }
 
 export type PayloadWithSender = {
