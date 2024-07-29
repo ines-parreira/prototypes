@@ -4,7 +4,10 @@ import {
     getHelpCenterDomain,
     getHomePageItemHashUrl,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {HELP_CENTER_DEFAULT_LAYOUT} from 'pages/settings/helpCenter/constants'
+import {
+    HELP_CENTER_DEFAULT_LAYOUT,
+    HELP_CENTER_MAX_ARTICLES,
+} from 'pages/settings/helpCenter/constants'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {
     ArticleWithLocalTranslationAndRating,
@@ -28,6 +31,7 @@ export const useAIArticlePublishedPreviewUrl = (
         helpCenter.id,
         {
             version_status: 'latest_draft',
+            per_page: HELP_CENTER_MAX_ARTICLES,
         },
         {
             refetchOnWindowFocus: false,
