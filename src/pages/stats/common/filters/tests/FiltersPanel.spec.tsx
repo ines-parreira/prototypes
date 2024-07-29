@@ -32,6 +32,7 @@ describe('FiltersPanel', () => {
         FilterKey.Channels,
         FilterKey.Integrations,
         FilterKey.Tags,
+        FilterKey.Agents,
     ]
 
     it('should render the panel without filters', () => {

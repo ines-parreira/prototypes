@@ -81,6 +81,7 @@ export default function SupportPerformanceOverview() {
                                     FilterKey.Channels,
                                     FilterKey.Integrations,
                                     FilterKey.Tags,
+                                    FilterKey.Agents,
                                 ]}
                             />
                         </DashboardGridCell>

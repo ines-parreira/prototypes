@@ -1,4 +1,5 @@
 import React, {useCallback, useState} from 'react'
+import {connect} from 'react-redux'
 import {emptyFilter} from 'pages/stats/common/filters/helpers'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 
@@ -10,13 +11,15 @@ import {
 } from 'state/stats/statsSlice'
 import {getFilterTeamsJS} from 'state/teams/selectors'
 import {getFilterAgentsJS} from 'state/agents/selectors'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {agentsFilterLogicalOperators} from 'pages/stats/common/filters/constants'
 import {DropdownOption} from 'pages/stats/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import {RootState} from 'state/types'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator['agents']
@@ -24,7 +27,7 @@ type Props = {
 
 export const AGENTS_FILTER_NAME = 'Agent'
 
-export default function AgentsFilter({value = emptyFilter}: Props) {
+export default function AgentsFilter({value = emptyFilter, onRemove}: Props) {
     const dispatch = useAppDispatch()
     const agents = useAppSelector(getFilterAgentsJS)
     const teams = useAppSelector(getFilterTeamsJS)
@@ -148,6 +151,8 @@ export default function AgentsFilter({value = emptyFilter}: Props) {
             onRemove={() => {
                 dispatch(mergeStatsFilters({agents: []}))
                 setSelectedTeamOption([])
+
+                onRemove?.()
             }}
             onChangeLogicalOperator={handleFilterOperatorChange}
             onDropdownOpen={handleDropdownOpen}
@@ -155,3 +160,7 @@ export default function AgentsFilter({value = emptyFilter}: Props) {
         />
     )
 }
+
+export const AgentsFiltersWithState = connect((state: RootState) => ({
+    value: getPageStatsFiltersWithLogicalOperators(state)[FilterKey.Agents],
+}))(AgentsFilter)

@@ -9,6 +9,7 @@ import css from 'pages/stats/common/filters/FiltersPanel.less'
 import {IntegrationsFilterWithState} from 'pages/stats/common/filters/IntegrationsFilter'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {AgentsFiltersWithState} from 'pages/stats/common/filters/AgentsFilter'
 
 type Props = {
     persistentFilters?: FilterKey[]
@@ -25,6 +26,8 @@ export const renderFilter = (filter: FilterKey) => {
             return ChannelsFilterWithState
         case FilterKey.Integrations:
             return IntegrationsFilterWithState
+        case FilterKey.Agents:
+            return AgentsFiltersWithState
         case FilterKey.Tags:
             return TagsFilterWithState
         default:

@@ -35,7 +35,11 @@ const Template: StoryFn<ComponentProps<typeof FiltersPanel>> = (props) => {
 export const Default = Template.bind({})
 Default.args = {
     persistentFilters: [FilterKey.Period],
-    optionalFilters: [FilterKey.Integrations, FilterKey.Channels],
+    optionalFilters: [
+        FilterKey.Integrations,
+        FilterKey.Channels,
+        FilterKey.Agents,
+    ],
 }
 
 export default storyConfig
