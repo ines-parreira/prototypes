@@ -5,7 +5,7 @@ import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_
 import DEPRECATED_ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {
     getPageStatsFilters,
     getStatsMessagingAndAppIntegrations,
@@ -34,7 +34,10 @@ export const SupportPerformanceFilters = () => {
                 value={pageStatsFilters.agents}
                 variant="ghost"
             />
-            <TagsStatsFilter value={pageStatsFilters.tags} variant={'ghost'} />
+            <DEPRECATED_TagsStatsFilter
+                value={pageStatsFilters.tags}
+                variant={'ghost'}
+            />
             <DEPRECATED_PeriodStatsFilter
                 initialSettings={{
                     maxSpan: 365,

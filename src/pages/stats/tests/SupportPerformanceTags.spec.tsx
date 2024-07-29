@@ -15,10 +15,10 @@ import {integrationsState} from 'fixtures/integrations'
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
-import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 
 jest.mock(
-    '../TagsStatsFilter',
+    'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',
     () =>
         ({value}: ComponentProps<typeof TagsStatsFilter>) =>
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>

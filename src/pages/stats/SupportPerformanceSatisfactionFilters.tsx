@@ -11,7 +11,7 @@ import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsS
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import {ScoreStatsFilter} from 'pages/stats/ScoreStatsFilter'
-import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {
     getStatsFilters,
     getMessagingAndAppIntegrationsStatsFilter,
@@ -45,7 +45,7 @@ export const SupportPerformanceSatisfactionFilters = () => {
                 isDescending
             />
             <DEPRECATED_AgentsStatsFilter value={statsFilters.agents} />
-            <TagsStatsFilter value={statsFilters.tags} />
+            <DEPRECATED_TagsStatsFilter value={statsFilters.tags} />
             <PeriodStatsFilter value={statsFilters.period} />
         </>
     )

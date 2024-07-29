@@ -4,7 +4,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {
     getStatsFilters,
     getMessagingAndAppIntegrationsStatsFilter,
@@ -29,7 +29,7 @@ export const SupportPerformanceTagsFilters = () => {
                 isMultiple
             />
             <ChannelsStatsFilter value={statsFilters.channels} />
-            <TagsStatsFilter value={statsFilters.tags} />
+            <DEPRECATED_TagsStatsFilter value={statsFilters.tags} />
             <PeriodStatsFilter value={statsFilters.period} />
         </>
     )

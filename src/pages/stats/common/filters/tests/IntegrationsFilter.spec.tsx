@@ -14,6 +14,9 @@ import {RootState} from 'state/types'
 
 import {renderWithStore} from 'utils/testing'
 import {
+    FILTER_DESELECT_ALL_LABEL,
+    FILTER_SELECT_ALL_LABEL,
+    FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
@@ -43,8 +46,6 @@ describe('IntegrationsFilter', () => {
         'i'
     )
 
-    const DROPDOWN_SELECT_VALUE_ELEMENT_TEXT = 'Select value...'
-
     beforeEach(() => {})
 
     it('should render IntegrationsFilter component', () => {
@@ -67,7 +68,7 @@ describe('IntegrationsFilter', () => {
 
     it('should render IntegrationsFilter options', () => {
         renderComponent()
-        userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         expect(screen.getByText(integrations[0].name)).toBeInTheDocument()
         expect(screen.getByText(integrations[1].name)).toBeInTheDocument()
@@ -76,7 +77,7 @@ describe('IntegrationsFilter', () => {
     it('should dispatch mergeStatsFilters action on selecting an integration', () => {
         renderComponent()
 
-        userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(integrations[0].name))
         userEvent.click(screen.getByText(integrations[1].name))
 
@@ -118,8 +119,8 @@ describe('IntegrationsFilter', () => {
 
     it('should dispatch mergeStatsFilters action on selecting all integrations and deselecting all integrations', () => {
         const {rerender} = renderComponent()
-        userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
-        userEvent.click(screen.getByText(/select all/i))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
         const allAvailableIntegrationsIds = integrations.map(
             (integration) => integration.id
@@ -141,7 +142,7 @@ describe('IntegrationsFilter', () => {
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
-        userEvent.click(screen.getByText(/deselect all/i))
+        userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
         expect(mockedDispatch).toHaveBeenCalledWith(
             mergeStatsFiltersWithLogicalOperator({
@@ -205,7 +206,7 @@ describe('IntegrationsFilter', () => {
     it('should change selection of logical operator when one of the options is clicked', () => {
         renderComponent()
 
-        userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         const isOneOfRadioLabel = screen.getByLabelText(
             new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i')

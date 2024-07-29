@@ -80,6 +80,7 @@ export default function SupportPerformanceOverview() {
                                 optionalFilters={[
                                     FilterKey.Channels,
                                     FilterKey.Integrations,
+                                    FilterKey.Tags,
                                 ]}
                             />
                         </DashboardGridCell>

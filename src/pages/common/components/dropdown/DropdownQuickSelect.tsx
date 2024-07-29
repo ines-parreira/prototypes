@@ -71,7 +71,7 @@ const DropdownQuickSelect = <T extends boolean | number | string>(
         [value]
     )
     const isSelected = useMemo(
-        () => valueLength === values.length,
+        () => valueLength === values.length && valueLength > 0,
         [valueLength, values]
     )
 

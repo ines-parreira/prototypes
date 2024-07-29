@@ -29,3 +29,8 @@ export const FilterLabels: Record<FilterKey, string> = {
     [FilterKey.Score]: 'Score',
     [FilterKey.SlaPolicies]: 'Sla Policy',
 }
+
+export const tagsFilterLogicalOperators = [
+    LogicalOperatorEnum['ONE_OF'],
+    LogicalOperatorEnum['NOT_ONE_OF'],
+]

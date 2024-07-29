@@ -1,7 +1,9 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
 :local {
     .container {
         display: inline-flex;
-        border-radius: 4px;
+        border-radius: @layout-spacing-xxs;
     }
 
     .dropdown {
@@ -9,8 +11,18 @@
     }
 
     .noTitle {
-        & + [class*='title'] {
+        & > [class*='title'] {
             display: none;
         }
+    }
+
+    .withInfiniteScroll {
+        overflow: initial;
+        padding: 0;
+    }
+
+    .infiniteScroll {
+        max-height: calc(7 * 36px);
+        padding: @layout-spacing-xs;
     }
 }

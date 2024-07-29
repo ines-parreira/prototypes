@@ -38,7 +38,7 @@ import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGet
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {channelConnection} from 'fixtures/channelConnection'
 import {campaign} from 'fixtures/campaign'
-import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import SupportPerformanceRevenue from 'pages/stats/SupportPerformanceRevenue'
 
 jest.mock('hooks/reporting/useStatResource')
@@ -51,9 +51,9 @@ jest.mock(
         }
 )
 jest.mock(
-    'pages/stats/TagsStatsFilter',
+    'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',
     () =>
-        ({value}: ComponentProps<typeof TagsStatsFilter>) =>
+        ({value}: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) =>
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({

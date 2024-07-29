@@ -1,9 +1,9 @@
 import React, {ReactNode, useCallback, useEffect, useRef, useState} from 'react'
 import classnames from 'classnames'
 
-import Loader from '../Loader/Loader'
+import Loader from 'pages/common/components/Loader/Loader'
 
-import css from './InfiniteScroll.less'
+import css from 'pages/common/components/InfiniteScroll/InfiniteScroll.less'
 
 type Props = {
     children: ReactNode

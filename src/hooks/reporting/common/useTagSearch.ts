@@ -1,61 +1,31 @@
-import React, {ComponentProps, useCallback, useState} from 'react'
 import {CancelToken} from 'axios'
-
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import {useCallback, useState} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {FetchTagsOptions, Tag, TagSortableProperties} from 'models/tag/types'
-import {fetchTags} from 'models/tag/resources'
-import {NotificationStatus} from 'state/notifications/types'
+import useCancellableRequest from 'hooks/useCancellableRequest'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {OrderDirection, OrderParams} from 'models/api/types'
+import {fetchTags} from 'models/tag/resources'
+import {FetchTagsOptions, Tag, TagSortableProperties} from 'models/tag/types'
 import {tagsFetched} from 'state/entities/tags/actions'
+import {getEntitiesTags} from 'state/entities/tags/selectors'
 import {notify} from 'state/notifications/actions'
-import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
-import {RootState} from 'state/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-
-import css from './TagsStatsFilter.less'
-import SelectFilter from './common/SelectFilter'
-import SelectStatsFilter from './common/SelectStatsFilter'
+import {NotificationStatus} from 'state/notifications/types'
 
 const ORDER_OPTIONS: OrderParams<TagSortableProperties> = {
     orderBy: `${TagSortableProperties.Name}:${OrderDirection.Asc}`,
 }
 
-const TagDropdownMenuWrapper = (
-    props: ComponentProps<typeof TagDropdownMenu>
-) => <TagDropdownMenu {...props} />
+export const TAGS_FETCH_ERROR_MESSAGE = 'Failed to fetch tags'
 
-type Props = {
-    value: LegacyStatsFilters['tags']
-    variant?: 'fill' | 'ghost'
-}
-
-export const tagsStatsFilterLabels = {
-    plural: 'tags',
-    singular: 'tag',
-}
-
-export default function TagsStatsFilter({value = [], variant = 'fill'}: Props) {
+export const useTagSearch = () => {
     const dispatch = useAppDispatch()
-    const tags = useAppSelector((state: RootState) => state.entities.tags)
+    const tags = useAppSelector(getEntitiesTags)
     const [tagIds, setTagIds] = useState<string[]>([])
     const [tagSearch, setTagSearch] = useState('')
     const [debouncedTagSearch, setDebouncedTagSearch] = useState('')
     const [nextCursor, setNextCursor] = useState<string | null>(null)
-    const Component = variant === 'fill' ? SelectFilter : SelectStatsFilter
-
-    const handleFilterChange: ComponentProps<typeof Component>['onChange'] =
-        useCallback(
-            (values) => {
-                dispatch(mergeStatsFilters({tags: values as number[]}))
-            },
-            [dispatch]
-        )
 
     const [cancellableFetchTags] = useCancellableRequest(
         (cancelToken: CancelToken) => async (options: FetchTagsOptions) =>
@@ -89,7 +59,7 @@ export default function TagsStatsFilter({value = [], variant = 'fill'}: Props) {
             } catch (error) {
                 void dispatch(
                     notify({
-                        message: 'Failed to fetch tags',
+                        message: TAGS_FETCH_ERROR_MESSAGE,
                         status: NotificationStatus.Error,
                     })
                 )
@@ -119,34 +89,12 @@ export default function TagsStatsFilter({value = [], variant = 'fill'}: Props) {
         await handleFetchTags(tagSearch, true)
     }, [handleFetchTags, tagSearch])
 
-    return (
-        <Component
-            {...tagsStatsFilterLabels}
-            onChange={handleFilterChange}
-            value={value}
-            onSearch={handleTagsSearch}
-            dropdownMenu={TagDropdownMenuWrapper}
-            isPartial
-        >
-            <InfiniteScroll
-                className={css.infiniteScroll}
-                onLoad={onLoad}
-                shouldLoadMore={!!nextCursor && !isFetchingTags}
-            >
-                {tagIds.map((tagId) => {
-                    const tag = tags[tagId.toString()]
-
-                    return (
-                        tag && (
-                            <Component.Item
-                                key={tag.id}
-                                label={tag.name}
-                                value={tag.id}
-                            />
-                        )
-                    )
-                })}
-            </InfiniteScroll>
-        </Component>
-    )
+    return {
+        handleTagsSearch,
+        onLoad,
+        tagIds,
+        tagsState: tags,
+        shouldLoadMore: !!nextCursor && !isFetchingTags,
+        tags: tagIds.map((tagId) => tags[tagId.toString()]),
+    }
 }

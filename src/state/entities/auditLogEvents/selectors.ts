@@ -1,7 +1,5 @@
 import {createSelector} from 'reselect'
-import {RootState} from 'state/types'
-
-const getEntities = (state: RootState) => state.entities
+import {getEntities} from 'state/entities/selectors'
 
 export const getAuditLogs = createSelector(
     getEntities,

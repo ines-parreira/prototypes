@@ -5,7 +5,7 @@ import CampaignsStatsFilter from 'pages/stats/CampaignsStatsFilter'
 import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {getCleanStatsFiltersWithInitialStoreIntegration} from 'state/ui/stats/selectors'
 
 export const SupportPerformanceRevenueFilters = () => {
@@ -28,7 +28,7 @@ export const SupportPerformanceRevenueFilters = () => {
                 />
             )}
             <ChannelsStatsFilter value={statsFilters.channels} />
-            <TagsStatsFilter value={statsFilters.tags} />
+            <DEPRECATED_TagsStatsFilter value={statsFilters.tags} />
             <PeriodStatsFilter value={statsFilters.period} />
         </>
     )

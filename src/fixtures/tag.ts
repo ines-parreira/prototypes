@@ -1,4 +1,4 @@
-import {Tag} from '../models/tag/types'
+import {Tag} from 'models/tag/types'
 
 export const tags = [
     {

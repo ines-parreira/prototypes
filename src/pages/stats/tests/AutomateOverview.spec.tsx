@@ -29,7 +29,7 @@ import {
     AutomateOverview,
     AAO_TIPS_VISIBILITY_KEY,
 } from 'pages/stats/AutomateOverview'
-import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {AutomateTimeseries} from 'hooks/reporting/automate/types'
@@ -49,9 +49,9 @@ jest.mock('hooks/useId', () => () => 'abc')
 
 jest.mock('react-chartjs-2')
 jest.mock(
-    '../TagsStatsFilter',
+    'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',
     () =>
-        ({value}: ComponentProps<typeof TagsStatsFilter>) =>
+        ({value}: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) =>
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
 jest.mock(

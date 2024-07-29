@@ -13,7 +13,7 @@ import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import ChartCard from 'pages/stats/ChartCard'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
-import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {
     VOICE_AGENTS_PAGE_TITLE,
     VOICE_CALL_ACTIVITY_TITLE,
@@ -42,7 +42,7 @@ function VoiceAgents() {
                         isMultiple
                         variant={'ghost'}
                     />
-                    <TagsStatsFilter
+                    <DEPRECATED_TagsStatsFilter
                         value={pageStatsFilters.tags}
                         variant={'ghost'}
                     />

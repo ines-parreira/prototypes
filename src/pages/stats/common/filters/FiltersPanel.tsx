@@ -1,4 +1,5 @@
 import React, {createElement, useCallback, useMemo, useState} from 'react'
+import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
 import useAppSelector from 'hooks/useAppSelector'
 import {FilterKey, StatsFilters} from 'models/stat/types'
 import {AddFilterButton} from 'pages/stats/common/filters/AddFilterButton'
@@ -24,6 +25,8 @@ export const renderFilter = (filter: FilterKey) => {
             return ChannelsFilterWithState
         case FilterKey.Integrations:
             return IntegrationsFilterWithState
+        case FilterKey.Tags:
+            return TagsFilterWithState
         default:
             return () => <div>{UNSUPPORTED_FILTER_PLACEHOLDER}</div>
     }
@@ -88,6 +91,7 @@ export const FiltersPanel = ({
         <div className={css.wrapper}>
             {[...persistentFilters, ...optionalFiltersToRender].map((filter) =>
                 createElement(renderFilter(filter), {
+                    key: filter,
                     onRemove: () =>
                         setActiveFilters({
                             ...activeFilters,

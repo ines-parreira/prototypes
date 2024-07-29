@@ -22,14 +22,14 @@ import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywal
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import SupportPerformanceSatisfaction from 'pages/stats/SupportPerformanceSatisfaction'
-import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
 jest.mock(
-    '../TagsStatsFilter',
+    'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',
     () =>
-        ({value}: ComponentProps<typeof TagsStatsFilter>) =>
+        ({value}: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) =>
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({

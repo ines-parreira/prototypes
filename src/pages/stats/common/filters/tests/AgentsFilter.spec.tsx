@@ -18,6 +18,9 @@ import {Team} from 'models/team/types'
 
 import {renderWithStore} from 'utils/testing'
 import {
+    FILTER_DESELECT_ALL_LABEL,
+    FILTER_SELECT_ALL_LABEL,
+    FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
@@ -49,8 +52,6 @@ describe('AgentsFilter', () => {
         'i'
     )
 
-    const DROPDOWN_SELECT_VALUE_ELEMENT_TEXT = 'Select value...'
-
     const checkIfMockedDispatchWasCalledWithExpectedArguments = (
         mockCalls: Record<string, any>[],
         expectedObject: Record<string, any>
@@ -72,14 +73,14 @@ describe('AgentsFilter', () => {
     })
 
     it('should render AgentsFilter options', () => {
-        userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         expect(screen.getByText(extendedAgents[0].name)).toBeInTheDocument()
         expect(screen.getByText(extendedAgents[1].name)).toBeInTheDocument()
     })
 
     it('should dispatch mergeStatsFilters action on selecting an agent', () => {
-        userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         userEvent.click(screen.getByText(extendedAgents[0].name))
         userEvent.click(screen.getByText(extendedAgents[1].name))
@@ -104,7 +105,7 @@ describe('AgentsFilter', () => {
     })
 
     it('should dispatch mergeStatsFilters action on selecting a team', () => {
-        userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         userEvent.click(screen.getByText(extendedTeams[0].name))
         userEvent.click(screen.getByText(extendedTeams[1].name))
@@ -133,7 +134,7 @@ describe('AgentsFilter', () => {
         const testTeam = extendedTeams.find((t) => t.id === 36) as Team
         const testAgent = extendedAgents[0]
 
-        userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(testTeam.name))
 
         rerender(
@@ -170,8 +171,8 @@ describe('AgentsFilter', () => {
 
     it('should dispatch mergeStatsFilters action on selecting all agents and deselecting all agents', () => {
         const {rerender} = component
-        userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
-        userEvent.click(screen.getByText(/select all/i))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
         const allAvailableAgentsIds = withDefaultLogicalOperator(
             extendedAgents.map((agents) => agents.id)
@@ -200,7 +201,7 @@ describe('AgentsFilter', () => {
             </Provider>
         )
 
-        userEvent.click(screen.getByText(/deselect all/i))
+        userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
         areEmptyAgentsInDispatch =
             checkIfMockedDispatchWasCalledWithExpectedArguments(
@@ -269,7 +270,7 @@ describe('AgentsFilter', () => {
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
-        userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         const isOneOfRadioLabel = screen.getByLabelText(
             new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i')

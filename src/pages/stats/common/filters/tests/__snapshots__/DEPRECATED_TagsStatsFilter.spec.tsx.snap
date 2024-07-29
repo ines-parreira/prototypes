@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TagsStatsFilter should render the selected tags 1`] = `
+exports[`DEPRECATED_TagsStatsFilter should render the selected tags 1`] = `
 <div
   class="dropdown"
 >

@@ -20,6 +20,9 @@ describe('FiltersPanel', () => {
         ui: {
             stats: uiStatsInitialState,
         },
+        entities: {
+            tags: {},
+        },
     } as RootState
     const persistentFilters = [FilterKey.Period]
     const optionalFilter = FilterKey.Channels
@@ -28,6 +31,7 @@ describe('FiltersPanel', () => {
         FilterKey.Period,
         FilterKey.Channels,
         FilterKey.Integrations,
+        FilterKey.Tags,
     ]
 
     it('should render the panel without filters', () => {
@@ -112,6 +116,32 @@ describe('FiltersPanel', () => {
         expect(
             screen.queryByText(new RegExp(FilterLabels[optionalFilter]))
         ).toBeInTheDocument()
+    })
+
+    it('should allow removal of optional Filters', () => {
+        renderWithStore(
+            <FiltersPanel optionalFilters={optionalFilters} />,
+            defaultState
+        )
+
+        userEvent.click(
+            screen.getByRole('button', {
+                name: new RegExp(ADD_FILTER_BUTTON_LABEL),
+            })
+        )
+        userEvent.click(
+            screen.getByRole('option', {name: FilterLabels[optionalFilter]})
+        )
+
+        expect(
+            screen.queryByText(new RegExp(FilterLabels[optionalFilter]))
+        ).toBeInTheDocument()
+
+        userEvent.click(screen.getByText('close'))
+
+        expect(
+            screen.queryByText(new RegExp(FilterLabels[optionalFilter]))
+        ).not.toBeInTheDocument()
     })
 
     it('should render selected optional Filters by default', () => {

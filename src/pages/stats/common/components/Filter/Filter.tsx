@@ -1,6 +1,13 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+import React, {
+    PropsWithChildren,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 import classNames from 'classnames'
 import flatMap from 'lodash/flatMap'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
@@ -10,7 +17,11 @@ import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickS
 import FilterName from 'pages/stats/common/components/Filter/components/FilterName/FilterName'
 import FilterValue from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue'
 import LogicalOperator from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
+    FILTER_DESELECT_ALL_LABEL,
+    FILTER_SELECT_ALL_LABEL,
+    LogicalOperatorEnum,
+} from 'pages/stats/common/components/Filter/constants'
 import {DropdownOption, FilterOptionGroup} from 'pages/stats/types'
 import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
 import FilterDropdownItemLabel from 'pages/stats/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel'
@@ -34,6 +45,37 @@ type Props = {
     onChangeLogicalOperator: (operator: LogicalOperatorEnum) => void
     onDropdownOpen?: () => void
     onDropdownClosed?: () => void
+    onSearch?: (search: string) => void
+    infiniteScroll?: {
+        onLoad: () => Promise<any>
+        shouldLoadMore: boolean
+    }
+}
+
+type WithInfiniteScrollProps = PropsWithChildren<{
+    infiniteScroll?: {
+        onLoad: () => Promise<any>
+        shouldLoadMore: boolean
+    }
+    className?: string
+}>
+
+const WithInfiniteScroll = ({
+    className,
+    infiniteScroll,
+    children,
+}: WithInfiniteScrollProps) => {
+    return infiniteScroll ? (
+        <InfiniteScroll
+            onLoad={infiniteScroll.onLoad}
+            shouldLoadMore={infiniteScroll.shouldLoadMore}
+            className={className}
+        >
+            {children}
+        </InfiniteScroll>
+    ) : (
+        <>{children}</>
+    )
 }
 
 const Filter = ({
@@ -54,6 +96,8 @@ const Filter = ({
     onChangeLogicalOperator,
     onDropdownOpen = () => {},
     onDropdownClosed = () => {},
+    infiniteScroll,
+    onSearch,
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -112,18 +156,22 @@ const Filter = ({
                         onChange={onChangeLogicalOperator}
                     />
                 )}
-                {showSearch && <DropdownSearch autoFocus />}
+                {showSearch && <DropdownSearch autoFocus onChange={onSearch} />}
                 {showQuickSelect && (
                     <DropdownQuickSelect
-                        addLabel="Select all"
-                        removeLabel="Deselect all"
+                        addLabel={FILTER_SELECT_ALL_LABEL}
+                        removeLabel={FILTER_DESELECT_ALL_LABEL}
                         onRemoveAll={onRemoveAll}
                         onSelectAll={onSelectAll}
                         values={allValues}
                         count={allValues.length}
                     />
                 )}
-                <DropdownBody>
+                <DropdownBody
+                    className={classNames({
+                        [css.withInfiniteScroll]: !!infiniteScroll,
+                    })}
+                >
                     {filterOptionGroups.map((filterOption, index) => (
                         <DropdownSection
                             className={classNames({
@@ -132,20 +180,25 @@ const Filter = ({
                             key={filterOption.title || `section_${index}`}
                             title={filterOption.title}
                         >
-                            {filterOption.options.map((option) => (
-                                <DropdownItem
-                                    key={option.value}
-                                    option={{
-                                        label: option.label,
-                                        value: option.value,
-                                    }}
-                                    onClick={() => onChangeOption(option)}
-                                >
-                                    <FilterDropdownItemLabel
-                                        label={option.label}
-                                    />
-                                </DropdownItem>
-                            ))}
+                            <WithInfiniteScroll
+                                infiniteScroll={infiniteScroll}
+                                className={css.infiniteScroll}
+                            >
+                                {filterOption.options.map((option) => (
+                                    <DropdownItem
+                                        key={option.value}
+                                        option={{
+                                            label: option.label,
+                                            value: option.value,
+                                        }}
+                                        onClick={() => onChangeOption(option)}
+                                    >
+                                        <FilterDropdownItemLabel
+                                            label={option.label}
+                                        />
+                                    </DropdownItem>
+                                ))}
+                            </WithInfiniteScroll>
                         </DropdownSection>
                     ))}
                 </DropdownBody>

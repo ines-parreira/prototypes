@@ -6,6 +6,7 @@ import {act, fireEvent, render, waitFor} from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 import {Action} from 'redux'
 
+import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
@@ -15,7 +16,6 @@ import {OrderDirection} from 'models/api/types'
 import * as tagsActions from 'state/entities/tags/actions'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import {tags as tagsFixtures} from 'fixtures/tag'
-import TagsStatsFilter from '../TagsStatsFilter'
 
 jest.mock('models/tag/resources')
 jest.mock(
@@ -34,7 +34,7 @@ const mockStore = configureMockStore([thunk])
 const fetchTagsMock = fetchTags as jest.MockedFunction<typeof fetchTags>
 let tagsFetchedSpy: jest.SpiedFunction<typeof tagsActions.tagsFetched>
 
-describe('TagsStatsFilter', () => {
+describe('DEPRECATED_TagsStatsFilter', () => {
     const defaultState = {
         stats: initialState,
         entities: {
@@ -65,7 +65,7 @@ describe('TagsStatsFilter', () => {
     it('should render the selected tags', async () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <TagsStatsFilter
+                <DEPRECATED_TagsStatsFilter
                     value={[tagsFixtures[0].id, tagsFixtures[2].id]}
                 />
             </Provider>
@@ -78,11 +78,25 @@ describe('TagsStatsFilter', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should render with no selected tags', async () => {
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <DEPRECATED_TagsStatsFilter value={undefined} />
+            </Provider>
+        )
+
+        await waitFor(() =>
+            expect(tagsFetchedSpy).toHaveBeenCalledWith(tagsFixtures)
+        )
+
+        expect(container.firstChild).not.toBeEmptyDOMElement()
+    })
+
     it('should merge stats filters on item select', async () => {
         const store = mockStore(defaultState)
         const {getByLabelText} = render(
             <Provider store={store}>
-                <TagsStatsFilter value={[]} />
+                <DEPRECATED_TagsStatsFilter value={[]} />
             </Provider>
         )
 
@@ -116,7 +130,7 @@ describe('TagsStatsFilter', () => {
             const store = mockStore(defaultState)
             const {getByPlaceholderText} = render(
                 <Provider store={store}>
-                    <TagsStatsFilter value={[1]} />
+                    <DEPRECATED_TagsStatsFilter value={[1]} />
                 </Provider>
             )
 
@@ -151,7 +165,7 @@ describe('TagsStatsFilter', () => {
             const store = mockStore(defaultState)
             const {getByPlaceholderText, getByTestId} = render(
                 <Provider store={store}>
-                    <TagsStatsFilter value={[1]} />
+                    <DEPRECATED_TagsStatsFilter value={[1]} />
                 </Provider>
             )
 

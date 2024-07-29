@@ -35,7 +35,7 @@ import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
-import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import ChartCard from 'pages/stats/ChartCard'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
@@ -129,7 +129,7 @@ function VoiceOverview() {
                         isMultiple
                         variant={'ghost'}
                     />
-                    <TagsStatsFilter
+                    <DEPRECATED_TagsStatsFilter
                         value={pageStatsFilters.tags}
                         variant={'ghost'}
                     />
