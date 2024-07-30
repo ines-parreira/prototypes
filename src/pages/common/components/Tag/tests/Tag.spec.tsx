@@ -2,7 +2,28 @@ import React from 'react'
 
 import {fireEvent, render} from '@testing-library/react'
 
+import useElementSize from 'hooks/useElementSize'
 import Tag from '../Tag'
+
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual<typeof React>('react'),
+        useRef: jest.fn().mockReturnValue({current: null}),
+    }
+})
+
+jest.mock('hooks/useElementSize')
+const useElementSizeMock = jest.mocked(useElementSize)
+useElementSizeMock.mockReturnValue([100, 20])
+
+const setSpyOnUseRef = (offsetWidth: number, scrollWidth: number) => {
+    jest.spyOn(React, 'useRef').mockReturnValue({
+        get current() {
+            return {offsetWidth, scrollWidth}
+        },
+        set current(_value) {},
+    })
+}
 
 describe('<Tag />', () => {
     it('should not render leadIcon', () => {
@@ -96,5 +117,25 @@ describe('<Tag />', () => {
         fireEvent.click(trailIcon)
 
         expect(onTrailIconClick).toHaveBeenCalled()
+    })
+
+    it('should call onEllipsisChange with "true" if there is an ellipsis', () => {
+        const onEllipsisChange = jest.fn()
+        setSpyOnUseRef(50, 100)
+
+        render(<Tag text="text" onEllipsisChange={onEllipsisChange} />)
+
+        expect(onEllipsisChange).toHaveBeenCalledTimes(1)
+        expect(onEllipsisChange).toHaveBeenCalledWith(true)
+    })
+
+    it('should call onEllipsisChange with "false" if there is no ellipsis', () => {
+        const onEllipsisChange = jest.fn()
+        setSpyOnUseRef(50, 50)
+
+        render(<Tag text="text" onEllipsisChange={onEllipsisChange} />)
+
+        expect(onEllipsisChange).toHaveBeenCalledTimes(1)
+        expect(onEllipsisChange).toHaveBeenCalledWith(false)
     })
 })

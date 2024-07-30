@@ -59,6 +59,7 @@ const FeedbackOtherResourcesSelect = ({
     })
 
     const [values, setValues] = useState<string[]>([])
+    const [tooltipIds, setTooltipIds] = useState<string[]>([])
 
     const initialFormattedValues = useMemo(() => {
         return initialValues.map((v) => {
@@ -183,6 +184,15 @@ const FeedbackOtherResourcesSelect = ({
         [getResourcesFromLabels, onRemove, values]
     )
 
+    const handleEllipsisChange = (isVisible: boolean, id: string) => {
+        const i = tooltipIds.findIndex((x) => x === id)
+
+        if (isVisible && i === -1) setTooltipIds((old) => [...old, id])
+
+        if (!isVisible && i !== -1)
+            setTooltipIds((old) => [...old.slice(0, i), ...old.slice(i + 1)])
+    }
+
     return (
         <div className={css.container}>
             <MultiLevelSelect
@@ -240,13 +250,18 @@ const FeedbackOtherResourcesSelect = ({
                                 data-testid="tag"
                                 className={css.tag}
                                 textClassName={css.tagText}
+                                onEllipsisChange={(val) =>
+                                    handleEllipsisChange(val, `option-${index}`)
+                                }
                             />
-                            <Tooltip
-                                placement="bottom"
-                                target={`option-${index}`}
-                            >
-                                {text}
-                            </Tooltip>
+                            {tooltipIds.includes(`option-${index}`) && (
+                                <Tooltip
+                                    placement="bottom"
+                                    target={`option-${index}`}
+                                >
+                                    {text}
+                                </Tooltip>
+                            )}
                         </Fragment>
                     )
                 })}
