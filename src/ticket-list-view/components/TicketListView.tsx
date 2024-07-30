@@ -78,6 +78,8 @@ export default function TicketListView({
         newTickets,
         ticketIds,
         initialLoaded,
+        pauseUpdates,
+        resumeUpdates,
     } = useTickets(viewId, sortOrder, activeTicketId, registerToggleUnread)
     const hasBulkActions = useFlag(FeatureFlagKey.BulkActionsDTP, false)
     const {setIsEnabled: setSplitTicketView, setShouldRedirectToSplitView} =
@@ -88,6 +90,14 @@ export default function TicketListView({
     const initialLoadedRef = useRef(initialLoaded)
 
     const ticketHeight = hasBulkActions ? TICKET_HEIGHT_NEW : TICKET_HEIGHT
+
+    useEffect(() => {
+        if (Object.keys(selectedTickets).length) {
+            pauseUpdates()
+        } else {
+            resumeUpdates()
+        }
+    }, [pauseUpdates, resumeUpdates, selectedTickets])
 
     useEffect(() => {
         initialLoadedRef.current = initialLoaded

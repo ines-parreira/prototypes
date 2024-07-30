@@ -28,8 +28,15 @@ export default function useTickets(
     const hasBulkActions = useFlag(FeatureFlagKey.BulkActionsDTP, false)
     const ticketHeight = hasBulkActions ? TICKET_HEIGHT_NEW : TICKET_HEIGHT
 
-    const {hasMore, initialLoaded, loadMore, partials, setLatest} =
-        useTicketPartials(viewId, sortOrder)
+    const {
+        hasMore,
+        initialLoaded,
+        loadMore,
+        partials,
+        pauseUpdates,
+        resumeUpdates,
+        setLatest,
+    } = useTicketPartials(viewId, sortOrder)
     const previousPartials = usePrevious(partials)
     const previousPartialsMap = useMemo(() => {
         return previousPartials?.reduce(
@@ -135,14 +142,30 @@ export default function useTickets(
         })
     }, [previousTicketId, nextTicketId, setPrevNextTicketIds])
 
-    return {
-        hasMore,
-        initialLoaded,
-        loadMore,
-        setElement,
-        staleTickets,
-        tickets,
-        newTickets: visibleNewPartialsMap,
-        ticketIds,
-    }
+    return useMemo(
+        () => ({
+            hasMore,
+            initialLoaded,
+            loadMore,
+            pauseUpdates,
+            resumeUpdates,
+            setElement,
+            staleTickets,
+            tickets,
+            ticketIds,
+            newTickets: visibleNewPartialsMap,
+        }),
+        [
+            hasMore,
+            initialLoaded,
+            loadMore,
+            pauseUpdates,
+            resumeUpdates,
+            setElement,
+            staleTickets,
+            tickets,
+            ticketIds,
+            visibleNewPartialsMap,
+        ]
+    )
 }

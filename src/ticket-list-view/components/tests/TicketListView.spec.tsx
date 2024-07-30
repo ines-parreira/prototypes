@@ -11,6 +11,7 @@ import {setViewEditMode} from 'state/views/actions'
 import useTickets from 'ticket-list-view/hooks/useTickets'
 import {TicketPartial} from 'ticket-list-view/types'
 
+import useSelection from '../../hooks/useSelection'
 import Ticket from '../Ticket'
 import TicketListView, {listInfoProps} from '../TicketListView'
 
@@ -29,6 +30,9 @@ const VirtuosoMock = Virtuoso as jest.Mock
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const mockUseSplitTicketViewMock = useSplitTicketView as jest.Mock
 
+jest.mock('../../hooks/useSelection')
+const useSelectionMock = useSelection as jest.Mock
+
 jest.mock('../../hooks/useTickets')
 const useTicketsMock = useTickets as jest.Mock
 
@@ -39,6 +43,8 @@ jest.mock('../InvalidFiltersAction', () => () => <div>Fix filters</div>)
 
 describe('<TicketListView />', () => {
     let loadMore: jest.Mock
+    let pauseUpdates: jest.Mock
+    let resumeUpdates: jest.Mock
     let setElement: jest.Mock
     let setIsEnabled: jest.Mock
     let setShouldRedirectToSplitView: jest.Mock
@@ -50,6 +56,10 @@ describe('<TicketListView />', () => {
         useAppDispatchMock.mockReturnValue(dispatch)
         useAppSelectorMock.mockReturnValue({
             name: 'view name',
+        })
+        useSelectionMock.mockReturnValue({
+            onSelect: jest.fn(),
+            selectedTickets: {},
         })
         VirtuosoMock.mockImplementation(
             ({
@@ -95,9 +105,13 @@ describe('<TicketListView />', () => {
             return <p>{ticket.id}</p>
         })
         loadMore = jest.fn()
+        pauseUpdates = jest.fn()
+        resumeUpdates = jest.fn()
         setElement = jest.fn()
         useTicketsMock.mockReturnValue({
             loadMore,
+            pauseUpdates,
+            resumeUpdates,
             setElement,
             staleTickets: {},
             tickets: [ticket],
@@ -112,6 +126,21 @@ describe('<TicketListView />', () => {
             setIsEnabled,
             setShouldRedirectToSplitView,
         })
+    })
+
+    it('should pause updates when there are selected tickets', () => {
+        useSelectionMock.mockReturnValue({
+            onSelect: jest.fn(),
+            selectedTickets: {1: true},
+        })
+        render(<TicketListView viewId={123} />)
+
+        expect(pauseUpdates).toHaveBeenCalledWith()
+    })
+
+    it('should resume updates when there are no selected tickets', () => {
+        render(<TicketListView viewId={123} />)
+        expect(resumeUpdates).toHaveBeenCalledWith()
     })
 
     it('should display a list of tickets', () => {
@@ -153,6 +182,8 @@ describe('<TicketListView />', () => {
         )
         useTicketsMock.mockReturnValue({
             loadMore,
+            pauseUpdates,
+            resumeUpdates,
             setElement,
             staleTickets: {},
             tickets: [ticket],
@@ -196,6 +227,8 @@ describe('<TicketListView />', () => {
         )
         useTicketsMock.mockReturnValue({
             loadMore,
+            pauseUpdates,
+            resumeUpdates,
             setElement,
             staleTickets: {},
             tickets: [ticket, {...ticket, id: 456}],
@@ -206,6 +239,8 @@ describe('<TicketListView />', () => {
         const {rerender, getByText} = render(<TicketListView viewId={123} />)
         useTicketsMock.mockReturnValue({
             loadMore,
+            pauseUpdates,
+            resumeUpdates,
             setElement,
             staleTickets: {},
             tickets: [ticket],
@@ -221,6 +256,8 @@ describe('<TicketListView />', () => {
     it('should render empty placeholder', () => {
         useTicketsMock.mockReturnValue({
             loadMore,
+            pauseUpdates,
+            resumeUpdates,
             setElement,
             staleTickets: {},
             tickets: [],
@@ -238,6 +275,8 @@ describe('<TicketListView />', () => {
     it('should render invalid view filters placeholder', () => {
         useTicketsMock.mockReturnValue({
             loadMore,
+            pauseUpdates,
+            resumeUpdates,
             setElement,
             staleTickets: {},
             tickets: [],
@@ -267,6 +306,8 @@ describe('<TicketListView />', () => {
     it('should render inaccessible view placeholder', () => {
         useTicketsMock.mockReturnValue({
             loadMore,
+            pauseUpdates,
+            resumeUpdates,
             setElement,
             staleTickets: {},
             tickets: [],

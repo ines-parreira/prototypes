@@ -51,6 +51,8 @@ export default function useTicketPartials(
             initialLoaded,
             loadMore,
             partials,
+            pauseUpdates: client.pause,
+            resumeUpdates: client.resume,
             setLatest: client.setLatest,
         }),
         [client, cursor, initialLoaded, loadMore, partials]

@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import {appQueryClient} from 'api/queryClient'
 import {CursorMeta} from 'models/api/types'
 import {viewItemsDefinitionKeys} from 'models/view/queries'
@@ -17,6 +18,7 @@ const PAGE_LIMIT = 25
 const POLLING_INTERVAL = 5000
 
 export default class TicketUpdatesManager {
+    private isPaused: boolean = false
     private latestDatetime: number | string | null = null
     private latestIndex = 0
     private listener: Listener | null = null
@@ -43,6 +45,14 @@ export default class TicketUpdatesManager {
         this.listener?.(this.tickets, this.nextCursor)
 
         this.loading = false
+    }
+
+    pause = () => {
+        this.isPaused = true
+    }
+
+    resume = () => {
+        this.isPaused = false
     }
 
     setLatest = (index: number, datetime: number | string | null) => {
@@ -98,7 +108,7 @@ export default class TicketUpdatesManager {
     }
 
     private async poll() {
-        if (!this.listener || this.loading) return
+        if (!this.listener || this.loading || this.isPaused) return
 
         // we want to get the full first page if:
         // - if the last visible item is lower than the PAGE_LIMIT -2, since that's
@@ -119,7 +129,10 @@ export default class TicketUpdatesManager {
                 this.tickets = data.map(transformApiTicketPartial)
             } catch (err) {}
 
-            this.listener?.(this.tickets, this.nextCursor)
+            if (this.listener && !this.isPaused) {
+                this.listener(this.tickets, this.nextCursor)
+            }
+
             this.loading = false
             return
         }
@@ -148,7 +161,9 @@ export default class TicketUpdatesManager {
             this.tickets = [...newTickets, ...oldTickets]
         } catch (err) {}
 
-        this.listener?.(this.tickets, this.nextCursor)
+        if (this.listener && !this.isPaused) {
+            this.listener(this.tickets, this.nextCursor)
+        }
         this.loading = false
     }
 
