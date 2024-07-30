@@ -22,7 +22,11 @@ import {
     IntegrationDataItem,
     ShopifyTags,
 } from './types'
-import {fetchShopTags, fetchCustomerSegments} from './resources/shopify'
+import {
+    fetchShopTags,
+    fetchCustomerSegments,
+    fetchShopifyCollections,
+} from './resources/shopify'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
@@ -127,6 +131,32 @@ export const useListShopifyCustomerSegments = (
             )
         },
         ...overrides,
+    })
+}
+
+export const useCollectionsFromShopifyIntegration = (
+    integrationId: number,
+    filter?: Record<string, string>
+) => {
+    return useQuery({
+        queryKey: [
+            'integration',
+            'shopify',
+            integrationId,
+            'collections',
+            filter,
+        ],
+        queryFn: async () => {
+            return await fetchShopifyCollections(integrationId)
+        },
+        keepPreviousData: true,
+        onError: () => {
+            reportError(
+                new Error(
+                    `Failed to fetch collections for Shopify integration ${integrationId}`
+                )
+            )
+        },
     })
 }
 

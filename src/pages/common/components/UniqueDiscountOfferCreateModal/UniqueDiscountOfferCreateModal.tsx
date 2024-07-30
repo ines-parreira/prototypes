@@ -31,7 +31,8 @@ import {useCreateDiscountOffer} from 'pages/convert/discountOffer/hooks/useCreat
 import {useModalManager} from 'hooks/useModalManager'
 import {UNIQUE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
 import {useUpdateDiscountOffer} from 'pages/convert/discountOffer/hooks/useUpdateDiscountOffer'
-import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector/CustomerSegmentSelector'
+import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector'
+import CollectionSelector from 'pages/convert/discountOffer/components/CollectionSelector'
 import {getMoneySymbol} from 'utils/getMoneySymbol'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -40,14 +41,20 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {useToolbarContext} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
-import css from './UniqueDiscountOfferCreateModal.less'
 import {testIds, transformAxiosError} from './utils'
+
+import css from './UniqueDiscountOfferCreateModal.less'
 
 export type UniqueDiscountOfferCreateModalProps = {
     isOpen: boolean
     integration: Map<string, string>
     onClose: () => void
     onSubmit: (inEditMode: boolean, code: UniqueDiscountOffer) => void
+}
+
+enum AppliesTypeEnum {
+    ORDER_AMOUNT = 'order_amount',
+    PRODUCT_COLLECTION = 'specific_collection',
 }
 
 export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateModalProps> =
@@ -61,6 +68,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                 value: 0,
                 minimum_purchase_amount: null,
                 external_customer_segment_ids: null,
+                external_collection_ids: null,
                 store_integration_id: integration.get('id'),
             }),
             [integration]
@@ -69,7 +77,9 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
             useState<Partial<UniqueDiscountOfferCreatePayload>>(
                 initialDiscountState
             )
-
+        const [appliesTo, setAppliesTo] = useState<AppliesTypeEnum>(
+            AppliesTypeEnum.ORDER_AMOUNT
+        )
         const currentAccount = useAppSelector(getCurrentAccountState)
 
         const [errors, setErrors] = useState<
@@ -105,6 +115,13 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                 : null
         }, [discount])
 
+        const selectedCollection = useMemo(() => {
+            return discount.external_collection_ids &&
+                discount.external_collection_ids?.length > 0
+                ? discount.external_collection_ids[0]
+                : null
+        }, [discount])
+
         const {
             mutateAsync: createDiscountOffer,
             error: createDiscountOfferError,
@@ -132,12 +149,26 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
             if (editDiscountOfferParams?.id) {
                 const {id: __id, ...restOfDiscount} = editDiscountOfferParams
                 setDiscount(restOfDiscount)
+                setAppliesTo(
+                    restOfDiscount.external_collection_ids
+                        ? AppliesTypeEnum.PRODUCT_COLLECTION
+                        : AppliesTypeEnum.ORDER_AMOUNT
+                )
                 setMinRequirementsPurchase(
                     !!restOfDiscount.minimum_purchase_amount
                 )
             }
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [editDiscountOfferParams?.id])
+
+        useEffect(() => {
+            if (appliesTo === AppliesTypeEnum.ORDER_AMOUNT) {
+                setDiscount((discount) => ({
+                    ...discount,
+                    external_collection_ids: null,
+                }))
+            }
+        }, [appliesTo])
 
         const handleSubmit = useCallback(
             async (evt: FormEvent<HTMLFormElement>) => {
@@ -151,6 +182,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                     minimum_purchase_amount: discount.minimum_purchase_amount,
                     external_customer_segment_ids:
                         discount.external_customer_segment_ids,
+                    external_collection_ids: discount.external_collection_ids,
                     store_integration_id:
                         discount.store_integration_id!.toString(),
                 }
@@ -191,6 +223,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                 createDiscountOffer,
                 currentAccount,
                 discount.external_customer_segment_ids,
+                discount.external_collection_ids,
                 discount.minimum_purchase_amount,
                 discount.prefix,
                 discount.store_integration_id,
@@ -352,6 +385,63 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                     </div>
                                 )}
                             </InputGroup>
+                        </FormGroup>
+                        <FormGroup>
+                            <div data-testid={testIds.appliesTo}>
+                                <Label
+                                    htmlFor="appliesTo"
+                                    className={css.label}
+                                >
+                                    Applies to
+                                </Label>
+                                <InputGroup className={css.inputGroup}>
+                                    <div className={css.inputChild}>
+                                        <SelectField
+                                            showSelectedOption
+                                            fullWidth
+                                            value={appliesTo}
+                                            options={[
+                                                {
+                                                    label: 'Total order amount',
+                                                    value: AppliesTypeEnum.ORDER_AMOUNT,
+                                                },
+                                                {
+                                                    label: 'To specific collection',
+                                                    value: AppliesTypeEnum.PRODUCT_COLLECTION,
+                                                },
+                                            ]}
+                                            onChange={(value) =>
+                                                setAppliesTo(
+                                                    value as AppliesTypeEnum
+                                                )
+                                            }
+                                        />
+                                    </div>
+                                </InputGroup>
+                            </div>
+                            {appliesTo ===
+                                AppliesTypeEnum.PRODUCT_COLLECTION && (
+                                <div className={css.collectionSelector}>
+                                    <CollectionSelector
+                                        value={selectedCollection}
+                                        integrationId={
+                                            integration.get(
+                                                'id'
+                                            ) as unknown as number
+                                        }
+                                        onChange={(value: string | null) => {
+                                            setDiscount((discount) => ({
+                                                ...discount,
+                                                ...(value && {
+                                                    external_collection_ids: [
+                                                        value,
+                                                    ],
+                                                }),
+                                            }))
+                                        }}
+                                    />
+                                </div>
+                            )}
                         </FormGroup>
                         <FormGroup>
                             <Label

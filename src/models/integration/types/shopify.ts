@@ -71,3 +71,12 @@ export type ShopifyCustomerSegment = {
     id: number
     name: string
 }
+
+export type ShopifyCollection = {
+    id: number
+    title: string
+}
+
+export type ShopifyCollectionResponse = {
+    data: ShopifyCollection[]
+}

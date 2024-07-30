@@ -595,6 +595,14 @@ declare namespace Components {
              */
             external_customer_segment_ids?: string[] | null
             /**
+             * External Collection Ids
+             */
+            external_collection_ids?: string[] | null
+            /**
+             * External Product Ids
+             */
+            external_product_ids?: string[] | null
+            /**
              * Store Integration Id
              */
             store_integration_id: string
@@ -620,6 +628,14 @@ declare namespace Components {
              * External Customer Segment Ids
              */
             external_customer_segment_ids?: string[] | null
+            /**
+             * External Collection Ids
+             */
+            external_collection_ids?: string[] | null
+            /**
+             * External Product Ids
+             */
+            external_product_ids?: string[] | null
         }
         /**
          * DiscountOfferResponseSchema
@@ -642,6 +658,14 @@ declare namespace Components {
              * External Customer Segment Ids
              */
             external_customer_segment_ids?: string[] | null
+            /**
+             * External Collection Ids
+             */
+            external_collection_ids?: string[] | null
+            /**
+             * External Product Ids
+             */
+            external_product_ids?: string[] | null
             /**
              * Id
              */

@@ -256,6 +256,50 @@
                 }
             }
         },
+        "/campaigns/all": {
+            "get": {
+                "tags": ["campaigns"],
+                "summary": "Get All Campaigns",
+                "operationId": "get_all_campaigns",
+                "parameters": [
+                    {
+                        "name": "data-token",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "title": "Data-Token"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CampaignResponseSchema"
+                                    },
+                                    "title": "Response Get All Campaigns"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/campaigns/{campaign_id}": {
             "get": {
                 "tags": ["campaigns"],
@@ -870,45 +914,6 @@
             }
         },
         "/assistant/pr": {
-            "post": {
-                "tags": ["product-recommendations"],
-                "summary": "Product Recommendations",
-                "operationId": "product_recommendations",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ProductRecommendationRequestSchema"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductRecommendationResponseSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/assistant/product-recommendations": {
             "post": {
                 "tags": ["product-recommendations"],
                 "summary": "Product Recommendations",
@@ -2655,7 +2660,13 @@
             },
             "CustomDomainOperationSchema": {
                 "properties": {
-                    "hostname": {"type": "string", "title": "Hostname"}
+                    "hostname": {"type": "string", "title": "Hostname"},
+                    "zone": {
+                        "anyOf": [
+                            {"$ref": "#/components/schemas/CustomDomainZone"},
+                            {"type": "null"}
+                        ]
+                    }
                 },
                 "type": "object",
                 "required": ["hostname"],
@@ -2669,6 +2680,11 @@
                 "type": "object",
                 "required": ["hostname", "status"],
                 "title": "CustomDomainSchema"
+            },
+            "CustomDomainZone": {
+                "type": "string",
+                "enum": ["gorgias-convert.com", "gorgias.win"],
+                "title": "CustomDomainZone"
             },
             "DiscountOfferCreateRequestSchema": {
                 "properties": {
@@ -2703,6 +2719,20 @@
                             {"type": "null"}
                         ],
                         "title": "External Customer Segment Ids"
+                    },
+                    "external_collection_ids": {
+                        "anyOf": [
+                            {"items": {"type": "string"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "External Collection Ids"
+                    },
+                    "external_product_ids": {
+                        "anyOf": [
+                            {"items": {"type": "string"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "External Product Ids"
                     },
                     "store_integration_id": {
                         "type": "string",
@@ -2752,6 +2782,20 @@
                             {"type": "null"}
                         ],
                         "title": "External Customer Segment Ids"
+                    },
+                    "external_collection_ids": {
+                        "anyOf": [
+                            {"items": {"type": "string"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "External Collection Ids"
+                    },
+                    "external_product_ids": {
+                        "anyOf": [
+                            {"items": {"type": "string"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "External Product Ids"
                     }
                 },
                 "type": "object",
@@ -2782,6 +2826,20 @@
                             {"type": "null"}
                         ],
                         "title": "External Customer Segment Ids"
+                    },
+                    "external_collection_ids": {
+                        "anyOf": [
+                            {"items": {"type": "string"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "External Collection Ids"
+                    },
+                    "external_product_ids": {
+                        "anyOf": [
+                            {"items": {"type": "string"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "External Product Ids"
                     },
                     "id": {"type": "string", "title": "Id"},
                     "store_integration_id": {
@@ -2909,7 +2967,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-janbalaz.eu.ngrok.io/loader.js"
+                        "default": "https://bundle-mariuszjanczyn.eu.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",

@@ -10,6 +10,7 @@ export const testIds = {
     noMinRequirementsRadio: 'noMinRequirementsRadio',
     minRequirementsRadio: 'minRequirementsRadio',
     minPurchaseAmountInput: 'minPurchaseAmountInput',
+    appliesTo: 'appliesTo',
     backBtn: 'backBtn',
     saveBtn: 'saveBtn',
 }

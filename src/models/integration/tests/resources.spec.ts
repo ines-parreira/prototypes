@@ -13,7 +13,8 @@ import {
     fetchInstalledApps,
     requestNewIntegration,
 } from '../resources'
-import {IntegrationRequest} from '../types'
+import {fetchShopifyCollections} from '../resources/shopify'
+import {IntegrationRequest, ShopifyCollectionResponse} from '../types'
 
 const mockedServer = new MockAdapter(client)
 
@@ -166,6 +167,43 @@ describe('integration resource', () => {
             return expect(
                 requestNewIntegration(newIntegrationRequest)
             ).rejects.toEqual(new Error('Request failed with status code 503'))
+        })
+    })
+
+    describe('Shopify resources', () => {
+        const collectionResponse = {
+            data: [
+                {
+                    id: 473163399490,
+                    title: 'Automated Collection',
+                },
+            ],
+        } as ShopifyCollectionResponse
+
+        it('should return values', async () => {
+            mockedServer
+                .onGet('/api/integrations/shopify/1/collections/')
+                .reply(200, collectionResponse)
+            const res = await fetchShopifyCollections(1)
+            expect(res).toHaveLength(1)
+        })
+
+        it('should return empty list', async () => {
+            mockedServer
+                .onGet('/api/integrations/shopify/1/collections/')
+                .reply(200, {})
+            const res = await fetchShopifyCollections(1)
+            expect(res).toHaveLength(0)
+        })
+
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onGet('/api/integrations/shopify/1/collections/')
+                .reply(503, {message: 'error'})
+
+            return expect(fetchShopifyCollections(1)).rejects.toEqual(
+                new Error('Request failed with status code 503')
+            )
         })
     })
 })
