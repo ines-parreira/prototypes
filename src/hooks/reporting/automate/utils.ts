@@ -452,7 +452,7 @@ export function computeWorkflowStepsMetrics(
                     workflowAnalyticsData.automatedInteractions =
                         workflowEndStepAutomatedInteractions(
                             workflowStepEnded,
-                            workflowStepTicktesCreated
+                            workflowStepPromptNotHelpful
                         )
                     break
                 }
