@@ -13,6 +13,7 @@ import {
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import css from 'pages/stats/AgentsTable.less'
 import heatmapCss from 'pages/stats/heatmap.less'
+import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 import {
     ChannelColumnConfig,
     ChannelsTableColumns,
@@ -91,7 +92,7 @@ export const ChannelsCellContent = ({
                     {cellContent}
                 </DrillDownModalTrigger>
             ) : (
-                cellContent
+                <TruncateCellContent content={cellContent} />
             )}
         </BodyCell>
     )

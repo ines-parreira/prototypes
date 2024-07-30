@@ -176,6 +176,7 @@ export const TicketDrillDownTableContent = ({
                                 {item.ticket.contactReason ? (
                                     <TruncateCellContent
                                         content={item.ticket.contactReason}
+                                        left
                                     />
                                 ) : (
                                     <span className={css.noData}>

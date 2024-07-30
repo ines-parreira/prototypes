@@ -8,8 +8,13 @@ import css from './TruncateCellContent.less'
 type Props = {
     content: string | React.ReactNode
     className?: string
+    left?: boolean
 }
-export const TruncateCellContent = ({content, className}: Props) => {
+export const TruncateCellContent = ({
+    content,
+    className,
+    left = false,
+}: Props) => {
     const ref = useRef<HTMLSpanElement>(null)
     const [isEllipsisActive, setIsEllipsisActive] = useState(false)
     const randomId = useId()
@@ -31,14 +36,18 @@ export const TruncateCellContent = ({content, className}: Props) => {
                 className={classNames(
                     css.text,
                     {
-                        [css.truncate]: isEllipsisActive,
+                        [css.truncate]: isEllipsisActive && left,
                     },
                     className
                 )}
             >
                 {content}
             </span>
-            <Tooltip target={tooltipTargetID} trigger={['hover']}>
+            <Tooltip
+                target={tooltipTargetID}
+                trigger={['hover']}
+                disabled={!isEllipsisActive}
+            >
                 {content}
             </Tooltip>
         </>

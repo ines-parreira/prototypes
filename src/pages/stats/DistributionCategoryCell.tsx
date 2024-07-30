@@ -7,11 +7,11 @@ import GaugeAddon from 'pages/stats/GaugeAddon'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
+import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 import {
     TICKET_CUSTOM_FIELDS_API_SEPARATOR,
     TICKET_CUSTOM_FIELDS_NEW_SEPARATOR,
 } from './utils'
-import {TruncateCellContent} from './TruncateCellContent'
 
 type Props = {
     category: string
@@ -34,7 +34,7 @@ export const DistributionCategoryCell = ({
     return (
         <BodyCell {...props}>
             <GaugeAddon progress={progress} color={cellColor}>
-                <TruncateCellContent content={content} />
+                <TruncateCellContent content={content} left />
             </GaugeAddon>
         </BodyCell>
     )

@@ -282,6 +282,7 @@ const getOrderedCells = ({
                             )
                         }
                         className={css.truncateContent}
+                        left
                     />
                 ),
             },
