@@ -13,8 +13,8 @@ import {IntegrationType} from 'models/integration/constants'
 import {useTopQuestionsFilters} from '../TopQuestions/useTopQuestionsFilters'
 import AutomateAllRecommendationsPage from '../AutomateAllRecommendationsPage'
 import {useAIArticleRecommendationItems} from '../../hooks/useAIArticleRecommendationItems'
-import {useLocalStorageTopQuestions} from '../../hooks/useLocalStorageTopQuestions'
 import {useHasEmailToStoreConnection} from '../TopQuestions/useHasEmailToStoreConnection'
+import {useTopQuestionsViewedOnPage} from '../TopQuestions/useTopQuestionsViewedOnPage'
 
 const storeFilter = {
     options: [
@@ -61,24 +61,28 @@ const helpCenterFilter = {
     setSelectedHelpCenterId: jest.fn(),
 }
 
+const batchDatetime = '2024-07-10T13:28:49.755Z'
 const paginatedItemsFixture = [
     {
         title: 'How to cancel order',
         templateKey: 'ai_Generated_3',
         ticketsCount: 8,
         reviewAction: undefined,
+        createArticle: jest.fn(),
     },
     {
         title: 'AI Generated Article 1',
         templateKey: 'ai_Generated_1',
         ticketsCount: 5,
         reviewAction: undefined,
+        createArticle: jest.fn(),
     },
     {
         title: 'AI Generated Article 2',
         templateKey: 'ai_Generated_2',
         ticketsCount: 3,
         reviewAction: 'archive',
+        createArticle: jest.fn(),
     },
 ]
 
@@ -103,8 +107,8 @@ const mockUseAIArticleRecommendationItems = assumeMock(
     useAIArticleRecommendationItems
 )
 
-jest.mock('../../hooks/useLocalStorageTopQuestions')
-const mockUseLocalStorageTopQuestions = assumeMock(useLocalStorageTopQuestions)
+jest.mock('../TopQuestions/useTopQuestionsViewedOnPage')
+const mockUseTopQuestionsViewedOnPage = assumeMock(useTopQuestionsViewedOnPage)
 
 jest.mock('../TopQuestions/useHasEmailToStoreConnection')
 const mockUseHasEmailToStoreConnection = assumeMock(
@@ -155,14 +159,9 @@ describe('<AutomateAllRecommendationsPage />', () => {
             itemsCount: 3,
             totalItemsCount: 3,
             isLoading: false,
+            batchDatetime,
         } as unknown as ReturnType<typeof useAIArticleRecommendationItems>)
-        mockUseLocalStorageTopQuestions.mockReturnValue({
-            viewedOnPages: new Set([
-                'automate-overview',
-                'all-recommendations',
-            ]),
-            addViewedOnPage: jest.fn(),
-        })
+        mockUseTopQuestionsViewedOnPage.mockReturnValue(true)
         mockUseHasEmailToStoreConnection.mockReturnValue(true)
         jest.spyOn(history, 'push')
     })
@@ -204,7 +203,51 @@ describe('<AutomateAllRecommendationsPage />', () => {
         expect(screen.getByText('All Recommendations')).toBeInTheDocument()
         expect(screen.getByText('AI Generated Article 2')).toBeInTheDocument()
         expect(screen.getByText('ARCHIVED')).toBeInTheDocument()
+
+        expect(mockUseTopQuestionsViewedOnPage).toBeCalledWith(
+            1,
+            11,
+            'all-recommendations',
+            new Date(batchDatetime)
+        )
     })
+
+    it('renders AutomateAllRecommendationsPage with new badge', () => {
+        mockUseTopQuestionsViewedOnPage.mockReturnValue(false)
+        renderComponent()
+
+        expect(screen.getByText('All Recommendations')).toBeInTheDocument()
+        expect(screen.getByText('AI Generated Article 2')).toBeInTheDocument()
+        expect(screen.getByText('ARCHIVED')).toBeInTheDocument()
+
+        expect(screen.getByText('3 NEW')).toBeInTheDocument()
+    })
+
+    it('does not render AutomateAllRecommendationsPage with new badge when loading', () => {
+        const dateNow = new Date('2024-07-10T10:10:10.500Z')
+        jest.useFakeTimers().setSystemTime(dateNow)
+
+        mockUseTopQuestionsViewedOnPage.mockReturnValue(false)
+        mockUseAIArticleRecommendationItems.mockReturnValue({
+            paginatedItems: paginatedItemsFixture,
+            itemsCount: 3,
+            totalItemsCount: 3,
+            isLoading: true,
+            batchDatetime: undefined,
+        } as unknown as ReturnType<typeof useAIArticleRecommendationItems>)
+
+        renderComponent()
+
+        expect(screen.queryByText('3 NEW')).not.toBeInTheDocument()
+
+        expect(mockUseTopQuestionsViewedOnPage).toBeCalledWith(
+            1,
+            11,
+            'all-recommendations',
+            dateNow
+        )
+    })
+
     it('updates query params when store changes', async () => {
         const {rerender} = renderComponent()
 

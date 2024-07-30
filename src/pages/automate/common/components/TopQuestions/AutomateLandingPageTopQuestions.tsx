@@ -16,8 +16,8 @@ import {
 } from './TopQuestionsSection'
 import {filteredSortedTopQuestionsFromFetchedArticles} from './utils'
 import {useHasEmailToStoreConnection} from './useHasEmailToStoreConnection'
-import {useViewedOnPage} from './useViewedOnPage'
 import {useTopQuestionsArticles} from './useTopQuestionsArticles'
+import {useTopQuestionsViewedOnPage} from './useTopQuestionsViewedOnPage'
 
 type TopQuestionsSectionWithFiltersProps = {
     selectedStore: ShopifyIntegration
@@ -47,11 +47,11 @@ const TopQuestionsSectionWithFilters = ({
         [articles, isLoading]
     )
 
-    const viewedOnPage = useViewedOnPage(
+    const viewedOnPage = useTopQuestionsViewedOnPage(
         selectedStore.id,
         selectedHelpCenter.id,
-        batchDatetime,
-        'automate-overview'
+        'automate-overview',
+        batchDatetime
     )
 
     const [topQuestions, setTopQuestions] = useState<
@@ -66,7 +66,8 @@ const TopQuestionsSectionWithFilters = ({
         }
     }, [isLoading, articles])
 
-    const newQuestionsCount = viewedOnPage ? undefined : topQuestions.length
+    const newQuestionsCount =
+        isLoading || viewedOnPage ? undefined : topQuestions.length
 
     const isSingleStore = !storeFilter || storeFilter.options.length < 2
 

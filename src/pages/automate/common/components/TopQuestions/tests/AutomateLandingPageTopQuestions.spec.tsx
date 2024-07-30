@@ -8,7 +8,7 @@ import {AutomateLandingPageTopQuestions} from '../AutomateLandingPageTopQuestion
 import {useTopQuestionsFilters} from '../useTopQuestionsFilters'
 import {useHasEmailToStoreConnection} from '../useHasEmailToStoreConnection'
 import {useTopQuestionsArticles} from '../useTopQuestionsArticles'
-import {useViewedOnPage} from '../useViewedOnPage'
+import {useTopQuestionsViewedOnPage} from '../useTopQuestionsViewedOnPage'
 
 jest.mock('../useTopQuestionsFilters')
 const mockUseTopQuestionsFilters = assumeMock(useTopQuestionsFilters)
@@ -21,8 +21,8 @@ const mockUseHasEmailToStoreConnection = assumeMock(
 jest.mock('../useTopQuestionsArticles')
 const mockUseTopQuestionsArticles = assumeMock(useTopQuestionsArticles)
 
-jest.mock('../useViewedOnPage')
-const mockUseViewedOnPage = assumeMock(useViewedOnPage)
+jest.mock('../useTopQuestionsViewedOnPage')
+const mockUseViewedOnPage = assumeMock(useTopQuestionsViewedOnPage)
 
 const defaultTopQuestionsFilters: ReturnType<typeof useTopQuestionsFilters> = {
     isLoading: false,

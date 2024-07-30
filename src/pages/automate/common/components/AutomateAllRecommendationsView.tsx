@@ -16,8 +16,8 @@ import {
     TopQuestionsSectionProps,
 } from './TopQuestions/TopQuestionsSection'
 import css from './AutomateAllRecommendationsView.less'
-import {useViewedOnPage} from './TopQuestions/useViewedOnPage'
 import {useHasEmailToStoreConnection} from './TopQuestions/useHasEmailToStoreConnection'
+import {useTopQuestionsViewedOnPage} from './TopQuestions/useTopQuestionsViewedOnPage'
 
 const ITEMS_PER_PAGE = 15
 
@@ -58,11 +58,11 @@ const AutomateAllRecommendationsContent = ({
         itemsPerPage: ITEMS_PER_PAGE,
     })
 
-    const viewedOnPage = useViewedOnPage(
+    const viewedOnPage = useTopQuestionsViewedOnPage(
         selectedStore.id,
         selectedHelpCenter.id,
-        batchDatetime ? moment(batchDatetime).toDate() : new Date(),
-        'all-recommendations'
+        'all-recommendations',
+        batchDatetime ? moment(batchDatetime).toDate() : new Date()
     )
 
     return (
@@ -75,7 +75,7 @@ const AutomateAllRecommendationsContent = ({
             setStatusFilter={setStatusFilter}
             currentPage={currentPage}
             onPageChange={onPageChange}
-            displayNewBadge={!viewedOnPage && totalItemsCount > 0}
+            displayNewBadge={!isLoading && !viewedOnPage && totalItemsCount > 0}
             helpCenterId={selectedHelpCenter.id}
         />
     )
