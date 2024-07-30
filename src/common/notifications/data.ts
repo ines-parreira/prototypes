@@ -23,7 +23,14 @@ export const events: Event[] = [
         type: 'ticket.snooze-expired',
         label: "A conversation snooze expires in a ticket I'm assigned to",
     },
+    {
+        enabled: true,
+        type: 'ticket.assigned',
+        label: 'I’m assigned to a ticket',
+    },
 ]
+
+export const enabledEvents = events.filter((event) => event.enabled)
 
 export const workflowMap: Record<NotificationType, string> = {
     'ticket.snooze-expired': 'ticket-snooze-expired',

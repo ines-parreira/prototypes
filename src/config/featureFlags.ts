@@ -85,6 +85,7 @@ export enum FeatureFlagKey {
     NewForwardCallsSection = 'new-forward-calls-section',
     NewPhoneNumberCustomerSidebar = 'new-phone-number-customer-sidebar',
     NewSenderSelect = 'new-sender-select',
+    NotificationsTicketAssigned = 'notifications-ticket-assigned',
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityAllowAIGeneratedArticlesForMultiStore = 'allow-ai-generated-articles-for-multi-store',
     ObservabilityArticleTemplates = 'observability-article-templates',

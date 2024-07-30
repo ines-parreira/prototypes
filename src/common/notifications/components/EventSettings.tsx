@@ -11,7 +11,8 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {SoundValue} from 'services/NotificationSounds'
 
-import {channels, events} from '../data'
+import useAvailableEvents from '../hooks/useAvailableEvents'
+import {channels} from '../data'
 import {NotificationType, Settings} from '../types'
 
 import SoundSelect from './SoundSelect'
@@ -30,13 +31,13 @@ type Props = {
     ) => void
 }
 
-const enabledEvents = events.filter((event) => event.enabled)
-
 export default function EventSettings({
     settings,
     onChangeChannel,
     onChangeSound,
 }: Props) {
+    const availableEvents = useAvailableEvents()
+
     return (
         <>
             <h2 className={css.heading}>Ticket updates</h2>
@@ -58,7 +59,7 @@ export default function EventSettings({
                     ))}
                 </TableHead>
                 <TableBody>
-                    {enabledEvents.map((event) => (
+                    {availableEvents.map((event) => (
                         <TableBodyRow key={event.type}>
                             <BodyCell innerClassName={css.bodyCell}>
                                 {event.label}

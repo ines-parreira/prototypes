@@ -8,6 +8,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {defaultSound, SoundValue} from 'services/NotificationSounds'
 import {submitSetting} from 'state/currentUser/actions'
 import {getNotificationSettings} from 'state/currentUser/selectors'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'common/flags'
 
 import {channels, events, workflowMap} from '../data'
 import {NotificationType, Settings} from '../types'
@@ -17,13 +19,26 @@ export default function useSettings() {
     const knockClient = useKnockClient()
     const allSettings = useAppSelector(getNotificationSettings)
 
+    const isTicketAssignedEnabled = useFlag(
+        FeatureFlagKey.NotificationsTicketAssigned,
+        false
+    )
+
+    const allEvents = useMemo(
+        () =>
+            isTicketAssignedEnabled
+                ? events
+                : events.filter((event) => event.type !== 'ticket.assigned'),
+        [isTicketAssignedEnabled]
+    )
+
     const [settings, setSettings] = useState<Settings>(() => {
         const notificationSound =
             allSettings?.data.notification_sound || defaultSound
 
         return {
             volume: notificationSound.volume,
-            events: events.reduce((acc, event) => {
+            events: allEvents.reduce((acc, event) => {
                 const eventSettings = allSettings?.data.events?.[
                     event.type
                 ] || {sound: defaultSound.sound}
@@ -48,7 +63,7 @@ export default function useSettings() {
             const preferences = await knockClient.preferences.get()
             setSettings((s) => ({
                 ...s,
-                events: events.reduce((eventsAcc, event) => {
+                events: allEvents.reduce((eventsAcc, event) => {
                     const workflowPreferences =
                         preferences.workflows?.[workflowMap[event.type]]
                     return {
@@ -69,14 +84,14 @@ export default function useSettings() {
                                                   channel.type
                                               ],
                                 }),
-                                eventsAcc[event.type].channels || {}
+                                eventsAcc[event.type]?.channels || {}
                             ),
                         },
                     }
                 }, s.events),
             }))
         })()
-    }, [knockClient])
+    }, [allEvents, knockClient])
 
     const handleChangeChannel = useCallback(
         (
@@ -135,7 +150,7 @@ export default function useSettings() {
                             : defaultSound.sound,
                     volume: settings.volume,
                 },
-                events: events
+                events: allEvents
                     .filter((event) => event.type !== 'ticket-message.created')
                     .reduce(
                         (acc, event) => ({
@@ -157,7 +172,7 @@ export default function useSettings() {
                     [k: string]: boolean
                 }
             }
-        } = events
+        } = allEvents
             .filter((event) => event.type !== 'ticket-message.created')
             .reduce(
                 (eventsAcc, event) => ({
@@ -195,7 +210,7 @@ export default function useSettings() {
         ])
 
         logEvent(SegmentEvent.NotificationSettingsUpdated, settings)
-    }, [allSettings, dispatch, knockClient, settings])
+    }, [allEvents, allSettings, dispatch, knockClient, settings])
 
     return useMemo(
         () => ({
