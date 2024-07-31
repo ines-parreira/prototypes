@@ -357,7 +357,12 @@ export const StoreConfigForm = ({
             <form onSubmit={onSubmit} className={css.automateView}>
                 <AIAgentIntroduction />
                 <section>
-                    <h2 className={css.sectionHeader}>General settings</h2>
+                    <div className={css.generalSettingsWrapper}>
+                        <h2 className={css.generalSettingsTitle}>
+                            General settings
+                        </h2>
+                        <span>How should AI Agent send responses?</span>
+                    </div>
                     <div className={css.formGroup}>
                         {trialModeAvailable ? (
                             <RadioFieldSet
@@ -365,19 +370,19 @@ export const StoreConfigForm = ({
                                 options={[
                                     {
                                         caption:
-                                            'When enabled, you can find tickets handled by AI Agent in your ticket views.',
-                                        label: 'Enable AI Agent for email',
+                                            'Answer customer questions immediately, even outside business hours.',
+                                        label: 'Directly respond to customers',
                                         value: 'enabled',
                                     },
                                     {
                                         caption:
-                                            'When enabled, you can find drafts from AI Agent in Gorgias Tips on your tickets. Also available in your ticket views.',
-                                        label: 'Enable Trial Mode for email',
+                                            'Draft messages for your agents to review and edit before sending. This mode is only available for a limited period of time.',
+                                        label: 'Draft responses for agents to review before sending',
                                         value: 'trial',
                                     },
                                     {
                                         caption:
-                                            'When disabled, none of your tickets will be handled by AI Agent.',
+                                            'AI Agent won’t generate any responses.',
                                         label: 'Disabled',
                                         value: 'disabled',
                                     },
