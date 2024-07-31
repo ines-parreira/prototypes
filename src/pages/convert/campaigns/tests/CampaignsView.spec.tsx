@@ -298,7 +298,7 @@ describe('<CampaignsView/>', () => {
                 }),
             }
 
-            const {getByRole} = renderComponent(state)
+            const {getByRole, findByText} = renderComponent(state)
 
             const button = getByRole('button', {name: 'Create Campaign'})
             expect(button).toBeInTheDocument()
@@ -308,9 +308,19 @@ describe('<CampaignsView/>', () => {
 
             fireEvent.mouseOver(button)
 
+            // verify tooltip click does not go to campaign create form
+            const tooltip = await findByText('To create more campaigns', {
+                exact: false,
+            })
+            tooltip.click()
+            expect(mockHistory.location.pathname).not.toContain(
+                '/campaigns/new'
+            )
+
             await waitFor(() => {
                 const link = getByRole('link', {name: 'discover Convert'})
                 expect(link).toBeInTheDocument()
+                expect(link).toHaveAttribute('target', '_blank')
             })
         })
     })

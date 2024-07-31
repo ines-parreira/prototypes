@@ -205,16 +205,18 @@ export const CampaignsView = () => {
                             </Link>
                         </>
                     ) : (
-                        <Link
-                            to={`/app/convert/${integrationId}/campaigns/new`}
-                            className={css.createCampaignFromLibraryLink}
-                        >
-                            <Button
-                                id="create-campaign-button"
-                                isDisabled={isCreateCampaignButtonDisabled}
+                        <>
+                            <Link
+                                to={`/app/convert/${integrationId}/campaigns/new`}
+                                className={css.createCampaignFromLibraryLink}
                             >
-                                Create Campaign
-                            </Button>
+                                <Button
+                                    id="create-campaign-button"
+                                    isDisabled={isCreateCampaignButtonDisabled}
+                                >
+                                    Create Campaign
+                                </Button>
+                            </Link>
                             {isCreateCampaignButtonDisabled && (
                                 <Tooltip
                                     placement="bottom-start"
@@ -235,7 +237,7 @@ export const CampaignsView = () => {
                                     .
                                 </Tooltip>
                             )}
-                        </Link>
+                        </>
                     )}
                 </PageHeader>
 
