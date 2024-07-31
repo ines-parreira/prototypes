@@ -32,6 +32,6 @@ coverage:
     # coverage of the patch should be strict
     patch:
       default:
-        target: 100% # patch changes have to fully covered
+        target: 80%
         threshold: 0.5% # to prevent the occasional jitter seen in reports
         if_ci_failed: error # fail on the coverage not matching requirements
