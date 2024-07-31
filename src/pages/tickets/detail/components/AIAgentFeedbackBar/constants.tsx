@@ -27,3 +27,5 @@ export const DATE_FEATURE_AVAILABLE = new Date(
 )
 
 export const DRAFT_MESSAGE_TAG = 'data-ai-agent-draft-message'
+
+export const TRIAL_MESSAGE_TAG = 'data-ai-agent-trial-message'

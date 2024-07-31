@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import moment, {Moment} from 'moment'
 import {fromJS, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -16,8 +16,13 @@ import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
+import {logEvent, SegmentEvent} from 'common/segment'
+import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import AIAgentDraftMessage from '../AIAgentDraftMessage/AIAgentDraftMessage'
-import {DRAFT_MESSAGE_TAG} from '../AIAgentFeedbackBar/constants'
+import {
+    DRAFT_MESSAGE_TAG,
+    TRIAL_MESSAGE_TAG,
+} from '../AIAgentFeedbackBar/constants'
 import Container from './Container'
 import Message from './Message'
 
@@ -51,10 +56,11 @@ export default function TicketMessages({
     const isFeedbackToAiAgentEnabled =
         useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViews]
 
-    const isAIAgentDraftMessageEnabled =
-        useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViewsV4]
+    const isAIAgentTrialMessageEnabled =
+        useFlags()[FeatureFlagKey.AiAgentTrialMode]
 
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
+    const accountId = useAppSelector(getCurrentAccountId)
 
     const message = buildFirstTicketMessage(messages[0], id, ticketMeta)
 
@@ -62,18 +68,46 @@ export default function TicketMessages({
         getShouldDisplayAuditLogEvents
     )
 
-    if (!messages.length) {
-        return null
-    }
-
     const isAIAgentMessage =
         isFeedbackToAiAgentEnabled &&
         message.sender.email === AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS
 
     const isAIAgentInternalNote = isAIAgentMessage && !message.public
 
-    const isAIAgentDraftMessage =
-        message.body_html && message.body_html.indexOf(DRAFT_MESSAGE_TAG) !== -1
+    const isAIAgentDraftMessage = !!(
+        message?.body_html &&
+        message?.body_html.indexOf(DRAFT_MESSAGE_TAG) !== -1
+    )
+
+    const isAIAgentTrialMessage = !!(
+        message?.body_html &&
+        message?.body_html.indexOf(TRIAL_MESSAGE_TAG) !== -1
+    )
+
+    useEffect(() => {
+        let bannerType = ''
+
+        switch (true) {
+            case isAIAgentDraftMessage:
+                bannerType = 'qa_failed'
+                break
+            case isAIAgentTrialMessage:
+                bannerType = 'trial'
+                break
+        }
+
+        if (bannerType !== '') {
+            logEvent(SegmentEvent.AiAgentTicketViewed, {
+                accountId: accountId,
+                banner: bannerType,
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    if (!messages.length) {
+        return null
+    }
 
     const groupAfterLastCustomerMessage = moment(message.sent_datetime).isAfter(
         lastCustomerMessage.get('sent_datetime')
@@ -105,8 +139,18 @@ export default function TicketMessages({
               )
     )
 
-    if (isAIAgentDraftMessage && isAIAgentDraftMessageEnabled) {
+    if (isAIAgentDraftMessage) {
         return <AIAgentDraftMessage ticketId={ticketId} message={message} />
+    }
+
+    if (isAIAgentTrialMessage && isAIAgentTrialMessageEnabled) {
+        return (
+            <AIAgentDraftMessage
+                ticketId={ticketId}
+                message={message}
+                isTrial
+            />
+        )
     }
 
     return (

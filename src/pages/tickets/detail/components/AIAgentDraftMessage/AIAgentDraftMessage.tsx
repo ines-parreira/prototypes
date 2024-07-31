@@ -5,6 +5,7 @@ import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import Button from 'pages/common/components/button/Button'
 import {MacroActionName, MacroActionType} from 'models/macroAction/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {
     applyMacro,
     applyMacroAction,
@@ -12,6 +13,8 @@ import {
 } from 'state/ticket/actions'
 import {TicketMessage} from 'models/ticket/types'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import {SegmentEvent, logEvent} from 'common/segment'
+import useAppSelector from 'hooks/useAppSelector'
 import InTicketSuggestion from '../RuleSuggestion/InTicketSuggestion'
 
 import css from './AIAgentDraftMessage.less'
@@ -19,9 +22,11 @@ import css from './AIAgentDraftMessage.less'
 export type Props = {
     ticketId: number
     message: TicketMessage
+    isTrial?: boolean
 }
 
-const AIAgentDraftMessage = ({ticketId, message}: Props) => {
+const AIAgentDraftMessage = ({ticketId, message, isTrial}: Props) => {
+    const accountId = useAppSelector(getCurrentAccountId)
     const {data, isLoading} = useGetAiAgentFeedback()
     const dispatch = useAppDispatch()
     const [hideMessage, setHideMessage] = useState(false)
@@ -42,6 +47,11 @@ const AIAgentDraftMessage = ({ticketId, message}: Props) => {
             })
         )
         setHideMessage(true)
+
+        logEvent(SegmentEvent.AiAgentCopiedToEditor, {
+            accountId,
+            banner: isTrial ? 'trial' : 'qa_failed',
+        })
 
         if (draftMessage) {
             dispatch(

@@ -26,7 +26,10 @@ import AIAgentFeedbackBar from 'pages/tickets/detail/components/AIAgentFeedbackB
 import secondaryNavbarCSS from 'pages/common/components/SecondaryNavbar/SecondaryNavbar.less'
 import css from 'pages/tickets/detail/TicketInforbarContainer.less'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-import {DATE_FEATURE_AVAILABLE} from './components/AIAgentFeedbackBar/constants'
+import {
+    DATE_FEATURE_AVAILABLE,
+    TRIAL_MESSAGE_TAG,
+} from './components/AIAgentFeedbackBar/constants'
 
 type OwnProps = {
     isEditingWidgets?: boolean
@@ -73,6 +76,12 @@ export const TicketInfobarContainer = ({
         (message) => new Date(message.created_datetime) > DATE_FEATURE_AVAILABLE
     )
 
+    const allAIMessagesOnTrialMode = aiMessages.every(
+        (message) =>
+            message.body_html &&
+            message.body_html.indexOf(TRIAL_MESSAGE_TAG) !== -1
+    )
+
     const handleChangeTab = (tab: TicketAIAgentFeedbackTab) => {
         if (activeTab === tab) {
             return
@@ -94,7 +103,10 @@ export const TicketInfobarContainer = ({
         }
     }
 
-    const showNavbar = aiMessages.length > 0 && isFeedbackToAiAgentEnabled
+    const showNavbar =
+        aiMessages.length > 0 &&
+        isFeedbackToAiAgentEnabled &&
+        !allAIMessagesOnTrialMode
 
     const activeTab = useAppSelector(getActiveTab)
     const isAIAgentTabActive = activeTab === TicketAIAgentFeedbackTab.AIAgent

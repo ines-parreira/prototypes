@@ -21,6 +21,8 @@ export enum SegmentEvent {
     AutomateSettingButtonClicked = 'automate/setting-button-clicked',
     AutomateSettingPageViewed = 'automate/setting-page-viewed',
     AiAgentConfigurationDisabled = 'ai-agent-configuration-disabled',
+    AiAgentTicketViewed = 'ai-agent-ticket-viewed',
+    AiAgentCopiedToEditor = 'ai-agent-copied-to-editor',
     BigCommerceCreateOrderAddLineItemDiscount = 'bigcommerce/create-order/add-line-item-discount',
     BigCommerceCreateOrderAddOrderDiscount = 'bigcommerce/create-order/add-order-discount',
     BigCommerceCreateOrderAddRow = 'bigcommerce/create-order/add-row',

@@ -24,6 +24,7 @@ import {
     TicketInfobarContainer,
 } from '../TicketInfobarContainer'
 import {Infobar} from '../../../common/components/infobar/Infobar/Infobar'
+import {TRIAL_MESSAGE_TAG} from '../components/AIAgentFeedbackBar/constants'
 
 jest.mock('state/widgets/actions')
 
@@ -241,6 +242,29 @@ describe('<TicketInfobarContainer />', () => {
 
     it('should not render secondary navbar if there are no AI messages', () => {
         mockedGetAIAgentMessages.mockReturnValue([])
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            }
+        )
+
+        expect(screen.queryByText(CUSTOMER_INFORMATION_TAB)).toBeNull()
+    })
+
+    it('should not render secondary navbar if all AI messages on trial mode', () => {
+        const aiMessage = {
+            id: '1',
+            created_datetime: dateAfterFeatureAvailable,
+            public: true,
+            body_html: TRIAL_MESSAGE_TAG,
+        } as any
+
+        mockedGetAIAgentMessages.mockReturnValue([aiMessage])
 
         renderWithRouter(
             <Provider store={store}>

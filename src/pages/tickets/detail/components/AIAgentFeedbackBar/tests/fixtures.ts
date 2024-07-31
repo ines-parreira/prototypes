@@ -109,7 +109,7 @@ export const messageFeedback: MessageFeedback = {
         {type: 'resource', resourceType: 'article', resourceId: 234},
     ],
     draftMessage: {
-        content: null,
+        content: 'test content',
         ticketActions: null,
     },
 }

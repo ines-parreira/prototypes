@@ -129,39 +129,47 @@ export const StoreConfigForm = ({
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
 
-    const deactivateAiAgent = useCallback(async () => {
-        if (isCreate) return
+    const deactivateAiAgent = useCallback(
+        async (silentUpdate?: boolean) => {
+            if (isCreate) return
 
-        const deactivatedDatetime = new Date().toISOString()
-        updateValue('deactivatedDatetime', deactivatedDatetime)
-        try {
-            await upsertStoreConfiguration({
-                ...storeConfiguration,
-                deactivatedDatetime,
-            })
-            void dispatch(
-                notify({
-                    message:
-                        'AI Agent has been disabled, because no Knowledge source is connected.',
-                    status: NotificationStatus.Warning,
+            const deactivatedDatetime = new Date().toISOString()
+            updateValue('deactivatedDatetime', deactivatedDatetime)
+            updateValue('trialModeActivatedDatetime', null)
+
+            try {
+                await upsertStoreConfiguration({
+                    ...storeConfiguration,
+                    deactivatedDatetime,
+                    trialModeActivatedDatetime: null,
                 })
-            )
-        } catch (error) {
-            // nothing to notify here for the user as we do silent disable AI Agent
-            reportError(error, {
-                tags: {team: AI_AGENT_SENTRY_TEAM},
-                extra: {
-                    context: 'Error during disabling AI Agent',
-                },
-            })
-        }
-    }, [
-        isCreate,
-        updateValue,
-        upsertStoreConfiguration,
-        storeConfiguration,
-        dispatch,
-    ])
+                if (!silentUpdate) {
+                    void dispatch(
+                        notify({
+                            message:
+                                'AI Agent has been disabled, because no Knowledge source is connected.',
+                            status: NotificationStatus.Warning,
+                        })
+                    )
+                }
+            } catch (error) {
+                // nothing to notify here for the user as we do silent disable AI Agent
+                reportError(error, {
+                    tags: {team: AI_AGENT_SENTRY_TEAM},
+                    extra: {
+                        context: 'Error during disabling AI Agent',
+                    },
+                })
+            }
+        },
+        [
+            isCreate,
+            updateValue,
+            upsertStoreConfiguration,
+            storeConfiguration,
+            dispatch,
+        ]
+    )
 
     const handleOnSave = async () => {
         let validFormValues: ValidFormValues
@@ -325,6 +333,17 @@ export const StoreConfigForm = ({
     const onSubmit = () => {
         void handleOnSave()
     }
+
+    useEffect(() => {
+        if (aiAgentMode === 'trial' && !trialModeAvailable) {
+            void deactivateAiAgent(true)
+        }
+    }, [
+        aiAgentMode,
+        deactivateAiAgent,
+        trialModeAvailable,
+        formValues.trialModeActivatedDatetime,
+    ])
 
     return (
         <>
