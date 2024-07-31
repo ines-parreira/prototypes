@@ -167,7 +167,9 @@ export default function TicketMessages({
             isBodyHighlighted={containerContainsHighlightedMessages}
             isAIAgentInternalNote={isAIAgentInternalNote}
             isAIAgentMessage={isAIAgentMessage}
-            isAIAgentMessageSelected={selectedAIMessage?.id === message.id}
+            isAIAgentMessageSelected={
+                !!message.id && selectedAIMessage?.id === message.id
+            }
             shouldDisplayAuditLogEvents={shouldDisplayAuditLogEvents}
             customer={customer}
             lastCustomerMessageDateTime={lastCustomerMessage.get(
