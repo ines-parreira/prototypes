@@ -42,7 +42,6 @@ import {
 } from 'hooks/reporting/automate/types'
 import {
     calculateRate,
-    workflowAutomatedInteractions,
     workflowEndStepAutomatedInteractions,
     workflowEndStepDropoff,
 } from 'hooks/reporting/automate/automateStatsFormulae'
@@ -362,19 +361,15 @@ export function getCountEventsByEventType(
 
 export function computeWorkflowMetrics(
     data: QueryReturnType<Cubes> | undefined,
-    dropoff: number
+    dropoff: number,
+    automatedInteractions: number
 ): WorkflowMetrics {
-    const workflowStarted = getCountEventsByEventType(data, FLOW_STARTED)
     const workflowTicketsCreated = getCountEventsByEventType(
         data,
         FLOW_HANDOVER_TICKET_CREATED
     )
-
-    const automatedInteractions = workflowAutomatedInteractions(
-        workflowStarted,
-        dropoff,
-        workflowTicketsCreated
-    )
+    const workflowStarted =
+        automatedInteractions + dropoff + workflowTicketsCreated
 
     const automationRate = calculateRate(automatedInteractions, workflowStarted)
 

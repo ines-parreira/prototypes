@@ -114,28 +114,6 @@ const workflowStepDropoffMock = [
         decile: '2',
     },
 ]
-const workflowCountEventsMock = [
-    {
-        'WorkflowDataset.eventType': 'flow_step_started',
-        'WorkflowDataset.countEvents': '26',
-        decile: '9',
-    },
-    {
-        'WorkflowDataset.eventType': 'flow_step_ended',
-        'WorkflowDataset.countEvents': '21',
-        decile: '7',
-    },
-    {
-        'WorkflowDataset.eventType': 'flow_prompt_started',
-        'WorkflowDataset.countEvents': '10',
-        decile: '4',
-    },
-    {
-        'WorkflowDataset.eventType': 'flow_started',
-        'WorkflowDataset.countEvents': '9',
-        decile: '2',
-    },
-]
 
 const steps = [
     {id: '01J0TNP9PYAF1K20MHTPJJ9TDK', kind: 'message', settings: {}},
@@ -146,33 +124,9 @@ const steps = [
 
 describe('useWorkflowDataset', () => {
     it('useWorkflowDatasetTrend', () => {
-        useMetricPerDimensionMock.mockReturnValueOnce({
-            data: {
-                allData: workflowCountEventsMock,
-                decile: null,
-                value: null,
-            },
-            isFetching: true,
-            isError: false,
-        })
-        useMetricPerDimensionMock.mockReturnValueOnce({
-            data: null,
-            isFetching: true,
-            isError: false,
-        })
-
         useMetricPerDimensionMock.mockReturnValue({
             data: {
                 allData: workflowStepCountEventsMock,
-                decile: null,
-                value: null,
-            },
-            isFetching: true,
-            isError: false,
-        })
-        useMetricPerDimensionMock.mockReturnValue({
-            data: {
-                allData: workflowStepDropoffMock,
                 decile: null,
                 value: null,
             },
@@ -195,12 +149,12 @@ describe('useWorkflowDataset', () => {
         expect(result.current).toMatchObject({
             workflowMetrics: {
                 workflowAutomatedInteractions: {
-                    data: {prevValue: null, value: 9},
+                    data: {prevValue: null, value: 3},
                     isError: false,
                     isFetching: true,
                 },
                 workflowAutomationRate: {
-                    data: {prevValue: 0, value: 1},
+                    data: {prevValue: 1, value: 1},
                     isError: false,
                     isFetching: true,
                 },
@@ -215,7 +169,7 @@ describe('useWorkflowDataset', () => {
                     isFetching: true,
                 },
                 workflowTotalViews: {
-                    data: {prevValue: null, value: 9},
+                    data: {prevValue: null, value: 3},
                     isError: false,
                     isFetching: true,
                 },

@@ -119,21 +119,6 @@ export const decreaseInResolutionTime = (
     return 0
 }
 
-export const workflowAutomatedInteractions = (
-    workflowStarted: number | null,
-    dropoff: number | null,
-    workflowTicketsCreated: number | null
-): number => {
-    if (
-        workflowStarted == null ||
-        dropoff == null ||
-        workflowTicketsCreated == null
-    )
-        return 0
-
-    return nonNegative(workflowStarted - dropoff - workflowTicketsCreated)
-}
-
 export const workflowEndStepDropoff = (
     dropoff: number | null,
     workflowStepPromptNotHelpful: number | null,
@@ -175,6 +160,21 @@ export const calculateSumOfDropoff = (data: WorkflowStepMetricsMap) => {
         const dropoff = item.dropoff
         return (
             sum + (typeof dropoff === 'number' && !isNaN(dropoff) ? dropoff : 0)
+        )
+    }, 0)
+}
+
+export const calculateSumOfAutomatedInteractions = (
+    data: WorkflowStepMetricsMap
+) => {
+    return Object.values(data).reduce((sum, item) => {
+        const automatedInteractions = item.automatedInteractions
+        return (
+            sum +
+            (typeof automatedInteractions === 'number' &&
+            !isNaN(automatedInteractions)
+                ? automatedInteractions
+                : 0)
         )
     }, 0)
 }

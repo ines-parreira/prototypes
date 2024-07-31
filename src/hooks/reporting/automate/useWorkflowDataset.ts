@@ -14,7 +14,10 @@ import {
     computeWorkflowStepsMetrics,
 } from 'hooks/reporting/automate/utils'
 import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {calculateSumOfDropoff} from './automateStatsFormulae'
+import {
+    calculateSumOfAutomatedInteractions,
+    calculateSumOfDropoff,
+} from './automateStatsFormulae'
 
 export const useWorkflowDataset = (
     filters: WorkflowStatsFilters,
@@ -46,12 +49,14 @@ export const useWorkflowDataset = (
 
     const workflowMetrics = computeWorkflowMetrics(
         workflowCountByEventType.data?.allData,
-        calculateSumOfDropoff(workflowStepMetrics.data)
+        calculateSumOfDropoff(workflowStepMetrics.data),
+        calculateSumOfAutomatedInteractions(workflowStepMetrics.data)
     )
 
     const previousWorkflowMetrics = computeWorkflowMetrics(
         previousWorkflowCountByEventType.data?.allData,
-        calculateSumOfDropoff(previousWorkflowStepMetrics.data)
+        calculateSumOfDropoff(previousWorkflowStepMetrics.data),
+        calculateSumOfAutomatedInteractions(previousWorkflowStepMetrics.data)
     )
 
     const isFetching =

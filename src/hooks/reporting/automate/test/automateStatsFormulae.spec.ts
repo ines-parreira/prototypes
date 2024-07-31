@@ -6,6 +6,8 @@ import {
     workflowEndStepDropoff,
     workflowEndStepAutomatedInteractions,
     calculateRate,
+    calculateSumOfAutomatedInteractions,
+    calculateSumOfDropoff,
 } from '../automateStatsFormulae'
 
 describe('Metrics Calculation Functions', () => {
@@ -130,6 +132,32 @@ describe('Metrics Calculation Functions', () => {
         it('workflowEndStepAutomatedInteractions should return 0 if any parameter is null', () => {
             expect(workflowEndStepAutomatedInteractions(null, 5)).toBe(0)
             expect(workflowEndStepAutomatedInteractions(10, null)).toBe(0)
+        })
+
+        it('should calculate sum of dropoff', () => {
+            expect(
+                calculateSumOfDropoff({
+                    '1': {dropoff: 2} as any,
+                    '2': {dropoff: 6} as any,
+                    '3': {dropoff: 2} as any,
+                    '4': {dropoff: undefined} as any,
+                    '5': {dropoff: null} as any,
+                    '6': {} as any,
+                })
+            ).toBe(10)
+        })
+
+        it('should calculate sum of automated interactions', () => {
+            expect(
+                calculateSumOfAutomatedInteractions({
+                    '1': {automatedInteractions: 2} as any,
+                    '2': {automatedInteractions: 6} as any,
+                    '3': {automatedInteractions: 2} as any,
+                    '4': {automatedInteractions: undefined} as any,
+                    '5': {automatedInteractions: null} as any,
+                    '6': {} as any,
+                })
+            ).toBe(10)
         })
     })
 })
