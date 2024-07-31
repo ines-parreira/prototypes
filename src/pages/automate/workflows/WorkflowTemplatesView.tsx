@@ -27,13 +27,12 @@ const WorkflowTemplatesView = ({
     goToNewWorkflowFromTemplatePage,
     workflowsUrl,
 }: Props) => {
-    const isImprovedNavigationEnabled =
-        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+    const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
 
     return (
         <div className="full-width overflow-auto">
             <div className={css.pageHeaderContainer}>
-                {!isImprovedNavigationEnabled && (
+                {sunsetQuickResponses && (
                     <PageHeader
                         title={
                             <Breadcrumb>
@@ -64,20 +63,26 @@ const WorkflowTemplatesView = ({
                 </div>
 
                 <div className={css.descriptionContainer}>
-                    <div>
-                        <h1
-                            className={css.title}
-                            data-candu-id="flow-templates"
-                        >
-                            Flow templates
-                        </h1>
-
-                        <div className={css.description}>
-                            Start with a Flow template that you can customize to
-                            fit your needs:
+                    {sunsetQuickResponses ? (
+                        <div className={css.heading}>
+                            Choose a template and customize it to fit your needs
                         </div>
-                    </div>
-                    {isImprovedNavigationEnabled && (
+                    ) : (
+                        <div>
+                            <h1
+                                className={css.title}
+                                data-candu-id="flow-templates"
+                            >
+                                Flow templates
+                            </h1>
+
+                            <div className={css.description}>
+                                Start with a Flow template that you can
+                                customize to fit your needs:
+                            </div>
+                        </div>
+                    )}
+                    {!sunsetQuickResponses && (
                         <Button
                             onClick={goToNewWorkflowPage}
                             intent="secondary"

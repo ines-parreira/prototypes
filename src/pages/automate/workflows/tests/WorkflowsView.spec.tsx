@@ -1,11 +1,12 @@
 import React from 'react'
-import {screen, waitFor} from '@testing-library/react'
+import {fireEvent, screen, waitFor, within} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouterAndDnD} from 'utils/testing'
+import {renderWithRouter, renderWithRouterAndDnD} from 'utils/testing'
 
 import {IntegrationType} from 'models/integration/constants'
 import {billingState} from 'fixtures/billing'
@@ -15,8 +16,11 @@ import {
     useDuplicateWorkflowConfiguration,
     useDeleteWorkflowConfiguration,
 } from 'models/workflows/queries'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {FLOWS} from 'pages/automate/common/components/constants'
 import WorkflowsView from '../WorkflowsView'
 import useStoreWorkflows from '../hooks/useStoreWorkflows'
+import {useStoreWorkflowsApi} from '../hooks/useStoreWorkflowsApi'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const queryClient = mockQueryClient()
@@ -27,6 +31,8 @@ jest.mock('models/workflows/queries', () => ({
     useDeleteWorkflowConfiguration: jest.fn(),
 }))
 jest.mock('../hooks/useStoreWorkflows.ts')
+jest.mock('launchdarkly-react-client-sdk')
+jest.mock('../hooks/useStoreWorkflowsApi')
 
 function getIntegration(id: number, type: IntegrationType) {
     return {
@@ -62,6 +68,12 @@ const mockedUseDeleteWorkflowConfiguration = jest.mocked(
     useDeleteWorkflowConfiguration
 )
 
+const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+const moackAppendWorkflowInStore = jest.fn()
+const mockRemoveWorkflowFromStore = jest.fn()
+const mockDuplicateWorkflow = jest.fn()
+const baseUrl = '/app/automation/shopType/shopName/flows'
+
 describe('<WorkflowsView />', () => {
     beforeEach(() => {
         mockedUseWorkflowConfigurations.mockReturnValue({
@@ -78,7 +90,23 @@ describe('<WorkflowsView />', () => {
             mutateAsync: jest.fn(),
             isLoading: false,
         } as unknown as ReturnType<typeof useDeleteWorkflowConfiguration>)
+
+        const mockStoreWorkflowsApi = {
+            isUpdatePending: false,
+            duplicateWorkflow: mockDuplicateWorkflow,
+            removeWorkflowFromStore: mockRemoveWorkflowFromStore,
+            appendWorkflowInStore: moackAppendWorkflowInStore,
+            workflowConfigurationById: {},
+            isFetchPending: false,
+        }
+        const mockUseStoreWorkflowsApi =
+            useStoreWorkflowsApi as jest.MockedFunction<
+                typeof useStoreWorkflowsApi
+            >
+
+        mockUseStoreWorkflowsApi.mockReturnValue(mockStoreWorkflowsApi)
     })
+
     it('should display skeleton while workflow entrypoints are being fetched', async () => {
         useStoreWorkflowsMock.mockReturnValue({
             isFetchPending: true,
@@ -169,5 +197,118 @@ describe('<WorkflowsView />', () => {
             await screen.findByText('a')
             await screen.findByText('b')
         })
+    })
+
+    it('should render correctly when sunsetQuickResponses is true', async () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.SunsetQuickResponses]: true,
+            [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
+            [FeatureFlagKey.MigrateQuickResponseToFlows]: false,
+        })
+
+        useStoreWorkflowsMock.mockReturnValue({
+            isFetchPending: false,
+            workflows: [
+                {
+                    id: 'a',
+                    internal_id: 'a',
+                    name: 'a',
+                    available_languages: [],
+                    account_id: 1,
+                    is_draft: false,
+                    entrypoint: {label: '', label_tkey: ''},
+                    steps: [],
+                    initial_step_id: '',
+                    created_datetime: '2023-12-22T10:41:08.337Z',
+                    updated_datetime: '2023-12-22T10:41:08.337Z',
+                    deleted_datetime: null,
+                },
+            ],
+            storeIntegrationId: 1,
+        })
+
+        renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <WorkflowsView
+                        shopName="ShopName"
+                        shopType="shopify"
+                        goToEditWorkflowPage={jest.fn()}
+                        goToWorkflowTemplatesPage={jest.fn()}
+                        goToNewWorkflowPage={jest.fn()}
+                        goToNewWorkflowFromTemplatePage={jest.fn()}
+                        notifyMerchant={jest.fn()}
+                    />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Flows')).toBeInTheDocument()
+            expect(screen.queryByText('Create Custom Flow')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Create From Template')
+            ).toBeInTheDocument()
+        })
+        const deleteIcon = screen.getByTitle('Delete')
+        fireEvent.click(deleteIcon)
+        const tooltip = await screen.findByRole('tooltip')
+        const deleteButton = within(tooltip).getByText('Delete')
+        fireEvent.click(deleteButton)
+
+        expect(mockRemoveWorkflowFromStore).toHaveBeenCalledWith('a', 1)
+    })
+    it('should be active for baseUrl', () => {
+        renderWithRouter(
+            <WorkflowsView
+                shopName="shopName"
+                shopType="shopType"
+                goToNewWorkflowPage={jest.fn()}
+                goToWorkflowTemplatesPage={jest.fn()}
+                goToEditWorkflowPage={jest.fn()}
+                goToNewWorkflowFromTemplatePage={jest.fn()}
+                notifyMerchant={jest.fn()}
+            />,
+            {route: baseUrl}
+        )
+
+        const navLink = screen.getByText(FLOWS)
+        expect(navLink).toHaveClass('d-flex align-items-center')
+    })
+
+    it('should be active for baseUrl/templates', () => {
+        renderWithRouter(
+            <WorkflowsView
+                shopName="shopName"
+                shopType="shopType"
+                goToNewWorkflowPage={jest.fn()}
+                goToWorkflowTemplatesPage={jest.fn()}
+                goToEditWorkflowPage={jest.fn()}
+                goToNewWorkflowFromTemplatePage={jest.fn()}
+                notifyMerchant={jest.fn()}
+            />,
+            {route: `${baseUrl}/templates`}
+        )
+
+        const navLink = screen.getByText(FLOWS)
+        expect(navLink).toHaveClass('d-flex align-items-center')
+    })
+
+    it('should not be active for other paths', () => {
+        renderWithRouter(
+            <WorkflowsView
+                shopName="shopName"
+                shopType="shopType"
+                goToNewWorkflowPage={jest.fn()}
+                goToWorkflowTemplatesPage={jest.fn()}
+                goToEditWorkflowPage={jest.fn()}
+                goToNewWorkflowFromTemplatePage={jest.fn()}
+                notifyMerchant={jest.fn()}
+            />,
+            {route: `${baseUrl}/other`}
+        )
+
+        const navLink = screen.getByText(FLOWS)
+        expect(navLink).not.toHaveClass('active')
     })
 })

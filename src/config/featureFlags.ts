@@ -103,6 +103,7 @@ export enum FeatureFlagKey {
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
+    SunsetQuickResponses = 'sunset-quick-responses',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketNavigationArrows = 'ticket-navigation-arrows',

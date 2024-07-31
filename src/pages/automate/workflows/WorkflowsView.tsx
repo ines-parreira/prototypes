@@ -1,6 +1,13 @@
 import React from 'react'
 import {Container} from 'reactstrap'
-import {NavLink, Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
+import {
+    matchPath,
+    NavLink,
+    Redirect,
+    Route,
+    Switch,
+    useRouteMatch,
+} from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classNames from 'classnames'
@@ -77,8 +84,7 @@ export default function WorkflowsView({
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
-    const isImprovedNavigationEnabled =
-        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+    const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
     const isMigrateQuickResponseToFlows =
         useFlags()[FeatureFlagKey.MigrateQuickResponseToFlows]
 
@@ -96,10 +102,10 @@ export default function WorkflowsView({
             <Container fluid className={css.pageContainer}>
                 <div className={css.pageContainerHeadline}>
                     <div
-                        className={classNames(css.descriptionContainer, {
-                            [css.descriptionContainerColumn]:
-                                isImprovedNavigationEnabled,
-                        })}
+                        className={classNames(
+                            css.descriptionContainer,
+                            css.descriptionContainerColumn
+                        )}
                     >
                         <div className={css.description}>
                             <div className={css.descriptionText}>
@@ -137,7 +143,7 @@ export default function WorkflowsView({
                                 How to create a Flow
                             </a>
                         </div>
-                        {isImprovedNavigationEnabled && (
+                        {!sunsetQuickResponses && (
                             <div className={css.headerContainer}>
                                 <Button
                                     onClick={goToNewWorkflowPage}
@@ -175,32 +181,38 @@ export default function WorkflowsView({
         )
 
     const baseUrl = `/app/automation/${shopType}/${shopName}/flows`
+    const isFlowsTemplatesRoutes = !!matchPath(
+        location.pathname,
+        '/app/automation/:shopType/:shopName/flows/templates'
+    )
 
     return (
         <div className="full-width overflow-auto">
             <div className={css.pageHeaderContainer}>
-                {isImprovedNavigationEnabled ? (
+                {!sunsetQuickResponses ? (
                     <PageHeader title={FLOWS} />
                 ) : (
-                    <PageHeader title={FLOWS}>
-                        {hasStoreWorkflows && (
-                            <div className={css.headerContainer}>
-                                <Button
-                                    onClick={goToNewWorkflowPage}
-                                    intent="secondary"
-                                >
-                                    Create Custom Flow
-                                </Button>
-                                <Button onClick={goToWorkflowTemplatesPage}>
-                                    Create From Template
-                                </Button>
-                            </div>
-                        )}
-                    </PageHeader>
+                    !isFlowsTemplatesRoutes && (
+                        <PageHeader title={FLOWS}>
+                            {hasStoreWorkflows && (
+                                <div className={css.headerContainer}>
+                                    <Button
+                                        onClick={goToNewWorkflowPage}
+                                        intent="secondary"
+                                    >
+                                        Create Custom Flow
+                                    </Button>
+                                    <Button onClick={goToWorkflowTemplatesPage}>
+                                        Create From Template
+                                    </Button>
+                                </div>
+                            )}
+                        </PageHeader>
+                    )
                 )}
             </div>
 
-            {isImprovedNavigationEnabled && (
+            {!sunsetQuickResponses && (
                 <SecondaryNavbar>
                     <NavLink
                         to={baseUrl}
@@ -225,37 +237,33 @@ export default function WorkflowsView({
                 </SecondaryNavbar>
             )}
 
-            {isImprovedNavigationEnabled ? (
-                <Switch>
-                    <Route path={path} exact>
-                        {workflowsElement}
+            <Switch>
+                <Route path={path} exact>
+                    {workflowsElement}
+                </Route>
+                {sunsetQuickResponses ? (
+                    <Route path={`${path}/quick-responses`} exact>
+                        <Redirect to={baseUrl} />
                     </Route>
-                    {isMigrateQuickResponseToFlows ? (
-                        <Route path={`${path}/quick-responses`} exact>
-                            <Redirect to={baseUrl} />
-                        </Route>
-                    ) : (
-                        <Route
-                            path={`${path}/quick-responses`}
-                            exact
-                            component={memoizedWithUserRoleRequired(
-                                QuickResponsesViewContainer,
-                                AGENT_ROLE
-                            )}
-                        />
-                    )}
+                ) : (
                     <Route
-                        path={`${path}/templates`}
+                        path={`${path}/quick-responses`}
                         exact
                         component={memoizedWithUserRoleRequired(
-                            WorkflowTemplatesViewContainer,
+                            QuickResponsesViewContainer,
                             AGENT_ROLE
                         )}
                     />
-                </Switch>
-            ) : (
-                workflowsElement
-            )}
+                )}
+                <Route
+                    path={`${path}/templates`}
+                    exact
+                    component={memoizedWithUserRoleRequired(
+                        WorkflowTemplatesViewContainer,
+                        AGENT_ROLE
+                    )}
+                />
+            </Switch>
         </div>
     )
 }
