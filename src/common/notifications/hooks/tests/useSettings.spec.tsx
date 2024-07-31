@@ -1,10 +1,17 @@
 import {renderHook, act} from '@testing-library/react-hooks'
 import {useKnockClient} from '@knocklabs/react'
 import {waitFor} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import React from 'react'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useFlag} from 'common/flags'
+import {submitSetting} from 'state/currentUser/actions'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {RootState, StoreDispatch} from 'state/types'
 
 import useSettings from '../useSettings'
 
@@ -21,7 +28,9 @@ const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
+jest.mock('state/currentUser/actions')
 const useAppDispatchMock = useAppDispatch as jest.Mock
+const submitSettingMock = submitSetting as jest.Mock
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 const notificationPreferences = {
@@ -41,6 +50,9 @@ const notificationPreferences = {
             'ticket.assigned': {
                 sound: 'definite',
             },
+            'ticket-message.created': {
+                sound: 'custom-sound',
+            },
         },
     },
 }
@@ -48,9 +60,20 @@ const notificationPreferences = {
 const mockGetKnockPreferences = jest.fn()
 const mockSetKnockPreferences = jest.fn()
 
+const mockFlagSet = {
+    [FeatureFlagKey.NotificationsTicketAssigned]: true,
+    [FeatureFlagKey.NotificationsTicketMessageCreated]: true,
+}
+
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
+
 describe('useSettings', () => {
     beforeEach(() => {
-        mockUseFlag.mockReturnValue(true)
+        mockUseFlag.mockImplementation(
+            (featureFlag: keyof typeof mockFlagSet) => {
+                return mockFlagSet[featureFlag]
+            }
+        )
         mockUseKnockClient.mockReturnValue({
             user: {identify: jest.fn()},
             preferences: {
@@ -225,6 +248,32 @@ describe('useSettings', () => {
         await waitFor(() => {
             expect(mockSetKnockPreferences).toHaveBeenCalled()
             expect(useAppDispatchMock).toHaveBeenCalled()
+        })
+    })
+
+    it('should filter out ticket-message.created event on save if the feature flag is disabled', async () => {
+        mockFlagSet[FeatureFlagKey.NotificationsTicketMessageCreated] = false
+        const {result, waitForNextUpdate} = renderHook(() => useSettings(), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore()}>{children}</Provider>
+            ),
+        })
+        await act(async () => await waitForNextUpdate())
+        await act(async () => {
+            await result.current.save()
+        })
+
+        await waitFor(() => {
+            expect(
+                // eslint-disable-next-line
+                submitSettingMock.mock.calls[0][0]['data']['events'][
+                    'ticket-message.created'
+                ]
+            ).not.toBeDefined()
+            expect(
+                // eslint-disable-next-line
+                mockSetKnockPreferences.mock.calls[0][0]['workflows']
+            ).not.toHaveProperty('ticket-message-created')
         })
     })
 })

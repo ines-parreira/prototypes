@@ -10,6 +10,8 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {SoundValue} from 'services/NotificationSounds'
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import useAvailableEvents from '../hooks/useAvailableEvents'
 import {channels} from '../data'
@@ -37,6 +39,11 @@ export default function EventSettings({
     onChangeSound,
 }: Props) {
     const availableEvents = useAvailableEvents()
+
+    const isTicketMessageCreatedEnabled = useFlag(
+        FeatureFlagKey.NotificationsTicketMessageCreated,
+        false
+    )
 
     return (
         <>
@@ -98,7 +105,8 @@ export default function EventSettings({
                                         }
                                         isDisabled={
                                             event.type ===
-                                            'ticket-message.created'
+                                                'ticket-message.created' &&
+                                            !isTicketMessageCreatedEnabled
                                         }
                                         isChecked={
                                             settings.events[event.type]
@@ -115,9 +123,11 @@ export default function EventSettings({
                                     />
                                 </BodyCell>
                             ))}
-                            <Tooltip target="checkbox">
-                                This setting cannot be deselected
-                            </Tooltip>
+                            {!isTicketMessageCreatedEnabled && (
+                                <Tooltip target="checkbox">
+                                    This setting cannot be deselected
+                                </Tooltip>
+                            )}
                         </TableBodyRow>
                     ))}
                 </TableBody>

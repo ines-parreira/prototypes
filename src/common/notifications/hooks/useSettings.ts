@@ -24,6 +24,11 @@ export default function useSettings() {
         false
     )
 
+    const isTicketMessageCreatedEnabled = useFlag(
+        FeatureFlagKey.NotificationsTicketMessageCreated,
+        false
+    )
+
     const allEvents = useMemo(
         () =>
             isTicketAssignedEnabled
@@ -47,7 +52,10 @@ export default function useSettings() {
                     [event.type]: {
                         sound:
                             event.type === 'ticket-message.created'
-                                ? notificationSound.enabled
+                                ? (isTicketMessageCreatedEnabled &&
+                                      allSettings?.data.events?.[event.type]
+                                          ?.sound) ||
+                                  notificationSound.enabled
                                     ? notificationSound.sound
                                     : ''
                                 : eventSettings.sound,
@@ -66,6 +74,7 @@ export default function useSettings() {
                 events: allEvents.reduce((eventsAcc, event) => {
                     const workflowPreferences =
                         preferences.workflows?.[workflowMap[event.type]]
+
                     return {
                         ...eventsAcc,
                         [event.type]: {
@@ -74,7 +83,9 @@ export default function useSettings() {
                                 (channelsAcc, channel) => ({
                                     ...channelsAcc,
                                     [channel.type]:
-                                        event.type === 'ticket-message.created'
+                                        event.type ===
+                                            'ticket-message.created' &&
+                                        !isTicketMessageCreatedEnabled
                                             ? true
                                             : !workflowPreferences ||
                                               typeof workflowPreferences ===
@@ -91,7 +102,7 @@ export default function useSettings() {
                 }, s.events),
             }))
         })()
-    }, [allEvents, knockClient])
+    }, [isTicketMessageCreatedEnabled, allEvents, knockClient])
 
     const handleChangeChannel = useCallback(
         (
@@ -151,7 +162,11 @@ export default function useSettings() {
                     volume: settings.volume,
                 },
                 events: allEvents
-                    .filter((event) => event.type !== 'ticket-message.created')
+                    .filter((event) =>
+                        !isTicketMessageCreatedEnabled
+                            ? event.type !== 'ticket-message.created'
+                            : true
+                    )
                     .reduce(
                         (acc, event) => ({
                             ...acc,
@@ -173,7 +188,11 @@ export default function useSettings() {
                 }
             }
         } = allEvents
-            .filter((event) => event.type !== 'ticket-message.created')
+            .filter((event) =>
+                !isTicketMessageCreatedEnabled
+                    ? event.type !== 'ticket-message.created'
+                    : true
+            )
             .reduce(
                 (eventsAcc, event) => ({
                     ...eventsAcc,
@@ -210,7 +229,14 @@ export default function useSettings() {
         ])
 
         logEvent(SegmentEvent.NotificationSettingsUpdated, settings)
-    }, [allEvents, allSettings, dispatch, knockClient, settings])
+    }, [
+        allEvents,
+        allSettings,
+        dispatch,
+        knockClient,
+        settings,
+        isTicketMessageCreatedEnabled,
+    ])
 
     return useMemo(
         () => ({
