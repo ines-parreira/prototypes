@@ -102,7 +102,12 @@ const mockUseSearchParam = assumeMock(useSearchParam)
 jest.mock('../TopQuestions/useTopQuestionsFilters')
 const mockUseTopQuestionsFilters = assumeMock(useTopQuestionsFilters)
 
-jest.mock('../../hooks/useAIArticleRecommendationItems')
+jest.mock('../../hooks/useAIArticleRecommendationItems', () => ({
+    ...jest.requireActual<Record<string, any>>(
+        '../../hooks/useAIArticleRecommendationItems'
+    ),
+    useAIArticleRecommendationItems: jest.fn(),
+}))
 const mockUseAIArticleRecommendationItems = assumeMock(
     useAIArticleRecommendationItems
 )
@@ -327,5 +332,103 @@ describe('<AutomateAllRecommendationsPage />', () => {
                 search: `store_integration_id=1&help_center_id=22`,
             })
         })
+    })
+
+    it('reads and updates status and page query params', async () => {
+        mockUseSearchParam.mockImplementation((param) =>
+            param === 'status'
+                ? ['all', jest.fn()]
+                : param === 'page'
+                ? ['2', jest.fn()]
+                : [null, jest.fn()]
+        )
+        mockUseLocation.mockReturnValue({
+            pathname: '/app/automation/ai-recommendations',
+            search: `store_integration_id=1&help_center_id=11&status=all&page=2`,
+            state: undefined,
+            hash: '',
+        })
+
+        mockUseAIArticleRecommendationItems.mockReturnValue({
+            paginatedItems: paginatedItemsFixture,
+            itemsCount: 40,
+            totalItemsCount: 60,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useAIArticleRecommendationItems>)
+
+        const {container, rerender} = renderComponent()
+
+        expect(mockUseAIArticleRecommendationItems).toHaveBeenCalledWith({
+            currentPage: 2,
+            helpCenterId: 11,
+            itemsPerPage: 15,
+            locale: undefined,
+            statusFilter: 'all',
+            storeIntegrationId: 1,
+        })
+
+        fireEvent.click(screen.getByText('Not created'))
+
+        await waitFor(() => {
+            expect(history.push).toHaveBeenCalledWith({
+                pathname: '/app/automation/ai-recommendations',
+                search: `store_integration_id=1&help_center_id=11&status=not-created`,
+            })
+        })
+
+        mockUseLocation.mockReturnValue({
+            pathname: '/app/automation/ai-recommendations',
+            search: `store_integration_id=1&help_center_id=11&status=not-created`,
+            state: undefined,
+            hash: '',
+        })
+
+        mockUseSearchParam.mockImplementation((param) =>
+            param === 'status' ? ['not-created', jest.fn()] : [null, jest.fn()]
+        )
+
+        rerender(
+            <Router history={history}>
+                <Provider store={mockStore(defaultState)}>
+                    <AutomateAllRecommendationsPage />
+                </Provider>
+            </Router>
+        )
+
+        const page3 = container.querySelector('[aria-label="page-3"]')
+        expect(page3).toBeInTheDocument()
+        fireEvent.click(page3!)
+
+        await waitFor(() => {
+            expect(history.push).toHaveBeenLastCalledWith({
+                pathname: '/app/automation/ai-recommendations',
+                search: `store_integration_id=1&help_center_id=11&status=not-created&page=3`,
+            })
+        })
+    })
+
+    it('does not update query params if there is no change', () => {
+        mockUseAIArticleRecommendationItems.mockReturnValue({
+            paginatedItems: paginatedItemsFixture,
+            itemsCount: 40,
+            totalItemsCount: 60,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useAIArticleRecommendationItems>)
+
+        const {container} = renderComponent()
+
+        const page1 = container.querySelector('[aria-label="page-1"]')
+        expect(page1).toBeInTheDocument()
+        fireEvent.click(page1!)
+
+        expect(history.push).not.toHaveBeenCalledWith(
+            expect.stringContaining('page=1')
+        )
+
+        fireEvent.click(screen.getAllByText('Not created')[1])
+
+        expect(history.push).not.toHaveBeenCalledWith(
+            expect.stringContaining('status=not-created')
+        )
     })
 })

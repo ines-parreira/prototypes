@@ -10,6 +10,7 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     useAIArticleRecommendationItems,
     AllRecommendationsStatus,
+    isAllRecommendationStatus,
 } from '../useAIArticleRecommendationItems'
 
 const queryClient = mockQueryClient()
@@ -177,5 +178,17 @@ describe('useAIArticleRecommendationItems', () => {
         expect(result.current.paginatedItems).toEqual([])
         expect(result.current.itemsCount).toBe(0)
         expect(result.current.isLoading).toBe(true)
+    })
+})
+
+describe('isAllRecommendationStatus', () => {
+    it.each([
+        [AllRecommendationsStatus.All, true],
+        [AllRecommendationsStatus.ArticleCreated, true],
+        [AllRecommendationsStatus.NotCreated, true],
+        ['invalid', false],
+        [undefined, false],
+    ])('for %s it returns %s', (status, expected) => {
+        expect(isAllRecommendationStatus(status)).toBe(expected)
     })
 })

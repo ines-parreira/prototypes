@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react'
+import React from 'react'
 import {Card} from '@gorgias/analytics-ui-kit'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -56,7 +56,7 @@ type AutomateAllRecommendationsCardProps = {
     itemsCount: number
     totalItemsCount: number
     statusFilter: AllRecommendationsStatus
-    setStatusFilter: Dispatch<SetStateAction<AllRecommendationsStatus>>
+    setStatusFilter: (status: AllRecommendationsStatus) => void
     currentPage: number
     onPageChange: (page: number) => void
     displayNewBadge: boolean
@@ -93,10 +93,9 @@ const AutomateAllRecommendationsCard = ({
                     style={{width: '160px'}}
                     dropdownMenuClassName={css.dropdownMenu}
                     value={statusFilter}
-                    onChange={(value) => {
+                    onChange={(value) =>
                         setStatusFilter(value as AllRecommendationsStatus)
-                        onPageChange(1)
-                    }}
+                    }
                     options={allRecommendationsStatusOptions}
                     showSelectedOption
                 />

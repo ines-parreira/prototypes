@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
 import {Card} from '@gorgias/analytics-ui-kit'
@@ -26,6 +26,8 @@ type AutomateAllRecommendationsViewProps = {
     selectedHelpCenter: HelpCenter
     currentPage: number
     onPageChange: (page: number) => void
+    currentStatus: AllRecommendationsStatus
+    onStatusChange: (status: AllRecommendationsStatus) => void
     storeFilter: TopQuestionsSectionProps['storeFilter']
     helpCenterFilter: TopQuestionsSectionProps['helpCenterFilter']
 }
@@ -35,14 +37,17 @@ const AutomateAllRecommendationsContent = ({
     selectedHelpCenter,
     currentPage,
     onPageChange,
+    currentStatus,
+    onStatusChange,
 }: Pick<
     AutomateAllRecommendationsViewProps,
-    'selectedStore' | 'selectedHelpCenter' | 'currentPage' | 'onPageChange'
+    | 'selectedStore'
+    | 'selectedHelpCenter'
+    | 'currentPage'
+    | 'onPageChange'
+    | 'currentStatus'
+    | 'onStatusChange'
 >) => {
-    const [statusFilter, setStatusFilter] = useState<AllRecommendationsStatus>(
-        AllRecommendationsStatus.NotCreated
-    )
-
     const {
         paginatedItems,
         itemsCount,
@@ -53,7 +58,7 @@ const AutomateAllRecommendationsContent = ({
         storeIntegrationId: selectedStore.id,
         helpCenterId: selectedHelpCenter.id,
         locale: selectedHelpCenter.default_locale,
-        statusFilter,
+        statusFilter: currentStatus,
         currentPage,
         itemsPerPage: ITEMS_PER_PAGE,
     })
@@ -71,8 +76,8 @@ const AutomateAllRecommendationsContent = ({
             isLoading={isLoading}
             itemsCount={itemsCount}
             totalItemsCount={totalItemsCount}
-            statusFilter={statusFilter}
-            setStatusFilter={setStatusFilter}
+            statusFilter={currentStatus}
+            setStatusFilter={onStatusChange}
             currentPage={currentPage}
             onPageChange={onPageChange}
             displayNewBadge={!isLoading && !viewedOnPage && totalItemsCount > 0}
@@ -107,6 +112,8 @@ const AutomateAllRecommendationsView = ({
     helpCenterFilter,
     currentPage,
     onPageChange,
+    currentStatus,
+    onStatusChange,
 }: AutomateAllRecommendationsViewProps) => {
     const isMultiStore = storeFilter && storeFilter.options.length > 1
     const hasEmailToStoreConnection = useHasEmailToStoreConnection(
@@ -153,6 +160,8 @@ const AutomateAllRecommendationsView = ({
                         selectedHelpCenter={selectedHelpCenter}
                         currentPage={currentPage}
                         onPageChange={onPageChange}
+                        currentStatus={currentStatus}
+                        onStatusChange={onStatusChange}
                     />
                 )}
             </div>

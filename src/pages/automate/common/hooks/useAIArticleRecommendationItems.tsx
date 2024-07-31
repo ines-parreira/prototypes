@@ -9,6 +9,13 @@ export enum AllRecommendationsStatus {
     NotCreated = 'not-created',
 }
 
+export const isAllRecommendationStatus = (
+    status: unknown
+): status is AllRecommendationsStatus =>
+    status === AllRecommendationsStatus.All ||
+    status === AllRecommendationsStatus.ArticleCreated ||
+    status === AllRecommendationsStatus.NotCreated
+
 export type AIArticleRecommendationItem = {
     title: string
     templateKey: string

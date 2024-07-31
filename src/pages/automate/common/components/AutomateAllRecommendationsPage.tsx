@@ -2,6 +2,10 @@ import React, {useCallback, useEffect} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 import {useSearchParam} from 'hooks/useSearchParam'
 
+import {
+    AllRecommendationsStatus,
+    isAllRecommendationStatus,
+} from '../hooks/useAIArticleRecommendationItems'
 import AutomateAllRecommendationsView from './AutomateAllRecommendationsView'
 import {useTopQuestionsFilters} from './TopQuestions/useTopQuestionsFilters'
 
@@ -30,13 +34,23 @@ const AutomateAllRecommendationsPage = () => {
     const [page] = useSearchParam('page')
     const currentPage = Number(page) || 1
 
+    const [statusParam] = useSearchParam('status')
+    const currentStatus = isAllRecommendationStatus(statusParam)
+        ? statusParam
+        : AllRecommendationsStatus.NotCreated
+
     const updateQueryParams = useCallback(
-        (params: {
+        ({
+            store_integration_id,
+            help_center_id,
+            page,
+            status,
+        }: {
             help_center_id?: number
             store_integration_id?: number
             page?: number
+            status?: AllRecommendationsStatus
         }) => {
-            const {store_integration_id, help_center_id, page} = params
             const searchParams = new URLSearchParams(location.search)
 
             if (store_integration_id !== undefined) {
@@ -48,6 +62,10 @@ const AutomateAllRecommendationsPage = () => {
             }
             if (help_center_id !== undefined) {
                 searchParams.set('help_center_id', String(help_center_id))
+                searchParams.delete('page')
+            }
+            if (status !== undefined) {
+                searchParams.set('status', status)
                 searchParams.delete('page')
             }
             if (page !== undefined) {
@@ -89,6 +107,12 @@ const AutomateAllRecommendationsPage = () => {
         }
     }
 
+    const onStatusChange = (status: AllRecommendationsStatus) => {
+        if (status !== currentStatus) {
+            updateQueryParams({status})
+        }
+    }
+
     if (
         isLoading ||
         !selectedHelpCenter ||
@@ -105,6 +129,8 @@ const AutomateAllRecommendationsPage = () => {
             selectedHelpCenter={selectedHelpCenter}
             storeFilter={storeFilter}
             helpCenterFilter={helpCenterFilter}
+            currentStatus={currentStatus}
+            onStatusChange={onStatusChange}
             currentPage={currentPage}
             onPageChange={onPageChange}
         />
