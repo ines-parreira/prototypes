@@ -21,7 +21,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import IconButton from 'pages/common/components/button/IconButton'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {setViewActive, setViewEditMode} from 'state/views/actions'
-import {getViewPlainJS} from 'state/views/selectors'
+import {getViewCount, getViewPlainJS} from 'state/views/selectors'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 import {TICKET_HEIGHT, TICKET_HEIGHT_NEW} from '../constants'
@@ -31,6 +31,7 @@ import useTickets from '../hooks/useTickets'
 import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoView'
 import {TicketSummary} from '../types'
 
+import BulkActions from './BulkActions'
 import SortOrderDropdown from './SortOrderDropdown'
 import Ticket from './Ticket'
 import TicketListInfo from './TicketListInfo'
@@ -67,6 +68,8 @@ export default function TicketListView({
 }: Props) {
     const dispatch = useAppDispatch()
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
+    const viewCount = useAppSelector(getViewCount(viewId))
+
     const areViewFiltersInvalid = !!view?.deactivated_datetime
     const isViewNull = view === null
     const defaultSortOrder = `${view?.order_by || ''}:${view?.order_dir || ''}`
@@ -85,7 +88,7 @@ export default function TicketListView({
     const {setIsEnabled: setSplitTicketView, setShouldRedirectToSplitView} =
         useSplitTicketView()
 
-    const {onSelect, selectedTickets} = useSelection(tickets)
+    const {onSelect, selectedTickets, clear} = useSelection(tickets)
 
     const initialLoadedRef = useRef(initialLoaded)
 
@@ -215,6 +218,12 @@ export default function TicketListView({
                 </div>
                 <SortOrderDropdown onChange={setSortOrder} value={sortOrder} />
             </div>
+            {hasBulkActions && viewCount !== 0 && (
+                <BulkActions
+                    selectedTickets={selectedTickets}
+                    clearSelection={clear}
+                />
+            )}
             <div className={css.list}>
                 <Virtuoso
                     ref={virtuosoRef}

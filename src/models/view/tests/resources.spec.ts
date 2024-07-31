@@ -80,7 +80,7 @@ describe('view resources', () => {
                 ...draftView,
                 id: view.id,
                 name: 'foo',
-                shared_with_teams: [{id: 1, meta: {}, name: 'foo'}],
+                shared_with_teams: [{id: 1, decoration: {}, name: 'foo'}],
                 shared_with_users: [{id: 1, meta: {}, name: 'bar'}],
             })
             expect(res).toMatchSnapshot()
@@ -95,7 +95,7 @@ describe('view resources', () => {
                 updateView(view.id, {
                     ...draftView,
                     id: view.id,
-                    shared_with_teams: [{id: 1, meta: {}, name: 'foo'}],
+                    shared_with_teams: [{id: 1, decoration: {}, name: 'foo'}],
                     shared_with_users: [{id: 1, meta: {}, name: 'bar'}],
                 })
             ).rejects.toEqual(new Error('Request failed with status code 503'))

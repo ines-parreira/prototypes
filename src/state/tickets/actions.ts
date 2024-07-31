@@ -1,6 +1,7 @@
 import {List} from 'immutable'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
+import {JobType} from '@gorgias/api-queries'
 import {JOBS_PATH} from 'models/job/resources'
 
 import client from '../../models/api/resources'
@@ -8,7 +9,6 @@ import {notify} from '../notifications/actions'
 import {StoreDispatch} from '../types'
 import {buildJobMessage} from '../../utils/notificationUtils'
 import {NotificationStatus} from '../notifications/types'
-import {JobType} from '../../models/job/types'
 
 import * as types from './constants'
 

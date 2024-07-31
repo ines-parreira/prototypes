@@ -1,3 +1,4 @@
+import {Team} from '@gorgias/api-queries'
 import {ApiPaginationParams, OrderDirection} from 'models/api/types'
 
 export type ListParams = ApiPaginationParams & {
@@ -81,7 +82,7 @@ export type ViewDraft = {
     with_highlights: boolean
 }
 
-type SharedWith = {
+export type SharedWith = {
     id: number
     meta: Record<string, unknown>
     name: string
@@ -92,6 +93,6 @@ export type View = Omit<
     'shared_with_teams' | 'shared_with_users'
 > & {
     id: number
-    shared_with_teams?: SharedWith[]
+    shared_with_teams?: Pick<Team, 'id' | 'name' | 'decoration'>[]
     shared_with_users?: SharedWith[]
 }

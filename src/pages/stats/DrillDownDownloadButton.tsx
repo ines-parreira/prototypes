@@ -1,6 +1,7 @@
 import React from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
-import {useRunningJobs} from 'hooks/jobs/useRunningJobs'
+
+import {useRunningJobs} from 'jobs'
 import {useDrillDownQueryWithoutLimit} from 'hooks/reporting/useDrillDownData'
 import {UserRole} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'

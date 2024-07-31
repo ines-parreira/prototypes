@@ -20,6 +20,7 @@ import {
 } from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import {CancelToken} from 'axios'
+import {JobType} from '@gorgias/api-queries'
 
 import {useAppNode} from 'appNode'
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -29,7 +30,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useShortcuts from 'hooks/useShortcuts'
-import {JobType} from 'models/job/types'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -780,7 +780,7 @@ export const TicketListActions = ({
                     <PopoverBody>
                         <p>
                             Are you sure you want to delete {selectedCount}{' '}
-                            ticket{selectedCount > 1 && 's'}
+                            ticket{selectedCount && selectedCount > 1 && 's'}
                             {isActiveViewTrashView && ' forever'}?
                         </p>
                         <Button

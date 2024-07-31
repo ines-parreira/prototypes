@@ -4,7 +4,8 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
-import {useRunningJobs} from 'hooks/jobs/useRunningJobs'
+
+import {useRunningJobs} from 'jobs'
 import {ReportingGranularity} from 'models/reporting/types'
 import {user} from 'fixtures/users'
 
@@ -34,7 +35,7 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )
 
-jest.mock('hooks/jobs/useRunningJobs')
+jest.mock('jobs/useRunningJobs')
 const mockUseRunningJobs = assumeMock(useRunningJobs)
 
 describe('<DrillDownDownloadButton />', () => {

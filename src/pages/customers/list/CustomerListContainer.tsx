@@ -20,7 +20,7 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import CustomerForm from 'pages/customers/common/components/CustomerForm'
-import CustomerListActions from 'pages/customers/list/components/CustomerListActions'
+import CustomerListActions from 'pages/customers/list/CustomerListActions'
 
 export default function CustomerListContainer() {
     const dispatch = useAppDispatch()

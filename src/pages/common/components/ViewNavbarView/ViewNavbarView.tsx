@@ -14,6 +14,8 @@ import {MAX_TICKET_COUNT_PER_VIEW} from 'config/views'
 import {ViewType} from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
+import ViewNavbarViewEditor from 'pages/common/components/ViewNavbarView/ViewNavbarViewEditor'
+import css from 'pages/common/components/ViewNavbarView/ViewNavbarView.less'
 import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
 import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager/index'
@@ -26,9 +28,6 @@ import {
     makeGetViewsByType,
 } from 'state/views/selectors'
 import {getPluralObjectName} from 'utils'
-
-import ViewNavbarViewEditor from 'pages/common/components/ViewNavbarView/ViewNavbarViewEditor'
-import css from 'pages/common/components/ViewNavbarView/ViewNavbarView.less'
 
 const popupEnterMessage = 'Create, re-order & hide views'
 const popupLeaveMessage = 'Leave edit mode'
@@ -269,7 +268,9 @@ class ViewNavbarView extends Component<Props, State> {
                                                 }
                                             >
                                                 <ViewCount
-                                                    viewCount={viewCount}
+                                                    viewCount={
+                                                        viewCount ?? undefined
+                                                    }
                                                     viewId={view.get('id')}
                                                     isDeactivated={false}
                                                     objectName={objectName}

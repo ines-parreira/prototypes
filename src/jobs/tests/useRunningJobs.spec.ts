@@ -1,8 +1,9 @@
 import {useListJobs} from '@gorgias/api-queries'
 import {JobStatus} from '@gorgias/api-types'
 import {renderHook} from '@testing-library/react-hooks'
-import {useRunningJobs} from 'hooks/jobs/useRunningJobs'
+
 import {assumeMock} from 'utils/testing'
+import {useRunningJobs} from '../useRunningJobs'
 
 jest.mock('@gorgias/api-queries')
 const useListJobsMock = assumeMock(useListJobs)

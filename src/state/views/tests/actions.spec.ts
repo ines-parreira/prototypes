@@ -6,6 +6,7 @@ import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map, List} from 'immutable'
 import _range from 'lodash/range'
 import {waitFor} from '@testing-library/react'
+import {JobType} from '@gorgias/api-queries'
 
 import {baseView, getExpirationTimeForCount} from 'config/views'
 import {customer} from 'fixtures/customer'
@@ -16,7 +17,6 @@ import {
     searchCustomers,
     searchCustomersWithHighlights,
 } from 'models/customer/resources'
-import {JobType} from 'models/job/types'
 import {SEARCH_ENDPOINT} from 'models/search/resources'
 import {
     searchTickets,

@@ -29,12 +29,12 @@ type DeepPartial<T> = {
         : T[P]
 }
 
-// https://juhanajauhiainen.com/posts/how-to-type-an-object-with-exclusive-or-properties-in-typescript
 type AllKeys<T> = T extends unknown ? keyof T : never
-type Id<T> = T extends infer U ? {[K in keyof U]: U[K]} : never
-type _ExclusifyUnion<T, K extends PropertyKey> = T extends unknown
-    ? Id<T & Partial<Record<Exclude<K, keyof T>, never>>>
-    : never
-type ExclusifyUnion<T> = _ExclusifyUnion<T, AllKeys<T>>
 
 type UnionPick<T, K extends keyof T> = T extends unknown ? Pick<T, K> : never
+
+type PickOne<T, F extends keyof T> = Pick<T, F> & {
+    [K in keyof Omit<T, F>]?: never
+}
+
+type XOR<T, K = keyof T> = K extends keyof T ? PickOne<T, K> : never

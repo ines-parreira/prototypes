@@ -882,4 +882,43 @@ describe('selectors', () => {
             expect(selectors.getViewPlainJS(state, '22')).toEqual(null)
         })
     })
+
+    describe('getViewCount()', () => {
+        const views = {
+            '2': {
+                id: 2,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Public,
+            },
+            '88': {
+                id: 88,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Public,
+            },
+            '1234': {
+                id: 123,
+                type: ViewType.CustomerList,
+                visibility: ViewVisibility.Private,
+            },
+        }
+        const counts = {
+            2: 10,
+            88: 0,
+        }
+
+        const state = {
+            views: fromJS({
+                items: views,
+                counts,
+            }),
+        } as RootState
+
+        it('should return the count matching the view', () => {
+            expect(selectors.getViewCount('88')(state)).toEqual(counts['88'])
+        })
+
+        it('should return null when no count matches the view', () => {
+            expect(selectors.getViewCount('1234')(state)).toEqual(null)
+        })
+    })
 })

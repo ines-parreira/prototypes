@@ -20,7 +20,7 @@ describe('useSelection', () => {
     it('should return a map of selected tickets and a function to select tickets', () => {
         const {result} = renderHook(() => useSelection(dummyTickets))
 
-        expect(result.current).toEqual({
+        expect(result.current).toMatchObject({
             onSelect: expect.any(Function),
             selectedTickets: {},
         })

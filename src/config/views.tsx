@@ -553,7 +553,7 @@ export const getConfigByType = (type: ViewType) => {
 /**
  * Return the expiration time for a given view count. 1min per 100 tickets. 30s under 100 tickets.
  */
-export const getExpirationTimeForCount = (count: number) =>
+export const getExpirationTimeForCount = (count: number | null) =>
     count && count >= 100 ? Math.ceil((count / 100) * 60) : 30
 
 export const getTicketViewField = (fieldName: ViewField): Map<any, any> => {

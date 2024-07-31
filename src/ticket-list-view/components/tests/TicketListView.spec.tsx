@@ -1,19 +1,26 @@
 import {fireEvent, render} from '@testing-library/react'
 import React, {ComponentProps, Fragment, ReactElement, ReactNode} from 'react'
 import {Virtuoso} from 'react-virtuoso'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
 
 import {useFlag} from 'common/flags'
 import {ticket} from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
+import {RootState, StoreDispatch} from 'state/types'
 import {setViewEditMode} from 'state/views/actions'
+import useSelection from 'ticket-list-view/hooks/useSelection'
 import useTickets from 'ticket-list-view/hooks/useTickets'
 import {TicketPartial} from 'ticket-list-view/types'
+import {assumeMock} from 'utils/testing'
 
-import useSelection from '../../hooks/useSelection'
 import Ticket from '../Ticket'
 import TicketListView, {listInfoProps} from '../TicketListView'
+
+jest.mock('react-virtuoso', () => ({Virtuoso: jest.fn()}))
+const VirtuosoMock = Virtuoso as jest.Mock
 
 jest.mock('common/flags', () => ({useFlag: jest.fn()}))
 const useFlagMock = useFlag as jest.Mock
@@ -21,25 +28,38 @@ const useFlagMock = useFlag as jest.Mock
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
 
-jest.mock('hooks/useAppSelector')
-const useAppSelectorMock = useAppSelector as jest.Mock
-
-jest.mock('react-virtuoso', () => ({Virtuoso: jest.fn()}))
-const VirtuosoMock = Virtuoso as jest.Mock
+jest.mock('pages/tickets/common/macros/MacroContainer', () => () => (
+    <div>MacroContainer</div>
+))
 
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const mockUseSplitTicketViewMock = useSplitTicketView as jest.Mock
 
-jest.mock('../../hooks/useSelection')
-const useSelectionMock = useSelection as jest.Mock
-
-jest.mock('../../hooks/useTickets')
+jest.mock('ticket-list-view/hooks/useTickets')
 const useTicketsMock = useTickets as jest.Mock
+
+jest.mock('ticket-list-view/hooks/useSelection')
+const useSelectionMock = assumeMock(useSelection)
 
 jest.mock('../Ticket', () => jest.fn())
 const TicketMock = Ticket as jest.Mock
 
 jest.mock('../InvalidFiltersAction', () => () => <div>Fix filters</div>)
+jest.mock('../BulkActions', () => () => <div>BulkActions</div>)
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+
+const view = {
+    id: 123,
+    name: 'view name',
+}
+const defaultState: Partial<RootState> = {
+    views: fromJS({
+        active: view,
+        items: [view],
+    }),
+}
+const store = mockStore(defaultState)
 
 describe('<TicketListView />', () => {
     let loadMore: jest.Mock
@@ -54,12 +74,10 @@ describe('<TicketListView />', () => {
         useFlagMock.mockReturnValue(false)
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
-        useAppSelectorMock.mockReturnValue({
-            name: 'view name',
-        })
         useSelectionMock.mockReturnValue({
             onSelect: jest.fn(),
             selectedTickets: {},
+            clear: jest.fn(),
         })
         VirtuosoMock.mockImplementation(
             ({
@@ -126,25 +144,43 @@ describe('<TicketListView />', () => {
             setIsEnabled,
             setShouldRedirectToSplitView,
         })
+        useSelectionMock.mockReturnValue({
+            onSelect: jest.fn(),
+            selectedTickets: {},
+            clear: jest.fn(),
+        })
     })
 
     it('should pause updates when there are selected tickets', () => {
         useSelectionMock.mockReturnValue({
             onSelect: jest.fn(),
             selectedTickets: {1: true},
+            clear: jest.fn(),
         })
-        render(<TicketListView viewId={123} />)
+        render(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
 
         expect(pauseUpdates).toHaveBeenCalledWith()
     })
 
     it('should resume updates when there are no selected tickets', () => {
-        render(<TicketListView viewId={123} />)
+        render(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
         expect(resumeUpdates).toHaveBeenCalledWith()
     })
 
     it('should display a list of tickets', () => {
-        const {getByText} = render(<TicketListView viewId={123} />)
+        const {getByText} = render(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
 
         expect(getByText(ticket.id)).toBeInTheDocument()
     })
@@ -152,19 +188,31 @@ describe('<TicketListView />', () => {
     it('should display a list of tickets with the new design', () => {
         useFlagMock.mockReturnValue(true)
 
-        const {getByText} = render(<TicketListView viewId={123} />)
+        const {getByText} = render(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
 
         expect(getByText(ticket.id)).toBeInTheDocument()
     })
 
     it('should register the scrolling element', () => {
-        render(<TicketListView viewId={123} />)
+        render(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
 
         expect(setElement).toHaveBeenCalledWith(expect.any(HTMLElement))
     })
 
     it('should call loadMore when the end of the list is reached', () => {
-        render(<TicketListView viewId={123} />)
+        render(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
         const [[{endReached}]] = VirtuosoMock.mock.calls as [
             [{endReached: () => void}]
         ]
@@ -191,7 +239,11 @@ describe('<TicketListView />', () => {
             ticketIds: {current: [152]},
         })
 
-        const {getByText} = render(<TicketListView viewId={123} />)
+        const {getByText} = render(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
 
         expect(getByText('true')).toBeInTheDocument()
     })
@@ -236,7 +288,11 @@ describe('<TicketListView />', () => {
             ticketIds: {current: [152, 456]},
         })
 
-        const {rerender, getByText} = render(<TicketListView viewId={123} />)
+        const {rerender, getByText} = render(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
         useTicketsMock.mockReturnValue({
             loadMore,
             pauseUpdates,
@@ -247,8 +303,16 @@ describe('<TicketListView />', () => {
             newTickets: [],
             ticketIds: {current: [152]},
         })
-        rerender(<TicketListView viewId={123} />)
-        rerender(<TicketListView viewId={123} />)
+        rerender(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
+        rerender(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
 
         expect(getByText('true')).toBeInTheDocument()
     })
@@ -266,7 +330,11 @@ describe('<TicketListView />', () => {
             initialLoaded: true,
         })
 
-        const {getByText} = render(<TicketListView viewId={123} />)
+        const {getByText} = render(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
 
         expect(getByText(listInfoProps.DEFAULT.text)).toBeInTheDocument()
         expect(getByText(listInfoProps.DEFAULT.subText)).toBeInTheDocument()
@@ -284,12 +352,23 @@ describe('<TicketListView />', () => {
             ticketIds: {current: []},
             initialLoaded: true,
         })
-        useAppSelectorMock.mockReturnValue({
-            name: 'view name',
-            deactivated_datetime: '2021-01-01T00:00:00Z',
-        })
 
-        const {getByText} = render(<TicketListView viewId={123} />)
+        const deactivatedView = {
+            ...view,
+            deactivated_datetime: '2021-01-01T00:00:00Z',
+        }
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    views: fromJS({
+                        active: deactivatedView,
+                        items: [deactivatedView],
+                    }),
+                })}
+            >
+                <TicketListView viewId={123} />
+            </Provider>
+        )
 
         expect(
             getByText(listInfoProps.INVALID_FILTERS.text)
@@ -315,9 +394,18 @@ describe('<TicketListView />', () => {
             ticketIds: {current: []},
             initialLoaded: true,
         })
-        useAppSelectorMock.mockReturnValue(null)
 
-        const {getByText} = render(<TicketListView viewId={123} />)
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    views: fromJS({
+                        active: null,
+                    }),
+                })}
+            >
+                <TicketListView viewId={123} />
+            </Provider>
+        )
 
         expect(getByText(listInfoProps.INACCESSIBLE.text)).toBeInTheDocument()
         expect(
@@ -326,13 +414,55 @@ describe('<TicketListView />', () => {
     })
 
     it('should redirect to edition view', () => {
-        useAppSelectorMock.mockReturnValue(null)
-
-        const {getByText} = render(<TicketListView viewId={123} />)
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    views: fromJS({
+                        active: null,
+                    }),
+                })}
+            >
+                <TicketListView viewId={123} />
+            </Provider>
+        )
         fireEvent.click(getByText('tune'))
 
         expect(dispatch).toHaveBeenCalledWith(setViewEditMode())
         expect(setIsEnabled).toHaveBeenCalledWith(false)
         expect(setShouldRedirectToSplitView).toHaveBeenCalledWith(true)
+    })
+
+    it('should display bulk actions', () => {
+        useFlagMock.mockReturnValue(true)
+
+        const {getByText} = render(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
+
+        expect(getByText('BulkActions')).toBeInTheDocument()
+    })
+
+    it('should hide bulk actions for view with count 0', () => {
+        useFlagMock.mockReturnValue(true)
+
+        const {queryByText} = render(
+            <Provider
+                store={mockStore({
+                    views: fromJS({
+                        active: view,
+                        items: [view],
+                        counts: {
+                            [view.id]: 0,
+                        },
+                    }),
+                })}
+            >
+                <TicketListView viewId={123} />
+            </Provider>
+        )
+
+        expect(queryByText('BulkActions')).not.toBeInTheDocument()
     })
 })

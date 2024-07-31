@@ -59,11 +59,14 @@ export default function useSelection(tickets: TicketSummary[]) {
         [tickets]
     )
 
+    const clear = useCallback(() => setSelectedTickets({}), [])
+
     return useMemo(
         () => ({
             selectedTickets,
             onSelect: handleSelect,
+            clear,
         }),
-        [handleSelect, selectedTickets]
+        [handleSelect, selectedTickets, clear]
     )
 }
