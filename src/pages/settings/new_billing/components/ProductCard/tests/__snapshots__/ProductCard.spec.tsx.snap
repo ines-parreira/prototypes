@@ -32,6 +32,7 @@ exports[`ProductCard should render a Helpdesk ProductCard component 1`] = `
           $60
         </b>
         /
+        month
       </div>
     </div>
     <div
@@ -81,8 +82,7 @@ exports[`ProductCard should render a Helpdesk ProductCard component 1`] = `
         <div
           class="extraCost"
         >
-          $
-          0.00
+          $0
            
           extra cost
         </div>

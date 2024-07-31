@@ -3,10 +3,7 @@ import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
 import {PlanInterval, Plan, ProductType} from 'models/billing/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {
-    formatAmount,
-    formatNumTickets,
-} from 'pages/settings/new_billing/utils/formatAmount'
+import {formatNumTickets} from 'pages/settings/new_billing/utils/formatAmount'
 import {
     ENTERPRISE_PRICE_ID,
     PRODUCT_INFO,
@@ -18,7 +15,7 @@ import {fetchCreditCard} from 'state/billing/actions'
 import SummaryPaymentSection from 'pages/settings/new_billing/components/SummaryPaymentSection/SummaryPaymentSection'
 
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
-import {getProductLabel} from 'models/billing/utils'
+import {getPlanPriceFormatted, getProductLabel} from 'models/billing/utils'
 import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription.less'
 import CounterText from 'pages/settings/new_billing/components/CounterText'
 import {ProductSubscriptionDescription} from 'pages/settings/new_billing/types'
@@ -183,7 +180,7 @@ const PlanSubscriptionDescription = ({
                         <div className={css.counter} ref={ref}>
                             <div>
                                 <CounterText
-                                    price={selectedPlan}
+                                    plan={selectedPlan}
                                     type={productType}
                                     interval={interval}
                                 />
@@ -208,11 +205,7 @@ const PlanSubscriptionDescription = ({
                             </div>
                         ) : (
                             <strong>
-                                {formatAmount(
-                                    (selectedPlan?.amount ?? 0) / 100,
-                                    null
-                                )}
-                                /{interval}
+                                {getPlanPriceFormatted(selectedPlan)}/{interval}
                             </strong>
                         )}
                     </div>

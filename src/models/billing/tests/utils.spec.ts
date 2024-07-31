@@ -13,6 +13,9 @@ import {
     getCheapestPrice,
     getFormattedAmount,
     getFullPrice,
+    getOverageUnitPriceFormatted,
+    getPlanPriceFormatted,
+    getPlanUnitsPerCadence,
     getProductLabel,
     isAutomate,
     isHelpdesk,
@@ -100,4 +103,39 @@ describe('getProductLabel', () => {
             expect(getProductLabel(plan)).toBe(expectedResult)
         }
     )
+})
+
+describe('getPlanPriceFormatted', () => {
+    it('returns the plan price formatted', () => {
+        expect(getPlanPriceFormatted(basicMonthlyHelpdeskPlan)).toEqual('$60')
+    })
+
+    it('returns the price formatted even with no plan', () => {
+        expect(getPlanPriceFormatted(null)).toEqual('$0')
+        expect(getPlanPriceFormatted(undefined)).toEqual('$0')
+    })
+})
+
+describe('getOverageUnitPriceFormatted', () => {
+    it('returns the overage unit price formatted', () => {
+        expect(getOverageUnitPriceFormatted(basicMonthlyHelpdeskPlan)).toEqual(
+            '$0.40'
+        )
+    })
+
+    it('returns a overage unit price formatted even if not plan', () => {
+        expect(getOverageUnitPriceFormatted(null)).toEqual('$0')
+        expect(getOverageUnitPriceFormatted(undefined)).toEqual('$0')
+    })
+})
+
+describe('getPlanUnitsPerCadence', () => {
+    it('returns the correct string', () => {
+        expect(getPlanUnitsPerCadence(basicMonthlyHelpdeskPlan)).toEqual(
+            '300 tickets/month'
+        )
+        expect(getPlanUnitsPerCadence(legacyBasicAutomatePlan)).toEqual(
+            '0 extra for helpdesk tickets overages'
+        )
+    })
 })

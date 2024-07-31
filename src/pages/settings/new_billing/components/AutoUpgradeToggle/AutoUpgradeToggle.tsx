@@ -11,10 +11,13 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import Modal from 'pages/common/components/modal/Modal'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {ENTERPRISE_PRICE_ID, PRODUCT_INFO} from '../../constants'
+import {
+    getPlanPriceFormatted,
+    getPlanUnitsPerCadence,
+} from 'models/billing/utils'
+import {ENTERPRISE_PRICE_ID} from '../../constants'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {getNextTier} from '../../utils/getNextTier'
-import {formatAmount} from '../../utils/formatAmount'
 import css from './AutoUpgradeToggle.less'
 
 export type AutoUpgradeToggleProps = {
@@ -43,17 +46,12 @@ const AutoUpgradeToggle = ({
     const {nextTierAmount, nextTierName} = useMemo(() => {
         if (nextTier) {
             return {
-                nextTierAmount: formatAmount(
-                    nextTier.amount / 100,
-                    nextTier.currency
-                ),
-                nextTierName: `${nextTier.num_quota_tickets || 0} ${
-                    PRODUCT_INFO[type].counter
-                }/${nextTier.interval}`,
+                nextTierAmount: getPlanPriceFormatted(nextTier),
+                nextTierName: getPlanUnitsPerCadence(nextTier),
             }
         }
         return {nextTierAmount: null, nextTierName: null}
-    }, [nextTier, type])
+    }, [nextTier])
 
     const isEnterprisePlan =
         selectedPlan.plan?.price_id === ENTERPRISE_PRICE_ID || !nextTier

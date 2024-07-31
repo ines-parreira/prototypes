@@ -1,10 +1,10 @@
 import React, {useMemo} from 'react'
 import {Plan, ProductType} from 'models/billing/types'
+import {getPlanPrice, getPlanPriceFormatted} from 'models/billing/utils'
 import SummaryBody from '../UI/SummaryBody'
 import SummaryHeader from '../UI/SummaryHeader'
 import {SummaryItemData} from '../UI/types'
 import {PRODUCT_INFO} from '../../../constants'
-import {formatAmount} from '../../../utils/formatAmount'
 import {SubscriptionProducts} from './types'
 import css from './CancellationSummary.less'
 
@@ -32,7 +32,7 @@ const CancellationSummary = ({
                 const plan = subscriptionProducts[productType] as Plan
 
                 if (!toBeRemoved) {
-                    total += (plan.amount | 0) / 100
+                    total += getPlanPrice(plan)
                 }
 
                 return {
@@ -44,7 +44,7 @@ const CancellationSummary = ({
                     interval: plan.interval,
                     quotaAmount: plan.num_quota_tickets || 0,
                     counter: PRODUCT_INFO[productType].counter,
-                    amount: formatAmount(plan.amount / 100, plan.currency),
+                    amount: getPlanPriceFormatted(plan),
                     strickenOut: toBeRemoved,
                 }
             })

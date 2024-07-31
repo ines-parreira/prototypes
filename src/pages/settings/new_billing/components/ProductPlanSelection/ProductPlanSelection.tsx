@@ -350,7 +350,7 @@ const ProductPlanSelection = ({
                         <div className={css.counter}>
                             <div>
                                 <CounterText
-                                    price={selectedPlan}
+                                    plan={selectedPlan}
                                     type={type}
                                     interval={interval}
                                 />

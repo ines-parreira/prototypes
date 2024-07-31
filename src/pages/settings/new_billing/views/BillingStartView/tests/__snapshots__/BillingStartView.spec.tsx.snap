@@ -318,6 +318,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
                   $30
                 </b>
                 /
+                month
               </div>
             </div>
             <div

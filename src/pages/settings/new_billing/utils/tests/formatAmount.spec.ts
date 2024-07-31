@@ -14,6 +14,24 @@ describe('formatAmount', () => {
         const formatted = formatAmount(amount, currency)
         expect(formatted).toBe('$2,000')
     })
+
+    it('should format amount with 2 decimals if a number with 2 decimals is provided', () => {
+        const amount = 1234.56
+        const formatted = formatAmount(amount)
+        expect(formatted).toBe('$1,234.56')
+    })
+
+    it('should format amount with 2 decimals if a number with 1 decimal is provided', () => {
+        const amount = 1234.5
+        const formatted = formatAmount(amount)
+        expect(formatted).toBe('$1,234.50')
+    })
+
+    it('should format amount with 0 decimals if a number with decimal 0 is provided', () => {
+        const amount = 1234.0
+        const formatted = formatAmount(amount)
+        expect(formatted).toBe('$1,234')
+    })
 })
 
 describe('formatNumTickets', () => {

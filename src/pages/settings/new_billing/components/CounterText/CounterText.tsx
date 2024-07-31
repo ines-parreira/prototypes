@@ -1,34 +1,36 @@
 import React from 'react'
-import {isLegacyAutomate, isTrial} from 'models/billing/utils'
+import {
+    getOverageUnitPriceFormatted,
+    getPlanPriceFormatted,
+    isLegacyAutomate,
+    isTrial,
+} from 'models/billing/utils'
 import {PRODUCT_INFO} from 'pages/settings/new_billing/constants'
 import {Plan, ProductType} from 'models/billing/types'
 
 export type CounterTextProps = {
-    price: Plan | undefined
+    plan: Plan | undefined
     type: ProductType
     interval: string
 }
 
-const CounterText = ({price, type, interval}: CounterTextProps) => {
+const CounterText = ({plan, type, interval}: CounterTextProps) => {
     return (
         <>
-            {isTrial(price) && !isLegacyAutomate(price) && (
+            {isTrial(plan) && !isLegacyAutomate(plan) && (
                 <>
-                    <strong>
-                        ${(price?.extra_ticket_cost ?? 0).toFixed(2)}
-                    </strong>{' '}
+                    <strong>{getOverageUnitPriceFormatted(plan)}</strong>{' '}
                     {PRODUCT_INFO[type].perTicket}
                 </>
             )}
 
-            {!isTrial(price) && isLegacyAutomate(price) && (
+            {!isTrial(plan) && isLegacyAutomate(plan) && (
                 <>
-                    <strong>${((price?.amount ?? 0) / 100).toFixed(2)}</strong>{' '}
-                    /{interval}
+                    <strong>{getPlanPriceFormatted(plan)}</strong> /{interval}
                 </>
             )}
 
-            {!isTrial(price) && !isLegacyAutomate(price) && (
+            {!isTrial(plan) && !isLegacyAutomate(plan) && (
                 <>
                     {PRODUCT_INFO[type].counter}/{interval}
                 </>

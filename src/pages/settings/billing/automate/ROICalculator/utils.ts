@@ -1,4 +1,5 @@
 import {AutomatePlan} from 'models/billing/types'
+import {getPlanPrice} from 'models/billing/utils'
 
 export const convertSecondsToHours = (
     seconds?: string | number | null
@@ -77,18 +78,18 @@ export const getFirstResponseTimeWithAutomate = (val: string | number) => {
 }
 
 export const getAutomateSubscriptionPrice = (
-    automateSubscriptionPrices: AutomatePlan[],
+    automatePlans: AutomatePlan[],
     numberOfClosedTickets: number
 ) => {
     const numQuota = numberOfClosedTickets * 0.3
-    const sortedPrices = automateSubscriptionPrices.sort(
+    const sortedPlans = automatePlans.sort(
         (a, b) => (a?.num_quota_tickets || 0) - (b?.num_quota_tickets || 0)
     )
-    const firstPriceWithHigherQuota = sortedPrices.find(
-        (price) =>
-            price?.num_quota_tickets !== null &&
-            price?.num_quota_tickets > numQuota
+    const firstPlanWithHigherQuota = sortedPlans.find(
+        (plan) =>
+            plan?.num_quota_tickets !== null &&
+            plan?.num_quota_tickets > numQuota
     )
 
-    return (firstPriceWithHigherQuota?.amount ?? 0) / 100
+    return getPlanPrice(firstPlanWithHigherQuota)
 }

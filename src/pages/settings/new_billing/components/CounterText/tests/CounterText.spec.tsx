@@ -12,14 +12,14 @@ import {PRODUCT_INFO} from 'pages/settings/new_billing/constants'
 describe('CounterText', () => {
     it('should render the trial price text', () => {
         const props = {
-            price: convertPlan0,
+            plan: convertPlan0,
             type: ProductType.Convert,
             interval: PlanInterval.Month,
         }
 
         const {getByText} = render(<CounterText {...props} />)
 
-        expect(getByText('$1.00')).toBeInTheDocument()
+        expect(getByText('$1')).toBeInTheDocument()
         expect(getByText('per click')).toBeInTheDocument()
     })
 
@@ -27,14 +27,14 @@ describe('CounterText', () => {
         const interval = PlanInterval.Month
 
         const props = {
-            price: legacyBasicAutomatePlan,
+            plan: legacyBasicAutomatePlan,
             type: ProductType.Automation,
             interval: interval,
         }
 
         const {getByText} = render(<CounterText {...props} />)
 
-        expect(getByText('$15.00')).toBeInTheDocument()
+        expect(getByText('$15')).toBeInTheDocument()
         expect(getByText(interval, {exact: false})).toBeInTheDocument()
     })
 
@@ -43,7 +43,7 @@ describe('CounterText', () => {
         const interval = PlanInterval.Year
 
         const props = {
-            price: basicMonthlyAutomationPlan,
+            plan: basicMonthlyAutomationPlan,
             type: type,
             interval: interval,
         }

@@ -80,7 +80,7 @@ const ROICalculator = () => {
     const costPerAutomatedInteraction = useGetCostPerAutomatedInteraction()
     const costPerBillableTicket = useGetCostPerBillableTicket()
 
-    const automationPrices = useAppSelector(getAvailableAutomatePlans)
+    const availableAutomatePlans = useAppSelector(getAvailableAutomatePlans)
 
     const [metricsType, setMetricsType] = useState('monthly_support_tickets')
     const [salaryType, setSalaryType] = useState('hourly_rate')
@@ -208,12 +208,12 @@ const ROICalculator = () => {
 
         setNumberOfTickets(numberOfTickets)
 
-        const automateSubscriptionPrices = automationPrices.filter(
+        const availableAutomateMonthlyPlans = availableAutomatePlans.filter(
             (plan) => plan.interval === PlanInterval.Month
         )
 
         const automateSubscriptionPrice = getAutomateSubscriptionPrice(
-            automateSubscriptionPrices,
+            availableAutomateMonthlyPlans,
             numberOfTickets
         )
 
@@ -256,7 +256,7 @@ const ROICalculator = () => {
         costPerBillableTicket,
         salaryType,
         salaryValue,
-        automationPrices,
+        availableAutomatePlans,
         ticketsClosedPerHour,
     ])
 

@@ -10,6 +10,7 @@ import {
 import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 
 import {useReactivateTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
+import {formatAmount} from 'pages/settings/new_billing/utils/formatAmount'
 import AddSalesCouponModal from '../AddSalesCouponModal'
 import {DATE_FORMAT} from '../../constants'
 import css from './UpcomingInvoiceCard.less'
@@ -180,10 +181,14 @@ export default function UpcomingInvoiceCard({
                     currentHelpdeskAndAutomateCoupon ? (
                         <>
                             <span className={css.subtotal}>
-                                ${upcomingInvoice.subtotal_decimal}
+                                {formatAmount(
+                                    upcomingInvoice.subtotal_in_cents / 100
+                                )}
                             </span>{' '}
                             <span className={css.total}>
-                                ${upcomingInvoice.total_decimal}
+                                {formatAmount(
+                                    upcomingInvoice.total_in_cents / 100
+                                )}
                             </span>
                             {' with '}
                             <span className={css.coupon}>
@@ -194,17 +199,21 @@ export default function UpcomingInvoiceCard({
                     ) : (
                         <>
                             <span className={css.subtotal}>
-                                ${upcomingInvoice.subtotal_decimal}
+                                {formatAmount(
+                                    upcomingInvoice.subtotal_in_cents / 100
+                                )}
                             </span>{' '}
                             <span className={css.total}>
-                                ${upcomingInvoice.total_decimal}
+                                {formatAmount(
+                                    upcomingInvoice.total_in_cents / 100
+                                )}
                             </span>
                         </>
                     )
                 ) : (
                     <>
                         <span className={css.total}>
-                            ${upcomingInvoice.total_decimal}
+                            {formatAmount(upcomingInvoice.total_in_cents / 100)}
                         </span>
                         {applyCouponButton}
                     </>

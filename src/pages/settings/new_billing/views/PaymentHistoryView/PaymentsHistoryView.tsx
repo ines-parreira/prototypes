@@ -18,6 +18,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 
+import {formatAmount} from 'pages/settings/new_billing/utils/formatAmount'
 import css from './PaymentHistoryView.less'
 
 const PaymentsHistoryView = () => {
@@ -150,9 +151,9 @@ const PaymentsHistoryView = () => {
                                     >
                                         {moment.unix(invoice.date).format('LL')}
                                     </td>
-                                    <td className="align-middle">{`$${(
-                                        invoice.amount_due / 100
-                                    ).toFixed(2)}`}</td>
+                                    <td className="align-middle">
+                                        {formatAmount(invoice.amount_due / 100)}
+                                    </td>
                                     <td
                                         className={classNames(
                                             'align-middle',

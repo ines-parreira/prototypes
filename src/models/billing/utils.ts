@@ -185,3 +185,24 @@ export function getPlanDescription(plan: Plan): string {
 
     return `${_capitalize(planName)}${amountPerCadence}, ${unitsPerCadence}`
 }
+
+export function getPlanPrice(plan: Plan | undefined | null): number {
+    return (plan?.amount ?? 0) / 100
+}
+
+/**
+ * @description
+ *    Returns a string such as
+ *    "$360" or "$360.10" when the number has decimals or
+ *    "$36,000" when the number is with thousands
+ *
+ * @param plan Plan
+ * @returns string
+ */
+export function getPlanPriceFormatted(plan: Plan | undefined | null): string {
+    return formatAmount(getPlanPrice(plan), plan?.currency ?? 'usd')
+}
+
+export function getOverageUnitPriceFormatted(plan: Plan | undefined | null) {
+    return formatAmount(plan?.extra_ticket_cost ?? 0)
+}

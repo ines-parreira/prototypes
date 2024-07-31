@@ -3,7 +3,12 @@ import React, {useMemo} from 'react'
 import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
 import {Plan, PlanInterval, ProductType} from 'models/billing/types'
-import {getProductLabel, isTrial} from 'models/billing/utils'
+import {
+    getOverageUnitPriceFormatted,
+    getPlanPrice,
+    getProductLabel,
+    isTrial,
+} from 'models/billing/utils'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {ENTERPRISE_PRICE_ID, PRODUCT_INFO} from '../../constants'
 import {formatAmount} from '../../utils/formatAmount'
@@ -37,14 +42,14 @@ const SummaryItem = ({
         )
         if (!selectedPlan.isSelected || !_selectedPlan) {
             return {
-                price: (currentPlan?.amount ?? 0) / 100,
+                price: getPlanPrice(currentPlan),
                 currency: null,
                 name: null,
                 tickets: currentPlan?.num_quota_tickets ?? 0,
             }
         }
         return {
-            price: _selectedPlan.amount / 100,
+            price: getPlanPrice(_selectedPlan),
             currency: _selectedPlan.currency,
             name: _selectedPlan.name,
             tickets: _selectedPlan.num_quota_tickets ?? 0,
@@ -64,7 +69,7 @@ const SummaryItem = ({
         if (!oldPlan) {
             return null
         }
-        return oldPlan.amount / 100
+        return getPlanPrice(oldPlan)
     }, [availablePlans, currentPlan, selectedPlan])
 
     const description = useMemo(() => {
@@ -117,12 +122,7 @@ const SummaryItem = ({
                     )}
                 {selectedPlan.plan && isTrial(selectedPlan.plan) ? (
                     <>
-                        <b>
-                            $
-                            {(selectedPlan.plan.extra_ticket_cost ?? 0).toFixed(
-                                2
-                            )}
-                        </b>{' '}
+                        <b>{getOverageUnitPriceFormatted(selectedPlan.plan)}</b>{' '}
                         {PRODUCT_INFO[productType].perTicket}
                     </>
                 ) : (

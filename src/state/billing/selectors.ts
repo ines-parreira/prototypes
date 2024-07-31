@@ -34,7 +34,7 @@ import {RootState} from '../types'
 
 import {
     BillingImmutableState,
-    BillingState,
+    ReduxBillingState,
     CurrentProductsUsages,
 } from './types'
 
@@ -45,7 +45,7 @@ export const DEPRECATED_getBillingState = (
 export const getBillingState = createSelector(
     DEPRECATED_getBillingState,
     (billingState) => {
-        return billingState.toJS() as BillingState
+        return billingState.toJS() as ReduxBillingState
     }
 )
 

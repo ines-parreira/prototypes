@@ -18,6 +18,8 @@ import {
     isEnterprise,
     isTrial,
     isConvert,
+    getOverageUnitPriceFormatted,
+    getPlanPriceFormatted,
 } from 'models/billing/utils'
 import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge/Badge'
@@ -72,34 +74,15 @@ const ProductCard = ({
         }
     }, [usage, plan])
 
-    const {isActive, price, currency, planName} = useMemo(() => {
-        if (!plan) {
-            return {
-                isActive: false,
-                price: null,
-                currency: null,
-                planName: null,
-            }
-        }
-        return {
-            isActive: !!plan,
-            price: plan.amount / 100,
-            currency: plan.currency,
-            planName: plan.name,
-        }
-    }, [plan])
-
     const currentStatus = useMemo(() => {
-        if (!isActive) {
+        if (!plan) {
             return null
         }
 
         if (plan && isTrial(plan)) {
             return (
                 <>
-                    <strong>
-                        ${(plan?.extra_ticket_cost ?? 0).toFixed(2)}
-                    </strong>{' '}
+                    <strong>{getOverageUnitPriceFormatted(plan)}</strong>{' '}
                     {PRODUCT_INFO[type].perTicket}
                 </>
             )
@@ -107,11 +90,11 @@ const ProductCard = ({
 
         return (
             <>
-                {type === ProductType.Helpdesk && <>{planName} - </>}
-                <b>{formatAmount(price ?? 0, currency)}</b>/{interval}
+                {type === ProductType.Helpdesk && <>{plan.name} - </>}
+                <b>{getPlanPriceFormatted(plan)}</b>/{plan.interval}
             </>
         )
-    }, [isActive, plan, type, planName, price, currency, interval])
+    }, [plan, type])
 
     const subscribeContainer = useMemo(() => {
         return (
@@ -120,11 +103,7 @@ const ProductCard = ({
                     <div>
                         Starting at{' '}
                         <b>
-                            {formatAmount(
-                                (cheapestPlanByProduct[type]?.amount ?? 0) /
-                                    100,
-                                currency
-                            )}
+                            {getPlanPriceFormatted(cheapestPlanByProduct[type])}
                         </b>
                         /{interval}
                     </div>
@@ -162,7 +141,6 @@ const ProductCard = ({
     }, [
         cheapestPlanByProduct,
         type,
-        currency,
         interval,
         history,
         isDisabled,
@@ -230,9 +208,8 @@ const ProductCard = ({
 
         return (
             <div className={css.extraCost}>
-                $
-                {((usage?.data.extra_tickets_cost_in_cents ?? 0) / 100).toFixed(
-                    2
+                {formatAmount(
+                    (usage?.data.extra_tickets_cost_in_cents ?? 0) / 100
                 )}{' '}
                 extra cost
             </div>
@@ -245,13 +222,13 @@ const ProductCard = ({
                 <div className={css.title}>
                     <i
                         className={classNames('material-icons', {
-                            [css.activeIcon]: isActive,
+                            [css.activeIcon]: !!plan,
                         })}
                     >
                         {PRODUCT_INFO[type].icon}
                     </i>
                     <div>{PRODUCT_INFO[type].title}</div>
-                    {isActive ? (
+                    {!!plan ? (
                         <Badge text="Active" type={BadgeType.Success} />
                     ) : (
                         <Badge text="Inactive" type={BadgeType.Info} />
@@ -285,9 +262,9 @@ const ProductCard = ({
                 </div>
             </div>
             <div className={css.footer}>
-                <div>{isActive ? updateContainer : subscribeContainer}</div>
+                <div>{!!plan ? updateContainer : subscribeContainer}</div>
                 <div>
-                    {isActive && counter}
+                    {!!plan && counter}
 
                     {plan && isConvert(plan) && !isEnterprise(plan) ? (
                         <div className={css.autoUpgradeLabel}>
@@ -302,7 +279,7 @@ const ProductCard = ({
                             </a>
                         </div>
                     ) : (
-                        <>{isActive && extraCost}</>
+                        <>{!!plan && extraCost}</>
                     )}
                 </div>
             </div>

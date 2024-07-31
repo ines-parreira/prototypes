@@ -105,7 +105,7 @@ export type BillingImmutableState = Map<any, any>
 
 export type BillingProducts = Product[]
 
-export type BillingState = {
+export type ReduxBillingState = {
     contact?: BillingContact
     products: BillingProducts
     invoices: Invoice[]
