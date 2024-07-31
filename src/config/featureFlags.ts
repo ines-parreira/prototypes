@@ -51,6 +51,7 @@ export enum FeatureFlagKey {
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ContactFormNewEntrypointView = 'contact-form-new-entrypoint-view',
     ConvertUniqueDiscountCodes = 'convert-unique-discount-codes',
+    ConvertABVariants = 'convert-ab-variants',
     CustomerTimelineButton = 'customer-timeline-button',
     DecoupleContactForm = 'decouple-contact-form',
     EarlyAdopter = 'early-adopter',
