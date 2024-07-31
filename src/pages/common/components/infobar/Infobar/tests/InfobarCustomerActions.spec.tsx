@@ -1,8 +1,22 @@
-import {render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
+import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
+import {SegmentEvent, logEvent} from 'common/segment'
 import InfobarCustomerActions from '../InfobarCustomerActions'
+
+jest.mock('utils', () => ({
+    isCurrentlyOnTicket: (ticketId: Maybe<string | number>) => !!ticketId,
+}))
+
+jest.mock(
+    'common/segment',
+    () =>
+        ({
+            ...jest.requireActual('common/segment'),
+            logEvent: jest.fn(),
+        } as Record<string, unknown>)
+)
 
 const commonProps: ComponentProps<typeof InfobarCustomerActions> = {
     customer: fromJS({
@@ -19,13 +33,9 @@ const commonProps: ComponentProps<typeof InfobarCustomerActions> = {
     selectedCustomer: fromJS({
         id: 3,
     }),
-    toggleMergeCustomerModal: () => null,
+    toggleMergeCustomerModal: jest.fn(),
     setCustomer: () => null,
 }
-
-jest.mock('utils', () => ({
-    isCurrentlyOnTicket: (ticketId: Maybe<string | number>) => !!ticketId,
-}))
 
 describe('InfobarCustomerActions component', () => {
     it('should not render "set as customer" button because the agent is not on a ticket', () => {
@@ -66,5 +76,18 @@ describe('InfobarCustomerActions component', () => {
         const {container} = render(<InfobarCustomerActions {...commonProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it("should call `toggleMergeCustomerModal` and `logEvent` when the 'merge' button is clicked", () => {
+        render(<InfobarCustomerActions {...commonProps} />)
+        screen.getByText('Merge').click()
+
+        expect(commonProps.toggleMergeCustomerModal).toHaveBeenCalledWith(true)
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.CustomerMergeClicked,
+            expect.objectContaining({
+                location: 'search',
+            })
+        )
     })
 })

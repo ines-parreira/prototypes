@@ -405,12 +405,22 @@ export const Infobar = ({
                                             <Button
                                                 className="mr-2"
                                                 onClick={() => {
-                                                    // TODO(customers-migration): ask confirmation to update this event
                                                     logEvent(
-                                                        SegmentEvent.UserMergeClicked,
+                                                        SegmentEvent.CustomerMergeClicked,
                                                         {
-                                                            location:
-                                                                'suggested user in infobar',
+                                                            location: 'infobar',
+                                                            account_domain:
+                                                                window
+                                                                    .GORGIAS_STATE
+                                                                    .currentAccount
+                                                                    .domain,
+                                                            user_id:
+                                                                window
+                                                                    .GORGIAS_STATE
+                                                                    .currentAccount
+                                                                    .id,
+                                                            timestamp:
+                                                                Date.now(),
                                                         }
                                                     )
                                                     setShowMergeCustomerModal(

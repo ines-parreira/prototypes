@@ -14,6 +14,7 @@ import {
     SearchEngine,
 } from 'models/search/types'
 import {searchWithHighlights} from 'state/infobar/actions'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 export const useCustomerSearch = () => {
     const dispatch = useAppDispatch()
@@ -54,6 +55,11 @@ export const useCustomerSearch = () => {
     }
 
     const onSearchSubmit = async (query: string) => {
+        logEvent(SegmentEvent.InfobarSearchUsed, {
+            account_domain: window.GORGIAS_STATE.currentAccount.domain,
+            user_id: window.GORGIAS_STATE.currentAccount.user_id,
+            timestamp: Date.now(),
+        })
         searchRank.endScenario()
 
         searchRank.registerResultsRequest({
