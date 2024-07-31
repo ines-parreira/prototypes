@@ -16,7 +16,7 @@ export const customization: TemplateCustomization = {
             customization: shopperCustomization,
         },
         {
-            dataMatcher: /ecommerce_data\..+\.orders$/,
+            dataMatcher: /ecommerce_data\..+\.orders\.\[]$/,
             customization: orderCustomization,
         },
     ],
