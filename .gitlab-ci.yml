@@ -204,6 +204,7 @@ Deploy production:
           - gorgias-helpdesk-production-us-east1-2607
           - gorgias-helpdesk-production-us-east4-5f09
           - gorgias-helpdesk-production-us-east4-65cd
+          - gorgias-helpdesk-production-us-east1-c94b
           - gorgias-main-us-east1-635c
   <<: *gitlab_environment
 
