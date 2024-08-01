@@ -2,9 +2,12 @@ import {render, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {rule} from '../../../../../../fixtures/rule'
 import {MemberExpressionContainer} from '../MemberExpression'
 
+const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 describe('<MemberExpression/>', () => {
     const minProps = {
         object: {
@@ -128,5 +131,29 @@ describe('<MemberExpression/>', () => {
                 >
             ).mock.calls
         ).toMatchSnapshot()
+    })
+    it('should exclude quick resppnses from the drop down if flag is true', () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.SunsetQuickResponses]: true,
+        })
+        const {getByText, queryByText} = render(
+            <MemberExpressionContainer {...minProps} />
+        )
+
+        expect(queryByText('Quick Responses')).not.toBeInTheDocument()
+        fireEvent.click(getByText('Self Service'))
+        expect(queryByText('Quick Responses')).not.toBeInTheDocument()
+    })
+    it('should exclude quick resppnses from the drop down if flag is false', () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.SunsetQuickResponses]: false,
+        })
+        const {getByText, queryByText} = render(
+            <MemberExpressionContainer {...minProps} />
+        )
+
+        expect(queryByText('Quick Responses')).not.toBeInTheDocument()
+        fireEvent.click(getByText('Self Service'))
+        expect(queryByText('Quick Responses')).toBeInTheDocument()
     })
 })

@@ -3,6 +3,7 @@ import {fromJS, List} from 'immutable'
 import React, {Fragment, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {IntegrationType} from 'models/integration/types'
 import {
     IDENTIFIER_CATEGORIES,
@@ -24,6 +25,8 @@ import {
     getHasLegacyAutomateFeatures,
 } from 'state/billing/selectors'
 
+import {QUICK_RESPONSES} from 'pages/automate/common/components/constants'
+import {FeatureFlagKey} from 'config/featureFlags'
 import RuleSelect from '../widget/RuleSelect'
 
 import css from './MemberExpression.less'
@@ -47,6 +50,7 @@ export function MemberExpressionContainer({
 }: OwnProps & ConnectedProps<typeof connector>) {
     const [selectedCategory, setSelectedCategory] =
         useState<IdentifierCategoryKey | null>(null)
+    const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
     const displayedValue = useMemo(() => {
         const valuePath = getAstPath(property, object)
         const jointValuePath = valuePath.join('.')
@@ -191,6 +195,11 @@ export function MemberExpressionContainer({
                     <div className={css.subOptions}>
                         {IDENTIFIER_VARIABLES_BY_CATEGORY[selectedCategory].map(
                             (subcategory) => {
+                                if (
+                                    sunsetQuickResponses &&
+                                    subcategory.label === QUICK_RESPONSES
+                                )
+                                    return <></>
                                 return subcategory.children ? (
                                     <Fragment key={subcategory.label}>
                                         <div className={css.subcategoryLabel}>
