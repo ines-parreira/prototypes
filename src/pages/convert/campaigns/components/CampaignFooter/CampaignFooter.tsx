@@ -2,6 +2,8 @@ import React, {useCallback, useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
+import {useDismissFlag} from 'hooks/useDismissFlag'
+
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -10,6 +12,10 @@ import DropdownButton from 'pages/common/components/button/DropdownButton'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
+
+import {ABVariantModalType} from 'pages/convert/abVariants/types/enums'
+import CreateABTestInfoModal from 'pages/convert/abVariants/components/CreateABTestInfoModal'
+import {useIsConvertABVariantsEnabled} from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
 import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
@@ -47,8 +53,19 @@ export const CampaignFooter = ({
     onDuplicate,
 }: Props): JSX.Element => {
     const [isLightModalOpen, setIsLightModalOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
+    const isABVariantEnabled = useIsConvertABVariantsEnabled()
+
+    const storageAbVariantModalKey = useMemo(() => {
+        return `convert:abVariant:${ABVariantModalType.CreateABGroup}`
+    }, [])
+
+    const {isDismissed, dismiss} = useDismissFlag(
+        storageAbVariantModalKey,
+        true
+    )
 
     const storageKey = useMemo(() => {
         return `convert:lightModal:${integrationId}:${LightCampaignModalType.DeleteCampaign}`
@@ -65,6 +82,34 @@ export const CampaignFooter = ({
         },
         [onSave, isCreateDisabled]
     )
+
+    const openModal = () => {
+        setIsModalOpen(true)
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false)
+    }
+
+    const createABGroup = () => {
+        // Temporary
+        // eslint-disable-next-line no-console
+        console.log('Creating A/B Group...')
+    }
+
+    const onCreateButtonClick = () => {
+        if (!isDismissed) {
+            openModal()
+            return
+        }
+
+        createABGroup()
+    }
+
+    const onModalSubmit = () => {
+        createABGroup()
+        closeModal()
+    }
 
     if (isUpdate) {
         return (
@@ -98,6 +143,18 @@ export const CampaignFooter = ({
                                 onClick={() => onDuplicate()}
                             >
                                 Duplicate Campaign
+                            </Button>
+                        )}
+
+                    {(!isShopifyStore || !isLightCampaign) &&
+                        !isCreateDisabled &&
+                        isABVariantEnabled && (
+                            <Button
+                                intent="secondary"
+                                aria-label="Create A/B Test"
+                                onClick={onCreateButtonClick}
+                            >
+                                Create A/B Test
                             </Button>
                         )}
                 </div>
@@ -153,6 +210,16 @@ export const CampaignFooter = ({
                             </>
                         )}
                     </>
+                )}
+
+                {isABVariantEnabled && !isDismissed && (
+                    <CreateABTestInfoModal
+                        isOpen={isModalOpen}
+                        onClose={closeModal}
+                        isDismissed={isDismissed}
+                        setIsDismissed={dismiss}
+                        onSubmit={onModalSubmit}
+                    />
                 )}
             </div>
         )

@@ -1,8 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, waitFor, act} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
+import * as useDismissFlag from 'hooks/useDismissFlag'
 import * as useLocalStorage from 'hooks/useLocalStorage'
+
+import * as useIsConvertABVariantsEnabled from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 import {CampaignFooter} from '../CampaignFooter'
+
+jest.mock('pages/convert/common/hooks/useIsConvertABVariantsEnabled')
+jest.mock('hooks/useDismissFlag')
 
 const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
 
@@ -20,6 +28,16 @@ describe('<CampaignFooter />', () => {
     const renderComponent = (props: any) => {
         return render(<CampaignFooter {...props} />)
     }
+
+    beforeAll(() => {
+        jest.spyOn(useDismissFlag, 'useDismissFlag').mockImplementation(
+            () =>
+                ({
+                    isDismissed: false,
+                    dismiss: jest.fn(),
+                } as any)
+        )
+    })
 
     describe('Light campaign affects button visibility', () => {
         it('renders all buttons when is update, but not light campaign', () => {
@@ -40,6 +58,7 @@ describe('<CampaignFooter />', () => {
             expect(getByText('Update Campaign')).toBeInTheDocument()
             expect(queryByText('Duplicate Campaign')).not.toBeInTheDocument()
             expect(queryByText('Delete Campaign')).not.toBeInTheDocument()
+            expect(queryByText('Create A/B Test')).not.toBeInTheDocument()
         })
 
         it('renders update and duplicate button for non-Shopify', () => {
@@ -96,6 +115,95 @@ describe('<CampaignFooter />', () => {
 
             expect(queryByText('Learn About Convert')).not.toBeInTheDocument()
             expect(getByText('Confirm')).toBeInTheDocument()
+        })
+    })
+
+    describe('Campaign update, user can create A/B Test', () => {
+        const consoleLogMock = jest.spyOn(console, 'log')
+
+        beforeEach(() => {
+            jest.spyOn(
+                useIsConvertABVariantsEnabled,
+                'useIsConvertABVariantsEnabled'
+            ).mockImplementation(() => true)
+
+            jest.spyOn(useDismissFlag, 'useDismissFlag').mockImplementation(
+                () =>
+                    ({
+                        isDismissed: false,
+                        dismiss: jest.fn(),
+                    } as any)
+            )
+        })
+
+        it('renders', () => {
+            const {getByText} = renderComponent({
+                ...defaultProps,
+            })
+
+            expect(getByText('Update Campaign')).toBeInTheDocument()
+            expect(getByText('Duplicate Campaign')).toBeInTheDocument()
+            expect(getByText('Create A/B Test')).toBeInTheDocument()
+        })
+
+        it('can open create a/b test info modal and create a/b test', async () => {
+            const {getByText, getByRole} = renderComponent({
+                ...defaultProps,
+            })
+
+            act(() => {
+                userEvent.click(getByRole('button', {name: 'Create A/B Test'}))
+            })
+
+            await waitFor(() => {
+                expect(
+                    getByText('Create an A/B test from a campaign')
+                ).toBeInTheDocument()
+
+                userEvent.click(getByRole('button', {name: 'Create A/B test'}))
+
+                expect(consoleLogMock).toBeCalledWith('Creating A/B Group...')
+            })
+        })
+
+        it('can dismiss modal', async () => {
+            const {queryByText, getByRole} = renderComponent({
+                ...defaultProps,
+            })
+
+            act(() => {
+                userEvent.click(getByRole('button', {name: 'Create A/B Test'}))
+            })
+
+            await waitFor(() => {
+                userEvent.click(getByRole('button', {name: 'Cancel'}))
+            })
+
+            await waitFor(() => {
+                expect(
+                    queryByText('Create an A/B test from a campaign')
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('creates a/b test when modal is dismissed', () => {
+            jest.spyOn(useDismissFlag, 'useDismissFlag').mockImplementation(
+                () =>
+                    ({
+                        isDismissed: true,
+                        dismiss: jest.fn(),
+                    } as any)
+            )
+
+            const {getByRole} = renderComponent({
+                ...defaultProps,
+            })
+
+            act(() => {
+                userEvent.click(getByRole('button', {name: 'Create A/B Test'}))
+            })
+
+            expect(consoleLogMock).toBeCalledWith('Creating A/B Group...')
         })
     })
 
