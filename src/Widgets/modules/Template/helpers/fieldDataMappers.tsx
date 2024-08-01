@@ -15,17 +15,16 @@ import {isUrl, isEmail} from 'utils'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import StarRating from 'pages/common/components/StarRating'
-import EditableListWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
+
+import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'
 
 import css from './fieldDataMappers.less'
 
 export function getValueFromData(
     potentiallyImmutableData: unknown,
-    type?: string,
-    integrationType?: string
+    type?: string
 ) {
     let assignedType = type
-    const fallbackValue = '-'
     const data = (
         isImmutable(potentiallyImmutableData)
             ? potentiallyImmutableData.toJS()
@@ -33,7 +32,7 @@ export function getValueFromData(
     ) as unknown
 
     if (_isUndefined(data) || _isNull(data)) {
-        return fallbackValue
+        return FALLBACK_VALUE
     }
 
     if (!type) {
@@ -44,10 +43,11 @@ export function getValueFromData(
         } else if (_isArray(data)) {
             assignedType = 'array'
         } else {
-            return fallbackValue
+            return FALLBACK_VALUE
         }
     }
 
+    // We should map over default leaf types with a config object instead of a switch
     switch (assignedType) {
         case 'text': {
             if ((_isString(data) && data) || typeof data === 'number') {
@@ -57,12 +57,7 @@ export function getValueFromData(
         }
         case 'date': {
             if (_isString(data) && data) {
-                return (
-                    <DatetimeLabel
-                        dateTime={data}
-                        integrationType={integrationType}
-                    />
-                )
+                return <DatetimeLabel dateTime={data} />
             }
             break
         }
@@ -122,7 +117,7 @@ export function getValueFromData(
         case 'array': {
             if (_isArray(data)) {
                 if (!data.length) {
-                    return fallbackValue
+                    return FALLBACK_VALUE
                 }
                 // This case means the array was empty when the template was generated
                 // so we could not guess the type of data it would contains
@@ -134,7 +129,7 @@ export function getValueFromData(
                         return (
                             <React.Fragment key={index}>
                                 {index > 0 && ', '}
-                                {val ? val.toString() : fallbackValue}
+                                {val ? val.toString() : FALLBACK_VALUE}
                             </React.Fragment>
                         )
                     }
@@ -176,12 +171,6 @@ export function getValueFromData(
             }
             break
         }
-        case 'editableList': {
-            if (_isString(data)) {
-                return <EditableListWidget selectedOptions={data} />
-            }
-            break
-        }
         case 'rating': {
             const value = Number(data)
             if (!Number.isNaN(value)) {
@@ -218,7 +207,7 @@ export function getValueFromData(
         }
     }
 
-    return _isString(data) && data ? data : fallbackValue
+    return _isString(data) && data ? data : FALLBACK_VALUE
 }
 
 export function getStringFromData(data: any, type: string): string | null {

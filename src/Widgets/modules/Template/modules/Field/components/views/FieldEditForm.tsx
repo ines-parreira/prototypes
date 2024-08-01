@@ -2,32 +2,31 @@ import React, {useState, SyntheticEvent} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {LeafType} from 'models/widget/types'
+import {FieldEditFormData, HiddenFields} from '../../types'
 
 export const TITLE_FIELD_LABEL = 'Title'
 export const TYPE_FIELD_LABEL = 'Type'
 export const SUBMIT_BUTTON_TEXT = 'Submit'
 export const CANCEL_BUTTON_TEXT = 'Cancel'
 
-export type FormData<T> = {
-    title: string
-    type: T
-}
-
 export type TypeOption<T> = {
     value: T
     label: string
 }
 
-type Props<T extends string> = {
-    initialData: Partial<FormData<T>>
+type Props<T extends LeafType> = {
+    initialData: Partial<FieldEditFormData<T>>
     availableTypes: TypeOption<T>[]
-    onSubmit: (formData: FormData<T>) => void
+    hiddenFields?: HiddenFields
+    onSubmit: (formData: FieldEditFormData<T>) => void
     onCancel: () => void
 }
 
-export default function FieldEditForm<T extends string>({
+export default function FieldEditForm<T extends LeafType>({
     initialData,
     availableTypes,
+    hiddenFields = [],
     onCancel,
     onSubmit,
 }: Props<T>) {
@@ -49,28 +48,32 @@ export default function FieldEditForm<T extends string>({
 
     return (
         <form onSubmit={handleFormSubmit}>
-            <DEPRECATED_InputField
-                type="text"
-                name="title"
-                label={TITLE_FIELD_LABEL}
-                required
-                value={title}
-                onChange={(title) => setTitle(title)}
-            />
-            <DEPRECATED_InputField
-                type="select"
-                name="type"
-                label={TYPE_FIELD_LABEL}
-                required
-                value={type}
-                onChange={(type) => setType(type)}
-            >
-                {availableTypes.map(({value, label}) => (
-                    <option key={value} value={value}>
-                        {label}
-                    </option>
-                ))}
-            </DEPRECATED_InputField>
+            {!hiddenFields.includes('title') && (
+                <DEPRECATED_InputField
+                    type="text"
+                    name="title"
+                    label={TITLE_FIELD_LABEL}
+                    required
+                    value={title}
+                    onChange={(title) => setTitle(title)}
+                />
+            )}
+            {!hiddenFields.includes('type') && (
+                <DEPRECATED_InputField
+                    type="select"
+                    name="type"
+                    label={TYPE_FIELD_LABEL}
+                    required
+                    value={type}
+                    onChange={(type) => setType(type)}
+                >
+                    {availableTypes.map(({value, label}) => (
+                        <option key={value} value={value}>
+                            {label}
+                        </option>
+                    ))}
+                </DEPRECATED_InputField>
+            )}
 
             <div>
                 <Button type="submit" className="mr-2">

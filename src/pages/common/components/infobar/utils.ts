@@ -26,6 +26,9 @@ import {
     CardTemplate,
     Source,
     isSourceRecord,
+    isWrapperTemplate,
+    isListTemplate,
+    isCardTemplate,
 } from 'models/widget/types'
 import {WidgetEnvironment} from 'state/widgets/types'
 import {getSourcePathFromContext} from 'state/widgets/utils'
@@ -205,32 +208,32 @@ export function canDisplayWidget(
 export function isWidgetEmpty(template: Template, source: Source): boolean {
     const data =
         isSourceRecord(source) && template.path ? source[template.path] : source
-    switch (template.type) {
-        case 'wrapper': {
-            const childTemplates = template.widgets
-            if (!childTemplates || !childTemplates.length) return true
-            return childTemplates.every((subWidget) =>
-                isWidgetEmpty(subWidget, data)
-            )
-        }
-        case 'card': {
-            const childTemplates = template.widgets
-            if (hasCustomAction(template)) return false
-            if (!childTemplates || !childTemplates.length) return true
-            return childTemplates.every((subWidget) =>
-                isWidgetEmpty(subWidget, data)
-            )
-        }
-        case 'list': {
-            const childTemplate = template.widgets?.[0]
-            if (!childTemplate) return true
-            if (!Array.isArray(data)) return true
-            return data.every((value) => isWidgetEmpty(childTemplate, value))
-        }
-        default: {
-            return typeof data !== 'number' && !data
-        }
+
+    if (isWrapperTemplate(template)) {
+        const childTemplates = template.widgets
+        if (!childTemplates || !childTemplates.length) return true
+        return childTemplates.every((subWidget) =>
+            isWidgetEmpty(subWidget, data)
+        )
     }
+
+    if (isCardTemplate(template)) {
+        const childTemplates = template.widgets
+        if (hasCustomAction(template)) return false
+        if (!childTemplates || !childTemplates.length) return true
+        return childTemplates.every((subWidget) =>
+            isWidgetEmpty(subWidget, data)
+        )
+    }
+
+    if (isListTemplate(template)) {
+        const childTemplate = template.widgets?.[0]
+        if (!childTemplate) return true
+        if (!Array.isArray(data)) return true
+        return data.every((value) => isWidgetEmpty(childTemplate, value))
+    }
+
+    return typeof data !== 'number' && !data
 }
 
 export function hasCustomAction(widget: CardTemplate) {

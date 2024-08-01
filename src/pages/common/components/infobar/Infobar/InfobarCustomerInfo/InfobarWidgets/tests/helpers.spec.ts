@@ -125,7 +125,7 @@ describe('helpers tests', () => {
                         template,
                         widgetType: STANDALONE_WIDGET_TYPE,
                     })
-                ).toBe(template?.widgets[0].title)
+                ).toBe(template?.widgets?.[0].title)
             })
 
             it('should return default label for some widget types in case none of the logic above applies', () => {

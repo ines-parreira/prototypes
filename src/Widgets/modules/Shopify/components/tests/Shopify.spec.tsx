@@ -5,6 +5,8 @@ import {assumeMock} from 'utils/testing'
 
 import Template, {CustomizationContext} from 'Widgets/modules/Template'
 
+import {ShopifyContext} from '../../contexts/ShopifyContext'
+import {useShopifyContextData} from '../../hooks/useShopifyContextData'
 import ShopifyWidget, {customization} from '../Shopify'
 
 jest.mock('Widgets/modules/Template', () => {
@@ -16,7 +18,10 @@ jest.mock('Widgets/modules/Template', () => {
         default: jest.fn(),
     }
 })
+jest.mock('../../hooks/useShopifyContextData')
+
 const TemplateMock = assumeMock(Template)
+const useShopifyContextDataMock = assumeMock(useShopifyContextData)
 
 describe('ShopifyWidget', () => {
     beforeEach(() => {
@@ -41,5 +46,27 @@ describe('ShopifyWidget', () => {
         render(<ShopifyWidget {...props} />)
 
         expect(passedCustomization).toEqual(customization)
+    })
+})
+
+describe('ShopifyContext', () => {
+    const spiedDataFunction = jest.fn()
+    it('should provide a context', () => {
+        const contextValue = {
+            data_source: 'Order',
+            widget_resource_ids: {
+                target_id: 4,
+                customer_id: null,
+            },
+        }
+        useShopifyContextDataMock.mockReturnValue(contextValue)
+        TemplateMock.mockImplementation(() => {
+            const data = useContext(ShopifyContext)
+            spiedDataFunction(data)
+            return <></>
+        })
+        render(<ShopifyWidget template={null} source={{}} />)
+
+        expect(spiedDataFunction).toHaveBeenCalledWith(contextValue)
     })
 })

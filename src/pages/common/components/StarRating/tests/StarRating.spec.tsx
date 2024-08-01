@@ -4,7 +4,7 @@ import {render} from '@testing-library/react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
-import {DEFAULT_SIZE, STAR_COLORS} from '../const'
+import {DEFAULT_SIZE, STAR_COLORS} from '../constants'
 import StartRating from '../StarRating'
 
 jest.mock('react-rating-stars-component', () => {

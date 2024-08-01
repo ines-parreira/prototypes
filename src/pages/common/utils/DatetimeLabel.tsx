@@ -1,11 +1,9 @@
 import React from 'react'
-import moment from 'moment-timezone'
 import {UncontrolledTooltipProps} from 'reactstrap'
 import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
 
 import {DateAndTimeFormatting} from 'constants/datetime'
-import {RECHARGE_INTEGRATION_TYPE} from 'constants/integration'
 import useId from 'hooks/useId'
 import {getDateAndTimeFormatter, getTimezone} from 'state/currentUser/selectors'
 import {formatDatetime} from 'utils'
@@ -18,7 +16,6 @@ type Props = {
     className?: string
     dateTime?: string
     hasTooltip?: boolean
-    integrationType?: string
     labelFormat?: DateAndTimeFormatting
     placement?: UncontrolledTooltipProps['placement']
 }
@@ -26,9 +23,8 @@ type Props = {
 const DatetimeLabel = ({
     breakDate,
     className,
-    dateTime: dateTimeProp,
+    dateTime,
     hasTooltip = true,
-    integrationType,
     labelFormat,
     placement = 'top',
 }: Props) => {
@@ -37,14 +33,9 @@ const DatetimeLabel = ({
 
     const id = `datetime-tooltip-${useId()}`
 
-    if (!dateTimeProp) {
+    if (!dateTime) {
         return null
     }
-
-    const dateTime =
-        integrationType === RECHARGE_INTEGRATION_TYPE
-            ? moment(dateTimeProp).tz('US/Eastern', true).toISOString(true)
-            : dateTimeProp
 
     const labelDatetime = formatDatetime(
         dateTime,

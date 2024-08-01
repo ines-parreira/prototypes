@@ -4,7 +4,6 @@ import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {ShopifyContext} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
 import useId from 'hooks/useId'
@@ -16,9 +15,11 @@ import {RootState} from 'state/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 import {ActionButtonContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
-import {getOptionsFromTags} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/utils'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-import {getLoggerOnTagSelectionEvent} from 'Widgets/modules/Shopify/helpers/logEventData'
+
+import {FieldCustomization} from 'Widgets/modules/Template/types'
+import {ShopifyContext} from '../contexts/ShopifyContext'
+import {ShopifyActionType} from '../types'
+import {getLoggerOnTagSelectionEvent} from '../helpers/logEventData'
 
 type OwnProps = {
     selectedOptions: string
@@ -29,7 +30,7 @@ type SelectedValues = {
     value: string
 }
 
-export function EditableListWidget({
+export function EditableListField({
     selectedOptions,
     executeAction,
     activeCustomerId,
@@ -93,7 +94,7 @@ export function EditableListWidget({
                 // silent fail
                 return
             }
-            setOptions(getOptionsFromTags(tags))
+            setOptions(tags.map((tag) => ({label: tag, value: tag})))
         }
     }
 
@@ -189,4 +190,17 @@ const connector = connect(
     }
 )
 
-export default connector(EditableListWidget)
+const ConnectedEditableListField = connector(EditableListField)
+
+export const editableListCustomization: FieldCustomization = {
+    dataMatcher: /(orders\.\[]\.tags$)|(customer\.tags$)/,
+    getValue: (source) =>
+        typeof source === 'string' ? (
+            <ConnectedEditableListField selectedOptions={source} />
+        ) : (
+            '-'
+        ),
+    getValueString: () => null,
+    editionHiddenFields: ['type'],
+    valueCanOverflow: true,
+}

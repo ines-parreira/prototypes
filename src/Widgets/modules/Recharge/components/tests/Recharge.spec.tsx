@@ -2,9 +2,12 @@ import React, {ComponentProps, useContext} from 'react'
 import {render} from '@testing-library/react'
 
 import {assumeMock} from 'utils/testing'
+import {LeafTemplate} from 'models/widget/types'
 
 import Template, {CustomizationContext} from 'Widgets/modules/Template'
+import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'
 
+import {formatRechargeDateTime} from '../../helpers/formatRechargeDateTime'
 import RechargeWidget, {customization} from '../Recharge'
 
 jest.mock('Widgets/modules/Template', () => {
@@ -16,7 +19,9 @@ jest.mock('Widgets/modules/Template', () => {
         default: jest.fn(),
     }
 })
+jest.mock('../../helpers/formatRechargeDateTime')
 const TemplateMock = assumeMock(Template)
+const formatRechargeDateTimeMock = assumeMock(formatRechargeDateTime)
 
 describe('RechargeWidget', () => {
     beforeEach(() => {
@@ -41,5 +46,33 @@ describe('RechargeWidget', () => {
         render(<RechargeWidget {...props} />)
 
         expect(passedCustomization).toEqual(customization)
+    })
+})
+
+describe('field customization', () => {
+    it('should call `formatRecharcheDataTime` with source when `getValue` is called', () => {
+        formatRechargeDateTimeMock.mockReturnValue('ok')
+        customization.field?.[0].getValue('source', {} as LeafTemplate)
+
+        expect(formatRechargeDateTimeMock).toHaveBeenCalledWith('source')
+    })
+
+    it('should return FALLBACK_VALUE if source is not a string when calling `getValue`', () => {
+        expect(
+            customization.field?.[0].getValue({}, {} as LeafTemplate)
+        ).toEqual(FALLBACK_VALUE)
+    })
+
+    it('should return null when getValueString is called with a non-string source', () => {
+        expect(
+            customization.field?.[0].getValueString({}, {} as LeafTemplate)
+        ).toBeNull()
+    })
+
+    it('should call `formatRechargeDateTime` with source when `getValueString` is called', () => {
+        formatRechargeDateTimeMock.mockReturnValue('ok')
+        customization.field?.[0].getValueString('source', {} as LeafTemplate)
+
+        expect(formatRechargeDateTimeMock).toHaveBeenCalledWith('source')
     })
 })

@@ -6,12 +6,15 @@ import Template, {
 } from 'Widgets/modules/Template'
 import {WidgetProps} from 'Widgets/modules/Widget'
 
+import {useShopifyContextData} from '../hooks/useShopifyContextData'
+import {ShopifyContext} from '../contexts/ShopifyContext'
 import {customerCustomization} from './Customer'
 import {draftOrderCustomization} from './DraftOrder'
 import {orderCustomization} from './Order'
 import {itemCustomization} from './Item'
 import {fulfillmentCustomization} from './Fulfillment'
 import {shippingAddressCustomization} from './ShippingAddress'
+import {editableListCustomization} from './EditableListField'
 
 export const customization: TemplateCustomization = {
     card: [
@@ -40,13 +43,17 @@ export const customization: TemplateCustomization = {
             customization: shippingAddressCustomization,
         },
     ],
+    field: [editableListCustomization],
 }
 
 export default function ShopifyWidget(props: WidgetProps) {
-    // You can set as much contexts as you want here
+    const shopifyContextData = useShopifyContextData(props.source)
+
     return (
-        <CustomizationContext.Provider value={customization}>
-            <Template {...props} />
-        </CustomizationContext.Provider>
+        <ShopifyContext.Provider value={shopifyContextData}>
+            <CustomizationContext.Provider value={customization}>
+                <Template {...props} />
+            </CustomizationContext.Provider>
+        </ShopifyContext.Provider>
     )
 }

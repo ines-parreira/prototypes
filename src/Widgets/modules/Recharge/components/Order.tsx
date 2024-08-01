@@ -10,7 +10,6 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
-import {RECHARGE_INTEGRATION_TYPE} from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
@@ -26,6 +25,7 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {StaticField} from 'Widgets/modules/Template/modules/Field'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
+import {formatRechargeDateTime} from '../helpers/formatRechargeDateTime'
 import css from './Order.less'
 
 const OrderContext = createContext<{
@@ -180,9 +180,9 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 />
                 <StaticField label="Created">
                     <DatetimeLabel
-                        key="created-at"
-                        dateTime={source.get('created_at')}
-                        integrationType={RECHARGE_INTEGRATION_TYPE}
+                        dateTime={formatRechargeDateTime(
+                            source.get('created_at')
+                        )}
                     />
                 </StaticField>
             </>
