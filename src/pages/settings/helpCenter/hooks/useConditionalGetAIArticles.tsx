@@ -1,5 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useEffect, useState} from 'react'
+import {useMemo} from 'react'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {LocaleCode} from 'models/helpCenter/types'
 import {doNotRetry40XErrorsHandler} from 'api/utils'
@@ -25,20 +25,18 @@ type FetchedArticles =
     | null
 
 type Props = {
-    helpCenterId: number
+    helpCenterId: number | null
     storeIntegrationId: number | null
     locale: LocaleCode
+    enabled?: boolean
 }
 
 export const useConditionalGetAIArticles = ({
     helpCenterId,
     storeIntegrationId,
     locale,
+    enabled,
 }: Props) => {
-    const [fetchedArticles, setFetchedArticles] =
-        useState<FetchedArticles>(null)
-    const [isLoading, setIsLoading] = useState(false)
-
     const isAIArticlesForMultiStoreEnabled =
         useFlags()[
             FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore
@@ -55,6 +53,7 @@ export const useConditionalGetAIArticles = ({
         {
             refetchOnWindowFocus: false,
             retry: doNotRetry40XErrorsHandler,
+            ...(enabled !== undefined ? {enabled} : {}),
         }
     )
 
@@ -68,23 +67,41 @@ export const useConditionalGetAIArticles = ({
         {
             refetchOnWindowFocus: false,
             retry: doNotRetry40XErrorsHandler,
+            ...(enabled !== undefined ? {enabled} : {}),
         }
     )
 
-    useEffect(() => {
-        if (isAIArticlesForMultiStoreEnabled) {
-            setFetchedArticles(aiArticlesWithMultiStoreEnabled ?? null)
-            setIsLoading(isLoadingWithMultiStoreEnabled)
-        } else {
-            setFetchedArticles(aiArticlesWithMultiStoreDisabled ?? null)
-            setIsLoading(isLoadingWithMultiStoreDisabled)
+    const isLoading = isAIArticlesForMultiStoreEnabled
+        ? isLoadingWithMultiStoreEnabled
+        : isLoadingWithMultiStoreDisabled
+
+    const fetchedArticles: FetchedArticles = useMemo(() => {
+        if (enabled === false) {
+            return null
         }
+
+        if (
+            isAIArticlesForMultiStoreEnabled &&
+            !isLoadingWithMultiStoreEnabled
+        ) {
+            return aiArticlesWithMultiStoreEnabled ?? null
+        }
+
+        if (
+            !isAIArticlesForMultiStoreEnabled &&
+            !isLoadingWithMultiStoreDisabled
+        ) {
+            return aiArticlesWithMultiStoreDisabled ?? null
+        }
+
+        return null
     }, [
-        aiArticlesWithMultiStoreDisabled,
-        aiArticlesWithMultiStoreEnabled,
         isAIArticlesForMultiStoreEnabled,
-        isLoadingWithMultiStoreDisabled,
         isLoadingWithMultiStoreEnabled,
+        isLoadingWithMultiStoreDisabled,
+        aiArticlesWithMultiStoreEnabled,
+        aiArticlesWithMultiStoreDisabled,
+        enabled,
     ])
 
     return {fetchedArticles, isLoading}

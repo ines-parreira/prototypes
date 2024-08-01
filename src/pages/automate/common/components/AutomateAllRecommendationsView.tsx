@@ -16,7 +16,6 @@ import {
     TopQuestionsSectionProps,
 } from './TopQuestions/TopQuestionsSection'
 import css from './AutomateAllRecommendationsView.less'
-import {useHasEmailToStoreConnection} from './TopQuestions/useHasEmailToStoreConnection'
 import {useTopQuestionsViewedOnPage} from './TopQuestions/useTopQuestionsViewedOnPage'
 
 const ITEMS_PER_PAGE = 15
@@ -30,6 +29,7 @@ type AutomateAllRecommendationsViewProps = {
     onStatusChange: (status: AllRecommendationsStatus) => void
     storeFilter: TopQuestionsSectionProps['storeFilter']
     helpCenterFilter: TopQuestionsSectionProps['helpCenterFilter']
+    hasEmailToStoreConnection: boolean
 }
 
 const AutomateAllRecommendationsContent = ({
@@ -114,11 +114,9 @@ const AutomateAllRecommendationsView = ({
     onPageChange,
     currentStatus,
     onStatusChange,
+    hasEmailToStoreConnection,
 }: AutomateAllRecommendationsViewProps) => {
     const isMultiStore = storeFilter && storeFilter.options.length > 1
-    const hasEmailToStoreConnection = useHasEmailToStoreConnection(
-        selectedStore?.id
-    )
 
     return (
         <StatsPage title="Automate">

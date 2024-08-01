@@ -195,13 +195,19 @@ export const AutomateLandingPageTopQuestions = () => {
         storeFilter,
         selectedHelpCenter,
         helpCenterFilter,
-    } = useTopQuestionsFilters({})
+    } = useTopQuestionsFilters({searchFirstMatchingStoreAndHelpCenter: true})
 
-    const hasEmailToStoreConnection = useHasEmailToStoreConnection(
-        selectedStore?.id
-    )
+    const {
+        hasEmailToStoreConnection,
+        isLoading: isLoadingEmailToStoreConnection,
+    } = useHasEmailToStoreConnection(selectedStore?.id)
 
-    if (isLoading || !selectedStore || !selectedHelpCenter) {
+    if (
+        isLoading ||
+        isLoadingEmailToStoreConnection ||
+        !selectedStore ||
+        !selectedHelpCenter
+    ) {
         return null
     }
 

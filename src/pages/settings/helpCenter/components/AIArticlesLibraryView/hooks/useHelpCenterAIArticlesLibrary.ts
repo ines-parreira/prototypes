@@ -39,19 +39,21 @@ export const useHelpCenterAIArticlesLibrary = (
         helpCenterShopName ?? ''
     )
 
-    const hasEmailToStoreConnection = useHasEmailToStoreConnection(
-        storeIntegration?.id
-    )
+    const {
+        hasEmailToStoreConnection,
+        isLoading: isLoadingEmailToStoreConnection,
+    } = useHasEmailToStoreConnection(storeIntegration?.id)
 
     const showLinkToConnectEmailToStore = useMemo(
         () =>
             isAIArticlesForMultiStoreEnabled &&
             hasMultiStores &&
-            !hasEmailToStoreConnection,
+            (!hasEmailToStoreConnection || isLoadingEmailToStoreConnection),
         [
             isAIArticlesForMultiStoreEnabled,
             hasMultiStores,
             hasEmailToStoreConnection,
+            isLoadingEmailToStoreConnection,
         ]
     )
 

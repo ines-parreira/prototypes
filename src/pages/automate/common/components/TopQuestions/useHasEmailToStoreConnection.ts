@@ -20,9 +20,12 @@ export const useHasEmailToStoreConnection = (storeIntegrationId?: number) => {
         () => emailIntegrations.map((emailIntegration) => emailIntegration.id),
         [emailIntegrations]
     )
-    const {data: storeMappings} = useListStoreMappings(emailIntegrationIds, {
-        refetchOnWindowFocus: false,
-    })
+    const {data: storeMappings, isLoading} = useListStoreMappings(
+        emailIntegrationIds,
+        {
+            refetchOnWindowFocus: false,
+        }
+    )
 
     const hasEmailToStoreConnection = useMemo(
         () =>
@@ -33,5 +36,8 @@ export const useHasEmailToStoreConnection = (storeIntegrationId?: number) => {
         [storeIntegrationId, storeMappings]
     )
 
-    return hasEmailToStoreConnection === true
+    return {
+        isLoading,
+        hasEmailToStoreConnection: hasEmailToStoreConnection === true,
+    }
 }

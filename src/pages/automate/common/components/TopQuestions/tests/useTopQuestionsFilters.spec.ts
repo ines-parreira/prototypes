@@ -3,16 +3,21 @@ import {waitFor} from '@testing-library/react'
 import {ShopifyIntegration} from 'models/integration/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {assumeMock} from 'utils/testing'
+import {NonEmptyArray} from 'types'
 import {useTopQuestionsFilters} from '../useTopQuestionsFilters'
-import {useTopQuestionsStoresWithHelpCenters} from '../useTopQuestionsStoresWithHelpCenters'
+import {
+    StoreWithHelpCenters,
+    useTopQuestionsStoresWithHelpCenters,
+} from '../useTopQuestionsStoresWithHelpCenters'
+import {useFirstStoreAndHelpCenterWithTopQuestions} from '../useFirstStoreAndHelpCenterWithTopQuestions'
 
-const storesWithHelpCentersFixture = [
+const storesWithHelpCentersFixture: StoreWithHelpCenters[] = [
     {
         store: {id: 1, name: 'Store 1'} as ShopifyIntegration,
         helpCenters: [
             {id: 11, name: 'Help Center 11'},
             {id: 12, name: 'Help Center 12'},
-        ] as HelpCenter[],
+        ] as unknown as NonEmptyArray<HelpCenter>,
     },
     {
         store: {id: 2, name: 'Store 2'} as ShopifyIntegration,
@@ -20,14 +25,14 @@ const storesWithHelpCentersFixture = [
             {id: 21, name: 'Help Center 21'},
             {id: 22, name: 'Help Center 22'},
             {id: 23, name: 'Help Center 23'},
-        ] as HelpCenter[],
+        ] as unknown as NonEmptyArray<HelpCenter>,
     },
     {
         store: {id: 3, name: 'Store 3'} as ShopifyIntegration,
         helpCenters: [
             {id: 31, name: 'Help Center 31'},
             {id: 32, name: 'Help Center 32'},
-        ] as HelpCenter[],
+        ] as unknown as NonEmptyArray<HelpCenter>,
     },
 ]
 
@@ -36,12 +41,21 @@ const mockUseTopQuestionsStoresWithHelpCenters = assumeMock(
     useTopQuestionsStoresWithHelpCenters
 )
 
+jest.mock('../useFirstStoreAndHelpCenterWithTopQuestions')
+const mockUseFirstStoreAndHelpCenterWithTopQuestions = assumeMock(
+    useFirstStoreAndHelpCenterWithTopQuestions
+)
+
 describe('useTopQuestionsFilters', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockUseTopQuestionsStoresWithHelpCenters.mockReturnValue({
             isLoading: false,
             storesWithHelpCenters: storesWithHelpCentersFixture,
+        })
+        mockUseFirstStoreAndHelpCenterWithTopQuestions.mockReturnValue({
+            isLoading: false,
+            firstMatchingStoreAndHelpCenter: undefined,
         })
     })
     it('handles loading state correctly', () => {
@@ -56,6 +70,20 @@ describe('useTopQuestionsFilters', () => {
         expect(result.current.selectedStore).toBeUndefined()
         expect(result.current.selectedHelpCenter).toBeUndefined()
     })
+
+    it('returns loading if useFirstStoreAndHelpCenterWithTopQuestions is loading', () => {
+        mockUseFirstStoreAndHelpCenterWithTopQuestions.mockReturnValue({
+            isLoading: true,
+            firstMatchingStoreAndHelpCenter: undefined,
+        })
+
+        const {result} = renderHook(() => useTopQuestionsFilters({}))
+
+        expect(result.current.isLoading).toBe(true)
+        expect(result.current.selectedStore).toBeUndefined()
+        expect(result.current.selectedHelpCenter).toBeUndefined()
+    })
+
     it('returns the default selected store and help center when not loading', () => {
         const {result} = renderHook(() => useTopQuestionsFilters({}))
 
@@ -102,25 +130,6 @@ describe('useTopQuestionsFilters', () => {
 
         const {result} = renderHook(() =>
             useTopQuestionsFilters({initialStoreId: 3})
-        )
-
-        expect(result.current.selectedStore).toBeUndefined()
-        expect(result.current.selectedHelpCenter).toBeUndefined()
-    })
-
-    it('returns undefined store and help-center when there is no available help-center', () => {
-        mockUseTopQuestionsStoresWithHelpCenters.mockReturnValue({
-            isLoading: false,
-            storesWithHelpCenters: [
-                {
-                    store: {id: 1, name: 'Store 1'} as ShopifyIntegration,
-                    helpCenters: [],
-                },
-            ],
-        })
-
-        const {result} = renderHook(() =>
-            useTopQuestionsFilters({initialStoreId: 1})
         )
 
         expect(result.current.selectedStore).toBeUndefined()
@@ -187,5 +196,27 @@ describe('useTopQuestionsFilters', () => {
                 storesWithHelpCentersFixture[1].helpCenters[0]
             )
         )
+    })
+
+    it('uses the first store and help-center with top questions when available', async () => {
+        mockUseFirstStoreAndHelpCenterWithTopQuestions.mockReturnValue({
+            isLoading: false,
+            firstMatchingStoreAndHelpCenter: {
+                firstMatchingStore: storesWithHelpCentersFixture[1].store,
+                firstMatchingHelpCenter:
+                    storesWithHelpCentersFixture[1].helpCenters[1],
+            },
+        })
+
+        const {result} = renderHook(() => useTopQuestionsFilters({}))
+
+        await waitFor(() => {
+            expect(result.current.selectedStore).toEqual(
+                storesWithHelpCentersFixture[1].store
+            )
+            expect(result.current.selectedHelpCenter).toEqual(
+                storesWithHelpCentersFixture[1].helpCenters[1]
+            )
+        })
     })
 })

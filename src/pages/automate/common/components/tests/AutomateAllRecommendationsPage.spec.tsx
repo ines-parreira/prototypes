@@ -170,6 +170,13 @@ describe('<AutomateAllRecommendationsPage />', () => {
             hash: '',
         })
         mockUseSearchParam.mockReturnValue([null, jest.fn()])
+        mockUseSearchParam.mockImplementation((param) =>
+            param === 'store_integration_id'
+                ? ['1', jest.fn()]
+                : param === 'help_center_id'
+                ? ['11', jest.fn()]
+                : [null, jest.fn()]
+        )
         mockUseTopQuestionsFilters.mockReturnValue({
             isLoading: false,
             selectedStore: {
@@ -191,7 +198,10 @@ describe('<AutomateAllRecommendationsPage />', () => {
             batchDatetime,
         } as unknown as ReturnType<typeof useAIArticleRecommendationItems>)
         mockUseTopQuestionsViewedOnPage.mockReturnValue(true)
-        mockUseHasEmailToStoreConnection.mockReturnValue(true)
+        mockUseHasEmailToStoreConnection.mockReturnValue({
+            hasEmailToStoreConnection: true,
+            isLoading: false,
+        })
         mockGetHelpCenterFAQList.mockReturnValue([
             {
                 id: 11,
@@ -237,8 +247,22 @@ describe('<AutomateAllRecommendationsPage />', () => {
         expect(container.firstChild).toBeNull()
     })
 
+    it('returns null when loading email to store connections', () => {
+        mockUseHasEmailToStoreConnection.mockReturnValue({
+            hasEmailToStoreConnection: false,
+            isLoading: true,
+        })
+
+        const {container} = renderComponent()
+
+        expect(container.firstChild).toBeNull
+    })
+
     it('return empty state section when selected store has no connection to email', () => {
-        mockUseHasEmailToStoreConnection.mockReturnValue(false)
+        mockUseHasEmailToStoreConnection.mockReturnValue({
+            hasEmailToStoreConnection: false,
+            isLoading: false,
+        })
 
         renderComponent()
 
@@ -262,6 +286,12 @@ describe('<AutomateAllRecommendationsPage />', () => {
             'all-recommendations',
             new Date(batchDatetime)
         )
+
+        expect(mockUseTopQuestionsFilters).toBeCalledWith({
+            initialStoreId: 1,
+            initialHelpCenterId: 11,
+            searchFirstMatchingStoreAndHelpCenter: false,
+        })
     })
 
     it('renders AutomateAllRecommendationsPage with new badge', () => {

@@ -8,6 +8,7 @@ import {
 } from '../hooks/useAIArticleRecommendationItems'
 import AutomateAllRecommendationsView from './AutomateAllRecommendationsView'
 import {useTopQuestionsFilters} from './TopQuestions/useTopQuestionsFilters'
+import {useHasEmailToStoreConnection} from './TopQuestions/useHasEmailToStoreConnection'
 
 const AutomateAllRecommendationsPage = () => {
     const location = useLocation()
@@ -29,7 +30,16 @@ const AutomateAllRecommendationsPage = () => {
         storeFilter,
         selectedHelpCenter,
         helpCenterFilter,
-    } = useTopQuestionsFilters({initialStoreId, initialHelpCenterId})
+    } = useTopQuestionsFilters({
+        initialStoreId,
+        initialHelpCenterId,
+        searchFirstMatchingStoreAndHelpCenter: false,
+    })
+
+    const {
+        hasEmailToStoreConnection,
+        isLoading: isLoadingEmailToStoreConnection,
+    } = useHasEmailToStoreConnection(selectedStore?.id)
 
     const [page] = useSearchParam('page')
     const currentPage = Number(page) || 1
@@ -115,6 +125,7 @@ const AutomateAllRecommendationsPage = () => {
 
     if (
         isLoading ||
+        isLoadingEmailToStoreConnection ||
         !selectedHelpCenter ||
         !selectedStore ||
         !selectedStore ||
@@ -133,6 +144,7 @@ const AutomateAllRecommendationsPage = () => {
             onStatusChange={onStatusChange}
             currentPage={currentPage}
             onPageChange={onPageChange}
+            hasEmailToStoreConnection={hasEmailToStoreConnection}
         />
     )
 }

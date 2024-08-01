@@ -2,6 +2,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {assumeMock} from 'utils/testing'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {doNotRetry40XErrorsHandler} from 'api/utils'
 import {
     useGetAIArticlesByHelpCenter,
     useGetAIArticlesByHelpCenterAndStore,
@@ -51,7 +52,15 @@ describe('useConditionalGetAIArticles', () => {
             })
         )
 
-        expect(mockedUseGetAIArticlesByHelpCenter).toHaveBeenCalled()
+        expect(mockedUseGetAIArticlesByHelpCenter).toHaveBeenCalledWith(
+            1,
+            'en-US',
+            false,
+            {
+                refetchOnWindowFocus: false,
+                retry: doNotRetry40XErrorsHandler,
+            }
+        )
         expect(result.current.fetchedArticles).toEqual(
             aiArticlesWithMultiStoreDisabled
         )
@@ -69,9 +78,73 @@ describe('useConditionalGetAIArticles', () => {
             })
         )
 
-        expect(mockedUseGetAIArticlesByHelpCenterAndStore).toHaveBeenCalled()
+        expect(mockedUseGetAIArticlesByHelpCenterAndStore).toHaveBeenCalledWith(
+            1,
+            2,
+            'en-US',
+            true,
+            {
+                refetchOnWindowFocus: false,
+                retry: doNotRetry40XErrorsHandler,
+            }
+        )
         expect(result.current.fetchedArticles).toEqual(
             aiArticlesWithMultiStoreEnabled
         )
+    })
+    it('does nothing when disabled - single store', () => {
+        mockFlags({
+            [FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore]:
+                false,
+        })
+
+        const {result} = renderHook(() =>
+            useConditionalGetAIArticles({
+                helpCenterId: 1,
+                storeIntegrationId: 2,
+                locale: 'en-US',
+                enabled: false,
+            })
+        )
+
+        expect(mockedUseGetAIArticlesByHelpCenter).toHaveBeenCalledWith(
+            1,
+            'en-US',
+            false,
+            {
+                refetchOnWindowFocus: false,
+                retry: doNotRetry40XErrorsHandler,
+                enabled: false,
+            }
+        )
+        expect(result.current.fetchedArticles).toBeNull()
+    })
+    it('does nothing when disabled - multistore', () => {
+        mockFlags({
+            [FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore]:
+                true,
+        })
+
+        const {result} = renderHook(() =>
+            useConditionalGetAIArticles({
+                helpCenterId: 1,
+                storeIntegrationId: 2,
+                locale: 'en-US',
+                enabled: false,
+            })
+        )
+
+        expect(mockedUseGetAIArticlesByHelpCenterAndStore).toHaveBeenCalledWith(
+            1,
+            2,
+            'en-US',
+            true,
+            {
+                refetchOnWindowFocus: false,
+                retry: doNotRetry40XErrorsHandler,
+                enabled: false,
+            }
+        )
+        expect(result.current.fetchedArticles).toBeNull()
     })
 })

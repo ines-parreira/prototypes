@@ -137,7 +137,10 @@ describe('AutomateLandingPageTopQuestions', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockUseTopQuestionsFilters.mockReturnValue(defaultTopQuestionsFilters)
-        mockUseHasEmailToStoreConnection.mockReturnValue(true)
+        mockUseHasEmailToStoreConnection.mockReturnValue({
+            hasEmailToStoreConnection: true,
+            isLoading: false,
+        })
         mockUseTopQuestionsArticles.mockReturnValue(defaultTopQuestionsArticles)
         mockUseViewedOnPage.mockReturnValue(true)
     })
@@ -176,8 +179,25 @@ describe('AutomateLandingPageTopQuestions', () => {
         expect(screen.queryByText('AI Article 4')).not.toBeInTheDocument()
     })
 
+    it('renders nothing is loading email to store connection', () => {
+        mockUseHasEmailToStoreConnection.mockReturnValue({
+            hasEmailToStoreConnection: false,
+            isLoading: true,
+        })
+
+        render(<AutomateLandingPageTopQuestions />)
+
+        expect(screen.queryByText('AI Article 1')).not.toBeInTheDocument()
+        expect(screen.queryByText('AI Article 2')).not.toBeInTheDocument()
+        expect(screen.queryByText('AI Article 3')).not.toBeInTheDocument()
+        expect(screen.queryByText('AI Article 4')).not.toBeInTheDocument()
+    })
+
     it('renders connect email to store message for multi store', () => {
-        mockUseHasEmailToStoreConnection.mockReturnValue(false)
+        mockUseHasEmailToStoreConnection.mockReturnValue({
+            hasEmailToStoreConnection: false,
+            isLoading: false,
+        })
 
         render(<AutomateLandingPageTopQuestions />)
 

@@ -2,6 +2,7 @@ import React from 'react'
 import _get from 'lodash/get'
 import {renderHook} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
+import * as reactQuery from '@tanstack/react-query'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -18,12 +19,22 @@ import {
     useGetAIArticlesByHelpCenterAndStore,
     useUpsertArticleTemplateReview,
 } from '../queries'
+import * as resources from '../resources'
 import {mockResourceServerReplies} from './resource-mocks'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
     typeof useHelpCenterApi
 >
+
+const getAIGeneratedArticlesByHelpCenter = jest.spyOn(
+    resources,
+    'getAIGeneratedArticlesByHelpCenter'
+)
+const getAIGeneratedArticlesByHelpCenterAndStore = jest.spyOn(
+    resources,
+    'getAIGeneratedArticlesByHelpCenterAndStore'
+)
 
 const queryClient = mockQueryClient()
 
@@ -407,6 +418,43 @@ describe('useGetAIGeneratedArticlesByHelpCenter', () => {
         )
     })
 
+    it('disables query if helpCenterId is null', async () => {
+        const useQuerySpy = jest.spyOn(reactQuery, 'useQuery')
+
+        const {result} = renderHook(
+            () =>
+                useGetAIArticlesByHelpCenter(
+                    null,
+                    locale,
+                    isAIArticlesForMultiStoreEnabled
+                ),
+            {
+                wrapper,
+            }
+        )
+
+        expect(getAIGeneratedArticlesByHelpCenter).toHaveBeenCalledTimes(0)
+
+        expect(result.current.data).toBeUndefined()
+
+        expect(useQuerySpy).toHaveBeenCalledTimes(1)
+
+        expect(useQuerySpy.mock.calls[0][0]).toEqual({
+            enabled: false,
+            queryFn: expect.any(Function),
+            queryKey: ['aiArticle', 'list', null],
+        })
+
+        const queryFn = (
+            useQuerySpy.mock.calls[0][0] as unknown as {
+                queryFn: () => Promise<any>
+            }
+        )?.queryFn
+
+        const queryFnResult = await queryFn()
+        expect(queryFnResult).toBeNull()
+    })
+
     it('returns the error', async () => {
         mockResourceServerReplies(sdkMocks.mockedServer, {
             getAIGeneratedArticlesByHelpCenter: 'error',
@@ -477,6 +525,86 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
         expect(result.current.data).toEqual(
             mocks.fixtures.AIArticlesListFixture
         )
+    })
+
+    it('disables query if helpCenterId is null', async () => {
+        const useQuerySpy = jest.spyOn(reactQuery, 'useQuery')
+
+        const {result} = renderHook(
+            () =>
+                useGetAIArticlesByHelpCenterAndStore(
+                    null,
+                    storeIntegrationId,
+                    locale,
+                    isAIArticlesForMultiStoreEnabled
+                ),
+            {
+                wrapper,
+            }
+        )
+
+        expect(
+            getAIGeneratedArticlesByHelpCenterAndStore
+        ).toHaveBeenCalledTimes(0)
+
+        expect(result.current.data).toBeUndefined()
+
+        expect(useQuerySpy).toHaveBeenCalledTimes(1)
+
+        expect(useQuerySpy.mock.calls[0][0]).toEqual({
+            enabled: false,
+            queryFn: expect.any(Function),
+            queryKey: ['aiArticle', 'list', null, 'store', storeIntegrationId],
+        })
+
+        const queryFn = (
+            useQuerySpy.mock.calls[0][0] as unknown as {
+                queryFn: () => Promise<any>
+            }
+        )?.queryFn
+
+        const queryFnResult = await queryFn()
+        expect(queryFnResult).toBeNull()
+    })
+
+    it('disables query if storeIntegrationId is null', async () => {
+        const useQuerySpy = jest.spyOn(reactQuery, 'useQuery')
+
+        const {result} = renderHook(
+            () =>
+                useGetAIArticlesByHelpCenterAndStore(
+                    helpCenterId,
+                    null,
+                    locale,
+                    isAIArticlesForMultiStoreEnabled
+                ),
+            {
+                wrapper,
+            }
+        )
+
+        expect(
+            getAIGeneratedArticlesByHelpCenterAndStore
+        ).toHaveBeenCalledTimes(0)
+
+        expect(result.current.data).toBeUndefined()
+
+        expect(useQuerySpy).toHaveBeenCalledTimes(1)
+
+        expect(useQuerySpy.mock.calls[0][0]).toEqual({
+            enabled: false,
+            queryFn: expect.any(Function),
+            queryKey: ['aiArticle', 'list', helpCenterId, 'store', null],
+        })
+
+        const queryFn = (
+            useQuerySpy.mock.calls[0][0] as unknown as {
+                queryFn: () => Promise<any>
+            }
+        )?.queryFn
+
+        const queryFnResult = await queryFn()
+        expect(queryFnResult).toBeNull()
     })
 
     it('returns the error', async () => {

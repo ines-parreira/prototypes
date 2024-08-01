@@ -6,6 +6,12 @@ import {ShopifyIntegration} from 'models/integration/types'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {NonEmptyArray} from 'types'
+
+export type StoreWithHelpCenters = {
+    store: ShopifyIntegration
+    helpCenters: NonEmptyArray<HelpCenter>
+}
 
 const useHelpCentersByStoreId = (storesIntegrations: ShopifyIntegration[]) => {
     const {helpCenters, isLoading} = useHelpCenterList({
@@ -33,7 +39,17 @@ const useHelpCentersByStoreId = (storesIntegrations: ShopifyIntegration[]) => {
     return {isLoading, helpCentersByStoreId}
 }
 
-export const useTopQuestionsStoresWithHelpCenters = () => {
+const isStoreWithHelpCenter = (
+    maybeStoreWithHelpCenter: Omit<StoreWithHelpCenters, 'helpCenters'> & {
+        helpCenters: HelpCenter[]
+    }
+): maybeStoreWithHelpCenter is StoreWithHelpCenters =>
+    maybeStoreWithHelpCenter.helpCenters.length > 0
+
+export const useTopQuestionsStoresWithHelpCenters = (): {
+    isLoading: boolean
+    storesWithHelpCenters: StoreWithHelpCenters[]
+} => {
     // note: help-centers can only be connected to shopify stores at the moment, so we only show shopify integrations
     const storesIntegrations = useAppSelector(
         getIntegrationsByTypes([IntegrationType.Shopify])
@@ -51,7 +67,7 @@ export const useTopQuestionsStoresWithHelpCenters = () => {
                           store,
                           helpCenters: helpCentersByStoreId[store.id] ?? [],
                       }))
-                      .filter(({helpCenters}) => helpCenters.length > 0),
+                      .filter(isStoreWithHelpCenter),
         [storesIntegrations, helpCentersByStoreId, isLoadingHelpCenters]
     )
 

@@ -14,10 +14,15 @@ import {
 
 const VIEW_ALL_LINK = '/app/automation/ai-recommendations'
 
-type TopQuestion = {
+export type TopQuestion = {
     title: string
     ticketsCount: number
     templateKey: string
+    reviewAction?:
+        | 'archive'
+        | 'publish'
+        | 'saveAsDraft'
+        | 'dismissFromTopQuestions'
 }
 
 export type TopQuestionsSectionProps = {

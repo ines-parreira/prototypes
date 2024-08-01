@@ -1,17 +1,17 @@
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import {ShopifyIntegration} from 'models/integration/types'
 import {HelpCenter} from 'models/helpCenter/types'
-import {useTopQuestionsStoresWithHelpCenters} from './useTopQuestionsStoresWithHelpCenters'
+import {
+    StoreWithHelpCenters,
+    useTopQuestionsStoresWithHelpCenters,
+} from './useTopQuestionsStoresWithHelpCenters'
 import {makeHelpCenterFilter, makeStoreFilter} from './utils'
-
-type StoreWithHelpCenters = {
-    store: ShopifyIntegration
-    helpCenters: HelpCenter[]
-}
+import {useFirstStoreAndHelpCenterWithTopQuestions} from './useFirstStoreAndHelpCenterWithTopQuestions'
 
 type Props = {
     initialStoreId?: number
     initialHelpCenterId?: number
+    searchFirstMatchingStoreAndHelpCenter?: boolean
 }
 
 const findInitialStoreAndHelpCenter = (
@@ -44,24 +44,8 @@ const findInitialStoreAndHelpCenter = (
 export const useTopQuestionsFilters = ({
     initialStoreId,
     initialHelpCenterId,
+    searchFirstMatchingStoreAndHelpCenter,
 }: Props) => {
-    const {isLoading, storesWithHelpCenters} =
-        useTopQuestionsStoresWithHelpCenters()
-
-    const storesById: Record<number, StoreWithHelpCenters> = useMemo(
-        () =>
-            isLoading
-                ? {}
-                : storesWithHelpCenters.reduce(
-                      (acc, store) => ({
-                          ...acc,
-                          [store.store.id]: store,
-                      }),
-                      {}
-                  ),
-        [isLoading, storesWithHelpCenters]
-    )
-
     const [selectedStore, setSelectedStoreRaw] = useState<
         ShopifyIntegration | undefined
     >(undefined)
@@ -70,12 +54,59 @@ export const useTopQuestionsFilters = ({
         HelpCenter | undefined
     >(undefined)
 
+    const {isLoading: isLoadingStoresWithHelpCenters, storesWithHelpCenters} =
+        useTopQuestionsStoresWithHelpCenters()
+
+    const {
+        isLoading: isSearchingFirstStoreAndHelpCenter,
+        firstMatchingStoreAndHelpCenter,
+    } = useFirstStoreAndHelpCenterWithTopQuestions(
+        storesWithHelpCenters,
+        !isLoadingStoresWithHelpCenters &&
+            searchFirstMatchingStoreAndHelpCenter === true
+    )
+
+    const isLoading =
+        isLoadingStoresWithHelpCenters || isSearchingFirstStoreAndHelpCenter
+
     useEffect(() => {
         if (isLoading) {
             return
         }
 
-        if (!selectedStore || !selectedHelpCenter) {
+        if (firstMatchingStoreAndHelpCenter) {
+            setSelectedStoreRaw(
+                firstMatchingStoreAndHelpCenter.firstMatchingStore
+            )
+            setSelectedHelpCenter(
+                firstMatchingStoreAndHelpCenter.firstMatchingHelpCenter
+            )
+        }
+    }, [isLoading, firstMatchingStoreAndHelpCenter])
+
+    const storesById: Record<number, StoreWithHelpCenters> = useMemo(
+        () =>
+            isLoadingStoresWithHelpCenters
+                ? {}
+                : storesWithHelpCenters.reduce(
+                      (acc, store) => ({
+                          ...acc,
+                          [store.store.id]: store,
+                      }),
+                      {}
+                  ),
+        [isLoadingStoresWithHelpCenters, storesWithHelpCenters]
+    )
+
+    useEffect(() => {
+        if (isLoading) {
+            return
+        }
+
+        if (
+            (!selectedStore || !selectedHelpCenter) &&
+            !firstMatchingStoreAndHelpCenter
+        ) {
             const initialStoreAndHelpCenter = findInitialStoreAndHelpCenter(
                 storesWithHelpCenters,
                 initialStoreId,
@@ -98,6 +129,7 @@ export const useTopQuestionsFilters = ({
         selectedStore,
         selectedHelpCenter,
         storesWithHelpCenters,
+        firstMatchingStoreAndHelpCenter,
     ])
 
     const setSelectedStore: React.Dispatch<
