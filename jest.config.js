@@ -27,6 +27,8 @@ module.exports = {
         '!**/bower_components/**',
         '!**/_build/**',
         '!**/*.stories.*',
+        '!**/fixtures/**',
+        '!**/fixtures.ts',
     ],
 
     // The directory where Jest should output its coverage files
