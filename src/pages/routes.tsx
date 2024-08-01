@@ -191,6 +191,9 @@ import QuickResponsesViewContainer from 'pages/automate/quickResponses/QuickResp
 import WorkflowTemplatesViewContainer from 'pages/automate/workflows/WorkflowTemplatesViewContainer'
 import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
+import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
+import ActionsPlatformTemplatesView from 'pages/automate/actionsPlatform/ActionsPlatformTemplatesView'
+import {useFlag} from 'common/flags'
 import WorkflowAnalyticsContainer from './automate/workflows/analytics/WorkflowAnalyticsContainer'
 import AutomateAllRecommendationsContainer from './automate/common/components/AutomateAllRecommendationsContainer'
 
@@ -1507,9 +1510,12 @@ function AutomationContent() {
         useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
     const isAutomateTopQuestionsEnabled =
         useFlags()[FeatureFlagKey.ObservabilityAutomateTopQuestions]
-
     const isNewChannelsViewEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.NewChannelsView]
+    const isActionsInternalPlatformEnabled = useFlag(
+        FeatureFlagKey.ActionsInternalPlatform,
+        false
+    )
 
     return (
         <Switch>
@@ -1794,6 +1800,20 @@ function AutomationContent() {
             <Route path={`${path}`} exact>
                 <AutomateLandingPageContainer />
             </Route>
+            {isActionsInternalPlatformEnabled && (
+                <Switch>
+                    <Route
+                        path={`${path}/actions-platform`}
+                        exact
+                        component={ActionsPlatformTemplatesView}
+                    />
+                    <Route
+                        path={`${path}/actions-platform/apps`}
+                        exact
+                        component={ActionsPlatformAppsView}
+                    />
+                </Switch>
+            )}
             <Route>
                 <Redirect to={`${path}`} />
             </Route>

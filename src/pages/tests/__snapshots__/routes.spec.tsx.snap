@@ -3,7 +3,7 @@
 exports[`<Routes/> should make Shopify route available for impersonated admin users 1`] = `
 <div>
   <div>
-    App
+    CreditShopifyBillingIntegration
   </div>
 </div>
 `;

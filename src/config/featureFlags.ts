@@ -1,5 +1,6 @@
 // Keep feature flags in alphabetical order and name it with Team/ApplicationSection name
 export enum FeatureFlagKey {
+    ActionsInternalPlatform = 'actions-internal-platform',
     ActionTemplates = 'action-templates',
     AdvancedSearchSorting = 'advanced-search-sorting',
     AgentActivityTracking = 'agent-activity-tracking',

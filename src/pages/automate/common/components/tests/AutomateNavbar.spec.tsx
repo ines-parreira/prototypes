@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import configureMockStore from 'redux-mock-store'
@@ -23,11 +23,15 @@ import {
     legacyBasicHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {ThemeProvider} from 'theme'
+import {useFlag} from 'common/flags'
 
 import AutomateNavbar from '../AutomateNavbar'
 
 jest.mock('utils/launchDarkly')
 jest.mock('react-router')
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn(),
+}))
 
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})
@@ -36,12 +40,18 @@ useParamsMock.mockReturnValue({})
 
 const mockStore = configureMockStore()
 
+const mockUseFlag = useFlag as jest.Mock
+
 jest.mock('common/notifications/components/Button', () => ({
     __esModule: true,
     default: () => <div>NotificationsButton</div>,
 }))
 
 describe('<AutomateNavbar />', () => {
+    beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
+    })
+
     const defaultState: Partial<RootState> = {
         currentUser: fromJS(user),
         currentAccount: fromJS(account),
@@ -262,6 +272,34 @@ describe('<AutomateNavbar />', () => {
             )
 
             expect(container).toMatchSnapshot()
+        })
+
+        it('should render automate navbar with actions internal platform', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        integrations,
+                        currentAccount: fromJS({
+                            ...account,
+                            current_subscription: {
+                                ...account.current_subscription,
+                                products: automationSubscriptionProductPrices,
+                            },
+                        }),
+                    })}
+                >
+                    <DndProvider backend={HTML5Backend}>
+                        <ThemeProvider>
+                            <AutomateNavbar />
+                        </ThemeProvider>
+                    </DndProvider>
+                </Provider>
+            )
+
+            expect(screen.getByText('Actions platform')).toBeInTheDocument()
         })
     })
 })

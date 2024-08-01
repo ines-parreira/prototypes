@@ -11,6 +11,7 @@ import {
     getHasAutomate,
     getHasLegacyAutomateFeatures,
 } from 'state/billing/selectors'
+import {useFlag} from 'common/flags'
 
 import AutomateNavbarView from './AutomateNavbarView'
 import css from './AutomateNavbar.less'
@@ -22,6 +23,10 @@ const AutomateNavbar = () => {
     )
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+    const isActionsInternalPlatformEnabled = useFlag(
+        FeatureFlagKey.ActionsInternalPlatform,
+        false
+    )
 
     return (
         <Navbar activeContent="automate">
@@ -52,6 +57,13 @@ const AutomateNavbar = () => {
                             )}
                         </NavbarLink>
                     </div>
+                    {isActionsInternalPlatformEnabled && (
+                        <div className={navbarCss['link-wrapper']}>
+                            <NavbarLink to="/app/automation/actions-platform">
+                                <span>Actions platform</span>
+                            </NavbarLink>
+                        </div>
+                    )}
                     <AutomateNavbarView />
                 </>
             )}
