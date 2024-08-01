@@ -44,7 +44,7 @@ const TagList = ({tags, onTagsUpdate}: Props) => {
                 </div>
             )}
             {tags.map((t, index) => (
-                <div key={index} className={css.body}>
+                <div key={`${index}${t.name}`} className={css.body}>
                     <div className={css.tag}>
                         <TagSearchSelect
                             onSelect={(name: string) =>
