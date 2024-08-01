@@ -88,19 +88,25 @@ const AutomateAllRecommendationsCard = ({
                         </Badge>
                     )}
                 </div>
-                <SelectField
-                    fixedWidth
-                    style={{width: '160px'}}
-                    dropdownMenuClassName={css.dropdownMenu}
-                    value={statusFilter}
-                    onChange={(value) =>
-                        setStatusFilter(value as AllRecommendationsStatus)
-                    }
-                    options={allRecommendationsStatusOptions}
-                    showSelectedOption
-                />
+                {!isLoading && totalItemsCount > 0 && (
+                    <SelectField
+                        fixedWidth
+                        style={{width: '160px'}}
+                        dropdownMenuClassName={css.dropdownMenu}
+                        value={statusFilter}
+                        onChange={(value) =>
+                            setStatusFilter(value as AllRecommendationsStatus)
+                        }
+                        options={allRecommendationsStatusOptions}
+                        showSelectedOption
+                    />
+                )}
             </div>
-            {!isLoading && itemsCount === 0 ? (
+            {!isLoading && totalItemsCount <= 0 ? (
+                <div className={css.noRecommendations}>
+                    You have no recommendations for this store yet.
+                </div>
+            ) : !isLoading && itemsCount <= 0 ? (
                 <NoDataAvailable
                     className={css.noDataWrapper}
                     title="No data available"

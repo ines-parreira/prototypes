@@ -185,7 +185,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
         } as unknown as ReturnType<typeof useTopQuestionsFilters>)
         mockUseAIArticleRecommendationItems.mockReturnValue({
             paginatedItems: paginatedItemsFixture,
-            itemsCount: 5,
+            itemsCount: 3,
             totalItemsCount: 5,
             isLoading: false,
             batchDatetime,
@@ -578,5 +578,38 @@ describe('<AutomateAllRecommendationsPage />', () => {
         })[0]
 
         expect(linkElement).toHaveAttribute('href', 'https://test-preview.com')
+    })
+
+    it('render no Recommendations state view when there is no fetch article', () => {
+        mockUseAIArticleRecommendationItems.mockReturnValue({
+            paginatedItems: paginatedItemsFixture,
+            itemsCount: 0,
+            totalItemsCount: 0,
+            isLoading: false,
+            batchDatetime,
+        } as unknown as ReturnType<typeof useAIArticleRecommendationItems>)
+
+        renderComponent()
+
+        expect(
+            screen.getByText('You have no recommendations for this store yet.')
+        ).toBeInTheDocument()
+    })
+
+    it('render no Data state view when there is no recommendation items in the selected status filter', () => {
+        mockUseAIArticleRecommendationItems.mockReturnValue({
+            paginatedItems: paginatedItemsFixture,
+            itemsCount: 0,
+            totalItemsCount: 5,
+            isLoading: false,
+            batchDatetime,
+        } as unknown as ReturnType<typeof useAIArticleRecommendationItems>)
+
+        renderComponent()
+
+        expect(screen.getByText('No data available')).toBeInTheDocument()
+        expect(
+            screen.getByText('Try adjusting filters to get results.')
+        ).toBeInTheDocument()
     })
 })
