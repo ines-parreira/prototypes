@@ -124,7 +124,7 @@ export const useTopQuestionsArticles = (
             try {
                 createdArticle = await createArticleMutation({
                     articleTemplate,
-                    visibilityStatus: 'UNLISTED',
+                    visibilityStatus: 'PUBLIC',
                     categoryId: null,
                     publish: false,
                 })

@@ -66,11 +66,21 @@ const OpenCreatedArticleIcon = ({
         templateKey
     )
 
+    const isArticleUnlisted =
+        article && article.translation.visibility_status === 'UNLISTED'
+
+    const redirectToPublishedPreview = useMemo(
+        () =>
+            isHelpCenterLive &&
+            reviewAction === 'publish' &&
+            !isArticleUnlisted &&
+            publishedPreviewUrl,
+        [isHelpCenterLive, reviewAction, isArticleUnlisted, publishedPreviewUrl]
+    )
+
     return (
         <>
-            {isHelpCenterLive &&
-            reviewAction === 'publish' &&
-            publishedPreviewUrl ? (
+            {redirectToPublishedPreview ? (
                 <a
                     href={publishedPreviewUrl}
                     target="_blank"

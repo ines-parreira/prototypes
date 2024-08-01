@@ -10,11 +10,13 @@ import {useSearchParam} from 'hooks/useSearchParam'
 import {assumeMock} from 'utils/testing'
 import {initialState} from 'state/ui/stats/drillDownSlice'
 import {IntegrationType} from 'models/integration/constants'
+import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
 import {useTopQuestionsFilters} from '../TopQuestions/useTopQuestionsFilters'
 import AutomateAllRecommendationsPage from '../AutomateAllRecommendationsPage'
 import {useAIArticleRecommendationItems} from '../../hooks/useAIArticleRecommendationItems'
 import {useHasEmailToStoreConnection} from '../TopQuestions/useHasEmailToStoreConnection'
 import {useTopQuestionsViewedOnPage} from '../TopQuestions/useTopQuestionsViewedOnPage'
+import {useAIArticlePublishedPreviewUrl} from '../../hooks/useAIArticlePublishedPreviewUrl'
 
 const storeFilter = {
     options: [
@@ -64,24 +66,38 @@ const helpCenterFilter = {
 const batchDatetime = '2024-07-10T13:28:49.755Z'
 const paginatedItemsFixture = [
     {
-        title: 'How to cancel order',
-        templateKey: 'ai_Generated_3',
-        ticketsCount: 8,
-        reviewAction: undefined,
-        createArticle: jest.fn(),
-    },
-    {
         title: 'AI Generated Article 1',
         templateKey: 'ai_Generated_1',
-        ticketsCount: 5,
+        ticketsCount: 12,
         reviewAction: undefined,
         createArticle: jest.fn(),
     },
     {
         title: 'AI Generated Article 2',
         templateKey: 'ai_Generated_2',
-        ticketsCount: 3,
+        ticketsCount: 10,
         reviewAction: 'archive',
+        createArticle: jest.fn(),
+    },
+    {
+        title: 'AI Generated Article 3',
+        templateKey: 'ai_Generated_3',
+        ticketsCount: 8,
+        reviewAction: undefined,
+        createArticle: jest.fn(),
+    },
+    {
+        title: 'AI Generated Article 4',
+        templateKey: 'ai_Generated_4',
+        ticketsCount: 5,
+        reviewAction: 'publish',
+        createArticle: jest.fn(),
+    },
+    {
+        title: 'AI Generated Article 5',
+        templateKey: 'ai_Generated_5',
+        ticketsCount: 3,
+        reviewAction: 'saveAsDraft',
         createArticle: jest.fn(),
     },
 ]
@@ -118,6 +134,14 @@ const mockUseTopQuestionsViewedOnPage = assumeMock(useTopQuestionsViewedOnPage)
 jest.mock('../TopQuestions/useHasEmailToStoreConnection')
 const mockUseHasEmailToStoreConnection = assumeMock(
     useHasEmailToStoreConnection
+)
+
+jest.mock('state/entities/helpCenter/helpCenters')
+const mockGetHelpCenterFAQList = assumeMock(getHelpCenterFAQList)
+
+jest.mock('../../hooks/useAIArticlePublishedPreviewUrl')
+const mockUseAIArticlePublishedPreviewUrl = assumeMock(
+    useAIArticlePublishedPreviewUrl
 )
 
 describe('<AutomateAllRecommendationsPage />', () => {
@@ -161,13 +185,36 @@ describe('<AutomateAllRecommendationsPage />', () => {
         } as unknown as ReturnType<typeof useTopQuestionsFilters>)
         mockUseAIArticleRecommendationItems.mockReturnValue({
             paginatedItems: paginatedItemsFixture,
-            itemsCount: 3,
-            totalItemsCount: 3,
+            itemsCount: 5,
+            totalItemsCount: 5,
             isLoading: false,
             batchDatetime,
         } as unknown as ReturnType<typeof useAIArticleRecommendationItems>)
         mockUseTopQuestionsViewedOnPage.mockReturnValue(true)
         mockUseHasEmailToStoreConnection.mockReturnValue(true)
+        mockGetHelpCenterFAQList.mockReturnValue([
+            {
+                id: 11,
+                name: 'Help Center 1',
+                type: 'faq',
+                deactivated_datetime: null,
+            },
+            {
+                id: 22,
+                name: 'Help Center 2',
+                type: 'faq',
+                deactivated_datetime: null,
+            },
+        ] as unknown as ReturnType<typeof getHelpCenterFAQList>)
+        mockUseAIArticlePublishedPreviewUrl.mockReturnValue({
+            url: 'https://test-preview.com',
+            article: {
+                id: 123,
+                translation: {
+                    visibility_status: 'PUBLIC',
+                },
+            },
+        } as unknown as ReturnType<typeof useAIArticlePublishedPreviewUrl>)
         jest.spyOn(history, 'push')
     })
 
@@ -225,7 +272,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
         expect(screen.getByText('AI Generated Article 2')).toBeInTheDocument()
         expect(screen.getByText('ARCHIVED')).toBeInTheDocument()
 
-        expect(screen.getByText('3 NEW')).toBeInTheDocument()
+        expect(screen.getByText('5 NEW')).toBeInTheDocument()
     })
 
     it('does not render AutomateAllRecommendationsPage with new badge when loading', () => {
@@ -235,15 +282,15 @@ describe('<AutomateAllRecommendationsPage />', () => {
         mockUseTopQuestionsViewedOnPage.mockReturnValue(false)
         mockUseAIArticleRecommendationItems.mockReturnValue({
             paginatedItems: paginatedItemsFixture,
-            itemsCount: 3,
-            totalItemsCount: 3,
+            itemsCount: 5,
+            totalItemsCount: 5,
             isLoading: true,
             batchDatetime: undefined,
         } as unknown as ReturnType<typeof useAIArticleRecommendationItems>)
 
         renderComponent()
 
-        expect(screen.queryByText('3 NEW')).not.toBeInTheDocument()
+        expect(screen.queryByText('5 NEW')).not.toBeInTheDocument()
 
         expect(mockUseTopQuestionsViewedOnPage).toBeCalledWith(
             1,
@@ -430,5 +477,106 @@ describe('<AutomateAllRecommendationsPage />', () => {
         expect(history.push).not.toHaveBeenCalledWith(
             expect.stringContaining('status=not-created')
         )
+    })
+
+    it('redirect preview to help center editor if the article published is unlisted', () => {
+        mockUseSearchParam.mockImplementation((param) =>
+            param === 'status'
+                ? ['article-created', jest.fn()]
+                : param === 'page'
+                ? ['1', jest.fn()]
+                : [null, jest.fn()]
+        )
+        mockUseLocation.mockReturnValue({
+            pathname: '/app/automation/ai-recommendations',
+            search: `store_integration_id=1&help_center_id=11&status=article-created&page=1`,
+            state: undefined,
+            hash: '',
+        })
+        mockUseAIArticlePublishedPreviewUrl.mockReturnValue({
+            url: 'https://test-preview.com',
+            article: {
+                id: 123,
+                translation: {
+                    visibility_status: 'UNLISTED',
+                },
+            },
+        } as unknown as ReturnType<typeof useAIArticlePublishedPreviewUrl>)
+
+        renderComponent()
+
+        expect(screen.getByText('AI Generated Article 4')).toBeInTheDocument()
+
+        const linkElement = screen.getAllByRole('link', {
+            name: /open_in_new/i,
+        })[0]
+
+        expect(linkElement).toHaveAttribute(
+            'href',
+            `/app/settings/help-center/11/articles?article_id=123`
+        )
+    })
+
+    it('redirect preview to help center editor if the help center is not live', () => {
+        mockUseSearchParam.mockImplementation((param) =>
+            param === 'status'
+                ? ['article-created', jest.fn()]
+                : param === 'page'
+                ? ['1', jest.fn()]
+                : [null, jest.fn()]
+        )
+        mockUseLocation.mockReturnValue({
+            pathname: '/app/automation/ai-recommendations',
+            search: `store_integration_id=1&help_center_id=11&status=article-created&page=1`,
+            state: undefined,
+            hash: '',
+        })
+        mockGetHelpCenterFAQList.mockReturnValue([
+            {
+                id: 11,
+                name: 'Help Center 1',
+                type: 'faq',
+                deactivated_datetime: '2021-01-15T15:26:02.575404+00:00',
+            },
+        ] as unknown as ReturnType<typeof getHelpCenterFAQList>)
+
+        renderComponent()
+
+        expect(screen.getByText('AI Generated Article 4')).toBeInTheDocument()
+
+        const linkElement = screen.getAllByRole('link', {
+            name: /open_in_new/i,
+        })[0]
+
+        expect(linkElement).toHaveAttribute(
+            'href',
+            `/app/settings/help-center/11/articles?article_id=123`
+        )
+    })
+
+    it('redirect to article preview url when article is published', () => {
+        mockUseSearchParam.mockImplementation((param) =>
+            param === 'status'
+                ? ['article-created', jest.fn()]
+                : param === 'page'
+                ? ['1', jest.fn()]
+                : [null, jest.fn()]
+        )
+        mockUseLocation.mockReturnValue({
+            pathname: '/app/automation/ai-recommendations',
+            search: `store_integration_id=1&help_center_id=11&status=article-created&page=1`,
+            state: undefined,
+            hash: '',
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('AI Generated Article 4')).toBeInTheDocument()
+
+        const linkElement = screen.getAllByRole('link', {
+            name: /open_in_new/i,
+        })[0]
+
+        expect(linkElement).toHaveAttribute('href', 'https://test-preview.com')
     })
 })

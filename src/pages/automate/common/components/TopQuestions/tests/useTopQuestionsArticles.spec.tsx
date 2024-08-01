@@ -283,7 +283,7 @@ describe('useTopQuestionsArticles', () => {
             },
             categoryId: null,
             publish: false,
-            visibilityStatus: 'UNLISTED',
+            visibilityStatus: 'PUBLIC',
         })
 
         expect(mockUpsertArticleTemplateReviewMutateAsync).toHaveBeenCalledWith(
