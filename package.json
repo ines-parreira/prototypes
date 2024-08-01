@@ -16,6 +16,7 @@
         "test": "run-s quality jest",
         "test:debug": "node --inspect-brk ./node_modules/.bin/jest -i",
         "test:cover": "run-s quality \"jest --coverage\"",
+        "test:cover:changed": "yarn jest --coverage --changedSince=main --onlyChanged --coverageReporters=lcov --coverageReporters=text-summary",
         "test:update": "yarn jest -u",
         "test:watch": "yarn jest --watch",
         "test:ci": "run-s quality test:ci:cover",
