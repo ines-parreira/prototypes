@@ -12,8 +12,8 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {AutomateFeatures} from '../types'
+import {usePaywallConfig} from '../hooks/usePaywallConfig'
 import css from './AutomatePaywallView.less'
-import {PaywallConfig} from './constants'
 
 const AutomatePaywallView = ({
     automateFeature,
@@ -29,7 +29,7 @@ const AutomatePaywallView = ({
         showRoiCalculator,
         slidesWidth,
         slidesData,
-    } = PaywallConfig[automateFeature]
+    } = usePaywallConfig(automateFeature)
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
     useEffectOnce(() => {

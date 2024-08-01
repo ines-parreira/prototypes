@@ -16,13 +16,13 @@ import {
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
 import {
-    AUTOMATION_FEATURES,
     BILLING_SUPPORT_EMAIL,
     CANCEL_AUTOMATION_REASONS,
     DATE_FORMAT,
     ZAPIER_REMOVE_AAO_HOOK,
 } from '../../constants'
 import {sendRemoveNotificationZap} from '../../utils/sendRemoveNotificationZap'
+import useAutomationFeatures from '../../hooks/useAutomationFeatures'
 import css from './CancelAAOModal.less'
 import ReasonsAAOModal from './ReasonsAAOModal'
 
@@ -51,6 +51,7 @@ const CancelAAOModal = ({
     const isTrialingSubscription = useAppSelector(isTrialing)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
+    const automateFeatures = useAutomationFeatures()
 
     const from: string = currentUser.get('email')
     const subject = `Remove Automate - ${domain}`
@@ -130,27 +131,32 @@ const CancelAAOModal = ({
                         You'll lose access to Automate and AI features like:
                     </div>
                     <div className={css.features}>
-                        {AUTOMATION_FEATURES.map((feature) => (
-                            <div className={css.feature} key={feature.title}>
-                                <div className={css.icon}>
-                                    {feature.icon ? (
-                                        <i className="material-icons">
-                                            {feature.icon}
-                                        </i>
-                                    ) : (
-                                        <img src={feature.iconUrl} alt="" />
-                                    )}
-                                </div>
-                                <div>
-                                    <div className={css.featureName}>
-                                        {feature.title}
+                        {automateFeatures
+                            .filter((feature) => !feature.disabled)
+                            .map((feature) => (
+                                <div
+                                    className={css.feature}
+                                    key={feature.title}
+                                >
+                                    <div className={css.icon}>
+                                        {feature.icon ? (
+                                            <i className="material-icons">
+                                                {feature.icon}
+                                            </i>
+                                        ) : (
+                                            <img src={feature.iconUrl} alt="" />
+                                        )}
                                     </div>
-                                    <div className={css.featureDescription}>
-                                        {feature.description}
+                                    <div>
+                                        <div className={css.featureName}>
+                                            {feature.title}
+                                        </div>
+                                        <div className={css.featureDescription}>
+                                            {feature.description}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
                 </ModalBody>
                 <ModalActionsFooter>

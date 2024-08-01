@@ -1,13 +1,5 @@
 import {ProductType} from 'models/billing/types'
-import orderManagementIcon from 'assets/img/icons/order-management.svg'
 import {ProductSubscriptionDescriptions} from 'pages/settings/new_billing/types'
-import flowsIcon from 'assets/img/icons/flows.svg'
-import {
-    ARTICLE_RECOMMENDATION,
-    FLOWS,
-    ORDER_MANAGEMENT,
-    QUICK_RESPONSES,
-} from 'pages/automate/common/components/constants'
 import {Reason} from './components/CancelAAOModal/CancelAAOModal'
 
 export const BILLING_BASE_PATH = '/app/settings/billing'
@@ -100,39 +92,6 @@ export const TICKET_SUBJECTS = {
 }
 
 export const BILLING_SUPPORT_EMAIL = 'billing@gorgias.com'
-
-export const AUTOMATION_FEATURES = [
-    {
-        title: FLOWS,
-        iconUrl: flowsIcon,
-        description: 'Build interactive, personalized resolutions',
-    },
-    {
-        title: QUICK_RESPONSES,
-        icon: 'chat',
-        description: 'Provide instant resolutions to FAQs',
-    },
-    {
-        title: ORDER_MANAGEMENT,
-        iconUrl: orderManagementIcon,
-        description: 'Let customers manage and track orders',
-    },
-    {
-        title: ARTICLE_RECOMMENDATION,
-        icon: 'menu_book',
-        description: 'Answer customer questions with AI',
-    },
-    {
-        title: 'Autoresponders',
-        icon: 'email',
-        description: 'Filter and resolve email requests with AI',
-    },
-    {
-        title: 'Automate statistics',
-        icon: 'bar_chart',
-        description: 'Measure and track your automation performance',
-    },
-]
 
 export const CANCEL_AUTOMATION_REASONS: Reason[] = [
     {value: false, label: `It's not automating enough`},
