@@ -79,7 +79,11 @@ export const useHelpCenterAIArticlesLibrary = (
     }, [articles])
 
     const articlesNotReviewed = useMemo(() => {
-        return articles?.filter((article) => !article.review_action)
+        return articles?.filter(
+            (article) =>
+                !article.review_action ||
+                article.review_action === 'dismissFromTopQuestions'
+        )
     }, [articles])
 
     const newArticles = useMemo(

@@ -199,4 +199,41 @@ describe('useHelpCenterAIArticlesLibrary', () => {
         expect(result.current.showLinkToConnectEmailToStore).toBe(true)
         expect(result.current.articles).toEqual([])
     })
+
+    it('should include article that has been dismissed in Top Questions section in the new AI articles', () => {
+        mockedUseConditionalGetAIArticles.mockReturnValue({
+            fetchedArticles: [
+                ...AIArticlesListFixture,
+                {
+                    key: 'ai_Generated_4',
+                    title: 'How to cancel order',
+                    html_content: '<h1>How to cancel order</h1>',
+                    score: 0,
+                    category: 'Ordering',
+                    excerpt:
+                        'You will have the option to cancel your order within your confirmation email. You may also contact our customer service team at [email/phone #]...',
+                    batch_datetime: '1709110371700',
+                    review_action: 'dismissFromTopQuestions',
+                },
+            ],
+            isLoading: false,
+        })
+
+        const {result} = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
+        )
+
+        expect(mockedUseConditionalGetAIArticles).toHaveBeenCalled()
+
+        expect(result.current.articles).toEqual(
+            AILibraryArticleItemsFixture.filter((aiArticle) => aiArticle.isNew)
+        )
+        expect(result.current.isLoading).toBe(false)
+
+        expect(result.current.counters).toEqual({
+            new: 2,
+            old: 2,
+            all: 4,
+        })
+    })
 })
