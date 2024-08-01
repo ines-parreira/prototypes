@@ -68,7 +68,7 @@ export const useFirstStoreAndHelpCenterWithTopQuestions = (
             ? fetchedArticles.filter(isAIArticleWithoutReviewAction)
             : []
 
-        if (filteredArticles.length < 4) {
+        if (filteredArticles.length === 0) {
             if (helpCenterIndex < store.helpCenters.length - 1) {
                 setStoreAndHelpCenterIndex([storeIndex, helpCenterIndex + 1])
             } else if (storeIndex < storesWithHelpCenters.length - 1) {

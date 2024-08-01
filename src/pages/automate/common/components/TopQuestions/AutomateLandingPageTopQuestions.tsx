@@ -100,7 +100,7 @@ const TopQuestionsSectionWithFilters = ({
     )
 
     if (isSingleStore) {
-        if (isLoading || (topQuestions.length < 4 && !wasJustReviewed)) {
+        if (isLoading || (topQuestions.length === 0 && !wasJustReviewed)) {
             return null
         }
 
@@ -146,7 +146,7 @@ const TopQuestionsSectionWithFilters = ({
         )
     }
 
-    if (topQuestions.length < 4 && !wasJustReviewed) {
+    if (topQuestions.length === 0 && !wasJustReviewed) {
         return (
             <div className={css.topQuestionsWrapper}>
                 <TopQuestionsSectionNoRecommendations

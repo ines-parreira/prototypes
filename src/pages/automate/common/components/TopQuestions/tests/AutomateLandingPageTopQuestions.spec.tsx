@@ -231,10 +231,10 @@ describe('AutomateLandingPageTopQuestions', () => {
         )
     })
 
-    it('displays message if there are less than 4 articles in multi-store configuration', () => {
+    it('displays message if there are 0 articles in multi-store configuration', () => {
         mockUseTopQuestionsArticles.mockReturnValue({
             ...defaultTopQuestionsArticles,
-            articles: defaultTopQuestionsArticles.articles.slice(0, 2),
+            articles: [],
         })
 
         render(<AutomateLandingPageTopQuestions />)
@@ -244,7 +244,7 @@ describe('AutomateLandingPageTopQuestions', () => {
         ).toBeInTheDocument()
     })
 
-    it('displays nothing if there are less than 4 articles in single store configuration', () => {
+    it('displays nothing if there are 0 articles in single store configuration', () => {
         mockUseTopQuestionsFilters.mockReturnValue({
             ...defaultTopQuestionsFilters,
             storeFilter: {
@@ -261,7 +261,7 @@ describe('AutomateLandingPageTopQuestions', () => {
 
         mockUseTopQuestionsArticles.mockReturnValue({
             ...defaultTopQuestionsArticles,
-            articles: defaultTopQuestionsArticles.articles.slice(0, 2),
+            articles: [],
         })
 
         render(<AutomateLandingPageTopQuestions />)
@@ -278,6 +278,50 @@ describe('AutomateLandingPageTopQuestions', () => {
     })
 
     it('displays all reviewed if all articles were just reviewed', async () => {
+        mockUseTopQuestionsArticles.mockReturnValue({
+            ...defaultTopQuestionsArticles,
+            articles: defaultTopQuestionsArticles.articles.slice(0, 4),
+            dismissArticle: async () => Promise.resolve(),
+        })
+
+        const {rerender} = render(<AutomateLandingPageTopQuestions />)
+
+        act(() => {
+            fireEvent.click(screen.getAllByText('close')[0])
+            fireEvent.click(screen.getAllByText('close')[1])
+            fireEvent.click(screen.getAllByText('close')[2])
+            fireEvent.click(screen.getAllByText('close')[3])
+        })
+
+        mockUseTopQuestionsArticles.mockReturnValue({
+            ...defaultTopQuestionsArticles,
+            articles: [],
+        })
+
+        rerender(<AutomateLandingPageTopQuestions />)
+
+        await waitFor(() =>
+            expect(
+                screen.getByText('You’ve reviewed every recommendation!')
+            ).toBeInTheDocument()
+        )
+    })
+
+    it('displays all reviewed if all articles were just reviewed in single store configuration', async () => {
+        mockUseTopQuestionsFilters.mockReturnValue({
+            ...defaultTopQuestionsFilters,
+            storeFilter: {
+                options: [
+                    {
+                        shopName: 'Store 1',
+                        shopType: IntegrationType.Shopify,
+                        integrationId: 1,
+                    },
+                ],
+                setSelectedStoreIntegrationId: jest.fn(),
+            },
+        })
+
         mockUseTopQuestionsArticles.mockReturnValue({
             ...defaultTopQuestionsArticles,
             articles: defaultTopQuestionsArticles.articles.slice(0, 4),
