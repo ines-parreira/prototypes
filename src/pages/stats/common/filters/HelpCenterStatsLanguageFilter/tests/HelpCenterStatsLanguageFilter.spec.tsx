@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import userEvent from '@testing-library/user-event'
 import {mockStore} from 'utils/testing'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import HelpCenterStatsLanguageFilter from '../HelpCenterStatsLanguageFilter'
+import DEPRECATED_HelpCenterStatsLanguageFilter from 'pages/stats/common/filters/HelpCenterStatsLanguageFilter/DEPRECATED_HelpCenterStatsLanguageFilter'
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     useSupportedLocales: jest.fn(),
@@ -13,11 +13,13 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
 const mockUseSupportedLocales = jest.mocked(useSupportedLocales)
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof HelpCenterStatsLanguageFilter>>
+    props: Partial<
+        ComponentProps<typeof DEPRECATED_HelpCenterStatsLanguageFilter>
+    >
 ) => {
     render(
         <Provider store={mockStore({} as any)}>
-            <HelpCenterStatsLanguageFilter
+            <DEPRECATED_HelpCenterStatsLanguageFilter
                 supportedLocales={[]}
                 selectedLocaleCodes={[]}
                 onFilterChange={jest.fn()}

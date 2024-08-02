@@ -5,17 +5,17 @@ import {useSupportedLocales} from 'pages/settings/helpCenter/providers/Supported
 import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import {LocaleCode} from 'models/helpCenter/types'
 
-type HelpCenterStatsLanguageFilterProps = {
+type Props = {
     supportedLocales: LocaleCode[]
     selectedLocaleCodes: string[]
     onFilterChange: (locales: string[]) => void
 }
 
-const HelpCenterStatsLanguageFilter = ({
+const DEPRECATED_HelpCenterStatsLanguageFilter = ({
     supportedLocales,
     onFilterChange,
     selectedLocaleCodes,
-}: HelpCenterStatsLanguageFilterProps) => {
+}: Props) => {
     const locales = useSupportedLocales()
     const helpCenterLocales = getLocaleSelectOptions(locales, supportedLocales)
     // We duplicate state because `selectedLocaleCodes` updates when the Selector closed
@@ -47,4 +47,4 @@ const HelpCenterStatsLanguageFilter = ({
     )
 }
 
-export default HelpCenterStatsLanguageFilter
+export default DEPRECATED_HelpCenterStatsLanguageFilter

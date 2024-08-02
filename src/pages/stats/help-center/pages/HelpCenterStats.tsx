@@ -37,7 +37,7 @@ import {
 import HelpCenterOverviewSection from 'pages/stats/help-center/components/HelpCenterOverviewSection/HelpCenterOverviewSection'
 import UnpublishedHelpCenterAlert from 'pages/stats/help-center/components/UnpublishedHelpCenterAlert/UnpublishedHelpCenterAlert'
 import {HelpCenterStatsEmptyState} from 'pages/stats/help-center/components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState'
-import HelpCenterStatsLanguageFilter from 'pages/stats/help-center/components/HelpCenterStatsLanguageFilter/HelpCenterStatsLanguageFilter'
+import DEPRECATED_HelpCenterStatsLanguageFilter from 'pages/stats/common/filters/HelpCenterStatsLanguageFilter/DEPRECATED_HelpCenterStatsLanguageFilter'
 import PartialDataAlert from 'pages/stats/help-center/components/PartialDataAlert/PartialDataAlert'
 import AIBanner from 'pages/stats/help-center/components/AIBanner'
 import {useStatsFilters} from 'pages/stats/help-center/hooks/useStatsFilters'
@@ -89,7 +89,7 @@ const HelpCenterStatsComponent = ({
                 title={PAGE_TITLE_HELP_CENTER}
                 titleExtra={
                     <>
-                        <HelpCenterStatsLanguageFilter
+                        <DEPRECATED_HelpCenterStatsLanguageFilter
                             supportedLocales={
                                 selectedHelpCenter.supported_locales
                             }

@@ -34,3 +34,8 @@ export const tagsFilterLogicalOperators = [
     LogicalOperatorEnum['ONE_OF'],
     LogicalOperatorEnum['NOT_ONE_OF'],
 ]
+
+export const helpCenterLanguageFilterLogicalOperators = [
+    LogicalOperatorEnum.ONE_OF,
+    LogicalOperatorEnum.NOT_ONE_OF,
+]
