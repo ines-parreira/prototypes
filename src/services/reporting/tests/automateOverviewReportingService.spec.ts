@@ -1,4 +1,5 @@
 import moment from 'moment'
+import {renderHook} from '@testing-library/react-hooks'
 import * as files from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {
@@ -8,6 +9,7 @@ import {
     OVERVIEW_METRICS_FILENAME,
     saveReport,
 } from 'services/reporting/automateOverviewReportingService'
+import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
 
 jest.mock('utils/file')
 
@@ -45,11 +47,14 @@ describe('reporting', () => {
     }
 
     it('should call saveReport with a report', async () => {
+        const {result} = renderHook(() => useAutomateStatsMeasureLabelMap())
+        const automateStatsMeasureLabelMap = result.current
+
         const fakeReport = 'someValue'
         jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
         const zipperMock = jest.spyOn(files, 'saveZippedFiles')
 
-        await saveReport(data, period)
+        await saveReport(data, period, automateStatsMeasureLabelMap)
 
         expect(zipperMock).toHaveBeenCalledWith(
             {
@@ -79,7 +84,8 @@ describe('reporting', () => {
         const fakeReport = 'someValue'
         jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
         const zipperMock = jest.spyOn(files, 'saveZippedFiles')
-
+        const {result} = renderHook(() => useAutomateStatsMeasureLabelMap())
+        const automateStatsMeasureLabelMap = result.current
         await saveReport(
             {
                 ...data,
@@ -96,7 +102,8 @@ describe('reporting', () => {
                     automatedInteractionByEventTypesTimeSeries: [],
                 },
             },
-            period
+            period,
+            automateStatsMeasureLabelMap
         )
 
         expect(zipperMock).toHaveBeenCalledWith(

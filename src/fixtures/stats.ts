@@ -10,6 +10,7 @@ import {
 } from 'models/stat/types'
 import {
     ARTICLE_RECOMMENDATION,
+    FLOWS,
     QUICK_RESPONSES,
 } from 'pages/automate/common/components/constants'
 
@@ -1383,6 +1384,57 @@ export const selfServiceQuickResponsePerformance: Stat<TwoDimensionalChart> = {
                     },
                     {
                         name: 'Served by an agent after quick response',
+                        type: StatType.Number,
+                    },
+                ],
+            },
+            lines: [
+                [
+                    {
+                        type: StatType.Title,
+                        value: 'How do I pick the right size?',
+                    },
+                    {type: StatType.Percent, value: 86},
+                    {type: StatType.Number, value: 750},
+                    {type: StatType.Number, value: 116},
+                ],
+                [
+                    {
+                        type: StatType.Title,
+                        value: 'What is your shipping policy?',
+                    },
+                    {type: StatType.Percent, value: 85},
+                    {type: StatType.Number, value: 417},
+                    {type: StatType.Number, value: 68},
+                ],
+            ],
+        },
+    },
+    meta: {
+        end_datetime: '2022-08-24T23:59:59-07:00',
+        previous_end_datetime: '2022-06-25T23:59:59-07:00',
+        previous_start_datetime: '2022-04-27T00:00:00-07:00',
+        start_datetime: '2022-06-26T00:00:00-07:00',
+    },
+}
+
+export const selfServiceFlowsPerformance: Stat<TwoDimensionalChart> = {
+    data: {
+        label: `${FLOWS} performance`,
+        data: {
+            axes: {
+                x: [
+                    {name: 'Flows response', type: StatType.Title},
+                    {
+                        name: 'Automation rate',
+                        type: StatType.QuickResponseAutomationRate,
+                    },
+                    {
+                        name: 'Automated by flows',
+                        type: StatType.Number,
+                    },
+                    {
+                        name: 'Served by an agent after flows',
                         type: StatType.Number,
                     },
                 ],

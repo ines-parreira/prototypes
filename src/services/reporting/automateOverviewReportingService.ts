@@ -20,7 +20,6 @@ import {
     DECREASE_IN_FIRST_RESPONSE,
     DECREASE_IN_RESOLUTION_TIME,
 } from 'pages/automate/automate-metrics/constants'
-import {AUTOMATE_STATS_MEASURE_LABEL_MAP} from 'hooks/reporting/automate/utils'
 
 export const AUTOMATE_IMPACT_FILENAME = 'automate-impact'
 export const AUTOMATE_PERFORMANCE_FILENAME = 'automate-performance'
@@ -38,7 +37,11 @@ export interface AutomateReportData {
     automatedInteractionTrend: MetricTrend
 }
 
-export const saveReport = async (data: AutomateReportData, period: Period) => {
+export const saveReport = async (
+    data: AutomateReportData,
+    period: Period,
+    automateStatsMeasureLabelMap: Record<AutomatedInteractionByFeatures, string>
+) => {
     const {
         automationRateTimeSeries,
         automatedInteractionTimeSeries,
@@ -96,7 +99,7 @@ export const saveReport = async (data: AutomateReportData, period: Period) => {
     const labels =
         automatedInteractionByEventTypesTimeSeries?.map(
             (item) =>
-                AUTOMATE_STATS_MEASURE_LABEL_MAP[
+                automateStatsMeasureLabelMap[
                     item[0].label as AutomatedInteractionByFeatures
                 ]
         ) || []

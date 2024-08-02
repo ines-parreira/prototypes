@@ -11,11 +11,6 @@ import {
     AutomationBillingEventMeasure,
 } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {
-    FLOWS,
-    QUICK_RESPONSES,
-    ARTICLE_RECOMMENDATION,
-} from 'pages/automate/common/components/constants'
-import {
     AutomatedInteractionByFeatures,
     TwoDimensionalDataItem,
 } from 'pages/stats/types'
@@ -93,27 +88,6 @@ export const AutomateEventType = {
     AI_AGENT_TICKET_RESOLVED: 'ai_agent_ticket_resolved',
 }
 
-export const AUTOMATE_STATS_MEASURE_LABEL_MAP: Record<
-    AutomatedInteractionByFeatures,
-    string
-> = {
-    [AutomationBillingEventMeasure.AutomatedInteractionsByAIAgent]: 'AI Agent',
-    [AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows]:
-        FLOWS,
-    [AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse]:
-        QUICK_RESPONSES,
-    [AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation]:
-        ARTICLE_RECOMMENDATION,
-    [AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder]:
-        'Track order',
-    [AutomationBillingEventMeasure.AutomatedInteractionsByLoopReturns]:
-        'Return order',
-    [AutomationBillingEventMeasure.AutomatedInteractionsByAutomatedResponse]:
-        'Report order issue',
-    [AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders]:
-        'Autoresponders',
-}
-
 function getAutomateStatsEventTypeMap(
     eventType: string
 ): AutomationBillingEventCubeWithJoins['measures'] | 'Others' {
@@ -184,7 +158,8 @@ function getPeriodDateTimesByGranularity(
 export function addNonExistingEventTypesForGraph(
     interactionsDataByEventType: Record<string, TimeSeriesDataItem[][]>,
     filter: StatsFilters,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
+    skipList?: typeof AutomateEventType[keyof typeof AutomateEventType][]
 ) {
     const dateTimes = getPeriodDateTimesByGranularity(
         [filter.period.start_datetime, filter.period.end_datetime],
@@ -192,7 +167,10 @@ export function addNonExistingEventTypesForGraph(
     )
 
     for (const eventType of Object.values(AutomateEventType)) {
-        if (!interactionsDataByEventType[eventType]) {
+        if (
+            !interactionsDataByEventType[eventType] &&
+            !skipList?.includes(eventType)
+        ) {
             interactionsDataByEventType[eventType] = [
                 dateTimes.map((dateTime) => {
                     return {
@@ -216,14 +194,16 @@ export const getAutomateStatsByMeasure = (
 export function automateInteractionsByEventTypeToTimeSeries(
     filter: StatsFilters,
     granularity: ReportingGranularity,
-    interactionsDataByEventType?: Record<string, TimeSeriesDataItem[][]>
+    interactionsDataByEventType?: Record<string, TimeSeriesDataItem[][]>,
+    sunsetQuickResponses?: boolean
 ): TimeSeriesDataItem[][] {
     if (!interactionsDataByEventType) return []
 
     const allEventTypesData = addNonExistingEventTypesForGraph(
         interactionsDataByEventType,
         filter,
-        granularity
+        granularity,
+        sunsetQuickResponses ? [AutomateEventType.QUICK_RESPONSE_STARTED] : []
     )
 
     const mergedData = mergeAutomateDataByEventType(allEventTypesData, [
@@ -245,14 +225,15 @@ export function automateInteractionsByEventTypeToTimeSeries(
 }
 
 export function sortByAutomateFeatureLabels(
-    a: {label: string},
-    b: {label: string}
+    automateStatsLabelMap: Record<AutomatedInteractionByFeatures, string>
 ) {
-    const eventTypeChartLabels = Object.values(AUTOMATE_STATS_MEASURE_LABEL_MAP)
-    return (
-        eventTypeChartLabels.indexOf(a.label) -
-        eventTypeChartLabels.indexOf(b.label)
-    )
+    return (a: {label: string}, b: {label: string}) => {
+        const eventTypeChartLabels = Object.values(automateStatsLabelMap)
+        return (
+            eventTypeChartLabels.indexOf(a.label) -
+            eventTypeChartLabels.indexOf(b.label)
+        )
+    }
 }
 
 const getGreyAreaDates = (showGreyArea: GreyArea) => {

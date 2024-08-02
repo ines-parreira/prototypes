@@ -3,6 +3,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
 import {stringify} from 'csv-stringify/sync' // eslint-disable-line import/no-unresolved
+import moment from 'moment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PaywallConfig,
@@ -59,6 +60,8 @@ import {SelfServiceFeaturePreview} from './SelfServiceFeaturePreview'
 
 import css from './SelfServiceStatsPage.less'
 import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
+
+const QUICK_RESPONSE_DEPRECATION_DATE = '2024-08-15'
 
 export const SelfServiceStatsPage = (): JSX.Element => {
     const isFlowsBuilderAnalyticsEnabled =
@@ -165,6 +168,8 @@ export const SelfServiceStatsPage = (): JSX.Element => {
 
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+    const isSunsetQuickResponses =
+        useFlags()[FeatureFlagKey.SunsetQuickResponses]
 
     const [workflowsPerformance, isFetchingWorkflowsPerformance] =
         useStatResource<TwoDimensionalChart>({
@@ -277,8 +282,15 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         topReportedIssuesNoData &&
         productsWithMostIssuesAndReturnRequestsNoData
 
+    const isDateAfter15thOfAug = useMemo(
+        () =>
+            moment(pageStatsFilters.period.start_datetime).isAfter(
+                moment(QUICK_RESPONSE_DEPRECATION_DATE)
+            ),
+        [pageStatsFilters]
+    )
     if (isSelfServiceFetchPending || isWorkflowsFetchPending) {
-        return <Loader />
+        return <Loader data-testid="self-service-loader" />
     }
 
     return (
@@ -332,63 +344,74 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             />
                         )}
                     </StatWrapper>
-                    <StatWrapper
-                        stat={quickResponsePerformance}
-                        isFetchingStat={isFetchingQuickResponsePerformance}
-                        resourceName={SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE}
-                        statsFilters={pageStatsFilters}
-                        helpText={
-                            <span>
-                                Only Quick Responses enabled during the selected
-                                time period are displayed below.{' '}
-                                <a
-                                    href="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Learn more
-                                </a>
-                            </span>
-                        }
-                        helpAutoHide={false}
-                        isDownloadable={!quickResponsePerformanceNoData}
-                    >
-                        {(stat) => (
-                            <>
-                                {quickResponsePerformanceNoData &&
-                                quickResponseDisabled ? (
-                                    <SelfServiceFeaturePreview
-                                        title={`Automate up to 14% of interactions with ${QUICK_RESPONSES}`}
-                                        description="Enable and display up to 6 custom Text to provide customers with automated responses to common questions."
-                                        buttonText={`Go to ${QUICK_RESPONSES}`}
-                                        buttonRedirectUrl={buildCtaRedirectUrl(
-                                            'quickResponses'
-                                        )}
-                                        imageUrl={assetsUrl(
-                                            '/img/presentationals/quick-response-preview.png'
-                                        )}
-                                        imageAltText={`${QUICK_RESPONSES} feature preview`}
-                                    />
-                                ) : (
-                                    <TableStat
-                                        context={{tagColors: null}}
-                                        data={stat.getIn(['data', 'data'])}
-                                        meta={stat.get('meta')}
-                                        config={statsConfig.get(
-                                            SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
-                                        )}
-                                        name={
-                                            SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
-                                        }
-                                        integrations={integrations}
-                                        selfServiceConfigurations={
-                                            selfServiceConfigurations
-                                        }
-                                    />
-                                )}
-                            </>
-                        )}
-                    </StatWrapper>
+                    {isSunsetQuickResponses && isDateAfter15thOfAug ? (
+                        <></>
+                    ) : (
+                        <StatWrapper
+                            stat={quickResponsePerformance}
+                            isFetchingStat={isFetchingQuickResponsePerformance}
+                            resourceName={
+                                SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
+                            }
+                            statDataLabelOverride={
+                                isSunsetQuickResponses
+                                    ? 'Quick Responses performance (removed)'
+                                    : undefined
+                            }
+                            statsFilters={pageStatsFilters}
+                            helpText={
+                                <span>
+                                    Only Quick Responses enabled during the
+                                    selected time period are displayed below.{' '}
+                                    <a
+                                        href="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Learn more
+                                    </a>
+                                </span>
+                            }
+                            helpAutoHide={false}
+                            isDownloadable={!quickResponsePerformanceNoData}
+                        >
+                            {(stat) => (
+                                <>
+                                    {quickResponsePerformanceNoData &&
+                                    quickResponseDisabled ? (
+                                        <SelfServiceFeaturePreview
+                                            title={`Automate up to 14% of interactions with ${QUICK_RESPONSES}`}
+                                            description="Enable and display up to 6 custom Text to provide customers with automated responses to common questions."
+                                            buttonText={`Go to ${QUICK_RESPONSES}`}
+                                            buttonRedirectUrl={buildCtaRedirectUrl(
+                                                'quickResponses'
+                                            )}
+                                            imageUrl={assetsUrl(
+                                                '/img/presentationals/quick-response-preview.png'
+                                            )}
+                                            imageAltText={`${QUICK_RESPONSES} feature preview`}
+                                        />
+                                    ) : (
+                                        <TableStat
+                                            context={{tagColors: null}}
+                                            data={stat.getIn(['data', 'data'])}
+                                            meta={stat.get('meta')}
+                                            config={statsConfig.get(
+                                                SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
+                                            )}
+                                            name={
+                                                SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
+                                            }
+                                            integrations={integrations}
+                                            selfServiceConfigurations={
+                                                selfServiceConfigurations
+                                            }
+                                        />
+                                    )}
+                                </>
+                            )}
+                        </StatWrapper>
+                    )}
                     <StatWrapper
                         stat={articleRecommendationPerformance}
                         isFetchingStat={

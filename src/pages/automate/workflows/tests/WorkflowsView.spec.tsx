@@ -311,4 +311,117 @@ describe('<WorkflowsView />', () => {
         const navLink = screen.getByText(FLOWS)
         expect(navLink).not.toHaveClass('active')
     })
+
+    it('should render correctly when sunsetQuickResponses is true', async () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.SunsetQuickResponses]: true,
+            [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
+            [FeatureFlagKey.MigrateQuickResponseToFlows]: false,
+        })
+
+        useStoreWorkflowsMock.mockReturnValue({
+            isFetchPending: false,
+            workflows: [
+                {
+                    id: 'a',
+                    internal_id: 'a',
+                    name: 'a',
+                    available_languages: [],
+                    account_id: 1,
+                    is_draft: false,
+                    entrypoint: {label: '', label_tkey: ''},
+                    steps: [],
+                    initial_step_id: '',
+                    created_datetime: '2023-12-22T10:41:08.337Z',
+                    updated_datetime: '2023-12-22T10:41:08.337Z',
+                    deleted_datetime: null,
+                },
+            ],
+            storeIntegrationId: 1,
+        })
+
+        renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <WorkflowsView
+                        shopName="ShopName"
+                        shopType="shopify"
+                        goToEditWorkflowPage={jest.fn()}
+                        goToWorkflowTemplatesPage={jest.fn()}
+                        goToNewWorkflowPage={jest.fn()}
+                        goToNewWorkflowFromTemplatePage={jest.fn()}
+                        notifyMerchant={jest.fn()}
+                    />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Flows')).toBeInTheDocument()
+            expect(screen.queryByText('Create Custom Flow')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Create From Template')
+            ).toBeInTheDocument()
+        })
+        const deleteIcon = screen.getByTitle('Delete')
+        fireEvent.click(deleteIcon)
+        const tooltip = await screen.findByRole('tooltip')
+        const deleteButton = within(tooltip).getByText('Delete')
+        fireEvent.click(deleteButton)
+
+        expect(mockRemoveWorkflowFromStore).toHaveBeenCalledWith('a', 1)
+    })
+    it('should be active for baseUrl', () => {
+        renderWithRouter(
+            <WorkflowsView
+                shopName="shopName"
+                shopType="shopType"
+                goToNewWorkflowPage={jest.fn()}
+                goToWorkflowTemplatesPage={jest.fn()}
+                goToEditWorkflowPage={jest.fn()}
+                goToNewWorkflowFromTemplatePage={jest.fn()}
+                notifyMerchant={jest.fn()}
+            />,
+            {route: baseUrl}
+        )
+
+        const navLink = screen.getByText(FLOWS)
+        expect(navLink).toHaveClass('d-flex align-items-center')
+    })
+
+    it('should be active for baseUrl/templates', () => {
+        renderWithRouter(
+            <WorkflowsView
+                shopName="shopName"
+                shopType="shopType"
+                goToNewWorkflowPage={jest.fn()}
+                goToWorkflowTemplatesPage={jest.fn()}
+                goToEditWorkflowPage={jest.fn()}
+                goToNewWorkflowFromTemplatePage={jest.fn()}
+                notifyMerchant={jest.fn()}
+            />,
+            {route: `${baseUrl}/templates`}
+        )
+
+        const navLink = screen.getByText(FLOWS)
+        expect(navLink).toHaveClass('d-flex align-items-center')
+    })
+
+    it('should not be active for other paths', () => {
+        renderWithRouter(
+            <WorkflowsView
+                shopName="shopName"
+                shopType="shopType"
+                goToNewWorkflowPage={jest.fn()}
+                goToWorkflowTemplatesPage={jest.fn()}
+                goToEditWorkflowPage={jest.fn()}
+                goToNewWorkflowFromTemplatePage={jest.fn()}
+                notifyMerchant={jest.fn()}
+            />,
+            {route: `${baseUrl}/other`}
+        )
+
+        const navLink = screen.getByText(FLOWS)
+        expect(navLink).not.toHaveClass('active')
+    })
 })

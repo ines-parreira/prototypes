@@ -32,7 +32,6 @@ import {AUTOMATED_INTERACTION_TOOLTIP} from 'pages/automate/automate-metrics/Aut
 import {AUTOMATION_RATE_TOOLTIP} from 'pages/automate/automate-metrics/AutomationRateMetric'
 import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
 import {
-    AUTOMATE_STATS_MEASURE_LABEL_MAP,
     addZeroValueTimeSeriesForGreyArea,
     automatePercentLabel,
     calculateGreyArea,
@@ -72,6 +71,7 @@ import {
 
 import TipsToggle from 'pages/stats/TipsToggle'
 import {AutomatedInteractionByFeatures} from 'pages/stats/types'
+import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 
@@ -107,6 +107,7 @@ function useTimeSeriesFormattedData(
     granularity: ReportingGranularity,
     showGreyArea: GreyArea | null
 ) {
+    const automateStatsMeasureLabelMap = useAutomateStatsMeasureLabelMap()
     return useMemo(() => {
         const {
             automationRateTimeSeries,
@@ -130,13 +131,13 @@ function useTimeSeriesFormattedData(
                 automatedInteractionByEventTypesTimeSeries,
                 automatedInteractionByEventTypesTimeSeries.map((item) =>
                     item[0].label
-                        ? AUTOMATE_STATS_MEASURE_LABEL_MAP[
+                        ? automateStatsMeasureLabelMap[
                               item[0].label as AutomatedInteractionByFeatures
                           ]
                         : 'Others'
                 ),
                 granularity
-            ).sort(sortByAutomateFeatureLabels)
+            ).sort(sortByAutomateFeatureLabels(automateStatsMeasureLabelMap))
 
         return {
             automationRateTimeSeriesData: addZeroValueTimeSeriesForGreyArea(
@@ -159,7 +160,7 @@ function useTimeSeriesFormattedData(
                 automatedInteractionByEventTypesTimeSeries,
             },
         }
-    }, [granularity, showGreyArea, timeseries])
+    }, [automateStatsMeasureLabelMap, granularity, showGreyArea, timeseries])
 }
 
 export default function AutomateOverviewContent({
@@ -243,6 +244,8 @@ export default function AutomateOverviewContent({
         automatedInteractionByEventTypesTimeSeriesData,
     } = useTimeSeriesFormattedData(timeseries, granularity, greyArea)
 
+    const automateStatsMeasureLabelMap = useAutomateStatsMeasureLabelMap()
+
     const hasActivity =
         !automatedInteractionTrend.isFetching &&
         automatedInteractionTrend.data?.value
@@ -269,7 +272,8 @@ export default function AutomateOverviewContent({
                                         automationRateTrend,
                                         automatedInteractionTrend,
                                     },
-                                    statsFilters.period
+                                    statsFilters.period,
+                                    automateStatsMeasureLabelMap
                                 )
                             }}
                             disabled={false}
