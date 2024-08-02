@@ -34,7 +34,12 @@ export interface CustomActionConfigurationFormInput
 export interface TemplateConfigurationFormInput
     extends Omit<
         TemplateConfiguration,
-        'internal_id' | 'account_id' | 'id' | 'initial_step_id'
+        | 'internal_id'
+        | 'account_id'
+        | 'id'
+        | 'initial_step_id'
+        | 'created_datetime'
+        | 'updated_datetime'
     > {
     id?: string
     internal_id?: string

@@ -1,24 +1,87 @@
-import React from 'react'
-import {Container} from 'reactstrap'
-import {NavLink} from 'react-router-dom'
+import React, {useMemo, useState} from 'react'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import AutomateListView from 'pages/automate/common/components/AutomateListView'
+
+import ActionsPlatformTemplatesFilters from './components/ActionsPlatformTemplatesFilters'
+import ActionsPlatformTemplatesTable from './components/ActionsPlatformTemplatesTable'
+import useApps from './hooks/useApps'
+import useGetAppFromTemplate from './hooks/useGetAppFromTemplate'
+import {ActionTemplate, App} from './types'
+
+import css from './ActionsPlatformTemplatesView.less'
 
 const ActionsPlatformTemplatesView = () => {
+    const {
+        data: templates = [],
+        isInitialLoading: isGetTemplatesInitialLoading,
+    } = useGetWorkflowConfigurationTemplates(['llm-prompt'])
+    const {apps, isLoading: areAppsLoading} = useApps()
+    const getAppFromTemplate = useGetAppFromTemplate({apps})
+
+    const [name, setName] = useState('')
+    const [app, setApp] = useState<App | null>(null)
+
+    const filteredTemplates = useMemo<ActionTemplate[]>(() => {
+        const nameLowerCase = name.toLocaleLowerCase()
+
+        return templates.filter((template) => {
+            if (app) {
+                const templateApp = getAppFromTemplate(template.apps[0])
+
+                if (!templateApp || templateApp.id !== app.id) {
+                    return false
+                }
+            }
+
+            if (
+                name &&
+                !template.name.toLocaleLowerCase().includes(nameLowerCase)
+            ) {
+                return false
+            }
+
+            return true
+        })
+    }, [templates, getAppFromTemplate, app, name])
+
+    const isLoading = isGetTemplatesInitialLoading || areAppsLoading
+
     return (
-        <div className="full-width">
-            <PageHeader title="Actions platform" />
-            <SecondaryNavbar>
-                <NavLink to="/app/automation/actions-platform" exact>
-                    Templates
-                </NavLink>
-                <NavLink to="/app/automation/actions-platform/apps" exact>
-                    Apps
-                </NavLink>
-            </SecondaryNavbar>
-            <Container fluid>ActionsPlatformTemplatesView</Container>
-        </div>
+        <AutomateListView
+            title="Actions platform"
+            headerNavbarItems={[
+                {
+                    route: '/app/automation/actions-platform',
+                    title: 'Templates',
+                    exact: true,
+                },
+                {
+                    route: '/app/automation/actions-platform/apps',
+                    title: 'Apps',
+                    exact: true,
+                },
+            ]}
+            isLoading={isLoading}
+        >
+            <div className={css.content}>
+                <div>
+                    Create, customize, publish and maintain reusable Actions for
+                    AI Agent.
+                </div>
+                <ActionsPlatformTemplatesFilters
+                    apps={apps}
+                    app={app}
+                    onAppChange={setApp}
+                    name={name}
+                    onNameChange={setName}
+                />
+            </div>
+            <ActionsPlatformTemplatesTable
+                templates={filteredTemplates}
+                getAppFromTemplate={getAppFromTemplate}
+            />
+        </AutomateListView>
     )
 }
 

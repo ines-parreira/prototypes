@@ -405,7 +405,7 @@ export function wfConfgurationToTemplateFormValue(
     )
 
     const llmConversationEntryPoint = getEntrypointByKind(
-        configuration.entrypoints!,
+        configuration.entrypoints,
         'llm-conversation'
     )
 
