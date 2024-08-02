@@ -4,7 +4,7 @@ exports[`ViewTable::Table::HeaderCell displays the default cell 1`] = `
 <td>
   <div>
     <div
-      class="cell-wrapper"
+      class="cell-wrapper cellWrapper"
     >
       <div>
         ACTIONS
@@ -18,7 +18,7 @@ exports[`ViewTable::Table::HeaderCell does not display ActionsComponent for non-
 <td>
   <div>
     <div
-      class="cell-wrapper"
+      class="cell-wrapper cellWrapper"
     >
       <div
         class=""

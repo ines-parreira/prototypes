@@ -176,6 +176,25 @@ describe('ViewTable::Table::HeaderCell', () => {
         expect(setOrderDirectionMock).not.toHaveBeenCalled()
     })
 
+    it('should not enable sort by field value on click when not in search mode and isClickable is false', () => {
+        const {getByText} = render(
+            <Provider store={mockStore()}>
+                <HeaderCell
+                    {...minProps}
+                    field={createdViewField}
+                    isClickable={false}
+                />
+            </Provider>
+        )
+
+        const field = getByText(createdViewField.get('title'))
+        fireEvent.click(field)
+
+        expect(field.parentNode).not.toHaveClass('clickable')
+        expect(fetchViewItemsMock).not.toHaveBeenCalled()
+        expect(setOrderDirectionMock).not.toHaveBeenCalled()
+    })
+
     it.each([
         ['when not in search mode', false, false],
         [

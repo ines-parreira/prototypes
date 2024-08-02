@@ -20,6 +20,8 @@ import {
 import {fieldPath as getFieldPath} from 'utils'
 import {EntityType} from 'models/view/types'
 
+import css from './HeaderCell.less'
+
 type Props = {
     ActionsComponent: Maybe<ComponentType<any>>
     field: Map<any, any>
@@ -27,6 +29,7 @@ type Props = {
     shouldRenderShowMoreDropdown: boolean
     isSearch: boolean
     type: EntityType
+    isClickable?: boolean
 }
 
 const HeaderCell = ({
@@ -36,6 +39,7 @@ const HeaderCell = ({
     shouldRenderShowMoreDropdown,
     isSearch,
     type,
+    isClickable = true,
 }: Props) => {
     const dispatch = useAppDispatch()
 
@@ -94,7 +98,8 @@ const HeaderCell = ({
         if (
             field.get('filter') &&
             (isSearchSortingEnabled || !isSearch) &&
-            action === 'sort'
+            action === 'sort' &&
+            isClickable
         ) {
             const newDirection =
                 orderDirection === OrderDirection.Desc
@@ -115,6 +120,7 @@ const HeaderCell = ({
         isSearch,
         isSearchSortingEnabled,
         orderDirection,
+        isClickable,
     ])
 
     const isMainField = config.get('mainField') === field.get('name')
@@ -122,7 +128,7 @@ const HeaderCell = ({
     return (
         <td>
             <div>
-                <div className="cell-wrapper">
+                <div className={classnames('cell-wrapper', css.cellWrapper)}>
                     {isMainField ? (
                         ActionsComponent ? (
                             <ActionsComponent
@@ -134,7 +140,7 @@ const HeaderCell = ({
                         <div
                             onClick={onClick}
                             className={classnames({
-                                clickable: action === 'sort',
+                                clickable: action === 'sort' && isClickable,
                             })}
                         >
                             <span className="field-title">

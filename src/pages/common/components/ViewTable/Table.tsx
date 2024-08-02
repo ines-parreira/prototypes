@@ -52,6 +52,7 @@ type OwnProps = {
     ) => Promise<unknown> | void
     onItemClick?: (item: Map<any, any>) => void
     shouldRenderShowMoreDropdown?: boolean
+    areHeaderCellsClickable?: boolean
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -78,6 +79,7 @@ const TableContainer = ({
     view,
     viewSelected,
     shouldRenderShowMoreDropdown = true,
+    areHeaderCellsClickable = true,
 }: Props) => {
     const hasNextItems =
         !!navigation.get('next_items') || !!navigation.get('next_cursor')
@@ -300,6 +302,7 @@ const TableContainer = ({
                                         fields.size === (index as number) + 1 &&
                                         shouldRenderShowMoreDropdown
                                     }
+                                    isClickable={areHeaderCellsClickable}
                                     isSearch={isSearch}
                                     ActionsComponent={ActionsComponent}
                                 />

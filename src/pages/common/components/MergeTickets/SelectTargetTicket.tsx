@@ -121,6 +121,7 @@ class SelectTargetTicket extends React.Component<Props, State> {
                         fetchViewItems={this._onPageChange}
                         navigation={navigation}
                         shouldRenderShowMoreDropdown={false}
+                        areHeaderCellsClickable={false}
                     />
                 </div>
             </div>
