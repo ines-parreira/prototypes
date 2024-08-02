@@ -20,6 +20,7 @@ import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useCo
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {IntegrationType} from 'models/integration/constants'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
+import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
 import {ImportSection} from '../../../Imports/components/ImportSection'
 import {LanguageSelect} from '../../../LanguageSelect'
@@ -53,17 +54,18 @@ const ArticleLandingPageComponent = ({
     const helpCenter = useCurrentHelpCenter()
     const supportedLocales = helpCenter.supported_locales
     const shopifyIntegrations = useShopifyIntegrations()
-    const hasMultiStores = shopifyIntegrations.length > 1
     const storeIntegration = useSelfServiceStoreIntegration(
         IntegrationType.Shopify,
         helpCenter.shop_name ?? ''
     )
+    const storeIntegrationId = getValidStoreIntegrationId(
+        shopifyIntegrations,
+        storeIntegration
+    )
     const {fetchedArticles: aiArticles, isLoading: isAIArticlesLoading} =
         useConditionalGetAIArticles({
             helpCenterId: helpCenter.id,
-            storeIntegrationId: !hasMultiStores
-                ? shopifyIntegrations[0]?.id
-                : storeIntegration?.id ?? null,
+            storeIntegrationId,
             locale: viewLanguage,
         })
 

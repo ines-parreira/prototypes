@@ -12,6 +12,7 @@ import {
     HelpCenterArticleItem,
     LocaleCode,
 } from 'models/helpCenter/types'
+import {ShopifyIntegration, StoreIntegration} from 'models/integration/types'
 import {
     HELP_CENTER_DOMAIN,
     EMOJI_REGEX,
@@ -331,3 +332,18 @@ export const getHelpCenterLayout = (
     helpCenter?.layout && isHelpCenterLayout(helpCenter.layout)
         ? helpCenter.layout
         : HELP_CENTER_DEFAULT_LAYOUT
+
+export const getValidStoreIntegrationId = (
+    shopifyIntegrations: ShopifyIntegration[],
+    storeIntegration?: StoreIntegration
+): number | null => {
+    if (!shopifyIntegrations || shopifyIntegrations.length === 0) {
+        return null
+    }
+
+    const hasMultiStores = shopifyIntegrations.length > 1
+
+    return !hasMultiStores
+        ? shopifyIntegrations[0].id
+        : storeIntegration?.id ?? null
+}

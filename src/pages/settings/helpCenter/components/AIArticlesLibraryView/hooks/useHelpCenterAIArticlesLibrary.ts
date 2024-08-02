@@ -13,6 +13,7 @@ import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegr
 import {FeatureFlagKey} from 'config/featureFlags'
 import {IntegrationType} from 'models/integration/constants'
 import {useHasEmailToStoreConnection} from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
+import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
 import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
 
@@ -57,12 +58,15 @@ export const useHelpCenterAIArticlesLibrary = (
         ]
     )
 
+    const storeIntegrationId = getValidStoreIntegrationId(
+        shopifyIntegrations,
+        storeIntegration
+    )
+
     const {fetchedArticles: fetchedArticles, isLoading: isLoading} =
         useConditionalGetAIArticles({
             helpCenterId,
-            storeIntegrationId: !hasMultiStores
-                ? shopifyIntegrations[0]?.id
-                : storeIntegration?.id ?? null,
+            storeIntegrationId,
             locale,
         })
     const fetchedArticlesCount = fetchedArticles?.length ?? 0

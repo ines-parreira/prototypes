@@ -1,3 +1,4 @@
+import {ShopifyIntegration, StoreIntegration} from 'models/integration/types'
 import {getSingleCustomDomainResponseFixture} from '../../fixtures/getCustomDomainsResponse.fixture'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {
@@ -12,6 +13,7 @@ import {
     removeEmojis,
     replaceUploadUrls,
     slugify,
+    getValidStoreIntegrationId,
 } from '../helpCenter.utils'
 
 describe('getNewArticleTranslation()', () => {
@@ -257,5 +259,55 @@ describe('replaceUploadUrls', () => {
         const previousStr = `<p>aaa</p><p><br></p><p><br></p><p><img src="https://uploads.gorgias.io/zKB3oxw4pl6rkVOL/delivery-c2fea9c0-f200-434c-b726-bc89ba74d4f9.png" class="fr-fic fr-dii"><img src="https://uploads.gorgias.io/zKB3oxw4pl6rkVOL/delivery-c2fea9c0-f200-434c-b726-bc89ba74d4f9.png" width="100" height="200" class="fr-fic fr-dii"></p><div class="fr-deletable gorgias-file-attachment__wrapper" contenteditable="false"><div><i class="material-icons">attach_file</i> <a class="gorgias-file-attachment__anchor-name" href="https://uploads.gorgias.io/zKB3oxw4pl6rkVOL/delivery-c2fea9c0-f200-434c-b726-bc89ba74d4f9.png" rel="noopener noreferrer" target="_blank">png file</a> <span class="gorgias-file-attachment__span-size">30B</span></div><i class="material-icons gorgias-file-attachment__close-icon">close</i></div><p><br></p><img src="https://attachments.gorgias.help/uploads.gorgias.io/untouched/untouched.png" class="fr-fic fr-dii">`
 
         expect(replaceUploadUrls(previousStr)).toMatchSnapshot()
+    })
+})
+
+describe('getValidStoreIntegrationId', () => {
+    it('should return null if shopifyIntegrations array is empty', () => {
+        const shopifyIntegrations = [] as unknown as ShopifyIntegration[]
+        const storeIntegration = {id: 1} as unknown as StoreIntegration
+        expect(
+            getValidStoreIntegrationId(shopifyIntegrations, storeIntegration)
+        ).toBeNull()
+    })
+
+    it('should return null if shopifyIntegrations is null', () => {
+        const shopifyIntegrations = null as unknown as ShopifyIntegration[]
+        const storeIntegration = {id: 1} as StoreIntegration
+        expect(
+            getValidStoreIntegrationId(shopifyIntegrations, storeIntegration)
+        ).toBeNull()
+    })
+
+    it('should return null if shopifyIntegrations is undefined', () => {
+        const shopifyIntegrations = undefined as unknown as ShopifyIntegration[]
+        const storeIntegration = {id: 1} as StoreIntegration
+        expect(
+            getValidStoreIntegrationId(shopifyIntegrations, storeIntegration)
+        ).toBeNull()
+    })
+
+    it('should return the default shopifyIntegration id if there is only one shopifyIntegrations', () => {
+        const shopifyIntegrations = [{id: 1}] as unknown as ShopifyIntegration[]
+        expect(getValidStoreIntegrationId(shopifyIntegrations)).toBe(1)
+    })
+
+    it('should return the id of the storeIntegration if there are multiple integrations and storeIntegration is provided', () => {
+        const shopifyIntegrations = [
+            {id: 1},
+            {id: 2},
+        ] as unknown as ShopifyIntegration[]
+        const storeIntegration = {id: 3} as unknown as StoreIntegration
+        expect(
+            getValidStoreIntegrationId(shopifyIntegrations, storeIntegration)
+        ).toBe(3)
+    })
+
+    it('should return null if there are multiple integrations but storeIntegration is undefined', () => {
+        const shopifyIntegrations = [
+            {id: 1},
+            {id: 2},
+        ] as unknown as ShopifyIntegration[]
+        expect(getValidStoreIntegrationId(shopifyIntegrations)).toBeNull()
     })
 })

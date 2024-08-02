@@ -11,6 +11,7 @@ import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useCo
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {IntegrationType} from 'models/integration/constants'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
+import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {
     groupArticlesByCategory,
     mapAIHelpCenterArticleData,
@@ -29,17 +30,18 @@ export const useGetHelpCenterArticles = (
     helpCenterShopName: string | null
 ): HelpCenterArticlesOutput => {
     const shopifyIntegrations = useShopifyIntegrations()
-    const hasMultiStores = shopifyIntegrations.length > 1
     const storeIntegration = useSelfServiceStoreIntegration(
         IntegrationType.Shopify,
         helpCenterShopName ?? ''
     )
+    const storeIntegrationId = getValidStoreIntegrationId(
+        shopifyIntegrations,
+        storeIntegration
+    )
     const {fetchedArticles: aiArticles, isLoading: isGetAIArticlesLoading} =
         useConditionalGetAIArticles({
             helpCenterId,
-            storeIntegrationId: !hasMultiStores
-                ? shopifyIntegrations[0]?.id
-                : storeIntegration?.id ?? null,
+            storeIntegrationId,
             locale,
         })
 
