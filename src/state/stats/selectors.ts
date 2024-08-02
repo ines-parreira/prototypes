@@ -135,6 +135,28 @@ export const getPageStatsFilters = createSelector(
     }
 )
 
+export const getStatsFiltersWithInitialStoreIntegration = createSelector(
+    getStatsFilters,
+    getStatsStoreIntegrations,
+    getStoreIntegrationsStatsFilter,
+    (statsFilters, storeIntegrations, storeStatsFilter) => {
+        const {channels, tags, period, campaigns} = statsFilters
+
+        return {
+            statsFilters: {
+                channels,
+                campaigns,
+                tags,
+                period,
+                integrations: storeStatsFilter.length
+                    ? storeStatsFilter
+                    : [storeIntegrations[0].id],
+            },
+            storeIntegrations,
+        }
+    }
+)
+
 export const getPageStatsFiltersWithLogicalOperators = createSelector(
     getStatsFiltersWithLogicalOperators,
     getMessagingAndAppIntegrationsStatsFilterWithLogicalOperators,

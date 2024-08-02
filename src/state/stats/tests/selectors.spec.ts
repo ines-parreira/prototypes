@@ -15,6 +15,7 @@ import {
     getSLAPoliciesStatsFilter,
     getPageStatsFilters,
     getPageStatsFiltersWithLogicalOperators,
+    getStatsFiltersWithInitialStoreIntegration,
 } from 'state/stats/selectors'
 import {initialState} from 'state/stats/statsSlice'
 
@@ -179,6 +180,64 @@ describe('stats selectors', () => {
                 campaigns: undefined,
                 campaignStatuses: undefined,
                 slaPolicies: undefined,
+            })
+        })
+    })
+
+    describe('getStatsFiltersWithInitialStoreIntegration', () => {
+        it('should return filters with initial store integration and store integrations', () => {
+            const state = {
+                ...defaultState,
+                stats: {
+                    filters: {
+                        ...defaultStatsFilters,
+                    },
+                },
+                integrations: fromJS({
+                    integrations: [gmailIntegration, shopifyIntegration],
+                }),
+            }
+
+            expect(getStatsFiltersWithInitialStoreIntegration(state)).toEqual({
+                statsFilters: {
+                    ...state.stats.filters,
+                    integrations: [shopifyIntegration.id],
+                },
+                storeIntegrations: [shopifyIntegration],
+            })
+        })
+
+        it('should return filters with selected store integration and store integrations', () => {
+            const someIntegrationId = 34
+            const someStoreIntegration = {
+                id: someIntegrationId,
+                type: IntegrationType.Shopify,
+            }
+            const state = {
+                ...defaultState,
+                stats: {
+                    filters: {
+                        ...defaultStatsFilters,
+                        integrations: withDefaultLogicalOperator([
+                            someIntegrationId,
+                        ]),
+                    },
+                },
+                integrations: fromJS({
+                    integrations: [
+                        gmailIntegration,
+                        shopifyIntegration,
+                        someStoreIntegration,
+                    ],
+                }),
+            }
+
+            expect(getStatsFiltersWithInitialStoreIntegration(state)).toEqual({
+                statsFilters: {
+                    ...state.stats.filters,
+                    integrations: [someIntegrationId],
+                },
+                storeIntegrations: [shopifyIntegration, someStoreIntegration],
             })
         })
     })

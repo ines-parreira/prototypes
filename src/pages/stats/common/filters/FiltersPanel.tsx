@@ -1,4 +1,5 @@
 import React, {createElement, useCallback, useMemo, useState} from 'react'
+import {hasFilter} from 'models/reporting/queryFactories/utils'
 import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
 import useAppSelector from 'hooks/useAppSelector'
 import {FilterKey, StatsFilters} from 'models/stat/types'
@@ -41,7 +42,9 @@ const getInitialActiveFilters = (
 ) =>
     optionalFilters.reduce<Partial<Record<FilterKey, boolean>>>(
         (filtersMap, filterKey) => {
-            filtersMap[filterKey] = cleanStatsFilters[filterKey] !== undefined
+            filtersMap[filterKey] =
+                filterKey !== FilterKey.Period &&
+                hasFilter(cleanStatsFilters[filterKey])
             return filtersMap
         },
         {}
