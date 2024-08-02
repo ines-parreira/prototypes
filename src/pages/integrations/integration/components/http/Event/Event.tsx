@@ -54,6 +54,8 @@ export function Event({integrationId, eventId}: Props) {
     const response = event.response
     let responseError = response.error
 
+    // Error management
+
     if (!request) {
         return (
             <div className={css.wrapper}>
@@ -66,6 +68,19 @@ export function Event({integrationId, eventId}: Props) {
             </div>
         )
     }
+
+    if (responseError && !event.status_code) {
+        // Previously, a similar default message (not exactly the same) was stored in database, along with the error
+        if (
+            !responseError.startsWith(
+                'There was an error while making this request.'
+            )
+        ) {
+            responseError = DEFAULT_ERROR_MESSAGE + responseError
+        }
+    }
+
+    // Normal behavior management
 
     const requestParams = request.params || null
     let requestJSONParams = null
@@ -106,17 +121,6 @@ export function Event({integrationId, eventId}: Props) {
                 4
             )
         } catch (err) {}
-    }
-
-    if (responseError && !event.status_code) {
-        // Previously, a similar default message (not exactly the same) was stored in database, along with the error
-        if (
-            !responseError.startsWith(
-                'There was an error while making this request.'
-            )
-        ) {
-            responseError = DEFAULT_ERROR_MESSAGE + responseError
-        }
     }
 
     return (

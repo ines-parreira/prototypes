@@ -79,9 +79,7 @@ exports[`Event should render 1`] = `
       <div
         class="badge upperCase"
       >
-        200
-         
-        OK
+        200 OK
       </div>
     </div>
     <div

@@ -8,6 +8,10 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {HTTPIntegrationEvent} from 'models/integration/types'
 import {useGetHTTPEvents} from 'models/integration/queries/http'
 
+import {
+    apiListCursorPaginationResponse,
+    axiosSuccessResponse,
+} from 'fixtures/axiosResponse'
 import Events from '../Events'
 
 jest.mock('models/integration/queries/http')
@@ -53,6 +57,30 @@ const mockEvents: HTTPIntegrationEvent[] = [
 describe('Events', () => {
     afterEach(() => {
         jest.resetAllMocks()
+    })
+
+    it('should retrieve data when calling useGetHTTPEvents override function', () => {
+        mockUseGetHTTPEvents.mockReturnValue({
+            data: mockEvents,
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult)
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID.toString()} />
+            </QueryClientProvider>
+        )
+
+        const objectWithDataKey = [
+            'this is a string',
+        ] as unknown as HTTPIntegrationEvent[]
+        const selectReturn = mockUseGetHTTPEvents.mock.calls[0][1]?.select!(
+            axiosSuccessResponse(
+                apiListCursorPaginationResponse(objectWithDataKey)
+            )
+        )
+
+        expect(selectReturn).toBe(objectWithDataKey)
     })
 
     it('renders the events', () => {

@@ -4,9 +4,7 @@ exports[`HTTPStatusLabel should render a danger label for 4xx HTTP status code 1
 <div
   class="badge upperCase"
 >
-  400
-   
-  BAD REQUEST
+  400 BAD REQUEST
 </div>
 `;
 
@@ -14,9 +12,7 @@ exports[`HTTPStatusLabel should render a danger label for 5xx HTTP status code 1
 <div
   class="badge upperCase"
 >
-  500
-   
-  INTERNAL SERVER ERROR
+  500 INTERNAL SERVER ERROR
 </div>
 `;
 
@@ -24,9 +20,7 @@ exports[`HTTPStatusLabel should render a primary label for 3xx HTTP status code 
 <div
   class="badge upperCase"
 >
-  300
-   
-  MULTIPLE CHOICES
+  300 MULTIPLE CHOICES
 </div>
 `;
 
@@ -34,9 +28,7 @@ exports[`HTTPStatusLabel should render a secondary label for 1xx HTTP status cod
 <div
   class="badge upperCase"
 >
-  100
-   
-  CONTINUE
+  100 CONTINUE
 </div>
 `;
 
@@ -44,9 +36,7 @@ exports[`HTTPStatusLabel should render a secondary label for unknown HTTP status
 <div
   class="badge upperCase"
 >
-  78
-   
-  UNKNOWN HTTP STATUS CODE
+  78 UNKNOWN HTTP STATUS CODE
 </div>
 `;
 
@@ -54,8 +44,22 @@ exports[`HTTPStatusLabel should render a success label for 2xx HTTP status code 
 <div
   class="badge upperCase"
 >
-  200
-   
-  OK
+  200 OK
+</div>
+`;
+
+exports[`HTTPStatusLabel should render an error label for undefined requests 1`] = `
+<div
+  class="badge upperCase"
+>
+  FAILED TO BUILD REQUEST
+</div>
+`;
+
+exports[`HTTPStatusLabel should render an error label for undefined statusCode 1`] = `
+<div
+  class="badge upperCase"
+>
+  HTTP REQUEST FAILED
 </div>
 `;

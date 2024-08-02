@@ -33,4 +33,16 @@ describe('HTTPStatusLabel', () => {
         const {container} = render(<HTTPStatusLabel statusCode={500} />)
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    it('should render an error label for undefined requests', () => {
+        const {container} = render(
+            <HTTPStatusLabel hasNoRequest={true} statusCode={200} />
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render an error label for undefined statusCode', () => {
+        const {container} = render(<HTTPStatusLabel statusCode={undefined} />)
+        expect(container.firstChild).toMatchSnapshot()
+    })
 })

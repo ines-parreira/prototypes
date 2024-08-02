@@ -30,7 +30,10 @@ function Event({
                 <span>{event.request?.method || HTTP_METHOD_GET}</span>
                 <span>{_truncate(event.request?.url, {length: 100})}</span>
                 <span>
-                    <HTTPStatusLabel statusCode={event.status_code} />
+                    <HTTPStatusLabel
+                        hasNoRequest={!event.request}
+                        statusCode={event.status_code}
+                    />
                 </span>
                 <span>
                     <DatetimeLabel dateTime={event.created_datetime} />
