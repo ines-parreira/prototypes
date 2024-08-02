@@ -70,3 +70,28 @@ describe('ShopifyContext', () => {
         expect(spiedDataFunction).toHaveBeenCalledWith(contextValue)
     })
 })
+
+describe('card customization', () => {
+    const cardCustomization = customization.card!
+    it.each([
+        ['integrations.420.orders.[]', true],
+        ['integrations.420.orders.[].line_items.[]', true],
+        ['integrations.420.orders.[].fulfillments.[]', true],
+        ['integrations.420.orders.[].shipping_address', true],
+        ['integrations.420.draft_orders.[]', true],
+        ['integrations.420.customer', true],
+        ['integrations.420.customer.tags', false],
+        ['integrations.420.orders.[].tags', false],
+        ['integrations.420.customer.smth', false],
+        ['integrations.420.orders', false],
+        ['integrations.420.orders.[].smth', false],
+    ])(
+        'should have a dataMatcher that matches the given path, or not',
+        (dataPath, output) => {
+            const hasMatch = cardCustomization.some(({dataMatcher}) => {
+                return dataMatcher.test(dataPath)
+            })
+            expect(hasMatch).toBe(output)
+        }
+    )
+})

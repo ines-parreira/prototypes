@@ -49,6 +49,28 @@ describe('RechargeWidget', () => {
     })
 })
 
+describe('card customization', () => {
+    const cardCustomization = customization.card!
+    it.each([
+        ['integrations.420.customer', true],
+        ['integrations.420.charges.[]', true],
+        ['integrations.420.subscriptions.[]', true],
+        ['integrations.420.orders.[]', true],
+        ['integrations.420.customer.smth', false],
+        ['integrations.420.orders.[].smth', false],
+        ['integrations.420.charges.[].smth', false],
+        ['integrations.420.subscriptions.[].smth', false],
+    ])(
+        'should have a dataMatcher that matches the given path, or not',
+        (dataPath, output) => {
+            const hasMatch = cardCustomization.some(({dataMatcher}) => {
+                return dataMatcher.test(dataPath)
+            })
+            expect(hasMatch).toBe(output)
+        }
+    )
+})
+
 describe('field customization', () => {
     it('should call `formatRecharcheDataTime` with source when `getValue` is called', () => {
         formatRechargeDateTimeMock.mockReturnValue('ok')

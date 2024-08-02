@@ -43,3 +43,21 @@ describe('WooCommerceWidget', () => {
         expect(passedCustomization).toEqual(customization)
     })
 })
+
+describe('card customization', () => {
+    const cardCustomization = customization.card!
+    it.each([
+        ['ecommerce_data.anyId.shopper', true],
+        ['ecommerce_data.anyId.orders.[]', true],
+        ['ecommerce_data.anyId.shopper.smth', false],
+        ['ecommerce_data.anyId.orders.[].smth', false],
+    ])(
+        'should have a dataMatcher that matches the given path, or not',
+        (dataPath, output) => {
+            const hasMatch = cardCustomization.some(({dataMatcher}) => {
+                return dataMatcher.test(dataPath)
+            })
+            expect(hasMatch).toBe(output)
+        }
+    )
+})

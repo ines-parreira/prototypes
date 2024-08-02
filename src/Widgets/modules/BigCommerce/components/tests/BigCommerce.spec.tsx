@@ -43,3 +43,37 @@ describe('BigCommerceWidget', () => {
         expect(passedCustomization).toEqual(customization)
     })
 })
+
+describe('card customization', () => {
+    const cardCustomization = customization.card!
+    it.each([
+        ['integrations.420.customer', true],
+        ['integrations.420.draft_orders.[]', true],
+        ['integrations.420.orders.[]', true],
+        ['integrations.420.orders.[].bc_order_shipments.[]', true],
+        ['integrations.420.customer.smth', false],
+        ['integrations.420.orders.[].smth', false],
+        ['integrations.420.draft_orders.[].smth', false],
+        ['integrations.420.orders.[].bc_order_shipments.[].smth', false],
+    ])(
+        'should have a dataMatcher that matches the given path, or not',
+        (dataPath, output) => {
+            const hasMatch = cardCustomization.some(({dataMatcher}) => {
+                return dataMatcher.test(dataPath)
+            })
+            expect(hasMatch).toBe(output)
+        }
+    )
+
+    it('should have a templateMatcher that matches the given path, or not', () => {
+        const hasMatch = cardCustomization.some(({templateMatcher}) => {
+            return templateMatcher?.test('1.template.widgets.2.widgets.3')
+        })
+        expect(hasMatch).toBe(true)
+
+        const hasNoMatch = cardCustomization.some(({templateMatcher}) => {
+            return templateMatcher?.test('1.template.widgets.2.widgets.3.smth')
+        })
+        expect(hasNoMatch).toBe(false)
+    })
+})

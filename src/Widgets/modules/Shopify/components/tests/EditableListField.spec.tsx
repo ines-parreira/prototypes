@@ -139,6 +139,23 @@ describe('<EditableListField/>', () => {
 })
 
 describe('editableListCustomization', () => {
+    it.each([
+        ['whatever.customer.tags', true],
+        ['whatever.orders.[].tags', true],
+        ['whatever.orders.[]', false],
+        ['whatever.customer', false],
+        ['whatever.customer.smth', false],
+        ['whatever.orders', false],
+        ['whatever.orders.[].smth', false],
+    ])(
+        'has a dataMatcher that matches or not the given path',
+        (match, output) => {
+            expect(editableListCustomization.dataMatcher?.test(match)).toBe(
+                output
+            )
+        }
+    )
+
     it('should return a getValueString function returning null', () => {
         expect(
             editableListCustomization.getValueString({}, {} as LeafTemplate)
