@@ -55,7 +55,7 @@ import {CampaignBasicStep} from '../../containers/CampaignBasicStep'
 import {CampaignAudienceStep} from '../../containers/CampaignAudienceStep'
 import {CampaignMessageStep} from '../../containers/CampaignMessageStep'
 
-import {CampaignDetailsHeader} from '../../components/CampaignDetailsHeader'
+import {HeaderReturnButton} from '../../../common/components/HeaderReturnButton'
 import CampaignPreview from '../../components/CampaignPreview'
 import {CampaignFooter} from '../../components/CampaignFooter'
 
@@ -495,7 +495,7 @@ export const CampaignDetailsForm = ({
                             {header ? (
                                 header
                             ) : (
-                                <CampaignDetailsHeader
+                                <HeaderReturnButton
                                     backToHref={backUrl}
                                     title="Back to Campaigns list"
                                 />

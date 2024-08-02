@@ -2,6 +2,7 @@ import {
     CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
     CONVERT_ROUTE_PARAM_NAME,
     CONVERT_ROUTE_TEMPLATE_PARAM_NAME,
+    CONVERT_ROUTING_AB_VARIANT_PARAM_NAME,
 } from 'pages/convert/common/constants'
 
 export type ConvertRouteParams = {
@@ -14,4 +15,9 @@ export type ConvertRouteCampaignDetailParams = ConvertRouteParams & {
 
 export type ConvertRouteTemplateParams = ConvertRouteParams & {
     [CONVERT_ROUTE_TEMPLATE_PARAM_NAME]?: string
+}
+
+export type ConvertRouteAbVariantParams = ConvertRouteParams & {
+    [CONVERT_ROUTE_CAMPAIGN_PARAM_NAME]: string
+    [CONVERT_ROUTING_AB_VARIANT_PARAM_NAME]?: string
 }

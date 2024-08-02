@@ -29,7 +29,7 @@ import {
     CampaignUpdatePayload,
 } from 'models/convert/campaign/types'
 import {useListCampaigns} from 'models/convert/campaign/queries'
-import {CampaignDetailsHeader} from 'pages/convert/campaigns/components/CampaignDetailsHeader'
+import {HeaderReturnButton} from 'pages/convert/common/components/HeaderReturnButton'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -227,7 +227,7 @@ const CampaignTemplateCustomizeBaseView = ({
                 updateCampaign={handleUpdateCampaign}
                 backUrl={backUrl}
                 header={
-                    <CampaignDetailsHeader
+                    <HeaderReturnButton
                         backToHref={backUrl}
                         title={backUrlTitle}
                     />
