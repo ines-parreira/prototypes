@@ -11,6 +11,7 @@ import {assumeMock} from 'utils/testing'
 import {initialState} from 'state/ui/stats/drillDownSlice'
 import {IntegrationType} from 'models/integration/constants'
 import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {useTopQuestionsFilters} from '../TopQuestions/useTopQuestionsFilters'
 import AutomateAllRecommendationsPage from '../AutomateAllRecommendationsPage'
 import {useAIArticleRecommendationItems} from '../../hooks/useAIArticleRecommendationItems'
@@ -63,6 +64,7 @@ const helpCenterFilter = {
     setSelectedHelpCenterId: jest.fn(),
 }
 
+const mockCreateArticle = jest.fn()
 const batchDatetime = '2024-07-10T13:28:49.755Z'
 const paginatedItemsFixture = [
     {
@@ -70,37 +72,40 @@ const paginatedItemsFixture = [
         templateKey: 'ai_Generated_1',
         ticketsCount: 12,
         reviewAction: undefined,
-        createArticle: jest.fn(),
+        createArticle: mockCreateArticle,
     },
     {
         title: 'AI Generated Article 2',
         templateKey: 'ai_Generated_2',
         ticketsCount: 10,
         reviewAction: 'archive',
-        createArticle: jest.fn(),
+        createArticle: mockCreateArticle,
     },
     {
         title: 'AI Generated Article 3',
         templateKey: 'ai_Generated_3',
         ticketsCount: 8,
         reviewAction: undefined,
-        createArticle: jest.fn(),
+        createArticle: mockCreateArticle,
     },
     {
         title: 'AI Generated Article 4',
         templateKey: 'ai_Generated_4',
         ticketsCount: 5,
         reviewAction: 'publish',
-        createArticle: jest.fn(),
+        createArticle: mockCreateArticle,
     },
     {
         title: 'AI Generated Article 5',
         templateKey: 'ai_Generated_5',
         ticketsCount: 3,
         reviewAction: 'saveAsDraft',
-        createArticle: jest.fn(),
+        createArticle: mockCreateArticle,
     },
 ]
+
+jest.mock('common/segment')
+const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -292,6 +297,20 @@ describe('<AutomateAllRecommendationsPage />', () => {
             initialHelpCenterId: 11,
             searchFirstMatchingStoreAndHelpCenter: false,
         })
+    })
+
+    it('creates article', async () => {
+        renderComponent()
+
+        fireEvent.click(screen.getAllByText('Create Article')[0])
+
+        await waitFor(() => {
+            expect(mockCreateArticle).toHaveBeenCalledTimes(1)
+        })
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AutomateTopQuestionsAllRecommendationsCreateArticle
+        )
     })
 
     it('renders AutomateAllRecommendationsPage with new badge', () => {

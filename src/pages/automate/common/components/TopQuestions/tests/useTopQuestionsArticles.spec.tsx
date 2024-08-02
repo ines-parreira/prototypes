@@ -9,6 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {waitFor} from '@testing-library/react'
 import axios from 'axios'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {AIArticle, LocalArticleTranslation} from 'models/helpCenter/types'
 import {assumeMock} from 'utils/testing'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
@@ -22,6 +23,9 @@ import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {useTopQuestionsArticles} from '../useTopQuestionsArticles'
+
+jest.mock('common/segment')
+const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])()
@@ -221,6 +225,10 @@ describe('useTopQuestionsArticles', () => {
                 aiArticleKeys.listWithStore(helpCenterId, storeIntegrationId)
             )
         })
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AutomateTopQuestionsSectionDismissArticle
+        )
     })
 
     it('creates article, updates its review and opens new tab to editor', async () => {

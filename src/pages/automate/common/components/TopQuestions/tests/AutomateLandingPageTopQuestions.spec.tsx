@@ -1,5 +1,6 @@
 import React from 'react'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {assumeMock} from 'utils/testing'
 import {IntegrationType} from 'models/integration/constants'
 import {ShopifyIntegration} from 'models/integration/types'
@@ -9,6 +10,9 @@ import {useTopQuestionsFilters} from '../useTopQuestionsFilters'
 import {useHasEmailToStoreConnection} from '../useHasEmailToStoreConnection'
 import {useTopQuestionsArticles} from '../useTopQuestionsArticles'
 import {useTopQuestionsViewedOnPage} from '../useTopQuestionsViewedOnPage'
+
+jest.mock('common/segment')
+const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 jest.mock('../useTopQuestionsFilters')
 const mockUseTopQuestionsFilters = assumeMock(useTopQuestionsFilters)
@@ -215,6 +219,10 @@ describe('AutomateLandingPageTopQuestions', () => {
             expect(defaultTopQuestionsArticles.createArticle).toHaveBeenCalled()
             expect(screen.getByText('Creating...')).toBeInTheDocument()
         })
+
+        expect(logEventMock.mock.calls).toEqual([
+            [SegmentEvent.AutomateTopQuestionsSectionCreateArticle],
+        ])
     })
 
     it('dismisses article', async () => {

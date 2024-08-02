@@ -5,6 +5,7 @@ import {
     ArticleTemplateReviewAction,
     LocaleCode,
 } from 'models/helpCenter/types'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
 import {
     aiArticleKeys,
@@ -97,6 +98,8 @@ export const useTopQuestionsArticles = (
                         template_key: templateKey,
                     },
                 ])
+
+                logEvent(SegmentEvent.AutomateTopQuestionsSectionDismissArticle)
             } catch (error) {
                 void appDispatch(
                     notify({

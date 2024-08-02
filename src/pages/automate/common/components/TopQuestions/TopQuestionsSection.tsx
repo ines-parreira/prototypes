@@ -5,6 +5,7 @@ import {IntegrationType} from 'models/integration/constants'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {getIconFromType} from 'state/integrations/helpers'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {logEvent, SegmentEvent} from 'common/segment'
 import css from './TopQuestionsSection.less'
 import {
     TopQuestionCard,
@@ -173,7 +174,15 @@ const Header = ({
                     )}
                 </div>
                 {viewAllLink && (
-                    <Link className={css.viewAll} to={viewAllLink}>
+                    <Link
+                        className={css.viewAll}
+                        to={viewAllLink}
+                        onClick={() =>
+                            logEvent(
+                                SegmentEvent.AutomateTopQuestionsSectionClickViewAll
+                            )
+                        }
+                    >
                         View All{' '}
                         <i
                             className="material-icons rounded"

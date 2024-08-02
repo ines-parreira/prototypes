@@ -13,6 +13,7 @@ import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
 import Spinner from 'pages/common/components/Spinner'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {AIArticleRecommendationItem} from '../hooks/useAIArticleRecommendationItems'
 import {useAIArticlePublishedPreviewUrl} from '../hooks/useAIArticlePublishedPreviewUrl'
 import {AllRecomendationsColumn} from './AutomateAllRecommendationsCard'
@@ -153,6 +154,9 @@ const ArticleStatus = ({
                 if (!isCreating) {
                     setIsCreating(true)
                     await createArticle()
+                    logEvent(
+                        SegmentEvent.AutomateTopQuestionsAllRecommendationsCreateArticle
+                    )
                     setIsCreating(false)
                 }
             }}

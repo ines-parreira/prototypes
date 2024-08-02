@@ -2,7 +2,11 @@ import React from 'react'
 import {act, fireEvent, render, screen} from '@testing-library/react'
 
 import {IntegrationType} from 'models/integration/constants'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {TopQuestionsSection} from '../TopQuestionsSection'
+
+jest.mock('common/segment')
+const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('<TopQuestionsSection />', () => {
     it('renders top questions', () => {
@@ -115,6 +119,18 @@ describe('<TopQuestionsSection />', () => {
         })
 
         expect(onDismiss).toHaveBeenCalledWith('templateKey1')
+
+        expect(screen.getByText('View All')).toHaveAttribute(
+            'to',
+            '/app/automation/ai-recommendations?help_center_id=100&store_integration_id=1000'
+        )
+        act(() => {
+            fireEvent.click(screen.getByText('View All'))
+        })
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AutomateTopQuestionsSectionClickViewAll
+        )
     })
 
     it('renders placeholders if there are less than 4 top questions', () => {

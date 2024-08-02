@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import moment from 'moment'
 import {ShopifyIntegration} from 'models/integration/types'
 import {HelpCenter} from 'models/helpCenter/types'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {useTopQuestionsFilters} from './useTopQuestionsFilters'
 
 import css from './AutomateLandingPageTopQuestions.less'
@@ -77,6 +78,7 @@ const TopQuestionsSectionWithFilters = ({
         async (templateKey: string) => {
             try {
                 await createArticle(templateKey)
+                logEvent(SegmentEvent.AutomateTopQuestionsSectionCreateArticle)
             } catch (error) {
                 console.error(error)
             } finally {
