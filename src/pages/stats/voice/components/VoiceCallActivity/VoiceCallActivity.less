@@ -24,4 +24,14 @@
     .customerLabel.hasAgent {
         max-width: 19ch;
     }
+
+    .customerLabel.hasAgent {
+        & > span {
+            display: inline-block;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            width: 100%;
+        }
+    }
 }

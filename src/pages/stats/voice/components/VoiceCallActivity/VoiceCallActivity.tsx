@@ -27,6 +27,7 @@ const InboundVoiceCallActivity = ({voiceCall}: Props) => {
                     className={classNames(css.customerLabel, {
                         [css.hasAgent]: !!voiceCall.agentId,
                     })}
+                    withTooltip={true}
                 />
             ) : (
                 <CustomerLabel customer={voiceCall.phoneNumberSource} />
@@ -44,6 +45,7 @@ const InboundVoiceCallActivity = ({voiceCall}: Props) => {
                         phoneNumber={
                             voiceCall.phoneNumberDestination ?? UNKNOWN_AGENT
                         }
+                        withTooltip={true}
                     />
                 </div>
             )}
@@ -64,6 +66,7 @@ const OutboundVoiceCallActivity = ({voiceCall}: Props) => {
                     <VoiceCallAgentLabel
                         agentId={voiceCall.agentId}
                         phoneNumber={unknownAgent}
+                        withTooltip={true}
                     />
                 ) : (
                     <AgentLabel
@@ -82,6 +85,7 @@ const OutboundVoiceCallActivity = ({voiceCall}: Props) => {
                     customerId={voiceCall.customerId}
                     phoneNumber={voiceCall.phoneNumberDestination}
                     className={css.customerLabel}
+                    withTooltip={true}
                 />
             ) : (
                 <CustomerLabel customer={voiceCall.phoneNumberDestination} />

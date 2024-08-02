@@ -14,12 +14,14 @@ type CustomerLabelProps = {
     customerId: number
     phoneNumber: string
     className?: string
+    withTooltip?: boolean
 }
 
 export default function VoiceCallCustomerLabel({
     customerId,
     phoneNumber,
     className,
+    withTooltip = false,
 }: CustomerLabelProps) {
     const {customer, error} = useCustomerDetails(customerId)
     const formattedPhoneNumber = formatPhoneNumberInternational(phoneNumber)
@@ -33,7 +35,7 @@ export default function VoiceCallCustomerLabel({
 
     return (
         <>
-            <Tooltip target={id}>{label}</Tooltip>
+            {withTooltip && <Tooltip target={id}>{label}</Tooltip>}
             <div id={id} className={classNames(css.name, className)}>
                 {label}
             </div>

@@ -15,6 +15,7 @@ type AgentLabelProps = {
     phoneNumber?: string
     className?: string
     semibold?: boolean
+    withTooltip?: boolean
 }
 
 export default function VoiceCallAgentLabel({
@@ -22,6 +23,7 @@ export default function VoiceCallAgentLabel({
     phoneNumber,
     className,
     semibold,
+    withTooltip = false,
 }: AgentLabelProps) {
     const {data: agent, error} = useAgentDetails(agentId)
     const formattedPhoneNumber = formatPhoneNumberInternational(phoneNumber)
@@ -31,9 +33,11 @@ export default function VoiceCallAgentLabel({
     if (axios.isAxiosError(error) && error.response?.status === 404) {
         return (
             <>
-                <Tooltip target={id}>
-                    Deleted agent ({formattedPhoneNumber})
-                </Tooltip>
+                {withTooltip && (
+                    <Tooltip target={id}>
+                        Deleted agent ({formattedPhoneNumber})
+                    </Tooltip>
+                )}
                 <AgentLabel
                     id={id}
                     name={`Deleted agent (${formattedPhoneNumber})`}
@@ -47,7 +51,7 @@ export default function VoiceCallAgentLabel({
 
     return (
         <>
-            <Tooltip target={id}>{displayedValue}</Tooltip>
+            {withTooltip && <Tooltip target={id}>{displayedValue}</Tooltip>}
             <AgentLabel
                 id={id}
                 name={displayedValue}
