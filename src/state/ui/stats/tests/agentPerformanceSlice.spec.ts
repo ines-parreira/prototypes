@@ -6,6 +6,7 @@ import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {
     defaultStatsFilters,
     initialState as initialStatsFiltersState,
@@ -214,7 +215,7 @@ describe('agentPerformanceSlice', () => {
                     start_datetime: '1970-01-01T00:00:00+00:00',
                     end_datetime: '1970-01-01T00:00:00+00:00',
                 },
-                agents: filteredAgents,
+                agents: withDefaultLogicalOperator(filteredAgents),
             }
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
@@ -402,7 +403,7 @@ describe('agentPerformanceSlice', () => {
                     stats: {
                         filters: defaultStatsFilters,
                         cleanStatsFilters: {
-                            agents: filteredAgents,
+                            agents: withDefaultLogicalOperator(filteredAgents),
                         },
                     },
                 },

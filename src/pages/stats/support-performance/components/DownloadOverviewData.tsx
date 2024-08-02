@@ -1,7 +1,6 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useMemo, useState} from 'react'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {DEFAULT_TIMEZONE} from 'pages/stats/constants'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {
     useWorkloadPerChannelDistribution,
@@ -24,13 +23,10 @@ import {
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
 import {saveReport} from 'services/reporting/supportPerformanceReportingService'
-import {getTimezone} from 'state/currentUser/selectors'
-import {getPageStatsFilters, getStatsFilters} from 'state/stats/selectors'
-import {periodToReportingGranularity} from 'utils/reporting'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 export const DownloadOverviewData = () => {
     const isDeferredLoadingEnabled: boolean | undefined =
@@ -51,12 +47,11 @@ export const DownloadOverviewData = () => {
 
     const [waitForTheReportData, setwaitForTheReportData] = useState(false)
 
-    const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
-    )
-    const statsFilters = useAppSelector(getStatsFilters)
-    const pageStatsFilters = useAppSelector(getPageStatsFilters)
-    const requestStatsFilters = useCleanStatsFilters(pageStatsFilters)
+    const {
+        cleanStatsFilters: requestStatsFilters,
+        userTimezone,
+        granularity,
+    } = useAppSelector(getCleanStatsFiltersWithTimezone)
 
     const customerSatisfactionTrend = useCustomerSatisfactionTrend(
         requestStatsFilters,
@@ -95,7 +90,6 @@ export const DownloadOverviewData = () => {
         userTimezone
     )
 
-    const granularity = periodToReportingGranularity(requestStatsFilters.period)
     const ticketsCreatedTimeSeries = useTicketsCreatedTimeSeries(
         requestStatsFilters,
         userTimezone,
@@ -170,7 +164,7 @@ export const DownloadOverviewData = () => {
 
     useEffect(() => {
         const saveReportAsync = async () => {
-            await saveReport(exportableData, statsFilters.period)
+            await saveReport(exportableData, requestStatsFilters.period)
         }
         if (fetchingEnabled && !loading && waitForTheReportData) {
             void saveReportAsync()
@@ -181,7 +175,7 @@ export const DownloadOverviewData = () => {
         fetchingEnabled,
         loading,
         exportableData,
-        statsFilters.period,
+        requestStatsFilters.period,
         waitForTheReportData,
     ])
 

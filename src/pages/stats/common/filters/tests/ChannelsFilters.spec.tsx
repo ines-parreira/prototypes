@@ -172,8 +172,7 @@ describe('ChannelsFilter', () => {
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            3,
+        expect(mockedDispatch).toHaveBeenCalledWith(
             mergeStatsFiltersWithLogicalOperator({
                 channels: {
                     operator: LogicalOperatorEnum.ONE_OF,

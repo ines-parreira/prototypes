@@ -3,9 +3,11 @@ import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {getTimezone} from 'state/currentUser/selectors'
 import {
     getPageStatsFilters,
+    getPageStatsFiltersWithLogicalOperators,
     getStatsStoreIntegrations,
     getStoreIntegrationsStatsFilter,
 } from 'state/stats/selectors'
+import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
 import {RootState} from 'state/types'
 import {periodToReportingGranularity} from 'utils/reporting'
 
@@ -20,15 +22,34 @@ export const getCleanStatsFiltersWithTimezone = createSelector(
     getPageStatsFilters,
     getTimezone,
     (cleanStatsFilters, pageStatsFilters, timezone) => {
+        const legacyCleanStatsFilters =
+            cleanStatsFilters !== null
+                ? fromFiltersWithLogicalOperators(cleanStatsFilters)
+                : pageStatsFilters
         return {
             userTimezone: timezone || DEFAULT_TIMEZONE,
-            cleanStatsFilters: cleanStatsFilters || pageStatsFilters,
+            cleanStatsFilters: legacyCleanStatsFilters,
             granularity: periodToReportingGranularity(
-                cleanStatsFilters?.period || pageStatsFilters?.period
+                legacyCleanStatsFilters.period
             ),
         }
     }
 )
+
+export const getCleanStatsFiltersWithLogicalOperatorsWithTimezone =
+    createSelector(
+        getCleanStatsFilters,
+        getPageStatsFiltersWithLogicalOperators,
+        getTimezone,
+        (cleanStatsFilters, pageStatsFilters, timezone) => {
+            const statsFilters = cleanStatsFilters || pageStatsFilters
+            return {
+                userTimezone: timezone || DEFAULT_TIMEZONE,
+                cleanStatsFilters: statsFilters,
+                granularity: periodToReportingGranularity(statsFilters.period),
+            }
+        }
+    )
 
 export const getCleanStatsFiltersWithInitialStoreIntegration = createSelector(
     getCleanStatsFiltersWithTimezone,

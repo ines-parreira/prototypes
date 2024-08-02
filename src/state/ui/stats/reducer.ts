@@ -1,4 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit'
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 
 import {
     fetchStatEnded,
@@ -6,8 +7,9 @@ import {
     statFiltersClean,
     statFiltersCleanWithPayload,
     statFiltersDirty,
-} from './actions'
-import {StatsState} from './types'
+    statFiltersWithLogicalOperatorsCleanWithPayload,
+} from 'state/ui/stats/actions'
+import {StatsState} from 'state/ui/stats/types'
 
 export const initialState = {
     fetchingMap: {},
@@ -37,8 +39,15 @@ const statsReducer = createReducer<StatsState>(initialState, (builder) =>
         })
         .addCase(statFiltersCleanWithPayload, (state, {payload}) => {
             state.isFilterDirty = false
-            state.cleanStatsFilters = payload
+            state.cleanStatsFilters = fromLegacyStatsFilters(payload)
         })
+        .addCase(
+            statFiltersWithLogicalOperatorsCleanWithPayload,
+            (state, {payload}) => {
+                state.isFilterDirty = false
+                state.cleanStatsFilters = payload
+            }
+        )
 )
 
 export default statsReducer

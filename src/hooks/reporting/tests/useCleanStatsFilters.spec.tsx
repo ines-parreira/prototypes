@@ -5,15 +5,26 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import React from 'react'
-import {statFiltersCleanWithPayload} from 'state/ui/stats/actions'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {fromLegacyStatsFilters} from 'state/stats/utils'
+import {
+    statFiltersCleanWithPayload,
+    statFiltersWithLogicalOperatorsCleanWithPayload,
+} from 'state/ui/stats/actions'
 import {getCleanStatsFilters, isCleanStatsDirty} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
 
-import {LegacyStatsFilters} from 'models/stat/types'
+import {
+    LegacyStatsFilters,
+    StatsFiltersWithLogicalOperator,
+} from 'models/stat/types'
 import {TicketChannel} from 'business/types/ticket'
 
 import {RootState, StoreDispatch} from 'state/types'
-import {useCleanStatsFilters} from '../useCleanStatsFilters'
+import {
+    useCleanStatsFilters,
+    useCleanStatsFiltersWithLogicalOperators,
+} from 'hooks/reporting/useCleanStatsFilters'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -67,7 +78,9 @@ describe('useCleanStatsFilters', () => {
     })
 
     it('should return the last clean stats filters when they are dirty', () => {
-        getCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
+        getCleanStatsFiltersMock.mockReturnValue(
+            fromLegacyStatsFilters(defaultStatsFilters)
+        )
         const {result, rerender} = renderHook<
             {
                 statsFilters: LegacyStatsFilters
@@ -88,11 +101,13 @@ describe('useCleanStatsFilters', () => {
             },
         })
 
-        expect(result.current).toBe(defaultStatsFilters)
+        expect(result.current).toStrictEqual(defaultStatsFilters)
     })
 
     it('should return the passed stats filters after they are clean again', () => {
-        getCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
+        getCleanStatsFiltersMock.mockReturnValue(
+            fromLegacyStatsFilters(defaultStatsFilters)
+        )
         const {result, rerender} = renderHook<
             {
                 statsFilters: LegacyStatsFilters
@@ -114,8 +129,8 @@ describe('useCleanStatsFilters', () => {
         })
         isCleanStatsDirtyMock.mockReturnValue(false)
         getCleanStatsFiltersMock.mockReturnValue({
-            ...defaultStatsFilters,
-            channels: [TicketChannel.Facebook],
+            ...fromLegacyStatsFilters(defaultStatsFilters),
+            channels: withDefaultLogicalOperator([TicketChannel.Facebook]),
         })
         rerender({
             statsFilters: {
@@ -136,7 +151,9 @@ describe('useCleanStatsFilters', () => {
             },
         }
         isCleanStatsDirtyMock.mockReturnValue(false)
-        getCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
+        getCleanStatsFiltersMock.mockReturnValue(
+            fromLegacyStatsFilters(defaultStatsFilters)
+        )
         const {result} = renderHook<
             {
                 statsFilters: LegacyStatsFilters
@@ -152,6 +169,157 @@ describe('useCleanStatsFilters', () => {
         await waitFor(() => {
             expect(store.getActions()).toContainEqual(
                 statFiltersCleanWithPayload(updatingFilters)
+            )
+            expect(result.current).toEqual(updatingFilters)
+        })
+    })
+})
+
+describe('useCleanStatsFiltersWithLogicalOperators', () => {
+    const defaultStatsFilters: StatsFiltersWithLogicalOperator = {
+        period: {
+            start_datetime: '2021-05-29T00:00:00+02:00',
+            end_datetime: '2021-06-04T23:59:59+02:00',
+        },
+        channels: withDefaultLogicalOperator([TicketChannel.Email]),
+        integrations: withDefaultLogicalOperator([1]),
+        agents: withDefaultLogicalOperator([2]),
+        tags: withDefaultLogicalOperator([1, 2]),
+    }
+
+    beforeEach(() => {
+        isCleanStatsDirtyMock.mockReturnValue(false)
+        getCleanStatsFiltersMock.mockReturnValue(null)
+    })
+
+    it('should return the stats filters if they are clean', () => {
+        const {result} = renderHook(
+            () => useCleanStatsFiltersWithLogicalOperators(defaultStatsFilters),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore({})}>{children}</Provider>
+                ),
+            }
+        )
+
+        expect(result.current).toBe(defaultStatsFilters)
+    })
+
+    it('should return the initial stats filters even if they are dirty', () => {
+        isCleanStatsDirtyMock.mockReturnValue(true)
+
+        const {result} = renderHook(
+            () => useCleanStatsFiltersWithLogicalOperators(defaultStatsFilters),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore({})}>{children}</Provider>
+                ),
+            }
+        )
+
+        expect(result.current).toBe(defaultStatsFilters)
+    })
+
+    it('should return the last clean stats filters when they are dirty', () => {
+        getCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
+        const {result, rerender} = renderHook<
+            {
+                statsFilters: StatsFiltersWithLogicalOperator
+            },
+            StatsFiltersWithLogicalOperator
+        >(
+            ({statsFilters}) =>
+                useCleanStatsFiltersWithLogicalOperators(statsFilters),
+            {
+                initialProps: {statsFilters: defaultStatsFilters},
+                wrapper: ({children}) => (
+                    <Provider store={mockStore({})}>{children}</Provider>
+                ),
+            }
+        )
+
+        isCleanStatsDirtyMock.mockReturnValue(true)
+        rerender({
+            statsFilters: {
+                ...defaultStatsFilters,
+                channels: withDefaultLogicalOperator([TicketChannel.Api]),
+            },
+        })
+
+        expect(result.current).toBe(defaultStatsFilters)
+    })
+
+    it('should return the passed stats filters after they are clean again', () => {
+        getCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
+        const {result, rerender} = renderHook<
+            {
+                statsFilters: StatsFiltersWithLogicalOperator
+            },
+            StatsFiltersWithLogicalOperator
+        >(
+            ({statsFilters}) =>
+                useCleanStatsFiltersWithLogicalOperators(statsFilters),
+            {
+                initialProps: {statsFilters: defaultStatsFilters},
+                wrapper: ({children}) => (
+                    <Provider store={mockStore({})}>{children}</Provider>
+                ),
+            }
+        )
+
+        isCleanStatsDirtyMock.mockReturnValue(true)
+        rerender({
+            statsFilters: {
+                ...defaultStatsFilters,
+                channels: withDefaultLogicalOperator([TicketChannel.Api]),
+            },
+        })
+        isCleanStatsDirtyMock.mockReturnValue(false)
+        getCleanStatsFiltersMock.mockReturnValue({
+            ...defaultStatsFilters,
+            channels: withDefaultLogicalOperator([TicketChannel.Facebook]),
+        })
+        rerender({
+            statsFilters: {
+                ...defaultStatsFilters,
+                channels: withDefaultLogicalOperator([TicketChannel.Facebook]),
+            },
+        })
+
+        expect(result.current.channels).toEqual(
+            withDefaultLogicalOperator([TicketChannel.Facebook])
+        )
+    })
+
+    it('should return passed statsFilters if the clean filters update is triggered', async () => {
+        const store = mockStore({})
+        const updatingFilters = {
+            period: {
+                ...defaultStatsFilters.period,
+                end_datetime: '2021-07-04T23:59:59+02:00',
+            },
+        }
+        isCleanStatsDirtyMock.mockReturnValue(false)
+        getCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
+        const {result} = renderHook<
+            {
+                statsFilters: StatsFiltersWithLogicalOperator
+            },
+            StatsFiltersWithLogicalOperator
+        >(
+            ({statsFilters}) =>
+                useCleanStatsFiltersWithLogicalOperators(statsFilters),
+            {
+                initialProps: {statsFilters: updatingFilters},
+                wrapper: ({children}) => (
+                    <Provider store={store}>{children}</Provider>
+                ),
+            }
+        )
+
+        await waitFor(() => {
+            expect(store.getActions()).toContainEqual(
+                statFiltersWithLogicalOperatorsCleanWithPayload(updatingFilters)
             )
             expect(result.current).toEqual(updatingFilters)
         })

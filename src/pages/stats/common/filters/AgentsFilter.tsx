@@ -5,10 +5,7 @@ import {RemovableFilter} from 'pages/stats/common/filters/types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    mergeStatsFilters,
-    mergeStatsFiltersWithLogicalOperator,
-} from 'state/stats/statsSlice'
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {getFilterTeamsJS} from 'state/teams/selectors'
 import {getFilterAgentsJS} from 'state/agents/selectors'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
@@ -36,11 +33,18 @@ export default function AgentsFilter({value = emptyFilter, onRemove}: Props) {
     >([])
     const teamValuePrefix = 'team_'
 
-    const handleFilterChange = useCallback(
+    const handleFilterValuesChange = useCallback(
         (values) => {
-            dispatch(mergeStatsFilters({agents: values as number[]}))
+            dispatch(
+                mergeStatsFiltersWithLogicalOperator({
+                    agents: {
+                        values,
+                        operator: value.operator,
+                    },
+                })
+            )
         },
-        [dispatch]
+        [dispatch, value.operator]
     )
 
     const filterOptions = [
@@ -75,14 +79,14 @@ export default function AgentsFilter({value = emptyFilter, onRemove}: Props) {
             (team) => team.value === opt.value
         )
         if (teamIsSelected) {
-            handleFilterChange(
+            handleFilterValuesChange(
                 value.values.filter((id) => !foundTeam.members.includes(id))
             )
             setSelectedTeamOption(
                 selectedTeamOption.filter((team) => team.value !== opt.value)
             )
         } else {
-            handleFilterChange([
+            handleFilterValuesChange([
                 ...value.values,
                 ...foundTeam.members.map((id) => id),
             ])
@@ -96,11 +100,14 @@ export default function AgentsFilter({value = emptyFilter, onRemove}: Props) {
         const agentIsSelected = value.values.includes(Number(foundAgent?.value))
 
         if (agentIsSelected) {
-            handleFilterChange(
+            handleFilterValuesChange(
                 value.values.filter((id) => id !== Number(foundAgent?.value))
             )
         } else {
-            handleFilterChange([...value.values, Number(foundAgent?.value)])
+            handleFilterValuesChange([
+                ...value.values,
+                Number(foundAgent?.value),
+            ])
         }
     }
 
@@ -142,14 +149,18 @@ export default function AgentsFilter({value = emptyFilter, onRemove}: Props) {
             filterOptionGroups={filterOptions}
             onChangeOption={onOptionChange}
             onSelectAll={() => {
-                handleFilterChange(agents.map((agent) => Number(agent.value)))
+                handleFilterValuesChange(
+                    agents.map((agent) => Number(agent.value))
+                )
             }}
             onRemoveAll={() => {
-                handleFilterChange([])
+                handleFilterValuesChange([])
                 setSelectedTeamOption([])
             }}
             onRemove={() => {
-                dispatch(mergeStatsFilters({agents: []}))
+                dispatch(
+                    mergeStatsFiltersWithLogicalOperator({agents: emptyFilter})
+                )
                 setSelectedTeamOption([])
 
                 onRemove?.()

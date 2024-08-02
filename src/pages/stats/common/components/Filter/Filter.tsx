@@ -1,6 +1,6 @@
 import React, {
     PropsWithChildren,
-    useEffect,
+    useCallback,
     useMemo,
     useRef,
     useState,
@@ -107,6 +107,11 @@ const Filter = ({
         setIsDropdownOpen(true)
     }
 
+    const onToggle = useCallback(() => {
+        setIsDropdownOpen(!isDropdownOpen)
+        onDropdownClosed()
+    }, [isDropdownOpen, onDropdownClosed])
+
     const allValues = useMemo(() => {
         return flatMap(filterOptionGroups, (option) =>
             option.options.map((option) => option.label)
@@ -123,12 +128,6 @@ const Filter = ({
         return {selectedValues: values, selectedLabels: labels}
     }, [selectedOptions])
 
-    useEffect(() => {
-        if (!isDropdownOpen) {
-            onDropdownClosed()
-        }
-    }, [isDropdownOpen, onDropdownClosed])
-
     return (
         <div className={classNames(css.container, className)}>
             <FilterName name={filterName} />
@@ -144,7 +143,7 @@ const Filter = ({
             <Dropdown
                 isMultiple={isMultiple}
                 isOpen={isDropdownOpen}
-                onToggle={() => setIsDropdownOpen(!isDropdownOpen)}
+                onToggle={onToggle}
                 target={ref}
                 value={selectedValues}
                 className={css.dropdown}

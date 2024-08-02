@@ -10,7 +10,6 @@ import isEqual from 'lodash/isEqual'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {
     initialState,
-    mergeStatsFilters,
     mergeStatsFiltersWithLogicalOperator,
 } from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
@@ -79,7 +78,7 @@ describe('AgentsFilter', () => {
         expect(screen.getByText(extendedAgents[1].name)).toBeInTheDocument()
     })
 
-    it('should dispatch mergeStatsFilters action on selecting an agent', () => {
+    it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting an agent', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         userEvent.click(screen.getByText(extendedAgents[0].name))
@@ -88,15 +87,15 @@ describe('AgentsFilter', () => {
         const isFirstAgentInDispatch =
             checkIfMockedDispatchWasCalledWithExpectedArguments(
                 mockedDispatch.mock.calls,
-                mergeStatsFilters({
-                    agents: [extendedAgents[0].id],
+                mergeStatsFiltersWithLogicalOperator({
+                    agents: withDefaultLogicalOperator([extendedAgents[0].id]),
                 })
             )
         const isSecondAgentInDispatch =
             checkIfMockedDispatchWasCalledWithExpectedArguments(
                 mockedDispatch.mock.calls,
-                mergeStatsFilters({
-                    agents: [extendedAgents[1].id],
+                mergeStatsFiltersWithLogicalOperator({
+                    agents: withDefaultLogicalOperator([extendedAgents[1].id]),
                 })
             )
 
@@ -104,7 +103,7 @@ describe('AgentsFilter', () => {
         expect(isSecondAgentInDispatch).toBe(true)
     })
 
-    it('should dispatch mergeStatsFilters action on selecting a team', () => {
+    it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting a team', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         userEvent.click(screen.getByText(extendedTeams[0].name))
@@ -113,15 +112,19 @@ describe('AgentsFilter', () => {
         const isFirstTeamMembersInDispatch =
             checkIfMockedDispatchWasCalledWithExpectedArguments(
                 mockedDispatch.mock.calls,
-                mergeStatsFilters({
-                    agents: extendedTeams[0].members.map((member) => member.id),
+                mergeStatsFiltersWithLogicalOperator({
+                    agents: withDefaultLogicalOperator(
+                        extendedTeams[0].members.map((member) => member.id)
+                    ),
                 })
             )
         const isSecondTeamMembersInDispatch =
             checkIfMockedDispatchWasCalledWithExpectedArguments(
                 mockedDispatch.mock.calls,
-                mergeStatsFilters({
-                    agents: extendedTeams[1].members.map((member) => member.id),
+                mergeStatsFiltersWithLogicalOperator({
+                    agents: withDefaultLogicalOperator(
+                        extendedTeams[1].members.map((member) => member.id)
+                    ),
                 })
             )
 
@@ -129,7 +132,7 @@ describe('AgentsFilter', () => {
         expect(isSecondTeamMembersInDispatch).toBe(true)
     })
 
-    it('should dispatch mergeStatsFilters action on deselecting a team', () => {
+    it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting a team', () => {
         const {rerender} = component
         const testTeam = extendedTeams.find((t) => t.id === 36) as Team
         const testAgent = extendedAgents[0]
@@ -153,15 +156,17 @@ describe('AgentsFilter', () => {
         const selectedTeamMembersNotInDispatch =
             checkIfMockedDispatchWasCalledWithExpectedArguments(
                 mockedDispatch.mock.calls,
-                mergeStatsFilters({
-                    agents: testTeam.members.map((member) => member.id),
+                mergeStatsFiltersWithLogicalOperator({
+                    agents: withDefaultLogicalOperator(
+                        testTeam.members.map((member) => member.id)
+                    ),
                 })
             )
         const selectedAgentInDispatch =
             checkIfMockedDispatchWasCalledWithExpectedArguments(
                 mockedDispatch.mock.calls,
-                mergeStatsFilters({
-                    agents: [testAgent.id],
+                mergeStatsFiltersWithLogicalOperator({
+                    agents: withDefaultLogicalOperator([testAgent.id]),
                 })
             )
 
@@ -169,7 +174,7 @@ describe('AgentsFilter', () => {
         expect(selectedAgentInDispatch).toBe(true)
     })
 
-    it('should dispatch mergeStatsFilters action on selecting all agents and deselecting all agents', () => {
+    it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting all agents and deselecting all agents', () => {
         const {rerender} = component
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
@@ -181,15 +186,17 @@ describe('AgentsFilter', () => {
         const areAllAgentsInDispatch =
             checkIfMockedDispatchWasCalledWithExpectedArguments(
                 mockedDispatch.mock.calls,
-                mergeStatsFilters({
-                    agents: extendedAgents.map((agents) => agents.id),
+                mergeStatsFiltersWithLogicalOperator({
+                    agents: withDefaultLogicalOperator(
+                        extendedAgents.map((agents) => agents.id)
+                    ),
                 })
             )
         let areEmptyAgentsInDispatch =
             checkIfMockedDispatchWasCalledWithExpectedArguments(
                 mockedDispatch.mock.calls,
-                mergeStatsFilters({
-                    agents: [],
+                mergeStatsFiltersWithLogicalOperator({
+                    agents: withDefaultLogicalOperator([]),
                 })
             )
         expect(areAllAgentsInDispatch).toBe(true)
@@ -206,15 +213,15 @@ describe('AgentsFilter', () => {
         areEmptyAgentsInDispatch =
             checkIfMockedDispatchWasCalledWithExpectedArguments(
                 mockedDispatch.mock.calls,
-                mergeStatsFilters({
-                    agents: [],
+                mergeStatsFiltersWithLogicalOperator({
+                    agents: withDefaultLogicalOperator([]),
                 })
             )
 
         expect(areEmptyAgentsInDispatch).toBe(true)
     })
 
-    it('should dispatch mergeStatsFilters action on deselecting one of the agent', () => {
+    it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting one of the agent', () => {
         const {rerender} = component
 
         const allAvailableAgentsIds = withDefaultLogicalOperator(
@@ -233,10 +240,12 @@ describe('AgentsFilter', () => {
         const allAgentsWithoutTheFirstOne =
             checkIfMockedDispatchWasCalledWithExpectedArguments(
                 mockedDispatch.mock.calls,
-                mergeStatsFilters({
-                    agents: extendedAgents
-                        .map((agents) => agents.id)
-                        .filter((id) => id !== extendedAgents[0].id),
+                mergeStatsFiltersWithLogicalOperator({
+                    agents: withDefaultLogicalOperator(
+                        extendedAgents
+                            .map((agents) => agents.id)
+                            .filter((id) => id !== extendedAgents[0].id)
+                    ),
                 })
             )
 
@@ -261,8 +270,8 @@ describe('AgentsFilter', () => {
 
         const emptyAgents = checkIfMockedDispatchWasCalledWithExpectedArguments(
             mockedDispatch.mock.calls,
-            mergeStatsFilters({
-                agents: [],
+            mergeStatsFiltersWithLogicalOperator({
+                agents: withDefaultLogicalOperator([]),
             })
         )
 

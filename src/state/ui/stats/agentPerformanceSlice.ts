@@ -103,10 +103,12 @@ export const getFilteredAgents = createSelector(
     getHumanAndAutomationBotAgentsJS,
     getCleanStatsFilters,
     (agents, filters) =>
-        filters !== null && filters?.agents && filters.agents.length > 0
+        filters !== null && filters?.agents && filters.agents.values.length > 0
             ? _intersectionBy(
                   agents,
-                  filters?.agents.map((agentId: number) => ({id: agentId})),
+                  filters?.agents.values.map((agentId: number) => ({
+                      id: agentId,
+                  })),
                   'id'
               )
             : agents

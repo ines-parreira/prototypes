@@ -37,7 +37,6 @@ export const TagsFilter = ({value = emptyFilter, onRemove}: Props) => {
 
     const handleFilterValuesChange = useCallback(
         (values: number[]) => {
-            dispatch(statFiltersDirty())
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
                     tags: {values, operator: value.operator},
@@ -62,12 +61,13 @@ export const TagsFilter = ({value = emptyFilter, onRemove}: Props) => {
     )
 
     const onOptionChange = (opt: DropdownOption) => {
-        if (value.values.includes(Number(opt.value))) {
+        const id = Number(opt.value)
+        if (value.values.includes(id)) {
             handleFilterValuesChange(
-                value.values.filter((tagId) => String(tagId) !== opt?.value)
+                value.values.filter((tagId) => tagId !== id)
             )
         } else {
-            handleFilterValuesChange([...value.values, Number(opt.value)])
+            handleFilterValuesChange([...value.values, id])
         }
     }
     const handleDropdownOpen = () => {
@@ -98,7 +98,7 @@ export const TagsFilter = ({value = emptyFilter, onRemove}: Props) => {
             onRemove={() => {
                 dispatch(
                     mergeStatsFiltersWithLogicalOperator({
-                        tags: {values: [], operator: value.operator},
+                        tags: emptyFilter,
                     })
                 )
                 handleTagsSearch('')

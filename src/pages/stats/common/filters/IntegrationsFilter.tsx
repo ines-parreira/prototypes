@@ -58,8 +58,8 @@ export default function IntegrationsFilter({
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
                     integrations: {
-                        operator: value.operator,
                         values,
+                        operator: value.operator,
                     },
                 })
             )

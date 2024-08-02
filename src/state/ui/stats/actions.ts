@@ -1,5 +1,8 @@
 import {createAction} from '@reduxjs/toolkit'
-import {LegacyStatsFilters} from 'models/stat/types'
+import {
+    LegacyStatsFilters,
+    StatsFiltersWithLogicalOperator,
+} from 'models/stat/types'
 
 import {
     FETCH_STAT_ENDED,
@@ -7,7 +10,8 @@ import {
     STAT_FILTERS_CLEAN,
     STAT_FILTERS_CLEAN_W_PAYLOAD,
     STAT_FILTERS_DIRTY,
-} from './constants'
+    STAT_FILTERS_WITH_LOGICAL_OPERATOR_CLEAN_W_PAYLOAD,
+} from 'state/ui/stats/constants'
 
 export const fetchStatStarted = createAction<{
     statName: string
@@ -26,3 +30,8 @@ export const statFiltersClean = createAction(STAT_FILTERS_CLEAN)
 export const statFiltersCleanWithPayload = createAction<LegacyStatsFilters>(
     STAT_FILTERS_CLEAN_W_PAYLOAD
 )
+
+export const statFiltersWithLogicalOperatorsCleanWithPayload =
+    createAction<StatsFiltersWithLogicalOperator>(
+        STAT_FILTERS_WITH_LOGICAL_OPERATOR_CLEAN_W_PAYLOAD
+    )

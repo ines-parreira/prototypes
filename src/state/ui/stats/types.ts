@@ -1,4 +1,4 @@
-import {LegacyStatsFilters} from 'models/stat/types'
+import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 
 export type StatsState = {
@@ -6,7 +6,7 @@ export type StatsState = {
         [key: string]: boolean | undefined
     }
     isFilterDirty: boolean
-    cleanStatsFilters: LegacyStatsFilters | null
+    cleanStatsFilters: StatsFiltersWithLogicalOperator | null
 }
 
 export enum OverviewMetric {

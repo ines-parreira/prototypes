@@ -201,6 +201,7 @@ describe('Filter', () => {
     })
 
     it('triggers onToggle when the dropdown is opened', () => {
+        const onDropdownClosedSpy = jest.fn()
         render(
             <Filter
                 filterName={filterName}
@@ -211,14 +212,17 @@ describe('Filter', () => {
                 onSelectAll={onSelectAll}
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
+                onDropdownClosed={onDropdownClosedSpy}
             />
         )
         expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         expect(screen.getByTestId('floating-overlay')).toBeInTheDocument()
+        expect(onDropdownClosedSpy).not.toHaveBeenCalled()
     })
 
     it('should close dropdown on toggle', () => {
+        const onDropdownClosedSpy = jest.fn()
         render(
             <Filter
                 filterName={filterName}
@@ -229,11 +233,13 @@ describe('Filter', () => {
                 onSelectAll={onSelectAll}
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
+                onDropdownClosed={onDropdownClosedSpy}
             />
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByTestId('floating-overlay'))
 
         expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
+        expect(onDropdownClosedSpy).toHaveBeenCalled()
     })
 })
