@@ -61,8 +61,7 @@ export function EditableListField({
 
     useMemo(() => _updateState(selectedOptions), [selectedOptions])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const notEditable = useMemo(() => !!actionError || widgetIsEditing, [])
+    const notEditable = !!actionError || widgetIsEditing
 
     const _onTagsChange = (tags: SelectedValues[]) => {
         setSelectedValues(tags)
