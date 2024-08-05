@@ -1,34 +1,33 @@
 import React, {
     ComponentProps,
     KeyboardEvent,
-    useEffect,
     useMemo,
     useRef,
     useState,
 } from 'react'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
-import {CancelToken} from 'axios'
-import {fromJS, List, Map} from 'immutable'
+import {List, Map} from 'immutable'
 import ReactDOM from 'react-dom'
-import _debounce from 'lodash/debounce'
-import _isUndefined from 'lodash/isUndefined'
 import classNames from 'classnames'
+import {useQueryClient} from '@tanstack/react-query'
+import {ListTagsOrderBy, queryKeys} from '@gorgias/api-queries'
 
 import {UserRole} from 'config/types/user'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useCancellableRequest from 'hooks/useCancellableRequest'
+import useGetTags from 'hooks/tags/useGetTags'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
-import usePrevious from 'hooks/usePrevious'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {getCurrentUserState} from 'state/currentUser/selectors'
-import {fieldEnumSearch} from 'state/views/actions'
 import {hasRole} from 'utils'
 
 import css from './TagSearchDropdown.less'
 
 const LIMIT_TAGS_SEARCH = 15
+const STALE_TIME = 5 * 60 * 1000 // 5 minutes
 
 type Props = {
     addTag: (tag: string) => void
@@ -47,22 +46,45 @@ const TagSearchDropdown = ({
     ticketTags,
     transparent,
 }: Props) => {
+    const dispatch = useAppDispatch()
+    const [search, setSearch] = useState('')
+    const [debouncedSearch, setDebouncedSearch] = useState('')
+    useDebouncedEffect(
+        () => {
+            setDebouncedSearch(search)
+        },
+        [search],
+        300
+    )
+    const queryClient = useQueryClient()
+
     const searchInputRef = useRef<HTMLInputElement>(null)
     const tagRef = useRef<DropdownItem>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-    const [search, setSearch] = useState('')
-    const [tagsResults, setTagsResults] = useState<List<any>>(fromJS([]))
-    const prevTicketTags = usePrevious(ticketTags)
+    const queryParams = useMemo(
+        () => ({
+            limit: LIMIT_TAGS_SEARCH,
+            search: debouncedSearch,
+            order_by: debouncedSearch
+                ? undefined
+                : ListTagsOrderBy.UsageDescNameDesc,
+        }),
+        [debouncedSearch]
+    )
+    const response = useGetTags(dispatch, queryParams, {
+        enabled: isDropdownOpen,
+        refetchOnWindowFocus: false,
+        staleTime: STALE_TIME,
+    })
+    const tags = useMemo(() => response.data?.data.data ?? [], [response])
+
     const displayedTags = useMemo(() => {
         const existingTagNames = ticketTags.map(
             (x?: Map<any, any>) => x!.get('name') as string
         )
-        return tagsResults.filter(
-            (tag: Map<any, any>) => !existingTagNames.contains(tag.get('name'))
-        )
-    }, [tagsResults, ticketTags])
-    const hasEmptyResults = displayedTags.isEmpty()
+        return tags.filter((tag) => !existingTagNames.contains(tag.name!))
+    }, [tags, ticketTags])
+    const hasEmptyResults = !displayedTags.length
 
     const currentUser = useAppSelector(getCurrentUserState)
     const hasUserRole = useMemo(
@@ -70,54 +92,39 @@ const TagSearchDropdown = ({
         [currentUser]
     )
 
-    const [fieldEnumSearchCancellable] = useCancellableRequest(
-        (cancelToken: CancelToken) => (field: Map<any, any>, search: string) =>
-            fieldEnumSearch(field, search, cancelToken)()
-    )
-
-    const queryResults = async (search: string) => {
-        setIsLoading(true)
-
-        const field = fromJS({
-            filter: {type: 'tag', size: LIMIT_TAGS_SEARCH},
-        })
-
-        const data = await fieldEnumSearchCancellable(field, search)
-        if (!data) return
-
-        setTagsResults(data)
-        setIsLoading(false)
-    }
-
-    const queryResultsOnSearch = _debounce(queryResults, 1000)
-
-    const onSearch = (search: string) => {
-        setIsLoading(true)
-        setSearch(search)
-        void queryResultsOnSearch(search)
-    }
-
-    const resetTagsResults = () => {
-        setSearch('')
-        void queryResults('')
-    }
-
-    const handleAddTag = (name: string) => {
+    const handleAddTag = (name?: string, isNew?: boolean) => {
         if (!name) {
             return
         }
 
         addTag(name)
-        resetTagsResults()
+
+        if (isNew) {
+            void queryClient.removeQueries({
+                queryKey: queryKeys.tags.listTags(queryParams),
+            })
+        }
+        searchInputRef.current?.focus()
+        setSearch('')
     }
 
-    const toggle = (_?: KeyboardEvent, visible?: boolean) => {
-        const opens = !_isUndefined(visible) ? visible : !isDropdownOpen
-        setIsDropdownOpen(opens)
+    const resetTagsResults = () => {
+        setSearch('')
+        setDebouncedSearch('')
+    }
 
-        if (opens) {
+    const toggle = () => {
+        const isOpen = !isDropdownOpen
+        setIsDropdownOpen(isOpen)
+
+        if (isOpen) {
             resetTagsResults()
         }
+    }
+
+    const openDropdown = () => {
+        setIsDropdownOpen(true)
+        resetTagsResults()
     }
 
     const handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -131,38 +138,21 @@ const TagSearchDropdown = ({
 
     const didNotFindSearchTerm = useMemo(
         () =>
-            !displayedTags.find(
-                (tag: Map<any, any>) => tag.get('name') === search
-            ) && search !== '',
+            search !== '' && !displayedTags.find((tag) => tag.name === search),
         [displayedTags, search]
     )
-
-    useEffect(() => {
-        if (isDropdownOpen && searchInputRef.current && prevTicketTags) {
-            const prevExistingTagNames = prevTicketTags
-                .sortBy((x?: Map<any, any>) => x!.get('name') as string)
-                .map((x?: Map<any, any>) => x!.get('name') as string)
-            const existingTagNames = ticketTags
-                .sortBy((x?: Map<any, any>) => x!.get('name') as string)
-                .map((x?: Map<any, any>) => x!.get('name') as string)
-
-            if (!prevExistingTagNames.equals(existingTagNames)) {
-                searchInputRef.current.focus()
-            }
-        }
-    }, [isDropdownOpen, prevTicketTags, ticketTags])
 
     useConditionalShortcuts(shouldBindKeys, 'TicketDetailContainer', {
         OPEN_TAGS: {
             action: (e) => {
                 // shortcut key gets typed in the search field otherwise
                 e.preventDefault()
-                toggle()
+                openDropdown()
             },
         },
         CLOSE_TAGS: {
             key: 'esc',
-            action: () => toggle(undefined, false),
+            action: () => setIsDropdownOpen(false),
         },
     })
 
@@ -201,21 +191,21 @@ const TagSearchDropdown = ({
                         placeholder="Search tags..."
                         autoFocus
                         value={search}
-                        onChange={onSearch}
+                        onChange={setSearch}
                         onKeyDown={handleSearchKeyDown}
                         role="menuitem"
                     />
                 </DropdownItem>
                 <DropdownItem divider />
-                {isLoading ? (
+                {response.isFetching ? (
                     <DropdownItem disabled>
                         <i className="material-icons md-spin mr-2">refresh</i>
                         Loading...
                     </DropdownItem>
                 ) : (
                     <>
-                        {displayedTags.map((tag: Map<any, any>, i) => {
-                            const name = tag.get('name') as string
+                        {displayedTags.map((tag, i) => {
+                            const name = tag.name
                             return (
                                 <DropdownItem
                                     key={i}
@@ -239,7 +229,9 @@ const TagSearchDropdown = ({
                                             hasEmptyResults ? tagRef : undefined
                                         }
                                         type="button"
-                                        onClick={() => handleAddTag(search)}
+                                        onClick={() =>
+                                            handleAddTag(search, true)
+                                        }
                                     >
                                         <b>Create</b> {search}
                                     </DropdownItem>

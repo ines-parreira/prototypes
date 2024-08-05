@@ -370,7 +370,7 @@ exports[`TicketListActions component should render agents options in assign agen
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
         role="menu"
-        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 28.571428571428573em; z-index: 1051;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 28.571428571428573em; z-index: 1051; max-height: 400px; overflow: auto;"
         tabindex="-1"
       >
         <h6
@@ -828,7 +828,7 @@ exports[`TicketListActions component should render teams in assign team dropdown
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
         role="menu"
-        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 28.571428571428573em; z-index: 1051;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 28.571428571428573em; z-index: 1051; max-height: 400px; overflow: auto;"
         tabindex="-1"
       >
         <h6

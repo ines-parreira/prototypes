@@ -15,9 +15,9 @@ type Props = {
 
 const AddTagsAction = ({
     args,
-    isDisabled,
     dropdownContainer,
     index,
+    isDisabled,
     right,
     updateActionArgs,
 }: Props) => {
@@ -26,7 +26,7 @@ const AddTagsAction = ({
             args
                 .get('tags', '')
                 .split(',')
-                .filter((t: string) => !!t),
+                .filter((t) => !!t),
         [args]
     )
 
@@ -54,7 +54,7 @@ const AddTagsAction = ({
             isDisabled={isDisabled}
             addTag={addTag}
             removeTag={removeTag}
-            right={!!right}
+            right={right}
             dropdownContainer={dropdownContainer}
         />
     )

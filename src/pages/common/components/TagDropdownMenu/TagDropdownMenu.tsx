@@ -17,6 +17,8 @@ export default function TagDropdownMenu({container, ...props}: Props) {
                 minWidth: `${230 / 14}em`,
                 maxWidth: `${400 / 14}em`,
                 zIndex: 1051,
+                maxHeight: '400px',
+                overflow: 'auto',
             }}
         />
     )

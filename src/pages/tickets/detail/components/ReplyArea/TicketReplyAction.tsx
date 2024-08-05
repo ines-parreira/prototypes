@@ -286,7 +286,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                                 value.get('tags')
                                             )
                                         }}
-                                        right={true}
+                                        right
                                         dropdownContainer={
                                             this.props.appNode ?? undefined
                                         }
