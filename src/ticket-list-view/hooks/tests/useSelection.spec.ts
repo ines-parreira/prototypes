@@ -99,4 +99,62 @@ describe('useSelection', () => {
             1: true,
         })
     })
+
+    it('should clear all selected tickets', () => {
+        const {result} = renderHook(() => useSelection(dummyTickets))
+        act(() => {
+            result.current.onSelect(1, true, false)
+        })
+        act(() => {
+            result.current.clear()
+        })
+
+        expect(result.current.selectedTickets).toEqual({})
+    })
+
+    it('should select all', () => {
+        const {result} = renderHook(() => useSelection(dummyTickets))
+        act(() => {
+            result.current.onSelect(1, true, false)
+        })
+        act(() => {
+            result.current.onSelectAll(true)
+        })
+
+        expect(result.current).toEqual(
+            expect.objectContaining({
+                hasSelectedAll: true,
+                selectedTickets: {},
+            })
+        )
+    })
+
+    it('should deselect all', () => {
+        const {result} = renderHook(() => useSelection(dummyTickets))
+        act(() => {
+            result.current.onSelectAll(true)
+        })
+        act(() => {
+            result.current.onSelectAll(false)
+        })
+
+        expect(result.current.hasSelectedAll).toBe(false)
+    })
+
+    it('should disable select all when a single ticket is deselected', () => {
+        const {result} = renderHook(() => useSelection(dummyTickets))
+        act(() => {
+            result.current.onSelectAll(true)
+        })
+        act(() => {
+            result.current.onSelect(1, false, false)
+        })
+
+        expect(result.current).toEqual(
+            expect.objectContaining({
+                hasSelectedAll: false,
+                selectedTickets: {},
+            })
+        )
+    })
 })

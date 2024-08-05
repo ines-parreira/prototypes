@@ -19,6 +19,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import IconButton from 'pages/common/components/button/IconButton'
+import CheckBox from 'pages/common/forms/CheckBox'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {setViewActive, setViewEditMode} from 'state/views/actions'
 import {getViewCount, getViewPlainJS} from 'state/views/selectors'
@@ -88,19 +89,20 @@ export default function TicketListView({
     const {setIsEnabled: setSplitTicketView, setShouldRedirectToSplitView} =
         useSplitTicketView()
 
-    const {onSelect, selectedTickets, clear} = useSelection(tickets)
+    const {hasSelectedAll, onSelect, onSelectAll, selectedTickets, clear} =
+        useSelection(tickets)
 
     const initialLoadedRef = useRef(initialLoaded)
 
     const ticketHeight = hasBulkActions ? TICKET_HEIGHT_NEW : TICKET_HEIGHT
 
     useEffect(() => {
-        if (Object.keys(selectedTickets).length) {
+        if (hasSelectedAll || Object.keys(selectedTickets).length) {
             pauseUpdates()
         } else {
             resumeUpdates()
         }
-    }, [pauseUpdates, resumeUpdates, selectedTickets])
+    }, [hasSelectedAll, pauseUpdates, resumeUpdates, selectedTickets])
 
     useEffect(() => {
         initialLoadedRef.current = initialLoaded
@@ -117,11 +119,18 @@ export default function TicketListView({
                 ticket={ticket}
                 viewId={viewId}
                 isNewTicket={!!newTickets[ticket.id]}
-                isSelected={!!selectedTickets[ticket.id]}
+                isSelected={hasSelectedAll || !!selectedTickets[ticket.id]}
                 onSelect={onSelect}
             />
         ),
-        [activeTicketId, viewId, newTickets, onSelect, selectedTickets]
+        [
+            activeTicketId,
+            hasSelectedAll,
+            newTickets,
+            onSelect,
+            selectedTickets,
+            viewId,
+        ]
     )
 
     const setScrollerRef = useCallback(
@@ -195,6 +204,14 @@ export default function TicketListView({
         virtuosoRef
     )
 
+    const selectionCount = useMemo(
+        () =>
+            hasSelectedAll
+                ? viewCount || 0
+                : Object.keys(selectedTickets).length,
+        [hasSelectedAll, selectedTickets, viewCount]
+    )
+
     return (
         <div className={css.wrapper}>
             <div
@@ -219,10 +236,26 @@ export default function TicketListView({
                 <SortOrderDropdown onChange={setSortOrder} value={sortOrder} />
             </div>
             {hasBulkActions && viewCount !== 0 && (
-                <BulkActions
-                    selectedTickets={selectedTickets}
-                    clearSelection={clear}
-                />
+                <div className={css.subHeader}>
+                    <div className={css.selection}>
+                        <CheckBox
+                            isChecked={hasSelectedAll}
+                            onChange={onSelectAll}
+                        />
+                        {selectionCount > 0 && (
+                            <span>{selectionCount} selected</span>
+                        )}
+                    </div>
+                    <BulkActions
+                        selectedTickets={selectedTickets}
+                        clearSelection={clear}
+                    />
+                </div>
+            )}
+            {hasBulkActions && hasSelectedAll && (
+                <div className={css.allSelected}>
+                    All tickets in the view are selected
+                </div>
             )}
             <div className={css.list}>
                 <Virtuoso

@@ -3,6 +3,7 @@ import {useCallback, useMemo, useRef, useState} from 'react'
 import {TicketSummary} from '../types'
 
 export default function useSelection(tickets: TicketSummary[]) {
+    const [hasSelectedAll, setHasSelectedAll] = useState(false)
     const [selectedTickets, setSelectedTickets] = useState<
         Record<number, boolean>
     >({})
@@ -11,6 +12,11 @@ export default function useSelection(tickets: TicketSummary[]) {
     const handleSelect = useCallback(
         (id: number, selected: boolean, selectRange?: boolean) => {
             setSelectedTickets((s) => {
+                if (hasSelectedAll) {
+                    setHasSelectedAll(false)
+                    return {}
+                }
+
                 if (!selectRange || !previousId.current) {
                     previousId.current = id
                     if (selected) {
@@ -56,17 +62,26 @@ export default function useSelection(tickets: TicketSummary[]) {
                 return newState
             })
         },
-        [tickets]
+        [hasSelectedAll, tickets]
     )
 
     const clear = useCallback(() => setSelectedTickets({}), [])
 
+    const handleSelectAll = useCallback((selected: boolean) => {
+        setHasSelectedAll(selected)
+        if (selected) {
+            setSelectedTickets({})
+        }
+    }, [])
+
     return useMemo(
         () => ({
+            hasSelectedAll,
             selectedTickets,
             onSelect: handleSelect,
+            onSelectAll: handleSelectAll,
             clear,
         }),
-        [handleSelect, selectedTickets, clear]
+        [hasSelectedAll, handleSelect, handleSelectAll, selectedTickets, clear]
     )
 }
