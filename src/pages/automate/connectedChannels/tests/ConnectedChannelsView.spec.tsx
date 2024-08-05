@@ -570,16 +570,28 @@ describe('ConnectedChannelsView', () => {
         expect(screen.getByText('Email')).toBeInTheDocument()
     })
 
-    it('should change the route to chat when clicking on a channel', () => {
+    it('should change the route to chat when clicking on a channel', async () => {
         const {history} = renderWithRouter(<ConnectedChannelsView />)
 
         const chatChannel = screen.getByRole('link', {name: /chat/i})
         expect(chatChannel).toBeInTheDocument()
-        fireEvent.click(chatChannel)
-        expect(history.location.pathname).toBe(
-            '/app/automation/shopType/shopName/connected-channels'
-        )
         // Check if the component corresponding to the route is rendered
+
+        await act(async () => {
+            fireEvent.click(chatChannel)
+            await waitFor(() => {
+                expect(history.location.pathname).toBe(
+                    '/app/automation/shopType/shopName/connected-channels'
+                )
+
+                expect(
+                    screen.getAllByText(
+                        'Display up to 6 Flows or Quick Responses on your Chat to proactively resolve top customer requests.'
+                    )
+                ).toHaveLength(2)
+                expect(screen.getByText(/forum/i)).toBeInTheDocument()
+            })
+        })
         expect(screen.getByText(/forum/i)).toBeInTheDocument()
     })
 
@@ -599,6 +611,11 @@ describe('ConnectedChannelsView', () => {
                     '/app/automation/shopType/shopName/connected-channels/help-center'
                 )
 
+                expect(
+                    screen.getByText(
+                        'Display up to 6 Flows or Quick Responses on your Help Center to proactively resolve top customer requests.'
+                    )
+                ).toBeInTheDocument()
                 expect(screen.getByText(/live_help/i)).toBeInTheDocument()
             })
         })
@@ -620,7 +637,17 @@ describe('ConnectedChannelsView', () => {
                     '/app/automation/shopType/shopName/connected-channels/contact-form'
                 )
 
-                expect(screen.getByText(/Contact form/i)).toBeInTheDocument()
+                expect(
+                    screen.getByText(/Enable Order Management/i)
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'Display up to 6 Flows or Quick Responses on your Contact Form to proactively resolve top customer requests.'
+                    )
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(/Currently viewing/i)
+                ).toBeInTheDocument()
             })
         })
     })

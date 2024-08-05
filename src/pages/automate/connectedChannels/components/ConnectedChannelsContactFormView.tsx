@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react'
+import React, {useCallback} from 'react'
 import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
 import {noop} from 'lodash'
@@ -6,15 +6,16 @@ import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServ
 import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import Spinner from 'pages/common/components/Spinner'
 import {SegmentEvent, logEvent} from 'common/segment'
-import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
-import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
+
+import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import {FlowsSettings} from './FlowsSettings'
 import css from './ConnectedChannelsChatView.less'
 import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
 import {FeatureSettings} from './FeatureSettings'
 
-export const ConnectedChannelsHelpCenterView = () => {
+export const ConnectedChannelsContactFormView = () => {
     const {shopType, shopName} = useParams<{
         shopType: string
         shopName: string
@@ -27,43 +28,42 @@ export const ConnectedChannelsHelpCenterView = () => {
     } = useSelfServiceConfiguration(shopType, shopName)
     const {data: workflowConfigurations = []} = useGetWorkflowConfigurations()
 
-    const helpCenterChannels = useSelfServiceHelpCenterChannels(
+    const contactFormChannels = useSelfServiceStandaloneContactFormChannels(
         shopType,
         shopName
     )
 
     const [selectedChannel, setSelectedChannel] = React.useState<number | null>(
-        () => helpCenterChannels[0]?.value.id ?? null
+        () => contactFormChannels[0]?.value.id ?? null
     )
 
     const currentChannel =
-        helpCenterChannels.find(
+        contactFormChannels.find(
             (channel) => channel.value.id === selectedChannel
-        ) ?? helpCenterChannels?.[0]
+        ) ?? contactFormChannels?.[0]
 
     const currentChannelId = currentChannel?.value.id ?? ''
 
     const {
         automationSettings,
-        handleHelpCenterAutomationSettingsUpdate,
+        handleContactFormAutomationSettingsUpdate,
         isFetchPending,
-    } = useHelpCentersAutomationSettings(currentChannelId)
+    } = useContactFormAutomationSettings(currentChannelId)
 
     const updateSettings = useCallback(
-        () => (value: boolean) => {
-            void handleHelpCenterAutomationSettingsUpdate({
+        (value: boolean) => {
+            void handleContactFormAutomationSettingsUpdate({
                 ...automationSettings,
                 order_management: {
                     enabled: value,
                 },
             })
         },
-        [automationSettings, handleHelpCenterAutomationSettingsUpdate]
+        [automationSettings, handleContactFormAutomationSettingsUpdate]
     )
 
-    const isOrderManagementEnabled = useMemo(() => {
-        return automationSettings.order_management?.enabled ?? false
-    }, [automationSettings])
+    const isOrderManagementEnabled =
+        automationSettings.order_management?.enabled
 
     const isLoading =
         !selfServiceConfiguration ||
@@ -84,8 +84,8 @@ export const ConnectedChannelsHelpCenterView = () => {
             <div className={css.settingsContainer}>
                 <CurrentlyViewingDropdown
                     onConnect={noop}
-                    channelType="help-center"
-                    channels={helpCenterChannels}
+                    channelType="contact-form"
+                    channels={contactFormChannels}
                     value={selectedChannel ?? ''}
                     label={currentChannel?.value?.name}
                     onSelectedChannelChange={(value) =>
@@ -98,7 +98,7 @@ export const ConnectedChannelsHelpCenterView = () => {
                 />
 
                 <FlowsSettings
-                    channelType="help-center"
+                    channelType="contact-form"
                     shopType={shopType}
                     shopName={shopName}
                     workflowEntrypoints={
@@ -107,7 +107,7 @@ export const ConnectedChannelsHelpCenterView = () => {
                     primaryLanguage={
                         currentChannel?.value.default_locale ?? 'en-US'
                     }
-                    configurations={workflowConfigurations ?? []}
+                    configurations={workflowConfigurations}
                     automationSettingsWorkflows={automationSettings.workflows.map(
                         (workflow) => ({
                             workflow_id: workflow.id,
@@ -122,7 +122,7 @@ export const ConnectedChannelsHelpCenterView = () => {
                             }
                         )
 
-                        void handleHelpCenterAutomationSettingsUpdate({
+                        void handleContactFormAutomationSettingsUpdate({
                             ...automationSettings,
                             workflows: nextEntrypoints.map((entrypoint) => ({
                                 id: entrypoint.workflow_id,
@@ -135,10 +135,10 @@ export const ConnectedChannelsHelpCenterView = () => {
                 <FeatureSettings
                     title="Order Management"
                     label="Enable Order Management"
-                    labelSubtitle="Allow customers to track and manage their orders directly within your Help Center."
+                    labelSubtitle="Allow customers to track and manage their orders directly within your Contact Form."
                     enabled={isOrderManagementEnabled}
                     externalLinkUrl={`/app/automation/${shopType}/${shopName}/order-management`}
-                    onToggle={updateSettings()}
+                    onToggle={updateSettings}
                 />
             </div>
 

@@ -12,6 +12,7 @@ import {AVAILABLE_CHANNELS, CHANNELS} from '../common/components/constants'
 import {ConnectedChannelsChatView} from './components/ConnectedChannelsChatView'
 import css from './ConnectedChannelsView.less'
 import {ConnectedChannelsHelpCenterView} from './components/ConnectedChannelsHelpCenterView'
+import {ConnectedChannelsContactFormView} from './components/ConnectedChannelsContactFormView'
 
 export const ConnectedChannelsView = () => {
     const {shopType, shopName} = useParams<{
@@ -68,7 +69,7 @@ export const ConnectedChannelsView = () => {
                 />
                 <Route
                     path={`${path}/contact-form`}
-                    component={() => <>Contact Form</>}
+                    component={() => <ConnectedChannelsContactFormView />}
                     exact
                 />
                 <Route
