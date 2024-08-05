@@ -1,7 +1,38 @@
+@import (reference) '~css/new/mixins';
+@import (reference) '~css/typography.less';
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
+    .pageContentWithPadding {
+        padding: @layout-spacing-m;
+    }
+
+    .subHeader {
+        display: flex;
+
+        .pushToRight {
+            margin-left: auto;
+        }
+    }
+
+    .alertWrapper {
+        margin: @layout-spacing-l 0;
+    }
+
     .backWrapper {
         margin: 0;
+    }
+
+    .externalLink {
+        .component-button-small;
+    }
+
+    .variantWrapper {
+        h2 {
+            .heading-section-semibold;
+        }
+        p {
+            .body-regular;
+        }
     }
 }

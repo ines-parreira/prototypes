@@ -35,7 +35,7 @@ const ABGroupIndexPage = () => {
 
     if (isLoading || !data) {
         return (
-            <Container fluid className={css.pageContainer}>
+            <Container fluid className={css.pageSkeletonContainer}>
                 <div className={css.mainLoader}>
                     <Skeleton height={75} width={'100%'} />
                 </div>
