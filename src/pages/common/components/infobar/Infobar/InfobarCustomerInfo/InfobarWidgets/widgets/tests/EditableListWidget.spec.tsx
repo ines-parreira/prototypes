@@ -9,16 +9,10 @@ import thunk from 'redux-thunk'
 import {ShopifyTags} from 'models/integration/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {fetchShopTags} from 'models/integration/resources/shopify'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {LeafTemplate} from 'models/widget/types'
-
 import {ShopifyContext} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
-import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'
-
-import {
-    EditableListField,
-    editableListCustomization,
-} from '../EditableListField'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {ActionButtonContext} from '../ActionButton'
+import {EditableListWidget} from '../EditableListWidget'
 
 jest.mock('models/integration/resources/shopify', () => {
     return {
@@ -44,8 +38,9 @@ const widgetContextValue = {
     },
 }
 const integrationContextValue = {integration: fromJS({}), integrationId: 1}
+const actionButtonContextValue = {actionError: ''}
 
-describe('<EditableListField/>', () => {
+describe('<EditableListWidget/>', () => {
     const mockStore = configureMockStore([thunk])
     const storeData = {
         infobarActions: {
@@ -64,7 +59,11 @@ describe('<EditableListField/>', () => {
         const {container} = render(
             <ShopifyContext.Provider value={widgetContextValue}>
                 <IntegrationContext.Provider value={integrationContextValue}>
-                    <EditableListField {...minProps} />
+                    <ActionButtonContext.Provider
+                        value={actionButtonContextValue}
+                    >
+                        <EditableListWidget {...minProps} />
+                    </ActionButtonContext.Provider>
                 </IntegrationContext.Provider>
             </ShopifyContext.Provider>
         )
@@ -77,7 +76,11 @@ describe('<EditableListField/>', () => {
         const {container} = render(
             <ShopifyContext.Provider value={widgetContextValue}>
                 <IntegrationContext.Provider value={integrationContextValue}>
-                    <EditableListField {...minProps} />
+                    <ActionButtonContext.Provider
+                        value={actionButtonContextValue}
+                    >
+                        <EditableListWidget {...minProps} />
+                    </ActionButtonContext.Provider>
                 </IntegrationContext.Provider>
             </ShopifyContext.Provider>
         )
@@ -114,7 +117,7 @@ describe('<EditableListField/>', () => {
                         <IntegrationContext.Provider
                             value={integrationContextData}
                         >
-                            <EditableListField
+                            <EditableListWidget
                                 {...minProps}
                                 selectedOptions={'test1, test2'}
                             />
@@ -135,45 +138,5 @@ describe('<EditableListField/>', () => {
                 tagsType
             )
         })
-    })
-})
-
-describe('editableListCustomization', () => {
-    it.each([
-        ['whatever.customer.tags', true],
-        ['whatever.orders.[].tags', true],
-        ['whatever.orders.[]', false],
-        ['whatever.customer', false],
-        ['whatever.customer.smth', false],
-        ['whatever.orders', false],
-        ['whatever.orders.[].smth', false],
-    ])(
-        'has a dataMatcher that matches or not the given path',
-        (match, output) => {
-            expect(editableListCustomization.dataMatcher?.test(match)).toBe(
-                output
-            )
-        }
-    )
-
-    it('should return a getValueString function returning null', () => {
-        expect(
-            editableListCustomization.getValueString({}, {} as LeafTemplate)
-        ).toBeNull()
-    })
-
-    it('should return a getValue function whose return is the ConnectedEditableListField', () => {
-        const value = editableListCustomization.getValue(
-            'something',
-            {} as LeafTemplate
-        ) as React.ReactElement<React.ComponentProps<typeof EditableListField>>
-
-        expect(value.props.selectedOptions).toBe('something')
-    })
-
-    it('should return a getValue function whose return is the fallback value if source is not a string', () => {
-        expect(editableListCustomization.getValue({}, {} as LeafTemplate)).toBe(
-            FALLBACK_VALUE
-        )
     })
 })

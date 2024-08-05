@@ -11,6 +11,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
 import {humanizeString} from 'utils'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {BIGCOMMERCE_INTEGRATION_TYPE} from 'constants/integration'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -289,6 +290,7 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                 <DatetimeLabel
                     key="created"
                     dateTime={source.get('date_created')}
+                    integrationType={BIGCOMMERCE_INTEGRATION_TYPE}
                 />
             </StaticField>
             <StaticField label="Total">

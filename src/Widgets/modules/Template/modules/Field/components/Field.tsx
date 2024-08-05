@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {useContext, useMemo} from 'react'
 
 import {LEAF_TYPES} from 'models/widget/constants'
-import {LeafTemplate, LeafType} from 'models/widget/types'
+import {isLeafType, LeafTemplate, LeafTypes} from 'models/widget/types'
 import {
     removeEditedWidget,
     startWidgetEdition,
@@ -9,16 +9,18 @@ import {
     updateEditedWidget,
 } from 'state/widgets/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {IntegrationType} from 'models/integration/constants'
 
-import {FieldEditFormData, HiddenFields} from '../types'
-import {TypeOption} from './views/FieldEditForm'
+import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+
+import {FormData, TypeOption} from './views/FieldEditForm'
 import UIField from './views'
 import CopyButton from './CopyButton'
 
 export const EDIT_BUTTON_TEXT = 'edit'
 export const DELETE_BUTTON_TEXT = 'delete'
 
-export const LEAF_TYPE_LABELS: Record<LeafType, string> = {
+export const LEAF_TYPE_LABELS = {
     [LEAF_TYPES.TEXT]: 'Text',
     [LEAF_TYPES.BOOLEAN]: 'Boolean (true/false)',
     [LEAF_TYPES.DATE]: 'Date',
@@ -30,9 +32,10 @@ export const LEAF_TYPE_LABELS: Record<LeafType, string> = {
     [LEAF_TYPES.RATING]: 'Rating',
     [LEAF_TYPES.POINT]: 'Points',
     [LEAF_TYPES.PERCENT]: 'Percent',
+    [LEAF_TYPES.EDITABLE_LIST]: 'Editable List',
 } as const
 
-export const TYPE_OPTIONS: TypeOption<LeafType>[] = Object.values(
+export const TYPE_OPTIONS: TypeOption<LeafTypes>[] = Object.values(
     LEAF_TYPES
 ).map((type) => {
     return {
@@ -43,12 +46,10 @@ export const TYPE_OPTIONS: TypeOption<LeafType>[] = Object.values(
 
 type Props = {
     value: unknown
-    type: LeafType
+    type: string
     isEditing: boolean
     template: LeafTemplate
     copyableValue: string | null
-    valueCanOverflow?: boolean
-    editionHiddenFields?: HiddenFields
 }
 
 export default function Field({
@@ -57,10 +58,9 @@ export default function Field({
     value,
     type,
     copyableValue,
-    valueCanOverflow = false,
-    editionHiddenFields,
 }: Props) {
     const dispatch = useAppDispatch()
+    const widget = useContext(WidgetContext)
 
     const title = template.title || ''
     const absolutePath = template.absolutePath || []
@@ -77,19 +77,28 @@ export default function Field({
         dispatch(removeEditedWidget(templatePath, absolutePath))
     }
 
-    const handleSubmit = (formData: FieldEditFormData<LeafType>) => {
+    const handleSubmit = (formData: FormData<LeafTypes>) => {
         dispatch(updateEditedWidget(formData))
     }
+
+    const availableTypes = useMemo(() => {
+        if (
+            widget.type === IntegrationType.Shopify &&
+            template.path === 'tags'
+        ) {
+            return TYPE_OPTIONS
+        }
+        return TYPE_OPTIONS.filter((option) => option.value !== 'editableList')
+    }, [widget, template.path])
 
     return (
         <UIField
             title={title}
             value={value}
-            type={type}
-            availableTypes={TYPE_OPTIONS}
+            type={isLeafType(type) ? type : LEAF_TYPES.TEXT}
+            availableTypes={availableTypes}
             isEditionMode={isEditing}
-            valueCanOverflow={valueCanOverflow}
-            editionHiddenFields={editionHiddenFields}
+            valueShouldOverflow={type === LEAF_TYPES.EDITABLE_LIST}
             copyButton={
                 !isEditing && copyableValue ? (
                     <CopyButton

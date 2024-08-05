@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {render} from '@testing-library/react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
@@ -6,12 +6,12 @@ import {shopifyWidget} from 'fixtures/widgets'
 import {
     CardTemplate,
     LeafTemplate,
-    LeafType,
     ListTemplate,
     WrapperTemplate,
 } from 'models/widget/types'
 
 import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+import {ShopifyContext} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
 import Card, {
     CardCustomization,
     HiddenField,
@@ -20,15 +20,9 @@ import Field from 'Widgets/modules/Template/modules/Field'
 import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
 import ListWidget from 'Widgets/modules/Template/modules/List'
 
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {LEAF_TYPES} from 'models/widget/constants'
 import {CustomizationContext} from '../../contexts/CustomizationContext'
-import {
-    seekCardCustomization,
-    seekFieldCustomization,
-} from '../../helpers/customization'
+import {seekCardCustomization} from '../../helpers/customization'
 import Template, {self} from '../Template'
-import {FieldEditFormData} from '../../modules/Field/types'
 
 jest.spyOn(self, 'Template')
 const spiedTemplate = assumeMock(self.Template)
@@ -44,7 +38,6 @@ const fieldMock = assumeMock(Field)
 const wrapperMock = assumeMock(Wrapper)
 const listMock = assumeMock(ListWidget)
 const seekCardCustomizationMock = assumeMock(seekCardCustomization)
-const seekFieldCustomizationMock = assumeMock(seekFieldCustomization)
 
 const editionHiddenFields: HiddenField[] = ['title']
 
@@ -88,13 +81,53 @@ describe('Template', () => {
         listMock.mockClear()
     })
 
-    it("should return null if there's no template", () => {
-        const {container} = render(<Template {...minProps} template={null} />)
+    describe('ShopifyContext', () => {
+        const spiedDataFunction = jest.fn()
+        it('should not provide the context ', () => {
+            cardMock.mockImplementation(() => {
+                const data = useContext(ShopifyContext)
+                spiedDataFunction(data)
+                return <></>
+            })
+            render(<Template {...minProps} template={cardTemplate} />)
 
-        expect(container).toBeEmptyDOMElement()
+            expect(spiedDataFunction).toHaveBeenCalledWith({
+                data_source: null,
+                widget_resource_ids: {
+                    target_id: null,
+                    customer_id: null,
+                },
+            })
+        })
+
+        it('should provide a context', () => {
+            cardMock.mockImplementation(() => {
+                const data = useContext(ShopifyContext)
+                spiedDataFunction(data)
+                return <></>
+            })
+            render(
+                <Template
+                    {...minProps}
+                    template={cardTemplate}
+                    source={{
+                        id: 4,
+                        admin_graphql_api_id: 'gid://shopify/Order/432',
+                    }}
+                />
+            )
+
+            expect(spiedDataFunction).toHaveBeenCalledWith({
+                data_source: 'Order',
+                widget_resource_ids: {
+                    target_id: 4,
+                    customer_id: null,
+                },
+            })
+        })
     })
 
-    describe('Card customization', () => {
+    describe('card customization', () => {
         const cardCustomizationObjects = [
             {
                 dataMatcher: /foo/,
@@ -102,7 +135,6 @@ describe('Template', () => {
             },
         ]
         const customization = {card: cardCustomizationObjects}
-
         it('should provide correct customization value to seekCardCustomization', () => {
             render(
                 <CustomizationContext.Provider value={customization}>
@@ -134,63 +166,7 @@ describe('Template', () => {
         })
     })
 
-    describe('Field customization', () => {
-        const fieldCustomization = {
-            dataMatcher: /foo/,
-            getValue: jest.fn(),
-            getValueString: jest.fn(),
-        }
-
-        it('should provide correct customization value to seekFieldCustomization', () => {
-            render(
-                <CustomizationContext.Provider
-                    value={{field: [fieldCustomization]}}
-                >
-                    <Template {...minProps} template={leafTemplate} />
-                </CustomizationContext.Provider>
-            )
-
-            expect(seekFieldCustomizationMock).toHaveBeenCalledWith(
-                [fieldCustomization],
-                minProps.source,
-                leafTemplate
-            )
-        })
-
-        it('should provide the props from `seekFieldCustomization`', () => {
-            const returnedValues = {
-                value: '2024 OLYMPICS',
-                copyableValue: 'RPZ',
-                editionHiddenFields: ['type'] as Array<
-                    keyof FieldEditFormData<LeafType>
-                >,
-                valueCanOverflow: true,
-                additionalTypes: ['nothing_yet' as const],
-            }
-            seekFieldCustomizationMock.mockReturnValueOnce(returnedValues)
-            render(<Template {...minProps} template={leafTemplate} />)
-
-            expect(getLastMockCall(fieldMock)[0]).toEqual(
-                expect.objectContaining(returnedValues)
-            )
-        })
-    })
-
     describe('Wrapper', () => {
-        it('should allow `template.widgets` to be falsy', () => {
-            render(
-                <Template
-                    {...minProps}
-                    template={{...wrapperTemplate, widgets: undefined}}
-                />
-            )
-            expect(getLastMockCall(wrapperMock)[0]).toEqual(
-                expect.objectContaining({
-                    children: [],
-                })
-            )
-        })
-
         it('should pass correct props to Wrapper', () => {
             render(<Template {...minProps} template={wrapperTemplate} />)
 
@@ -298,17 +274,6 @@ describe('Template', () => {
             }
         )
 
-        it('should render if source has no key but widget is in edition mode', () => {
-            render(
-                <EditionContext.Provider value={{isEditing: true}}>
-                    <WidgetContext.Provider value={{...shopifyWidget}}>
-                        <Template {...minProps} source={{}} />
-                    </WidgetContext.Provider>
-                </EditionContext.Provider>
-            )
-            expect(cardMock).toHaveBeenCalled()
-        })
-
         it('should not render if source is not ok but widget type is standalone', () => {
             render(<Template {...minProps} source={undefined} />)
             expect(cardMock).toHaveBeenCalled()
@@ -368,18 +333,6 @@ describe('Template', () => {
                 template: leafTemplate,
                 copyableValue: 'foo',
             })
-        })
-
-        it('should narrow down the type of from string to LeafType', () => {
-            render(
-                <Template
-                    {...minProps}
-                    template={{type: 'unknown'} as LeafTemplate}
-                    source={'foo'}
-                />
-            )
-
-            expect(getLastMockCall(fieldMock)[0].type).toBe(LEAF_TYPES.TEXT)
         })
     })
 })

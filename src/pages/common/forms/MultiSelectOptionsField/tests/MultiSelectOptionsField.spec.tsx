@@ -8,6 +8,7 @@ import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu
 import Dropdown from '../Dropdown'
 import MultiSelectField from '../MultiSelectOptionsField'
 import OptionTag from '../Tag'
+import {getOptionsFromTags} from '../../../components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/utils'
 
 type OptionProps = ComponentProps<typeof MultiSelectField>['options']
 
@@ -394,7 +395,7 @@ describe('MultiSelectField', () => {
             for (let i = 0; i < TAGS_LIMIT * 3; i++) {
                 tags.push(`tag${i}`)
             }
-            props.options = tags.map((tag) => ({label: tag, value: tag}))
+            props.options = getOptionsFromTags(tags)
 
             const component = render(
                 <MultiSelectField {...minProps} {...props} />

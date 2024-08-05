@@ -1,8 +1,12 @@
 import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
-import {idTemplate} from 'fixtures/widgets'
+import {idTemplate, shopifyWidget} from 'fixtures/widgets'
+import {RootState} from 'state/types'
 import {
     removeEditedWidget,
     startWidgetEdition,
@@ -11,12 +15,14 @@ import {
 } from 'state/widgets/actions'
 import {LEAF_TYPES} from 'models/widget/constants'
 
+import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+
 import CopyButton from '../CopyButton'
 import UIField from '../views'
-import Field from '../Field'
 
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+import Field, {TYPE_OPTIONS} from '../Field'
+
+const mockStore = configureMockStore()
 
 jest.mock('../CopyButton', () => jest.fn(() => <span>copy button</span>))
 const CopyButtonMock = assumeMock(CopyButton)
@@ -29,6 +35,13 @@ jest.mock('../views', () =>
 const UIFieldMock = assumeMock(UIField)
 
 describe('Field', () => {
+    const defaultState = {
+        widgets: fromJS({
+            _internal: {
+                currentlyEditedWidgetPath: '',
+            },
+        }),
+    } as RootState
     const defaultAbsolutePath = ['foo', 'bar']
     const defaultTemplate = {...idTemplate, absolutePath: defaultAbsolutePath}
 
@@ -38,24 +51,32 @@ describe('Field', () => {
         isEditing: false,
         template: defaultTemplate,
         copyableValue: 'copyable value',
-        valueCanOverflow: false,
-        editionHiddenFields: ['title'],
     }
 
-    it('should prepare available types', () => {
-        render(<Field {...defaultProps} />)
-        expect(getLastMockCall(UIFieldMock)[0].availableTypes).toEqual(
-            expect.arrayContaining([
-                expect.objectContaining({
-                    value: expect.any(String),
-                    label: expect.any(String),
-                }),
-            ])
+    const store = mockStore(defaultState)
+
+    it('should default type to text if type is not an existing leaf type', () => {
+        render(
+            <Provider store={store}>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field
+                        {...defaultProps}
+                        type={'someone messed with the API again'}
+                    />
+                </WidgetContext.Provider>
+            </Provider>
         )
+        expect(getLastMockCall(UIFieldMock)[0].type).toEqual(LEAF_TYPES.TEXT)
     })
 
-    it('should pass template title, value, type, isEditing, canOverflow and editionHiddenFields to the UI field', () => {
-        render(<Field {...defaultProps} />)
+    it('should pass template title, value, type, isEditing to the UI field', () => {
+        render(
+            <Provider store={store}>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field {...defaultProps} />
+                </WidgetContext.Provider>
+            </Provider>
+        )
 
         expect(getLastMockCall(UIFieldMock)[0]).toEqual(
             expect.objectContaining({
@@ -63,53 +84,110 @@ describe('Field', () => {
                 value: defaultProps.value,
                 type: defaultProps.type,
                 isEditionMode: defaultProps.isEditing,
-                valueCanOverflow: defaultProps.valueCanOverflow,
-                editionHiddenFields: defaultProps.editionHiddenFields,
             })
         )
     })
 
-    it('should pass valueCanOverflow to `false` when undefined', () => {
-        render(<Field {...defaultProps} valueCanOverflow={undefined} />)
+    it('should exclude editable list from type options', () => {
+        render(
+            <Provider store={store}>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field {...defaultProps} />
+                </WidgetContext.Provider>
+            </Provider>
+        )
 
-        expect(getLastMockCall(UIFieldMock)[0].valueCanOverflow).toBe(false)
+        const {availableTypes} = getLastMockCall(UIFieldMock)[0]
+        expect(availableTypes).toEqual(
+            TYPE_OPTIONS.filter(
+                (option) => option.value !== LEAF_TYPES.EDITABLE_LIST
+            )
+        )
+    })
+
+    it('should include editableList in the type options for the tags path of a shopify widget ', () => {
+        render(
+            <Provider store={store}>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field
+                        {...defaultProps}
+                        template={{...defaultTemplate, path: 'tags'}}
+                    />
+                </WidgetContext.Provider>
+            </Provider>
+        )
+
+        const {availableTypes} = getLastMockCall(UIFieldMock)[0]
+        expect(availableTypes).toEqual(TYPE_OPTIONS)
+    })
+
+    it('should set `valueShouldOverflow` to true if type is an editable list', () => {
+        render(
+            <Provider store={store}>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field {...defaultProps} type={LEAF_TYPES.EDITABLE_LIST} />
+                </WidgetContext.Provider>
+            </Provider>
+        )
+
+        expect(getLastMockCall(UIFieldMock)[0].valueShouldOverflow).toBeTruthy()
     })
 
     it('should call correct actions with appropriate value', () => {
-        render(<Field {...defaultProps} isEditing />)
+        render(
+            <Provider store={store}>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field {...defaultProps} isEditing />
+                </WidgetContext.Provider>
+            </Provider>
+        )
 
         getLastMockCall(UIFieldMock)[0].onEditionStart()
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
-        expect(mockedDispatch).toHaveBeenLastCalledWith(
+        let actions = store.getActions()
+        expect(actions).toHaveLength(1)
+        expect(actions).toContainEqual(
             startWidgetEdition(idTemplate.templatePath!)
         )
 
         getLastMockCall(UIFieldMock)[0].onEditionStop()
-        expect(mockedDispatch).toHaveBeenCalledTimes(2)
-        expect(mockedDispatch).toHaveBeenLastCalledWith(stopWidgetEdition())
+        actions = store.getActions()
+        expect(actions).toHaveLength(2)
+        expect(actions).toContainEqual(stopWidgetEdition())
 
         getLastMockCall(UIFieldMock)[0].onDelete()
-        expect(mockedDispatch).toHaveBeenCalledTimes(3)
-        expect(mockedDispatch).toHaveBeenLastCalledWith(
+        actions = store.getActions()
+        expect(actions).toHaveLength(3)
+        expect(actions).toContainEqual(
             removeEditedWidget(idTemplate.templatePath, defaultAbsolutePath)
         )
 
         const formData = {title: 'ok', type: LEAF_TYPES.BOOLEAN}
         getLastMockCall(UIFieldMock)[0].onSubmit(formData)
-        expect(mockedDispatch).toHaveBeenCalledTimes(4)
-        expect(mockedDispatch).toHaveBeenLastCalledWith(
-            updateEditedWidget(formData)
-        )
+        actions = store.getActions()
+        expect(actions).toHaveLength(4)
+        expect(actions).toContainEqual(updateEditedWidget(formData))
     })
 
     it("should not render a copy button if it's editing", () => {
-        render(<Field {...defaultProps} isEditing />)
+        render(
+            <Provider store={store}>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field {...defaultProps} isEditing />
+                </WidgetContext.Provider>
+            </Provider>
+        )
 
         expect(getLastMockCall(UIFieldMock)[0].copyButton).toBeNull()
     })
 
     it("should render a copy button  with correct props if it's not editing and there is a copyable value", () => {
-        render(<Field {...defaultProps} isEditing={false} />)
+        render(
+            <Provider store={store}>
+                <WidgetContext.Provider value={shopifyWidget}>
+                    <Field {...defaultProps} isEditing={false} />
+                </WidgetContext.Provider>
+            </Provider>
+        )
 
         expect(getLastMockCall(UIFieldMock)[0].copyButton).not.toBeNull()
         expect(getLastMockCall(CopyButtonMock)[0]).toEqual({

@@ -42,23 +42,4 @@ describe('HttpWidget', () => {
 
         expect(passedCustomization).toEqual(customization)
     })
-
-    describe('card customization', () => {
-        const cardCustomization = customization.card!
-        it.each([
-            ['ticket.customer.integrations.10', true],
-            ['ticket.customer.integrations.10.data', true],
-            ['ticket.customer.integrations.10.[data]', true],
-            ['ticket.customer.integrations.10.data.[meuuuuh]', false],
-            ['ticket.customer.integrations.10.data.else', false],
-        ])(
-            'should have a dataMatcher that matches the given path, or not',
-            (dataPath, output) => {
-                const hasMatch = cardCustomization.some(({dataMatcher}) => {
-                    return dataMatcher.test(dataPath)
-                })
-                expect(hasMatch).toBe(output)
-            }
-        )
-    })
 })

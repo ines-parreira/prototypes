@@ -106,7 +106,7 @@ export default function Card(props: Props) {
     }
 
     const handleEditSubmit = (formState: CardEditFormState) => {
-        const card: DeepPartial<CardTemplate> = {
+        const card: PartialTemplate = {
             type: 'card',
             title: formState.title,
         }

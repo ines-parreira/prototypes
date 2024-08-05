@@ -492,20 +492,6 @@ describe('widgets infobar utils', () => {
                 } as Template,
                 {bar: [{baz: '', buz: ''}]},
             ],
-            [
-                {
-                    type: 'list',
-                    path: 'bar',
-                } as Template,
-                {bar: [{baz: '', buz: ''}]},
-            ],
-            [
-                {
-                    type: 'list',
-                    path: 'bar',
-                } as Template,
-                {bar: 'not an array'},
-            ],
         ]
 
         it.each(emptyValues)(
@@ -517,14 +503,6 @@ describe('widgets infobar utils', () => {
         )
 
         const validValues: [Template, Source][] = [
-            [
-                {
-                    type: 'card',
-                    path: 'foo',
-                    meta: {custom: {links: [{label: 'link', url: 'url'}]}},
-                } as Template,
-                {foo: {bar: {baz: 'baz!', buz: ''}}},
-            ],
             [
                 {
                     type: 'wrapper',

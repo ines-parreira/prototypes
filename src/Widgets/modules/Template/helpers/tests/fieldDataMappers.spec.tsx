@@ -7,8 +7,6 @@ import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
-import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'
-
 import {getStringFromData, getValueFromData} from '../fieldDataMappers'
 
 jest.mock('pages/common/utils/DatetimeLabel', () => {
@@ -122,9 +120,9 @@ describe('getValueFromData()', () => {
         }
     )
     it('should return the default value when passed an empty value', () => {
-        expect(getValueFromData(undefined)).toEqual(FALLBACK_VALUE)
-        expect(getValueFromData(null)).toEqual(FALLBACK_VALUE)
-        expect(getValueFromData('')).toEqual(FALLBACK_VALUE)
+        expect(getValueFromData(undefined)).toEqual('-')
+        expect(getValueFromData(null)).toEqual('-')
+        expect(getValueFromData('')).toEqual('-')
     })
 
     it.each([[true], ['true'], ['1'], [1], [42]])(
@@ -149,31 +147,25 @@ describe('getValueFromData()', () => {
         }
     )
 
+    it('should return a comma-separated list of rendered values because passed data is an array', () => {
+        render(getValueFromData([123, 'test', true, null]) as ReactElement)
+        expect(
+            screen.getByText(/123.*,.*test.*,.*true.*,.*-/)
+        ).toBeInTheDocument()
+    })
+
     it('should return default value when passer undefined, null or an object', () => {
-        expect(getValueFromData({key: 'value'})).toBe(FALLBACK_VALUE)
-        expect(getValueFromData(undefined)).toBe(FALLBACK_VALUE)
-        expect(getValueFromData(null)).toBe(FALLBACK_VALUE)
+        expect(getValueFromData({key: 'value'})).toBe('-')
+        expect(getValueFromData(undefined)).toBe('-')
+        expect(getValueFromData(null)).toBe('-')
     })
 
     it('should work when passed an immutable object', () => {
-        expect(getValueFromData(fromJS({key: 'value'}))).toBe(FALLBACK_VALUE)
+        expect(getValueFromData(fromJS({key: 'value'}))).toBe('-')
     })
 
-    describe('array', () => {
-        it('should return a comma-separated list of rendered values because passed data is an array', () => {
-            render(getValueFromData([123, 'test', true, null]) as ReactElement)
-            expect(
-                screen.getByText(/123.*,.*test.*,.*true.*,.*-/)
-            ).toBeInTheDocument()
-        })
-
-        it('should return "Undetermined value" when passed an array of objects', () => {
-            expect(getValueFromData([{foo: 'bar'}])).toBe('Undetermined value')
-        })
-
-        it('should return the default value when passed an empty array ', () => {
-            expect(getValueFromData([])).toBe(FALLBACK_VALUE)
-        })
+    it('should return "Undetermined value" when passed an array of objects', () => {
+        expect(getValueFromData([{foo: 'bar'}])).toBe('Undetermined value')
     })
 })
 

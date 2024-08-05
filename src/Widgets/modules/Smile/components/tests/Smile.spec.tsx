@@ -43,20 +43,3 @@ describe('SmileWidget', () => {
         expect(passedCustomization).toEqual(customization)
     })
 })
-
-describe('card customization', () => {
-    const cardCustomization = customization.card!
-    it.each([
-        ['integrations.420.customer', true],
-        ['integrations.420.customer.smth', false],
-        ['integrations.420.smth', false],
-    ])(
-        'should have a dataMatcher that matches the given path, or not',
-        (dataPath, output) => {
-            const hasMatch = cardCustomization.some(({dataMatcher}) => {
-                return dataMatcher.test(dataPath)
-            })
-            expect(hasMatch).toBe(output)
-        }
-    )
-})

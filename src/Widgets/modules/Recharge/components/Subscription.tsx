@@ -9,6 +9,7 @@ import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {RECHARGE_INTEGRATION_TYPE} from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {RootState} from 'state/types'
@@ -28,8 +29,6 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {StaticField} from 'Widgets/modules/Template/modules/Field'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
-
-import {formatRechargeDateTime} from '../helpers/formatRechargeDateTime'
 
 const OrderContext = createContext<{
     order: Map<string, unknown> | null
@@ -135,9 +134,9 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 <ActionButtonsGroup actions={actions} payload={payload} />
                 <StaticField label="Created">
                     <DatetimeLabel
-                        dateTime={formatRechargeDateTime(
-                            source.get('created_at')
-                        )}
+                        key="created-at"
+                        dateTime={source.get('created_at')}
+                        integrationType={RECHARGE_INTEGRATION_TYPE}
                     />
                 </StaticField>
             </>

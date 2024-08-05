@@ -16,6 +16,7 @@ import {getCreateOrderState} from 'state/infobarActions/shopify/createOrder/sele
 import {onPayloadChange} from 'state/infobarActions/shopify/createOrder/actions'
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
+import {getOptionsFromTags} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/utils'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import {getLoggerOnTagSelectionEvent} from 'Widgets/modules/Shopify/helpers/logEventData'
@@ -122,7 +123,7 @@ export class OrderFooterComponent extends Component<Props, State> {
             }
 
             this.setState({
-                options: tags.map((tag) => ({label: tag, value: tag})),
+                options: getOptionsFromTags(tags),
             })
         }
     }

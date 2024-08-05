@@ -4,6 +4,7 @@ import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {ShopifyContext} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
 import useId from 'hooks/useId'
@@ -15,11 +16,9 @@ import {RootState} from 'state/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 import {ActionButtonContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
-
-import {FieldCustomization} from 'Widgets/modules/Template/types'
-import {ShopifyContext} from '../contexts/ShopifyContext'
-import {ShopifyActionType} from '../types'
-import {getLoggerOnTagSelectionEvent} from '../helpers/logEventData'
+import {getOptionsFromTags} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/utils'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import {getLoggerOnTagSelectionEvent} from 'Widgets/modules/Shopify/helpers/logEventData'
 
 type OwnProps = {
     selectedOptions: string
@@ -30,7 +29,7 @@ type SelectedValues = {
     value: string
 }
 
-export function EditableListField({
+export function EditableListWidget({
     selectedOptions,
     executeAction,
     activeCustomerId,
@@ -61,7 +60,8 @@ export function EditableListField({
 
     useMemo(() => _updateState(selectedOptions), [selectedOptions])
 
-    const notEditable = !!actionError || widgetIsEditing
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const notEditable = useMemo(() => !!actionError || widgetIsEditing, [])
 
     const _onTagsChange = (tags: SelectedValues[]) => {
         setSelectedValues(tags)
@@ -93,7 +93,7 @@ export function EditableListField({
                 // silent fail
                 return
             }
-            setOptions(tags.map((tag) => ({label: tag, value: tag})))
+            setOptions(getOptionsFromTags(tags))
         }
     }
 
@@ -189,17 +189,4 @@ const connector = connect(
     }
 )
 
-const ConnectedEditableListField = connector(EditableListField)
-
-export const editableListCustomization: FieldCustomization = {
-    dataMatcher: /(orders\.\[]\.tags$)|(customer\.tags$)/,
-    getValue: (source) =>
-        typeof source === 'string' ? (
-            <ConnectedEditableListField selectedOptions={source} />
-        ) : (
-            '-'
-        ),
-    getValueString: () => null,
-    editionHiddenFields: ['type'],
-    valueCanOverflow: true,
-}
+export default connector(EditableListWidget)
