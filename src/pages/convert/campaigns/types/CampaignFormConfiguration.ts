@@ -25,10 +25,20 @@ export type Banner = {
 
 export type WizardStepConfiguration = {
     banner?: Banner
+    isDisabled?: boolean
+}
+
+export enum Label {
+    Create = 'Create',
+    CreateAndActivate = 'CreateAndActivate',
+    Update = 'Update',
+    Duplicate = 'Duplicate',
+    Cancel = 'Cancel',
 }
 
 export type WizardConfiguration = {
     defaultStepOpened?: CampaignStepsKeys
     stepConfiguration?: Record<string, WizardStepConfiguration>
     toolbarConfiguration?: Record<string, ToolbarActionConfiguration>
+    labels?: Partial<Record<Label, string>>
 }

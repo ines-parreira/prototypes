@@ -139,6 +139,7 @@ describe('<CampaignFooter />', () => {
         it('renders', () => {
             const {getByText} = renderComponent({
                 ...defaultProps,
+                canCreateABVariants: true,
             })
 
             expect(getByText('Update Campaign')).toBeInTheDocument()
@@ -149,6 +150,7 @@ describe('<CampaignFooter />', () => {
         it('can open create a/b test info modal and create a/b test', async () => {
             const {getByText, getByRole} = renderComponent({
                 ...defaultProps,
+                canCreateABVariants: true,
             })
 
             act(() => {
@@ -169,6 +171,7 @@ describe('<CampaignFooter />', () => {
         it('can dismiss modal', async () => {
             const {queryByText, getByRole} = renderComponent({
                 ...defaultProps,
+                canCreateABVariants: true,
             })
 
             act(() => {
@@ -197,6 +200,7 @@ describe('<CampaignFooter />', () => {
 
             const {getByRole} = renderComponent({
                 ...defaultProps,
+                canCreateABVariants: true,
             })
 
             act(() => {
@@ -211,7 +215,7 @@ describe('<CampaignFooter />', () => {
         const onSave = jest.fn()
 
         it('blocks the create button when creation is disabled', () => {
-            const {getByRole} = renderComponent({
+            const {getByRole, getByText} = renderComponent({
                 ...defaultProps,
                 onSave,
                 isCreateDisabled: true,
@@ -221,7 +225,23 @@ describe('<CampaignFooter />', () => {
             expect(getByRole('button', {name: 'Create'})).toHaveAttribute(
                 'aria-disabled'
             )
+            expect(getByText('arrow_drop_down')).toBeInTheDocument()
             expect(onSave).not.toHaveBeenCalled()
+        })
+
+        it('cannot activate campaign', () => {
+            const {getByRole, queryByText} = renderComponent({
+                ...defaultProps,
+                onSave,
+                isCreateDisabled: false,
+                isUpdate: false,
+                allowActivate: false,
+            })
+
+            expect(getByRole('button', {name: 'Create'})).toHaveAttribute(
+                'aria-disabled'
+            )
+            expect(queryByText('arrow_drop_down')).not.toBeInTheDocument()
         })
 
         it('blocks creation when user manually enables button', () => {

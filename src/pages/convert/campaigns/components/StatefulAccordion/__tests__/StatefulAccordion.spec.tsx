@@ -56,6 +56,20 @@ describe('<StatefulAccordion />', () => {
         getByAltText('warning icon state')
     })
 
+    it('renders the disabled state', () => {
+        const {container} = render(
+            <Accordion>
+                <StatefulAccordion isDisabled title="Set up the basics">
+                    Lorem ipsum dolor
+                </StatefulAccordion>
+            </Accordion>
+        )
+
+        expect(
+            container.getElementsByClassName('toggleContainer')[0].className
+        ).toContain('isDisabled')
+    })
+
     it('renders only the last state', () => {
         const {rerender} = render(
             <Accordion>

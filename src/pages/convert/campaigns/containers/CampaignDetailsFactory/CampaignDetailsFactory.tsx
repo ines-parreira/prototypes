@@ -205,6 +205,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
                 isCreateDisabled={!campaignCreationAllowed}
                 integration={integration}
                 shopifyIntegration={shopify}
+                canCreateABVariants={true}
                 createCampaign={handleCreateCampaign}
                 duplicateCampaign={handleCreateDuplicate}
                 updateCampaign={handleUpdateCampaign}

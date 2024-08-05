@@ -16,6 +16,7 @@ import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
 import {ABGroupContainer} from 'pages/convert/abVariants/containers/ABGroupContainer'
 import {
     abVariantsControlVersionPath,
+    abVariantAddPath,
     abVariantEditorPath,
     abVariantsPath,
 } from 'pages/convert/abVariants/urls'
@@ -62,10 +63,13 @@ const ABGroupIndexPage = () => {
                         <ABTestSettingsPage />
                     </Route>
                     <Route exact path={abVariantsControlVersionPath}>
-                        <ABTestVariantEditPage />
+                        <ABTestVariantEditPage isControlVersion={true} />
+                    </Route>
+                    <Route exact path={abVariantAddPath}>
+                        <ABTestVariantEditPage isControlVersion={false} />
                     </Route>
                     <Route exact path={abVariantEditorPath}>
-                        <ABTestVariantEditPage />
+                        <ABTestVariantEditPage isControlVersion={false} />
                     </Route>
                 </Switch>
             </Container>

@@ -78,7 +78,7 @@ import {
 
 import css from './style.less'
 
-type Props = {
+export type Props = {
     agents: User[]
     campaign: Campaign
     wizardConfiguration?: WizardConfiguration
@@ -87,13 +87,16 @@ type Props = {
     isShopifyStore?: boolean
     isOverCampaignsLimit?: boolean
     isCreateDisabled?: boolean
+    canCreateABVariants?: boolean
     integration: Map<any, any>
     shopifyIntegration: Map<any, any>
-    createCampaign: (form: any) => Promise<unknown>
+    createCampaign?: (form: any) => Promise<unknown>
     updateCampaign: (form: any) => Promise<unknown>
     duplicateCampaign?: (form: any) => Promise<unknown>
     deleteCampaign?: () => Promise<unknown>
     header?: React.ReactNode
+    openedStep?: CampaignStepsKeys
+    allowActivate?: boolean
     backUrl: string
 }
 
@@ -106,6 +109,7 @@ export const CampaignDetailsForm = ({
     isShopifyStore = false,
     isOverCampaignsLimit = false,
     isCreateDisabled = false,
+    canCreateABVariants = false,
     integration,
     shopifyIntegration,
     createCampaign,
@@ -114,6 +118,8 @@ export const CampaignDetailsForm = ({
     deleteCampaign,
     header,
     backUrl,
+    openedStep,
+    allowActivate = true,
 }: Props) => {
     const dispatch = useAppDispatch()
 
@@ -124,12 +130,17 @@ export const CampaignDetailsForm = ({
     })
 
     const defaultOpenedStep = useMemo(() => {
+        // if initial step is predefinied, use it
+        if (openedStep) {
+            return openedStep
+        }
+
         return isEditMode
             ? CampaignStepsKeys.Audience
             : wizardConfiguration && wizardConfiguration.defaultStepOpened
             ? wizardConfiguration.defaultStepOpened
             : CampaignStepsKeys.Basics
-    }, [isEditMode, wizardConfiguration])
+    }, [isEditMode, wizardConfiguration, openedStep])
 
     const isConvertSubscriber = useIsConvertSubscriber()
     const {pristine, onChangePristine} = usePristineSteps(defaultOpenedStep)
@@ -325,6 +336,11 @@ export const CampaignDetailsForm = ({
     const handleSaveCampaign = async (activate = false) => {
         if (!isCampaignValid) return
 
+        if (!isEditMode && !createCampaign) {
+            console.error('Cannot create campaign!')
+            return
+        }
+
         setActionInProgress(isEditMode ? 'edit' : 'create')
 
         try {
@@ -343,7 +359,9 @@ export const CampaignDetailsForm = ({
             if (isEditMode) {
                 await updateCampaign(fromJS(payload))
             } else {
-                await createCampaign(fromJS(payload))
+                if (createCampaign !== undefined) {
+                    await createCampaign(fromJS(payload))
+                }
             }
         } finally {
             setActionInProgress('')
@@ -396,6 +414,15 @@ export const CampaignDetailsForm = ({
         if (step === CampaignStepsKeys.Message) {
             return campaignData.message_text !== ''
         }
+    }
+
+    const isStepDisabled = (step: CampaignStepsKeys): boolean => {
+        if (!wizardConfiguration) {
+            return false
+        }
+        return wizardConfiguration?.stepConfiguration
+            ? wizardConfiguration?.stepConfiguration[step]?.isDisabled ?? false
+            : false
     }
 
     const updateSetValidation = useCallback(
@@ -513,12 +540,18 @@ export const CampaignDetailsForm = ({
                                             isValid={isStepValid(
                                                 CampaignStepsKeys.Basics
                                             )}
+                                            isDisabled={isStepDisabled(
+                                                CampaignStepsKeys.Basics
+                                            )}
                                         />
                                         <CampaignAudienceStep
                                             count={2}
                                             key={CampaignStepsKeys.Audience}
                                             isPristine={pristine.audience}
                                             isValid={isStepValid(
+                                                CampaignStepsKeys.Audience
+                                            )}
+                                            isDisabled={isStepDisabled(
                                                 CampaignStepsKeys.Audience
                                             )}
                                             isConvertSubscriber={
@@ -537,6 +570,9 @@ export const CampaignDetailsForm = ({
                                             key={CampaignStepsKeys.Message}
                                             isPristine={pristine.message}
                                             isValid={isStepValid(
+                                                CampaignStepsKeys.Message
+                                            )}
+                                            isDisabled={isStepDisabled(
                                                 CampaignStepsKeys.Message
                                             )}
                                             isConvertSubscriber={
@@ -561,6 +597,9 @@ export const CampaignDetailsForm = ({
                                             isOverCampaignsLimit={
                                                 isOverCampaignsLimit
                                             }
+                                            canCreateABVariants={
+                                                canCreateABVariants
+                                            }
                                             isCreateDisabled={isCreateDisabled}
                                             isUpdate={isEditMode}
                                             onSave={handleSaveCampaign}
@@ -575,6 +614,7 @@ export const CampaignDetailsForm = ({
                                                     ? handleDuplicateCampaign
                                                     : undefined
                                             }
+                                            allowActivate={allowActivate}
                                         />
                                     </div>
                                 </div>

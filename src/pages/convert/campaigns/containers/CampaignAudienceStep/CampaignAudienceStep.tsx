@@ -30,6 +30,7 @@ type Props = {
     count?: number
     isPristine?: boolean
     isValid?: boolean
+    isDisabled?: boolean
     isConvertSubscriber?: boolean
     isShopifyStore?: boolean
     isLightCampaign?: boolean
@@ -41,6 +42,7 @@ export const CampaignAudienceStep = ({
     count,
     isPristine = true,
     isValid = false,
+    isDisabled = false,
     isConvertSubscriber,
     isShopifyStore,
     isLightCampaign,
@@ -58,7 +60,13 @@ export const CampaignAudienceStep = ({
     const {isEditMode, getStepConfiguration} = useCampaignFormContext()
     const campaignWithNoReply = campaign.meta?.noReply ?? false
     const campaignDelay = campaign.meta?.delay ?? 0
-    const stateProps = useStepState({count, isPristine, isValid, isEditMode})
+    const stateProps = useStepState({
+        count,
+        isPristine,
+        isValid,
+        isEditMode,
+        isDisabled,
+    })
     const stepConfiguration = useMemo(() => {
         return getStepConfiguration(CampaignStepsKeys.Audience)
     }, [getStepConfiguration])

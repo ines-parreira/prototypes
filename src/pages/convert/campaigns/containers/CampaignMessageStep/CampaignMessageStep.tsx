@@ -20,6 +20,7 @@ type Props = {
     count?: number
     isPristine?: boolean
     isValid?: boolean
+    isDisabled?: boolean
     isConvertSubscriber?: boolean
     showContentWarning?: boolean
     onDeleteAttachment: (index: number) => void
@@ -30,13 +31,20 @@ export const CampaignMessageStep = ({
     count,
     isPristine = true,
     isValid = false,
+    isDisabled = false,
     isConvertSubscriber = false,
     showContentWarning = false,
     onDeleteAttachment,
 }: Props) => {
     const {campaign, updateCampaign} = useCampaignDetailsContext()
     const {isEditMode} = useCampaignFormContext()
-    const stateProps = useStepState({count, isPristine, isValid, isEditMode})
+    const stateProps = useStepState({
+        count,
+        isPristine,
+        isValid,
+        isEditMode,
+        isDisabled,
+    })
 
     const [richArea, setRichArea] = useState<RichField | null>(null)
 

@@ -1,10 +1,11 @@
-export const INTEGRATION_ID_PARAM = 'intergrationId'
+export const INTEGRATION_ID_PARAM = 'id'
 export const CAMPAIGN_ID_PARAM = 'campaignId'
-export const VARIANT_ID_PARAM = 'variantId'
+export const VARIANT_ID_PARAM = 'abVariantId'
 
 export const abVariantsPath = `/app/convert/:${INTEGRATION_ID_PARAM}/campaigns/:${CAMPAIGN_ID_PARAM}/ab-variants`
 export const abVariantsControlVersionPath = `${abVariantsPath}/control-variant`
 export const abVariantEditorPath = `${abVariantsPath}/:${VARIANT_ID_PARAM}`
+export const abVariantAddPath = `${abVariantsPath}/new`
 
 export const abVariantsUrl = (
     integrationId: string,
@@ -26,4 +27,11 @@ export const abVariantEditorUrl = (
     variantId: string
 ): string => {
     return `${abVariantsUrl(integrationId, campaignId)}/${variantId}`
+}
+
+export const abVariantAddUrl = (
+    integrationId: string,
+    campaignId: string
+): string => {
+    return `${abVariantsUrl(integrationId, campaignId)}/add`
 }

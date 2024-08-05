@@ -6,6 +6,7 @@ import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 
 import checkIcon from 'assets/img/icons/check-circle.svg'
+import checkIconDisabled from 'assets/img/icons/check-circle-disabled.svg'
 import warningIcon from 'assets/img/icons/warning-big.svg'
 
 import css from './style.less'
@@ -16,6 +17,7 @@ type Props = {
     id?: string
     isValid?: boolean
     isInvalid?: boolean
+    isDisabled?: boolean
     title: string
 }
 
@@ -25,6 +27,7 @@ export const StatefulAccordion = ({
     id,
     isValid,
     isInvalid,
+    isDisabled,
     title,
 }: Props) => {
     let state
@@ -49,8 +52,18 @@ export const StatefulAccordion = ({
         )
     }
 
+    if (isDisabled) {
+        state = (
+            <img
+                className={css.state}
+                src={checkIconDisabled}
+                alt="disabled icon state"
+            />
+        )
+    }
+
     return (
-        <AccordionItem id={id}>
+        <AccordionItem id={id} isDisabled={isDisabled}>
             <AccordionHeader>
                 <div className={css.header}>
                     {state}

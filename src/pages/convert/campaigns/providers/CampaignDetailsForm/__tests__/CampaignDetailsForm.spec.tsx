@@ -1,5 +1,6 @@
 import React from 'react'
-import {RenderResult, render, screen} from '@testing-library/react'
+import {RenderResult, render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 
@@ -146,6 +147,36 @@ describe('<CampaignDetailsForm />', () => {
             expect(
                 screen.getByRole('button', {name: 'Create'})
             ).toHaveAttribute('aria-disabled', 'false')
+        })
+
+        it('console.error when createCampaign is not defined', async () => {
+            const consoleErrorMock = jest.spyOn(console, 'error')
+
+            result.rerender(
+                <Provider store={mockStore(defaultState)}>
+                    <CampaignDetailsForm
+                        {...defaultProps}
+                        campaign={toJS(campaign)}
+                        isEditMode={false}
+                        createCampaign={undefined}
+                    />
+                </Provider>
+            )
+
+            expect(
+                screen.getByRole('button', {name: 'Create'})
+            ).toHaveAttribute('aria-disabled', 'false')
+
+            userEvent.click(screen.getByRole('button', {name: 'Create'}))
+
+            await waitFor(() => {
+                const activateButton = screen.getByText('Create & Activate')
+                activateButton.click()
+
+                expect(consoleErrorMock).toBeCalledWith(
+                    'Cannot create campaign!'
+                )
+            })
         })
     })
 

@@ -27,18 +27,26 @@ type Props = {
     count?: number
     isPristine?: boolean
     isValid?: boolean
+    isDisabled?: boolean
 }
 
 export const CampaignBasicStep = ({
     count,
     isPristine = true,
     isValid = false,
+    isDisabled = false,
 }: Props) => {
     const {isEditMode} = useCampaignFormContext()
     const {campaign, updateCampaign} = useCampaignDetailsContext()
     const {chatIntegration} = useIntegrationContext()
 
-    const stateProps = useStepState({count, isPristine, isValid, isEditMode})
+    const stateProps = useStepState({
+        count,
+        isPristine,
+        isValid,
+        isEditMode,
+        isDisabled,
+    })
 
     const handleUpdateName = (value: string) => updateCampaign('name', value)
 
