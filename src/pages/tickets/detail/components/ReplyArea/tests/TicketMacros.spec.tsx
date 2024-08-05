@@ -12,11 +12,11 @@ import {RootState} from 'state/types'
 import {TicketMacrosContainer} from '../TicketMacros'
 
 jest.mock(
-    '../../../../common/macros/components/MacroNoResults',
+    'pages/tickets/common/macros/components/MacroNoResults',
     () => () => 'No macros found'
 )
 jest.mock(
-    '../../../../common/macros/components/MacroList',
+    'pages/tickets/common/macros/components/MacroList',
     () => () => 'Macro list'
 )
 
@@ -97,6 +97,6 @@ describe('<TicketMacros />', () => {
             </Provider>
         )
 
-        expect(queryByText('settings')).toBeNull()
+        expect(queryByText('settings')).not.toBeInTheDocument()
     })
 })

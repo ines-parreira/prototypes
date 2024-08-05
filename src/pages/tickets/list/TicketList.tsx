@@ -1,7 +1,15 @@
 import classnames from 'classnames'
 import decorateComponentWithProps from 'decorate-component-with-props'
-import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
+import React, {
+    ComponentProps,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 import {useLocation, useParams} from 'react-router-dom'
+import {List} from 'immutable'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {SearchRankSource} from 'hooks/useSearchRankScenario'
@@ -14,7 +22,9 @@ import {isCreationUrl, isSearchUrl} from 'pages/common/utils/url'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import {fetchTags} from 'state/tags/actions'
 import {getTickets} from 'state/tickets/selectors'
+import {updateSelectedItemsIds} from 'state/views/actions'
 import {
+    areAllActiveViewItemsSelected,
     getActiveView,
     getSelectedItemsIds,
     hasActiveView as getHasActiveView,
@@ -31,6 +41,7 @@ const TicketList = () => {
     const hasActiveView = useAppSelector(getHasActiveView)
     const selectedItemsIds = useAppSelector(getSelectedItemsIds)
     const tickets = useAppSelector(getTickets)
+    const allViewItemsSelected = useAppSelector(areAllActiveViewItemsSelected)
 
     const [isMacroModalOpen, setIsMacroModalOpen] = useState(false)
 
@@ -44,6 +55,13 @@ const TicketList = () => {
     const isEditMode = useMemo(
         () => activeView.get('editMode') as boolean,
         [activeView]
+    )
+
+    const onComplete = useCallback(
+        (ids: List<any>) => {
+            dispatch(updateSelectedItemsIds(ids))
+        },
+        [dispatch]
     )
 
     useEffect(() => {
@@ -116,7 +134,9 @@ const TicketList = () => {
                     disableExternalActions
                     selectedItemsIds={selectedItemsIds}
                     closeModal={() => setIsMacroModalOpen(false)}
+                    allViewItemsSelected={allViewItemsSelected}
                     selectionMode
+                    onComplete={onComplete}
                 />
             )}
         </div>

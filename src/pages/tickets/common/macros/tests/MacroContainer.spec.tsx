@@ -28,6 +28,7 @@ describe('<MacroContainer />', () => {
                     closeModal={jest.fn()}
                     isCreatingMacro={false}
                     toggleCreateMacro={jest.fn()}
+                    onComplete={jest.fn()}
                 />
             </Provider>
         )

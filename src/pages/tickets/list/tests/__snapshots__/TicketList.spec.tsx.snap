@@ -24,11 +24,10 @@ exports[`<TicketList /> should display with default props 1`] = `
     </div>
     <div>
       ActionsComponent:
-      function _class() {
-      _classCallCheck(this, _class);
-
-      return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
-    }
+      Props:
+      <div>
+        openMacroModal
+      </div>
     </div>
     <div>
       <div>
@@ -66,11 +65,10 @@ exports[`<TicketList /> should render SearchRankProvider on search url 1`] = `
       </div>
       <div>
         ActionsComponent:
-        function _class() {
-      _classCallCheck(this, _class);
-
-      return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
-    }
+        Props:
+        <div>
+          openMacroModal
+        </div>
       </div>
       <div>
         <div>

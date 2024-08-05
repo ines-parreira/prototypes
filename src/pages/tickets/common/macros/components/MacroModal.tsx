@@ -21,10 +21,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import {DEFAULT_ACTIONS} from 'config'
 import shortcutManager from 'services/shortcutManager/index'
 import {createJob as createTicketJob} from 'state/tickets/actions'
-import {
-    createJob as createViewJob,
-    updateSelectedItemsIds,
-} from 'state/views/actions'
+import {createJob as createViewJob} from 'state/views/actions'
 import {JobParams, JobType} from 'models/job/types'
 import {RootState} from 'state/types'
 import {makeGetViewCount} from 'state/views/selectors'
@@ -36,27 +33,28 @@ import MacroEdit from './MacroEdit'
 import MacroModalList from './MacroModalList'
 
 type Props = {
-    searchParams: FetchMacrosOptions
-    searchResults: List<any>
-    agents: List<any>
-    handleClickItem: (id: number) => void
-    disableExternalActions: boolean
-    selectionMode: boolean
-    isCreatingMacro?: boolean
-    closeModal: () => void
-    updateMacros: (macro: Macro) => void
     activeView: Map<any, any>
+    agents: List<any>
+    allViewItemsSelected?: boolean
+    closeModal: () => void
     currentMacro: Map<any, any>
-    toggleCreateMacro?: (toggle?: boolean) => void
-    onSearch: (searchParams: FetchMacrosOptions) => void
-    firstLoad: boolean
-    selectedItemsIds: List<any>
-    allViewItemsSelected: boolean
+    disableExternalActions: boolean
     fetchMacros: (
         opts?: FetchMacrosOptions,
         retainPreviousResults?: boolean
     ) => Promise<Macro[] | void>
+    firstLoad: boolean
+    handleClickItem: (id: number) => void
     hasDataToLoad?: boolean
+    isCreatingMacro?: boolean
+    onComplete?: (ids: List<any>) => void
+    onSearch: (searchParams: FetchMacrosOptions) => void
+    searchParams: FetchMacrosOptions
+    searchResults: List<any>
+    selectedItemsIds: List<any>
+    selectionMode: boolean
+    toggleCreateMacro?: (toggle?: boolean) => void
+    updateMacros: (macro: Macro) => void
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -141,7 +139,7 @@ export class MacroModalContainer extends Component<Props, State> {
             createTicketJob,
             createViewJob,
             selectedItemsIds,
-            updateSelectedItemsIds,
+            onComplete,
         } = this.props
         const job = allViewItemsSelected
             ? createViewJob(activeView, JobType.ApplyMacro, jobPartialParams)
@@ -153,7 +151,7 @@ export class MacroModalContainer extends Component<Props, State> {
 
         void job
             .then(() => {
-                updateSelectedItemsIds(fromJS([]))
+                onComplete?.(fromJS([]))
             })
             .catch()
     }
@@ -318,8 +316,6 @@ export class MacroModalContainer extends Component<Props, State> {
         const {
             searchParams,
             searchResults,
-            selectionMode,
-            selectedItemsIds,
             disableExternalActions,
             closeModal,
             onSearch,
@@ -329,8 +325,10 @@ export class MacroModalContainer extends Component<Props, State> {
             firstLoad,
             activeView,
             getViewCount,
-            allViewItemsSelected,
             hasDataToLoad,
+            allViewItemsSelected,
+            selectedItemsIds,
+            selectionMode,
         } = this.props
 
         const noResults = searchResults.isEmpty() && !isCreatingMacro
@@ -537,7 +535,6 @@ const connector = connect(
     {
         createTicketJob,
         createViewJob,
-        updateSelectedItemsIds,
         createMacro,
         updateMacro,
         deleteMacro,

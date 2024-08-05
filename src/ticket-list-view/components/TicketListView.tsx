@@ -32,7 +32,7 @@ import useTickets from '../hooks/useTickets'
 import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoView'
 import {TicketSummary} from '../types'
 
-import BulkActions from './BulkActions'
+import BulkActions from './bulk-actions/BulkActions'
 import SortOrderDropdown from './SortOrderDropdown'
 import Ticket from './Ticket'
 import TicketListInfo from './TicketListInfo'
@@ -248,7 +248,7 @@ export default function TicketListView({
                     </div>
                     <BulkActions
                         selectedTickets={selectedTickets}
-                        clearSelection={clear}
+                        onComplete={clear}
                     />
                 </div>
             )}

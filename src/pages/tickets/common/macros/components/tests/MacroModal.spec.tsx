@@ -1,19 +1,28 @@
 import React, {ComponentProps, ReactNode} from 'react'
-import {render} from '@testing-library/react'
+import {fireEvent, render, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS, List} from 'immutable'
 import MockDate from 'mockdate'
+import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import {createJob} from 'state/tickets/actions'
 import {RootState} from 'state/types'
+import {assumeMock} from 'utils/testing'
 
 import MacroModal from '../MacroModal'
 
 const mockStore = configureMockStore([thunk])
 
 jest.mock('lodash/uniqueId', () => () => '42')
+
+jest.mock('state/tickets/actions')
+const mockCreateJob = assumeMock(createJob)
+mockCreateJob.mockImplementation(
+    () => () => Promise.resolve(null as unknown as UpsertNotificationAction)
+)
 
 jest.mock('../MacroModalList', () => () => <div>MacroModalList</div>)
 jest.mock('../MacroEdit', () => () => <div>MacroEdit</div>)
@@ -44,6 +53,23 @@ describe('<MacroModal />', () => {
         },
     ])
 
+    const props = {
+        agents: fromJS([]),
+        closeModal: jest.fn(),
+        currentMacro: macros.first(),
+        disableExternalActions: false,
+        fetchMacros: jest.fn(),
+        firstLoad: false,
+        handleClickItem: jest.fn(),
+        onComplete: jest.fn(),
+        onSearch: jest.fn(),
+        searchParams: {},
+        searchResults: macros,
+        selectedItemsIds: fromJS([]),
+        selectionMode: false,
+        updateMacros: jest.fn(),
+    }
+
     beforeEach(() => {
         MockDate.set(date)
     })
@@ -55,25 +81,29 @@ describe('<MacroModal />', () => {
     it('should render MacroModal', () => {
         const {container} = render(
             <Provider store={mockStore(defaultStore)}>
-                <MacroModal
-                    closeModal={jest.fn()}
-                    searchParams={{}}
-                    searchResults={macros}
-                    fetchMacros={jest.fn()}
-                    firstLoad={false}
-                    currentMacro={macros.first()}
-                    agents={fromJS([])}
-                    disableExternalActions={false}
-                    selectionMode={false}
-                    selectedItemsIds={fromJS([])}
-                    handleClickItem={jest.fn()}
-                    updateMacros={jest.fn()}
-                    onSearch={jest.fn()}
-                    isCreatingMacro={false}
-                    allViewItemsSelected={false}
-                />
+                <MacroModal {...props} />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should update selected items after job completion', async () => {
+        const {getByText} = render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroModal
+                    {...props}
+                    selectionMode
+                    selectedItemsIds={fromJS([1, 2])}
+                />
+            </Provider>
+        )
+
+        fireEvent.click(getByText(/Apply macro to 2/))
+
+        await waitFor(() => {
+            expect(createJob).toHaveBeenCalled()
+            expect(props.closeModal).toHaveBeenCalled()
+            expect(props.onComplete).toHaveBeenCalledWith(fromJS([]))
+        })
     })
 })

@@ -28,10 +28,6 @@ const useFlagMock = useFlag as jest.Mock
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
 
-jest.mock('pages/tickets/common/macros/MacroContainer', () => () => (
-    <div>MacroContainer</div>
-))
-
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const mockUseSplitTicketViewMock = useSplitTicketView as jest.Mock
 
@@ -45,7 +41,7 @@ jest.mock('../Ticket', () => jest.fn())
 const TicketMock = Ticket as jest.Mock
 
 jest.mock('../InvalidFiltersAction', () => () => <div>Fix filters</div>)
-jest.mock('../BulkActions', () => () => <div>BulkActions</div>)
+jest.mock('../bulk-actions/BulkActions', () => () => <div>BulkActions</div>)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -62,17 +58,17 @@ const defaultState: Partial<RootState> = {
 const store = mockStore(defaultState)
 
 describe('<TicketListView />', () => {
-    let loadMore: jest.Mock
-    let pauseUpdates: jest.Mock
-    let resumeUpdates: jest.Mock
-    let setElement: jest.Mock
-    let setIsEnabled: jest.Mock
-    let setShouldRedirectToSplitView: jest.Mock
-    let dispatch: jest.Mock
+    const loadMore = jest.fn()
+    const pauseUpdates = jest.fn()
+    const resumeUpdates = jest.fn()
+    const setElement = jest.fn()
+    const setIsEnabled = jest.fn()
+    const setShouldRedirectToSplitView = jest.fn()
+    const dispatch = jest.fn()
+    const clearMock = jest.fn()
 
     beforeEach(() => {
         useFlagMock.mockReturnValue(false)
-        dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
         useSelectionMock.mockReturnValue({
             hasSelectedAll: false,
@@ -124,10 +120,6 @@ describe('<TicketListView />', () => {
         TicketMock.mockImplementation(({ticket}: {ticket: TicketPartial}) => {
             return <p>{ticket.id}</p>
         })
-        loadMore = jest.fn()
-        pauseUpdates = jest.fn()
-        resumeUpdates = jest.fn()
-        setElement = jest.fn()
         useTicketsMock.mockReturnValue({
             loadMore,
             pauseUpdates,
@@ -139,8 +131,6 @@ describe('<TicketListView />', () => {
             ticketIds: {current: [152]},
             initialLoaded: true,
         })
-        setIsEnabled = jest.fn()
-        setShouldRedirectToSplitView = jest.fn()
         mockUseSplitTicketViewMock.mockReturnValue({
             isEnabled: false,
             setIsEnabled,
@@ -150,19 +140,15 @@ describe('<TicketListView />', () => {
             hasSelectedAll: false,
             onSelect: jest.fn(),
             onSelectAll: jest.fn(),
-            selectedTickets: {},
-            clear: jest.fn(),
+            selectedTickets: {
+                1: true,
+                2: false,
+            },
+            clear: clearMock,
         })
     })
 
     it('should pause updates when there are selected tickets', () => {
-        useSelectionMock.mockReturnValue({
-            hasSelectedAll: false,
-            onSelect: jest.fn(),
-            onSelectAll: jest.fn(),
-            selectedTickets: {1: true},
-            clear: jest.fn(),
-        })
         render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
@@ -173,6 +159,13 @@ describe('<TicketListView />', () => {
     })
 
     it('should resume updates when there are no selected tickets', () => {
+        useSelectionMock.mockReturnValue({
+            hasSelectedAll: false,
+            onSelect: jest.fn(),
+            onSelectAll: jest.fn(),
+            selectedTickets: {},
+            clear: jest.fn(),
+        })
         render(
             <Provider store={store}>
                 <TicketListView viewId={123} />

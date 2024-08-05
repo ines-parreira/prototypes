@@ -18,15 +18,16 @@ import {getHumanAgents} from 'state/agents/selectors'
 import {fetchMacros} from 'state/macro/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {areAllActiveViewItemsSelected} from 'state/views/selectors'
 
 import MacroModal from './components/MacroModal'
 import {getDefaultSelectedMacroId, getCurrentMacro} from './utils'
 
 type Props = {
     activeView?: Map<any, any>
+    allViewItemsSelected?: boolean
     closeModal: () => void
     isCreatingMacro?: boolean
+    onComplete?: (ids: List<any>) => void
     toggleCreateMacro?: (toggle?: boolean) => void
     // macro to select when modal opens, selects first macro of list otherwise
     selectedMacro?: Map<any, any>
@@ -37,9 +38,11 @@ type Props = {
 
 const MacroContainer = ({
     activeView = fromJS({}),
+    allViewItemsSelected,
     closeModal,
     disableExternalActions = false,
     isCreatingMacro,
+    onComplete,
     selectedMacro = fromJS({}),
     selectedItemsIds = fromJS([]),
     selectionMode,
@@ -48,7 +51,6 @@ const MacroContainer = ({
     const dispatch = useAppDispatch()
 
     const agents = useAppSelector(getHumanAgents)
-    const allViewItemsSelected = useAppSelector(areAllActiveViewItemsSelected)
 
     const [searchParams, setSearchParams] = useState<FetchMacrosOptions>({})
     const [selectedMacroId, setSelectedMacroId] = useState<number | null>(null)
@@ -185,6 +187,7 @@ const MacroContainer = ({
             toggleCreateMacro={toggleCreateMacro}
             allViewItemsSelected={allViewItemsSelected}
             hasDataToLoad={!isFetchPending && !!meta?.next_cursor}
+            onComplete={onComplete}
         />
     )
 }

@@ -4,17 +4,41 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {EntityType} from 'models/view/types'
+import decorateComponentWithProps from 'decorate-component-with-props'
 
+import {fireEvent} from '@testing-library/react'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {view as fixtureView} from 'fixtures/views'
-import * as ViewTable from 'pages/common/components/ViewTable/ViewTable'
+import {EntityType} from 'models/view/types'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
+import * as ViewTable from 'pages/common/components/ViewTable/ViewTable'
+import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import {fetchTags} from 'state/tags/actions'
+import {updateSelectedItemsIds} from 'state/views/actions'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+import TicketList from 'pages/tickets/list/TicketList'
 
-import {renderWithRouter} from 'utils/testing'
+jest.mock('decorate-component-with-props')
+const decorateComponentWithPropsMock = assumeMock(decorateComponentWithProps)
+decorateComponentWithPropsMock.mockImplementation((_component, props) => () => (
+    <>
+        Props:
+        {Object.entries(props as {openMacroModal: () => void}).map(
+            ([propName, value]) => (
+                <div key={propName} onClick={value}>
+                    {propName}
+                </div>
+            )
+        )}
+    </>
+))
+
+jest.mock('hooks/useAppDispatch')
+const useAppDispatchMock = useAppDispatch as jest.Mock
+const dispatch = jest.fn()
+useAppDispatchMock.mockReturnValue(dispatch)
 
 jest.mock('state/tags/actions')
-import TicketList from 'pages/tickets/list/TicketList'
 
 const fetchTagsMock = (
     fetchTags as jest.MockedFunction<typeof fetchTags>
@@ -25,6 +49,13 @@ jest.mock(
     () =>
         ({children}: {children: ReactNode}) =>
             <div data-testid="search-rank-scenario-provider">{children}</div>
+)
+const mockItemsIds = fromJS([111])
+jest.mock(
+    'pages/tickets/common/macros/MacroContainer',
+    () =>
+        ({onComplete}: ComponentProps<typeof MacroContainer>) =>
+            <div onClick={() => onComplete?.(mockItemsIds)}>MacroContainer</div>
 )
 
 const mockHistoryPush = jest.fn()
@@ -55,6 +86,7 @@ const store = mockStore({
 
 jest.mock('pages/common/components/CreateTicket/CreateTicketButton')
 const MockCreateTicketButton = CreateTicketButton as jest.Mock
+MockCreateTicketButton.mockImplementation(() => <div>CreateTicketButton</div>)
 
 describe('<TicketList />', () => {
     beforeEach(() => {
@@ -76,16 +108,13 @@ describe('<TicketList />', () => {
                         <div>urlViewId: {JSON.stringify(urlViewId)}</div>
                         <div>
                             ActionsComponent:
-                            {ActionsComponent && ActionsComponent.toString()}
+                            {ActionsComponent && <ActionsComponent />}
                         </div>
                         <div>{viewButtons}</div>
                     </div>
                 )
             }
         )
-        MockCreateTicketButton.mockImplementation(() => (
-            <div>CreateTicketButton</div>
-        ))
     })
 
     it('should display with default props', () => {
@@ -248,6 +277,20 @@ describe('<TicketList />', () => {
                 type: EntityType.Ticket,
             }),
             {}
+        )
+    })
+
+    it('should trigger update of selected items ids', () => {
+        const {getByText} = renderWithRouter(
+            <Provider store={store}>
+                <TicketList />
+            </Provider>
+        )
+
+        fireEvent.click(getByText('openMacroModal'))
+        fireEvent.click(getByText('MacroContainer'))
+        expect(dispatch).toHaveBeenCalledWith(
+            updateSelectedItemsIds(mockItemsIds)
         )
     })
 })
