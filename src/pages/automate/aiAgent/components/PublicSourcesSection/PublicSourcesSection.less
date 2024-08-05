@@ -9,7 +9,9 @@
     }
 
     .title {
-        .body-semibold();
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         margin-bottom: @layout-spacing-xxs;
     }
 
@@ -20,5 +22,11 @@
         display: flex;
         flex-direction: column;
         gap: @layout-spacing-xs;
+    }
+
+    .icon {
+        i {
+            color: var(--neutral-grey-5);
+        }
     }
 }

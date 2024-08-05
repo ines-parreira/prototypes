@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import {usePublicResourceMutation} from '../../hooks/usePublicResourcesMutation'
 import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
 import css from './PublicSourcesSection.less'
@@ -125,13 +126,24 @@ export const PublicSourcesSection = ({
     return (
         <div className={css.container}>
             <div>
-                <h3 className={css.title}>Public URL sources</h3>
+                <Label className={css.title}>
+                    Public URL sources
+                    <IconTooltip
+                        className={css.icon}
+                        tooltipProps={{
+                            placement: 'top-start',
+                        }}
+                    >
+                        Example sources: "<u>https://yourstore.com/faqs</u>" or
+                        "<u>https://yourstore.com/return-policy</u>". Please
+                        note that image, tables and video content will be
+                        ignored.
+                    </IconTooltip>
+                </Label>
                 <div>
-                    Add URLs to specific web pages that AI Agent should
-                    reference to answer shopper questions, for example
-                    "https://yourstore.com/faqs" and
-                    "https://yourstore.com/return-policy". Image and video
-                    content is ignored.
+                    Add external URLs for AI Agent to reference. Links to your
+                    Gorgias Help Center or main domain are not accepted, as AI
+                    Agent needs specific pages to provide accurate answers.
                 </div>
             </div>
 

@@ -108,7 +108,7 @@ export const PublicSourcesItem = ({
                 value={value}
                 isDisabled={isEditingDisabled}
                 onChange={handleChange}
-                placeholder="URL"
+                placeholder="https://yourstore.com/faqs"
                 hasError={source.status === 'error' || !!inputError}
                 aria-label="Public URL"
                 error={inputError}
