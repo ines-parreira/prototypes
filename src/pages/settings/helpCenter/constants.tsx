@@ -43,9 +43,9 @@ export const HELP_CENTER_DOMAIN = isProduction()
     ? '.gorgias.rehab'
     : '.gorgias.docker:4000'
 
-export const HELP_CENTER_MAX_ARTICLES = 1000
+export const HELP_CENTER_MAX_ARTICLES = 1500
 
-export const HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD = 990
+export const HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD = 1490
 
 export const HELP_CENTER_MAX_CREATION = 200
 
