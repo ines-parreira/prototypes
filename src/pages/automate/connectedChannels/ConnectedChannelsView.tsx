@@ -11,6 +11,7 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import {AVAILABLE_CHANNELS, CHANNELS} from '../common/components/constants'
 import {ConnectedChannelsChatView} from './components/ConnectedChannelsChatView'
 import css from './ConnectedChannelsView.less'
+import {ConnectedChannelsHelpCenterView} from './components/ConnectedChannelsHelpCenterView'
 
 export const ConnectedChannelsView = () => {
     const {shopType, shopName} = useParams<{
@@ -62,7 +63,7 @@ export const ConnectedChannelsView = () => {
                 />
                 <Route
                     path={`${path}/help-center`}
-                    component={() => <>Help Center</>}
+                    component={() => <ConnectedChannelsHelpCenterView />}
                     exact
                 />
                 <Route

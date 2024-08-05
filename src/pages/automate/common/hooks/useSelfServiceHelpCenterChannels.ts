@@ -1,10 +1,8 @@
 import {useMemo} from 'react'
-
-import useAppSelector from 'hooks/useAppSelector'
-import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
 import {IntegrationType} from 'models/integration/constants'
 import {HelpCenter} from 'models/helpCenter/types'
 import {TicketChannel} from 'business/types/ticket'
+import {useGetHelpCenterList} from 'models/helpCenter/queries'
 
 export type SelfServiceHelpCenterChannel = {
     type: TicketChannel.HelpCenter
@@ -15,20 +13,24 @@ const useSelfServiceHelpCenterChannels = (
     shopType: string,
     shopName: string
 ) => {
-    const helpCenters = useAppSelector(getHelpCenterFAQList)
+    const {data: helpCenters} = useGetHelpCenterList({
+        shop_name: shopName,
+    })
 
     return useMemo<SelfServiceHelpCenterChannel[]>(() => {
         if (shopType !== IntegrationType.Shopify) {
             return []
         }
 
-        return helpCenters
-            .filter((helpCenter) => helpCenter.shop_name === shopName)
-            .map((helpCenter) => ({
-                type: TicketChannel.HelpCenter,
-                value: helpCenter,
-            }))
-    }, [helpCenters, shopType, shopName])
+        return (
+            helpCenters?.data.data
+                .filter((helpCenter) => helpCenter.shop_name === shopName)
+                .map((helpCenter) => ({
+                    type: TicketChannel.HelpCenter,
+                    value: helpCenter,
+                })) ?? []
+        )
+    }, [helpCenters, shopName, shopType])
 }
 
 export default useSelfServiceHelpCenterChannels

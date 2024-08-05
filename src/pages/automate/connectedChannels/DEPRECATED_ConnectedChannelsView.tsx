@@ -160,6 +160,7 @@ const DEPRECATED_ConnectedChannelsView = () => {
     const hasHelpCenterChannel = channels.some(
         (channel) => channel.type === TicketChannel.HelpCenter
     )
+
     const hasContactFormChannel = channels.some(
         (channel) => channel.type === TicketChannel.ContactForm
     )

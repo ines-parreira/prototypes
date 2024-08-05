@@ -254,7 +254,6 @@ describe('<TrainMyAiView />', () => {
             },
             isFetchPending: false,
             isUpdatePending: false,
-            handleChatsApplicationAutomationSettingsFetch: jest.fn(),
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
 
@@ -338,7 +337,6 @@ describe('<TrainMyAiView />', () => {
             },
             isFetchPending: false,
             isUpdatePending: false,
-            handleChatsApplicationAutomationSettingsFetch: jest.fn(),
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
 
@@ -423,7 +421,6 @@ describe('<TrainMyAiView />', () => {
             },
             isFetchPending: false,
             isUpdatePending: false,
-            handleChatsApplicationAutomationSettingsFetch: jest.fn(),
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
 
@@ -492,7 +489,6 @@ describe('<TrainMyAiView />', () => {
             },
             isFetchPending: false,
             isUpdatePending: false,
-            handleChatsApplicationAutomationSettingsFetch: jest.fn(),
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
 
@@ -559,7 +555,6 @@ describe('<TrainMyAiView />', () => {
             },
             isFetchPending: false,
             isUpdatePending: false,
-            handleChatsApplicationAutomationSettingsFetch: jest.fn(),
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
 
@@ -700,7 +695,6 @@ describe('<TrainMyAiView />', () => {
             },
             isFetchPending: false,
             isUpdatePending: false,
-            handleChatsApplicationAutomationSettingsFetch: jest.fn(),
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
 
@@ -801,7 +795,6 @@ describe('<TrainMyAiView />', () => {
             },
             isFetchPending: false,
             isUpdatePending: false,
-            handleChatsApplicationAutomationSettingsFetch: jest.fn(),
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
 
@@ -911,7 +904,6 @@ describe('<TrainMyAiView />', () => {
             },
             isFetchPending: false,
             isUpdatePending: false,
-            handleChatsApplicationAutomationSettingsFetch: jest.fn(),
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
 
@@ -1022,7 +1014,6 @@ describe('<TrainMyAiView />', () => {
             },
             isFetchPending: false,
             isUpdatePending: false,
-            handleChatsApplicationAutomationSettingsFetch: jest.fn(),
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
 
@@ -1124,7 +1115,6 @@ describe('<TrainMyAiView />', () => {
             },
             isFetchPending: false,
             isUpdatePending: false,
-            handleChatsApplicationAutomationSettingsFetch: jest.fn(),
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
 

@@ -1,12 +1,7 @@
-import {useEffect} from 'react'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {
-    fetchChatsApplicationAutomationSettings,
-    upsertChatApplicationAutomationSettings,
-} from 'models/chatApplicationAutomationSettings/resources'
+import {upsertChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import {
     chatApplicationAutomationSettingsUpdated,
@@ -15,6 +10,7 @@ import {
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
+import {useGetChatsApplicationAutomationSettings} from 'models/automation/queries'
 
 const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
     const dispatch = useAppDispatch()
@@ -23,25 +19,28 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
         getChatsApplicationAutomationSettings
     )
 
-    const [
-        {loading: isFetchPending},
-        handleChatsApplicationAutomationSettingsFetch,
-    ] = useAsyncFn(async (applicationsIds: string[]) => {
-        try {
-            const res = await fetchChatsApplicationAutomationSettings(
-                applicationsIds
-            )
-
-            void dispatch(chatsApplicationAutomationSettingsFetched(res))
-        } catch (error) {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch',
-                    status: NotificationStatus.Error,
-                })
-            )
+    const {isLoading} = useGetChatsApplicationAutomationSettings(
+        applicationsIds,
+        {
+            enabled: Boolean(applicationsIds.length),
+            onSettled: (data) => {
+                if (data) {
+                    void dispatch(
+                        chatsApplicationAutomationSettingsFetched(data)
+                    )
+                    return data
+                }
+            },
+            onError: () => {
+                void dispatch(
+                    notify({
+                        message: 'Failed to fetch',
+                        status: NotificationStatus.Error,
+                    })
+                )
+            },
         }
-    }, [])
+    )
 
     const [
         {loading: isUpdatePending},
@@ -88,25 +87,10 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
         []
     )
 
-    useEffect(() => {
-        const valuesMissing = applicationsIds.filter(
-            (id) => !(id in applicationsAutomationSettings)
-        )
-
-        if (valuesMissing.length) {
-            void handleChatsApplicationAutomationSettingsFetch(valuesMissing)
-        }
-    }, [
-        applicationsIds,
-        applicationsAutomationSettings,
-        handleChatsApplicationAutomationSettingsFetch,
-    ])
-
     return {
-        isFetchPending,
         isUpdatePending,
+        isFetchPending: isLoading,
         applicationsAutomationSettings,
-        handleChatsApplicationAutomationSettingsFetch,
         handleChatApplicationAutomationSettingsUpdate,
     }
 }

@@ -42,6 +42,7 @@ const ConnectedChannelsPreview = ({
     const applicationsAutomationSettings = useAppSelector(
         getChatsApplicationAutomationSettings
     )
+
     const helpCentersAutomationSettings = useAppSelector(
         getHelpCentersAutomationSettings
     )

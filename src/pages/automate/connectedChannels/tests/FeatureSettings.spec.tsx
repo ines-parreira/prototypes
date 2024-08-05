@@ -1,7 +1,7 @@
 import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import {FeatureSettings} from './FeatureSettings'
+import {FeatureSettings} from '../components/FeatureSettings'
 
 describe('FeatureSettings', () => {
     test('renders the component with all props', () => {

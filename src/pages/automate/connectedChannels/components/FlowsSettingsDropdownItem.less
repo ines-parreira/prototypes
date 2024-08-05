@@ -1,0 +1,19 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .workflowDropdownItem {
+        flex-direction: column;
+        align-items: unset;
+        padding-top: @layout-spacing-xs;
+        padding-bottom: @layout-spacing-xs;
+        .body-regular();
+    }
+
+    .workflowListItemButtons {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        gap: @layout-spacing-xxs;
+    }
+}

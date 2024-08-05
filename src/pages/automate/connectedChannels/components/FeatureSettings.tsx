@@ -12,7 +12,7 @@ interface Props {
     subtitle?: string
     label: string
     labelSubtitle?: string
-    onToggle?: () => void
+    onToggle?: (value: boolean) => void
 }
 
 export const FeatureSettings = ({
@@ -39,7 +39,7 @@ export const FeatureSettings = ({
             {labelSubtitle && <span>{labelSubtitle}</span>}
             <ToggleInput
                 isToggled={enabled}
-                onChange={onToggle}
+                onClick={() => onToggle?.(!enabled)}
                 caption={subtitle}
                 className={css.toggle}
             >

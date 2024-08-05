@@ -72,7 +72,7 @@ const useHelpCentersAutomationSettings = (
                     })
                 )
             }
-        }, [client])
+        }, [client, helpCenterId])
 
     const [
         {loading: isUpdatePending},
@@ -118,7 +118,7 @@ const useHelpCentersAutomationSettings = (
                 )
             }
         },
-        [client]
+        [client, helpCenterId]
     )
 
     useEffect(() => {

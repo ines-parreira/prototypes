@@ -25,14 +25,14 @@ const renderIconByChannelType = (channelType: ChannelType) => {
 
 interface Props<T> {
     channelType: 'help-center' | 'chat' | 'contact-form' | 'email'
-    value: string
+    value: string | number
     label: string
     channels: T[]
     onConnect: () => void
-    onSelectedChannelChange: (value: string) => void
+    onSelectedChannelChange: (value: string | number) => void
     renderOption: (channel: T) => {
         label: string
-        value: string
+        value: string | number
     }
 }
 export const CurrentlyViewingDropdown = <T,>({
@@ -52,6 +52,7 @@ export const CurrentlyViewingDropdown = <T,>({
             <Button
                 intent="secondary"
                 fillStyle="ghost"
+                aria-label="Currently viewing"
                 ref={targetRef}
                 className={css.dropdownButton}
                 onClick={() => setIsSelectOpen(!isSelectOpen)}

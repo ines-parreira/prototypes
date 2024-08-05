@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {WizardContext} from 'pages/common/components/wizard/Wizard'
@@ -27,10 +28,14 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
+import {
+    useGetHelpCenterArticleList,
+    useGetHelpCenterList,
+} from 'models/helpCenter/queries'
 import {createWorkflowConfigurationShallow} from 'fixtures/workflows'
 import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
 import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import HelpCenterCreationWizardStepAutomate from '../HelpCenterCreationWizardStepAutomate'
 import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
 
@@ -100,6 +105,7 @@ const mockedUseSelfServiceConfiguration = jest.mocked(
 const mockedUseGetHelpCenterArticleList = jest.mocked(
     useGetHelpCenterArticleList
 )
+const mockedUseGetHelpCenterList = jest.mocked(useGetHelpCenterList)
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof HelpCenterCreationWizardStepAutomate>>,
@@ -130,30 +136,35 @@ const renderComponent = (
         },
     } as unknown as StoreState
 
+    const queryClientMock = mockQueryClient()
     render(
-        <Provider store={mockStore(defaultStore)}>
-            <SupportedLocalesProvider>
-                <WizardContext.Provider
-                    value={{
-                        steps: [HelpCenterCreationWizardStep.Automate],
-                        activeStepIndex: 0,
-                        setActiveStep: jest.fn(),
-                        totalSteps: 1,
-                        activeStep: HelpCenterCreationWizardStep.Automate,
-                        nextStep: undefined,
-                        previousStep: undefined,
-                    }}
-                >
-                    <WizardStep name={HelpCenterCreationWizardStep.Automate}>
-                        <HelpCenterCreationWizardStepAutomate
-                            isUpdate={false}
-                            helpCenter={helpCenter}
-                            {...props}
-                        />
-                    </WizardStep>
-                </WizardContext.Provider>
-            </SupportedLocalesProvider>
-        </Provider>
+        <QueryClientProvider client={queryClientMock}>
+            <Provider store={mockStore(defaultStore)}>
+                <SupportedLocalesProvider>
+                    <WizardContext.Provider
+                        value={{
+                            steps: [HelpCenterCreationWizardStep.Automate],
+                            activeStepIndex: 0,
+                            setActiveStep: jest.fn(),
+                            totalSteps: 1,
+                            activeStep: HelpCenterCreationWizardStep.Automate,
+                            nextStep: undefined,
+                            previousStep: undefined,
+                        }}
+                    >
+                        <WizardStep
+                            name={HelpCenterCreationWizardStep.Automate}
+                        >
+                            <HelpCenterCreationWizardStepAutomate
+                                isUpdate={false}
+                                helpCenter={helpCenter}
+                                {...props}
+                            />
+                        </WizardStep>
+                    </WizardContext.Provider>
+                </SupportedLocalesProvider>
+            </Provider>
+        </QueryClientProvider>
     )
 }
 
@@ -183,6 +194,10 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
         mockedUseGetHelpCenterArticleList.mockReturnValue({
             data: null,
         } as unknown as ReturnType<typeof useGetHelpCenterArticleList>)
+
+        mockedUseGetHelpCenterList.mockReturnValue({
+            data: null,
+        } as unknown as ReturnType<typeof useGetHelpCenterList>)
     })
     it('should render', () => {
         renderComponent({})
