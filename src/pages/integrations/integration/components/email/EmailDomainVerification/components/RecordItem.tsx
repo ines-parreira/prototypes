@@ -2,20 +2,23 @@ import React from 'react'
 import classnames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
 
+import {EmailDNSRecord} from '@gorgias/api-queries'
 import useId from 'hooks/useId'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import {DomainDNSRecord} from 'models/integration/types'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
-import css from '../EmailDomainVerification.less'
 import RecordStatus from './RecordStatus'
 import CopyButton from './CopyButton'
 
+import css from './RecordItem.less'
+
 type Props = {
-    record: DomainDNSRecord
+    record: EmailDNSRecord
+    isPending?: boolean
+    isRequested?: boolean
 }
 
-const RecordItem = ({record}: Props) => {
+const RecordItem = ({record, isPending, isRequested}: Props) => {
     const id = useId()
     const hostID = 'record-host-' + id
     const valueID = 'record-value-' + id
@@ -23,7 +26,11 @@ const RecordItem = ({record}: Props) => {
     return (
         <TableBodyRow className={css.row}>
             <BodyCell>
-                <RecordStatus isVerified={record.verified} />
+                <RecordStatus
+                    isVerified={record.verified}
+                    isPending={isPending}
+                    isRequested={isRequested}
+                />
             </BodyCell>
             <BodyCell className="text-uppercase">{record.record_type}</BodyCell>
             <BodyCell innerClassName={css.hostCellInner}>
@@ -33,7 +40,7 @@ const RecordItem = ({record}: Props) => {
                 <CopyButton clipboardTarget={`#${hostID}`} fillStyle="ghost" />
             </BodyCell>
             <BodyCell
-                className={classnames(css.cell, css['value-cell'])}
+                className={classnames(css.cell, css.valueCell)}
                 innerClassName={css.valueCellInner}
             >
                 <div id={valueID} className={css.valueText}>
@@ -41,9 +48,7 @@ const RecordItem = ({record}: Props) => {
                 </div>
                 <CopyButton clipboardTarget={`#${valueID}`} />
             </BodyCell>
-            <BodyCell
-                className={classnames(css.cell, css['current-values-cell'])}
-            >
+            <BodyCell className={classnames(css.cell, css.currentValuesCell)}>
                 {_isEmpty(record.current_values)
                     ? 'None found'
                     : record.current_values}

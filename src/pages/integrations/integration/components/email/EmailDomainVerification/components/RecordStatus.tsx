@@ -5,9 +5,25 @@ import css from './RecordStatus.less'
 
 type Props = {
     isVerified: boolean
+    isPending?: boolean
+    isRequested?: boolean
 }
 
-const RecordStatus = ({isVerified}: Props) => {
+const RecordStatus = ({isVerified, isPending, isRequested}: Props) => {
+    if (isPending) {
+        return (
+            <i
+                className={classnames(
+                    css['status-icon'],
+                    css.pending,
+                    'material-icons'
+                )}
+            >
+                timelapse
+            </i>
+        )
+    }
+
     if (isVerified) {
         return (
             <i
@@ -20,6 +36,10 @@ const RecordStatus = ({isVerified}: Props) => {
                 check_circle
             </i>
         )
+    }
+
+    if (!isRequested) {
+        return null
     }
 
     return (

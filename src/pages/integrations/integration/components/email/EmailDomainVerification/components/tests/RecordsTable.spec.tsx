@@ -1,93 +1,110 @@
 import React from 'react'
-import {render, waitFor} from '@testing-library/react'
-import * as helpers from 'pages/integrations/integration/components/email/helpers'
+import {EmailDomain} from '@gorgias/api-queries'
+import {render, screen} from '@testing-library/react'
+
+import * as hook from '../../useDomainVerification'
+import * as helpers from '../../../helpers'
 
 import RecordsTable from '../RecordsTable'
 
-const populateCurrentValuesForDNSRecords = jest
-    .spyOn(helpers, 'populateCurrentValuesForDNSRecords')
-    .mockImplementation((records) => Promise.resolve(records))
-const removeDomainFromDNSRecords = jest
-    .spyOn(helpers, 'removeDomainFromDNSRecords')
-    .mockImplementation((records) => records)
+const domain: EmailDomain = {
+    name: 'gorgias.com',
+    provider: 'sendgrid',
+    verified: true,
+    data: {
+        domain: 'gorgias.com',
+        valid: true,
+        sending_dns_records: [
+            {
+                verified: true,
+                record_type: 'MX',
+                host: 'gorgias.com',
+                value: 'mx.sendgrid.desired-root',
+                current_values: ['mx.sendgrid.current-root'],
+            },
+            {
+                verified: false,
+                record_type: 'TXT',
+                host: 'subdomain-a.gorgias.com',
+                value: 'mx.sendgrid.desired-a',
+                current_values: ['mx.sendgrid.current-a'],
+            },
+            {
+                verified: true,
+                record_type: 'CNAME',
+                host: 'subdomain-b.gorgias.com',
+                value: 'mx.sendgrid.desired-b',
+                current_values: ['mx.sendgrid.current-b'],
+            },
+        ],
+    },
+}
+
+const defaultHookState: hook.UseDomainVerificationRequestHookResult = {
+    domain,
+    verifyDomain: jest.fn(),
+    deleteDomain: jest.fn(),
+    isRequested: true,
+    isVerifying: false,
+    isFetching: false,
+    isDeleting: false,
+    isPending: false,
+}
 
 describe('RecordsTable component', () => {
-    it('should render a list of DNS records', () => {
-        const records = [
-            {
-                verified: true,
-                record_type: 'MX',
-                host: 'gorgias.com',
-                value: 'mx.sendgrid.net-desired',
-                current_values: ['mx.sendgrid.net-current'],
-            },
-        ]
-        const {getByText} = render(
-            <RecordsTable
-                records={records}
-                provider="sendgrid"
-                domain="gorgias.com"
-            />
+    it('should render a list of DNS records (with the domain names replaced)', () => {
+        jest.spyOn(hook, 'useDomainVerification').mockImplementation(
+            () => defaultHookState
         )
 
-        expect(getByText('MX')).toBeInTheDocument()
-        expect(getByText('gorgias.com')).toBeInTheDocument()
-        expect(getByText('mx.sendgrid.net-desired')).toBeInTheDocument()
-        expect(getByText('mx.sendgrid.net-current')).toBeInTheDocument()
+        render(<RecordsTable domainName="gorgias.com" />)
+
+        expect(screen.getByText('MX')).toBeInTheDocument()
+        expect(screen.getByText('TXT')).toBeInTheDocument()
+        expect(screen.getByText('CNAME')).toBeInTheDocument()
+
+        expect(screen.getByText('@')).toBeInTheDocument()
+        expect(screen.getByText('subdomain-a')).toBeInTheDocument()
+        expect(screen.getByText('subdomain-b')).toBeInTheDocument()
+
+        expect(screen.getByText('mx.sendgrid.desired-a')).toBeInTheDocument()
+        expect(screen.getByText('mx.sendgrid.desired-b')).toBeInTheDocument()
+        expect(screen.getByText('mx.sendgrid.current-a')).toBeInTheDocument()
+        expect(screen.getByText('mx.sendgrid.current-b')).toBeInTheDocument()
+
+        expect(screen.getAllByText('check_circle')).toHaveLength(2)
+        expect(screen.getAllByText('close')).toHaveLength(1)
     })
 
-    it('should remove the domain name from the host, when the provider is mailgun', () => {
-        const records = [
-            {
-                verified: true,
-                record_type: 'MX',
-                host: 'gorgias.com',
-                value: 'mx.mailgun.net-desired',
-                current_values: ['mx.mailgun.net-current'],
-            },
-        ]
-
-        render(
-            <RecordsTable
-                records={records}
-                provider="mailgun"
-                domain="gorgias.com"
-            />
+    it('should populate the current values for the DNS records', () => {
+        jest.spyOn(hook, 'useDomainVerification').mockImplementation(
+            () => defaultHookState
         )
 
-        expect(removeDomainFromDNSRecords).toHaveBeenCalledWith(
-            records,
+        const removeDomainMock = jest
+            .spyOn(helpers, 'removeDomainFromDNSRecords')
+            .mockImplementation((records) => records)
+
+        render(<RecordsTable domainName="gorgias.com" />)
+
+        expect(removeDomainMock).toHaveBeenCalledWith(
+            defaultHookState.domain?.data.sending_dns_records,
             'gorgias.com'
         )
-        expect(populateCurrentValuesForDNSRecords).not.toHaveBeenCalled()
     })
 
-    it('should remove the domain name from the host AND populate current values, when the provider is sendgrid', async () => {
-        const records = [
-            {
-                verified: true,
-                record_type: 'MX',
-                host: 'gorgias.com',
-                value: 'mx.sendgrid.net-desired',
-                current_values: ['mx.sendgrid.net-current'],
-            },
-        ]
+    it('should call populate with an empty list if domain is missing', () => {
+        jest.spyOn(hook, 'useDomainVerification').mockImplementation(() => ({
+            ...defaultHookState,
+            domain: undefined,
+        }))
 
-        render(
-            <RecordsTable
-                records={records}
-                provider="sendgrid"
-                domain="gorgias.com"
-            />
-        )
+        const removeDomainMock = jest
+            .spyOn(helpers, 'removeDomainFromDNSRecords')
+            .mockImplementation((records) => records)
 
-        expect(populateCurrentValuesForDNSRecords).toHaveBeenCalledWith(records)
+        render(<RecordsTable domainName="gorgias.com" />)
 
-        await waitFor(() => {
-            expect(removeDomainFromDNSRecords).toHaveBeenCalledWith(
-                records,
-                'gorgias.com'
-            )
-        })
+        expect(removeDomainMock).toHaveBeenCalledWith([], 'gorgias.com')
     })
 })

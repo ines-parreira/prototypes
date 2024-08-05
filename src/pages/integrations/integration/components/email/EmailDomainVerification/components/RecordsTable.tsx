@@ -1,51 +1,30 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 
+import {EmailDNSRecord} from '@gorgias/api-queries'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableBody from 'pages/common/components/table/TableBody'
-import {EmailProvider} from 'models/integration/constants'
-import {DomainDNSRecord} from 'models/integration/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import {
-    populateCurrentValuesForDNSRecords,
-    removeDomainFromDNSRecords,
-} from '../../helpers'
+import {useDomainVerification} from '../useDomainVerification'
+import {removeDomainFromDNSRecords} from '../../helpers'
 
-import css from '../EmailDomainVerification.less'
 import RecordItem from './RecordItem'
+import css from './RecordsTable.less'
 
 type Props = {
-    records: Array<DomainDNSRecord>
-    provider?: string
-    domain?: string
+    domainName: string
 }
 
-const RecordsTable = ({records: rawRecords, provider, domain}: Props) => {
-    const [records, setRecords] = useState(rawRecords)
-    useEffect(() => {
-        async function transformRecords() {
-            if (provider === EmailProvider.Mailgun) {
-                setRecords(removeDomainFromDNSRecords(rawRecords, domain))
-                return
-            }
+const RecordsTable = ({domainName}: Props) => {
+    const {domain, isPending, isRequested} = useDomainVerification(domainName)
 
-            try {
-                const records = await populateCurrentValuesForDNSRecords(
-                    rawRecords
-                )
-                if (records) {
-                    setRecords(removeDomainFromDNSRecords(records, domain))
-                }
-            } catch (e) {
-                setRecords(removeDomainFromDNSRecords(rawRecords, domain))
-            }
-        }
-
-        void transformRecords()
-    }, [rawRecords, provider, domain])
+    const records = removeDomainFromDNSRecords(
+        domain?.data.sending_dns_records ?? [],
+        domainName
+    )
 
     return (
-        <TableWrapper className={css['records-table']}>
+        <TableWrapper className={css.recordsTable}>
             <TableHead>
                 <HeaderCellProperty
                     title="Status"
@@ -60,8 +39,13 @@ const RecordsTable = ({records: rawRecords, provider, domain}: Props) => {
                 <HeaderCellProperty title="Current Values" />
             </TableHead>
             <TableBody>
-                {records.map((record: DomainDNSRecord, index: number) => (
-                    <RecordItem key={index} record={record} />
+                {records.map((record: EmailDNSRecord, index: number) => (
+                    <RecordItem
+                        key={index}
+                        record={record}
+                        isPending={isPending}
+                        isRequested={isRequested}
+                    />
                 ))}
             </TableBody>
         </TableWrapper>

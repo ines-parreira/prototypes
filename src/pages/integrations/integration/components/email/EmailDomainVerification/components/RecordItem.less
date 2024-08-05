@@ -1,0 +1,65 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .row {
+        button {
+            position: absolute;
+            right: 2px;
+            display: none;
+        }
+
+        :hover {
+            button {
+                display: block !important;
+            }
+        }
+    }
+
+    .cell {
+        > div {
+            display: inline-block;
+            position: relative;
+            margin: 2px;
+        }
+    }
+
+    .valueCell {
+        max-width: 550px;
+        overflow-wrap: break-word;
+        padding: @layout-spacing-s 0;
+
+        > div {
+            background: var(--neutral-grey-2);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .valueCellInner {
+            padding: @layout-spacing-xs 0 @layout-spacing-xs @layout-spacing-xs !important;
+        }
+
+        .valueText {
+            max-height: 100%;
+            overflow-y: auto;
+        }
+
+        button {
+            top: 2px;
+        }
+    }
+
+    .currentValuesCell {
+        min-width: 200px;
+        max-width: 550px;
+        overflow-wrap: break-word;
+    }
+
+    .hostCellInner {
+        overflow-wrap: anywhere;
+
+        button {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}

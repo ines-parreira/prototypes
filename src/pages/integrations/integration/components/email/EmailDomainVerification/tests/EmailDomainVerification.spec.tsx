@@ -1,22 +1,26 @@
 import React, {ComponentProps} from 'react'
-
+import {EmailDomain} from '@gorgias/api-queries'
+import {QueryClientProvider} from '@tanstack/react-query'
+import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
-import {render, waitFor} from '@testing-library/react'
 
+import {render, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
-import {IntegrationType, EmailProvider} from 'models/integration/constants'
+import configureMockStore from 'redux-mock-store'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
+import {RootState, StoreDispatch} from 'state/types'
 import {UserRole} from 'config/types/user'
-import {mockStore} from 'utils/testing'
-import * as actions from 'state/integrations/actions'
+
+import * as helpers from '../../helpers'
 import EmailDomainVerification from '../EmailDomainVerification'
+import * as hook from '../useDomainVerification'
+
+const queryClient = mockQueryClient()
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
-
-jest.mock('state/integrations/actions', () => ({
-    fetchEmailDomain: jest.fn(() => ({})),
-    createEmailDomain: jest.fn(() => ({})),
-    deleteEmailDomain: jest.fn(() => ({})),
-}))
 
 describe('<EmailDomainVerification/>', () => {
     const minProps: ComponentProps<typeof EmailDomainVerification> = {
@@ -28,162 +32,195 @@ describe('<EmailDomainVerification/>', () => {
         } as any,
         loading: fromJS({}),
     }
-    const adminUser = {
-        role: {
-            name: UserRole.Admin,
+
+    const getEmailDomain = ({verified} = {verified: true}): EmailDomain => ({
+        name: 'gorgias.com',
+        provider: 'sendgrid',
+        verified,
+        data: {
+            domain: 'gorgias.com',
+            valid: verified,
+            sending_dns_records: [
+                {
+                    verified,
+                    value: 'k=rsa; p=EXPECTED',
+                    host: 'm1._domainkey.gorgias.com',
+                    record_type: 'txt',
+                    current_values: ['k=rsa; p=CURRENT'],
+                },
+            ],
         },
+    })
+
+    const defaultHookState: hook.UseDomainVerificationRequestHookResult = {
+        domain: getEmailDomain(),
+        isRequested: false,
+        isVerifying: false,
+        isFetching: false,
+        isDeleting: false,
+        isPending: false,
+        verifyDomain: jest.fn(),
+        deleteDomain: jest.fn(),
     }
 
-    const renderWithStore = (props = {}, storeState = {}) =>
+    const renderComponent = (props = {}) =>
         render(
-            <Provider store={mockStore(storeState as any)}>
-                <EmailDomainVerification {...minProps} {...props} />
-            </Provider>
-        )
-
-    describe('render()', () => {
-        it('should render the page when domain is verified', () => {
-            const {container} = renderWithStore(undefined, {
-                integrations: fromJS({
-                    emailDomain: {
-                        verified: false,
-                        data: {
-                            sending_dns_records: [],
-                        },
-                    },
-                }),
-            })
-
-            expect(container).toMatchSnapshot()
-        })
-        it('should render the page when domain is not verified', () => {
-            const {container} = renderWithStore(undefined, {
-                integrations: fromJS({
-                    emailDomain: {
-                        verified: false,
-                        data: {
-                            sending_dns_records: [],
-                        },
-                    },
-                }),
-            })
-
-            expect(container).toMatchSnapshot()
-        })
-        it('should render the page when there is no domain - mailgun', () => {
-            const {container} = renderWithStore(
-                {
-                    integration: {
-                        ...minProps.integration,
-                        meta: {
-                            address: 'test@gorgias.com',
-                            provider: EmailProvider.Mailgun,
-                        },
-                    },
-                },
-                {
-                    integrations: fromJS({
-                        emailDomain: null,
-                    }),
-                }
-            )
-
-            expect(container).toMatchSnapshot()
-        })
-        it('should render the page when there is no domain - sendgrid', () => {
-            const {container} = renderWithStore(
-                {
-                    integration: {
-                        ...minProps.integration,
-                        meta: {
-                            address: 'test@gorgias.com',
-                            provider: EmailProvider.Sendgrid,
-                        },
-                    },
-                },
-                {
-                    integrations: fromJS({
-                        emailDomain: null,
-                    }),
-                }
-            )
-
-            expect(container).toMatchSnapshot()
-        })
-        it.each([IntegrationType.Gmail, IntegrationType.Outlook])(
-            'should render the page with an optional verification information box when there is no domain',
-            (integrationType) => {
-                const {container} = renderWithStore(
-                    {
-                        integration: {id: 1, type: integrationType, meta: {}},
-                    },
-                    {
-                        integrations: fromJS({
-                            emailDomain: null,
+            <QueryClientProvider client={queryClient}>
+                <Provider
+                    store={mockStore({
+                        currentUser: fromJS({
+                            role: {
+                                name: UserRole.Admin,
+                            },
                         }),
-                    }
-                )
-
-                expect(container).toMatchSnapshot()
-            }
+                    })}
+                >
+                    <EmailDomainVerification {...minProps} {...props} />
+                </Provider>
+            </QueryClientProvider>
         )
 
-        it('should load the domain when none is provided', () => {
-            renderWithStore(undefined, {
-                integrations: fromJS({
-                    emailDomain: null,
-                }),
-            })
+    describe('when the integration is a base integration', () => {
+        it('should render just an alert if the integration is a base email integration', () => {
+            jest.spyOn(helpers, 'isBaseEmailAddress').mockReturnValueOnce(true)
 
-            expect(actions.fetchEmailDomain).toHaveBeenCalledWith('gorgias.com')
-        })
+            renderComponent()
 
-        it('should render a delete button to account admins', () => {
-            // Patch Date.now to always get the same time-based IDs.
-            let frozenTime = 42
-            const now = Date.now
-            Date.now = () => frozenTime++
-
-            const {container} = renderWithStore(undefined, {
-                currentUser: fromJS(adminUser),
-                integrations: fromJS({
-                    emailDomain: {
-                        verified: true,
-                        data: {
-                            sending_dns_records: [],
-                        },
-                    },
-                }),
-            })
-
-            expect(container).toMatchSnapshot()
-
-            // Unpatch Date.now
-            Date.now = now
-        })
-
-        // TODO: During TypeScript migration, it was discovered that the test was a false positive, as the waitFor was not awaited.
-        // Check why the test fails in a future issue.
-        it.skip('clicking the delete button should trigger deletion', async () => {
-            const {getByText} = renderWithStore(undefined, {
-                currentUser: fromJS(adminUser),
-                integrations: fromJS({
-                    emailDomain: {
-                        verified: true,
-                        data: {
-                            sending_dns_records: [],
-                        },
-                    },
-                }),
-            })
-
-            getByText('Delete').click()
-
-            await waitFor(() =>
-                expect(actions.deleteEmailDomain).toHaveBeenCalledWith(
-                    'gorgias.com'
+            expect(
+                screen.getByText(
+                    'The base email integration cannot have a domain associated.'
                 )
+            ).toBeInTheDocument()
+        })
+
+        it('should not break rendering when the address is not defined', () => {
+            const baseAddressMock = jest.spyOn(helpers, 'isBaseEmailAddress')
+            renderComponent({
+                ...minProps,
+                integration: {
+                    ...minProps.integration,
+                    meta: {
+                        address: undefined,
+                    },
+                },
+            })
+            expect(baseAddressMock).toHaveBeenCalledWith('')
+        })
+    })
+
+    describe('when the domain exists', () => {
+        it('should render the correct records list page when domain is verified', () => {
+            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
+                () => ({
+                    ...defaultHookState,
+                    domain: getEmailDomain({verified: true}),
+                })
             )
+
+            const {container} = renderComponent()
+
+            expect(container).toHaveTextContent(
+                'The domain gorgias.com has been verified.'
+            )
+
+            expect(screen.getByText('txt')).toBeInTheDocument()
+            expect(screen.getByText('m1._domainkey')).toBeInTheDocument()
+            expect(screen.getByText('k=rsa; p=EXPECTED')).toBeInTheDocument()
+            expect(screen.getByText('k=rsa; p=CURRENT')).toBeInTheDocument()
+        })
+
+        it('should render the correct records list page when domain is not verified', () => {
+            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
+                () => ({
+                    ...defaultHookState,
+                    domain: getEmailDomain({verified: false}),
+                })
+            )
+
+            const {container} = renderComponent()
+
+            expect(container).toHaveTextContent(
+                'The domain gorgias.com has not yet been verified.'
+            )
+
+            expect(screen.getByText('txt')).toBeInTheDocument()
+            expect(screen.getByText('m1._domainkey')).toBeInTheDocument()
+            expect(screen.getByText('k=rsa; p=EXPECTED')).toBeInTheDocument()
+            expect(screen.getByText('k=rsa; p=CURRENT')).toBeInTheDocument()
+        })
+    })
+
+    describe('when the domain does not exist', () => {
+        it('should render the domain creation form', () => {
+            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
+                () => ({
+                    ...defaultHookState,
+                    domain: undefined,
+                })
+            )
+
+            renderComponent()
+
+            expect(screen.getByText('DKIM key size')).toBeInTheDocument()
+            expect(screen.getByText('Add Domain')).toBeInTheDocument()
+        })
+    })
+
+    describe('when loading data', () => {
+        it('should render a loader when the integration is loading', () => {
+            renderComponent({
+                loading: {integration: true},
+            })
+
+            expect(screen.getByTestId('loader')).toBeInTheDocument()
+        })
+
+        it('should render a loader when domain is loading', () => {
+            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
+                () => ({
+                    ...defaultHookState,
+                    domain: undefined,
+                    isFetching: true,
+                })
+            )
+
+            renderComponent()
+
+            expect(screen.getByTestId('loader')).toBeInTheDocument()
+        })
+    })
+
+    describe('performable actions', () => {
+        it('should call verifyDomain when the verify domain button is clicked', () => {
+            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
+                () => ({
+                    ...defaultHookState,
+                    domain: getEmailDomain({verified: false}),
+                })
+            )
+
+            renderComponent()
+
+            screen.getByText('Check Status').click()
+
+            expect(defaultHookState.verifyDomain).toHaveBeenCalled()
+        })
+
+        it('should call deleteDomain when the domain deletion button is clicked', async () => {
+            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
+                () => ({
+                    ...defaultHookState,
+                    domain: getEmailDomain({verified: false}),
+                })
+            )
+
+            renderComponent()
+
+            screen.getByText('Delete Domain').click()
+            await waitFor(() => screen.getByText('Confirm'))
+            screen.getByText('Confirm').click()
+
+            expect(defaultHookState.deleteDomain).toHaveBeenCalled()
         })
     })
 })

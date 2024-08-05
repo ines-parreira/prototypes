@@ -97,10 +97,7 @@ export default function DomainVerificationAccordionItem({
                                 domain was purchased (ie. Google Domains).
                             </p>
                             <RecordsTable
-                                records={
-                                    verification.domain.data.sending_dns_records
-                                }
-                                provider={verification.domain.provider}
+                                domainName={verification.domain.name}
                             />
                         </>
                     )}
