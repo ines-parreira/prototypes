@@ -14,16 +14,16 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {useGetOrCreateSnippetHelpCenter} from 'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import {StoreConfigForm} from '../StoreConfigForm'
 import {useStoreConfigurationMutation} from '../../../hooks/useStoreConfigurationMutation'
-import {useAiAgentHelpCenter} from '../../../hooks/useAiAgentHelpCenter'
 
 jest.mock('state/notifications/actions')
 jest.mock('../../../hooks/useStoreConfigurationMutation', () => ({
     useStoreConfigurationMutation: jest.fn(),
 }))
-jest.mock('../../../hooks/useAiAgentHelpCenter', () => ({
-    useAiAgentHelpCenter: jest.fn(),
+jest.mock('../../../hooks/useGetOrCreateSnippetHelpCenter', () => ({
+    useGetOrCreateSnippetHelpCenter: jest.fn(),
 }))
 jest.mock('../../../hooks/useConfigurationForm')
 jest.mock('pages/automate/aiAgent/hooks/usePublicResources', () => ({
@@ -36,7 +36,9 @@ jest.mock('../../PublicSourcesSection/PublicSourcesSection', () => ({
 const mockedUseStoreConfigurationMutation = jest.mocked(
     useStoreConfigurationMutation
 )
-const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
+const mockedUseGetOrCreateSnippetHelpCenter = jest.mocked(
+    useGetOrCreateSnippetHelpCenter
+)
 const mockedUseConfigurationForm = jest.mocked(useConfigurationForm)
 const mockedUsePublicResources = jest.mocked(usePublicResources)
 
@@ -116,7 +118,7 @@ describe('<StoreConfigForm />', () => {
             createStoreConfiguration: () => Promise.resolve(),
             upsertStoreConfiguration: () => Promise.resolve(),
         })
-        mockedUseAiAgentHelpCenter.mockReturnValue(undefined)
+        mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue(null)
         mockedUseConfigurationForm.mockReturnValue({
             formValues: {
                 deactivatedDatetime: null,
@@ -236,7 +238,7 @@ describe('<StoreConfigForm />', () => {
         mockedUseStoreConfigurationMutation.mockReturnValue(mockMutation)
 
         const helpCenter = getHelpCentersResponseFixture.data[0]
-        mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
+        mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue(helpCenter)
 
         mockedUsePublicResources.mockReturnValue({
             sourceItems: [

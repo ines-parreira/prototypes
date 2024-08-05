@@ -1,0 +1,96 @@
+import {renderHook, act} from '@testing-library/react-hooks'
+import {useCreateStoreSnippetHelpCenter} from 'models/aiAgent/queries'
+import {useGetHelpCenterList} from 'models/helpCenter/queries'
+import {useGetOrCreateSnippetHelpCenter} from '../useGetOrCreateSnippetHelpCenter'
+
+jest.mock('models/aiAgent/queries')
+jest.mock('models/helpCenter/queries')
+jest.mock('utils/errors')
+
+describe('useGetOrCreateSnippetHelpCenter', () => {
+    const accountDomain = 'test-domain'
+    const shopName = 'test-shop'
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
+    const renderUseGetOrCreateSnippetHelpCenterHook = () => {
+        return renderHook(() =>
+            useGetOrCreateSnippetHelpCenter({accountDomain, shopName})
+        )
+    }
+
+    const mockUseGetHelpCenterList = (
+        data: any,
+        error: Error | null = null,
+        isLoading: boolean = false
+    ) => {
+        ;(useGetHelpCenterList as jest.Mock).mockReturnValue({
+            data,
+            error,
+            isLoading,
+        })
+    }
+
+    const mockUseCreateStoreSnippetHelpCenter = (
+        mutateAsync: jest.Mock,
+        error: Error | null = null,
+        isLoading: boolean = false
+    ) => {
+        ;(useCreateStoreSnippetHelpCenter as jest.Mock).mockReturnValue({
+            mutateAsync,
+            error,
+            isLoading,
+        })
+    }
+
+    it('returns existing help center if it exists', async () => {
+        const mockHelpCenter = {id: 1, name: 'Test Help Center'}
+        mockUseGetHelpCenterList({data: {data: [mockHelpCenter]}})
+        mockUseCreateStoreSnippetHelpCenter(jest.fn())
+
+        const {result, waitFor} = renderUseGetOrCreateSnippetHelpCenterHook()
+
+        await waitFor(() => result.current !== null)
+
+        expect(result.current).toEqual(mockHelpCenter)
+    })
+
+    it('creates a new help center if none exists', async () => {
+        const mockCreatedHelpCenter = {id: 2, name: 'Created Help Center'}
+        const createHelpCenter = jest
+            .fn()
+            .mockResolvedValue({data: mockCreatedHelpCenter})
+
+        mockUseGetHelpCenterList({data: {data: []}})
+        mockUseCreateStoreSnippetHelpCenter(createHelpCenter)
+
+        const {result, waitFor} = renderUseGetOrCreateSnippetHelpCenterHook()
+
+        await act(async () => {
+            await waitFor(() => result.current !== null)
+        })
+
+        expect(createHelpCenter).toHaveBeenCalledWith([accountDomain, shopName])
+        expect(result.current).toEqual(mockCreatedHelpCenter)
+    })
+
+    it('returns null if loading existing help center', () => {
+        mockUseGetHelpCenterList(null, null, true)
+        mockUseCreateStoreSnippetHelpCenter(jest.fn())
+
+        const {result} = renderUseGetOrCreateSnippetHelpCenterHook()
+
+        expect(result.current).toBeNull()
+    })
+
+    it('returns null if error in fetching existing help center', () => {
+        mockUseGetHelpCenterList(null, new Error('Fetch error'))
+        mockUseCreateStoreSnippetHelpCenter(jest.fn())
+
+        const {result} = renderUseGetOrCreateSnippetHelpCenterHook()
+
+        expect(result.current).toBeNull()
+    })
+})

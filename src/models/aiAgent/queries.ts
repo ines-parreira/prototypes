@@ -5,6 +5,7 @@ import {SearchCustomerRequest} from 'models/aiAgentPlayground/types'
 import {MutationOverrides} from 'types/query'
 import {
     createStoreConfiguration,
+    createStoreSnippetHelpCenter,
     getAccountConfiguration,
     getStoreConfiguration,
     upsertAccountConfiguration,
@@ -86,6 +87,15 @@ export const useUpsertStoreConfigurationPure = (
 ) => {
     return useMutation({
         mutationFn: (params) => upsertStoreConfiguration(...params),
+        ...overrides,
+    })
+}
+
+export const useCreateStoreSnippetHelpCenter = (
+    overrides?: MutationOverrides<typeof createStoreSnippetHelpCenter>
+) => {
+    return useMutation({
+        mutationFn: (params) => createStoreSnippetHelpCenter(...params),
         ...overrides,
     })
 }

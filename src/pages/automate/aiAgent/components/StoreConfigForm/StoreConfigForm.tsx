@@ -48,7 +48,6 @@ import {
     EXCLUDED_TOPIC_MAX_LENGTH,
     MAX_EXCLUDED_TOPICS,
 } from '../../constants'
-import {useAiAgentHelpCenter} from '../../hooks/useAiAgentHelpCenter'
 import {usePublicResources} from '../../hooks/usePublicResources'
 import {FormValues, ValidFormValues} from '../../types'
 import {isAiAgentEnabled, isHandoffEnabled} from '../../util'
@@ -59,6 +58,7 @@ import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection
 import TagList from '../TicketTag/TagList'
 
 import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
+import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
 import css from './StoreConfigForm.less'
 import {
     getFormValuesFromStoreConfiguration,
@@ -309,9 +309,9 @@ export const StoreConfigForm = ({
     const isCustomToneOfVoiceSelected =
         formValues.toneOfVoice === ToneOfVoice.Custom
 
-    const snippetHelpCenter = useAiAgentHelpCenter({
+    const snippetHelpCenter = useGetOrCreateSnippetHelpCenter({
+        accountDomain,
         shopName,
-        helpCenterType: 'snippet',
     })
 
     const handlePublicURLsChange = useCallback(

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {HelpCenter} from 'models/helpCenter/types'
 import {isProduction, isStaging} from '../../../utils/environment'
 
 import {
@@ -97,5 +98,14 @@ export const upsertStoreConfiguration = async (
     return await apiClient.put<StoreConfigurationResponse>(
         `/accounts/${accountDomain}/stores/${storeName}`,
         storeConfiguration
+    )
+}
+
+export const createStoreSnippetHelpCenter = async (
+    accountDomain: string,
+    storeName: string
+) => {
+    return await apiClient.post<HelpCenter | null>(
+        `/accounts/${accountDomain}/stores/${storeName}/initialize-snippet`
     )
 }
