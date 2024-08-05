@@ -742,6 +742,13 @@ export const StoreConfigForm = ({
                     >
                         Save Changes
                     </Button>
+                    <p className={css.legalDisclaimer}>
+                        By using AI Agent, you agree to comply with all
+                        applicable laws, including, but not limited to, laws
+                        prohibiting misleading consumers about the artificial
+                        identity of an automated online account, such as the
+                        California Bolstering Online Transparency Act.
+                    </p>
                 </section>
             </form>
         </>
