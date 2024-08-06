@@ -52,6 +52,7 @@ import {EmailIntegrationDefaultProviderSetting} from 'models/integration/constan
 import EmailIntegrationConnectStore from '../EmailToStoreMapping/EmailIntegrationConnectStore'
 import css from './EmailIntegrationUpdate.less'
 import EmailIntegrationDeliverabilitySettings from './EmailIntegrationDeliverabilitySettings'
+import EmailIntegrationAddressField from './EmailIntegrationAddressField'
 
 type Props = {
     integration: Map<any, any>
@@ -519,6 +520,9 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                 />
                 <h3>Settings</h3>
                 <Form onSubmit={this._handleSubmit}>
+                    <EmailIntegrationAddressField
+                        integration={this.props.integration.toJS()}
+                    />
                     <InputField
                         type="text"
                         name="name"

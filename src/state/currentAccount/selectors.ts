@@ -16,6 +16,7 @@ import {
     AccountSettingAutoMerge,
     AccountSettingBusinessHours,
     AccountSettingChannelsTableConfig,
+    AccountSettingDefaultIntegration,
     AccountSettingInTicketSuggestion,
     AccountSettingSatisfactionSurvey,
     AccountSettingType,
@@ -299,6 +300,15 @@ export const getViewsOrderingSetting = createSelector(
 export const getAccessSettings = createSettingByTypeSelector(
     AccountSettingType.Access
 )
+
+export const getDefaultIntegrationSettings = createSelector(
+    createSettingByTypeSelector(AccountSettingType.DefaultIntegration),
+    (setting) =>
+        setting.isEmpty()
+            ? undefined
+            : (setting.toJS() as AccountSettingDefaultIntegration)
+)
+
 export const getTwoFAEnforcedDatetime = createSelector(
     getAccessSettings,
     (setting) =>

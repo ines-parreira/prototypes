@@ -1,4 +1,10 @@
-import React, {CSSProperties, HTMLAttributes, ReactNode} from 'react'
+import React, {
+    CSSProperties,
+    ForwardedRef,
+    HTMLAttributes,
+    ReactNode,
+    forwardRef,
+} from 'react'
 import classnames from 'classnames'
 
 import css from './Badge.less'
@@ -34,14 +40,10 @@ export enum ColorType {
     Magenta = 'magenta',
 }
 
-const Badge = ({
-    className,
-    children,
-    style,
-    type,
-    upperCase = true,
-    ...props
-}: Props) => {
+const Badge = (
+    {className, children, style, type, upperCase = true, ...props}: Props,
+    ref: ForwardedRef<HTMLDivElement>
+) => {
     return (
         <div
             className={classnames(css.badge, className, {
@@ -56,6 +58,7 @@ const Badge = ({
                     : {}),
                 ...style,
             }}
+            ref={ref}
             {...props}
         >
             {children}
@@ -63,4 +66,4 @@ const Badge = ({
     )
 }
 
-export default Badge
+export default forwardRef<HTMLDivElement, Props>(Badge)

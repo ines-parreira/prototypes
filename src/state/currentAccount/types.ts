@@ -27,6 +27,7 @@ export enum AccountSettingType {
     ViewsVisibility = 'views-visibility',
     AutoMerge = 'auto-merge',
     InTicketSuggestion = 'in-ticket-suggestion',
+    DefaultIntegration = 'default-integration',
 }
 
 export enum AccountFeature {
@@ -75,6 +76,7 @@ export type AccountSetting =
     | AccountSettingAgentsTableConfig
     | AccountSettingChannelsTableConfig
     | AccountSettingInTicketSuggestion
+    | AccountSettingDefaultIntegration
 
 export type AccountSettingAgentCostType = 'yearly' | 'hourly'
 
@@ -203,6 +205,12 @@ export type AccountSettingInTicketSuggestion = {
     data: {
         is_demo_hidden: boolean
     }
+}
+
+export type AccountSettingDefaultIntegration = {
+    id: number
+    type: AccountSettingType.DefaultIntegration
+    data: Record<string, number>
 }
 
 export type AccountFeatures = Record<AccountFeature, AccountFeatureMetadata>

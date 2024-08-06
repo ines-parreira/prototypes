@@ -32,6 +32,10 @@ import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration
 
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn().mockReturnValue(false),
+}))
+
 const queryClient = mockQueryClient()
 const INTEGRATION_NAME = 'My Integration'
 const commonProps: ComponentProps<typeof EmailIntegrationUpdateContainer> = {

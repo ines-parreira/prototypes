@@ -56,6 +56,7 @@ export enum FeatureFlagKey {
     ConvertLLMProductRecommendations = 'convert-llm-product-recommendations',
     CustomerTimelineButton = 'customer-timeline-button',
     DecoupleContactForm = 'decouple-contact-form',
+    DefaultEmailAddress = 'default-email-address',
     EarlyAdopter = 'early-adopter',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',

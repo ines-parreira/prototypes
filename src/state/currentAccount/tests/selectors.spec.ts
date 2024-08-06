@@ -554,4 +554,42 @@ describe('current account selectors', () => {
             }
         )
     })
+
+    describe('getDefaultIntegrationSettings', () => {
+        it('should return the setting', () => {
+            expect(
+                selectors.getDefaultIntegrationSettings(
+                    setStateWith(
+                        defaultState,
+                        ['settings'],
+                        fromJS([
+                            {
+                                type: AccountSettingType.DefaultIntegration,
+                                data: {
+                                    email: 123,
+                                },
+                            },
+                        ])
+                    )
+                )
+            ).toEqual({
+                type: AccountSettingType.DefaultIntegration,
+                data: {
+                    email: 123,
+                },
+            })
+        })
+
+        it('should return undefined when there is no setting', () => {
+            expect(
+                selectors.getDefaultIntegrationSettings(
+                    setStateWith(
+                        defaultState,
+                        ['settings'],
+                        fromJS([{type: 'unknown'}])
+                    )
+                )
+            ).toBe(undefined)
+        })
+    })
 })
