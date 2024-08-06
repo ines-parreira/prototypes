@@ -53,6 +53,14 @@ jest.mock(
     'pages/automate/common/components/AutomateLandingPageContainer',
     () => () => <div>AutomateLandingPageContainer</div>
 )
+jest.mock(
+    'pages/convert/onboarding/components/ConvertOnboardingView',
+    () => () => <div>ConvertOnboardingView</div>
+)
+jest.mock(
+    'pages/convert/common/components/ConvertNavbar/ConvertNavbar',
+    () => () => <div>ConvertNavbar</div>
+)
 
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
@@ -93,20 +101,23 @@ describe('<Routes/>', () => {
         expect(logPageMock).not.toHaveBeenCalled()
     })
 
-    it('should log page change after location change to the stats page', () => {
-        renderWithRouter(
-            <Provider store={mockStore({})}>
-                <Routes />
-            </Provider>,
-            {
-                history: mockHistory,
-            }
-        )
+    it.each(['/app/stats/live-overview', '/app/convert/setup'])(
+        'should log page change after location change to a tracked page',
+        (path) => {
+            renderWithRouter(
+                <Provider store={mockStore({})}>
+                    <Routes />
+                </Provider>,
+                {
+                    history: mockHistory,
+                }
+            )
 
-        act(() => mockHistory.push('/app/stats/live-overview'))
+            act(() => mockHistory.push(path))
 
-        expect(logPageMock).toHaveBeenCalledTimes(1)
-    })
+            expect(logPageMock).toHaveBeenCalledTimes(1)
+        }
+    )
 
     it('should make Shopify route available for impersonated admin users', () => {
         window.USER_IMPERSONATED = true

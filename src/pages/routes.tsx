@@ -245,7 +245,9 @@ export function AppRoutes() {
                 <StatsRoutes />
             </Route>
             <Route path={`${path}/automation`} render={AutomationRoutes} />
-            <Route path={`${path}/convert`} render={ConvertRoutes} />
+            <Route path={`${path}/convert`}>
+                <ConvertRoutes />
+            </Route>
             <Route path={`${path}/settings`}>
                 <SettingsRoutes />
             </Route>
@@ -1920,6 +1922,10 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
 }
 
 export function ConvertRoutes() {
+    const location = useLocation()
+
+    useEffect(logPageChange, [location.pathname])
+
     return (
         <RevenueAddonApiClientProvider>
             <Switch>
