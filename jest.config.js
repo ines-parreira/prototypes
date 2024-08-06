@@ -29,6 +29,7 @@ module.exports = {
         '!**/*.stories.*',
         '!**/fixtures/**',
         '!**/fixtures.ts',
+        '!<rootDir>/tests/reactQueryTestingUtils.tsx',
     ],
 
     // The directory where Jest should output its coverage files

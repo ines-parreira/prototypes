@@ -7,20 +7,20 @@ import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
 
 import {ActionTemplate} from '../types'
-import {GetAppFromTemplate} from '../hooks/useGetAppFromTemplate'
+import {GetAppFromTemplateApp} from '../hooks/useGetAppFromTemplateApp'
 
 import css from './ActionsPlatformTemplatesTableRow.less'
 
 type Props = {
     template: Pick<ActionTemplate, 'apps' | 'name' | 'updated_datetime'>
-    getAppFromTemplate: GetAppFromTemplate
+    getAppFromTemplateApp: GetAppFromTemplateApp
 }
 
 const ActionsPlatformTemplatesTableRow = ({
     template,
-    getAppFromTemplate,
+    getAppFromTemplateApp,
 }: Props) => {
-    const app = getAppFromTemplate(template.apps[0])
+    const app = getAppFromTemplateApp(template.apps[0])
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.CompactDate
     )

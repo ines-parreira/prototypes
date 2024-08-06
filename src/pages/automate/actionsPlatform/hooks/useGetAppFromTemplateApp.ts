@@ -2,7 +2,7 @@ import {useCallback} from 'react'
 
 import {ActionTemplate, App} from '../types'
 
-export type GetAppFromTemplate = (
+export type GetAppFromTemplateApp = (
     templateApp: ActionTemplate['apps'][number]
 ) => App | undefined
 
@@ -10,8 +10,8 @@ type Props = {
     apps: App[]
 }
 
-const useGetAppFromTemplate = ({apps}: Props) => {
-    return useCallback<GetAppFromTemplate>(
+const useGetAppFromTemplateApp = ({apps}: Props) => {
+    return useCallback<GetAppFromTemplateApp>(
         (templateApp) => {
             switch (templateApp.type) {
                 case 'shopify':
@@ -29,4 +29,4 @@ const useGetAppFromTemplate = ({apps}: Props) => {
     )
 }
 
-export default useGetAppFromTemplate
+export default useGetAppFromTemplateApp

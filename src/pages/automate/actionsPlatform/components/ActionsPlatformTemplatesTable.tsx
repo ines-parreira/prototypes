@@ -6,7 +6,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import useOrderBy from 'hooks/useOrderBy'
 
-import {GetAppFromTemplate} from '../hooks/useGetAppFromTemplate'
+import {GetAppFromTemplateApp} from '../hooks/useGetAppFromTemplateApp'
 import {ActionTemplate} from '../types'
 import ActionsPlatformTemplatesTableRow from './ActionsPlatformTemplatesTableRow'
 
@@ -15,12 +15,12 @@ type Props = {
         ActionTemplate,
         'id' | 'apps' | 'name' | 'updated_datetime'
     >[]
-    getAppFromTemplate: GetAppFromTemplate
+    getAppFromTemplateApp: GetAppFromTemplateApp
 }
 
 const ActionsPlatformTemplatesTable = ({
     templates,
-    getAppFromTemplate,
+    getAppFromTemplateApp,
 }: Props) => {
     const {orderDirection, orderBy, orderParam, toggleOrderBy} =
         useOrderBy<'updated_datetime'>('updated_datetime')
@@ -59,7 +59,7 @@ const ActionsPlatformTemplatesTable = ({
                     <ActionsPlatformTemplatesTableRow
                         key={template.id}
                         template={template}
-                        getAppFromTemplate={getAppFromTemplate}
+                        getAppFromTemplateApp={getAppFromTemplateApp}
                     />
                 ))}
             </TableBody>

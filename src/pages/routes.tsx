@@ -1503,6 +1503,17 @@ function AutomationContent() {
 
     return (
         <Switch>
+            <Route path={`${path}/actions-platform`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformTemplatesView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/apps`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformAppsView />
+                )}
+            </Route>
+
             <Route path={`${path}/ai-recommendations`} exact>
                 <SelfServiceHelpCentersProvider>
                     {isAutomateTopQuestionsEnabled && (
@@ -1784,20 +1795,6 @@ function AutomationContent() {
             <Route path={`${path}`} exact>
                 <AutomateLandingPageContainer />
             </Route>
-            {isActionsInternalPlatformEnabled && (
-                <Switch>
-                    <Route
-                        path={`${path}/actions-platform`}
-                        exact
-                        component={ActionsPlatformTemplatesView}
-                    />
-                    <Route
-                        path={`${path}/actions-platform/apps`}
-                        exact
-                        component={ActionsPlatformAppsView}
-                    />
-                </Switch>
-            )}
             <Route>
                 <Redirect to={`${path}`} />
             </Route>

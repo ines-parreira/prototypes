@@ -1,0 +1,45 @@
+import {renderHook} from '@testing-library/react-hooks'
+
+import {IntegrationType} from 'models/integration/constants'
+
+import {App} from '../../types'
+import useGetAppFromActionsApp from '../useGetAppFromActionsApp'
+
+describe('useGetAppFromActionsApp()', () => {
+    const shopifyApp: App = {
+        icon: '/assets/img/integrations/shopify.png',
+        id: 'shopify',
+        name: 'Shopify',
+        type: IntegrationType.Shopify,
+    }
+    const rechargeApp: App = {
+        icon: '/assets/img/integrations/recharge.svg',
+        id: 'recharge',
+        name: 'Recharge',
+        type: IntegrationType.Recharge,
+    }
+    const testApp: App = {
+        icon: 'https://ok.com/1.png',
+        id: 'someid',
+        name: 'My test app',
+        type: IntegrationType.App,
+    }
+
+    const apps: App[] = [shopifyApp, rechargeApp, testApp]
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
+    it('should get app from Actions app', () => {
+        const {result} = renderHook(() => useGetAppFromActionsApp({apps}))
+
+        expect(result.current({id: 'someid'})).toEqual(testApp)
+    })
+
+    it('should return undefined is app does not exist', () => {
+        const {result} = renderHook(() => useGetAppFromActionsApp({apps}))
+
+        expect(result.current({id: 'someid2'})).toBeUndefined()
+    })
+})

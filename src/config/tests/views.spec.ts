@@ -20,8 +20,6 @@ import {
 } from 'models/view/types'
 import {getLDClient} from 'utils/launchDarkly'
 
-global.console.error = jest.fn()
-
 jest.mock('utils/launchDarkly')
 const variationMock = getLDClient().variation as jest.Mock
 
@@ -36,8 +34,10 @@ describe('Config: views', () => {
         })
 
         it('returns empty string if wrong value and call console.error', () => {
+            const consoleErrorSpy = jest.spyOn(console, 'error')
+
             expect(viewsConfig.defaultCell('unknown', ticket)).toBe('')
-            expect(console.error).toBeCalled()
+            expect(consoleErrorSpy).toBeCalled()
             expect(viewsConfig.defaultCell('status', fromJS({}))).toBe('')
         })
     })

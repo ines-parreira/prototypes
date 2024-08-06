@@ -12,7 +12,7 @@ const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
 
 mockUseGetDateAndTimeFormat.mockReturnValue('MM/DD/YYYY')
 
-const mockGetAppFromTemplate = jest.fn().mockReturnValue({
+const mockGetAppFromTemplateApp = jest.fn().mockReturnValue({
     icon: '/assets/img/integrations/shopify.png',
     id: 'shopify',
     name: 'Shopify',
@@ -28,7 +28,7 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
                     apps: [{type: 'shopify'}],
                     updated_datetime: '2024-08-02T08:18:51.611Z',
                 }}
-                getAppFromTemplate={mockGetAppFromTemplate}
+                getAppFromTemplateApp={mockGetAppFromTemplateApp}
             />
         )
 

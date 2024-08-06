@@ -34,7 +34,7 @@ describe('<ActionsPlatformTemplatesTable />', () => {
                         updated_datetime: '2024-08-01T08:18:51.611Z',
                     },
                 ]}
-                getAppFromTemplate={jest.fn()}
+                getAppFromTemplateApp={jest.fn()}
             />
         )
 
@@ -60,7 +60,7 @@ describe('<ActionsPlatformTemplatesTable />', () => {
                         updated_datetime: '2024-08-01T08:18:51.611Z',
                     },
                 ]}
-                getAppFromTemplate={jest.fn()}
+                getAppFromTemplateApp={jest.fn()}
             />
         )
 

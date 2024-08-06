@@ -6,6 +6,7 @@ import {
     QueryKey,
 } from '@tanstack/react-query'
 import {render} from '@testing-library/react'
+import {renderHook} from '@testing-library/react-hooks'
 
 export function mockQueryClient({
     cachedData,
@@ -50,6 +51,20 @@ export const renderWithQueryClientProvider = (ui: ReactElement) => {
     const queryClient = mockQueryClient()
 
     return render(ui, {
+        wrapper: ({children}: any) => (
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
+        ),
+    })
+}
+
+export const renderHookWithQueryClientProvider = <TProps, TResult>(
+    callback: (props: TProps) => TResult
+) => {
+    const queryClient = mockQueryClient()
+
+    return renderHook(callback, {
         wrapper: ({children}: any) => (
             <QueryClientProvider client={queryClient}>
                 {children}

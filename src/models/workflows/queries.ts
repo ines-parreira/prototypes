@@ -56,6 +56,8 @@ export const storeWorkflowsEntrypointsDefinitionKeys = {
 
 export const actionsAppDefinitionKeys = {
     all: () => [ACTIONS_APP_QUERY_KEY] as const,
+    lists: () => [...actionsAppDefinitionKeys.all(), 'list'] as const,
+    list: () => [...actionsAppDefinitionKeys.lists()] as const,
     get: (id?: string) => [...actionsAppDefinitionKeys.all(), id],
 }
 
@@ -369,6 +371,27 @@ export const useGetActionsApp = (id?: string) => {
             return response.data
         },
         select: (data) => data.find((app) => app.id === id),
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+    })
+}
+
+export const useListActionsApps = () => {
+    return useQuery({
+        queryKey: actionsAppDefinitionKeys.list(),
+        queryFn: async () => {
+            const client = await getGorgiasWfApiClient()
+            const response = await client.AppController_list(
+                {},
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: true,
+                    },
+                }
+            )
+            return response.data
+        },
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
     })
