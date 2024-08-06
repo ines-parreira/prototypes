@@ -17,7 +17,7 @@ export const AiAgentGuidanceTemplatesView = ({shopName}: Props) => {
             <BackLink path={routes.guidance} label="Back to Guidance" />
 
             <h3 className="heading-section-semibold mb-0">
-                Start with a template that you can customize to fit your needs:
+                Start with a template that you can customize to fit your needs
             </h3>
 
             <GuidanceTemplatesList

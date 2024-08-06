@@ -1,4 +1,5 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/new/mixins.less';
 
 :local {
     .container {
@@ -7,5 +8,21 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: @layout-spacing-s;
+
+        @media @mobiles {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        @media @tablets {
+            grid-template-columns: repeat(2, minmax(233px, 1fr));
+        }
+
+        @media @desktops {
+            grid-template-columns: repeat(2, minmax(346px, 1fr));
+        }
+
+        @media @large-desktops {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
     }
 }

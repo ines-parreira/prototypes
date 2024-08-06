@@ -11,6 +11,7 @@
         padding: @layout-spacing-s;
         cursor: pointer;
         transition: ease-in-out 0.2s;
+        gap: 12px;
 
         &.default:hover {
             box-shadow: 4px 4px 16px 0px rgba(22, 22, 22, 0.1);
@@ -29,7 +30,6 @@
     .header {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 12px;
         color: var(--neutral-grey-3);
     }
 
@@ -53,7 +53,11 @@
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
-        overflow: hidden;
+    }
+
+    .onlyTitle {
+        .heading-subsection-semibold();
+        min-height: 4.5em;
     }
 
     .description {

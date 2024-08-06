@@ -52,8 +52,6 @@ describe('<AiAgentGuidanceTemplatesContainer />', () => {
         renderComponent()
 
         expect(screen.getByText(template.name)).toBeInTheDocument()
-        expect(
-            screen.getByText('Create a guidance for your specific requirements')
-        ).toBeInTheDocument()
+        expect(screen.getByText('Create custom Guidance')).toBeInTheDocument()
     })
 })

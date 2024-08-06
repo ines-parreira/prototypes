@@ -12,7 +12,7 @@ import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import {CreateNewGuidanceCard} from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
 import css from './GuidanceEmptyState.less'
 
-const SHOW_TEMPLATES_COUNT = 5
+const SHOW_TEMPLATES_COUNT = 7
 
 type Props = {
     shopName: string
@@ -48,14 +48,11 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
                                 AI Powered
                             </Badge>
                         </div>
-                        <p className={css.title}>
-                            Create Guidance to ensure AI Agent handles requests
-                            according to your support policies
-                        </p>
+                        <p className={css.title}>Get started with Guidance</p>
                         <p className={css.subtitle}>
-                            Guidance is internal-facing knowledge that allows
-                            you to customize AI Agent's behavior and fine-tune
-                            how it handles customer requests.
+                            Add Guidance to tell AI Agent how to handle specific
+                            topics or inquiries, and when to escalate tickets to
+                            your team.
                         </p>
                     </div>
                     <div className={css.imageWrapper}>

@@ -14,9 +14,10 @@ import css from './Card.less'
 type Props = {
     buttonLabel?: string
     className?: string
-    description: string
+    description?: string
     icon?: ReactNode
     onClick?: MouseEventHandler<HTMLDivElement>
+    showOnlyTitle?: boolean
     style?: CSSProperties
     tag?: ReactNode
     title: string
@@ -28,6 +29,7 @@ function BaseCard({
     description,
     icon,
     onClick,
+    showOnlyTitle,
     style,
     tag,
     title,
@@ -58,10 +60,15 @@ function BaseCard({
                     </Button>
                 )}
             </div>
-            <div className={css.text}>
-                <div className={css.title}>{title}</div>
-                <div className={css.description}>{description}</div>
-            </div>
+
+            {showOnlyTitle ? (
+                <div className={css.onlyTitle}>{title}</div>
+            ) : (
+                <div className={css.text}>
+                    <div className={css.title}>{title}</div>
+                    <div className={css.description}>{description}</div>
+                </div>
+            )}
         </div>
     )
 }

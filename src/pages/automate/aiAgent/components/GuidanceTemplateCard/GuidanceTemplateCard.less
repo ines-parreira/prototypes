@@ -1,8 +1,10 @@
 @import (reference) '~css/typography.less';
+@import '~@gorgias/design-tokens/dist/css/layout';
 
 :local {
     .card {
         height: 100%;
+        gap: @layout-spacing-s;
     }
     .tag {
         .caption-semibold();

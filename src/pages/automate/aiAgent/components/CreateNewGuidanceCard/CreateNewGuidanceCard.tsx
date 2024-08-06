@@ -12,10 +12,7 @@ export const CreateNewGuidanceCard = ({shopName}: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
     return (
         <Link to={routes.newGuidanceArticle} className={css.link}>
-            <CustomCard
-                title="Custom Guidance"
-                description="Create a guidance for your specific requirements"
-            />
+            <CustomCard title="Create custom Guidance" showOnlyTitle />
         </Link>
     )
 }
