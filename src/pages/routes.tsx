@@ -1380,12 +1380,6 @@ export function HelpCenterSettingsRoutes({
 }
 
 function AiAgentRoutes({match: {path}}: RouteComponentProps) {
-    const showAiAgentSettings: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentSettings]
-
-    const showAiAgentGuidance: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentGuidance]
-
     const showAutomateActions = useShowAutomateActions()
     const {shopType} = useParams<{
         shopType: string
@@ -1393,10 +1387,6 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
 
     if (shopType !== 'shopify') {
         return <Redirect to="/app/automation" />
-    }
-
-    if (!showAiAgentSettings) {
-        return <Route path={`${path}`} exact component={AiAgentViewContainer} />
     }
 
     return (
@@ -1441,46 +1431,38 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                             />
                         </Switch>
                     )}
-                    {showAiAgentGuidance !== false && (
-                        <AiAgentErrorBoundary section="ai-agent-guidance">
+                    <AiAgentErrorBoundary section="ai-agent-guidance">
+                        <Route
+                            path={`${path}/guidance`}
+                            exact
+                            component={AiAgentGuidanceContainer}
+                        />
+                        <Switch>
                             <Route
-                                path={`${path}/guidance`}
-                                exact
-                                component={AiAgentGuidanceContainer}
+                                path={`${path}/guidance/new`}
+                                component={AiAgentGuidanceNewContainer}
                             />
-                            <Switch>
-                                <Route
-                                    path={`${path}/guidance/new`}
-                                    component={AiAgentGuidanceNewContainer}
-                                />
 
-                                <Route
-                                    path={`${path}/guidance/templates`}
-                                    exact
-                                    component={
-                                        AiAgentGuidanceTemplatesContainer
-                                    }
-                                />
-                                <Route
-                                    path={`${path}/guidance/templates/:templateId`}
-                                    component={
-                                        AiAgentGuidanceTemplateNewContainer
-                                    }
-                                />
-                                <Route
-                                    path={`${path}/guidance/templates`}
-                                    component={
-                                        AiAgentGuidanceTemplatesContainer
-                                    }
-                                />
+                            <Route
+                                path={`${path}/guidance/templates`}
+                                exact
+                                component={AiAgentGuidanceTemplatesContainer}
+                            />
+                            <Route
+                                path={`${path}/guidance/templates/:templateId`}
+                                component={AiAgentGuidanceTemplateNewContainer}
+                            />
+                            <Route
+                                path={`${path}/guidance/templates`}
+                                component={AiAgentGuidanceTemplatesContainer}
+                            />
 
-                                <Route
-                                    path={`${path}/guidance/:articleId`}
-                                    component={AiAgentGuidanceDetailContainer}
-                                />
-                            </Switch>
-                        </AiAgentErrorBoundary>
-                    )}
+                            <Route
+                                path={`${path}/guidance/:articleId`}
+                                component={AiAgentGuidanceDetailContainer}
+                            />
+                        </Switch>
+                    </AiAgentErrorBoundary>
                 </AiAgentAccountConfigurationProvider>
             </SelfServiceHelpCentersProvider>
         </Switch>

@@ -1,7 +1,5 @@
 import React from 'react'
 import {screen} from '@testing-library/react'
-import LD from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {renderWithRouter} from 'utils/testing'
 import {AiAgentGuidanceTemplatesContainer} from '../AiAgentGuidanceTemplatesContainer'
@@ -22,10 +20,6 @@ jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceTemplates = jest.mocked(useGuidanceTemplates)
 
-jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-    [FeatureFlagKey.AiAgentGuidance]: true,
-    [FeatureFlagKey.AiAgentSettings]: true,
-}))
 const helpCenter = getHelpCentersResponseFixture.data[0]
 
 const renderComponent = () => {

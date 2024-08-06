@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import _isEqual from 'lodash/isEqual'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {notify} from 'state/notifications/actions'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import BackLink from 'pages/common/components/BackLink'
@@ -11,7 +10,6 @@ import InputField from 'pages/common/forms/input/InputField'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {NotificationStatus} from 'state/notifications/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {GuidanceEditor} from '../GuidanceEditor/GuidanceEditor'
 
@@ -42,8 +40,6 @@ export const GuidanceForm = ({
     onDelete,
     actionType,
 }: Props) => {
-    const isGuidanceToggleEnabled: undefined | boolean =
-        useFlags()[FeatureFlagKey.AiAgentGuidanceToggle]
     const dispatch = useAppDispatch()
     const {routes} = useAiAgentNavigation({shopName})
     const initialFormState = initialFields ?? FORM_INITIAL_STATE
@@ -159,16 +155,14 @@ export const GuidanceForm = ({
                         height={320}
                     />
 
-                    {isGuidanceToggleEnabled && (
-                        <ToggleInput
-                            isToggled={formState.isVisible}
-                            onClick={(val) => {
-                                void onChangeVisibility(val)
-                            }}
-                        >
-                            Available for AI Agent
-                        </ToggleInput>
-                    )}
+                    <ToggleInput
+                        isToggled={formState.isVisible}
+                        onClick={(val) => {
+                            void onChangeVisibility(val)
+                        }}
+                    >
+                        Available for AI Agent
+                    </ToggleInput>
                 </div>
 
                 <div className={css.btnGroup}>

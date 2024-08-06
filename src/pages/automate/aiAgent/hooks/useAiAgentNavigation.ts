@@ -1,13 +1,8 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
 import {ACTIONS} from 'pages/automate/common/components/constants'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
 
 export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
-    const showGuidance: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentGuidance]
-
     const showAutomateActions = useShowAutomateActions()
 
     const routes = useMemo(
@@ -34,15 +29,11 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
 
     const headerNavbarItems = useMemo(
         () => [
-            ...(showGuidance
-                ? [
-                      {
-                          route: routes.guidance,
-                          title: 'Guidance',
-                          exact: false,
-                      },
-                  ]
-                : []),
+            {
+                route: routes.guidance,
+                title: 'Guidance',
+                exact: false,
+            },
             ...(showAutomateActions
                 ? [
                       {
@@ -64,7 +55,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                 title: 'Test',
             },
         ],
-        [routes, showGuidance, showAutomateActions]
+        [routes, showAutomateActions]
     )
 
     return {headerNavbarItems, routes}

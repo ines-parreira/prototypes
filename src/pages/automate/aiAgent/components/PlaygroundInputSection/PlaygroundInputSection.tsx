@@ -1,11 +1,9 @@
 import React, {ReactNode, useCallback} from 'react'
 
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Tooltip} from '@gorgias/ui-kit'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {PlaygroundEditor} from '../PlaygroundEditor/PlaygroundEditor'
 import {PlaygroundFormValues} from '../PlaygroundChat/PlaygroundChat.types'
 import {PlaygroundCustomerSelection} from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
@@ -34,9 +32,6 @@ export const PlaygroundInputSection = ({
     onNewConversation,
     isMessageSending,
 }: Props) => {
-    const isPlaygroundPredefinedMessages: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentPlaygroundPredefinedMessages]
-
     const handleMessageChange = (message: string) => {
         onFormValuesChange('message', message)
     }
@@ -89,9 +84,7 @@ export const PlaygroundInputSection = ({
                     value={formValues.message}
                     onMessageChange={handleMessageChange}
                     onSubjectChange={handleSubjectChange}
-                    enablePredefinedMessages={
-                        isPlaygroundPredefinedMessages && !isMessageSending
-                    }
+                    enablePredefinedMessages={!isMessageSending}
                 />
             </div>
             <div className={classnames(css.section, css.footer)}>

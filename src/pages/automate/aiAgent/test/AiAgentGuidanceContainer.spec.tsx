@@ -1,12 +1,10 @@
 import React from 'react'
 import {fireEvent, screen, within} from '@testing-library/react'
-import LD from 'launchdarkly-react-client-sdk'
 import userEvent from '@testing-library/user-event'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {reportError} from 'utils/errors'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {renderWithRouter} from 'utils/testing'
 import {AiAgentGuidanceContainer} from '../AiAgentGuidanceContainer'
@@ -41,11 +39,6 @@ const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 const mockedUseStoreConfiguration = jest.mocked(useStoreConfiguration)
 
-jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-    [FeatureFlagKey.AiAgentGuidance]: true,
-    [FeatureFlagKey.AiAgentSettings]: true,
-    [FeatureFlagKey.AiAgentGuidanceToggle]: true,
-}))
 const helpCenter = {...getHelpCentersResponseFixture.data[0], type: 'guidance'}
 const defaultGuidanceArticleProps: ReturnType<typeof useGuidanceArticles> = {
     guidanceArticles: [],

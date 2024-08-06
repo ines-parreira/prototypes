@@ -1,10 +1,8 @@
 import React from 'react'
-import LD from 'launchdarkly-react-client-sdk'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {renderWithRouter} from 'utils/testing'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 import {useGuidanceTemplate} from '../hooks/useGuidanceTemplate'
@@ -28,10 +26,6 @@ jest.mock(
         return ComponentToMock
     }
 )
-jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-    [FeatureFlagKey.AiAgentGuidance]: true,
-    [FeatureFlagKey.AiAgentGuidanceToggle]: true,
-}))
 
 const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)

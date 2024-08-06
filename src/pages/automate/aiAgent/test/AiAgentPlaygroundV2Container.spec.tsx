@@ -1,15 +1,9 @@
 // import React from 'react'
-import LD from 'launchdarkly-react-client-sdk'
 // import {screen} from '@testing-library/react'
 // import {renderWithRouter} from 'utils/testing'
-import {FeatureFlagKey} from 'config/featureFlags'
 // import {AiAgentPlaygroundContainerV2} from '../AiAgentPlaygroundV2Container'
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
-jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-    [FeatureFlagKey.AiAgentGuidance]: true,
-    [FeatureFlagKey.AiAgentSettings]: true,
-}))
 
 // const renderComponent = () => {
 //     return renderWithRouter(<AiAgentPlaygroundContainerV2 />, {
