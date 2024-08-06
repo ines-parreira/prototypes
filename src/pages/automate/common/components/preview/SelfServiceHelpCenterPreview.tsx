@@ -19,11 +19,10 @@ type Props = {
 }
 
 const SelfServiceHelpCenterPreview = (props: Props) => {
-    const {helpCenter} = props
     const location = useLocation()
 
     return (
-        <HelpCenterPreview name={helpCenter.name}>
+        <HelpCenterPreview>
             <React.Fragment key={location.key}>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.HOME} exact>
                     <SelfServiceHelpCenterHomePage {...props} />

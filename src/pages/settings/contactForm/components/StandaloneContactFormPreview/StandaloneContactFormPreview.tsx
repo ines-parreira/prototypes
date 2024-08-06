@@ -4,14 +4,14 @@ import css from './StandaloneContactFormPreview.less'
 
 type Props = {
     children: ReactNode
-    name: string
+    name?: string
 }
 
 const StandaloneContactFormPreview = ({children, name}: Props) => {
     return (
         <div className={css.container}>
             <div className={css.topBar} />
-            <div className={css.titleBar}>{name}</div>
+            {name && <div className={css.titleBar}>{name}</div>}
             {children}
         </div>
     )

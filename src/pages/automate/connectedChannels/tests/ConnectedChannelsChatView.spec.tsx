@@ -789,7 +789,7 @@ describe('ConnectedChannelsView', () => {
             </Router>
         )
 
-        expect(screen.queryByText(/Try it live/i)).not.toBeInTheDocument()
+        expect(screen.queryByText(/Test/i)).not.toBeInTheDocument()
     })
 
     it(`will call 'handleUpdate' when switching off the quick-responses`, () => {

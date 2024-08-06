@@ -103,16 +103,12 @@ export const PreviewChannelButton = ({
             </Tooltip>
 
             <Button
-                fillStyle="ghost"
-                intent="secondary"
                 onClick={onPreview}
                 id={TOOLTIP_TARGET_ID}
                 isDisabled={!!disableMessage}
                 data-testid="preview-button"
             >
-                <ButtonIconLabel icon="open_in_new">
-                    Try it live
-                </ButtonIconLabel>
+                <ButtonIconLabel icon="open_in_new">Test</ButtonIconLabel>
             </Button>
         </>
     )

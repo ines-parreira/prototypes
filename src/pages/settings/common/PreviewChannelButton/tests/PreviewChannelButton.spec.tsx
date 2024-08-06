@@ -16,7 +16,7 @@ describe('<PreviewChannelButton />', () => {
     it('should render button', () => {
         renderComponent({})
 
-        expect(screen.getByText('Try it live')).toBeInTheDocument()
+        expect(screen.getByText('Test')).toBeInTheDocument()
     })
 
     it('should show disable message when help center not published', async () => {

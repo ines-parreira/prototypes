@@ -20,7 +20,7 @@ const SelfServiceStandaloneContactFormPreview = (props: Props) => {
         ContactFormDisplayMode.SHOW_AFTER_BUTTON_CLICK
 
     return (
-        <StandaloneContactFormPreview name={contactForm.name}>
+        <StandaloneContactFormPreview>
             <React.Fragment key={location.key}>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.HOME} exact>
                     <SelfServiceStandaloneContactFormHomePage
