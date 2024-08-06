@@ -2,6 +2,7 @@ import React, {useMemo} from 'react'
 
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
+import {OutOfStockProductPagesTrigger} from 'pages/convert/campaigns/components/AdvancedTriggerFactory/OutOfStockProductPagesTrigger'
 import {useTriggers} from '../../containers/TriggersProvider'
 
 import {isAllowedToUpdateTrigger} from '../../utils/isAllowedToUpdateTrigger'
@@ -87,6 +88,8 @@ export const AdvancedTriggerFactory = ({
                 return <CustomerCountryTrigger {...baseProps} />
             case CampaignTriggerType.OrderedProducts:
                 return <OrderedProductsTriggers {...baseProps} />
+            case CampaignTriggerType.OutOfStockProductPages:
+                return <OutOfStockProductPagesTrigger />
 
             default:
                 return <div />

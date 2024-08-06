@@ -6,641 +6,6 @@
         "version": "0.1.0"
     },
     "paths": {
-        "/assistant/configs/revenue/{revenue_id}": {
-            "get": {
-                "tags": ["configs"],
-                "summary": "Get Config",
-                "operationId": "get_config_by_revenue_id",
-                "deprecated": true,
-                "parameters": [
-                    {
-                        "name": "revenue_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {"type": "string", "title": "Revenue Id"}
-                    },
-                    {
-                        "name": "widget-app-id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
-                            "title": "Widget-App-Id"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ConfigSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/assistant/configs/{revenue_id}": {
-            "get": {
-                "tags": ["configs"],
-                "summary": "Get Config",
-                "operationId": "get_config_by_revenue_id",
-                "parameters": [
-                    {
-                        "name": "revenue_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {"type": "string", "title": "Revenue Id"}
-                    },
-                    {
-                        "name": "widget-app-id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
-                            "title": "Widget-App-Id"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ConfigSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/assistant/configs/shop/{shop_name}": {
-            "get": {
-                "tags": ["configs"],
-                "summary": "Get Config By Shop Name",
-                "operationId": "get_config_by_shop_name",
-                "parameters": [
-                    {
-                        "name": "shop_name",
-                        "in": "path",
-                        "required": true,
-                        "schema": {"type": "string", "title": "Shop Name"}
-                    },
-                    {
-                        "name": "widget-app-id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
-                            "title": "Widget-App-Id"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ConfigSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/campaigns": {
-            "post": {
-                "tags": ["campaigns"],
-                "summary": "Create Campaign",
-                "operationId": "create_campaign",
-                "security": [{"HTTPBearer": []}],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CampaignCreateRequestSchema"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CampaignResponseSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "get": {
-                "tags": ["campaigns"],
-                "summary": "Get Campaigns",
-                "operationId": "get_campaigns",
-                "security": [{"HTTPBearer": []}],
-                "parameters": [
-                    {
-                        "name": "channel_connection_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
-                            "description": "Channel connection ID to which campaigns belong",
-                            "title": "Channel Connection Id"
-                        },
-                        "description": "Channel connection ID to which campaigns belong"
-                    },
-                    {
-                        "name": "channel_connection_external_ids",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "anyOf": [
-                                {"type": "array", "items": {"type": "string"}},
-                                {"type": "null"}
-                            ],
-                            "description": "Channel connection external ID",
-                            "title": "Channel Connection External Ids"
-                        },
-                        "description": "Channel connection external ID"
-                    },
-                    {
-                        "name": "deleted",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean",
-                            "description": "Include deleted campaigns",
-                            "default": false,
-                            "title": "Deleted"
-                        },
-                        "description": "Include deleted campaigns"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CampaignResponseSchema"
-                                    },
-                                    "title": "Response Get Campaigns"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/campaigns/all": {
-            "get": {
-                "tags": ["campaigns"],
-                "summary": "Get All Campaigns",
-                "operationId": "get_all_campaigns",
-                "parameters": [
-                    {
-                        "name": "data-token",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
-                            "title": "Data-Token"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CampaignResponseSchema"
-                                    },
-                                    "title": "Response Get All Campaigns"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/campaigns/{campaign_id}": {
-            "get": {
-                "tags": ["campaigns"],
-                "summary": "Get Campaign",
-                "operationId": "get_campaign",
-                "security": [{"HTTPBearer": []}],
-                "parameters": [
-                    {
-                        "name": "campaign_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {"type": "string", "title": "Campaign Id"}
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CampaignResponseSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "tags": ["campaigns"],
-                "summary": "Patch Campaign",
-                "operationId": "patch_campaign",
-                "security": [{"HTTPBearer": []}],
-                "parameters": [
-                    {
-                        "name": "campaign_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {"type": "string", "title": "Campaign Id"}
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CampaignPatchRequestSchema"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CampaignResponseSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "tags": ["campaigns"],
-                "summary": "Delete Campaign",
-                "operationId": "delete_campaign",
-                "security": [{"HTTPBearer": []}],
-                "parameters": [
-                    {
-                        "name": "campaign_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {"type": "string", "title": "Campaign Id"}
-                    }
-                ],
-                "responses": {
-                    "204": {"description": "Successful Response"},
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/channel-connections": {
-            "post": {
-                "tags": ["channel-connections"],
-                "summary": "Create Channel Connection",
-                "operationId": "create_channel_connection",
-                "security": [{"HTTPBearer": []}],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ChannelConnectionCreateRequestSchema"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "get": {
-                "tags": ["channel-connections"],
-                "summary": "Get Channel Connections",
-                "operationId": "get_channel_connections",
-                "security": [{"HTTPBearer": []}],
-                "parameters": [
-                    {
-                        "name": "store_integration_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "anyOf": [{"type": "integer"}, {"type": "null"}],
-                            "description": "Gorgias integration ID for the store",
-                            "title": "Store Integration Id"
-                        },
-                        "description": "Gorgias integration ID for the store"
-                    },
-                    {
-                        "name": "external_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
-                            "description": "External ID connected to the Channel connection, usually dependent on the channel type",
-                            "title": "External Id"
-                        },
-                        "description": "External ID connected to the Channel connection, usually dependent on the channel type"
-                    },
-                    {
-                        "name": "channel",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "anyOf": [
-                                {"$ref": "#/components/schemas/ChannelType"},
-                                {"type": "null"}
-                            ],
-                            "description": "Channel type, e.g. widget",
-                            "title": "Channel"
-                        },
-                        "description": "Channel type, e.g. widget"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
-                                    },
-                                    "title": "Response Get Channel Connections"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/channel-connections/{channel_connection_id}": {
-            "get": {
-                "tags": ["channel-connections"],
-                "summary": "Get Channel Connection",
-                "operationId": "get_channel_connection",
-                "security": [{"HTTPBearer": []}],
-                "parameters": [
-                    {
-                        "name": "channel_connection_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "title": "Channel Connection Id"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "tags": ["channel-connections"],
-                "summary": "Patch Channel Connection",
-                "operationId": "patch_channel_connection",
-                "security": [{"HTTPBearer": []}],
-                "parameters": [
-                    {
-                        "name": "channel_connection_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "title": "Channel Connection Id"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ChannelPatchRequestSchema"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "tags": ["channel-connections"],
-                "summary": "Delete Channel Connection",
-                "operationId": "delete_channel_connection",
-                "security": [{"HTTPBearer": []}],
-                "parameters": [
-                    {
-                        "name": "channel_connection_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "title": "Channel Connection Id"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {"description": "Successful Response"},
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/ab-tests": {
             "post": {
                 "tags": ["ab-tests"],
@@ -857,6 +222,145 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/EvaluationResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/assistant/configs/revenue/{revenue_id}": {
+            "get": {
+                "tags": ["configs"],
+                "summary": "Get Config",
+                "operationId": "get_config_assistant_configs_revenue__revenue_id__get",
+                "deprecated": true,
+                "parameters": [
+                    {
+                        "name": "revenue_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Revenue Id"}
+                    },
+                    {
+                        "name": "widget-app-id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "title": "Widget-App-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConfigSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/assistant/configs/{revenue_id}": {
+            "get": {
+                "tags": ["configs"],
+                "summary": "Get Config",
+                "operationId": "get_config_by_revenue_id",
+                "parameters": [
+                    {
+                        "name": "revenue_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Revenue Id"}
+                    },
+                    {
+                        "name": "widget-app-id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "title": "Widget-App-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConfigSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/assistant/configs/shop/{shop_name}": {
+            "get": {
+                "tags": ["configs"],
+                "summary": "Get Config By Shop Name",
+                "operationId": "get_config_by_shop_name",
+                "parameters": [
+                    {
+                        "name": "shop_name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Shop Name"}
+                    },
+                    {
+                        "name": "widget-app-id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "title": "Widget-App-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConfigSchema"
                                 }
                             }
                         }
@@ -1771,6 +1275,664 @@
                 "security": [{"HTTPBearer": []}]
             }
         },
+        "/campaigns": {
+            "post": {
+                "tags": ["campaigns"],
+                "summary": "Create Campaign",
+                "operationId": "create_campaign",
+                "security": [{"HTTPBearer": []}],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CampaignCreateRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CampaignResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": ["campaigns"],
+                "summary": "Get Campaigns",
+                "operationId": "get_campaigns",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "description": "Channel connection ID to which campaigns belong",
+                            "title": "Channel Connection Id"
+                        },
+                        "description": "Channel connection ID to which campaigns belong"
+                    },
+                    {
+                        "name": "channel_connection_external_ids",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {"type": "array", "items": {"type": "string"}},
+                                {"type": "null"}
+                            ],
+                            "description": "Channel connection external ID",
+                            "title": "Channel Connection External Ids"
+                        },
+                        "description": "Channel connection external ID"
+                    },
+                    {
+                        "name": "deleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "description": "Include deleted campaigns",
+                            "default": false,
+                            "title": "Deleted"
+                        },
+                        "description": "Include deleted campaigns"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CampaignResponseSchema"
+                                    },
+                                    "title": "Response Get Campaigns"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/campaigns/all": {
+            "get": {
+                "tags": ["campaigns"],
+                "summary": "Get All Campaigns",
+                "operationId": "get_all_campaigns",
+                "parameters": [
+                    {
+                        "name": "data-token",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "title": "Data-Token"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CampaignResponseSchema"
+                                    },
+                                    "title": "Response Get All Campaigns"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/campaigns/{campaign_id}": {
+            "get": {
+                "tags": ["campaigns"],
+                "summary": "Get Campaign",
+                "operationId": "get_campaign",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "campaign_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Campaign Id"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CampaignResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["campaigns"],
+                "summary": "Patch Campaign",
+                "operationId": "patch_campaign",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "campaign_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Campaign Id"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CampaignPatchRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CampaignResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["campaigns"],
+                "summary": "Delete Campaign",
+                "operationId": "delete_campaign",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "campaign_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Campaign Id"}
+                    }
+                ],
+                "responses": {
+                    "204": {"description": "Successful Response"},
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/campaigns/{campaign_id}/ab-test": {
+            "post": {
+                "tags": ["campaigns"],
+                "summary": "Create Ab Group",
+                "operationId": "create_ab_group",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "campaign_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Campaign Id"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ABGroupResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/campaigns/{campaign_id}/ab-test/start": {
+            "post": {
+                "tags": ["campaigns"],
+                "summary": "Start Ab Group",
+                "operationId": "start_ab_group",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "campaign_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Campaign Id"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ABGroupResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/campaigns/{campaign_id}/ab-test/pause": {
+            "post": {
+                "tags": ["campaigns"],
+                "summary": "Pause Ab Group",
+                "operationId": "pause_ab_group",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "campaign_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Campaign Id"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ABGroupResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/campaigns/{campaign_id}/ab-test/stop": {
+            "post": {
+                "tags": ["campaigns"],
+                "summary": "Stop Ab Group",
+                "operationId": "stop_ab_group",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "campaign_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Campaign Id"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ABGroupStopRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ABGroupResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/channel-connections": {
+            "post": {
+                "tags": ["channel-connections"],
+                "summary": "Create Channel Connection",
+                "operationId": "create_channel_connection",
+                "security": [{"HTTPBearer": []}],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChannelConnectionCreateRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": ["channel-connections"],
+                "summary": "Get Channel Connections",
+                "operationId": "get_channel_connections",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "store_integration_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "integer"}, {"type": "null"}],
+                            "description": "Gorgias integration ID for the store",
+                            "title": "Store Integration Id"
+                        },
+                        "description": "Gorgias integration ID for the store"
+                    },
+                    {
+                        "name": "external_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "description": "External ID connected to the Channel connection, usually dependent on the channel type",
+                            "title": "External Id"
+                        },
+                        "description": "External ID connected to the Channel connection, usually dependent on the channel type"
+                    },
+                    {
+                        "name": "channel",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {"$ref": "#/components/schemas/ChannelType"},
+                                {"type": "null"}
+                            ],
+                            "description": "Channel type, e.g. widget",
+                            "title": "Channel"
+                        },
+                        "description": "Channel type, e.g. widget"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
+                                    },
+                                    "title": "Response Get Channel Connections"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/channel-connections/{channel_connection_id}": {
+            "get": {
+                "tags": ["channel-connections"],
+                "summary": "Get Channel Connection",
+                "operationId": "get_channel_connection",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Channel Connection Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["channel-connections"],
+                "summary": "Patch Channel Connection",
+                "operationId": "patch_channel_connection",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Channel Connection Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChannelPatchRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["channel-connections"],
+                "summary": "Delete Channel Connection",
+                "operationId": "delete_channel_connection",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Channel Connection Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {"description": "Successful Response"},
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/billing/subscriptions/account-status": {
             "get": {
                 "tags": ["subscriptions"],
@@ -1919,6 +2081,60 @@
     },
     "components": {
         "schemas": {
+            "ABGroupResponseSchema": {
+                "properties": {
+                    "winner_variant_id": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 36},
+                            {"type": "null"}
+                        ],
+                        "title": "Winner Variant Id"
+                    },
+                    "status": {"$ref": "#/components/schemas/ABGroupStatus"},
+                    "started_datetime": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Started Datetime"
+                    },
+                    "stopped_datetime": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Stopped Datetime"
+                    },
+                    "campaign_id": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 36},
+                            {"type": "null"}
+                        ],
+                        "title": "Campaign Id"
+                    }
+                },
+                "type": "object",
+                "required": ["status"],
+                "title": "ABGroupResponseSchema"
+            },
+            "ABGroupStatus": {
+                "type": "string",
+                "enum": ["draft", "started", "paused", "completed"],
+                "title": "ABGroupStatus"
+            },
+            "ABGroupStopRequestSchema": {
+                "properties": {
+                    "winner_variant_id": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 36},
+                            {"type": "null"}
+                        ],
+                        "title": "Winner Variant Id"
+                    }
+                },
+                "type": "object",
+                "title": "ABGroupStopRequestSchema"
+            },
             "ABTestConfigurationResponseSchema": {
                 "properties": {
                     "active": {
@@ -2056,8 +2272,46 @@
                 "enum": ["installed", "not_installed"],
                 "title": "BundleOnboardingStatus"
             },
-            "CampaignAttachmentExtraSchema": {
+            "CampaignAttachmentDiscountOfferExtraSchema": {
                 "properties": {
+                    "discount_offer_id": {
+                        "type": "string",
+                        "title": "Discount Offer Id"
+                    }
+                },
+                "type": "object",
+                "required": ["discount_offer_id"],
+                "title": "CampaignAttachmentDiscountOfferExtraSchema"
+            },
+            "CampaignAttachmentDiscountOfferSchema": {
+                "properties": {
+                    "contentType": {
+                        "type": "string",
+                        "enum": ["application/discountOffer"],
+                        "const": "application/discountOffer",
+                        "title": "Contenttype"
+                    },
+                    "name": {"type": "string", "title": "Name"},
+                    "url": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Url"
+                    },
+                    "extra": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferExtraSchema"
+                            },
+                            {"type": "null"}
+                        ]
+                    }
+                },
+                "type": "object",
+                "required": ["contentType", "name"],
+                "title": "CampaignAttachmentDiscountOfferSchema"
+            },
+            "CampaignAttachmentProductExtraSchema": {
+                "properties": {
+                    "product_id": {"type": "integer", "title": "Product Id"},
                     "price": {
                         "anyOf": [{"type": "number"}, {"type": "null"}],
                         "title": "Price"
@@ -2065,10 +2319,6 @@
                     "currency": {
                         "anyOf": [{"type": "string"}, {"type": "null"}],
                         "title": "Currency"
-                    },
-                    "product_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
-                        "title": "Product Id"
                     },
                     "product_link": {
                         "anyOf": [{"type": "string"}, {"type": "null"}],
@@ -2085,14 +2335,11 @@
                             },
                             {"type": "null"}
                         ]
-                    },
-                    "discount_offer_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "Discount Offer Id"
                     }
                 },
                 "type": "object",
-                "title": "CampaignAttachmentExtraSchema"
+                "required": ["product_id"],
+                "title": "CampaignAttachmentProductExtraSchema"
             },
             "CampaignAttachmentProductPositionSchema": {
                 "properties": {
@@ -2106,10 +2353,58 @@
                 "required": ["x", "y", "offsetX", "offsetY", "size"],
                 "title": "CampaignAttachmentProductPositionSchema"
             },
-            "CampaignAttachmentSchema-Input": {
+            "CampaignAttachmentProductRecommendationExtraSchema": {
+                "properties": {
+                    "id": {"type": "string", "title": "Id"},
+                    "scenario": {
+                        "$ref": "#/components/schemas/ProductRecommendationScenarioType"
+                    }
+                },
+                "type": "object",
+                "required": ["id", "scenario"],
+                "title": "CampaignAttachmentProductRecommendationExtraSchema"
+            },
+            "CampaignAttachmentProductRecommendationSchema-Input": {
                 "properties": {
                     "contentType": {
-                        "$ref": "#/components/schemas/CampaignAttachmentType"
+                        "type": "string",
+                        "enum": ["application/productRecommendation"],
+                        "const": "application/productRecommendation",
+                        "title": "Contenttype"
+                    },
+                    "name": {"type": "string", "title": "Name"},
+                    "extra": {
+                        "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationExtraSchema"
+                    }
+                },
+                "type": "object",
+                "required": ["contentType", "name", "extra"],
+                "title": "CampaignAttachmentProductRecommendationSchema"
+            },
+            "CampaignAttachmentProductRecommendationSchema-Output": {
+                "properties": {
+                    "contentType": {
+                        "type": "string",
+                        "enum": ["application/productRecommendation"],
+                        "const": "application/productRecommendation",
+                        "title": "Contenttype"
+                    },
+                    "name": {"type": "string", "title": "Name"},
+                    "extra": {
+                        "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationExtraSchema"
+                    }
+                },
+                "type": "object",
+                "required": ["contentType", "name", "extra"],
+                "title": "CampaignAttachmentProductRecommendationSchema"
+            },
+            "CampaignAttachmentProductSchema-Input": {
+                "properties": {
+                    "contentType": {
+                        "type": "string",
+                        "enum": ["application/productCard"],
+                        "const": "application/productCard",
+                        "title": "Contenttype"
                     },
                     "name": {"type": "string", "title": "Name"},
                     "url": {
@@ -2123,7 +2418,7 @@
                     "extra": {
                         "anyOf": [
                             {
-                                "$ref": "#/components/schemas/CampaignAttachmentExtraSchema"
+                                "$ref": "#/components/schemas/CampaignAttachmentProductExtraSchema"
                             },
                             {"type": "null"}
                         ]
@@ -2131,12 +2426,15 @@
                 },
                 "type": "object",
                 "required": ["contentType", "name"],
-                "title": "CampaignAttachmentSchema"
+                "title": "CampaignAttachmentProductSchema"
             },
-            "CampaignAttachmentSchema-Output": {
+            "CampaignAttachmentProductSchema-Output": {
                 "properties": {
                     "contentType": {
-                        "$ref": "#/components/schemas/CampaignAttachmentType"
+                        "type": "string",
+                        "enum": ["application/productCard"],
+                        "const": "application/productCard",
+                        "title": "Contenttype"
                     },
                     "name": {"type": "string", "title": "Name"},
                     "url": {
@@ -2150,7 +2448,7 @@
                     "extra": {
                         "anyOf": [
                             {
-                                "$ref": "#/components/schemas/CampaignAttachmentExtraSchema"
+                                "$ref": "#/components/schemas/CampaignAttachmentProductExtraSchema"
                             },
                             {"type": "null"}
                         ]
@@ -2158,15 +2456,115 @@
                 },
                 "type": "object",
                 "required": ["contentType", "name"],
-                "title": "CampaignAttachmentSchema"
+                "title": "CampaignAttachmentProductSchema"
             },
-            "CampaignAttachmentType": {
-                "type": "string",
-                "enum": [
-                    "application/productCard",
-                    "application/discountOffer"
+            "CampaignAttachmentVisitorFormExtraSchema-Input": {
+                "properties": {
+                    "fields": {
+                        "items": {
+                            "$ref": "#/components/schemas/VisitorFormFieldsSchema"
+                        },
+                        "type": "array",
+                        "title": "Fields"
+                    },
+                    "after_form_content": {
+                        "$ref": "#/components/schemas/VisitorFormAfterContentSchema"
+                    },
+                    "on_success_content": {
+                        "$ref": "#/components/schemas/VisitorFormOnSuccessContentSchema-Input"
+                    },
+                    "targets": {
+                        "items": {
+                            "$ref": "#/components/schemas/VisitorFormTargetsSchema"
+                        },
+                        "type": "array",
+                        "title": "Targets"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "fields",
+                    "after_form_content",
+                    "on_success_content",
+                    "targets"
                 ],
-                "title": "CampaignAttachmentType"
+                "title": "CampaignAttachmentVisitorFormExtraSchema"
+            },
+            "CampaignAttachmentVisitorFormExtraSchema-Output": {
+                "properties": {
+                    "fields": {
+                        "items": {
+                            "$ref": "#/components/schemas/VisitorFormFieldsSchema"
+                        },
+                        "type": "array",
+                        "title": "Fields"
+                    },
+                    "after_form_content": {
+                        "$ref": "#/components/schemas/VisitorFormAfterContentSchema"
+                    },
+                    "on_success_content": {
+                        "$ref": "#/components/schemas/VisitorFormOnSuccessContentSchema-Output"
+                    },
+                    "targets": {
+                        "items": {
+                            "$ref": "#/components/schemas/VisitorFormTargetsSchema"
+                        },
+                        "type": "array",
+                        "title": "Targets"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "fields",
+                    "after_form_content",
+                    "on_success_content",
+                    "targets"
+                ],
+                "title": "CampaignAttachmentVisitorFormExtraSchema"
+            },
+            "CampaignAttachmentVisitorFormSchema-Input": {
+                "properties": {
+                    "contentType": {
+                        "type": "string",
+                        "enum": ["application/visitorForm"],
+                        "const": "application/visitorForm",
+                        "title": "Contenttype"
+                    },
+                    "name": {"type": "string", "title": "Name"},
+                    "extra": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/CampaignAttachmentVisitorFormExtraSchema-Input"
+                            },
+                            {"type": "null"}
+                        ]
+                    }
+                },
+                "type": "object",
+                "required": ["contentType", "name"],
+                "title": "CampaignAttachmentVisitorFormSchema"
+            },
+            "CampaignAttachmentVisitorFormSchema-Output": {
+                "properties": {
+                    "contentType": {
+                        "type": "string",
+                        "enum": ["application/visitorForm"],
+                        "const": "application/visitorForm",
+                        "title": "Contenttype"
+                    },
+                    "name": {"type": "string", "title": "Name"},
+                    "extra": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/CampaignAttachmentVisitorFormExtraSchema-Output"
+                            },
+                            {"type": "null"}
+                        ]
+                    }
+                },
+                "type": "object",
+                "required": ["contentType", "name"],
+                "title": "CampaignAttachmentVisitorFormSchema"
             },
             "CampaignCreateRequestSchema": {
                 "properties": {
@@ -2209,7 +2607,29 @@
                         "anyOf": [
                             {
                                 "items": {
-                                    "$ref": "#/components/schemas/CampaignAttachmentSchema-Input"
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Input"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Input"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Input"
+                                        }
+                                    ],
+                                    "discriminator": {
+                                        "propertyName": "contentType",
+                                        "mapping": {
+                                            "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Input",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Input",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Input"
+                                        }
+                                    }
                                 },
                                 "type": "array"
                             },
@@ -2242,6 +2662,14 @@
                             {"type": "null"}
                         ],
                         "title": "Template Id"
+                    },
+                    "variants": {
+                        "items": {
+                            "$ref": "#/components/schemas/CampaignVariantRequestSchema"
+                        },
+                        "type": "array",
+                        "maxItems": 2,
+                        "title": "Variants"
                     }
                 },
                 "type": "object",
@@ -2310,7 +2738,29 @@
                         "anyOf": [
                             {
                                 "items": {
-                                    "$ref": "#/components/schemas/CampaignAttachmentSchema-Input"
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Input"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Input"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Input"
+                                        }
+                                    ],
+                                    "discriminator": {
+                                        "propertyName": "contentType",
+                                        "mapping": {
+                                            "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Input",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Input",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Input"
+                                        }
+                                    }
                                 },
                                 "type": "array"
                             },
@@ -2333,6 +2783,19 @@
                             {"type": "null"}
                         ],
                         "title": "Triggers"
+                    },
+                    "variants": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/CampaignVariantRequestSchema"
+                                },
+                                "type": "array",
+                                "maxItems": 2
+                            },
+                            {"type": "null"}
+                        ],
+                        "title": "Variants"
                     },
                     "external_tag_id": {
                         "anyOf": [{"type": "integer"}, {"type": "null"}],
@@ -2391,7 +2854,29 @@
                         "anyOf": [
                             {
                                 "items": {
-                                    "$ref": "#/components/schemas/CampaignAttachmentSchema-Output"
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Output"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output"
+                                        }
+                                    ],
+                                    "discriminator": {
+                                        "propertyName": "contentType",
+                                        "mapping": {
+                                            "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Output",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                        }
+                                    }
                                 },
                                 "type": "array"
                             },
@@ -2410,6 +2895,21 @@
                         },
                         "type": "array",
                         "title": "Triggers"
+                    },
+                    "ab_group": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/ABGroupResponseSchema"
+                            },
+                            {"type": "null"}
+                        ]
+                    },
+                    "variants": {
+                        "items": {
+                            "$ref": "#/components/schemas/CampaignVariantResponseSchema"
+                        },
+                        "type": "array",
+                        "title": "Variants"
                     },
                     "is_light": {"type": "boolean", "title": "Is Light"},
                     "created_datetime": {
@@ -2445,6 +2945,7 @@
                     "trigger_rule",
                     "id",
                     "triggers",
+                    "variants",
                     "is_light",
                     "created_datetime",
                     "updated_datetime"
@@ -2532,9 +3033,132 @@
                     "ordered_products",
                     "customer_tags",
                     "country_code",
-                    "incognito_visitor"
+                    "incognito_visitor",
+                    "out_of_stock_product_pages"
                 ],
                 "title": "CampaignTriggerType"
+            },
+            "CampaignVariantRequestSchema": {
+                "properties": {
+                    "message_text": {
+                        "type": "string",
+                        "maxLength": 2048,
+                        "title": "Message Text"
+                    },
+                    "message_html": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 4096},
+                            {"type": "null"}
+                        ],
+                        "title": "Message Html"
+                    },
+                    "attachments": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Input"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Input"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Input"
+                                        }
+                                    ],
+                                    "discriminator": {
+                                        "propertyName": "contentType",
+                                        "mapping": {
+                                            "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Input",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Input",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Input"
+                                        }
+                                    }
+                                },
+                                "type": "array"
+                            },
+                            {"type": "null"}
+                        ],
+                        "title": "Attachments"
+                    },
+                    "id": {"type": "string", "title": "Id"}
+                },
+                "type": "object",
+                "required": ["message_text", "id"],
+                "title": "CampaignVariantRequestSchema"
+            },
+            "CampaignVariantResponseSchema": {
+                "properties": {
+                    "message_text": {
+                        "type": "string",
+                        "maxLength": 2048,
+                        "title": "Message Text"
+                    },
+                    "message_html": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 4096},
+                            {"type": "null"}
+                        ],
+                        "title": "Message Html"
+                    },
+                    "attachments": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Output"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output"
+                                        }
+                                    ],
+                                    "discriminator": {
+                                        "propertyName": "contentType",
+                                        "mapping": {
+                                            "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Output",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                        }
+                                    }
+                                },
+                                "type": "array"
+                            },
+                            {"type": "null"}
+                        ],
+                        "title": "Attachments"
+                    },
+                    "id": {"type": "string", "title": "Id"},
+                    "started_datetime": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Started Datetime"
+                    },
+                    "stopped_datetime": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "Stopped Datetime"
+                    }
+                },
+                "type": "object",
+                "required": ["message_text", "id"],
+                "title": "CampaignVariantResponseSchema"
             },
             "ChannelConnectionCreateRequestSchema": {
                 "properties": {
@@ -2967,7 +3591,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-mariuszjanczyn.eu.ngrok.io/loader.js"
+                        "default": "https://bundle-janbalaz.eu.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",
@@ -3041,6 +3665,17 @@
                 "required": ["items"],
                 "title": "ProductRecommendationResponseSchema"
             },
+            "ProductRecommendationScenarioType": {
+                "type": "string",
+                "enum": [
+                    "similar_seen",
+                    "similar_bought",
+                    "out_of_stock_alternatives",
+                    "best_seller",
+                    "newest"
+                ],
+                "title": "ProductRecommendationScenarioType"
+            },
             "PublicCampaignResponseSchema": {
                 "properties": {
                     "name": {
@@ -3082,7 +3717,29 @@
                         "anyOf": [
                             {
                                 "items": {
-                                    "$ref": "#/components/schemas/CampaignAttachmentSchema-Output"
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Output"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output"
+                                        }
+                                    ],
+                                    "discriminator": {
+                                        "propertyName": "contentType",
+                                        "mapping": {
+                                            "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Output",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                        }
+                                    }
                                 },
                                 "type": "array"
                             },
@@ -3528,6 +4185,104 @@
                 "type": "object",
                 "required": ["loc", "msg", "type"],
                 "title": "ValidationError"
+            },
+            "VisitorFormAfterContentSchema": {
+                "properties": {
+                    "cta": {"type": "string", "title": "Cta"},
+                    "disclaimer": {"type": "string", "title": "Disclaimer"}
+                },
+                "type": "object",
+                "required": ["cta", "disclaimer"],
+                "title": "VisitorFormAfterContentSchema"
+            },
+            "VisitorFormFieldName": {
+                "type": "string",
+                "enum": ["email", "phone", "first_name", "last_name"],
+                "title": "VisitorFormFieldName"
+            },
+            "VisitorFormFieldType": {
+                "type": "string",
+                "enum": ["email", "phone", "text"],
+                "title": "VisitorFormFieldType"
+            },
+            "VisitorFormFieldsSchema": {
+                "properties": {
+                    "name": {
+                        "$ref": "#/components/schemas/VisitorFormFieldName"
+                    },
+                    "label": {"type": "string", "title": "Label"},
+                    "type": {
+                        "$ref": "#/components/schemas/VisitorFormFieldType"
+                    },
+                    "required": {"type": "boolean", "title": "Required"}
+                },
+                "type": "object",
+                "required": ["name", "label", "type", "required"],
+                "title": "VisitorFormFieldsSchema"
+            },
+            "VisitorFormOnSuccessContentSchema-Input": {
+                "properties": {
+                    "message": {"type": "string", "title": "Message"},
+                    "attachments": {
+                        "items": {
+                            "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
+                        },
+                        "type": "array",
+                        "title": "Attachments"
+                    }
+                },
+                "type": "object",
+                "required": ["message", "attachments"],
+                "title": "VisitorFormOnSuccessContentSchema"
+            },
+            "VisitorFormOnSuccessContentSchema-Output": {
+                "properties": {
+                    "message": {"type": "string", "title": "Message"},
+                    "attachments": {
+                        "items": {
+                            "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
+                        },
+                        "type": "array",
+                        "title": "Attachments"
+                    }
+                },
+                "type": "object",
+                "required": ["message", "attachments"],
+                "title": "VisitorFormOnSuccessContentSchema"
+            },
+            "VisitorFormSubscriberType": {
+                "type": "string",
+                "enum": ["email", "sms"],
+                "title": "VisitorFormSubscriberType"
+            },
+            "VisitorFormTargetType": {
+                "type": "string",
+                "enum": ["shopify", "gorgias"],
+                "title": "VisitorFormTargetType"
+            },
+            "VisitorFormTargetsSchema": {
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/VisitorFormTargetType"
+                    },
+                    "subscriber_types": {
+                        "items": {
+                            "$ref": "#/components/schemas/VisitorFormSubscriberType"
+                        },
+                        "type": "array",
+                        "title": "Subscriber Types"
+                    },
+                    "tags": {
+                        "anyOf": [
+                            {"items": {"type": "string"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "Tags"
+                    }
+                },
+                "type": "object",
+                "required": ["type", "subscriber_types"],
+                "title": "VisitorFormTargetsSchema"
             }
         },
         "securitySchemes": {

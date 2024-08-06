@@ -5,11 +5,24 @@ import {
     TRIGGERS_CONFIG,
 } from 'pages/convert/campaigns/constants/triggers'
 
+import {useAreConvertLLMProductRecommendationsEnabled} from 'pages/convert/common/hooks/useAreConvertLLMProductRecommendationsEnabled'
+import {assumeMock} from 'utils/testing'
 import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
 
 import {useAvailableTriggerList} from '../useAvailableTriggerList'
 
+jest.mock(
+    'pages/convert/common/hooks/useAreConvertLLMProductRecommendationsEnabled'
+)
+const useAreConvertLLMProductRecommendationsEnabledMock = assumeMock(
+    useAreConvertLLMProductRecommendationsEnabled
+)
+
 describe('useAvailableTriggerList()', () => {
+    beforeEach(() => {
+        useAreConvertLLMProductRecommendationsEnabledMock.mockReturnValue(true)
+    })
+
     describe('Merchant IS NOT a revenue subscriber and DOES NOT HAVE a Shopify chat', () => {
         it('returns only legacy triggers', () => {
             const {result} = renderHook(() =>
@@ -117,6 +130,31 @@ describe('useAvailableTriggerList()', () => {
                 [CONVERT_LIGHT_TRIGGERS[1]]:
                     TRIGGERS_CONFIG[CONVERT_LIGHT_TRIGGERS[1]],
             }
+
+            expect(result.current).toStrictEqual(expected)
+        })
+    })
+
+    describe('Merchant IS a Convert subscriber and HAS a Shopify chat and flag is disabled', () => {
+        it('returns only triggers without Out of Stock Product Pages', () => {
+            useAreConvertLLMProductRecommendationsEnabledMock.mockReturnValue(
+                false
+            )
+
+            const {result} = renderHook(() =>
+                useAvailableTriggerList({
+                    isConvertSubscriber: true,
+                    isShopifyStore: true,
+                })
+            )
+
+            const {
+                [CampaignTriggerType.SingleInView]: ___,
+                [CampaignTriggerType.DeviceType]: __,
+                [CampaignTriggerType.IncognitoVisitor]: ____,
+                [CampaignTriggerType.OutOfStockProductPages]: _____,
+                ...expected
+            } = TRIGGERS_CONFIG
 
             expect(result.current).toStrictEqual(expected)
         })

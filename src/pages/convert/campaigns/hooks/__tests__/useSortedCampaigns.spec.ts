@@ -14,6 +14,7 @@ const campaignA = {
     id: 'bff7506e-2694-49d9-98d0-d313145b9eb0',
     triggers: [],
     trigger_rule: '',
+    variants: [],
     message_text:
         'Join us on a journey to sustainability and ride the green tide! Discover innovative ways to protect our planet and make a positive impact. Together, we can create a cleaner and greener future for generations to come. #EcoWaves #Sustainability #GreenTide',
     message_html:
@@ -33,6 +34,7 @@ const campaignB = {
     id: 'feb4fcfd-76a0-4b4a-82e6-f38d2cc2455e',
     triggers: [],
     trigger_rule: '',
+    variants: [],
     message_text:
         'Bridging tomorrow starts today! Embrace the power of technology to shape a brighter future. Join our community of tech enthusiasts, visionaries, and changemakers as we connect minds and explore limitless possibilities. #TechConnect #Innovation #BrighterFuture',
     message_html:
@@ -52,6 +54,7 @@ const campaignC = {
     id: '21d40a12-76b6-48da-9b1d-d388857cf8ab',
     triggers: [],
     trigger_rule: '',
+    variants: [],
     message_text:
         'Inhale tranquility, exhale stress. Unlock inner peace and mindfulness on this transformative journey. Take a moment to breathe, reflect, and embrace the beauty within and around you. #MindfulMoments #InnerPeace #Tranquility',
     message_html:
@@ -71,6 +74,7 @@ const campaignD = {
     id: 'acb5ee07-bcf0-410d-aa63-f23baf745a9e',
     triggers: [],
     trigger_rule: '',
+    variants: [],
     message_text:
         "Power your potential and ignite your fitness journey! Join our tribe of health enthusiasts as we revolutionize the way we approach fitness and well-being. Together, we'll break barriers and achieve new heights of strength and vitality. #FitLifeRevolution #PowerYourPotential #FitnessGoals",
     message_html:
@@ -90,6 +94,7 @@ const campaignE = {
     id: 'e8e5e53d-52b4-4373-9f9a-3e83040d9bbb',
     triggers: [],
     trigger_rule: '',
+    variants: [],
     message_text:
         "Colors unite us all! Celebrate diversity and creativity as we fuse artistic expressions from around the world. Join our vibrant community and let your imagination run free. Together, we'll paint a canvas of unity and inspiration. #ArtisticFusion #CreativityUnleashed #UnityInDiversity",
     message_html:

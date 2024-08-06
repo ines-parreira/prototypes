@@ -9,6 +9,41 @@ import {
 declare namespace Components {
     namespace Schemas {
         /**
+         * ABGroupResponseSchema
+         */
+        export interface ABGroupResponseSchema {
+            /**
+             * Winner Variant Id
+             */
+            winner_variant_id?: string | null
+            status: ABGroupStatus
+            /**
+             * Started Datetime
+             */
+            started_datetime?: string /* date-time */ | null
+            /**
+             * Stopped Datetime
+             */
+            stopped_datetime?: string /* date-time */ | null
+            /**
+             * Campaign Id
+             */
+            campaign_id?: string | null
+        }
+        /**
+         * ABGroupStatus
+         */
+        export type ABGroupStatus = 'draft' | 'started' | 'paused' | 'completed'
+        /**
+         * ABGroupStopRequestSchema
+         */
+        export interface ABGroupStopRequestSchema {
+            /**
+             * Winner Variant Id
+             */
+            winner_variant_id?: string | null
+        }
+        /**
          * ABTestConfigurationResponseSchema
          */
         export interface ABTestConfigurationResponseSchema {
@@ -104,9 +139,40 @@ declare namespace Components {
          */
         export type BundleOnboardingStatus = 'installed' | 'not_installed'
         /**
-         * CampaignAttachmentExtraSchema
+         * CampaignAttachmentDiscountOfferExtraSchema
          */
-        export interface CampaignAttachmentExtraSchema {
+        export interface CampaignAttachmentDiscountOfferExtraSchema {
+            /**
+             * Discount Offer Id
+             */
+            discount_offer_id: string
+        }
+        /**
+         * CampaignAttachmentDiscountOfferSchema
+         */
+        export interface CampaignAttachmentDiscountOfferSchema {
+            /**
+             * Contenttype
+             */
+            contentType: 'application/discountOffer'
+            /**
+             * Name
+             */
+            name: string
+            /**
+             * Url
+             */
+            url?: string | null
+            extra?: CampaignAttachmentDiscountOfferExtraSchema | null
+        }
+        /**
+         * CampaignAttachmentProductExtraSchema
+         */
+        export interface CampaignAttachmentProductExtraSchema {
+            /**
+             * Product Id
+             */
+            product_id: number
             /**
              * Price
              */
@@ -116,10 +182,6 @@ declare namespace Components {
              */
             currency?: string | null
             /**
-             * Product Id
-             */
-            product_id?: number | null
-            /**
              * Product Link
              */
             product_link?: string | null
@@ -128,10 +190,6 @@ declare namespace Components {
              */
             variant_name?: string | null
             position?: CampaignAttachmentProductPositionSchema | null
-            /**
-             * Discount Offer Id
-             */
-            discount_offer_id?: string | null
         }
         /**
          * CampaignAttachmentProductPositionSchema
@@ -159,10 +217,51 @@ declare namespace Components {
             size: number
         }
         /**
-         * CampaignAttachmentSchema
+         * CampaignAttachmentProductRecommendationExtraSchema
          */
-        export interface CampaignAttachmentSchemaInput {
-            contentType: CampaignAttachmentType
+        export interface CampaignAttachmentProductRecommendationExtraSchema {
+            /**
+             * Id
+             */
+            id: string
+            scenario: ProductRecommendationScenarioType
+        }
+        /**
+         * CampaignAttachmentProductRecommendationSchema
+         */
+        export interface CampaignAttachmentProductRecommendationSchemaInput {
+            /**
+             * Contenttype
+             */
+            contentType: 'application/productRecommendation'
+            /**
+             * Name
+             */
+            name: string
+            extra: CampaignAttachmentProductRecommendationExtraSchema
+        }
+        /**
+         * CampaignAttachmentProductRecommendationSchema
+         */
+        export interface CampaignAttachmentProductRecommendationSchemaOutput {
+            /**
+             * Contenttype
+             */
+            contentType: 'application/productRecommendation'
+            /**
+             * Name
+             */
+            name: string
+            extra: CampaignAttachmentProductRecommendationExtraSchema
+        }
+        /**
+         * CampaignAttachmentProductSchema
+         */
+        export interface CampaignAttachmentProductSchemaInput {
+            /**
+             * Contenttype
+             */
+            contentType: 'application/productCard'
             /**
              * Name
              */
@@ -175,13 +274,16 @@ declare namespace Components {
              * Size
              */
             size?: number | null
-            extra?: CampaignAttachmentExtraSchema | null
+            extra?: CampaignAttachmentProductExtraSchema | null
         }
         /**
-         * CampaignAttachmentSchema
+         * CampaignAttachmentProductSchema
          */
-        export interface CampaignAttachmentSchemaOutput {
-            contentType: CampaignAttachmentType
+        export interface CampaignAttachmentProductSchemaOutput {
+            /**
+             * Contenttype
+             */
+            contentType: 'application/productCard'
             /**
              * Name
              */
@@ -194,14 +296,66 @@ declare namespace Components {
              * Size
              */
             size?: number | null
-            extra?: CampaignAttachmentExtraSchema | null
+            extra?: CampaignAttachmentProductExtraSchema | null
         }
         /**
-         * CampaignAttachmentType
+         * CampaignAttachmentVisitorFormExtraSchema
          */
-        export type CampaignAttachmentType =
-            | 'application/productCard'
-            | 'application/discountOffer'
+        export interface CampaignAttachmentVisitorFormExtraSchemaInput {
+            /**
+             * Fields
+             */
+            fields: VisitorFormFieldsSchema[]
+            after_form_content: VisitorFormAfterContentSchema
+            on_success_content: VisitorFormOnSuccessContentSchemaInput
+            /**
+             * Targets
+             */
+            targets: VisitorFormTargetsSchema[]
+        }
+        /**
+         * CampaignAttachmentVisitorFormExtraSchema
+         */
+        export interface CampaignAttachmentVisitorFormExtraSchemaOutput {
+            /**
+             * Fields
+             */
+            fields: VisitorFormFieldsSchema[]
+            after_form_content: VisitorFormAfterContentSchema
+            on_success_content: VisitorFormOnSuccessContentSchemaOutput
+            /**
+             * Targets
+             */
+            targets: VisitorFormTargetsSchema[]
+        }
+        /**
+         * CampaignAttachmentVisitorFormSchema
+         */
+        export interface CampaignAttachmentVisitorFormSchemaInput {
+            /**
+             * Contenttype
+             */
+            contentType: 'application/visitorForm'
+            /**
+             * Name
+             */
+            name: string
+            extra?: CampaignAttachmentVisitorFormExtraSchemaInput | null
+        }
+        /**
+         * CampaignAttachmentVisitorFormSchema
+         */
+        export interface CampaignAttachmentVisitorFormSchemaOutput {
+            /**
+             * Contenttype
+             */
+            contentType: 'application/visitorForm'
+            /**
+             * Name
+             */
+            name: string
+            extra?: CampaignAttachmentVisitorFormExtraSchemaOutput | null
+        }
         /**
          * CampaignCreateRequestSchema
          */
@@ -234,7 +388,14 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?: CampaignAttachmentSchemaInput[] | null
+            attachments?:
+                | (
+                      | CampaignAttachmentProductSchemaInput
+                      | CampaignAttachmentDiscountOfferSchema
+                      | CampaignAttachmentVisitorFormSchemaInput
+                      | CampaignAttachmentProductRecommendationSchemaInput
+                  )[]
+                | null
             /**
              * Meta
              */
@@ -255,6 +416,10 @@ declare namespace Components {
              * Template Id
              */
             template_id?: string | null
+            /**
+             * Variants
+             */
+            variants?: CampaignVariantRequestSchema[]
         }
         /**
          * CampaignPatchRequestSchema
@@ -293,7 +458,14 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?: CampaignAttachmentSchemaInput[] | null
+            attachments?:
+                | (
+                      | CampaignAttachmentProductSchemaInput
+                      | CampaignAttachmentDiscountOfferSchema
+                      | CampaignAttachmentVisitorFormSchemaInput
+                      | CampaignAttachmentProductRecommendationSchemaInput
+                  )[]
+                | null
             /**
              * Meta
              */
@@ -302,6 +474,10 @@ declare namespace Components {
              * Triggers
              */
             triggers?: CampaignTriggerSchema[] | null
+            /**
+             * Variants
+             */
+            variants?: CampaignVariantRequestSchema[] | null
             /**
              * External Tag Id
              */
@@ -343,7 +519,14 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?: CampaignAttachmentSchemaOutput[] | null
+            attachments?:
+                | (
+                      | CampaignAttachmentProductSchemaOutput
+                      | CampaignAttachmentDiscountOfferSchema
+                      | CampaignAttachmentVisitorFormSchemaOutput
+                      | CampaignAttachmentProductRecommendationSchemaOutput
+                  )[]
+                | null
             /**
              * Meta
              */
@@ -356,6 +539,11 @@ declare namespace Components {
              * Triggers
              */
             triggers: CampaignTriggerSchema[]
+            ab_group?: ABGroupResponseSchema | null
+            /**
+             * Variants
+             */
+            variants: CampaignVariantResponseSchema[]
             /**
              * Is Light
              */
@@ -448,6 +636,71 @@ declare namespace Components {
             | 'customer_tags'
             | 'country_code'
             | 'incognito_visitor'
+            | 'out_of_stock_product_pages'
+        /**
+         * CampaignVariantRequestSchema
+         */
+        export interface CampaignVariantRequestSchema {
+            /**
+             * Message Text
+             */
+            message_text: string
+            /**
+             * Message Html
+             */
+            message_html?: string | null
+            /**
+             * Attachments
+             */
+            attachments?:
+                | (
+                      | CampaignAttachmentProductSchemaInput
+                      | CampaignAttachmentDiscountOfferSchema
+                      | CampaignAttachmentVisitorFormSchemaInput
+                      | CampaignAttachmentProductRecommendationSchemaInput
+                  )[]
+                | null
+            /**
+             * Id
+             */
+            id: string
+        }
+        /**
+         * CampaignVariantResponseSchema
+         */
+        export interface CampaignVariantResponseSchema {
+            /**
+             * Message Text
+             */
+            message_text: string
+            /**
+             * Message Html
+             */
+            message_html?: string | null
+            /**
+             * Attachments
+             */
+            attachments?:
+                | (
+                      | CampaignAttachmentProductSchemaOutput
+                      | CampaignAttachmentDiscountOfferSchema
+                      | CampaignAttachmentVisitorFormSchemaOutput
+                      | CampaignAttachmentProductRecommendationSchemaOutput
+                  )[]
+                | null
+            /**
+             * Id
+             */
+            id: string
+            /**
+             * Started Datetime
+             */
+            started_datetime?: string /* date-time */ | null
+            /**
+             * Stopped Datetime
+             */
+            stopped_datetime?: string /* date-time */ | null
+        }
         /**
          * ChannelConnectionCreateRequestSchema
          */
@@ -559,6 +812,7 @@ declare namespace Components {
              * Hostname
              */
             hostname: string
+            zone?: CustomDomainZone | null
         }
         /**
          * CustomDomainSchema
@@ -573,6 +827,10 @@ declare namespace Components {
              */
             status: string
         }
+        /**
+         * CustomDomainZone
+         */
+        export type CustomDomainZone = 'gorgias-convert.com' | 'gorgias.win'
         /**
          * DiscountOfferCreateRequestSchema
          */
@@ -854,6 +1112,15 @@ declare namespace Components {
             items: RecommendationItemSchema[]
         }
         /**
+         * ProductRecommendationScenarioType
+         */
+        export type ProductRecommendationScenarioType =
+            | 'similar_seen'
+            | 'similar_bought'
+            | 'out_of_stock_alternatives'
+            | 'best_seller'
+            | 'newest'
+        /**
          * PublicCampaignResponseSchema
          * Contains only fields allowed to be seen by the public, e.g. no channel_connection_id.
          */
@@ -886,7 +1153,14 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?: CampaignAttachmentSchemaOutput[] | null
+            attachments?:
+                | (
+                      | CampaignAttachmentProductSchemaOutput
+                      | CampaignAttachmentDiscountOfferSchema
+                      | CampaignAttachmentVisitorFormSchemaOutput
+                      | CampaignAttachmentProductRecommendationSchemaOutput
+                  )[]
+                | null
             /**
              * Meta
              */
@@ -1249,6 +1523,94 @@ declare namespace Components {
              */
             type: string
         }
+        /**
+         * VisitorFormAfterContentSchema
+         */
+        export interface VisitorFormAfterContentSchema {
+            /**
+             * Cta
+             */
+            cta: string
+            /**
+             * Disclaimer
+             */
+            disclaimer: string
+        }
+        /**
+         * VisitorFormFieldName
+         */
+        export type VisitorFormFieldName =
+            | 'email'
+            | 'phone'
+            | 'first_name'
+            | 'last_name'
+        /**
+         * VisitorFormFieldType
+         */
+        export type VisitorFormFieldType = 'email' | 'phone' | 'text'
+        /**
+         * VisitorFormFieldsSchema
+         */
+        export interface VisitorFormFieldsSchema {
+            name: VisitorFormFieldName
+            /**
+             * Label
+             */
+            label: string
+            type: VisitorFormFieldType
+            /**
+             * Required
+             */
+            required: boolean
+        }
+        /**
+         * VisitorFormOnSuccessContentSchema
+         */
+        export interface VisitorFormOnSuccessContentSchemaInput {
+            /**
+             * Message
+             */
+            message: string
+            /**
+             * Attachments
+             */
+            attachments: CampaignAttachmentDiscountOfferSchema[]
+        }
+        /**
+         * VisitorFormOnSuccessContentSchema
+         */
+        export interface VisitorFormOnSuccessContentSchemaOutput {
+            /**
+             * Message
+             */
+            message: string
+            /**
+             * Attachments
+             */
+            attachments: CampaignAttachmentDiscountOfferSchema[]
+        }
+        /**
+         * VisitorFormSubscriberType
+         */
+        export type VisitorFormSubscriberType = 'email' | 'sms'
+        /**
+         * VisitorFormTargetType
+         */
+        export type VisitorFormTargetType = 'shopify' | 'gorgias'
+        /**
+         * VisitorFormTargetsSchema
+         */
+        export interface VisitorFormTargetsSchema {
+            type: VisitorFormTargetType
+            /**
+             * Subscriber Types
+             */
+            subscriber_types: VisitorFormSubscriberType[]
+            /**
+             * Tags
+             */
+            tags?: string[] | null
+        }
     }
 }
 declare namespace Paths {
@@ -1260,6 +1622,21 @@ declare namespace Paths {
     namespace CheckCustomDomainsCheckPost {
         namespace Responses {
             export type $200 = Components.Schemas.CustomDomainSchema
+        }
+    }
+    namespace CreateAbGroup {
+        namespace Parameters {
+            /**
+             * Campaign Id
+             */
+            export type CampaignId = string
+        }
+        export interface PathParameters {
+            campaign_id: Parameters.CampaignId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ABGroupResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
         }
     }
     namespace CreateAbTest {
@@ -1419,6 +1796,24 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace GetAllCampaigns {
+        export interface HeaderParameters {
+            'data-token'?: Parameters.DataToken
+        }
+        namespace Parameters {
+            /**
+             * Data-Token
+             */
+            export type DataToken = string | null
+        }
+        namespace Responses {
+            /**
+             * Response Get All Campaigns
+             */
+            export type $200 = Components.Schemas.CampaignResponseSchema[]
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace GetBundleInstallation {
         namespace Parameters {
             /**
@@ -1525,6 +1920,28 @@ declare namespace Paths {
              */
             export type $200 =
                 Components.Schemas.ChannelConnectionResponseSchema[]
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace GetConfigAssistantConfigsRevenue_RevenueId_Get {
+        namespace Parameters {
+            /**
+             * Revenue Id
+             */
+            export type RevenueId = string
+            /**
+             * Widget-App-Id
+             */
+            export type WidgetAppId = string | null
+        }
+        export interface PathParameters {
+            revenue_id: Parameters.RevenueId
+        }
+        export interface QueryParameters {
+            'widget-app-id'?: Parameters.WidgetAppId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ConfigSchema
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -1737,6 +2154,21 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace PauseAbGroup {
+        namespace Parameters {
+            /**
+             * Campaign Id
+             */
+            export type CampaignId = string
+        }
+        export interface PathParameters {
+            campaign_id: Parameters.CampaignId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ABGroupResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace ProductRecommendations {
         export type RequestBody =
             Components.Schemas.ProductRecommendationRequestSchema
@@ -1825,6 +2257,37 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace StartAbGroup {
+        namespace Parameters {
+            /**
+             * Campaign Id
+             */
+            export type CampaignId = string
+        }
+        export interface PathParameters {
+            campaign_id: Parameters.CampaignId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ABGroupResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace StopAbGroup {
+        namespace Parameters {
+            /**
+             * Campaign Id
+             */
+            export type CampaignId = string
+        }
+        export interface PathParameters {
+            campaign_id: Parameters.CampaignId
+        }
+        export type RequestBody = Components.Schemas.ABGroupStopRequestSchema
+        namespace Responses {
+            export type $200 = Components.Schemas.ABGroupResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace UpdateAutoUpgradeFlag {
         export type RequestBody = Components.Schemas.UpdateAutoUpgradeSchema
         namespace Responses {
@@ -1852,149 +2315,6 @@ declare namespace Paths {
 }
 
 export interface OperationMethods {
-    /**
-     * get_config_by_revenue_id - Get Config
-     */
-    'get_config_by_revenue_id'(
-        parameters?: Parameters<
-            Paths.GetConfigByRevenueId.PathParameters &
-                Paths.GetConfigByRevenueId.QueryParameters
-        > | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.GetConfigByRevenueId.Responses.$200
-        | Paths.GetConfigByRevenueId.Responses.$422
-    >
-    /**
-     * get_config_by_revenue_id - Get Config
-     */
-    'get_config_by_revenue_id'(
-        parameters?: Parameters<
-            Paths.GetConfigByRevenueId.PathParameters &
-                Paths.GetConfigByRevenueId.QueryParameters
-        > | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.GetConfigByRevenueId.Responses.$200
-        | Paths.GetConfigByRevenueId.Responses.$422
-    >
-    /**
-     * get_config_by_shop_name - Get Config By Shop Name
-     */
-    'get_config_by_shop_name'(
-        parameters?: Parameters<
-            Paths.GetConfigByShopName.PathParameters &
-                Paths.GetConfigByShopName.QueryParameters
-        > | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.GetConfigByShopName.Responses.$200
-        | Paths.GetConfigByShopName.Responses.$422
-    >
-    /**
-     * get_campaigns - Get Campaigns
-     */
-    'get_campaigns'(
-        parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        Paths.GetCampaigns.Responses.$200 | Paths.GetCampaigns.Responses.$422
-    >
-    /**
-     * create_campaign - Create Campaign
-     */
-    'create_campaign'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.CreateCampaign.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.CreateCampaign.Responses.$201
-        | Paths.CreateCampaign.Responses.$422
-    >
-    /**
-     * get_campaign - Get Campaign
-     */
-    'get_campaign'(
-        parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
-    >
-    /**
-     * patch_campaign - Patch Campaign
-     */
-    'patch_campaign'(
-        parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
-        data?: Paths.PatchCampaign.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        Paths.PatchCampaign.Responses.$200 | Paths.PatchCampaign.Responses.$422
-    >
-    /**
-     * delete_campaign - Delete Campaign
-     */
-    'delete_campaign'(
-        parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
-    /**
-     * get_channel_connections - Get Channel Connections
-     */
-    'get_channel_connections'(
-        parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.GetChannelConnections.Responses.$200
-        | Paths.GetChannelConnections.Responses.$422
-    >
-    /**
-     * create_channel_connection - Create Channel Connection
-     */
-    'create_channel_connection'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.CreateChannelConnection.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.CreateChannelConnection.Responses.$201
-        | Paths.CreateChannelConnection.Responses.$422
-    >
-    /**
-     * get_channel_connection - Get Channel Connection
-     */
-    'get_channel_connection'(
-        parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.GetChannelConnection.Responses.$200
-        | Paths.GetChannelConnection.Responses.$422
-    >
-    /**
-     * patch_channel_connection - Patch Channel Connection
-     */
-    'patch_channel_connection'(
-        parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
-        data?: Paths.PatchChannelConnection.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.PatchChannelConnection.Responses.$200
-        | Paths.PatchChannelConnection.Responses.$422
-    >
-    /**
-     * delete_channel_connection - Delete Channel Connection
-     */
-    'delete_channel_connection'(
-        parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
     /**
      * get_ab_tests - Get Ab Tests
      */
@@ -2047,6 +2367,48 @@ export interface OperationMethods {
         | Paths.EvaluateCampaignRules.Responses.$422
     >
     /**
+     * get_config_assistant_configs_revenue__revenue_id__get - Get Config
+     */
+    'get_config_assistant_configs_revenue__revenue_id__get'(
+        parameters?: Parameters<
+            Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.PathParameters &
+                Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.Responses.$200
+        | Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.Responses.$422
+    >
+    /**
+     * get_config_by_revenue_id - Get Config
+     */
+    'get_config_by_revenue_id'(
+        parameters?: Parameters<
+            Paths.GetConfigByRevenueId.PathParameters &
+                Paths.GetConfigByRevenueId.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetConfigByRevenueId.Responses.$200
+        | Paths.GetConfigByRevenueId.Responses.$422
+    >
+    /**
+     * get_config_by_shop_name - Get Config By Shop Name
+     */
+    'get_config_by_shop_name'(
+        parameters?: Parameters<
+            Paths.GetConfigByShopName.PathParameters &
+                Paths.GetConfigByShopName.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetConfigByShopName.Responses.$200
+        | Paths.GetConfigByShopName.Responses.$422
+    >
+    /**
      * reveal_discount_code - Reveal
      */
     'reveal_discount_code'(
@@ -2056,17 +2418,6 @@ export interface OperationMethods {
     ): OperationResponse<
         | Paths.RevealDiscountCode.Responses.$200
         | Paths.RevealDiscountCode.Responses.$422
-    >
-    /**
-     * product_recommendations - Product Recommendations
-     */
-    'product_recommendations'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.ProductRecommendations.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.ProductRecommendations.Responses.$200
-        | Paths.ProductRecommendations.Responses.$422
     >
     /**
      * product_recommendations - Product Recommendations
@@ -2323,6 +2674,158 @@ export interface OperationMethods {
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
     /**
+     * get_campaigns - Get Campaigns
+     */
+    'get_campaigns'(
+        parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.GetCampaigns.Responses.$200 | Paths.GetCampaigns.Responses.$422
+    >
+    /**
+     * create_campaign - Create Campaign
+     */
+    'create_campaign'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.CreateCampaign.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.CreateCampaign.Responses.$201
+        | Paths.CreateCampaign.Responses.$422
+    >
+    /**
+     * get_all_campaigns - Get All Campaigns
+     */
+    'get_all_campaigns'(
+        parameters?: Parameters<Paths.GetAllCampaigns.HeaderParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetAllCampaigns.Responses.$200
+        | Paths.GetAllCampaigns.Responses.$422
+    >
+    /**
+     * get_campaign - Get Campaign
+     */
+    'get_campaign'(
+        parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
+    >
+    /**
+     * patch_campaign - Patch Campaign
+     */
+    'patch_campaign'(
+        parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
+        data?: Paths.PatchCampaign.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.PatchCampaign.Responses.$200 | Paths.PatchCampaign.Responses.$422
+    >
+    /**
+     * delete_campaign - Delete Campaign
+     */
+    'delete_campaign'(
+        parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
+    /**
+     * create_ab_group - Create Ab Group
+     */
+    'create_ab_group'(
+        parameters?: Parameters<Paths.CreateAbGroup.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.CreateAbGroup.Responses.$200 | Paths.CreateAbGroup.Responses.$422
+    >
+    /**
+     * start_ab_group - Start Ab Group
+     */
+    'start_ab_group'(
+        parameters?: Parameters<Paths.StartAbGroup.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.StartAbGroup.Responses.$200 | Paths.StartAbGroup.Responses.$422
+    >
+    /**
+     * pause_ab_group - Pause Ab Group
+     */
+    'pause_ab_group'(
+        parameters?: Parameters<Paths.PauseAbGroup.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.PauseAbGroup.Responses.$200 | Paths.PauseAbGroup.Responses.$422
+    >
+    /**
+     * stop_ab_group - Stop Ab Group
+     */
+    'stop_ab_group'(
+        parameters?: Parameters<Paths.StopAbGroup.PathParameters> | null,
+        data?: Paths.StopAbGroup.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.StopAbGroup.Responses.$200 | Paths.StopAbGroup.Responses.$422
+    >
+    /**
+     * get_channel_connections - Get Channel Connections
+     */
+    'get_channel_connections'(
+        parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetChannelConnections.Responses.$200
+        | Paths.GetChannelConnections.Responses.$422
+    >
+    /**
+     * create_channel_connection - Create Channel Connection
+     */
+    'create_channel_connection'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.CreateChannelConnection.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.CreateChannelConnection.Responses.$201
+        | Paths.CreateChannelConnection.Responses.$422
+    >
+    /**
+     * get_channel_connection - Get Channel Connection
+     */
+    'get_channel_connection'(
+        parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetChannelConnection.Responses.$200
+        | Paths.GetChannelConnection.Responses.$422
+    >
+    /**
+     * patch_channel_connection - Patch Channel Connection
+     */
+    'patch_channel_connection'(
+        parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
+        data?: Paths.PatchChannelConnection.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.PatchChannelConnection.Responses.$200
+        | Paths.PatchChannelConnection.Responses.$422
+    >
+    /**
+     * delete_channel_connection - Delete Channel Connection
+     */
+    'delete_channel_connection'(
+        parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
+    /**
      * get_status_and_usage - Get Status And Usage
      */
     'get_status_and_usage'(
@@ -2371,165 +2874,6 @@ export interface OperationMethods {
 }
 
 export interface PathsDictionary {
-    ['/assistant/configs/revenue/{revenue_id}']: {
-        /**
-         * get_config_by_revenue_id - Get Config
-         */
-        'get'(
-            parameters?: Parameters<
-                Paths.GetConfigByRevenueId.PathParameters &
-                    Paths.GetConfigByRevenueId.QueryParameters
-            > | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.GetConfigByRevenueId.Responses.$200
-            | Paths.GetConfigByRevenueId.Responses.$422
-        >
-    }
-    ['/assistant/configs/{revenue_id}']: {
-        /**
-         * get_config_by_revenue_id - Get Config
-         */
-        'get'(
-            parameters?: Parameters<
-                Paths.GetConfigByRevenueId.PathParameters &
-                    Paths.GetConfigByRevenueId.QueryParameters
-            > | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.GetConfigByRevenueId.Responses.$200
-            | Paths.GetConfigByRevenueId.Responses.$422
-        >
-    }
-    ['/assistant/configs/shop/{shop_name}']: {
-        /**
-         * get_config_by_shop_name - Get Config By Shop Name
-         */
-        'get'(
-            parameters?: Parameters<
-                Paths.GetConfigByShopName.PathParameters &
-                    Paths.GetConfigByShopName.QueryParameters
-            > | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.GetConfigByShopName.Responses.$200
-            | Paths.GetConfigByShopName.Responses.$422
-        >
-    }
-    ['/campaigns']: {
-        /**
-         * create_campaign - Create Campaign
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.CreateCampaign.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.CreateCampaign.Responses.$201
-            | Paths.CreateCampaign.Responses.$422
-        >
-        /**
-         * get_campaigns - Get Campaigns
-         */
-        'get'(
-            parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.GetCampaigns.Responses.$200
-            | Paths.GetCampaigns.Responses.$422
-        >
-    }
-    ['/campaigns/{campaign_id}']: {
-        /**
-         * get_campaign - Get Campaign
-         */
-        'get'(
-            parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
-        >
-        /**
-         * patch_campaign - Patch Campaign
-         */
-        'patch'(
-            parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
-            data?: Paths.PatchCampaign.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.PatchCampaign.Responses.$200
-            | Paths.PatchCampaign.Responses.$422
-        >
-        /**
-         * delete_campaign - Delete Campaign
-         */
-        'delete'(
-            parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
-    }
-    ['/channel-connections']: {
-        /**
-         * create_channel_connection - Create Channel Connection
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.CreateChannelConnection.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.CreateChannelConnection.Responses.$201
-            | Paths.CreateChannelConnection.Responses.$422
-        >
-        /**
-         * get_channel_connections - Get Channel Connections
-         */
-        'get'(
-            parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.GetChannelConnections.Responses.$200
-            | Paths.GetChannelConnections.Responses.$422
-        >
-    }
-    ['/channel-connections/{channel_connection_id}']: {
-        /**
-         * get_channel_connection - Get Channel Connection
-         */
-        'get'(
-            parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.GetChannelConnection.Responses.$200
-            | Paths.GetChannelConnection.Responses.$422
-        >
-        /**
-         * patch_channel_connection - Patch Channel Connection
-         */
-        'patch'(
-            parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
-            data?: Paths.PatchChannelConnection.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.PatchChannelConnection.Responses.$200
-            | Paths.PatchChannelConnection.Responses.$422
-        >
-        /**
-         * delete_channel_connection - Delete Channel Connection
-         */
-        'delete'(
-            parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
-    }
     ['/ab-tests']: {
         /**
          * create_ab_test - Create Ab Test
@@ -2588,6 +2932,54 @@ export interface PathsDictionary {
             | Paths.EvaluateCampaignRules.Responses.$422
         >
     }
+    ['/assistant/configs/revenue/{revenue_id}']: {
+        /**
+         * get_config_assistant_configs_revenue__revenue_id__get - Get Config
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.PathParameters &
+                    Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.QueryParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.Responses.$200
+            | Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.Responses.$422
+        >
+    }
+    ['/assistant/configs/{revenue_id}']: {
+        /**
+         * get_config_by_revenue_id - Get Config
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetConfigByRevenueId.PathParameters &
+                    Paths.GetConfigByRevenueId.QueryParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetConfigByRevenueId.Responses.$200
+            | Paths.GetConfigByRevenueId.Responses.$422
+        >
+    }
+    ['/assistant/configs/shop/{shop_name}']: {
+        /**
+         * get_config_by_shop_name - Get Config By Shop Name
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetConfigByShopName.PathParameters &
+                    Paths.GetConfigByShopName.QueryParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetConfigByShopName.Responses.$200
+            | Paths.GetConfigByShopName.Responses.$422
+        >
+    }
     ['/assistant/discount-codes/reveal']: {
         /**
          * reveal_discount_code - Reveal
@@ -2602,19 +2994,6 @@ export interface PathsDictionary {
         >
     }
     ['/assistant/pr']: {
-        /**
-         * product_recommendations - Product Recommendations
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.ProductRecommendations.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.ProductRecommendations.Responses.$200
-            | Paths.ProductRecommendations.Responses.$422
-        >
-    }
-    ['/assistant/product-recommendations']: {
         /**
          * product_recommendations - Product Recommendations
          */
@@ -2899,6 +3278,181 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
+    }
+    ['/campaigns']: {
+        /**
+         * create_campaign - Create Campaign
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.CreateCampaign.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.CreateCampaign.Responses.$201
+            | Paths.CreateCampaign.Responses.$422
+        >
+        /**
+         * get_campaigns - Get Campaigns
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetCampaigns.Responses.$200
+            | Paths.GetCampaigns.Responses.$422
+        >
+    }
+    ['/campaigns/all']: {
+        /**
+         * get_all_campaigns - Get All Campaigns
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetAllCampaigns.HeaderParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetAllCampaigns.Responses.$200
+            | Paths.GetAllCampaigns.Responses.$422
+        >
+    }
+    ['/campaigns/{campaign_id}']: {
+        /**
+         * get_campaign - Get Campaign
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
+        >
+        /**
+         * patch_campaign - Patch Campaign
+         */
+        'patch'(
+            parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
+            data?: Paths.PatchCampaign.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.PatchCampaign.Responses.$200
+            | Paths.PatchCampaign.Responses.$422
+        >
+        /**
+         * delete_campaign - Delete Campaign
+         */
+        'delete'(
+            parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
+    }
+    ['/campaigns/{campaign_id}/ab-test']: {
+        /**
+         * create_ab_group - Create Ab Group
+         */
+        'post'(
+            parameters?: Parameters<Paths.CreateAbGroup.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.CreateAbGroup.Responses.$200
+            | Paths.CreateAbGroup.Responses.$422
+        >
+    }
+    ['/campaigns/{campaign_id}/ab-test/start']: {
+        /**
+         * start_ab_group - Start Ab Group
+         */
+        'post'(
+            parameters?: Parameters<Paths.StartAbGroup.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.StartAbGroup.Responses.$200
+            | Paths.StartAbGroup.Responses.$422
+        >
+    }
+    ['/campaigns/{campaign_id}/ab-test/pause']: {
+        /**
+         * pause_ab_group - Pause Ab Group
+         */
+        'post'(
+            parameters?: Parameters<Paths.PauseAbGroup.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.PauseAbGroup.Responses.$200
+            | Paths.PauseAbGroup.Responses.$422
+        >
+    }
+    ['/campaigns/{campaign_id}/ab-test/stop']: {
+        /**
+         * stop_ab_group - Stop Ab Group
+         */
+        'post'(
+            parameters?: Parameters<Paths.StopAbGroup.PathParameters> | null,
+            data?: Paths.StopAbGroup.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            Paths.StopAbGroup.Responses.$200 | Paths.StopAbGroup.Responses.$422
+        >
+    }
+    ['/channel-connections']: {
+        /**
+         * create_channel_connection - Create Channel Connection
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.CreateChannelConnection.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.CreateChannelConnection.Responses.$201
+            | Paths.CreateChannelConnection.Responses.$422
+        >
+        /**
+         * get_channel_connections - Get Channel Connections
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetChannelConnections.Responses.$200
+            | Paths.GetChannelConnections.Responses.$422
+        >
+    }
+    ['/channel-connections/{channel_connection_id}']: {
+        /**
+         * get_channel_connection - Get Channel Connection
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetChannelConnection.Responses.$200
+            | Paths.GetChannelConnection.Responses.$422
+        >
+        /**
+         * patch_channel_connection - Patch Channel Connection
+         */
+        'patch'(
+            parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
+            data?: Paths.PatchChannelConnection.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.PatchChannelConnection.Responses.$200
+            | Paths.PatchChannelConnection.Responses.$422
+        >
+        /**
+         * delete_channel_connection - Delete Channel Connection
+         */
+        'delete'(
+            parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
     }
     ['/billing/subscriptions/account-status']: {
         /**

@@ -28,6 +28,7 @@ export const campaign = {
         agentEmail: null,
     },
     triggers: [campaignTrigger],
+    variants: [],
     created_datetime: '2024-02-16T09:57:44.284000',
     updated_datetime: '2024-02-16T09:57:56.352370',
     deleted_datetime: null,

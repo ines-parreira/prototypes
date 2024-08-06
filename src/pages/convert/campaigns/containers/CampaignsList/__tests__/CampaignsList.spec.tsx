@@ -22,6 +22,7 @@ import {
 import {user} from 'fixtures/users'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {channelConnection} from 'fixtures/channelConnection'
+import {campaign} from 'fixtures/campaign'
 import {CampaignStatus} from '../../../types/enums/CampaignStatus.enum'
 import {useCampaignListOptions} from '../../../hooks/useCampaignListOptions'
 
@@ -47,6 +48,7 @@ const useGetOrCreateChannelConnectionMock = assumeMock(
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const campaignsList = Array.from({length: 19}, (_, i) => ({
+    ...campaign,
     id: i,
     name: `campaign ${i}`,
     triggers: [createTrigger(CampaignTriggerType.BusinessHours)],
@@ -151,6 +153,7 @@ describe('<CampaignsList />', () => {
                             campaigns={[
                                 ...campaignsList,
                                 {
+                                    ...campaign,
                                     id: '999',
                                     name: `Awesome campaign`,
                                     triggers: [trigger],

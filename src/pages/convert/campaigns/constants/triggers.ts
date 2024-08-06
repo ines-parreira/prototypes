@@ -149,6 +149,24 @@ export const TRIGGERS_CONFIG: TriggerConfig = {
             },
         },
     },
+    [CampaignTriggerType.OutOfStockProductPages]: {
+        label: 'Out Of Stock Product Pages',
+        group: 'Behavior',
+        defaults: {
+            value: 'true',
+            operator: CampaignTriggerOperator.Eq,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+        },
+        operators: {
+            [CampaignTriggerOperator.Eq]: {
+                label: 'is visited',
+            },
+        },
+    },
     // --------------------
     // Cart
     // --------------------
