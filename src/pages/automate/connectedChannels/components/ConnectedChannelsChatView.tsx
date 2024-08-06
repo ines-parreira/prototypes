@@ -2,6 +2,7 @@ import React, {useCallback, useMemo} from 'react'
 import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
 import {noop} from 'lodash'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {TicketChannel} from 'business/types/ticket'
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
@@ -10,6 +11,7 @@ import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfService
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
 import Spinner from 'pages/common/components/Spinner'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {SegmentEvent, logEvent} from 'common/segment'
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import {FlowsSettings} from './FlowsSettings'
@@ -135,6 +137,8 @@ export const ConnectedChannelsChatView = () => {
         )
     }, [applicationsAutomationSettings, selectedChannel])
 
+    const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
+
     if (chatChannels.length === 0) return null
 
     if (isLoading) {
@@ -194,14 +198,16 @@ export const ConnectedChannelsChatView = () => {
                     }}
                 />
 
-                <FeatureSettings
-                    title="Quick Responses"
-                    label="Enable Quick Responses"
-                    labelSubtitle="Display up to 6 Flows or Quick Responses on your Chat to proactively resolve top customer requests."
-                    enabled={isQuickResponsesEnabled}
-                    externalLinkUrl={`/app/automation/${shopType}/${shopName}/flows/quick-responses`}
-                    onToggle={updateSettings('quickResponses')}
-                />
+                {!sunsetQuickResponses && (
+                    <FeatureSettings
+                        title="Quick Responses"
+                        label="Enable Quick Responses"
+                        labelSubtitle="Display up to 6 Flows or Quick Responses on your Chat to proactively resolve top customer requests."
+                        enabled={isQuickResponsesEnabled}
+                        externalLinkUrl={`/app/automation/${shopType}/${shopName}/flows/quick-responses`}
+                        onToggle={updateSettings('quickResponses')}
+                    />
+                )}
 
                 <FeatureSettings
                     title="Order Management"

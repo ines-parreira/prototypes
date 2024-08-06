@@ -2,6 +2,7 @@ import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {Label} from '@gorgias/ui-kit'
 import {isEqual, keyBy, startCase} from 'lodash'
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {Components} from 'rest_api/workflows_api/client.generated'
 import Button from 'pages/common/components/button/Button'
@@ -10,6 +11,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import Search from 'pages/common/components/Search'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import {useListWorkflowEntryPoints} from 'models/workflows/queries'
+import {FeatureFlagKey} from 'config/featureFlags'
 import css from './FlowsSettings.less'
 import {FlowSettingsDropdownItem} from './FlowSettingsDropdownItem'
 import {FlowSettingsItem} from './FlowSettingsItem'
@@ -135,14 +137,17 @@ export const FlowsSettings = ({
         workflowEntrypoints,
         entrypointLabelByWorkflowId,
     ])
+    const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
 
     return (
         <div className="full-width">
             <Label>Flows</Label>
             <span>
-                Display up to {FLOWS_LIMIT} Flows or Quick Responses on your{' '}
-                {startCase(channelType.replace('-', ' '))} to proactively
-                resolve top customer requests.
+                {sunsetQuickResponses
+                    ? `Display up to ${FLOWS_LIMIT} Flows on your Chat to proactively resolve top customer requests.`
+                    : `Display up to ${FLOWS_LIMIT} Flows or Quick Responses on your 
+                ${startCase(channelType.replace('-', ' '))} to proactively
+                resolve top customer requests.`}
             </span>
 
             <ul className={css.enabledWorkflowList}>

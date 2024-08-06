@@ -6,11 +6,14 @@ import {createDragDropManager} from 'dnd-core'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
 import {act} from 'react-dom/test-utils'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {FlowsSettings} from '../components/FlowsSettings'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
-
+jest.mock('launchdarkly-react-client-sdk')
+const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 describe('FeatureSettings', () => {
     test('renders the component with all props', () => {
         renderWithQueryClientProvider(
@@ -269,4 +272,65 @@ describe('FeatureSettings', () => {
         closeButton.click()
         expect(onChange).toHaveBeenCalledWith([])
     })
+
+    it.each([[true], [false]])(
+        'Should render text based on the quick response sunset flag if true',
+        (flag) => {
+            mockUseFlags.mockReturnValue({
+                [FeatureFlagKey.SunsetQuickResponses]: flag,
+            })
+            const {getByText, queryByText} = renderWithQueryClientProvider(
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            {
+                                workflow_id: '1',
+                            },
+                            {
+                                workflow_id: '2',
+                            },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            {
+                                id: '1',
+                                name: 'Flow 1',
+                            } as any,
+                            {
+                                id: '2',
+                                name: 'Flow 2',
+                            },
+                        ]}
+                        automationSettingsWorkflows={[
+                            {
+                                workflow_id: '1',
+                                enabled: false,
+                            },
+                            {
+                                workflow_id: '2',
+                                enabled: false,
+                            },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            )
+            if (flag) {
+                expect(
+                    getByText(
+                        `Display up to 6 Flows on your Chat to proactively resolve top customer requests.`
+                    )
+                ).toBeInTheDocument()
+            } else {
+                expect(
+                    queryByText(
+                        `Display up to 6 Flows on your Chat to proactively resolve top customer requests.`
+                    )
+                ).not.toBeInTheDocument()
+            }
+        }
+    )
 })
