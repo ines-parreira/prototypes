@@ -37,6 +37,7 @@ import TextArea from 'pages/common/forms/TextArea'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {SegmentEvent, logEvent} from 'common/segment'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import {getHasAutomate} from 'state/billing/selectors'
 import {
     useConfigurationForm,
     validateConfigurationFormValues,
@@ -92,6 +93,7 @@ export const StoreConfigForm = ({
 }: Props) => {
     const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
     const faqHelpCenters = useAppSelector(getHelpCenterFAQList)
+    const hasAutomate = useAppSelector(getHasAutomate)
     const dispatch = useAppDispatch()
     const isCreate = storeConfiguration === undefined
 
@@ -367,11 +369,13 @@ export const StoreConfigForm = ({
                         {trialModeAvailable ? (
                             <RadioFieldSet
                                 name="ai-agent-trial-mode"
+                                dataCanduId="ai-agent-trial-mode-toggle"
                                 options={[
                                     {
                                         caption:
                                             'Answer customer questions immediately, even outside business hours.',
                                         label: 'Directly respond to customers',
+                                        disabled: !hasAutomate,
                                         value: 'enabled',
                                     },
                                     {

@@ -41,6 +41,8 @@ const AutomateNavbarSectionBlock = ({
     ...props
 }: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
+
+    const hasAiAgentTrial = useFlags()[FeatureFlagKey.AiAgentTrialMode]
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
@@ -53,6 +55,50 @@ const AutomateNavbarSectionBlock = ({
         }
     }
 
+    if (hasAiAgentTrial && !hasAutomate) {
+        return (
+            <NavbarSectionBlock
+                icon={
+                    <img
+                        alt={`${shopType} logo`}
+                        role="presentation"
+                        src={getIconSrc()}
+                    />
+                }
+                className={css.section}
+                {...props}
+            >
+                {shopType === 'shopify' && (
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                        {...(shouldRenderCanduIds && {
+                            ['data-candu-id']: 'automate-link-ai-agent',
+                        })}
+                    >
+                        <NavbarLink
+                            to={{
+                                pathname: `/app/automation/shopify/${shopName}/ai-agent`,
+                                state: {from: FROM_LOCATION},
+                            }}
+                        >
+                            <span className={cssNavbar['item-name']}>
+                                {AI_AGENT}
+                            </span>
+                            <Badge
+                                type={ColorType.Blue}
+                                className={cssNavbar.badge}
+                            >
+                                NEW
+                            </Badge>
+                        </NavbarLink>
+                    </div>
+                )}
+            </NavbarSectionBlock>
+        )
+    }
     return (
         <NavbarSectionBlock
             icon={

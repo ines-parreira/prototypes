@@ -18,6 +18,7 @@ import css from './AutomateNavbar.less'
 
 const AutomateNavbar = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
+    const hasAiAgentTrial = useFlags()[FeatureFlagKey.AiAgentTrialMode]
     const hasLegacyAutomateFeatures = useAppSelector(
         getHasLegacyAutomateFeatures
     )
@@ -30,7 +31,7 @@ const AutomateNavbar = () => {
 
     return (
         <Navbar activeContent="automate">
-            {(hasAutomate || hasLegacyAutomateFeatures) && (
+            {(hasAutomate || hasLegacyAutomateFeatures || hasAiAgentTrial) && (
                 <>
                     <div
                         className={classNames(

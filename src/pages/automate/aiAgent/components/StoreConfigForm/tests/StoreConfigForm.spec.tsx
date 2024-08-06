@@ -15,6 +15,7 @@ import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {useGetOrCreateSnippetHelpCenter} from 'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
+import {getHasAutomate} from 'state/billing/selectors'
 import {StoreConfigForm} from '../StoreConfigForm'
 import {useStoreConfigurationMutation} from '../../../hooks/useStoreConfigurationMutation'
 
@@ -32,6 +33,10 @@ jest.mock('pages/automate/aiAgent/hooks/usePublicResources', () => ({
 jest.mock('../../PublicSourcesSection/PublicSourcesSection', () => ({
     PublicSourcesSection: jest.fn(() => <p>Public Source Section</p>),
 }))
+jest.mock('state/billing/selectors', () => ({
+    __esModule: true,
+    getHasAutomate: jest.fn(),
+}))
 
 const mockedUseStoreConfigurationMutation = jest.mocked(
     useStoreConfigurationMutation
@@ -41,6 +46,7 @@ const mockedUseGetOrCreateSnippetHelpCenter = jest.mocked(
 )
 const mockedUseConfigurationForm = jest.mocked(useConfigurationForm)
 const mockedUsePublicResources = jest.mocked(usePublicResources)
+const mockGetHasAutomate = jest.mocked(getHasAutomate)
 
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
@@ -113,6 +119,7 @@ describe('<StoreConfigForm />', () => {
         isDraft: false,
     }
     beforeEach(() => {
+        mockGetHasAutomate.mockReturnValue(true)
         mockedUseStoreConfigurationMutation.mockReturnValue({
             isLoading: false,
             createStoreConfiguration: () => Promise.resolve(),

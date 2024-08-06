@@ -22,6 +22,7 @@ type Props = {
     options: Array<RadioFieldOption>
     selectedValue: string | null
     isHorizontal?: boolean
+    dataCanduId?: string
 }
 
 const RadioFieldSet = ({
@@ -33,6 +34,7 @@ const RadioFieldSet = ({
     options,
     selectedValue,
     isHorizontal,
+    dataCanduId,
 }: Props) => {
     const id = useId()
     const fieldsetName = name || 'radio-field-' + id
@@ -44,6 +46,7 @@ const RadioFieldSet = ({
             className={classnames(className, {
                 [css.horizontal]: isHorizontal,
             })}
+            {...(dataCanduId ? {'data-candu-id': dataCanduId} : {})}
         >
             {!!label && <legend className={css.legend}>{label}</legend>}
             {options.map(({value, label, caption, disabled}) => (
