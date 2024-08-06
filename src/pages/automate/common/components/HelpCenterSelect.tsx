@@ -15,6 +15,7 @@ type Props = {
     helpCenters: HelpCenter[]
     withEmptyItemSelection?: boolean
     setHelpCenterId: (id: number) => void
+    className?: string
 }
 
 const HelpCenterSelect = ({
@@ -22,6 +23,7 @@ const HelpCenterSelect = ({
     helpCenters,
     withEmptyItemSelection,
     setHelpCenterId,
+    className,
 }: Props) => {
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -34,6 +36,7 @@ const HelpCenterSelect = ({
             onToggle={setSelectorOpen}
             placeholder="Select a Help Center"
             ref={targetRef}
+            className={className}
         >
             <SelectInputBoxContext.Consumer>
                 {(context) => (

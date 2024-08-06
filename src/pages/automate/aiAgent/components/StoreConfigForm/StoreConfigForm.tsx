@@ -548,6 +548,7 @@ export const StoreConfigForm = ({
                             setHelpCenterId={setHelpCenterId}
                             helpCenters={faqHelpCenters}
                             withEmptyItemSelection
+                            className={css.helpCenterSelect}
                         />
                         <div className={css.formInputFooterInfo}>
                             Select a Help Center to connect to AI Agent.
@@ -557,6 +558,7 @@ export const StoreConfigForm = ({
                     {snippetHelpCenter ? (
                         <CreatePublicSourcesSection
                             helpCenterId={snippetHelpCenter.id}
+                            selectedHelpCenterId={selectedHelpCenter?.id}
                             onPublicURLsChanged={handlePublicURLsChange}
                             shopName={shopName}
                         />

@@ -22,7 +22,28 @@ const isUrlValid = (url?: string) => {
 const isUrlRoot = (url: string) => {
     try {
         const urlObj = new URL(url)
-        return urlObj.pathname === '/' || urlObj.pathname === ''
+        return (
+            (urlObj.pathname === '/' || urlObj.pathname === '') &&
+            !urlObj.search &&
+            !urlObj.hash
+        )
+    } catch (_) {
+        return false
+    }
+}
+
+const isUrlFromGorgiasHelpCenter = (
+    url: string,
+    helpCenterCustomDomains: string[]
+) => {
+    try {
+        const urlObj = new URL(url)
+        const hostname = urlObj.hostname
+
+        const isGorgiasDomain = hostname.endsWith('.gorgias.help')
+        const isCustomDomain = helpCenterCustomDomains.includes(hostname)
+
+        return isGorgiasDomain || isCustomDomain
     } catch (_) {
         return false
     }
@@ -30,11 +51,21 @@ const isUrlRoot = (url: string) => {
 
 const getInputError = (
     isInvalid: boolean,
+    isGorgiasHelpCenterUrl: boolean,
+    isRootUrl: boolean,
     isDuplicate: boolean,
     status: SourceItem['status']
 ) => {
     if (isInvalid) {
         return 'Invalid URL'
+    }
+
+    if (isGorgiasHelpCenterUrl) {
+        return 'URL cannot be a Gorgias Help Center'
+    }
+
+    if (isRootUrl) {
+        return 'URL must include a subpage (ie. yourstore.com/faqs)'
     }
 
     if (isDuplicate) {
@@ -53,6 +84,7 @@ type Props = {
     existingUrls: string[]
     onDelete: (source: SourceItem) => void
     onSync: (url: string, sourceId: number) => void
+    helpCenterCustomDomains: string[]
 }
 
 export const PublicSourcesItem = ({
@@ -60,6 +92,7 @@ export const PublicSourcesItem = ({
     onDelete,
     onSync,
     existingUrls,
+    helpCenterCustomDomains,
 }: Props) => {
     const [value, setValue] = useState(source.url ?? '')
 
@@ -84,7 +117,13 @@ export const PublicSourcesItem = ({
     const isValidUrl = isUrlValid(value)
     const isDuplicate = value !== source.url && existingUrls.includes(value)
     const isNotEmpty = value !== '' && value !== undefined
-    const isValid = isValidUrl && isNotEmpty
+    const isGorgiasHelpCenterUrl = isUrlFromGorgiasHelpCenter(
+        value,
+        helpCenterCustomDomains
+    )
+    const isRootUrl = isUrlRoot(value)
+    const isValid =
+        isValidUrl && isNotEmpty && !isGorgiasHelpCenterUrl && !isRootUrl
 
     const isEditingDisabled =
         source.status !== 'idle' && source.status !== 'error'
@@ -97,6 +136,8 @@ export const PublicSourcesItem = ({
 
     const inputError = getInputError(
         !isValidUrl && isNotEmpty,
+        isGorgiasHelpCenterUrl,
+        isRootUrl,
         isDuplicate,
         source.status
     )
@@ -112,19 +153,6 @@ export const PublicSourcesItem = ({
                 hasError={source.status === 'error' || !!inputError}
                 aria-label="Public URL"
                 error={inputError}
-                caption={
-                    source.status === 'idle' &&
-                    isValidUrl &&
-                    isUrlRoot(value) ? (
-                        <span className={css.warningCaption}>
-                            Only this specific page is read by AI Agent, please
-                            make sure it has all the information to answer
-                            customer questions. Website home pages often don't
-                            contain enough information to make AI Agent
-                            effective.
-                        </span>
-                    ) : null
-                }
             />
             <Button
                 intent="secondary"

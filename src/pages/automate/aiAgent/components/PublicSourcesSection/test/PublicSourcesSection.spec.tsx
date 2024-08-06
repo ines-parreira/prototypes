@@ -3,6 +3,7 @@ import {screen, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {usePublicResourceMutation} from 'pages/automate/aiAgent/hooks/usePublicResourcesMutation'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import {SourceItem} from '../types'
 import {PublicSourcesSection} from '../PublicSourcesSection'
 
@@ -14,6 +15,11 @@ jest.mock('../../../hooks/usePublicResourcesPooling', () => ({
 jest.mock('../../../hooks/usePublicResourcesMutation', () => ({
     usePublicResourceMutation: jest.fn(),
 }))
+
+jest.mock(
+    'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames',
+    () => jest.fn()
+)
 
 const HELP_CENTER_ID = 1
 
@@ -38,12 +44,22 @@ const renderComponent = (
 }
 
 const mockUsePublicResourcesMutation = jest.mocked(usePublicResourceMutation)
+const mockUseHelpCenterCustomDomainHostnames = jest.mocked(
+    useHelpCenterCustomDomainHostnames
+)
 
 describe('<PublicSourcesSection />', () => {
     beforeEach(() => {
         mockUsePublicResourcesMutation.mockReturnValue({
             addPublicResource: jest.fn(),
             deletePublicResource: jest.fn(),
+        })
+        mockUseHelpCenterCustomDomainHostnames.mockReturnValue({
+            customDomainHostnames: [
+                'help-center-example.com',
+                'help-center-test.com',
+            ],
+            isLoading: false,
         })
     })
     it('should render component', () => {
@@ -81,7 +97,7 @@ describe('<PublicSourcesSection />', () => {
     })
 
     it('should open URL in new tab when URL clicked', async () => {
-        const url = 'https://example.com'
+        const url = 'https://example.com/faqs'
         renderComponent()
         const addButton = screen.getByTestId('add-button')
         addButton.click()
@@ -169,7 +185,7 @@ describe('<PublicSourcesSection />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should show warning message when URL is root', async () => {
+    it('should show error message when URL is root', async () => {
         const url = 'https://example.com'
         renderComponent()
 
@@ -184,11 +200,53 @@ describe('<PublicSourcesSection />', () => {
             .pop() as HTMLElement
         const syncButton = within(lastElement).getByTestId('sync-button')
 
-        expect(syncButton).toBeEnabled()
+        expect(syncButton).toBeDisabled()
         expect(
             within(lastElement).getByText(
-                "Only this specific page is read by AI Agent, please make sure it has all the information to answer customer questions. Website home pages often don't contain enough information to make AI Agent effective."
+                'URL must include a subpage (ie. yourstore.com/faqs)'
             )
+        ).toBeInTheDocument()
+    })
+
+    it('should show error message when URL is from Gorgias Help Center', async () => {
+        const url = 'https://example.gorgias.help/faqs'
+        renderComponent()
+
+        const addButton = screen.getByTestId('add-button')
+        userEvent.click(addButton)
+        const input = screen
+            .getAllByLabelText('Public URL')
+            .pop() as HTMLInputElement
+        await userEvent.type(input, url)
+        const lastElement = screen
+            .getAllByTestId('source-item')
+            .pop() as HTMLElement
+        const syncButton = within(lastElement).getByTestId('sync-button')
+
+        expect(syncButton).toBeDisabled()
+        expect(
+            within(lastElement).getByText('URL cannot be a Gorgias Help Center')
+        ).toBeInTheDocument()
+    })
+
+    it('should show error message when URL is from selected Help Center custom domain', async () => {
+        const url = 'https://help-center-example.com/faqs'
+        renderComponent()
+
+        const addButton = screen.getByTestId('add-button')
+        userEvent.click(addButton)
+        const input = screen
+            .getAllByLabelText('Public URL')
+            .pop() as HTMLInputElement
+        await userEvent.type(input, url)
+        const lastElement = screen
+            .getAllByTestId('source-item')
+            .pop() as HTMLElement
+        const syncButton = within(lastElement).getByTestId('sync-button')
+
+        expect(syncButton).toBeDisabled()
+        expect(
+            within(lastElement).getByText('URL cannot be a Gorgias Help Center')
         ).toBeInTheDocument()
     })
 
@@ -204,7 +262,7 @@ describe('<PublicSourcesSection />', () => {
         const input = within(lastElement).getByLabelText('Public URL')
         const syncButton = within(lastElement).getByTestId('sync-button')
 
-        await userEvent.type(input, 'https://example.com')
+        await userEvent.type(input, 'https://example.com/faqs')
         userEvent.click(syncButton)
 
         expect(syncButton).toBeDisabled()

@@ -7,6 +7,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import {usePublicResourceMutation} from '../../hooks/usePublicResourcesMutation'
 import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
 import css from './PublicSourcesSection.less'
@@ -21,6 +22,7 @@ type Props = {
     shopName: string
     onPublicURLsChanged: (publicURLs: string[]) => void
     sourceItems?: SourceItem[]
+    selectedHelpCenterId?: number
 }
 
 export const PublicSourcesSection = ({
@@ -28,6 +30,7 @@ export const PublicSourcesSection = ({
     shopName,
     onPublicURLsChanged,
     sourceItems,
+    selectedHelpCenterId,
 }: Props) => {
     const dispatch = useAppDispatch()
 
@@ -123,6 +126,9 @@ export const PublicSourcesSection = ({
         .map((s) => s.url)
         .filter((url): url is string => !!url)
 
+    const {customDomainHostnames} =
+        useHelpCenterCustomDomainHostnames(selectedHelpCenterId)
+
     return (
         <div className={css.container}>
             <div>
@@ -156,6 +162,7 @@ export const PublicSourcesSection = ({
                                 source={source}
                                 onDelete={onDeleteSource}
                                 onSync={onSyncSource}
+                                helpCenterCustomDomains={customDomainHostnames}
                             />
                         </li>
                     ))}
