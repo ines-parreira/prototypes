@@ -55,7 +55,7 @@ export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
             <div className={css.info}>
                 <UncontrolledTooltip target="macro-suggestion-info">
                     <div className={css.tooltip}>
-                        Macros are suggested based on the conversation content.
+                        Macros are suggested based on your previous macro usage.
                         Use macros to save time answering tickets.
                     </div>
                 </UncontrolledTooltip>

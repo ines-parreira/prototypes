@@ -613,13 +613,13 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                     >
                       auto_awesome
                     </i>
-                    AI Macro prediction
+                    Macro prediction
                   </label>
                 </div>
                 <small
                   class="macroDescription form-text text-muted"
                 >
-                  Automatically select macros based on ticket content.
+                  Automatically select macros based on previous macro usage.
                    
                   <a
                     href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
@@ -656,7 +656,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                     >
                       auto_awesome
                     </i>
-                    AI Macro suggestions
+                    Macro suggestions
                   </label>
                 </div>
                 <small

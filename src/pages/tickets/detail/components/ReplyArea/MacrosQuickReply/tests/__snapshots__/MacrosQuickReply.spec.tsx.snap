@@ -131,6 +131,6 @@ exports[`<MacrosQuickReply /> should show the tooltip when hovering on the icon 
 <div
   class="tooltip"
 >
-  Macros are suggested based on the conversation content. Use macros to save time answering tickets.
+  Macros are suggested based on your previous macro usage. Use macros to save time answering tickets.
 </div>
 `;

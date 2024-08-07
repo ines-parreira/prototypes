@@ -485,7 +485,7 @@ export class YourProfileView extends Component<Props, State> {
                                                 >
                                                     auto_awesome
                                                 </i>
-                                                AI Macro prediction
+                                                Macro prediction
                                             </ToggleInput>
                                             <FormText
                                                 color="muted"
@@ -494,7 +494,7 @@ export class YourProfileView extends Component<Props, State> {
                                                 }
                                             >
                                                 Automatically select macros
-                                                based on ticket content.{' '}
+                                                based on previous macro usage.{' '}
                                                 <a
                                                     href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
                                                     target="_blank"
@@ -535,7 +535,7 @@ export class YourProfileView extends Component<Props, State> {
                                                 >
                                                     auto_awesome
                                                 </i>
-                                                AI Macro suggestions
+                                                Macro suggestions
                                             </ToggleInput>
                                             <FormText
                                                 color="muted"
