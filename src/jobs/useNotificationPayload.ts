@@ -1,60 +1,71 @@
-import {useMemo} from 'react'
+import {useCallback, useRef} from 'react'
 import {JobType} from '@gorgias/api-queries'
 import {POSITIONS} from 'reapop'
+import _uniqueId from 'lodash/uniqueId'
 
-import useId from 'hooks/useId'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {buildJobMessage} from 'utils/notificationUtils'
 
 import {Update} from './types'
 
 type Props = {
-    jobType: JobType
     level: 'ticket' | 'view'
     objectType: string
-    params?: {
-        updates: XOR<Update>
-    }
     ticketIds?: number[]
 }
 
-const useNotificationPayload = ({
-    jobType,
-    level,
-    objectType,
-    params,
-    ticketIds,
-}: Props) => {
-    const notificationId = 'notification-' + useId()
-    const jobMessage = useMemo(
-        () =>
-            buildJobMessage(
-                jobType,
+const useNotificationPayload = ({level, objectType, ticketIds}: Props) => {
+    const notification = useRef<{
+        message: string
+        id: string
+    }>()
+
+    const getNotificationParams = useCallback(
+        (
+            type: JobType,
+            params?: {
+                updates: XOR<Update>
+            }
+        ) => {
+            const message = buildJobMessage(
+                type,
                 level === 'view',
                 objectType,
                 params || {},
                 ticketIds?.length
-            ),
-        [jobType, level, objectType, params, ticketIds?.length]
-    )
-    const notificationPayload = useMemo(
-        () => ({
-            id: notificationId,
-            buttons: [],
-            allowHTML: false,
-            closeButton: false,
-            closeOnNext: true,
-            dismissAfter: 10000,
-            dismissible: true,
-            message: jobMessage,
-            position: POSITIONS.topCenter,
-            status: NotificationStatus.Loading,
-            style: NotificationStyle.Alert,
-        }),
-        [jobMessage, notificationId]
+            )
+            notification.current = {
+                id: _uniqueId('notification-'),
+                message,
+            }
+            return notification.current
+        },
+        [level, objectType, ticketIds?.length]
     )
 
-    return notificationPayload
+    const getNotificationPayload = useCallback(
+        ({id, message}: {id?: string; message?: string} = {}) => {
+            return {
+                id: id ?? notification.current?.id,
+                buttons: [],
+                allowHTML: false,
+                closeButton: false,
+                closeOnNext: true,
+                dismissAfter: 10000,
+                dismissible: true,
+                message: message ?? notification.current?.message,
+                position: POSITIONS.topCenter,
+                status: NotificationStatus.Loading,
+                style: NotificationStyle.Alert,
+            }
+        },
+        []
+    )
+
+    return {
+        getNotificationParams,
+        getNotificationPayload,
+    }
 }
 
 export default useNotificationPayload

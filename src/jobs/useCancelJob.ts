@@ -8,10 +8,12 @@ import {NotificationStatus} from 'state/notifications/types'
 import useNotificationPayload from './useNotificationPayload'
 
 type Props = {
-    notificationPayload: ReturnType<typeof useNotificationPayload>
+    getNotificationPayload: ReturnType<
+        typeof useNotificationPayload
+    >['getNotificationPayload']
 }
 
-const useCancelJob = ({notificationPayload}: Props) => {
+const useCancelJob = ({getNotificationPayload}: Props) => {
     const dispatch = useAppDispatch()
 
     const {mutate: cancelJob} = useCancelJobQuery({
@@ -19,7 +21,7 @@ const useCancelJob = ({notificationPayload}: Props) => {
             onSuccess: () => {
                 void dispatch(
                     notify({
-                        ...notificationPayload,
+                        ...getNotificationPayload(),
                         status: NotificationStatus.Success,
                         message: 'The job has been canceled.',
                     })
@@ -28,7 +30,7 @@ const useCancelJob = ({notificationPayload}: Props) => {
             onError: (error: AxiosError<{error: {msg: string}}>) => {
                 void dispatch(
                     notify({
-                        ...notificationPayload,
+                        ...getNotificationPayload(),
                         status: NotificationStatus.Error,
                         message: error.response?.data.error.msg,
                     })

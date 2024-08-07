@@ -52,38 +52,29 @@ const defaultState = {
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('useBulkAction', () => {
-    const notificationPayloadMock = {
+    const statusMock = 'jobStatus'
+    const getNotificationParamsMock = jest.fn()
+    const getNotificationPayloadMock = jest.fn().mockReturnValue({
+        status: statusMock,
         message: 'Job is launched',
-        status: 'jobStatus',
-    }
+    })
 
     useCreateJobMock.mockReturnValue(createJobResponse())
     useCancelJobMock.mockReturnValue({
         cancelJob: mutateCancelJobMock,
-        notificationPayload: notificationPayloadMock,
     } as unknown as ReturnType<typeof useCancelJob>)
-    useNotificationPayloadMock.mockReturnValue(
-        notificationPayloadMock as unknown as ReturnType<
-            typeof useNotificationPayload
-        >
-    )
+    useNotificationPayloadMock.mockReturnValue({
+        getNotificationParams: getNotificationParamsMock,
+        getNotificationPayload: getNotificationPayloadMock,
+    } as unknown as ReturnType<typeof useNotificationPayload>)
 
     it('should create job for a non-dirty view', () => {
-        const {result} = renderHook(
-            () =>
-                useBulkAction({
-                    jobType: JobType.DeleteTicket,
-                    level: 'view',
-                }),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-        void result.current.createJob()
+        const {result} = renderHook(() => useBulkAction('view'), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+        void result.current.createJob(JobType.DeleteTicket)
 
         expect(mutateCreateJobMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -99,31 +90,24 @@ describe('useBulkAction', () => {
     })
 
     it('should create job for a dirty view', () => {
-        const {result} = renderHook(
-            () =>
-                useBulkAction({
-                    jobType: JobType.DeleteTicket,
-                    level: 'view',
-                }),
-            {
-                wrapper: ({children}) => (
-                    <Provider
-                        store={mockStore({
-                            views: fromJS({
-                                active: {
-                                    ...viewFixture,
-                                    dirty: true,
-                                    type: ViewType.TicketList,
-                                },
-                            }),
-                        })}
-                    >
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-        void result.current.createJob()
+        const {result} = renderHook(() => useBulkAction('view'), {
+            wrapper: ({children}) => (
+                <Provider
+                    store={mockStore({
+                        views: fromJS({
+                            active: {
+                                ...viewFixture,
+                                dirty: true,
+                                type: ViewType.TicketList,
+                            },
+                        }),
+                    })}
+                >
+                    {children}
+                </Provider>
+            ),
+        })
+        void result.current.createJob(JobType.DeleteTicket)
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {id, slug, uri, ...viewParam} = viewFixture
@@ -142,22 +126,12 @@ describe('useBulkAction', () => {
     })
 
     it('should create job for a list of tickets', () => {
-        const {result} = renderHook(
-            () =>
-                useBulkAction({
-                    jobType: JobType.DeleteTicket,
-                    level: 'ticket',
-                    ticketIds: [1, 2, 3],
-                }),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-        void result.current.createJob()
+        const {result} = renderHook(() => useBulkAction('ticket', [1, 2, 3]), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+        void result.current.createJob(JobType.DeleteTicket)
 
         expect(mutateCreateJobMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -172,43 +146,28 @@ describe('useBulkAction', () => {
     })
 
     it('should display a notification when creating a job', () => {
-        const {result} = renderHook(
-            () =>
-                useBulkAction({
-                    jobType: JobType.DeleteTicket,
-                    level: 'view',
-                }),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-        void result.current.createJob()
+        const {result} = renderHook(() => useBulkAction('view'), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+        void result.current.createJob(JobType.DeleteTicket)
 
         expect(notify).toHaveBeenCalledWith(
-            expect.objectContaining(notificationPayloadMock)
+            expect.objectContaining({
+                message: expect.stringMatching(/^(?!\s*$).+/),
+                status: statusMock,
+            })
         )
     })
 
     it('should update the notification when job is successfully created', () => {
-        const {result} = renderHook(
-            () =>
-                useBulkAction({
-                    jobType: JobType.DeleteTicket,
-                    level: 'view',
-                }),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-        void result.current.createJob()
+        const {result} = renderHook(() => useBulkAction('view'), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+        void result.current.createJob(JobType.DeleteTicket)
 
         useCreateJobMock.mock.calls[0][0]?.mutation?.onSuccess?.(
             axiosSuccessResponse({id: 123}),
@@ -223,28 +182,20 @@ describe('useBulkAction', () => {
 
         expect(updateNotification).toHaveBeenCalledWith(
             expect.objectContaining({
-                ...notificationPayloadMock,
+                message: expect.stringMatching(/^(?!\s*$).+/),
                 status: NotificationStatus.Success,
+                buttons: expect.any(Array),
             })
         )
     })
 
     it('should display a cancel button for job at view level', () => {
-        const {result} = renderHook(
-            () =>
-                useBulkAction({
-                    jobType: JobType.DeleteTicket,
-                    level: 'view',
-                }),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-        void result.current.createJob()
+        const {result} = renderHook(() => useBulkAction('view'), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+        void result.current.createJob(JobType.DeleteTicket)
 
         useCreateJobMock.mock.calls[0][0]?.mutation?.onSuccess?.(
             axiosSuccessResponse({id: 123}),
@@ -271,22 +222,13 @@ describe('useBulkAction', () => {
         expect(mutateCancelJobMock).toHaveBeenCalledWith({id: 123})
     })
 
-    it('should not display buttons for job at ticket level', () => {
-        const {result} = renderHook(
-            () =>
-                useBulkAction({
-                    jobType: JobType.DeleteTicket,
-                    level: 'ticket',
-                }),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-        void result.current.createJob()
+    it('should not display a cancel button for job at ticket level', () => {
+        const {result} = renderHook(() => useBulkAction('ticket'), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+        void result.current.createJob(JobType.DeleteTicket)
 
         useCreateJobMock.mock.calls[0][0]?.mutation?.onSuccess?.(
             axiosSuccessResponse({id: 123}),
@@ -306,22 +248,39 @@ describe('useBulkAction', () => {
         )
     })
 
-    it('should update the notification when job is unsuccessfully created with an unauthorized error', () => {
-        const {result} = renderHook(
-            () =>
-                useBulkAction({
-                    jobType: JobType.DeleteTicket,
-                    level: 'view',
-                }),
+    it('should cancel job', () => {
+        renderHook(() => useBulkAction('view'), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+
+        useCreateJobMock.mock.calls[0][0]?.mutation?.onSuccess?.(
+            axiosSuccessResponse({id: 123}),
             {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
+                data: {
+                    params: {},
+                    type: JobType.DeleteTicket,
+                },
+            },
+            undefined
         )
-        void result.current.createJob()
+        ;(
+            updateNotificationMock.mock.calls[0][0] as unknown as {
+                buttons: {onClick: () => void}[]
+            }
+        ).buttons[0].onClick()
+
+        expect(mutateCancelJobMock).toHaveBeenCalledWith({id: 123})
+    })
+
+    it('should update the notification when job is unsuccessfully created with an unauthorized error', () => {
+        const {result} = renderHook(() => useBulkAction('view'), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+        void result.current.createJob(JobType.DeleteTicket)
         useCreateJobMock.mock.calls[0][0]?.mutation?.onError?.(
             {
                 response: {
@@ -347,21 +306,12 @@ describe('useBulkAction', () => {
     })
 
     it('should update the notification when job is unsuccessfully created', () => {
-        const {result} = renderHook(
-            () =>
-                useBulkAction({
-                    jobType: JobType.DeleteTicket,
-                    level: 'view',
-                }),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-        void result.current.createJob()
+        const {result} = renderHook(() => useBulkAction('view'), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+        void result.current.createJob(JobType.DeleteTicket)
         useCreateJobMock.mock.calls[0][0]?.mutation?.onError?.(
             {
                 error: new Error('foo'),

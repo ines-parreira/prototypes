@@ -44,7 +44,7 @@ describe('useBulkAction', () => {
     it('should successfully cancel job', () => {
         const {result} = renderHook(() =>
             useCancelJob({
-                notificationPayload,
+                getNotificationPayload: () => notificationPayload,
             })
         )
         void result.current.cancelJob({id: 1})
@@ -67,7 +67,7 @@ describe('useBulkAction', () => {
     it('should handle failure on job cancellation', () => {
         const {result} = renderHook(() =>
             useCancelJob({
-                notificationPayload,
+                getNotificationPayload: () => notificationPayload,
             })
         )
         void result.current.cancelJob({id: 1})

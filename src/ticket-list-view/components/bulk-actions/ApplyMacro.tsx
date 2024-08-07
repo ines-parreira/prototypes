@@ -39,6 +39,7 @@ export default function ApplyMacro({onComplete, ticketIds}: Props) {
             >
                 bolt
             </IconButton>
+
             {isMacroModalOpen && (
                 <MacroContainer
                     activeView={activeView}

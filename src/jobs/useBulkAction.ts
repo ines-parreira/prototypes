@@ -17,16 +17,7 @@ import {Update} from './types'
 import useCancelJob from './useCancelJob'
 import useNotificationPayload from './useNotificationPayload'
 
-type Props = {
-    jobType: JobType
-    level: 'ticket' | 'view'
-    params?: {
-        updates: XOR<Update>
-    }
-    ticketIds?: number[]
-}
-
-const useBulkAction = ({jobType, level, params, ticketIds}: Props) => {
+const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
     const dispatch = useAppDispatch()
     const activeViewImmutable = useAppSelector(getActiveView)
     const activeView = useMemo(
@@ -44,15 +35,14 @@ const useBulkAction = ({jobType, level, params, ticketIds}: Props) => {
         [viewConfig]
     )
 
-    const notificationPayload = useNotificationPayload({
-        jobType,
-        level,
-        params,
-        objectType,
-        ticketIds,
-    })
+    const {getNotificationParams, getNotificationPayload} =
+        useNotificationPayload({
+            level,
+            objectType,
+            ticketIds,
+        })
     const {cancelJob} = useCancelJob({
-        notificationPayload,
+        getNotificationPayload,
     })
 
     const {mutateAsync, isLoading} = useCreateJob({
@@ -60,7 +50,7 @@ const useBulkAction = ({jobType, level, params, ticketIds}: Props) => {
             onSuccess: (response) => {
                 dispatch(
                     updateNotification({
-                        ...notificationPayload,
+                        ...getNotificationPayload(),
                         status: NotificationStatus.Success,
                         ...(level === 'view'
                             ? {
@@ -81,7 +71,7 @@ const useBulkAction = ({jobType, level, params, ticketIds}: Props) => {
             onError: (error: AxiosError<{error: {msg: string}}>) => {
                 dispatch(
                     updateNotification({
-                        ...notificationPayload,
+                        ...getNotificationPayload(),
                         status: NotificationStatus.Error,
                         message:
                             error.response?.status === 403
@@ -95,11 +85,23 @@ const useBulkAction = ({jobType, level, params, ticketIds}: Props) => {
         },
     })
 
-    const displayNotification = useCallback(() => {
-        dispatch(
-            notify(notificationPayload)
-        ) as unknown as UpsertNotificationAction
-    }, [dispatch, notificationPayload])
+    const createNotification = useCallback(
+        (
+            jobType: JobType,
+            params?: {
+                updates: XOR<Update>
+            }
+        ) => {
+            dispatch(
+                notify(
+                    getNotificationPayload(
+                        getNotificationParams(jobType, params)
+                    )
+                )
+            ) as unknown as UpsertNotificationAction
+        },
+        [dispatch, getNotificationParams, getNotificationPayload]
+    )
 
     if (level === 'view') {
         if (activeView.dirty) {
@@ -118,8 +120,13 @@ const useBulkAction = ({jobType, level, params, ticketIds}: Props) => {
             /* eslint-enable @typescript-eslint/no-unused-vars */
 
             return {
-                createJob: () => {
-                    displayNotification()
+                createJob: (
+                    jobType: JobType,
+                    params?: {
+                        updates: XOR<Update>
+                    }
+                ) => {
+                    createNotification(jobType, params)
                     return mutateAsync({
                         data: {
                             params: {
@@ -138,8 +145,13 @@ const useBulkAction = ({jobType, level, params, ticketIds}: Props) => {
         }
 
         return {
-            createJob: () => {
-                displayNotification()
+            createJob: (
+                jobType: JobType,
+                params?: {
+                    updates: XOR<Update>
+                }
+            ) => {
+                createNotification(jobType, params)
                 return mutateAsync({
                     data: {
                         params: {
@@ -158,8 +170,13 @@ const useBulkAction = ({jobType, level, params, ticketIds}: Props) => {
     }
 
     return {
-        createJob: () => {
-            displayNotification()
+        createJob: (
+            jobType: JobType,
+            params?: {
+                updates: XOR<Update>
+            }
+        ) => {
+            createNotification(jobType, params)
             return mutateAsync({
                 data: {
                     params: {

@@ -1,5 +1,3 @@
-import {Moment} from 'moment'
-
 export type Update = {
     assignee_team_id: number | null
     assignee_user: {
@@ -9,5 +7,5 @@ export type Update = {
     is_unread: boolean
     status: 'open' | 'closed'
     tags: string[]
-    trashed_datetime: Moment | null
+    trashed_datetime: string | null
 }
