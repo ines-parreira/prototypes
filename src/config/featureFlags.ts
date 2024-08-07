@@ -9,6 +9,7 @@ export enum FeatureFlagKey {
     AnalyticsNewChannelsReport = 'analytics-new-channels-report',
     AnalyticsAutoQA = 'analytics-auto-qa',
     AnalyticsNewFilters = 'analytics-new-filters',
+    AnalyticsNewFiltersAutomate = 'analytics-new-filters-automate',
     AnalyticsSLAs = 'analytics-slas-report',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
     NewChannelsView = 'new-channels-view',

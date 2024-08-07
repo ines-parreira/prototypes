@@ -1,6 +1,7 @@
 import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import {
+    addOptionalFilter,
     hasFilter,
     isFilterWithLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
@@ -25,17 +26,11 @@ export const automationDatasetDefaultFilters = (
 
 export const automationDatasetAdditionalFilters = (
     filters: StatsFilters
-): ReportingFilter[] => [
-    ...(hasFilter(filters.channels)
-        ? [
-              {
-                  member: AutomationDatasetFilterMember.Channel,
-                  operator: ReportingFilterOperator.Equals,
-                  values: mapTicketChannelsToAutomateChannels(filters.channels),
-              },
-          ]
-        : []),
-]
+): ReportingFilter[] =>
+    addOptionalFilter([], filters.channels, {
+        member: AutomationDatasetFilterMember.Channel,
+        operator: ReportingFilterOperator.Equals,
+    })
 
 export const billableTicketDatasetDefaultFilters = (
     filters: StatsFilters

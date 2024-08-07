@@ -3,14 +3,15 @@ import React, {useMemo, useState} from 'react'
 import moment from 'moment'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {AutomateOverviewFilters} from 'pages/stats/AutomateOverviewFilters'
 import {ReportingGranularity} from 'models/reporting/types'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 
-import useAppSelector from 'hooks/useAppSelector'
-import {LegacyStatsFilters} from 'models/stat/types'
+import {FilterKey} from 'models/stat/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
@@ -45,7 +46,6 @@ import {
     GreyArea,
 } from 'hooks/reporting/automate/types'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {useTicketHandleTimeTrend} from 'hooks/reporting/metricTrends'
 import {TimeSavedByAgentsMetric} from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
 import {
@@ -172,6 +172,8 @@ export default function AutomateOverviewContent({
 }) {
     const [noActivityAlert, setNoActivityAlert] = useState(true)
     const [hide72HourAlert, set72HoursAlert] = useState(false)
+    const isAutomateOverviewChannelsFilter: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomateOverviewChannelsFilter]
     const isTicketTimeToHandleEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.ObservabilityTicketTimeToHandle]
 
@@ -179,21 +181,16 @@ export default function AutomateOverviewContent({
         AAO_TIPS_VISIBILITY_KEY,
         true
     )
+
     const {
-        cleanStatsFilters: statsFilters,
+        statsFilters,
         userTimezone,
         granularity,
-    } = useAppSelector(getCleanStatsFiltersWithTimezone)
+        isAnalyticsNewFiltersAutomate,
+    } = useNewAutomateFilters()
 
-    const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
-        const {channels, period} = statsFilters
-        return {
-            channels,
-            period,
-        }
-    }, [statsFilters])
     const ticketHandleTimeTrend = useTicketHandleTimeTrend(
-        pageStatsFilters,
+        statsFilters,
         userTimezone
     )
     const {
@@ -256,7 +253,11 @@ export default function AutomateOverviewContent({
                 title={PAGE_TITLE_AUTOMATE_PAYWALL}
                 titleExtra={
                     <>
-                        <AutomateOverviewFilters />
+                        <AutomateOverviewFilters
+                            isAnalyticsNewFiltersAutomate={
+                                isAnalyticsNewFiltersAutomate
+                            }
+                        />
                         <DownloadOverviewDataButton
                             onClick={async () => {
                                 logEvent(SegmentEvent.StatDownloadClicked, {
@@ -321,7 +322,20 @@ export default function AutomateOverviewContent({
                         </div>
                     )
                 )}
-
+                {isAnalyticsNewFiltersAutomate && (
+                    <DashboardSection className={'pb-0'}>
+                        <DashboardGridCell size={12}>
+                            <FiltersPanel
+                                persistentFilters={[FilterKey.Period]}
+                                optionalFilters={
+                                    isAutomateOverviewChannelsFilter
+                                        ? [FilterKey.Channels]
+                                        : []
+                                }
+                            />
+                        </DashboardGridCell>
+                    </DashboardSection>
+                )}
                 <DashboardSection
                     title="Performance"
                     titleExtra={

@@ -22,6 +22,7 @@ import css from 'pages/stats/common/filters/PeriodFilter.less'
 import {RootState} from 'state/types'
 
 const MAX_SPAN = 90
+export const PERIOD_FILTER_NAME = 'Date'
 
 type Props = {
     initialSettings?: Omit<InitialSettings, 'maxSpan'> & {maxSpan?: number}
@@ -112,7 +113,7 @@ export default function PeriodFilter({
 
     return (
         <div className={css.filterContainer}>
-            <FilterName className={css.filterName} name={'Date'} />
+            <FilterName className={css.filterName} name={PERIOD_FILTER_NAME} />
             <PeriodPicker
                 startDatetime={moment(value.start_datetime)}
                 endDatetime={moment(value.end_datetime)}

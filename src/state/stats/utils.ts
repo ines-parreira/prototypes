@@ -33,6 +33,7 @@ export const fromPartialLegacyStatsFilters = (
         {}
     )
 }
+
 export const fromLegacyStatsFilters = (
     statsFilters: LegacyStatsFilters
 ): StatsFiltersWithLogicalOperator => {
@@ -66,6 +67,50 @@ export const fromLegacyStatsFilters = (
         },
         {
             period: statsFilters.period,
+        }
+    )
+}
+
+export const fromLegacyAndLogicalOperatorStatsFilters = (
+    legacyStatsFilters: LegacyStatsFilters,
+    statsFilters: StatsFiltersWithLogicalOperator
+): StatsFiltersWithLogicalOperator => {
+    const filterKeys = Object.values(FilterKey)
+    return filterKeys.reduce<StatsFiltersWithLogicalOperator>(
+        (acc, key) => {
+            switch (key) {
+                case FilterKey.Period:
+                    acc[key] = legacyStatsFilters[key]
+                    break
+                case FilterKey.Integrations:
+                case FilterKey.Tags:
+                case FilterKey.Agents:
+                case FilterKey.HelpCenters:
+                    if (
+                        legacyStatsFilters[key] !== undefined &&
+                        legacyStatsFilters[key]?.values !== undefined
+                    ) {
+                        acc[key] = withDefaultLogicalOperator(
+                            legacyStatsFilters[key],
+                            statsFilters[key]?.operator
+                        )
+                    }
+                    break
+                default:
+                    if (
+                        legacyStatsFilters[key] !== undefined &&
+                        legacyStatsFilters[key]?.values !== undefined
+                    ) {
+                        acc[key] = withDefaultLogicalOperator(
+                            legacyStatsFilters[key],
+                            statsFilters[key]?.operator
+                        )
+                    }
+            }
+            return acc
+        },
+        {
+            period: legacyStatsFilters.period,
         }
     )
 }

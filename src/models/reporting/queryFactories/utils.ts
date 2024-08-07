@@ -84,10 +84,11 @@ export const addOptionalFilter = (
 }
 
 export function withDefaultLogicalOperator<T extends number | string>(
-    values?: T[]
+    values?: T[],
+    operator?: LogicalOperatorEnum
 ): WithLogicalOperator<T> {
     return {
         values: values ?? [],
-        operator: LogicalOperatorEnum.ONE_OF,
+        operator: operator ?? LogicalOperatorEnum.ONE_OF,
     }
 }

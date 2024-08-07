@@ -160,7 +160,10 @@ export const getStatsFiltersWithInitialStoreIntegration = createSelector(
 export const getPageStatsFiltersWithLogicalOperators = createSelector(
     getStatsFiltersWithLogicalOperators,
     getMessagingAndAppIntegrationsStatsFilterWithLogicalOperators,
-    (statsFilters, integrationsStatsFilter) => {
+    (
+        statsFilters,
+        integrationsStatsFilter
+    ): StatsFiltersWithLogicalOperator => {
         const {
             channels,
             agents,

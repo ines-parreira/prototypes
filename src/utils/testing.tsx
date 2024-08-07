@@ -1,6 +1,6 @@
 import React, {ComponentType, Context, ReactElement, useContext} from 'react'
 import {Provider} from 'react-redux'
-import configureMockStore, {MockStore} from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {act, render, RenderOptions} from '@testing-library/react'
 import {Route, Router} from 'react-router-dom'
@@ -19,7 +19,7 @@ const middlewares = [thunk]
 /**
  * Mock a Redux store
  */
-export const mockStore = (store: MockStore) =>
+export const mockStore = <T extends object>(store: T) =>
     configureMockStore(middlewares)(store)
 
 export type RenderWithRouterParams = {

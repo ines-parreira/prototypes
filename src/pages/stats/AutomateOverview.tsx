@@ -1,7 +1,6 @@
-import React, {useMemo} from 'react'
+import React from 'react'
+import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
 
-import useAppSelector from 'hooks/useAppSelector'
-import {StatsFilters} from 'models/stat/types'
 import {
     PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
@@ -11,34 +10,21 @@ import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import AutomateOverviewV2 from './AutomateOverviewV2'
-import SelfServiceStatsPagePaywallCustomCta from './self-service/SelfServiceStatsPagePaywallCustomCta'
+import AutomateOverviewV2 from 'pages/stats/AutomateOverviewV2'
+import SelfServiceStatsPagePaywallCustomCta from 'pages/stats/self-service/SelfServiceStatsPagePaywallCustomCta'
 import {
     PAGE_TITLE_AUTOMATE_PAYWALL,
     PAGE_TITLE_OVERVIEW,
-} from './self-service/constants'
+} from 'pages/stats/self-service/constants'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 
 export function AutomateOverview() {
-    const {
-        cleanStatsFilters: statsFilters,
-        userTimezone,
-        granularity,
-    } = useAppSelector(getCleanStatsFiltersWithTimezone)
-
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
-        const {channels, period} = statsFilters
-        return {
-            channels,
-            period,
-        }
-    }, [statsFilters])
+    const {statsFilters, userTimezone, granularity} = useNewAutomateFilters()
 
     return (
         <AutomateOverviewV2
-            filters={pageStatsFilters}
+            filters={statsFilters}
             timezone={userTimezone}
             granularity={granularity}
         />

@@ -136,5 +136,15 @@ describe('utils', () => {
                 operator: LogicalOperatorEnum.ONE_OF,
             })
         })
+
+        it('should return filter with passed logic operator', () => {
+            const filterValue = [1, 2]
+            const operator = LogicalOperatorEnum.ALL_OF
+
+            expect(withDefaultLogicalOperator(filterValue, operator)).toEqual({
+                values: filterValue,
+                operator,
+            })
+        })
     })
 })

@@ -1,12 +1,17 @@
 import {QueryClientProvider} from '@tanstack/react-query'
+import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
+import {act} from 'react-dom/test-utils'
 
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import LD from 'launchdarkly-react-client-sdk'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {PERIOD_FILTER_NAME} from 'pages/stats/common/filters/PeriodFilter'
+import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
 
 import {AUTOMATION_RATE_FIXED_STATS} from 'pages/automate/automate-metrics/constants'
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -14,7 +19,7 @@ import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
 
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {LegacyStatsFilters} from 'models/stat/types'
+import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
@@ -286,6 +291,7 @@ describe('<AutomateOverview />', () => {
 
         expect(container.firstChild).toMatchSnapshot()
     })
+
     it('should display AAO', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
@@ -297,6 +303,60 @@ describe('<AutomateOverview />', () => {
 
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    describe('Filters Panel', () => {
+        it('should display new filters panel when the feature flag is enabled', async () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
+                [FeatureFlagKey.AnalyticsNewFiltersAutomate]: true,
+            }))
+            const store = mockStore(defaultState)
+            render(
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>
+            )
+
+            const addFilterButton = screen.getByText(ADD_FILTER_BUTTON_LABEL)
+            act(() => {
+                userEvent.click(addFilterButton)
+            })
+
+            expect(screen.getByText(PERIOD_FILTER_NAME)).toBeInTheDocument()
+            await waitFor(() => {
+                expect(
+                    screen.getByText(FilterLabels[FilterKey.Channels])
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should display new filters panel without Channels filter if feature flag is disabled', async () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AutomateOverviewChannelsFilter]: false,
+                [FeatureFlagKey.AnalyticsNewFiltersAutomate]: true,
+            }))
+            const store = mockStore(defaultState)
+            render(
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>
+            )
+
+            expect(
+                screen.queryByText(ADD_FILTER_BUTTON_LABEL)
+            ).not.toBeInTheDocument()
+            await waitFor(() => {
+                expect(
+                    screen.queryByText(FilterLabels[FilterKey.Channels])
+                ).not.toBeInTheDocument()
+            })
+        })
+    })
+
     it('should set filters to last 28 days if query param source=automate', () => {
         mockedUseSearchParam.mockReturnValue(['automate', jest.fn()])
         const store = mockStore(defaultState)
@@ -308,15 +368,16 @@ describe('<AutomateOverview />', () => {
             </Provider>
         )
 
-        expect(store.getActions()).toEqual([
+        expect(store.getActions()).toContainEqual(
             mergeStatsFilters({
                 period: {
                     start_datetime: '2022-01-06T00:00:00Z',
                     end_datetime: '2022-02-02T23:59:59Z',
                 },
-            }),
-        ])
+            })
+        )
     })
+
     it('should send event to segment and call saveReport on download data button click', () => {
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
@@ -431,6 +492,7 @@ describe('<AutomateOverview />', () => {
             })
         })
     })
+
     describe.each([['show dash in case of', 0]])('%s', (testName, value) => {
         it('should show tips with sentiment ', () => {
             localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
@@ -460,6 +522,7 @@ describe('<AutomateOverview />', () => {
             expect(screen.getByText('-'))
         })
     })
+
     describe.each([['FRT show 0h 0m in case of', 0]])(
         '%s',
         (testName, value) => {

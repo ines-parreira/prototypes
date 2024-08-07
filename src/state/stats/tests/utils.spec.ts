@@ -1,6 +1,8 @@
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {LegacyStatsFilters} from 'models/stat/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
+    fromLegacyAndLogicalOperatorStatsFilters,
     fromLegacyStatsFilters,
     fromPartialLegacyStatsFilters,
 } from 'state/stats/utils'
@@ -38,6 +40,51 @@ describe('fromLegacyStatsFilters', () => {
             period,
             agents: withDefaultLogicalOperator(agents),
             channels: withDefaultLogicalOperator(channels),
+        })
+    })
+})
+
+describe('fromLegacyAndLogicalOperatorStatsFilters', () => {
+    it('should merge the legacy stats filters with logical operators', () => {
+        const legacyFilters: LegacyStatsFilters = {
+            period,
+            agents,
+            channels,
+        }
+        const statsFiltersWithLogicalOperators = {
+            period: {
+                start_datetime: '2022-05-03T00:00:00.000Z',
+                end_datetime: '2022-05-04T23:59:59.999Z',
+            },
+            agents: {
+                values: [7, 8],
+                operator: LogicalOperatorEnum.ALL_OF,
+            },
+            channels: {
+                values: ['30', '40'],
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+            },
+            integrations: {
+                values: [45, 55],
+                operator: LogicalOperatorEnum.ONE_OF,
+            },
+        }
+
+        expect(
+            fromLegacyAndLogicalOperatorStatsFilters(
+                legacyFilters,
+                statsFiltersWithLogicalOperators
+            )
+        ).toEqual({
+            period: legacyFilters.period,
+            agents: {
+                values: legacyFilters.agents,
+                operator: statsFiltersWithLogicalOperators.agents.operator,
+            },
+            channels: {
+                values: legacyFilters.channels,
+                operator: statsFiltersWithLogicalOperators.channels.operator,
+            },
         })
     })
 })

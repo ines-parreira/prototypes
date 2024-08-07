@@ -12,7 +12,11 @@ import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStats
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {getStatsFilters} from 'state/stats/selectors'
 
-export const AutomateOverviewFilters = () => {
+export const AutomateOverviewFilters = ({
+    isAnalyticsNewFiltersAutomate = false,
+}: {
+    isAnalyticsNewFiltersAutomate?: boolean
+}) => {
     const isAutomateOverviewChannelsFilter: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomateOverviewChannelsFilter]
 
@@ -29,7 +33,7 @@ export const AutomateOverviewFilters = () => {
 
     useCleanStatsFilters(statsFilters)
 
-    return (
+    return isAnalyticsNewFiltersAutomate ? null : (
         <>
             {isAutomateOverviewChannelsFilter && (
                 <ChannelsStatsFilter

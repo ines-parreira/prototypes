@@ -100,4 +100,24 @@ describe('<AutomateOverviewFilters />', () => {
             ).toBeInTheDocument()
         })
     })
+
+    it('should not render the legacy filters when the New Filters are enabled', () => {
+        render(
+            <MemoryRouter>
+                <Provider store={mockStore(defaultState)}>
+                    <AutomateOverviewFilters
+                        isAnalyticsNewFiltersAutomate={true}
+                    />
+                </Provider>
+            </MemoryRouter>
+        )
+
+        filtersLabels.forEach((filterLabels) => {
+            expect(
+                screen.queryByText(`1 ${filterLabels.singular}`, {
+                    exact: false,
+                })
+            ).not.toBeInTheDocument()
+        })
+    })
 })

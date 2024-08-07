@@ -1,5 +1,4 @@
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {ChannelIdentifier} from 'services/channels'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {CursorMeta} from 'models/api/types'
 
@@ -34,7 +33,7 @@ export type LegacyStatsFilters = {
     [FilterKey.Agents]?: number[]
     [FilterKey.HelpCenters]?: number[]
     [FilterKey.LocaleCodes]?: string[]
-    [FilterKey.Channels]?: ChannelIdentifier[]
+    [FilterKey.Channels]?: string[]
     [FilterKey.Campaigns]?: string[]
     [FilterKey.CampaignStatuses]?: string[]
     [FilterKey.Score]?: string[]
@@ -60,7 +59,7 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.Agents]?: WithLogicalOperator<number>
     [FilterKey.HelpCenters]?: WithLogicalOperator<number>
     [FilterKey.LocaleCodes]?: WithLogicalOperator<string>
-    [FilterKey.Channels]?: WithLogicalOperator<ChannelIdentifier>
+    [FilterKey.Channels]?: WithLogicalOperator<string>
     [FilterKey.Campaigns]?: WithLogicalOperator<string>
     [FilterKey.CampaignStatuses]?: WithLogicalOperator<string>
     [FilterKey.Score]?: WithLogicalOperator<string>
