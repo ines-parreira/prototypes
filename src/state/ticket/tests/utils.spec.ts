@@ -23,7 +23,7 @@ import {
 import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
 import {getEmailChannels} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-
+import {AccountSettingType} from 'state/currentAccount/types'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {
     GorgiasContactFormTicketMeta,
@@ -1141,6 +1141,67 @@ describe('ticket utils', () => {
                     integrations
                 )
             ).toEqualImmutable(testChannel)
+        })
+
+        describe('default integration', () => {
+            it('should return the default integration if set', () => {
+                const _emailTicket = emailTicket.set('messages', fromJS([]))
+                const expected = channels.find(
+                    (c: Map<any, any>) => c.get('id') === 15
+                )
+                expect(
+                    getNewMessageSender(
+                        _emailTicket,
+                        TicketMessageSourceType.Email,
+                        channels,
+                        integrations,
+                        {
+                            id: 10,
+                            type: AccountSettingType.DefaultIntegration,
+                            data: {
+                                email: 15,
+                            },
+                        }
+                    )
+                ).toEqualImmutable(expected)
+            })
+
+            it('should not return the default if not part of the available channels', () => {
+                const _emailTicket = emailTicket.set('messages', fromJS([]))
+                const expected = channels.find(
+                    (c: Map<any, any>) => c.get('id') === 1
+                )
+                expect(
+                    getNewMessageSender(
+                        _emailTicket,
+                        TicketMessageSourceType.Email,
+                        channels,
+                        integrations,
+                        {
+                            id: 10,
+                            type: AccountSettingType.DefaultIntegration,
+                            data: {
+                                email: 999,
+                            },
+                        }
+                    )
+                ).toEqualImmutable(expected)
+            })
+
+            it('should use the default behaviour if the setting is missing', () => {
+                const _emailTicket = emailTicket.set('messages', fromJS([]))
+                const expected = channels.find(
+                    (c: Map<any, any>) => c.get('id') === 1
+                )
+                expect(
+                    getNewMessageSender(
+                        _emailTicket,
+                        TicketMessageSourceType.Email,
+                        channels,
+                        integrations
+                    )
+                ).toEqualImmutable(expected)
+            })
         })
 
         it('should get the sender channel from ticket events', () => {

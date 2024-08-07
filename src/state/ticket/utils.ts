@@ -15,6 +15,7 @@ import {TicketMessage} from 'models/ticket/types'
 import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
 import {tryLocalStorage} from 'services/common/utils'
 import * as responseUtils from 'state/newMessage/responseUtils'
+import {AccountSettingDefaultIntegration} from 'state/currentAccount/types'
 import {RootState} from 'state/types'
 import {
     getValuePropFromSourceType,
@@ -586,7 +587,8 @@ export function getNewMessageSender(
     ticket: Map<any, any>,
     newMessageSourceType: TicketMessageSourceType,
     channels: List<any>,
-    integrations: Map<any, any>
+    integrations: Map<any, any>,
+    defaultSettings?: AccountSettingDefaultIntegration | undefined
 ) {
     if (newMessageSourceType === 'internal-note') {
         return fromJS(EMPTY_SENDER) as Map<any, any>
@@ -624,6 +626,9 @@ export function getNewMessageSender(
             sourceTypeToChannel(newMessageSourceType),
             channels
         ) || fromJS({})
+
+    const defaultIntegration =
+        defaultSettings?.data?.[sourceTypeToChannel(newMessageSourceType)]
 
     const lastMessage: Map<any, any> | undefined = (
         ticket.get('messages') as List<any>
@@ -712,6 +717,17 @@ export function getNewMessageSender(
 
     // new ticket
     if (!lastMessage) {
+        if (defaultIntegration) {
+            const matchingDefaultSender: Map<any, any> | undefined =
+                channels.find(
+                    (c: Map<any, any>) => c.get('id') === defaultIntegration
+                )
+
+            if (matchingDefaultSender) {
+                return matchingDefaultSender
+            }
+        }
+
         const lastSender = getLastSenderChannel()
 
         // make sure the persisted sender is in the list of channels

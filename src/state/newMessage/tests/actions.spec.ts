@@ -63,6 +63,7 @@ import {
 import * as activityTracker from 'services/activityTracker'
 import {ActivityEvents} from 'services/activityTracker'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import {AccountSettingType} from 'state/currentAccount/types'
 
 import {getReplyAreaStateSnapshot} from './testUtils'
 
@@ -72,6 +73,7 @@ type MockedRootState = {
     ticket?: Map<any, any>
     newMessage?: Map<any, any>
     currentUser?: Map<any, any>
+    currentAccount?: Map<any, any>
     entities?: {
         newPhoneNumbers: Record<number, PhoneNumber>
     }
@@ -510,7 +512,7 @@ describe('actions', () => {
                 store = mockStore({
                     integrations: fromJS(integrationsState),
                     entities: {newPhoneNumbers: phoneNumbers},
-                    ticket: fromJS({}),
+                    ticket: fromJS({messages: []}),
                     newMessage: initialState.set(
                         'newMessage',
                         makeNewMessage(
@@ -522,6 +524,70 @@ describe('actions', () => {
                 store.dispatch(actions.setSender())
 
                 expect(store.getActions()).toMatchSnapshot()
+            })
+
+            it('should handle the default integration setting', () => {
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    currentAccount: fromJS({
+                        settings: [
+                            {
+                                id: 1,
+                                type: AccountSettingType.DefaultIntegration,
+                                data: {
+                                    email: 15,
+                                },
+                            },
+                        ],
+                    }),
+                    ticket: emailTicket.set('messages', fromJS([])),
+                    newMessage: initialState.set(
+                        'newMessage',
+                        makeNewMessage(
+                            TicketChannel.Email,
+                            TicketMessageSourceType.Email
+                        )
+                    ),
+                })
+                store.dispatch(actions.setSender())
+
+                expect(store.getActions()).toEqual([
+                    {
+                        type: types.NEW_MESSAGE_SET_SENDER,
+                        sender: fromJS({
+                            name: 'Acme Contact',
+                            address: 'contact@acme.com',
+                        }),
+                    },
+                ])
+            })
+
+            it('should use the default behaviour if default integration setting is missing', () => {
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    currentAccount: fromJS({
+                        settings: [],
+                    }),
+                    ticket: emailTicket.set('messages', fromJS([])),
+                    newMessage: initialState.set(
+                        'newMessage',
+                        makeNewMessage(
+                            TicketChannel.Email,
+                            TicketMessageSourceType.Email
+                        )
+                    ),
+                })
+                store.dispatch(actions.setSender())
+
+                expect(store.getActions()).toEqual([
+                    {
+                        type: types.NEW_MESSAGE_SET_SENDER,
+                        sender: fromJS({
+                            name: 'Acme Support',
+                            address: 'support@acme.gorgias.io',
+                        }),
+                    },
+                ])
             })
         })
 

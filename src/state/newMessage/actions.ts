@@ -78,7 +78,10 @@ import {
 import {isBaseEmailAddress} from 'pages/integrations/integration/components/email/helpers'
 import {FullTicketStateWithoutImmutable} from 'state/ticket/types'
 import {DiscountCode} from 'models/discountCodes/types'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {
+    getCurrentAccountState,
+    getDefaultIntegrationSettings,
+} from 'state/currentAccount/selectors'
 import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import {mapNormalizedToArray} from 'models/ticket/mappers'
@@ -400,6 +403,7 @@ export const setSender =
         const {integrations, ticket} = state
         const sourceType = selectors.getNewMessageType(state)
         const {getSendersForChannel} = integrationSelectors
+        const defaultSettings = getDefaultIntegrationSettings(state)
 
         const channels = fromJS(
             getSendersForChannel(sourceType)(state)
@@ -420,7 +424,8 @@ export const setSender =
                     ticket,
                     sourceType,
                     channels,
-                    integrations
+                    integrations,
+                    defaultSettings
                 ) || fromJS({})
         }
 
