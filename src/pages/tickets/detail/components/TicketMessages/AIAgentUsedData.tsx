@@ -54,7 +54,7 @@ const AIAgentUsedData = ({messageId}: Props) => {
                 <i className={classNames('material-icons', css.titleIcon)}>
                     auto_awesome
                 </i>
-                Used Data
+                Data Used
             </div>
             <div className={css.resources}>
                 {orders?.map((order) => (
