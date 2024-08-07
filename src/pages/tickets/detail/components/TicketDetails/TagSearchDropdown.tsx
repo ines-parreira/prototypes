@@ -65,9 +65,7 @@ const TagSearchDropdown = ({
         () => ({
             limit: LIMIT_TAGS_SEARCH,
             search: debouncedSearch,
-            order_by: debouncedSearch
-                ? undefined
-                : ListTagsOrderBy.UsageDescNameDesc,
+            order_by: ListTagsOrderBy.UsageDescNameDesc,
         }),
         [debouncedSearch]
     )
