@@ -59,8 +59,12 @@ const MacroListContainer = ({
                             if (isDisabled) return
 
                             logEvent(SegmentEvent.MacroAppliedSearchbar, {
-                                user_id: currentUser.get('id'),
+                                is_recommended: isSuggestion(
+                                    macro.get('relevance_rank', 0)
+                                ),
+                                macro_id: macro.get('id'),
                                 rank: macro.get('relevance_rank'),
+                                user_id: currentUser.get('id'),
                             })
                             onClickItem(macro)
                         }}

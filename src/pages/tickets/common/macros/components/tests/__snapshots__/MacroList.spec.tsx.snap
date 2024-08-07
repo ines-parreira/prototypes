@@ -85,6 +85,8 @@ exports[`MacroList component should send event to segment on send 1`] = `
   [
     "macro-applied-searchbar",
     {
+      "is_recommended": false,
+      "macro_id": 2,
       "rank": undefined,
       "user_id": 2,
     },
