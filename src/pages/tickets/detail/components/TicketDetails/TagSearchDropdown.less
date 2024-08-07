@@ -1,27 +1,25 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
-    .addTags {
-        height: 24px;
+    .inputSearch {
+        padding-bottom: 0;
+    }
 
-        .toggle {
-            border-radius: 4px;
-            height: 24px;
-            padding: 0 8px 0 4px;
-            color: var(--neutral-grey-5) !important; // overrides reactstrap
+    .createTag {
+        position: relative;
 
-            &.transparent {
-                background: unset;
-                border: unset;
-                box-shadow: unset;
-            }
+        &.separator {
+            margin-top: @layout-spacing-s;
 
-            &:hover,
-            &:focus {
-                background-color: var(--neutral-grey-2);
-            }
-
-            &:active {
-                background-color: var(--neutral-grey-3);
-                color: var(--neutral-grey-6) !important;
+            :before {
+                position: absolute;
+                content: '';
+                display: block;
+                top: -8px;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: var(--neutral-grey-3);
             }
         }
     }

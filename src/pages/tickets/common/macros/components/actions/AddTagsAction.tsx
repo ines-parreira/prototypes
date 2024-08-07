@@ -1,12 +1,10 @@
-import React, {ComponentProps, useMemo} from 'react'
+import React, {useMemo} from 'react'
 import {fromJS, List, Map} from 'immutable'
-import {DropdownMenu} from 'reactstrap'
 
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 
 type Props = {
     args: Map<string, string>
-    dropdownContainer?: ComponentProps<typeof DropdownMenu>['container']
     index: number
     isDisabled?: boolean
     right?: boolean
@@ -15,7 +13,6 @@ type Props = {
 
 const AddTagsAction = ({
     args,
-    dropdownContainer,
     index,
     isDisabled,
     right,
@@ -55,7 +52,6 @@ const AddTagsAction = ({
             addTag={addTag}
             removeTag={removeTag}
             right={right}
-            dropdownContainer={dropdownContainer}
         />
     )
 }

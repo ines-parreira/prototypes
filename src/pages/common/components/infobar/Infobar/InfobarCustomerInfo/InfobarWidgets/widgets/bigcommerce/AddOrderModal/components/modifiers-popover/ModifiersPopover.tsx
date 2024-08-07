@@ -4,8 +4,8 @@ import {
     BigCommerceCartLineItem,
     BigCommerceProduct,
 } from 'models/integration/types'
-
 import Button from 'pages/common/components/button/Button'
+
 import {PopoverContainerBody} from '../popover-container/PopoverContainer'
 import {ModifierProductComponent} from './ModifierProductComponent'
 import {ModifierSelect} from './fields/ModifierSelect'

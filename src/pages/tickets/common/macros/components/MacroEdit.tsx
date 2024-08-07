@@ -238,7 +238,6 @@ export class MacroEdit extends Component<Props> {
                             index={index}
                             args={action.get('arguments')}
                             updateActionArgs={this._updateActionArguments}
-                            dropdownContainer={this.props.container}
                         />
                     ),
                 }
@@ -251,7 +250,6 @@ export class MacroEdit extends Component<Props> {
                             index={index}
                             args={action.get('arguments')}
                             updateActionArgs={this._updateActionArguments}
-                            dropdownContainer={this.props.container}
                         />
                     ),
                 }

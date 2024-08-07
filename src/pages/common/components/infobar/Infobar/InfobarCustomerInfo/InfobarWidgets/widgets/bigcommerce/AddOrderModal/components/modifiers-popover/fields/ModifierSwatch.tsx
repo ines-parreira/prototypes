@@ -133,34 +133,28 @@ export const ModifierSwatch = ({
                             contained
                         >
                             <DropdownBody>
-                                <>
-                                    {modifier.option_values.map(
-                                        (optionValue) => (
-                                            <DropdownItem
-                                                key={optionValue.id}
-                                                autoFocus
-                                                shouldCloseOnSelect
-                                                option={{
-                                                    label: optionValue.label,
-                                                    value: optionValue.id,
-                                                }}
-                                                onClick={() =>
-                                                    onSetValue(
-                                                        modifier.id,
-                                                        optionValue.id
-                                                    )
-                                                }
-                                            >
-                                                <ColorLabel
-                                                    valueData={
-                                                        optionValue.value_data
-                                                    }
-                                                    label={optionValue.label}
-                                                />
-                                            </DropdownItem>
-                                        )
-                                    )}
-                                </>
+                                {modifier.option_values.map((optionValue) => (
+                                    <DropdownItem
+                                        key={optionValue.id}
+                                        autoFocus
+                                        shouldCloseOnSelect
+                                        option={{
+                                            label: optionValue.label,
+                                            value: optionValue.id,
+                                        }}
+                                        onClick={() =>
+                                            onSetValue(
+                                                modifier.id,
+                                                optionValue.id
+                                            )
+                                        }
+                                    >
+                                        <ColorLabel
+                                            valueData={optionValue.value_data}
+                                            label={optionValue.label}
+                                        />
+                                    </DropdownItem>
+                                ))}
                             </DropdownBody>
                         </Dropdown>
                     )}

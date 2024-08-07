@@ -1,16 +1,14 @@
 import React, {
-    ComponentProps,
     KeyboardEvent,
+    useCallback,
     useMemo,
     useRef,
     useState,
 } from 'react'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import {List, Map} from 'immutable'
-import ReactDOM from 'react-dom'
-import classNames from 'classnames'
 import {useQueryClient} from '@tanstack/react-query'
 import {ListTagsOrderBy, queryKeys} from '@gorgias/api-queries'
+import cn from 'classnames'
 
 import {UserRole} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -18,9 +16,13 @@ import useAppSelector from 'hooks/useAppSelector'
 import useGetTags from 'hooks/tags/useGetTags'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
-import TextInput from 'pages/common/forms/input/TextInput'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import dropdownItemCss from 'pages/common/components/dropdown/DropdownItem.less'
+import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import {getCurrentUserState} from 'state/currentUser/selectors'
 import {hasRole} from 'utils'
 
@@ -31,8 +33,6 @@ const STALE_TIME = 5 * 60 * 1000 // 5 minutes
 
 type Props = {
     addTag: (tag: string) => void
-    dropdownContainer?: ComponentProps<typeof DropdownMenu>['container']
-    right?: boolean
     shouldBindKeys: boolean
     ticketTags: List<Map<any, any>>
     transparent?: boolean
@@ -40,8 +40,6 @@ type Props = {
 
 const TagSearchDropdown = ({
     addTag,
-    dropdownContainer,
-    right,
     shouldBindKeys,
     ticketTags,
     transparent,
@@ -56,10 +54,16 @@ const TagSearchDropdown = ({
         [search],
         300
     )
+    const isTyping = useMemo(
+        () => debouncedSearch !== search,
+        [debouncedSearch, search]
+    )
     const queryClient = useQueryClient()
 
     const searchInputRef = useRef<HTMLInputElement>(null)
-    const tagRef = useRef<DropdownItem>(null)
+    const targetRef = useRef<HTMLButtonElement>(null)
+    const bodyRef = useRef<HTMLDivElement>(null)
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const queryParams = useMemo(
         () => ({
@@ -76,13 +80,22 @@ const TagSearchDropdown = ({
     })
     const tags = useMemo(() => response.data?.data.data ?? [], [response])
 
-    const displayedTags = useMemo(() => {
-        const existingTagNames = ticketTags.map(
-            (x?: Map<any, any>) => x!.get('name') as string
-        )
-        return tags.filter((tag) => !existingTagNames.contains(tag.name!))
-    }, [tags, ticketTags])
-    const hasEmptyResults = !displayedTags.length
+    const existingTagNames = useMemo(
+        () => ticketTags.map((x?: Map<any, any>) => x!.get('name') as string),
+        [ticketTags]
+    )
+
+    const displayedTags = useMemo(
+        () => tags.filter((tag) => !existingTagNames.contains(tag.name!)),
+        [existingTagNames, tags]
+    )
+    const tagsLength = useMemo(() => displayedTags.length, [displayedTags])
+    const hasEmptyResults = !tagsLength
+
+    const didNotFindSearchTerm = useMemo(
+        () => search !== '' && !tags.find((tag) => tag.name === search),
+        [search, tags]
+    )
 
     const currentUser = useAppSelector(getCurrentUserState)
     const hasUserRole = useMemo(
@@ -90,54 +103,75 @@ const TagSearchDropdown = ({
         [currentUser]
     )
 
-    const handleAddTag = (name?: string, isNew?: boolean) => {
-        if (!name) {
-            return
-        }
+    const handleAddTag = useCallback(
+        (name?: string, isNew?: boolean) => {
+            if (!name) {
+                return
+            }
 
-        addTag(name)
+            addTag(name)
 
-        if (isNew) {
-            void queryClient.removeQueries({
-                queryKey: queryKeys.tags.listTags(queryParams),
-            })
-        }
-        searchInputRef.current?.focus()
-        setSearch('')
-    }
+            if (isNew) {
+                void queryClient.removeQueries({
+                    queryKey: queryKeys.tags.listTags(queryParams),
+                })
+            }
+            searchInputRef.current?.focus()
+            setSearch('')
+        },
+        [addTag, queryClient, queryParams]
+    )
 
     const resetTagsResults = () => {
         setSearch('')
         setDebouncedSearch('')
     }
 
-    const toggle = () => {
-        const isOpen = !isDropdownOpen
-        setIsDropdownOpen(isOpen)
-
-        if (isOpen) {
-            resetTagsResults()
-        }
-    }
-
-    const openDropdown = () => {
-        setIsDropdownOpen(true)
+    const onToggle = (value: boolean) => {
+        setIsDropdownOpen(value)
         resetTagsResults()
     }
 
     const handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'ArrowDown' && tagRef.current) {
-            const node = ReactDOM.findDOMNode(
-                tagRef.current
-            ) as HTMLElement | null
-            node?.focus()
+        if (e.key === 'ArrowDown' && bodyRef.current?.firstElementChild) {
+            e.preventDefault()
+            ;(bodyRef.current?.firstElementChild as HTMLElement)?.focus()
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault()
+            ;(bodyRef.current?.lastElementChild as HTMLElement)?.focus()
         }
     }
 
-    const didNotFindSearchTerm = useMemo(
-        () =>
-            search !== '' && !displayedTags.find((tag) => tag.name === search),
-        [displayedTags, search]
+    const handleElementKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (
+            (e.key === 'ArrowUp' &&
+                e.target === bodyRef.current?.firstElementChild) ||
+            (e.key === 'ArrowDown' &&
+                e.target === bodyRef.current?.lastElementChild)
+        ) {
+            e.preventDefault()
+            searchInputRef?.current?.focus({preventScroll: true})
+        }
+    }
+
+    const handleCreateTagKeyDown = useCallback(
+        (e: KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                handleAddTag(search, true)
+            } else if (e.key === 'ArrowUp') {
+                if (e.target === bodyRef.current?.firstElementChild) {
+                    searchInputRef?.current?.focus()
+                } else {
+                    ;(
+                        (e.target as HTMLElement)
+                            ?.previousElementSibling as HTMLElement
+                    ).focus()
+                }
+            } else if (e.key === 'ArrowDown') {
+                searchInputRef?.current?.focus()
+            }
+        },
+        [handleAddTag, search]
     )
 
     useConditionalShortcuts(shouldBindKeys, 'TicketDetailContainer', {
@@ -145,105 +179,107 @@ const TagSearchDropdown = ({
             action: (e) => {
                 // shortcut key gets typed in the search field otherwise
                 e.preventDefault()
-                openDropdown()
+                onToggle(true)
             },
         },
         CLOSE_TAGS: {
             key: 'esc',
-            action: () => setIsDropdownOpen(false),
+            action: () => onToggle(false),
         },
     })
 
     return (
-        <Dropdown
-            className={css.addTags}
-            isOpen={isDropdownOpen}
-            toggle={toggle}
-            group={false}
-        >
-            <DropdownToggle
-                size="sm"
-                className={classNames(
-                    {
-                        [css.transparent]: transparent,
-                    },
-                    css.toggle
-                )}
+        <>
+            <Button
+                ref={targetRef}
+                onClick={() => onToggle(!isDropdownOpen)}
+                intent="secondary"
+                fillStyle={transparent ? 'ghost' : 'fill'}
+                size="small"
             >
                 <ButtonIconLabel icon="add">Add tags</ButtonIconLabel>
-            </DropdownToggle>
-            <TagDropdownMenu
-                right={!!right}
-                style={{padding: '0.5rem 4px'}}
-                container={dropdownContainer}
-                modifiers={{
-                    preventOverflow: {
-                        boundariesElement: 'viewport',
-                    },
-                }}
+            </Button>
+            <Dropdown
+                isOpen={isDropdownOpen}
+                onToggle={onToggle}
+                target={targetRef}
             >
-                <DropdownItem header>ADD TAG:</DropdownItem>
-                <DropdownItem header className="dropdown-item-input">
-                    <TextInput
-                        ref={searchInputRef}
-                        placeholder="Search tags..."
-                        autoFocus
-                        value={search}
-                        onChange={setSearch}
-                        onKeyDown={handleSearchKeyDown}
-                        role="menuitem"
-                    />
-                </DropdownItem>
-                <DropdownItem divider />
-                {response.isFetching ? (
-                    <DropdownItem disabled>
-                        <i className="material-icons md-spin mr-2">refresh</i>
-                        Loading...
-                    </DropdownItem>
-                ) : (
-                    <>
-                        {displayedTags.map((tag, i) => {
-                            const name = tag.name
-                            return (
-                                <DropdownItem
-                                    key={i}
-                                    ref={i === 0 ? tagRef : undefined}
-                                    type="button"
-                                    toggle={false}
-                                    onClick={() => handleAddTag(name)}
-                                >
-                                    {name}
-                                </DropdownItem>
-                            )
-                        })}
-                        {didNotFindSearchTerm ? (
-                            hasUserRole ? (
-                                <>
-                                    {!hasEmptyResults && (
-                                        <DropdownItem divider />
-                                    )}
-                                    <DropdownItem
-                                        ref={
-                                            hasEmptyResults ? tagRef : undefined
-                                        }
-                                        type="button"
-                                        onClick={() =>
-                                            handleAddTag(search, true)
-                                        }
-                                    >
-                                        <b>Create</b> {search}
-                                    </DropdownItem>
-                                </>
-                            ) : hasEmptyResults ? (
-                                <DropdownItem disabled>
-                                    Couldn't find the tag: {search}
-                                </DropdownItem>
-                            ) : null
-                        ) : null}
-                    </>
-                )}
-            </TagDropdownMenu>
-        </Dropdown>
+                <DropdownSearch
+                    ref={searchInputRef}
+                    value={search}
+                    onChange={setSearch}
+                    className={css.inputSearch}
+                    placeholder="Search"
+                    autoFocus
+                    role="listitem"
+                    onKeyDown={handleSearchKeyDown}
+                />
+                <DropdownBody
+                    isLoading={response.isFetching || isTyping}
+                    ref={bodyRef}
+                    role="list"
+                >
+                    {displayedTags.map((tag, i) => {
+                        const name = tag.name
+                        return (
+                            <DropdownItem
+                                key={tag.id}
+                                option={{
+                                    label: name!,
+                                    value: name!,
+                                }}
+                                onClick={() => handleAddTag(name)}
+                                role="listitem"
+                                onKeyDown={
+                                    i === 0 || i === tagsLength - 1
+                                        ? handleElementKeyDown
+                                        : undefined
+                                }
+                            >
+                                {name}
+                            </DropdownItem>
+                        )
+                    })}
+                    {didNotFindSearchTerm ? (
+                        hasUserRole ? (
+                            <div
+                                className={cn(
+                                    dropdownItemCss.item,
+                                    css.createTag,
+                                    {
+                                        [css.separator]: !hasEmptyResults,
+                                    }
+                                )}
+                                onClick={() => handleAddTag(search, true)}
+                                role="listitem"
+                                onKeyDown={handleCreateTagKeyDown}
+                                tabIndex={0}
+                            >
+                                <b>Create</b>&nbsp;{search}
+                            </div>
+                        ) : hasEmptyResults ? (
+                            <div
+                                className={cn(
+                                    dropdownItemCss.item,
+                                    dropdownItemCss.disabled
+                                )}
+                            >
+                                Couldn't find the tag: {search}
+                            </div>
+                        ) : null
+                    ) : hasEmptyResults ? (
+                        <div
+                            className={cn(
+                                dropdownItemCss.item,
+                                dropdownItemCss.disabled
+                            )}
+                        >
+                            No results
+                        </div>
+                    ) : null}
+                </DropdownBody>
+            </Dropdown>
+        </>
     )
 }
 

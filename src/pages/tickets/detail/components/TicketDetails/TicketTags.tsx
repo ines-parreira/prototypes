@@ -1,8 +1,7 @@
 import React, {useContext, useMemo, useState} from 'react'
-import type {ComponentProps} from 'react'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
-import {Badge, DropdownMenu} from 'reactstrap'
+import {Badge} from 'reactstrap'
 import {Tooltip} from '@gorgias/ui-kit'
 import _uniqueId from 'lodash/uniqueId'
 
@@ -20,7 +19,6 @@ import css from './TicketTags.less'
 type Props = {
     addTag: (tag: string) => void
     className?: string
-    dropdownContainer?: ComponentProps<typeof DropdownMenu>['container']
     isDisabled?: boolean
     removeTag: (tag: string) => void
     right?: boolean
@@ -32,7 +30,6 @@ type Props = {
 const TicketTags = ({
     addTag,
     className,
-    dropdownContainer,
     isDisabled = false,
     removeTag,
     right = false,
@@ -103,7 +100,6 @@ const TicketTags = ({
                     {!isDisabled && (
                         <TagSearchDropdown
                             addTag={addTag}
-                            dropdownContainer={dropdownContainer}
                             shouldBindKeys={shouldBindKeys}
                             ticketTags={ticketTags}
                             transparent={transparent}

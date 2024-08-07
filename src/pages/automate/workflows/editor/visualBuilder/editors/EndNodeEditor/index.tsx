@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React from 'react'
 import Immutable from 'immutable'
 import {Label} from '@gorgias/ui-kit'
 
@@ -23,14 +23,6 @@ type EndNodeEditorProps = {
 export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
     const users = useAppSelector(getHumanAgents)
     const teams = useAppSelector(getTeams)
-    const [dropdownContainerRef, setDropdownContainerRef] =
-        useState<HTMLDivElement | null>(null)
-    const onDropdownContainerRefChange = useCallback(
-        (node: HTMLDivElement | null) => {
-            setDropdownContainerRef(node)
-        },
-        []
-    )
     const {dispatch} = useWorkflowEditorContext()
     const handleAddTag = (tag: string) => {
         const {action, ticketTags, ticketAssigneeUserId, ticketAssigneeTeamId} =
@@ -95,10 +87,7 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                             }}
                         />
                     </div>
-                    <div
-                        className={css.formField}
-                        ref={onDropdownContainerRefChange}
-                    >
+                    <div className={css.formField}>
                         {nodeInEdition.data.action === 'ask-for-feedback' && (
                             <div className={css.withDescription}>
                                 <WasThisHelpfulCard />
@@ -140,9 +129,6 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                                     addTag={handleAddTag}
                                     removeTag={handleDeleteTag}
                                     transparent
-                                    dropdownContainer={
-                                        dropdownContainerRef ?? undefined
-                                    }
                                 />
                                 <TicketAssignee
                                     currentAssigneeUser={ticketAssigneeUser}

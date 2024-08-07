@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {render, screen} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {produce} from 'immer'
 import {
@@ -99,7 +99,7 @@ describe('<ModifiersPopover/>', () => {
         userEvent.click(screen.getByText(/Test 1/i))
 
         userEvent.click(screen.getAllByRole('listbox')[1])
-        userEvent.click(screen.getByText(/Pattern/i))
+        fireEvent.click(screen.getByText(/Pattern/i))
 
         userEvent.click(screen.getAllByRole('listbox')[2])
         userEvent.click(screen.getByText(/Three/i))

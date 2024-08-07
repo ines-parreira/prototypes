@@ -33,6 +33,8 @@ useQueryClientMock.mockImplementation(
 jest.mock('hooks/useConditionalShortcuts', () => jest.fn())
 const useConditionalShortcutsMock = assumeMock(useConditionalShortcuts)
 
+jest.mock('pages/common/components/Spinner', () => () => 'SpinnerMock')
+
 describe('<TagSearchDropdown />', () => {
     const user = fromJS(fromJS(agents[0])) as Map<any, any>
     const store = mockStore({
@@ -50,18 +52,23 @@ describe('<TagSearchDropdown />', () => {
         ]) as List<Map<any, any>>,
     }
     beforeEach(() => {
+        jest.useFakeTimers()
         mockUseGetTags.mockReturnValue({
             data: {
                 data: {
                     data: [
                         {id: 1, name: 'exchange'},
-                        {id: 1, name: 'refund'},
-                        {id: 1, name: 'return'},
-                        {id: 1, name: 'product'},
+                        {id: 2, name: 'refund'},
+                        {id: 3, name: 'return'},
+                        {id: 4, name: 'product'},
                     ],
                 },
             },
         })
+    })
+
+    afterEach(() => {
+        jest.useRealTimers()
     })
 
     it('should display only tags not already assigned to ticket', async () => {
@@ -70,7 +77,7 @@ describe('<TagSearchDropdown />', () => {
                 <TagSearchDropdown {...props} />
             </Provider>
         )
-        fireEvent.click(getByText(/Add tags/))
+        getByText(/Add tags/).click()
 
         await waitFor(() => {
             expect(getByText('product')).toBeInTheDocument()
@@ -91,7 +98,31 @@ describe('<TagSearchDropdown />', () => {
             </Provider>
         )
 
-        expect(getByText('Loading...')).toBeInTheDocument()
+        getByText(/Add tags/).click()
+        expect(getByText('SpinnerMock')).toBeInTheDocument()
+    })
+
+    it('should reset search on dropdown toggle', () => {
+        const {getByText, getByPlaceholderText, queryByText} = render(
+            <Provider store={store}>
+                <TagSearchDropdown {...props} />
+            </Provider>
+        )
+
+        getByText(/Add tags/).click()
+        fireEvent.change(getByPlaceholderText(/Search/), {
+            target: {value: 'Foo'},
+        })
+        act(() => jest.runAllTimers())
+
+        expect(getByText(/Create/i)).toBeInTheDocument()
+
+        getByText(/Add tags/).click()
+        expect(queryByText(/Create/i)).not.toBeInTheDocument()
+        act(() => jest.runAllTimers())
+
+        getByText(/Add tags/).click()
+        expect(getByPlaceholderText(/Search/)).toHaveValue('')
     })
 
     it('should add tag to ticket', () => {
@@ -101,10 +132,10 @@ describe('<TagSearchDropdown />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText(/Add tags/))
-        fireEvent.click(getAllByRole('menuitem')[1])
+        getByText(/Add tags/).click()
+        getAllByRole('listitem')[1].click()
 
-        expect(props.addTag).toHaveBeenCalled()
+        expect(props.addTag).toHaveBeenCalledWith('exchange')
         expect(removeQueriesMock).not.toHaveBeenCalled()
     })
 
@@ -114,9 +145,9 @@ describe('<TagSearchDropdown />', () => {
                 data: {
                     data: [
                         {id: 1, name: ''},
-                        {id: 1, name: 'refund'},
-                        {id: 1, name: 'return'},
-                        {id: 1, name: 'product'},
+                        {id: 2, name: 'refund'},
+                        {id: 3, name: 'return'},
+                        {id: 4, name: 'product'},
                     ],
                 },
             },
@@ -128,13 +159,13 @@ describe('<TagSearchDropdown />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText(/Add tags/))
-        fireEvent.click(getAllByRole('menuitem')[1])
+        getByText(/Add tags/).click()
+        getAllByRole('listitem')[1].click()
 
         expect(props.addTag).not.toHaveBeenCalled()
     })
 
-    it('should allow the tag creation to lead agent', async () => {
+    it('should allow the tag creation to lead agent', () => {
         mockUseGetTags.mockReturnValue({
             data: {
                 data: {
@@ -148,57 +179,79 @@ describe('<TagSearchDropdown />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText(/add/))
-        fireEvent.change(getByPlaceholderText(/Search tags/), {
+        getByText(/Add tags/).click()
+        fireEvent.change(getByPlaceholderText(/Search/), {
             target: {value: 'Foo'},
         })
-        await waitFor(() => expect(getByText(/Create/i)).toBeTruthy())
+        act(() => jest.runAllTimers())
+
+        expect(getByText(/Create/i)).toBeInTheDocument()
     })
 
-    it('should restrict the tag creation to basic agent', () => {
-        mockUseGetTags.mockReturnValue({
-            data: {
+    describe('should restrict the tag creation to basic agent', () => {
+        test('when results are empty', () => {
+            mockUseGetTags.mockReturnValue({
                 data: {
-                    data: [],
+                    data: {
+                        data: [],
+                    },
                 },
-            },
-        })
-        const {getByText, getByPlaceholderText, queryByText} = render(
-            <Provider
-                store={mockStore({
-                    currentUser: user.setIn(
-                        ['role', 'name'],
-                        UserRole.BasicAgent
-                    ),
-                })}
-            >
-                <TagSearchDropdown {...props} />
-            </Provider>
-        )
+            })
+            const {getByText, getByPlaceholderText, queryByText} = render(
+                <Provider
+                    store={mockStore({
+                        currentUser: user.setIn(
+                            ['role', 'name'],
+                            UserRole.BasicAgent
+                        ),
+                    })}
+                >
+                    <TagSearchDropdown {...props} />
+                </Provider>
+            )
 
-        fireEvent.click(getByText(/add/))
-        fireEvent.change(getByPlaceholderText(/Search tags/), {
-            target: {value: 'Foo'},
-        })
-        expect(getByText(/Couldn't find the tag: Foo/i)).toBeInTheDocument()
-        expect(queryByText(/Create Foo/i)).not.toBeInTheDocument()
+            getByText(/Add tags/).click()
+            fireEvent.change(getByPlaceholderText(/Search/), {
+                target: {value: 'Foo'},
+            })
+            act(() => jest.runAllTimers())
 
-        mockUseGetTags.mockReturnValue({
-            data: {
+            expect(getByText(/Couldn't find the tag: Foo/i)).toBeInTheDocument()
+            expect(queryByText(/Create Foo/i)).not.toBeInTheDocument()
+        })
+
+        test('when results are not empty', () => {
+            mockUseGetTags.mockReturnValue({
                 data: {
-                    data: [{id: 1, name: 'Foop'}],
+                    data: {
+                        data: [{id: 1, name: 'Foop'}],
+                    },
                 },
-            },
-        })
+            })
+            const {getByText, getByPlaceholderText, queryByText} = render(
+                <Provider
+                    store={mockStore({
+                        currentUser: user.setIn(
+                            ['role', 'name'],
+                            UserRole.BasicAgent
+                        ),
+                    })}
+                >
+                    <TagSearchDropdown {...props} />
+                </Provider>
+            )
 
-        fireEvent.click(getByText(/add/))
-        fireEvent.change(getByPlaceholderText(/Search tags/), {
-            target: {value: 'Foo'},
+            getByText(/Add tags/).click()
+            fireEvent.change(getByPlaceholderText(/Search/), {
+                target: {value: 'Foo'},
+            })
+            act(() => jest.runAllTimers())
+
+            expect(
+                queryByText(/Couldn't find the tag: Foo/i)
+            ).not.toBeInTheDocument()
+            expect(queryByText(/Create Foo/i)).not.toBeInTheDocument()
         })
-        expect(
-            queryByText(/Couldn't find the tag: Foo/i)
-        ).not.toBeInTheDocument()
-        expect(queryByText(/Create Foo/i)).not.toBeInTheDocument()
     })
 
     it('should trigger tag request for searched term', async () => {
@@ -208,8 +261,8 @@ describe('<TagSearchDropdown />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText(/add/))
-        fireEvent.change(getByPlaceholderText(/Search tags/), {
+        getByText(/Add tags/).click()
+        fireEvent.change(getByPlaceholderText(/Search/), {
             target: {value: 'Foo'},
         })
 
@@ -233,11 +286,13 @@ describe('<TagSearchDropdown />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText(/add/))
-        fireEvent.change(getByPlaceholderText(/Search tags/), {
+        getByText(/Add tags/).click()
+        fireEvent.change(getByPlaceholderText(/Search/), {
             target: {value: 'Foo'},
         })
-        fireEvent.click(getByText(/Create/i))
+        act(() => jest.runAllTimers())
+
+        getByText(/Create/i).click()
 
         expect(removeQueriesMock).toHaveBeenCalled()
     })
@@ -255,7 +310,7 @@ describe('<TagSearchDropdown />', () => {
             )
         })
 
-        expect(queryByRole('menu')).toBeInTheDocument()
+        expect(queryByRole('list')).toBeInTheDocument()
         expect(mockUseGetTags).toHaveBeenCalledWith(
             expect.any(Function),
             expect.objectContaining({
@@ -272,23 +327,135 @@ describe('<TagSearchDropdown />', () => {
             )
         })
 
-        expect(queryByRole('menu')).not.toBeInTheDocument()
+        expect(queryByRole('list')).not.toBeInTheDocument()
     })
 
-    it('should navigate through items via keyboard event', () => {
-        const {getAllByRole, getByText} = render(
+    it('should loop through items via keyboard events', () => {
+        const {getAllByRole, getByPlaceholderText, getByText} = render(
             <Provider store={store}>
                 <TagSearchDropdown {...props} />
             </Provider>
         )
-        fireEvent.click(getByText(/add/))
-        const items = getAllByRole('menuitem')
+        getByText(/Add tags/).click()
+        const searchInput = getByPlaceholderText(/Search/)
+        fireEvent.change(searchInput, {
+            target: {value: 'ex'},
+        })
+        act(() => jest.runAllTimers())
 
-        expect(items[0]).toHaveFocus()
+        const items = getAllByRole('listitem')
+
+        expect(searchInput).toEqual(items[0])
+        expect(searchInput).toHaveFocus()
 
         fireEvent.keyDown(items[0], {
             key: 'ArrowDown',
         })
-        expect(items[1]).toHaveFocus()
+        expect(getByText(/change/).parentElement).toEqual(items[1])
+        expect(getByText(/change/).parentElement).toHaveFocus()
+
+        fireEvent.keyDown(items[1], {
+            key: 'ArrowDown',
+        })
+        expect(getByText(/Create/).parentElement).toEqual(items[2])
+        expect(getByText(/Create/).parentElement).toHaveFocus()
+
+        fireEvent.keyDown(items[2], {
+            key: 'ArrowDown',
+        })
+        expect(searchInput).toHaveFocus()
+
+        fireEvent.keyDown(items[0], {
+            key: 'ArrowUp',
+        })
+        expect(getByText(/Create/).parentElement).toEqual(items[2])
+        expect(getByText(/Create/).parentElement).toHaveFocus()
+
+        fireEvent.keyDown(items[2], {
+            key: 'ArrowUp',
+        })
+        expect(getByText(/change/).parentElement).toEqual(items[1])
+        expect(getByText(/change/).parentElement).toHaveFocus()
+
+        fireEvent.keyDown(items[1], {
+            key: 'ArrowUp',
+        })
+
+        expect(searchInput).toHaveFocus()
+    })
+
+    it('should loop through items via keyboard events with empty results', () => {
+        mockUseGetTags.mockReturnValue({
+            data: {
+                data: {
+                    data: [],
+                },
+            },
+        })
+
+        const {getAllByRole, getByPlaceholderText, getByText} = render(
+            <Provider store={store}>
+                <TagSearchDropdown {...props} />
+            </Provider>
+        )
+        getByText(/Add tags/).click()
+        const searchInput = getByPlaceholderText(/Search/)
+        fireEvent.change(searchInput, {
+            target: {value: 'Foo'},
+        })
+        act(() => jest.runAllTimers())
+
+        const items = getAllByRole('listitem')
+
+        expect(searchInput).toEqual(items[0])
+        expect(searchInput).toHaveFocus()
+
+        fireEvent.keyDown(items[0], {
+            key: 'ArrowDown',
+        })
+        expect(getByText(/Create/).parentElement).toEqual(items[1])
+        expect(getByText(/Create/).parentElement).toHaveFocus()
+
+        fireEvent.keyDown(items[1], {
+            key: 'ArrowDown',
+        })
+        expect(searchInput).toEqual(items[0])
+        expect(searchInput).toHaveFocus()
+
+        fireEvent.keyDown(items[0], {
+            key: 'ArrowUp',
+        })
+        expect(getByText(/Create/).parentElement).toEqual(items[1])
+        expect(getByText(/Create/).parentElement).toHaveFocus()
+
+        fireEvent.keyDown(items[1], {
+            key: 'ArrowUp',
+        })
+        expect(searchInput).toEqual(items[0])
+        expect(searchInput).toHaveFocus()
+    })
+
+    it('should trigger tag creation through keyboard shortcut', () => {
+        mockUseGetTags.mockReturnValue({
+            data: {
+                data: {
+                    data: [],
+                },
+            },
+        })
+        const {getByText, getByPlaceholderText} = render(
+            <Provider store={store}>
+                <TagSearchDropdown {...props} />
+            </Provider>
+        )
+
+        getByText(/Add tags/).click()
+        fireEvent.change(getByPlaceholderText(/Search/), {
+            target: {value: 'Foo'},
+        })
+        act(() => jest.runAllTimers())
+        fireEvent.keyDown(getByText(/Create/i), {key: 'Enter'})
+
+        expect(props.addTag).toHaveBeenCalledWith('Foo')
     })
 })

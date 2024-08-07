@@ -49,24 +49,20 @@ export const ModifierSelect = ({
                             contained
                         >
                             <DropdownBody>
-                                <>
-                                    {modifier.option_values.map(
-                                        ({label, id}) => (
-                                            <DropdownItem
-                                                key={id}
-                                                autoFocus
-                                                shouldCloseOnSelect
-                                                option={{
-                                                    label: label,
-                                                    value: id,
-                                                }}
-                                                onClick={() =>
-                                                    onSetValue(modifier.id, id)
-                                                }
-                                            />
-                                        )
-                                    )}
-                                </>
+                                {modifier.option_values.map(({label, id}) => (
+                                    <DropdownItem
+                                        key={id}
+                                        autoFocus
+                                        shouldCloseOnSelect
+                                        option={{
+                                            label: label,
+                                            value: id,
+                                        }}
+                                        onClick={() =>
+                                            onSetValue(modifier.id, id)
+                                        }
+                                    />
+                                ))}
                             </DropdownBody>
                         </Dropdown>
                     )}

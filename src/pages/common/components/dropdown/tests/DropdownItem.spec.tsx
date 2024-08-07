@@ -1,7 +1,7 @@
-import React, {ComponentProps, ContextType} from 'react'
+import React, {ContextType} from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
-import DropdownItem from '../DropdownItem'
+import DropdownItem, {Props} from '../DropdownItem'
 import {DropdownContext} from '../Dropdown'
 
 const minProps = {
@@ -19,7 +19,7 @@ const mockContext: ContextType<typeof DropdownContext> = {
 }
 
 const MockedComponent = (
-    props: ComponentProps<typeof DropdownItem>,
+    props: Props<string>,
     context: ContextType<typeof DropdownContext>
 ) => {
     return (

@@ -2,11 +2,14 @@ import React, {
     useContext,
     useMemo,
     useCallback,
-    useRef,
     ReactNode,
     createElement,
     HTMLAttributes,
     forwardRef,
+    useImperativeHandle,
+    ForwardedRef,
+    KeyboardEvent,
+    useRef,
 } from 'react'
 import classnames from 'classnames'
 import _isString from 'lodash/isString'
@@ -19,7 +22,7 @@ import {DropdownContext} from './Dropdown'
 
 import css from './DropdownItem.less'
 
-type Props<T extends boolean | number | string | null> = {
+export type Props<T extends boolean | number | string | null> = {
     autoFocus?: boolean
     children?: ReactNode | ((highlightedLabel: ReactNode) => ReactNode)
     className?: string
@@ -34,25 +37,30 @@ type Props<T extends boolean | number | string | null> = {
     }
 }
 
-const DropdownItem = <T extends boolean | number | string | null>({
-    autoFocus,
-    children,
-    className,
-    onClick,
-    shouldCloseOnSelect,
-    hasSubItems = false,
-    isDisabled,
-    tag = 'li',
-    option,
-    ...rest
-}: Props<T> & Omit<HTMLAttributes<HTMLOrSVGElement>, 'onClick'>) => {
-    const itemRef = useRef<HTMLElement | null>(null)
+export const DropdownItem = <T extends boolean | number | string | null>(
+    {
+        autoFocus,
+        children,
+        className,
+        onClick,
+        shouldCloseOnSelect,
+        hasSubItems = false,
+        isDisabled,
+        tag = 'li',
+        option,
+        onKeyDown,
+        ...rest
+    }: Props<T> & Omit<HTMLAttributes<HTMLOrSVGElement>, 'onClick'>,
+    ref: ForwardedRef<HTMLElement>
+) => {
+    const itemRef = useRef<HTMLElement>(null)
+    useImperativeHandle(ref, () => itemRef.current!)
 
     const dropdownContext = useContext(DropdownContext)
 
     if (!dropdownContext) {
         throw new Error(
-            'DropdownSearch must be used within a DropdownContext.Provider'
+            'DropdownItem must be used within a DropdownContext.Provider'
         )
     }
 
@@ -91,7 +99,6 @@ const DropdownItem = <T extends boolean | number | string | null>({
 
     useEffectOnce(() => {
         const currentItem = itemRef.current
-
         if (autoFocus && !currentItem?.previousElementSibling) {
             currentItem?.focus()
         }
@@ -111,9 +118,8 @@ const DropdownItem = <T extends boolean | number | string | null>({
     )
 
     const handleKeyDown = useCallback(
-        (event: React.KeyboardEvent, value: T) => {
-            const currentItem = itemRef?.current
-
+        (event: KeyboardEvent<HTMLOrSVGElement>, value: T) => {
+            const currentItem = itemRef.current
             if (event.key === 'Enter' || event.key === ' ') {
                 if (isDisabled) {
                     return
@@ -130,14 +136,25 @@ const DropdownItem = <T extends boolean | number | string | null>({
                     ;(
                         currentItem?.previousElementSibling as HTMLElement
                     ).focus()
+                } else {
+                    ;(
+                        currentItem?.parentNode?.lastElementChild as HTMLElement
+                    )?.focus()
                 }
             } else if (event.key === 'ArrowDown') {
                 if (currentItem?.nextElementSibling) {
                     ;(currentItem?.nextElementSibling as HTMLElement).focus()
+                } else {
+                    ;(
+                        currentItem?.parentNode
+                            ?.firstElementChild as HTMLElement
+                    ).focus()
                 }
             }
+
+            onKeyDown?.(event)
         },
-        [onClick, shouldCloseOnSelect, onToggle, isDisabled]
+        [onKeyDown, isDisabled, onClick, shouldCloseOnSelect, onToggle]
     )
 
     const label = useMemo(
@@ -159,7 +176,7 @@ const DropdownItem = <T extends boolean | number | string | null>({
             })}
             role="option"
             onClick={() => handleClick(option.value)}
-            onKeyDown={(e: React.KeyboardEvent) =>
+            onKeyDown={(e: KeyboardEvent<HTMLOrSVGElement>) =>
                 handleKeyDown(e, option.value)
             }
             ref={itemRef}
@@ -183,4 +200,4 @@ const DropdownItem = <T extends boolean | number | string | null>({
     ) : null
 }
 
-export default DropdownItem
+export default forwardRef(DropdownItem)

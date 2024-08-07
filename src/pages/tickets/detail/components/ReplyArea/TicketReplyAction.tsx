@@ -287,9 +287,6 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                             )
                                         }}
                                         right
-                                        dropdownContainer={
-                                            this.props.appNode ?? undefined
-                                        }
                                         isDisabled={this.props.disabled}
                                     />
                                 </div>
