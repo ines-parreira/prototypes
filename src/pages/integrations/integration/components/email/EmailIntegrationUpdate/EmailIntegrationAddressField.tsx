@@ -7,7 +7,6 @@ import {
 } from 'models/integration/types'
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {getDefaultIntegrationSettings} from 'state/currentAccount/selectors'
@@ -15,6 +14,7 @@ import {AccountSettingType} from 'state/currentAccount/types'
 import {submitSetting} from 'state/currentAccount/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import DefaultIntegrationBadge from '../DefaultIntegrationBadge'
 
 import css from './EmailIntegrationAddressField.less'
 
@@ -28,7 +28,6 @@ function EmailIntegrationAddressField({integration}: Props) {
         false
     )
     const buttonRef = useRef<HTMLButtonElement>(null)
-    const badgeRef = useRef<HTMLDivElement>(null)
     const dispatch = useAppDispatch()
     const currentSetting = useAppSelector(getDefaultIntegrationSettings)
 
@@ -58,21 +57,7 @@ function EmailIntegrationAddressField({integration}: Props) {
             <div className={css.fieldValue}>
                 <span className={css.address}>{address}</span>
                 {isDefault ? (
-                    <>
-                        <Badge
-                            ref={badgeRef}
-                            id="default-address-badge"
-                            type={ColorType.Blue}
-                        >
-                            DEFAULT
-                        </Badge>
-                        <Tooltip target={badgeRef}>
-                            This email address is used as the default when
-                            creating email tickets or switching to the email
-                            channel. To remove this as the default, you must set
-                            another email as the default first.
-                        </Tooltip>
-                    </>
+                    <DefaultIntegrationBadge />
                 ) : (
                     <>
                         <Button

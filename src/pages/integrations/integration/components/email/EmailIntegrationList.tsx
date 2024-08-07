@@ -26,12 +26,14 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {fetchIntegrations} from 'state/integrations/actions'
 import {makeGetRedirectUri} from 'state/integrations/selectors'
+import {getDefaultIntegrationSettings} from 'state/currentAccount/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useListStoreMappings} from 'models/storeMapping/queries'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import IntegrationList from '../IntegrationList'
+import DefaultIntegrationBadge from './DefaultIntegrationBadge'
 import {fetchEmailDomains} from './resources'
 import {
     getDomainFromEmailAddress,
@@ -58,6 +60,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
     const [isLoadingDomains, setIsLoadingDomains] = useState(false)
     const [emailDomains, setEmailDomains] = useState<EmailDomain[]>([])
 
+    const defaultIntegrations = useAppSelector(getDefaultIntegrationSettings)
     const dispatch = useAppDispatch()
 
     const {data: storeMappings, isFetching: isLoadingStoreMappings} =
@@ -118,6 +121,8 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
         const domain = getDomainFromEmailAddress(address)
 
         const isBaseIntegration = isBaseEmailIntegration(integration.toJS())
+        const isDefault =
+            defaultIntegrations?.data?.email === integration.get('id')
 
         const integrationType:
             | IntegrationType.Gmail
@@ -201,13 +206,14 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
         return (
             <tr key={integrationId}>
                 <td className="smallest align-middle">{adapter.image}</td>
-                <td className="link-full-td">
+                <td className={classnames('link-full-td', css.address)}>
                     <Link to={editLink} data-testid="integration-link">
                         <div>
                             <b className="mr-2">{integration.get('name')}</b>
                             <span className="text-faded">{address}</span>
                         </div>
                     </Link>
+                    {isDefault && <DefaultIntegrationBadge />}
                 </td>
                 {showStoreMapping && (
                     <td className="align-middle pr-2">

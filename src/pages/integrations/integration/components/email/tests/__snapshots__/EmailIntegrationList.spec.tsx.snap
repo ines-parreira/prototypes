@@ -154,7 +154,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
             </i>
           </td>
           <td
-            class="link-full-td"
+            class="link-full-td address"
           >
             <a
               data-testid="integration-link"

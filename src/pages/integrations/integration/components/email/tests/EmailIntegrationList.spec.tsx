@@ -10,6 +10,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import LD from 'launchdarkly-react-client-sdk'
 import {renderWithRouter, assumeMock, mockStore} from 'utils/testing'
 import {IntegrationType, EmailProvider} from 'models/integration/constants'
+import {AccountSettingType} from 'state/currentAccount/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {FeatureFlagKey} from 'config/featureFlags'
 import EmailIntegrationList from '../EmailIntegrationList'
@@ -267,6 +268,54 @@ describe('<EmailIntegrationList/>', () => {
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
             expect(container).toMatchSnapshot()
+        })
+
+        it('should render the default badge if an integration is set as default', async () => {
+            const get = fetchEmailDomainsMock.mockResolvedValueOnce([
+                {
+                    name: 'gorgias-test.com',
+                    verified: true,
+                    data: fromJS({
+                        sending_dns_records: [
+                            {
+                                verified: true,
+                                record_type: 'AA',
+                                host: 'gorgias-test.com',
+                                value: 'test',
+                                current_values: ['test1', 'test2'],
+                            },
+                        ],
+                    }),
+                },
+            ])
+            const store = mockStore({
+                currentAccount: fromJS({
+                    settings: [
+                        {
+                            id: 1,
+                            type: AccountSettingType.DefaultIntegration,
+                            data: {
+                                email: 1,
+                            },
+                        },
+                    ],
+                }),
+            } as any)
+            render(
+                <Provider store={store}>
+                    <EmailIntegrationList {...commonProps} />
+                </Provider>,
+
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <MemoryRouter>{children}</MemoryRouter>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+            await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
+            expect(screen.getByText('DEFAULT')).toBeInTheDocument()
         })
 
         it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
