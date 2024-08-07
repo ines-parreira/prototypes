@@ -4,7 +4,7 @@ import {Tooltip} from '@gorgias/ui-kit'
 
 import classNames from 'classnames'
 import {useTheme} from 'theme'
-import shopify from 'assets/img/integrations/shopify.png'
+import store from 'assets/img/icons/store.svg'
 
 import Button from 'pages/common/components/button/Button'
 import {getHasAutomate} from 'state/billing/selectors'
@@ -16,7 +16,9 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import settingsCss from 'pages/settings/settings.less'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {useShopifyStoreWithChatConnectionsOptions} from '../../hooks/useShopifyStoreWithChatConnectionsOptions'
+import {IntegrationType} from 'models/integration/types'
+import {getIconFromType} from 'state/integrations/helpers'
+import {useStoreWithChatConnectionsOptions} from '../../hooks/useStoreWithChatConnectionsOptions'
 
 import css from './ConnectToShopSection.less'
 
@@ -26,10 +28,12 @@ interface Props {
         self_service_deactivated?: boolean
     }) => void
     shopName: string | null
+    shopType?: IntegrationType
 }
 
 export const ConnectToShopSection = ({
     shopName,
+    shopType,
     onUpdate,
 }: Props): JSX.Element | null => {
     const [disconnectModalOpen, setDisconnectModalOpen] = useState(false)
@@ -46,9 +50,9 @@ export const ConnectToShopSection = ({
 
     const disconnectButtonRef = useRef<HTMLSpanElement>(null)
 
-    const shopifyShopsOptions = useShopifyStoreWithChatConnectionsOptions({
+    const eCommerceShopsOptions = useStoreWithChatConnectionsOptions({
         option: css['select-option'],
-        icon: css['shopify-icon'],
+        icon: css['store-icon'],
         connectedChatsCount: css['select-connected-chats'],
     })
 
@@ -64,9 +68,9 @@ export const ConnectToShopSection = ({
             {shopName ? (
                 <div className={css['connected-store']}>
                     <img
-                        src={shopify}
-                        className={css['shopify-icon']}
-                        alt="shopify logo"
+                        src={shopType ? getIconFromType(shopType) : store}
+                        className={css['store-icon']}
+                        alt="store logo"
                     />
 
                     <span className={css['store-name']}>{shopName}</span>
@@ -203,7 +207,7 @@ Auto-embedding and Automate features unavailable."
                             // this type cast is safe as all values are string
                             setSelectedShop(value as string)
                         }}
-                        options={shopifyShopsOptions}
+                        options={eCommerceShopsOptions}
                         icon={selectedShop ? '' : 'store'}
                     />
                 </>

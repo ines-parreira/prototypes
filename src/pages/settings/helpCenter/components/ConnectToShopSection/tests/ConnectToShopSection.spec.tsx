@@ -14,6 +14,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
+import {IntegrationType} from 'models/integration/constants'
 import {ConnectToShopSection} from '../ConnectToShopSection'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -128,5 +129,47 @@ describe('<ConnectToShopSection />', () => {
             shop_name: 'meow-shop',
             self_service_deactivated: true,
         })
+    })
+
+    it('should display appropriate store logo when shopType is provided', () => {
+        const onUpdate = jest.fn()
+
+        const {getByText, getByAltText} = render(
+            <ThemeProvider>
+                <ConnectToShopSection
+                    shopName={'meow-shop'}
+                    shopType={IntegrationType.Shopify}
+                    onUpdate={onUpdate}
+                />
+            </ThemeProvider>,
+            {wrapper: ReduxProvider}
+        )
+
+        expect(getByText('meow-shop')).toBeInTheDocument()
+        const imgElement = getByAltText('store logo')
+        expect(imgElement).toBeInTheDocument()
+        expect(imgElement).toHaveAttribute(
+            'src',
+            '/assets/img/integrations/shopify.png'
+        )
+    })
+
+    it('should display a default store logo when shopType is not provided', () => {
+        const onUpdate = jest.fn()
+
+        const {getByText, getByAltText} = render(
+            <ThemeProvider>
+                <ConnectToShopSection
+                    shopName={'meow-shop'}
+                    onUpdate={onUpdate}
+                />
+            </ThemeProvider>,
+            {wrapper: ReduxProvider}
+        )
+
+        expect(getByText('meow-shop')).toBeInTheDocument()
+        const imgElement = getByAltText('store logo')
+        expect(imgElement).toBeInTheDocument()
+        expect(imgElement).toHaveAttribute('src', 'test-file-stub')
     })
 })

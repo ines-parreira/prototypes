@@ -1,7 +1,4 @@
 import {IntegrationType} from '../constants'
-import {ShopifyIntegration} from './shopify'
-import {Magento2Integration} from './magento2'
-import {BigCommerceIntegration} from './bigcommerce'
 import {Integration} from './index'
 
 type AuthenticationStatus = 'pending' | 'success' | 'error' | ''
@@ -84,7 +81,8 @@ export type IntegrationFromType<T extends Integration['type']> = Extract<
     {type: T}
 >
 
-export type StoreIntegration =
-    | ShopifyIntegration
-    | Magento2Integration
-    | BigCommerceIntegration
+export type StoreIntegration = IntegrationFromType<
+    | IntegrationType.Shopify
+    | IntegrationType.Magento2
+    | IntegrationType.BigCommerce
+>

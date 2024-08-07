@@ -5,6 +5,7 @@ import _debounce from 'lodash/debounce'
 import {Route, Switch, useHistory, useLocation} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {IntegrationType} from '@gorgias/api-queries'
 import {SegmentEvent, logEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 
@@ -35,6 +36,7 @@ import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 import {useGetPageEmbedments} from 'pages/settings/helpCenter/queries'
 import BackLink from 'pages/common/components/BackLink'
+import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import {
@@ -97,9 +99,17 @@ export const HelpCenterInstallationView: React.FC = () => {
         () => preferences.availableLanguages.length > 0,
         [preferences.availableLanguages]
     )
-    const isConnectedToShop = useMemo(
-        () => Boolean(preferences.connectedShop.shopName),
-        [preferences.connectedShop.shopName]
+
+    const selectedShop = useSelfServiceStoreIntegrationByShopName(
+        preferences.connectedShop.shopName ?? ''
+    )
+
+    const isConnectedToShopifyShop = useMemo(
+        () =>
+            Boolean(preferences.connectedShop.shopName) &&
+            !!selectedShop &&
+            selectedShop.type === IntegrationType.Shopify,
+        [preferences.connectedShop.shopName, selectedShop]
     )
 
     const helpCenterUrl = useMemo(() => {
@@ -316,6 +326,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                     <ConnectToShopSection
                         onUpdate={onConnectedShopChange}
                         shopName={preferences.connectedShop.shopName}
+                        shopType={selectedShop?.type}
                     />
                     <section className="mb-4">
                         <h3 className={css.sectionTitle}>Publish</h3>
@@ -330,7 +341,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                         {canUseHelpCenterAutoEmbed ? (
                             // The new Publish section
                             <div className={css.cards}>
-                                {!isConnectedToShop &&
+                                {!isConnectedToShopifyShop &&
                                     showConnectToStoreWarning && (
                                         <Alert
                                             type={AlertType.Warning}
