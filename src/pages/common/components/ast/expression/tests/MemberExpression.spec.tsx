@@ -132,7 +132,7 @@ describe('<MemberExpression/>', () => {
             ).mock.calls
         ).toMatchSnapshot()
     })
-    it('should exclude quick resppnses from the drop down if flag is true', () => {
+    it('should exclude quick resppnses from the drop down', () => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.SunsetQuickResponses]: true,
         })
@@ -143,17 +143,5 @@ describe('<MemberExpression/>', () => {
         expect(queryByText('Quick Responses')).not.toBeInTheDocument()
         fireEvent.click(getByText('Self Service'))
         expect(queryByText('Quick Responses')).not.toBeInTheDocument()
-    })
-    it('should exclude quick resppnses from the drop down if flag is false', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.SunsetQuickResponses]: false,
-        })
-        const {getByText, queryByText} = render(
-            <MemberExpressionContainer {...minProps} />
-        )
-
-        expect(queryByText('Quick Responses')).not.toBeInTheDocument()
-        fireEvent.click(getByText('Self Service'))
-        expect(queryByText('Quick Responses')).toBeInTheDocument()
     })
 })

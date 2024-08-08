@@ -1,8 +1,5 @@
 import React from 'react'
-import {
-    ORDER_MANAGEMENT,
-    QUICK_RESPONSES,
-} from 'pages/automate/common/components/constants'
+import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
 import {
     IdentifierCategoryKey,
     IdentifierCategoryValue,
@@ -497,11 +494,6 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             label: ORDER_MANAGEMENT,
             text: ORDER_MANAGEMENT.toLowerCase(),
             value: 'message.self_service_flow.order_management_flow',
-        },
-        {
-            label: QUICK_RESPONSES,
-            text: QUICK_RESPONSES.toLowerCase(),
-            value: 'message.self_service_flow.quick_response_flow',
         },
         {
             label: 'Self-service store',
