@@ -2,13 +2,13 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {InferredCampaignStatus} from 'models/convert/campaign/types'
-import {CampaignStatusMultiSelect} from '../CampaignStatusMultiSelect'
+import {DEPRECATED_CampaignStatusMultiSelect} from 'pages/stats/convert/components/DEPRECATED_CampaignStatusMultiSelect'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = useAppDispatch as jest.Mock
 useAppDispatchMock.mockReturnValue(jest.fn())
 
-describe('CampaignStatusMultiSelect', () => {
+describe('DEPRECATED_CampaignStatusMultiSelect', () => {
     const defaultProps = {
         selected: [],
         onChangeItem: jest.fn(),
@@ -16,7 +16,7 @@ describe('CampaignStatusMultiSelect', () => {
 
     it('should render', () => {
         const {getByText} = render(
-            <CampaignStatusMultiSelect {...defaultProps} />
+            <DEPRECATED_CampaignStatusMultiSelect {...defaultProps} />
         )
 
         expect(getByText('All statuses')).toBeInTheDocument()
@@ -27,7 +27,7 @@ describe('CampaignStatusMultiSelect', () => {
 
     it('should call onChangeItem with correct value', () => {
         const {getByText} = render(
-            <CampaignStatusMultiSelect {...defaultProps} />
+            <DEPRECATED_CampaignStatusMultiSelect {...defaultProps} />
         )
 
         getByText('Active').click()

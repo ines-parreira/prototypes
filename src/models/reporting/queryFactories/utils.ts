@@ -92,3 +92,13 @@ export function withDefaultLogicalOperator<T extends number | string>(
         operator: operator ?? LogicalOperatorEnum.ONE_OF,
     }
 }
+
+export function withLogicalOperator<T extends number | string>(
+    values?: T[],
+    operator = LogicalOperatorEnum.ONE_OF
+): WithLogicalOperator<T> {
+    return {
+        values: values ?? [],
+        operator,
+    }
+}

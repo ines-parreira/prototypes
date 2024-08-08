@@ -1,12 +1,12 @@
 import React from 'react'
 
+import {DEPRECATED_CampaignStatusMultiSelect} from 'pages/stats/convert/components/DEPRECATED_CampaignStatusMultiSelect'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 
-import {CampaignStatusMultiSelect} from 'pages/stats/convert/components/CampaignStatusMultiSelect'
-import {useCampaignStatsFilters} from '../../hooks/useCampaignStatsFilters'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 
-import {CampaignMultiSelect} from '../../components/CampaignMultiSelect'
-import {IntegrationMultiSelect} from '../../components/IntegrationMultiSelect'
+import {CampaignMultiSelect} from 'pages/stats/convert/components/CampaignMultiSelect'
+import {IntegrationMultiSelect} from 'pages/stats/convert/components/IntegrationMultiSelect'
 
 import css from './RevenueFilters.less'
 
@@ -46,7 +46,7 @@ export const RevenueFilters = () => {
             </div>
 
             <div className={css.filterItem}>
-                <CampaignStatusMultiSelect
+                <DEPRECATED_CampaignStatusMultiSelect
                     selected={selectedCampaignStatuses}
                     onChangeItem={onChangeCampaignsByStatus}
                 />

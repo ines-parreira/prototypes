@@ -11,7 +11,10 @@ type Props = {
     onChangeItem: ComponentProps<typeof SelectStatsFilter>['onChange']
 }
 
-export const CampaignStatusMultiSelect = ({selected, onChangeItem}: Props) => {
+export const DEPRECATED_CampaignStatusMultiSelect = ({
+    selected,
+    onChangeItem,
+}: Props) => {
     return (
         <SelectStatsFilter
             plural="statuses"

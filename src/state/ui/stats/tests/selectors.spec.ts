@@ -1,7 +1,10 @@
 import {fromJS} from 'immutable'
 import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {user} from 'fixtures/users'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {
+    withDefaultLogicalOperator,
+    withLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
 import {STATS_STORE_INTEGRATION_TYPES} from 'state/stats/constants'
@@ -23,6 +26,7 @@ import {
     getCleanStatsFiltersWithTimezone,
     isCleanStatsDirty,
 } from 'state/ui/stats/selectors'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 const store = {
     ui: {
@@ -217,7 +221,7 @@ describe('ui/stats/selectors', () => {
     })
 
     describe('getCleanStatsFiltersWithInitialStoreIntegration', () => {
-        it('should return integrations filter', () => {
+        it('should return integrations filter using withDefaultLogicalOperator', () => {
             const selectedIntegrationId = 345
             const state = {
                 ui: {
@@ -236,6 +240,45 @@ describe('ui/stats/selectors', () => {
                         period: initialStatsFiltersState.filters.period,
                         integrations: withDefaultLogicalOperator([
                             selectedIntegrationId,
+                        ]),
+                    },
+                },
+                integrations: integrationsStateWithShopify.mergeDeep({
+                    integrations: [
+                        {
+                            id: selectedIntegrationId,
+                            type: STATS_STORE_INTEGRATION_TYPES[0],
+                        },
+                    ],
+                }),
+            } as RootState
+
+            expect(
+                getCleanStatsFiltersWithInitialStoreIntegration(state)
+                    .statsFilters.integrations
+            ).toEqual([selectedIntegrationId])
+        })
+
+        it('should return integrations filter using withLogicalOperator', () => {
+            const selectedIntegrationId = 345
+            const state = {
+                ui: {
+                    stats: {
+                        ...initialUiStatsState,
+                        cleanStatsFilters: {
+                            period: initialStatsFiltersState.filters.period,
+                            integrations: withLogicalOperator([
+                                selectedIntegrationId,
+                            ]),
+                        },
+                    },
+                },
+                stats: {
+                    filters: {
+                        period: initialStatsFiltersState.filters.period,
+                        integrations: withLogicalOperator([
+                            selectedIntegrationId,
+                            LogicalOperatorEnum.NOT_ONE_OF,
                         ]),
                     },
                 },

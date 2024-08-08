@@ -174,6 +174,7 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
             score,
             campaigns,
             slaPolicies,
+            campaignStatuses,
         } = statsFilters
         return {
             channels,
@@ -186,6 +187,7 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
             score,
             campaigns,
             slaPolicies,
+            campaignStatuses,
         }
     }
 )
