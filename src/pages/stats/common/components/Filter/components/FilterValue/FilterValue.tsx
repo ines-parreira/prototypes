@@ -52,11 +52,10 @@ const FilterValue = (
         : FILTER_VALUE_PLACEHOLDER
 
     useEffect(() => {
-        const showTooltip =
-            !!containerRef.current &&
-            containerRef.current.offsetWidth === FILTER_VALUE_MAX_WIDTH
+        const show =
+            containerRef.current?.offsetWidth === FILTER_VALUE_MAX_WIDTH
 
-        setShowTooltip(showTooltip && !trailIconHovered)
+        setShowTooltip(show && !trailIconHovered)
     }, [optionsLabels, trailIconHovered])
 
     const handleTrailIconClick = (e: React.MouseEvent) => {
@@ -65,7 +64,7 @@ const FilterValue = (
     }
 
     return (
-        <>
+        <div>
             <div
                 ref={containerRef}
                 className={classNames(
@@ -74,6 +73,7 @@ const FilterValue = (
                     className
                 )}
                 onClick={onChange}
+                data-testid="filter-value"
             >
                 {!!logicalOperator && (
                     <div
@@ -112,7 +112,7 @@ const FilterValue = (
                     <div className={css.tooltip}>{filterText}</div>
                 </Tooltip>
             )}
-        </>
+        </div>
     )
 }
 

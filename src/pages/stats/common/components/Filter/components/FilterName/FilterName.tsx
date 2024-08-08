@@ -16,10 +16,10 @@ const FilterName = ({name, className}: Props) => {
     const [showTooltip, setShowTooltip] = useState(false)
 
     useEffect(() => {
-        const showTooltip =
+        const show =
             ref.current && ref.current.offsetWidth === FILTER_NAME_MAX_WIDTH
 
-        setShowTooltip(!!showTooltip)
+        setShowTooltip(!!show)
     }, [name])
 
     return (

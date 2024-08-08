@@ -7,7 +7,6 @@ import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import {ThemeProvider} from 'theme'
 import PeriodFilter from 'pages/stats/common/filters/PeriodFilter'
-import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
 
 const defaultState = {}
 
@@ -15,16 +14,6 @@ const DATE = '2024-04-14T12:34:56.000Z'
 
 const startDate = moment(DATE).subtract(7, 'days').toISOString()
 const endDateTime = moment(DATE).endOf('day').toISOString()
-const formattedStartDate = moment(startDate).format(
-    DateTimeFormatMapper[
-        DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US
-    ] as string
-)
-const formattedEndDate = moment(endDateTime).format(
-    DateTimeFormatMapper[
-        DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US
-    ] as string
-)
 
 const storyConfig: Meta = {
     title: 'Common/Filters/PeriodFilter',
@@ -56,10 +45,12 @@ const defaultProps: ComponentProps<typeof PeriodFilter> = {
 export const Default = Template.bind({})
 Default.args = defaultProps
 Default.play = ({canvasElement}) => {
+    Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+        configurable: true,
+        value: 186,
+    })
     const canvas = within(canvasElement)
-    userEvent.click(
-        canvas.getByText(`${formattedStartDate} - ${formattedEndDate}`)
-    )
+    userEvent.click(canvas.getByTestId('filter-value'))
 }
 
 export default storyConfig

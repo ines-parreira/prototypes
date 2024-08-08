@@ -18,9 +18,12 @@ const Template: StoryFn<ComponentProps<typeof DatePicker>> = (
 ) => {
     return (
         <ThemeProvider>
-            <DatePicker {...props}>
-                <input type="text" placeholder="Choose a date..." />
-            </DatePicker>
+            {/** fixes the flaky chromatic tests issue */}
+            <div style={{paddingLeft: '100px'}}>
+                <DatePicker {...props}>
+                    <input type="text" placeholder="Choose a date..." />
+                </DatePicker>
+            </div>
         </ThemeProvider>
     )
 }
