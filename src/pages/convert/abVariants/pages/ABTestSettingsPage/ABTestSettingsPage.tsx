@@ -2,12 +2,18 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+
 import {HeaderReturnButton} from 'pages/convert/common/components/HeaderReturnButton'
 import VariantsList from 'pages/convert/abVariants/components/VariantsList'
 
 import css from './ABTestSettingsPage.less'
 
-export const ABTestSettingsPage = () => {
+type Props = {
+    variants: CampaignVariant[]
+}
+
+export const ABTestSettingsPage: React.FC<Props> = ({variants}) => {
     return (
         <>
             <div className={css.pageContentWithPadding}>
@@ -52,7 +58,7 @@ export const ABTestSettingsPage = () => {
             </div>
 
             <div>
-                <VariantsList />
+                <VariantsList variants={variants} />
             </div>
         </>
     )

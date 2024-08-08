@@ -419,7 +419,7 @@ declare namespace Components {
             /**
              * Variants
              */
-            variants?: CampaignVariantRequestSchema[]
+            variants?: CampaignVariantRequestSchema[] | null
         }
         /**
          * CampaignPatchRequestSchema

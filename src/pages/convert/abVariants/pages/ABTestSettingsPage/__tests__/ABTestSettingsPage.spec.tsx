@@ -5,7 +5,7 @@ import ABTestSettingPage from '../ABTestSettingsPage'
 
 describe('<ABTestSettingPage />', () => {
     it('renders', () => {
-        const {getByText} = render(<ABTestSettingPage />)
+        const {getByText} = render(<ABTestSettingPage variants={[]} />)
         expect(getByText('Back to Campaigns list')).toBeInTheDocument()
     })
 })

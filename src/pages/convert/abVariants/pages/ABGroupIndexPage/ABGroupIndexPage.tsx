@@ -1,13 +1,12 @@
-import React from 'react'
-
+import React, {useMemo} from 'react'
 import {Route, Switch, useParams} from 'react-router-dom'
-
 import {Container} from 'reactstrap'
+
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 
 import {useGetCampaign} from 'models/convert/campaign/queries'
 
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
@@ -33,6 +32,10 @@ const ABGroupIndexPage = () => {
         {campaign_id: campaignId || ''},
         {enabled: !!campaignId}
     )
+
+    const variants = useMemo(() => {
+        return (data?.variants ?? []) as CampaignVariant[]
+    }, [data])
 
     if (isLoading || !data) {
         return (
@@ -60,7 +63,7 @@ const ABGroupIndexPage = () => {
             <Container fluid className={css.pageContainer}>
                 <Switch>
                     <Route exact path={abVariantsPath}>
-                        <ABTestSettingsPage />
+                        <ABTestSettingsPage variants={variants} />
                     </Route>
                     <Route exact path={abVariantsControlVersionPath}>
                         <ABTestVariantEditPage isControlVersion={true} />

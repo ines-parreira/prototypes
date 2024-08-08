@@ -5,16 +5,18 @@ import {
 import {CampaignAttachment} from './CampaignAttachment'
 import {CampaignTrigger} from './CampaignTrigger'
 import {CampaignMeta} from './CampaignMeta'
+import {CampaignVariant} from './CampaignVariant'
 
 type SharedCampaignParams = {
     attachments?: CampaignAttachment[]
     triggers: CampaignTrigger[]
     meta?: CampaignMeta
+    variants?: CampaignVariant[] | null
 }
 
 export type Campaign = Omit<
     CampaignSchema,
-    'attachments' | 'triggers' | 'meta'
+    'attachments' | 'triggers' | 'meta' | 'variants'
 > &
     SharedCampaignParams
 

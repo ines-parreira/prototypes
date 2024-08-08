@@ -17,13 +17,21 @@ import css from './CreateABTestInfoModal.less'
 type Props = {
     isOpen: boolean
     isDismissed: boolean
+    isLoading?: boolean
     onClose: () => void
     onSubmit: () => void
     setIsDismissed: (isDismissed: boolean) => void
 }
 
 const CreateABTestInfoModal: React.FC<Props> = (props) => {
-    const {isOpen, isDismissed, onClose, onSubmit, setIsDismissed} = props
+    const {
+        isOpen,
+        isDismissed,
+        isLoading = false,
+        onClose,
+        onSubmit,
+        setIsDismissed,
+    } = props
     const [isDismissedChecked, setIsDismissedChecked] = useState(isDismissed)
 
     const onDismissClick = () => {
@@ -90,7 +98,9 @@ const CreateABTestInfoModal: React.FC<Props> = (props) => {
                 <Button intent="secondary" onClick={onClose}>
                     Cancel
                 </Button>
-                <Button onClick={onSubmitClick}>Create A/B test</Button>
+                <Button isLoading={isLoading} onClick={onSubmitClick}>
+                    Create A/B test
+                </Button>
             </ModalActionsFooter>
         </Modal>
     )

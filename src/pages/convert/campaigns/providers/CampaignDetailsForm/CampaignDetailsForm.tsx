@@ -94,6 +94,7 @@ export type Props = {
     updateCampaign: (form: any) => Promise<unknown>
     duplicateCampaign?: (form: any) => Promise<unknown>
     deleteCampaign?: () => Promise<unknown>
+    createABVariant?: () => Promise<unknown>
     header?: React.ReactNode
     openedStep?: CampaignStepsKeys
     allowActivate?: boolean
@@ -116,6 +117,7 @@ export const CampaignDetailsForm = ({
     updateCampaign,
     duplicateCampaign,
     deleteCampaign,
+    createABVariant,
     header,
     backUrl,
     openedStep,
@@ -396,6 +398,13 @@ export const CampaignDetailsForm = ({
         await deleteCampaign().then(() => setActionInProgress(''))
     }
 
+    const handleCreateABVariant = async () => {
+        if (createABVariant === undefined) return
+
+        setActionInProgress('createVariant')
+        await createABVariant().finally(() => setActionInProgress(''))
+    }
+
     const handleDiscardChanges = () => {
         history.push(backUrl)
     }
@@ -421,6 +430,7 @@ export const CampaignDetailsForm = ({
         if (!wizardConfiguration) {
             return false
         }
+        3
         return wizardConfiguration?.stepConfiguration
             ? wizardConfiguration?.stepConfiguration[step]?.isDisabled ?? false
             : false
@@ -614,6 +624,9 @@ export const CampaignDetailsForm = ({
                                                 duplicateCampaign
                                                     ? handleDuplicateCampaign
                                                     : undefined
+                                            }
+                                            onABVariantCreate={
+                                                handleCreateABVariant
                                             }
                                             allowActivate={allowActivate}
                                         />

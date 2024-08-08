@@ -11,6 +11,8 @@ import {
     getIntegrationByIdAndType,
 } from 'state/integrations/selectors'
 
+import {useCreateABGroup} from 'models/convert/abVariants/queries'
+import {abVariantAddUrl, abVariantsUrl} from 'pages/convert/abVariants/urls'
 import {useGetCampaign, useListCampaigns} from 'models/convert/campaign/queries'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {toJS} from 'utils'
@@ -36,6 +38,7 @@ import {
     CONVERT_ROUTE_PARAM_NAME,
 } from '../../../common/constants'
 import {ConvertRouteCampaignDetailParams} from '../../../common/types'
+
 import {useUpdateCampaign} from '../../hooks/useUpdateCampaign'
 import {useCreateCampaign} from '../../hooks/useCreateCampaign'
 import {useDeleteCampaign} from '../../hooks/useDeleteCampaign'
@@ -107,6 +110,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
     const {mutateAsync: updateCampaign} = useUpdateCampaign()
     const {mutateAsync: createCampaign} = useCreateCampaign()
     const {mutateAsync: deleteCampaign} = useDeleteCampaign()
+    const {mutateAsync: createABVariant} = useCreateABGroup()
 
     const handleCreateCampaign = useCallback(
         async (campaign: Map<any, any>) => {
@@ -176,6 +180,21 @@ const CampaignDetailsFactory = (): JSX.Element => {
         [createCampaign, channelConnection, integrationId]
     )
 
+    const handleCreateABVariant = useCallback(async () => {
+        if (!data) {
+            return
+        }
+
+        if (data.ab_group) {
+            history.push(abVariantsUrl(integrationId, data.id))
+            return
+        }
+
+        await createABVariant([undefined, {campaign_id: data.id}])
+
+        history.push(abVariantAddUrl(integrationId, data.id))
+    }, [data, createABVariant, integrationId])
+
     const memoCampaign = useMemo(() => {
         return campaign.toJS() as Campaign
     }, [campaign])
@@ -210,6 +229,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
                 duplicateCampaign={handleCreateDuplicate}
                 updateCampaign={handleUpdateCampaign}
                 deleteCampaign={handleDeleteCampaign}
+                createABVariant={handleCreateABVariant}
                 backUrl={backUrl}
             />
         </BaseCampaignDetails>

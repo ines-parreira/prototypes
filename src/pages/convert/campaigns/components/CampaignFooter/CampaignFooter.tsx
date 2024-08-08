@@ -40,6 +40,7 @@ type Props = {
     onDiscard?: () => void
     onDelete?: () => void
     onDuplicate?: () => void
+    onABVariantCreate?: () => void
 }
 
 export const CampaignFooter = ({
@@ -57,6 +58,7 @@ export const CampaignFooter = ({
     onDiscard,
     onDelete,
     onDuplicate,
+    onABVariantCreate,
 }: Props): JSX.Element => {
     const [isLightModalOpen, setIsLightModalOpen] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -99,9 +101,9 @@ export const CampaignFooter = ({
     }
 
     const createABGroup = () => {
-        // Temporary
-        // eslint-disable-next-line no-console
-        console.log('Creating A/B Group...')
+        if (onABVariantCreate) {
+            onABVariantCreate()
+        }
     }
 
     const onCreateButtonClick = () => {
@@ -109,8 +111,6 @@ export const CampaignFooter = ({
             openModal()
             return
         }
-
-        createABGroup()
     }
 
     const onModalSubmit = () => {
@@ -167,6 +167,10 @@ export const CampaignFooter = ({
                                 intent="secondary"
                                 aria-label="Create A/B Test"
                                 onClick={onCreateButtonClick}
+                                className={classnames({
+                                    'btn-loading':
+                                        actionInProgress === 'createVariant',
+                                })}
                             >
                                 Create A/B Test
                             </Button>
@@ -231,6 +235,7 @@ export const CampaignFooter = ({
                         isOpen={isModalOpen}
                         onClose={closeModal}
                         isDismissed={isDismissed}
+                        isLoading={actionInProgress === 'createVariant'}
                         setIsDismissed={dismiss}
                         onSubmit={onModalSubmit}
                     />

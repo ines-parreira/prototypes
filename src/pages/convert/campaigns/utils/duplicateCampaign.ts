@@ -27,5 +27,6 @@ export const duplicateCampaign = (
         message_html: removeLinksFromHtml(campaign.message_html || '') ?? '',
         triggers: triggers,
         trigger_rule: createTriggerRule(triggers),
+        variants: [],
     }
 }

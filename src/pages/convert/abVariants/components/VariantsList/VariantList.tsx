@@ -1,6 +1,8 @@
 import React from 'react'
 import classnames from 'classnames'
 
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -11,7 +13,13 @@ import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellPr
 import VariantActions from 'pages/convert/abVariants/components/VariantActions'
 import {TableColumn} from 'pages/convert/abVariants/components/VariantsList/types'
 
+import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
+
 import css from './VariantList.less'
+
+type Props = {
+    variants: CampaignVariant[]
+}
 
 const variantTableCells: TableColumn[] = [
     {
@@ -49,7 +57,7 @@ const variantTableCells: TableColumn[] = [
     },
 ]
 
-const VariantsList = () => {
+const VariantsList: React.FC<Props> = ({variants}) => {
     const onDelete = () => {
         // eslint-disable-next-line no-console
         console.log('deleting variant')
@@ -111,6 +119,29 @@ const VariantsList = () => {
                         />
                     </BodyCell>
                 </TableBodyRow>
+                {variants.map((_, idx) => {
+                    return (
+                        <TableBodyRow key={idx}>
+                            <BodyCell>
+                                <strong>{generateVariantName(idx)}</strong>
+                            </BodyCell>
+                            <BodyCell>-</BodyCell>
+                            <BodyCell>-</BodyCell>
+                            <BodyCell>100%</BodyCell>
+                            <BodyCell>0</BodyCell>
+                            <BodyCell>0%</BodyCell>
+                            <BodyCell>0%</BodyCell>
+                            <BodyCell style={{width: 110}}>
+                                <VariantActions
+                                    isDeletingDisabled={false}
+                                    isDuplicatingDisabled={false}
+                                    onClickDelete={onDelete}
+                                    onClickDuplicate={onDuplicate}
+                                />
+                            </BodyCell>
+                        </TableBodyRow>
+                    )
+                })}
             </TableBody>
         </TableWrapper>
     )

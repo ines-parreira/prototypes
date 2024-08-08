@@ -7,6 +7,7 @@ import * as useDismissFlag from 'hooks/useDismissFlag'
 import * as useLocalStorage from 'hooks/useLocalStorage'
 
 import * as useIsConvertABVariantsEnabled from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
+
 import {CampaignFooter} from '../CampaignFooter'
 
 jest.mock('pages/convert/common/hooks/useIsConvertABVariantsEnabled')
@@ -15,6 +16,7 @@ jest.mock('hooks/useDismissFlag')
 const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
 
 describe('<CampaignFooter />', () => {
+    const onVariantCreateMock = jest.fn()
     const defaultProps = {
         isCampaignValid: true,
         isLightCampaign: false,
@@ -119,8 +121,6 @@ describe('<CampaignFooter />', () => {
     })
 
     describe('Campaign update, user can create A/B Test', () => {
-        const consoleLogMock = jest.spyOn(console, 'log')
-
         beforeEach(() => {
             jest.spyOn(
                 useIsConvertABVariantsEnabled,
@@ -151,6 +151,7 @@ describe('<CampaignFooter />', () => {
             const {getByText, getByRole} = renderComponent({
                 ...defaultProps,
                 canCreateABVariants: true,
+                onABVariantCreate: onVariantCreateMock,
             })
 
             act(() => {
@@ -164,7 +165,7 @@ describe('<CampaignFooter />', () => {
 
                 userEvent.click(getByRole('button', {name: 'Create A/B test'}))
 
-                expect(consoleLogMock).toBeCalledWith('Creating A/B Group...')
+                expect(onVariantCreateMock).toHaveBeenCalledTimes(1)
             })
         })
 
@@ -201,13 +202,14 @@ describe('<CampaignFooter />', () => {
             const {getByRole} = renderComponent({
                 ...defaultProps,
                 canCreateABVariants: true,
+                onABVariantCreate: onVariantCreateMock,
             })
 
             act(() => {
                 userEvent.click(getByRole('button', {name: 'Create A/B Test'}))
             })
 
-            expect(consoleLogMock).toBeCalledWith('Creating A/B Group...')
+            expect(onVariantCreateMock).toHaveBeenCalledTimes(0)
         })
     })
 
