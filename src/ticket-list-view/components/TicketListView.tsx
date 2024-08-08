@@ -27,7 +27,7 @@ import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 import {TICKET_HEIGHT, TICKET_HEIGHT_NEW} from '../constants'
 import useSelection from '../hooks/useSelection'
-import useSortOrder from '../hooks/useSortOrder'
+import useSortOrder, {SortOrder} from '../hooks/useSortOrder'
 import useTickets from '../hooks/useTickets'
 import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoView'
 import {TicketSummary} from '../types'
@@ -75,6 +75,7 @@ export default function TicketListView({
     const isViewNull = view === null
     const defaultSortOrder = `${view?.order_by || ''}:${view?.order_dir || ''}`
     const [sortOrder, setSortOrder] = useSortOrder(viewId, defaultSortOrder)
+    const prevSortOrder = useRef<SortOrder | undefined>(sortOrder)
     const {
         loadMore,
         setElement,
@@ -103,6 +104,12 @@ export default function TicketListView({
             resumeUpdates()
         }
     }, [hasSelectedAll, pauseUpdates, resumeUpdates, selectedTickets])
+
+    useEffect(() => {
+        if (prevSortOrder.current === sortOrder) return
+        prevSortOrder.current = sortOrder
+        clear()
+    }, [clear, sortOrder])
 
     useEffect(() => {
         initialLoadedRef.current = initialLoaded

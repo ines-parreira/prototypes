@@ -65,7 +65,10 @@ export default function useSelection(tickets: TicketSummary[]) {
         [hasSelectedAll, tickets]
     )
 
-    const clear = useCallback(() => setSelectedTickets({}), [])
+    const clear = useCallback(() => {
+        setHasSelectedAll(false)
+        setSelectedTickets({})
+    }, [])
 
     const handleSelectAll = useCallback((selected: boolean) => {
         setHasSelectedAll(selected)

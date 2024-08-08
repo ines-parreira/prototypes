@@ -1,4 +1,4 @@
-import {fireEvent, render} from '@testing-library/react'
+import {act, fireEvent, render} from '@testing-library/react'
 import React, {ComponentProps, Fragment, ReactElement, ReactNode} from 'react'
 import {Virtuoso} from 'react-virtuoso'
 import {Provider} from 'react-redux'
@@ -16,6 +16,7 @@ import useTickets from 'ticket-list-view/hooks/useTickets'
 import {TicketPartial} from 'ticket-list-view/types'
 import {assumeMock} from 'utils/testing'
 
+import useSortOrder from '../../hooks/useSortOrder'
 import Ticket from '../Ticket'
 import TicketListView, {listInfoProps} from '../TicketListView'
 
@@ -42,6 +43,9 @@ const TicketMock = Ticket as jest.Mock
 
 jest.mock('../InvalidFiltersAction', () => () => <div>Fix filters</div>)
 jest.mock('../bulk-actions/BulkActions', () => () => <div>BulkActions</div>)
+
+jest.mock('../../hooks/useSortOrder')
+const useSortOrderMock = useSortOrder as jest.Mock
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -77,6 +81,10 @@ describe('<TicketListView />', () => {
             selectedTickets: {},
             clear: jest.fn(),
         })
+        useSortOrderMock.mockReturnValue([
+            'last_message_datetime:asc',
+            jest.fn(),
+        ])
         VirtuosoMock.mockImplementation(
             ({
                 computeItemKey,
@@ -172,6 +180,37 @@ describe('<TicketListView />', () => {
             </Provider>
         )
         expect(resumeUpdates).toHaveBeenCalledWith()
+    })
+
+    it('should clear the selection when the sort order changes', () => {
+        const clear = jest.fn()
+        useSelectionMock.mockReturnValue({
+            clear,
+            hasSelectedAll: false,
+            onSelect: jest.fn(),
+            onSelectAll: jest.fn(),
+            selectedTickets: {},
+        })
+
+        const {rerender} = render(
+            <Provider store={store}>
+                <TicketListView viewId={123} />
+            </Provider>
+        )
+
+        useSortOrderMock.mockReturnValue([
+            'last_message_datetime:desc',
+            jest.fn(),
+        ])
+        act(() => {
+            rerender(
+                <Provider store={store}>
+                    <TicketListView viewId={123} />
+                </Provider>
+            )
+        })
+
+        expect(clear).toHaveBeenCalledWith()
     })
 
     it('should display a list of tickets', () => {

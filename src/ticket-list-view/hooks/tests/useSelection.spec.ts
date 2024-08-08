@@ -141,6 +141,18 @@ describe('useSelection', () => {
         expect(result.current.hasSelectedAll).toBe(false)
     })
 
+    it('should deselect all when calling clear', () => {
+        const {result} = renderHook(() => useSelection(dummyTickets))
+        act(() => {
+            result.current.onSelectAll(true)
+        })
+        act(() => {
+            result.current.clear()
+        })
+
+        expect(result.current.hasSelectedAll).toBe(false)
+    })
+
     it('should disable select all when a single ticket is deselected', () => {
         const {result} = renderHook(() => useSelection(dummyTickets))
         act(() => {
