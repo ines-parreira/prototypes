@@ -5,7 +5,7 @@ import {List} from 'immutable'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {DiscountCode} from 'models/discountCodes/types'
 import {ProductCardDetails, ShopifyIntegration} from 'models/integration/types'
-import {DiscountOfferAttachment} from 'common/types'
+import {DiscountOfferAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {TooltipTourConfigurationType} from './types'
 
 import {ProductCardAttachment} from './components/AddProductLink'

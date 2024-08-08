@@ -3,13 +3,7 @@ import classnames from 'classnames'
 
 import {EditorState} from 'draft-js'
 
-import {
-    AttachmentType,
-    ProductAttachment,
-    UploadType,
-    attachmentIsDiscountOffer,
-    attachmentIsProduct,
-} from 'common/types'
+import {UploadType} from 'common/types'
 import {User} from 'config/types/user'
 import {AgentLabel} from 'pages/common/utils/labels'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -32,6 +26,12 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
 
 import {toJS} from 'utils'
+import {
+    attachmentIsDiscountOffer,
+    attachmentIsProduct,
+    AttachmentType,
+    ProductAttachment,
+} from 'pages/convert/campaigns/types/CampaignAttachment'
 import css from './CampaignMessage.less'
 
 type Props = {

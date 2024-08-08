@@ -16,7 +16,7 @@ import {
     fetchTicketReplyMacro,
     triggerTicketFieldsRefreshAndInvalidation,
 } from 'common/state'
-import {DiscountOfferAttachment, GenericAttachment} from 'common/types'
+import {GenericAttachment} from 'common/types'
 import {isImmutable, uploadFiles} from 'common/utils'
 import * as ticketConstants from 'state/ticket/constants'
 import {notify} from 'state/notifications/actions'
@@ -89,7 +89,10 @@ import {isNewChannel} from 'services/channels'
 import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 import {isCustomFieldValueEmpty} from 'utils/customFields'
 
-import {AttachmentPosition} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {
+    AttachmentPosition,
+    DiscountOfferAttachment,
+} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {
     MessageContext,
     selectionAfter,

@@ -1,0 +1,24 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/mixins';
+
+:local {
+    .modalBody {
+        padding: @layout-spacing-s;
+    }
+
+    .badge {
+        margin-bottom: @layout-spacing-s;
+        gap: @layout-spacing-xxs;
+        place-self: flex-start;
+
+        i {
+            font-size: 12px;
+        }
+    }
+
+    .image {
+        width: 100%;
+        margin-top: @layout-spacing-xxs;
+    }
+}

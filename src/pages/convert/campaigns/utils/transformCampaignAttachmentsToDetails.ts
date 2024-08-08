@@ -1,8 +1,8 @@
-import {DiscountOfferAttachment} from 'common/types'
 import {
     CampaignAttachment,
     campaignAttachmentIsDiscountOffer,
     campaignAttachmentIsProduct,
+    DiscountOfferAttachment,
 } from '../types/CampaignAttachment'
 
 export const transformCampaignAttachmentsToDetails = (
