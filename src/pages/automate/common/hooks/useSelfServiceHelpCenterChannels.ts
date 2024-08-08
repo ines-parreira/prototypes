@@ -15,6 +15,7 @@ const useSelfServiceHelpCenterChannels = (
 ) => {
     const {data: helpCenters} = useGetHelpCenterList({
         shop_name: shopName,
+        type: 'faq',
     })
 
     return useMemo<SelfServiceHelpCenterChannel[]>(() => {
