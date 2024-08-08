@@ -29,6 +29,8 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
     const newChannelsReport: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewChannelsReport]
+    const liveCallQueueEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.LiveCallQueue]
 
     return (
         <>
@@ -60,6 +62,27 @@ export default function StatsNavbarView() {
                             Agents
                         </NavbarLink>
                     </div>
+                    {liveCallQueueEnabled && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                        >
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/live-voice"
+                            >
+                                Voice
+                                <Badge
+                                    type={ColorType.Blue}
+                                    className={cssNavbar.badge}
+                                >
+                                    {NEW_NAV_LABEL}
+                                </Badge>
+                            </NavbarLink>
+                        </div>
+                    )}
                 </div>
             </NavbarBlock>
             <NavbarBlock icon="emoji_events" title="Support Performance">

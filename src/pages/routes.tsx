@@ -196,6 +196,7 @@ import ActionsPlatformTemplatesView from 'pages/automate/actionsPlatform/Actions
 import {useFlag} from 'common/flags'
 import WorkflowAnalyticsContainer from './automate/workflows/analytics/WorkflowAnalyticsContainer'
 import AutomateAllRecommendationsContainer from './automate/common/components/AutomateAllRecommendationsContainer'
+import LiveVoice from './stats/voice/pages/LiveVoice'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -489,6 +490,8 @@ export function StatsRoutes() {
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
     const newChannelsReport: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewChannelsReport]
+    const isLiveVoiceEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.LiveCallQueue]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -532,6 +535,18 @@ export function StatsRoutes() {
                         />
                     )}
                 />
+                {isLiveVoiceEnabled && (
+                    <Route
+                        exact
+                        path={`${path}/live-voice`}
+                        render={() => (
+                            <App
+                                content={LiveVoice}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                )}
                 <Route
                     exact
                     path={`${path}/support-performance-overview`}

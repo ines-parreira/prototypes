@@ -75,6 +75,7 @@ export enum FeatureFlagKey {
     HideBillableTicketsProgressBar = 'hide-billable-tickets-progress-bar',
     ImprovedAutomateNavigation = 'improved-automate-navigation',
     InternalBillingInterface = 'internal-billing-interface',
+    LiveCallQueue = 'live-call-queue',
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     MigrateQuickResponseToFlows = 'migrate-quick-response-to-flows',

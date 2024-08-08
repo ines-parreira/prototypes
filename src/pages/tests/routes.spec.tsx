@@ -61,6 +61,7 @@ jest.mock(
     'pages/convert/common/components/ConvertNavbar/ConvertNavbar',
     () => () => <div>ConvertNavbar</div>
 )
+jest.mock('pages/stats/voice/pages/LiveVoice', () => () => <div>LiveVoice</div>)
 
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()

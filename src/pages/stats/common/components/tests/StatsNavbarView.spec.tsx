@@ -1,12 +1,12 @@
 import React from 'react'
 import configureMockStore from 'redux-mock-store'
-import LD from 'launchdarkly-react-client-sdk'
 import thunk from 'redux-thunk'
 import {screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQA'
 
 import {account} from 'fixtures/account'
@@ -54,11 +54,12 @@ describe('StatsNavbarView', () => {
     }
 
     beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+        mockFlags({
             [FeatureFlagKey.AnalyticsAutoQA]: false,
             [FeatureFlagKey.AnalyticsSLAs]: false,
             [FeatureFlagKey.AnalyticsNewChannelsReport]: false,
-        }))
+            [FeatureFlagKey.LiveCallQueue]: false,
+        })
     })
 
     it('should render', () => {
@@ -121,9 +122,9 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Help Center Stats when having access to the feature', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+        mockFlags({
             [FeatureFlagKey.HelpCenterAnalytics]: true,
-        }))
+        })
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>
@@ -149,9 +150,9 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Service Level Agreements', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+        mockFlags({
             [FeatureFlagKey.AnalyticsSLAs]: true,
-        }))
+        })
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>
@@ -166,9 +167,9 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Service Level Agreements', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+        mockFlags({
             [FeatureFlagKey.AnalyticsAutoQA]: true,
-        }))
+        })
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>
@@ -181,9 +182,9 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the New Channels Reports', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+        mockFlags({
             [FeatureFlagKey.AnalyticsNewChannelsReport]: true,
-        }))
+        })
         const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>
@@ -195,5 +196,38 @@ describe('StatsNavbarView', () => {
             'a[href="/app/stats/channels"]'
         )
         expect(newChannelsReportLink).toBeInTheDocument()
+    })
+
+    it('should render the link to the Live Call queue when FF is off', () => {
+        const {container} = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
+            </Provider>
+        )
+
+        const liveVoiceLink = container.querySelector(
+            'a[href="/app/stats/live-voice"]'
+        )
+        expect(liveVoiceLink).not.toBeInTheDocument()
+    })
+
+    it('should render the link to the Live Voice', () => {
+        mockFlags({
+            [FeatureFlagKey.LiveCallQueue]: true,
+        })
+        const {container} = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
+            </Provider>
+        )
+
+        const liveVoiceLink = container.querySelector(
+            'a[href="/app/stats/live-voice"]'
+        )
+        expect(liveVoiceLink).toBeInTheDocument()
     })
 })
