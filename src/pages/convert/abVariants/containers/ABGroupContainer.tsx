@@ -3,8 +3,13 @@ import {Link, NavLink, useParams, useLocation} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {Tooltip} from '@gorgias/ui-kit'
 
+import {useModalManager} from 'hooks/useModalManager'
+
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+
 import {usePauseABGroup} from 'pages/convert/abVariants/hooks/usePauseABGroup'
 import {useStartABGroup} from 'pages/convert/abVariants/hooks/useStartABGroup'
+import {useStopABGroup} from 'pages/convert/abVariants/hooks/useStopABGroup'
 
 import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
@@ -16,8 +21,9 @@ import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-
 import PageHeader from 'pages/common/components/PageHeader'
+
+import StopABTestModal from 'pages/convert/abVariants/components/StopABTestModal/StopABTestModal'
 
 import {
     abVariantControlVariantUrl,
@@ -44,10 +50,14 @@ export const ABGroupContainer: React.FC<Props> = ({
     } = useParams<ConvertRouteAbVariantParams>()
     const location = useLocation()
 
+    const stopModalManager = useModalManager('stopModal')
+
     const {mutateAsync: startABGroup, isLoading: isLoadingStartABGroup} =
         useStartABGroup()
     const {mutateAsync: pauseABGroup, isLoading: isLoadingPauseABGroup} =
         usePauseABGroup()
+    const {mutateAsync: stopABGroup, isLoading: isLoadingStopABGroup} =
+        useStopABGroup()
 
     const variants = useMemo(() => {
         return (campaign.variants ?? []).map((variant, idx) => {
@@ -98,6 +108,19 @@ export const ABGroupContainer: React.FC<Props> = ({
         await pauseABGroup([undefined, {campaign_id: campaign.id}])
     }, [campaign, pauseABGroup])
 
+    const handleStopABGroup = useCallback(
+        async (variantId: string | null) => {
+            await stopABGroup([
+                undefined,
+                {campaign_id: campaign.id},
+                {winner_variant_id: variantId},
+            ])
+
+            stopModalManager.closeModal()
+        },
+        [stopABGroup, campaign, stopModalManager]
+    )
+
     return (
         <div className="full-width">
             <PageHeader
@@ -135,7 +158,12 @@ export const ABGroupContainer: React.FC<Props> = ({
                                             Pause Test
                                         </ButtonIconLabel>
                                     </Button>
-                                    <Button intent="destructive">
+                                    <Button
+                                        onClick={() =>
+                                            stopModalManager.openModal()
+                                        }
+                                        intent="destructive"
+                                    >
                                         <ButtonIconLabel icon="stop">
                                             Stop Test
                                         </ButtonIconLabel>
@@ -197,6 +225,15 @@ export const ABGroupContainer: React.FC<Props> = ({
             </SecondaryNavbar>
 
             {children}
+
+            <StopABTestModal
+                isOpen={stopModalManager.isOpen()}
+                isLoading={isLoadingStopABGroup}
+                variants={campaign.variants as CampaignVariant[]}
+                controlVersionId={campaign.id}
+                onClose={close}
+                onSubmit={handleStopABGroup}
+            />
         </div>
     )
 }
