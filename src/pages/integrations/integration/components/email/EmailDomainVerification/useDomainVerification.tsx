@@ -41,8 +41,11 @@ export function useDomainVerification(
 ): UseDomainVerificationRequestHookResult {
     const dispatch = useAppDispatch()
 
-    const {isPending, isRequested, setRequestedAt} =
-        useRequestStatus(domainName)
+    const {
+        isPending: isRequestPending,
+        isRequested,
+        setRequestedAt,
+    } = useRequestStatus(domainName)
 
     const {data, isLoading: isFetching} = useGetEmailIntegrationDomain(
         domainName,
@@ -54,6 +57,8 @@ export function useDomainVerification(
     )
 
     const [domain, setDomain] = useState<EmailDomain | undefined>()
+
+    const isPending = isRequestPending && !domain?.verified
 
     useEffect(() => {
         const transformDomainRecords = async () => {

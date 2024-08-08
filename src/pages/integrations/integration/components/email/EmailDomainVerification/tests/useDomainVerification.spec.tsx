@@ -42,7 +42,7 @@ assumeMock(populateCurrentValuesForDNSRecords).mockImplementation((records) =>
     Promise.resolve(records)
 )
 
-const getEmailDomain = ({verified} = {verified: true}): EmailDomain => ({
+const getEmailDomain = ({verified} = {verified: false}): EmailDomain => ({
     name: 'gorgias.com',
     provider: 'sendgrid',
     verified,
@@ -203,11 +203,35 @@ describe('useDomainVerification()', () => {
 
             jest.useRealTimers()
         })
+
+        it('should not be pending if the domain has been verified', async () => {
+            const domain = getEmailDomain({verified: true})
+            getDomainMock.mockReturnValue(
+                Promise.resolve({data: domain} as HttpResponse<EmailDomain>)
+            )
+
+            const {result, waitForValueToChange} = render()
+
+            expect(result.current.isRequested).toEqual(false)
+            expect(result.current.isPending).toEqual(false)
+
+            result.current.verifyDomain()
+
+            await waitForValueToChange(() => result.current.isRequested)
+
+            expect(result.current.isRequested).toEqual(true)
+            expect(result.current.isPending).toEqual(false)
+        })
     })
 
     describe('actions', () => {
         describe('verifyDomain', () => {
             it('should return trigger the verify mutation when calling verifyDomain', async () => {
+                const domain = getEmailDomain({verified: false})
+                getDomainMock.mockReturnValue(
+                    Promise.resolve({data: domain} as HttpResponse<EmailDomain>)
+                )
+
                 const {result} = render()
                 expect(result.current.isVerifying).toEqual(false)
 
@@ -219,7 +243,6 @@ describe('useDomainVerification()', () => {
                         undefined
                     )
                 })
-
                 expect(result.current.isVerifying).toEqual(false)
                 expect(result.current.isRequested).toEqual(true)
                 expect(result.current.isPending).toEqual(true)
