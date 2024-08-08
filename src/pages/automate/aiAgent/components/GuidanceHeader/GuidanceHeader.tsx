@@ -31,7 +31,7 @@ export const GuidanceHeader = ({
     return (
         <>
             <div className={css.container}>
-                <p>
+                <p data-candu-id="ai-agent-guidance-has-guidance-articles">
                     Guidance is internal-facing knowledge that allows you to
                     customize AI Agent's behavior and fine-tune how it handles
                     customer requests.

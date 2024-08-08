@@ -49,7 +49,10 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
                             </Badge>
                         </div>
                         <p className={css.title}>Get started with Guidance</p>
-                        <p className={css.subtitle}>
+                        <p
+                            className={css.subtitle}
+                            data-candu-id="ai-agent-guidence-empty-state"
+                        >
                             Add Guidance to tell AI Agent how to handle specific
                             topics or inquiries, and when to escalate tickets to
                             your team.
