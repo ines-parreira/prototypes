@@ -19,7 +19,10 @@ import {
 } from 'models/integration/queries'
 import {integrationsState} from 'fixtures/integrations'
 import {useModalManager, useModalManagerApi} from 'hooks/useModalManager'
-import {testIds} from 'pages/common/components/UniqueDiscountOfferCreateModal/utils'
+import {
+    setupValidModalParameters,
+    testIds,
+} from 'pages/common/components/UniqueDiscountOfferCreateModal/utils'
 import {
     UniqueDiscountOfferCreateModal,
     UniqueDiscountOfferCreateModalProps,
@@ -43,6 +46,24 @@ const useCollectionsFromShopifyIntegrationMock = assumeMock(
 const useListShopifyCustomerSegmentsMock = assumeMock(
     useListShopifyCustomerSegments
 )
+const VALID_SEGMENT_1 = {
+    id: 1069404225875,
+    name: 'Customers who have purchased at least once',
+    admin_graphql_api_id: 'gid://shopify/Segment/1069404225875',
+}
+const VALID_SEGMENT_2 = {
+    id: 1069404193107,
+    name: 'Email subscribers',
+    admin_graphql_api_id: 'gid://shopify/Segment/1069404193107',
+}
+const VALID_PRODUCT_1 = {
+    id: 1,
+    title: 'Lorem Ipsum',
+}
+const VALID_PRODUCT_2 = {
+    id: 2,
+    title: 'Nike',
+}
 
 describe('<UniqueDiscountOfferCreateModal />', () => {
     const props: UniqueDiscountOfferCreateModalProps = {
@@ -66,14 +87,17 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         } as any)
 
         useCollectionsFromShopifyIntegrationMock.mockReturnValue({
-            data: [
-                {
-                    id: 1,
-                    title: 'Lorem Ipsum',
-                },
-            ],
+            data: [VALID_PRODUCT_1, VALID_PRODUCT_2],
         } as any)
-        useListShopifyCustomerSegmentsMock.mockReturnValue([] as any)
+        useListShopifyCustomerSegmentsMock.mockReturnValue({
+            data: [VALID_SEGMENT_1, VALID_SEGMENT_2],
+            object: 'list',
+            uri: '/integrations/shopify/5007/segments/?',
+            meta: {
+                prev_cursor: null,
+                next_cursor: null,
+            },
+        } as any)
     })
 
     it('opens in create mode event if collections is not returned', async () => {
@@ -311,6 +335,190 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 undefined,
                 expect.objectContaining({
                     ...expected,
+                }),
+            ])
+        })
+    })
+
+    it('allows saving without selected customer segments', async () => {
+        // Setup
+        useModalManagerMock.mockReturnValue({
+            getParams: () => ({}),
+        } as unknown as useModalManagerApi)
+
+        const {getByTestId, getByText, getByRole} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <UniqueDiscountOfferCreateModal {...props} />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await setupValidModalParameters(getByTestId, getByRole)
+
+        // Default value, nothing selected
+        getByText('All customers')
+
+        const saveBtn = getByTestId(testIds.saveBtn)
+
+        // Saves without segments
+        saveBtn.click()
+        await waitFor(() => {
+            expect(
+                useCreateDiscountOfferMock().mutateAsync
+            ).toHaveBeenCalledWith([
+                undefined,
+                expect.objectContaining({
+                    external_customer_segment_ids: null,
+                }),
+            ])
+        })
+    })
+
+    it('allows saving with multiple values for customer segment', async () => {
+        // Setup
+        useModalManagerMock.mockReturnValue({
+            getParams: () => ({}),
+        } as unknown as useModalManagerApi)
+
+        const {getByTestId, getByText, getByRole} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <UniqueDiscountOfferCreateModal {...props} />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await setupValidModalParameters(getByTestId, getByRole)
+
+        // Select specific collections
+        const inputElement = getByText('All customers')
+        fireEvent.focus(inputElement)
+        const validSegmentSample = getByText(VALID_SEGMENT_1.name)
+        const validSegmentSample2 = getByText(VALID_SEGMENT_2.name)
+
+        // Selects the first segment
+        userEvent.click(validSegmentSample)
+        expect(inputElement.textContent).toBe(VALID_SEGMENT_1.name)
+
+        // Selects the second segment
+        userEvent.click(validSegmentSample2)
+        expect(inputElement.textContent).toBe('2 segments selected')
+
+        // Delete one of the segments, check and add again
+        userEvent.click(validSegmentSample)
+        expect(inputElement.textContent).toBe(VALID_SEGMENT_2.name)
+        userEvent.click(validSegmentSample)
+
+        const saveBtn = getByTestId(testIds.saveBtn)
+
+        // Saves with two segments
+        saveBtn.click()
+        await waitFor(() => {
+            expect(
+                useCreateDiscountOfferMock().mutateAsync
+            ).toHaveBeenCalledWith([
+                undefined,
+                expect.objectContaining({
+                    external_customer_segment_ids: [
+                        VALID_SEGMENT_2.id.toString(),
+                        VALID_SEGMENT_1.id.toString(),
+                    ],
+                }),
+            ])
+        })
+    })
+
+    it('allows saving without values for product collections', async () => {
+        // Setup
+        useModalManagerMock.mockReturnValue({
+            getParams: () => ({}),
+        } as unknown as useModalManagerApi)
+
+        const {getByTestId, getByText, getByRole} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <UniqueDiscountOfferCreateModal {...props} />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await setupValidModalParameters(getByTestId, getByRole)
+        getByText('To specific collection').click()
+
+        // This grants the initial status
+        getByText('Select a product collection')
+
+        const saveBtn = getByTestId(testIds.saveBtn)
+
+        // Saves without collections
+        saveBtn.click()
+        await waitFor(() => {
+            expect(
+                useCreateDiscountOfferMock().mutateAsync
+            ).toHaveBeenCalledWith([
+                undefined,
+                expect.objectContaining({
+                    external_collection_ids: null,
+                }),
+            ])
+        })
+    })
+
+    it('allows saving with multiple values for product collections', async () => {
+        // Setup
+        useModalManagerMock.mockReturnValue({
+            getParams: () => ({}),
+        } as unknown as useModalManagerApi)
+
+        const {getByTestId, getByText, getByRole} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <UniqueDiscountOfferCreateModal {...props} />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await setupValidModalParameters(getByTestId, getByRole)
+        getByText('To specific collection').click()
+
+        const inputElement = getByText('Select a product collection')
+        fireEvent.focus(inputElement)
+
+        const validCollectionSample = getByText(VALID_PRODUCT_1.title)
+        const validCollectionSample2 = getByText(VALID_PRODUCT_2.title)
+
+        // Selects the first collection
+        userEvent.click(validCollectionSample)
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_1.title)
+
+        // Selects the second collection
+        userEvent.click(validCollectionSample2)
+        expect(inputElement.textContent).toBe('2 collections selected')
+
+        // Delete one of the collections, check, delete again, check add both
+        userEvent.click(validCollectionSample)
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_2.title)
+        // Deleting both tests the label for a list of 0 collections
+        userEvent.click(validCollectionSample2)
+        expect(inputElement.textContent).toBe('Select a product collection')
+        userEvent.click(validCollectionSample)
+        userEvent.click(validCollectionSample2)
+
+        const saveBtn = getByTestId(testIds.saveBtn)
+
+        // Saves with two collections
+        saveBtn.click()
+        await waitFor(() => {
+            expect(
+                useCreateDiscountOfferMock().mutateAsync
+            ).toHaveBeenCalledWith([
+                undefined,
+                expect.objectContaining({
+                    external_collection_ids: [
+                        VALID_PRODUCT_1.id.toString(),
+                        VALID_PRODUCT_2.id.toString(),
+                    ],
                 }),
             ])
         })

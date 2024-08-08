@@ -27,7 +27,7 @@ describe('<CollectionSelector />', () => {
         } as any)
 
         const props = {
-            value: '',
+            value: null,
             integrationId: 1,
             onChange: jest.fn(),
         }
@@ -47,7 +47,7 @@ describe('<CollectionSelector />', () => {
         } as any)
 
         const props = {
-            value: '',
+            value: null,
             integrationId: 1,
             onChange: jest.fn(),
         }

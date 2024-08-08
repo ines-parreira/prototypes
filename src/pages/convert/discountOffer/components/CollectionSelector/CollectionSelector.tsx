@@ -19,7 +19,7 @@ type Option = {
 
 type Props = {
     integrationId: number
-    value: string | null
+    value: string[] | null
     onChange: (nextValue: string | null) => void
 }
 
@@ -49,9 +49,20 @@ const CollectionSelector: React.FC<Props> = ({
         )
     }, [collectionData])
 
-    const label = productCollections.find(
-        (segment) => segment.value === value
-    )?.label
+    const getLabel = () => {
+        switch (value?.length) {
+            case undefined:
+                return ''
+            case 0:
+                return ''
+            case 1:
+                return productCollections.find(
+                    (item) => item.value === value[0]
+                )?.label
+            default:
+                return `${value?.length} collections selected`
+        }
+    }
 
     return (
         <SelectInputBox
@@ -60,7 +71,7 @@ const CollectionSelector: React.FC<Props> = ({
             placeholder={'Select a product collection'}
             onToggle={setIsSelectOpen}
             className={css.selectInput}
-            label={label}
+            label={getLabel()}
         >
             <SelectInputBoxContext.Consumer>
                 {(context) => (
@@ -69,7 +80,8 @@ const CollectionSelector: React.FC<Props> = ({
                         onToggle={() => context!.onBlur()}
                         ref={floatingRef}
                         target={targetRef}
-                        value={''}
+                        value={value}
+                        isMultiple={true}
                     >
                         <DropdownSearch
                             ref={searchRef}
@@ -83,7 +95,7 @@ const CollectionSelector: React.FC<Props> = ({
                                     key={segment.value}
                                     option={segment}
                                     onClick={() => onChange(segment.value)}
-                                    shouldCloseOnSelect
+                                    shouldCloseOnSelect={false}
                                 >
                                     <span>{segment.label}</span>
                                 </DropdownItem>

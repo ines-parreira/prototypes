@@ -108,18 +108,12 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
 
         const appNode = useAppNode()
 
-        const selectedSegment = useMemo(() => {
-            return discount.external_customer_segment_ids &&
-                discount.external_customer_segment_ids?.length > 0
-                ? discount.external_customer_segment_ids[0]
-                : null
+        const selectedSegments = useMemo(() => {
+            return new Set([...(discount.external_customer_segment_ids || [])])
         }, [discount])
 
-        const selectedCollection = useMemo(() => {
-            return discount.external_collection_ids &&
-                discount.external_collection_ids?.length > 0
-                ? discount.external_collection_ids[0]
-                : null
+        const selectedCollections = useMemo(() => {
+            return new Set([...(discount.external_collection_ids || [])])
         }, [discount])
 
         const {
@@ -246,10 +240,37 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
         }, [discount, editDiscountOfferParams, inEditMode])
 
         const onCustomerSegmentChange = (segmentId: string | null) => {
+            let updatedSegments: Array<string> | null = null
+            if (segmentId !== null) {
+                if (selectedSegments.has(segmentId)) {
+                    selectedSegments.delete(segmentId)
+                } else {
+                    selectedSegments.add(segmentId)
+                }
+                updatedSegments =
+                    selectedSegments.size > 0
+                        ? Array.from(selectedSegments)
+                        : null
+            }
             setDiscount((prevState) => ({
                 ...prevState,
-                external_customer_segment_ids:
-                    segmentId === null ? null : [segmentId],
+                external_customer_segment_ids: updatedSegments,
+            }))
+        }
+
+        const onCollectionSelectionChange = (collectionId: string | null) => {
+            let updatedCollections: Array<string> | null = null
+            if (collectionId !== null) {
+                if (selectedCollections.has(collectionId)) {
+                    selectedCollections.delete(collectionId)
+                } else {
+                    selectedCollections.add(collectionId)
+                }
+                updatedCollections = Array.from(selectedCollections)
+            }
+            setDiscount((prevState) => ({
+                ...prevState,
+                external_collection_ids: updatedCollections,
             }))
         }
 
@@ -423,22 +444,16 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                 AppliesTypeEnum.PRODUCT_COLLECTION && (
                                 <div className={css.collectionSelector}>
                                     <CollectionSelector
-                                        value={selectedCollection}
+                                        value={
+                                            discount.external_collection_ids ||
+                                            null
+                                        }
                                         integrationId={
                                             integration.get(
                                                 'id'
                                             ) as unknown as number
                                         }
-                                        onChange={(value: string | null) => {
-                                            setDiscount((discount) => ({
-                                                ...discount,
-                                                ...(value && {
-                                                    external_collection_ids: [
-                                                        value,
-                                                    ],
-                                                }),
-                                            }))
-                                        }}
+                                        onChange={onCollectionSelectionChange}
                                     />
                                 </div>
                             )}
@@ -523,7 +538,10 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                             <InputGroup className={css.inputGroup}>
                                 <div className={css.customerSegmentWrapper}>
                                     <CustomerSegmentSelector
-                                        value={selectedSegment}
+                                        value={
+                                            discount.external_customer_segment_ids ||
+                                            null
+                                        }
                                         integrationId={
                                             integration.get(
                                                 'id'

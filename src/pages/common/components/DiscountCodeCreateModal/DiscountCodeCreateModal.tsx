@@ -48,7 +48,9 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
     const [discountType, setDiscountType] = useState(DISCOUNT_TYPE.PERCENTAGE)
     const [discountCode, setDiscountCode] = useState<string>()
     const [discountValue, setDiscountValue] = useState<number>(0)
-    const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
+    const [selectedSegments, setSelectedSegments] = useState<string[] | null>(
+        null
+    )
     const [discountUseType, setDiscountUseType] = useState(
         ticket?.get('id')
             ? DISCOUNT_USE_TYPE.ONE_PER_USER
@@ -64,6 +66,22 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
     })
 
     const dispatch = useAppDispatch()
+
+    const handleSegmentValueChange = (value: string | null): void => {
+        const selectedSegmentsSet = new Set(selectedSegments || [])
+        if (value !== null) {
+            if (selectedSegmentsSet.has(value)) {
+                selectedSegmentsSet.delete(value)
+            } else {
+                selectedSegmentsSet.add(value)
+            }
+        }
+        setSelectedSegments(
+            value && selectedSegmentsSet.size > 0
+                ? Array.from(selectedSegmentsSet)
+                : null
+        )
+    }
 
     const handleSubmit = useCallback(
         (evt: FormEvent<HTMLFormElement>) => {
@@ -82,7 +100,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                 minimum_purchase_amount: minRequirementsPurchase
                     ? minRequirementsPurchaseAmount
                     : null,
-                segment_ids: selectedSegment ? [selectedSegment] : [],
+                segment_ids: selectedSegments,
             }
 
             client
@@ -110,7 +128,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
             discountUseType,
             minRequirementsPurchase,
             minRequirementsPurchaseAmount,
-            selectedSegment,
+            selectedSegments,
             integration,
             onSubmit,
             dispatch,
@@ -288,14 +306,14 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                         <InputGroup className={css.inputGroup}>
                             <div className={css.customerSegmentWrapper}>
                                 <CustomerSegmentSelector
-                                    value={selectedSegment}
+                                    value={selectedSegments}
                                     integrationId={
                                         integration.get(
                                             'id'
                                         ) as unknown as number
                                     }
                                     onChange={(value) =>
-                                        setSelectedSegment(value)
+                                        handleSegmentValueChange(value)
                                     }
                                 />
                             </div>
