@@ -3,6 +3,8 @@ import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import userEvent from '@testing-library/user-event'
 import {UseQueryResult} from '@tanstack/react-query'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
@@ -12,29 +14,34 @@ import {useArticleViewTimeSeries} from 'pages/stats/help-center/hooks/useArticle
 import {InitialRootState} from 'types'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import {HELP_CENTER_STATS_TEST_IDS} from 'pages/stats/help-center/pages/tests/constants'
+import {assumeMock} from 'utils/testing'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 
 jest.mock('common/segment')
 
-jest.mock('../../hooks/useHelpCenterTrend', () => ({
+jest.mock('pages/stats/help-center/hooks/useHelpCenterTrend', () => ({
     useHelpCenterTrend: () => ({data: {value: 1}, isFetching: false}),
 }))
-jest.mock('../../hooks/useArticleViewTimeSeries', () => ({
+jest.mock('pages/stats/help-center/hooks/useArticleViewTimeSeries', () => ({
     useArticleViewTimeSeries: jest.fn(),
 }))
-jest.mock('../../hooks/useSearchTermsMetrics', () => ({
+jest.mock('pages/stats/help-center/hooks/useSearchTermsMetrics', () => ({
     useSearchTermsMetrics: () => ({data: [], isFetching: false}),
 }))
 
-jest.mock('../../hooks/usePerformanceByArticleMetrics', () => ({
-    usePerformanceByArticleMetrics: () => ({data: [], isFetching: false}),
-}))
-jest.mock('../../hooks/useNoSearchResultsMetrics', () => ({
+jest.mock(
+    'pages/stats/help-center/hooks/usePerformanceByArticleMetrics',
+    () => ({
+        usePerformanceByArticleMetrics: () => ({data: [], isFetching: false}),
+    })
+)
+jest.mock('pages/stats/help-center/hooks/useNoSearchResultsMetrics', () => ({
     useNoSearchResultsMetrics: () => ({data: [], isFetching: false}),
 }))
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList', () => ({
     useHelpCenterList: jest.fn(),
 }))
-jest.mock('../../hooks/useSearchResultRange', () => ({
+jest.mock('pages/stats/help-center/hooks/useSearchResultRange', () => ({
     useSearchResultRange: () => ({data: [], isLoading: true}),
 }))
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
@@ -54,6 +61,9 @@ jest.mock(
         useHelpCenterAIArticlesLibrary: () => ({hasNewArticles: false}),
     })
 )
+
+jest.mock('pages/stats/common/filters/FiltersPanel')
+const filtersPanelMock = assumeMock(FiltersPanel)
 
 const mockUseHelpCenterList = jest.mocked(useHelpCenterList)
 const mockUseArticleViewTimeSeries = jest.mocked(useArticleViewTimeSeries)
@@ -87,6 +97,11 @@ describe('<HelpCenterStats />', () => {
             data: [],
             isLoading: false,
         } as unknown as UseQueryResult<TimeSeriesDataItem[][]>)
+
+        filtersPanelMock.mockImplementation(() => <div>FiltersPanelMock</div>)
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFiltersHelpCenter]: false,
+        })
     })
 
     it('should render page with title and sections', () => {
@@ -267,5 +282,19 @@ describe('<HelpCenterStats />', () => {
             expect.anything(),
             expect.anything()
         )
+    })
+
+    describe('FilterPanel', () => {
+        beforeEach(() => {
+            mockFlags({
+                [FeatureFlagKey.AnalyticsNewFiltersHelpCenter]: true,
+            })
+        })
+
+        it('should show New Filters Panel', () => {
+            renderComponent()
+
+            expect(filtersPanelMock).toHaveBeenCalled()
+        })
     })
 })

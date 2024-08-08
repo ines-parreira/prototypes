@@ -1,15 +1,18 @@
 import React, {useCallback, useMemo} from 'react'
 import _noop from 'lodash/noop'
+import {connect} from 'react-redux'
 import {DropdownOption} from 'pages/stats/types'
 import useAppSelector from 'hooks/useAppSelector'
 
 import Filter from 'pages/stats/common/components/Filter'
 import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import {RootState} from 'state/types'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 
 type HelpCenterFilterProps = {
     value: StatsFiltersWithLogicalOperator['helpCenters']
@@ -72,3 +75,9 @@ const HelpCenterFilter = ({value = emptyFilter}: HelpCenterFilterProps) => {
 }
 
 export default HelpCenterFilter
+
+export const HelpCenterFilterWithState = connect((state: RootState) => ({
+    value: getPageStatsFiltersWithLogicalOperators(state)[
+        FilterKey.HelpCenters
+    ],
+}))(HelpCenterFilter)

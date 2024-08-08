@@ -1,5 +1,7 @@
 import React, {useMemo} from 'react'
 import moment from 'moment'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser, getTimezone} from 'state/currentUser/selectors'
@@ -13,7 +15,7 @@ import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {HelpCenter} from 'models/helpCenter/types'
 import {NonEmptyArray} from 'types'
 import {isNotEmptyArray} from 'utils'
-import {LegacyStatsFilters} from 'models/stat/types'
+import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
 
 import {getSortByName} from 'utils/getSortByName'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -41,6 +43,10 @@ import DEPRECATED_HelpCenterStatsLanguageFilter from 'pages/stats/common/filters
 import PartialDataAlert from 'pages/stats/help-center/components/PartialDataAlert/PartialDataAlert'
 import AIBanner from 'pages/stats/help-center/components/AIBanner'
 import {useStatsFilters} from 'pages/stats/help-center/hooks/useStatsFilters'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import {useGridSize} from 'hooks/useGridSize'
+import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+import {isFilterWithLogicalOperator} from 'models/reporting/queryFactories/utils'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 
@@ -60,11 +66,24 @@ const HelpCenterStatsComponent = ({
     const timezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const isAnalyticsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersHelpCenter]
+
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : statsFilters
+
+    const helpCentersFromState = Array.isArray(cleanStatsFilters.helpCenters)
+        ? cleanStatsFilters.helpCenters
+        : cleanStatsFilters.helpCenters?.values
 
     const selectedHelpCenter =
-        helpCenters.find((helpCenter) =>
-            statsFilters.helpCenters?.includes(helpCenter.id)
-        ) ?? helpCenters[0]
+        helpCenters.find((helpCenter) => {
+            helpCentersFromState?.includes(helpCenter.id)
+        }) ?? helpCenters[0]
 
     const selectedHelpCenterDomain = getHelpCenterDomain(selectedHelpCenter)
     const onLanguageFilterChange = (localeCodes: string[]) => {
@@ -72,7 +91,7 @@ const HelpCenterStatsComponent = ({
     }
 
     const isEndDateBeforeStartCollectionEvents = moment(
-        statsFilters.period.start_datetime
+        cleanStatsFilters.period.start_datetime
     ).isBefore(DATE_WHEN_START_COLLECTION_EVENTS)
 
     const {hasNewArticles: showAIBanner} = useHelpCenterAIArticlesLibrary(
@@ -83,29 +102,59 @@ const HelpCenterStatsComponent = ({
 
     const hasAccessToAILibrary = useHasAccessToAILibrary()
 
+    const getGridCellSize = useGridSize()
+
+    const localCodes: string[] = useMemo(() => {
+        return (
+            (isFilterWithLogicalOperator(cleanStatsFilters.localeCodes || [])
+                ? !Array.isArray(cleanStatsFilters.localeCodes) &&
+                  cleanStatsFilters.localeCodes?.values
+                : Array.isArray(cleanStatsFilters.localeCodes) &&
+                  cleanStatsFilters.localeCodes) || []
+        )
+    }, [cleanStatsFilters.localeCodes])
+
     return (
         <div className="full-width">
             <StatsPage
                 title={PAGE_TITLE_HELP_CENTER}
                 titleExtra={
-                    <>
-                        <DEPRECATED_HelpCenterStatsLanguageFilter
-                            supportedLocales={
-                                selectedHelpCenter.supported_locales
-                            }
-                            selectedLocaleCodes={statsFilters.localeCodes}
-                            onFilterChange={onLanguageFilterChange}
-                        />
-                        <PeriodStatsFilter
-                            initialSettings={{
-                                maxSpan: 365,
-                            }}
-                            value={statsFilters.period}
-                            variant="ghost"
-                        />
-                    </>
+                    !isAnalyticsNewFilters && (
+                        <>
+                            <DEPRECATED_HelpCenterStatsLanguageFilter
+                                supportedLocales={
+                                    selectedHelpCenter.supported_locales
+                                }
+                                selectedLocaleCodes={localCodes}
+                                onFilterChange={onLanguageFilterChange}
+                            />
+                            <PeriodStatsFilter
+                                initialSettings={{
+                                    maxSpan: 365,
+                                }}
+                                value={cleanStatsFilters.period}
+                                variant="ghost"
+                            />
+                        </>
+                    )
                 }
             >
+                {isAnalyticsNewFilters && (
+                    <DashboardSection>
+                        <DashboardGridCell
+                            size={getGridCellSize(12)}
+                            className="pb-0"
+                        >
+                            <FiltersPanel
+                                persistentFilters={[
+                                    FilterKey.Period,
+                                    FilterKey.HelpCenters,
+                                    FilterKey.LocaleCodes,
+                                ]}
+                            />
+                        </DashboardGridCell>
+                    </DashboardSection>
+                )}
                 <DashboardSection title="" className="pb-0">
                     {isEndDateBeforeStartCollectionEvents && (
                         <DashboardGridCell>
@@ -123,30 +172,32 @@ const HelpCenterStatsComponent = ({
                             />
                         </DashboardGridCell>
                     )}
-                    <DashboardGridCell>
-                        <DEPRECATED_HelpCenterFilter
-                            selectedHelpCenter={selectedHelpCenter}
-                            helpCenters={helpCenters}
-                            setSelectedHelpCenter={setStatsFilters}
-                        />
-                    </DashboardGridCell>
+                    {!isAnalyticsNewFilters && (
+                        <DashboardGridCell>
+                            <DEPRECATED_HelpCenterFilter
+                                selectedHelpCenter={selectedHelpCenter}
+                                helpCenters={helpCenters}
+                                setSelectedHelpCenter={setStatsFilters}
+                            />
+                        </DashboardGridCell>
+                    )}
                 </DashboardSection>
 
                 <HelpCenterOverviewSection
-                    statsFilters={statsFilters}
+                    statsFilters={cleanStatsFilters}
                     timezone={timezone}
                 />
 
                 <DashboardSection title="Performance">
                     <DashboardGridCell size={12}>
                         <ArticleViewsGraph
-                            statsFilters={statsFilters}
+                            statsFilters={cleanStatsFilters}
                             timezone={timezone}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={12}>
                         <PerformanceByArticle
-                            statsFilters={statsFilters}
+                            statsFilters={cleanStatsFilters}
                             timezone={timezone}
                             helpCenterDomain={selectedHelpCenterDomain}
                             helpCenterId={selectedHelpCenter.id}
@@ -164,20 +215,20 @@ const HelpCenterStatsComponent = ({
                 <DashboardSection title="Help Center searches">
                     <DashboardGridCell size={6}>
                         <SearchResultDonut
-                            statsFilters={statsFilters}
+                            statsFilters={cleanStatsFilters}
                             timezone={timezone}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={8}>
                         <SearchTermsTable
-                            statsFilters={statsFilters}
+                            statsFilters={cleanStatsFilters}
                             timezone={timezone}
                             helpCenterDomain={selectedHelpCenterDomain}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
                         <NoSearchTable
-                            statsFilters={statsFilters}
+                            statsFilters={cleanStatsFilters}
                             timezone={timezone}
                         />
                     </DashboardGridCell>

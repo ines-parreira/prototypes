@@ -11,6 +11,8 @@ import {IntegrationsFilterWithState} from 'pages/stats/common/filters/Integratio
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {AgentsFiltersWithState} from 'pages/stats/common/filters/AgentsFilter'
+import {HelpCenterFilterWithState} from 'pages/stats/common/filters/HelpCenterFilter'
+import {HelpCenterLanguageFilterWithState} from 'pages/stats/common/filters/HelpCenterLanguageFilter'
 
 type Props = {
     persistentFilters?: FilterKey[]
@@ -31,6 +33,10 @@ export const renderFilter = (filter: FilterKey) => {
             return AgentsFiltersWithState
         case FilterKey.Tags:
             return TagsFilterWithState
+        case FilterKey.HelpCenters:
+            return HelpCenterFilterWithState
+        case FilterKey.LocaleCodes:
+            return HelpCenterLanguageFilterWithState
         default:
             return () => <div>{UNSUPPORTED_FILTER_PLACEHOLDER}</div>
     }

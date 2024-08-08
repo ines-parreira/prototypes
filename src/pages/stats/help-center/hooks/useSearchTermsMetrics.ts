@@ -1,5 +1,5 @@
 import {useMemo} from 'react'
-import {LegacyStatsFilters} from 'models/stat/types'
+import {StatsFilters} from 'models/stat/types'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {
     searchResultQueryCountFactory,
@@ -22,7 +22,7 @@ export const useSearchTermsMetrics = ({
     currentPage,
     onModalOpen,
 }: {
-    statsFilters: LegacyStatsFilters
+    statsFilters: StatsFilters
     timezone: string
     currentPage: number
     itemPerPage: number

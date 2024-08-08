@@ -1,7 +1,6 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 import {screen} from '@testing-library/react'
-import {CombinedState} from 'redux'
 import {
     initialState,
     mergeStatsFiltersWithLogicalOperator,
@@ -15,13 +14,13 @@ import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/
 import {HelpCenter} from 'models/helpCenter/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterKey} from 'models/stat/types'
-import {StoreState} from 'state/types'
+import {RootState} from 'state/types'
 import {
     FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
-} from '../../components/Filter/constants'
-import {emptyFilter} from '../helpers'
+} from 'pages/stats/common/components/Filter/constants'
+import {emptyFilter} from 'pages/stats/common/filters/helpers'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -46,7 +45,7 @@ const defaultState = {
             },
         },
     },
-} as unknown as Partial<CombinedState<StoreState>>
+} as RootState
 
 const mockedLocales = [
     {name: 'English', code: 'en-US'},

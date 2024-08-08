@@ -3,12 +3,14 @@ import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import HelpCenterFilter, {
     HELP_CENTER_FILTER_NAME,
+    HelpCenterFilterWithState,
 } from 'pages/stats/common/filters/HelpCenterFilter'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {renderWithStore} from 'utils/testing'
 import {HelpCenter} from 'models/helpCenter/types'
 import {RootState} from 'state/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {initialState} from 'state/stats/statsSlice'
 
 const mockedHelpCenterData = getHelpCentersResponseFixture.data
 
@@ -31,6 +33,7 @@ describe('HelpCenterFilter', () => {
             },
         },
     } as RootState
+
     it('should render HelpCenterFilter component', () => {
         renderWithStore(
             <HelpCenterFilter value={withDefaultLogicalOperator([])} />,
@@ -82,5 +85,28 @@ describe('HelpCenterFilter', () => {
             },
             type: 'stats/mergeStatsFiltersWithLogicalOperator',
         })
+    })
+
+    it('should render the HelpCenterFilterWithState and reflect the value coming from store', () => {
+        const mockedStoreWithHelpCenterFilters = {
+            ...mockStore,
+            stats: {
+                filters: {
+                    ...initialState.filters,
+                    helpCenters: withDefaultLogicalOperator([
+                        getHelpCentersResponseFixture.data[0].id,
+                    ]),
+                },
+            },
+        }
+
+        renderWithStore(
+            <HelpCenterFilterWithState />,
+            mockedStoreWithHelpCenterFilters
+        )
+
+        expect(
+            screen.getByText(getHelpCentersResponseFixture.data[0].name)
+        ).toBeInTheDocument()
     })
 })

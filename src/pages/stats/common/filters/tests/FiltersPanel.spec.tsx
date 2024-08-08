@@ -13,17 +13,51 @@ import {
 } from 'pages/stats/common/filters/FiltersPanel'
 import {initialState, statsSlice} from 'state/stats/statsSlice'
 import {renderWithStore} from 'utils/testing'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {HelpCenter} from 'models/helpCenter/types'
+
+const mockedLocales = [
+    {name: 'English', code: 'en-US'},
+    {name: 'Spanish', code: 'es-ES'},
+    {name: 'French', code: 'fr-FR'},
+    {name: 'German', code: 'de-DE'},
+]
+
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
+    useSupportedLocales: () => mockedLocales,
+}))
 
 describe('FiltersPanel', () => {
     const defaultState = {
-        [statsSlice.name]: initialState,
+        [statsSlice.name]: {
+            ...initialState,
+            filters: {
+                ...initialState.filters,
+                helpCenters: withDefaultLogicalOperator([
+                    getHelpCentersResponseFixture.data[1].id,
+                ]),
+            },
+        },
         ui: {
             stats: uiStatsInitialState,
         },
         entities: {
             tags: {},
+            helpCenter: {
+                helpCenters: {
+                    helpCentersById: getHelpCentersResponseFixture.data.reduce(
+                        (acc: Record<string, HelpCenter>, hCenter) => {
+                            acc[hCenter.id] = hCenter
+                            return acc
+                        },
+                        {}
+                    ),
+                },
+            },
         },
     } as RootState
+
     const persistentFilters = [FilterKey.Period]
     const optionalFilter = FilterKey.Channels
     const optionalFilters = [optionalFilter, FilterKey.LocaleCodes]
@@ -33,6 +67,8 @@ describe('FiltersPanel', () => {
         FilterKey.Integrations,
         FilterKey.Tags,
         FilterKey.Agents,
+        FilterKey.HelpCenters,
+        FilterKey.LocaleCodes,
     ]
 
     it('should render the panel without filters', () => {
@@ -61,7 +97,7 @@ describe('FiltersPanel', () => {
     )
 
     it('should render a placeholder for unsupported filter', () => {
-        const unsupportedFilter = FilterKey.HelpCenters
+        const unsupportedFilter = FilterKey.Score
         renderWithStore(
             <FiltersPanel
                 persistentFilters={[unsupportedFilter]}
