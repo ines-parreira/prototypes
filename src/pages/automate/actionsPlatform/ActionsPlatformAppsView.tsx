@@ -1,4 +1,5 @@
 import React, {useMemo, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 
 import {useListActionsApps} from 'models/workflows/queries'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'
@@ -7,6 +8,7 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
+import Button from 'pages/common/components/button/Button'
 
 import ActionsPlatformAppsTableRow from './components/ActionsPlatformAppsTableRow'
 import useApps from './hooks/useApps'
@@ -21,6 +23,7 @@ const ActionsPlatformAppsView = () => {
     } = useListActionsApps()
     const {apps = [], isLoading: isAppsLoading} = useApps()
     const getAppFromActionsApp = useGetAppFromActionsApp({apps})
+    const history = useHistory()
 
     const [name, setName] = useState('')
 
@@ -61,8 +64,20 @@ const ActionsPlatformAppsView = () => {
             isLoading={isLoading}
         >
             <div className={css.content}>
-                <div>
-                    Maintain authentication method settings for 3rd party Apps.
+                <div className={css.description}>
+                    <span>
+                        Maintain authentication method settings for 3rd party
+                        Apps.
+                    </span>
+                    <Button
+                        onClick={() => {
+                            history.push(
+                                '/app/automation/actions-platform/apps/new'
+                            )
+                        }}
+                    >
+                        Create App settings
+                    </Button>
                 </div>
                 <div className={css.filters}>
                     <Search
@@ -84,6 +99,11 @@ const ActionsPlatformAppsView = () => {
                             key={actionsApp.id}
                             app={getAppFromActionsApp(actionsApp)}
                             actionsApp={actionsApp}
+                            onClick={() => {
+                                history.push(
+                                    `/app/automation/actions-platform/apps/edit/${actionsApp.id}`
+                                )
+                            }}
                         />
                     ))}
                 </TableBody>

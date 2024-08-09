@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, screen} from '@testing-library/react'
+import {render, screen, act, fireEvent} from '@testing-library/react'
 
 import ActionsPlatformAppsTableRow from '../ActionsPlatformAppsTableRow'
 
@@ -15,6 +15,7 @@ describe('<ActionsPlatformAppsTableRow />', () => {
                     id: 'someid',
                     auth_type: 'api-key',
                 }}
+                onClick={jest.fn()}
             />
         )
 
@@ -34,11 +35,36 @@ describe('<ActionsPlatformAppsTableRow />', () => {
                     id: 'someid',
                     auth_type: 'api-key',
                 }}
+                onClick={jest.fn()}
             />
         )
 
         expect(screen.queryByText('App 1')).not.toBeInTheDocument()
         expect(screen.getByText('someid')).toBeInTheDocument()
         expect(screen.getByText('API key')).toBeInTheDocument()
+    })
+
+    it('should trigger onClick handle on click', () => {
+        const mockOnClick = jest.fn()
+
+        render(
+            <ActionsPlatformAppsTableRow
+                app={{
+                    icon: '/assets/img/integrations/app.png',
+                    name: 'App 1',
+                }}
+                actionsApp={{
+                    id: 'someid',
+                    auth_type: 'api-key',
+                }}
+                onClick={mockOnClick}
+            />
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('App 1'))
+        })
+
+        expect(mockOnClick).toHaveBeenCalled()
     })
 })

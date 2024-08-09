@@ -357,9 +357,9 @@ export const useGetActionsApp = (id?: string) => {
         enabled: !!id,
         queryFn: async () => {
             const client = await getGorgiasWfApiClient()
-            const response = await client.AppController_list(
+            const response = await client.AppController_get(
                 {
-                    ids: [id],
+                    id: id!,
                 },
                 {},
                 {
@@ -370,7 +370,6 @@ export const useGetActionsApp = (id?: string) => {
             )
             return response.data
         },
-        select: (data) => data.find((app) => app.id === id),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
     })
@@ -394,6 +393,18 @@ export const useListActionsApps = () => {
         },
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
+    })
+}
+
+export const useUpsertActionsApp = (
+    overrides?: MutationOverrides<OperationMethods['AppController_upsert']>
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.AppController_upsert(...params)
+        },
+        ...overrides,
     })
 }
 

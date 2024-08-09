@@ -1,0 +1,23 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
+    .icon {
+        height: 20px;
+        width: 20px;
+        object-fit: contain;
+        vertical-align: baseline;
+    }
+
+    .name {
+        .body-semibold();
+
+        margin-left: @layout-spacing-xs;
+    }
+}

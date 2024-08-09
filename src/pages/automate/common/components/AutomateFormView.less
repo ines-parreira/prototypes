@@ -1,0 +1,21 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        padding: 0;
+
+        &:not(.isLoading) {
+            padding: @layout-spacing-m;
+            min-width: 480px;
+            max-width: 680px;
+            margin-left: 0;
+        }
+    }
+
+    .header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: var(--neutral-grey-0);
+    }
+}

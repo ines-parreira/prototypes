@@ -194,6 +194,8 @@ import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomate
 import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
 import ActionsPlatformTemplatesView from 'pages/automate/actionsPlatform/ActionsPlatformTemplatesView'
 import {useFlag} from 'common/flags'
+import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView'
+import ActionsPlatformEditAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformEditAppFormView'
 import WorkflowAnalyticsContainer from './automate/workflows/analytics/WorkflowAnalyticsContainer'
 import AutomateAllRecommendationsContainer from './automate/common/components/AutomateAllRecommendationsContainer'
 import LiveVoice from './stats/voice/pages/LiveVoice'
@@ -1526,6 +1528,16 @@ function AutomationContent() {
             <Route path={`${path}/actions-platform/apps`} exact>
                 {isActionsInternalPlatformEnabled && (
                     <ActionsPlatformAppsView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/apps/new`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformCreateAppFormView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/apps/edit/:id`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformEditAppFormView />
                 )}
             </Route>
 

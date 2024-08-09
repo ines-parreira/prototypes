@@ -1,8 +1,10 @@
 import React from 'react'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 
+import {createMemoryHistory} from 'history'
 import {useListActionsApps} from 'models/workflows/queries'
 import {IntegrationType} from 'models/integration/constants'
+import {renderWithRouter} from 'utils/testing'
 
 import useApps from '../hooks/useApps'
 import ActionsPlatformAppsView from '../ActionsPlatformAppsView'
@@ -78,5 +80,37 @@ describe('<ActionsPlatformAppsView />', () => {
             expect(screen.getByText('App 1')).toBeInTheDocument()
             expect(screen.queryByText('App 2')).not.toBeInTheDocument()
         })
+    })
+
+    it('should redirect to new App settings form on CTA click', () => {
+        const history = createMemoryHistory()
+
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        renderWithRouter(<ActionsPlatformAppsView />, {history})
+
+        act(() => {
+            fireEvent.click(screen.getByText('Create App settings'))
+        })
+
+        expect(historyPushSpy).toHaveBeenCalledWith(
+            '/app/automation/actions-platform/apps/new'
+        )
+    })
+
+    it('should redirect to existing App settings form on row click', () => {
+        const history = createMemoryHistory()
+
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        renderWithRouter(<ActionsPlatformAppsView />, {history})
+
+        act(() => {
+            fireEvent.click(screen.getByText('App 1'))
+        })
+
+        expect(historyPushSpy).toHaveBeenCalledWith(
+            '/app/automation/actions-platform/apps/edit/1'
+        )
     })
 })

@@ -1,25 +1,23 @@
 import React from 'react'
-
 import classnames from 'classnames'
+
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
 import {ActionsApp, App} from '../types'
+import {AUTH_TYPE_LABEL_BY_TYPE} from '../constants'
 
 import css from './ActionsPlatformAppsTableRow.less'
 
 type Props = {
     app: Pick<App, 'icon' | 'name'> | undefined
     actionsApp: Pick<ActionsApp, 'id' | 'auth_type'>
+    onClick: () => void
 }
 
-const AUTH_TYPE_LABEL_BY_TYPE: Record<ActionsApp['auth_type'], string> = {
-    'api-key': 'API key',
-}
-
-const ActionsPlatformAppsTableRow = ({app, actionsApp}: Props) => {
+const ActionsPlatformAppsTableRow = ({app, actionsApp, onClick}: Props) => {
     return (
-        <TableBodyRow>
+        <TableBodyRow onClick={onClick}>
             <BodyCell>
                 {app ? (
                     <img

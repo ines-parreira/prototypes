@@ -62,6 +62,14 @@ jest.mock(
     () => () => <div>ConvertNavbar</div>
 )
 jest.mock('pages/stats/voice/pages/LiveVoice', () => () => <div>LiveVoice</div>)
+jest.mock(
+    'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView',
+    () => () => <div>ActionsPlatformCreateAppFormView</div>
+)
+jest.mock(
+    'pages/automate/actionsPlatform/ActionsPlatformEditAppFormView',
+    () => () => <div>ActionsPlatformEditAppFormView</div>
+)
 
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
@@ -221,6 +229,90 @@ describe('<Routes/>', () => {
 
             expect(
                 screen.queryByText('ActionsPlatformTemplatesView')
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render actions platform create app page if feature flag is toggled on', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            renderWithRouter(
+                <Provider store={mockStore({})}>
+                    <Routes />
+                </Provider>,
+                {
+                    history: mockHistory,
+                }
+            )
+
+            act(() => {
+                mockHistory.push('/app/automation/actions-platform/apps/new')
+            })
+
+            expect(
+                screen.getByText('ActionsPlatformCreateAppFormView')
+            ).toBeInTheDocument()
+        })
+
+        it('should not render actions platform create app page if feature flag is toggled off', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            renderWithRouter(
+                <Provider store={mockStore({})}>
+                    <Routes />
+                </Provider>,
+                {
+                    history: mockHistory,
+                }
+            )
+
+            act(() => {
+                mockHistory.push('/app/automation/actions-platform/apps/new')
+            })
+
+            expect(
+                screen.queryByText('ActionsPlatformCreateAppFormView')
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render actions platform edit app page if feature flag is toggled on', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            renderWithRouter(
+                <Provider store={mockStore({})}>
+                    <Routes />
+                </Provider>,
+                {
+                    history: mockHistory,
+                }
+            )
+
+            act(() => {
+                mockHistory.push('/app/automation/actions-platform/apps/edit/1')
+            })
+
+            expect(
+                screen.getByText('ActionsPlatformEditAppFormView')
+            ).toBeInTheDocument()
+        })
+
+        it('should not render actions platform edit app page if feature flag is toggled off', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            renderWithRouter(
+                <Provider store={mockStore({})}>
+                    <Routes />
+                </Provider>,
+                {
+                    history: mockHistory,
+                }
+            )
+
+            act(() => {
+                mockHistory.push('/app/automation/actions-platform/apps/edit/1')
+            })
+
+            expect(
+                screen.queryByText('ActionsPlatformEditAppFormView')
             ).not.toBeInTheDocument()
         })
     })
