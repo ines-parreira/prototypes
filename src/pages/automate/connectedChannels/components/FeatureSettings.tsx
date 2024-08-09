@@ -3,25 +3,43 @@ import React from 'react'
 import classNames from 'classnames'
 import {Link} from 'react-router-dom'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import css from './FeatureSettings.less'
 
-interface Props {
+interface BaseProps {
     enabled: boolean
     title: string
-    externalLinkUrl?: string
     subtitle?: string
     label: string
     labelSubtitle?: string
+    disabled?: boolean
     onToggle?: (value: boolean) => void
+    isLoading?: boolean
 }
+
+interface WithConfigurationAlert extends BaseProps {
+    showConfigurationRequiredAlert: true
+    externalLinkUrl: string
+}
+
+interface WithoutConfigurationAlert extends BaseProps {
+    showConfigurationRequiredAlert?: false
+    externalLinkUrl?: string
+}
+
+type Props = WithConfigurationAlert | WithoutConfigurationAlert
 
 export const FeatureSettings = ({
     enabled,
     title,
     externalLinkUrl,
     subtitle,
+    isLoading,
     label,
     labelSubtitle,
+    showConfigurationRequiredAlert,
+    disabled,
     onToggle,
 }: Props) => {
     return (
@@ -37,14 +55,30 @@ export const FeatureSettings = ({
                 )}
             </div>
             {labelSubtitle && <span>{labelSubtitle}</span>}
-            <ToggleInput
-                isToggled={enabled}
-                onClick={() => onToggle?.(!enabled)}
-                caption={subtitle}
-                className={css.toggle}
-            >
-                {label}
-            </ToggleInput>
+            <div className={css.toggleContainer}>
+                <ToggleInput
+                    isDisabled={disabled}
+                    isToggled={enabled}
+                    isLoading={isLoading}
+                    onClick={() => onToggle?.(!enabled)}
+                    caption={subtitle}
+                    className={css.toggle}
+                >
+                    {label}
+                </ToggleInput>
+                {showConfigurationRequiredAlert && (
+                    <Link to={externalLinkUrl}>
+                        <Button fillStyle="ghost" size="small">
+                            <ButtonIconLabel
+                                icon="warning"
+                                className={css.warningText}
+                            >
+                                Configuration Required
+                            </ButtonIconLabel>
+                        </Button>
+                    </Link>
+                )}
+            </div>
         </div>
     )
 }

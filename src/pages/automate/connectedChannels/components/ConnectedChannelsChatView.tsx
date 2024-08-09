@@ -61,7 +61,6 @@ export const ConnectedChannelsChatView = () => {
     )
 
     // check if one of the id in the chatChannels in the automationSettings
-
     const automationExistsInChannel = chatChannels.some((chat) => {
         if (!applicationsAutomationSettings) return false
         if (
@@ -149,6 +148,12 @@ export const ConnectedChannelsChatView = () => {
         )
     }
 
+    const enabledQuickResponses = isQuickResponsesEnabled
+        ? selfServiceConfiguration?.quickResponsePolicies.filter(
+              (qr) => !qr.deactivatedDatetime
+          ).length ?? 0
+        : 0
+
     return (
         <div className={classNames('full-width', css.container)}>
             <div className={css.settingsContainer}>
@@ -176,6 +181,7 @@ export const ConnectedChannelsChatView = () => {
                     primaryLanguage={getPrimaryLanguageFromChatConfig(
                         currentChannel.value.meta
                     )}
+                    enabledQuickResponses={enabledQuickResponses}
                     configurations={workflowConfigurations ?? []}
                     automationSettingsWorkflows={automationSettingsWorkflows}
                     onChange={(nextEntrypoints) => {

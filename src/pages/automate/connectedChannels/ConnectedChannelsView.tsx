@@ -13,6 +13,7 @@ import {ConnectedChannelsChatView} from './components/ConnectedChannelsChatView'
 import css from './ConnectedChannelsView.less'
 import {ConnectedChannelsHelpCenterView} from './components/ConnectedChannelsHelpCenterView'
 import {ConnectedChannelsContactFormView} from './components/ConnectedChannelsContactFormView'
+import {ConnectedChannelsEmailView} from './components/ConnectedChannelsEmailView'
 
 export const ConnectedChannelsView = () => {
     const {shopType, shopName} = useParams<{
@@ -74,7 +75,7 @@ export const ConnectedChannelsView = () => {
                 />
                 <Route
                     path={`${path}/email`}
-                    component={() => <>Email</>}
+                    component={() => <ConnectedChannelsEmailView />}
                     exact
                 />
             </Switch>

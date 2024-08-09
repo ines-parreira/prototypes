@@ -22,6 +22,7 @@ describe('FeatureSettings', () => {
                     channelType="chat"
                     shopType="shopify"
                     shopName="Shop Name"
+                    enabledQuickResponses={0}
                     workflowEntrypoints={[
                         {
                             workflow_id: '1',
@@ -66,6 +67,7 @@ describe('FeatureSettings', () => {
                     channelType="chat"
                     shopType="shopify"
                     shopName="Shop Name"
+                    enabledQuickResponses={0}
                     workflowEntrypoints={[
                         {
                             workflow_id: '1',
@@ -273,6 +275,106 @@ describe('FeatureSettings', () => {
         expect(onChange).toHaveBeenCalledWith([])
     })
 
+    it('should disable the add flow button when limit is reached', async () => {
+        renderWithQueryClientProvider(
+            <DndProvider manager={manager}>
+                <FlowsSettings
+                    channelType="chat"
+                    shopType="shopify"
+                    shopName="Shop Name"
+                    workflowEntrypoints={[
+                        {
+                            workflow_id: '1',
+                        },
+                        {
+                            workflow_id: '2',
+                        },
+                        {
+                            workflow_id: '3',
+                        },
+                        {
+                            workflow_id: '4',
+                        },
+                        {
+                            workflow_id: '5',
+                        },
+                        {
+                            workflow_id: '6',
+                        },
+                    ]}
+                    primaryLanguage="en"
+                    configurations={[
+                        {
+                            id: '1',
+                            name: 'Flow 1',
+                        } as any,
+                        {
+                            id: '2',
+                            name: 'Flow 2',
+                        },
+                        {
+                            id: '3',
+                            name: 'Flow 3',
+                        },
+                        {
+                            id: '4',
+                            name: 'Flow 4',
+                        },
+                        {
+                            id: '5',
+                            name: 'Flow 5',
+                        },
+                        {
+                            id: '6',
+                            name: 'Flow 6',
+                        },
+                    ]}
+                    automationSettingsWorkflows={[
+                        {
+                            workflow_id: '1',
+                            enabled: true,
+                        },
+                        {
+                            workflow_id: '2',
+                            enabled: true,
+                        },
+                        {
+                            workflow_id: '3',
+                            enabled: true,
+                        },
+                        {
+                            workflow_id: '4',
+                            enabled: true,
+                        },
+                        {
+                            workflow_id: '5',
+                            enabled: true,
+                        },
+                        {
+                            workflow_id: '6',
+                            enabled: true,
+                        },
+                    ]}
+                    onChange={jest.fn()}
+                />
+            </DndProvider>
+        )
+
+        const addFlowButton = screen.getByRole('button', {name: /add flow/i})
+        expect(addFlowButton).toHaveAttribute('aria-disabled', 'true')
+
+        await act(async () => {
+            fireEvent.mouseEnter(addFlowButton)
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        /reached the maximum number of Quick Responses and Flows to display on this channel/i
+                    )
+                ).toBeInTheDocument()
+            })
+        })
+    })
+
     it.each([[true], [false]])(
         'Should render text based on the quick response sunset flag if true',
         (flag) => {
@@ -333,4 +435,61 @@ describe('FeatureSettings', () => {
             }
         }
     )
+
+    it('should take into account the enabledQuickResponses prop and disable the add-flow button', () => {
+        renderWithQueryClientProvider(
+            <DndProvider manager={manager}>
+                <FlowsSettings
+                    channelType="chat"
+                    shopType="shopify"
+                    shopName="Shop Name"
+                    enabledQuickResponses={3}
+                    workflowEntrypoints={[
+                        {
+                            workflow_id: '1',
+                        },
+                        {
+                            workflow_id: '2',
+                        },
+                        {
+                            workflow_id: '3',
+                        },
+                    ]}
+                    primaryLanguage="en"
+                    configurations={[
+                        {
+                            id: '1',
+                            name: 'Flow 1',
+                        } as any,
+                        {
+                            id: '2',
+                            name: 'Flow 2',
+                        },
+                        {
+                            id: '3',
+                            name: 'Flow 3',
+                        },
+                    ]}
+                    automationSettingsWorkflows={[
+                        {
+                            workflow_id: '1',
+                            enabled: true,
+                        },
+                        {
+                            workflow_id: '2',
+                            enabled: true,
+                        },
+                        {
+                            workflow_id: '3',
+                            enabled: true,
+                        },
+                    ]}
+                    onChange={jest.fn()}
+                />
+            </DndProvider>
+        )
+
+        const addFlowButton = screen.getByRole('button', {name: /add flow/i})
+        expect(addFlowButton).toHaveAttribute('aria-disabled', 'true')
+    })
 })

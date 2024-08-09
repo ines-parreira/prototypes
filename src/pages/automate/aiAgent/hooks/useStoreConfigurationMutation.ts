@@ -34,6 +34,7 @@ export const useStoreConfigurationMutation = ({
     const {
         mutateAsync: upsertStoreConfigurationAsync,
         isLoading: isUpsertLoading,
+        error: isUpsertError,
     } = useUpsertStoreConfigurationPure({
         onSuccess: () => {
             void queryClient.invalidateQueries({
@@ -66,5 +67,6 @@ export const useStoreConfigurationMutation = ({
         createStoreConfiguration,
         upsertStoreConfiguration,
         isLoading: isCreateLoading || isUpsertLoading,
+        error: isUpsertError,
     }
 }

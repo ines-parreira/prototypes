@@ -124,6 +124,7 @@ describe('<StoreConfigForm />', () => {
             isLoading: false,
             createStoreConfiguration: () => Promise.resolve(),
             upsertStoreConfiguration: () => Promise.resolve(),
+            error: null,
         })
         mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue(null)
         mockedUseConfigurationForm.mockReturnValue({
@@ -161,6 +162,7 @@ describe('<StoreConfigForm />', () => {
             isLoading: false,
             createStoreConfiguration: jest.fn(),
             upsertStoreConfiguration: jest.fn(),
+            error: null,
         }
         mockedUseStoreConfigurationMutation.mockReturnValue(mockMutation)
 
@@ -196,6 +198,7 @@ describe('<StoreConfigForm />', () => {
             isLoading: false,
             createStoreConfiguration: jest.fn(),
             upsertStoreConfiguration: jest.fn(),
+            error: null,
         }
         mockedUseStoreConfigurationMutation.mockReturnValue(mockMutation)
 
@@ -217,6 +220,7 @@ describe('<StoreConfigForm />', () => {
             upsertStoreConfiguration: jest
                 .fn()
                 .mockRejectedValue(new Error('Test error')),
+            error: null,
         }
         mockedUseStoreConfigurationMutation.mockReturnValue(mockMutation)
 
@@ -241,6 +245,7 @@ describe('<StoreConfigForm />', () => {
             isLoading: false,
             createStoreConfiguration: jest.fn(),
             upsertStoreConfiguration: jest.fn(),
+            error: null,
         }
         mockedUseStoreConfigurationMutation.mockReturnValue(mockMutation)
 

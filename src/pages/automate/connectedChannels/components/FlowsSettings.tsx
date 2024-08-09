@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 import {isEqual, keyBy, startCase} from 'lodash'
 import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -29,6 +29,7 @@ interface Props {
     shopName: string
     shopType: string
     channelType: string
+    enabledQuickResponses?: number
     onChange?: (updatedWorkflows: Workflow[]) => void
 }
 export const FlowsSettings = ({
@@ -39,6 +40,7 @@ export const FlowsSettings = ({
     shopName,
     shopType,
     channelType,
+    enabledQuickResponses = 0,
     onChange,
 }: Props) => {
     const [dirtyEntrypoints, setDirtyEntrypoints] = useState<Workflow[]>([])
@@ -138,6 +140,7 @@ export const FlowsSettings = ({
         entrypointLabelByWorkflowId,
     ])
     const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
+    const currentFlowsCount = enabledWorkflows.length + enabledQuickResponses
 
     return (
         <div className="full-width">
@@ -145,7 +148,7 @@ export const FlowsSettings = ({
             <span>
                 {sunsetQuickResponses
                     ? `Display up to ${FLOWS_LIMIT} Flows on your Chat to proactively resolve top customer requests.`
-                    : `Display up to ${FLOWS_LIMIT} Flows or Quick Responses on your 
+                    : `Display up to ${FLOWS_LIMIT} Flows or Quick Responses on your
                 ${startCase(channelType.replace('-', ' '))} to proactively
                 resolve top customer requests.`}
             </span>
@@ -178,7 +181,9 @@ export const FlowsSettings = ({
             </ul>
 
             <Button
+                id="add-flow-button"
                 intent="secondary"
+                isDisabled={currentFlowsCount >= FLOWS_LIMIT}
                 ref={dropdownTargetRef}
                 onClick={() => setIsFlowSelectorDropdownOpen((prev) => !prev)}
             >
@@ -187,7 +192,16 @@ export const FlowsSettings = ({
                     arrow_drop_down
                 </i>
             </Button>
-
+            {currentFlowsCount >= FLOWS_LIMIT && (
+                <Tooltip
+                    trigger={['hover']}
+                    placement="top"
+                    target="add-flow-button"
+                >
+                    You’ve reached the maximum number of Quick Responses and
+                    Flows to display on this channel.
+                </Tooltip>
+            )}
             <Dropdown
                 target={dropdownTargetRef}
                 isOpen={isFlowSelectorDropdownOpen}

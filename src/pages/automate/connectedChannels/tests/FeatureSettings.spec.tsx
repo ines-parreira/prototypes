@@ -56,4 +56,38 @@ describe('FeatureSettings', () => {
         fireEvent.click(toggleInput)
         expect(onChange).toHaveBeenCalledTimes(1)
     })
+
+    test('should not toggle the input when disabled', () => {
+        const onChange = jest.fn()
+
+        render(
+            <FeatureSettings
+                enabled={false}
+                title="Feature Title"
+                label="Toggle Label"
+                subtitle="Feature Subtitle"
+                disabled
+                onToggle={onChange}
+            />
+        )
+
+        const toggleInput = screen.getByRole('checkbox')
+        fireEvent.click(toggleInput)
+        expect(onChange).not.toHaveBeenCalled()
+    })
+
+    test('should render configuration required alert when showConfigurationRequiredAlert is true', () => {
+        render(
+            <FeatureSettings
+                enabled={false}
+                title="Feature Title"
+                label="Toggle Label"
+                showConfigurationRequiredAlert
+                externalLinkUrl="http://example.com"
+            />
+        )
+
+        expect(screen.getByText('Toggle Label')).toBeInTheDocument()
+        expect(screen.getByText(/open_in_new/i)).toBeInTheDocument()
+    })
 })
