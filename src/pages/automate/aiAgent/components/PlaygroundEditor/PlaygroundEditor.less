@@ -1,3 +1,5 @@
+@import '~css/typography';
+
 :local {
     .editor {
         flex: 1;
@@ -34,6 +36,15 @@
             }
             .fr-toolbar {
                 border: none !important;
+            }
+            .fr-box.fr-basic .fr-wrapper,
+            .fr-toolbar {
+                background: transparent;
+            }
+
+            .fr-box.fr-basic .fr-element,
+            .fr-toolbar .fr-command.fr-btn {
+                color: var(--neutral-grey-6);
             }
         }
     }
