@@ -3,6 +3,7 @@ import {Link, NavLink, useParams, useLocation} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {Tooltip} from '@gorgias/ui-kit'
 
+import {useDismissFlag} from 'hooks/useDismissFlag'
 import {useModalManager} from 'hooks/useModalManager'
 
 import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
@@ -23,7 +24,10 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import PageHeader from 'pages/common/components/PageHeader'
 
-import StopABTestModal from 'pages/convert/abVariants/components/StopABTestModal/StopABTestModal'
+import {ABVariantModalType} from 'pages/convert/abVariants/types/enums'
+
+import StartABTestModal from 'pages/convert/abVariants/components/StartABTestModal'
+import StopABTestModal from 'pages/convert/abVariants/components/StopABTestModal'
 
 import {
     abVariantControlVariantUrl,
@@ -50,7 +54,17 @@ export const ABGroupContainer: React.FC<Props> = ({
     } = useParams<ConvertRouteAbVariantParams>()
     const location = useLocation()
 
+    const storageAbVariantModalKey = useMemo(() => {
+        return `convert:abVariant:${ABVariantModalType.StartABGroup}`
+    }, [])
+
+    const {isDismissed, dismiss} = useDismissFlag(
+        storageAbVariantModalKey,
+        true
+    )
+
     const stopModalManager = useModalManager('stopModal')
+    const startModalManager = useModalManager('startModal')
 
     const {mutateAsync: startABGroup, isLoading: isLoadingStartABGroup} =
         useStartABGroup()
@@ -121,6 +135,23 @@ export const ABGroupContainer: React.FC<Props> = ({
         [stopABGroup, campaign, stopModalManager]
     )
 
+    const onStartClick = () => {
+        if (campaign.ab_group?.status === ABGroupStatus.Draft && !isDismissed) {
+            startModalManager.openModal()
+            return
+        }
+
+        handleStartABGroup().catch(() => console.error)
+    }
+
+    const onModalSubmit = () => {
+        handleStartABGroup()
+            .then(() => {
+                startModalManager.closeModal()
+            })
+            .catch(() => console.error)
+    }
+
     return (
         <div className="full-width">
             <PageHeader
@@ -176,7 +207,7 @@ export const ABGroupContainer: React.FC<Props> = ({
                                         id="start-button"
                                         isDisabled={isStartButtonDisabled}
                                         isLoading={isLoadingStartABGroup}
-                                        onClick={handleStartABGroup}
+                                        onClick={onStartClick}
                                     >
                                         <ButtonIconLabel icon="play_arrow">
                                             {campaign.ab_group?.status ===
@@ -231,8 +262,17 @@ export const ABGroupContainer: React.FC<Props> = ({
                 isLoading={isLoadingStopABGroup}
                 variants={campaign.variants as CampaignVariant[]}
                 controlVersionId={campaign.id}
-                onClose={close}
+                onClose={() => stopModalManager.closeModal()}
                 onSubmit={handleStopABGroup}
+            />
+
+            <StartABTestModal
+                isOpen={startModalManager.isOpen()}
+                isLoading={isLoadingStartABGroup}
+                isDismissed={isDismissed}
+                setIsDismissed={dismiss}
+                onClose={() => startModalManager.closeModal()}
+                onSubmit={onModalSubmit}
             />
         </div>
     )

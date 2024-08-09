@@ -1,0 +1,22 @@
+@import (reference) '~css/typography.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .list {
+        margin-left: 0;
+        padding-left: @layout-spacing-m;
+
+        li {
+            margin-bottom: @layout-spacing-xs;
+        }
+    }
+
+    .heading {
+        .body-semibold;
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .radioButton {
+        margin-top: @layout-spacing-xs;
+    }
+}

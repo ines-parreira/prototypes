@@ -1,5 +1,6 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {act, render, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {Router, useLocation} from 'react-router-dom'
 import {createMemoryHistory} from 'history'
 import {Provider} from 'react-redux'
@@ -7,14 +8,21 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
 
+import * as useDismissFlag from 'hooks/useDismissFlag'
 import {RootState, StoreDispatch} from 'state/types'
 import {campaignWithABGroup, abGroup} from 'fixtures/abGroup'
 import {assumeMock} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {useStartABGroup} from 'pages/convert/abVariants/hooks/useStartABGroup'
 
 import ABGroupContainer from '../ABGroupContainer'
+
+jest.mock('hooks/useDismissFlag')
+
+jest.mock('pages/convert/abVariants/hooks/useStartABGroup')
+const useStartABGroupMock = assumeMock(useStartABGroup)
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
@@ -39,6 +47,8 @@ const renderComponent = (props: any) =>
     )
 
 describe('ABGroupContainer', () => {
+    const useStartABGroupMutation = jest.fn()
+
     beforeEach(() => {
         jest.resetAllMocks()
 
@@ -47,6 +57,17 @@ describe('ABGroupContainer', () => {
             search: '',
             state: undefined,
             hash: '',
+        })
+
+        jest.spyOn(useDismissFlag, 'useDismissFlag').mockReturnValue({
+            isDismissed: false,
+            dismiss: jest.fn(),
+        })
+
+        useStartABGroupMock.mockImplementation(() => {
+            return {
+                mutateAsync: useStartABGroupMutation,
+            } as unknown as ReturnType<typeof useStartABGroup>
         })
     })
 
@@ -81,6 +102,59 @@ describe('ABGroupContainer', () => {
         const startBtn = getByRole('button', {name: /Start/})
         expect(startBtn).toBeInTheDocument()
         expect(startBtn).toHaveAttribute('aria-disabled', 'false')
+    })
+
+    it('users click `Start Test` button and it shows modal', async () => {
+        const abGrpupWithOutVariants = {
+            ...campaignWithABGroup,
+        } as Campaign
+
+        const {getByText, getByRole} = renderComponent({
+            campaign: abGrpupWithOutVariants,
+        })
+
+        const startBtn = getByRole('button', {name: /Start/})
+        expect(startBtn).toBeInTheDocument()
+
+        act(() => {
+            userEvent.click(startBtn)
+        })
+
+        await waitFor(() => {
+            expect(
+                getByText('You’re about to start your test')
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('users click `Start Test` button but modal has been dismissed', async () => {
+        jest.spyOn(useDismissFlag, 'useDismissFlag').mockReturnValue({
+            isDismissed: true,
+            dismiss: jest.fn(),
+        })
+
+        const abGrpupWithOutVariants = {
+            ...campaignWithABGroup,
+        } as Campaign
+
+        const {getByRole, queryByText} = renderComponent({
+            campaign: abGrpupWithOutVariants,
+        })
+
+        const startBtn = getByRole('button', {name: /Start/})
+        expect(startBtn).toBeInTheDocument()
+
+        act(() => {
+            userEvent.click(startBtn)
+        })
+
+        await waitFor(() => {
+            expect(
+                queryByText('You’re about to start your test')
+            ).not.toBeInTheDocument()
+
+            expect(useStartABGroupMutation).toBeCalled()
+        })
     })
 
     it('A/B test is started', () => {
