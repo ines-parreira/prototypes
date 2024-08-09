@@ -6,6 +6,7 @@ import mapValues from 'lodash/mapValues'
 
 import moment, {Moment} from 'moment'
 import {Scale, TooltipItem} from 'chart.js'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {
     AutomationBillingEventCubeWithJoins,
     AutomationBillingEventMeasure,
@@ -42,6 +43,7 @@ import {
 } from 'hooks/reporting/automate/automateStatsFormulae'
 import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {MetricTrend} from '../useMetricTrend'
+import {DisplayEventType} from './useAutomateStatsMeasureLabelMap'
 
 export type WorkflowMetrics = {
     workflowStarted: number
@@ -112,6 +114,31 @@ function getAutomateStatsEventTypeMap(
             return AutomationBillingEventMeasure.AutomatedInteractionsByAIAgent
     }
     return 'Others'
+}
+
+export function getAutomateColorsForEventType(eventType: string): string {
+    const classicColors = colors['📺 Classic']
+    switch (eventType) {
+        case DisplayEventType.AI_AGENT:
+            return classicColors.Accessory.Navy_text.value
+        case DisplayEventType.WORKFLOWS:
+            return classicColors.Main.Variations.Primary_3.value
+        case DisplayEventType.QUICK_RESPONSES:
+        case DisplayEventType.QUICK_RESPONSES_DEPRECATED:
+            return classicColors.Feedback.Variations.Warning_3.value
+        case DisplayEventType.ARTICLE_RECOMMENDATION:
+            return classicColors.Accessory.Purple_text.value
+        case DisplayEventType.TRACK_ORDER:
+            return classicColors.Accessory.Green_text.value
+        case DisplayEventType.RETURN_ORDER:
+            return classicColors.Feedback.Variations.Error_3.value
+        case DisplayEventType.REPORT_ORDER_ISSUE:
+            return classicColors.Neutral.Grey_5.value
+        case DisplayEventType.AUTORESPONDERS:
+            return classicColors.Accessory.Yellow_text.value
+        default:
+            return colors['📺 Classic'].Neutral.Grey_5.value
+    }
 }
 
 export function mergeAutomateDataByEventType(

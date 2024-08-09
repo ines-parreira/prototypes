@@ -2,11 +2,13 @@ import React from 'react'
 
 import {Container} from 'reactstrap'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 
 import templatesImage from 'assets/img/workflows/templates.png'
 
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {WORKFLOW_TEMPLATES_LIST} from '../workflowTemplates'
 
 import templatesCss from '../WorkflowTemplatesView.less'
@@ -25,6 +27,7 @@ const WorkflowsEmptyState: React.FC<Props> = ({
     goToWorkflowTemplatesPage,
     goToNewWorkflowFromTemplatePage,
 }) => {
+    const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
     return (
         <>
             <AutomateViewEmptyStateBanner
@@ -39,17 +42,19 @@ const WorkflowsEmptyState: React.FC<Props> = ({
                         <p className={css.pageTitle}>
                             Choose a template and customize it to fit your needs
                         </p>
-                        <div className={css.pageTitleActions}>
-                            <Button
-                                onClick={goToNewWorkflowPage}
-                                intent="secondary"
-                            >
-                                Create Custom Flow
-                            </Button>
-                            <Button onClick={goToWorkflowTemplatesPage}>
-                                Create From Template
-                            </Button>
-                        </div>
+                        {!sunsetQuickResponses && (
+                            <div className={css.pageTitleActions}>
+                                <Button
+                                    onClick={goToNewWorkflowPage}
+                                    intent="secondary"
+                                >
+                                    Create Custom Flow
+                                </Button>
+                                <Button onClick={goToWorkflowTemplatesPage}>
+                                    Create From Template
+                                </Button>
+                            </div>
+                        )}
                     </div>
                     <div className={templatesCss.templatesContainer}>
                         {WORKFLOW_TEMPLATES_LIST.slice(0, 2).map((template) => (

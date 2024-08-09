@@ -198,8 +198,9 @@ export const FlowsSettings = ({
                     placement="top"
                     target="add-flow-button"
                 >
-                    You’ve reached the maximum number of Quick Responses and
-                    Flows to display on this channel.
+                    {sunsetQuickResponses
+                        ? 'You’ve reached the maximum number of Flows to display on this channel.'
+                        : 'You’ve reached the maximum number of Quick Responses and Flows to display on this channel.'}
                 </Tooltip>
             )}
             <Dropdown

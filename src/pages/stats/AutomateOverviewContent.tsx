@@ -1,7 +1,6 @@
 import classnames from 'classnames'
 import React, {useMemo, useState} from 'react'
 import moment from 'moment'
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
@@ -36,6 +35,7 @@ import {
     addZeroValueTimeSeriesForGreyArea,
     automatePercentLabel,
     calculateGreyArea,
+    getAutomateColorsForEventType,
     renderAutomateTooltipLabel,
     renderAutomateXTickLabel,
     sortByAutomateFeatureLabels,
@@ -246,6 +246,12 @@ export default function AutomateOverviewContent({
     const hasActivity =
         !automatedInteractionTrend.isFetching &&
         automatedInteractionTrend.data?.value
+
+    const colorsForInteractionsByEventType = useMemo(() => {
+        return automatedInteractionByEventTypesTimeSeriesData.map((data) =>
+            getAutomateColorsForEventType(data.label)
+        )
+    }, [automatedInteractionByEventTypesTimeSeriesData])
 
     return (
         <div className="full-width">
@@ -467,23 +473,7 @@ export default function AutomateOverviewContent({
                                 toggleLegend
                                 legendOnLeft
                                 _renderLegacyTooltipLabel={renderAutomateTooltipLabel()}
-                                customColors={[
-                                    colors['📺 Classic'].Accessory.Navy_text
-                                        .value,
-                                    colors['📺 Classic'].Main.Variations
-                                        .Primary_3.value,
-                                    colors['📺 Classic'].Feedback.Variations
-                                        .Warning_3.value,
-                                    colors['📺 Classic'].Accessory.Purple_text
-                                        .value,
-                                    colors['📺 Classic'].Accessory.Green_text
-                                        .value,
-                                    colors['📺 Classic'].Feedback.Variations
-                                        .Error_3.value,
-                                    colors['📺 Classic'].Neutral.Grey_5.value,
-                                    colors['📺 Classic'].Accessory.Yellow_text
-                                        .value,
-                                ]}
+                                customColors={colorsForInteractionsByEventType}
                                 renderXTickLabel={renderAutomateXTickLabel}
                                 yAxisScale={
                                     hasActivity ? {} : {min: 0, max: 750}

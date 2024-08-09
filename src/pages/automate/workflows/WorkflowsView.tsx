@@ -194,7 +194,7 @@ export default function WorkflowsView({
                 ) : (
                     !isFlowsTemplatesRoutes && (
                         <PageHeader title={FLOWS}>
-                            {hasStoreWorkflows && (
+                            {(hasStoreWorkflows || sunsetQuickResponses) && (
                                 <div className={css.headerContainer}>
                                     <Button
                                         onClick={goToNewWorkflowPage}

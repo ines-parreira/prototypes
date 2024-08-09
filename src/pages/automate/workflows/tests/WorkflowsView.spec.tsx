@@ -258,6 +258,49 @@ describe('<WorkflowsView />', () => {
 
         expect(mockRemoveWorkflowFromStore).toHaveBeenCalledWith('a', 1)
     })
+
+    it('should render correctly when sunsetQuickResponses is true and workflowslength is 0', async () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.SunsetQuickResponses]: true,
+            [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
+            [FeatureFlagKey.MigrateQuickResponseToFlows]: false,
+        })
+
+        useStoreWorkflowsMock.mockReturnValue({
+            isFetchPending: false,
+            workflows: [],
+            storeIntegrationId: 1,
+        })
+
+        renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <WorkflowsView
+                        shopName="ShopName"
+                        shopType="shopify"
+                        goToEditWorkflowPage={jest.fn()}
+                        goToWorkflowTemplatesPage={jest.fn()}
+                        goToNewWorkflowPage={jest.fn()}
+                        goToNewWorkflowFromTemplatePage={jest.fn()}
+                        notifyMerchant={jest.fn()}
+                    />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Flows')).toBeInTheDocument()
+            expect(screen.queryByText('Create Custom Flow')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Create From Template')
+            ).toBeInTheDocument()
+            expect(
+                document.querySelector(
+                    '[data-candu-id="flows-empty-state-banner-description"]'
+                )
+            ).toBeInTheDocument()
+        })
+    })
     it('should be active for baseUrl', () => {
         renderWithRouter(
             <WorkflowsView
