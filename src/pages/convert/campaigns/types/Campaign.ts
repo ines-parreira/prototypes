@@ -22,6 +22,6 @@ export type Campaign = Omit<
 
 export type CampaignCreatePayload = Omit<
     CampaignCreatePayloadSchema,
-    'attachments' | 'triggers' | 'meta'
+    'attachments' | 'triggers' | 'meta' | 'variants'
 > &
     SharedCampaignParams

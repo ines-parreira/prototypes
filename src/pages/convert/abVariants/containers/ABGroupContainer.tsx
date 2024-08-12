@@ -22,6 +22,9 @@ import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+
+import history from 'pages/history'
+
 import PageHeader from 'pages/common/components/PageHeader'
 
 import {ABVariantModalType} from 'pages/convert/abVariants/types/enums'
@@ -30,6 +33,7 @@ import StartABTestModal from 'pages/convert/abVariants/components/StartABTestMod
 import StopABTestModal from 'pages/convert/abVariants/components/StopABTestModal'
 
 import {
+    abVariantAddUrl,
     abVariantControlVariantUrl,
     abVariantEditorUrl,
     abVariantsUrl,
@@ -89,6 +93,10 @@ export const ABGroupContainer: React.FC<Props> = ({
             return false
         }
 
+        if (campaign.variants && campaign.variants.length >= 2) {
+            return false
+        }
+
         return statuses.indexOf(campaign.ab_group.status) >= 0
     }, [campaign])
 
@@ -97,7 +105,6 @@ export const ABGroupContainer: React.FC<Props> = ({
             return true
         }
 
-        // TODO: Fix me! Set 1 only for easier testing now.
         if (!campaign.variants || campaign.variants?.length < 1) {
             return true
         }
@@ -113,6 +120,10 @@ export const ABGroupContainer: React.FC<Props> = ({
         const statuses: string[] = [ABGroupStatus.Started]
         return statuses.indexOf(campaign.ab_group?.status) < 0
     }, [campaign])
+
+    const handleAddVariant = () => {
+        history.push(abVariantAddUrl(integrationId, campaignId))
+    }
 
     const handleStartABGroup = useCallback(async () => {
         await startABGroup([undefined, {campaign_id: campaign.id}])
@@ -174,6 +185,7 @@ export const ABGroupContainer: React.FC<Props> = ({
                             <Button
                                 intent="secondary"
                                 isDisabled={!canAddVariant}
+                                onClick={handleAddVariant}
                             >
                                 Add Variant
                             </Button>
@@ -243,11 +255,15 @@ export const ABGroupContainer: React.FC<Props> = ({
                 {variants.map((variant, idx) => (
                     <NavLink
                         key={idx}
-                        to={abVariantEditorUrl(
-                            integrationId,
-                            campaignId,
-                            variant.id as string
-                        )}
+                        to={
+                            variant.id
+                                ? abVariantEditorUrl(
+                                      integrationId,
+                                      campaignId,
+                                      variant.id
+                                  )
+                                : abVariantAddUrl(integrationId, campaignId)
+                        }
                         exact
                     >
                         {variant.name}

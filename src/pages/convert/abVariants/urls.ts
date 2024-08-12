@@ -33,5 +33,5 @@ export const abVariantAddUrl = (
     integrationId: string,
     campaignId: string
 ): string => {
-    return `${abVariantsUrl(integrationId, campaignId)}/add`
+    return `${abVariantsUrl(integrationId, campaignId)}/new`
 }

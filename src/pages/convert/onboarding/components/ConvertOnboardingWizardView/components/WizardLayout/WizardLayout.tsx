@@ -129,6 +129,7 @@ const WizardLayout = ({
                             undefined,
                             {
                                 ...data,
+                                variants: [],
                                 language: getPrimaryLanguageFromChatConfig(
                                     chatIntegration.meta
                                 ),

@@ -1,30 +1,15 @@
-import React, {useCallback, useMemo} from 'react'
+import React, {useCallback, useMemo, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import {fromJS, Map} from 'immutable'
 
-import {toJS} from 'utils'
-import {Label} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-
 import useAppSelector from 'hooks/useAppSelector'
-
+import {IntegrationType} from 'models/integration/constants'
 import {getHumanAgentsJS} from 'state/agents/selectors'
 import {
     getIntegrationById,
     getIntegrationByIdAndType,
 } from 'state/integrations/selectors'
-import {useGetCampaign} from 'models/convert/campaign/queries'
-import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
-import {CampaignUpdatePayload} from 'models/convert/campaign/types'
-import {IntegrationType} from 'models/integration/constants'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-
-import {
-    CampaignDetailsForm,
-    Props as CampaignDetailsFormProps,
-} from 'pages/convert/campaigns/providers/CampaignDetailsForm'
+import history from 'pages/history'
 
 import {
     CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
@@ -32,14 +17,40 @@ import {
     CONVERT_ROUTING_AB_VARIANT_PARAM_NAME,
 } from 'pages/convert/common/constants'
 import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
+
+import {VARIANT_LIMIT} from 'pages/convert/abVariants/contants'
+import {abVariantsUrl} from 'pages/convert/abVariants/urls'
+
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {Label} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import {
+    CampaignDetailsForm,
+    Props as CampaignDetailsFormProps,
+} from 'pages/convert/campaigns/providers/CampaignDetailsForm'
+
 import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 
 type Props = {
     isControlVersion: boolean
+    campaign: Campaign
+    onDiscard?: () => void
+    addVariant?: () => void
+    onUpdate?: (campaign: Map<any, any>, variantId?: string | null) => void
+    onCreate?: (campaign: Map<any, any>) => void
+    onDuplicateVariant?: (variantId: string | null) => void
 }
 
 export const ABTestVariantEditPage: React.FC<Props> = (props) => {
-    const {isControlVersion} = props
+    const {
+        isControlVersion,
+        campaign: data,
+        onDiscard,
+        addVariant,
+        onUpdate,
+        onCreate,
+        onDuplicateVariant,
+    } = props
 
     const {
         [CONVERT_ROUTE_PARAM_NAME]: integrationId,
@@ -49,15 +60,6 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
 
     const integration = useAppSelector(
         getIntegrationById(parseInt(integrationId))
-    )
-
-    const {channelConnection} = useGetOrCreateChannelConnection(
-        toJS(integration)
-    )
-
-    const {data, isLoading: isCampaignLoading} = useGetCampaign(
-        {campaign_id: campaignId || ''},
-        {enabled: !!campaignId}
     )
 
     const shopifyIntegration = useAppSelector(
@@ -71,59 +73,64 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
 
     const agents = useAppSelector(getHumanAgentsJS)
 
-    const {mutateAsync: updateCampaign} = useUpdateCampaign()
+    const handleDiscardVariant = () => {
+        onDiscard && onDiscard()
+        history.push(abVariantsUrl(integrationId, campaignId))
+    }
 
     const handleUpdateCampaign = useCallback(
         async (campaign: Map<any, any>) => {
-            if (!!channelConnection) {
-                const campaignData: Campaign = toJS(campaign)
-                return await updateCampaign([
-                    undefined,
-                    {
-                        campaign_id: campaignData.id,
-                        channelConnectionId: channelConnection.id,
-                    },
-                    campaignData as CampaignUpdatePayload,
-                ])
-            }
+            // eslint-disable-next-line @typescript-eslint/await-thenable
+            onUpdate && (await onUpdate(campaign))
         },
-        [updateCampaign, channelConnection]
+        [onUpdate]
     )
 
-    const handleUpdateVariant = useCallback(
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/require-await
-        async (campaign: Map<any, any>) => {
-            // eslint-disable-next-line no-console
-            console.log('handleUpdateVariant')
-        },
-        []
-    )
+    const handleUpdateVariant = async (campaign: Map<any, any>) => {
+        // eslint-disable-next-line @typescript-eslint/await-thenable
+        onUpdate && (await onUpdate(campaign, variantId))
+    }
 
-    const handleCreateVariant = useCallback(
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/require-await
-        async (campaign: Map<any, any>) => {
-            // eslint-disable-next-line no-console
-            console.log('handleCreateVariant')
-        },
-        []
-    )
+    const handleCreateVariant = async (campaign: Map<any, any>) => {
+        // eslint-disable-next-line @typescript-eslint/await-thenable
+        onCreate && (await onCreate(campaign))
+    }
 
-    const handleDuplicateVariant = useCallback(
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/require-await
-        async (campaign: Map<any, any>) => {
-            // eslint-disable-next-line no-console
-            console.log('handleDuplicateVariant')
-        },
-        []
-    )
+    const handleDuplicateVariant = async () => {
+        if (variantId === undefined) {
+            return
+        }
+        // eslint-disable-next-line @typescript-eslint/await-thenable
+        onDuplicateVariant && (await onDuplicateVariant(variantId))
+    }
 
     const backUrl = `/app/convert/${integrationId}/campaigns`
 
-    const newCampaign = useMemo(() => {
-        const newData = {...data}
+    const isDuplicateDisabled = useMemo(() => {
+        return (data.variants ?? []).length >= VARIANT_LIMIT
+    }, [data])
+
+    const campaignVariant = useMemo(() => {
+        let newData = {...data}
         if (newData && !isControlVersion && variantId === undefined) {
-            newData.message_text = ''
-            newData.message_html = ''
+            // if creating a new variant clean data
+            newData = {
+                ...newData,
+                message_text: '',
+                message_html: '',
+                attachments: [],
+            }
+        } else if (newData) {
+            const variant = (data?.variants || []).find(
+                (item) => item.id === variantId
+            )
+            if (variant) {
+                newData.message_html = variant.message_html
+                newData.message_text = variant.message_text
+                newData.attachments = variant?.attachments
+                    ? variant.attachments
+                    : undefined
+            }
         }
         return newData
     }, [data, variantId, isControlVersion])
@@ -146,10 +153,25 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
         }
     }, [])
 
+    useEffect(() => {
+        if (!addVariant) {
+            return
+        }
+
+        addVariant()
+
+        return () => {
+            if (onDiscard) {
+                onDiscard()
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [addVariant, onDiscard])
+
     let campaignDetailsFormProps: CampaignDetailsFormProps = {
         agents: agents,
-        campaign: data as Campaign,
-        isLoading: isCampaignLoading,
+        campaign: data,
+        isLoading: false,
         isEditMode: true,
         isShopifyStore: chatIsShopifyStore(integration),
         isOverCampaignsLimit: false,
@@ -164,13 +186,16 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
     if (!isControlVersion) {
         campaignDetailsFormProps = {
             ...campaignDetailsFormProps,
-            campaign: newCampaign as Campaign,
+            campaign: campaignVariant as Campaign,
             isEditMode: variantId !== undefined,
             isCreateDisabled: false,
             updateCampaign: handleUpdateVariant,
             createCampaign: handleCreateVariant,
             duplicateCampaign:
-                variantId !== undefined ? handleDuplicateVariant : undefined,
+                variantId !== undefined && !isDuplicateDisabled
+                    ? handleDuplicateVariant
+                    : undefined,
+            onDiscard: handleDiscardVariant,
             wizardConfiguration: wizardConfiguration,
             allowActivate: false,
         }

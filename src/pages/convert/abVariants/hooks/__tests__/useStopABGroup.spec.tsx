@@ -16,7 +16,7 @@ import {useStopABGroup} from '../useStopABGroup'
 const queryClient = mockQueryClient()
 
 jest.mock('models/convert/abVariants/queries')
-const usePureCreateCampaignMock = assumeMock(usePureStopABGroup)
+const usePureStopCampaignMock = assumeMock(usePureStopABGroup)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -24,7 +24,7 @@ jest.mock('state/notifications/actions')
 
 describe('usePauseABGroup', () => {
     beforeEach(() => {
-        usePureCreateCampaignMock.mockClear()
+        usePureStopCampaignMock.mockClear()
     })
 
     it('should dispatch success notification on success and invalidate detail queries', () => {
@@ -36,7 +36,7 @@ describe('usePauseABGroup', () => {
                 </QueryClientProvider>
             ),
         })
-        usePureCreateCampaignMock.mock.calls[0][0]?.onSuccess!(
+        usePureStopCampaignMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(campaign as any),
             [undefined, {campaign_id: campaign.id}, {winner_variant_id: '1'}],
             undefined
@@ -58,7 +58,7 @@ describe('usePauseABGroup', () => {
             ),
         })
         const myError = {}
-        usePureCreateCampaignMock.mock.calls[0][0]?.onError!(
+        usePureStopCampaignMock.mock.calls[0][0]?.onError!(
             myError,
             [undefined, {campaign_id: campaign.id}, {winner_variant_id: '1'}],
             undefined

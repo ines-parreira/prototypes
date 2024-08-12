@@ -11,7 +11,7 @@ import {
     getIntegrationByIdAndType,
 } from 'state/integrations/selectors'
 
-import {useCreateABGroup} from 'models/convert/abVariants/queries'
+import {useCreateABGroup} from 'pages/convert/abVariants/hooks/useCreateABGroup'
 import {abVariantAddUrl, abVariantsUrl} from 'pages/convert/abVariants/urls'
 import {useGetCampaign, useListCampaigns} from 'models/convert/campaign/queries'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'

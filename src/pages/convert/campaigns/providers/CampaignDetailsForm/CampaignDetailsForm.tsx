@@ -95,6 +95,7 @@ export type Props = {
     duplicateCampaign?: (form: any) => Promise<unknown>
     deleteCampaign?: () => Promise<unknown>
     createABVariant?: () => Promise<unknown>
+    onDiscard?: () => void
     header?: React.ReactNode
     openedStep?: CampaignStepsKeys
     allowActivate?: boolean
@@ -118,6 +119,7 @@ export const CampaignDetailsForm = ({
     duplicateCampaign,
     deleteCampaign,
     createABVariant,
+    onDiscard,
     header,
     backUrl,
     openedStep,
@@ -406,6 +408,10 @@ export const CampaignDetailsForm = ({
     }
 
     const handleDiscardChanges = () => {
+        if (onDiscard) {
+            onDiscard()
+            return
+        }
         history.push(backUrl)
     }
 

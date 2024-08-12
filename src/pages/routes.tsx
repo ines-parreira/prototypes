@@ -130,7 +130,7 @@ import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import ClickTrackingSettingsView from 'pages/convert/clickTracking/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
 import ConvertNavbar from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar'
 import CampaginLibaryView from 'pages/convert/campaigns/components/CampaginLibaryView'
-import ABGroupIndexPage from 'pages/convert/abVariants/pages/ABGroupIndexPage'
+import ABGroupIndexPage from 'pages/convert/abVariants/pages/ABGroupPage'
 import {
     CONVERT_ROUTING_CAMPAIGN_PARAM,
     CONVERT_ROUTING_PARAM,

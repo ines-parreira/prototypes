@@ -58,11 +58,15 @@ const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {integrations: fromJS(integrationsState)} as RootState
 
 const renderComponent = (props: any) => {
+    const componentProps = {
+        campaign: campaign,
+        ...props,
+    }
     return render(
         <BrowserRouter>
             <Provider store={mockStore(defaultState)}>
                 <QueryClientProvider client={queryClient}>
-                    <ABTestVariantEditPage {...props} />
+                    <ABTestVariantEditPage {...componentProps} />
                 </QueryClientProvider>
             </Provider>
         </BrowserRouter>
@@ -105,23 +109,59 @@ describe('<ABTestVariantEditPage />', () => {
 
     describe('as control version', () => {
         it('renders', () => {
+            const onUpdateMock = jest.fn()
+            const campaignData = {
+                ...campaign,
+                message_text: 'foo',
+                message_html: '<p>foo</p>',
+            }
+
             const {getByText, getByRole} = renderComponent({
+                campaign: campaignData,
+                onUpdate: onUpdateMock,
                 isControlVersion: true,
             })
+
             expect(getByText('Set up the basics')).toBeInTheDocument()
             expect(
                 getByRole('button', {name: 'Update Campaign'})
             ).toBeInTheDocument()
+
+            userEvent.click(getByRole('button', {name: 'Update Campaign'}))
+
+            // Should get whole campaign data
+            expect(onUpdateMock).toBeCalledWith(fromJS(campaignData))
         })
     })
 
     describe('as variant - add path', () => {
+        const onCreateMock = jest.fn()
+        const onDiscardMock = jest.fn()
+
         it('renders', () => {
             const {getByText, getByRole} = renderComponent({
                 isControlVersion: false,
             })
             expect(getByText('Set up the basics')).toBeInTheDocument()
+
+            const createBtn = getByRole('button', {name: 'Create'})
+            expect(createBtn).toBeInTheDocument()
+            expect(createBtn).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('user discards changes', () => {
+            const {getByText, getByRole} = renderComponent({
+                isControlVersion: false,
+                onCreate: onCreateMock,
+                onDiscard: onDiscardMock,
+            })
+            expect(getByText('Set up the basics')).toBeInTheDocument()
             expect(getByRole('button', {name: 'Create'})).toBeInTheDocument()
+
+            userEvent.click(getByRole('button', {name: 'Cancel'}))
+
+            expect(onCreateMock).not.toBeCalled()
+            expect(onDiscardMock).toBeCalled()
         })
     })
 
@@ -145,27 +185,38 @@ describe('<ABTestVariantEditPage />', () => {
         })
 
         it('edit the variant', () => {
-            const consoleLogMock = jest.spyOn(console, 'log')
+            const onUpdateMock = jest.fn()
+            const campaignData = {
+                ...campaign,
+                message_text: 'foo',
+                message_html: '<p>foo</p>',
+            }
 
             const {getByRole} = renderComponent({
+                campaign: campaignData,
                 isControlVersion: false,
+                onUpdate: onUpdateMock,
             })
 
             userEvent.click(getByRole('button', {name: 'Update Variant'}))
 
-            expect(consoleLogMock).toBeCalledWith('handleUpdateVariant')
+            // Should get whole campaign data
+            expect(onUpdateMock).toBeCalledWith(
+                fromJS(campaignData),
+                'variant-id'
+            )
         })
 
         it('duplicate the variant', () => {
-            const consoleLogMock = jest.spyOn(console, 'log')
-
+            const onDuplicateVariantMock = jest.fn()
             const {getByRole} = renderComponent({
                 isControlVersion: false,
+                onDuplicateVariant: onDuplicateVariantMock,
             })
 
             userEvent.click(getByRole('button', {name: 'Duplicate Variant'}))
 
-            expect(consoleLogMock).toBeCalledWith('handleDuplicateVariant')
+            expect(onDuplicateVariantMock).toBeCalledWith('variant-id')
         })
     })
 })

@@ -7,18 +7,22 @@ import {Provider} from 'react-redux'
 
 import {campaign} from 'fixtures/campaign'
 
-import {useGetCampaign} from 'models/convert/campaign/queries'
+import {
+    useGetCampaign,
+    useUpdateCampaign,
+} from 'models/convert/campaign/queries'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
-import ABGroupIndexPage from '../ABGroupIndexPage'
+import ABGroupPage from '../ABGroupPage'
 
 const queryClient = mockQueryClient()
 
 jest.mock('models/convert/campaign/queries')
 const useGetCampaignMock = assumeMock(useGetCampaign)
+const useUpdateCampaignMock = assumeMock(useUpdateCampaign)
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 
@@ -26,7 +30,7 @@ const renderComponent = () => {
     return renderWithRouter(
         <Provider store={mockStore()}>
             <QueryClientProvider client={queryClient}>
-                <ABGroupIndexPage />
+                <ABGroupPage />
             </QueryClientProvider>
         </Provider>
     )
@@ -35,6 +39,11 @@ const renderComponent = () => {
 describe('<ABGroupIndexPage />', () => {
     beforeEach(() => {
         useGetCampaignMock.mockReturnValue({data: campaign} as any)
+        useUpdateCampaignMock.mockImplementation(() => {
+            return {
+                mutateAsync: jest.fn(),
+            } as unknown as ReturnType<typeof useUpdateCampaign>
+        })
     })
 
     it('renders', () => {

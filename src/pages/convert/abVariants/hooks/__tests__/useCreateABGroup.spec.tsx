@@ -5,18 +5,18 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {campaignKeys} from 'models/convert/campaign/queries'
-import {useStartABGroup as usePureStartABGroup} from 'models/convert/abVariants/queries'
+import {useCreateABGroup as usePureCreateABGroup} from 'models/convert/abVariants/queries'
 import {assumeMock} from 'utils/testing'
 
 import {campaign, campaignId} from 'fixtures/campaign'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
-import {useStartABGroup} from '../useStartABGroup'
+import {useCreateABGroup} from '../useCreateABGroup'
 
 const queryClient = mockQueryClient()
 
 jest.mock('models/convert/abVariants/queries')
-const usePureStartCampaignMock = assumeMock(usePureStartABGroup)
+const usePureCreateCampaignMock = assumeMock(usePureCreateABGroup)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -24,19 +24,19 @@ jest.mock('state/notifications/actions')
 
 describe('usePauseABGroup', () => {
     beforeEach(() => {
-        usePureStartCampaignMock.mockClear()
+        usePureCreateCampaignMock.mockClear()
     })
 
     it('should dispatch success notification on success and invalidate detail queries', () => {
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
-        renderHook(() => useStartABGroup(), {
+        renderHook(() => useCreateABGroup(), {
             wrapper: ({children}) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
             ),
         })
-        usePureStartCampaignMock.mock.calls[0][0]?.onSuccess!(
+        usePureCreateCampaignMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(campaign as any),
             [undefined, {campaign_id: campaign.id}],
             undefined
@@ -50,7 +50,7 @@ describe('usePauseABGroup', () => {
     })
 
     it('should call handleError on error', () => {
-        renderHook(() => useStartABGroup(), {
+        renderHook(() => useCreateABGroup(), {
             wrapper: ({children}) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
@@ -58,14 +58,14 @@ describe('usePauseABGroup', () => {
             ),
         })
         const myError = {}
-        usePureStartCampaignMock.mock.calls[0][0]?.onError!(
+        usePureCreateCampaignMock.mock.calls[0][0]?.onError!(
             myError,
             [undefined, {campaign_id: campaign.id}],
             undefined
         )
 
         expect(notify).toHaveBeenCalledWith({
-            message: 'Failed to start A/B test',
+            message: 'Failed to create A/B test',
             status: NotificationStatus.Error,
         })
     })

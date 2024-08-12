@@ -97,7 +97,7 @@ describe('ABGroupContainer', () => {
 
         const addVariantBtn = getByRole('button', {name: 'Add Variant'})
         expect(addVariantBtn).toBeInTheDocument()
-        expect(addVariantBtn).toHaveAttribute('aria-disabled', 'false')
+        expect(addVariantBtn).toHaveAttribute('aria-disabled', 'true')
 
         const startBtn = getByRole('button', {name: /Start/})
         expect(startBtn).toBeInTheDocument()
@@ -201,7 +201,7 @@ describe('ABGroupContainer', () => {
 
         const addVariantBtn = getByRole('button', {name: 'Add Variant'})
         expect(addVariantBtn).toBeInTheDocument()
-        expect(addVariantBtn).toHaveAttribute('aria-disabled', 'false')
+        expect(addVariantBtn).toHaveAttribute('aria-disabled', 'true')
 
         const resumeBtn = queryByRole('button', {name: /Resume Test/})
         expect(resumeBtn).toBeInTheDocument()

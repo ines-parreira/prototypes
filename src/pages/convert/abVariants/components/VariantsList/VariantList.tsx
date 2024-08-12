@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import classnames from 'classnames'
 
 import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
@@ -10,6 +10,7 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 
+import {VARIANT_LIMIT} from 'pages/convert/abVariants/contants'
 import VariantActions from 'pages/convert/abVariants/components/VariantActions'
 import {TableColumn} from 'pages/convert/abVariants/components/VariantsList/types'
 
@@ -58,6 +59,10 @@ const variantTableCells: TableColumn[] = [
 ]
 
 const VariantsList: React.FC<Props> = ({variants}) => {
+    const isCreateDisabled = useMemo(() => {
+        return variants.length >= VARIANT_LIMIT
+    }, [variants])
+
     const onDelete = () => {
         // eslint-disable-next-line no-console
         console.log('deleting variant')
@@ -112,8 +117,8 @@ const VariantsList: React.FC<Props> = ({variants}) => {
                     <BodyCell>0%</BodyCell>
                     <BodyCell style={{width: 110}}>
                         <VariantActions
-                            isDeletingDisabled={false}
-                            isDuplicatingDisabled={false}
+                            isDeletingDisabled={true}
+                            isDuplicatingDisabled={isCreateDisabled}
                             onClickDelete={onDelete}
                             onClickDuplicate={onDuplicate}
                         />
@@ -134,7 +139,7 @@ const VariantsList: React.FC<Props> = ({variants}) => {
                             <BodyCell style={{width: 110}}>
                                 <VariantActions
                                     isDeletingDisabled={false}
-                                    isDuplicatingDisabled={false}
+                                    isDuplicatingDisabled={isCreateDisabled}
                                     onClickDelete={onDelete}
                                     onClickDuplicate={onDuplicate}
                                 />
