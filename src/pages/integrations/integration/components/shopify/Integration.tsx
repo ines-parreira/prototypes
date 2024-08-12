@@ -1,4 +1,4 @@
-import React, {FormEvent, useCallback, useState} from 'react'
+import React, {FormEvent, useCallback, useEffect, useState} from 'react'
 import {Map} from 'immutable'
 import {Col, Container, Row} from 'reactstrap'
 import {Label} from '@gorgias/ui-kit'
@@ -38,10 +38,13 @@ export default function Integration({
     useQueryNotify()
 
     const isAuthenticationPending = useAuthenticationPolling(integration)
-    const [mustSyncCustomerNotes, setSyncCustomerNotes] = useState<boolean>(
-        integration.getIn(['meta', 'sync_customer_notes'], true)
-    )
+    const [syncCustomerNotes, setSyncCustomerNotes] = useState<boolean>(true)
     const shopName = integration.getIn(['meta', 'shop_name'])
+
+    const integrationSyncCustomerNotes = integration.getIn(
+        ['meta', 'sync_customer_notes'],
+        true
+    )
 
     const handleUpdate = useCallback(
         (evt: FormEvent<HTMLFormElement>) => {
@@ -51,14 +54,19 @@ export default function Integration({
                 updateOrCreateIntegrationRequest(
                     integration.mergeDeep({
                         meta: {
-                            sync_customer_notes: mustSyncCustomerNotes,
+                            sync_customer_notes: syncCustomerNotes,
                         },
                     })
                 )
             )
         },
-        [dispatch, integration, mustSyncCustomerNotes]
+        [dispatch, integration, syncCustomerNotes]
     )
+
+    useEffect(() => {
+        // important, otherwise the value will remain the default one, since at the start we will not yet have the integration data loaded
+        setSyncCustomerNotes(integrationSyncCustomerNotes)
+    }, [integration, integrationSyncCustomerNotes])
 
     const retriggerOAuthFlow = useCallback(() => {
         window.location.href = redirectUri.replace('{shop_name}', shopName)
@@ -111,7 +119,7 @@ export default function Integration({
                         <div className="mb-4">
                             <ToggleInput
                                 name="sync_customer_notes"
-                                isToggled={mustSyncCustomerNotes}
+                                isToggled={syncCustomerNotes}
                                 onClick={(value) => setSyncCustomerNotes(value)}
                                 caption={
                                     <>
@@ -146,10 +154,8 @@ export default function Integration({
                                 className="mr-2"
                                 isDisabled={
                                     isSubmitting ||
-                                    integration.getIn([
-                                        'meta',
-                                        'sync_customer_notes',
-                                    ]) === mustSyncCustomerNotes
+                                    integrationSyncCustomerNotes ===
+                                        syncCustomerNotes
                                 }
                                 isLoading={
                                     isSubmitting || isAuthenticationPending

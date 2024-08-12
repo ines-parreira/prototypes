@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 
 import {renderWithRouter} from 'utils/testing'
 import * as actions from 'state/integrations/actions'
+import * as ToggleInput from 'pages/common/forms/ToggleInput'
 import Integration from '../Integration'
 
 jest.spyOn(actions, 'deleteIntegration')
@@ -164,6 +165,44 @@ describe('<ShopifyIntegration/>', () => {
             expect(
                 updateOrCreateIntegrationRequest.mock.calls
             ).toMatchSnapshot()
+        })
+
+        it('should correctly update the sync customers option based on integration data, after we fetch it', () => {
+            // first, simulate still waiting for the integration data
+            jest.spyOn(ToggleInput, 'default').mockImplementation(
+                ({
+                    name,
+                    isToggled,
+                }: Partial<ComponentProps<typeof ToggleInput.default>>) => (
+                    <div data-testid={name}>{isToggled ? 'true' : 'false'}</div>
+                )
+            )
+
+            // then, simulate the integration data being fetched
+            const component = renderWithRouter(
+                <Provider store={store}>
+                    <Integration
+                        {...minProps}
+                        loading={fromJS({integration: true})}
+                    />
+                </Provider>
+            )
+
+            component.rerenderComponent(
+                <Provider store={store}>
+                    <Integration
+                        {...minProps}
+                        loading={fromJS({integration: false})}
+                        integration={fromJS({
+                            meta: {sync_customer_notes: false},
+                        })}
+                    />
+                </Provider>
+            )
+
+            expect(screen.getByTestId('sync_customer_notes')).toHaveTextContent(
+                'false'
+            )
         })
     })
 })

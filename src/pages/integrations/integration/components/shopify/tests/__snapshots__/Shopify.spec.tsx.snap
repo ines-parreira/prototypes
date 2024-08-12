@@ -498,8 +498,8 @@ exports[`<Shopify/> Integration should render 1`] = `
           </div>
           <div>
             <button
-              aria-disabled="false"
-              class="wrapper mr-2 fill primary medium"
+              aria-disabled="true"
+              class="wrapper mr-2 fill primary medium isDisabled"
               type="submit"
             >
               <span>

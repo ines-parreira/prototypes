@@ -59,7 +59,7 @@ export const renderWithRouter = (
         history = createMemoryHistory({initialEntries: [route]}),
     }: RenderWithRouterParams = {}
 ) => {
-    return render(ui, {
+    const component = render(ui, {
         wrapper: ({children}: any) => (
             <Router history={history}>
                 <Route path={path}>{children}</Route>
@@ -67,6 +67,15 @@ export const renderWithRouter = (
         ),
         ...options,
     })
+    return {
+        ...component,
+        rerenderComponent: (newUi: ReactElement) =>
+            component.rerender(
+                <Router history={history}>
+                    <Route path={path}>{newUi}</Route>
+                </Router>
+            ),
+    }
 }
 
 export type RenderWithDnDParams = {
