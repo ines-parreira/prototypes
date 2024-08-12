@@ -22,10 +22,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
-import {
-    ORDER_MANAGEMENT,
-    QUICK_RESPONSES,
-} from 'pages/automate/common/components/constants'
+import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import withEcommerceIntegration from 'pages/automate/common/utils/withStoreIntegrations'
@@ -143,12 +140,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             )
         },
     })
-
-    const quickResponseDisabled = selfServiceConfigurations.every((config) =>
-        config.quickResponsePolicies.every(
-            (policy) => policy.deactivatedDatetime
-        )
-    )
 
     const reportIssueDisabled = selfServiceConfigurations.every(
         (config) => !config.reportIssuePolicy.enabled
@@ -376,39 +367,21 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             isDownloadable={!quickResponsePerformanceNoData}
                         >
                             {(stat) => (
-                                <>
-                                    {quickResponsePerformanceNoData &&
-                                    quickResponseDisabled ? (
-                                        <SelfServiceFeaturePreview
-                                            title={`Automate up to 14% of interactions with ${QUICK_RESPONSES}`}
-                                            description="Enable and display up to 6 custom Text to provide customers with automated responses to common questions."
-                                            buttonText={`Go to ${QUICK_RESPONSES}`}
-                                            buttonRedirectUrl={buildCtaRedirectUrl(
-                                                'quickResponses'
-                                            )}
-                                            imageUrl={assetsUrl(
-                                                '/img/presentationals/quick-response-preview.png'
-                                            )}
-                                            imageAltText={`${QUICK_RESPONSES} feature preview`}
-                                        />
-                                    ) : (
-                                        <TableStat
-                                            context={{tagColors: null}}
-                                            data={stat.getIn(['data', 'data'])}
-                                            meta={stat.get('meta')}
-                                            config={statsConfig.get(
-                                                SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
-                                            )}
-                                            name={
-                                                SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
-                                            }
-                                            integrations={integrations}
-                                            selfServiceConfigurations={
-                                                selfServiceConfigurations
-                                            }
-                                        />
+                                <TableStat
+                                    context={{tagColors: null}}
+                                    data={stat.getIn(['data', 'data'])}
+                                    meta={stat.get('meta')}
+                                    config={statsConfig.get(
+                                        SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
                                     )}
-                                </>
+                                    name={
+                                        SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
+                                    }
+                                    integrations={integrations}
+                                    selfServiceConfigurations={
+                                        selfServiceConfigurations
+                                    }
+                                />
                             )}
                         </StatWrapper>
                     )}

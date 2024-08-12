@@ -1645,40 +1645,9 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           />
         </div>
         <div
-          class="preview"
+          class="text-muted"
         >
-          <div
-            class="previewImageContainer"
-          >
-            <img
-              alt="Quick Responses feature preview"
-              src="/assets/img/presentationals/quick-response-preview.png"
-              width="246"
-            />
-          </div>
-          <div
-            class="previewTextContainer"
-          >
-            <div
-              class="title"
-            >
-              Automate up to 14% of interactions with Quick Responses
-            </div>
-            <div
-              class="description"
-            >
-              Enable and display up to 6 custom Text to provide customers with automated responses to common questions.
-            </div>
-            <button
-              aria-disabled="false"
-              class="wrapper fill primary medium"
-              type="button"
-            >
-              <span>
-                Go to Quick Responses
-              </span>
-            </button>
-          </div>
+          There is no data for this period.
         </div>
       </div>
       <div
