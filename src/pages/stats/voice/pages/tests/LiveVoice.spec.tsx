@@ -5,6 +5,9 @@ import LiveVoice from '../LiveVoice'
 jest.mock('pages/stats/voice/components/LiveVoiceFilters', () => () => (
     <div>LiveVoiceFilters</div>
 ))
+jest.mock('pages/stats/voice/components/LiveVoiceAgentsList', () => () => (
+    <div>LiveVoiceAgentsList</div>
+))
 jest.mock(
     'pages/stats/StatsPage',
     () =>
@@ -18,6 +21,6 @@ describe('LiveVoice', () => {
     it('should render all sections', () => {
         const {getByText} = renderComponent()
         expect(getByText('LiveVoiceFilters')).toBeInTheDocument()
-        expect(getByText('Agents list')).toBeInTheDocument()
+        expect(getByText('LiveVoiceAgentsList')).toBeInTheDocument()
     })
 })

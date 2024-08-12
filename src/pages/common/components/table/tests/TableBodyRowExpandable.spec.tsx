@@ -71,6 +71,19 @@ describe('<TableBodyRowExpandable />', () => {
         expect(screen.queryByText(level2Label)).not.toBeInTheDocument()
     })
 
+    it('should show children when first rendering if isDefaultExpanded is true', () => {
+        render(
+            <TableBodyRowExpandable<WithChildren<Data>>
+                RowContentComponent={SampleRowContentComponentMock}
+                rowContentProps={sampleData}
+                isDefaultExpanded
+            />
+        )
+
+        expect(screen.getByText(level1Label)).toBeInTheDocument()
+        expect(screen.queryByText(level2Label)).toBeInTheDocument()
+    })
+
     it('should show children 1 level below after clicking expand icon', () => {
         render(
             <TableBodyRowExpandable<WithChildren<Data>>

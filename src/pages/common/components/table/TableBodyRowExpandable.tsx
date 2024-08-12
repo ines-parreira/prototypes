@@ -8,11 +8,12 @@ import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 export type WithChildren<T> = T & {children: WithChildren<T>[]}
 
 type Props<T> = {
-    tableBodyRowProps?: ComponentProps<typeof TableBodyRow>
+    tableBodyRowProps?: Omit<ComponentProps<typeof TableBodyRow>, 'children'>
     level?: number
     RowContentComponent: FC<T>
     rowContentProps: WithChildren<T & {onClick?: () => void}>
     innerClassName?: string
+    isDefaultExpanded?: boolean
 }
 
 export const COLUMN_WIDTH = 24
@@ -24,8 +25,9 @@ export const TableBodyRowExpandable = <T,>({
     RowContentComponent,
     rowContentProps,
     innerClassName,
+    isDefaultExpanded = false,
 }: Props<T>) => {
-    const [isExpanded, setIsExpanded] = useState(false)
+    const [isExpanded, setIsExpanded] = useState(isDefaultExpanded)
     const toggleExpand = () => setIsExpanded(!isExpanded)
     const isMobile = useScreenSize() === SCREEN_SIZE.SMALL
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import StatsPage from 'pages/stats/StatsPage'
 import LiveVoiceFilters from 'pages/stats/voice/components/LiveVoiceFilters'
-import DashboardSection from 'pages/stats/DashboardSection'
 import StatCurrentDate from 'pages/stats/common/components/StatCurrentDate'
+import LiveVoiceAgentsList from 'pages/stats/voice/components/LiveVoiceAgentsList'
 
 import css from './LiveVoice.less'
 
@@ -13,9 +13,9 @@ export default function LiveVoice() {
                 <div>
                     <LiveVoiceFilters />
                 </div>
-                <DashboardSection title="Agents" className={css.agentsSection}>
-                    Agents list
-                </DashboardSection>
+                <div className={css.agentsSection}>
+                    <LiveVoiceAgentsList />
+                </div>
             </div>
         </StatsPage>
     )

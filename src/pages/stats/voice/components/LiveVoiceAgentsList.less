@@ -1,0 +1,23 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .row {
+        padding: @layout-spacing-s;
+    }
+
+    .cellInner {
+        position: static;
+        padding-left: @layout-spacing-s !important;
+        width: 100% !important;
+    }
+
+    .categoryCell {
+        .body-medium();
+    }
+
+    .title {
+        .heading-section-semibold();
+        padding: @layout-spacing-m;
+    }
+}
