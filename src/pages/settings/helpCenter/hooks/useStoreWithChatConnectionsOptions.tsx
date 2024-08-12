@@ -64,15 +64,17 @@ export function useStoreWithChatConnectionsOptions(css: CssClasses) {
     const shopsOptions: Option[] = useMemo(() => {
         const options = eCommerceIntegrations.map<Option>(
             (integration: StoreIntegration) => {
-                const shopName: string =
-                    getShopNameFromStoreIntegration(integration)
+                const shopName: string = integration.name
                 const shopType: IntegrationType = integration.type
 
                 const connectedChats = chatIntegrations.filter(
                     (chat: GorgiasChatIntegration) => {
                         const chatShopName = chat.meta?.shop_name
 
-                        return chatShopName === shopName
+                        return (
+                            chatShopName ===
+                            getShopNameFromStoreIntegration(integration)
+                        )
                     }
                 ).length
 

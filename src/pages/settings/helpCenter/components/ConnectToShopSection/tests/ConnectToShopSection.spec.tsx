@@ -113,12 +113,12 @@ describe('<ConnectToShopSection />', () => {
             fireEvent.click(getAllByText('Select a store')[0])
         })
 
-        await waitFor(() => getByText('meow-shop'))
+        await waitFor(() => getByText('Meow shop'))
 
         getByText('1 connected chat')
 
         act(() => {
-            fireEvent.click(getByText('meow-shop'))
+            fireEvent.click(getByText('Meow shop'))
         })
 
         act(() => {
@@ -126,7 +126,7 @@ describe('<ConnectToShopSection />', () => {
         })
 
         expect(onUpdate).toBeCalledWith({
-            shop_name: 'meow-shop',
+            shop_name: 'Meow shop',
             self_service_deactivated: true,
         })
     })
@@ -137,7 +137,7 @@ describe('<ConnectToShopSection />', () => {
         const {getByText, getByAltText} = render(
             <ThemeProvider>
                 <ConnectToShopSection
-                    shopName={'meow-shop'}
+                    shopName={'Meow shop'}
                     shopType={IntegrationType.Shopify}
                     onUpdate={onUpdate}
                 />
@@ -145,7 +145,7 @@ describe('<ConnectToShopSection />', () => {
             {wrapper: ReduxProvider}
         )
 
-        expect(getByText('meow-shop')).toBeInTheDocument()
+        expect(getByText('Meow shop')).toBeInTheDocument()
         const imgElement = getByAltText('store logo')
         expect(imgElement).toBeInTheDocument()
         expect(imgElement).toHaveAttribute(
@@ -160,14 +160,14 @@ describe('<ConnectToShopSection />', () => {
         const {getByText, getByAltText} = render(
             <ThemeProvider>
                 <ConnectToShopSection
-                    shopName={'meow-shop'}
+                    shopName={'Meow shop'}
                     onUpdate={onUpdate}
                 />
             </ThemeProvider>,
             {wrapper: ReduxProvider}
         )
 
-        expect(getByText('meow-shop')).toBeInTheDocument()
+        expect(getByText('Meow shop')).toBeInTheDocument()
         const imgElement = getByAltText('store logo')
         expect(imgElement).toBeInTheDocument()
         expect(imgElement).toHaveAttribute('src', 'test-file-stub')

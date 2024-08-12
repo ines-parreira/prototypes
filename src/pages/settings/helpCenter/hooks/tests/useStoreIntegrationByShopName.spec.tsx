@@ -1,11 +1,13 @@
 import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
 import {StoreIntegration, IntegrationType} from 'models/integration/types'
 import {assumeMock} from 'utils/testing'
-import useStoreIntegrations from '../useStoreIntegrations'
-import {useSelfServiceStoreIntegrationByShopName} from '../useSelfServiceStoreIntegration'
+import useAppSelector from 'hooks/useAppSelector'
+import {StoreState} from 'state/types'
+import {useStoreIntegrationByShopName} from '../useStoreIntegrationByShopName'
 
-jest.mock('../useStoreIntegrations')
-const mockUseStoreIntegrations = assumeMock(useStoreIntegrations)
+jest.mock('hooks/useAppSelector')
+const mockUseAppSelector = assumeMock(useAppSelector)
 
 const storeIntegrations = [
     {
@@ -31,24 +33,28 @@ const storeIntegrations = [
 describe('useSelfServiceStoreIntegrationByShopName', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        mockUseStoreIntegrations.mockReturnValue(storeIntegrations)
+        mockUseAppSelector.mockImplementation((selector) =>
+            selector({
+                integrations: fromJS({integrations: storeIntegrations}),
+            } as unknown as StoreState)
+        )
     })
 
     it('should return the correct store integration based on shop name', () => {
         const {result} = renderHook(() =>
-            useSelfServiceStoreIntegrationByShopName('Shop1')
+            useStoreIntegrationByShopName('Shopify Store 1')
         )
         expect(result.current).toEqual(storeIntegrations[0])
 
         const {result: result2} = renderHook(() =>
-            useSelfServiceStoreIntegrationByShopName('Shop3')
+            useStoreIntegrationByShopName('BigCommerce Store 1')
         )
         expect(result2.current).toEqual(storeIntegrations[2])
     })
 
     it('should return undefined if no matching store integration is found', () => {
         const {result} = renderHook(() =>
-            useSelfServiceStoreIntegrationByShopName('NonExistentShop')
+            useStoreIntegrationByShopName('NonExistentShop')
         )
         expect(result.current).toBeUndefined()
     })

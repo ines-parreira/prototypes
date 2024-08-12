@@ -17,17 +17,6 @@ const useSelfServiceStoreIntegration = (shopType: string, shopName: string) => {
     }, [storeIntegrations, shopType, shopName])
 }
 
-export const useSelfServiceStoreIntegrationByShopName = (shopName: string) => {
-    const storeIntegrations = useStoreIntegrations()
-
-    return useMemo(() => {
-        return storeIntegrations.find(
-            (storeIntegration) =>
-                getShopNameFromStoreIntegration(storeIntegration) === shopName
-        )
-    }, [storeIntegrations, shopName])
-}
-
 export default useSelfServiceStoreIntegration
 
 export const StoreIntegrationContext = createContext<

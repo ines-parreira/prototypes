@@ -36,7 +36,6 @@ import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 import {useGetPageEmbedments} from 'pages/settings/helpCenter/queries'
 import BackLink from 'pages/common/components/BackLink'
-import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import {
@@ -53,6 +52,7 @@ import {
     MANUALLY_EMBED_TABS,
     ManuallyEmbedOptions,
 } from '../constants'
+import {useStoreIntegrationByShopName} from '../hooks/useStoreIntegrationByShopName'
 import {CustomDomain} from './CustomDomain'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {SubdomainSection} from './SubdomainSection'
@@ -100,7 +100,7 @@ export const HelpCenterInstallationView: React.FC = () => {
         [preferences.availableLanguages]
     )
 
-    const selectedShop = useSelfServiceStoreIntegrationByShopName(
+    const selectedShop = useStoreIntegrationByShopName(
         preferences.connectedShop.shopName ?? ''
     )
 
