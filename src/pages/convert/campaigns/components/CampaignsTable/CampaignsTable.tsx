@@ -5,6 +5,10 @@ import {Map} from 'immutable'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Tooltip} from '@gorgias/ui-kit'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+
+import IconButton from 'pages/common/components/button/IconButton'
+import {useIsConvertABVariantsEnabled} from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -14,6 +18,8 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import TableHead from 'pages/common/components/table/TableHead'
 import {NumberedPagination} from 'pages/common/components/Paginations/NumberedPagination'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+
+import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
@@ -31,6 +37,8 @@ import useLocalStorage from 'hooks/useLocalStorage'
 import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
 import {useGetActiveCampaignsCount} from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
 import {GorgiasChatIntegration} from 'models/integration/types'
+import {abVariantsUrl} from 'pages/convert/abVariants/urls'
+
 import {isActiveStatus} from '../../types/enums/CampaignStatus.enum'
 import {SortingKeys, useSortedCampaigns} from '../../hooks/useSortedCampaigns'
 
@@ -39,11 +47,15 @@ import {Campaign} from '../../types/Campaign'
 import {CampaignPreviewPopover} from '../CampaignPreviewPopover'
 
 import {CampaignToolsCell} from './components/CampaignToolsCell'
+import ABGroupVariants from './components/ABGroupVariants'
 
 import css from './CampaignsTable.less'
 
 const TOOGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS =
     'You already have 3 or more campaigns active. Disable them to activate this one.'
+
+const TOOGLE_TOOPTIP_AB_TEST_COMPLETED =
+    'The A/B test is completed and cannot be re-activated.'
 
 type Props = {
     data: Campaign[]
@@ -74,7 +86,10 @@ export const CampaignsTable = ({
     const {sortBy, sortDirection, sortedCampaigns, changeSorting} =
         useSortedCampaigns(data)
 
+    const isConvertABVariantsEnabled = useIsConvertABVariantsEnabled()
     const [isLightModalOpen, setIsLightModalOpen] = useState(false)
+    const [toggleState, setToggleState] = useState<Record<string, boolean>>({})
+
     const onLightModalSubmitFn = useRef<() => void>()
 
     const storageKey = useMemo(() => {
@@ -134,9 +149,15 @@ export const CampaignsTable = ({
 
     const renderRows = useCallback(
         (campaign: Campaign, index: number) => {
-            const editLink = `/app/convert/${
+            const isABGroup = isConvertABVariantsEnabled && campaign.ab_group
+
+            let editLink = `/app/convert/${
                 integration.get('id') as number
             }/campaigns/${campaign.id}`
+
+            if (isABGroup) {
+                editLink = abVariantsUrl(integration.get('id'), campaign.id)
+            }
 
             const onClickEdit = (event: React.UIEvent) => {
                 event.preventDefault()
@@ -156,79 +177,126 @@ export const CampaignsTable = ({
             ) as LanguageUI
 
             const isCampaignActive = isActiveStatus(campaign.status)
-            const toggleDisabled =
-                !isCampaignActive &&
-                (isAtCampaignsLimit || isOverCampaignsLimit)
+            const toggleDisabled = isABGroup
+                ? campaign.ab_group?.status === ABGroupStatus.Completed ||
+                  isAtCampaignsLimit ||
+                  isOverCampaignsLimit
+                : !isCampaignActive &&
+                  (isAtCampaignsLimit || isOverCampaignsLimit)
             const toggleId = `toggle-${campaign.id}`
 
             return (
-                <TableBodyRow key={index} className={css.tableRow}>
-                    <BodyCell style={{width: 88}}>
-                        <span id={toggleId}>
-                            <ToggleInput
-                                isToggled={isCampaignActive}
-                                isDisabled={toggleDisabled}
-                                onClick={() => onClickToggle(campaign)}
-                                aria-label={`Enable campaign ${campaign.name}`}
-                            />
-                        </span>
-                        {toggleDisabled && (
-                            <Tooltip target={toggleId} placement="bottom-start">
-                                {TOOGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS}
-                            </Tooltip>
-                        )}
-                    </BodyCell>
-                    <CampaignPreviewPopover
-                        message={campaign.message_text}
-                        triggers={campaign.triggers}
-                    >
-                        <BodyCell innerClassName={css.anchorCell}>
-                            <Link
-                                className={css.anchor}
-                                to={editLink}
-                                onClick={onClickEdit}
-                            >
-                                <div>
-                                    <b>{campaign.name}</b>
-                                </div>
-                                <LightCampaignBadge
-                                    campaign={campaign}
-                                    integration={integration}
-                                    className={css.lightBadge}
+                <>
+                    <TableBodyRow key={index} className={css.tableRow}>
+                        <BodyCell style={{width: 88}}>
+                            <span id={toggleId}>
+                                <ToggleInput
+                                    isToggled={isCampaignActive}
+                                    isDisabled={toggleDisabled}
+                                    onClick={() => onClickToggle(campaign)}
+                                    aria-label={`Enable campaign ${campaign.name}`}
                                 />
-                            </Link>
+                            </span>
+                            {toggleDisabled && (
+                                <Tooltip
+                                    target={toggleId}
+                                    placement="bottom-start"
+                                >
+                                    {isABGroup
+                                        ? TOOGLE_TOOPTIP_AB_TEST_COMPLETED
+                                        : TOOGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS}
+                                </Tooltip>
+                            )}
                         </BodyCell>
-                    </CampaignPreviewPopover>
-                    <BodyCell>
-                        <div>{creationDate}</div>
-                    </BodyCell>
-                    {chatMultiLanguagesEnabled && (
-                        <BodyCell size="small">
-                            <BadgeItem
-                                customClass={css.languageBadge}
-                                key={language.value}
-                                id={language.value as any}
-                                label={`${language.label}${
-                                    language.value === defaultLanguage
-                                        ? ' (Default)'
-                                        : ''
-                                }`}
+                        <CampaignPreviewPopover
+                            message={campaign.message_text}
+                            triggers={campaign.triggers}
+                        >
+                            <BodyCell innerClassName={css.anchorCell}>
+                                {isConvertABVariantsEnabled &&
+                                    campaign.ab_group && (
+                                        <IconButton
+                                            fillStyle="ghost"
+                                            intent="secondary"
+                                            className={css.toggleBtn}
+                                            onClick={() => {
+                                                setToggleState((state) => {
+                                                    return {
+                                                        ...state,
+                                                        [campaign.id]:
+                                                            !state[campaign.id],
+                                                    }
+                                                })
+                                            }}
+                                        >
+                                            {!toggleState[campaign.id]
+                                                ? 'arrow_right'
+                                                : 'arrow_drop_down'}
+                                        </IconButton>
+                                    )}
+                                <Link
+                                    className={css.anchor}
+                                    to={editLink}
+                                    onClick={onClickEdit}
+                                >
+                                    <div>
+                                        <b>{campaign.name}</b>
+                                        {isConvertABVariantsEnabled &&
+                                            campaign.ab_group && (
+                                                <Badge
+                                                    className={css.abBadge}
+                                                    type={ColorType.LightDark}
+                                                >
+                                                    A/B Test
+                                                </Badge>
+                                            )}
+                                    </div>
+                                    <LightCampaignBadge
+                                        campaign={campaign}
+                                        integration={integration}
+                                        className={css.lightBadge}
+                                    />
+                                </Link>
+                            </BodyCell>
+                        </CampaignPreviewPopover>
+                        <BodyCell>
+                            <div>{creationDate}</div>
+                        </BodyCell>
+                        {chatMultiLanguagesEnabled && (
+                            <BodyCell size="small">
+                                <BadgeItem
+                                    customClass={css.languageBadge}
+                                    key={language.value}
+                                    id={language.value as any}
+                                    label={`${language.label}${
+                                        language.value === defaultLanguage
+                                            ? ' (Default)'
+                                            : ''
+                                    }`}
+                                />
+                            </BodyCell>
+                        )}
+                        <BodyCell style={{width: 110}}>
+                            <CampaignToolsCell
+                                campaign={campaign}
+                                integration={integration}
+                                createDisabled={!campaignCreationAllowed}
+                                isDeletingCampaign={isDeletingCampaign}
+                                isOverCampaignsLimit={isOverCampaignsLimit}
+                                onClickDelete={onClickDelete}
+                                onClickDuplicate={onClickDuplicate}
+                                onClickEdit={onClickEdit}
                             />
                         </BodyCell>
-                    )}
-                    <BodyCell style={{width: 110}}>
-                        <CampaignToolsCell
-                            campaign={campaign}
-                            integration={integration}
-                            createDisabled={!campaignCreationAllowed}
-                            isDeletingCampaign={isDeletingCampaign}
-                            isOverCampaignsLimit={isOverCampaignsLimit}
-                            onClickDelete={onClickDelete}
-                            onClickDuplicate={onClickDuplicate}
-                            onClickEdit={onClickEdit}
+                    </TableBodyRow>
+                    {isABGroup && toggleState[campaign.id] && (
+                        <ABGroupVariants
+                            variants={campaign.variants}
+                            integrationId={integration.get('id') as string}
+                            campaignId={campaign.id}
                         />
-                    </BodyCell>
-                </TableBodyRow>
+                    )}
+                </>
             )
         },
         [
@@ -243,6 +311,9 @@ export const CampaignsTable = ({
             onClickDuplicate,
             history,
             onClickToggle,
+            setToggleState,
+            toggleState,
+            isConvertABVariantsEnabled,
         ]
     )
 

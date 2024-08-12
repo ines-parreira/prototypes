@@ -1,13 +1,18 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import {screen, fireEvent, render, waitFor} from '@testing-library/react'
+import {screen, fireEvent, render, waitFor, act} from '@testing-library/react'
 
 import useSearch from 'hooks/useSearch'
 
+import {campaignWithABGroup} from 'fixtures/abGroup'
+
+import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
 import * as useLocalStorage from 'hooks/useLocalStorage'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import * as useIsConvertABVariantsEnabled from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+
 import {createTrigger} from '../../../utils/createTrigger'
 
 import {Campaign} from '../../../types/Campaign'
@@ -17,6 +22,8 @@ import {CampaignsTable} from '../CampaignsTable'
 
 jest.mock('hooks/useSearch')
 const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
+
+jest.mock('pages/convert/common/hooks/useIsConvertABVariantsEnabled')
 
 const CAMPAIGNS_COUNT = 19
 const ACTIVE_CAMPAIGNS_COUNT = ACTIVE_CAMPAIGNS_LIMIT + 1
@@ -33,6 +40,11 @@ const data = Array.from({length: CAMPAIGNS_COUNT}, (_, i) => ({
             ? CampaignStatus.Active
             : CampaignStatus.Inactive,
 })) as unknown[] as Campaign[]
+
+const campaignListWithABGroup = [
+    campaignWithABGroup,
+    ...data,
+] as unknown[] as Campaign[]
 
 const integration = fromJS({
     id: '1',
@@ -65,115 +77,211 @@ describe('<CampaignsTable />', () => {
         onChangePage: onChangePage,
     }
 
-    beforeEach(() => {
-        Object.defineProperty(window, 'location', {
-            value: {
-                search: '',
-            },
+    describe('A/B Variants LD flag is disabled', () => {
+        beforeEach(() => {
+            Object.defineProperty(window, 'location', {
+                value: {
+                    search: '',
+                },
+            })
+            ;(useSearch as jest.Mock).mockImplementation(() => ({}))
+            useIsConvertSubscriberSpy.mockImplementation(() => true)
+            useLocalStorageSpy.mockReturnValue([])
+
+            jest.spyOn(
+                useIsConvertABVariantsEnabled,
+                'useIsConvertABVariantsEnabled'
+            ).mockImplementation(() => false)
         })
-        ;(useSearch as jest.Mock).mockImplementation(() => ({}))
-        useIsConvertSubscriberSpy.mockImplementation(() => true)
-        useLocalStorageSpy.mockReturnValue([])
-    })
 
-    it('renders the `perPage` items', () => {
-        const {container} = render(<CampaignsTable {...props} />)
+        it('renders the `perPage` items', () => {
+            const {container} = render(<CampaignsTable {...props} />)
 
-        const rows = container.querySelectorAll('tr')
+            const rows = container.querySelectorAll('tr')
 
-        expect(rows.length).toEqual(11) // 10 campaign rows + header row
-    })
+            expect(rows.length).toEqual(11) // 10 campaign rows + header row
+        })
 
-    it('renders the `perPage` items with offset', () => {
-        const {container, rerender} = render(<CampaignsTable {...props} />)
+        it('renders the `perPage` items with offset', () => {
+            const {container, rerender} = render(<CampaignsTable {...props} />)
 
-        const firstPage = container.querySelectorAll('tr')
-        expect(firstPage.length).toEqual(11) // 10 campaign rows + header row
+            const firstPage = container.querySelectorAll('tr')
+            expect(firstPage.length).toEqual(11) // 10 campaign rows + header row
 
-        rerender(<CampaignsTable {...props} page={2} />)
+            rerender(<CampaignsTable {...props} page={2} />)
 
-        const secondPage = container.querySelectorAll('tr')
-        expect(secondPage.length).toEqual(10) // 9 campaign rows + header row
-    })
+            const secondPage = container.querySelectorAll('tr')
+            expect(secondPage.length).toEqual(10) // 9 campaign rows + header row
+        })
 
-    it('shows the preview tooltip', async () => {
-        render(<CampaignsTable {...props} data={[data[0]]} />)
+        it('shows the preview tooltip', async () => {
+            render(<CampaignsTable {...props} data={[data[0]]} />)
 
-        fireEvent.mouseOver(screen.getByText('campaign 0'))
+            fireEvent.mouseOver(screen.getByText('campaign 0'))
 
-        await waitFor(() => {
-            expect(screen.getByText(data[0].message_text)).toBeInTheDocument()
-            expect(screen.getByText('Business hours')).toBeInTheDocument()
+            await waitFor(() => {
+                expect(
+                    screen.getByText(data[0].message_text)
+                ).toBeInTheDocument()
+                expect(screen.getByText('Business hours')).toBeInTheDocument()
+            })
+        })
+
+        it('does not show the pagination if there is only one page', () => {
+            render(<CampaignsTable {...props} perPage={25} />)
+
+            expect(() => screen.getByLabelText(/next/)).toThrow()
+            expect(() => screen.getByLabelText(/previous/)).toThrow()
+        })
+
+        it('resets the page when the data changes', () => {
+            const {rerender} = render(
+                <CampaignsTable {...props} page={3} perPage={5} />
+            )
+
+            expect(screen.getByLabelText('page-3')).toHaveAttribute(
+                'aria-current',
+                'true'
+            )
+
+            rerender(
+                <CampaignsTable
+                    {...props}
+                    data={data.slice(0, 15)}
+                    perPage={5}
+                />
+            )
+
+            expect(screen.getByLabelText('page-1')).toHaveAttribute(
+                'aria-current',
+                'true'
+            )
+        })
+
+        it('blocks toggle activation when over the limit', () => {
+            useIsConvertSubscriberSpy.mockImplementation(() => false)
+
+            const {container} = render(
+                <CampaignsTable {...props} perPage={CAMPAIGNS_COUNT} />
+            )
+
+            const disabledToggles = container.querySelectorAll(
+                'label[class*="isDisabled"]'
+            )
+
+            expect(disabledToggles.length).toEqual(
+                CAMPAIGNS_COUNT - ACTIVE_CAMPAIGNS_COUNT
+            )
+        })
+
+        it('displays light campaign modal when toggling active campaign', () => {
+            useIsConvertSubscriberSpy.mockImplementation(() => false)
+
+            const {container, getByText} = render(
+                <CampaignsTable {...props} perPage={CAMPAIGNS_COUNT} />
+            )
+
+            const toggles = Array.from(
+                container.querySelectorAll('label[class*="label"]')
+            ).filter(
+                (el) =>
+                    !Array.from(el.classList).some((cn) =>
+                        cn.includes('isDisabled')
+                    )
+            )
+
+            expect(toggles.length).toEqual(ACTIVE_CAMPAIGNS_COUNT)
+
+            const inputId = toggles[0].getAttribute('for') || ''
+
+            const activeCampaignToggle = document.getElementById(inputId)
+            expect(activeCampaignToggle).not.toBeNull()
+            activeCampaignToggle && fireEvent.click(activeCampaignToggle)
+
+            expect(getByText('Learn About Convert')).toBeInTheDocument()
         })
     })
 
-    it('does not show the pagination if there is only one page', () => {
-        render(<CampaignsTable {...props} perPage={25} />)
+    describe('A/B Variants LD flag is enabled', () => {
+        const propsWithABGroup = {
+            ...props,
+            data: campaignListWithABGroup,
+        }
 
-        expect(() => screen.getByLabelText(/next/)).toThrow()
-        expect(() => screen.getByLabelText(/previous/)).toThrow()
-    })
+        beforeEach(() => {
+            Object.defineProperty(window, 'location', {
+                value: {
+                    search: '',
+                },
+            })
+            ;(useSearch as jest.Mock).mockImplementation(() => ({}))
+            useIsConvertSubscriberSpy.mockImplementation(() => true)
+            useLocalStorageSpy.mockReturnValue([])
 
-    it('resets the page when the data changes', () => {
-        const {rerender} = render(
-            <CampaignsTable {...props} page={3} perPage={5} />
-        )
+            jest.spyOn(
+                useIsConvertABVariantsEnabled,
+                'useIsConvertABVariantsEnabled'
+            ).mockImplementation(() => true)
+        })
 
-        expect(screen.getByLabelText('page-3')).toHaveAttribute(
-            'aria-current',
-            'true'
-        )
+        it('renders a/b test with other', () => {
+            const {container, getByText} = render(
+                <CampaignsTable {...propsWithABGroup} />
+            )
 
-        rerender(
-            <CampaignsTable {...props} data={data.slice(0, 15)} perPage={5} />
-        )
+            const rows = container.querySelectorAll('tr')
 
-        expect(screen.getByLabelText('page-1')).toHaveAttribute(
-            'aria-current',
-            'true'
-        )
-    })
+            expect(rows.length).toEqual(11) // 10 campaign rows + header row
 
-    it('blocks toggle activation when over the limit', () => {
-        useIsConvertSubscriberSpy.mockImplementation(() => false)
+            expect(getByText('A/B Test')).toBeInTheDocument()
+        })
 
-        const {container} = render(
-            <CampaignsTable {...props} perPage={CAMPAIGNS_COUNT} />
-        )
+        it('can toggle show/hide variants', async () => {
+            const componentProps = {
+                ...props,
+                data: [campaignWithABGroup] as unknown[] as Campaign[],
+            }
 
-        const disabledToggles = container.querySelectorAll(
-            'label[class*="isDisabled"]'
-        )
+            const {container, getByText, queryByText} = render(
+                <CampaignsTable {...componentProps} />
+            )
 
-        expect(disabledToggles.length).toEqual(
-            CAMPAIGNS_COUNT - ACTIVE_CAMPAIGNS_COUNT
-        )
-    })
+            expect(queryByText('Control Variant')).not.toBeInTheDocument()
 
-    it('displays light campaign modal when toggling active campaign', () => {
-        useIsConvertSubscriberSpy.mockImplementation(() => false)
+            const toggleButton = container.querySelectorAll(
+                'button[class*="toggleBtn"]'
+            )
+            expect(toggleButton.length).toEqual(1)
 
-        const {container, getByText} = render(
-            <CampaignsTable {...props} perPage={CAMPAIGNS_COUNT} />
-        )
+            act(() => {
+                fireEvent.click(toggleButton[0])
+            })
 
-        const toggles = Array.from(
-            container.querySelectorAll('label[class*="label"]')
-        ).filter(
-            (el) =>
-                !Array.from(el.classList).some((cn) =>
-                    cn.includes('isDisabled')
-                )
-        )
+            await waitFor(() => {
+                expect(getByText('Control Variant')).toBeInTheDocument()
+            })
+        })
 
-        expect(toggles.length).toEqual(ACTIVE_CAMPAIGNS_COUNT)
+        it('blocks toggle activation when A/B Group is completed', () => {
+            const campaign = {
+                campaignWithABGroup,
+                ab_group: {
+                    ...campaignWithABGroup,
+                    status: ABGroupStatus.Completed,
+                },
+            }
+            const componentProps = {
+                ...props,
+                data: [campaign] as unknown[] as Campaign[],
+            }
 
-        const inputId = toggles[0].getAttribute('for') || ''
+            const {container} = render(<CampaignsTable {...componentProps} />)
 
-        const activeCampaignToggle = document.getElementById(inputId)
-        expect(activeCampaignToggle).not.toBeNull()
-        activeCampaignToggle && fireEvent.click(activeCampaignToggle)
+            const disabledToggles = container.querySelectorAll(
+                'label[class*="isDisabled"]'
+            )
 
-        expect(getByText('Learn About Convert')).toBeInTheDocument()
+            expect(disabledToggles.length).toEqual(1)
+        })
     })
 })
