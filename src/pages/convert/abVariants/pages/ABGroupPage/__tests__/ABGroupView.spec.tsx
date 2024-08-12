@@ -37,6 +37,7 @@ import {
     abVariantAddUrl,
     abVariantControlVariantUrl,
     abVariantEditorUrl,
+    abVariantsUrl,
 } from 'pages/convert/abVariants/urls'
 
 import {ABGroupView} from '../ABGroupPage'
@@ -353,5 +354,49 @@ describe('ABGroupView', () => {
         })
 
         expect(updateCampaignMock).not.toBeCalled()
+    })
+
+    it('user can delete variant', () => {
+        useParamsMock.mockReturnValue({
+            id: integrationId,
+            campaignId: campaignWithABGroup.id,
+        })
+
+        const {getAllByTestId} = renderComponent(
+            {
+                campaign: campaignWithABGroup,
+                integrationId: integrationId,
+            },
+            abVariantsUrl(integrationId, campaignWithABGroup.id)
+        )
+
+        const deleteButtons = getAllByTestId('delete-icon-button')
+        expect(deleteButtons).toHaveLength(3)
+
+        deleteButtons.forEach((element, idx) => {
+            // First element is 'control version'
+            expect(element).toHaveAttribute(
+                'aria-disabled',
+                idx === 0 ? 'true' : 'false'
+            )
+        })
+
+        act(() => {
+            userEvent.click(deleteButtons[2])
+        })
+
+        expect(updateCampaignMock).toBeCalledWith([
+            undefined,
+            {campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677'},
+            {
+                variants: [
+                    {
+                        id: campaignWithABGroup.variants[0].id,
+                        message_html: 'Lorem <b>Ipsum</b>.',
+                        message_text: 'Lorem Ipsum',
+                    },
+                ],
+            },
+        ])
     })
 })

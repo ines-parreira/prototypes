@@ -7,10 +7,17 @@ import {variants} from 'fixtures/abGroup'
 import VariantsList from '../VariantList'
 
 describe('<VariantsList />', () => {
-    it('render and user can performa basic actions', () => {
-        const consoleLogMock = jest.spyOn(console, 'log')
+    const onDelete = jest.fn()
+    const onDuplicate = jest.fn()
 
-        const {getByText, getByTestId} = render(<VariantsList variants={[]} />)
+    it('render and user can performa basic actions', () => {
+        const {getByText, getByTestId} = render(
+            <VariantsList
+                variants={[]}
+                onDelete={onDelete}
+                onDuplicate={onDuplicate}
+            />
+        )
 
         expect(getByText('Control Variant')).toBeInTheDocument()
 
@@ -20,11 +27,17 @@ describe('<VariantsList />', () => {
         const duplicateBtn = getByTestId('duplicate-icon-button')
         userEvent.click(duplicateBtn)
 
-        expect(consoleLogMock).toBeCalledWith('duplicating variant')
+        expect(onDuplicate).toBeCalledWith(null)
     })
 
     it('render and list actions shoould be disabled', () => {
-        const {getAllByTestId} = render(<VariantsList variants={variants} />)
+        const {getAllByTestId} = render(
+            <VariantsList
+                variants={variants}
+                onDelete={onDelete}
+                onDuplicate={onDuplicate}
+            />
+        )
 
         const deleteButtons = getAllByTestId('delete-icon-button')
         expect(deleteButtons).toHaveLength(3)

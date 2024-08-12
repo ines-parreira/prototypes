@@ -37,6 +37,7 @@ import ABTestVariantEditPage from 'pages/convert/abVariants/pages/ABTestVariantE
 import {createVariant} from 'pages/convert/abVariants/utils/createVariant'
 import {duplicateVariant} from 'pages/convert/abVariants/utils/duplicateVariant'
 import {updateVariant} from 'pages/convert/abVariants/utils/updateVariant'
+import {deleteVariant} from 'pages/convert/abVariants/utils/deleteVariant'
 
 import css from './ABGroupPage.less'
 
@@ -141,7 +142,8 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
     const handleDuplicateVariant = async (variantId: string | null) => {
         const [newVariantId, variants] = duplicateVariant(
             campaignData?.variants ?? [],
-            variantId as string
+            campaignData,
+            variantId
         )
 
         if (!newVariantId) {
@@ -160,6 +162,26 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
         history.push(
             abVariantEditorUrl(integrationId, campaignData.id, newVariantId)
         )
+    }
+
+    const handleDeleteVariant = async (variantId: string | null) => {
+        const variants = deleteVariant(
+            campaignData.variants ?? [],
+            variantId as string
+        )
+
+        if (!variants) {
+            return
+        }
+
+        // Update state to not have glitches
+        setCampaignData(
+            produce((draft) => {
+                draft.variants = variants
+            })
+        )
+
+        await updateCampaign({variants: variants} as CampaignUpdatePayload)
     }
 
     const handleCreateVariant = async (data: Map<any, any>) => {
@@ -195,6 +217,8 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                             variants={
                                 campaignData.variants as CampaignVariant[]
                             }
+                            onDelete={handleDeleteVariant}
+                            onDuplicate={handleDuplicateVariant}
                         />
                     </Route>
                     <Route exact path={abVariantsControlVersionPath}>

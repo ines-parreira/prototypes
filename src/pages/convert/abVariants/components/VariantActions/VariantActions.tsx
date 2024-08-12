@@ -4,7 +4,7 @@ import IconButton from 'pages/common/components/button/IconButton'
 type Props = {
     isDeletingDisabled: boolean
     isDuplicatingDisabled: boolean
-    onClickDelete: () => void
+    onClickDelete?: () => void
     onClickDuplicate: () => void
 }
 

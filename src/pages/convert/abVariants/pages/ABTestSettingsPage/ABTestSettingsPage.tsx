@@ -11,9 +11,15 @@ import css from './ABTestSettingsPage.less'
 
 type Props = {
     variants: CampaignVariant[]
+    onDelete: (variantId: string | null) => void
+    onDuplicate: (variantId: string | null) => void
 }
 
-export const ABTestSettingsPage: React.FC<Props> = ({variants}) => {
+export const ABTestSettingsPage: React.FC<Props> = ({
+    variants,
+    onDelete,
+    onDuplicate,
+}) => {
     return (
         <>
             <div className={css.pageContentWithPadding}>
@@ -58,7 +64,11 @@ export const ABTestSettingsPage: React.FC<Props> = ({variants}) => {
             </div>
 
             <div>
-                <VariantsList variants={variants} />
+                <VariantsList
+                    variants={variants}
+                    onDelete={onDelete}
+                    onDuplicate={onDuplicate}
+                />
             </div>
         </>
     )

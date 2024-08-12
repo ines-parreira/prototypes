@@ -5,7 +5,13 @@ import ABTestSettingPage from '../ABTestSettingsPage'
 
 describe('<ABTestSettingPage />', () => {
     it('renders', () => {
-        const {getByText} = render(<ABTestSettingPage variants={[]} />)
+        const {getByText} = render(
+            <ABTestSettingPage
+                variants={[]}
+                onDelete={jest.fn()}
+                onDuplicate={jest.fn()}
+            />
+        )
         expect(getByText('Back to Campaigns list')).toBeInTheDocument()
     })
 })
