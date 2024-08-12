@@ -65,6 +65,7 @@ import {ActivityEvents} from 'services/activityTracker'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import {AccountSettingType} from 'state/currentAccount/types'
 
+import {AttachmentEnum} from 'common/types'
 import {getReplyAreaStateSnapshot} from './testUtils'
 
 type MockedRootState = {
@@ -1951,7 +1952,7 @@ describe('actions', () => {
 
     describe('addProductCardAttachments()', () => {
         const attachment = {
-            content_type: 'application/productCard',
+            content_type: AttachmentEnum.Product,
             name: 'bar',
             size: 0,
             url: 'https://cdn.shopify.com/s/files/1/1781/7573/products/candy.jpg?v=1575311784',
@@ -1975,7 +1976,7 @@ describe('actions', () => {
                 ticket: ticketInitialState.set('id', 1),
             })
             store.dispatch(
-                actions.addProductCardAttachment(
+                actions.addAttachment(
                     ticketInitialState.set('id', 1),
                     attachment
                 )
@@ -1993,7 +1994,7 @@ describe('actions', () => {
                 ticket: ticketInitialState.set('id', 2),
             })
             store.dispatch(
-                actions.addProductCardAttachment(
+                actions.addAttachment(
                     ticketInitialState.set('id', 1),
                     attachment
                 )

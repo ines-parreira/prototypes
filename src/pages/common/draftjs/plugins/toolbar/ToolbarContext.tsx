@@ -5,7 +5,10 @@ import {List} from 'immutable'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {DiscountCode} from 'models/discountCodes/types'
 import {ProductCardDetails, ShopifyIntegration} from 'models/integration/types'
-import {DiscountOfferAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {
+    AttachmentType,
+    DiscountOfferAttachment,
+} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {TooltipTourConfigurationType} from './types'
 
 import {ProductCardAttachment} from './components/AddProductLink'
@@ -31,10 +34,12 @@ export type ToolbarContextType = {
     // AddProductLink
     canAddProductCard: boolean
     canAddProductLink: boolean
+    canAddProductAutomations: boolean
     toolbarTour: Record<string, TooltipTourConfigurationType> | undefined
     disableOutOfStockProducts: boolean
     disableVariantSelection: boolean
     onAddProductCardAttachment: (attachment: ProductCardAttachment) => void
+    onAddProductAutomationAttachment: (attachment: AttachmentType) => void
     onInsertProductLinkOpen: () => void
     onInsertProductLinkAdded: (productCardDetails: ProductCardDetails) => void
     shopifyIntegrations: List<any>
@@ -58,10 +63,12 @@ export const ToolbarContext = createContext<ToolbarContextType>({
     canAddProductCard: false,
     onAddUniqueDiscountOfferAttachment: _noop,
     canAddProductLink: false,
+    canAddProductAutomations: false,
     toolbarTour: undefined,
     disableOutOfStockProducts: false,
     disableVariantSelection: false,
     onAddProductCardAttachment: _noop,
+    onAddProductAutomationAttachment: _noop,
     onInsertProductLinkOpen: _noop,
     onInsertProductLinkAdded: _noop,
     shopifyIntegrations: List([]),

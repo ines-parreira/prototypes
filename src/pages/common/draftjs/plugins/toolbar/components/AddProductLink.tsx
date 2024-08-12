@@ -10,6 +10,7 @@ import {ProductCardDetails} from 'models/integration/types'
 import {insertLink, insertText} from 'utils'
 import {getIconFromType} from 'state/integrations/helpers'
 
+import {AttachmentEnum} from 'common/types'
 import {ActionInjectedProps, ActionName} from '../types'
 import {getTooltipTourConfiguration} from '../utils'
 import {useToolbarContext} from '../ToolbarContext'
@@ -20,7 +21,7 @@ import css from './AddProductLink.less'
 type Props = ActionInjectedProps
 
 export type ProductCardAttachment = {
-    content_type: 'application/productCard'
+    content_type: AttachmentEnum.Product
     name?: string
     size: number
     url: string
@@ -50,9 +51,11 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
     const {
         canAddProductCard,
         canAddProductLink,
+        canAddProductAutomations,
         disableOutOfStockProducts,
         disableVariantSelection,
         onAddProductCardAttachment,
+        onAddProductAutomationAttachment,
         onInsertProductLinkOpen,
         onInsertProductLinkAdded,
         shopifyIntegrations,
@@ -101,7 +104,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
 
             if (canAddProductCard) {
                 onAddProductCardAttachment({
-                    content_type: 'application/productCard',
+                    content_type: AttachmentEnum.Product,
                     name: productCardDetails.productTitle,
                     size: 0,
                     url: productCardDetails.imageUrl,
@@ -153,6 +156,14 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
             onInsertProductLinkAdded,
             onAddProductCardAttachment,
         ]
+    )
+
+    const handleProductAutomationClicked = useCallback(
+        (attachment) => {
+            onAddProductAutomationAttachment(attachment)
+            setOpen(false)
+        },
+        [onAddProductAutomationAttachment]
     )
 
     return (
@@ -213,6 +224,8 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
                     disableOutOfStockProducts={disableOutOfStockProducts}
                     disableVariantStep={disableVariantSelection}
                     productClicked={handleAddProductLink}
+                    canAddProductAutomations={canAddProductAutomations}
+                    productAutomationClicked={handleProductAutomationClicked}
                     onResetStoreChoice={
                         shopifyIntegrations.size > 1
                             ? handleResetStoreChoice

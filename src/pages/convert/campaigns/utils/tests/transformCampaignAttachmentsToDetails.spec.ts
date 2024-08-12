@@ -1,0 +1,62 @@
+import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
+import {AttachmentEnum} from 'common/types'
+import {
+    campaignDiscountOfferAttachment,
+    campaignProductAttachment,
+    campaignProductRecommendationAttachment,
+} from 'fixtures/campaign'
+
+describe('transformCampaignAttachmentsToDetails', () => {
+    it('should transform product attachment', () => {
+        const attachments = [campaignProductAttachment]
+        const result = transformCampaignAttachmentsToDetails(attachments)
+        expect(result).toEqual([
+            {
+                content_type: AttachmentEnum.Product,
+                name: 'Thick socks',
+                size: 44,
+                url: 'https://athlete-shift.com/products/thick-socks',
+                extra: {
+                    product_id: 349348782,
+                    product_link:
+                        'https://athlete-shift.com/products/thick-socks-heart',
+                    price: 12.34,
+                    featured_image:
+                        'https://athlete-shift.com/products/thick-socks',
+                    variant_name: 'Thick socks with heart',
+                    position: undefined,
+                },
+            },
+        ])
+    })
+
+    it('should transform discount offer attachment', () => {
+        const attachments = [campaignDiscountOfferAttachment]
+        const result = transformCampaignAttachmentsToDetails(attachments)
+        expect(result).toEqual([
+            {
+                content_type: AttachmentEnum.DiscountOffer,
+                name: '10% off',
+                extra: {
+                    discount_offer_id: '10OFF',
+                    summary: '10% off for everyone',
+                },
+            },
+        ])
+    })
+
+    it('should transform product recommendation attachment', () => {
+        const attachments = [campaignProductRecommendationAttachment]
+        const result = transformCampaignAttachmentsToDetails(attachments)
+        expect(result).toEqual([
+            {
+                content_type: AttachmentEnum.ProductRecommendation,
+                name: 'Similar Products You Have Seen',
+                extra: {
+                    id: '01J4VH71YJ704QXCP4WDST3ZT3',
+                    scenario: 'similar_seen',
+                },
+            },
+        ])
+    })
+})

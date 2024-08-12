@@ -68,8 +68,6 @@ import {SearchType, UserSearchResult} from 'models/search/types'
 import {search} from 'models/search/resources'
 import {CustomerChannel} from 'models/customerChannel/types'
 import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/shopify'
-import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
-
 import {
     MacroAction,
     MacroActionName,
@@ -91,7 +89,7 @@ import {isCustomFieldValueEmpty} from 'utils/customFields'
 
 import {
     AttachmentPosition,
-    DiscountOfferAttachment,
+    AttachmentType,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import {
     MessageContext,
@@ -220,35 +218,10 @@ export const addAttachments =
         )
     }
 
-export const addProductCardAttachment =
+export const addAttachment =
     (
         ticket: Map<any, any>,
-        attachment: ProductCardAttachment,
-        sortAttachments?: boolean
-    ) =>
-    (
-        dispatch: StoreDispatch,
-        getState: () => RootState
-        // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-    ): Promise<ReturnType<StoreDispatch>> | ReturnType<StoreDispatch> => {
-        const state = getState()
-        const {ticket: _ticket} = state
-
-        if (ticket.get('id') !== _ticket.get('id')) {
-            return Promise.resolve()
-        }
-
-        dispatch({
-            type: !!sortAttachments
-                ? constants.NEW_MESSAGE_ADD_SORTED_ATTACHMENT_SUCCESS
-                : constants.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
-            resp: [attachment],
-        })
-    }
-export const addUniqueDiscountOfferAttachment =
-    (
-        ticket: Map<any, any>,
-        attachment: DiscountOfferAttachment,
+        attachment: AttachmentType,
         sortAttachments?: boolean
     ) =>
     (

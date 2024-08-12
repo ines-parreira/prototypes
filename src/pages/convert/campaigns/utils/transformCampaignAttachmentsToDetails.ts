@@ -1,14 +1,17 @@
 import {
+    AttachmentType,
     CampaignAttachment,
     campaignAttachmentIsDiscountOffer,
     campaignAttachmentIsProduct,
+    campaignAttachmentIsProductRecommendation,
     DiscountOfferAttachment,
+    ProductRecommendationAttachment,
 } from '../types/CampaignAttachment'
 
 export const transformCampaignAttachmentsToDetails = (
     attachments: CampaignAttachment[]
     // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-): (unknown | DiscountOfferAttachment)[] => {
+): (unknown | AttachmentType)[] => {
     const transformed = attachments.map((attachment) => {
         // The problem with product attachment there are missing things from ProductCardAttachment
         // like `extra.variant_id` and type miss match from `extra.price`
@@ -37,6 +40,16 @@ export const transformCampaignAttachmentsToDetails = (
                     summary: attachment.extra.summary,
                 },
             } as DiscountOfferAttachment
+        }
+        if (campaignAttachmentIsProductRecommendation(attachment)) {
+            return {
+                content_type: attachment.contentType,
+                name: attachment.name,
+                extra: {
+                    id: attachment.extra.id,
+                    scenario: attachment.extra.scenario,
+                },
+            } as ProductRecommendationAttachment
         }
     })
     return transformed

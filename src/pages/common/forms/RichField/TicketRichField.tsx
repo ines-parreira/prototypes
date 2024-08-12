@@ -21,8 +21,7 @@ import {TicketChannel} from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     addNewMessageDiscountCode,
-    addProductCardAttachment,
-    addUniqueDiscountOfferAttachment,
+    addAttachment,
 } from 'state/newMessage/actions'
 import {canAddVideoPlayer} from 'utils'
 import {getIntegrationsByType} from 'state/integrations/selectors'
@@ -40,6 +39,7 @@ type Props = {
     toolbarTour?: Record<string, TooltipTourConfigurationType>
     supportsUniqueDiscountOffer?: boolean
     canAddUniqueDiscountOffer?: boolean
+    canAddProductAutomations?: boolean
     sortAttachments?: boolean
     currentShopifyIntegration?: ShopifyIntegration
 } & RichFieldProps
@@ -53,6 +53,7 @@ const TicketRichField = (
         disableOutOfStockProducts,
         supportsUniqueDiscountOffer = false,
         canAddUniqueDiscountOffer = false,
+        canAddProductAutomations = false,
         sortAttachments = false,
         toolbarTour,
         currentShopifyIntegration,
@@ -135,30 +136,25 @@ const TicketRichField = (
                 !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS.includes(
                     newMessageChannel
                 ),
+            canAddProductAutomations:
+                canAddProductAutomations &&
+                (newMessageChannel === TicketChannel.Chat ||
+                    !isNewMessagePublic),
             toolbarTour: toolbarTour ?? {},
             disableOutOfStockProducts: disableOutOfStockProducts ?? false,
             disableVariantSelection: disableVariantSelection ?? false,
             onAddProductCardAttachment: (attachment) => {
-                dispatch(
-                    addProductCardAttachment(
-                        ticket,
-                        attachment,
-                        sortAttachments
-                    )
-                )
+                dispatch(addAttachment(ticket, attachment, sortAttachments))
             },
             onAddUniqueDiscountOfferAttachment: (discount) => {
-                dispatch(
-                    addUniqueDiscountOfferAttachment(
-                        ticket,
-                        discount,
-                        sortAttachments
-                    )
-                )
+                dispatch(addAttachment(ticket, discount, sortAttachments))
 
                 logEvent(SegmentEvent.InsertUniqueDiscountCodeAdded, {
                     account_domain: currentAccount?.get('domain'),
                 })
+            },
+            onAddProductAutomationAttachment: (attachment) => {
+                dispatch(addAttachment(ticket, attachment, sortAttachments))
             },
             onInsertProductLinkOpen: () => {
                 logEvent(SegmentEvent.ShopifyInsertProductLinkOpen, {
@@ -193,6 +189,7 @@ const TicketRichField = (
             currentShopifyIntegration,
             supportsUniqueDiscountOffer,
             canAddUniqueDiscountOffer,
+            canAddProductAutomations,
             sortAttachments,
         ]
     )

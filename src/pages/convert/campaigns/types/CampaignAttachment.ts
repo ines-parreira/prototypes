@@ -29,6 +29,15 @@ export interface CampaignProductAttachment {
     }
 }
 
+export type CampaignProductRecommendation = {
+    contentType: AttachmentEnum.ProductRecommendation
+    name: string
+    extra: {
+        id: string
+        scenario: ProductRecommendationScenario
+    }
+}
+
 export type CampaignDiscountOfferAttachment = {
     contentType: AttachmentEnum.DiscountOffer
     name: string
@@ -41,6 +50,7 @@ export type CampaignDiscountOfferAttachment = {
 export type CampaignAttachment =
     | CampaignProductAttachment
     | CampaignDiscountOfferAttachment
+    | CampaignProductRecommendation
 
 export const campaignAttachmentIsProduct = (
     attachment: CampaignAttachment
@@ -54,6 +64,12 @@ export const campaignAttachmentIsDiscountOffer = (
     return attachment.contentType === AttachmentEnum.DiscountOffer
 }
 
+export const campaignAttachmentIsProductRecommendation = (
+    attachment: CampaignAttachment
+): attachment is CampaignProductRecommendation => {
+    return attachment.contentType === AttachmentEnum.ProductRecommendation
+}
+
 /*
  * Types and enums below are used in the context of the editor and Chat preview components
  */
@@ -61,7 +77,6 @@ export enum ProductRecommendationScenario {
     SimilarSeen = 'similar_seen',
     SimilarBought = 'similar_bought',
     OutOfStockAlternatives = 'out_of_stock_alternatives',
-    BestSeller = 'best_seller',
     Newest = 'newest',
 }
 
@@ -79,11 +94,19 @@ export type DiscountOfferAttachment = {
     }
 }
 
-export type ProductAttachment = Omit<ProductCardAttachment, 'content_type'> & {
-    content_type: AttachmentEnum.Product
+export type ProductRecommendationAttachment = {
+    content_type: AttachmentEnum.ProductRecommendation
+    name: string
+    extra: {
+        id: string
+        scenario: ProductRecommendationScenario
+    }
 }
 
-export type AttachmentType = DiscountOfferAttachment | ProductAttachment
+export type AttachmentType =
+    | DiscountOfferAttachment
+    | ProductCardAttachment
+    | ProductRecommendationAttachment
 
 export const attachmentIsDiscountOffer = (
     attachment: AttachmentType
@@ -93,6 +116,12 @@ export const attachmentIsDiscountOffer = (
 
 export const attachmentIsProduct = (
     attachment: AttachmentType
-): attachment is ProductAttachment => {
+): attachment is ProductCardAttachment => {
     return attachment.content_type === AttachmentEnum.Product
+}
+
+export const attachmentIsProductRecommendation = (
+    attachment: AttachmentType
+): attachment is ProductCardAttachment => {
+    return attachment.content_type === AttachmentEnum.ProductRecommendation
 }

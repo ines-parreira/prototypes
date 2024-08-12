@@ -1,0 +1,98 @@
+import React, {useState} from 'react'
+import {ListGroup, ListGroupItem} from 'reactstrap'
+import {IntegrationDataItem} from 'models/integration/types'
+import {Product} from 'constants/integrations/types/shopify'
+import ProductRecommendationScenarioPicker from 'pages/convert/campaigns/components/ProductRecommendationScenarioPicker/ProductRecommendationScenarioPicker'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {ProductRecommendationAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
+import css from 'pages/common/components/ProductAutomations/ProductAutomations.less'
+
+type Props = {
+    products: IntegrationDataItem<Product>[]
+    productAutomationClicked: (
+        attachment: ProductRecommendationAttachment
+    ) => void
+    onClick: () => void
+    onBackClicked: () => void
+}
+
+const ProductAutomations = ({
+    products,
+    productAutomationClicked,
+    onClick,
+    onBackClicked,
+}: Props) => {
+    const title = 'Dynamic Product Recommendation'
+    const [isProductRecommendationClicked, setIsProductRecommendationClicked] =
+        useState(false)
+
+    const handleOnBackClick = () => {
+        setIsProductRecommendationClicked(false)
+        onBackClicked()
+    }
+
+    const AiBadgeElement = (
+        <Badge type={ColorType.Magenta} className={css.badge}>
+            <i className="material-icons">auto_awesome</i>ai powered
+        </Badge>
+    )
+
+    return (
+        <>
+            {!isProductRecommendationClicked && (
+                <ListGroup flush>
+                    <div className={css.header}>Automations</div>
+                    <ListGroupItem
+                        key="product-recommendation"
+                        tag="button"
+                        action
+                        className={css.automationBody}
+                        onClick={(event) => {
+                            event.preventDefault()
+                            onClick()
+                            setIsProductRecommendationClicked(true)
+                        }}
+                    >
+                        <div>
+                            <span className={css.automationTitle}>{title}</span>
+                            {AiBadgeElement}
+                        </div>
+                        <div className={css.automationDescription}>
+                            Automatically recommends products based on visitors’
+                            behavior
+                        </div>
+                    </ListGroupItem>
+                </ListGroup>
+            )}
+            {isProductRecommendationClicked && (
+                <div className={css.productRecommendationWrapper}>
+                    <div className={css.backContainer}>
+                        <Button
+                            className="mr-2"
+                            intent="secondary"
+                            fillStyle="fill"
+                            onClick={handleOnBackClick}
+                            size="small"
+                            tabIndex={-1}
+                        >
+                            <ButtonIconLabel icon="arrow_back">
+                                Back
+                            </ButtonIconLabel>
+                        </Button>
+                        <div className={css.backHeader}>{title}</div>
+                        {AiBadgeElement}
+                    </div>
+                    <ProductRecommendationScenarioPicker
+                        products={products}
+                        onClick={productAutomationClicked}
+                    />
+                </div>
+            )}
+        </>
+    )
+}
+
+export default ProductAutomations

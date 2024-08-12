@@ -82,4 +82,46 @@ describe('<AddProductLink/>', () => {
         expect(container).toMatchSnapshot()
         unmount()
     })
+
+    it('should render the product automations when single integration and is allowed to show it', () => {
+        const onAddProductAutomationAttachmentMock = jest.fn()
+
+        const {getByText, unmount} = render(
+            <Provider store={store}>
+                <ToolbarProvider
+                    shopifyIntegrations={
+                        integrationsStateWithShopify.get(
+                            'integrations'
+                        ) as List<any>
+                    }
+                    canAddProductAutomations
+                    onAddProductAutomationAttachment={
+                        onAddProductAutomationAttachmentMock
+                    }
+                >
+                    <AddProductLink {...minProps} />
+                </ToolbarProvider>
+            </Provider>,
+            {container: document.body}
+        )
+
+        fireEvent.click(getByText(/shopify/i))
+        const productRecommendation = getByText(
+            'Dynamic Product Recommendation'
+        )
+        expect(productRecommendation).toBeInTheDocument()
+
+        fireEvent.click(productRecommendation)
+        const seenScenario = getByText('Similar Products You Have Seen')
+        expect(seenScenario).toBeInTheDocument()
+
+        fireEvent.click(seenScenario)
+        expect(onAddProductAutomationAttachmentMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                name: 'Similar Products You Have Seen',
+            })
+        )
+
+        unmount()
+    })
 })

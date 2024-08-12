@@ -29,9 +29,11 @@ import {toJS} from 'utils'
 import {
     attachmentIsDiscountOffer,
     attachmentIsProduct,
+    attachmentIsProductRecommendation,
     AttachmentType,
-    ProductAttachment,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
+import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import {useAreConvertLLMProductRecommendationsEnabled} from 'pages/convert/common/hooks/useAreConvertLLMProductRecommendationsEnabled'
 import css from './CampaignMessage.less'
 
 type Props = {
@@ -65,6 +67,8 @@ export const CampaignMessage = memo(
         const {shopifyIntegration} = useIntegrationContext()
         const {getStepConfiguration, getTourConfiguration} =
             useCampaignFormContext()
+        const areProductRecommendationsEnabled =
+            useAreConvertLLMProductRecommendationsEnabled()
         const stepConfiguration = useMemo(() => {
             return getStepConfiguration(CampaignStepsKeys.Message)
         }, [getStepConfiguration])
@@ -133,7 +137,20 @@ export const CampaignMessage = memo(
 
         const supportsUniqueDiscountOffer =
             isConvertUniqueDiscountCodesEnabled && isConvertSubscriber
+
         const canAddUniqueDiscountOffer = !anyDiscountOfferAttached
+
+        const canAddProductRecommendation = useMemo(() => {
+            const anyProductRecommendationAttached = (
+                attachments.toJS() as AttachmentType[]
+            ).find((att) => attachmentIsProductRecommendation(att))
+
+            return (
+                isConvertSubscriber &&
+                !anyProductRecommendationAttached &&
+                areProductRecommendationsEnabled
+            )
+        }, [isConvertSubscriber, areProductRecommendationsEnabled, attachments])
 
         useEffect(() => {
             if (attachments.isEmpty() && showWarningOutOfStock) {
@@ -158,7 +175,7 @@ export const CampaignMessage = memo(
 
             const product = attachmentsJS.find((att) =>
                 attachmentIsProduct(att)
-            ) as ProductAttachment | undefined
+            ) as ProductCardAttachment | undefined
 
             const productId = product?.extra?.product_id
 
@@ -281,6 +298,7 @@ export const CampaignMessage = memo(
                             supportsUniqueDiscountOffer
                         }
                         canAddUniqueDiscountOffer={canAddUniqueDiscountOffer}
+                        canAddProductAutomations={canAddProductRecommendation}
                         currentShopifyIntegration={shopifyIntegration}
                         sortAttachments={true}
                     />

@@ -1,0 +1,74 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
+@import (reference) '~css/typography';
+
+:local {
+    .badge {
+        float: right;
+        gap: @layout-spacing-xxs;
+    }
+
+    .productRecommendationWrapper {
+        .backContainer {
+            display: flex;
+            position: relative;
+            height: 48px;
+            min-width: 80px;
+            background-color: var(--neutral-grey-1);
+            padding: 12px;
+
+            .badge {
+                position: absolute;
+                right: 12px;
+
+                i {
+                    font-size: 12px;
+                }
+            }
+
+            .backHeader {
+                .body-medium();
+                width: 192px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+        }
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        text-align: left;
+        min-height: 30px;
+        padding: @layout-spacing-xs @layout-spacing-s;
+        color: var(--neutral-grey-5);
+        text-transform: uppercase;
+        font-family: @caption-all-caps-font-family;
+        font-weight: @caption-all-caps-font-weight;
+        font-size: @caption-all-caps-font-size;
+        line-height: @caption-all-caps-line-height;
+        background-color: var(--neutral-grey-2);
+        border-top: 1px solid var(--neutral-grey-3);
+    }
+
+    .automationBody {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--neutral-grey-0);
+
+        .automationTitle {
+            font-weight: @body-medium-font-weight;
+            font-size: @body-medium-font-size;
+            line-height: @body-medium-line-height;
+            color: var(--neutral-grey-6);
+        }
+
+        .automationDescription {
+            font-size: @caption-regular-font-size;
+            line-height: @caption-regular-line-height;
+            font-weight: @caption-regular-font-weight;
+            color: var(--neutral-grey-4);
+            margin-top: @layout-spacing-xxs;
+        }
+    }
+}

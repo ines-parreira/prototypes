@@ -16,5 +16,6 @@ export type GenericAttachment = {
 
 export enum AttachmentEnum {
     Product = 'application/productCard',
+    ProductRecommendation = 'application/productRecommendation',
     DiscountOffer = 'application/discountOffer',
 }

@@ -38,6 +38,14 @@ describe('TicketAttachments component', () => {
                     currency: 'USD',
                 },
             },
+            {
+                name: 'Similar Products You Have Seen',
+                content_type: 'application/productRecommendation',
+                extra: {
+                    id: '01J4VFPQ477Z2CNXAB5ES70GN3',
+                    scenario: 'similar_seen',
+                },
+            },
         ])
 
     window.IMAGE_PROXY_URL = 'http://proxy-url/'

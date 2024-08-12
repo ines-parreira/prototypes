@@ -3372,6 +3372,7 @@ exports[`RichField should render mutable variable 1`] = `
                         >
                           <AddLinkContainer
                             canAddDiscountCodeLink={false}
+                            canAddProductAutomations={false}
                             canAddProductCard={false}
                             canAddProductLink={false}
                             canAddUniqueDiscountOffer={false}
@@ -3383,6 +3384,7 @@ exports[`RichField should render mutable variable 1`] = `
                             isOpen={false}
                             linkEditionEnded={[Function]}
                             linkEditionStarted={[Function]}
+                            onAddProductAutomationAttachment={[Function]}
                             onAddProductCardAttachment={[Function]}
                             onAddUniqueDiscountOfferAttachment={[Function]}
                             onClose={[Function]}

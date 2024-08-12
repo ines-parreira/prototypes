@@ -93,6 +93,13 @@ export default class TicketAttachments extends Component<Props, State> {
         )
     }
 
+    isProductRecommendation = (attachment: Attachment) => {
+        return (
+            attachment.get('content_type') ===
+            AttachmentEnum.ProductRecommendation
+        )
+    }
+
     isUniqueDiscountOffer = (attachment: Attachment) => {
         return attachment.get('content_type') === AttachmentEnum.DiscountOffer
     }
@@ -237,6 +244,30 @@ export default class TicketAttachments extends Component<Props, State> {
         )
     }
 
+    _renderProductRecommendationAttachment(
+        attachment: Attachment,
+        idx: number
+    ) {
+        return (
+            <div className={css.productRecommendation}>
+                <div className={css.productRecommendationImageContainer}>
+                    <i className="material-icons">auto_awesome</i>
+                </div>
+                <div className={css.productRecommendationDetail}>
+                    <p className={css.productRecommendationTitle}>
+                        {attachment.get('name')}
+                    </p>
+                    <p className={css.productRecommendationDescription}>
+                        {attachment.getIn(['extra', 'description'])}
+                    </p>
+                    <div className={css.productRecommendationCloseIcon}>
+                        {this.renderRemoveIcon(idx)}
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     renderAttachment = (
         attachment: Attachment,
         index: number,
@@ -246,6 +277,11 @@ export default class TicketAttachments extends Component<Props, State> {
             return this._renderProductAttachment(attachment, index)
         } else if (this.isUniqueDiscountOffer(attachment)) {
             return this._renderUniqueDiscountOfferAttachment(attachment, index)
+        } else if (this.isProductRecommendation(attachment)) {
+            return this._renderProductRecommendationAttachment(
+                attachment,
+                index
+            )
         }
 
         return this._renderDefaultAttachment(attachment, index, images)

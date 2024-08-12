@@ -21,6 +21,8 @@ const minProps = {
     }),
     resetStoreChoice: jest.fn(),
     productClicked: jest.fn(),
+    canAddProductAutomations: false,
+    productAutomationClicked: jest.fn(),
 }
 
 const middlewares = [thunk]
@@ -122,5 +124,30 @@ describe('<ShopifyProductLine/>', () => {
             ).toBeDefined()
             expect(container).toMatchSnapshot()
         })
+    })
+
+    it('should render the product automations', async () => {
+        mockServer
+            .onGet('/api/integrations/1/product/')
+            .reply(200, {data: shopifyProductResult()})
+
+        const {getByText} = render(
+            <Provider store={store}>
+                <ShopifyProductLine
+                    {...minProps}
+                    canAddProductAutomations={true}
+                />
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(getByText('Automations', {exact: false})).toBeInTheDocument()
+        })
+
+        getByText('Dynamic Product Recommendation').click()
+        expect(getByText('Similar Products You Have Seen')).toBeInTheDocument()
+
+        getByText('Back').click()
+        expect(getByText('Automations', {exact: false})).toBeInTheDocument()
     })
 })

@@ -1,4 +1,7 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 @import '~css/new/mixins';
+@import (reference) '~css/typography';
 
 :local {
     .productCard {
@@ -188,5 +191,65 @@
         max-height: 2.4em;
 
         line-height: 1.2;
+    }
+
+    .productRecommendation {
+        height: 80px;
+        max-width: 400px;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+        border-radius: 4px;
+        border: 1px solid var(--neutral-grey-3);
+        vertical-align: top;
+
+        .productRecommendationImageContainer {
+            display: flex;
+            height: 80px;
+            width: 80px;
+            min-width: 80px;
+            background-color: var(--neutral-grey-1);
+
+            i {
+                font-size: 48px;
+                color: var(--ai-magenta-3);
+                margin: auto;
+            }
+        }
+
+        .productRecommendationDetail {
+            max-width: 320px;
+            padding: 12px @layout-spacing-s;
+            display: flex;
+            flex-flow: column;
+            justify-content: space-between;
+            background-color: var(--neutral-grey-0);
+
+            p {
+                margin: 0;
+            }
+
+            .productRecommendationTitle {
+                .body-medium();
+                color: var(--neutral-grey-6);
+                padding-bottom: @layout-spacing-xxs;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .productRecommendationDescription {
+                .caption-regular();
+                color: var(--neutral-grey-5);
+            }
+
+            .productRecommendationCloseIcon {
+                color: var(--neutral-grey-4);
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
     }
 }

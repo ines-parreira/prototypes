@@ -1,3 +1,11 @@
+import {AttachmentEnum} from 'common/types'
+import {
+    CampaignDiscountOfferAttachment,
+    CampaignProductAttachment,
+    CampaignProductRecommendation,
+    ProductRecommendationScenario,
+} from 'pages/convert/campaigns/types/CampaignAttachment'
+
 export const campaignId = 'ee869594-65e2-45a5-a759-a4660c9ce677'
 
 export const triggerId = '476ce50d-ac6f-4553-8400-b7ae0aad70c2'
@@ -34,3 +42,35 @@ export const campaign = {
     deleted_datetime: null,
     template_id: null,
 }
+
+export const campaignProductAttachment = {
+    url: 'https://athlete-shift.com/products/thick-socks',
+    name: 'Thick socks',
+    contentType: AttachmentEnum.Product,
+    size: 44,
+    extra: {
+        price: 12.34,
+        currency: 'USD',
+        product_link: 'https://athlete-shift.com/products/thick-socks-heart',
+        product_id: 349348782,
+        variant_name: 'Thick socks with heart',
+    },
+} as CampaignProductAttachment
+
+export const campaignDiscountOfferAttachment = {
+    contentType: AttachmentEnum.DiscountOffer,
+    name: '10% off',
+    extra: {
+        discount_offer_id: '10OFF',
+        summary: '10% off for everyone',
+    },
+} as CampaignDiscountOfferAttachment
+
+export const campaignProductRecommendationAttachment = {
+    contentType: AttachmentEnum.ProductRecommendation,
+    name: 'Similar Products You Have Seen',
+    extra: {
+        id: '01J4VH71YJ704QXCP4WDST3ZT3',
+        scenario: ProductRecommendationScenario.SimilarSeen,
+    },
+} as CampaignProductRecommendation
