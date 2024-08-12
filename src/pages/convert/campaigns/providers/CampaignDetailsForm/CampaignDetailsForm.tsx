@@ -98,6 +98,7 @@ export type Props = {
     onDiscard?: () => void
     header?: React.ReactNode
     openedStep?: CampaignStepsKeys
+    allowChangeSection?: boolean
     allowActivate?: boolean
     backUrl: string
 }
@@ -124,6 +125,7 @@ export const CampaignDetailsForm = ({
     backUrl,
     openedStep,
     allowActivate = true,
+    allowChangeSection = true,
 }: Props) => {
     const dispatch = useAppDispatch()
 
@@ -547,6 +549,11 @@ export const CampaignDetailsForm = ({
                             {!isFormLoading && (
                                 <div className={css.formContainer}>
                                     <Accordion
+                                        expandedItem={
+                                            !allowChangeSection
+                                                ? defaultOpenedStep
+                                                : undefined
+                                        }
                                         defaultExpandedItem={defaultOpenedStep}
                                         onChange={onChangePristine}
                                     >

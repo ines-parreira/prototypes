@@ -198,6 +198,7 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
             onDiscard: handleDiscardVariant,
             wizardConfiguration: wizardConfiguration,
             allowActivate: false,
+            allowChangeSection: false,
         }
     }
 
