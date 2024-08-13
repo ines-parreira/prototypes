@@ -3,7 +3,11 @@ import {Tooltip} from '@gorgias/ui-kit'
 import {logEvent, SegmentEvent} from 'common/segment'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {DrillDownMetric, setMetricData} from 'state/ui/stats/drillDownSlice'
+import {
+    DrillDownMetric,
+    setMetricData,
+    setShouldUseNewFilterData,
+} from 'state/ui/stats/drillDownSlice'
 import css from 'pages/stats/DrillDownModalTrigger.less'
 import {hintTooltipDelay} from 'pages/stats/common/constants'
 import useId from 'hooks/useId'
@@ -19,6 +23,7 @@ export const TRIGGER_ID = 'drill-down'
 type Props = {
     metricData: DrillDownMetric
     enabled?: boolean
+    useNewFilterData?: boolean
 }
 
 const getTooltipText = (metricName: string) => {
@@ -42,11 +47,15 @@ export const DrillDownModalTrigger = ({
     children,
     metricData,
     enabled = true,
+    useNewFilterData = false,
 }: PropsWithChildren<Props>) => {
     const dispatch = useAppDispatch()
 
     const handleClick = () => {
         dispatch(setMetricData(metricData))
+        if (useNewFilterData) {
+            dispatch(setShouldUseNewFilterData(true))
+        }
         logEvent(SegmentEvent.StatClicked, {metric: metricData.metricName})
     }
 

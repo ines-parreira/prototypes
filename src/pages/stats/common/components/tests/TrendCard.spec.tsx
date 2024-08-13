@@ -3,6 +3,7 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
@@ -27,6 +28,10 @@ import {LegacyStatsFilters} from 'models/stat/types'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
@@ -206,7 +211,7 @@ describe('<TrendCard />', () => {
                             OverviewMetricConfig[overviewMetric].interpretAs,
                         tooltipData: {
                             period: getBadgeTooltipForPreviousPeriod(
-                                defaultStatsFilters
+                                defaultStatsFilters.period
                             ),
                         },
                         value: defaultMetricTrend?.data?.value,
@@ -242,5 +247,55 @@ describe('<TrendCard />', () => {
                 `${NOT_AVAILABLE_PLACEHOLDER}${DEFAULT_BADGE_TEXT}`
             )
         ).toBeInTheDocument()
+    })
+
+    it('should call useTrend with legacyStatsFilters', () => {
+        const metric = OverviewMetric.CustomerSatisfaction
+        const useTrendSpy = jest.fn().mockReturnValue({
+            data: {value: null, prevValue: null},
+            isFetching: false,
+            isError: false,
+        })
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TrendCard
+                    {...OverviewMetricConfig[metric]}
+                    useTrend={useTrendSpy}
+                    drillDownMetric={metric}
+                />
+            </Provider>
+        )
+
+        expect(useTrendSpy).toHaveBeenCalledWith(
+            getCleanStatsFiltersWithTimezone(defaultState).cleanStatsFilters,
+            DEFAULT_TIMEZONE
+        )
+    })
+
+    it('should call useTrend with statsFiltersWithLogicalOperators', () => {
+        const metric = OverviewMetric.CustomerSatisfaction
+        const useTrendSpy = jest.fn().mockReturnValue({
+            data: {value: null, prevValue: null},
+            isFetching: false,
+            isError: false,
+        })
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TrendCard
+                    {...OverviewMetricConfig[metric]}
+                    useTrend={useTrendSpy}
+                    drillDownMetric={metric}
+                    isAnalyticsNewFilters={true}
+                />
+            </Provider>
+        )
+
+        expect(useTrendSpy).toHaveBeenCalledWith(
+            getCleanStatsFiltersWithLogicalOperatorsWithTimezone(defaultState)
+                .cleanStatsFilters,
+            DEFAULT_TIMEZONE
+        )
     })
 })

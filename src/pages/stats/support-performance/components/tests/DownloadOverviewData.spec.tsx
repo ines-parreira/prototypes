@@ -4,6 +4,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {
@@ -42,6 +43,10 @@ import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('models/reporting/queries')
@@ -263,5 +268,35 @@ describe('DownloadOverviewData', () => {
             })
         )
         expect(saveReportMock).toHaveBeenCalled()
+    })
+
+    describe('statsFilters', () => {
+        it('should call data hooks with legacyStatsFilters', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <DownloadOverviewData />
+                </Provider>
+            )
+
+            expect(useCustomerSatisfactionTrendMock).toHaveBeenCalledWith(
+                getCleanStatsFiltersWithTimezone(defaultState)
+                    .cleanStatsFilters,
+                DEFAULT_TIMEZONE
+            )
+        })
+        it('should call data hooks with statsFiltersWithLogicalOperators', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <DownloadOverviewData isAnalyticsNewFilters={true} />
+                </Provider>
+            )
+
+            expect(useCustomerSatisfactionTrendMock).toHaveBeenCalledWith(
+                getCleanStatsFiltersWithLogicalOperatorsWithTimezone(
+                    defaultState
+                ).cleanStatsFilters,
+                DEFAULT_TIMEZONE
+            )
+        })
     })
 })

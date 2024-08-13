@@ -6,18 +6,30 @@ import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import PerformanceTip from 'pages/stats/PerformanceTip'
 
 import {MetricName} from 'services/reporting/constants'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 
 export const SupportPerformanceTip = ({
     metric,
     useTrend,
+    isAnalyticsNewFilters = false,
 }: {
     metric: MetricName
     useTrend: MetricTrendHook
+    isAnalyticsNewFilters?: boolean
 }) => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
+
     const trend = useTrend(cleanStatsFilters, userTimezone)
     const tip = usePerformanceTips(metric, trend?.data?.value || null)
 

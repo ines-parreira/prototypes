@@ -78,6 +78,35 @@ describe('utils', () => {
                 filter,
                 filterDefaults
             )
+            // // ALL OF
+            // const cubeFilter = [
+            //     {
+            //         values: ['123'],
+            //         member: filterDefaults.member,
+            //         operator: ReportingFilterOperator.Equals,
+            //     },
+            //     {
+            //         values: ['456'],
+            //         member: filterDefaults.member,
+            //         operator: ReportingFilterOperator.Equals,
+            //     }
+            // ]
+            // // ONE OF
+            // const cubeFilter = [
+            //     {
+            //         values: ['123', '456'],
+            //         member: filterDefaults.member,
+            //         operator: ReportingFilterOperator.Equals,
+            //     },
+            // ]
+            // // NOT ONE OF
+            // const cubeFilter = [
+            //     {
+            //         values: ['123', '456'],
+            //         member: filterDefaults.member,
+            //         operator: ReportingFilterOperator.NotEquals,
+            //     },
+            // ]
 
             expect(updatedFilters).toEqual(
                 filter.values.map((value) => ({

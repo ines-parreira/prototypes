@@ -15,9 +15,13 @@ import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {
     DrillDownMetric,
     getDrillDownCurrentPage,
+    getIsNewFilter,
     setCurrentPage,
 } from 'state/ui/stats/drillDownSlice'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {
     AgentsTableColumn,
     OverviewMetric,
@@ -63,9 +67,16 @@ export const getDrillDownMetricOrder = (
 }
 
 export const useDrillDownQuery = (metricData: DrillDownMetric) => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
+    const isAnalyticsNewFilters = useAppSelector(getIsNewFilter)
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
+
     return getDrillDownQuery(metricData)(
         cleanStatsFilters,
         userTimezone,

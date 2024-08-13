@@ -1,6 +1,9 @@
 import moment from 'moment/moment'
 import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {LegacyStatsFilters} from 'models/stat/types'
+import {
+    LegacyStatsFilters,
+    StatsFiltersWithLogicalOperator,
+} from 'models/stat/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
@@ -28,6 +31,7 @@ import {
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 
 jest.mock(
     'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -207,7 +211,11 @@ describe('getDrillDownQuery', () => {
         getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
 
         expect(customerSatisfactionQueryFactoryMock).toHaveBeenCalledWith(
-            expect.objectContaining({agents: [drillDownMetric.perAgentId]}),
+            expect.objectContaining({
+                agents: withDefaultLogicalOperator([
+                    drillDownMetric.perAgentId,
+                ]),
+            }),
             timezone,
             undefined
         )
@@ -231,7 +239,69 @@ describe('getDrillDownQuery', () => {
         getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
 
         expect(customerSatisfactionQueryFactoryMock).toHaveBeenCalledWith(
-            expect.objectContaining({channels: [drillDownMetric.perChannel]}),
+            expect.objectContaining({
+                channels: withDefaultLogicalOperator([
+                    drillDownMetric.perChannel,
+                ]),
+            }),
+            timezone,
+            undefined
+        )
+    })
+
+    it('should be populated with channel filter using statsFiltersWithLogicalOperator', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFiltersWithLogicalOperator = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+            channels: withDefaultLogicalOperator(['email']),
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: DrillDownMetric = {
+            metricName: ChannelsTableColumns.CustomerSatisfaction,
+            perChannel: 'email',
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(customerSatisfactionQueryFactoryMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                channels: withDefaultLogicalOperator([
+                    drillDownMetric.perChannel,
+                ]),
+            }),
+            timezone,
+            undefined
+        )
+    })
+
+    it('should be populated with agent filter using statsFiltersWithLogicalOperator', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFiltersWithLogicalOperator = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+            agents: withDefaultLogicalOperator([5, 15]),
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: DrillDownMetric = {
+            metricName: AgentsTableColumn.CustomerSatisfaction,
+            perAgentId: 123,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(customerSatisfactionQueryFactoryMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                agents: withDefaultLogicalOperator([
+                    drillDownMetric.perAgentId,
+                ]),
+            }),
             timezone,
             undefined
         )

@@ -143,6 +143,7 @@ export type DrillDownState = {
         isError: boolean
         isRequested: boolean
     }
+    isNewFilter?: boolean
 }
 
 const hiddenMetrics: DrillDownMetric['metricName'][] = [
@@ -184,6 +185,7 @@ export const initialState: DrillDownState = {
         isError: false,
         isRequested: false,
     },
+    isNewFilter: false,
 }
 
 export const EXPORT_DRILL_DOWN_JOB_ACTION = 'exportDrillDownJob'
@@ -241,6 +243,9 @@ export const drillDownSlice = createSlice({
             state.export = initialState.export
             state.currentPage = initialState.currentPage
         },
+        setShouldUseNewFilterData(state, action: PayloadAction<boolean>) {
+            state.isNewFilter = action.payload
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(createExportDrillDownJob.pending, (state) => {
@@ -258,8 +263,12 @@ export const drillDownSlice = createSlice({
     },
 })
 
-export const {closeDrillDownModal, setMetricData, setCurrentPage} =
-    drillDownSlice.actions
+export const {
+    closeDrillDownModal,
+    setMetricData,
+    setCurrentPage,
+    setShouldUseNewFilterData,
+} = drillDownSlice.actions
 
 export const getDrillDownModalState = (state: RootState) =>
     state.ui[drillDownSlice.name].isOpen
@@ -272,6 +281,9 @@ export const getDrillDownExport = (state: RootState) =>
 
 export const getDrillDownMetric = (state: RootState) =>
     state.ui[drillDownSlice.name].metricData
+
+export const getIsNewFilter = (state: RootState) =>
+    state.ui[drillDownSlice.name].isNewFilter
 
 export const getDrillDownMetricColumn = (
     state: RootState

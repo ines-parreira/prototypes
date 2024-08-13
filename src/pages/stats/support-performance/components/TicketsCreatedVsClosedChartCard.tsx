@@ -5,8 +5,14 @@ import {CREATED_VS_CLOSED_TICKETS_LABEL} from 'services/reporting/constants'
 import {TICKETS_CREATED_VS_CLOSED_HINT} from 'pages/stats/SupportPerformanceOverviewConfig'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 
-export const TicketsCreatedVsClosedChartCard = () => {
-    const {timeSeries, isLoading} = useCreatedVsClosedTicketsTimeSeries()
+export const TicketsCreatedVsClosedChartCard = ({
+    isAnalyticsNewFilters = false,
+}: {
+    isAnalyticsNewFilters?: boolean
+}) => {
+    const {timeSeries, isLoading} = useCreatedVsClosedTicketsTimeSeries(
+        isAnalyticsNewFilters
+    )
 
     return (
         <ChartCard

@@ -7,7 +7,11 @@ import userEvent from '@testing-library/user-event'
 import {logEvent, SegmentEvent} from 'common/segment'
 
 import {RootState, StoreDispatch} from 'state/types'
-import {DrillDownMetric, setMetricData} from 'state/ui/stats/drillDownSlice'
+import {
+    DrillDownMetric,
+    setMetricData,
+    setShouldUseNewFilterData,
+} from 'state/ui/stats/drillDownSlice'
 import {
     OverviewMetric,
     VoiceAgentsMetric,
@@ -51,6 +55,33 @@ describe('<DrillDownModalTrigger />', () => {
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.StatClicked,
                 {metric: metricData.metricName}
+            )
+        })
+    })
+
+    it('should set metric data on trigger and set new filters data in store', async () => {
+        const store = mockStore(defaultState)
+        const metricData: DrillDownMetric = {
+            metricName: OverviewMetric.OpenTickets,
+        }
+
+        render(
+            <Provider store={store}>
+                <DrillDownModalTrigger
+                    metricData={metricData}
+                    useNewFilterData={true}
+                >
+                    {trigger}
+                </DrillDownModalTrigger>
+            </Provider>
+        )
+
+        fireEvent.click(screen.getByText(trigger))
+
+        await waitFor(() => {
+            expect(store.getActions()).toContainEqual(setMetricData(metricData))
+            expect(store.getActions()).toContainEqual(
+                setShouldUseNewFilterData(true)
             )
         })
     })

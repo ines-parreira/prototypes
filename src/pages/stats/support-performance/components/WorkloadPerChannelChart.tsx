@@ -8,10 +8,17 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ChartCard from 'pages/stats/ChartCard'
 import GaugeChart from 'pages/stats/GaugeChart'
 import {TOTAL_WORKLOAD_BY_CHANNEL_LABEL} from 'services/reporting/constants'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {WORKLOAD_BY_CHANNEL_HINT} from 'pages/stats/SupportPerformanceOverviewConfig'
 
-export const WorkloadPerChannelChart = () => {
+export const WorkloadPerChannelChart = ({
+    isAnalyticsNewFilters = false,
+}: {
+    isAnalyticsNewFilters?: boolean
+}) => {
     const isDeferredLoadingEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsDeferredLoadingExperiment]
 
@@ -28,9 +35,16 @@ export const WorkloadPerChannelChart = () => {
         )
     }, [isDeferredLoadingEnabled])
 
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
+
     const workloadPerChannel = useWorkloadPerChannelDistribution(
         cleanStatsFilters,
         userTimezone,

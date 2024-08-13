@@ -118,4 +118,22 @@ describe('Support Performance Filters', () => {
             ).toBeInTheDocument()
         })
     })
+
+    it('should not render the filters when hidden', () => {
+        render(
+            <MemoryRouter>
+                <Provider store={mockStore(defaultState)}>
+                    <SupportPerformanceFilters hidden={true} />
+                </Provider>
+            </MemoryRouter>
+        )
+
+        filtersLabels.forEach((filterLabels) => {
+            expect(
+                screen.queryByText(`1 ${filterLabels.singular}`, {
+                    exact: false,
+                })
+            ).not.toBeInTheDocument()
+        })
+    })
 })

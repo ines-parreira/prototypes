@@ -33,6 +33,8 @@ import {
     SLA_FORMAT,
     setCurrentPage,
     getDrillDownCurrentPage,
+    setShouldUseNewFilterData,
+    getIsNewFilter,
 } from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
@@ -124,6 +126,15 @@ describe('drillDownSlice', () => {
 
             expect(newState.export.isLoading).toEqual(false)
         })
+
+        it('should set new filter value to true', () => {
+            const newState = drillDownSlice.reducer(
+                initialState,
+                setShouldUseNewFilterData(true)
+            )
+
+            expect(newState.isNewFilter).toBeTruthy
+        })
     })
 
     describe('selectors', () => {
@@ -139,6 +150,7 @@ describe('drillDownSlice', () => {
                     isOpen,
                     currentPage,
                     metricData,
+                    isNewFilter: false,
                 },
             },
         } as unknown as RootState
@@ -156,6 +168,10 @@ describe('drillDownSlice', () => {
 
         it('getDrillDownMetric', () => {
             expect(getDrillDownMetric(state)).toEqual(metricData)
+        })
+
+        it('getIsNewFilter', () => {
+            expect(getIsNewFilter(state)).toBeFalsy
         })
 
         it.each([

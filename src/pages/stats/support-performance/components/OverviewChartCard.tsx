@@ -3,7 +3,10 @@ import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import ChartCard from 'pages/stats/ChartCard'
 import {formatTimeSeriesData} from 'pages/stats/common/utils'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {TooltipData} from 'pages/stats/types'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
@@ -13,15 +16,27 @@ export const OverviewChartCard = ({
     hint,
     useTimeSeries,
     chartType,
+    isAnalyticsNewFilters = false,
 }: {
     title: string
     hint: TooltipData
     useTimeSeries: TimeSeriesHook
     chartType: 'bar' | 'line'
+    isAnalyticsNewFilters?: boolean
 }) => {
-    const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+    const {
+        cleanStatsFilters: statsFiltersWithLogicalOperators,
+        userTimezone,
+        granularity,
+    } = useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
+
     const timeSeries = useTimeSeries(
         cleanStatsFilters,
         userTimezone,

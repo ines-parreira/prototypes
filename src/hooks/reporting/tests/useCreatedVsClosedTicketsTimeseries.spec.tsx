@@ -1,29 +1,27 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {UseQueryResult} from '@tanstack/react-query'
-import useAppSelector from 'hooks/useAppSelector'
+import React, {ComponentType} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {formatTimeSeriesData} from 'pages/stats/common/utils'
 import {useCreatedVsClosedTicketsTimeSeries} from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
 import {
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
 } from 'hooks/reporting/timeSeries'
+import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
+import {RootState, StoreDispatch} from 'state/types'
 import {periodToReportingGranularity} from 'utils/reporting'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {assumeMock} from 'utils/testing'
 import {ReportingGranularity} from 'models/reporting/types'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {TimeSeriesDataItem} from '../useTimeSeries'
-
-jest.mock('hooks/useAppSelector')
-const useAppSelectorMock = assumeMock(useAppSelector)
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 
 jest.mock('hooks/reporting/timeSeries')
 const mockedUseTicketsClosedTimeSeries = assumeMock(useTicketsClosedTimeSeries)
 const mockedUseTicketsCreatedTimeSeries = assumeMock(
     useTicketsCreatedTimeSeries
 )
-jest.mock('hooks/reporting/useCleanStatsFilters')
-const mockedUseCleanStatsFilters = assumeMock(useCleanStatsFilters)
 
 jest.mock('pages/stats/common/utils')
 const mockedFormatTimeSeriesData = assumeMock(formatTimeSeriesData)
@@ -33,18 +31,28 @@ const mockedPeriodToReportingGranularity = assumeMock(
     periodToReportingGranularity
 )
 
-jest.mock('state/ui/stats/selectors')
-const getCleanStatsFiltersWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithTimezone
-)
+const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 describe('useCreatedVsClosedTicketsTimeSeries', () => {
     const mockGranularity = ReportingGranularity.Month
 
     const mockTimezone = 'UTC'
-    const mockFilters = {
+    const filters = {
         period: {start_datetime: '2023-01-01', end_datetime: '2023-02-01'},
+        agents: {values: [1, 2], operator: LogicalOperatorEnum.ALL_OF},
     }
+    const defaultState = {
+        stats: {
+            filters,
+        },
+        ui: {
+            stats: {
+                isFilterDirty: false,
+                cleanStatsFilters: filters,
+            },
+        },
+    } as RootState
+
     const mockClosedData = [
         [{dateTime: '2023-01-01', value: 10, label: 'closed'}],
     ]
@@ -61,7 +69,6 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
     beforeEach(() => {
         jest.resetAllMocks()
 
-        mockedUseCleanStatsFilters.mockReturnValue(mockFilters)
         mockedUseTicketsClosedTimeSeries.mockReturnValue({
             data: mockClosedData,
             isLoading: false,
@@ -74,21 +81,19 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
         } as UseQueryResult<TimeSeriesDataItem[][]>)
         mockedFormatTimeSeriesData.mockReturnValue(mockTimeSeriesData)
         mockedPeriodToReportingGranularity.mockReturnValue(mockGranularity)
-        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
-            cleanStatsFilters: mockFilters,
-            userTimezone: mockTimezone,
-            granularity: mockGranularity,
-        })
-
-        useAppSelectorMock.mockReturnValue({
-            cleanStatsFilters: mockFilters,
-            userTimezone: mockTimezone,
-            granularity: mockGranularity,
-        })
     })
 
     it('should return formatted time series for closed and created tickets', () => {
-        const {result} = renderHook(() => useCreatedVsClosedTicketsTimeSeries())
+        const {result} = renderHook(
+            () => useCreatedVsClosedTicketsTimeSeries(),
+            {
+                wrapper: (({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                )) as ComponentType,
+            }
+        )
 
         expect(result.current).toEqual(
             expect.objectContaining({
@@ -98,12 +103,31 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
         )
         expect(mockedFormatTimeSeriesData).toHaveBeenCalledTimes(2)
         expect(mockedUseTicketsClosedTimeSeries).toHaveBeenCalledWith(
-            mockFilters,
+            fromFiltersWithLogicalOperators(filters),
             mockTimezone,
             mockGranularity
         )
         expect(mockedUseTicketsCreatedTimeSeries).toHaveBeenCalledWith(
-            mockFilters,
+            fromFiltersWithLogicalOperators(filters),
+            mockTimezone,
+            mockGranularity
+        )
+    })
+
+    it('should pass stats filters with logical operators', () => {
+        renderHook(() => useCreatedVsClosedTicketsTimeSeries(true), {
+            wrapper: (({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            )) as ComponentType,
+        })
+
+        expect(mockedUseTicketsClosedTimeSeries).toHaveBeenCalledWith(
+            filters,
+            mockTimezone,
+            mockGranularity
+        )
+        expect(mockedUseTicketsCreatedTimeSeries).toHaveBeenCalledWith(
+            filters,
             mockTimezone,
             mockGranularity
         )

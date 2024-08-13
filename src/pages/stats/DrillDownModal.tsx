@@ -11,6 +11,7 @@ import {
     getDrillDownMetric,
     closeDrillDownModal,
     DrillDownMetric,
+    setShouldUseNewFilterData,
 } from 'state/ui/stats/drillDownSlice'
 import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
 import {
@@ -56,6 +57,7 @@ export const DrillDownModal = () => {
             isOpen={isOpen}
             onClose={() => {
                 dispatch(closeDrillDownModal())
+                dispatch(setShouldUseNewFilterData(false))
             }}
         >
             <ModalHeader title={metricData?.title} />

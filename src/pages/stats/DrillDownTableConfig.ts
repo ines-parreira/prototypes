@@ -18,7 +18,12 @@ import {openTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryF
 import {ticketsCreatedPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {customFieldsTicketCountPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {LegacyStatsFilters, StatsFilters} from 'models/stat/types'
+import {
+    FilterKey,
+    LegacyStatsFilters,
+    StatsFilters,
+    StatsFiltersWithLogicalOperator,
+} from 'models/stat/types'
 import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {
     ChannelColumnConfig,
@@ -41,9 +46,14 @@ import {
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
+import {
+    isFilterWithLogicalOperator,
+    withDefaultLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 
 export type DrillDownQueryFactory = (
-    statsFilters: LegacyStatsFilters,
+    statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ) => DrillDownReportingQuery
@@ -54,11 +64,31 @@ const queryBuilderWithAgentFilter =
         queryBuilder: DrillDownQueryFactory
     ): DrillDownQueryFactory =>
     (
-        statsFilters: LegacyStatsFilters,
+        statsFilters: StatsFilters,
         timezone: string,
         sorting?: OrderDirection
-    ) =>
-        queryBuilder({...statsFilters, agents: [agentId]}, timezone, sorting)
+    ) => {
+        const areFiltersWithLogicalOperator = Object.values(FilterKey).some(
+            (val) =>
+                val !== FilterKey.Period &&
+                isFilterWithLogicalOperator(statsFilters?.[val] || [])
+        )
+        const statsFiltersWithLogicalOperators = areFiltersWithLogicalOperator
+            ? (statsFilters as StatsFiltersWithLogicalOperator)
+            : fromLegacyStatsFilters(statsFilters as LegacyStatsFilters)
+
+        return queryBuilder(
+            {
+                ...statsFiltersWithLogicalOperators,
+                agents: withDefaultLogicalOperator(
+                    [agentId],
+                    statsFiltersWithLogicalOperators[FilterKey.Agents]?.operator
+                ),
+            },
+            timezone,
+            sorting
+        )
+    }
 
 const queryBuilderWithChannelFilter =
     (
@@ -66,11 +96,32 @@ const queryBuilderWithChannelFilter =
         queryBuilder: DrillDownQueryFactory
     ): DrillDownQueryFactory =>
     (
-        statsFilters: LegacyStatsFilters,
+        statsFilters: StatsFilters,
         timezone: string,
         sorting?: OrderDirection
-    ) =>
-        queryBuilder({...statsFilters, channels: [channel]}, timezone, sorting)
+    ) => {
+        const areFiltersWithLogicalOperator = Object.values(FilterKey).some(
+            (val) =>
+                val !== FilterKey.Period &&
+                isFilterWithLogicalOperator(statsFilters?.[val] || [])
+        )
+        const statsFiltersWithLogicalOperators = areFiltersWithLogicalOperator
+            ? (statsFilters as StatsFiltersWithLogicalOperator)
+            : fromLegacyStatsFilters(statsFilters as LegacyStatsFilters)
+
+        return queryBuilder(
+            {
+                ...statsFiltersWithLogicalOperators,
+                channels: withDefaultLogicalOperator(
+                    [channel],
+                    statsFiltersWithLogicalOperators[FilterKey.Channels]
+                        ?.operator
+                ),
+            },
+            timezone,
+            sorting
+        )
+    }
 
 export const getDrillDownQuery = (
     metricName: DrillDownMetric
@@ -164,7 +215,7 @@ export const getDrillDownQuery = (
             )
         case TicketFieldsMetric.TicketCustomFieldsTicketCount:
             return (
-                statsFilters: LegacyStatsFilters,
+                statsFilters: StatsFilters,
                 timezone: string,
                 sorting?: OrderDirection
             ) =>
@@ -178,7 +229,7 @@ export const getDrillDownQuery = (
                 )
         case ConvertMetric.CampaignSalesCount:
             return (
-                statsFilters: LegacyStatsFilters,
+                statsFilters: StatsFilters,
                 timezone: string,
                 sorting?: OrderDirection
             ) =>

@@ -1,6 +1,6 @@
 import {OrderDirection} from 'models/api/types'
 import {ReportingQuery} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
+import {FilterKey, StatsFilters} from 'models/stat/types'
 import {getCampaignOrderPerformanceDrillDownData} from 'pages/stats/convert/clients/CampaignCubeQueries'
 import {CubeFilterParams} from 'pages/stats/convert/clients/types'
 import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
@@ -8,15 +8,19 @@ import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderCon
 export const campaignSalesDrillDownQueryFactory = (
     shopName: string,
     selectedCampaignIds: string[],
-    filters: LegacyStatsFilters,
+    filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<ConvertOrderConversionCube> => {
+    const campaignIds = Array.isArray(filters[FilterKey.Campaigns])
+        ? filters[FilterKey.Campaigns]
+        : filters[FilterKey.Campaigns]?.values
+
     const filterParams: CubeFilterParams = {
         campaignIds:
             selectedCampaignIds.length > 0
                 ? selectedCampaignIds
-                : filters.campaigns,
+                : campaignIds || [],
         startDate: filters.period.start_datetime,
         endDate: filters.period.end_datetime,
         shopName,

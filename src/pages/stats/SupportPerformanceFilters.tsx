@@ -12,7 +12,11 @@ import {
     getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
 
-export const SupportPerformanceFilters = () => {
+export const SupportPerformanceFilters = ({
+    hidden = false,
+}: {
+    hidden?: boolean
+}) => {
     const pageStatsFiltersWithLogicalOperators = useAppSelector(
         getPageStatsFiltersWithLogicalOperators
     )
@@ -25,7 +29,7 @@ export const SupportPerformanceFilters = () => {
         getStatsMessagingAndAppIntegrations
     )
 
-    return (
+    return !hidden ? (
         <>
             <DEPRECATED_IntegrationsStatsFilter
                 value={pageStatsFilters.integrations}
@@ -53,5 +57,5 @@ export const SupportPerformanceFilters = () => {
                 variant="ghost"
             />
         </>
-    )
+    ) : null
 }

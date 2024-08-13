@@ -26,9 +26,16 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
 import {saveReport} from 'services/reporting/supportPerformanceReportingService'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 
-export const DownloadOverviewData = () => {
+export const DownloadOverviewData = ({
+    isAnalyticsNewFilters = false,
+}: {
+    isAnalyticsNewFilters?: boolean
+}) => {
     const isDeferredLoadingEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsDeferredLoadingExperiment]
 
@@ -47,78 +54,85 @@ export const DownloadOverviewData = () => {
 
     const [waitForTheReportData, setwaitForTheReportData] = useState(false)
 
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
+    )
     const {
-        cleanStatsFilters: requestStatsFilters,
+        cleanStatsFilters: statsFiltersWithLogicalOperators,
         userTimezone,
         granularity,
-    } = useAppSelector(getCleanStatsFiltersWithTimezone)
+    } = useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
 
     const customerSatisfactionTrend = useCustomerSatisfactionTrend(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const medianFirstResponseTimeTrend = useMedianFirstResponseTimeTrend(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const medianResolutionTimeTrend = useMedianResolutionTimeTrend(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const messagesPerTicketTrend = useMessagesPerTicketTrend(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const openTicketsTrend = useOpenTicketsTrend(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const closedTicketsTrend = useClosedTicketsTrend(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const ticketsCreatedTrend = useTicketsCreatedTrend(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const ticketsRepliedTrend = useTicketsRepliedTrend(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const messagesSentTrend = useMessagesSentTrend(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
 
     const ticketsCreatedTimeSeries = useTicketsCreatedTimeSeries(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone,
         granularity
     )
     const ticketsClosedTimeSeries = useTicketsClosedTimeSeries(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone,
         granularity
     )
     const ticketsRepliedTimeSeries = useTicketsRepliedTimeSeries(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone,
         granularity
     )
     const messagesSentTimeSeries = useMessagesSentTimeSeries(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone,
         granularity
     )
 
     const workloadPerChannel = useWorkloadPerChannelDistribution(
-        requestStatsFilters,
+        cleanStatsFilters,
         userTimezone,
         fetchingEnabled
     )
     const workloadPerChannelPrevious =
         useWorkloadPerChannelDistributionForPreviousPeriod(
-            requestStatsFilters,
+            cleanStatsFilters,
             userTimezone,
             fetchingEnabled
         )
@@ -164,7 +178,7 @@ export const DownloadOverviewData = () => {
 
     useEffect(() => {
         const saveReportAsync = async () => {
-            await saveReport(exportableData, requestStatsFilters.period)
+            await saveReport(exportableData, cleanStatsFilters.period)
         }
         if (fetchingEnabled && !loading && waitForTheReportData) {
             void saveReportAsync()
@@ -175,7 +189,7 @@ export const DownloadOverviewData = () => {
         fetchingEnabled,
         loading,
         exportableData,
-        requestStatsFilters.period,
+        cleanStatsFilters.period,
         waitForTheReportData,
     ])
 

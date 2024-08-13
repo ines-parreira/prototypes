@@ -39,7 +39,10 @@ import {
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithTimezone,
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+} from 'state/ui/stats/selectors'
 import {
     ConvertMetric,
     OverviewMetric,
@@ -48,6 +51,7 @@ import {
 } from 'state/ui/stats/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 
 const initialState = {
     ui: {
@@ -66,6 +70,9 @@ jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )
+const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
+)
 jest.mock('state/agents/selectors')
 const getHumanAndBotAgentsJSMock = assumeMock(getHumanAndAutomationBotAgentsJS)
 jest.mock('hooks/reporting/useMetricPerDimension')
@@ -83,6 +90,10 @@ describe('DrillDownData hooks', () => {
             start_datetime: periodStart,
         },
     }
+    const statsFiltersWithLogicalOperators = {
+        period: statsFilters.period,
+        channels: withDefaultLogicalOperator(['Email']),
+    }
     const userTimezone = 'someTimeZone'
 
     beforeEach(() => {
@@ -93,6 +104,13 @@ describe('DrillDownData hooks', () => {
             userTimezone,
             granularity: ReportingGranularity.Day,
         })
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
+            {
+                cleanStatsFilters: statsFiltersWithLogicalOperators,
+                userTimezone,
+                granularity: ReportingGranularity.Day,
+            }
+        )
     })
 
     describe('useEnrichedDrillDownData', () => {
@@ -138,6 +156,48 @@ describe('DrillDownData hooks', () => {
                         <Provider store={mockStore(initialState)}>
                             {children}
                         </Provider>
+                    ),
+                }
+            )
+
+            expect(result.current).toEqual({
+                isFetching: false,
+                perPage: DRILL_DOWN_PER_PAGE,
+                currentPage: 1,
+                pagesCount: Math.ceil(rowData.length / DRILL_DOWN_PER_PAGE),
+                totalResults: rowData.length,
+                onPageChange: expect.any(Function),
+                data: rowData.map((row) =>
+                    formatTicketDrillDownRowData({
+                        row,
+                        metricField: metricDimension,
+                        agents,
+                        ticketIdField,
+                    })
+                ),
+            })
+        })
+
+        it('should return formatted Data when stats filters have logical operators', () => {
+            const state = {
+                ui: {
+                    drillDown: {
+                        ...initialState.ui.drillDown,
+                        isNewFilter: true,
+                    },
+                },
+            } as unknown as RootState
+            const {result} = renderHook(
+                () =>
+                    useEnrichedDrillDownData(
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId
+                    ),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(state)}>{children}</Provider>
                     ),
                 }
             )

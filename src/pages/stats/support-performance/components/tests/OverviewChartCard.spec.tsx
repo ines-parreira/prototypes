@@ -3,6 +3,8 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {ReportingGranularity} from 'models/reporting/types'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
@@ -20,6 +22,10 @@ import {OverviewChartConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
 import {CHART_TOOLTIP_TARGET as lineChartTooltipTarget} from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {CHART_TOOLTIP_TARGET as barChartTooltipTarget} from 'pages/stats/common/components/charts/BarChart/BarChart'
@@ -98,4 +104,59 @@ describe('<OverviewChartCard />', () => {
             )
         }
     )
+
+    describe('statsFilters', () => {
+        const config = {
+            title: 'some title',
+            hint: {title: 'Some description of the metric'},
+            chartType: 'bar' as const,
+        }
+        const userTimezone = DEFAULT_TIMEZONE
+        const granularity = ReportingGranularity.Day
+        it('should pas legacyStatsFilters to useTimeSeries', () => {
+            const useTimeSeriesSpy = jest
+                .fn()
+                .mockReturnValue(defaultTimeSeries)
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <OverviewChartCard
+                        {...config}
+                        useTimeSeries={useTimeSeriesSpy}
+                    />
+                </Provider>
+            )
+
+            expect(useTimeSeriesSpy).toHaveBeenCalledWith(
+                getCleanStatsFiltersWithTimezone(defaultState)
+                    .cleanStatsFilters,
+                userTimezone,
+                granularity
+            )
+        })
+
+        it('should pas statsFilterWithLogicalOperators to useTimeSeries', () => {
+            const useTimeSeriesSpy = jest
+                .fn()
+                .mockReturnValue(defaultTimeSeries)
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <OverviewChartCard
+                        {...config}
+                        useTimeSeries={useTimeSeriesSpy}
+                        isAnalyticsNewFilters={true}
+                    />
+                </Provider>
+            )
+
+            expect(useTimeSeriesSpy).toHaveBeenCalledWith(
+                getCleanStatsFiltersWithLogicalOperatorsWithTimezone(
+                    defaultState
+                ).cleanStatsFilters,
+                userTimezone,
+                granularity
+            )
+        })
+    })
 })

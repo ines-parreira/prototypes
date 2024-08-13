@@ -64,8 +64,12 @@ export default function SupportPerformanceOverview() {
                 title={SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE}
                 titleExtra={
                     <>
-                        <SupportPerformanceFilters />
-                        <DownloadOverviewData />
+                        <SupportPerformanceFilters
+                            hidden={isAnalyticsNewFilters}
+                        />
+                        <DownloadOverviewData
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
+                        />
                     </>
                 }
             >
@@ -98,6 +102,7 @@ export default function SupportPerformanceOverview() {
                 >
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <TrendCard
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
                             {...OverviewMetricConfig[
                                 OverviewMetric.CustomerSatisfaction
                             ]}
@@ -108,6 +113,9 @@ export default function SupportPerformanceOverview() {
                                 areTipsVisible &&
                                 (hasSatisfactionSurveyEnabledAndConfigured ? (
                                     <SupportPerformanceTip
+                                        isAnalyticsNewFilters={
+                                            isAnalyticsNewFilters
+                                        }
                                         metric={MetricName.CustomerSatisfaction}
                                         {...OverviewMetricConfig[
                                             OverviewMetric.CustomerSatisfaction
@@ -121,6 +129,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <TrendCard
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
                             {...OverviewMetricConfig[
                                 OverviewMetric.MedianFirstResponseTime
                             ]}
@@ -130,6 +139,9 @@ export default function SupportPerformanceOverview() {
                             tip={
                                 areTipsVisible && (
                                     <SupportPerformanceTip
+                                        isAnalyticsNewFilters={
+                                            isAnalyticsNewFilters
+                                        }
                                         metric={
                                             MetricName.MedianFirstResponseTime
                                         }
@@ -144,6 +156,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <TrendCard
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
                             {...OverviewMetricConfig[
                                 OverviewMetric.MedianResolutionTime
                             ]}
@@ -153,6 +166,9 @@ export default function SupportPerformanceOverview() {
                             tip={
                                 areTipsVisible && (
                                     <SupportPerformanceTip
+                                        isAnalyticsNewFilters={
+                                            isAnalyticsNewFilters
+                                        }
                                         {...OverviewMetricConfig[
                                             OverviewMetric.MedianResolutionTime
                                         ]}
@@ -164,6 +180,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <TrendCard
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
                             {...OverviewMetricConfig[
                                 OverviewMetric.MessagesPerTicket
                             ]}
@@ -171,6 +188,9 @@ export default function SupportPerformanceOverview() {
                             tip={
                                 areTipsVisible && (
                                     <SupportPerformanceTip
+                                        isAnalyticsNewFilters={
+                                            isAnalyticsNewFilters
+                                        }
                                         metric={MetricName.MessagesPerTicket}
                                         {...OverviewMetricConfig[
                                             OverviewMetric.MessagesPerTicket
@@ -186,6 +206,7 @@ export default function SupportPerformanceOverview() {
                     <>
                         <DashboardGridCell size={getGridCellSize(4)}>
                             <TrendCard
+                                isAnalyticsNewFilters={isAnalyticsNewFilters}
                                 {...OverviewMetricConfig[
                                     OverviewMetric.TicketsCreated
                                 ]}
@@ -194,6 +215,7 @@ export default function SupportPerformanceOverview() {
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(4)}>
                             <TrendCard
+                                isAnalyticsNewFilters={isAnalyticsNewFilters}
                                 {...OverviewMetricConfig[
                                     OverviewMetric.TicketsClosed
                                 ]}
@@ -202,6 +224,7 @@ export default function SupportPerformanceOverview() {
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(4)}>
                             <TrendCard
+                                isAnalyticsNewFilters={isAnalyticsNewFilters}
                                 {...OverviewMetricConfig[
                                     OverviewMetric.OpenTickets
                                 ]}
@@ -209,18 +232,23 @@ export default function SupportPerformanceOverview() {
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={12}>
-                            <TicketsCreatedVsClosedChartCard />
+                            <TicketsCreatedVsClosedChartCard
+                                isAnalyticsNewFilters={isAnalyticsNewFilters}
+                            />
                         </DashboardGridCell>
                     </>
 
                     <DashboardGridCell size={12}>
-                        <WorkloadPerChannelChart />
+                        <WorkloadPerChannelChart
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
+                        />
                     </DashboardGridCell>
                 </DashboardSection>
 
                 <DashboardSection title="Productivity">
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <TrendCard
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
                             {...OverviewMetricConfig[
                                 OverviewMetric.TicketsReplied
                             ]}
@@ -229,6 +257,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <TrendCard
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
                             {...OverviewMetricConfig[
                                 OverviewMetric.MessagesSent
                             ]}
@@ -237,6 +266,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <TrendCard
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
                             {...OverviewMetricConfig[
                                 OverviewMetric.TicketHandleTime
                             ]}
@@ -245,6 +275,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <TrendCard
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
                             {...OverviewMetricConfig[
                                 OverviewMetric.OneTouchTickets
                             ]}
@@ -253,6 +284,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(6)}>
                         <OverviewChartCard
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
                             {...OverviewChartConfig[
                                 OverviewMetric.TicketsReplied
                             ]}
@@ -261,6 +293,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(6)}>
                         <OverviewChartCard
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
                             {...OverviewChartConfig[
                                 OverviewMetric.MessagesSent
                             ]}

@@ -24,7 +24,10 @@ import {
     EXPORT_DRILL_DOWN_JOB_ACTION,
     initialState,
 } from 'state/ui/stats/drillDownSlice'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithTimezone,
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+} from 'state/ui/stats/selectors'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
@@ -33,6 +36,9 @@ const mockStore = configureMockStore([thunk])
 jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
+)
+const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
 )
 
 jest.mock('jobs/useRunningJobs')
@@ -52,6 +58,13 @@ describe('<DrillDownDownloadButton />', () => {
             cleanStatsFilters,
             granularity: ReportingGranularity.Day,
         })
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
+            {
+                userTimezone: 'someTimezone',
+                cleanStatsFilters,
+                granularity: ReportingGranularity.Day,
+            }
+        )
 
         mockUseRunningJobs.mockReturnValue({
             running: false,

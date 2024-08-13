@@ -12,7 +12,10 @@ import MetricCard from 'pages/stats/MetricCard'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {TooltipData} from 'pages/stats/types'
 import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {AutoQAMetric, OverviewMetric, SlaMetric} from 'state/ui/stats/types'
 
 export const TrendCard = ({
@@ -23,6 +26,7 @@ export const TrendCard = ({
     tip,
     interpretAs,
     metricFormat,
+    isAnalyticsNewFilters = false,
 }: {
     useTrend: MetricTrendHook
     hint: TooltipData
@@ -31,10 +35,18 @@ export const TrendCard = ({
     tip?: ReactNode
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat?: MetricTrendFormat
+    isAnalyticsNewFilters?: boolean
 }) => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
+
     const trend = useTrend(cleanStatsFilters, userTimezone)
     const formattedMetric = formatMetricValue(
         trend.data?.value,
@@ -59,7 +71,7 @@ export const TrendCard = ({
                         prevValue={trend.data?.prevValue}
                         tooltipData={{
                             period: getBadgeTooltipForPreviousPeriod(
-                                cleanStatsFilters
+                                cleanStatsFilters.period
                             ),
                         }}
                         metricFormat={metricFormat}
@@ -73,6 +85,7 @@ export const TrendCard = ({
                             title,
                             metricName: drillDownMetric,
                         }}
+                        useNewFilterData={isAnalyticsNewFilters}
                     >
                         {formattedMetric}
                     </DrillDownModalTrigger>

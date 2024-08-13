@@ -4,6 +4,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
 import {agents} from 'fixtures/agents'
@@ -20,6 +21,10 @@ import {AccountSettingType} from 'state/currentAccount/types'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 
 jest.mock('hooks/reporting/usePerformanceTips')
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -35,7 +40,7 @@ describe('SupportPerformanceTip', () => {
         agents: [agents[0].id],
         tags: [1],
     }
-
+    const metric = MetricName.MessagesPerTicket
     const tag = tags[0]
     const defaultAccount = {
         ...account,
@@ -77,7 +82,6 @@ describe('SupportPerformanceTip', () => {
     } as RootState
 
     it('should render tip from PerformanceTipProvider', () => {
-        const metric = MetricName.MessagesPerTicket
         const average = '4.9'
         const topTen = '3.1'
         const content = 'some content'
@@ -111,8 +115,6 @@ describe('SupportPerformanceTip', () => {
     })
 
     it('should pass null to the provider when value is missing', () => {
-        const metric = MetricName.MessagesPerTicket
-
         const providerMock = jest
             .spyOn(PerformanceTipHook, 'usePerformanceTips')
             .mockReturnValue({
@@ -136,5 +138,40 @@ describe('SupportPerformanceTip', () => {
         )
 
         expect(providerMock).toHaveBeenCalledWith(metric, null)
+    })
+
+    it('should pass legacyStatsFilters to the data hook', () => {
+        const useTrendSpy = jest.fn()
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceTip metric={metric} useTrend={useTrendSpy} />
+            </Provider>
+        )
+
+        expect(useTrendSpy).toHaveBeenCalledWith(
+            getCleanStatsFiltersWithTimezone(defaultState).cleanStatsFilters,
+            DEFAULT_TIMEZONE
+        )
+    })
+
+    it('should pass statsFiltersWithLogicalOperators to the data hook', () => {
+        const useTrendSpy = jest.fn()
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceTip
+                    metric={metric}
+                    useTrend={useTrendSpy}
+                    isAnalyticsNewFilters={true}
+                />
+            </Provider>
+        )
+
+        expect(useTrendSpy).toHaveBeenCalledWith(
+            getCleanStatsFiltersWithLogicalOperatorsWithTimezone(defaultState)
+                .cleanStatsFilters,
+            DEFAULT_TIMEZONE
+        )
     })
 })
