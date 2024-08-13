@@ -42,6 +42,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {useStoreOptions} from 'pages/settings/helpCenter/hooks/useStoreOptions'
 import store from 'assets/img/icons/store.svg'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
+import {IntegrationType} from 'models/integration/constants'
 import DiscardNewHelpCenterPrompt from '../DiscardNewHelpCenterPrompt'
 import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
 import {
@@ -89,6 +90,14 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
             ),
         [helpCenter, uiLanguageOptions]
     )
+    const shopifyIntegrations = useMemo(
+        () =>
+            allStoreIntegrations.filter(
+                (storeIntegration) =>
+                    storeIntegration.type === IntegrationType.Shopify
+            ),
+        [allStoreIntegrations]
+    )
 
     const [isPristine, setIsPristine] = useState(true)
     const [isPristineSubdomain, setPristineSubdomain] = useState(true)
@@ -106,9 +115,9 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
     useEffect(() => {
         const isStoreRequired =
             newHelpCenter.platformType === PlatformType.ECOMMERCE &&
-            integrationOptions.length > 0
+            shopifyIntegrations.length > 0
         setIsStoreRequired(isStoreRequired)
-    }, [integrationOptions, newHelpCenter.platformType])
+    }, [shopifyIntegrations, newHelpCenter.platformType])
 
     useDebouncedEffect(
         () => {

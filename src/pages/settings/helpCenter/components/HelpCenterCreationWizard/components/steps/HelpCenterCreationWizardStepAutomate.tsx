@@ -8,7 +8,7 @@ import {
 } from 'pages/settings/helpCenter/constants'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
-import {IntegrationFromType, IntegrationType} from 'models/integration/types'
+import {IntegrationType, StoreIntegration} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
@@ -22,6 +22,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import HelpCenterWizardOrderManagement from '../HelpCenterWizardOrderManagement/HelpCenterWizardOrderManagement'
 import {useHelpCenterAutomationForm} from '../../hooks/useHelpCenterAutomationForm'
 import HelpCenterWizardArticleRec from '../HelpCenterWizardArticleRec/HelpCenterWizardArticleRec'
@@ -31,22 +32,20 @@ import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWiza
 import {mapEntrypointsToAutomationSettings} from '../../HelpCenterCreationWizardUtils'
 import css from './HelpCenterCreationWizardStepAutomate.less'
 
-const HELP_CENTER_SHOP_INTEGRATION_TYPES = [
-    IntegrationType.Shopify,
-    IntegrationType.BigCommerce,
-    IntegrationType.Magento2,
-]
-
 type Props = {
     helpCenter: HelpCenter
     isUpdate: boolean
-    helpCenterShopIntegration: IntegrationFromType<IntegrationType>
+    helpCenterShopIntegration: StoreIntegration
 }
 
 const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
     helpCenter,
     helpCenterShopIntegration,
 }) => {
+    const helpCenterShopIntegrationName = getShopNameFromStoreIntegration(
+        helpCenterShopIntegration
+    )
+
     const {
         isFetchPending: isSelfServiceConfigurationPending,
         isUpdatePending: isSelfServiceConfigurationUpdating,
@@ -54,7 +53,7 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
         selfServiceConfiguration,
     } = useSelfServiceConfiguration(
         helpCenterShopIntegration.type,
-        helpCenterShopIntegration.name,
+        helpCenterShopIntegrationName,
         // Avoid notifications about the self service configuration
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => {}
@@ -77,7 +76,8 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
         updateFlows,
     } = useHelpCenterAutomationForm({
         orderManagementEnabled:
-            helpCenter.self_service_deactivated_datetime === null,
+            helpCenter.self_service_deactivated_datetime === null &&
+            helpCenterShopIntegration.type === IntegrationType.Shopify,
     })
     const {data: helpCenterArticles} = useGetHelpCenterArticleList(
         helpCenter.id,
@@ -209,7 +209,7 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
             preview={
                 <HelpCenterWizardAutomationPreview
                     shopType={helpCenterShopIntegration.type}
-                    shopName={helpCenterShopIntegration.name}
+                    shopName={helpCenterShopIntegrationName}
                     helpCenter={helpCenter}
                     flows={state.flows}
                     orderManagementEnabled={state.orderManagementEnabled}
@@ -217,10 +217,12 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
             }
         >
             <div className={css.container}>
-                <HelpCenterWizardOrderManagement
-                    onChange={updateOrderManagementEnabled}
-                    enabled={state.orderManagementEnabled}
-                />
+                {helpCenterShopIntegration.type === IntegrationType.Shopify && (
+                    <HelpCenterWizardOrderManagement
+                        onChange={updateOrderManagementEnabled}
+                        enabled={state.orderManagementEnabled}
+                    />
+                )}
                 {chatIntegrations.length > 0 && (
                     <HelpCenterWizardArticleRec
                         isArticleRecomAlreadyEnabled={
@@ -239,7 +241,7 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
                     <HelpCenterWizardFlows
                         helpCenterId={helpCenter.id}
                         shopType={helpCenterShopIntegration.type}
-                        shopName={helpCenterShopIntegration.name}
+                        shopName={helpCenterShopIntegrationName}
                         supportedLocales={helpCenter.supported_locales}
                         flows={state.flows}
                         onChange={updateFlows}
@@ -255,7 +257,11 @@ const HelpCenterCreationWizardStepAutomate = (
     props: Omit<Props, 'helpCenterShopIntegration'>
 ) => {
     const integrations = useAppSelector(
-        getIntegrationsByTypes(HELP_CENTER_SHOP_INTEGRATION_TYPES)
+        getIntegrationsByTypes([
+            IntegrationType.Shopify,
+            IntegrationType.BigCommerce,
+            IntegrationType.Magento2,
+        ])
     )
 
     const helpCenterShopName = props.helpCenter.shop_name
