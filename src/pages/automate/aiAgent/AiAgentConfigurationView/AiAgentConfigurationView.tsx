@@ -1,11 +1,11 @@
 import React from 'react'
 import {Redirect} from 'react-router-dom'
-import {notify} from 'reapop'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Loader from 'pages/common/components/Loader/Loader'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {NotificationStatus} from 'state/notifications/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {notify} from 'state/notifications/actions'
 import {useStoreConfiguration} from '../hooks/useStoreConfiguration'
 
 import {AiAgentLayout} from '../components/AiAgentLayout/AiAgentLayout'
