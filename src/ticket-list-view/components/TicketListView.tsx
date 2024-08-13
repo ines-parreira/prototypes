@@ -249,8 +249,10 @@ export default function TicketListView({
                             isChecked={hasSelectedAll}
                             onChange={onSelectAll}
                         />
-                        {selectionCount > 0 && (
+                        {selectionCount > 0 ? (
                             <span>{selectionCount} selected</span>
+                        ) : (
+                            <span>Select all</span>
                         )}
                     </div>
                     <BulkActions
