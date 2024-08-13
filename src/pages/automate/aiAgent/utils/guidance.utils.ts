@@ -16,6 +16,7 @@ export const mapGuidanceToArticleApi = (
     guidanceArticle: GuidanceArticle | CreateGuidanceArticle
 ): CreateArticleDto => {
     return {
+        template_key: guidanceArticle.templateKey,
         translation: {
             locale: guidanceArticle.locale,
             title: guidanceArticle.title,
@@ -54,17 +55,20 @@ export const mapArticleApiToGuidanceArticle = (
         locale: article.translation.locale,
         visibility: article.translation.visibility_status,
         lastUpdated: article.updated_datetime,
+        templateKey: article.template_key || null,
     }
 }
 
 export const mapGuidanceFormFieldsToGuidanceArticle = (
     formValues: GuidanceFormFields,
-    locale: GuidanceArticle['locale']
+    locale: GuidanceArticle['locale'],
+    templateKey?: string
 ): CreateGuidanceArticle => {
     return {
         title: formValues.name,
         content: formValues.content,
         visibility: formValues.isVisible ? 'PUBLIC' : 'UNLISTED',
         locale,
+        templateKey: templateKey || null,
     }
 }

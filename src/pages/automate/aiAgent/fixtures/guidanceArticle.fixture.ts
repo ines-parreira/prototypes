@@ -10,5 +10,6 @@ export const getGuidanceArticleFixture = (
     locale: 'en-US' as const,
     visibility: 'PUBLIC',
     lastUpdated: '2024-04-18T12:21:00.531Z',
+    templateKey: null,
     ...overrides,
 })

@@ -25,7 +25,11 @@ export const AiAgentGuidanceTemplateNewView = ({
 
     const onSubmit = async (guidanceFormFields: GuidanceFormFields) => {
         await createGuidanceArticle(
-            mapGuidanceFormFieldsToGuidanceArticle(guidanceFormFields, locale)
+            mapGuidanceFormFieldsToGuidanceArticle(
+                guidanceFormFields,
+                locale,
+                `template_guidance_${guidanceTemplate.id}`
+            )
         )
     }
 

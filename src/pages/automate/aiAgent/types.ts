@@ -1,4 +1,5 @@
 import {CreateArticleDto, LocaleCode} from 'models/helpCenter/types'
+import {Components} from 'rest_api/help_center_api/client.generated'
 import {Tag} from '../../../models/aiAgent/types'
 
 export type NonNullProperties<T> = {
@@ -27,6 +28,8 @@ export type ValidFormValues = NonNullFields<
     'monitoredEmailIntegrations' | 'signature'
 >
 
+export type AIGuidance = Components.Schemas.AIGuidanceDto
+
 export type GuidanceArticle = {
     id: number
     title: string
@@ -34,9 +37,13 @@ export type GuidanceArticle = {
     locale: LocaleCode
     visibility: CreateArticleDto['translation']['visibility_status']
     lastUpdated: string
+    templateKey: string | null
 }
 
-export type CreateGuidanceArticle = Omit<GuidanceArticle, 'id' | 'lastUpdated'>
+export type CreateGuidanceArticle = Omit<
+    GuidanceArticle,
+    'id' | 'lastUpdated' | 'review'
+>
 export type UpdateGuidanceArticle = Omit<
     Partial<GuidanceArticle>,
     'lastUpdated' | 'id'

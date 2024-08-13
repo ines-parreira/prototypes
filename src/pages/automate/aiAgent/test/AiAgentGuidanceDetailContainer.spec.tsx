@@ -135,6 +135,7 @@ describe('<AiAgentGuidanceDetail />', () => {
                 title: 'New name',
                 content: guidanceArticle.content,
                 locale: guidanceArticle.locale,
+                templateKey: null,
                 visibility: 'PUBLIC',
             },
             {articleId: guidanceArticle.id, locale: guidanceArticle.locale}
@@ -160,6 +161,7 @@ describe('<AiAgentGuidanceDetail />', () => {
                 title: guidanceArticle.title,
                 content: guidanceArticle.content,
                 locale: guidanceArticle.locale,
+                templateKey: null,
                 visibility: 'UNLISTED',
             },
             {articleId: guidanceArticle.id, locale: guidanceArticle.locale}

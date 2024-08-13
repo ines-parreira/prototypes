@@ -40,6 +40,13 @@ declare namespace Components {
       review_action?: "archive" | "dismissFromTopQuestions" | "publish" | "saveAsDraft";
       reviews?: ArticleTemplateReviewDto[];
     }
+    export interface AIGuidanceDto {
+      key: string;
+      name: string;
+      content: string;
+      batch_datetime: string; // date-time
+      review_action?: "created" | "none";
+    }
     export interface AccessTokenDto {
       access_token: string;
       token_type: string;
@@ -3453,6 +3460,19 @@ declare namespace Paths {
       export type $200 = Components.Schemas.AIArticleTemplateDto[];
     }
   }
+  namespace ListAIGuidancesByHelpCenterAndStore {
+    namespace Parameters {
+      export type HelpCenterId = number;
+      export type StoreIntegrationId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+      store_integration_id: Parameters.StoreIntegrationId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.AIGuidanceDto[];
+    }
+  }
   namespace ListArticleTemplates {
     namespace Parameters {
       export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
@@ -4065,53 +4085,196 @@ declare namespace Paths {
 
 export interface OperationMethods {
   /**
-   * importCsv - Import a CSV file
+   * deleteArticleIngestionLog - Delete article ingestion log
    */
-  'importCsv'(
-    parameters?: Parameters<Paths.ImportCsv.PathParameters> | null,
-    data?: Paths.ImportCsv.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ImportCsv.Responses.$201>
-  /**
-   * analyseCsv - Provide information on a CSV file with a preview of its rows
-   */
-  'analyseCsv'(
-    parameters?: Parameters<Paths.AnalyseCsv.PathParameters> | null,
-    data?: Paths.AnalyseCsv.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AnalyseCsv.Responses.$200>
-  /**
-   * generateCsvTemplate - Generate a template CSV based on the help-center's languages
-   */
-  'generateCsvTemplate'(
-    parameters?: Parameters<Paths.GenerateCsvTemplate.PathParameters> | null,
+  'deleteArticleIngestionLog'(
+    parameters?: Parameters<Paths.DeleteArticleIngestionLog.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GenerateCsvTemplate.Responses.$200>
-  /**
-   * createHotswapSessionToken - Generate hotswap session token
-   */
-  'createHotswapSessionToken'(
-    parameters?: Parameters<Paths.CreateHotswapSessionToken.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateHotswapSessionToken.Responses.$201>
-  /**
-   * complete - Webhook called by hotswap when import is completed
-   */
-  'complete'(
-    parameters?: Parameters<Paths.Complete.PathParameters> | null,
-    data?: Paths.Complete.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
-   * getHotswapStatus - Get hotswap import status
+   * getArticleIngestionLogs - Get article ingestion logs
    */
-  'getHotswapStatus'(
-    parameters?: Parameters<Paths.GetHotswapStatus.PathParameters> | null,
+  'getArticleIngestionLogs'(
+    parameters?: Parameters<Paths.GetArticleIngestionLogs.PathParameters & Paths.GetArticleIngestionLogs.QueryParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetHotswapStatus.Responses.$200>
+  ): OperationResponse<Paths.GetArticleIngestionLogs.Responses.$200>
+  /**
+   * startArticleIngestion - Trigger external content ingestion
+   */
+  'startArticleIngestion'(
+    parameters?: Parameters<Paths.StartArticleIngestion.PathParameters> | null,
+    data?: Paths.StartArticleIngestion.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * handleArticleIngestionDone - Webhook integration with Apify
+   */
+  'handleArticleIngestionDone'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.HandleArticleIngestionDone.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * listCategoryArticles - List category's articles
+   */
+  'listCategoryArticles'(
+    parameters?: Parameters<Paths.ListCategoryArticles.PathParameters & Paths.ListCategoryArticles.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListCategoryArticles.Responses.$200>
+  /**
+   * deleteCategoryArticles - Delete category's articles
+   */
+  'deleteCategoryArticles'(
+    parameters?: Parameters<Paths.DeleteCategoryArticles.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * getCategoryArticlesPositions - Retrieve articles' positions in category
+   */
+  'getCategoryArticlesPositions'(
+    parameters?: Parameters<Paths.GetCategoryArticlesPositions.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetCategoryArticlesPositions.Responses.$200>
+  /**
+   * setArticlesPositionsInCategory - Set articles' positions in category
+   * 
+   * If the provided `id`s is missing an item, this item will be sorted last.
+   */
+  'setArticlesPositionsInCategory'(
+    parameters?: Parameters<Paths.SetArticlesPositionsInCategory.PathParameters> | null,
+    data?: Paths.SetArticlesPositionsInCategory.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.SetArticlesPositionsInCategory.Responses.$200>
+  /**
+   * listArticles - List articles
+   * 
+   * If you want to get articles ordered by `position` in a category, prefer using
+   * `/categories/:category_id/articles`.
+   */
+  'listArticles'(
+    parameters?: Parameters<Paths.ListArticles.PathParameters & Paths.ListArticles.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListArticles.Responses.$200>
+  /**
+   * createArticle - Create an article
+   * 
+   * Create an article for the given help center.
+   * 
+   * A translation should be provided when creating an article.
+   */
+  'createArticle'(
+    parameters?: Parameters<Paths.CreateArticle.PathParameters> | null,
+    data?: Paths.CreateArticle.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateArticle.Responses.$201>
+  /**
+   * getUncategorizedArticlesPositions - Retrieve uncategorized articles' positions
+   */
+  'getUncategorizedArticlesPositions'(
+    parameters?: Parameters<Paths.GetUncategorizedArticlesPositions.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetUncategorizedArticlesPositions.Responses.$200>
+  /**
+   * setUncategorizedArticlesPositions - Set uncategorized articles' positions
+   * 
+   * If the provided `id`s is missing an item, this item will be sorted last.
+   */
+  'setUncategorizedArticlesPositions'(
+    parameters?: Parameters<Paths.SetUncategorizedArticlesPositions.PathParameters> | null,
+    data?: Paths.SetUncategorizedArticlesPositions.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.SetUncategorizedArticlesPositions.Responses.$200>
+  /**
+   * getArticle - Retrieve an article
+   */
+  'getArticle'(
+    parameters?: Parameters<Paths.GetArticle.PathParameters & Paths.GetArticle.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetArticle.Responses.$200>
+  /**
+   * updateArticle - Update an article
+   */
+  'updateArticle'(
+    parameters?: Parameters<Paths.UpdateArticle.PathParameters> | null,
+    data?: Paths.UpdateArticle.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateArticle.Responses.$200>
+  /**
+   * deleteArticle - Delete an article
+   */
+  'deleteArticle'(
+    parameters?: Parameters<Paths.DeleteArticle.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * listArticleTranslations - List article's translations
+   */
+  'listArticleTranslations'(
+    parameters?: Parameters<Paths.ListArticleTranslations.PathParameters & Paths.ListArticleTranslations.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListArticleTranslations.Responses.$200>
+  /**
+   * createArticleTranslation - Create an article translation
+   */
+  'createArticleTranslation'(
+    parameters?: Parameters<Paths.CreateArticleTranslation.PathParameters> | null,
+    data?: Paths.CreateArticleTranslation.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateArticleTranslation.Responses.$201>
+  /**
+   * updateArticleTranslation - Update an article translation
+   */
+  'updateArticleTranslation'(
+    parameters?: Parameters<Paths.UpdateArticleTranslation.PathParameters> | null,
+    data?: Paths.UpdateArticleTranslation.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateArticleTranslation.Responses.$200>
+  /**
+   * deleteArticleTranslation - Delete an article translation
+   * 
+   * So that an article have at least 1
+   *     translation, you can't delete a translation if it's the only
+   *     non-deleted translation.
+   */
+  'deleteArticleTranslation'(
+    parameters?: Parameters<Paths.DeleteArticleTranslation.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * createArticleTranslationRating - Create an article translation rating
+   */
+  'createArticleTranslationRating'(
+    parameters?: Parameters<Paths.CreateArticleTranslationRating.PathParameters> | null,
+    data?: Paths.CreateArticleTranslationRating.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateArticleTranslationRating.Responses.$201>
+  /**
+   * updateArticleTranslationRating - Update an article translation rating
+   */
+  'updateArticleTranslationRating'(
+    parameters?: Parameters<Paths.UpdateArticleTranslationRating.PathParameters> | null,
+    data?: Paths.UpdateArticleTranslationRating.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateArticleTranslationRating.Responses.$200>
+  /**
+   * deleteArticleTranslationRating - Removes an article translation rating
+   */
+  'deleteArticleTranslationRating'(
+    parameters?: Parameters<Paths.DeleteArticleTranslationRating.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
   /**
    * listHelpCenters - List help centers
    * 
@@ -4486,172 +4649,61 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.SetSubCategoriesPositions.Responses.$200>
   /**
-   * listCategoryArticles - List category's articles
+   * upsertArticleTemplateReview - Review an AI article template
    */
-  'listCategoryArticles'(
-    parameters?: Parameters<Paths.ListCategoryArticles.PathParameters & Paths.ListCategoryArticles.QueryParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListCategoryArticles.Responses.$200>
-  /**
-   * deleteCategoryArticles - Delete category's articles
-   */
-  'deleteCategoryArticles'(
-    parameters?: Parameters<Paths.DeleteCategoryArticles.PathParameters> | null,
-    data?: any,
+  'upsertArticleTemplateReview'(
+    parameters?: Parameters<Paths.UpsertArticleTemplateReview.PathParameters> | null,
+    data?: Paths.UpsertArticleTemplateReview.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
-   * getCategoryArticlesPositions - Retrieve articles' positions in category
+   * reviewArticleTemplate - Review an AI article template
    */
-  'getCategoryArticlesPositions'(
-    parameters?: Parameters<Paths.GetCategoryArticlesPositions.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetCategoryArticlesPositions.Responses.$200>
-  /**
-   * setArticlesPositionsInCategory - Set articles' positions in category
-   * 
-   * If the provided `id`s is missing an item, this item will be sorted last.
-   */
-  'setArticlesPositionsInCategory'(
-    parameters?: Parameters<Paths.SetArticlesPositionsInCategory.PathParameters> | null,
-    data?: Paths.SetArticlesPositionsInCategory.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.SetArticlesPositionsInCategory.Responses.$200>
-  /**
-   * listArticles - List articles
-   * 
-   * If you want to get articles ordered by `position` in a category, prefer using
-   * `/categories/:category_id/articles`.
-   */
-  'listArticles'(
-    parameters?: Parameters<Paths.ListArticles.PathParameters & Paths.ListArticles.QueryParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListArticles.Responses.$200>
-  /**
-   * createArticle - Create an article
-   * 
-   * Create an article for the given help center.
-   * 
-   * A translation should be provided when creating an article.
-   */
-  'createArticle'(
-    parameters?: Parameters<Paths.CreateArticle.PathParameters> | null,
-    data?: Paths.CreateArticle.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateArticle.Responses.$201>
-  /**
-   * getUncategorizedArticlesPositions - Retrieve uncategorized articles' positions
-   */
-  'getUncategorizedArticlesPositions'(
-    parameters?: Parameters<Paths.GetUncategorizedArticlesPositions.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetUncategorizedArticlesPositions.Responses.$200>
-  /**
-   * setUncategorizedArticlesPositions - Set uncategorized articles' positions
-   * 
-   * If the provided `id`s is missing an item, this item will be sorted last.
-   */
-  'setUncategorizedArticlesPositions'(
-    parameters?: Parameters<Paths.SetUncategorizedArticlesPositions.PathParameters> | null,
-    data?: Paths.SetUncategorizedArticlesPositions.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.SetUncategorizedArticlesPositions.Responses.$200>
-  /**
-   * getArticle - Retrieve an article
-   */
-  'getArticle'(
-    parameters?: Parameters<Paths.GetArticle.PathParameters & Paths.GetArticle.QueryParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetArticle.Responses.$200>
-  /**
-   * updateArticle - Update an article
-   */
-  'updateArticle'(
-    parameters?: Parameters<Paths.UpdateArticle.PathParameters> | null,
-    data?: Paths.UpdateArticle.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateArticle.Responses.$200>
-  /**
-   * deleteArticle - Delete an article
-   */
-  'deleteArticle'(
-    parameters?: Parameters<Paths.DeleteArticle.PathParameters> | null,
-    data?: any,
+  'reviewArticleTemplate'(
+    parameters?: Parameters<Paths.ReviewArticleTemplate.PathParameters> | null,
+    data?: Paths.ReviewArticleTemplate.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
-   * listArticleTranslations - List article's translations
+   * listAIArticleTemplatesByHelpCenter - Retrieve AI article templates by help center
    */
-  'listArticleTranslations'(
-    parameters?: Parameters<Paths.ListArticleTranslations.PathParameters & Paths.ListArticleTranslations.QueryParameters> | null,
+  'listAIArticleTemplatesByHelpCenter'(
+    parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenter.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListArticleTranslations.Responses.$200>
+  ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenter.Responses.$200>
   /**
-   * createArticleTranslation - Create an article translation
+   * listAIArticleTemplatesByHelpCenterAndStore - Retrieve AI article templates by help center
    */
-  'createArticleTranslation'(
-    parameters?: Parameters<Paths.CreateArticleTranslation.PathParameters> | null,
-    data?: Paths.CreateArticleTranslation.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateArticleTranslation.Responses.$201>
-  /**
-   * updateArticleTranslation - Update an article translation
-   */
-  'updateArticleTranslation'(
-    parameters?: Parameters<Paths.UpdateArticleTranslation.PathParameters> | null,
-    data?: Paths.UpdateArticleTranslation.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateArticleTranslation.Responses.$200>
-  /**
-   * deleteArticleTranslation - Delete an article translation
-   * 
-   * So that an article have at least 1
-   *     translation, you can't delete a translation if it's the only
-   *     non-deleted translation.
-   */
-  'deleteArticleTranslation'(
-    parameters?: Parameters<Paths.DeleteArticleTranslation.PathParameters> | null,
+  'listAIArticleTemplatesByHelpCenterAndStore'(
+    parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<any>
+  ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenterAndStore.Responses.$200>
   /**
-   * createArticleTranslationRating - Create an article translation rating
+   * listAIArticleTemplates - Retrieve AI article templates for account
    */
-  'createArticleTranslationRating'(
-    parameters?: Parameters<Paths.CreateArticleTranslationRating.PathParameters> | null,
-    data?: Paths.CreateArticleTranslationRating.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateArticleTranslationRating.Responses.$201>
-  /**
-   * updateArticleTranslationRating - Update an article translation rating
-   */
-  'updateArticleTranslationRating'(
-    parameters?: Parameters<Paths.UpdateArticleTranslationRating.PathParameters> | null,
-    data?: Paths.UpdateArticleTranslationRating.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateArticleTranslationRating.Responses.$200>
-  /**
-   * deleteArticleTranslationRating - Removes an article translation rating
-   */
-  'deleteArticleTranslationRating'(
-    parameters?: Parameters<Paths.DeleteArticleTranslationRating.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
-   * createAccessToken - Generate JWT token
-   */
-  'createAccessToken'(
+  'listAIArticleTemplates'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
+  ): OperationResponse<Paths.ListAIArticleTemplates.Responses.$200>
+  /**
+   * listArticleTemplates - List article templates
+   */
+  'listArticleTemplates'(
+    parameters?: Parameters<Paths.ListArticleTemplates.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListArticleTemplates.Responses.$200>
+  /**
+   * getArticleTemplate - Retrieve article template
+   */
+  'getArticleTemplate'(
+    parameters?: Parameters<Paths.GetArticleTemplate.PathParameters & Paths.GetArticleTemplate.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetArticleTemplate.Responses.$200>
   /**
    * getAttachmentUploadPolicy - Generate a signed url to upload a file based on the declared policy
    */
@@ -4847,6 +4899,104 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListHelpCenterShopifyPages.Responses.$200>
   /**
+   * createAccessToken - Generate JWT token
+   */
+  'createAccessToken'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
+  /**
+   * listGoogleFonts - List google fonts
+   */
+  'listGoogleFonts'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * listAIGuidancesByHelpCenterAndStore - Retrieve AI guidances by help center
+   */
+  'listAIGuidancesByHelpCenterAndStore'(
+    parameters?: Parameters<Paths.ListAIGuidancesByHelpCenterAndStore.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListAIGuidancesByHelpCenterAndStore.Responses.$200>
+  /**
+   * importCsv - Import a CSV file
+   */
+  'importCsv'(
+    parameters?: Parameters<Paths.ImportCsv.PathParameters> | null,
+    data?: Paths.ImportCsv.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ImportCsv.Responses.$201>
+  /**
+   * analyseCsv - Provide information on a CSV file with a preview of its rows
+   */
+  'analyseCsv'(
+    parameters?: Parameters<Paths.AnalyseCsv.PathParameters> | null,
+    data?: Paths.AnalyseCsv.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AnalyseCsv.Responses.$200>
+  /**
+   * generateCsvTemplate - Generate a template CSV based on the help-center's languages
+   */
+  'generateCsvTemplate'(
+    parameters?: Parameters<Paths.GenerateCsvTemplate.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GenerateCsvTemplate.Responses.$200>
+  /**
+   * createHotswapSessionToken - Generate hotswap session token
+   */
+  'createHotswapSessionToken'(
+    parameters?: Parameters<Paths.CreateHotswapSessionToken.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateHotswapSessionToken.Responses.$201>
+  /**
+   * complete - Webhook called by hotswap when import is completed
+   */
+  'complete'(
+    parameters?: Parameters<Paths.Complete.PathParameters> | null,
+    data?: Paths.Complete.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * getHotswapStatus - Get hotswap import status
+   */
+  'getHotswapStatus'(
+    parameters?: Parameters<Paths.GetHotswapStatus.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetHotswapStatus.Responses.$200>
+  /**
+   * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
+   */
+  'getContactFormMailtoReplacementConfig'(
+    parameters?: Parameters<Paths.GetContactFormMailtoReplacementConfig.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetContactFormMailtoReplacementConfig.Responses.$200>
+  /**
+   * upsertContactFormShopifyMailtoReplacement - Create, Update or Delete a Contact Form Mailto Replacement Config
+   * 
+   * If the emails array is empty, the config will be deleted
+   */
+  'upsertContactFormShopifyMailtoReplacement'(
+    parameters?: Parameters<Paths.UpsertContactFormShopifyMailtoReplacement.PathParameters> | null,
+    data?: Paths.UpsertContactFormShopifyMailtoReplacement.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpsertContactFormShopifyMailtoReplacement.Responses.$200>
+  /**
+   * getContactFormShopifyMailtoReplacementConfig
+   */
+  'getContactFormShopifyMailtoReplacementConfig'(
+    parameters?: Parameters<Paths.GetContactFormShopifyMailtoReplacementConfig.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
+  /**
    * listNavigationLinks - List navigation links
    */
   'listNavigationLinks'(
@@ -4897,14 +5047,6 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.SetNavigationLinksPositions.Responses.$200>
   /**
-   * listGoogleFonts - List google fonts
-   */
-  'listGoogleFonts'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
    * handoverWorkflowExecution - Hand over a workflow execution
    */
   'handoverWorkflowExecution'(
@@ -4912,182 +5054,225 @@ export interface OperationMethods {
     data?: Paths.HandoverWorkflowExecution.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
-  /**
-   * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
-   */
-  'getContactFormMailtoReplacementConfig'(
-    parameters?: Parameters<Paths.GetContactFormMailtoReplacementConfig.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetContactFormMailtoReplacementConfig.Responses.$200>
-  /**
-   * upsertContactFormShopifyMailtoReplacement - Create, Update or Delete a Contact Form Mailto Replacement Config
-   * 
-   * If the emails array is empty, the config will be deleted
-   */
-  'upsertContactFormShopifyMailtoReplacement'(
-    parameters?: Parameters<Paths.UpsertContactFormShopifyMailtoReplacement.PathParameters> | null,
-    data?: Paths.UpsertContactFormShopifyMailtoReplacement.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpsertContactFormShopifyMailtoReplacement.Responses.$200>
-  /**
-   * getContactFormShopifyMailtoReplacementConfig
-   */
-  'getContactFormShopifyMailtoReplacementConfig'(
-    parameters?: Parameters<Paths.GetContactFormShopifyMailtoReplacementConfig.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
-  /**
-   * upsertArticleTemplateReview - Review an AI article template
-   */
-  'upsertArticleTemplateReview'(
-    parameters?: Parameters<Paths.UpsertArticleTemplateReview.PathParameters> | null,
-    data?: Paths.UpsertArticleTemplateReview.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
-   * reviewArticleTemplate - Review an AI article template
-   */
-  'reviewArticleTemplate'(
-    parameters?: Parameters<Paths.ReviewArticleTemplate.PathParameters> | null,
-    data?: Paths.ReviewArticleTemplate.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
-   * listAIArticleTemplatesByHelpCenter - Retrieve AI article templates by help center
-   */
-  'listAIArticleTemplatesByHelpCenter'(
-    parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenter.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenter.Responses.$200>
-  /**
-   * listAIArticleTemplatesByHelpCenterAndStore - Retrieve AI article templates by help center
-   */
-  'listAIArticleTemplatesByHelpCenterAndStore'(
-    parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenterAndStore.Responses.$200>
-  /**
-   * listAIArticleTemplates - Retrieve AI article templates for account
-   */
-  'listAIArticleTemplates'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListAIArticleTemplates.Responses.$200>
-  /**
-   * listArticleTemplates - List article templates
-   */
-  'listArticleTemplates'(
-    parameters?: Parameters<Paths.ListArticleTemplates.QueryParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListArticleTemplates.Responses.$200>
-  /**
-   * getArticleTemplate - Retrieve article template
-   */
-  'getArticleTemplate'(
-    parameters?: Parameters<Paths.GetArticleTemplate.PathParameters & Paths.GetArticleTemplate.QueryParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetArticleTemplate.Responses.$200>
-  /**
-   * deleteArticleIngestionLog - Delete article ingestion log
-   */
-  'deleteArticleIngestionLog'(
-    parameters?: Parameters<Paths.DeleteArticleIngestionLog.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
-   * getArticleIngestionLogs - Get article ingestion logs
-   */
-  'getArticleIngestionLogs'(
-    parameters?: Parameters<Paths.GetArticleIngestionLogs.PathParameters & Paths.GetArticleIngestionLogs.QueryParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetArticleIngestionLogs.Responses.$200>
-  /**
-   * startArticleIngestion - Trigger external content ingestion
-   */
-  'startArticleIngestion'(
-    parameters?: Parameters<Paths.StartArticleIngestion.PathParameters> | null,
-    data?: Paths.StartArticleIngestion.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
-   * handleArticleIngestionDone - Webhook integration with Apify
-   */
-  'handleArticleIngestionDone'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.HandleArticleIngestionDone.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
 }
 
 export interface PathsDictionary {
-  ['/api/help-center/help-centers/{help_center_id}/import/csv/process']: {
+  ['/api/help-center/help-centers/{help_center_id}/article-ingestion-log/{article_ingestion_log_id}']: {
     /**
-     * importCsv - Import a CSV file
+     * deleteArticleIngestionLog - Delete article ingestion log
      */
-    'post'(
-      parameters?: Parameters<Paths.ImportCsv.PathParameters> | null,
-      data?: Paths.ImportCsv.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ImportCsv.Responses.$201>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/import/csv/analysis']: {
-    /**
-     * analyseCsv - Provide information on a CSV file with a preview of its rows
-     */
-    'post'(
-      parameters?: Parameters<Paths.AnalyseCsv.PathParameters> | null,
-      data?: Paths.AnalyseCsv.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AnalyseCsv.Responses.$200>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/import/csv/template']: {
-    /**
-     * generateCsvTemplate - Generate a template CSV based on the help-center's languages
-     */
-    'post'(
-      parameters?: Parameters<Paths.GenerateCsvTemplate.PathParameters> | null,
+    'delete'(
+      parameters?: Parameters<Paths.DeleteArticleIngestionLog.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GenerateCsvTemplate.Responses.$200>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/import/hotswap/token']: {
-    /**
-     * createHotswapSessionToken - Generate hotswap session token
-     */
-    'post'(
-      parameters?: Parameters<Paths.CreateHotswapSessionToken.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateHotswapSessionToken.Responses.$201>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/import/hotswap/complete']: {
-    /**
-     * complete - Webhook called by hotswap when import is completed
-     */
-    'post'(
-      parameters?: Parameters<Paths.Complete.PathParameters> | null,
-      data?: Paths.Complete.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
-  ['/api/help-center/help-centers/{help_center_id}/import/hotswap/status']: {
+  ['/api/help-center/help-centers/{help_center_id}/article-ingestion-log']: {
     /**
-     * getHotswapStatus - Get hotswap import status
+     * getArticleIngestionLogs - Get article ingestion logs
      */
     'get'(
-      parameters?: Parameters<Paths.GetHotswapStatus.PathParameters> | null,
+      parameters?: Parameters<Paths.GetArticleIngestionLogs.PathParameters & Paths.GetArticleIngestionLogs.QueryParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetHotswapStatus.Responses.$200>
+    ): OperationResponse<Paths.GetArticleIngestionLogs.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/article-ingestion/start']: {
+    /**
+     * startArticleIngestion - Trigger external content ingestion
+     */
+    'post'(
+      parameters?: Parameters<Paths.StartArticleIngestion.PathParameters> | null,
+      data?: Paths.StartArticleIngestion.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/article-ingestion/done']: {
+    /**
+     * handleArticleIngestionDone - Webhook integration with Apify
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.HandleArticleIngestionDone.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles']: {
+    /**
+     * listCategoryArticles - List category's articles
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListCategoryArticles.PathParameters & Paths.ListCategoryArticles.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListCategoryArticles.Responses.$200>
+    /**
+     * deleteCategoryArticles - Delete category's articles
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteCategoryArticles.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles/positions']: {
+    /**
+     * getCategoryArticlesPositions - Retrieve articles' positions in category
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetCategoryArticlesPositions.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetCategoryArticlesPositions.Responses.$200>
+    /**
+     * setArticlesPositionsInCategory - Set articles' positions in category
+     * 
+     * If the provided `id`s is missing an item, this item will be sorted last.
+     */
+    'put'(
+      parameters?: Parameters<Paths.SetArticlesPositionsInCategory.PathParameters> | null,
+      data?: Paths.SetArticlesPositionsInCategory.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.SetArticlesPositionsInCategory.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/articles']: {
+    /**
+     * listArticles - List articles
+     * 
+     * If you want to get articles ordered by `position` in a category, prefer using
+     * `/categories/:category_id/articles`.
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListArticles.PathParameters & Paths.ListArticles.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListArticles.Responses.$200>
+    /**
+     * createArticle - Create an article
+     * 
+     * Create an article for the given help center.
+     * 
+     * A translation should be provided when creating an article.
+     */
+    'post'(
+      parameters?: Parameters<Paths.CreateArticle.PathParameters> | null,
+      data?: Paths.CreateArticle.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateArticle.Responses.$201>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/articles/uncategorized/positions']: {
+    /**
+     * getUncategorizedArticlesPositions - Retrieve uncategorized articles' positions
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetUncategorizedArticlesPositions.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetUncategorizedArticlesPositions.Responses.$200>
+    /**
+     * setUncategorizedArticlesPositions - Set uncategorized articles' positions
+     * 
+     * If the provided `id`s is missing an item, this item will be sorted last.
+     */
+    'put'(
+      parameters?: Parameters<Paths.SetUncategorizedArticlesPositions.PathParameters> | null,
+      data?: Paths.SetUncategorizedArticlesPositions.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.SetUncategorizedArticlesPositions.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/articles/{id}']: {
+    /**
+     * getArticle - Retrieve an article
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetArticle.PathParameters & Paths.GetArticle.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetArticle.Responses.$200>
+    /**
+     * updateArticle - Update an article
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpdateArticle.PathParameters> | null,
+      data?: Paths.UpdateArticle.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateArticle.Responses.$200>
+    /**
+     * deleteArticle - Delete an article
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteArticle.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations']: {
+    /**
+     * listArticleTranslations - List article's translations
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListArticleTranslations.PathParameters & Paths.ListArticleTranslations.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListArticleTranslations.Responses.$200>
+    /**
+     * createArticleTranslation - Create an article translation
+     */
+    'post'(
+      parameters?: Parameters<Paths.CreateArticleTranslation.PathParameters> | null,
+      data?: Paths.CreateArticleTranslation.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateArticleTranslation.Responses.$201>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}']: {
+    /**
+     * updateArticleTranslation - Update an article translation
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpdateArticleTranslation.PathParameters> | null,
+      data?: Paths.UpdateArticleTranslation.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateArticleTranslation.Responses.$200>
+    /**
+     * deleteArticleTranslation - Delete an article translation
+     * 
+     * So that an article have at least 1
+     *     translation, you can't delete a translation if it's the only
+     *     non-deleted translation.
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteArticleTranslation.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/ratings']: {
+    /**
+     * createArticleTranslationRating - Create an article translation rating
+     */
+    'post'(
+      parameters?: Parameters<Paths.CreateArticleTranslationRating.PathParameters> | null,
+      data?: Paths.CreateArticleTranslationRating.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateArticleTranslationRating.Responses.$201>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/ratings/{ratingId}']: {
+    /**
+     * updateArticleTranslationRating - Update an article translation rating
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpdateArticleTranslationRating.PathParameters> | null,
+      data?: Paths.UpdateArticleTranslationRating.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateArticleTranslationRating.Responses.$200>
+    /**
+     * deleteArticleTranslationRating - Removes an article translation rating
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteArticleTranslationRating.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
   }
   ['/api/help-center/help-centers']: {
     /**
@@ -5516,192 +5701,73 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.SetSubCategoriesPositions.Responses.$200>
   }
-  ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles']: {
+  ['/api/help-center/help-centers/{help_center_id}/article-templates/review']: {
     /**
-     * listCategoryArticles - List category's articles
+     * reviewArticleTemplate - Review an AI article template
      */
-    'get'(
-      parameters?: Parameters<Paths.ListCategoryArticles.PathParameters & Paths.ListCategoryArticles.QueryParameters> | null,
-      data?: any,
+    'post'(
+      parameters?: Parameters<Paths.ReviewArticleTemplate.PathParameters> | null,
+      data?: Paths.ReviewArticleTemplate.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListCategoryArticles.Responses.$200>
+    ): OperationResponse<any>
     /**
-     * deleteCategoryArticles - Delete category's articles
+     * upsertArticleTemplateReview - Review an AI article template
      */
-    'delete'(
-      parameters?: Parameters<Paths.DeleteCategoryArticles.PathParameters> | null,
-      data?: any,
+    'put'(
+      parameters?: Parameters<Paths.UpsertArticleTemplateReview.PathParameters> | null,
+      data?: Paths.UpsertArticleTemplateReview.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
-  ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles/positions']: {
+  ['/api/help-center/help-centers/{help_center_id}/article-templates/ai']: {
     /**
-     * getCategoryArticlesPositions - Retrieve articles' positions in category
+     * listAIArticleTemplatesByHelpCenter - Retrieve AI article templates by help center
      */
     'get'(
-      parameters?: Parameters<Paths.GetCategoryArticlesPositions.PathParameters> | null,
+      parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenter.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetCategoryArticlesPositions.Responses.$200>
-    /**
-     * setArticlesPositionsInCategory - Set articles' positions in category
-     * 
-     * If the provided `id`s is missing an item, this item will be sorted last.
-     */
-    'put'(
-      parameters?: Parameters<Paths.SetArticlesPositionsInCategory.PathParameters> | null,
-      data?: Paths.SetArticlesPositionsInCategory.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.SetArticlesPositionsInCategory.Responses.$200>
+    ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenter.Responses.$200>
   }
-  ['/api/help-center/help-centers/{help_center_id}/articles']: {
+  ['/api/help-center/help-centers/{help_center_id}/article-templates/ai/{store_integration_id}']: {
     /**
-     * listArticles - List articles
-     * 
-     * If you want to get articles ordered by `position` in a category, prefer using
-     * `/categories/:category_id/articles`.
+     * listAIArticleTemplatesByHelpCenterAndStore - Retrieve AI article templates by help center
      */
     'get'(
-      parameters?: Parameters<Paths.ListArticles.PathParameters & Paths.ListArticles.QueryParameters> | null,
+      parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListArticles.Responses.$200>
-    /**
-     * createArticle - Create an article
-     * 
-     * Create an article for the given help center.
-     * 
-     * A translation should be provided when creating an article.
-     */
-    'post'(
-      parameters?: Parameters<Paths.CreateArticle.PathParameters> | null,
-      data?: Paths.CreateArticle.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateArticle.Responses.$201>
+    ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenterAndStore.Responses.$200>
   }
-  ['/api/help-center/help-centers/{help_center_id}/articles/uncategorized/positions']: {
+  ['/api/help-center/article-templates/ai']: {
     /**
-     * getUncategorizedArticlesPositions - Retrieve uncategorized articles' positions
+     * listAIArticleTemplates - Retrieve AI article templates for account
      */
     'get'(
-      parameters?: Parameters<Paths.GetUncategorizedArticlesPositions.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetUncategorizedArticlesPositions.Responses.$200>
-    /**
-     * setUncategorizedArticlesPositions - Set uncategorized articles' positions
-     * 
-     * If the provided `id`s is missing an item, this item will be sorted last.
-     */
-    'put'(
-      parameters?: Parameters<Paths.SetUncategorizedArticlesPositions.PathParameters> | null,
-      data?: Paths.SetUncategorizedArticlesPositions.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.SetUncategorizedArticlesPositions.Responses.$200>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/articles/{id}']: {
-    /**
-     * getArticle - Retrieve an article
-     */
-    'get'(
-      parameters?: Parameters<Paths.GetArticle.PathParameters & Paths.GetArticle.QueryParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetArticle.Responses.$200>
-    /**
-     * updateArticle - Update an article
-     */
-    'put'(
-      parameters?: Parameters<Paths.UpdateArticle.PathParameters> | null,
-      data?: Paths.UpdateArticle.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateArticle.Responses.$200>
-    /**
-     * deleteArticle - Delete an article
-     */
-    'delete'(
-      parameters?: Parameters<Paths.DeleteArticle.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations']: {
-    /**
-     * listArticleTranslations - List article's translations
-     */
-    'get'(
-      parameters?: Parameters<Paths.ListArticleTranslations.PathParameters & Paths.ListArticleTranslations.QueryParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListArticleTranslations.Responses.$200>
-    /**
-     * createArticleTranslation - Create an article translation
-     */
-    'post'(
-      parameters?: Parameters<Paths.CreateArticleTranslation.PathParameters> | null,
-      data?: Paths.CreateArticleTranslation.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateArticleTranslation.Responses.$201>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}']: {
-    /**
-     * updateArticleTranslation - Update an article translation
-     */
-    'put'(
-      parameters?: Parameters<Paths.UpdateArticleTranslation.PathParameters> | null,
-      data?: Paths.UpdateArticleTranslation.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateArticleTranslation.Responses.$200>
-    /**
-     * deleteArticleTranslation - Delete an article translation
-     * 
-     * So that an article have at least 1
-     *     translation, you can't delete a translation if it's the only
-     *     non-deleted translation.
-     */
-    'delete'(
-      parameters?: Parameters<Paths.DeleteArticleTranslation.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/ratings']: {
-    /**
-     * createArticleTranslationRating - Create an article translation rating
-     */
-    'post'(
-      parameters?: Parameters<Paths.CreateArticleTranslationRating.PathParameters> | null,
-      data?: Paths.CreateArticleTranslationRating.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateArticleTranslationRating.Responses.$201>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/ratings/{ratingId}']: {
-    /**
-     * updateArticleTranslationRating - Update an article translation rating
-     */
-    'put'(
-      parameters?: Parameters<Paths.UpdateArticleTranslationRating.PathParameters> | null,
-      data?: Paths.UpdateArticleTranslationRating.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateArticleTranslationRating.Responses.$200>
-    /**
-     * deleteArticleTranslationRating - Removes an article translation rating
-     */
-    'delete'(
-      parameters?: Parameters<Paths.DeleteArticleTranslationRating.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/auth']: {
-    /**
-     * createAccessToken - Generate JWT token
-     */
-    'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
+    ): OperationResponse<Paths.ListAIArticleTemplates.Responses.$200>
+  }
+  ['/api/help-center/article-templates']: {
+    /**
+     * listArticleTemplates - List article templates
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListArticleTemplates.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListArticleTemplates.Responses.$200>
+  }
+  ['/api/help-center/article-templates/{template_key}']: {
+    /**
+     * getArticleTemplate - Retrieve article template
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetArticleTemplate.PathParameters & Paths.GetArticleTemplate.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetArticleTemplate.Responses.$200>
   }
   ['/api/help-center/attachments']: {
     /**
@@ -5927,6 +5993,126 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListHelpCenterShopifyPages.Responses.$200>
   }
+  ['/api/help-center/auth']: {
+    /**
+     * createAccessToken - Generate JWT token
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
+  }
+  ['/api/help-center/google-fonts']: {
+    /**
+     * listGoogleFonts - List google fonts
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/guidances/ai/{store_integration_id}']: {
+    /**
+     * listAIGuidancesByHelpCenterAndStore - Retrieve AI guidances by help center
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListAIGuidancesByHelpCenterAndStore.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListAIGuidancesByHelpCenterAndStore.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/import/csv/process']: {
+    /**
+     * importCsv - Import a CSV file
+     */
+    'post'(
+      parameters?: Parameters<Paths.ImportCsv.PathParameters> | null,
+      data?: Paths.ImportCsv.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ImportCsv.Responses.$201>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/import/csv/analysis']: {
+    /**
+     * analyseCsv - Provide information on a CSV file with a preview of its rows
+     */
+    'post'(
+      parameters?: Parameters<Paths.AnalyseCsv.PathParameters> | null,
+      data?: Paths.AnalyseCsv.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AnalyseCsv.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/import/csv/template']: {
+    /**
+     * generateCsvTemplate - Generate a template CSV based on the help-center's languages
+     */
+    'post'(
+      parameters?: Parameters<Paths.GenerateCsvTemplate.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GenerateCsvTemplate.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/import/hotswap/token']: {
+    /**
+     * createHotswapSessionToken - Generate hotswap session token
+     */
+    'post'(
+      parameters?: Parameters<Paths.CreateHotswapSessionToken.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateHotswapSessionToken.Responses.$201>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/import/hotswap/complete']: {
+    /**
+     * complete - Webhook called by hotswap when import is completed
+     */
+    'post'(
+      parameters?: Parameters<Paths.Complete.PathParameters> | null,
+      data?: Paths.Complete.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/import/hotswap/status']: {
+    /**
+     * getHotswapStatus - Get hotswap import status
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetHotswapStatus.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetHotswapStatus.Responses.$200>
+  }
+  ['/api/help-center/contact-forms/{contact_form_id}/mailto-replacement-config']: {
+    /**
+     * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetContactFormMailtoReplacementConfig.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetContactFormMailtoReplacementConfig.Responses.$200>
+    /**
+     * upsertContactFormShopifyMailtoReplacement - Create, Update or Delete a Contact Form Mailto Replacement Config
+     * 
+     * If the emails array is empty, the config will be deleted
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpsertContactFormShopifyMailtoReplacement.PathParameters> | null,
+      data?: Paths.UpsertContactFormShopifyMailtoReplacement.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpsertContactFormShopifyMailtoReplacement.Responses.$200>
+  }
+  ['/api/help-center/contact-forms/shop-name/{shop_name}/mailto-replacement-config']: {
+    /**
+     * getContactFormShopifyMailtoReplacementConfig
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetContactFormShopifyMailtoReplacementConfig.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
+  }
   ['/api/help-center/help-centers/{help_center_id}/navigation-links']: {
     /**
      * createNavigationLink - Create a navigation link
@@ -5983,16 +6169,6 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.SetNavigationLinksPositions.Responses.$200>
   }
-  ['/api/help-center/google-fonts']: {
-    /**
-     * listGoogleFonts - List google fonts
-     */
-    'get'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
   ['/api/help-center/workflows/handover']: {
     /**
      * handoverWorkflowExecution - Hand over a workflow execution
@@ -6000,144 +6176,6 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.HandoverWorkflowExecution.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/contact-forms/{contact_form_id}/mailto-replacement-config']: {
-    /**
-     * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
-     */
-    'get'(
-      parameters?: Parameters<Paths.GetContactFormMailtoReplacementConfig.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetContactFormMailtoReplacementConfig.Responses.$200>
-    /**
-     * upsertContactFormShopifyMailtoReplacement - Create, Update or Delete a Contact Form Mailto Replacement Config
-     * 
-     * If the emails array is empty, the config will be deleted
-     */
-    'put'(
-      parameters?: Parameters<Paths.UpsertContactFormShopifyMailtoReplacement.PathParameters> | null,
-      data?: Paths.UpsertContactFormShopifyMailtoReplacement.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpsertContactFormShopifyMailtoReplacement.Responses.$200>
-  }
-  ['/api/help-center/contact-forms/shop-name/{shop_name}/mailto-replacement-config']: {
-    /**
-     * getContactFormShopifyMailtoReplacementConfig
-     */
-    'get'(
-      parameters?: Parameters<Paths.GetContactFormShopifyMailtoReplacementConfig.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/article-templates/review']: {
-    /**
-     * reviewArticleTemplate - Review an AI article template
-     */
-    'post'(
-      parameters?: Parameters<Paths.ReviewArticleTemplate.PathParameters> | null,
-      data?: Paths.ReviewArticleTemplate.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-    /**
-     * upsertArticleTemplateReview - Review an AI article template
-     */
-    'put'(
-      parameters?: Parameters<Paths.UpsertArticleTemplateReview.PathParameters> | null,
-      data?: Paths.UpsertArticleTemplateReview.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/article-templates/ai']: {
-    /**
-     * listAIArticleTemplatesByHelpCenter - Retrieve AI article templates by help center
-     */
-    'get'(
-      parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenter.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenter.Responses.$200>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/article-templates/ai/{store_integration_id}']: {
-    /**
-     * listAIArticleTemplatesByHelpCenterAndStore - Retrieve AI article templates by help center
-     */
-    'get'(
-      parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenterAndStore.Responses.$200>
-  }
-  ['/api/help-center/article-templates/ai']: {
-    /**
-     * listAIArticleTemplates - Retrieve AI article templates for account
-     */
-    'get'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListAIArticleTemplates.Responses.$200>
-  }
-  ['/api/help-center/article-templates']: {
-    /**
-     * listArticleTemplates - List article templates
-     */
-    'get'(
-      parameters?: Parameters<Paths.ListArticleTemplates.QueryParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListArticleTemplates.Responses.$200>
-  }
-  ['/api/help-center/article-templates/{template_key}']: {
-    /**
-     * getArticleTemplate - Retrieve article template
-     */
-    'get'(
-      parameters?: Parameters<Paths.GetArticleTemplate.PathParameters & Paths.GetArticleTemplate.QueryParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetArticleTemplate.Responses.$200>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/article-ingestion-log/{article_ingestion_log_id}']: {
-    /**
-     * deleteArticleIngestionLog - Delete article ingestion log
-     */
-    'delete'(
-      parameters?: Parameters<Paths.DeleteArticleIngestionLog.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/article-ingestion-log']: {
-    /**
-     * getArticleIngestionLogs - Get article ingestion logs
-     */
-    'get'(
-      parameters?: Parameters<Paths.GetArticleIngestionLogs.PathParameters & Paths.GetArticleIngestionLogs.QueryParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetArticleIngestionLogs.Responses.$200>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/article-ingestion/start']: {
-    /**
-     * startArticleIngestion - Trigger external content ingestion
-     */
-    'post'(
-      parameters?: Parameters<Paths.StartArticleIngestion.PathParameters> | null,
-      data?: Paths.StartArticleIngestion.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/article-ingestion/done']: {
-    /**
-     * handleArticleIngestionDone - Webhook integration with Apify
-     */
-    'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.HandleArticleIngestionDone.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
