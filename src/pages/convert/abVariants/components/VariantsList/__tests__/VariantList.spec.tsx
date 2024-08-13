@@ -13,6 +13,7 @@ describe('<VariantsList />', () => {
     it('render and user can performa basic actions', () => {
         const {getByText, getByTestId} = render(
             <VariantsList
+                canPerformActions={true}
                 variants={[]}
                 onDelete={onDelete}
                 onDuplicate={onDuplicate}
@@ -30,9 +31,10 @@ describe('<VariantsList />', () => {
         expect(onDuplicate).toBeCalledWith(null)
     })
 
-    it('render and list actions shoould be disabled', () => {
+    it('render and list actions should be disabled', () => {
         const {getAllByTestId} = render(
             <VariantsList
+                canPerformActions={true}
                 variants={variants}
                 onDelete={onDelete}
                 onDuplicate={onDuplicate}

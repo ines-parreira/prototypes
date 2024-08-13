@@ -7,6 +7,7 @@ describe('<ABTestSettingPage />', () => {
     it('renders', () => {
         const {getByText} = render(
             <ABTestSettingPage
+                canPerformActions={true}
                 variants={[]}
                 onDelete={jest.fn()}
                 onDuplicate={jest.fn()}

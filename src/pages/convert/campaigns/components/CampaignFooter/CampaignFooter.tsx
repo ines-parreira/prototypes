@@ -2,6 +2,8 @@ import React, {useCallback, useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
+import {Tooltip} from '@gorgias/ui-kit'
+
 import {useDismissFlag} from 'hooks/useDismissFlag'
 
 import Button from 'pages/common/components/button/Button'
@@ -30,9 +32,10 @@ type Props = {
     isCampaignValid?: boolean
     isLightCampaign?: boolean
     isShopifyStore?: boolean
-    isOverCampaignsLimit?: boolean
+    isOverLimit?: boolean
     isCreateDisabled?: boolean
     isUpdate?: boolean
+    disableActions?: boolean
     canCreateABVariants?: boolean
     allowActivate?: boolean
 
@@ -49,9 +52,10 @@ export const CampaignFooter = ({
     isCampaignValid = false,
     isLightCampaign = false,
     isShopifyStore = false,
-    isOverCampaignsLimit = false,
+    isOverLimit = false,
     isCreateDisabled = false,
     isUpdate = false,
+    disableActions = false,
     canCreateABVariants = false,
     allowActivate = true,
     onSave,
@@ -131,7 +135,11 @@ export const CampaignFooter = ({
                             'btn-loading': actionInProgress === 'update',
                         })}
                         isLoading={actionInProgress === 'update'}
-                        isDisabled={!isCampaignValid || actionInProgress !== ''}
+                        isDisabled={
+                            disableActions ||
+                            !isCampaignValid ||
+                            actionInProgress !== ''
+                        }
                         onClick={() => onSave()}
                     >
                         {configuration?.labels?.Update ?? 'Update Campaign'}
@@ -140,23 +148,37 @@ export const CampaignFooter = ({
                     {(!isShopifyStore || !isLightCampaign) &&
                         !isCreateDisabled &&
                         onDuplicate && (
-                            <Button
-                                intent="secondary"
-                                aria-label={
-                                    configuration?.labels?.Duplicate ??
-                                    'Duplicate Campaign'
-                                }
-                                className={classnames({
-                                    'btn-loading':
-                                        actionInProgress === 'duplicate',
-                                })}
-                                isLoading={actionInProgress === 'duplicate'}
-                                isDisabled={actionInProgress !== ''}
-                                onClick={() => onDuplicate()}
-                            >
-                                {configuration?.labels?.Duplicate ??
-                                    'Duplicate Campaign'}
-                            </Button>
+                            <>
+                                <Button
+                                    id="duplicate-button"
+                                    intent="secondary"
+                                    aria-label={
+                                        configuration?.labels?.Duplicate ??
+                                        'Duplicate Campaign'
+                                    }
+                                    className={classnames({
+                                        'btn-loading':
+                                            actionInProgress === 'duplicate',
+                                    })}
+                                    isLoading={actionInProgress === 'duplicate'}
+                                    isDisabled={
+                                        disableActions ||
+                                        isOverLimit ||
+                                        actionInProgress !== ''
+                                    }
+                                    onClick={() => onDuplicate()}
+                                >
+                                    {configuration?.labels?.Duplicate ??
+                                        'Duplicate Campaign'}
+                                </Button>
+                                {isOverLimit && (
+                                    <Tooltip target="duplicate-button">
+                                        You can only have a max of 3 variants
+                                        (including the control). You can delete
+                                        variants from the Test Settings page.
+                                    </Tooltip>
+                                )}
+                            </>
                         )}
 
                     {(!isShopifyStore || !isLightCampaign) &&
@@ -166,6 +188,7 @@ export const CampaignFooter = ({
                             <Button
                                 intent="secondary"
                                 aria-label="Create A/B Test"
+                                isDisabled={disableActions}
                                 onClick={onCreateButtonClick}
                                 className={classnames({
                                     'btn-loading':
@@ -179,13 +202,13 @@ export const CampaignFooter = ({
 
                 {!isLightCampaign && onDelete && (
                     <>
-                        {!isOverCampaignsLimit || lightModalDismissed ? (
+                        {!isOverLimit || lightModalDismissed ? (
                             <ConfirmButton
                                 placement="bottom-end"
                                 onConfirm={onDelete}
                                 confirmationContent="Are you sure you want to delete this campaign?"
                                 intent="destructive"
-                                isDisabled={actionInProgress !== ''}
+                                isDisabled={disableActions}
                                 fillStyle="ghost"
                                 className={classnames('float-right', {
                                     'btn-loading':
@@ -204,6 +227,7 @@ export const CampaignFooter = ({
                                     fillStyle="ghost"
                                     intent="destructive"
                                     title="Delete campaign"
+                                    isDisabled={disableActions}
                                     data-testid="delete-icon-button"
                                     className={classnames('float-right', {
                                         'btn-loading':
@@ -254,7 +278,11 @@ export const CampaignFooter = ({
                             fillStyle="fill"
                             ref={dropdownTargetRef}
                             isLoading={actionInProgress === 'create'}
-                            isDisabled={!isCampaignValid || isCreateDisabled}
+                            isDisabled={
+                                disableActions ||
+                                !isCampaignValid ||
+                                isCreateDisabled
+                            }
                             className={classnames({
                                 'btn-loading': actionInProgress === 'create',
                             })}
@@ -299,7 +327,11 @@ export const CampaignFooter = ({
                         title="Create"
                         data-testid="create-button"
                         isLoading={actionInProgress === 'create'}
-                        isDisabled={!isCampaignValid || isCreateDisabled}
+                        isDisabled={
+                            disableActions ||
+                            !isCampaignValid ||
+                            isCreateDisabled
+                        }
                         className={classnames({
                             'btn-loading': actionInProgress === 'create',
                         })}

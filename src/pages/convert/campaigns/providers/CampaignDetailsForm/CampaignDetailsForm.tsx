@@ -85,9 +85,10 @@ export type Props = {
     isLoading: boolean
     isEditMode?: boolean
     isShopifyStore?: boolean
-    isOverCampaignsLimit?: boolean
+    isOverLimit?: boolean
     isCreateDisabled?: boolean
     canCreateABVariants?: boolean
+    disableActions?: boolean
     integration: Map<any, any>
     shopifyIntegration: Map<any, any>
     createCampaign?: (form: any) => Promise<unknown>
@@ -97,6 +98,7 @@ export type Props = {
     createABVariant?: () => Promise<unknown>
     onDiscard?: () => void
     header?: React.ReactNode
+    banners?: React.ReactNode
     openedStep?: CampaignStepsKeys
     allowChangeSection?: boolean
     allowActivate?: boolean
@@ -110,9 +112,10 @@ export const CampaignDetailsForm = ({
     isLoading,
     isEditMode = false,
     isShopifyStore = false,
-    isOverCampaignsLimit = false,
+    isOverLimit = false,
     isCreateDisabled = false,
     canCreateABVariants = false,
+    disableActions = false,
     integration,
     shopifyIntegration,
     createCampaign,
@@ -122,6 +125,7 @@ export const CampaignDetailsForm = ({
     createABVariant,
     onDiscard,
     header,
+    banners,
     backUrl,
     openedStep,
     allowActivate = true,
@@ -533,6 +537,7 @@ export const CampaignDetailsForm = ({
                             }
                         />
                     )}
+
                     <div
                         className={css.pageContainer}
                         data-testid="improved-campaign-details-page"
@@ -545,6 +550,11 @@ export const CampaignDetailsForm = ({
                                     backToHref={backUrl}
                                     title="Back to Campaigns list"
                                 />
+                            )}
+                            {banners && (
+                                <div className={css.bannerWrapper}>
+                                    {banners}
+                                </div>
                             )}
                             {!isFormLoading && (
                                 <div className={css.formContainer}>
@@ -618,9 +628,7 @@ export const CampaignDetailsForm = ({
                                             isCampaignValid={isCampaignValid}
                                             isLightCampaign={isLightCampaign}
                                             isShopifyStore={isShopifyStore}
-                                            isOverCampaignsLimit={
-                                                isOverCampaignsLimit
-                                            }
+                                            isOverLimit={isOverLimit}
                                             canCreateABVariants={
                                                 canCreateABVariants
                                             }
@@ -642,6 +650,7 @@ export const CampaignDetailsForm = ({
                                                 handleCreateABVariant
                                             }
                                             allowActivate={allowActivate}
+                                            disableActions={disableActions}
                                         />
                                     </div>
                                 </div>

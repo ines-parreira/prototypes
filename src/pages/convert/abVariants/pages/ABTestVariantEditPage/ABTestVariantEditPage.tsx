@@ -11,13 +11,16 @@ import {
 } from 'state/integrations/selectors'
 import history from 'pages/history'
 
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+
 import {
     CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
     CONVERT_ROUTE_PARAM_NAME,
     CONVERT_ROUTING_AB_VARIANT_PARAM_NAME,
 } from 'pages/convert/common/constants'
-import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
 
+import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
+import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import {VARIANT_LIMIT} from 'pages/convert/abVariants/contants'
 import {abVariantsUrl} from 'pages/convert/abVariants/urls'
 
@@ -34,6 +37,7 @@ import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifySto
 type Props = {
     isControlVersion: boolean
     campaign: Campaign
+    canPerformActions: boolean
     onDiscard?: () => void
     addVariant?: () => void
     onUpdate?: (campaign: Map<any, any>, variantId?: string | null) => void
@@ -45,6 +49,7 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
     const {
         isControlVersion,
         campaign: data,
+        canPerformActions,
         onDiscard,
         addVariant,
         onUpdate,
@@ -97,17 +102,18 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
     }
 
     const handleDuplicateVariant = async () => {
-        if (variantId === undefined) {
-            return
-        }
         // eslint-disable-next-line @typescript-eslint/await-thenable
-        onDuplicateVariant && (await onDuplicateVariant(variantId))
+        onDuplicateVariant && (await onDuplicateVariant(variantId ?? null))
     }
 
     const backUrl = `/app/convert/${integrationId}/campaigns`
 
-    const isDuplicateDisabled = useMemo(() => {
+    const isOverLimit = useMemo(() => {
         return (data.variants ?? []).length >= VARIANT_LIMIT
+    }, [data])
+
+    const isTestCompleted = useMemo(() => {
+        return data.ab_group?.status === ABGroupStatus.Completed
     }, [data])
 
     const campaignVariant = useMemo(() => {
@@ -174,13 +180,22 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
         isLoading: false,
         isEditMode: true,
         isShopifyStore: chatIsShopifyStore(integration),
-        isOverCampaignsLimit: false,
-        isCreateDisabled: true,
+        isOverLimit: isOverLimit,
+        isCreateDisabled: false,
         integration: integration,
         shopifyIntegration: shopify,
         updateCampaign: handleUpdateCampaign,
+        duplicateCampaign: handleDuplicateVariant,
         backUrl: backUrl,
         openedStep: CampaignStepsKeys.Message,
+        disableActions: !canPerformActions,
+        banners: !canPerformActions && !isTestCompleted && (
+            <Alert type={AlertType.Warning}>
+                Variants cannot be edited when a test is running. To edit your
+                variants you will need to pause your test from the test settings
+                page first.
+            </Alert>
+        ),
     }
 
     if (!isControlVersion) {
@@ -188,13 +203,10 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
             ...campaignDetailsFormProps,
             campaign: campaignVariant as Campaign,
             isEditMode: variantId !== undefined,
-            isCreateDisabled: false,
             updateCampaign: handleUpdateVariant,
             createCampaign: handleCreateVariant,
             duplicateCampaign:
-                variantId !== undefined && !isDuplicateDisabled
-                    ? handleDuplicateVariant
-                    : undefined,
+                variantId !== undefined ? handleDuplicateVariant : undefined,
             onDiscard: handleDiscardVariant,
             wizardConfiguration: wizardConfiguration,
             allowActivate: false,

@@ -1,4 +1,4 @@
-import React, {useMemo, useCallback} from 'react'
+import React, {useMemo} from 'react'
 import classnames from 'classnames'
 
 import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
@@ -19,6 +19,7 @@ import {generateVariantName} from 'pages/convert/abVariants/utils/generateVarian
 import css from './VariantList.less'
 
 type Props = {
+    canPerformActions: boolean
     variants: CampaignVariant[]
     onDelete: (variantId: string | null) => void
     onDuplicate: (variantId: string | null) => void
@@ -60,24 +61,16 @@ const variantTableCells: TableColumn[] = [
     },
 ]
 
-const VariantsList: React.FC<Props> = ({variants, onDelete, onDuplicate}) => {
+const VariantsList: React.FC<Props> = ({
+    canPerformActions,
+    variants,
+    onDelete,
+    onDuplicate,
+}) => {
     const isCreateDisabled = useMemo(() => {
-        return variants.length >= VARIANT_LIMIT
-    }, [variants])
+        return !canPerformActions || variants.length >= VARIANT_LIMIT
+    }, [variants, canPerformActions])
 
-    const handleonDelete = useCallback(
-        (variantId: string | null) => {
-            onDelete(variantId)
-        },
-        [onDelete]
-    )
-
-    const handleonDuplicate = useCallback(
-        (variantId: string | null) => {
-            onDuplicate(variantId)
-        },
-        [onDuplicate]
-    )
     return (
         <TableWrapper
             className={classnames('table-integrations', css.variantTable)}
@@ -122,9 +115,10 @@ const VariantsList: React.FC<Props> = ({variants, onDelete, onDuplicate}) => {
                     <BodyCell>0%</BodyCell>
                     <BodyCell style={{width: 110}}>
                         <VariantActions
-                            isDeletingDisabled={true}
+                            variant={null}
+                            isDeletingDisabled={true} // disabled by default
                             isDuplicatingDisabled={isCreateDisabled}
-                            onClickDuplicate={() => handleonDuplicate(null)}
+                            onDuplicate={onDuplicate}
                         />
                     </BodyCell>
                 </TableBodyRow>
@@ -142,14 +136,11 @@ const VariantsList: React.FC<Props> = ({variants, onDelete, onDuplicate}) => {
                             <BodyCell>0%</BodyCell>
                             <BodyCell style={{width: 110}}>
                                 <VariantActions
-                                    isDeletingDisabled={false}
+                                    variant={variant}
+                                    isDeletingDisabled={!canPerformActions}
                                     isDuplicatingDisabled={isCreateDisabled}
-                                    onClickDelete={() =>
-                                        handleonDelete(variant.id)
-                                    }
-                                    onClickDuplicate={() =>
-                                        handleonDuplicate(variant.id)
-                                    }
+                                    onDelete={onDelete}
+                                    onDuplicate={onDuplicate}
                                 />
                             </BodyCell>
                         </TableBodyRow>

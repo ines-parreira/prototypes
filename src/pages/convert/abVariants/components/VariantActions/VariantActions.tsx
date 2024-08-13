@@ -1,19 +1,24 @@
 import React from 'react'
+
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+
 import IconButton from 'pages/common/components/button/IconButton'
 
 type Props = {
+    variant: CampaignVariant | null
     isDeletingDisabled: boolean
     isDuplicatingDisabled: boolean
-    onClickDelete?: () => void
-    onClickDuplicate: () => void
+    onDelete?: (variantId: string) => void
+    onDuplicate: (variantId: string | null) => void
 }
 
 const VariantActions: React.FC<Props> = (props) => {
     const {
+        variant,
         isDeletingDisabled,
         isDuplicatingDisabled,
-        onClickDelete,
-        onClickDuplicate,
+        onDelete,
+        onDuplicate,
     } = props
 
     return (
@@ -25,7 +30,7 @@ const VariantActions: React.FC<Props> = (props) => {
                 intent="secondary"
                 title="Duplicate variant"
                 isDisabled={isDuplicatingDisabled}
-                onClick={onClickDuplicate}
+                onClick={() => onDuplicate(variant ? variant.id : null)}
             >
                 file_copy
             </IconButton>
@@ -36,7 +41,7 @@ const VariantActions: React.FC<Props> = (props) => {
                 title="Delete variant"
                 data-testid="delete-icon-button"
                 isDisabled={isDeletingDisabled}
-                onClick={onClickDelete}
+                onClick={() => variant && onDelete?.(variant.id as string)}
             >
                 delete
             </IconButton>

@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useEffect} from 'react'
+import React, {useCallback, useState, useEffect, useMemo} from 'react'
 import {Route, Switch, useParams} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import {produce} from 'immer'
@@ -33,6 +33,7 @@ import {
 import {ABGroupContainer} from 'pages/convert/abVariants/containers/ABGroupContainer'
 import ABTestSettingsPage from 'pages/convert/abVariants/pages/ABTestSettingsPage'
 import ABTestVariantEditPage from 'pages/convert/abVariants/pages/ABTestVariantEditPage'
+import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 
 import {createVariant} from 'pages/convert/abVariants/utils/createVariant'
 import {duplicateVariant} from 'pages/convert/abVariants/utils/duplicateVariant'
@@ -50,7 +51,7 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
     campaign,
     integrationId,
 }) => {
-    const [campaignData, setCampaignData] = useState({...campaign})
+    const [campaignData, setCampaignData] = useState<Campaign>({...campaign})
 
     useEffect(() => {
         setCampaignData({...campaign})
@@ -70,6 +71,19 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
         },
         [campaignData, updateCampaignRequest]
     )
+
+    const canPerformActions = useMemo(() => {
+        const statuses: string[] = [
+            ABGroupStatus.Started,
+            ABGroupStatus.Completed,
+        ]
+
+        if (!campaignData.ab_group) {
+            return false
+        }
+
+        return !(statuses.indexOf(campaignData.ab_group?.status as string) >= 0)
+    }, [campaignData])
 
     const addVariant = () => {
         const hasEmptyVariant = campaignData.variants?.find(
@@ -214,6 +228,7 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                 <Switch>
                     <Route exact path={abVariantsPath}>
                         <ABTestSettingsPage
+                            canPerformActions={canPerformActions}
                             variants={
                                 campaignData.variants as CampaignVariant[]
                             }
@@ -223,13 +238,16 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                     </Route>
                     <Route exact path={abVariantsControlVersionPath}>
                         <ABTestVariantEditPage
+                            canPerformActions={canPerformActions}
                             isControlVersion={true}
                             campaign={campaignData}
                             onUpdate={handleUpdateControlVariant}
+                            onDuplicateVariant={handleDuplicateVariant}
                         />
                     </Route>
                     <Route exact path={abVariantAddPath}>
                         <ABTestVariantEditPage
+                            canPerformActions={canPerformActions}
                             isControlVersion={false}
                             campaign={campaignData}
                             addVariant={addVariant}
@@ -239,6 +257,7 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                     </Route>
                     <Route exact path={abVariantEditorPath}>
                         <ABTestVariantEditPage
+                            canPerformActions={canPerformActions}
                             isControlVersion={false}
                             campaign={campaignData}
                             onUpdate={handleUpdateVariant}

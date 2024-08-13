@@ -220,7 +220,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
                 isLoading={isLoading}
                 isEditMode={campaignId !== undefined}
                 isShopifyStore={chatIsShopifyStore(integration)}
-                isOverCampaignsLimit={isOverCampaignsLimit}
+                isOverLimit={isOverCampaignsLimit}
                 isCreateDisabled={!campaignCreationAllowed}
                 integration={integration}
                 shopifyIntegration={shopify}

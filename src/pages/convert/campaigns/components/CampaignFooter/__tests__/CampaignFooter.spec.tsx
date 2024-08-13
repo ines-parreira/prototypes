@@ -97,7 +97,7 @@ describe('<CampaignFooter />', () => {
         it('renders delete button with light modal when over campaigns limit', () => {
             const {getByText} = renderComponent({
                 ...defaultProps,
-                isOverCampaignsLimit: true,
+                isOverLimit: true,
             })
 
             getByText('Delete Campaign').click()
@@ -110,7 +110,7 @@ describe('<CampaignFooter />', () => {
 
             const {getByText, queryByText} = renderComponent({
                 ...defaultProps,
-                isOverCampaignsLimit: true,
+                isOverLimit: true,
             })
 
             getByText('Delete Campaign').click()
