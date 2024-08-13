@@ -20,11 +20,17 @@ export const TRIGGERED_OUTSIDE_BUSINESS_HOURS = {
     label: 'Triggered outside business hours',
 }
 
+export const AB_GROUP_TESTS = {
+    id: 'ab-tests',
+    label: 'A/B Tests',
+}
+
 export const QUICK_FILTERS: QuickFilterType[] = [
     CONTAINS_PRODUCT_CARDS,
     CONTAINS_DISCOUNT_CODES,
     TRIGGERED_ON_EXIT_INTENT,
     TRIGGERED_OUTSIDE_BUSINESS_HOURS,
+    AB_GROUP_TESTS,
 ]
 
 export default QUICK_FILTERS

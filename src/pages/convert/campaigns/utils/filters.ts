@@ -1,4 +1,5 @@
 import {
+    AB_GROUP_TESTS,
     CONTAINS_DISCOUNT_CODES,
     CONTAINS_PRODUCT_CARDS,
     TRIGGERED_ON_EXIT_INTENT,
@@ -63,11 +64,18 @@ export function filterWithOutsideBusinessHours(
     })
 }
 
+export const filterWithABTests = (campaigns: Campaign[]): Campaign[] => {
+    return campaigns.filter((campaign) => {
+        return !!campaign.ab_group
+    })
+}
+
 const QUICK_FILTERS_FN = {
     [CONTAINS_PRODUCT_CARDS.id]: filterWithProductCards,
     [CONTAINS_DISCOUNT_CODES.id]: filterWithDiscountCodes,
     [TRIGGERED_ON_EXIT_INTENT.id]: filterWithExitIntent,
     [TRIGGERED_OUTSIDE_BUSINESS_HOURS.id]: filterWithOutsideBusinessHours,
+    [AB_GROUP_TESTS.id]: filterWithABTests,
 }
 
 export function quickFiltersInvoke(

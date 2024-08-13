@@ -23,6 +23,8 @@ import {user} from 'fixtures/users'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {channelConnection} from 'fixtures/channelConnection'
 import {campaign} from 'fixtures/campaign'
+import * as useIsConvertABVariantsEnabled from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
+
 import {CampaignStatus} from '../../../types/enums/CampaignStatus.enum'
 import {useCampaignListOptions} from '../../../hooks/useCampaignListOptions'
 
@@ -37,6 +39,7 @@ import CampaignsList from '../CampaignsList'
 jest.mock('hooks/useSearch')
 jest.mock('../../../hooks/useCampaignListOptions')
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
+jest.mock('pages/convert/common/hooks/useIsConvertABVariantsEnabled')
 
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
@@ -83,6 +86,11 @@ describe('<CampaignsList />', () => {
             revenueBetaHook,
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
+
+        jest.spyOn(
+            useIsConvertABVariantsEnabled,
+            'useIsConvertABVariantsEnabled'
+        ).mockImplementation(() => false)
     })
 
     beforeEach(() => {
@@ -194,6 +202,27 @@ describe('<CampaignsList />', () => {
             )
 
             getByText('No campaigns match your search and filters.')
+        })
+    })
+
+    describe('Campaign filter when A/B test LD is enabled', () => {
+        beforeEach(() => {
+            jest.spyOn(
+                useIsConvertABVariantsEnabled,
+                'useIsConvertABVariantsEnabled'
+            ).mockImplementation(() => true)
+        })
+        it('should display A/B Test filter', () => {
+            const {getByText} = render(
+                <Provider store={store}>
+                    <CampaignsList {...props} />
+                </Provider>
+            )
+
+            getByText('All')
+            getByText('Active')
+            getByText('Inactive')
+            getByText('A/B Tests')
         })
     })
 

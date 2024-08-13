@@ -1,4 +1,5 @@
 import {campaign} from 'fixtures/campaign'
+import {campaignWithABGroup} from 'fixtures/abGroup'
 import {AttachmentEnum} from 'common/types'
 import {Campaign} from '../../types/Campaign'
 
@@ -7,6 +8,7 @@ import {
     filterWithDiscountCodes,
     filterWithExitIntent,
     filterWithOutsideBusinessHours,
+    filterWithABTests,
     quickFiltersInvoke,
 } from '../filters'
 
@@ -20,6 +22,7 @@ import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
 import {CampaignTriggerBusinessHoursValuesEnum} from '../../types/enums/CampaignTriggerBusinessHoursValues.enum'
 import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
 import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
+import {ABGroupStatus} from '../../types/enums/ABGroupStatus.enum'
 
 const campaignOne: Campaign = {
     ...campaign,
@@ -127,6 +130,17 @@ const campaignFive: Campaign = {
     ],
 }
 
+const campaignWithABTest: Campaign = {
+    ...campaignWithABGroup,
+    status: CampaignStatus.Active,
+    ab_group: {
+        ...campaignWithABGroup,
+        status: ABGroupStatus.Draft,
+    },
+    variants: [],
+    triggers: [],
+}
+
 describe('filterWithProductCards()', () => {
     it('should return campaigns with product cards', () => {
         expect(
@@ -181,6 +195,18 @@ describe('filterWithOutsideBusinessHours()', () => {
 
     it('should return empty array if no campaigns with outside business hours', () => {
         expect(filterWithOutsideBusinessHours([campaignThree])).toEqual([])
+    })
+})
+
+describe('filterWithABTests', () => {
+    it('should return campanies with A/B test', () => {
+        expect(filterWithABTests([campaignTwo, campaignWithABTest])).toEqual([
+            campaignWithABTest,
+        ])
+    })
+
+    it('should return empty array if no campaigns with A/B Tests', () => {
+        expect(filterWithABTests([campaignThree])).toEqual([])
     })
 })
 
