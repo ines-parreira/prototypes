@@ -32,7 +32,6 @@ import {useModalManager} from 'hooks/useModalManager'
 import {UNIQUE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
 import {useUpdateDiscountOffer} from 'pages/convert/discountOffer/hooks/useUpdateDiscountOffer'
 import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector'
-import CollectionSelector from 'pages/convert/discountOffer/components/CollectionSelector'
 import {getMoneySymbol} from 'utils/getMoneySymbol'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -41,6 +40,10 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {useToolbarContext} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
+import {
+    AppliesTypeEnum,
+    CollectionFormGroup,
+} from 'pages/convert/discountOffer/components/CollectionFormGroup/CollectionFormGroup'
 import {testIds, transformAxiosError} from './utils'
 
 import css from './UniqueDiscountOfferCreateModal.less'
@@ -50,11 +53,6 @@ export type UniqueDiscountOfferCreateModalProps = {
     integration: Map<string, string>
     onClose: () => void
     onSubmit: (inEditMode: boolean, code: UniqueDiscountOffer) => void
-}
-
-enum AppliesTypeEnum {
-    ORDER_AMOUNT = 'order_amount',
-    PRODUCT_COLLECTION = 'specific_collection',
 }
 
 export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateModalProps> =
@@ -407,57 +405,15 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                 )}
                             </InputGroup>
                         </FormGroup>
-                        <FormGroup>
-                            <div data-testid={testIds.appliesTo}>
-                                <Label
-                                    htmlFor="appliesTo"
-                                    className={css.label}
-                                >
-                                    Applies to
-                                </Label>
-                                <InputGroup className={css.inputGroup}>
-                                    <div className={css.inputChild}>
-                                        <SelectField
-                                            showSelectedOption
-                                            fullWidth
-                                            value={appliesTo}
-                                            options={[
-                                                {
-                                                    label: 'Total order amount',
-                                                    value: AppliesTypeEnum.ORDER_AMOUNT,
-                                                },
-                                                {
-                                                    label: 'To specific collection',
-                                                    value: AppliesTypeEnum.PRODUCT_COLLECTION,
-                                                },
-                                            ]}
-                                            onChange={(value) =>
-                                                setAppliesTo(
-                                                    value as AppliesTypeEnum
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                </InputGroup>
-                            </div>
-                            {appliesTo ===
-                                AppliesTypeEnum.PRODUCT_COLLECTION && (
-                                <div className={css.collectionSelector}>
-                                    <CollectionSelector
-                                        value={
-                                            discount.external_collection_ids ||
-                                            null
-                                        }
-                                        integrationId={
-                                            integration.get(
-                                                'id'
-                                            ) as unknown as number
-                                        }
-                                        onChange={onCollectionSelectionChange}
-                                    />
-                                </div>
-                            )}
-                        </FormGroup>
+                        <CollectionFormGroup
+                            integrationId={
+                                integration.get('id') as unknown as number
+                            }
+                            selected={discount.external_collection_ids || null}
+                            onSelectionChange={onCollectionSelectionChange}
+                            appliesTo={appliesTo}
+                            setAppliesTo={setAppliesTo}
+                        />
                         <FormGroup>
                             <Label
                                 className={css.label}

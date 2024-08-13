@@ -1,4 +1,4 @@
-import React, {FormEvent, memo, useCallback, useState} from 'react'
+import React, {FormEvent, memo, useCallback, useEffect, useState} from 'react'
 import {
     Form as ReactStrapForm,
     FormGroup,
@@ -33,6 +33,10 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTicketState} from 'state/ticket/selectors'
 import {getMoneySymbol} from 'utils/getMoneySymbol'
+import {
+    AppliesTypeEnum,
+    CollectionFormGroup,
+} from 'pages/convert/discountOffer/components/CollectionFormGroup/CollectionFormGroup'
 import {testIds} from './utils'
 import css from './DiscountCodeCreateModal.less'
 
@@ -51,6 +55,10 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
     const [selectedSegments, setSelectedSegments] = useState<string[] | null>(
         null
     )
+    const [selectedCollections, setSelectedCollections] = useState<string[]>([])
+    const [appliesTo, setAppliesTo] = useState<AppliesTypeEnum>(
+        AppliesTypeEnum.ORDER_AMOUNT
+    )
     const [discountUseType, setDiscountUseType] = useState(
         ticket?.get('id')
             ? DISCOUNT_USE_TYPE.ONE_PER_USER
@@ -64,24 +72,42 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
     const [formErrors, setFormErrors] = useState({
         code: null,
     })
+    const shouldRenderCollectionFormGroup =
+        discountType !== DISCOUNT_TYPE.FREE_SHIPPING
 
     const dispatch = useAppDispatch()
 
     const handleSegmentValueChange = (value: string | null): void => {
-        const selectedSegmentsSet = new Set(selectedSegments || [])
-        if (value !== null) {
-            if (selectedSegmentsSet.has(value)) {
-                selectedSegmentsSet.delete(value)
-            } else {
-                selectedSegmentsSet.add(value)
-            }
-        }
+        const selectedSegmentsSet = new Set(selectedSegments)
+        if (value !== null)
+            selectedSegmentsSet.has(value)
+                ? selectedSegmentsSet.delete(value)
+                : selectedSegmentsSet.add(value)
         setSelectedSegments(
             value && selectedSegmentsSet.size > 0
                 ? Array.from(selectedSegmentsSet)
                 : null
         )
     }
+
+    const handleCollectionChange = useCallback(
+        (value: string | null): void => {
+            const selectedCollectionsSet = new Set(selectedCollections)
+            if (value !== null)
+                selectedCollectionsSet.has(value)
+                    ? selectedCollectionsSet.delete(value)
+                    : selectedCollectionsSet.add(value)
+            setSelectedCollections(Array.from(selectedCollectionsSet))
+        },
+        [selectedCollections]
+    )
+
+    // Listen to applies to and clear the selection if it's back to order amount
+    useEffect(() => {
+        if (appliesTo !== AppliesTypeEnum.PRODUCT_COLLECTION) {
+            setSelectedCollections([])
+        }
+    }, [appliesTo])
 
     const handleSubmit = useCallback(
         (evt: FormEvent<HTMLFormElement>) => {
@@ -101,6 +127,11 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                     ? minRequirementsPurchaseAmount
                     : null,
                 segment_ids: selectedSegments,
+                collection_ids:
+                    shouldRenderCollectionFormGroup &&
+                    selectedCollections.length
+                        ? selectedCollections
+                        : null,
             }
 
             client
@@ -129,6 +160,8 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
             minRequirementsPurchase,
             minRequirementsPurchaseAmount,
             selectedSegments,
+            selectedCollections,
+            shouldRenderCollectionFormGroup,
             integration,
             onSubmit,
             dispatch,
@@ -296,6 +329,17 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                             </div>
                         </InputGroup>
                     </FormGroup>
+                    {shouldRenderCollectionFormGroup && (
+                        <CollectionFormGroup
+                            integrationId={
+                                integration.get('id') as unknown as number
+                            }
+                            selected={selectedCollections}
+                            onSelectionChange={handleCollectionChange}
+                            appliesTo={appliesTo}
+                            setAppliesTo={setAppliesTo}
+                        />
+                    )}
                     <FormGroup>
                         <Label
                             className={css.label}
@@ -312,9 +356,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                             'id'
                                         ) as unknown as number
                                     }
-                                    onChange={(value) =>
-                                        handleSegmentValueChange(value)
-                                    }
+                                    onChange={handleSegmentValueChange}
                                 />
                             </div>
                         </InputGroup>

@@ -609,4 +609,53 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             ])
         })
     })
+
+    it('allows saving with multiple values for product collections', async () => {
+        // Setup
+        useModalManagerMock.mockReturnValue({
+            getParams: () => ({}),
+        } as unknown as useModalManagerApi)
+
+        const {getByTestId, getByText, getByRole} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <UniqueDiscountOfferCreateModal {...props} />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await setupValidModalParameters(getByTestId, getByRole)
+        getByText('To specific collection').click()
+
+        const inputElement = getByText('Select a product collection')
+        fireEvent.focus(inputElement)
+
+        const validCollectionSample = getByText(VALID_PRODUCT_1.title)
+        const validCollectionSample2 = getByText(VALID_PRODUCT_2.title)
+
+        // Selects the first collection
+        userEvent.click(validCollectionSample)
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_1.title)
+
+        // Selects the second collection
+        userEvent.click(validCollectionSample2)
+        expect(inputElement.textContent).toBe('2 collections selected')
+
+        // Move back to total order amount
+        getByText('Total order amount').click()
+
+        // Save
+        getByTestId(testIds.saveBtn).click()
+
+        await waitFor(() => {
+            expect(
+                useCreateDiscountOfferMock().mutateAsync
+            ).toHaveBeenCalledWith([
+                undefined,
+                expect.objectContaining({
+                    external_collection_ids: null,
+                }),
+            ])
+        })
+    })
 })
