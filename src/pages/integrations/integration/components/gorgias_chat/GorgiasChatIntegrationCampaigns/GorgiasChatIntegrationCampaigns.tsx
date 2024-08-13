@@ -21,7 +21,7 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
 }: Props) => {
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
-
+    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
     return (
         <div className="full-width">
             <PageHeader
@@ -40,7 +40,7 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
                     </Breadcrumb>
                 }
             >
-                {!changeAutomateSettingButtomPosition && (
+                {!changeAutomateSettingButtomPosition && !newChannelsView && (
                     <GorgiasChatIntegrationConnectedChannel
                         integration={integration}
                     />

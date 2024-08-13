@@ -14,6 +14,7 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import dotError from 'assets/img/icons/dot-error.svg'
 
 import css from './HelpCenterNavigation.less'
 import {useHasAccessToAILibrary} from './AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
@@ -40,6 +41,8 @@ export const HelpCenterNavigation: React.FC<Props> = ({
 
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
+    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
 
     const showAILibraryTab = useHasAccessToAILibrary()
 
@@ -90,10 +93,22 @@ export const HelpCenterNavigation: React.FC<Props> = ({
                 Customization
             </NavLink>
             <NavLink to={`${baseURL}/publish-track`}>Publish & Track</NavLink>
+            {newChannelsView && (
+                <NavLink to={`${baseURL}/automate`}>
+                    Automate
+                    {!helpCenterShopName && (
+                        <img
+                            alt="status icon"
+                            src={dotError}
+                            className={css.redDot}
+                        />
+                    )}
+                </NavLink>
+            )}
             {changeAutomateSettingButtomPosition &&
                 (hasAutomate ? (
                     <>
-                        {helpCenterShopName ? (
+                        {helpCenterShopName && !newChannelsView ? (
                             <Button
                                 fillStyle="ghost"
                                 intent="primary"
@@ -111,25 +126,27 @@ export const HelpCenterNavigation: React.FC<Props> = ({
                                 </ButtonIconLabel>
                             </Button>
                         ) : (
-                            <Button
-                                fillStyle="ghost"
-                                intent="primary"
-                                onClick={() => {
-                                    logHelpCenterEvent('Store')
-                                    if (isConnectStoreLinkEnabled) {
-                                        history.push(
-                                            `/app/settings/help-center/${helpCenterId}/publish-track`
-                                        )
-                                    }
-                                }}
-                            >
-                                <ButtonIconLabel
-                                    icon="warning"
-                                    className={css.connectStoreWarning}
+                            !newChannelsView && (
+                                <Button
+                                    fillStyle="ghost"
+                                    intent="primary"
+                                    onClick={() => {
+                                        logHelpCenterEvent('Store')
+                                        if (isConnectStoreLinkEnabled) {
+                                            history.push(
+                                                `/app/settings/help-center/${helpCenterId}/publish-track`
+                                            )
+                                        }
+                                    }}
                                 >
-                                    Connect to Automate
-                                </ButtonIconLabel>
-                            </Button>
+                                    <ButtonIconLabel
+                                        icon="warning"
+                                        className={css.connectStoreWarning}
+                                    >
+                                        Connect to Automate
+                                    </ButtonIconLabel>
+                                </Button>
+                            )
                         )}
                     </>
                 ) : (

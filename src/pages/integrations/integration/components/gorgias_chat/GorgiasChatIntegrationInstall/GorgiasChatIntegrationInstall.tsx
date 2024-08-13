@@ -82,6 +82,7 @@ const GorgiasChatIntegrationInstall = ({
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
+    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
     return (
         <>
             <NavigatedSuccessModal
@@ -112,11 +113,12 @@ const GorgiasChatIntegrationInstall = ({
                         </Breadcrumb>
                     }
                 >
-                    {!changeAutomateSettingButtomPosition && (
-                        <GorgiasChatIntegrationConnectedChannel
-                            integration={integration}
-                        />
-                    )}
+                    {!changeAutomateSettingButtomPosition &&
+                        !newChannelsView && (
+                            <GorgiasChatIntegrationConnectedChannel
+                                integration={integration}
+                            />
+                        )}
                 </PageHeader>
 
                 <GorgiasChatIntegrationHeader

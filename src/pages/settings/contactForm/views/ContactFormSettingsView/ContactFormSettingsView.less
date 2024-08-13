@@ -1,3 +1,5 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .pageHeader {
         flex-wrap: nowrap;
@@ -21,5 +23,10 @@
     .header {
         display: flex;
         column-gap: 8px;
+    }
+
+    .redDot {
+        margin-left: @layout-spacing-xs;
+        margin-bottom: 1px;
     }
 }

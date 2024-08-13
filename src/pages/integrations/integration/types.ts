@@ -17,4 +17,5 @@ export enum Tab {
     PhoneIvr = 'ivr',
     CreateWizard = 'create-wizard',
     Languages = 'languages',
+    Automate = 'automate',
 }

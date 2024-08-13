@@ -21,6 +21,7 @@ import {
     CONTACT_FORM_PREFERENCES_PATH,
     CONTACT_FORM_PUBLISH_PATH,
     CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
+    CONTACT_FORM_AUTOMATE_PATH,
 } from 'pages/settings/contactForm/constants'
 import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import {useContactFormIdParam} from 'pages/settings/contactForm/hooks/useCurrentContactFormId'
@@ -43,7 +44,9 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import dotError from 'assets/img/icons/dot-error.svg'
 import css from './ContactFormSettingsView.less'
+import {ContactFormAutomateView} from './ContactFormAutomateView'
 
 const navLinks = {
     Preferences: CONTACT_FORM_PREFERENCES_PATH,
@@ -63,6 +66,8 @@ const ContactFormSettingsView = (): JSX.Element => {
 
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
+    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
 
     useEffect(() => {
         if (!isIdValid) return history.push(CONTACT_FORM_BASE_PATH)
@@ -150,24 +155,26 @@ const ContactFormSettingsView = (): JSX.Element => {
                     {!changeAutomateSettingButtomPosition &&
                         (hasAutomate ? (
                             contactForm.shop_name ? (
-                                <Button
-                                    fillStyle="ghost"
-                                    intent="primary"
-                                    onClick={() => {
-                                        history.push(
-                                            `/app/automation/shopify/${
-                                                contactForm.shop_name as string
-                                            }/connected-channels?type=${
-                                                TicketChannel.ContactForm
-                                            }&id=${contactForm.id}`,
-                                            {from: 'contact-form-settings'}
-                                        )
-                                    }}
-                                >
-                                    <ButtonIconLabel icon="bolt">
-                                        Go to Automate settings
-                                    </ButtonIconLabel>
-                                </Button>
+                                !newChannelsView && (
+                                    <Button
+                                        fillStyle="ghost"
+                                        intent="primary"
+                                        onClick={() => {
+                                            history.push(
+                                                `/app/automation/shopify/${
+                                                    contactForm.shop_name as string
+                                                }/connected-channels?type=${
+                                                    TicketChannel.ContactForm
+                                                }&id=${contactForm.id}`,
+                                                {from: 'contact-form-settings'}
+                                            )
+                                        }}
+                                    >
+                                        <ButtonIconLabel icon="bolt">
+                                            Go to Automate settings
+                                        </ButtonIconLabel>
+                                    </Button>
+                                )
                             ) : (
                                 <Button
                                     fillStyle="ghost"
@@ -216,37 +223,51 @@ const ContactFormSettingsView = (): JSX.Element => {
                 </div>
             </PageHeader>
             <SecondaryNavbar>
-                {Object.entries(navLinks).map(([name, to]) => (
+                {Object.entries({
+                    ...navLinks,
+                    ...(newChannelsView
+                        ? {Automate: CONTACT_FORM_AUTOMATE_PATH}
+                        : {}),
+                }).map(([name, to]) => (
                     <NavLink
                         key={name}
                         to={insertContactFormIdParam(to, contactFormId)}
                     >
                         {name}
+                        {name === 'Automate' && !contactForm.shop_name && (
+                            <img
+                                alt="status icon"
+                                src={dotError}
+                                className={css.redDot}
+                            />
+                        )}
                     </NavLink>
                 ))}
                 {changeAutomateSettingButtomPosition &&
                     (hasAutomate ? (
                         <>
                             {contactForm.shop_name ? (
-                                <Button
-                                    fillStyle="ghost"
-                                    intent="primary"
-                                    onClick={() => {
-                                        logContactFormEvent('Setting')
-                                        history.push(
-                                            `/app/automation/shopify/${
-                                                contactForm.shop_name as string
-                                            }/connected-channels?type=${
-                                                TicketChannel.ContactForm
-                                            }&id=${contactForm.id}`,
-                                            {from: 'contact-form-settings'}
-                                        )
-                                    }}
-                                >
-                                    <ButtonIconLabel icon="bolt">
-                                        Automate Settings
-                                    </ButtonIconLabel>
-                                </Button>
+                                !newChannelsView && (
+                                    <Button
+                                        fillStyle="ghost"
+                                        intent="primary"
+                                        onClick={() => {
+                                            logContactFormEvent('Setting')
+                                            history.push(
+                                                `/app/automation/shopify/${
+                                                    contactForm.shop_name as string
+                                                }/connected-channels?type=${
+                                                    TicketChannel.ContactForm
+                                                }&id=${contactForm.id}`,
+                                                {from: 'contact-form-settings'}
+                                            )
+                                        }}
+                                    >
+                                        <ButtonIconLabel icon="bolt">
+                                            Automate Settings
+                                        </ButtonIconLabel>
+                                    </Button>
+                                )
                             ) : (
                                 <Button
                                     fillStyle="ghost"
@@ -298,6 +319,11 @@ const ContactFormSettingsView = (): JSX.Element => {
                         exact
                         path={CONTACT_FORM_CUSTOMIZATION_PATH}
                         component={ContactFormCustomization}
+                    />
+                    <Route
+                        exact
+                        path={CONTACT_FORM_AUTOMATE_PATH}
+                        component={ContactFormAutomateView}
                     />
                     <Route
                         exact

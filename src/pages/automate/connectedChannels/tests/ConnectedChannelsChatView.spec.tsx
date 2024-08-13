@@ -68,7 +68,7 @@ const mockChatChannels = [
             http: null,
             deactivated_datetime: null,
             application_id: null,
-            name: '[E2E] 24/06/17_10:45:16 local chro 00',
+            name: '25 Shopify Chat',
             uri: '/api/integrations/15/',
             decoration: {
                 avatar_type: 'team-members',
@@ -493,6 +493,46 @@ const mockedStore = mockStore({
                 createdDatetime: '2024-06-05T11:27:06.939Z',
                 updatedDatetime: '2024-07-30T14:16:39.411Z',
             },
+            23: {
+                id: 110,
+                applicationId: 23,
+                articleRecommendation: {
+                    enabled: false,
+                },
+                orderManagement: {
+                    enabled: false,
+                },
+                quickResponses: {
+                    enabled: false,
+                },
+                workflows: {
+                    enabled: true,
+                    entrypoints: [
+                        {
+                            enabled: true,
+                            workflow_id: '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                        },
+                        {
+                            enabled: true,
+                            workflow_id: '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                        },
+                        {
+                            enabled: true,
+                            workflow_id: '01HNDKMSSAV6MPV125PXB3MMSG',
+                        },
+                        {
+                            enabled: true,
+                            workflow_id: '01HQQYPGNH1CNBART86FG8PCN6',
+                        },
+                        {
+                            enabled: true,
+                            workflow_id: '01HQT87MV168MHHENMC1VC55S7',
+                        },
+                    ],
+                },
+                createdDatetime: '2024-06-05T11:27:06.939Z',
+                updatedDatetime: '2024-07-30T14:16:39.411Z',
+            },
         },
         helpCenter: {
             helpCenters: {
@@ -871,5 +911,57 @@ describe('ConnectedChannelsView', () => {
                 orderManagement: {enabled: true},
             })
         )
+    })
+
+    it('should take `shopType` and `shopName` from props when passed', () => {
+        const handleUpdate = jest.fn()
+
+        ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
+            applicationsAutomationSettings: {
+                ...applicationAutomationSettingsFixture,
+                [23]: {
+                    ...applicationAutomationSettingsFixture[25],
+                    id: 23,
+                    quickResponses: {
+                        enabled: false,
+                    },
+                    articleRecommendation: {
+                        enabled: false,
+                    },
+                    orderManagement: {
+                        enabled: false,
+                    },
+                },
+            },
+
+            isFetchPending: false,
+            handleChatApplicationAutomationSettingsUpdate: handleUpdate,
+        })
+
+        renderWithQueryClientProvider(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <ConnectedChannelsChatView
+                        channelId="23"
+                        shopType="shopitay"
+                        shopName="itayshop"
+                        hideDropdown
+                    />
+                </Provider>
+            </Router>
+        )
+
+        expect(screen.queryByText(/currently viewing/i)).not.toBeInTheDocument()
+        expect(screen.queryByText(/forum/i)).not.toBeInTheDocument()
+        expect(
+            screen.getByRole('switch', {name: /enable quick responses/i})
+        ).not.toBeChecked()
+        expect(
+            screen.getByRole('switch', {name: /enable article recommendation/i})
+        ).not.toBeChecked()
+        expect(
+            screen.getByRole('switch', {name: /enable order management/i})
+        ).not.toBeChecked()
+        expect(screen.getAllByText(/test 1/i)).toHaveLength(2)
     })
 })

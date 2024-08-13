@@ -14,6 +14,18 @@ import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigatio
 jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
     return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
 })
+
+jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
+    __esModule: true,
+    default: () => [
+        {
+            id: 1,
+            type: 'shopType',
+            name: 'shopName',
+        },
+    ],
+}))
+
 describe('<GorgiasChatIntegrationNavigation />', () => {
     const integration = {
         id: 16,

@@ -28,6 +28,7 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
     const shopName = integration.getIn(['meta', 'shop_name']) as string | null
     const shopType = integration.getIn(['meta', 'shop_type']) as string | null
 
+    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
@@ -65,6 +66,7 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
             </>
         )
     }
+    if (newChannelsView) return null
 
     if (!shopName || !shopType) {
         return (

@@ -132,6 +132,16 @@ jest.mock('../components/magento2/Magento2', () => () => (
     <div>Magento2Integration</div>
 ))
 
+jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
+    __esModule: true,
+    default: jest.fn(() => [
+        {
+            id: 1,
+            name: 'Integration 1',
+            type: 'shopify',
+        },
+    ]),
+}))
 jest.mock('hooks/useAppSelector', () => jest.fn(() => 'mocked'))
 
 const queryClient = mockQueryClient()
@@ -350,6 +360,23 @@ describe('<IntegrationDetail />', () => {
             expect(container.firstChild).toMatchSnapshot()
         }
     )
+
+    it('should render the automate tab of a specific integration for %s', () => {
+        const {container} = renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>
+            </QueryClientProvider>,
+            {
+                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Automate}`,
+            }
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
 
     it('should render the list of campaigns of a specific integration for %s', () => {
         const {container} = renderWithRouter(

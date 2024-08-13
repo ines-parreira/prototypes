@@ -437,4 +437,25 @@ describe('ConnectedChannelsContactFormView', () => {
             })
         )
     })
+
+    it('should use the shopName and shopType from the contact form', () => {
+        render(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <ConnectedChannelsContactFormView
+                            contactForm={
+                                {
+                                    shop_name: 'itay-store-three',
+                                    id: 1,
+                                } as any
+                            }
+                        />
+                    </QueryClientProvider>
+                </Provider>
+            </Router>
+        )
+
+        expect(screen.queryAllByRole('option').length).toBe(0)
+    })
 })

@@ -258,6 +258,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         useFlags()[FeatureFlagKey.ChatHeaderPictureStyle]
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
     const isControlBotLabelEnabled =
         useFlags()[FeatureFlagKey.ChatControlBotLabelVisibility]
     const isControlUseMainColorOutsideBusinessHoursEnabled =
@@ -919,11 +920,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     </Breadcrumb>
                 }
             >
-                {isUpdate && !changeAutomateSettingButtomPosition && (
-                    <GorgiasChatIntegrationConnectedChannel
-                        integration={integration}
-                    />
-                )}
+                {isUpdate &&
+                    !changeAutomateSettingButtomPosition &&
+                    !newChannelsView && (
+                        <GorgiasChatIntegrationConnectedChannel
+                            integration={integration}
+                        />
+                    )}
             </PageHeader>
 
             {isUpdate && (

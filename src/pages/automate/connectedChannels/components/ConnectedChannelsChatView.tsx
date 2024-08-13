@@ -19,12 +19,26 @@ import css from './ConnectedChannelsChatView.less'
 import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
 import {FeatureSettings} from './FeatureSettings'
 
-export const ConnectedChannelsChatView = () => {
-    const {shopType, shopName} = useParams<{
+interface Props {
+    channelId?: string
+    shopName?: string
+    shopType?: string
+    hideDropdown?: boolean
+}
+
+export const ConnectedChannelsChatView = ({
+    channelId,
+    shopName: extShopName,
+    shopType: extShopType,
+    hideDropdown,
+}: Props) => {
+    const {shopType: shopTypeParam, shopName: shopNameParam} = useParams<{
         shopType: string
         shopName: string
     }>()
 
+    const shopName = extShopName ?? shopNameParam
+    const shopType = extShopType ?? shopTypeParam
     const {
         selfServiceConfiguration,
         storeIntegration,
@@ -42,7 +56,7 @@ export const ConnectedChannelsChatView = () => {
     }, [channels])
 
     const [selectedChannel, setSelectedChannel] = React.useState<string | null>(
-        () => chatChannels[0]?.value.meta.app_id ?? null
+        () => channelId ?? chatChannels[0]?.value.meta.app_id ?? null
     )
 
     const currentChannel =
@@ -157,20 +171,23 @@ export const ConnectedChannelsChatView = () => {
     return (
         <div className={classNames('full-width', css.container)}>
             <div className={css.settingsContainer}>
-                <CurrentlyViewingDropdown
-                    onConnect={noop}
-                    channelType="chat"
-                    channels={chatChannels}
-                    value={selectedChannel ?? ''}
-                    label={currentChannel.value.name}
-                    onSelectedChannelChange={(value) =>
-                        setSelectedChannel(String(value))
-                    }
-                    renderOption={(channel) => ({
-                        label: channel.value.name,
-                        value: channel.value.meta.app_id ?? channel.value.name,
-                    })}
-                />
+                {!hideDropdown && (
+                    <CurrentlyViewingDropdown
+                        onConnect={noop}
+                        channelType="chat"
+                        channels={chatChannels}
+                        value={selectedChannel ?? ''}
+                        label={currentChannel.value.name}
+                        onSelectedChannelChange={(value) =>
+                            setSelectedChannel(String(value))
+                        }
+                        renderOption={(channel) => ({
+                            label: channel.value.name,
+                            value:
+                                channel.value.meta.app_id ?? channel.value.name,
+                        })}
+                    />
+                )}
                 <FlowsSettings
                     channelType="chat"
                     shopType={shopType}

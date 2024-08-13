@@ -768,6 +768,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         const changeAutomateSettingButtomPosition =
             flags?.[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
+        const newChannelsView = flags?.[FeatureFlagKey.NewChannelsView]
+
         const liveChatAvailabilityOptions = [
             {
                 caption:
@@ -982,11 +984,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             </Breadcrumb>
                         }
                     >
-                        {!changeAutomateSettingButtomPosition && (
-                            <GorgiasChatIntegrationConnectedChannel
-                                integration={integration}
-                            />
-                        )}
+                        {!changeAutomateSettingButtomPosition &&
+                            !newChannelsView && (
+                                <GorgiasChatIntegrationConnectedChannel
+                                    integration={integration}
+                                />
+                            )}
                     </PageHeader>
 
                     <GorgiasChatIntegrationHeader integration={integration} />

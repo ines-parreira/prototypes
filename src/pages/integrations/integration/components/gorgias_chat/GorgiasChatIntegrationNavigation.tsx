@@ -7,6 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
 import dotError from 'assets/img/icons/dot-error.svg'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 import {IntegrationType} from '../../../../../models/integration/types'
 
@@ -24,6 +25,24 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
     const integrationId: number = integration.get('id')
 
     const installationStatus = useAppSelector(getChatInstallationStatus)
+    const storeIntegrations = useStoreIntegrations()
+    const shopIntegrationId: number | null = integration.getIn(
+        ['meta', 'shop_integration_id'],
+        null
+    )
+    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
+    const storeIntegration = storeIntegrations.find(
+        (integration) => integration.id === shopIntegrationId
+    )
+    const changeAutomateSettingButtomPosition =
+        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+
+    const isStoreNotConnected =
+        storeIntegrations.length > 0 &&
+        !shopIntegrationId &&
+        integrationId &&
+        !storeIntegration
+
     const baseURL = useMemo(
         () =>
             `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}`,
@@ -31,8 +50,6 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
     )
     const isChatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]
-    const changeAutomateSettingButtomPosition =
-        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
     return (
         <SecondaryNavbar>
@@ -61,6 +78,20 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
                     />
                 )}
             </NavLink>
+
+            {newChannelsView && (
+                <NavLink to={`${baseURL}/automate`} exact>
+                    Automate
+                    {isStoreNotConnected && (
+                        <img
+                            alt="status icon"
+                            src={dotError}
+                            className={css.redDot}
+                        />
+                    )}
+                </NavLink>
+            )}
+
             {changeAutomateSettingButtomPosition && (
                 <GorgiasChatIntegrationConnectedChannel
                     integration={integration}

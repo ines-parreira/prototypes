@@ -127,7 +127,7 @@ export const FlowsSettings = ({
 
         return items.filter(
             (item) =>
-                item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 entrypointLabelByWorkflowId?.[item.id]
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase())

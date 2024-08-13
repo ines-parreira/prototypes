@@ -9,17 +9,29 @@ import {SegmentEvent, logEvent} from 'common/segment'
 
 import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
+import {ContactForm} from 'models/contactForm/types'
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import {FlowsSettings} from './FlowsSettings'
 import css from './ConnectedChannelsChatView.less'
 import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
 import {FeatureSettings} from './FeatureSettings'
 
-export const ConnectedChannelsContactFormView = () => {
-    const {shopType, shopName} = useParams<{
+interface Props {
+    contactForm?: ContactForm
+    hideDropdown?: boolean
+}
+
+export const ConnectedChannelsContactFormView = ({
+    contactForm,
+    hideDropdown,
+}: Props) => {
+    const {shopType: shopTypeParam, shopName: shopNameParam} = useParams<{
         shopType: string
         shopName: string
     }>()
+
+    const shopType = contactForm ? 'shopify' : shopTypeParam
+    const shopName = contactForm ? contactForm.shop_name ?? '' : shopNameParam
 
     const {
         selfServiceConfiguration,
@@ -82,20 +94,23 @@ export const ConnectedChannelsContactFormView = () => {
     return (
         <div className={classNames('full-width', css.container)}>
             <div className={css.settingsContainer}>
-                <CurrentlyViewingDropdown
-                    onConnect={noop}
-                    channelType="contact-form"
-                    channels={contactFormChannels}
-                    value={selectedChannel ?? ''}
-                    label={currentChannel?.value?.name}
-                    onSelectedChannelChange={(value) =>
-                        setSelectedChannel(Number(value))
-                    }
-                    renderOption={(channel) => ({
-                        label: channel.value.name,
-                        value: channel.value.id ?? channel.value.name,
-                    })}
-                />
+                {!hideDropdown && (
+                    /* If contact form is provided, it means we are in the help center context, so we don't need to show the dropdown */
+                    <CurrentlyViewingDropdown
+                        onConnect={noop}
+                        channelType="contact-form"
+                        channels={contactFormChannels}
+                        value={selectedChannel ?? ''}
+                        label={currentChannel?.value?.name}
+                        onSelectedChannelChange={(value) =>
+                            setSelectedChannel(Number(value))
+                        }
+                        renderOption={(channel) => ({
+                            label: channel.value.name,
+                            value: channel.value.id ?? channel.value.name,
+                        })}
+                    />
+                )}
 
                 <FlowsSettings
                     channelType="contact-form"

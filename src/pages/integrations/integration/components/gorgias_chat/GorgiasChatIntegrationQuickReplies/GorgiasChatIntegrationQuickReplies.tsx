@@ -48,6 +48,7 @@ type State = {
     isInitialized: boolean
     chatMultiLanguageFeatureFlag: boolean
     changeAutomateSettingButtomPosition: boolean
+    newChannelsView: boolean
 }
 
 export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
@@ -61,6 +62,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
         isInitialized: false,
         chatMultiLanguageFeatureFlag: false,
         changeAutomateSettingButtomPosition: false,
+        newChannelsView: false,
     }
 
     _initState = () => {
@@ -83,6 +85,8 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
             !!getLDClient().allFlags()[
                 FeatureFlagKey.ChangeAutomateSettingButtomPosition
             ]
+        const newChannelsView =
+            !!getLDClient().allFlags()[FeatureFlagKey.NewChannelsView]
 
         this.setState({
             quickRepliesEnabled: quickRepliesState.get('enabled') || false,
@@ -90,6 +94,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
             isInitialized: true,
             chatMultiLanguageFeatureFlag,
             changeAutomateSettingButtomPosition,
+            newChannelsView,
         })
     }
 
@@ -248,11 +253,12 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                         </Breadcrumb>
                     }
                 >
-                    {!this.state.changeAutomateSettingButtomPosition && (
-                        <GorgiasChatIntegrationConnectedChannel
-                            integration={integration}
-                        />
-                    )}
+                    {!this.state.changeAutomateSettingButtomPosition &&
+                        !this.state.newChannelsView && (
+                            <GorgiasChatIntegrationConnectedChannel
+                                integration={integration}
+                            />
+                        )}
                 </PageHeader>
 
                 <GorgiasChatIntegrationHeader integration={integration} />

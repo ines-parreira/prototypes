@@ -8,17 +8,28 @@ import Spinner from 'pages/common/components/Spinner'
 import {SegmentEvent, logEvent} from 'common/segment'
 import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
+import {HelpCenter} from 'models/helpCenter/types'
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import {FlowsSettings} from './FlowsSettings'
 import css from './ConnectedChannelsChatView.less'
 import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
 import {FeatureSettings} from './FeatureSettings'
 
-export const ConnectedChannelsHelpCenterView = () => {
-    const {shopType, shopName} = useParams<{
+interface Props {
+    helpCenter?: HelpCenter
+    hideDropdown?: boolean
+}
+export const ConnectedChannelsHelpCenterView = ({
+    helpCenter,
+    hideDropdown,
+}: Props) => {
+    const {shopType: shopTypeParam, shopName: shopNameParam} = useParams<{
         shopType: string
         shopName: string
     }>()
+
+    const shopType = helpCenter ? 'shopify' : shopTypeParam
+    const shopName = helpCenter ? helpCenter.shop_name ?? '' : shopNameParam
 
     const {
         selfServiceConfiguration,
@@ -33,7 +44,8 @@ export const ConnectedChannelsHelpCenterView = () => {
     )
 
     const [selectedChannel, setSelectedChannel] = React.useState<number | null>(
-        () => helpCenterChannels[0]?.value.id ?? null
+        () =>
+            helpCenter ? helpCenter.id : helpCenterChannels[0]?.value.id ?? null
     )
 
     const currentChannel =
@@ -82,20 +94,23 @@ export const ConnectedChannelsHelpCenterView = () => {
     return (
         <div className={classNames('full-width', css.container)}>
             <div className={css.settingsContainer}>
-                <CurrentlyViewingDropdown
-                    onConnect={noop}
-                    channelType="help-center"
-                    channels={helpCenterChannels}
-                    value={selectedChannel ?? ''}
-                    label={currentChannel?.value?.name}
-                    onSelectedChannelChange={(value) =>
-                        setSelectedChannel(Number(value))
-                    }
-                    renderOption={(channel) => ({
-                        label: channel.value.name,
-                        value: channel.value.id ?? channel.value.name,
-                    })}
-                />
+                {!hideDropdown && (
+                    /* If help center is provided, it means we are in the help center context, so we don't need to show the dropdown */
+                    <CurrentlyViewingDropdown
+                        onConnect={noop}
+                        channelType="help-center"
+                        channels={helpCenterChannels}
+                        value={selectedChannel ?? ''}
+                        label={currentChannel?.value?.name}
+                        onSelectedChannelChange={(value) =>
+                            setSelectedChannel(Number(value))
+                        }
+                        renderOption={(channel) => ({
+                            label: channel.value.name,
+                            value: channel.value.id ?? channel.value.name,
+                        })}
+                    />
+                )}
 
                 <FlowsSettings
                     channelType="help-center"

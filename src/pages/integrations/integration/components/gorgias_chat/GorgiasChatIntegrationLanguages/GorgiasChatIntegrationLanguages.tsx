@@ -44,6 +44,7 @@ const GorgiasChatIntegrationLanguages = ({
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
+    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
     return (
         <div className="full-width">
             <PageHeader
@@ -62,7 +63,7 @@ const GorgiasChatIntegrationLanguages = ({
                     </Breadcrumb>
                 }
             >
-                {!changeAutomateSettingButtomPosition && (
+                {!changeAutomateSettingButtomPosition && !newChannelsView && (
                     <GorgiasChatIntegrationConnectedChannel
                         integration={integration}
                     />

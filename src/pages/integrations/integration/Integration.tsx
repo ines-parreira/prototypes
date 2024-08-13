@@ -102,6 +102,7 @@ import EmailMigration from './components/email/EmailMigration/EmailMigration'
 import useIsQuickRepliesEnabled from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 import {Tab} from './types'
 import useSelfServiceConfiguration from './components/gorgias_chat/hooks/useSelfServiceConfiguration'
+import {GorgiasAutomateChatIntegration} from './components/gorgias_chat/GorgiasAutomateChatIntegration'
 
 export const IntegrationDetail = ({
     actions,
@@ -438,6 +439,14 @@ export const IntegrationDetail = ({
                         <GorgiasChatIntegrationLanguages
                             integration={integration}
                             loading={loading}
+                        />
+                    )
+                }
+
+                if (extra === Tab.Automate) {
+                    return (
+                        <GorgiasAutomateChatIntegration
+                            integration={integration}
                         />
                     )
                 }

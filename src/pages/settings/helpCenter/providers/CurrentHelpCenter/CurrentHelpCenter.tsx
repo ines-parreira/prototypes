@@ -51,6 +51,7 @@ import {HelpCenterMaintenanceView} from '../../components/HelpCenterMaintenanceV
 import HelpCenterCreationWizard from '../../components/HelpCenterCreationWizard'
 import AILibraryView from '../../components/AIArticlesLibraryView'
 import {useHasAccessToAILibrary} from '../../components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import {HelpCenterAutomateView} from '../../components/HelpCenterAutomateView'
 
 const CurrentHelpCenter: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -173,6 +174,15 @@ const CurrentHelpCenter: React.FC = () => {
                     render={() => (
                         <HelpCenterPreferencesSettings helpCenter={helpCenter}>
                             <HelpCenterPreferencesView />
+                        </HelpCenterPreferencesSettings>
+                    )}
+                />
+                <Route
+                    path={`${path}/automate`}
+                    exact
+                    render={() => (
+                        <HelpCenterPreferencesSettings helpCenter={helpCenter}>
+                            <HelpCenterAutomateView />
                         </HelpCenterPreferencesSettings>
                     )}
                 />

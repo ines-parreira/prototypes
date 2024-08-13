@@ -17,6 +17,7 @@ import history from 'pages/history'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCentersAutomationSettings'
+import {HelpCenter} from 'models/helpCenter/types'
 import {initialState as articlesState} from '../../../../state/entities/helpCenter/articles'
 import {initialState as categoriesState} from '../../../../state/entities/helpCenter/categories'
 import {ConnectedChannelsHelpCenterView} from '../components/ConnectedChannelsHelpCenterView'
@@ -314,6 +315,25 @@ describe('ConnectedChannelsContactFormView', () => {
 
         await waitFor(() => {
             expect(screen.getByText('live_help')).toBeInTheDocument()
+        })
+    })
+
+    it('should not render app dropdown when help center prop is passed', async () => {
+        render(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <ConnectedChannelsHelpCenterView
+                            helpCenter={
+                                mockHelpCenterChannels[0].value as HelpCenter
+                            }
+                        />
+                    </QueryClientProvider>
+                </Provider>
+            </Router>
+        )
+        await waitFor(() => {
+            expect(screen.queryByText('Currently viewing')).toBeNull()
         })
     })
 })
