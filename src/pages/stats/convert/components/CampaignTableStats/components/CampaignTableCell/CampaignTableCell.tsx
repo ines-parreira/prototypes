@@ -17,7 +17,16 @@ import {formatNumber} from 'pages/stats/common/utils'
 
 import Badge, {BadgeColor} from 'gorgias-design-system/Badge/Badge'
 import {InferredCampaignStatus} from 'models/convert/campaign/types'
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+
 import {OrdersCell} from 'pages/stats/convert/components/CampaignTableStats/components/OrdersCell'
+import {useIsConvertABVariantsEnabled} from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
+import IconButton from 'pages/common/components/button/IconButton'
+import {
+    abVariantControlVariantUrl,
+    abVariantEditorUrl,
+    abVariantsUrl,
+} from 'pages/convert/abVariants/urls'
 import {TicketsCreatedCell} from '../TicketsCreatedCell'
 
 import css from '../../CampaignTableStats.less'
@@ -28,6 +37,12 @@ type Props = {
     isTableScrolled?: boolean
     data: any
     isLoading?: boolean
+    variantName?: string
+    variant?: CampaignVariant
+    variantToggleState: Record<string, boolean>
+    setVariantToggleState: React.Dispatch<
+        React.SetStateAction<Record<string, boolean>>
+    >
 }
 
 const highlighted = [
@@ -46,7 +61,13 @@ export const CampaignTableCell = ({
     data,
     isTableScrolled = false,
     isLoading,
+    variantToggleState,
+    setVariantToggleState,
+    variantName,
+    variant,
 }: Props) => {
+    const isConvertABVariantsEnabled = useIsConvertABVariantsEnabled()
+
     const bodyCellProps = useMemo(() => {
         return {
             isHighlighted: highlighted.includes(column.key),
@@ -73,7 +94,44 @@ export const CampaignTableCell = ({
 
     if (column.key === CampaignTableKeys.CampaignName) {
         if (cell.chatIntegration) {
-            const url = `/app/convert/${cell.chatIntegration.id}/campaigns/${cell.campaign.id}`
+            if (!!variantName) {
+                return (
+                    <BodyCell
+                        {...bodyCellProps}
+                        className={classNames(
+                            css.campaignName,
+                            css.variantName,
+                            {
+                                [css.withShadow]: isTableScrolled,
+                            }
+                        )}
+                    >
+                        <Link
+                            to={
+                                variant
+                                    ? abVariantEditorUrl(
+                                          cell.chatIntegration.id.toString(),
+                                          cell.campaign.id,
+                                          variant.id
+                                      )
+                                    : abVariantControlVariantUrl(
+                                          cell.chatIntegration.id.toString(),
+                                          cell.campaign.id
+                                      )
+                            }
+                        >
+                            <div>{variantName}</div>
+                        </Link>
+                    </BodyCell>
+                )
+            }
+
+            const url = cell.campaign.ab_group
+                ? abVariantsUrl(
+                      cell.chatIntegration.id.toString(),
+                      cell.campaign.id
+                  )
+                : `/app/convert/${cell.chatIntegration.id}/campaigns/${cell.campaign.id}`
             return (
                 <BodyCell
                     {...bodyCellProps}
@@ -81,6 +139,26 @@ export const CampaignTableCell = ({
                         [css.withShadow]: isTableScrolled,
                     })}
                 >
+                    {isConvertABVariantsEnabled &&
+                        cell.campaign.variants.length > 0 && (
+                            <IconButton
+                                fillStyle="ghost"
+                                intent="secondary"
+                                className={css.toggleBtn}
+                                onClick={() => {
+                                    setVariantToggleState((state) => ({
+                                        ...state,
+                                        [cell.campaign.id]:
+                                            !state[cell.campaign.id],
+                                    }))
+                                }}
+                            >
+                                {!variantToggleState[cell.campaign.id]
+                                    ? 'arrow_right'
+                                    : 'arrow_drop_down'}
+                            </IconButton>
+                        )}
+
                     <Link to={url}>
                         <div>{data}</div>
                         {cell.campaign.is_light && (
@@ -97,6 +175,8 @@ export const CampaignTableCell = ({
     }
 
     if (column.key === CampaignTableKeys.CampaignCurrentStatus) {
+        if (!!variantName) return <BodyCell {...bodyCellProps}></BodyCell>
+
         const getColorForStatus = (status: InferredCampaignStatus) => {
             switch (status) {
                 case InferredCampaignStatus.Active:

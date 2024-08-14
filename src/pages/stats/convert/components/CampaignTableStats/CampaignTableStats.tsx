@@ -12,6 +12,8 @@ import Navigation from 'pages/common/components/Navigation/Navigation'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import useMeasure from 'hooks/useMeasure'
 
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
 import {CampaignTableKeys} from '../../types/enums/CampaignTableKeys.enum'
 import {CampaignTableColumn} from '../../types/CampaignTableColumn'
 import {CampaignTableContentCell} from '../../types/CampaignTableContentCell'
@@ -61,6 +63,10 @@ export const CampaignTableStats = ({
         page: ITEMS_PER_PAGE,
     })
 
+    const [variantToggleState, setVariantToggleState] = useState<
+        Record<string, boolean>
+    >({})
+
     const handleClickHeaderCell = useCallback(
         (key: CampaignTableKeys) => {
             if (orderKey === key) {
@@ -99,31 +105,73 @@ export const CampaignTableStats = ({
     )
 
     const renderCells = useCallback(
-        (column: CampaignTableColumn, cell: CampaignTableContentCell) => {
+        (
+            column: CampaignTableColumn,
+            cell: CampaignTableContentCell,
+            variantName?: string,
+            variant?: CampaignVariant
+        ) => {
+            const variantId = variantName
+                ? variant
+                    ? variant.id
+                    : cell.campaign.id
+                : undefined
+
             return (
                 <CampaignTableCell
                     column={column}
                     cell={cell}
-                    data={getDataFromTableCell(cell, column.key)}
+                    data={getDataFromTableCell(cell, column.key, variantId)}
                     isTableScrolled={isTableScrolled}
                     isLoading={isLoading}
+                    variant={variant}
+                    variantName={variantName}
+                    variantToggleState={variantToggleState}
+                    setVariantToggleState={setVariantToggleState}
                 />
             )
         },
-        [isLoading, isTableScrolled]
+        [isLoading, isTableScrolled, variantToggleState]
     )
 
     const renderRows = useCallback(
         (cell: CampaignTableContentCell, index) => {
             return (
-                <TableBodyRow key={index}>
-                    {CAMPAIGN_TABLE_CELLS.map((column) =>
-                        renderCells(column, cell)
+                <>
+                    <TableBodyRow key={index}>
+                        {CAMPAIGN_TABLE_CELLS.map((column) =>
+                            renderCells(column, cell)
+                        )}
+                    </TableBodyRow>
+                    {variantToggleState[cell.campaign.id] && (
+                        <>
+                            <TableBodyRow key={`variant-${cell.campaign.id}`}>
+                                {CAMPAIGN_TABLE_CELLS.map((column) =>
+                                    renderCells(column, cell, 'Control Variant')
+                                )}
+                            </TableBodyRow>
+                            {(cell.campaign.variants ?? []).map(
+                                (variant, variantIdx) => (
+                                    <TableBodyRow
+                                        key={`variant-${cell.campaign.id}-${variantIdx}`}
+                                    >
+                                        {CAMPAIGN_TABLE_CELLS.map((column) =>
+                                            renderCells(
+                                                column,
+                                                cell,
+                                                generateVariantName(variantIdx),
+                                                variant
+                                            )
+                                        )}
+                                    </TableBodyRow>
+                                )
+                            )}
+                        </>
                     )}
-                </TableBodyRow>
+                </>
             )
         },
-        [renderCells]
+        [renderCells, variantToggleState]
     )
 
     const renderTableBody = useCallback(() => {

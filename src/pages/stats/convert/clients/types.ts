@@ -1,6 +1,7 @@
 import {TicketChannel} from 'business/types/ticket'
 import {ReportingGranularity} from 'models/reporting/types'
 import {OrderDirection} from 'models/api/types'
+import {SharedDimension} from './constants'
 
 export type CubeFilter = {
     member: any
@@ -34,6 +35,14 @@ export type FilterParams = {
 } & RequiredFilterParams
 
 export type CubeFilterParams = FilterParams
+
+export type GroupDimension =
+    | SharedDimension.campaignId
+    | SharedDimension.abVariant
+
+export type CampaignCubeFilterParams = FilterParams & {
+    groupDimension: GroupDimension
+}
 
 export type RevenueAttributionFilterParams = {
     integrationIds?: number[]

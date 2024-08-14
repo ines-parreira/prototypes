@@ -23,6 +23,7 @@ import {
     EventsMeasure,
     OrderConversionDimension,
     OrderConversionMeasure,
+    SharedDimension,
 } from 'pages/stats/convert/clients/constants'
 import {
     AbTestMetricNames,
@@ -547,6 +548,7 @@ describe('Campaign metrics helper tests', () => {
 
         it('should transform data from metrics to table data', () => {
             const result = transformToCampaignsPerformanceTable(
+                SharedDimension.campaignId,
                 campaignEventsPerformanceData,
                 campaignOrdersPerformanceData,
                 campaignEventsOrdersPerformanceData,
@@ -557,6 +559,7 @@ describe('Campaign metrics helper tests', () => {
 
         it('should return defaults for missing data', () => {
             const result = transformToCampaignsPerformanceTable(
+                SharedDimension.campaignId,
                 [
                     {[EventsDimension.campaignId]: 'campaign1'},
                     {[EventsDimension.campaignId]: 'campaign2'},
@@ -570,6 +573,7 @@ describe('Campaign metrics helper tests', () => {
 
         it('should not divide by zero for compound metrics', () => {
             const result = transformToCampaignsPerformanceTable(
+                SharedDimension.campaignId,
                 [
                     {
                         [EventsDimension.campaignId]: 'campaign1',

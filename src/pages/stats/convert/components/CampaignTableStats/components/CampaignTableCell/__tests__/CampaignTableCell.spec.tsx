@@ -39,6 +39,7 @@ describe('<CampaignTableCell />', () => {
         metrics: {
             conversionRate: 0.5,
         },
+        variantMetrics: {},
         chatIntegration: {
             id: '1234',
             name: 'Test integration',
@@ -103,6 +104,8 @@ describe('<CampaignTableCell />', () => {
                     column={column as CampaignTableColumn}
                     cell={cell}
                     data={value}
+                    variantToggleState={{}}
+                    setVariantToggleState={jest.fn()}
                 />
             )
 
@@ -126,6 +129,8 @@ describe('<CampaignTableCell />', () => {
                     },
                 }}
                 data="Super converting campaign"
+                variantToggleState={{}}
+                setVariantToggleState={jest.fn()}
             />
         )
 
@@ -147,6 +152,8 @@ describe('<CampaignTableCell />', () => {
                 }
                 cell={cell}
                 data={status}
+                variantToggleState={{}}
+                setVariantToggleState={jest.fn()}
             />
         )
 
@@ -166,6 +173,8 @@ describe('<CampaignTableCell />', () => {
                     campaign,
                 }}
                 data="10"
+                variantToggleState={{}}
+                setVariantToggleState={jest.fn()}
             />
         )
 

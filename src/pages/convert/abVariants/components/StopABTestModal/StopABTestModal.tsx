@@ -79,7 +79,7 @@ const StopABTestModal: React.FC<Props> = (props) => {
                                         isSelected={
                                             variant.id === selectedVariant
                                         }
-                                        value={variant.id as string}
+                                        value={variant.id}
                                     />
                                 )
                             })}

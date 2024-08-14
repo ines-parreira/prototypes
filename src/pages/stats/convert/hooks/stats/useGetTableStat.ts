@@ -1,8 +1,9 @@
 import {useMemo} from 'react'
 import {
+    CampaignCubeFilterParams,
     CubeData,
-    CubeFilterParams,
     CubeMetric,
+    GroupDimension,
 } from 'pages/stats/convert/clients/types'
 import {
     getCampaignEventsOrdersPerformanceData,
@@ -29,22 +30,35 @@ export type GetTableQuery = {
 }
 
 export const useGetTableStat = (
+    groupDimension: GroupDimension,
     namespacedShopName: string,
     campaignIds: string[] | null,
     startDate: string,
     endDate: string,
-    timezone: string
+    timezone: string,
+    enabled?: boolean
 ): GetTableQuery => {
-    const attrs: CubeFilterParams = useMemo(
+    const attrs: CampaignCubeFilterParams = useMemo(
         () => ({
             shopName: namespacedShopName,
             campaignIds: campaignIds || [],
             startDate,
             endDate,
             timezone,
+            groupDimension,
         }),
-        [namespacedShopName, campaignIds, startDate, endDate, timezone]
+        [
+            namespacedShopName,
+            campaignIds,
+            startDate,
+            endDate,
+            timezone,
+            groupDimension,
+        ]
     )
+
+    const isEnabled =
+        (enabled !== undefined ? enabled : true) && campaignIds !== null
 
     const eventsQuery = useMemo(
         () => getCampaignEventsPerformanceData(attrs),
@@ -65,29 +79,31 @@ export const useGetTableStat = (
 
     const eventsPerformance = usePostReporting<[CubeData], CubeData>(
         eventsQuery,
-        {...OVERRIDES, enabled: campaignIds !== null}
+        {...OVERRIDES, enabled: isEnabled}
     )
     const ordersPerformance = usePostReporting<[CubeData], CubeData>(
         ordersQuery,
-        {...OVERRIDES, enabled: campaignIds !== null}
+        {...OVERRIDES, enabled: isEnabled}
     )
     const eventsOrdersPerformance = usePostReporting<[CubeData], CubeData>(
         eventsOrdersQuery,
-        {...OVERRIDES, enabled: campaignIds !== null}
+        {...OVERRIDES, enabled: isEnabled}
     )
     const storeTotal = usePostReporting<[CubeMetric], CubeMetric>(
         storeTotalQuery,
-        {select: getMetricFromCubeData, enabled: campaignIds !== null}
+        {select: getMetricFromCubeData, enabled: isEnabled}
     )
 
     const data = useMemo(() => {
         return transformToCampaignsPerformanceTable(
+            groupDimension,
             eventsPerformance.data,
             ordersPerformance.data,
             eventsOrdersPerformance.data,
             storeTotal.data
         )
     }, [
+        groupDimension,
         eventsPerformance.data,
         ordersPerformance.data,
         eventsOrdersPerformance.data,

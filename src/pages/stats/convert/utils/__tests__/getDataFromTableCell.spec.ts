@@ -6,10 +6,13 @@ import {
     InferredCampaignStatus,
 } from 'models/convert/campaign/types'
 
+import {campaignVariant} from 'fixtures/campaign'
+
 describe('getDataFromTableCell', () => {
     const campaignName = 'Super conversion campaign name'
     const campaignStatus = InferredCampaignStatus.Active
     const clicksConverted = 124
+    const clicksVariantConverted = 234
     const cell = {
         campaign: {
             name: campaignName,
@@ -17,6 +20,11 @@ describe('getDataFromTableCell', () => {
         } as CampaignPreview,
         metrics: {
             [CampaignTableKeys.ClicksConverted]: clicksConverted,
+        },
+        variantMetrics: {
+            [campaignVariant.id]: {
+                [CampaignTableKeys.ClicksConverted]: clicksVariantConverted,
+            },
         },
     } as unknown as CampaignTableContentCell
 
@@ -54,5 +62,15 @@ describe('getDataFromTableCell', () => {
         )
 
         expect(result).toEqual(0)
+    })
+
+    it('should return data from variantMetrics', () => {
+        const result = getDataFromTableCell(
+            cell,
+            CampaignTableKeys.ClicksConverted,
+            campaignVariant.id
+        )
+
+        expect(result).toEqual(clicksVariantConverted)
     })
 })

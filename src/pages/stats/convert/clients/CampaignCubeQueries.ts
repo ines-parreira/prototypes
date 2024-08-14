@@ -1,5 +1,6 @@
 import {OrderDirection} from 'models/api/types'
 import {
+    CampaignCubeFilterParams,
     CubeFilter,
     CubeFilterParams,
     DefaultFilterParams,
@@ -8,7 +9,6 @@ import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
     Cube,
-    EventsDimension,
     EventsMeasure,
     EventsSegment,
     FilterOperator,
@@ -87,14 +87,15 @@ const _campaignNotEqualsFilter = (cubeName: string): CubeFilter => {
 }
 
 export const getCampaignEventsPerformanceData = ({
+    groupDimension,
     startDate,
     endDate,
     campaignIds,
     timezone,
-}: CubeFilterParams): ReportingParams => {
+}: CampaignCubeFilterParams): ReportingParams => {
     return [
         {
-            dimensions: [EventsDimension.campaignId],
+            dimensions: [`${Cube.events}.${groupDimension}`],
             measures: [
                 EventsMeasure.impressions,
                 EventsMeasure.firstCampaignDisplay,
@@ -116,14 +117,15 @@ export const getCampaignEventsPerformanceData = ({
 }
 
 export const getCampaignOrderPerformanceData = ({
+    groupDimension,
     startDate,
     endDate,
     campaignIds,
     timezone,
-}: CubeFilterParams): ReportingParams => {
+}: CampaignCubeFilterParams): ReportingParams => {
     return [
         {
-            dimensions: [OrderConversionDimension.campaignId],
+            dimensions: [`${Cube.orderConversion}.${groupDimension}`],
             measures: [
                 OrderConversionMeasure.campaignSales,
                 OrderConversionMeasure.ticketSales,
@@ -185,14 +187,15 @@ export const getCampaignOrderPerformanceDrillDownData = ({
 }
 
 export const getCampaignEventsOrdersPerformanceData = ({
+    groupDimension,
     startDate,
     endDate,
     campaignIds,
     timezone,
-}: CubeFilterParams): ReportingParams => {
+}: CampaignCubeFilterParams): ReportingParams => {
     return [
         {
-            dimensions: [CampaignOrderEventsDimension.campaignId],
+            dimensions: [`${Cube.campaignOrderEvents}.${groupDimension}`],
             measures: [
                 CampaignOrderEventsMeasure.engagement,
                 CampaignOrderEventsMeasure.totalConversionRate,

@@ -5,6 +5,7 @@ import {
     CampaignProductRecommendation,
     ProductRecommendationScenario,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 
 export const campaignId = 'ee869594-65e2-45a5-a759-a4660c9ce677'
 
@@ -15,6 +16,13 @@ export const campaignTrigger = {
     type: 'time_spent_on_page',
     operator: 'gt',
     value: 10,
+}
+
+export const campaignVariant: CampaignVariant = {
+    id: '01GWQ5K143AN1Y3W0AYBZXCGPT',
+    message_text: 'Hello variant 1!',
+    message_html: '<b>Hello variant 1</b>.',
+    attachments: [],
 }
 
 export const campaign = {
@@ -36,7 +44,7 @@ export const campaign = {
         agentEmail: null,
     },
     triggers: [campaignTrigger],
-    variants: [],
+    variants: [campaignVariant],
     created_datetime: '2024-02-16T09:57:44.284000',
     updated_datetime: '2024-02-16T09:57:56.352370',
     deleted_datetime: null,

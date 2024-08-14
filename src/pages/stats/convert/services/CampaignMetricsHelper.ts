@@ -23,11 +23,15 @@ import {
     StoreTotal,
 } from 'pages/stats/convert/services/types'
 import {Stat} from 'models/stat/types'
-import {CubeData, CubeMetric} from 'pages/stats/convert/clients/types'
+import {
+    CubeData,
+    CubeMetric,
+    GroupDimension,
+} from 'pages/stats/convert/clients/types'
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
-    EventsDimension,
+    Cube,
     EventsMeasure,
     OrderConversionDimension,
     OrderConversionMeasure,
@@ -299,12 +303,23 @@ const _getDefaultsForAllDates = (
 }
 
 export const transformToCampaignsPerformanceTable = (
+    groupDimension: GroupDimension,
     eventsData: CubeData | undefined,
     ordersData: CubeData | undefined,
     campaignsOrdersData: CubeData | undefined,
     storeTotal: CubeMetric | undefined
 ): CampaignsPerformanceDataset => {
-    const eventsDataset = _reduce(eventsData, _eventsPerformanceReducer, {})
+    const eventsDataset = _reduce(
+        eventsData,
+        _bind(
+            _eventsPerformanceReducer,
+            _bind.placeholder,
+            _bind.placeholder,
+            _bind.placeholder,
+            groupDimension
+        ),
+        {}
+    )
 
     const ordersDataset = _reduce(
         _getCubeDataOrDefault(ordersData),
@@ -313,18 +328,25 @@ export const transformToCampaignsPerformanceTable = (
             _bind.placeholder,
             _bind.placeholder,
             _bind.placeholder,
-            _getMetricOrDefault(storeTotal)
+            _getMetricOrDefault(storeTotal),
+            groupDimension
         ),
         eventsDataset
     )
     const campaignsOrdersDataset = _reduce(
         _getCubeDataOrDefault(campaignsOrdersData),
-        _campaignsOrdersPerformanceReducer,
+        _bind(
+            _campaignsOrdersPerformanceReducer,
+            _bind.placeholder,
+            _bind.placeholder,
+            _bind.placeholder,
+            groupDimension
+        ),
         ordersDataset
     )
 
     return _mapValues(
-        {...campaignsOrdersDataset},
+        {...campaignsOrdersDataset} as CampaignsPerformanceDataset,
         _processCampaignsPerformanceData
     )
 }
@@ -348,9 +370,10 @@ export const transformToCampaignAbTestEvent = (
 
 const _eventsPerformanceReducer = (
     dataset: CampaignsPerformanceDataset,
-    metric: CubeMetric
+    metric: CubeMetric,
+    groupDimension: GroupDimension
 ): CampaignsPerformanceDataset => {
-    const campaignId = _get(metric, EventsDimension.campaignId)
+    const groupId = _get(metric, `${Cube.events}.${groupDimension}`)
     const eventMetricValue = _mapValues(
         {
             impressions: _get(metric, EventsMeasure.impressions),
@@ -362,19 +385,20 @@ const _eventsPerformanceReducer = (
     )
 
     const value = {
-        ..._get(dataset, campaignId, {}),
+        ..._get(dataset, groupId, {}),
         ...eventMetricValue,
     }
 
-    return {...dataset, [campaignId]: value} as CampaignsPerformanceDataset
+    return {...dataset, [groupId]: value} as CampaignsPerformanceDataset
 }
 
 const _ordersPerformanceReducer = (
     dataset: CampaignsPerformanceDataset,
     metric: CubeMetric,
-    storeTotalMetric: CubeMetric
+    storeTotalMetric: CubeMetric,
+    groupDimension: GroupDimension
 ): CampaignsPerformanceDataset => {
-    const campaignId = _get(metric, OrderConversionDimension.campaignId)
+    const groupId = _get(metric, `${Cube.orderConversion}.${groupDimension}`)
 
     const totalRevenue = _get(metric, OrderConversionMeasure.campaignSales)
     const totalStoreRevenue = _get(storeTotalMetric, OrderConversionMeasure.gmv)
@@ -415,18 +439,22 @@ const _ordersPerformanceReducer = (
     )
 
     const value = {
-        ..._get(dataset, campaignId, {}),
+        ..._get(dataset, groupId, {}),
         ...orderMetricValue,
     }
 
-    return {...dataset, [campaignId]: value} as CampaignsPerformanceDataset
+    return {...dataset, [groupId]: value} as CampaignsPerformanceDataset
 }
 
 const _campaignsOrdersPerformanceReducer = (
     dataset: CampaignsPerformanceDataset,
-    metric: CubeMetric
+    metric: CubeMetric,
+    groupDimension: GroupDimension
 ): CampaignsPerformanceDataset => {
-    const campaignId = _get(metric, CampaignOrderEventsDimension.campaignId)
+    const groupId = _get(
+        metric,
+        `${Cube.campaignOrderEvents}.${groupDimension}`
+    )
     const campaignOrderMetricValue = _mapValues(
         {
             engagement: _get(metric, CampaignOrderEventsMeasure.engagement),
@@ -443,11 +471,11 @@ const _campaignsOrdersPerformanceReducer = (
     )
 
     const value = {
-        ..._get(dataset, campaignId, {}),
+        ..._get(dataset, groupId, {}),
         ...campaignOrderMetricValue,
     }
 
-    return {...dataset, [campaignId]: value} as CampaignsPerformanceDataset
+    return {...dataset, [groupId]: value} as CampaignsPerformanceDataset
 }
 
 const _processCampaignsPerformanceData = (

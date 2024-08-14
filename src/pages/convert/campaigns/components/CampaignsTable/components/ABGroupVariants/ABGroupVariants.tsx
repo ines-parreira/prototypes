@@ -49,7 +49,7 @@ const ABGroupVariants: React.FC<Props> = ({
                             to={abVariantEditorUrl(
                                 integrationId,
                                 campaignId,
-                                variant.id as string
+                                variant.id
                             )}
                         >
                             <b>{generateVariantName(idx)}</b>

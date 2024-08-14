@@ -12,6 +12,7 @@ export enum FilterOperator {
 
 export enum SharedDimension {
     campaignId = 'campaignId',
+    abVariant = 'abVariant',
     createdDatetime = 'createdDatetime',
     shopName = 'shopName',
 }

@@ -1,4 +1,5 @@
 import {Components, Paths} from 'rest_api/revenue_addon_api/client.generated'
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 
 export type CampaignParams =
     | (
@@ -31,6 +32,7 @@ export enum InferredCampaignStatus {
 export type CampaignPreview = {
     id: string
     name: string
+    variants: CampaignVariant[]
     status: InferredCampaignStatus
     is_light: boolean
-}
+} & Pick<Campaign, 'ab_group'>

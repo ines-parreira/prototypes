@@ -7,11 +7,13 @@ import {
     EventsMeasure,
     OrderConversionDimension,
     OrderConversionMeasure,
+    SharedDimension,
 } from 'pages/stats/convert/clients/constants'
 import {assumeMock} from 'utils/testing'
 import {usePostReporting} from 'models/reporting/queries'
 import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
 import {getDataFromResult} from 'pages/stats/convert/services/CampaignMetricsHelper'
+import {GroupDimension} from 'pages/stats/convert/clients/types'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -22,7 +24,15 @@ describe('useGetTableStat', () => {
         isError: false,
     } as UseQueryResult
 
-    const hookArgs: [string, string[] | null, string, string, string] = [
+    const hookArgs: [
+        GroupDimension,
+        string,
+        string[] | null,
+        string,
+        string,
+        string
+    ] = [
+        SharedDimension.campaignId,
         'shopify:slow-formulas-for-sale',
         ['campaign1', 'campaign2'],
         '2023-02-01T00:00:00-08:00',
@@ -184,7 +194,7 @@ describe('useGetTableStat', () => {
     it('should not call query if campaignIds is null', () => {
         // arrange
         const args: typeof hookArgs = [...hookArgs]
-        args[1] = null
+        args[2] = null
 
         // act
         const {result} = renderHook(() => useGetTableStat(...args))

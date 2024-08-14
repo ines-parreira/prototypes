@@ -1,7 +1,7 @@
 import {CampaignAttachment} from './CampaignAttachment'
 
 export type CampaignVariant = {
-    id: string | null
+    id: string
     message_text: string
     message_html?: string | null
     attachments?: CampaignAttachment[] | null

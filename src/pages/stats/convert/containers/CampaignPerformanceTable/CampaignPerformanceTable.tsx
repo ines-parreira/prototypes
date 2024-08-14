@@ -15,6 +15,8 @@ import {getIntegrationByIdAndType} from 'state/integrations/selectors'
 import {ConvertMetric} from 'state/ui/stats/types'
 import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import {SharedDimension} from 'pages/stats/convert/clients/constants'
+import {useIsConvertABVariantsEnabled} from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 import {useCampaignStatsFilters} from '../../hooks/useCampaignStatsFilters'
 import {useGetChatForStore} from '../../hooks/useGetChatForStore'
 import {useGetCurrencyForStore} from '../../hooks/useGetCurrencyForStore'
@@ -37,6 +39,8 @@ export const CampaignPerformanceTable = () => {
 
     const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
         useParams<ConvertRouteParams>()
+
+    const isABVariantEnabled = useIsConvertABVariantsEnabled()
 
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
@@ -69,7 +73,18 @@ export const CampaignPerformanceTable = () => {
         return selectedCampaignIds
     }, [campaigns, selectedCampaignIds])
 
-    const {isFetching, data} = useGetTableStat(
+    const hasVariants = useMemo(() => {
+        if (!isABVariantEnabled) return false
+
+        if (!campaignIds) return false
+
+        return campaigns.some((campaign) =>
+            Boolean(campaignIds.includes(campaign.id) && campaign.variants)
+        )
+    }, [campaignIds, campaigns, isABVariantEnabled])
+
+    const {isFetching, isError, data} = useGetTableStat(
+        SharedDimension.campaignId,
         namespacedShopName,
         campaignIds,
         selectedPeriod.start_datetime,
@@ -77,31 +92,58 @@ export const CampaignPerformanceTable = () => {
         userTimezone
     )
 
+    const {
+        isFetching: isVariantFetching,
+        isError: isVariantError,
+        data: variantData,
+    } = useGetTableStat(
+        SharedDimension.abVariant,
+        namespacedShopName,
+        campaignIds,
+        selectedPeriod.start_datetime,
+        selectedPeriod.end_datetime,
+        userTimezone,
+        hasVariants
+    )
+
     const rows = useMemo<CampaignTableContentCell[]>(() => {
         const selectedCampaigns = campaigns.filter((campaign) =>
             campaignIds?.includes(campaign.id)
         )
 
-        return selectedCampaigns.map((campaign) => ({
-            campaign,
-            chatIntegration: chatIntegration,
-            currency,
-            metrics: _get(data, campaign.id, {}),
-            drillDownMetricData: {
-                [ConvertMetric.CampaignSalesCount]: {
-                    title: CAMPAIGN_TABLE_COLUMN_TITLES[
-                        CampaignTableKeys.Conversions
-                    ],
-                    metricName: ConvertMetric.CampaignSalesCount,
-                    shopName: namespacedShopName,
-                    selectedCampaignIds: [campaign.id],
-                    context: {
-                        channel_connection_external_ids:
-                            channelConnectionExternalIds,
+        return selectedCampaigns.map((campaign) => {
+            const variantIds = (campaign.variants || [])
+                .map((variant) => variant.id)
+                .concat(campaign.id)
+
+            return {
+                campaign,
+                chatIntegration: chatIntegration,
+                currency,
+                metrics: _get(data, campaign.id, {}),
+                variantMetrics: variantIds.reduce(
+                    (o, variantId) => ({
+                        ...o,
+                        [variantId]: _get(variantData, variantId, {}),
+                    }),
+                    {}
+                ),
+                drillDownMetricData: {
+                    [ConvertMetric.CampaignSalesCount]: {
+                        title: CAMPAIGN_TABLE_COLUMN_TITLES[
+                            CampaignTableKeys.Conversions
+                        ],
+                        metricName: ConvertMetric.CampaignSalesCount,
+                        shopName: namespacedShopName,
+                        selectedCampaignIds: [campaign.id],
+                        context: {
+                            channel_connection_external_ids:
+                                channelConnectionExternalIds,
+                        },
                     },
                 },
-            },
-        }))
+            }
+        })
     }, [
         campaigns,
         campaignIds,
@@ -110,6 +152,7 @@ export const CampaignPerformanceTable = () => {
         data,
         namespacedShopName,
         channelConnectionExternalIds,
+        variantData,
     ])
 
     const handleClickNextPage = () => {
@@ -139,7 +182,9 @@ export const CampaignPerformanceTable = () => {
         <DashboardGridCell size={12}>
             <CampaignTableStats
                 chatIntegrationId={chatIntegration?.id}
-                isLoading={isFetching}
+                isLoading={
+                    isFetching || isVariantFetching || isError || isVariantError
+                }
                 rows={rows}
                 offset={offset}
                 onClickNextPage={handleClickNextPage}

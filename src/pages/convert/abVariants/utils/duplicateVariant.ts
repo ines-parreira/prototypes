@@ -50,5 +50,5 @@ export const duplicateVariant = (
 
     variants.push(newVariant)
 
-    return [newVariant.id as string, variants]
+    return [newVariant.id, variants]
 }

@@ -8,5 +8,6 @@ export interface CampaignTableContentCell {
     chatIntegration?: GorgiasChatIntegration
     currency: string
     metrics: Record<string, string | number>
+    variantMetrics: Record<string, Record<string, string | number>>
     drillDownMetricData: Record<ConvertMetric, DrillDownMetric>
 }

@@ -32,6 +32,7 @@ describe('<OrdersCell />', () => {
         metrics: {
             conversionRate: 0.5,
         },
+        variantMetrics: {},
         drillDownMetricData: {
             [ConvertMetric.CampaignSalesCount]: {
                 title: CAMPAIGN_TABLE_COLUMN_TITLES[

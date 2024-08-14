@@ -9,6 +9,8 @@ import {
     getRevenueShareGraphData,
     getStoreRevenueTotalData,
 } from 'pages/stats/convert/clients/CampaignCubeQueries'
+import {SharedDimension} from '../constants'
+import {GroupDimension} from '../types'
 
 describe('Getting Cube queries', () => {
     const props = {
@@ -21,6 +23,7 @@ describe('Getting Cube queries', () => {
         limit: 100,
         offset: 200,
         timezone: 'America/San_Francisco',
+        groupDimension: SharedDimension.campaignId as GroupDimension,
     }
 
     it.each([
