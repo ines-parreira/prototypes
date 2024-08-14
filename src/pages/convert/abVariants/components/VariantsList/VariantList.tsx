@@ -161,7 +161,6 @@ const VariantsList: React.FC<Props> = ({
             </TableHead>
             <TableBody>
                 {variants.map((variant, idx) => {
-                    const variantName = generateVariantName(idx)
                     return (
                         <TableBodyRow key={idx}>
                             <BodyCell>
@@ -201,7 +200,7 @@ const VariantsList: React.FC<Props> = ({
                             <BodyCell style={{width: 110}}>
                                 <VariantActions
                                     data={variant}
-                                    variantName={variantName}
+                                    variantName={variant.variantName}
                                     isDeletingDisabled={!variant.canDelete}
                                     isDuplicatingDisabled={isCreateDisabled}
                                     onDelete={onDelete}

@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Map, fromJS} from 'immutable'
 import {produce} from 'immer'
 import {EditorState} from 'draft-js'
+import cn from 'classnames'
 
 import _trim from 'lodash/trim'
 import _isEmpty from 'lodash/isEmpty'
@@ -103,6 +104,7 @@ export type Props = {
     allowChangeSection?: boolean
     allowActivate?: boolean
     backUrl: string
+    className?: string
 }
 
 export const CampaignDetailsForm = ({
@@ -130,6 +132,7 @@ export const CampaignDetailsForm = ({
     openedStep,
     allowActivate = true,
     allowChangeSection = true,
+    className,
 }: Props) => {
     const dispatch = useAppDispatch()
 
@@ -542,7 +545,7 @@ export const CampaignDetailsForm = ({
                         className={css.pageContainer}
                         data-testid="improved-campaign-details-page"
                     >
-                        <div className={css.formWrapper}>
+                        <div className={cn(css.formWrapper, className)}>
                             {header ? (
                                 header
                             ) : (

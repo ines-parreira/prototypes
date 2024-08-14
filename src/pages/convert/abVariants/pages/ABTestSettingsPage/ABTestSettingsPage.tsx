@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
@@ -6,6 +6,8 @@ import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 
 import {HeaderReturnButton} from 'pages/convert/common/components/HeaderReturnButton'
 import VariantsList from 'pages/convert/abVariants/components/VariantsList'
+import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
 import css from './ABTestSettingsPage.less'
 
@@ -24,6 +26,15 @@ export const ABTestSettingsPage: React.FC<Props> = ({
     onDelete,
     onDuplicate,
 }) => {
+    const shouldDisplayBanner = useMemo(() => {
+        return (
+            isActiveStatus(campaign.status) &&
+            ([ABGroupStatus.Draft, ABGroupStatus.Paused] as string[]).indexOf(
+                campaign.ab_group?.status ?? ''
+            ) >= 0
+        )
+    }, [campaign])
+
     return (
         <>
             <div className={css.pageContentWithPadding}>
@@ -46,13 +57,15 @@ export const ABTestSettingsPage: React.FC<Props> = ({
                     </div>
                 </div>
 
-                <div className={css.alertWrapper}>
-                    <Alert icon type={AlertType.Info}>
-                        Your campaign is still running as your “Control
-                        Variant”. Once the A/B test is started, traffic will be
-                        evenly distributed across your variants.
-                    </Alert>
-                </div>
+                {shouldDisplayBanner && (
+                    <div className={css.alertWrapper}>
+                        <Alert icon type={AlertType.Info}>
+                            Your campaign is still running as your “Control
+                            Variant”. Once the A/B test is started, traffic will
+                            be evenly distributed across your variants.
+                        </Alert>
+                    </div>
+                )}
 
                 <div className={css.variantWrapper}>
                     <h2>Variants</h2>

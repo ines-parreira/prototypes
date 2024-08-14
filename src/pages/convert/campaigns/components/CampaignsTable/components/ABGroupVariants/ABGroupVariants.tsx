@@ -36,7 +36,7 @@ const ABGroupVariants: React.FC<Props> = ({
                             campaignId
                         )}
                     >
-                        <b>Control Variant</b>
+                        Control Variant
                     </Link>
                 </BodyCell>
             </TableBodyRow>
@@ -52,7 +52,7 @@ const ABGroupVariants: React.FC<Props> = ({
                                 variant.id
                             )}
                         >
-                            <b>{generateVariantName(idx)}</b>
+                            {generateVariantName(idx)}
                         </Link>
                     </BodyCell>
                 </TableBodyRow>

@@ -34,6 +34,8 @@ import {
 
 import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 
+import css from './ABTestVariantEditPage.less'
+
 type Props = {
     isControlVersion: boolean
     campaign: Campaign
@@ -216,7 +218,12 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
         }
     }
 
-    return <CampaignDetailsForm {...campaignDetailsFormProps} />
+    return (
+        <CampaignDetailsForm
+            className={css.formWrapper}
+            {...campaignDetailsFormProps}
+        />
+    )
 }
 
 export default ABTestVariantEditPage
