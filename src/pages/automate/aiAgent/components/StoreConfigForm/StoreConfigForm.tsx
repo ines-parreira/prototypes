@@ -724,12 +724,23 @@ export const StoreConfigForm = ({
                         style={{marginBottom: '4px'}}
                     >
                         AI ticket tagging
+                        <IconTooltip
+                            className={css.taggingTooltip}
+                            tooltipProps={{
+                                placement: 'top-start',
+                            }}
+                        >
+                            Provide quick instructions in everyday speech, and
+                            let AI Agent handle the rest, saving you time and
+                            ensuring consistent categorization.
+                        </IconTooltip>
                     </h2>
                     <div
                         className={css.sectionDescription}
                         style={{marginBottom: '16px'}}
                     >
-                        Define when AI Agent should tag incoming tickets.
+                        Use AI tagging to let AI Agent automatically label
+                        tickets based on their content.
                     </div>
 
                     <TagList
