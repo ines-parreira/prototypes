@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
@@ -8,10 +8,44 @@ import thunk from 'redux-thunk'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
 import {IntegrationType} from 'models/integration/constants'
+import {assumeMock} from 'utils/testing'
+
+import {ShopifyContext} from '../../contexts/ShopifyContext'
+import {buildShopifyContextData} from '../../helpers/buildShopifyContextData'
 
 import {customerCustomization} from '../Customer'
 
+jest.mock('../../helpers/buildShopifyContextData')
+const buildShopifyContextDataMock = assumeMock(buildShopifyContextData)
+
 const AfterTitle = customerCustomization.AfterTitle!
+const Wrapper = customerCustomization.Wrapper!
+
+describe('Wrapper', () => {
+    const spiedDataFunction = jest.fn()
+    it('should provide a context', () => {
+        const contextValue = {
+            data_source: 'Order',
+            widget_resource_ids: {
+                target_id: 4,
+                customer_id: null,
+            },
+        }
+        buildShopifyContextDataMock.mockReturnValue(contextValue)
+        const Child = () => {
+            const data = useContext(ShopifyContext)
+            spiedDataFunction(data)
+            return <></>
+        }
+        render(
+            <Wrapper source={fromJS({})}>
+                <Child />
+            </Wrapper>
+        )
+
+        expect(spiedDataFunction).toHaveBeenCalledWith(contextValue)
+    })
+})
 
 describe('<AfterTitle/>', () => {
     let store: MockStore

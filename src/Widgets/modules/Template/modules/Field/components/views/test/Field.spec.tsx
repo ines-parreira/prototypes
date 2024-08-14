@@ -2,12 +2,11 @@ import React, {ComponentProps} from 'react'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
-import {LeafTypes} from 'models/widget/types'
 import {LEAF_TYPES} from 'models/widget/constants'
 
+import {FieldEditFormData} from '../../../types'
 import CopyButton from '../../CopyButton'
-import FieldEditForm, {FormData} from '../FieldEditForm'
-
+import FieldEditForm from '../FieldEditForm'
 import Field, {DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT} from '../Field'
 
 const COPY_BUTTON_TEST_ID = 'copy-button'
@@ -51,7 +50,7 @@ describe('Field', () => {
         expect(screen.getByText(defaultProps.value as string))
     })
 
-    it('should not add `overflow` class to value when `valueShouldOverflow` is not true', () => {
+    it('should not add `overflow` class to value when `valueCanOverflow` is not true', () => {
         render(<Field {...defaultProps} />)
 
         expect(
@@ -59,8 +58,8 @@ describe('Field', () => {
         ).not.toContain('overflow')
     })
 
-    it('should add `overflow` class to value when `valueShouldOverflow` is true', () => {
-        render(<Field {...defaultProps} valueShouldOverflow />)
+    it('should add `overflow` class to value when `valueCanOverflow` is true', () => {
+        render(<Field {...defaultProps} valueCanOverflow />)
 
         expect(
             screen.getByText(defaultProps.value as string).classList
@@ -105,12 +104,15 @@ describe('Field', () => {
         expect(defaultProps.onDelete).toHaveBeenCalledTimes(1)
     })
 
-    it('should pass title, type and availableTypes to the edition form', () => {
-        const expectedInitialData: FormData<LeafTypes> = {
+    it('should pass initialData, availableTypes and hiddenFields to the edition form', () => {
+        const expectedInitialData: FieldEditFormData = {
             title: defaultProps.title,
-            type: defaultProps.type as LeafTypes,
+            type: defaultProps.type,
         }
-        const {getByText} = render(<Field {...defaultProps} />)
+
+        const {getByText} = render(
+            <Field {...defaultProps} editionHiddenFields={['title']} />
+        )
 
         fireEvent.click(getByText(EDIT_BUTTON_TEXT))
 
@@ -118,6 +120,7 @@ describe('Field', () => {
             expect.objectContaining({
                 initialData: expectedInitialData,
                 availableTypes: defaultProps.availableTypes,
+                hiddenFields: ['title'],
             }),
             expect.anything()
         )

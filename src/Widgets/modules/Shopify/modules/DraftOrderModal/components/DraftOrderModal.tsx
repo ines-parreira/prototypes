@@ -6,7 +6,6 @@ import {Link} from 'react-router-dom'
 
 import {CustomerContext} from 'providers/infobar/CustomerContext'
 
-import {ShopifyContext} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
 import {Product, Variant} from 'constants/integrations/types/shopify'
 import {getCreateOrderState} from 'state/infobarActions/shopify/createOrder/selectors'
 import {
@@ -88,7 +87,6 @@ export function DraftOrderModalContainer({
     ConnectedProps<typeof connector>) {
     const {customerId} = useContext(CustomerContext)
     const {integrationId} = useContext(IntegrationContext)
-    const {widget_resource_ids} = useContext(ShopifyContext)
     const modalRef = useRef<HTMLDivElement>(null)
 
     const currentIntegration = useMemo(
@@ -311,13 +309,6 @@ export function DraftOrderModalContainer({
                         editable
                         actionName={data.actionName!}
                         currencyCode={currencyCode}
-                        widgetData={{
-                            target_id: widget_resource_ids.target_id,
-                            customer_id:
-                                widget_resource_ids.customer_id ||
-                                widget_resource_ids.target_id ||
-                                customerId,
-                        }}
                         container={modalRef}
                     />
                     {draftOrder.get('status') === 'invoice_sent' ? (

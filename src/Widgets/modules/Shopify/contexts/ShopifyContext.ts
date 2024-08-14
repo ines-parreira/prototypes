@@ -8,10 +8,15 @@ export type ShopifyContextType = {
     }
 }
 
-export const ShopifyContext = createContext<ShopifyContextType>({
-    data_source: null,
-    widget_resource_ids: {
-        target_id: null,
-        customer_id: null,
-    },
-})
+export const defaultShopifyContextValue: Readonly<ShopifyContextType> =
+    Object.freeze({
+        data_source: null,
+        widget_resource_ids: {
+            target_id: null,
+            customer_id: null,
+        },
+    })
+
+export const ShopifyContext = createContext<ShopifyContextType>(
+    defaultShopifyContextValue
+)

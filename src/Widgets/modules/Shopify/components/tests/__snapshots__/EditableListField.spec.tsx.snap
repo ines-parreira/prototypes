@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<EditableListWidget/> should render a list with some tags in it 1`] = `
+exports[`<EditableListField/> should render a list with some tags in it 1`] = `
 <div>
   <div
     id="editable-list-2-tooltip-target"
@@ -79,7 +79,7 @@ exports[`<EditableListWidget/> should render a list with some tags in it 1`] = `
 </div>
 `;
 
-exports[`<EditableListWidget/> should render an empty list because no options has been given 1`] = `
+exports[`<EditableListField/> should render an empty list because no options has been given 1`] = `
 <div>
   <div
     id="editable-list-1-tooltip-target"

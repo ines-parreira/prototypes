@@ -5,37 +5,41 @@ import {Popover, PopoverBody} from 'reactstrap'
 import {useAppNode} from 'appNode'
 import useId from 'hooks/useId'
 
+import {LeafType} from 'models/widget/types'
+import {FieldEditFormData, HiddenFields} from '../../types'
 import FieldContainer from './FieldContainer'
 import FieldLabel from './FieldLabel'
 import FieldValue from './FieldValue'
-import FieldEditForm, {FormData, TypeOption} from './FieldEditForm'
+import FieldEditForm, {TypeOption} from './FieldEditForm'
 import css from './Field.less'
 
 export const EDIT_BUTTON_TEXT = 'edit'
 export const DELETE_BUTTON_TEXT = 'delete'
 
-type Props<T extends string> = {
+type Props<T extends LeafType> = {
     title: string
     value: unknown
     type: T
     availableTypes: TypeOption<T>[]
     copyButton: React.ReactNode
     isEditionMode?: boolean
-    valueShouldOverflow?: boolean
+    editionHiddenFields?: HiddenFields
+    valueCanOverflow?: boolean
     onEditionStart: () => void
     onEditionStop: () => void
-    onSubmit: (formData: FormData<T>) => void
+    onSubmit: (formData: FieldEditFormData<T>) => void
     onDelete: () => void
 }
 
-export default function Field<T extends string>({
+export default function Field<T extends LeafType>({
     title,
     value,
     type,
     availableTypes,
     copyButton,
     isEditionMode = false,
-    valueShouldOverflow = false,
+    editionHiddenFields,
+    valueCanOverflow = false,
     onEditionStart,
     onEditionStop,
     onSubmit,
@@ -67,7 +71,7 @@ export default function Field<T extends string>({
         }
     }
 
-    const handleEditSubmit = (formData: FormData<T>) => {
+    const handleEditSubmit = (formData: FieldEditFormData<T>) => {
         onSubmit(formData)
         handleEditStop()
     }
@@ -82,11 +86,11 @@ export default function Field<T extends string>({
             <FieldLabel className={css.fieldLabel}>{title}:</FieldLabel>
             <FieldValue
                 className={cs({
-                    [css.overflow]: valueShouldOverflow,
+                    [css.overflow]: valueCanOverflow,
                 })}
             >
                 {value}
-                {!isEditionMode && (
+                {!isEditionMode && copyButton && (
                     <span className={css.copyButton}>{copyButton}</span>
                 )}
             </FieldValue>
@@ -121,6 +125,7 @@ export default function Field<T extends string>({
                                     type,
                                 }}
                                 availableTypes={availableTypes}
+                                hiddenFields={editionHiddenFields}
                                 onCancel={handleEditStop}
                                 onSubmit={handleEditSubmit}
                             />

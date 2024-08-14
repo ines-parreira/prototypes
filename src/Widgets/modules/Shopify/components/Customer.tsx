@@ -26,6 +26,23 @@ import {
 } from 'Widgets/modules/Template/modules/Card'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import {buildShopifyContextData} from '../helpers/buildShopifyContextData'
+import {ShopifyContext} from '../contexts/ShopifyContext'
+
+function Wrapper({
+    source,
+    children,
+}: {
+    source: Map<any, any>
+    children: ReactNode
+}) {
+    const shopifyContextData = buildShopifyContextData(source.toJS())
+    return (
+        <ShopifyContext.Provider value={shopifyContextData}>
+            {children}
+        </ShopifyContext.Provider>
+    )
+}
 
 type AfterTitleProps = {
     source: Map<any, any>
@@ -157,4 +174,5 @@ export const customerCustomization: CardCustomization = {
     editionHiddenFields: ['link'],
     TitleWrapper,
     AfterTitle,
+    Wrapper,
 }

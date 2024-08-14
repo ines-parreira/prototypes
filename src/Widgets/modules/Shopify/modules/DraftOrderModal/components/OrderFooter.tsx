@@ -16,10 +16,7 @@ import {getCreateOrderState} from 'state/infobarActions/shopify/createOrder/sele
 import {onPayloadChange} from 'state/infobarActions/shopify/createOrder/actions'
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
-import {getOptionsFromTags} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/utils'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-
-import {getLoggerOnTagSelectionEvent} from 'Widgets/modules/Shopify/helpers/logEventData'
 
 import css from './OrderFooter.less'
 
@@ -33,8 +30,6 @@ type Props = {
         record: Map<any, any>,
         shouldCalculate?: boolean
     ) => void
-    currentAccount: Map<any, any>
-    widgetData?: Record<string, any>
     container?: RefObject<HTMLDivElement>
 }
 
@@ -97,17 +92,12 @@ export class OrderFooterComponent extends Component<Props, State> {
     }, 1000)
 
     _onTagsChange = (tags: Option[]) => {
-        const {onPayloadChange, payload, actionName} = this.props
+        const {onPayloadChange, payload} = this.props
         const {integrationId} = this.context
         const newValue = tags.map((option) => option.value as string).join(',')
         const newPayload = payload.set('tags', newValue)
 
         onPayloadChange(integrationId!, newPayload, false)
-        logEvent(
-            actionName === ShopifyActionType.CreateOrder
-                ? SegmentEvent.ShopifyCreateOrderTagsChanged
-                : SegmentEvent.ShopifyDuplicateOrderTagsChanged
-        )
     }
 
     handleFocus = async () => {
@@ -123,21 +113,14 @@ export class OrderFooterComponent extends Component<Props, State> {
             }
 
             this.setState({
-                options: getOptionsFromTags(tags),
+                options: tags.map((tag) => ({label: tag, value: tag})),
             })
         }
     }
 
     render() {
-        const {
-            editable,
-            payload,
-            currencyCode,
-            actionName,
-            widgetData,
-            currentAccount,
-            container,
-        } = this.props
+        const {editable, payload, currencyCode, actionName, container} =
+            this.props
         const {note, options} = this.state
         const tags = payload.get('tags') || ''
 
@@ -175,36 +158,6 @@ export class OrderFooterComponent extends Component<Props, State> {
                                 allowCustomOptions
                                 matchInput
                                 className={css.tagsDropdown}
-                                onSelectTag={
-                                    actionName === ShopifyActionType.CreateOrder
-                                        ? getLoggerOnTagSelectionEvent(
-                                              {
-                                                  account_id:
-                                                      currentAccount.get(
-                                                          'domain'
-                                                      ),
-                                                  customer_id:
-                                                      widgetData?.customer_id ||
-                                                      widgetData?.target_id,
-                                                  order_id: null,
-                                              },
-                                              SegmentEvent.ShopifyCreateOrderTagsSuggestionUsed
-                                          )
-                                        : getLoggerOnTagSelectionEvent(
-                                              {
-                                                  account_id:
-                                                      currentAccount.get(
-                                                          'domain'
-                                                      ),
-                                                  customer_id:
-                                                      widgetData?.customer_id ||
-                                                      widgetData?.target_id,
-                                                  order_id:
-                                                      widgetData?.target_id,
-                                              },
-                                              SegmentEvent.ShopifyDuplicateOrderTagsSuggestionUsed
-                                          )
-                                }
                             />
                         </div>
                     </Col>

@@ -12,6 +12,7 @@ import {orderCustomization} from './Order'
 import {itemCustomization} from './Item'
 import {fulfillmentCustomization} from './Fulfillment'
 import {shippingAddressCustomization} from './ShippingAddress'
+import {editableListCustomization} from './EditableListField'
 
 export const customization: TemplateCustomization = {
     card: [
@@ -40,10 +41,10 @@ export const customization: TemplateCustomization = {
             customization: shippingAddressCustomization,
         },
     ],
+    field: [editableListCustomization],
 }
 
 export default function ShopifyWidget(props: WidgetProps) {
-    // You can set as much contexts as you want here
     return (
         <CustomizationContext.Provider value={customization}>
             <Template {...props} />

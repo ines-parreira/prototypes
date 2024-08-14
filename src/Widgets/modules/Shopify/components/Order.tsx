@@ -38,6 +38,8 @@ import RefundOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/Refu
 import EditOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/EditOrderModal'
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
+import {ShopifyContext} from '../contexts/ShopifyContext'
+import {buildShopifyContextData} from '../helpers/buildShopifyContextData'
 import css from './Order.less'
 
 export const OrderContext = createContext<{
@@ -336,22 +338,25 @@ export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
     const createdDate = order.get('created_at')
     const orderAge = new Date().getTime() - new Date(createdDate).getTime()
     const isOldOrder = Math.round(orderAge / (1000 * 3600 * 24)) >= 60
+    const shopifyContextData = buildShopifyContextData(order.toJS())
     return (
-        <OrderContext.Provider
-            value={{
-                order,
-                orderId: order.get('id'),
-                isOrderCancelled: isCancelled,
-                isOldOrder: isOldOrder,
-                isOrderRefunded: isRefunded,
-                isOrderFulfilled: isFulfilled,
-                isOrderPartiallyFulfilled: isPartiallyFulfilled,
-                integrationId,
-                integration,
-            }}
-        >
-            {children}
-        </OrderContext.Provider>
+        <ShopifyContext.Provider value={shopifyContextData}>
+            <OrderContext.Provider
+                value={{
+                    order,
+                    orderId: order.get('id'),
+                    isOrderCancelled: isCancelled,
+                    isOldOrder: isOldOrder,
+                    isOrderRefunded: isRefunded,
+                    isOrderFulfilled: isFulfilled,
+                    isOrderPartiallyFulfilled: isPartiallyFulfilled,
+                    integrationId,
+                    integration,
+                }}
+            >
+                {children}
+            </OrderContext.Provider>
+        </ShopifyContext.Provider>
     )
 }
 

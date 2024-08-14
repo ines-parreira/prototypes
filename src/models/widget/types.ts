@@ -38,10 +38,10 @@ export function isSourceArray(source: Source): source is Source[] {
     return Array.isArray(source)
 }
 
-export type LeafTypes = typeof LEAF_TYPES[keyof typeof LEAF_TYPES]
+export type LeafType = typeof LEAF_TYPES[keyof typeof LEAF_TYPES]
 
-export function isLeafType(type: string): type is LeafTypes {
-    return Object.values(LEAF_TYPES).includes(type as LeafTypes)
+export function isLeafType(type: string): type is LeafType {
+    return Object.values(LEAF_TYPES).includes(type as LeafType)
 }
 
 export type WrapperMeta = {
@@ -76,7 +76,7 @@ type baseTemplate = {
 export type WrapperTemplate = baseTemplate & {
     type: 'wrapper'
     title?: string
-    widgets: Array<CardTemplate | ListTemplate>
+    widgets?: Array<CardTemplate | ListTemplate>
     meta?: WrapperMeta
 }
 
@@ -96,7 +96,8 @@ export type ListTemplate = baseTemplate & {
 }
 
 export type LeafTemplate = baseTemplate & {
-    type: LeafTypes
+    // We can’t guarantee that type is LeafType because backend is compromised
+    type: string
     title: string
     // TODO: remove this when we set proper typeguards
     // this allows to access the properties in any case
@@ -135,6 +136,12 @@ export function isListTemplate(template?: Template): template is ListTemplate {
     return template?.type === 'list'
 }
 
+// LeafType can actually also be a string because we don’t check it on the backend yet
 export function isLeafTemplate(template?: Template): template is LeafTemplate {
-    return isLeafType(template?.type || '')
+    return (
+        isLeafType(template?.type || '') ||
+        (!isCardTemplate(template) &&
+            !isListTemplate(template) &&
+            !isWrapperTemplate(template))
+    )
 }

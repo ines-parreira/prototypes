@@ -5,7 +5,6 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {SegmentEvent, logEvent} from 'common/segment'
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
 import {shopifyDraftOrderPayloadFixture} from 'fixtures/shopify'
@@ -19,15 +18,6 @@ import {OrderFooterComponent} from '../OrderFooter'
 jest.useFakeTimers()
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
-
-jest.mock('common/segment', () => {
-    const segmentTracker: Record<string, unknown> =
-        jest.requireActual('common/segment')
-    return {
-        ...segmentTracker,
-        logEvent: jest.fn(),
-    }
-})
 
 jest.mock('models/integration/resources/shopify', () => {
     return {
@@ -68,7 +58,6 @@ describe('<OrderFooterComponent/>', () => {
                             currencyCode="USD"
                             payload={fromJS(shopifyDraftOrderPayloadFixture())}
                             onPayloadChange={onPayloadChange}
-                            currentAccount={fromJS({domain: 'acme'})}
                         />
                     </IntegrationContext.Provider>
                 </Provider>
@@ -90,7 +79,6 @@ describe('<OrderFooterComponent/>', () => {
                             currencyCode="USD"
                             payload={fromJS(payload)}
                             onPayloadChange={onPayloadChange}
-                            currentAccount={fromJS({domain: 'acme'})}
                         />
                     </IntegrationContext.Provider>
                 </Provider>
@@ -102,14 +90,8 @@ describe('<OrderFooterComponent/>', () => {
 
     describe('_onNoteChange()', () => {
         it.each([
-            [
-                ShopifyActionType.CreateOrder,
-                SegmentEvent.ShopifyCreateOrderNotesChanged,
-            ],
-            [
-                ShopifyActionType.DuplicateOrder,
-                SegmentEvent.ShopifyDuplicateOrderNotesChanged,
-            ],
+            [ShopifyActionType.CreateOrder],
+            [ShopifyActionType.DuplicateOrder],
         ])(
             'should call onPayloadChange() with updated payload',
             (actionName) => {
@@ -128,7 +110,6 @@ describe('<OrderFooterComponent/>', () => {
                                 currencyCode="USD"
                                 payload={payload}
                                 onPayloadChange={onPayloadChange}
-                                currentAccount={fromJS({domain: 'acme'})}
                             />
                         </IntegrationContext.Provider>
                     </Provider>
@@ -141,21 +122,14 @@ describe('<OrderFooterComponent/>', () => {
                 })
 
                 expect(onPayloadChange).toHaveBeenCalled()
-                expect(logEvent).toHaveBeenCalled()
             }
         )
     })
 
     describe('_onTagsChange()', () => {
         it.each([
-            [
-                ShopifyActionType.CreateOrder,
-                SegmentEvent.ShopifyCreateOrderTagsChanged,
-            ],
-            [
-                ShopifyActionType.DuplicateOrder,
-                SegmentEvent.ShopifyDuplicateOrderTagsChanged,
-            ],
+            [ShopifyActionType.CreateOrder],
+            [ShopifyActionType.DuplicateOrder],
         ])(
             'should call onPayloadChange() with updated payload',
             (actionName) => {
@@ -174,7 +148,6 @@ describe('<OrderFooterComponent/>', () => {
                                 currencyCode="USD"
                                 payload={payload}
                                 onPayloadChange={onPayloadChange}
-                                currentAccount={fromJS({domain: 'acme'})}
                             />
                         </IntegrationContext.Provider>
                     </Provider>
@@ -192,21 +165,14 @@ describe('<OrderFooterComponent/>', () => {
                 })
 
                 expect(onPayloadChange).toHaveBeenCalled()
-                expect(logEvent).toHaveBeenCalled()
             }
         )
     })
 
     describe('handleFocus()', () => {
         it.each([
-            [
-                ShopifyActionType.CreateOrder,
-                SegmentEvent.ShopifyCreateOrderTagsChanged,
-            ],
-            [
-                ShopifyActionType.DuplicateOrder,
-                SegmentEvent.ShopifyDuplicateOrderTagsChanged,
-            ],
+            [ShopifyActionType.CreateOrder],
+            [ShopifyActionType.DuplicateOrder],
         ])('should call fetchShopTags()', (actionName) => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<
                 any,
@@ -222,7 +188,6 @@ describe('<OrderFooterComponent/>', () => {
                             currencyCode="USD"
                             payload={payload}
                             onPayloadChange={onPayloadChange}
-                            currentAccount={fromJS({domain: 'acme'})}
                         />
                     </IntegrationContext.Provider>
                 </Provider>

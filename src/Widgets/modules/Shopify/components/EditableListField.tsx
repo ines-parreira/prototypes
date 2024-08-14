@@ -4,7 +4,6 @@ import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {ShopifyContext} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
 import useId from 'hooks/useId'
@@ -16,9 +15,11 @@ import {RootState} from 'state/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 import {ActionButtonContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
-import {getOptionsFromTags} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/utils'
+
+import {FieldCustomization} from 'Widgets/modules/Template/types'
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-import {getLoggerOnTagSelectionEvent} from 'Widgets/modules/Shopify/helpers/logEventData'
+
+import {ShopifyContext} from '../contexts/ShopifyContext'
 
 type OwnProps = {
     selectedOptions: string
@@ -29,7 +30,7 @@ type SelectedValues = {
     value: string
 }
 
-export function EditableListWidget({
+export function EditableListField({
     selectedOptions,
     executeAction,
     activeCustomerId,
@@ -60,8 +61,7 @@ export function EditableListWidget({
 
     useMemo(() => _updateState(selectedOptions), [selectedOptions])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const notEditable = useMemo(() => !!actionError || widgetIsEditing, [])
+    const notEditable = !!actionError || widgetIsEditing
 
     const _onTagsChange = (tags: SelectedValues[]) => {
         setSelectedValues(tags)
@@ -93,7 +93,7 @@ export function EditableListWidget({
                 // silent fail
                 return
             }
-            setOptions(getOptionsFromTags(tags))
+            setOptions(tags.map((tag) => ({label: tag, value: tag})))
         }
     }
 
@@ -144,27 +144,6 @@ export function EditableListWidget({
                 onBlur={_submitChanges}
                 isDisabled={notEditable}
                 options={options}
-                onSelectTag={
-                    data_source === 'Customer'
-                        ? getLoggerOnTagSelectionEvent(
-                              {
-                                  account_id: currentAccount.get('domain'),
-                                  customer_id:
-                                      widget_resource_ids?.customer_id ||
-                                      widget_resource_ids?.target_id,
-                                  order_id: null,
-                              },
-                              SegmentEvent.ShopifyEditCustomerTagsSuggestionUsed
-                          )
-                        : getLoggerOnTagSelectionEvent(
-                              {
-                                  account_id: currentAccount.get('domain'),
-                                  customer_id: widget_resource_ids?.customer_id,
-                                  order_id: widget_resource_ids?.target_id,
-                              },
-                              SegmentEvent.ShopifyEditOrderTagsSuggestionUsed
-                          )
-                }
                 allowCustomOptions
                 matchInput
                 isCompact
@@ -189,4 +168,17 @@ const connector = connect(
     }
 )
 
-export default connector(EditableListWidget)
+const ConnectedEditableListField = connector(EditableListField)
+
+export const editableListCustomization: FieldCustomization = {
+    dataMatcher: /(orders\.\[]\.tags$)|(customer\.tags$)/,
+    getValue: (source) =>
+        typeof source === 'string' ? (
+            <ConnectedEditableListField selectedOptions={source} />
+        ) : (
+            '-'
+        ),
+    getValueString: () => null,
+    editionHiddenFields: ['type'],
+    valueCanOverflow: true,
+}

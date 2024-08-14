@@ -10,5 +10,4 @@ export const LEAF_TYPES = {
     RATING: 'rating',
     POINT: 'points',
     PERCENT: 'percent',
-    EDITABLE_LIST: 'editableList',
 } as const

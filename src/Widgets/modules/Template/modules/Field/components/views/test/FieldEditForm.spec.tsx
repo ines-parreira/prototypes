@@ -1,30 +1,32 @@
 import React, {ComponentProps} from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
+import {LeafType} from 'models/widget/types'
+import {LEAF_TYPES} from 'models/widget/constants'
+
 import FieldEditForm, {
     CANCEL_BUTTON_TEXT,
     SUBMIT_BUTTON_TEXT,
     TITLE_FIELD_LABEL,
     TYPE_FIELD_LABEL,
-    FormData,
     TypeOption,
 } from '../FieldEditForm'
+import {FieldEditFormData, HiddenFields} from '../../../types'
 
 describe('FieldEditForm', () => {
-    type DefaultTypes = 'foo' | 'bar'
-    const defaultAvailableTypes: TypeOption<DefaultTypes>[] = [
+    const defaultAvailableTypes: TypeOption<LeafType>[] = [
         {
-            value: 'foo',
-            label: 'Foo',
+            value: LEAF_TYPES.TEXT,
+            label: 'Text',
         },
         {
-            value: 'bar',
-            label: 'Bar',
+            value: LEAF_TYPES.DATE,
+            label: 'Date',
         },
     ]
-    const defaultInitialData: FormData<DefaultTypes> = {
+    const defaultInitialData: FieldEditFormData<LeafType> = {
         title: 'Some title',
-        type: 'foo',
+        type: LEAF_TYPES.TEXT,
     }
     const defaultProps: ComponentProps<typeof FieldEditForm> = {
         initialData: defaultInitialData,
@@ -59,6 +61,16 @@ describe('FieldEditForm', () => {
         }
     })
 
+    it('should not display hidden fields', () => {
+        const hiddenFields: HiddenFields = ['title', 'type']
+        const {queryByLabelText} = render(
+            <FieldEditForm {...defaultProps} hiddenFields={hiddenFields} />
+        )
+
+        expect(queryByLabelText(TITLE_FIELD_LABEL)).not.toBeInTheDocument()
+        expect(queryByLabelText(TYPE_FIELD_LABEL)).not.toBeInTheDocument()
+    })
+
     it('should call onCancel and not call onSubmit on cancel button click', () => {
         const {getByText} = render(<FieldEditForm {...defaultProps} />)
 
@@ -70,7 +82,7 @@ describe('FieldEditForm', () => {
 
     it('should call onSubmit and not call onCancel on submit button click', () => {
         const title = 'foo'
-        const type: DefaultTypes = 'bar'
+        const type = LEAF_TYPES.DATE
         const {getByText, getByLabelText} = render(
             <FieldEditForm {...defaultProps} />
         )
