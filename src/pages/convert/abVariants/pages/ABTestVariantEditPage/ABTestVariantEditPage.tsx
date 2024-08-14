@@ -37,7 +37,8 @@ import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifySto
 type Props = {
     isControlVersion: boolean
     campaign: Campaign
-    canPerformActions: boolean
+    canCreateDeleteObjects: boolean
+    canModifyObjects: boolean
     onDiscard?: () => void
     addVariant?: () => void
     onUpdate?: (campaign: Map<any, any>, variantId?: string | null) => void
@@ -49,7 +50,8 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
     const {
         isControlVersion,
         campaign: data,
-        canPerformActions,
+        canModifyObjects,
+        canCreateDeleteObjects,
         onDiscard,
         addVariant,
         onUpdate,
@@ -181,15 +183,15 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
         isEditMode: true,
         isShopifyStore: chatIsShopifyStore(integration),
         isOverLimit: isOverLimit,
-        isCreateDisabled: false,
+        isCreateDisabled: !canCreateDeleteObjects,
         integration: integration,
         shopifyIntegration: shopify,
         updateCampaign: handleUpdateCampaign,
         duplicateCampaign: handleDuplicateVariant,
         backUrl: backUrl,
         openedStep: CampaignStepsKeys.Message,
-        disableActions: !canPerformActions,
-        banners: !canPerformActions && !isTestCompleted && (
+        disableActions: !canModifyObjects,
+        banners: !canModifyObjects && !isTestCompleted && (
             <Alert type={AlertType.Warning}>
                 Variants cannot be edited when a test is running. To edit your
                 variants you will need to pause your test from the test settings

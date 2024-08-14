@@ -87,7 +87,7 @@ export const ABGroupContainer: React.FC<Props> = ({
     }, [campaign])
 
     const canAddVariant = useMemo<boolean>(() => {
-        const statuses: string[] = [ABGroupStatus.Draft, ABGroupStatus.Paused]
+        const statuses: string[] = [ABGroupStatus.Draft]
 
         if (!campaign.ab_group) {
             return false

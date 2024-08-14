@@ -60,7 +60,8 @@ const defaultState = {integrations: fromJS(integrationsState)} as RootState
 const renderComponent = (props: any) => {
     const componentProps = {
         campaign: campaign,
-        canPerformActions: true,
+        canCreateDeleteObjects: true,
+        canModifyObjects: true,
         ...props,
     }
     return render(

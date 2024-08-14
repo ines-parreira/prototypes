@@ -72,7 +72,15 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
         [campaignData, updateCampaignRequest]
     )
 
-    const canPerformActions = useMemo(() => {
+    const canPerformCreateDeleteActions = useMemo(() => {
+        if (!campaignData.ab_group) {
+            return false
+        }
+
+        return campaignData.ab_group.status === ABGroupStatus.Draft
+    }, [campaignData])
+
+    const canPerformUpdateActions = useMemo(() => {
         const statuses: string[] = [
             ABGroupStatus.Started,
             ABGroupStatus.Completed,
@@ -228,7 +236,9 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                 <Switch>
                     <Route exact path={abVariantsPath}>
                         <ABTestSettingsPage
-                            canPerformActions={canPerformActions}
+                            canCreateDeleteObjects={
+                                canPerformCreateDeleteActions
+                            }
                             campaign={campaignData}
                             integrationId={integrationId}
                             onDelete={handleDeleteVariant}
@@ -237,7 +247,10 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                     </Route>
                     <Route exact path={abVariantsControlVersionPath}>
                         <ABTestVariantEditPage
-                            canPerformActions={canPerformActions}
+                            canCreateDeleteObjects={
+                                canPerformCreateDeleteActions
+                            }
+                            canModifyObjects={canPerformUpdateActions}
                             isControlVersion={true}
                             campaign={campaignData}
                             onUpdate={handleUpdateControlVariant}
@@ -246,7 +259,10 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                     </Route>
                     <Route exact path={abVariantAddPath}>
                         <ABTestVariantEditPage
-                            canPerformActions={canPerformActions}
+                            canCreateDeleteObjects={
+                                canPerformCreateDeleteActions
+                            }
+                            canModifyObjects={canPerformUpdateActions}
                             isControlVersion={false}
                             campaign={campaignData}
                             addVariant={addVariant}
@@ -256,7 +272,10 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                     </Route>
                     <Route exact path={abVariantEditorPath}>
                         <ABTestVariantEditPage
-                            canPerformActions={canPerformActions}
+                            canCreateDeleteObjects={
+                                canPerformCreateDeleteActions
+                            }
+                            canModifyObjects={canPerformUpdateActions}
                             isControlVersion={false}
                             campaign={campaignData}
                             onUpdate={handleUpdateVariant}

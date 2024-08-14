@@ -19,7 +19,7 @@ describe('<ABTestSettingPage />', () => {
     it('renders', () => {
         const {getByText} = render(
             <ABTestSettingPage
-                canPerformActions={true}
+                canCreateDeleteObjects={true}
                 campaign={campaignWithABGroup as Campaign}
                 integrationId="4"
                 onDelete={jest.fn()}
