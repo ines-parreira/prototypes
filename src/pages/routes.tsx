@@ -200,6 +200,7 @@ import WorkflowAnalyticsContainer from './automate/workflows/analytics/WorkflowA
 import AutomateAllRecommendationsContainer from './automate/common/components/AutomateAllRecommendationsContainer'
 import LiveVoice from './stats/voice/pages/LiveVoice'
 import {AiAgentGuidanceLibraryContainer} from './automate/aiAgent/AiAgentGuidanceLibraryContainer'
+import AiAgentStoreConfigurationProvider from './automate/aiAgent/providers/AiAgentStoreConfigurationProvider'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1414,82 +1415,85 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
         <Switch>
             <SelfServiceHelpCentersProvider>
                 <AiAgentAccountConfigurationProvider>
-                    <AiAgentErrorBoundary section="ai-agent-configuration">
-                        <Route
-                            path={`${path}`}
-                            exact
-                            component={AiAgentViewContainer}
-                        />
-                    </AiAgentErrorBoundary>
-                    <AiAgentErrorBoundary section="ai-agent-playground">
-                        <Route
-                            path={`${path}/test`}
-                            exact
-                            component={AiAgentPlaygroundContainer}
-                        />
-                    </AiAgentErrorBoundary>
-                    {!!showAutomateActions && (
-                        <Switch>
+                    <AiAgentStoreConfigurationProvider>
+                        <AiAgentErrorBoundary section="ai-agent-configuration">
                             <Route
-                                path={`${path}/actions`}
+                                path={`${path}`}
                                 exact
-                                component={ActionsViewContainer}
+                                component={AiAgentViewContainer}
                             />
+                        </AiAgentErrorBoundary>
+                        <AiAgentErrorBoundary section="ai-agent-playground">
                             <Route
-                                path={`${path}/actions/new`}
+                                path={`${path}/test`}
                                 exact
-                                component={CreateActionFormView}
+                                component={AiAgentPlaygroundContainer}
                             />
-                            <Route
-                                path={`${path}/actions/edit/:id`}
-                                exact
-                                component={EditActionFormView}
-                            />
-                            <Route
-                                path={`${path}/actions/templates`}
-                                exact
-                                component={ActionsTemplatesViewContainer}
-                            />
-                        </Switch>
-                    )}
-                    <AiAgentErrorBoundary section="ai-agent-guidance">
-                        <Route
-                            path={`${path}/guidance`}
-                            exact
-                            component={AiAgentGuidanceContainer}
-                        />
-                        <Switch>
-                            <Route
-                                path={`${path}/guidance/new`}
-                                component={AiAgentGuidanceNewContainer}
-                            />
-                            {isAiAgentAIGeneratedGuidancesEnabled && (
+                        </AiAgentErrorBoundary>
+                        {!!showAutomateActions && (
+                            <Switch>
                                 <Route
-                                    path={`${path}/guidance/library`}
+                                    path={`${path}/actions`}
                                     exact
-                                    component={AiAgentGuidanceLibraryContainer}
+                                    component={ActionsViewContainer}
                                 />
-                            )}
+                                <Route
+                                    path={`${path}/actions/new`}
+                                    exact
+                                    component={CreateActionFormView}
+                                />
+                                <Route
+                                    path={`${path}/actions/edit/:id`}
+                                    exact
+                                    component={EditActionFormView}
+                                />
+                                <Route
+                                    path={`${path}/actions/templates`}
+                                    exact
+                                    component={ActionsTemplatesViewContainer}
+                                />
+                            </Switch>
+                        )}
+                        <AiAgentErrorBoundary section="ai-agent-guidance">
                             <Route
-                                path={`${path}/guidance/templates`}
+                                path={`${path}/guidance`}
                                 exact
-                                component={AiAgentGuidanceTemplatesContainer}
+                                component={AiAgentGuidanceContainer}
                             />
-                            <Route
-                                path={`${path}/guidance/templates/:templateId`}
-                                component={AiAgentGuidanceTemplateNewContainer}
-                            />
-                            <Route
-                                path={`${path}/guidance/templates`}
-                                component={AiAgentGuidanceTemplatesContainer}
-                            />
-
-                            <Route
-                                path={`${path}/guidance/:articleId`}
-                                component={AiAgentGuidanceDetailContainer}
-                            />
-                        </Switch>
-                    </AiAgentErrorBoundary>
+                            <Switch>
+                                <Route
+                                    path={`${path}/guidance/new`}
+                                    component={AiAgentGuidanceNewContainer}
+                                />
+                                {isAiAgentAIGeneratedGuidancesEnabled && (
+                                    <Route
+                                        path={`${path}/guidance/library`}
+                                        exact
+                                        component={
+                                            AiAgentGuidanceLibraryContainer
+                                        }
+                                    />
+                                )}
+                                <Route
+                                    path={`${path}/guidance/templates`}
+                                    exact
+                                    component={
+                                        AiAgentGuidanceTemplatesContainer
+                                    }
+                                />
+                                <Route
+                                    path={`${path}/guidance/templates/:templateId`}
+                                    component={
+                                        AiAgentGuidanceTemplateNewContainer
+                                    }
+                                />
+                                <Route
+                                    path={`${path}/guidance/:articleId`}
+                                    component={AiAgentGuidanceDetailContainer}
+                                />
+                            </Switch>
+                        </AiAgentErrorBoundary>
+                    </AiAgentStoreConfigurationProvider>
                 </AiAgentAccountConfigurationProvider>
             </SelfServiceHelpCentersProvider>
         </Switch>

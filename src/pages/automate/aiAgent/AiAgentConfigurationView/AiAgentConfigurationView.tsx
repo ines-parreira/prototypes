@@ -6,10 +6,10 @@ import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegr
 import {NotificationStatus} from 'state/notifications/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {notify} from 'state/notifications/actions'
-import {useStoreConfiguration} from '../hooks/useStoreConfiguration'
 
 import {AiAgentLayout} from '../components/AiAgentLayout/AiAgentLayout'
 import {StoreConfigForm} from '../components/StoreConfigForm/StoreConfigForm'
+import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
 import css from './AiAgentConfigurationView.less'
 
 const READ_FULFILLMENTS_PERMISSION = 'read_fulfillments'
@@ -23,10 +23,8 @@ export const AiAgentConfigurationView = ({
     accountDomain,
 }: AiAgentConfigurationViewProps) => {
     const dispatch = useAppDispatch()
-    const {storeConfiguration, isLoading} = useStoreConfiguration({
-        shopName,
-        accountDomain,
-    })
+    const {isLoading} = useAiAgentStoreConfigurationContext()
+
     const {integration} = useShopifyIntegrationAndScope(shopName)
 
     if (!integration) {
@@ -41,7 +39,7 @@ export const AiAgentConfigurationView = ({
     }
 
     if (isLoading) {
-        return <Loader />
+        return <Loader data-testid="loader" />
     }
 
     const integrationNeedMorePermissions =
@@ -69,7 +67,6 @@ export const AiAgentConfigurationView = ({
                 <StoreConfigForm
                     shopName={shopName}
                     accountDomain={accountDomain}
-                    storeConfiguration={storeConfiguration}
                 />
             </div>
         </AiAgentLayout>
