@@ -1,3 +1,4 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import React, {
     ComponentProps,
     MouseEvent,
@@ -84,6 +85,8 @@ export default function Ticket({
         [ticket, onSelect]
     )
 
+    const sourceRef = useRef<HTMLImageElement | null>(null)
+
     if (hasBulkActions) {
         const customer =
             'channel' in ticket &&
@@ -141,9 +144,17 @@ export default function Ticket({
                                             )}
 
                                             <SourceIcon
+                                                ref={sourceRef}
                                                 className={css.icon}
                                                 type={ticket.channel}
                                             />
+                                            <Tooltip
+                                                delay={100}
+                                                placement="bottom"
+                                                target={sourceRef}
+                                            >
+                                                {ticket.channel}
+                                            </Tooltip>
                                         </span>
                                         {!!datetime && (
                                             <span className={css.timeNew}>

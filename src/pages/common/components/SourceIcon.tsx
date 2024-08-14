@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ForwardedRef, forwardRef} from 'react'
 import classnames from 'classnames'
 
 import {IntegrationType} from 'models/integration/types'
@@ -127,12 +127,16 @@ const sourceTypeToIcon = (sourceType?: ChannelLike) => {
     return icon
 }
 
-const SourceIcon = ({type, className, variant, ...otherProps}: Props) => {
+const SourceIcon = (
+    {type, className, variant, ...otherProps}: Props,
+    ref: ForwardedRef<HTMLImageElement>
+) => {
     if (type && !isLegacyChannel(type)) {
         const channel = toChannel(type)
         if (channel && channel.logo_url) {
             return (
                 <img
+                    ref={ref}
                     src={channel.logo_url}
                     alt={channel.name}
                     width="13px"
@@ -153,6 +157,7 @@ const SourceIcon = ({type, className, variant, ...otherProps}: Props) => {
 
     return (
         <i
+            ref={ref}
             className={classnames(
                 'icon source-icon d-inline-block',
                 icon.extra,
@@ -170,4 +175,4 @@ const SourceIcon = ({type, className, variant, ...otherProps}: Props) => {
     )
 }
 
-export default SourceIcon
+export default forwardRef(SourceIcon)
