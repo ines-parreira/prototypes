@@ -229,9 +229,8 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                     <Route exact path={abVariantsPath}>
                         <ABTestSettingsPage
                             canPerformActions={canPerformActions}
-                            variants={
-                                campaignData.variants as CampaignVariant[]
-                            }
+                            campaign={campaignData}
+                            integrationId={integrationId}
                             onDelete={handleDeleteVariant}
                             onDuplicate={handleDuplicateVariant}
                         />

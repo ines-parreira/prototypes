@@ -1,12 +1,13 @@
 import React, {useCallback, useMemo} from 'react'
 
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import IconButton from 'pages/common/components/button/IconButton'
 
+import {VariantTableEntry} from 'pages/convert/abVariants/types/VariantTableEntry'
+
 type Props = {
-    variant: CampaignVariant | null
     variantName: string
+    data: VariantTableEntry
     isDeletingDisabled: boolean
     isDuplicatingDisabled: boolean
     onDelete?: (variantId: string) => void
@@ -15,7 +16,7 @@ type Props = {
 
 const VariantActions: React.FC<Props> = (props) => {
     const {
-        variant,
+        data,
         variantName,
         isDeletingDisabled,
         isDuplicatingDisabled,
@@ -54,13 +55,13 @@ const VariantActions: React.FC<Props> = (props) => {
                         You are about to delete <b>{variantName}</b>.
                     </>
                 }
-                id={`delete-variant-${variant?.id}`}
-                onConfirm={() => variant && onDelete?.(variant.id)}
+                id={`delete-variant-${data.variant?.id}`}
+                onConfirm={() => data.variant && onDelete?.(data.variant.id)}
             >
                 {renderConfirmation}
             </ConfirmationPopover>
         )
-    }, [variant, variantName, onDelete, renderConfirmation])
+    }, [data, variantName, onDelete, renderConfirmation])
 
     return (
         <>
@@ -71,7 +72,9 @@ const VariantActions: React.FC<Props> = (props) => {
                 intent="secondary"
                 title="Duplicate variant"
                 isDisabled={isDuplicatingDisabled}
-                onClick={() => onDuplicate(variant ? variant.id : null)}
+                onClick={() =>
+                    onDuplicate(data.variant ? data.variant.id : null)
+                }
             >
                 file_copy
             </IconButton>

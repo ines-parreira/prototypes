@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 
 import {HeaderReturnButton} from 'pages/convert/common/components/HeaderReturnButton'
 import VariantsList from 'pages/convert/abVariants/components/VariantsList'
@@ -11,14 +11,17 @@ import css from './ABTestSettingsPage.less'
 
 type Props = {
     canPerformActions: boolean
-    variants: CampaignVariant[]
+
+    campaign: Campaign
+    integrationId: string
     onDelete: (variantId: string | null) => void
     onDuplicate: (variantId: string | null) => void
 }
 
 export const ABTestSettingsPage: React.FC<Props> = ({
     canPerformActions,
-    variants,
+    campaign,
+    integrationId,
     onDelete,
     onDuplicate,
 }) => {
@@ -27,7 +30,7 @@ export const ABTestSettingsPage: React.FC<Props> = ({
             <div className={css.pageContentWithPadding}>
                 <div className={css.subHeader}>
                     <HeaderReturnButton
-                        backToHref={'/app/convert/4/campaigns'}
+                        backToHref={`/app/convert/${integrationId}/campaigns`}
                         title="Back to Campaigns list"
                         className={css.backWrapper}
                     />
@@ -57,7 +60,7 @@ export const ABTestSettingsPage: React.FC<Props> = ({
                     <p>
                         View and manage your variants here. Access the full
                         performance data on the{' '}
-                        <Link to={'/to'}>
+                        <Link to={`/app/convert/${integrationId}/performance`}>
                             <strong>performance dashboard</strong>
                         </Link>
                         .
@@ -68,7 +71,7 @@ export const ABTestSettingsPage: React.FC<Props> = ({
             <div>
                 <VariantsList
                     canPerformActions={canPerformActions}
-                    variants={variants}
+                    campaign={campaign}
                     onDelete={onDelete}
                     onDuplicate={onDuplicate}
                 />

@@ -1,7 +1,8 @@
 import React, {useMemo} from 'react'
 import classnames from 'classnames'
 
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -9,18 +10,31 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
 import {VARIANT_LIMIT} from 'pages/convert/abVariants/contants'
 import VariantActions from 'pages/convert/abVariants/components/VariantActions'
 import {TableColumn} from 'pages/convert/abVariants/components/VariantsList/types'
+import {ABGroup} from 'models/convert/campaign/types'
+
+import {VariantTableEntry} from 'pages/convert/abVariants/types/VariantTableEntry'
 
 import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
+
+import {formatPercent} from 'pages/stats/common/utils'
+
+import {formatDatetime} from 'utils'
 
 import css from './VariantList.less'
 
 type Props = {
     canPerformActions: boolean
-    variants: CampaignVariant[]
+    campaign: Campaign
     onDelete: (variantId: string | null) => void
     onDuplicate: (variantId: string | null) => void
 }
@@ -63,12 +77,55 @@ const variantTableCells: TableColumn[] = [
 
 const VariantsList: React.FC<Props> = ({
     canPerformActions,
-    variants,
+    campaign,
     onDelete,
     onDuplicate,
 }) => {
+    const isStarted = campaign.ab_group?.status === ABGroupStatus.Started
+    const isCompleted = campaign.ab_group?.status === ABGroupStatus.Completed
+
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.CompactDate
+    )
+
+    const variants = useMemo<VariantTableEntry[]>(() => {
+        const splitBetweenLength = (campaign.variants?.length || 0) + 1 // include control version
+        const winnerId = campaign.ab_group?.winner_variant_id
+
+        const variants: VariantTableEntry[] = [
+            {
+                variant: null, // Control Version
+                abGroup: campaign.ab_group as ABGroup,
+                isWinner: isCompleted && winnerId === null,
+                variantName: 'Control Variant',
+                trafficAllocation: !isStarted
+                    ? isCompleted || !isActiveStatus(campaign.status)
+                        ? 0
+                        : 100
+                    : Math.floor(100 / splitBetweenLength),
+                canDelete: false,
+            },
+        ]
+
+        campaign.variants?.forEach((variant, idx) => {
+            variants.push({
+                variant,
+                abGroup: campaign.ab_group as ABGroup,
+                variantName: generateVariantName(idx),
+                isWinner: winnerId === variant.id,
+                trafficAllocation: !isStarted
+                    ? 0
+                    : Math.floor(100 / splitBetweenLength),
+                canDelete: canPerformActions,
+            })
+        })
+
+        return variants
+    }, [campaign, isStarted, isCompleted, canPerformActions])
+
     const isCreateDisabled = useMemo(() => {
-        return !canPerformActions || variants.length >= VARIANT_LIMIT
+        const limit = VARIANT_LIMIT + 1 // include control version
+        return !canPerformActions || variants.length >= limit
     }, [variants, canPerformActions])
 
     return (
@@ -103,44 +160,49 @@ const VariantsList: React.FC<Props> = ({
                 />
             </TableHead>
             <TableBody>
-                <TableBodyRow>
-                    <BodyCell>
-                        <strong>Control Variant</strong>
-                    </BodyCell>
-                    <BodyCell>-</BodyCell>
-                    <BodyCell>-</BodyCell>
-                    <BodyCell>100%</BodyCell>
-                    <BodyCell>0</BodyCell>
-                    <BodyCell>0%</BodyCell>
-                    <BodyCell>0%</BodyCell>
-                    <BodyCell style={{width: 110}}>
-                        <VariantActions
-                            variantName="Control Variant"
-                            variant={null}
-                            isDeletingDisabled={true} // disabled by default
-                            isDuplicatingDisabled={isCreateDisabled}
-                            onDuplicate={onDuplicate}
-                        />
-                    </BodyCell>
-                </TableBodyRow>
                 {variants.map((variant, idx) => {
                     const variantName = generateVariantName(idx)
                     return (
                         <TableBodyRow key={idx}>
                             <BodyCell>
-                                <strong>{variantName}</strong>
+                                <div className={css.nameWrapper}>
+                                    <strong>{variant.variantName}</strong>
+                                    {variant.isWinner && (
+                                        <div className={css.winnerBadge}>
+                                            <Badge type={ColorType.Blue}>
+                                                Winner
+                                            </Badge>
+                                        </div>
+                                    )}
+                                </div>
                             </BodyCell>
-                            <BodyCell>-</BodyCell>
-                            <BodyCell>-</BodyCell>
-                            <BodyCell>100%</BodyCell>
+                            <BodyCell>
+                                {variant.abGroup.started_datetime
+                                    ? formatDatetime(
+                                          variant.abGroup.started_datetime,
+                                          datetimeFormat
+                                      )
+                                    : '-'}
+                            </BodyCell>
+                            <BodyCell>
+                                {variant.abGroup.stopped_datetime
+                                    ? formatDatetime(
+                                          variant.abGroup.stopped_datetime,
+                                          datetimeFormat
+                                      )
+                                    : '-'}
+                            </BodyCell>
+                            <BodyCell>
+                                {formatPercent(variant.trafficAllocation)}
+                            </BodyCell>
                             <BodyCell>0</BodyCell>
                             <BodyCell>0%</BodyCell>
                             <BodyCell>0%</BodyCell>
                             <BodyCell style={{width: 110}}>
                                 <VariantActions
-                                    variant={variant}
+                                    data={variant}
                                     variantName={variantName}
-                                    isDeletingDisabled={!canPerformActions}
+                                    isDeletingDisabled={!variant.canDelete}
                                     isDuplicatingDisabled={isCreateDisabled}
                                     onDelete={onDelete}
                                     onDuplicate={onDuplicate}

@@ -36,3 +36,5 @@ export type CampaignPreview = {
     status: InferredCampaignStatus
     is_light: boolean
 } & Pick<Campaign, 'ab_group'>
+
+export type ABGroup = Components.Schemas.ABGroupResponseSchema
