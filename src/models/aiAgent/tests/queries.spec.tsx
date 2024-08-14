@@ -1,16 +1,22 @@
 import {QueryClientProvider} from '@tanstack/react-query'
 import React from 'react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {renderHook} from '@testing-library/react-hooks'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {HelpCenterClient} from 'rest_api/help_center_api/client'
 import {getAIGuidanceFixture} from 'pages/automate/aiAgent/fixtures/aiGuidance.fixture'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useGetAIGeneratedGuidances} from '../queries'
 import * as guidanceResources from '../resources/guidances'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),
 }))
+
+mockFlags({
+    [FeatureFlagKey.AiAgentAIGeneratedGuidances]: true,
+})
 
 const mockUseHelpCenterApi = jest.mocked(useHelpCenterApi)
 
@@ -27,7 +33,10 @@ const wrapper = ({children}: any) => (
 const helpCenterId = 1
 const storeIntegrationId = 1
 
-const mockedAIGuidances = [getAIGuidanceFixture('1'), getAIGuidanceFixture('2')]
+const mockedAIGuidances = [
+    {...getAIGuidanceFixture('1'), batch_datetime: '2024-04-18T12:21:00.531Z'},
+    {...getAIGuidanceFixture('2'), batch_datetime: '2024-04-18T12:21:00.531Z'},
+]
 
 describe('queries', () => {
     beforeEach(() => {
