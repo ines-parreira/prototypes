@@ -75,23 +75,23 @@ src/state/integrations/actions/gorgias-chat.actions.ts @gorgias/automations-chat
 src/state/integrations/tests/gorgias-chat.actions.spec.ts @gorgias/automations-chat
 src/rest_api/gorgias_chat_protected_api @gorgias/automations-chat
 
-# AgentXP scope @gorgias/core-frontend
+# AgentXP scope @gorgias/agent-xp
 
-src/pages/common/editor @gorgias/core-frontend
-src/pages/tickets @gorgias/core-frontend
-src/pages/settings/notifications @gorgias/core-frontend
-src/services/browserNotification.ts @gorgias/core-frontend
-src/services/NotificationSounds.ts @gorgias/core-frontend
-src/services/localForageManager @gorgias/core-frontend
-src/services/shortcutManager @gorgias/core-frontend
-src/pages/common/components/Spotlight @gorgias/core-frontend
-src/pages/settings/teams @gorgias/core-frontend
-src/pages/settings/tags @gorgias/core-frontend
-src/state/ticket @gorgias/core-frontend
-src/state/ui/editor @gorgias/core-frontend
-src/state/ui/ticketNavbar @gorgias/core-frontend
-src/state/ui/views @gorgias/core-frontend
-src/state/newMessage @gorgias/core-frontend
+src/pages/common/editor @gorgias/agent-xp
+src/pages/tickets @gorgias/agent-xp
+src/pages/settings/notifications @gorgias/agent-xp
+src/services/browserNotification.ts @gorgias/agent-xp
+src/services/NotificationSounds.ts @gorgias/agent-xp
+src/services/localForageManager @gorgias/agent-xp
+src/services/shortcutManager @gorgias/agent-xp
+src/pages/common/components/Spotlight @gorgias/agent-xp
+src/pages/settings/teams @gorgias/agent-xp
+src/pages/settings/tags @gorgias/agent-xp
+src/state/ticket @gorgias/agent-xp
+src/state/ui/editor @gorgias/agent-xp
+src/state/ui/ticketNavbar @gorgias/agent-xp
+src/state/ui/views @gorgias/agent-xp
+src/state/newMessage @gorgias/agent-xp
 
 # Phone scope @gorgias/phone
 
