@@ -1,21 +1,24 @@
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {screen} from '@testing-library/react'
+import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
+import {useGetCustomFieldDefinitions} from 'models/customField/queries'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {FilterKey} from 'models/stat/types'
+import {FilterKey, StaticFilter} from 'models/stat/types'
 import {
     FiltersPanel,
     UNSUPPORTED_FILTER_PLACEHOLDER,
 } from 'pages/stats/common/filters/FiltersPanel'
 import {initialState, statsSlice} from 'state/stats/statsSlice'
-import {renderWithStore} from 'utils/testing'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {HelpCenter} from 'models/helpCenter/types'
+import {assumeMock, renderWithStore} from 'utils/testing'
+import {customFieldsMockReponse} from 'fixtures/customField'
 
 const mockedLocales = [
     {name: 'English', code: 'en-US'},
@@ -28,40 +31,64 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     useSupportedLocales: () => mockedLocales,
 }))
 
-describe('FiltersPanel', () => {
-    const defaultState = {
-        [statsSlice.name]: {
-            ...initialState,
-            filters: {
-                ...initialState.filters,
-                helpCenters: withDefaultLogicalOperator([
-                    getHelpCentersResponseFixture.data[1].id,
-                ]),
-            },
-        },
-        ui: {
-            stats: uiStatsInitialState,
-        },
-        entities: {
-            tags: {},
-            helpCenter: {
-                helpCenters: {
-                    helpCentersById: getHelpCentersResponseFixture.data.reduce(
-                        (acc: Record<string, HelpCenter>, hCenter) => {
-                            acc[hCenter.id] = hCenter
-                            return acc
-                        },
-                        {}
-                    ),
-                },
-            },
-        },
-    } as RootState
+jest.mock('models/customField/queries')
+const useGetCustomFieldDefinitionsMock = assumeMock(
+    useGetCustomFieldDefinitions
+)
 
-    const persistentFilters = [FilterKey.Period]
+const defaultState = {
+    [statsSlice.name]: {
+        ...initialState,
+        filters: {
+            ...initialState.filters,
+            helpCenters: withDefaultLogicalOperator([
+                getHelpCentersResponseFixture.data[1].id,
+            ]),
+        },
+    },
+    ui: {
+        stats: uiStatsInitialState,
+    },
+    entities: {
+        tags: {},
+        helpCenter: {
+            helpCenters: {
+                helpCentersById: getHelpCentersResponseFixture.data.reduce(
+                    (acc: Record<string, HelpCenter>, hCenter) => {
+                        acc[hCenter.id] = hCenter
+                        return acc
+                    },
+                    {}
+                ),
+            },
+        },
+    },
+} as RootState
+
+describe('FiltersPanel without data', () => {
+    beforeEach(() => {
+        useGetCustomFieldDefinitionsMock.mockReturnValue(
+            apiListCursorPaginationResponse([]) as any
+        )
+    })
+    it('should render the panel without filters', () => {
+        const {container} = renderWithStore(<FiltersPanel />, defaultState)
+
+        expect(container.firstChild).toContainHTML(
+            '<div class="wrapper"></div>'
+        )
+    })
+})
+
+describe('FiltersPanel', () => {
+    const persistentFilters: StaticFilter[] = [FilterKey.Period]
     const optionalFilter = FilterKey.Channels
-    const optionalFilters = [optionalFilter, FilterKey.LocaleCodes]
-    const supportedFilters = [
+    const optionalFilters = [
+        optionalFilter,
+        FilterKey.LocaleCodes,
+        FilterKey.CustomFields,
+    ]
+    const supportedFilters: StaticFilter[] = [
         FilterKey.Period,
         FilterKey.Channels,
         FilterKey.Integrations,
@@ -71,11 +98,9 @@ describe('FiltersPanel', () => {
         FilterKey.LocaleCodes,
     ]
 
-    it('should render the panel without filters', () => {
-        const {container} = renderWithStore(<FiltersPanel />, defaultState)
-
-        expect(container.firstChild).toContainHTML(
-            '<div class="wrapper"></div>'
+    beforeEach(() => {
+        useGetCustomFieldDefinitionsMock.mockReturnValue(
+            apiListCursorPaginationResponse(customFieldsMockReponse) as any
         )
     })
 
@@ -201,7 +226,29 @@ describe('FiltersPanel', () => {
         )
 
         expect(
-            screen.queryByText(new RegExp(FilterLabels[optionalFilter]))
+            screen.getByText(new RegExp(FilterLabels[optionalFilter]))
         ).toBeInTheDocument()
+    })
+
+    it('should render customFields filter', () => {
+        const customFieldsFilters = [FilterKey.CustomFields]
+        const state = {
+            ...defaultState,
+            [statsSlice.name]: {
+                filters: fromLegacyStatsFilters({
+                    period: initialState.filters.period,
+                    [optionalFilter]: ['1', '2'],
+                    [FilterKey.CustomFields]: ['1:field'],
+                }),
+            },
+        } as RootState
+
+        renderWithStore(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={customFieldsFilters}
+            />,
+            state
+        )
     })
 })

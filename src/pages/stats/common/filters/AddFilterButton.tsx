@@ -1,5 +1,4 @@
 import React, {useRef, useState} from 'react'
-import {FilterKey} from 'models/stat/types'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -12,13 +11,13 @@ export const AddFilterButton = ({
     onClick,
     options,
 }: {
-    onClick: (value: FilterKey) => void
-    options: {label: string; value: FilterKey}[]
+    onClick: (value: string) => void
+    options: {label: string; value: string}[]
 }) => {
     const buttonRef = useRef(null)
     const [isOpen, setIsOpen] = useState(false)
     const onToggle = () => setIsOpen(!isOpen)
-    const handleOnClick = (value: FilterKey) => {
+    const handleOnClick = (value: string) => {
         onClick(value)
         setIsOpen(!isOpen)
     }

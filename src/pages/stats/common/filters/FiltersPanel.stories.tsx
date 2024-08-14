@@ -1,23 +1,29 @@
+import {QueryClientProvider} from '@tanstack/react-query'
 import {Meta, StoryFn} from '@storybook/react'
-import {fromJS} from 'immutable'
-
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {integrationsState} from 'fixtures/integrations'
+import {fromJS} from 'immutable'
+
+import {appQueryClient} from 'api/queryClient'
 import {FilterKey} from 'models/stat/types'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-import {initialState, statsSlice} from 'state/stats/statsSlice'
+import {initialState} from 'state/stats/statsSlice'
+import {activeParams} from 'pages/stats/CustomFieldSelect'
+import {customFieldDefinitionKeys} from 'models/customField/queries'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {RootState} from 'state/types'
+import {integrationsState} from 'fixtures/integrations'
+import {customFieldsMockReponse} from 'fixtures/customField'
 
 const defaultState = {
-    [statsSlice.name]: initialState,
+    stats: initialState,
     ui: {
         stats: uiStatsInitialState,
     },
     integrations: fromJS(integrationsState),
-}
+} as RootState
 
 const storyConfig: Meta = {
     title: 'Common/Filters/FiltersPanel',
@@ -25,10 +31,15 @@ const storyConfig: Meta = {
 }
 
 const Template: StoryFn<ComponentProps<typeof FiltersPanel>> = (props) => {
+    appQueryClient.setQueryData(customFieldDefinitionKeys.list(activeParams), {
+        data: customFieldsMockReponse,
+    })
     return (
-        <Provider store={configureMockStore([thunk])(defaultState)}>
-            <FiltersPanel {...props} />
-        </Provider>
+        <QueryClientProvider client={appQueryClient}>
+            <Provider store={configureMockStore([thunk])(defaultState)}>
+                <FiltersPanel {...props} />
+            </Provider>
+        </QueryClientProvider>
     )
 }
 

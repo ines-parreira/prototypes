@@ -21,7 +21,7 @@ export const SELECT_FIELD_LABEL = 'Select field'
 export const TOOLTIP_CONTENT =
     'This report is available only for ticket fields of type "dropdown" that are currently active (i.e. not archived).'
 
-const activeParams: ListParams = {
+export const activeParams: ListParams = {
     archived: false,
     object_type: 'Ticket',
 }

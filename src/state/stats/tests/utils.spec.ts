@@ -1,7 +1,11 @@
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {
+    withDefaultCustomFieldAndLogicalOperator,
+    withDefaultLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
+    fromFiltersWithLogicalOperators,
     fromLegacyAndLogicalOperatorStatsFilters,
     fromLegacyStatsFilters,
     fromPartialLegacyStatsFilters,
@@ -13,6 +17,13 @@ const period = {
     start_datetime: '2021-04-02T00:00:00.000Z',
     end_datetime: '2021-04-02T23:59:59.999Z',
 }
+const customIds = [123, 456]
+const customValues = ['Field Name', 'Custom Field Name::Another']
+const customFields = [
+    `${customIds[0]}::${customValues[0]}`,
+    `${customIds[1]}::${customValues[1]}`,
+]
+const campaignStatuses = ['active']
 
 describe('fromPartialLegacyStatsFilters', () => {
     it('should transform partial LegacyFilters into Partial StatsFiltersWithLogicalOperators', () => {
@@ -24,6 +35,38 @@ describe('fromPartialLegacyStatsFilters', () => {
         expect(fromPartialLegacyStatsFilters(legacyFilters)).toEqual({
             agents: withDefaultLogicalOperator(agents),
             channels: withDefaultLogicalOperator(channels),
+        })
+    })
+    it('should transform partial LegacyCustomFilters into Partial StatsFiltersWithLogicalOperators', () => {
+        const legacyFilters: Partial<LegacyStatsFilters> = {
+            customFields,
+        }
+
+        expect(fromPartialLegacyStatsFilters(legacyFilters)).toEqual({
+            customFields: [
+                withDefaultCustomFieldAndLogicalOperator({
+                    customFieldId: customIds[0],
+                    values: [customValues[0]],
+                }),
+                withDefaultCustomFieldAndLogicalOperator({
+                    customFieldId: customIds[1],
+                    values: [customValues[1]],
+                }),
+            ],
+            period: undefined,
+        })
+    })
+    it('should transform any other filter into Partial StatsFiltersWithLogicalOperators', () => {
+        const legacyFilters: Partial<LegacyStatsFilters> = {
+            campaignStatuses,
+        }
+
+        expect(fromPartialLegacyStatsFilters(legacyFilters)).toEqual({
+            campaignStatuses: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: campaignStatuses,
+            },
+            period: undefined,
         })
     })
 })
@@ -42,6 +85,26 @@ describe('fromLegacyStatsFilters', () => {
             channels: withDefaultLogicalOperator(channels),
         })
     })
+    it('should transform LegacyCustomFilters into Partial StatsFiltersWithLogicalOperators', () => {
+        const legacyFilters: LegacyStatsFilters = {
+            period,
+            customFields,
+        }
+
+        expect(fromLegacyStatsFilters(legacyFilters)).toEqual({
+            customFields: [
+                withDefaultCustomFieldAndLogicalOperator({
+                    customFieldId: customIds[0],
+                    values: [customValues[0]],
+                }),
+                withDefaultCustomFieldAndLogicalOperator({
+                    customFieldId: customIds[1],
+                    values: [customValues[1]],
+                }),
+            ],
+            period,
+        })
+    })
 })
 
 describe('fromLegacyAndLogicalOperatorStatsFilters', () => {
@@ -50,6 +113,7 @@ describe('fromLegacyAndLogicalOperatorStatsFilters', () => {
             period,
             agents,
             channels,
+            customFields,
         }
         const statsFiltersWithLogicalOperators = {
             period: {
@@ -68,6 +132,17 @@ describe('fromLegacyAndLogicalOperatorStatsFilters', () => {
                 values: [45, 55],
                 operator: LogicalOperatorEnum.ONE_OF,
             },
+            customFields: [
+                withDefaultCustomFieldAndLogicalOperator({
+                    values: ['first:value'],
+                    customFieldId: customIds[0],
+                }),
+                withDefaultCustomFieldAndLogicalOperator({
+                    values: ['other:value'],
+                    customFieldId: customIds[1],
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                }),
+            ],
         }
 
         expect(
@@ -85,6 +160,62 @@ describe('fromLegacyAndLogicalOperatorStatsFilters', () => {
                 values: legacyFilters.channels,
                 operator: statsFiltersWithLogicalOperators.channels.operator,
             },
+            customFields: [
+                withDefaultCustomFieldAndLogicalOperator({
+                    values: [customValues[0]],
+                    customFieldId: customIds[0],
+                }),
+                withDefaultCustomFieldAndLogicalOperator({
+                    values: [customValues[1]],
+                    customFieldId: customIds[1],
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                }),
+            ],
+        })
+    })
+})
+
+describe('fromFiltersWithLogicalOperators', () => {
+    it('should do smtg', () => {
+        const statsFiltersWithLogicalOperators = {
+            period: {
+                start_datetime: '2022-05-03T00:00:00.000Z',
+                end_datetime: '2022-05-04T23:59:59.999Z',
+            },
+            agents: {
+                values: [7, 8],
+                operator: LogicalOperatorEnum.ALL_OF,
+            },
+            channels: {
+                values: ['30', '40'],
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+            },
+            integrations: {
+                values: [45, 55],
+                operator: LogicalOperatorEnum.ONE_OF,
+            },
+            customFields: [
+                withDefaultCustomFieldAndLogicalOperator({
+                    values: [customValues[0]],
+                    customFieldId: customIds[0],
+                }),
+                withDefaultCustomFieldAndLogicalOperator({
+                    values: [customValues[1]],
+                    customFieldId: customIds[1],
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                }),
+            ],
+        }
+        expect(
+            fromFiltersWithLogicalOperators(statsFiltersWithLogicalOperators)
+        ).toEqual({
+            agents: statsFiltersWithLogicalOperators.agents.values,
+            channels: statsFiltersWithLogicalOperators.channels.values,
+            customFields: statsFiltersWithLogicalOperators.customFields.map(
+                (filter) => filter.values[0]
+            ),
+            integrations: statsFiltersWithLogicalOperators.integrations.values,
+            period: statsFiltersWithLogicalOperators.period,
         })
     })
 })

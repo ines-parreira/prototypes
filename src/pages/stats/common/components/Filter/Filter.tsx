@@ -102,15 +102,14 @@ const Filter = ({
     const ref = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-    const onOpenDropdown = () => {
-        onDropdownOpen()
-        setIsDropdownOpen(true)
-    }
-
     const onToggle = useCallback(() => {
+        if (!isDropdownOpen) {
+            onDropdownOpen()
+        } else {
+            onDropdownClosed()
+        }
         setIsDropdownOpen(!isDropdownOpen)
-        onDropdownClosed()
-    }, [isDropdownOpen, onDropdownClosed])
+    }, [isDropdownOpen, onDropdownClosed, onDropdownOpen])
 
     const allValues = useMemo(() => {
         return flatMap(filterOptionGroups, (option) =>
@@ -136,7 +135,7 @@ const Filter = ({
                 optionsLabels={selectedLabels}
                 trailIcon={!isPersistent}
                 logicalOperator={selectedLogicalOperator}
-                onChange={onOpenDropdown}
+                onChange={onToggle}
                 onRemove={onRemove}
                 pressedState={isDropdownOpen}
             />

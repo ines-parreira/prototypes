@@ -16,6 +16,8 @@ export enum TicketDimension {
     AccountId = 'TicketEnriched.accountId',
     Status = 'TicketEnriched.status',
     Channel = 'TicketEnriched.channel',
+    CustomField = 'TicketEnriched.customField',
+    CustomFieldToExclude = 'TicketEnriched.customFieldToExclude',
     CreatedDatetime = 'TicketEnriched.createdDatetime',
     ClosedDatetime = 'TicketEnriched.closedDatetime',
     AssigneeUserId = 'TicketEnriched.assigneeUserId',
@@ -39,6 +41,8 @@ export enum TicketMember {
     Status = 'TicketEnriched.status',
     Tags = 'TicketEnriched.tags',
     Channel = 'TicketEnriched.channel',
+    CustomField = 'TicketEnriched.customField',
+    CustomFieldToExclude = 'TicketEnriched.customFieldToExclude',
 }
 
 export type TicketTimeDimensions =

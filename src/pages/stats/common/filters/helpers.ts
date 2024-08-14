@@ -1,5 +1,6 @@
 import isArray from 'lodash/isArray'
 import isFunction from 'lodash/isFunction'
+import {CustomFieldFilter} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {Channel, ChannelIdentifier, toChannels} from 'services/channels'
 
@@ -19,6 +20,14 @@ export function filterChannels(
 }
 
 export const emptyFilter = {
-    operator: LogicalOperatorEnum['ONE_OF'],
+    operator: LogicalOperatorEnum.ONE_OF,
     values: [],
 }
+
+export const emptyCustomFieldFilter = (
+    customFieldId: number
+): CustomFieldFilter => ({
+    customFieldId,
+    operator: LogicalOperatorEnum.ONE_OF,
+    values: [],
+})

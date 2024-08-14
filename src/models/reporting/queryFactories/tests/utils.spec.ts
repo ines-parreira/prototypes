@@ -1,3 +1,4 @@
+import _flatMap from 'lodash/flatMap'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
     addOptionalFilter,
@@ -7,6 +8,7 @@ import {
     withDefaultLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
+import {CustomFieldFilter} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 describe('utils', () => {
@@ -78,6 +80,7 @@ describe('utils', () => {
                 filter,
                 filterDefaults
             )
+            // examples of result shapes for each logical operator
             // // ALL OF
             // const cubeFilter = [
             //     {
@@ -113,6 +116,97 @@ describe('utils', () => {
                     values: [toLowerCaseString(value)],
                     member: filterDefaults.member,
                     operator: FilterOperatorMap[filter.operator],
+                }))
+            )
+        })
+
+        it('should produce multiple entries for ALL_OF operator for a custom field', () => {
+            const filter: CustomFieldFilter[] = [
+                {
+                    values: ['123:one', '456:two'],
+                    operator: LogicalOperatorEnum.ALL_OF,
+                    customFieldId: 123,
+                },
+            ]
+            const filterDefaults = {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.Equals,
+            }
+            const filters: ReportingFilter[] = []
+
+            const updatedFilters = addOptionalFilter(
+                filters,
+                filter,
+                filterDefaults
+            )
+
+            expect(updatedFilters).toEqual(
+                _flatMap(
+                    filter.map((value) =>
+                        filter[0].values.map((val) => ({
+                            values: [toLowerCaseString(val)],
+                            member: filterDefaults.member,
+                            operator: FilterOperatorMap[value.operator],
+                        }))
+                    )
+                )
+            )
+        })
+
+        it('should produce multiple entries for NOT_ONE_OF operator for a custom field', () => {
+            const filter: CustomFieldFilter[] = [
+                {
+                    values: ['123:one', '456:two'],
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    customFieldId: 123,
+                },
+            ]
+            const filterDefaults = {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.Equals,
+            }
+            const filters: ReportingFilter[] = []
+
+            const updatedFilters = addOptionalFilter(
+                filters,
+                filter,
+                filterDefaults
+            )
+
+            expect(updatedFilters).toEqual(
+                filter.map((value) => ({
+                    values: value.values,
+                    member: TicketMember.CustomFieldToExclude,
+                    operator: FilterOperatorMap[value.operator],
+                }))
+            )
+        })
+
+        it('should produce multiple entries for ONE_OF operator for a custom field', () => {
+            const filter: CustomFieldFilter[] = [
+                {
+                    values: ['123:one', '456:two'],
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    customFieldId: 123,
+                },
+            ]
+            const filterDefaults = {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.Equals,
+            }
+            const filters: ReportingFilter[] = []
+
+            const updatedFilters = addOptionalFilter(
+                filters,
+                filter,
+                filterDefaults
+            )
+
+            expect(updatedFilters).toEqual(
+                filter.map((value) => ({
+                    values: value.values,
+                    member: filterDefaults.member,
+                    operator: FilterOperatorMap[value.operator],
                 }))
             )
         })

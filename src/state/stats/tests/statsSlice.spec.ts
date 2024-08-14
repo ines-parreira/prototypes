@@ -1,8 +1,12 @@
 import {AnyAction} from 'redux'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {
+    withDefaultCustomFieldAndLogicalOperator,
+    withDefaultLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 
 import {
     initialState,
+    mergeCustomFieldsFilter,
     mergeStatsFilters,
     mergeStatsFiltersWithLogicalOperator,
     resetStatsFilters,
@@ -102,6 +106,50 @@ describe('stats reducer', () => {
                     ...state.filters,
                     tags: filters.tags,
                     agents: filters.agents,
+                },
+            })
+        })
+    })
+
+    describe('mergeCustomFieldsFilter', () => {
+        const state = {
+            ...initialState,
+            filters: {
+                ...initialState.filters,
+                customFields: [
+                    withDefaultCustomFieldAndLogicalOperator({
+                        values: [],
+                        customFieldId: 2,
+                    }),
+                ],
+            },
+        }
+        const newCustomField = withDefaultCustomFieldAndLogicalOperator({
+            values: ['first:field'],
+            customFieldId: 1,
+        })
+
+        it('should merge custom fields by replacing state with new customFields', () => {
+            const action = mergeCustomFieldsFilter(newCustomField)
+            expect(statsSlice.reducer(state, action)).toEqual({
+                filters: {
+                    ...initialState.filters,
+                    customFields: [newCustomField],
+                },
+            })
+        })
+
+        const sameCustomField = withDefaultCustomFieldAndLogicalOperator({
+            values: ['first:field'],
+            customFieldId: 2,
+        })
+
+        it('should merge custom fields by changing its payload', () => {
+            const action = mergeCustomFieldsFilter(sameCustomField)
+            expect(statsSlice.reducer(state, action)).toEqual({
+                filters: {
+                    ...initialState.filters,
+                    customFields: [sameCustomField],
                 },
             })
         })

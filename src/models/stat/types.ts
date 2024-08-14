@@ -7,6 +7,7 @@ export enum FilterKey {
     Campaigns = 'campaigns',
     CampaignStatuses = 'campaignStatuses',
     Channels = 'channels',
+    CustomFields = 'customFields',
     HelpCenters = 'helpCenters',
     Integrations = 'integrations',
     LocaleCodes = 'localeCodes',
@@ -15,6 +16,19 @@ export enum FilterKey {
     SlaPolicies = 'slaPolicies',
     Tags = 'tags',
 }
+
+export type StaticFilter =
+    | FilterKey.Agents
+    | FilterKey.Campaigns
+    | FilterKey.CampaignStatuses
+    | FilterKey.Channels
+    | FilterKey.HelpCenters
+    | FilterKey.Integrations
+    | FilterKey.LocaleCodes
+    | FilterKey.Period
+    | FilterKey.Score
+    | FilterKey.SlaPolicies
+    | FilterKey.Tags
 
 export interface Period {
     end_datetime: string
@@ -26,18 +40,23 @@ export interface WithLogicalOperator<T extends number | string> {
     values: T[]
 }
 
+export interface CustomFieldFilter extends WithLogicalOperator<string> {
+    customFieldId: number
+}
+
 export type LegacyStatsFilters = {
-    [FilterKey.Period]: Period
-    [FilterKey.Integrations]?: number[]
-    [FilterKey.Tags]?: number[]
     [FilterKey.Agents]?: number[]
-    [FilterKey.HelpCenters]?: number[]
-    [FilterKey.LocaleCodes]?: string[]
-    [FilterKey.Channels]?: string[]
     [FilterKey.Campaigns]?: string[]
     [FilterKey.CampaignStatuses]?: string[]
+    [FilterKey.Channels]?: string[]
+    [FilterKey.CustomFields]?: string[]
+    [FilterKey.HelpCenters]?: number[]
+    [FilterKey.Integrations]?: number[]
+    [FilterKey.LocaleCodes]?: string[]
+    [FilterKey.Period]: Period
     [FilterKey.Score]?: string[]
     [FilterKey.SlaPolicies]?: string[]
+    [FilterKey.Tags]?: number[]
 }
 
 export type AgentOnlyFilters<T> = T extends any
@@ -53,17 +72,18 @@ export type WorkflowStatsFilters = {
 }
 
 export type StatsFiltersWithLogicalOperator = {
-    [FilterKey.Period]: Period
-    [FilterKey.Integrations]?: WithLogicalOperator<number>
-    [FilterKey.Tags]?: WithLogicalOperator<number>
     [FilterKey.Agents]?: WithLogicalOperator<number>
-    [FilterKey.HelpCenters]?: WithLogicalOperator<number>
-    [FilterKey.LocaleCodes]?: WithLogicalOperator<string>
-    [FilterKey.Channels]?: WithLogicalOperator<string>
     [FilterKey.Campaigns]?: WithLogicalOperator<string>
     [FilterKey.CampaignStatuses]?: WithLogicalOperator<string>
+    [FilterKey.Channels]?: WithLogicalOperator<string>
+    [FilterKey.CustomFields]?: CustomFieldFilter[]
+    [FilterKey.HelpCenters]?: WithLogicalOperator<number>
+    [FilterKey.Integrations]?: WithLogicalOperator<number>
+    [FilterKey.LocaleCodes]?: WithLogicalOperator<string>
+    [FilterKey.Period]: Period
     [FilterKey.Score]?: WithLogicalOperator<string>
     [FilterKey.SlaPolicies]?: WithLogicalOperator<string>
+    [FilterKey.Tags]?: WithLogicalOperator<number>
 }
 
 export type StatsFilters = LegacyStatsFilters | StatsFiltersWithLogicalOperator

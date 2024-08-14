@@ -2,6 +2,7 @@ import {createSelector, Selector} from 'reselect'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 import {
+    FilterKey,
     LegacyStatsFilters,
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
@@ -115,6 +116,7 @@ export const getPageStatsFilters = createSelector(
             score,
             campaigns,
             campaignStatuses,
+            customFields,
             slaPolicies,
         } = statsFilters
         return {
@@ -130,6 +132,7 @@ export const getPageStatsFilters = createSelector(
             score,
             campaigns,
             campaignStatuses,
+            customFields,
             slaPolicies,
         }
     }
@@ -166,6 +169,7 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
     ): StatsFiltersWithLogicalOperator => {
         const {
             channels,
+            customFields,
             agents,
             period,
             tags,
@@ -173,11 +177,12 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
             localeCodes,
             score,
             campaigns,
-            slaPolicies,
             campaignStatuses,
+            slaPolicies,
         } = statsFilters
         return {
             channels,
+            customFields,
             agents,
             period,
             integrations: integrationsStatsFilter,
@@ -186,8 +191,14 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
             localeCodes,
             score,
             campaigns,
-            slaPolicies,
             campaignStatuses,
+            slaPolicies,
         }
     }
 )
+
+export const getCustomFieldFilterById = (customFieldId: number) =>
+    createSelector(getPageStatsFiltersWithLogicalOperators, (statsFilters) => {
+        const filters = statsFilters[FilterKey.CustomFields] ?? []
+        return filters.find((filter) => filter.customFieldId === customFieldId)
+    })

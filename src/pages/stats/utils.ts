@@ -125,8 +125,10 @@ export const getUtcPeriodFromDateAndGranularity = (
     }
 }
 
-export const getBadgeTooltipForPreviousPeriod = (statsPeriod: Period) => {
-    const period = getPreviousPeriod(statsPeriod)
+export const getBadgeTooltipForPreviousPeriod = (
+    statsFiltersPeriod: Period
+) => {
+    const period = getPreviousPeriod(statsFiltersPeriod)
     return comparedPeriodString(
         moment(period.start_datetime),
         moment(period.end_datetime)

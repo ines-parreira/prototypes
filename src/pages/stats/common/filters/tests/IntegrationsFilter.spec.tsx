@@ -46,8 +46,6 @@ describe('IntegrationsFilter', () => {
         'i'
     )
 
-    beforeEach(() => {})
-
     it('should render IntegrationsFilter component', () => {
         renderComponent()
 

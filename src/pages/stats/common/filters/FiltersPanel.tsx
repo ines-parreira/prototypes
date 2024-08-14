@@ -1,21 +1,32 @@
-import React, {createElement, useCallback, useMemo, useState} from 'react'
-import {hasFilter} from 'models/reporting/queryFactories/utils'
+import React, {
+    createElement,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
+import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
-import {FilterKey, StatsFilters} from 'models/stat/types'
+import {FilterKey, StaticFilter, StatsFilters} from 'models/stat/types'
 import {AddFilterButton} from 'pages/stats/common/filters/AddFilterButton'
+import {AgentsFiltersWithState} from 'pages/stats/common/filters/AgentsFilter'
 import {ChannelsFilterWithState} from 'pages/stats/common/filters/ChannelsFilter'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {CustomFieldsFilterFilterWithState} from 'pages/stats/common/filters/CustomFieldsFilter'
 import css from 'pages/stats/common/filters/FiltersPanel.less'
 import {IntegrationsFilterWithState} from 'pages/stats/common/filters/IntegrationsFilter'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {AgentsFiltersWithState} from 'pages/stats/common/filters/AgentsFilter'
 import {HelpCenterFilterWithState} from 'pages/stats/common/filters/HelpCenterFilter'
 import {HelpCenterLanguageFilterWithState} from 'pages/stats/common/filters/HelpCenterLanguageFilter'
+import {
+    activeParams,
+    selectDropdownTextFields,
+} from 'pages/stats/CustomFieldSelect'
+import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 
 type Props = {
-    persistentFilters?: FilterKey[]
+    persistentFilters?: StaticFilter[]
     optionalFilters?: FilterKey[]
 }
 
@@ -25,6 +36,8 @@ export const renderFilter = (filter: FilterKey) => {
     switch (filter) {
         case FilterKey.Period:
             return PeriodFilterWithState
+        case FilterKey.CustomFields:
+            return CustomFieldsFilterFilterWithState
         case FilterKey.Channels:
             return ChannelsFilterWithState
         case FilterKey.Integrations:
@@ -46,69 +59,146 @@ const getInitialActiveFilters = (
     optionalFilters: FilterKey[],
     cleanStatsFilters: StatsFilters
 ) =>
-    optionalFilters.reduce<Partial<Record<FilterKey, boolean>>>(
-        (filtersMap, filterKey) => {
-            filtersMap[filterKey] =
-                filterKey !== FilterKey.Period &&
-                hasFilter(cleanStatsFilters[filterKey])
-            return filtersMap
-        },
-        {}
-    )
+    optionalFilters.reduce<ActiveFilter[]>((filtersMap, filterKey) => {
+        if (
+            filterKey !== FilterKey.CustomFields &&
+            filterKey !== FilterKey.Period
+        ) {
+            const filter = cleanStatsFilters[filterKey]
+            return [
+                ...filtersMap,
+                {
+                    key: filterKey,
+                    type: filterKey,
+                    active: filter !== undefined && filter.values.length > 0,
+                },
+            ]
+        }
+        return filtersMap
+    }, [])
+
+type CustomFieldFilter = {
+    type: FilterKey.CustomFields
+    key: string
+    customFieldId: number
+    filterName: string
+    active: boolean
+}
+
+type ActiveFilter =
+    | {
+          key: string
+          type: StaticFilter
+          active: boolean
+      }
+    | CustomFieldFilter
 
 export const FiltersPanel = ({
     persistentFilters = [],
     optionalFilters = [],
 }: Props) => {
-    const {cleanStatsFilters} = useAppSelector(getCleanStatsFiltersWithTimezone)
-    const [activeFilters, setActiveFilters] = useState<Record<string, boolean>>(
+    const {cleanStatsFilters} = useAppSelector(
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezone
+    )
+    const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>(
         getInitialActiveFilters(optionalFilters, cleanStatsFilters)
     )
 
-    const options = useMemo(
-        () =>
-            optionalFilters
-                .filter((filter) => !activeFilters[filter])
-                .map((filter) => ({
-                    value: filter,
-                    label: FilterLabels[filter],
-                })),
-        [activeFilters, optionalFilters]
+    const {data: {data: activeFields = []} = {}} =
+        useCustomFieldDefinitions(activeParams)
+    const activeDropdownFields = activeFields.filter(selectDropdownTextFields)
+    const customFieldFilters: CustomFieldFilter[] = activeDropdownFields.map(
+        (field) => ({
+            type: FilterKey.CustomFields,
+            key: `${FilterKey.CustomFields}::${field.id}`,
+            filterName: field.label,
+            customFieldId: field.id,
+            active: false,
+        })
     )
 
+    useEffect(() => {
+        if (
+            customFieldFilters.length > 0 &&
+            !activeFilters.find(
+                (filter) => filter.type === FilterKey.CustomFields
+            )
+        ) {
+            setActiveFilters([...activeFilters, ...customFieldFilters])
+        }
+    }, [activeFilters, customFieldFilters])
+
+    const options = activeFilters
+        .filter((filter) => !filter.active)
+        .map((filter) => {
+            if (filter.type === FilterKey.CustomFields) {
+                return {
+                    value: filter.key,
+                    label: filter.filterName,
+                    type: FilterKey.CustomFields,
+                }
+            }
+            return {
+                value: filter.key,
+                label: FilterLabels[filter.type],
+            }
+        })
+
     const optionalFiltersToRender = useMemo(
-        () =>
-            Object.keys(activeFilters).reduce<FilterKey[]>(
-                (toRender, filter) => {
-                    if (activeFilters[filter]) {
-                        toRender.push(filter as FilterKey)
-                    }
-                    return toRender
-                },
-                []
-            ),
+        () => activeFilters.filter((filter) => filter.active),
         [activeFilters]
     )
 
     const handleOnClick = useCallback(
-        (value: FilterKey) =>
-            setActiveFilters({
-                ...activeFilters,
-                [value]: true,
-            }),
+        (value: string) =>
+            setActiveFilters(
+                activeFilters.map((filter) => {
+                    if (filter.key === value) {
+                        return {
+                            ...filter,
+                            active: true,
+                        }
+                    }
+                    return filter
+                })
+            ),
         [activeFilters]
     )
 
+    const filtersToRender: ActiveFilter[] = [
+        ...persistentFilters.map((filter) => ({
+            key: filter,
+            type: filter,
+            active: true,
+        })),
+        ...optionalFiltersToRender,
+    ]
+
     return (
         <div className={css.wrapper}>
-            {[...persistentFilters, ...optionalFiltersToRender].map((filter) =>
-                createElement(renderFilter(filter), {
-                    key: filter,
+            {filtersToRender.map((filter) =>
+                createElement(renderFilter(filter.type), {
                     onRemove: () =>
-                        setActiveFilters({
-                            ...activeFilters,
-                            [filter]: false,
-                        }),
+                        setActiveFilters(
+                            activeFilters.map((activeFilter) => {
+                                if (activeFilter.key === filter.key) {
+                                    return {
+                                        ...activeFilter,
+                                        active: false,
+                                    }
+                                }
+                                return activeFilter
+                            })
+                        ),
+                    key: filter.key,
+                    filterName:
+                        filter.type === FilterKey.CustomFields
+                            ? filter.filterName
+                            : '',
+                    customFieldId:
+                        filter.type === FilterKey.CustomFields
+                            ? filter.customFieldId
+                            : 0,
                 })
             )}
             {options.length > 0 && (

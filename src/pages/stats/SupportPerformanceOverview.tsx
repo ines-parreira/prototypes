@@ -30,9 +30,9 @@ import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 import {MetricName} from 'services/reporting/constants'
 import {OverviewMetric} from 'state/ui/stats/types'
 import {useGridSize} from 'hooks/useGridSize'
-import DashboardGridCell from './DashboardGridCell'
-import DashboardSection from './DashboardSection'
-import {TicketsCreatedVsClosedChartCard} from './support-performance/components/TicketsCreatedVsClosedChartCard'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardSection from 'pages/stats/DashboardSection'
+import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
 
 const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE = 'Support performance overview'
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
@@ -86,6 +86,7 @@ export default function SupportPerformanceOverview() {
                                     FilterKey.Integrations,
                                     FilterKey.Tags,
                                     FilterKey.Agents,
+                                    FilterKey.CustomFields,
                                 ]}
                             />
                         </DashboardGridCell>

@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {
+    CustomFieldFilter,
     FilterKey,
     LegacyStatsFilters,
     Period,
@@ -58,6 +59,26 @@ export const statsSlice = createSlice({
                 period: action.payload.period ?? state.filters.period,
             }
         },
+        mergeCustomFieldsFilter(
+            state,
+            action: PayloadAction<CustomFieldFilter>
+        ) {
+            const {payload} = action
+            if (
+                state.filters.customFields?.find(
+                    (filter) => filter.customFieldId === payload.customFieldId
+                )
+            ) {
+                state.filters.customFields = state.filters.customFields.map(
+                    (customFieldFilter) =>
+                        customFieldFilter.customFieldId ===
+                        payload.customFieldId
+                            ? payload
+                            : customFieldFilter
+                )
+            }
+            state.filters.customFields = [payload]
+        },
     },
 })
 
@@ -66,4 +87,5 @@ export const {
     setStatsFilters,
     mergeStatsFilters,
     mergeStatsFiltersWithLogicalOperator,
+    mergeCustomFieldsFilter,
 } = statsSlice.actions

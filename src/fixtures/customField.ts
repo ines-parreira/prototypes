@@ -115,3 +115,72 @@ export const managedTicketInputFieldDefinition: CustomField = {
         },
     },
 }
+
+export const customFieldsMockReponse = {
+    object: 'list',
+    uri: '/api/custom-fields/?archived=false&object_type=Ticket',
+    data: [
+        {
+            id: 5081,
+            external_id: null,
+            object_type: 'Ticket',
+            label: 'AI Agent Contact Reason',
+            description: 'AI Agent contact reason categories',
+            priority: 8,
+            required: false,
+            managed_type: null,
+            definition: {
+                input_settings: {
+                    choices: [
+                        'Pre-sale::Uncategorized',
+                        'Order::Uncategorized',
+                        'Shipping::Uncategorized',
+                        'Warranty::Uncategorized',
+                        'Exchange::Uncategorized',
+                        'Return::Uncategorized',
+                        'Feedback::Uncategorized',
+                        'Subscription::Uncategorized',
+                        'Wholesale::Uncategorized',
+                        'Marketing::Uncategorized',
+                        'Other::Uncategorized',
+                    ],
+                    input_type: 'dropdown',
+                },
+                data_type: 'text',
+            },
+            created_datetime: '2024-07-29T09:09:41.626092+00:00',
+            updated_datetime: '2024-07-29T09:09:41.626097+00:00',
+            deactivated_datetime: null,
+        },
+        {
+            id: 4979,
+            external_id: null,
+            object_type: 'Ticket',
+            label: 'AI Agent Outcome',
+            description: 'AI Agent computed outcome for ticket',
+            priority: 7,
+            required: false,
+            managed_type: null,
+            definition: {
+                input_settings: {
+                    choices: [
+                        'Handover::With message',
+                        'Handover::Without message',
+                        'Close::With message',
+                        'Close::Without message',
+                        'Snooze::With message',
+                    ],
+                    input_type: 'dropdown',
+                },
+                data_type: 'text',
+            },
+            created_datetime: '2024-07-15T17:05:25.778110+00:00',
+            updated_datetime: '2024-07-15T17:05:25.778116+00:00',
+            deactivated_datetime: null,
+        },
+    ],
+    meta: {
+        prev_cursor: null,
+        next_cursor: null,
+    },
+}

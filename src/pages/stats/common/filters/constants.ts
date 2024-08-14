@@ -31,16 +31,22 @@ export const FilterLabels: Record<FilterKey, string> = {
     [FilterKey.Channels]: 'Channel',
     [FilterKey.Campaigns]: 'Campaign',
     [FilterKey.CampaignStatuses]: 'Campaign Status',
+    [FilterKey.CustomFields]: 'Custom Field',
     [FilterKey.Score]: 'Score',
     [FilterKey.SlaPolicies]: 'Sla Policy',
 }
 
 export const tagsFilterLogicalOperators = [
-    LogicalOperatorEnum['ONE_OF'],
-    LogicalOperatorEnum['NOT_ONE_OF'],
+    LogicalOperatorEnum.ONE_OF,
+    LogicalOperatorEnum.NOT_ONE_OF,
 ]
 
 export const helpCenterLanguageFilterLogicalOperators = [
+    LogicalOperatorEnum.ONE_OF,
+    LogicalOperatorEnum.NOT_ONE_OF,
+]
+
+export const customFieldsFilterLogicalOperators = [
     LogicalOperatorEnum.ONE_OF,
     LogicalOperatorEnum.NOT_ONE_OF,
 ]

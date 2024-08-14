@@ -1,10 +1,13 @@
+import _flatMap from 'lodash/flatMap'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
-import {WithLogicalOperator} from 'models/stat/types'
+import {CustomFieldFilter, WithLogicalOperator} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 type OptionalFilter =
     | string[]
     | number[]
+    | CustomFieldFilter[]
     | WithLogicalOperator<string>
     | WithLogicalOperator<number>
     | undefined
@@ -15,12 +18,32 @@ export const isFilterWithLogicalOperator = (
         | number[]
         | WithLogicalOperator<string>
         | WithLogicalOperator<number>
+        | CustomFieldFilter[]
 ): filter is WithLogicalOperator<string> | WithLogicalOperator<number> =>
     !Array.isArray(filter) && 'operator' in filter
+
+export const isCustomFieldFilter = (
+    filter:
+        | string[]
+        | number[]
+        | CustomFieldFilter[]
+        | WithLogicalOperator<string>
+        | WithLogicalOperator<number>
+): filter is CustomFieldFilter[] =>
+    Array.isArray(filter) &&
+    filter.every(
+        (subFilter) =>
+            typeof subFilter === 'object' &&
+            'operator' in subFilter &&
+            'customFieldId' in subFilter
+    )
 
 export const hasFilter = (filter: OptionalFilter) => {
     if (filter === undefined) {
         return false
+    }
+    if (isCustomFieldFilter(filter)) {
+        return filter.some((subFilter) => subFilter.values.length > 0)
     }
     if (isFilterWithLogicalOperator(filter)) {
         return filter.values.length > 0
@@ -37,6 +60,10 @@ export const FilterOperatorMap = {
 export const toLowerCaseString = (value: string | number) =>
     String(value).toLowerCase()
 
+const NotEqualsMap = {
+    [TicketMember.CustomField]: TicketMember.CustomFieldToExclude,
+}
+
 export const addOptionalFilter = (
     commonFilters: ReportingFilter[],
     filter: OptionalFilter,
@@ -49,7 +76,35 @@ export const addOptionalFilter = (
         return commonFilters
     }
     let reportingFilters
-    if (isFilterWithLogicalOperator(filter)) {
+    if (isCustomFieldFilter(filter)) {
+        const values = filter.map((customFieldFilter) => {
+            if (
+                customFieldFilter.operator === LogicalOperatorEnum.NOT_ONE_OF &&
+                filterDefaults.member === TicketMember.CustomField
+            ) {
+                return {
+                    values: customFieldFilter.values.map(toLowerCaseString),
+                    member: NotEqualsMap[filterDefaults.member],
+                    operator: FilterOperatorMap[customFieldFilter.operator],
+                }
+            } else if (
+                customFieldFilter.operator === LogicalOperatorEnum.ALL_OF
+            ) {
+                return customFieldFilter.values.map((value) => ({
+                    values: [toLowerCaseString(value)],
+                    member: filterDefaults.member,
+                    operator: FilterOperatorMap[customFieldFilter.operator],
+                }))
+            }
+            return {
+                values: customFieldFilter.values.map(toLowerCaseString),
+                member: filterDefaults.member,
+                operator: FilterOperatorMap[customFieldFilter.operator],
+            }
+        })
+
+        reportingFilters = _flatMap(values)
+    } else if (isFilterWithLogicalOperator(filter)) {
         if (filter.values.length === 0) {
             return commonFilters
         }
@@ -99,6 +154,22 @@ export function withLogicalOperator<T extends number | string>(
 ): WithLogicalOperator<T> {
     return {
         values: values ?? [],
+        operator,
+    }
+}
+
+export function withDefaultCustomFieldAndLogicalOperator({
+    values = [],
+    operator = LogicalOperatorEnum.ONE_OF,
+    customFieldId,
+}: {
+    values?: string[]
+    operator?: LogicalOperatorEnum
+    customFieldId: number
+}): CustomFieldFilter {
+    return {
+        customFieldId,
+        values,
         operator,
     }
 }

@@ -55,6 +55,7 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     integrations: TicketMessagesMember.Integration,
     agents: TicketMember.AssigneeUserId,
     tags: TicketMember.Tags,
+    customFields: TicketMember.CustomField,
 }
 
 export const TicketSLAStatsFiltersMembers: StatsFiltersMembers = {
@@ -147,6 +148,7 @@ export const statsFiltersToReportingFilters = (
         channels,
         agents,
         tags,
+        customFields,
         helpCenters,
         localeCodes,
         slaPolicies,
@@ -196,6 +198,12 @@ export const statsFiltersToReportingFilters = (
     if (hasFilter(tags) && members.tags) {
         filters = addOptionalFilter(filters, tags, {
             member: members.tags,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(customFields) && members.customFields) {
+        filters = addOptionalFilter(filters, customFields, {
+            member: members.customFields,
             operator: ReportingFilterOperator.Equals,
         })
     }
