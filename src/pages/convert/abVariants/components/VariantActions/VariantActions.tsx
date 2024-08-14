@@ -55,7 +55,7 @@ const VariantActions: React.FC<Props> = (props) => {
                     </>
                 }
                 id={`delete-variant-${variant?.id}`}
-                onConfirm={() => variant && onDelete?.(variant.id as string)}
+                onConfirm={() => variant && onDelete?.(variant.id)}
             >
                 {renderConfirmation}
             </ConfirmationPopover>
