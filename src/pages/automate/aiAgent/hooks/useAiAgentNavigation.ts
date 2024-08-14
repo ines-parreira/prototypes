@@ -30,6 +30,11 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
     const headerNavbarItems = useMemo(
         () => [
             {
+                route: routes.configuration,
+                title: 'Configuration',
+                dataCanduId: 'ai-agent-navbar-configuration',
+            },
+            {
                 route: routes.guidance,
                 title: 'Guidance',
                 exact: false,
@@ -44,12 +49,6 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                       },
                   ]
                 : []),
-            {
-                route: routes.configuration,
-                title: 'Configuration',
-                dataCanduId: 'ai-agent-navbar-configuration',
-            },
-
             {
                 route: routes.test,
                 title: 'Test',
