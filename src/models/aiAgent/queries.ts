@@ -1,10 +1,12 @@
 import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {searchCustomer} from 'models/aiAgentPlayground/resources'
 import {SearchCustomerRequest} from 'models/aiAgentPlayground/types'
 import {MutationOverrides} from 'types/query'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {Paths} from 'rest_api/help_center_api/client.generated'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     createStoreConfiguration,
     createStoreSnippetHelpCenter,
@@ -158,13 +160,20 @@ export const useGetAIGeneratedGuidances = <
 ) => {
     const {client} = useHelpCenterApi()
 
+    const isAiAgentAIGeneratedGuidancesEnabled =
+        useFlags()[FeatureFlagKey.AiAgentAIGeneratedGuidances]
+
     return useQuery({
         queryKey: aiGeneratedGuidanceKeys.listWithStore(
             helpCenterId,
             storeIntegrationId
         ),
         queryFn: async () => {
-            if (storeIntegrationId === null || helpCenterId === null) {
+            if (
+                storeIntegrationId === null ||
+                helpCenterId === null ||
+                !isAiAgentAIGeneratedGuidancesEnabled
+            ) {
                 return Promise.resolve(null)
             }
             return getAIGeneratedGuidances(client, {

@@ -11,12 +11,14 @@ import {AiAgentGuidanceContainer} from '../AiAgentGuidanceContainer'
 import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
 import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
 import {
+    DATA_TEST_ID,
     GUIDANCE_ARTICLE_LIMIT,
     GUIDANCE_ARTICLE_LIMIT_WARNING,
 } from '../constants'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 import {useStoreConfiguration} from '../hooks/useStoreConfiguration'
 import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
+import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('sanitize-html', () => () => jest.fn())
@@ -29,6 +31,10 @@ jest.mock('../hooks/useGuidanceArticles', () => ({
 jest.mock('../hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: jest.fn(),
 }))
+
+jest.mock('../hooks/useGuidanceAiSuggestions', () => ({
+    useGuidanceAiSuggestions: jest.fn(),
+}))
 jest.mock('../hooks/useStoreConfiguration', () => ({
     useStoreConfiguration: jest.fn(),
 }))
@@ -38,6 +44,7 @@ jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 const mockedUseStoreConfiguration = jest.mocked(useStoreConfiguration)
+const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)
 
 const helpCenter = {...getHelpCentersResponseFixture.data[0], type: 'guidance'}
 const defaultGuidanceArticleProps: ReturnType<typeof useGuidanceArticles> = {
@@ -52,6 +59,19 @@ const defaultGuidanceArticleMutationProps: ReturnType<
     updateGuidanceArticle: jest.fn(),
     isGuidanceArticleUpdating: false,
     isGuidanceArticleDeleting: false,
+}
+
+const defaultGuidanceAiSuggestionsProps: ReturnType<
+    typeof useGuidanceAiSuggestions
+> = {
+    guidanceArticles: [],
+    guidanceAISuggestions: [],
+    isLoading: false,
+    isAllAIGuidancesUsed: false,
+    isEmptyStateNoAIGuidances: false,
+    isEmptyStateAIGuidances: false,
+    isGuidancesOnly: false,
+    isGuidancesAndAIGuidances: false,
 }
 
 const mockStore = configureMockStore([thunk])
@@ -91,6 +111,9 @@ describe('<AiAgentGuidanceContainer />', () => {
         mockedUseGuidanceArticleMutation.mockReturnValue(
             defaultGuidanceArticleMutationProps
         )
+        mockedUseGuidanceAiSuggestions.mockReturnValue(
+            defaultGuidanceAiSuggestionsProps
+        )
     })
 
     it('should render loader', () => {
@@ -126,20 +149,66 @@ describe('<AiAgentGuidanceContainer />', () => {
         expect(reportError).toHaveBeenCalled()
     })
 
+    it('should render loader when guidance articles are loading', () => {
+        mockedUseGuidanceAiSuggestions.mockReturnValue({
+            ...defaultGuidanceAiSuggestionsProps,
+            isLoading: true,
+        })
+
+        renderComponent()
+
+        expect(screen.getByTestId('loader')).toBeInTheDocument()
+    })
+
     it('should render empty state component', () => {
+        mockedUseGuidanceAiSuggestions.mockReturnValue({
+            ...defaultGuidanceAiSuggestionsProps,
+            isEmptyStateNoAIGuidances: true,
+        })
+
         renderComponent()
 
         expect(screen.getByText('Create Custom Guidance')).toBeInTheDocument()
         expect(screen.getByText('Create From Template')).toBeInTheDocument()
     })
 
+    it.skip('should render empty state component with ai guidances', () => {
+        mockedUseGuidanceAiSuggestions.mockReturnValue({
+            ...defaultGuidanceAiSuggestionsProps,
+            isEmptyStateAIGuidances: true,
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByTestId(DATA_TEST_ID.EmptyStateAIGuidances)
+        ).toBeInTheDocument()
+    })
+
     describe("when there's guidance articles", () => {
+        it.skip('should render guidances and AI guidances', () => {
+            const guidanceArticles = [getGuidanceArticleFixture(1)]
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesAndAIGuidances: true,
+                guidanceArticles,
+                guidanceAISuggestions: [{name: 'AI Guidance 1'} as any],
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByTestId(DATA_TEST_ID.GuidancesAndAIGuidances)
+            ).toBeInTheDocument()
+            expect(screen.getByText('AI Guidance 1')).toBeInTheDocument()
+        })
+
         it('should render guidance list', () => {
             const guidanceArticles = [getGuidanceArticleFixture(1)]
-            mockedUseGuidanceArticles.mockReturnValue({
-                ...defaultGuidanceArticleProps,
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesOnly: true,
                 guidanceArticles,
-                isGuidanceArticleListLoading: false,
             })
 
             renderComponent()
@@ -152,10 +221,10 @@ describe('<AiAgentGuidanceContainer />', () => {
         it('should call delete action when delete button is clicked', () => {
             const deleteGuidanceArticle = jest.fn()
             const guidanceArticles = [getGuidanceArticleFixture(1)]
-            mockedUseGuidanceArticles.mockReturnValue({
-                ...defaultGuidanceArticleProps,
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesOnly: true,
                 guidanceArticles,
-                isGuidanceArticleListLoading: false,
             })
             mockedUseGuidanceArticleMutation.mockReturnValue({
                 ...defaultGuidanceArticleMutationProps,
@@ -179,10 +248,10 @@ describe('<AiAgentGuidanceContainer />', () => {
             const guidanceArticles = Array(GUIDANCE_ARTICLE_LIMIT_WARNING)
                 .fill(null)
                 .map((_, index) => getGuidanceArticleFixture(index))
-            mockedUseGuidanceArticles.mockReturnValue({
-                ...defaultGuidanceArticleProps,
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesOnly: true,
                 guidanceArticles,
-                isGuidanceArticleListLoading: false,
             })
 
             renderComponent()
@@ -198,10 +267,10 @@ describe('<AiAgentGuidanceContainer />', () => {
             const guidanceArticles = Array(GUIDANCE_ARTICLE_LIMIT)
                 .fill(null)
                 .map((_, index) => getGuidanceArticleFixture(index))
-            mockedUseGuidanceArticles.mockReturnValue({
-                ...defaultGuidanceArticleProps,
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesOnly: true,
                 guidanceArticles,
-                isGuidanceArticleListLoading: false,
             })
 
             renderComponent()
@@ -223,10 +292,10 @@ describe('<AiAgentGuidanceContainer />', () => {
                 }),
             ]
 
-            mockedUseGuidanceArticles.mockReturnValue({
-                ...defaultGuidanceArticleProps,
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesOnly: true,
                 guidanceArticles,
-                isGuidanceArticleListLoading: false,
             })
 
             renderComponent()
@@ -259,10 +328,10 @@ describe('<AiAgentGuidanceContainer />', () => {
             ]
             const updateGuidanceArticle = jest.fn()
 
-            mockedUseGuidanceArticles.mockReturnValue({
-                ...defaultGuidanceArticleProps,
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesOnly: true,
                 guidanceArticles,
-                isGuidanceArticleListLoading: false,
             })
 
             mockedUseGuidanceArticleMutation.mockReturnValue({

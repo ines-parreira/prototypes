@@ -32,7 +32,7 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
 
     return (
         <>
-            <div className={css.container}>
+            <div className={css.container} data-testid="guidance-empty-state">
                 <div className={css.innerContainer}>
                     <div className={css.content}>
                         <div>
