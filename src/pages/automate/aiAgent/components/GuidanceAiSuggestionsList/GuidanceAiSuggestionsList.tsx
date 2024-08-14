@@ -1,13 +1,13 @@
 import React from 'react'
 import history from 'pages/history'
-import {GuidanceTemplate} from '../../types'
+import {AIGuidance} from '../../types'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import {SeeAllSuggestionsCard} from '../SeeAllSuggestionsCard/SeeAllSuggestionsCard'
 import {GuidanceAiSuggestionCard} from '../GuidanceAiSuggestionCard/GuidanceAiSuggestionCard'
 import css from './GuidanceAiSuggestionsList.less'
 
 type Props = {
-    guidanceAiSuggestions: GuidanceTemplate[]
+    guidanceAiSuggestions: AIGuidance[]
     shopName: string
     showBanner?: boolean
     showAllSuggestionsCard?: boolean
@@ -39,8 +39,8 @@ export const GuidanceAiSuggestionsList = ({
 
     return (
         <ul className={css.container}>
-            {guidanceAiSuggestions.map((guidance) => (
-                <li key={guidance.id}>
+            {guidanceAiSuggestions.map((guidance: AIGuidance) => (
+                <li key={guidance.key}>
                     <GuidanceAiSuggestionCard
                         onClick={() => onAiSuggestionClick()}
                         guidanceAiSuggestion={guidance}

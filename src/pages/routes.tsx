@@ -199,6 +199,7 @@ import ActionsPlatformEditAppFormView from 'pages/automate/actionsPlatform/Actio
 import WorkflowAnalyticsContainer from './automate/workflows/analytics/WorkflowAnalyticsContainer'
 import AutomateAllRecommendationsContainer from './automate/common/components/AutomateAllRecommendationsContainer'
 import LiveVoice from './stats/voice/pages/LiveVoice'
+import {AiAgentGuidanceLibraryContainer} from './automate/aiAgent/AiAgentGuidanceLibraryContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1402,6 +1403,9 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
         shopType: string
     }>()
 
+    const isAiAgentAIGeneratedGuidancesEnabled =
+        useFlags()[FeatureFlagKey.AiAgentAIGeneratedGuidances]
+
     if (shopType !== 'shopify') {
         return <Redirect to="/app/automation" />
     }
@@ -1459,7 +1463,13 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                                 path={`${path}/guidance/new`}
                                 component={AiAgentGuidanceNewContainer}
                             />
-
+                            {isAiAgentAIGeneratedGuidancesEnabled && (
+                                <Route
+                                    path={`${path}/guidance/library`}
+                                    exact
+                                    component={AiAgentGuidanceLibraryContainer}
+                                />
+                            )}
                             <Route
                                 path={`${path}/guidance/templates`}
                                 exact

@@ -1,0 +1,76 @@
+import React from 'react'
+import BackLink from 'pages/common/components/BackLink'
+import Button from 'pages/common/components/button/Button'
+import history from 'pages/history'
+import Loader from 'pages/common/components/Loader/Loader'
+import {useGuidanceTemplates} from './hooks/useGuidanceTemplates'
+import {GuidanceTemplatesList} from './components/GuidanceTemplatesList/GuidanceTemplatesList'
+import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+
+import css from './AiAgentGuidanceLibrary.less'
+import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
+import {GuidanceAiSuggestionsList} from './components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
+
+type Props = {
+    helpCenterId: number
+    shopName: string
+}
+
+export const AiAgentGuidanceLibrary = ({helpCenterId, shopName}: Props) => {
+    const {guidanceTemplates} = useGuidanceTemplates()
+    const {routes} = useAiAgentNavigation({shopName})
+
+    const {guidanceAISuggestions, isLoading} = useGuidanceAiSuggestions({
+        helpCenterId,
+        shopName,
+    })
+
+    const onNewClick = () => {
+        history.push(routes.newGuidanceArticle)
+    }
+
+    if (isLoading) {
+        return <Loader data-testid="loader" />
+    }
+
+    return (
+        <>
+            <div className={css.guidanceLibraryHeader}>
+                <BackLink path={routes.guidance} label="Back to Guidance" />
+                <Button intent="secondary" onClick={onNewClick}>
+                    Create Custom Guidance
+                </Button>
+            </div>
+
+            <div className="mb-4">
+                <h3 className="heading-section-semibold mb-1">
+                    <span className={css.icon}>
+                        <i className="material-icons">auto_awesome</i>
+                    </span>
+                    AI-generated Guidance based on your tickets
+                </h3>
+                {guidanceAISuggestions?.length > 0 && (
+                    <p className={css.subtitle}>
+                        You may already have an existing Guidance addressing one
+                        of these topics. Make sure to double check first before
+                        creating a new one.
+                    </p>
+                )}
+                <GuidanceAiSuggestionsList
+                    guidanceAiSuggestions={guidanceAISuggestions}
+                    shopName={shopName}
+                    showBanner
+                />
+            </div>
+
+            <h3 className="heading-section-semibold mb-0">
+                Choose a template and customize it to fit your needs
+            </h3>
+
+            <GuidanceTemplatesList
+                guidanceTemplates={guidanceTemplates}
+                shopName={shopName}
+            />
+        </>
+    )
+}

@@ -1,11 +1,11 @@
 import React from 'react'
 import classNames from 'classnames'
 import {TemplateCard} from 'pages/common/components/TemplateCard'
-import {GuidanceTemplate} from '../../types'
+import {AIGuidance} from '../../types'
 import css from './GuidanceAiSuggestionCard.less'
 
 type Props = {
-    guidanceAiSuggestion: GuidanceTemplate
+    guidanceAiSuggestion: AIGuidance
     onClick: () => void
 }
 

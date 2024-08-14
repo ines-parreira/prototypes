@@ -1,0 +1,21 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .guidanceLibraryHeader {
+        display: flex;
+        justify-content: space-between;
+        gap: @layout-spacing-s;
+    }
+
+    .subtitle {
+        .body-regular();
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .icon {
+        color: var(--accessory-magenta-3);
+        font-size: 24px;
+        margin-right: @layout-spacing-xs;
+    }
+}

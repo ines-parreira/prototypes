@@ -3,8 +3,8 @@ import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {renderWithRouter} from 'utils/testing'
 import history from 'pages/history'
-import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
 import {GuidanceAiSuggestionsList} from '../components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
+import {getAIGuidanceFixture} from '../fixtures/aiGuidance.fixture'
 
 jest.mock('pages/history')
 
@@ -30,26 +30,26 @@ describe('<GuidanceAiSuggestionsList />', () => {
     })
 
     it('should render ai guidance suggestions', () => {
-        const template = getGuidanceTemplateFixture('order-status')
+        const aiGuidance = getAIGuidanceFixture('ai_guidance_id1')
 
-        renderComponent({guidanceAiSuggestions: [template], shopName: 'test'})
+        renderComponent({guidanceAiSuggestions: [aiGuidance], shopName: 'test'})
 
-        expect(screen.getByText(template.name)).toBeInTheDocument()
+        expect(screen.getByText(aiGuidance.name)).toBeInTheDocument()
         expect(
             screen.queryByText('See All Suggestions')
         ).not.toBeInTheDocument()
     })
 
     it('should render ai guidance suggestions and add select all suggestion card', () => {
-        const template = getGuidanceTemplateFixture('order-status')
+        const aiGuidance = getAIGuidanceFixture('ai_guidance_id1')
 
         renderComponent({
-            guidanceAiSuggestions: [template],
+            guidanceAiSuggestions: [aiGuidance],
             shopName: 'test',
             showAllSuggestionsCard: true,
         })
 
-        expect(screen.getByText(template.name)).toBeInTheDocument()
+        expect(screen.getByText(aiGuidance.name)).toBeInTheDocument()
         expect(screen.getByText('See All Suggestions')).toBeInTheDocument()
     })
 
@@ -68,15 +68,15 @@ describe('<GuidanceAiSuggestionsList />', () => {
     })
 
     it('should execute onClick on click on ai guidance suggestion card', () => {
-        const template = getGuidanceTemplateFixture('order-status')
+        const aiGuidance = getAIGuidanceFixture('ai_guidance_id1')
 
         renderComponent({
-            guidanceAiSuggestions: [template],
+            guidanceAiSuggestions: [aiGuidance],
             shopName: 'test',
             showAllSuggestionsCard: true,
         })
 
-        const aiGuidanceSuggestion = screen.getByText(template.name)
+        const aiGuidanceSuggestion = screen.getByText(aiGuidance.name)
         userEvent.click(aiGuidanceSuggestion)
 
         expect(history.push).toHaveBeenCalledWith(
@@ -85,10 +85,10 @@ describe('<GuidanceAiSuggestionsList />', () => {
     })
 
     it('should execute onClick on click on select all suggestion card', () => {
-        const template = getGuidanceTemplateFixture('order-status')
+        const aiGuidance = getAIGuidanceFixture('ai_guidance_id1')
 
         renderComponent({
-            guidanceAiSuggestions: [template],
+            guidanceAiSuggestions: [aiGuidance],
             shopName: 'test',
             showAllSuggestionsCard: true,
         })
