@@ -5,13 +5,12 @@ import history from 'pages/history'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import {LocaleCode} from 'models/helpCenter/types'
+import {useGuidanceArticles} from './hooks/useGuidanceArticles'
 import {GuidanceEmptyState} from './components/GuidanceEmptyState/GuidanceEmptyState'
 import {GuidanceList} from './components/GuidanceList/GuidanceList'
 import {GuidanceHeader} from './components/GuidanceHeader/GuidanceHeader'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
-import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
-import {DATA_TEST_ID} from './constants'
 
 type Props = {
     helpCenterId: number
@@ -24,20 +23,12 @@ export const AiAgentGuidanceView = ({
     shopName,
     locale,
 }: Props) => {
+    const {guidanceArticles, isGuidanceArticleListLoading} =
+        useGuidanceArticles(helpCenterId)
     const {deleteGuidanceArticle, updateGuidanceArticle} =
         useGuidanceArticleMutation({
             guidanceHelpCenterId: helpCenterId,
         })
-
-    const {
-        guidanceArticles,
-        isLoading,
-        isEmptyStateNoAIGuidances,
-        isGuidancesOnly,
-    } = useGuidanceAiSuggestions({
-        helpCenterId,
-        shopName,
-    })
 
     const {routes} = useAiAgentNavigation({shopName})
 
@@ -93,35 +84,29 @@ export const AiAgentGuidanceView = ({
         history.push(routes.guidanceArticleEdit(articleId))
     }
 
-    if (isLoading) {
-        return <Loader data-testid={DATA_TEST_ID.Loader} />
+    if (isGuidanceArticleListLoading) {
+        return <Loader />
     }
 
-    if (isEmptyStateNoAIGuidances) {
-        return (
-            <div data-testid={DATA_TEST_ID.EmptyStateNoAIGuidances}>
-                <GuidanceEmptyState shopName={shopName} />
-            </div>
-        )
+    const isEmptyState = !guidanceArticles || guidanceArticles.length === 0
+
+    if (isEmptyState) {
+        return <GuidanceEmptyState shopName={shopName} />
     }
 
-    if (isGuidancesOnly) {
-        return (
-            <div>
-                <GuidanceHeader
-                    onCreateGuidanceClick={onCreateGuidanceClick}
-                    onCreateFromTemplate={onCreateFromTemplate}
-                    guidanceArticlesLength={guidanceArticles.length}
-                />
-                <GuidanceList
-                    guidanceArticles={guidanceArticles}
-                    onDelete={onDelete}
-                    onRowClick={onGuidanceArticleClick}
-                    onChangeVisibility={onChangeVisibility}
-                />
-            </div>
-        )
-    }
-
-    return null
+    return (
+        <div>
+            <GuidanceHeader
+                onCreateGuidanceClick={onCreateGuidanceClick}
+                onCreateFromTemplate={onCreateFromTemplate}
+                guidanceArticlesLength={guidanceArticles.length}
+            />
+            <GuidanceList
+                guidanceArticles={guidanceArticles}
+                onDelete={onDelete}
+                onRowClick={onGuidanceArticleClick}
+                onChangeVisibility={onChangeVisibility}
+            />
+        </div>
+    )
 }

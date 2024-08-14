@@ -28,10 +28,7 @@ export type ValidFormValues = NonNullFields<
     'monitoredEmailIntegrations' | 'signature'
 >
 
-export type AIGuidance = Omit<
-    Components.Schemas.AIGuidanceDto,
-    'batch_datetime'
->
+export type AIGuidance = Components.Schemas.AIGuidanceDto
 
 export type GuidanceArticle = {
     id: number

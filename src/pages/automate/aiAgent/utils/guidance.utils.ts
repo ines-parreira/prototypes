@@ -5,9 +5,7 @@ import {
     UpdateArticleTranslationDto,
 } from 'models/helpCenter/types'
 import {slugify} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {Components} from 'rest_api/help_center_api/client.generated'
 import {
-    AIGuidance,
     CreateGuidanceArticle,
     GuidanceArticle,
     GuidanceFormFields,
@@ -72,16 +70,5 @@ export const mapGuidanceFormFieldsToGuidanceArticle = (
         visibility: formValues.isVisible ? 'PUBLIC' : 'UNLISTED',
         locale,
         templateKey: templateKey || null,
-    }
-}
-
-export const mapAIGuidanceDTOToAIGuidance = (
-    aiGuidance: Components.Schemas.AIGuidanceDto
-): AIGuidance => {
-    return {
-        key: aiGuidance.key,
-        review_action: aiGuidance.review_action,
-        content: aiGuidance.content,
-        name: aiGuidance.name,
     }
 }
