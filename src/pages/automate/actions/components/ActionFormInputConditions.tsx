@@ -1,13 +1,17 @@
 import React, {useCallback} from 'react'
 import {Label} from '@gorgias/ui-kit'
 
+import {useController, useFieldArray, useFormContext} from 'react-hook-form'
 import {ConditionsBranchBody} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
 import {buildConditionSchemaByVariableType} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'
 import {
     WorkflowVariable,
     WorkflowVariableGroup,
 } from 'pages/automate/workflows/models/variables.types'
-import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
+import {
+    ConditionSchema,
+    VarSchema,
+} from 'pages/automate/workflows/models/conditions.types'
 
 import {
     fulfillmentStatus,
@@ -15,27 +19,44 @@ import {
     paymentStatus,
     shipmentStatus,
 } from '../utils'
+import {ConditionsFormValues} from '../types'
 import css from './CustomActionsForm.less'
 
 type Props = {
-    conditions: ConditionSchema[]
-    conditionsType: 'and' | 'or' | null
-    onConditionDelete: (index: number) => void
-    onVariableSelect: (condition: ConditionSchema) => void
-    onConditionTypeChange: (type: 'and' | 'or' | null) => void
     inputVariables: WorkflowVariableGroup[]
-    onConditionChange: (condition: ConditionSchema, index: number) => void
 }
 
-export default function ActionFormInputConditions({
-    conditions,
-    conditionsType,
-    inputVariables,
-    onConditionChange,
-    onConditionDelete,
-    onConditionTypeChange,
-    onVariableSelect,
-}: Props) {
+export default function ActionFormInputConditions({inputVariables}: Props) {
+    const {control, getValues} = useFormContext<ConditionsFormValues>()
+    const {field: conditionsType} = useController({
+        control,
+        name: 'conditionsType',
+    })
+
+    const {remove, update, append} = useFieldArray({
+        control,
+        name: 'conditions',
+        rules: {
+            validate: (conditions: ConditionSchema[], {conditionsType}) => {
+                if (!conditionsType) return true
+                const conditionsValues = conditions.map(
+                    (condition) =>
+                        (
+                            Object.values(condition)[0] as [
+                                VarSchema,
+                                string | null | undefined | boolean
+                            ]
+                        )[1]
+                )
+                for (const value of conditionsValues) {
+                    if (value === null) return false
+                    if (typeof value === 'string' && value.trim().length === 0)
+                        return false
+                }
+            },
+        },
+    })
+
     // Works only for string conditions.
     // To add more types, refer to /ConditionsBranchBody -> renderInput method.
     const handleRenderCustomConditionError = useCallback(
@@ -73,6 +94,7 @@ export default function ActionFormInputConditions({
                 Action can only be performed according to the following
                 conditions
             </Label>
+
             <ConditionsBranchBody
                 maxConditionsTooltipMessage="You’ve reached the maximum number of conditions for this action"
                 variableDropdownProps={{
@@ -86,22 +108,31 @@ export default function ActionFormInputConditions({
                 availableVariables={inputVariables}
                 showNoneOption={true}
                 shouldShowErrors={true}
-                type={conditionsType}
-                conditions={conditions}
+                type={conditionsType.value}
+                conditions={getValues('conditions')}
                 onDeleteBranch={() => {}}
                 renderCustomConditionError={handleRenderCustomConditionError}
-                onConditionDelete={onConditionDelete}
+                onConditionDelete={(index) => {
+                    remove(index)
+                    conditionsType.onChange(conditionsType.value)
+                }}
                 onVariableSelect={(variable) => {
                     const newCondition = buildConditionSchemaByVariableType(
                         variable.type,
                         variable.value
                     )
-                    onVariableSelect(newCondition)
+                    append(newCondition)
+                    conditionsType.onChange(conditionsType.value)
                 }}
-                onConditionTypeChange={(_branchId, type) =>
-                    onConditionTypeChange(type)
-                }
-                onConditionChange={onConditionChange}
+                onConditionTypeChange={(_branchId, type) => {
+                    conditionsType.onChange(type, {
+                        shouldDirty: true,
+                    })
+                }}
+                onConditionChange={(condition, index) => {
+                    update(index, condition)
+                    conditionsType.onChange(conditionsType.value)
+                }}
             />
         </div>
     )

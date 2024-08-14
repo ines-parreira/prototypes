@@ -7,6 +7,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
+import Caption from 'pages/common/forms/Caption/Caption'
 import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
 
 import css from '../NodeEditor.less'
@@ -20,9 +21,11 @@ type Props = {
     ) => void
     onDelete: (index: number) => void
     onAdd: () => void
+    onBlur?: () => void
     isDisabled?: boolean
     noSelectedCategoryText?: string
     inputVariableToolTipMessage?: string | null
+    error?: string
 }
 
 const Headers = ({
@@ -31,14 +34,16 @@ const Headers = ({
     onChange,
     onDelete,
     onAdd,
+    onBlur,
     isDisabled,
     inputVariableToolTipMessage,
+    error,
     noSelectedCategoryText = 'Insert variable from previous steps',
 }: Props) => {
     return (
         <div className={css.keyValueContainer}>
             {headers.map((header, index) => (
-                <div key={index} className={css.keyValueRow}>
+                <div key={index} className={css.keyValueRow} onBlur={onBlur}>
                     <TextInput
                         isDisabled={isDisabled}
                         value={header.name}
@@ -72,9 +77,9 @@ const Headers = ({
                 </div>
             ))}
             {headers.length > 0 && (
-                <div className={css.description}>
+                <Caption error={error} darken>
                     Key and value pairs to be added as headers in all requests
-                </div>
+                </Caption>
             )}
             <Button
                 isDisabled={isDisabled}

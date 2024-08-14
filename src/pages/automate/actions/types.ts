@@ -84,12 +84,12 @@ export interface ActionFormInputValues {
 interface InputVariablesFormValues {
     customInput: CustomInput[]
 }
-interface ConditionsFormValues {
+export interface ConditionsFormValues {
     conditionsType: 'and' | 'or' | null
     conditions: ConditionSchema[]
 }
 
-interface HttpRequestFormValues {
+export interface HttpRequestFormValues {
     httpUrl: StepHttpRequest['settings']['url']
     httpMethod: StepHttpRequest['settings']['method']
     httpHeaders: {name: string; value: string}[]

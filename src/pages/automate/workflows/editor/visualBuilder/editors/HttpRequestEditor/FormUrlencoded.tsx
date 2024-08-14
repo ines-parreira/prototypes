@@ -21,6 +21,7 @@ type Props = {
     ) => void
     onDelete: (index: number) => void
     onAdd: () => void
+    onBlur?: () => void
     noSelectedCategoryText?: string
     inputVariableToolTipMessage?: string | null
 }
@@ -31,6 +32,7 @@ const FormUrlencoded = ({
     onChange,
     onDelete,
     onAdd,
+    onBlur,
     isDisabled,
     inputVariableToolTipMessage,
     noSelectedCategoryText = 'Insert variable from previous steps',
@@ -47,6 +49,7 @@ const FormUrlencoded = ({
                         onChange={(key) => {
                             onChange(index, {...item, key})
                         }}
+                        onBlur={onBlur}
                     />
                     <TextInputWithVariables
                         toolTipMessage={inputVariableToolTipMessage}
@@ -58,6 +61,7 @@ const FormUrlencoded = ({
                         variables={variables}
                         noSelectedCategoryText={noSelectedCategoryText}
                         placeholder="Value"
+                        onBlur={onBlur}
                     />
                     <IconButton
                         isDisabled={isDisabled}
@@ -65,6 +69,7 @@ const FormUrlencoded = ({
                         fillStyle="ghost"
                         onClick={() => {
                             onDelete(index)
+                            onBlur?.()
                         }}
                     >
                         close

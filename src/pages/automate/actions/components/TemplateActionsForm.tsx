@@ -2,8 +2,7 @@ import React, {useEffect, useMemo} from 'react'
 import {ulid} from 'ulidx'
 import _ from 'lodash'
 import {useParams, useHistory} from 'react-router-dom'
-import {useFieldArray, useForm, Controller} from 'react-hook-form'
-import InputField from 'pages/common/forms/input/InputField'
+import {useFieldArray, useForm, Controller, FormProvider} from 'react-hook-form'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
@@ -11,7 +10,6 @@ import ToolbarContext, {
     ToolbarContextType,
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {VarSchema} from 'pages/automate/workflows/models/conditions.types'
 import {SegmentEvent, logEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -45,6 +43,7 @@ import ActionFormInputConditions from './ActionFormInputConditions'
 import ActionFormInputVariable from './ActionFormInputVariable'
 import TemplateActionBanner from './TemplateActionBanner'
 import css from './CustomActionsForm.less'
+import ActionFormInputName from './ActionFormInputName'
 
 type Props = {
     initialConfigurationData: TemplateConfigurationFormInput
@@ -63,13 +62,14 @@ export default function TemplateActionsForm({
         shopType: string
         shopName: string
     }>()
-    const {setValue, control, reset, watch, getValues, formState, trigger} =
-        useForm<TemplateActionFormInputValues>({
-            defaultValues: wfConfgurationToTemplateFormValue(
-                initialFormValues,
-                templateConfiguration
-            ),
-        })
+    const methods = useForm<TemplateActionFormInputValues>({
+        mode: 'onBlur',
+        defaultValues: wfConfgurationToTemplateFormValue(
+            initialFormValues,
+            templateConfiguration
+        ),
+    })
+    const {control, reset, getValues, formState, trigger} = methods
 
     const isNewAction = !initialFormValues.internal_id
 
@@ -80,15 +80,6 @@ export default function TemplateActionsForm({
                 template_name: templateConfiguration.name,
             })
         }
-    })
-
-    const {
-        remove: removeConditions,
-        update: updateConditions,
-        append: appendConditions,
-    } = useFieldArray({
-        control,
-        name: 'conditions',
     })
 
     const {
@@ -248,7 +239,7 @@ export default function TemplateActionsForm({
                     data_type: input.dataType,
                 }))
 
-            if (data.conditionsType) {
+            if (data.conditionsType && data.conditions.length > 0) {
                 llmPromptTriggerCopy.settings.conditions = {
                     [data.conditionsType]: data.conditions,
                 } as any
@@ -369,39 +360,17 @@ export default function TemplateActionsForm({
                         )}
                     </header>
                     <div className={css.formSessionContainer}>
-                        <Controller
-                            control={control}
+                        <ActionFormInputName
                             name="name"
-                            rules={{
-                                required: true,
-                            }}
-                            render={({field: {onChange, value}}) => (
-                                <InputField
-                                    className={css.formItem}
-                                    label="Name"
-                                    isRequired
-                                    isDisabled={isActionUpserting}
-                                    type="text"
-                                    value={value}
-                                    onChange={onChange}
-                                    caption="Provide an internal name for this Action."
-                                    darkenCaption
-                                />
-                            )}
-                        />
-                        <Controller
                             control={control}
+                            disabled={isActionUpserting}
+                            caption="Provide an internal name for this Action."
+                            label="Name"
+                        />
+                        <ActionFormInputAiInstruction
                             name="aiAgentInstructions"
-                            rules={{
-                                required: true,
-                            }}
-                            render={({field: {onChange, value}}) => (
-                                <ActionFormInputAiInstruction
-                                    value={value}
-                                    isDisabled={isActionUpserting}
-                                    onChange={onChange}
-                                />
-                            )}
+                            control={control}
+                            disabled={isActionUpserting}
                         />
 
                         <Controller
@@ -444,72 +413,11 @@ export default function TemplateActionsForm({
                                 />
                             )}
                         />
-
-                        <Controller
-                            control={control}
-                            name="conditions"
-                            rules={{
-                                validate: (value) => {
-                                    if (
-                                        watch('conditionsType') &&
-                                        !value.length
-                                    ) {
-                                        return false
-                                    }
-                                    const conditionsValues = value.map(
-                                        (condition) =>
-                                            (
-                                                Object.values(condition)[0] as [
-                                                    VarSchema,
-                                                    (
-                                                        | string
-                                                        | null
-                                                        | undefined
-                                                        | boolean
-                                                    )
-                                                ]
-                                            )[1]
-                                    )
-                                    for (const value of conditionsValues) {
-                                        if (value === null) return false
-                                        if (
-                                            typeof value === 'string' &&
-                                            value.length === 0
-                                        )
-                                            return false
-                                    }
-                                },
-                            }}
-                            render={({field: {value}}) => (
-                                <ActionFormInputConditions
-                                    conditions={value}
-                                    inputVariables={inputVariables}
-                                    conditionsType={watch('conditionsType')}
-                                    onConditionDelete={(index) => {
-                                        removeConditions(index)
-                                    }}
-                                    onVariableSelect={(newCondition) => {
-                                        appendConditions(newCondition)
-                                    }}
-                                    onConditionTypeChange={(type) => {
-                                        setValue('conditionsType', type, {
-                                            shouldDirty: true,
-                                        })
-                                        // In order to trigger condtions validation when conditions type is changed
-                                        setValue(
-                                            'conditions',
-                                            watch('conditions'),
-                                            {
-                                                shouldDirty: true,
-                                            }
-                                        )
-                                    }}
-                                    onConditionChange={(condition, index) => {
-                                        updateConditions(index, condition)
-                                    }}
-                                />
-                            )}
-                        />
+                        <FormProvider {...methods}>
+                            <ActionFormInputConditions
+                                inputVariables={inputVariables}
+                            />
+                        </FormProvider>
                     </div>
                 </section>
 
@@ -534,10 +442,6 @@ export default function TemplateActionsForm({
                         <div>
                             <Button
                                 isLoading={
-                                    isActionUpserting ||
-                                    storeAppsIsInitialLoading
-                                }
-                                isDisabled={
                                     (!isNewAction && !formState.isDirty) ||
                                     isActionUpserted ||
                                     isDeletingAction ||

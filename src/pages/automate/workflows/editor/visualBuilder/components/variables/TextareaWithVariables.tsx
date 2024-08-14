@@ -21,6 +21,7 @@ import css from './TextareaWithVariables.less'
 type Props = {
     value: string
     onChange: (value: string) => void
+    onBlur?: () => void
     variables?: WorkflowVariableList
     error?: string
     isDisabled?: boolean
@@ -43,6 +44,7 @@ const workflowVariablesNodeTypes: NonNullable<
 const TextareaWithVariables = ({
     value,
     onChange,
+    onBlur,
     variables,
     error,
     isDisabled,
@@ -159,6 +161,7 @@ const TextareaWithVariables = ({
                             readOnly={isDisabled}
                             editorState={editorState}
                             onChange={handleChange}
+                            onBlur={onBlur}
                             ref={(editor) => {
                                 editorRef.current = editor
                             }}

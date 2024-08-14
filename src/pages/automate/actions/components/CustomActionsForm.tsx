@@ -2,10 +2,8 @@ import React, {useEffect, useMemo} from 'react'
 import {ulid} from 'ulidx'
 import _ from 'lodash'
 import {useParams, useHistory} from 'react-router-dom'
-import {useFieldArray, useWatch, useForm, Controller} from 'react-hook-form'
-import {Label} from '@gorgias/ui-kit'
+import {useFieldArray, useForm, Controller, FormProvider} from 'react-hook-form'
 
-import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
@@ -13,19 +11,10 @@ import ToolbarContext, {
     ToolbarContextType,
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {VarSchema} from 'pages/automate/workflows/models/conditions.types'
 import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
-import BodyContentTypeSelect from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/BodyContentTypeSelect'
-import FormUrlencoded from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/FormUrlencoded'
-import {validateJSONWithVariables} from 'pages/automate/workflows/models/variables.model'
-import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
-import TextareaWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextareaWithVariables'
-import MethodSelect from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/MethodSelect'
-import Headers from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/Headers'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Button from 'pages/common/components/button/Button'
-import TextArea from 'pages/common/forms/TextArea'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {logEvent, SegmentEvent} from 'common/segment'
 
@@ -51,6 +40,7 @@ import ActionFormInputAiInstruction from './ActionFormInputAiInstruction'
 import ActionFormInputConditions from './ActionFormInputConditions'
 import ActionFormInputVariable from './ActionFormInputVariable'
 import css from './CustomActionsForm.less'
+import HttpRequestFormInput from './HttpRequestFormInput'
 
 type Props = {
     initialConfigurationData: CustomActionConfigurationFormInput
@@ -63,30 +53,11 @@ export default function CustomActionsForm({
         shopType: string
         shopName: string
     }>()
-    const {setValue, control, reset, watch, getValues, formState, trigger} =
-        useForm<CustomActionFormInputValues>({
-            defaultValues:
-                storeWorkflowsConfgurationToFormValue(initialFormValues),
-        })
-
-    const {
-        remove: removeConditions,
-        update: updateConditions,
-        append: appendConditions,
-    } = useFieldArray({
-        control,
-        name: 'conditions',
+    const methods = useForm<CustomActionFormInputValues>({
+        mode: 'onBlur',
+        defaultValues: storeWorkflowsConfgurationToFormValue(initialFormValues),
     })
-
-    const {
-        remove: removeHttpHeaders,
-        update: updateHttpHeaders,
-        append: appendHttpHeaders,
-    } = useFieldArray({
-        control,
-        name: 'httpHeaders',
-    })
-
+    const {control, reset, getValues, formState} = methods
     const {
         remove: removeCustomInputs,
         update: updateCustomInputs,
@@ -99,11 +70,6 @@ export default function CustomActionsForm({
     })
 
     const {routes} = useAiAgentNavigation({shopName})
-
-    const httpBody = useWatch({
-        control,
-        name: 'httpBody',
-    })
 
     const inputVariables = useMemo(
         () => getInputVariables(customInput),
@@ -232,7 +198,7 @@ export default function CustomActionsForm({
             llmPromptTriggerCopy.settings.outputs[0].description =
                 data.outputsDescription
 
-            if (data.conditionsType) {
+            if (data.conditionsType && data.conditions.length > 0) {
                 llmPromptTriggerCopy.settings.conditions = {
                     [data.conditionsType]: data.conditions,
                 } as any
@@ -251,10 +217,6 @@ export default function CustomActionsForm({
         ])
     }
 
-    useEffectOnce(() => {
-        void trigger()
-    })
-
     useEffect(() => {
         if (isActionUpserted || isActionDeleted) {
             history.push(routes.actions)
@@ -267,10 +229,6 @@ export default function CustomActionsForm({
         shopName,
         shopType,
     ])
-
-    const isHttpJsonBodyValid = useMemo(() => {
-        return validateJSONWithVariables(httpBody ?? '', inputVariables)
-    }, [httpBody, inputVariables])
 
     return (
         <ToolbarContext.Provider
@@ -294,35 +252,16 @@ export default function CustomActionsForm({
                         <BackToActionButton />
                     </header>
                     <div className={css.formSessionContainer}>
-                        <Controller
-                            control={control}
+                        <ActionFormInputName
                             name="name"
-                            rules={{
-                                required: true,
-                            }}
-                            render={({field: {onChange, value}}) => (
-                                <ActionFormInputName
-                                    isDisabled={isActionUpserting}
-                                    value={value}
-                                    onChange={onChange}
-                                />
-                            )}
-                        />
-                        <Controller
                             control={control}
-                            name="aiAgentInstructions"
-                            rules={{
-                                required: true,
-                            }}
-                            render={({field: {onChange, value}}) => (
-                                <ActionFormInputAiInstruction
-                                    value={value}
-                                    isDisabled={isActionUpserting}
-                                    onChange={onChange}
-                                />
-                            )}
+                            disabled={isActionUpserting}
                         />
-
+                        <ActionFormInputAiInstruction
+                            name="aiAgentInstructions"
+                            control={control}
+                            disabled={isActionUpserting}
+                        />
                         <Controller
                             control={control}
                             name="requiresConfirmation"
@@ -378,372 +317,19 @@ export default function CustomActionsForm({
                                 />
                             )}
                         />
-
-                        <Controller
-                            control={control}
-                            name="conditions"
-                            rules={{
-                                validate: (value) => {
-                                    if (
-                                        watch('conditionsType') &&
-                                        !value.length
-                                    ) {
-                                        return false
-                                    }
-                                    const conditionsValues = value.map(
-                                        (condition) =>
-                                            (
-                                                Object.values(condition)[0] as [
-                                                    VarSchema,
-                                                    (
-                                                        | string
-                                                        | null
-                                                        | undefined
-                                                        | boolean
-                                                    )
-                                                ]
-                                            )[1]
-                                    )
-                                    for (const value of conditionsValues) {
-                                        if (value === null) return false
-                                        if (
-                                            typeof value === 'string' &&
-                                            value.length === 0
-                                        )
-                                            return false
-                                    }
-                                },
-                            }}
-                            render={({field: {value}}) => (
-                                <ActionFormInputConditions
-                                    conditions={value}
-                                    inputVariables={inputVariables}
-                                    conditionsType={watch('conditionsType')}
-                                    onConditionDelete={(index) => {
-                                        removeConditions(index)
-                                    }}
-                                    onVariableSelect={(newCondition) => {
-                                        appendConditions(newCondition)
-                                    }}
-                                    onConditionTypeChange={(type) => {
-                                        setValue('conditionsType', type, {
-                                            shouldDirty: true,
-                                        })
-                                        // In order to trigger condtions validation when conditions type is changed
-                                        setValue(
-                                            'conditions',
-                                            watch('conditions'),
-                                            {
-                                                shouldDirty: true,
-                                            }
-                                        )
-                                    }}
-                                    onConditionChange={(condition, index) => {
-                                        updateConditions(index, condition)
-                                    }}
-                                />
-                            )}
-                        />
-                    </div>
-                </section>
-
-                <section>
-                    <header>
-                        <h1>Configure the HTTP request</h1>
-                    </header>
-                    <div className={css.formSessionContainer}>
-                        <div className={css.urlFormContainer}>
-                            <div className={css.formItem}>
-                                <Label isRequired>URL</Label>
-
-                                <Controller
-                                    control={control}
-                                    name="httpUrl"
-                                    rules={{
-                                        required: true,
-                                        validate: (value) =>
-                                            !validateWebhookURL(value),
-                                    }}
-                                    render={({field: {onChange, value}}) => (
-                                        <TextInputWithVariables
-                                            toolTipMessage={null}
-                                            isDisabled={isActionUpserting}
-                                            value={value}
-                                            noSelectedCategoryText="INSERT variable"
-                                            onChange={(value) =>
-                                                onChange(value)
-                                            }
-                                            variables={inputVariables}
-                                        />
-                                    )}
-                                />
-                            </div>
-                            <div className={css.formItem}>
-                                <Label isRequired>HTTP method</Label>
-                                <Controller
-                                    control={control}
-                                    name="httpMethod"
-                                    render={({field: {onChange, value}}) => (
-                                        <MethodSelect
-                                            isDisabled={isActionUpserting}
-                                            value={value}
-                                            onChange={(value) => {
-                                                onChange(value)
-                                                const newBody =
-                                                    value === 'GET'
-                                                        ? null
-                                                        : getValues(
-                                                              'httpBody'
-                                                          ) ?? '{}'
-
-                                                setValue('httpBody', newBody, {
-                                                    shouldDirty: true,
-                                                })
-
-                                                const httpContentType =
-                                                    getValues('httpContentType')
-                                                const newContentType =
-                                                    value === 'GET'
-                                                        ? null
-                                                        : httpContentType ??
-                                                          'application/json'
-
-                                                setValue(
-                                                    'httpContentType',
-                                                    newContentType,
-                                                    {
-                                                        shouldDirty: true,
-                                                    }
-                                                )
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </div>
-                        </div>
-
-                        <div className={css.formItem}>
-                            <Label>Headers</Label>
-
-                            <Controller
-                                control={control}
-                                name="httpHeaders"
-                                rules={{
-                                    validate: (value) =>
-                                        !value.some(
-                                            (header) =>
-                                                !validateHttpHeaderName(
-                                                    header.name
-                                                ) || !header.value.trim()
-                                        ),
-                                }}
-                                render={({field: {value}}) => (
-                                    <Headers
-                                        noSelectedCategoryText="INSERT variable"
-                                        inputVariableToolTipMessage={null}
-                                        isDisabled={isActionUpserting}
-                                        variables={inputVariables}
-                                        headers={value}
-                                        onChange={(index, value) =>
-                                            updateHttpHeaders(index, value)
-                                        }
-                                        onDelete={(index) =>
-                                            removeHttpHeaders(index)
-                                        }
-                                        onAdd={() =>
-                                            appendHttpHeaders({
-                                                name: '',
-                                                value: '',
-                                            })
-                                        }
-                                    />
-                                )}
+                        <FormProvider {...methods}>
+                            <ActionFormInputConditions
+                                inputVariables={inputVariables}
                             />
-                        </div>
-                        {(watch('httpContentType') === 'application/json' ||
-                            watch('httpContentType') ===
-                                'application/x-www-form-urlencoded') && (
-                            <div className={css.formItem}>
-                                <Label>Request body</Label>
-                                <Controller
-                                    control={control}
-                                    name="httpContentType"
-                                    render={({field: {onChange, value}}) => (
-                                        <BodyContentTypeSelect
-                                            isDisabled={isActionUpserting}
-                                            value={
-                                                value as
-                                                    | 'application/json'
-                                                    | 'application/x-www-form-urlencoded'
-                                            }
-                                            onChange={(value) => {
-                                                onChange(value)
-                                                const newHttpBody =
-                                                    value === 'application/json'
-                                                        ? '{}'
-                                                        : '='
-                                                setValue(
-                                                    'httpBody',
-                                                    newHttpBody,
-                                                    {
-                                                        shouldDirty: true,
-                                                    }
-                                                )
-                                            }}
-                                        />
-                                    )}
-                                />
-                                <div className={css.httpBodyInput}>
-                                    {watch('httpContentType') ===
-                                        'application/json' && (
-                                        <Controller
-                                            control={control}
-                                            name="httpBody"
-                                            rules={{
-                                                validate: (value) =>
-                                                    validateJSONWithVariables(
-                                                        value ?? '',
-                                                        inputVariables
-                                                    ),
-                                            }}
-                                            render={({
-                                                field: {onChange, value},
-                                            }) => (
-                                                <TextareaWithVariables
-                                                    variablePickerTooltipMessage={
-                                                        null
-                                                    }
-                                                    noSelectedCategoryText="INSERT variable"
-                                                    isDisabled={
-                                                        isActionUpserting
-                                                    }
-                                                    value={value ?? ''}
-                                                    onChange={(value) =>
-                                                        onChange(value)
-                                                    }
-                                                    variables={inputVariables}
-                                                    error={
-                                                        isHttpJsonBodyValid
-                                                            ? undefined
-                                                            : 'Invalid JSON'
-                                                    }
-                                                />
-                                            )}
-                                        />
-                                    )}
-                                    {watch('httpContentType') ===
-                                        'application/x-www-form-urlencoded' && (
-                                        <Controller
-                                            control={control}
-                                            name="httpBody"
-                                            rules={{
-                                                validate: (value) =>
-                                                    !Array.from(
-                                                        new URLSearchParams(
-                                                            value ?? ''
-                                                        )
-                                                    ).some(
-                                                        ([key, value]) =>
-                                                            !key.trim() ||
-                                                            !value.trim()
-                                                    ),
-                                            }}
-                                            render={({
-                                                field: {onChange, value},
-                                            }) => (
-                                                <FormUrlencoded
-                                                    inputVariableToolTipMessage={
-                                                        null
-                                                    }
-                                                    noSelectedCategoryText="INSERT variable"
-                                                    isDisabled={
-                                                        isActionUpserting
-                                                    }
-                                                    items={Array.from(
-                                                        new URLSearchParams(
-                                                            value ?? ''
-                                                        )
-                                                    ).map(([key, value]) => ({
-                                                        key,
-                                                        value,
-                                                    }))}
-                                                    variables={inputVariables}
-                                                    onChange={(index, item) => {
-                                                        const params =
-                                                            new URLSearchParams(
-                                                                value ?? ''
-                                                            )
-                                                        const entries =
-                                                            Array.from(params)
-                                                        entries[index] = [
-                                                            item.key,
-                                                            item.value,
-                                                        ]
-                                                        const newValue =
-                                                            new URLSearchParams(
-                                                                entries
-                                                            ).toString()
-                                                        onChange(newValue)
-                                                    }}
-                                                    onDelete={(index) => {
-                                                        const params =
-                                                            new URLSearchParams(
-                                                                getValues(
-                                                                    'httpBody'
-                                                                ) ?? ''
-                                                            )
-                                                        const entries =
-                                                            Array.from(params)
-                                                        entries.splice(index, 1)
-
-                                                        const newValue =
-                                                            new URLSearchParams(
-                                                                entries
-                                                            ).toString()
-                                                        onChange(newValue)
-                                                    }}
-                                                    onAdd={() => {
-                                                        const params =
-                                                            new URLSearchParams(
-                                                                getValues(
-                                                                    'httpBody'
-                                                                ) ?? ''
-                                                            )
-                                                        const entries =
-                                                            Array.from(params)
-                                                        entries.push(['', ''])
-
-                                                        const newValue =
-                                                            new URLSearchParams(
-                                                                entries
-                                                            ).toString()
-                                                        onChange(newValue)
-                                                    }}
-                                                />
-                                            )}
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                        )}
-
-                        <Controller
-                            control={control}
-                            name="outputsDescription"
-                            render={({field: {onChange, value}}) => (
-                                <TextArea
-                                    className={css.formItem}
-                                    darkenCaption
-                                    label="Request results explanation for AI Agent (optional)"
-                                    isDisabled={isActionUpserting}
-                                    onChange={onChange}
-                                    value={value}
-                                    caption="Provide additional guidance for AI Agent to interpret the HTTP request results."
-                                />
-                            )}
-                        />
+                        </FormProvider>
                     </div>
                 </section>
+
+                <HttpRequestFormInput
+                    inputVariables={inputVariables}
+                    control={control}
+                    disabled={isActionUpserting}
+                />
                 <section>
                     <Controller
                         control={control}

@@ -26,6 +26,7 @@ import css from './TextInputWithVariables.less'
 type Props = {
     value: string
     onChange: (value: string) => void
+    onBlur?: () => void
     variables?: WorkflowVariableList
     placeholder?: string
     noSelectedCategoryText?: string
@@ -36,6 +37,7 @@ type Props = {
 const TextInputWithVariables = ({
     value,
     onChange,
+    onBlur,
     variables,
     placeholder,
     noSelectedCategoryText,
@@ -138,6 +140,7 @@ const TextInputWithVariables = ({
                                     }}
                                     onBlur={() => {
                                         inputGroupContext?.setIsFocused(false)
+                                        onBlur?.()
                                     }}
                                     placeholder={placeholder}
                                 />
