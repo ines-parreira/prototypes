@@ -1,11 +1,12 @@
-import React from 'react'
+import React, {useCallback, useMemo} from 'react'
 
 import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import IconButton from 'pages/common/components/button/IconButton'
 
 type Props = {
     variant: CampaignVariant | null
+    variantName: string
     isDeletingDisabled: boolean
     isDuplicatingDisabled: boolean
     onDelete?: (variantId: string) => void
@@ -15,11 +16,51 @@ type Props = {
 const VariantActions: React.FC<Props> = (props) => {
     const {
         variant,
+        variantName,
         isDeletingDisabled,
         isDuplicatingDisabled,
         onDelete,
         onDuplicate,
     } = props
+
+    const renderConfirmation = useCallback(
+        ({uid, onDisplayConfirmation}) => {
+            return (
+                <IconButton
+                    className="mr-1"
+                    onClick={onDisplayConfirmation}
+                    isDisabled={isDeletingDisabled}
+                    fillStyle="ghost"
+                    intent="destructive"
+                    title="Delete campaign"
+                    id={uid}
+                    data-testid="delete-icon-button"
+                >
+                    delete
+                </IconButton>
+            )
+        },
+        [isDeletingDisabled]
+    )
+
+    const deleteButton = useMemo(() => {
+        return (
+            <ConfirmationPopover
+                buttonProps={{
+                    intent: 'destructive',
+                }}
+                content={
+                    <>
+                        You are about to delete <b>{variantName}</b>.
+                    </>
+                }
+                id={`delete-variant-${variant?.id}`}
+                onConfirm={() => variant && onDelete?.(variant.id as string)}
+            >
+                {renderConfirmation}
+            </ConfirmationPopover>
+        )
+    }, [variant, variantName, onDelete, renderConfirmation])
 
     return (
         <>
@@ -34,17 +75,7 @@ const VariantActions: React.FC<Props> = (props) => {
             >
                 file_copy
             </IconButton>
-            <IconButton
-                className="mr-1"
-                fillStyle="ghost"
-                intent="destructive"
-                title="Delete variant"
-                data-testid="delete-icon-button"
-                isDisabled={isDeletingDisabled}
-                onClick={() => variant && onDelete?.(variant.id as string)}
-            >
-                delete
-            </IconButton>
+            {deleteButton}
         </>
     )
 }

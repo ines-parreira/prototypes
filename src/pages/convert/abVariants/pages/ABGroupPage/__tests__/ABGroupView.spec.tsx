@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {act, createEvent, fireEvent} from '@testing-library/react'
+import {act, createEvent, fireEvent, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import {QueryClientProvider} from '@tanstack/react-query'
@@ -21,6 +21,7 @@ import {
 } from 'fixtures/abGroup'
 import {entitiesInitialState} from 'fixtures/entities'
 import {integrationsState} from 'fixtures/integrations'
+
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 
@@ -356,13 +357,13 @@ describe('ABGroupView', () => {
         expect(updateCampaignMock).not.toBeCalled()
     })
 
-    it('user can delete variant', () => {
+    it('user can delete variant', async () => {
         useParamsMock.mockReturnValue({
             id: integrationId,
             campaignId: campaignWithABGroup.id,
         })
 
-        const {getAllByTestId} = renderComponent(
+        const {getAllByTestId, getByText} = renderComponent(
             {
                 campaign: campaignWithABGroup,
                 integrationId: integrationId,
@@ -381,22 +382,24 @@ describe('ABGroupView', () => {
             )
         })
 
-        act(() => {
-            userEvent.click(deleteButtons[2])
-        })
+        userEvent.click(deleteButtons[2])
 
-        expect(updateCampaignMock).toBeCalledWith([
-            undefined,
-            {campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677'},
-            {
-                variants: [
-                    {
-                        id: campaignWithABGroup.variants[0].id,
-                        message_html: 'Lorem <b>Ipsum</b>.',
-                        message_text: 'Lorem Ipsum',
-                    },
-                ],
-            },
-        ])
+        getByText('Confirm').click()
+
+        await waitFor(() => {
+            expect(updateCampaignMock).toBeCalledWith([
+                undefined,
+                {campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677'},
+                {
+                    variants: [
+                        {
+                            id: campaignWithABGroup.variants[0].id,
+                            message_html: 'Lorem <b>Ipsum</b>.',
+                            message_text: 'Lorem Ipsum',
+                        },
+                    ],
+                },
+            ])
+        })
     })
 })

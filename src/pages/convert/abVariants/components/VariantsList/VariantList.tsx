@@ -115,6 +115,7 @@ const VariantsList: React.FC<Props> = ({
                     <BodyCell>0%</BodyCell>
                     <BodyCell style={{width: 110}}>
                         <VariantActions
+                            variantName="Control Variant"
                             variant={null}
                             isDeletingDisabled={true} // disabled by default
                             isDuplicatingDisabled={isCreateDisabled}
@@ -123,10 +124,11 @@ const VariantsList: React.FC<Props> = ({
                     </BodyCell>
                 </TableBodyRow>
                 {variants.map((variant, idx) => {
+                    const variantName = generateVariantName(idx)
                     return (
                         <TableBodyRow key={idx}>
                             <BodyCell>
-                                <strong>{generateVariantName(idx)}</strong>
+                                <strong>{variantName}</strong>
                             </BodyCell>
                             <BodyCell>-</BodyCell>
                             <BodyCell>-</BodyCell>
@@ -137,6 +139,7 @@ const VariantsList: React.FC<Props> = ({
                             <BodyCell style={{width: 110}}>
                                 <VariantActions
                                     variant={variant}
+                                    variantName={variantName}
                                     isDeletingDisabled={!canPerformActions}
                                     isDuplicatingDisabled={isCreateDisabled}
                                     onDelete={onDelete}
