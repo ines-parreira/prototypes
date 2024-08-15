@@ -22,11 +22,13 @@ export type DefaultFilterParams = {
     cubeName: string
     campaignIds?: string[]
     shopName?: string
+    abVariant?: string
 } & RequiredFilterParams
 
 export type FilterParams = {
     shopName?: string
     campaignIds?: string[]
+    abVariant?: string
     granularity?: ReportingGranularity
     limit?: number
     offset?: number

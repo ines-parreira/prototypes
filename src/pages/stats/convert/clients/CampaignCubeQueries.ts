@@ -30,6 +30,7 @@ const _getDefaultFilters = ({
     cubeName,
     campaignIds,
     shopName,
+    abVariant,
 }: DefaultFilterParams): CubeFilter[] => {
     const filters = [_inDateRangeFilter(startDate, endDate, cubeName)]
 
@@ -39,6 +40,10 @@ const _getDefaultFilters = ({
 
     if (shopName) {
         filters.push(_shopNameEqualsFilter(shopName, cubeName))
+    }
+
+    if (abVariant) {
+        filters.push(_abVariantEqualsFilter(abVariant, cubeName))
     }
 
     return filters
@@ -64,6 +69,17 @@ const _shopNameEqualsFilter = (
         member: `${cubeName}.${SharedDimension.shopName}`,
         operator: FilterOperator.equals,
         values: [shopName],
+    }
+}
+
+const _abVariantEqualsFilter = (
+    abVariant: string,
+    cubeName: string
+): CubeFilter => {
+    return {
+        member: `${cubeName}.${SharedDimension.abVariant}`,
+        operator: FilterOperator.equals,
+        values: [abVariant],
     }
 }
 
@@ -152,6 +168,7 @@ export const getCampaignOrderPerformanceDrillDownData = ({
     endDate,
     shopName,
     campaignIds,
+    abVariant,
     timezone,
     sorting,
 }: CubeFilterParams): ReportingQuery<ConvertOrderConversionCube> => {
@@ -174,6 +191,7 @@ export const getCampaignOrderPerformanceDrillDownData = ({
                 cubeName: Cube.orderConversion,
                 campaignIds,
                 shopName,
+                abVariant,
             }),
             _campaignNotEqualsFilter(Cube.orderConversion),
         ],

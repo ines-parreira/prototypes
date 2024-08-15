@@ -144,6 +144,7 @@ describe('getDrillDownQuery', () => {
             metricName: ConvertMetric.CampaignSalesCount,
             shopName: 'shopify:someShop',
             selectedCampaignIds: ['someCampaignId'],
+            abVariant: 'someAbVariant',
             context: {
                 channel_connection_external_ids: [],
             },
@@ -377,7 +378,8 @@ describe('getDrillDownQuery', () => {
             drillDownMetric.selectedCampaignIds,
             statsFilters,
             timezone,
-            undefined
+            undefined,
+            'someAbVariant'
         )
     })
 })

@@ -10,7 +10,8 @@ export const campaignSalesDrillDownQueryFactory = (
     selectedCampaignIds: string[],
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
+    abVariant?: string
 ): ReportingQuery<ConvertOrderConversionCube> => {
     const campaignIds = Array.isArray(filters[FilterKey.Campaigns])
         ? filters[FilterKey.Campaigns]
@@ -23,6 +24,7 @@ export const campaignSalesDrillDownQueryFactory = (
                 : campaignIds || [],
         startDate: filters.period.start_datetime,
         endDate: filters.period.end_datetime,
+        abVariant,
         shopName,
         timezone,
         sorting,

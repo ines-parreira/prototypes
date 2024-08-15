@@ -238,7 +238,8 @@ export const getDrillDownQuery = (
                     metricName.selectedCampaignIds,
                     statsFilters,
                     timezone,
-                    sorting
+                    sorting,
+                    metricName.abVariant
                 )
         case VoiceMetric.AverageTalkTime:
             return (statsFilters: StatsFilters, timezone: string) =>

@@ -29,6 +29,7 @@ describe('campaignSalesDrillDownQueryFactory', () => {
     }
     const shopName = 'shopify:athlete-shift'
     const timezone = 'someTimeZone'
+    const abVariant = 'CVAASP33YDHGCHQDDZT49KJ54A'
     const sorting = OrderDirection.Asc
 
     it('should build a query', () => {
@@ -38,7 +39,8 @@ describe('campaignSalesDrillDownQueryFactory', () => {
                 [],
                 statsFilters,
                 timezone,
-                sorting
+                sorting,
+                abVariant
             )
         ).toEqual({
             dimensions: [
@@ -68,6 +70,11 @@ describe('campaignSalesDrillDownQueryFactory', () => {
                     member: `${Cube.orderConversion}.${SharedDimension.shopName}`,
                     operator: FilterOperator.equals,
                     values: [shopName],
+                },
+                {
+                    member: `${Cube.orderConversion}.${SharedDimension.abVariant}`,
+                    operator: FilterOperator.equals,
+                    values: [abVariant],
                 },
                 {
                     member: OrderConversionDimension.campaignId,

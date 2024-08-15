@@ -4,22 +4,26 @@ import {formatNumber} from 'pages/stats/common/utils'
 import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
 import {ConvertMetric} from 'state/ui/stats/types'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {ConvertMetrics} from 'state/ui/stats/drillDownSlice'
 
 type Props = {
     cell: CampaignTableContentCell
     data: any
     isHighlighted?: boolean
+    variantId?: string
 }
 
-export const OrdersCell = ({cell, data, ...props}: Props) => {
+export const OrdersCell = ({cell, data, variantId, ...props}: Props) => {
+    const metricData: ConvertMetrics = {
+        ...(cell.drillDownMetricData[
+            ConvertMetric.CampaignSalesCount
+        ] as ConvertMetrics),
+        abVariant: variantId,
+    }
+
     return (
         <BodyCell {...props}>
-            <DrillDownModalTrigger
-                enabled={!!data}
-                metricData={
-                    cell.drillDownMetricData[ConvertMetric.CampaignSalesCount]
-                }
-            >
+            <DrillDownModalTrigger enabled={!!data} metricData={metricData}>
                 {formatNumber(data)}
             </DrillDownModalTrigger>
         </BodyCell>

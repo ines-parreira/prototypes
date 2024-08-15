@@ -17,7 +17,6 @@ import {formatNumber} from 'pages/stats/common/utils'
 
 import Badge, {BadgeColor} from 'gorgias-design-system/Badge/Badge'
 import {InferredCampaignStatus} from 'models/convert/campaign/types'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 
 import {OrdersCell} from 'pages/stats/convert/components/CampaignTableStats/components/OrdersCell'
 import {useIsConvertABVariantsEnabled} from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
@@ -37,8 +36,8 @@ type Props = {
     isTableScrolled?: boolean
     data: any
     isLoading?: boolean
+    variantId?: string
     variantName?: string
-    variant?: CampaignVariant
     variantToggleState: Record<string, boolean>
     setVariantToggleState: React.Dispatch<
         React.SetStateAction<Record<string, boolean>>
@@ -63,8 +62,8 @@ export const CampaignTableCell = ({
     isLoading,
     variantToggleState,
     setVariantToggleState,
+    variantId,
     variantName,
-    variant,
 }: Props) => {
     const isConvertABVariantsEnabled = useIsConvertABVariantsEnabled()
 
@@ -85,16 +84,23 @@ export const CampaignTableCell = ({
     }
 
     if (column.key === CampaignTableKeys.Conversions) {
-        return <OrdersCell {...bodyCellProps} cell={cell} data={data} />
+        return (
+            <OrdersCell
+                {...bodyCellProps}
+                cell={cell}
+                data={data}
+                variantId={variantId}
+            />
+        )
     }
 
-    if (column.key === CampaignTableKeys.TicketsCreated) {
+    if (column.key === CampaignTableKeys.TicketsCreated && !variantName) {
         return <TicketsCreatedCell {...bodyCellProps} cell={cell} data={data} />
     }
 
     if (column.key === CampaignTableKeys.CampaignName) {
         if (cell.chatIntegration) {
-            if (!!variantName) {
+            if (variantId && variantName) {
                 return (
                     <BodyCell
                         {...bodyCellProps}
@@ -108,15 +114,15 @@ export const CampaignTableCell = ({
                     >
                         <Link
                             to={
-                                variant
-                                    ? abVariantEditorUrl(
-                                          cell.chatIntegration.id.toString(),
-                                          cell.campaign.id,
-                                          variant.id
-                                      )
-                                    : abVariantControlVariantUrl(
+                                variantId === cell.campaign.id
+                                    ? abVariantControlVariantUrl(
                                           cell.chatIntegration.id.toString(),
                                           cell.campaign.id
+                                      )
+                                    : abVariantEditorUrl(
+                                          cell.chatIntegration.id.toString(),
+                                          cell.campaign.id,
+                                          variantId
                                       )
                             }
                         >

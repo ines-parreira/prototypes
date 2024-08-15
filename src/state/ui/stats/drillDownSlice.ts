@@ -111,6 +111,7 @@ export type ConvertMetrics = {
     metricName: ConvertMetric
     shopName: string
     selectedCampaignIds: string[]
+    abVariant?: string
     context: ConvertJobContext
 } & CommonMetrics
 
