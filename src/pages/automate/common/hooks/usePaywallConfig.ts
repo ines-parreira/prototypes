@@ -1,4 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
 import {assetsUrl} from 'utils'
 import {CarouselData} from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -12,11 +13,14 @@ export type PaywallFeature = {
     descriptions: string[]
     showRoiCalculator: boolean
     slidesWidth?: number
+    hideLearnMore?: boolean
+    customCta?: React.ReactNode
     slidesData: CarouselData[]
 }
 
 export const usePaywallConfig = (
-    automateFeature: AutomateFeatures
+    automateFeature: AutomateFeatures,
+    customCta?: React.ReactNode
 ): PaywallFeature => {
     const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
     switch (automateFeature) {
@@ -141,6 +145,76 @@ export const usePaywallConfig = (
                     {
                         imageUrl: assetsUrl(
                             '/img/paywalls/screens/ai_agent_waitwall.gif'
+                        ),
+                        description: '',
+                    },
+                ],
+            }
+        case AutomateFeatures.AutomateChat:
+            return {
+                headerTitle: '',
+                paywallLogo: '',
+                paywallLogoAlt: 'Gorgias Chat Preview',
+                paywallTitle:
+                    'Connect a Chat to your store to use Automate features',
+                showRoiCalculator: false,
+                hideLearnMore: true,
+                descriptions: [
+                    'Display Flows as interactive triggers on your Chat to proactively resolve top customer requests',
+                    'Allow customers to track and manage their orders directly within your Chat',
+                    'Automatically send Help Center articles to customer questions in Chat',
+                ],
+                customCta,
+                slidesData: [
+                    {
+                        imageUrl: assetsUrl(
+                            '/img/paywalls/screens/chat-preview.png'
+                        ),
+                        description: '',
+                    },
+                ],
+            }
+        case AutomateFeatures.AutomateContactForm:
+            return {
+                headerTitle: '',
+                paywallLogo: '',
+                paywallLogoAlt: 'Gorgias Contact Form Preview',
+                paywallTitle:
+                    'Connect a Contact Form to your store to use Automate features',
+                showRoiCalculator: false,
+                hideLearnMore: true,
+                descriptions: [
+                    'Display Flows as interactive triggers on your Contact Form to proactively resolve top customer requests',
+                    'Allow customers to track and manage their orders directly within your Contact Form',
+                ],
+                customCta,
+                slidesData: [
+                    {
+                        imageUrl: assetsUrl(
+                            '/img/paywalls/screens/contact-form-preview.png'
+                        ),
+                        description: '',
+                    },
+                ],
+            }
+        case AutomateFeatures.AutomateHelpCenter:
+            return {
+                headerTitle: '',
+                paywallLogo: '',
+                paywallLogoAlt: 'Gorgias Help Center Preview',
+                paywallTitle:
+                    'Connect a Help Center to your store to use Automate features',
+                showRoiCalculator: false,
+                hideLearnMore: true,
+                descriptions: [
+                    'Display Flows as interactive triggers on your Help Center to proactively resolve top customer requests',
+                    'Allow customers to track and manage their orders directly within your Help Center',
+                ],
+                customCta,
+                slidesData: [
+                    {
+                        imageUrl: assetsUrl(
+                            '/img/paywalls/screens/help-center-preview.png'
                         ),
                         description: '',
                     },

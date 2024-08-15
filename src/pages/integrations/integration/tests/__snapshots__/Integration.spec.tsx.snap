@@ -42,8 +42,6 @@ exports[`<IntegrationDetail /> should display not available message if twitter i
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the automate tab of a specific integration for %s 1`] = `null`;
-
 exports[`<IntegrationDetail /> should render the campaign tab of a specific integration for %s 1`] = `
 <div>
   GorgiasChatIntegrationCampaigns

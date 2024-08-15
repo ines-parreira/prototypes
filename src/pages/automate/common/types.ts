@@ -30,6 +30,9 @@ export type ChannelLanguage =
           ? GetShortCode<ChannelLanguageCode>
           : never)
 export enum AutomateFeatures {
+    AutomateChat = 'AutomateChat',
+    AutomateHelpCenter = 'AutomateHelpCenter',
+    AutomateContactForm = 'AutomateContactForm',
     Automate = 'Automate',
     AutomateStats = 'AutomateStats',
     AiAgent = 'AiAgent',

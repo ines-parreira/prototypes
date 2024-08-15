@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import {assetsUrl} from 'utils'
 import HeroImageCarousel from '../HeroImageCarousel'
 
@@ -120,5 +120,37 @@ describe('<HeroImageCarousel />', () => {
         expect(getByText(buttonLabel)).toBeInTheDocument()
         fireEvent.click(getByText(buttonLabel))
         expect(buttonClick).toBeCalled()
+    })
+
+    it('should hide the slide button if slide.length is 1 and no "singleSlideButtonTitle" is provided', () => {
+        const slidesData = [
+            {
+                imageUrl: assetsUrl('/img/slide1.png'),
+                description: 'description 1',
+                header: 'header 1',
+            },
+        ]
+        render(<HeroImageCarousel slides={slidesData} />)
+        const button = screen.queryByText(buttonLabel)
+        expect(button).not.toBeInTheDocument()
+    })
+
+    it('should render a single slide button if slide.length is 1 and singleSlideButtonTitle is provided', () => {
+        const slidesData = [
+            {
+                imageUrl: assetsUrl('/img/slide1.png'),
+                description: 'description 1',
+                header: 'header 1',
+            },
+        ]
+
+        render(
+            <HeroImageCarousel
+                slides={slidesData}
+                singleSlideButtonTitle={buttonLabel}
+            />
+        )
+        const button = screen.queryByText(buttonLabel)
+        expect(button).toBeInTheDocument()
     })
 })

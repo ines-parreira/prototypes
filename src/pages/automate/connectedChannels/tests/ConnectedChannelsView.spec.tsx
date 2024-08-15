@@ -23,7 +23,7 @@ import {ConnectedChannelsView} from '../ConnectedChannelsView'
 import {initialState as articlesState} from '../../../../state/entities/helpCenter/articles'
 import {initialState as categoriesState} from '../../../../state/entities/helpCenter/categories'
 
-const mockChatChannels = [
+const mockChannels = [
     {
         type: 'chat',
         value: {
@@ -95,235 +95,6 @@ const mockChatChannels = [
             id: 15,
             description: null,
             updated_datetime: '2024-07-12T12:44:21.004402+00:00',
-            managed: false,
-        },
-    },
-    {
-        type: 'chat',
-        value: {
-            deleted_datetime: null,
-            meta: {
-                shop_type: 'shopify',
-                wizard: {
-                    installation_method: 'manual',
-                    quick_response_ids: [],
-                    status: 'published',
-                    step: 'installation',
-                },
-                shop_integration_id: 8,
-                shop_name: 'itay-store-two',
-                shopify_integration_ids: [],
-                preferences: {
-                    email_capture_enforcement: 'optional',
-                    hide_on_mobile: false,
-                    email_capture_enabled: true,
-                    send_chat_transcript: true,
-                    hide_outside_business_hours: false,
-                    control_ticket_volume: false,
-                    live_chat_availability: 'auto-based-on-agent-availability',
-                    auto_responder: {
-                        enabled: true,
-                        reply: 'reply-dynamic',
-                    },
-                    privacy_policy_disclaimer_enabled: false,
-                    display_campaigns_hidden_chat: false,
-                    offline_mode_enabled_datetime: null,
-                },
-                language: 'en-US',
-                app_id: '24',
-                languages: [
-                    {
-                        language: 'en-US',
-                        primary: true,
-                    },
-                ],
-            },
-            http: null,
-            deactivated_datetime: null,
-            application_id: null,
-            name: '[E2E] 24/06/17_10:39:14 local chro 00',
-            uri: '/api/integrations/14/',
-            decoration: {
-                avatar_type: 'team-members',
-                launcher: {
-                    type: 'icon',
-                },
-                background_color_style: 'gradient',
-                conversation_color: '#115cb5',
-                position: {
-                    alignment: 'bottom-right',
-                    offsetX: 0,
-                    offsetY: 0,
-                },
-                introduction_text: 'How can we help?',
-                offline_introduction_text: 'We will be back soon',
-                avatar: {
-                    image_type: 'agent-picture',
-                    name_type: 'agent-first-name',
-                },
-                main_color: '#115cb5',
-            },
-            locked_datetime: null,
-            created_datetime: '2024-06-17T10:39:38.427296+00:00',
-            type: 'gorgias_chat',
-            id: 14,
-            description: null,
-            updated_datetime: '2024-07-12T12:44:59.364312+00:00',
-            managed: false,
-        },
-    },
-    {
-        type: 'chat',
-        value: {
-            deleted_datetime: null,
-            meta: {
-                shop_type: 'shopify',
-                wizard: {
-                    installation_method: 'manual',
-                    quick_response_ids: [],
-                    status: 'published',
-                    step: 'installation',
-                },
-                shop_integration_id: 8,
-                shop_name: 'itay-store-two',
-                shopify_integration_ids: [],
-                preferences: {
-                    email_capture_enforcement: 'optional',
-                    hide_on_mobile: false,
-                    email_capture_enabled: true,
-                    send_chat_transcript: true,
-                    hide_outside_business_hours: false,
-                    control_ticket_volume: false,
-                    live_chat_availability: 'auto-based-on-agent-availability',
-                    auto_responder: {
-                        enabled: true,
-                        reply: 'reply-dynamic',
-                    },
-                    privacy_policy_disclaimer_enabled: false,
-                    display_campaigns_hidden_chat: false,
-                    offline_mode_enabled_datetime: null,
-                },
-                language: 'en-US',
-                app_id: '23',
-                languages: [
-                    {
-                        language: 'en-US',
-                        primary: true,
-                    },
-                ],
-            },
-            http: null,
-            deactivated_datetime: null,
-            application_id: null,
-            name: 'test 1',
-            uri: '/api/integrations/13/',
-            decoration: {
-                avatar_type: 'team-members',
-                launcher: {
-                    type: 'icon',
-                },
-                background_color_style: 'gradient',
-                conversation_color: '#115cb5',
-                position: {
-                    alignment: 'bottom-right',
-                    offsetX: 0,
-                    offsetY: 0,
-                },
-                main_font_family: 'Inter',
-                introduction_text: 'How can we help?',
-                use_main_color_outside_business_hours: false,
-                offline_introduction_text: 'We will be back soon',
-                avatar: {
-                    image_type: 'agent-picture',
-                    name_type: 'agent-first-name',
-                },
-                main_color: '#115cb5',
-                display_bot_label: true,
-            },
-            locked_datetime: null,
-            created_datetime: '2024-06-17T10:33:18.860981+00:00',
-            type: 'gorgias_chat',
-            id: 13,
-            description: null,
-            updated_datetime: '2024-07-15T09:37:28.115505+00:00',
-            managed: false,
-        },
-    },
-    {
-        type: 'chat',
-        value: {
-            deleted_datetime: null,
-            meta: {
-                shop_type: 'shopify',
-                wizard: {
-                    installation_method: '1-click',
-                    quick_response_ids: [
-                        '8122010c-248b-4a1c-a795-8dd80eda57a0',
-                    ],
-                    status: 'published',
-                    step: 'installation',
-                },
-                shop_integration_id: 8,
-                one_click_installation_datetime: '2024-06-05T11:27:41.210735',
-                shop_name: 'itay-store-two',
-                shopify_integration_ids: [8],
-                one_click_installation_method: 'theme_app_extension',
-                preferences: {
-                    email_capture_enforcement: 'optional',
-                    hide_on_mobile: false,
-                    email_capture_enabled: true,
-                    send_chat_transcript: true,
-                    hide_outside_business_hours: false,
-                    control_ticket_volume: false,
-                    live_chat_availability: 'auto-based-on-agent-availability',
-                    auto_responder: {
-                        enabled: true,
-                        reply: 'reply-dynamic',
-                    },
-                    privacy_policy_disclaimer_enabled: false,
-                    display_campaigns_hidden_chat: false,
-                    offline_mode_enabled_datetime: null,
-                },
-                language: 'en-US',
-                app_id: '20',
-                languages: [
-                    {
-                        language: 'en-US',
-                        primary: true,
-                    },
-                ],
-            },
-            http: null,
-            deactivated_datetime: null,
-            application_id: null,
-            name: "Itay's Chat",
-            uri: '/api/integrations/10/',
-            decoration: {
-                avatar_type: 'team-members',
-                launcher: {
-                    type: 'icon',
-                },
-                background_color_style: 'gradient',
-                conversation_color: '#115cb5',
-                position: {
-                    alignment: 'bottom-right',
-                    offsetX: 0,
-                    offsetY: 0,
-                },
-                introduction_text: 'How can we help?',
-                offline_introduction_text: 'We will be back soon',
-                avatar: {
-                    image_type: 'agent-picture',
-                    name_type: 'agent-first-name',
-                },
-                main_color: '#115cb5',
-            },
-            locked_datetime: null,
-            created_datetime: '2024-06-05T11:27:05.925116+00:00',
-            type: 'gorgias_chat',
-            id: 10,
-            description: null,
-            updated_datetime: '2024-06-05T11:27:41.211069+00:00',
             managed: false,
         },
     },
@@ -465,6 +236,42 @@ jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
 jest.mock('pages/automate/common/hooks/useSelfServiceChannels')
 jest.mock('pages/automate/common/hooks/useHelpCentersAutomationSettings')
+jest.mock(
+    'pages/automate/connectedChannels/components/ConnectedChannelsEmptyView',
+    () => ({
+        ConnectedChannelsEmptyView: jest.fn(() => (
+            <div>ConnectedChannelsEmptyView</div>
+        )),
+    })
+)
+
+jest.mock(
+    'pages/automate/common/hooks/useSelfServiceHelpCenterChannels',
+    () => ({
+        __esModule: true,
+        default: () => [
+            {
+                value: {
+                    id: 1,
+                },
+            },
+        ],
+    })
+)
+
+jest.mock(
+    'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels',
+    () => ({
+        __esModule: true,
+        default: () => [
+            {
+                value: {
+                    id: 1,
+                },
+            },
+        ],
+    })
+)
 
 const renderWithRouter = (ui: React.ReactElement, {route = '/'} = {}) => {
     const history = createMemoryHistory({initialEntries: [route]})
@@ -485,7 +292,7 @@ describe('ConnectedChannelsView', () => {
             storeIntegration: null,
             isFetchPending: false,
         })
-        ;(useSelfServiceChannels as jest.Mock).mockReturnValue(mockChatChannels)
+        ;(useSelfServiceChannels as jest.Mock).mockReturnValue(mockChannels)
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings: {
                 25: {

@@ -23,9 +23,6 @@ export const GorgiasAutomateChatIntegration = ({integration}: Props) => {
     const storeIntegration = storeIntegrations.find(
         (integration) => integration.id === shopIntegrationId
     )
-    if (!storeIntegration) {
-        return null
-    }
     return (
         <div className="full-width">
             <PageHeader
@@ -47,8 +44,12 @@ export const GorgiasAutomateChatIntegration = ({integration}: Props) => {
             <GorgiasChatIntegrationHeader integration={integration} />
             <ConnectedChannelsChatView
                 channelId={channelId}
-                shopType={storeIntegration.type}
-                shopName={getShopNameFromStoreIntegration(storeIntegration)}
+                shopType={storeIntegration?.type}
+                shopName={
+                    storeIntegration
+                        ? getShopNameFromStoreIntegration(storeIntegration)
+                        : undefined
+                }
                 hideDropdown
             />
         </div>

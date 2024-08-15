@@ -17,8 +17,10 @@ import css from './AutomatePaywallView.less'
 
 const AutomatePaywallView = ({
     automateFeature,
+    customCta,
 }: {
     automateFeature: AutomateFeatures
+    customCta?: React.ReactNode
 }) => {
     const {
         headerTitle,
@@ -29,7 +31,8 @@ const AutomatePaywallView = ({
         showRoiCalculator,
         slidesWidth,
         slidesData,
-    } = usePaywallConfig(automateFeature)
+        ...props
+    } = usePaywallConfig(automateFeature, customCta)
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
     useEffectOnce(() => {
@@ -56,16 +59,20 @@ const AutomatePaywallView = ({
 
     return (
         <div className={css.layout}>
-            <PageHeader title={headerTitle}></PageHeader>
+            {headerTitle && <PageHeader title={headerTitle} />}
 
             <div className={css.wrapper}>
                 <div className={css.leftContainer}>
-                    <img
-                        className={css.headerIcon}
-                        src={paywallLogo}
-                        alt={paywallLogoAlt}
-                    />
-                    <div className={css.title}>{paywallTitle}</div>
+                    {paywallLogo && (
+                        <img
+                            className={css.headerIcon}
+                            src={paywallLogo}
+                            alt={paywallLogoAlt}
+                        />
+                    )}
+                    {paywallTitle && (
+                        <div className={css.title}>{paywallTitle}</div>
+                    )}
 
                     {descriptions.map((description, i) => (
                         <div key={i} className={css.description}>
@@ -85,25 +92,33 @@ const AutomatePaywallView = ({
                         <div data-candu-id="automate-ai-agent-waitwall" />
                     ) : (
                         <div className={css.actionButton}>
-                            <Button
-                                data-candu-id="automate-paywall-select-plan"
-                                onClick={() => setIsAutomationModalOpened(true)}
-                            >
-                                Select plan to get started
-                            </Button>
-                            <LinkButton
-                                target="blank"
-                                data-candu-id="automate-paywall-learn-more"
-                                intent="secondary"
-                                onClick={() =>
-                                    logEvent(
-                                        SegmentEvent.AutomatePaywallLearnMore
-                                    )
-                                }
-                                href="https://link.gorgias.com/bij"
-                            >
-                                Learn more
-                            </LinkButton>
+                            {props?.customCta ? (
+                                props.customCta
+                            ) : (
+                                <Button
+                                    data-candu-id="automate-paywall-select-plan"
+                                    onClick={() =>
+                                        setIsAutomationModalOpened(true)
+                                    }
+                                >
+                                    Select plan to get started
+                                </Button>
+                            )}
+                            {!props?.hideLearnMore && (
+                                <LinkButton
+                                    target="blank"
+                                    data-candu-id="automate-paywall-learn-more"
+                                    intent="secondary"
+                                    onClick={() =>
+                                        logEvent(
+                                            SegmentEvent.AutomatePaywallLearnMore
+                                        )
+                                    }
+                                    href="https://link.gorgias.com/bij"
+                                >
+                                    Learn more
+                                </LinkButton>
+                            )}
                         </div>
                     )}
 

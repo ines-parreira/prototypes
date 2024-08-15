@@ -68,15 +68,17 @@ const HeroImageCarousel = ({
                 </Slider>
             </div>
 
-            {slides.length === 1 && singleSlideButtonTitle ? (
-                <div className={css.slideAction}>
-                    <Button
-                        fillStyle="ghost"
-                        onClick={onSingleSlideButtonTitleClick}
-                    >
-                        {singleSlideButtonTitle}
-                    </Button>
-                </div>
+            {slides.length === 1 ? (
+                singleSlideButtonTitle ? (
+                    <div className={css.slideAction}>
+                        <Button
+                            fillStyle="ghost"
+                            onClick={onSingleSlideButtonTitleClick}
+                        >
+                            {singleSlideButtonTitle}
+                        </Button>
+                    </div>
+                ) : null
             ) : (
                 <div className={css.slideAction}>
                     <i

@@ -10,11 +10,13 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import {ContactForm} from 'models/contactForm/types'
+import {AutomateFeatures} from 'pages/automate/common/types'
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import {FlowsSettings} from './FlowsSettings'
 import css from './ConnectedChannelsChatView.less'
 import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
 import {FeatureSettings} from './FeatureSettings'
+import {ConnectedChannelsEmptyView} from './ConnectedChannelsEmptyView'
 
 interface Props {
     contactForm?: ContactForm
@@ -73,6 +75,14 @@ export const ConnectedChannelsContactFormView = ({
         },
         [automationSettings, handleContactFormAutomationSettingsUpdate]
     )
+
+    if (contactFormChannels.length === 0) {
+        return (
+            <ConnectedChannelsEmptyView
+                view={AutomateFeatures.AutomateContactForm}
+            />
+        )
+    }
 
     const isOrderManagementEnabled =
         automationSettings.order_management?.enabled

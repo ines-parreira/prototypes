@@ -9,11 +9,13 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import {HelpCenter} from 'models/helpCenter/types'
+import {AutomateFeatures} from 'pages/automate/common/types'
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import {FlowsSettings} from './FlowsSettings'
 import css from './ConnectedChannelsChatView.less'
 import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
 import {FeatureSettings} from './FeatureSettings'
+import {ConnectedChannelsEmptyView} from './ConnectedChannelsEmptyView'
 
 interface Props {
     helpCenter?: HelpCenter
@@ -76,6 +78,14 @@ export const ConnectedChannelsHelpCenterView = ({
     const isOrderManagementEnabled = useMemo(() => {
         return automationSettings.order_management?.enabled ?? false
     }, [automationSettings])
+
+    if (helpCenterChannels.length === 0) {
+        return (
+            <ConnectedChannelsEmptyView
+                view={AutomateFeatures.AutomateHelpCenter}
+            />
+        )
+    }
 
     const isLoading =
         !selfServiceConfiguration ||

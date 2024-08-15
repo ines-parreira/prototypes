@@ -1,3 +1,4 @@
+import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {assetsUrl} from 'utils'
@@ -210,6 +211,99 @@ describe('usePaywallConfig', () => {
                 {
                     imageUrl:
                         'https://mockedurl.com/img/paywalls/screens/ai_agent_waitwall.gif',
+                    description: '',
+                },
+            ],
+        }
+
+        expect(result.current).toEqual(expectedConfig)
+    })
+
+    it('should return the correct config for AutomateFeatures.AutomateChat', () => {
+        const customCta = <div role="button">My custom call to Action</div>
+        const {result} = renderHook(() =>
+            usePaywallConfig(AutomateFeatures.AutomateChat, customCta)
+        )
+
+        const expectedConfig: PaywallFeature = {
+            customCta: <div role="button">My custom call to Action</div>,
+            descriptions: [
+                'Display Flows as interactive triggers on your Chat to proactively resolve top customer requests',
+                'Allow customers to track and manage their orders directly within your Chat',
+                'Automatically send Help Center articles to customer questions in Chat',
+            ],
+            headerTitle: '',
+            hideLearnMore: true,
+            paywallLogo: '',
+            paywallLogoAlt: 'Gorgias Chat Preview',
+            paywallTitle:
+                'Connect a Chat to your store to use Automate features',
+            showRoiCalculator: false,
+            slidesData: [
+                {
+                    description: '',
+                    imageUrl:
+                        'https://mockedurl.com/img/paywalls/screens/chat-preview.png',
+                },
+            ],
+        }
+        expect(result.current).toMatchObject(expectedConfig)
+    })
+
+    it('should return the correct config for AutomateFeatures.AutomateContactForm', () => {
+        const customCta = <div role="button">My custom call to Action</div>
+        const {result} = renderHook(() =>
+            usePaywallConfig(AutomateFeatures.AutomateContactForm, customCta)
+        )
+        const expectedConfig: PaywallFeature = {
+            headerTitle: '',
+            paywallLogo: '',
+            paywallLogoAlt: 'Gorgias Contact Form Preview',
+            paywallTitle:
+                'Connect a Contact Form to your store to use Automate features',
+            showRoiCalculator: false,
+            hideLearnMore: true,
+            descriptions: [
+                'Display Flows as interactive triggers on your Contact Form to proactively resolve top customer requests',
+                'Allow customers to track and manage their orders directly within your Contact Form',
+            ],
+            customCta,
+            slidesData: [
+                {
+                    imageUrl: assetsUrl(
+                        '/img/paywalls/screens/contact-form-preview.png'
+                    ),
+                    description: '',
+                },
+            ],
+        }
+        expect(result.current).toEqual(expectedConfig)
+    })
+
+    it('should return the correct config for AutomateFeatures.AutomateHelpCenter', () => {
+        const customCta = <div role="button">My custom call to Action</div>
+        const {result} = renderHook(() =>
+            usePaywallConfig(AutomateFeatures.AutomateHelpCenter, customCta)
+        )
+
+        const expectedConfig: PaywallFeature = {
+            headerTitle: '',
+            paywallLogo: '',
+            paywallLogoAlt: 'Gorgias Help Center Preview',
+            paywallTitle:
+                'Connect a Help Center to your store to use Automate features',
+            showRoiCalculator: false,
+            hideLearnMore: true,
+            descriptions: [
+                'Display Flows as interactive triggers on your Help Center to proactively resolve top customer requests',
+                'Allow customers to track and manage their orders directly within your Help Center',
+            ],
+            customCta,
+            slidesData: [
+                {
+                    imageUrl: assetsUrl(
+                        '/img/paywalls/screens/help-center-preview.png'
+                    ),
                     description: '',
                 },
             ],

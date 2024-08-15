@@ -126,6 +126,62 @@ describe('AutomatePaywallView', () => {
         )
     })
 
+    it('hide the header title when it is not provided', () => {
+        mockUsePaywallConfig.mockReturnValue({
+            ...paywallConfig,
+            headerTitle: '',
+        })
+
+        renderWithProvider(
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+        )
+
+        expect(screen.queryByText('Automate')).not.toBeInTheDocument()
+    })
+
+    it('hide the logo when it is not provided', () => {
+        mockUsePaywallConfig.mockReturnValue({
+            ...paywallConfig,
+            paywallLogo: '',
+        })
+
+        renderWithProvider(
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+        )
+
+        expect(screen.queryByAltText('logo-alt')).not.toBeInTheDocument()
+    })
+
+    it('hides the learn more button when "hideLearnMore" is true', () => {
+        mockUsePaywallConfig.mockReturnValue({
+            ...paywallConfig,
+            hideLearnMore: true,
+        })
+
+        renderWithProvider(
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+        )
+        expect(screen.queryByText('Learn more')).not.toBeInTheDocument()
+    })
+
+    it('displays a custom call to action when provided, instead of the default "Select plan to get started"', () => {
+        mockUsePaywallConfig.mockReturnValue({
+            ...paywallConfig,
+            customCta: <div role="button">My custom call to Action</div>,
+        })
+
+        renderWithProvider(
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+        )
+
+        expect(
+            screen.getByRole('button', {name: 'My custom call to Action'})
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText('Select plan to get started')
+        ).not.toBeInTheDocument()
+    })
+
     it('displays ROI Calculator button when feature flag is enabled', () => {
         renderWithProvider(
             <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />

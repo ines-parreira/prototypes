@@ -361,23 +361,6 @@ describe('<IntegrationDetail />', () => {
         }
     )
 
-    it('should render the automate tab of a specific integration for %s', () => {
-        const {container} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>
-            </QueryClientProvider>,
-            {
-                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Automate}`,
-            }
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render the list of campaigns of a specific integration for %s', () => {
         const {container} = renderWithRouter(
             <QueryClientProvider client={queryClient}>

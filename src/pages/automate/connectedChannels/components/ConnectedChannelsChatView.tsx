@@ -13,11 +13,13 @@ import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat
 import Spinner from 'pages/common/components/Spinner'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {SegmentEvent, logEvent} from 'common/segment'
+import {AutomateFeatures} from 'pages/automate/common/types'
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import {FlowsSettings} from './FlowsSettings'
 import css from './ConnectedChannelsChatView.less'
 import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
 import {FeatureSettings} from './FeatureSettings'
+import {ConnectedChannelsEmptyView} from './ConnectedChannelsEmptyView'
 
 interface Props {
     channelId?: string
@@ -152,7 +154,10 @@ export const ConnectedChannelsChatView = ({
 
     const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
 
-    if (chatChannels.length === 0) return null
+    if (chatChannels.length === 0)
+        return (
+            <ConnectedChannelsEmptyView view={AutomateFeatures.AutomateChat} />
+        )
 
     if (isLoading) {
         return (
