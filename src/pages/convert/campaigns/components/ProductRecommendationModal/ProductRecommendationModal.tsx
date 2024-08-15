@@ -1,16 +1,14 @@
 import React from 'react'
 import {Modal, ModalBody, ModalHeader} from 'reactstrap'
-import {ulid} from 'ulidx'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Button from 'pages/common/components/button/Button'
 import {useAppNode} from 'appNode'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import {assetsUrl} from 'utils'
-
 import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {getRecommendedTriggerForScenario} from 'pages/convert/campaigns/utils/geRecommendedTriggerForScenario'
+
 import css from './ProductRecommendationModal.less'
 
 const getScenarioContent = (scenario: ProductRecommendationScenario) => {
@@ -62,35 +60,17 @@ const getScenarioContent = (scenario: ProductRecommendationScenario) => {
     }
 }
 
-const getScenarioTrigger = (scenario: ProductRecommendationScenario) => {
-    switch (scenario) {
-        case ProductRecommendationScenario.SimilarBought:
-            return {
-                id: ulid(),
-                type: CampaignTriggerType.OrdersCount,
-                operator: CampaignTriggerOperator.Gt,
-                value: 0,
-            }
-        case ProductRecommendationScenario.OutOfStockAlternatives:
-            return {
-                id: ulid(),
-                type: CampaignTriggerType.OutOfStockProductPages,
-                operator: CampaignTriggerOperator.Eq,
-                value: 'true',
-            }
-    }
-}
-
 type Props = {
     scenario: ProductRecommendationScenario
     isOpen: boolean
     onSubmit: (trigger: CampaignTrigger | undefined) => void
     onClose: () => void
+    onExit: () => void
 }
 
 const ProductRecommendationModal = (props: Props) => {
     const appNode = useAppNode()
-    const {scenario, isOpen, onSubmit, onClose} = props
+    const {scenario, isOpen, onSubmit, onClose, onExit} = props
 
     const {title, description, image} = getScenarioContent(scenario)
     if (!title || !description || !image) {
@@ -98,7 +78,7 @@ const ProductRecommendationModal = (props: Props) => {
     }
 
     const onSubmitClick = () => {
-        const trigger = getScenarioTrigger(scenario)
+        const trigger = getRecommendedTriggerForScenario(scenario)
         onSubmit(trigger)
     }
 
@@ -110,6 +90,7 @@ const ProductRecommendationModal = (props: Props) => {
         <Modal
             isOpen={isOpen}
             toggle={onClose}
+            onExit={onExit}
             autoFocus={true}
             backdrop="static"
             size="lg"

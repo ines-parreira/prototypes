@@ -45,6 +45,10 @@ import BannerNotification from 'pages/common/components/BannerNotifications/Bann
 
 import {createCampaignPayload} from 'pages/convert/campaigns/utils/createCampaignPayload'
 
+import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
+import {CampaignProductRecommendation} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
+import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
 
 import {usePristineSteps} from '../../hooks/usePristineSteps'
@@ -257,6 +261,18 @@ export const CampaignDetailsForm = ({
         return transformAttachmentsToDiscountOffers(attachments)
     }, [attachments])
 
+    const productRecommendations = useMemo<
+        CampaignProductRecommendation[]
+    >(() => {
+        return transformAttachmentsToProductRecommendations(attachments)
+    }, [attachments])
+
+    const productsToPreview = useGetPreviewProducts(
+        shopifyIntegration,
+        productRecommendations,
+        shopifyProducts
+    )
+
     const handleUpdateCampaign = useCallback(
         (key: string, payload: any) => {
             if (key === 'name') {
@@ -366,6 +382,7 @@ export const CampaignDetailsForm = ({
                 shopifyIntegration: integration,
                 shopifyProducts: shopifyProducts,
                 discountOffers: discountOffers,
+                productRecommendations: productRecommendations,
                 isEditMode: isEditMode,
                 isActive: activate,
             })
@@ -675,40 +692,46 @@ export const CampaignDetailsForm = ({
                         </div>
                         <div>
                             {!isFormLoading && (
-                                <CampaignPreview
-                                    {...chatPreviewProps}
-                                    translatedTexts={
-                                        campaignData.language
-                                            ? GORGIAS_CHAT_WIDGET_TEXTS[
-                                                  campaignData.language
-                                              ]
-                                            : chatPreviewProps.translatedTexts
-                                    }
-                                    className={css.campaignPreview}
-                                    products={shopifyProducts}
-                                    discountOffers={discountOffers}
-                                    html={sanitizeHtmlDefault(
-                                        campaignData.message_html || ''
+                                <>
+                                    {!!productRecommendations.length && (
+                                        <ProductRecommendationBanner />
                                     )}
-                                    authorName={
-                                        campaignData.meta?.agentName ?? ``
-                                    }
-                                    authorAvatarUrl={
-                                        campaignData.meta?.agentAvatarUrl ?? ''
-                                    }
-                                    avatar={avatar}
-                                    chatTitle={integration.get('name')}
-                                    mainFontFamily={
-                                        chatPreviewProps.mainFontFamily ??
-                                        GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
-                                    }
-                                    shouldHideReplyInput={
-                                        !!campaignData.meta?.noReply
-                                    }
-                                    onCampaignContentChange={
-                                        setShowContentWarning
-                                    }
-                                />
+                                    <CampaignPreview
+                                        {...chatPreviewProps}
+                                        translatedTexts={
+                                            campaignData.language
+                                                ? GORGIAS_CHAT_WIDGET_TEXTS[
+                                                      campaignData.language
+                                                  ]
+                                                : chatPreviewProps.translatedTexts
+                                        }
+                                        className={css.campaignPreview}
+                                        products={productsToPreview}
+                                        discountOffers={discountOffers}
+                                        html={sanitizeHtmlDefault(
+                                            campaignData.message_html || ''
+                                        )}
+                                        authorName={
+                                            campaignData.meta?.agentName ?? ``
+                                        }
+                                        authorAvatarUrl={
+                                            campaignData.meta?.agentAvatarUrl ??
+                                            ''
+                                        }
+                                        avatar={avatar}
+                                        chatTitle={integration.get('name')}
+                                        mainFontFamily={
+                                            chatPreviewProps.mainFontFamily ??
+                                            GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                                        }
+                                        shouldHideReplyInput={
+                                            !!campaignData.meta?.noReply
+                                        }
+                                        onCampaignContentChange={
+                                            setShowContentWarning
+                                        }
+                                    />
+                                </>
                             )}
                         </div>
                     </div>

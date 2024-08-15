@@ -1,5 +1,8 @@
 import {fromJS} from 'immutable'
-import {campaign as campaignFixture} from 'fixtures/campaign'
+import {
+    campaign as campaignFixture,
+    campaignProductRecommendationAttachment,
+} from 'fixtures/campaign'
 
 import {getLDClient} from 'utils/launchDarkly'
 
@@ -52,6 +55,7 @@ describe('createCampaignPayload', () => {
             shopifyIntegration: integration,
             shopifyProducts: [],
             discountOffers: [],
+            productRecommendations: [],
             isActive: false,
             isEditMode: false,
         })
@@ -75,11 +79,15 @@ describe('createCampaignPayload', () => {
             shopifyIntegration: integration,
             shopifyProducts: [MOCK_CAMPAIGN_PRODUCT],
             discountOffers: [MOCK_CAMPAIGN_DISCOUNT],
+            productRecommendations: [campaignProductRecommendationAttachment],
             isActive: true,
             isEditMode: false,
         })
 
         expect(payload.attachments).toEqual([
+            {
+                ...campaignProductRecommendationAttachment,
+            },
             {
                 contentType: 'application/discountOffer',
                 extra: {
@@ -119,6 +127,7 @@ describe('createCampaignPayload', () => {
             shopifyIntegration: integration,
             shopifyProducts: [MOCK_CAMPAIGN_PRODUCT],
             discountOffers: [MOCK_CAMPAIGN_DISCOUNT],
+            productRecommendations: [campaignProductRecommendationAttachment],
             isActive: false,
             isEditMode: true,
         })

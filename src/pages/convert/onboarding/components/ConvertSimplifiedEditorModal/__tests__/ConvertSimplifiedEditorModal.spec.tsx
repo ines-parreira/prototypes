@@ -29,6 +29,9 @@ import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGet
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
 
+import {campaignProductRecommendationAttachment} from 'fixtures/campaign'
+import {AttachmentEnum} from 'common/types'
+import {getNewMessageAttachments} from 'state/newMessage/selectors'
 import ConvertSimplifiedEditorModal from '../ConvertSimplifiedEditorModal'
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
@@ -41,6 +44,9 @@ jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection
 )
+
+jest.mock('state/newMessage/selectors')
+const getNewMessageAttachmentsMock = assumeMock(getNewMessageAttachments)
 
 jest.mock('utils/launchDarkly')
 const allFlagsMock = getLDClient().allFlags as jest.Mock
@@ -61,6 +67,12 @@ const integration = fromJS({
         shop_type: 'shopify',
     },
 })
+
+const campaign = {
+    id: '1',
+    message_text: 'Lorem Ipsum',
+    message_html: '<p>Lorem Ipsum</p>',
+} as Campaign
 
 const queryClient = mockQueryClient()
 
@@ -86,6 +98,8 @@ describe('<ConvertSimplifiedEditorModal />', () => {
                 mutateAsync: jest.fn(),
             } as unknown as ReturnType<typeof useUpdateCampaign>
         })
+
+        getNewMessageAttachmentsMock.mockReturnValue(fromJS([]))
     })
 
     it('renders a template', async () => {
@@ -111,12 +125,6 @@ describe('<ConvertSimplifiedEditorModal />', () => {
     })
 
     it('renders a existing campaign', async () => {
-        const campaign = {
-            id: '1',
-            message_text: 'Lorem Ipsum',
-            message_html: '<p>Lorem Ipsum</p>',
-        } as Campaign
-
         const {getByText} = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(defaultState)}>
@@ -135,6 +143,43 @@ describe('<ConvertSimplifiedEditorModal />', () => {
         await waitFor(() => {
             expect(getByText('Prevent Cart Abandonment')).toBeTruthy() // There is no option to edit name
             expect(getByText('Lorem Ipsum')).toBeTruthy()
+        })
+    })
+
+    it('renders the banner when product recommendation is in attachments', async () => {
+        getNewMessageAttachmentsMock.mockReturnValue(
+            fromJS([
+                {
+                    ...campaignProductRecommendationAttachment,
+                    content_type: AttachmentEnum.ProductRecommendation,
+                },
+            ])
+        )
+
+        const {queryByText} = render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <ConvertSimplifiedEditorModal
+                        isOpen={true}
+                        integration={integration}
+                        template={CART_ABANDONMENT}
+                        estimatedRevenue={'estimated revenue'}
+                        onClose={jest.fn()}
+                        campaign={campaign}
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        await waitFor(() => {
+            expect(
+                queryByText(
+                    'Product recommendations will be personalized for each visitor',
+                    {
+                        exact: false,
+                    }
+                )
+            ).toBeInTheDocument()
         })
     })
 })

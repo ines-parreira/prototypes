@@ -1,0 +1,23 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/mixins';
+
+:local {
+    .bannerWrapper {
+        .body-regular();
+        width: 384px;
+        display: flex;
+        margin: @layout-spacing-m 0 0 56px;
+        padding: @layout-spacing-s 20px;
+        gap: @layout-spacing-s;
+        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-0);
+        border: 1px solid var(--ai-magenta-3);
+        border-radius: 4px;
+
+        .icon {
+            color: var(--ai-magenta-3);
+            font-size: @heading-section-regular-font-size;
+        }
+    }
+}

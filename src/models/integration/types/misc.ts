@@ -65,7 +65,7 @@ export type IntegrationDataItem<T> = {
 }
 
 export type ProductCardDetails = {
-    fullProductTitle: string
+    fullProductTitle?: string
     imageUrl: string
     link: string
     variantTitle?: string

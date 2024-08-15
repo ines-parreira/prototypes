@@ -49,6 +49,11 @@ import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
 import {GorgiasChatIntegration} from 'models/integration/types'
+import {CampaignProductRecommendation} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
+import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
+import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
+
 import css from './ConvertSimplifiedEditorModal.less'
 
 type Props = {
@@ -160,6 +165,18 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
         return transformAttachmentsToDiscountOffers(attachments)
     }, [attachments])
 
+    const productRecommendations = useMemo<
+        CampaignProductRecommendation[]
+    >(() => {
+        return transformAttachmentsToProductRecommendations(attachments)
+    }, [attachments])
+
+    const productsToPreview = useGetPreviewProducts(
+        storeIntegration,
+        productRecommendations,
+        shopifyProducts
+    )
+
     const chatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]
 
@@ -182,6 +199,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
             shopifyIntegration: integration,
             shopifyProducts: shopifyProducts,
             discountOffers: discountOffers,
+            productRecommendations: productRecommendations,
             isActive: activate,
             isEditMode: !!campaign?.id,
         })
@@ -260,33 +278,42 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
                     </div>
                     <div className={css.rightSide}>
                         {campaign && (
-                            <CampaignPreview
-                                {...chatPreviewProps}
-                                translatedTexts={
-                                    campaign.language
-                                        ? GORGIAS_CHAT_WIDGET_TEXTS[
-                                              campaign.language
-                                          ]
-                                        : chatPreviewProps.translatedTexts
-                                }
-                                className={css.campaignPreview}
-                                products={shopifyProducts}
-                                discountOffers={discountOffers}
-                                html={sanitizeHtmlDefault(
-                                    campaign.message_html || ''
+                            <>
+                                {!!productRecommendations.length && (
+                                    <ProductRecommendationBanner
+                                        className={css.recommendationBanner}
+                                    />
                                 )}
-                                authorName={campaign.meta?.agentName ?? ``}
-                                authorAvatarUrl={
-                                    campaign.meta?.agentAvatarUrl ?? ''
-                                }
-                                chatTitle={integration.get('name')}
-                                mainFontFamily={
-                                    chatPreviewProps.mainFontFamily ??
-                                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
-                                }
-                                shouldHideReplyInput={!!campaign.meta?.noReply}
-                                onCampaignContentChange={() => {}}
-                            />
+                                <CampaignPreview
+                                    {...chatPreviewProps}
+                                    translatedTexts={
+                                        campaign.language
+                                            ? GORGIAS_CHAT_WIDGET_TEXTS[
+                                                  campaign.language
+                                              ]
+                                            : chatPreviewProps.translatedTexts
+                                    }
+                                    className={css.campaignPreview}
+                                    products={productsToPreview}
+                                    discountOffers={discountOffers}
+                                    html={sanitizeHtmlDefault(
+                                        campaign.message_html || ''
+                                    )}
+                                    authorName={campaign.meta?.agentName ?? ``}
+                                    authorAvatarUrl={
+                                        campaign.meta?.agentAvatarUrl ?? ''
+                                    }
+                                    chatTitle={integration.get('name')}
+                                    mainFontFamily={
+                                        chatPreviewProps.mainFontFamily ??
+                                        GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                                    }
+                                    shouldHideReplyInput={
+                                        !!campaign.meta?.noReply
+                                    }
+                                    onCampaignContentChange={() => {}}
+                                />
+                            </>
                         )}
                     </div>
                 </div>

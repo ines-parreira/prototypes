@@ -26,6 +26,7 @@ import Result, {
 import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import ProductAutomations from 'pages/common/components/ProductAutomations/ProductAutomations'
 import {ProductRecommendationAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {transformShopifyProductToProductCardDetails} from 'pages/common/draftjs/plugins/toolbar/utils'
 import css from './ShopifyProductLine.less'
 
 type OwnProps = {
@@ -138,23 +139,12 @@ export default function ShopifyProductLine({
             const variants = result?.data?.variants || []
 
             if (disableVariantStep || (variants.length === 1 && result)) {
-                const productCardDetails = {
-                    imageUrl:
-                        result?.data?.image?.src ||
-                        getIconFromUrl(shopifyPlaceholderImage),
-                    price: result?.data?.variants[0].price,
-                    currency: shopifyIntegration.get('currency'),
-                    link: `https://${shopifyIntegration.get(
-                        'shop_domain'
-                    )}/products/${result?.data?.handle || ''}`,
-                    productTitle: result?.data?.title,
-                    productId: result?.data?.id,
-                    variantId: result?.data?.variants?.[0]?.id,
-                    variantTitle:
+                const productCardDetails =
+                    transformShopifyProductToProductCardDetails(
+                        result,
+                        shopifyIntegration,
                         disableVariantStep && variants.length > 1
-                            ? result?.data?.title
-                            : undefined,
-                } as ProductCardDetails
+                    )
                 productClicked(productCardDetails)
             } else {
                 setClickedResult(result)
@@ -246,7 +236,6 @@ export default function ShopifyProductLine({
             )}
             {!filter && canAddProductAutomations && (
                 <ProductAutomations
-                    products={shopifyProducts}
                     productAutomationClicked={productAutomationClicked}
                     onClick={() => setIsProductAutomationPicked(true)}
                     onBackClicked={() => setIsProductAutomationPicked(false)}

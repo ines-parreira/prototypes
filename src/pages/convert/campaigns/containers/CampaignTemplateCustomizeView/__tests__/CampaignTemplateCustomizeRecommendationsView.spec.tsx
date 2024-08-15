@@ -20,6 +20,7 @@ const mockStore = configureMockStore()
 
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
+jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(

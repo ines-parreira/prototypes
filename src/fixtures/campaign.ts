@@ -6,6 +6,8 @@ import {
     ProductRecommendationScenario,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 
 export const campaignId = 'ee869594-65e2-45a5-a759-a4660c9ce677'
 
@@ -13,8 +15,8 @@ export const triggerId = '476ce50d-ac6f-4553-8400-b7ae0aad70c2'
 
 export const campaignTrigger = {
     id: triggerId,
-    type: 'time_spent_on_page',
-    operator: 'gt',
+    type: CampaignTriggerType.TimeSpentOnPage,
+    operator: CampaignTriggerOperator.Gt,
     value: 10,
 }
 

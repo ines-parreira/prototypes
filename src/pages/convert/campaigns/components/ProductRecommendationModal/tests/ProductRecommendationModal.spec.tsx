@@ -13,6 +13,7 @@ describe('<ProductRecommendationModal />', () => {
         isOpen: true,
         onSubmit: onSubmit,
         onClose: onClose,
+        onExit: jest.fn(),
     }
 
     it.each([

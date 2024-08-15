@@ -8,7 +8,7 @@ describe('isAllowedToUpdateTrigger', () => {
     const notLightTrigger = {
         ...campaignTrigger,
         type: CampaignTriggerType.OrdersCount,
-    } as CampaignTrigger
+    }
 
     it.each([
         [lightTrigger, false, true],

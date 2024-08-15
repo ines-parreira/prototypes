@@ -2,7 +2,7 @@ import React, {useCallback, useState, useMemo} from 'react'
 import classnames from 'classnames'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
+import {Map} from 'immutable'
 
 import {IntegrationType} from 'models/integration/constants'
 import ShopifyProductLine from 'pages/common/components/ShopifyProductLine/ShopifyProductLine'
@@ -12,7 +12,11 @@ import {getIconFromType} from 'state/integrations/helpers'
 
 import {AttachmentEnum} from 'common/types'
 import {ActionInjectedProps, ActionName} from '../types'
-import {getTooltipTourConfiguration} from '../utils'
+import {
+    getTooltipTourConfiguration,
+    mapIntegrationToPickedShopifyIntegration,
+    transformProductCardDetailsToProductCardAttachment,
+} from '../utils'
 import {useToolbarContext} from '../ToolbarContext'
 import Popover from './ButtonPopover'
 
@@ -34,17 +38,6 @@ export type ProductCardAttachment = {
         currency?: string
         featured_image: string
     }
-}
-
-const mapIntegrationToPickedShopifyIntegration = (
-    integration: Map<any, any>
-) => {
-    return fromJS({
-        id: integration.get('id'),
-        name: integration.get('name'),
-        shop_domain: integration.getIn(['meta', 'shop_domain']),
-        currency: integration.getIn(['meta', 'currency']),
-    }) as Map<any, any>
 }
 
 const AddProductLink = ({getEditorState, setEditorState}: Props) => {
@@ -103,26 +96,17 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
             const editorState = getEditorState()
 
             if (canAddProductCard) {
-                onAddProductCardAttachment({
-                    content_type: AttachmentEnum.Product,
-                    name: productCardDetails.productTitle,
-                    size: 0,
-                    url: productCardDetails.imageUrl,
-                    extra: {
-                        product_id: productCardDetails.productId,
-                        variant_id: productCardDetails.variantId,
-                        price: productCardDetails.price,
-                        variant_name: productCardDetails.variantTitle,
-                        product_link: productCardDetails.link,
-                        currency: productCardDetails.currency,
-                        featured_image: productCardDetails.imageUrl,
-                    },
-                })
+                onAddProductCardAttachment(
+                    transformProductCardDetailsToProductCardAttachment(
+                        productCardDetails
+                    )
+                )
             } else {
                 let newEditorState
                 const productTitle =
                     productCardDetails.fullProductTitle ??
-                    productCardDetails.productTitle
+                    productCardDetails.productTitle ??
+                    ''
 
                 if (!canAddProductLink) {
                     newEditorState = insertText(

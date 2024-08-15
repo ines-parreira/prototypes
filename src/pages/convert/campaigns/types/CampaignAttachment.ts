@@ -100,6 +100,7 @@ export type ProductRecommendationAttachment = {
     extra: {
         id: string
         scenario: ProductRecommendationScenario
+        description?: string
     }
 }
 
@@ -122,6 +123,6 @@ export const attachmentIsProduct = (
 
 export const attachmentIsProductRecommendation = (
     attachment: AttachmentType
-): attachment is ProductCardAttachment => {
+): attachment is ProductRecommendationAttachment => {
     return attachment.content_type === AttachmentEnum.ProductRecommendation
 }

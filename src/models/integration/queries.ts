@@ -64,7 +64,8 @@ export const useApplications = () =>
 
 export const useProductsFromShopifyIntegration = (
     integrationId: number,
-    filter = ''
+    filter = '',
+    enabled = true
 ) => {
     return useQuery({
         queryKey: ['integration', 'shopify', integrationId, 'products', filter],
@@ -84,6 +85,7 @@ export const useProductsFromShopifyIntegration = (
                 )
             )
         },
+        enabled,
     })
 }
 

@@ -140,17 +140,14 @@ export const CampaignMessage = memo(
 
         const canAddUniqueDiscountOffer = !anyDiscountOfferAttached
 
-        const canAddProductRecommendation = useMemo(() => {
-            const anyProductRecommendationAttached = (
-                attachments.toJS() as AttachmentType[]
-            ).find((att) => attachmentIsProductRecommendation(att))
+        const anyProductRecommendationAttached = (
+            attachments.toJS() as AttachmentType[]
+        ).find((att) => attachmentIsProductRecommendation(att))
 
-            return (
-                isConvertSubscriber &&
-                !anyProductRecommendationAttached &&
-                areProductRecommendationsEnabled
-            )
-        }, [isConvertSubscriber, areProductRecommendationsEnabled, attachments])
+        const canAddProductRecommendation =
+            isConvertSubscriber &&
+            !anyProductRecommendationAttached &&
+            areProductRecommendationsEnabled
 
         useEffect(() => {
             if (attachments.isEmpty() && showWarningOutOfStock) {

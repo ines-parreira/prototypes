@@ -17,8 +17,15 @@ import {RootState, StoreDispatch} from 'state/types'
 
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 
-import {campaign as campaignFixture} from 'fixtures/campaign'
+import {
+    campaign as campaignFixture,
+    campaignProductRecommendationAttachment,
+} from 'fixtures/campaign'
 import {toJS} from 'utils'
+import {assumeMock} from 'utils/testing'
+import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
+import {getNewMessageAttachments} from 'state/newMessage/selectors'
+import {AttachmentEnum} from 'common/types'
 import {CampaignDetailsForm} from '../CampaignDetailsForm'
 
 import {Campaign} from '../../../types/Campaign'
@@ -36,8 +43,13 @@ jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
         return <div data-testid="mock-convert-setup-banner" />
     })
 })
+jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
+const useGetPreviewProductsMock = assumeMock(useGetPreviewProducts)
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {integrations: fromJS(integrationsState)} as RootState
+
+jest.mock('state/newMessage/selectors')
+const getNewMessageAttachmentsMock = assumeMock(getNewMessageAttachments)
 
 const agents = [
     {
@@ -91,6 +103,9 @@ describe('<CampaignDetailsForm />', () => {
         allFlagsMock.mockReturnValue({})
 
         isConvertSubscriberSpy.mockImplementation(() => false)
+
+        useGetPreviewProductsMock.mockReturnValue([])
+        getNewMessageAttachmentsMock.mockReturnValue(fromJS([]))
     })
 
     const defaultProps = {
@@ -266,6 +281,33 @@ describe('<CampaignDetailsForm />', () => {
                     exact: false,
                 })
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Product recommendation banner', () => {
+        it('renders the banner when product recommendation is in attachments', async () => {
+            isConvertSubscriberSpy.mockImplementation(() => true)
+            getNewMessageAttachmentsMock.mockReturnValue(
+                fromJS([
+                    {
+                        ...campaignProductRecommendationAttachment,
+                        content_type: AttachmentEnum.ProductRecommendation,
+                    },
+                ])
+            )
+
+            const {queryByText} = renderComponent(defaultProps)
+
+            await waitFor(() => {
+                expect(
+                    queryByText(
+                        'Product recommendations will be personalized for each visitor',
+                        {
+                            exact: false,
+                        }
+                    )
+                ).toBeInTheDocument()
+            })
         })
     })
 })

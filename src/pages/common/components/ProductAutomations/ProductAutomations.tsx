@@ -1,7 +1,5 @@
 import React, {useState} from 'react'
 import {ListGroup, ListGroupItem} from 'reactstrap'
-import {IntegrationDataItem} from 'models/integration/types'
-import {Product} from 'constants/integrations/types/shopify'
 import ProductRecommendationScenarioPicker from 'pages/convert/campaigns/components/ProductRecommendationScenarioPicker/ProductRecommendationScenarioPicker'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -11,7 +9,6 @@ import {ProductRecommendationAttachment} from 'pages/convert/campaigns/types/Cam
 import css from 'pages/common/components/ProductAutomations/ProductAutomations.less'
 
 type Props = {
-    products: IntegrationDataItem<Product>[]
     productAutomationClicked: (
         attachment: ProductRecommendationAttachment
     ) => void
@@ -20,7 +17,6 @@ type Props = {
 }
 
 const ProductAutomations = ({
-    products,
     productAutomationClicked,
     onClick,
     onBackClicked,
@@ -86,7 +82,6 @@ const ProductAutomations = ({
                         {AiBadgeElement}
                     </div>
                     <ProductRecommendationScenarioPicker
-                        products={products}
                         onClick={productAutomationClicked}
                     />
                 </div>

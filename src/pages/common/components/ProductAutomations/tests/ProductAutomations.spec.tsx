@@ -6,7 +6,6 @@ describe('ProductAutomations', () => {
     it('should render the component', () => {
         const {getByText, queryByText} = render(
             <ProductAutomations
-                products={[]}
                 productAutomationClicked={jest.fn()}
                 onClick={jest.fn()}
                 onBackClicked={jest.fn()}
@@ -23,7 +22,6 @@ describe('ProductAutomations', () => {
         const onClick = jest.fn()
         const {getByText} = render(
             <ProductAutomations
-                products={[]}
                 productAutomationClicked={jest.fn()}
                 onClick={onClick}
                 onBackClicked={jest.fn()}
@@ -43,7 +41,6 @@ describe('ProductAutomations', () => {
         const onBackClicked = jest.fn()
         const {getByText} = render(
             <ProductAutomations
-                products={[]}
                 productAutomationClicked={jest.fn()}
                 onClick={jest.fn()}
                 onBackClicked={onBackClicked}

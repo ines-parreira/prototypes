@@ -136,10 +136,7 @@ const TicketRichField = (
                 !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS.includes(
                     newMessageChannel
                 ),
-            canAddProductAutomations:
-                canAddProductAutomations &&
-                (newMessageChannel === TicketChannel.Chat ||
-                    !isNewMessagePublic),
+            canAddProductAutomations,
             toolbarTour: toolbarTour ?? {},
             disableOutOfStockProducts: disableOutOfStockProducts ?? false,
             disableVariantSelection: disableVariantSelection ?? false,

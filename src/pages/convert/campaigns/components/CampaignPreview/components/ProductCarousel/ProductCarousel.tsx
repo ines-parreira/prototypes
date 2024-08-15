@@ -33,6 +33,10 @@ export const ProductCarousel = ({
     )
     const isHeadlessStore = useIsHeadlessShopifyStore()
 
+    useEffect(() => {
+        setCurrentElement(0)
+    }, [products])
+
     const calculateNextTranslate = useCallback(
         (element: number): number => {
             if (element === 0) {

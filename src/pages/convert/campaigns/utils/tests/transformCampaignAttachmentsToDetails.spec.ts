@@ -55,6 +55,8 @@ describe('transformCampaignAttachmentsToDetails', () => {
                 extra: {
                     id: '01J4VH71YJ704QXCP4WDST3ZT3',
                     scenario: 'similar_seen',
+                    description:
+                        'Recommends based on visitors’ product pages browsed',
                 },
             },
         ])

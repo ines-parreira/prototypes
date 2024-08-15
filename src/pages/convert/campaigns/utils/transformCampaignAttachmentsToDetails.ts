@@ -1,3 +1,4 @@
+import {SCENARIO_CONFIG} from 'pages/convert/campaigns/constants/productRecommendationScenarios'
 import {
     AttachmentType,
     CampaignAttachment,
@@ -48,6 +49,8 @@ export const transformCampaignAttachmentsToDetails = (
                 extra: {
                     id: attachment.extra.id,
                     scenario: attachment.extra.scenario,
+                    description:
+                        SCENARIO_CONFIG[attachment.extra.scenario].description,
                 },
             } as ProductRecommendationAttachment
         }
