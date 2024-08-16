@@ -11,12 +11,12 @@ import {IntegrationType} from 'models/integration/constants'
 import {assumeMock} from 'utils/testing'
 
 import {ShopifyContext} from '../../contexts/ShopifyContext'
-import {buildShopifyContextData} from '../../helpers/buildShopifyContextData'
+import {getShopifyResourceIds} from '../../helpers/getShopifyResourceIds'
 
 import {customerCustomization} from '../Customer'
 
-jest.mock('../../helpers/buildShopifyContextData')
-const buildShopifyContextDataMock = assumeMock(buildShopifyContextData)
+jest.mock('../../helpers/getShopifyResourceIds')
+const getShopifyResourceIdsMock = assumeMock(getShopifyResourceIds)
 
 const AfterTitle = customerCustomization.AfterTitle!
 const Wrapper = customerCustomization.Wrapper!
@@ -25,13 +25,15 @@ describe('Wrapper', () => {
     const spiedDataFunction = jest.fn()
     it('should provide a context', () => {
         const contextValue = {
-            data_source: 'Order',
+            data_source: 'Customer',
             widget_resource_ids: {
                 target_id: 4,
                 customer_id: null,
             },
         }
-        buildShopifyContextDataMock.mockReturnValue(contextValue)
+        getShopifyResourceIdsMock.mockReturnValue(
+            contextValue.widget_resource_ids
+        )
         const Child = () => {
             const data = useContext(ShopifyContext)
             spiedDataFunction(data)

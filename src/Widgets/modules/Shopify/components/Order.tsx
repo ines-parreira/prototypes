@@ -5,6 +5,7 @@ import React, {
     FunctionComponent,
     ReactNode,
     useContext,
+    useMemo,
 } from 'react'
 import {fromJS, Map} from 'immutable'
 
@@ -39,7 +40,7 @@ import EditOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/EditOr
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
 import {ShopifyContext} from '../contexts/ShopifyContext'
-import {buildShopifyContextData} from '../helpers/buildShopifyContextData'
+import {getShopifyResourceIds} from '../helpers/getShopifyResourceIds'
 import css from './Order.less'
 
 export const OrderContext = createContext<{
@@ -338,7 +339,17 @@ export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
     const createdDate = order.get('created_at')
     const orderAge = new Date().getTime() - new Date(createdDate).getTime()
     const isOldOrder = Math.round(orderAge / (1000 * 3600 * 24)) >= 60
-    const shopifyContextData = buildShopifyContextData(order.toJS())
+    const {target_id, customer_id} = getShopifyResourceIds(order.toJS())
+    const shopifyContextData = useMemo(
+        () => ({
+            data_source: 'Order' as const,
+            widget_resource_ids: {
+                target_id,
+                customer_id,
+            },
+        }),
+        [target_id, customer_id]
+    )
     return (
         <ShopifyContext.Provider value={shopifyContextData}>
             <OrderContext.Provider

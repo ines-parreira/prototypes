@@ -1,4 +1,10 @@
-import React, {Component, ContextType, ReactNode, useContext} from 'react'
+import React, {
+    Component,
+    ContextType,
+    ReactNode,
+    useContext,
+    useMemo,
+} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 
@@ -26,7 +32,7 @@ import {
 } from 'Widgets/modules/Template/modules/Card'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-import {buildShopifyContextData} from '../helpers/buildShopifyContextData'
+import {getShopifyResourceIds} from '../helpers/getShopifyResourceIds'
 import {ShopifyContext} from '../contexts/ShopifyContext'
 
 function Wrapper({
@@ -36,7 +42,17 @@ function Wrapper({
     source: Map<any, any>
     children: ReactNode
 }) {
-    const shopifyContextData = buildShopifyContextData(source.toJS())
+    const {target_id, customer_id} = getShopifyResourceIds(source.toJS())
+    const shopifyContextData = useMemo(
+        () => ({
+            data_source: 'Customer' as const,
+            widget_resource_ids: {
+                target_id,
+                customer_id,
+            },
+        }),
+        [target_id, customer_id]
+    )
     return (
         <ShopifyContext.Provider value={shopifyContextData}>
             {children}

@@ -271,6 +271,8 @@ export enum SegmentEvent {
     ShopifyProfileClicked = 'widget/shopify-profile-link/link-clicked',
     ShopifyRefundOrderCancel = 'shopify/refund-order/cancel',
     ShopifyRefundOrderOpen = 'shopify/refund-order/open',
+    ShopifyContextDataMissing = 'shopify-context-data-missing',
+    ShopifyContextResourceIdMissing = 'shopify-context-resource-id-missing',
     ShowMoreFieldsClicked = 'show-more-fields-clicked',
     SidebarViewsChanged = 'sidebar-views-changed',
     SnoozeButtonClicked = 'snooze-button-clicked',

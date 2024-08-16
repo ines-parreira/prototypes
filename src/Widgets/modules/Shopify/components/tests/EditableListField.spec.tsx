@@ -37,7 +37,7 @@ const minProps = {
 }
 
 const widgetContextValue = {
-    data_source: 'customer',
+    data_source: 'Customer' as const,
     widget_resource_ids: {
         target_id: null,
         customer_id: null,
@@ -89,7 +89,7 @@ describe('<EditableListField/>', () => {
         it.each([
             [
                 {
-                    data_source: 'Customer',
+                    data_source: 'Customer' as const,
                     widget_resource_ids: {
                         target_id: null,
                         customer_id: null,
@@ -99,7 +99,7 @@ describe('<EditableListField/>', () => {
             ],
             [
                 {
-                    data_source: 'Order',
+                    data_source: 'Order' as const,
                     widget_resource_ids: {
                         target_id: null,
                         customer_id: null,

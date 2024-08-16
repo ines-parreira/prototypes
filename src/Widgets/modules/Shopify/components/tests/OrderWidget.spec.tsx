@@ -172,7 +172,6 @@ describe('<AfterTitle/>', () => {
                             <Wrapper
                                 source={fromJS({
                                     financial_status: financial_status,
-                                    admin_graphql_api_id: `gid://shopify/customer/123`,
                                     id: 123,
                                 })}
                             >
