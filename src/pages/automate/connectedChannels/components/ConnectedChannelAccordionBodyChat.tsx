@@ -20,7 +20,6 @@ import {
     ARTICLE_RECOMMENDATION,
     MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
     ORDER_MANAGEMENT,
-    QUICK_RESPONSES,
 } from '../../common/components/constants'
 import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
@@ -112,14 +111,6 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                   0
               )
 
-    const enabledEntrypointsCount =
-        workflows.entrypoints?.filter((entrypoint) => entrypoint.enabled)
-            .length ?? 0
-    const cantReactivateQuickResponses = isMLFlowRecommendationEnabled
-        ? false
-        : enabledEntrypointsCount + enabledQuickResponsesCount >
-              MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS && !quickResponses.enabled
-
     const channelLanguages = getLanguagesFromChatConfig(
         channel.value.meta
     ) as ChannelLanguage[]
@@ -155,23 +146,6 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                         },
                     })
                 }}
-            />
-
-            <ConnectedChannelFeatureToggle
-                name={QUICK_RESPONSES}
-                value={quickResponses.enabled}
-                onChange={updateSettings('quickResponses')}
-                disabled={
-                    isUpdatePending ||
-                    !hasAutomate ||
-                    cantReactivateQuickResponses
-                }
-                action={!hasAutomate && <AutomateSubscriptionAction />}
-                tooltipMessage={
-                    cantReactivateQuickResponses
-                        ? 'Disable individual Flows and Quick Responses to have a maximum of 6 Flows between them in order to turn on Quick Response again.'
-                        : undefined
-                }
             />
 
             {isOrderManagementAvailable && (
