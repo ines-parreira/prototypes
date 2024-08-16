@@ -36,12 +36,14 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
     const mockUseCreateStoreSnippetHelpCenter = (
         mutateAsync: jest.Mock,
         error: Error | null = null,
-        isLoading: boolean = false
+        isLoading: boolean = false,
+        status: 'idle' | 'loading' | 'success' | 'error' = 'idle'
     ) => {
         ;(useCreateStoreSnippetHelpCenter as jest.Mock).mockReturnValue({
             mutateAsync,
             error,
             isLoading,
+            status,
         })
     }
 

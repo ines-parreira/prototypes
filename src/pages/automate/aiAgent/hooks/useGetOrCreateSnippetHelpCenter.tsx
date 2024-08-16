@@ -28,19 +28,27 @@ export const useGetOrCreateSnippetHelpCenter = ({
 
     const helpCenterData = existingHelpCenterRes?.data.data[0]
 
-    const {mutateAsync: createHelpCenter, isLoading: isCreatingHelpCenter} =
-        useCreateStoreSnippetHelpCenter({
-            onError: (error) => {
-                reportError(error, {
-                    tags: {team: AI_AGENT_SENTRY_TEAM},
-                    extra: {
-                        context: `Failed to fetch or create help center for ${accountDomain} ${shopName}`,
-                    },
-                })
-            },
-        })
+    const {
+        mutateAsync: createHelpCenter,
+        isLoading: isCreatingHelpCenter,
+        status: creationStatus,
+    } = useCreateStoreSnippetHelpCenter({
+        onError: (error) => {
+            reportError(error, {
+                tags: {team: AI_AGENT_SENTRY_TEAM},
+                extra: {
+                    context: `Failed to fetch or create help center for ${accountDomain} ${shopName}`,
+                },
+            })
+        },
+    })
 
     useEffect(() => {
+        // As soon as the creation was attempted, we stop calling again the creation attempt.
+        // This is a temporary fix to prevent infinite loop of creation attempts.
+        // we shouldn't implement a retry mechanism here, but rather configure the retry mechanism in the react-query hook itself
+        if (creationStatus !== 'idle') return
+
         const fetchOrCreateHelpCenter = async () => {
             if (helpCenterData) {
                 setHelpCenter(helpCenterData)
@@ -49,6 +57,8 @@ export const useGetOrCreateSnippetHelpCenter = ({
                     accountDomain,
                     shopName,
                 ])
+                // Note: this should not be implemented that way but instead be set in the onSuccess callback of the mutation
+                // I'm keeping this for the sake of limiting the changes in this quick PR to solely focus on fixing the infinite loop
                 setHelpCenter(createdHelpCenterRes.data)
             }
         }
@@ -65,6 +75,7 @@ export const useGetOrCreateSnippetHelpCenter = ({
         createHelpCenter,
         isLoadingHelpCenter,
         isCreatingHelpCenter,
+        creationStatus,
     ])
 
     return helpCenter
