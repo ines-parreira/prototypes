@@ -101,4 +101,20 @@ describe('getAvailableFlowVariables', () => {
             ]
         )
     })
+    test('dont put undefined nodes if ptrNodeId is not present', () => {
+        expect(
+            getWorkflowVariableListForNode(
+                {
+                    name: 'name',
+                    nodes: [
+                        {
+                            id: 'trigger_button1',
+                        },
+                    ],
+                    edges: [{target: 'conditions_end1'}],
+                } as any,
+                'conditions_end1'
+            )
+        ).toEqual([])
+    })
 })

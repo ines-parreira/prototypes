@@ -498,7 +498,9 @@ export function getWorkflowVariableListForNode(
         if (incomingEdges.length > 0) {
             // we assume only one incoming edge per node
             ptrNodeId = incomingEdges[0].source
-            ancestors.push(nodes.find(({id}) => id === ptrNodeId)!)
+            const node = nodes.find(({id}) => id === ptrNodeId)
+            if (!node) continue
+            ancestors.push(node)
             incomingEdges = edges.filter((e) => e.target === ptrNodeId)
         }
     } while (incomingEdges.length > 0)
