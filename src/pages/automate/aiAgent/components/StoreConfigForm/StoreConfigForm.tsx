@@ -58,8 +58,8 @@ import {EmailIntegrationListSelection} from '../EmailIntegrationListSelection/Em
 import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection'
 import TagList from '../TicketTag/TagList'
 
+import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
 import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
-import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 import css from './StoreConfigForm.less'
 import {
     getFormValuesFromStoreConfiguration,
@@ -83,19 +83,18 @@ const INITIAL_FORM_VALUES = {
 type Props = {
     shopName: string
     accountDomain: string
+    storeConfiguration?: StoreConfiguration
 }
 
-export const StoreConfigForm = ({shopName, accountDomain}: Props) => {
+export const StoreConfigForm = ({
+    shopName,
+    accountDomain,
+    storeConfiguration,
+}: Props) => {
     const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
     const faqHelpCenters = useAppSelector(getHelpCenterFAQList)
     const hasAutomate = useAppSelector(getHasAutomate)
     const dispatch = useAppDispatch()
-    const {
-        storeConfiguration,
-        isPendingCreateOrUpdate,
-        createStoreConfiguration,
-        updateStoreConfiguration,
-    } = useAiAgentStoreConfigurationContext()
     const isCreate = storeConfiguration === undefined
 
     // because this selector is a function which return function we need to memoized it before send to reselect
@@ -127,7 +126,8 @@ export const StoreConfigForm = ({shopName, accountDomain}: Props) => {
     const {formValues, isFormDirty, resetForm, updateValue} =
         useConfigurationForm(defaultFormValues)
     const [publicUrls, setPublicUrls] = useState<string[]>([])
-
+    const {isLoading, createStoreConfiguration, upsertStoreConfiguration} =
+        useStoreConfigurationMutation({shopName, accountDomain})
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
 
@@ -140,7 +140,7 @@ export const StoreConfigForm = ({shopName, accountDomain}: Props) => {
             updateValue('trialModeActivatedDatetime', null)
 
             try {
-                await updateStoreConfiguration({
+                await upsertStoreConfiguration({
                     ...storeConfiguration,
                     deactivatedDatetime,
                     trialModeActivatedDatetime: null,
@@ -167,7 +167,7 @@ export const StoreConfigForm = ({shopName, accountDomain}: Props) => {
         [
             isCreate,
             updateValue,
-            updateStoreConfiguration,
+            upsertStoreConfiguration,
             storeConfiguration,
             dispatch,
         ]
@@ -204,7 +204,7 @@ export const StoreConfigForm = ({shopName, accountDomain}: Props) => {
             if (isCreate) {
                 await createStoreConfiguration(configurationToSubmit)
             } else {
-                await updateStoreConfiguration({
+                await upsertStoreConfiguration({
                     ...storeConfiguration,
                     ...configurationToSubmit,
                 })
@@ -754,10 +754,7 @@ export const StoreConfigForm = ({shopName, accountDomain}: Props) => {
                 <section>
                     <Button
                         onClick={handleOnSave}
-                        isDisabled={
-                            isPendingCreateOrUpdate ||
-                            (!isFormDirty && !isCreate)
-                        }
+                        isDisabled={isLoading || (!isFormDirty && !isCreate)}
                         className="mb-3"
                     >
                         Save Changes

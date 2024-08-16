@@ -16,9 +16,9 @@ import {
     GUIDANCE_ARTICLE_LIMIT_WARNING,
 } from '../constants'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
+import {useStoreConfiguration} from '../hooks/useStoreConfiguration'
 import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
 import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
-import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('sanitize-html', () => () => jest.fn())
@@ -35,19 +35,16 @@ jest.mock('../hooks/useGuidanceArticleMutation', () => ({
 jest.mock('../hooks/useGuidanceAiSuggestions', () => ({
     useGuidanceAiSuggestions: jest.fn(),
 }))
-
-jest.mock('../providers/AiAgentStoreConfigurationContext', () => ({
-    useAiAgentStoreConfigurationContext: jest.fn(),
+jest.mock('../hooks/useStoreConfiguration', () => ({
+    useStoreConfiguration: jest.fn(),
 }))
 
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 
 const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
+const mockedUseStoreConfiguration = jest.mocked(useStoreConfiguration)
 const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)
-const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
-    useAiAgentStoreConfigurationContext
-)
 
 const helpCenter = {...getHelpCentersResponseFixture.data[0], type: 'guidance'}
 const defaultGuidanceArticleProps: ReturnType<typeof useGuidanceArticles> = {
@@ -102,21 +99,13 @@ const renderComponent = () => {
         }
     )
 }
-
-const mockedAiAgentStoreConfigurationContext = {
-    isLoading: false,
-    updateStoreConfiguration: jest.fn(),
-    createStoreConfiguration: jest.fn(),
-    isPendingCreateOrUpdate: false,
-}
-
 describe('<AiAgentGuidanceContainer />', () => {
     beforeEach(() => {
-        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-            ...mockedAiAgentStoreConfigurationContext,
+        mockedUseStoreConfiguration.mockReturnValue({
             storeConfiguration: getStoreConfigurationFixture({
                 guidanceHelpCenterId: helpCenter.id,
             }),
+            isLoading: false,
         })
         mockedUseGuidanceArticles.mockReturnValue(defaultGuidanceArticleProps)
         mockedUseGuidanceArticleMutation.mockReturnValue(
@@ -128,8 +117,7 @@ describe('<AiAgentGuidanceContainer />', () => {
     })
 
     it('should render loader', () => {
-        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-            ...mockedAiAgentStoreConfigurationContext,
+        mockedUseStoreConfiguration.mockReturnValue({
             storeConfiguration: undefined,
             isLoading: true,
         })
@@ -138,8 +126,7 @@ describe('<AiAgentGuidanceContainer />', () => {
     })
 
     it('should render alert about store configuration', () => {
-        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-            ...mockedAiAgentStoreConfigurationContext,
+        mockedUseStoreConfiguration.mockReturnValue({
             storeConfiguration: undefined,
             isLoading: false,
         })
@@ -152,8 +139,7 @@ describe('<AiAgentGuidanceContainer />', () => {
     })
 
     it('should report error when guidance help center is not found', () => {
-        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-            ...mockedAiAgentStoreConfigurationContext,
+        mockedUseStoreConfiguration.mockReturnValue({
             storeConfiguration: getStoreConfigurationFixture({
                 guidanceHelpCenterId: undefined,
             }),

@@ -44,29 +44,21 @@ export const useStoreConfigurationMutation = ({
     })
 
     const createStoreConfiguration = useCallback(
-        async (
-            configurationToSubmit: CreateStoreConfigurationPayload
-        ): Promise<StoreConfiguration> => {
-            const createdConfiguration = await createStoreConfigurationAsync([
+        async (configurationToSubmit: CreateStoreConfigurationPayload) => {
+            await createStoreConfigurationAsync([
                 accountDomain,
                 configurationToSubmit,
             ])
-
-            return createdConfiguration.data.storeConfiguration
         },
         [accountDomain, createStoreConfigurationAsync]
     )
 
     const upsertStoreConfiguration = useCallback(
-        async (
-            configurationToSubmit: StoreConfiguration
-        ): Promise<StoreConfiguration> => {
-            const upsertedConfiguration = await upsertStoreConfigurationAsync([
+        async (configurationToSubmit: StoreConfiguration) => {
+            await upsertStoreConfigurationAsync([
                 accountDomain,
                 configurationToSubmit,
             ])
-
-            return upsertedConfiguration.data.storeConfiguration
         },
         [accountDomain, upsertStoreConfigurationAsync]
     )
