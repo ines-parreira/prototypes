@@ -3,3 +3,9 @@ export interface TableColumn {
     title: string
     tooltip?: string
 }
+
+export enum ABGroupValueFormat {
+    Number = 'number',
+    Percentage = 'percentage',
+    Date = 'date,',
+}

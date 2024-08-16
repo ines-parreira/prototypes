@@ -38,7 +38,7 @@ describe('<CampaignFromABTestModal />', () => {
             <CampaignFromABTestModal
                 isOpen={true}
                 campaign={campaign as Campaign}
-                integrationId={'1'}
+                integrationId={1}
                 onClose={onClose}
             />,
             {}
@@ -56,7 +56,7 @@ describe('<CampaignFromABTestModal />', () => {
             <CampaignFromABTestModal
                 isOpen={true}
                 campaign={campaign as Campaign}
-                integrationId={'1'}
+                integrationId={1}
                 onClose={onClose}
             />,
             {}
@@ -89,7 +89,7 @@ describe('<CampaignFromABTestModal />', () => {
             <CampaignFromABTestModal
                 isOpen={true}
                 campaign={campaign as Campaign}
-                integrationId={'1'}
+                integrationId={1}
                 onClose={onClose}
             />,
             {}

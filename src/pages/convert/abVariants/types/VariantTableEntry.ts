@@ -9,4 +9,5 @@ export type VariantTableEntry = {
     variantName: string
     trafficAllocation: number
     canDelete: boolean
+    metrics: Record<string, string | number>
 }

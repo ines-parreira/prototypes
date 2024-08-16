@@ -240,7 +240,7 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                                 canPerformCreateDeleteActions
                             }
                             campaign={campaignData}
-                            integrationId={integrationId}
+                            integrationId={integrationId as unknown as number}
                             onDelete={handleDeleteVariant}
                             onDuplicate={handleDuplicateVariant}
                         />

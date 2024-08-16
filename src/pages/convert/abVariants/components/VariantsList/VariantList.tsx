@@ -1,8 +1,12 @@
 import React, {useMemo} from 'react'
 import classnames from 'classnames'
+import _get from 'lodash/get'
+import moment from 'moment'
 
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -12,29 +16,34 @@ import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-
-import {DateAndTimeFormatting} from 'constants/datetime'
 import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
 import {VARIANT_LIMIT} from 'pages/convert/abVariants/contants'
 import VariantActions from 'pages/convert/abVariants/components/VariantActions'
-import {TableColumn} from 'pages/convert/abVariants/components/VariantsList/types'
+import {
+    TableColumn,
+    ABGroupValueFormat,
+} from 'pages/convert/abVariants/components/VariantsList/types'
+
+import {getDataFromTableCell} from 'pages/convert/abVariants/components/VariantsList/utils'
 import {ABGroup} from 'models/convert/campaign/types'
+import {SharedDimension} from 'pages/stats/convert/clients/constants'
+import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
+import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 
 import {VariantTableEntry} from 'pages/convert/abVariants/types/VariantTableEntry'
 
 import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
 
-import {formatPercent} from 'pages/stats/common/utils'
-
-import {formatDatetime} from 'utils'
+import DataCell from './components/DataCell'
 
 import css from './VariantList.less'
 
 type Props = {
     canPerformActions: boolean
     campaign: Campaign
+    integrationId: number
     onDelete: (variantId: string | null) => void
     onDuplicate: (variantId: string | null) => void
 }
@@ -78,14 +87,24 @@ const variantTableCells: TableColumn[] = [
 const VariantsList: React.FC<Props> = ({
     canPerformActions,
     campaign,
+    integrationId,
     onDelete,
     onDuplicate,
 }) => {
     const isStarted = campaign.ab_group?.status === ABGroupStatus.Started
     const isCompleted = campaign.ab_group?.status === ABGroupStatus.Completed
 
-    const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate
+    const namespacedShopName = useGetNamespacedShopNameForStore([
+        integrationId as unknown as number,
+    ])
+    const {isFetching: isVariantFetching, data: variantData} = useGetTableStat(
+        SharedDimension.abVariant,
+        namespacedShopName,
+        [campaign.id],
+        campaign.ab_group?.started_datetime ?? campaign.created_datetime,
+        campaign.ab_group?.stopped_datetime ?? moment().endOf('day').format(),
+        DEFAULT_TIMEZONE,
+        true
     )
 
     const variants = useMemo<VariantTableEntry[]>(() => {
@@ -95,6 +114,7 @@ const VariantsList: React.FC<Props> = ({
         const variants: VariantTableEntry[] = [
             {
                 variant: null, // Control Version
+                metrics: _get(variantData, campaign.id, {}),
                 abGroup: campaign.ab_group as ABGroup,
                 isWinner: isCompleted && winnerId === null,
                 variantName: 'Control Variant',
@@ -110,6 +130,7 @@ const VariantsList: React.FC<Props> = ({
         campaign.variants?.forEach((variant, idx) => {
             variants.push({
                 variant,
+                metrics: _get(variantData, variant.id, {}),
                 abGroup: campaign.ab_group as ABGroup,
                 variantName: generateVariantName(idx),
                 isWinner: winnerId === variant.id,
@@ -121,7 +142,7 @@ const VariantsList: React.FC<Props> = ({
         })
 
         return variants
-    }, [campaign, isStarted, isCompleted, canPerformActions])
+    }, [campaign, isStarted, isCompleted, variantData, canPerformActions])
 
     const isCreateDisabled = useMemo(() => {
         const limit = VARIANT_LIMIT + 1 // include control version
@@ -176,27 +197,53 @@ const VariantsList: React.FC<Props> = ({
                                 </div>
                             </BodyCell>
                             <BodyCell>
-                                {variant.abGroup.started_datetime
-                                    ? formatDatetime(
-                                          variant.abGroup.started_datetime,
-                                          datetimeFormat
-                                      )
-                                    : '-'}
+                                <DataCell
+                                    format={ABGroupValueFormat.Date}
+                                    data={variant.abGroup.started_datetime}
+                                />
                             </BodyCell>
                             <BodyCell>
-                                {variant.abGroup.stopped_datetime
-                                    ? formatDatetime(
-                                          variant.abGroup.stopped_datetime,
-                                          datetimeFormat
-                                      )
-                                    : '-'}
+                                <DataCell
+                                    format={ABGroupValueFormat.Date}
+                                    data={variant.abGroup.stopped_datetime}
+                                />
                             </BodyCell>
                             <BodyCell>
-                                {formatPercent(variant.trafficAllocation)}
+                                <DataCell
+                                    format={ABGroupValueFormat.Percentage}
+                                    data={variant.trafficAllocation}
+                                />
                             </BodyCell>
-                            <BodyCell>0</BodyCell>
-                            <BodyCell>0%</BodyCell>
-                            <BodyCell>0%</BodyCell>
+                            <BodyCell>
+                                <DataCell
+                                    isLoading={isVariantFetching}
+                                    format={ABGroupValueFormat.Number}
+                                    data={getDataFromTableCell(
+                                        variant,
+                                        CampaignTableKeys.Impressions
+                                    )}
+                                />
+                            </BodyCell>
+                            <BodyCell>
+                                <DataCell
+                                    isLoading={isVariantFetching}
+                                    format={ABGroupValueFormat.Percentage}
+                                    data={getDataFromTableCell(
+                                        variant,
+                                        CampaignTableKeys.ClickThroughRate
+                                    )}
+                                />
+                            </BodyCell>
+                            <BodyCell>
+                                <DataCell
+                                    isLoading={isVariantFetching}
+                                    format={ABGroupValueFormat.Percentage}
+                                    data={getDataFromTableCell(
+                                        variant,
+                                        CampaignTableKeys.TotalConversionRate
+                                    )}
+                                />
+                            </BodyCell>
                             <BodyCell style={{width: 110}}>
                                 <VariantActions
                                     data={variant}

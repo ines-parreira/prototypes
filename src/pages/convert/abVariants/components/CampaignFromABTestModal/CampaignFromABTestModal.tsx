@@ -28,7 +28,7 @@ import css from './CampaignFromABTestModal.less'
 type Props = {
     isOpen: boolean
     campaign: Campaign
-    integrationId: string
+    integrationId: number
     onClose: () => void
 }
 
@@ -44,8 +44,7 @@ const CampaignFromABTestModal: React.FC<Props> = (props) => {
 
     const [selectedVariant, setSelectedVariant] = useState(campaign.id)
 
-    const chatIntegrationId = parseInt(integrationId)
-    const integration = useAppSelector(getIntegrationById(chatIntegrationId))
+    const integration = useAppSelector(getIntegrationById(integrationId))
     const {channelConnection} = useGetOrCreateChannelConnection(
         toJS(integration)
     )

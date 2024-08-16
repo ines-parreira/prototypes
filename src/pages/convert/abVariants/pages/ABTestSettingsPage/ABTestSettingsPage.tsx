@@ -16,7 +16,7 @@ import css from './ABTestSettingsPage.less'
 
 type Props = {
     campaign: Campaign
-    integrationId: string
+    integrationId: number
     canCreateDeleteObjects: boolean
     onDelete: (variantId: string | null) => void
     onDuplicate: (variantId: string | null) => void
@@ -87,6 +87,7 @@ export const ABTestSettingsPage: React.FC<Props> = ({
 
             <div>
                 <VariantsList
+                    integrationId={integrationId}
                     campaign={campaign}
                     canPerformActions={canCreateDeleteObjects}
                     onDelete={onDelete}

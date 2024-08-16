@@ -1,24 +1,30 @@
 import React from 'react'
-import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {fromJS} from 'immutable'
 
 import {campaignWithABGroup} from 'fixtures/abGroup'
+import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
+import {assumeMock, renderWithStore} from 'utils/testing'
+
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
 
 import VariantsList from '../VariantList'
 
-jest.mock('hooks/useGetDateAndTimeFormat')
-
-const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
-
-mockUseGetDateAndTimeFormat.mockReturnValue('MM/DD/YYYY')
+jest.mock('pages/stats/convert/hooks/stats/useGetTableStat')
+const useGetTableStatMock = assumeMock(useGetTableStat)
 
 describe('<VariantsList />', () => {
     const onDelete = jest.fn()
     const onDuplicate = jest.fn()
+
+    beforeAll(() => {
+        useGetTableStatMock.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {},
+        })
+    })
 
     it('render and user can performa basic actions', () => {
         const campaign = {
@@ -26,13 +32,22 @@ describe('<VariantsList />', () => {
             variants: [],
         } as Campaign
 
-        const {getByText, getByTestId} = render(
+        const {getByText, getByTestId} = renderWithStore(
             <VariantsList
+                integrationId={shopifyIntegration.id}
                 canPerformActions={true}
                 campaign={campaign}
                 onDelete={onDelete}
                 onDuplicate={onDuplicate}
-            />
+            />,
+            {
+                integrations: fromJS({
+                    integrations: [
+                        ...integrationsState.integrations,
+                        shopifyIntegration,
+                    ],
+                }),
+            }
         )
 
         expect(getByText('Control Variant')).toBeInTheDocument()
@@ -47,13 +62,22 @@ describe('<VariantsList />', () => {
     })
 
     it('render and list actions should be disabled', () => {
-        const {getAllByTestId} = render(
+        const {getAllByTestId} = renderWithStore(
             <VariantsList
+                integrationId={shopifyIntegration.id}
                 canPerformActions={true}
                 campaign={campaignWithABGroup as Campaign}
                 onDelete={onDelete}
                 onDuplicate={onDuplicate}
-            />
+            />,
+            {
+                integrations: fromJS({
+                    integrations: [
+                        ...integrationsState.integrations,
+                        shopifyIntegration,
+                    ],
+                }),
+            }
         )
 
         const deleteButtons = getAllByTestId('delete-icon-button')
@@ -85,13 +109,22 @@ describe('<VariantsList />', () => {
             },
         } as Campaign
 
-        const {getByText, queryAllByText} = render(
+        const {getByText, queryAllByText} = renderWithStore(
             <VariantsList
+                integrationId={shopifyIntegration.id}
                 canPerformActions={true}
                 campaign={campaign}
                 onDelete={onDelete}
                 onDuplicate={onDuplicate}
-            />
+            />,
+            {
+                integrations: fromJS({
+                    integrations: [
+                        ...integrationsState.integrations,
+                        shopifyIntegration,
+                    ],
+                }),
+            }
         )
 
         expect(getByText('Winner')).toBeInTheDocument()
@@ -107,13 +140,22 @@ describe('<VariantsList />', () => {
             },
         } as Campaign
 
-        const {queryAllByText} = render(
+        const {queryAllByText} = renderWithStore(
             <VariantsList
+                integrationId={shopifyIntegration.id}
                 canPerformActions={true}
                 campaign={campaign}
                 onDelete={onDelete}
                 onDuplicate={onDuplicate}
-            />
+            />,
+            {
+                integrations: fromJS({
+                    integrations: [
+                        ...integrationsState.integrations,
+                        shopifyIntegration,
+                    ],
+                }),
+            }
         )
 
         expect(queryAllByText('33%')).toHaveLength(3)
