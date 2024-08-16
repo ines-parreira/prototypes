@@ -63,25 +63,27 @@ const CreateABTestInfoModal: React.FC<Props> = (props) => {
                 </div>
                 <div>
                     <p>
-                        <strong>How does it work?</strong>
+                        <strong>
+                            Optimize Your Campaign Messaging with A/B Testing
+                        </strong>
                     </p>
                     <p>
-                        Optimise your campaign messaging by testing different
-                        versions against each other.
+                        Maximize the effectiveness of your campaign by testing
+                        multiple messaging variations. When you initiate a test,
+                        your original campaign will automatically become the
+                        "Control Variant," retaining all your existing settings
+                        and configurations. You can create up to two additional
+                        variants, which will inherit the same properties (e.g.,
+                        triggers) as the Control Variant, with the key
+                        difference being the messaging content.
                     </p>
                     <p>
-                        Your original campaign will become the “Control
-                        Variant”, and contains all of your campaign settings.
-                        You will have the ability to create up to 2 other
-                        variants, which will have all the same properties (e.g.
-                        triggers) as the “Master Variant”, except for the
-                        messaging.
-                    </p>
-                    <p>
-                        If your campaign is already running, it will continue
-                        normally until the test starts. Once the test is
-                        started, traffic will be evenly distributed among your
-                        variants.
+                        If your campaign is already running, it will continue to
+                        run as usual until the test begins. Once the A/B test is
+                        activated, the system will evenly distribute incoming
+                        traffic across all variants, allowing you to compare
+                        performance and identify the most effective messaging
+                        strategy.
                     </p>
                 </div>
             </ModalBody>

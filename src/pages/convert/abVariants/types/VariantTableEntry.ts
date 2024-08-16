@@ -7,6 +7,7 @@ export type VariantTableEntry = {
     abGroup: ABGroup
     isWinner: boolean
     variantName: string
+    link: string
     trafficAllocation: number
     canDelete: boolean
     metrics: Record<string, string | number>

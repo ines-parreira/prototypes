@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react'
-import classnames from 'classnames'
 import _get from 'lodash/get'
 import moment from 'moment'
+import {Link} from 'react-router-dom'
 
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
@@ -36,6 +36,10 @@ import {VariantTableEntry} from 'pages/convert/abVariants/types/VariantTableEntr
 
 import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
 
+import {
+    abVariantControlVariantUrl,
+    abVariantEditorUrl,
+} from 'pages/convert/abVariants/urls'
 import DataCell from './components/DataCell'
 
 import css from './VariantList.less'
@@ -79,6 +83,12 @@ const variantTableCells: TableColumn[] = [
             'It measures the attractiveness of the campaign, calculated as engagement divided by impressions',
     },
     {
+        title: 'Orders',
+        className: 'campaignSalesCount',
+        tooltip:
+            'Numbers of orders following an engagement with the campaign variant',
+    },
+    {
         title: 'Conversion rate',
         className: 'conversionRate',
     },
@@ -118,6 +128,10 @@ const VariantsList: React.FC<Props> = ({
                 abGroup: campaign.ab_group as ABGroup,
                 isWinner: isCompleted && winnerId === null,
                 variantName: 'Control Variant',
+                link: abVariantControlVariantUrl(
+                    integrationId.toString(),
+                    campaign.id
+                ),
                 trafficAllocation: !isStarted
                     ? isCompleted || !isActiveStatus(campaign.status)
                         ? 0
@@ -133,6 +147,11 @@ const VariantsList: React.FC<Props> = ({
                 metrics: _get(variantData, variant.id, {}),
                 abGroup: campaign.ab_group as ABGroup,
                 variantName: generateVariantName(idx),
+                link: abVariantEditorUrl(
+                    integrationId.toString(),
+                    campaign.id,
+                    variant.id
+                ),
                 isWinner: winnerId === variant.id,
                 trafficAllocation: !isStarted
                     ? 0
@@ -142,7 +161,14 @@ const VariantsList: React.FC<Props> = ({
         })
 
         return variants
-    }, [campaign, isStarted, isCompleted, variantData, canPerformActions])
+    }, [
+        campaign,
+        variantData,
+        isCompleted,
+        integrationId,
+        isStarted,
+        canPerformActions,
+    ])
 
     const isCreateDisabled = useMemo(() => {
         const limit = VARIANT_LIMIT + 1 // include control version
@@ -150,115 +176,130 @@ const VariantsList: React.FC<Props> = ({
     }, [variants, canPerformActions])
 
     return (
-        <TableWrapper
-            className={classnames('table-integrations', css.variantTable)}
-        >
-            <TableHead>
-                {variantTableCells.map((headerColumn) => {
-                    return (
-                        <HeaderCellProperty
-                            key={headerColumn.title}
-                            titleClassName={css.headerCellTitle}
-                            title={headerColumn.title}
-                            className={
-                                headerColumn.className
-                                    ? css[headerColumn.className]
-                                    : undefined
-                            }
-                            tooltip={
-                                headerColumn.tooltip
-                                    ? headerColumn.tooltip
-                                    : undefined
-                            }
-                        />
-                    )
-                })}
+        <div className={css.tableContainer}>
+            <TableWrapper className={css.variantTable}>
+                <TableHead>
+                    {variantTableCells.map((headerColumn) => {
+                        return (
+                            <HeaderCellProperty
+                                key={headerColumn.title}
+                                titleClassName={css.headerCellTitle}
+                                title={headerColumn.title}
+                                className={
+                                    headerColumn.className
+                                        ? css[headerColumn.className]
+                                        : undefined
+                                }
+                                tooltip={
+                                    headerColumn.tooltip
+                                        ? headerColumn.tooltip
+                                        : undefined
+                                }
+                            />
+                        )
+                    })}
 
-                <HeaderCellProperty
-                    titleClassName={css.headerCellTitle}
-                    title=""
-                    style={{width: 110}}
-                />
-            </TableHead>
-            <TableBody>
-                {variants.map((variant, idx) => {
-                    return (
-                        <TableBodyRow key={idx}>
-                            <BodyCell>
-                                <div className={css.nameWrapper}>
-                                    <strong>{variant.variantName}</strong>
-                                    {variant.isWinner && (
-                                        <div className={css.winnerBadge}>
-                                            <Badge type={ColorType.Blue}>
-                                                Winner
-                                            </Badge>
-                                        </div>
-                                    )}
-                                </div>
-                            </BodyCell>
-                            <BodyCell>
-                                <DataCell
-                                    format={ABGroupValueFormat.Date}
-                                    data={variant.abGroup.started_datetime}
-                                />
-                            </BodyCell>
-                            <BodyCell>
-                                <DataCell
-                                    format={ABGroupValueFormat.Date}
-                                    data={variant.abGroup.stopped_datetime}
-                                />
-                            </BodyCell>
-                            <BodyCell>
-                                <DataCell
-                                    format={ABGroupValueFormat.Percentage}
-                                    data={variant.trafficAllocation}
-                                />
-                            </BodyCell>
-                            <BodyCell>
-                                <DataCell
-                                    isLoading={isVariantFetching}
-                                    format={ABGroupValueFormat.Number}
-                                    data={getDataFromTableCell(
-                                        variant,
-                                        CampaignTableKeys.Impressions
-                                    )}
-                                />
-                            </BodyCell>
-                            <BodyCell>
-                                <DataCell
-                                    isLoading={isVariantFetching}
-                                    format={ABGroupValueFormat.Percentage}
-                                    data={getDataFromTableCell(
-                                        variant,
-                                        CampaignTableKeys.ClickThroughRate
-                                    )}
-                                />
-                            </BodyCell>
-                            <BodyCell>
-                                <DataCell
-                                    isLoading={isVariantFetching}
-                                    format={ABGroupValueFormat.Percentage}
-                                    data={getDataFromTableCell(
-                                        variant,
-                                        CampaignTableKeys.TotalConversionRate
-                                    )}
-                                />
-                            </BodyCell>
-                            <BodyCell style={{width: 110}}>
-                                <VariantActions
-                                    data={variant}
-                                    variantName={variant.variantName}
-                                    isDeletingDisabled={!variant.canDelete}
-                                    isDuplicatingDisabled={isCreateDisabled}
-                                    onDelete={onDelete}
-                                    onDuplicate={onDuplicate}
-                                />
-                            </BodyCell>
-                        </TableBodyRow>
-                    )
-                })}
-            </TableBody>
-        </TableWrapper>
+                    <HeaderCellProperty
+                        titleClassName={css.headerCellTitle}
+                        title=""
+                        style={{width: 110}}
+                    />
+                </TableHead>
+                <TableBody>
+                    {variants.map((variant, idx) => {
+                        return (
+                            <TableBodyRow key={idx}>
+                                <BodyCell>
+                                    <div className={css.nameWrapper}>
+                                        <Link
+                                            to={variant.link}
+                                            className={css.nameLink}
+                                        >
+                                            {variant.variantName}
+                                        </Link>
+                                        {variant.isWinner && (
+                                            <div className={css.winnerBadge}>
+                                                <Badge type={ColorType.Blue}>
+                                                    Winner
+                                                </Badge>
+                                            </div>
+                                        )}
+                                    </div>
+                                </BodyCell>
+                                <BodyCell>
+                                    <DataCell
+                                        format={ABGroupValueFormat.Date}
+                                        data={variant.abGroup.started_datetime}
+                                    />
+                                </BodyCell>
+                                <BodyCell>
+                                    <DataCell
+                                        format={ABGroupValueFormat.Date}
+                                        data={variant.abGroup.stopped_datetime}
+                                    />
+                                </BodyCell>
+                                <BodyCell>
+                                    <DataCell
+                                        format={ABGroupValueFormat.Percentage}
+                                        data={variant.trafficAllocation}
+                                    />
+                                </BodyCell>
+                                <BodyCell>
+                                    <DataCell
+                                        isLoading={isVariantFetching}
+                                        format={ABGroupValueFormat.Number}
+                                        data={getDataFromTableCell(
+                                            variant,
+                                            CampaignTableKeys.Impressions
+                                        )}
+                                    />
+                                </BodyCell>
+                                <BodyCell>
+                                    <DataCell
+                                        isLoading={isVariantFetching}
+                                        format={ABGroupValueFormat.Percentage}
+                                        data={getDataFromTableCell(
+                                            variant,
+                                            CampaignTableKeys.ClickThroughRate
+                                        )}
+                                    />
+                                </BodyCell>
+                                <BodyCell>
+                                    <DataCell
+                                        isLoading={isVariantFetching}
+                                        format={ABGroupValueFormat.Number}
+                                        data={getDataFromTableCell(
+                                            variant,
+                                            CampaignTableKeys.Conversions
+                                        )}
+                                    />
+                                </BodyCell>
+                                <BodyCell>
+                                    <DataCell
+                                        isLoading={isVariantFetching}
+                                        format={ABGroupValueFormat.Percentage}
+                                        data={getDataFromTableCell(
+                                            variant,
+                                            CampaignTableKeys.TotalConversionRate
+                                        )}
+                                    />
+                                </BodyCell>
+                                <BodyCell style={{width: 110}}>
+                                    <VariantActions
+                                        data={variant}
+                                        variantName={variant.variantName}
+                                        isDeletingDisabled={!variant.canDelete}
+                                        isDuplicatingDisabled={isCreateDisabled}
+                                        onDelete={onDelete}
+                                        onDuplicate={onDuplicate}
+                                    />
+                                </BodyCell>
+                            </TableBodyRow>
+                        )
+                    })}
+                </TableBody>
+            </TableWrapper>
+        </div>
     )
 }
 

@@ -1,4 +1,5 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 
 :local {
     .pageContainer {
@@ -22,6 +23,21 @@
     .nameWrapper {
         display: flex;
         flex-direction: column;
+
+        .nameLink {
+            color: var(--neutral-grey-6);
+            font-weight: @body-link-font-weight;
+
+            &:hover {
+                color: var(--main-primary-2);
+            }
+        }
+    }
+
+    .tableContainer {
+        width: 100%;
+
+        overflow-x: scroll;
     }
 
     .winnerBadge {
