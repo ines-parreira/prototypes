@@ -9,6 +9,9 @@ import VariantsList from 'pages/convert/abVariants/components/VariantsList'
 import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
+import Button from 'pages/common/components/button/Button'
+import {useModalManager} from 'hooks/useModalManager'
+import CampaignFromABTestModal from 'pages/convert/abVariants/components/CampaignFromABTestModal'
 import css from './ABTestSettingsPage.less'
 
 type Props = {
@@ -34,6 +37,8 @@ export const ABTestSettingsPage: React.FC<Props> = ({
             ) >= 0
         )
     }, [campaign])
+
+    const createCampaignManager = useModalManager('createCampaignFromWinner')
 
     return (
         <>
@@ -88,6 +93,23 @@ export const ABTestSettingsPage: React.FC<Props> = ({
                     onDuplicate={onDuplicate}
                 />
             </div>
+
+            {campaign.ab_group?.status === ABGroupStatus.Completed && (
+                <div>
+                    <Button
+                        className="mt-2 ml-4"
+                        onClick={() => createCampaignManager.openModal()}
+                    >
+                        New Campaign From Winner
+                    </Button>
+                    <CampaignFromABTestModal
+                        isOpen={createCampaignManager.isOpen()}
+                        campaign={campaign}
+                        integrationId={integrationId}
+                        onClose={() => createCampaignManager.closeModal()}
+                    />
+                </div>
+            )}
         </>
     )
 }
