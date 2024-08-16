@@ -1,11 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ShopifyIntegration/> render() should have a disabled update button that gets enabled when synchronization is changed and trigger an update 1`] = `
+exports[`<ShopifyIntegration/> render() should correctly send the updated integration meta to the backend 1`] = `
 [
   [
     Immutable.Map {
       "meta": Immutable.Map {
         "sync_customer_notes": false,
+        "default_address_phone_matching_enabled": true,
       },
     },
   ],
@@ -190,6 +191,18 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
 [
   [
     Immutable.Map {},
+  ],
+]
+`;
+
+exports[`<ShopifyIntegration/> render() should send only the sync_customer_notes option when the Shopify DSA phone matching FF is disabled 1`] = `
+[
+  [
+    Immutable.Map {
+      "meta": Immutable.Map {
+        "sync_customer_notes": false,
+      },
+    },
   ],
 ]
 `;

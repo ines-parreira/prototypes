@@ -5,16 +5,12 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {renderWithRouter} from 'utils/testing'
+import {FeatureFlagKey} from 'config/featureFlags'
 import * as actions from 'state/integrations/actions'
 import * as ToggleInput from 'pages/common/forms/ToggleInput'
 import Integration from '../Integration'
-
-jest.spyOn(actions, 'deleteIntegration')
-jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
-const deleteIntegration = actions.deleteIntegration as jest.Mock
-const updateOrCreateIntegrationRequest =
-    actions.updateOrCreateIntegrationRequest as jest.Mock
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})
@@ -25,6 +21,13 @@ describe('<ShopifyIntegration/>', () => {
         loading: fromJS({}),
         redirectUri: '',
     }
+
+    beforeEach(() => {
+        jest.restoreAllMocks()
+        mockFlags({
+            [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: false,
+        })
+    })
 
     describe('render()', () => {
         it('should render a loader because the integration is loading', () => {
@@ -79,6 +82,9 @@ describe('<ShopifyIntegration/>', () => {
         })
 
         it('should render an integration with a delete button that deletes the integration', async () => {
+            jest.spyOn(actions, 'deleteIntegration')
+            const deleteIntegration = actions.deleteIntegration as jest.Mock
+
             const {container} = renderWithRouter(
                 <Provider store={store}>
                     <Integration {...minProps} />
@@ -140,32 +146,44 @@ describe('<ShopifyIntegration/>', () => {
             expect(window.location.href).toBe('okokkumquat')
         })
 
-        it('should have a disabled update button that gets enabled when synchronization is changed and trigger an update', () => {
-            renderWithRouter(
-                <Provider store={store}>
-                    <Integration
-                        {...minProps}
-                        integration={fromJS({
-                            meta: {sync_customer_notes: true},
-                        })}
-                    />
-                </Provider>
-            )
+        it.each([
+            'Synchronize customer notes between Gorgias and Shopify',
+            'Match customer by Shopify default address phone number',
+        ])(
+            'should have a disabled update button that gets enabled when one of the options is enabled',
+            (optionName: string) => {
+                mockFlags({
+                    [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: true,
+                })
 
-            expect(
-                screen.getByRole('button', {name: 'Update Connection'})
-            ).toHaveAttribute('aria-disabled', 'true')
-            fireEvent.click(screen.getByRole('checkbox'))
-            expect(
-                screen.getByRole('button', {name: 'Update Connection'})
-            ).toHaveAttribute('aria-disabled', 'false')
-            fireEvent.click(
-                screen.getByRole('button', {name: 'Update Connection'})
-            )
-            expect(
-                updateOrCreateIntegrationRequest.mock.calls
-            ).toMatchSnapshot()
-        })
+                renderWithRouter(
+                    <Provider store={store}>
+                        <Integration
+                            {...minProps}
+                            integration={fromJS({
+                                meta: {
+                                    sync_customer_notes: true,
+                                    default_address_phone_matching_enabled:
+                                        false,
+                                },
+                            })}
+                        />
+                    </Provider>
+                )
+
+                expect(
+                    screen.getByRole('button', {name: 'Update Connection'})
+                ).toHaveAttribute('aria-disabled', 'true')
+                fireEvent.click(
+                    screen.getByRole('checkbox', {
+                        name: optionName,
+                    })
+                )
+                expect(
+                    screen.getByRole('button', {name: 'Update Connection'})
+                ).toHaveAttribute('aria-disabled', 'false')
+            }
+        )
 
         it('should correctly update the sync customers option based on integration data, after we fetch it', () => {
             // first, simulate still waiting for the integration data
@@ -203,6 +221,89 @@ describe('<ShopifyIntegration/>', () => {
             expect(screen.getByTestId('sync_customer_notes')).toHaveTextContent(
                 'false'
             )
+        })
+
+        it('should send only the sync_customer_notes option when the Shopify DSA phone matching FF is disabled', () => {
+            jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
+            const updateOrCreateIntegrationRequest =
+                actions.updateOrCreateIntegrationRequest as jest.Mock
+
+            mockFlags({
+                [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: false,
+            })
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <Integration
+                        {...minProps}
+                        integration={fromJS({
+                            meta: {
+                                sync_customer_notes: true,
+                            },
+                        })}
+                    />
+                </Provider>
+            )
+
+            expect(
+                screen.queryByRole('checkbox', {
+                    name: 'Match customer by Shopify default address phone number',
+                })
+            ).toBeNull()
+
+            fireEvent.click(
+                screen.getByRole('checkbox', {
+                    name: 'Synchronize customer notes between Gorgias and Shopify',
+                })
+            )
+
+            fireEvent.click(
+                screen.getByRole('button', {name: 'Update Connection'})
+            )
+            expect(
+                updateOrCreateIntegrationRequest.mock.calls
+            ).toMatchSnapshot()
+        })
+
+        it('should correctly send the updated integration meta to the backend', () => {
+            mockFlags({
+                [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: true,
+            })
+            jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
+            const updateOrCreateIntegrationRequest =
+                actions.updateOrCreateIntegrationRequest as jest.Mock
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <Integration
+                        {...minProps}
+                        integration={fromJS({
+                            meta: {
+                                sync_customer_notes: true,
+                                default_address_phone_matching_enabled: false,
+                            },
+                        })}
+                    />
+                </Provider>
+            )
+
+            fireEvent.click(
+                screen.getByRole('checkbox', {
+                    name: 'Synchronize customer notes between Gorgias and Shopify',
+                })
+            )
+            fireEvent.click(
+                screen.getByRole('checkbox', {
+                    name: 'Match customer by Shopify default address phone number',
+                })
+            )
+
+            fireEvent.click(
+                screen.getByRole('button', {name: 'Update Connection'})
+            )
+            expect(
+                updateOrCreateIntegrationRequest.mock.calls
+            ).toMatchSnapshot()
         })
     })
 })

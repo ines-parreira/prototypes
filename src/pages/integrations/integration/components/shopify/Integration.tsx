@@ -2,6 +2,7 @@ import React, {FormEvent, useCallback, useEffect, useState} from 'react'
 import {Map} from 'immutable'
 import {Col, Container, Row} from 'reactstrap'
 import {Label} from '@gorgias/ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {
     deleteIntegration,
@@ -22,6 +23,7 @@ import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAu
 
 import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
 import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 type Props = {
     integration: Map<any, any>
@@ -34,16 +36,27 @@ export default function Integration({
     loading,
     redirectUri,
 }: Props) {
+    const isShopifyDefaultAddressPhoneMatchingEnabled =
+        useFlags()[FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]
+
     const dispatch = useAppDispatch()
     useQueryNotify()
 
     const isAuthenticationPending = useAuthenticationPolling(integration)
     const [syncCustomerNotes, setSyncCustomerNotes] = useState<boolean>(true)
+    const [
+        defaultAddressPhoneMatchingEnabled,
+        setDefaultAddressPhoneMatchingEnabled,
+    ] = useState<boolean>(false)
     const shopName = integration.getIn(['meta', 'shop_name'])
 
     const integrationSyncCustomerNotes = integration.getIn(
         ['meta', 'sync_customer_notes'],
         true
+    )
+    const integrationDefaultAddressPhoneMatchingEnabled = integration.getIn(
+        ['meta', 'default_address_phone_matching_enabled'],
+        false
     )
 
     const handleUpdate = useCallback(
@@ -53,20 +66,37 @@ export default function Integration({
             void dispatch(
                 updateOrCreateIntegrationRequest(
                     integration.mergeDeep({
-                        meta: {
-                            sync_customer_notes: syncCustomerNotes,
-                        },
+                        meta: isShopifyDefaultAddressPhoneMatchingEnabled
+                            ? {
+                                  sync_customer_notes: syncCustomerNotes,
+                                  default_address_phone_matching_enabled:
+                                      defaultAddressPhoneMatchingEnabled,
+                              }
+                            : {sync_customer_notes: syncCustomerNotes},
                     })
                 )
             )
         },
-        [dispatch, integration, syncCustomerNotes]
+        [
+            dispatch,
+            integration,
+            isShopifyDefaultAddressPhoneMatchingEnabled,
+            syncCustomerNotes,
+            defaultAddressPhoneMatchingEnabled,
+        ]
     )
 
     useEffect(() => {
         // important, otherwise the value will remain the default one, since at the start we will not yet have the integration data loaded
         setSyncCustomerNotes(integrationSyncCustomerNotes)
-    }, [integration, integrationSyncCustomerNotes])
+        setDefaultAddressPhoneMatchingEnabled(
+            integrationDefaultAddressPhoneMatchingEnabled
+        )
+    }, [
+        integration,
+        integrationSyncCustomerNotes,
+        integrationDefaultAddressPhoneMatchingEnabled,
+    ])
 
     const retriggerOAuthFlow = useCallback(() => {
         window.location.href = redirectUri.replace('{shop_name}', shopName)
@@ -88,6 +118,11 @@ export default function Integration({
     if (loading.get('integration')) {
         return <Loader />
     }
+
+    const areIntegrationOptionsDirty =
+        integrationSyncCustomerNotes === syncCustomerNotes &&
+        integrationDefaultAddressPhoneMatchingEnabled ===
+            defaultAddressPhoneMatchingEnabled
 
     return (
         <Container fluid className={css.pageContainer}>
@@ -138,6 +173,40 @@ export default function Integration({
                             </ToggleInput>
                         </div>
 
+                        {isShopifyDefaultAddressPhoneMatchingEnabled && (
+                            <div className="mb-4">
+                                <ToggleInput
+                                    name="default_address_phone_matching_enabled"
+                                    isToggled={
+                                        defaultAddressPhoneMatchingEnabled
+                                    }
+                                    onClick={(value) =>
+                                        setDefaultAddressPhoneMatchingEnabled(
+                                            value
+                                        )
+                                    }
+                                    caption={
+                                        <>
+                                            Gorgias will search for Shopify
+                                            customer’s default address for
+                                            customer matching.
+                                            <br />
+                                            <b>
+                                                Do not enable if you use the
+                                                same phone number across
+                                                multiple customers
+                                            </b>
+                                            , as this will lead to incorrect
+                                            customer merges.
+                                        </>
+                                    }
+                                >
+                                    Match customer by Shopify default address
+                                    phone number
+                                </ToggleInput>
+                            </div>
+                        )}
+
                         <div>
                             {needScopeUpdate && (
                                 <Button
@@ -153,9 +222,7 @@ export default function Integration({
                                 type="submit"
                                 className="mr-2"
                                 isDisabled={
-                                    isSubmitting ||
-                                    integrationSyncCustomerNotes ===
-                                        syncCustomerNotes
+                                    isSubmitting || areIntegrationOptionsDirty
                                 }
                                 isLoading={
                                     isSubmitting || isAuthenticationPending
