@@ -174,8 +174,13 @@ export default function ShopifyProductLine({
                 pickedOptions
             )
 
+            const variantImage = clickedResult?.data?.images?.find(
+                (image) => image.id === result.image_id
+            )
+
             const variantCardDetails = {
                 imageUrl:
+                    variantImage?.src ||
                     clickedResult?.data?.image?.src ||
                     getIconFromUrl(shopifyPlaceholderImage),
                 price: result?.price,

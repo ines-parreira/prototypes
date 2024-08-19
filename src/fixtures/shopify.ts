@@ -1416,7 +1416,7 @@ export const shopifyProductResult = () => [
                     option2: null,
                     option3: null,
                     taxable: true,
-                    image_id: null,
+                    image_id: 28584880636113,
                     position: 4,
                     created_at: '2021-07-13T12:04:54+02:00',
                     product_id: 6694428737745,
@@ -1504,6 +1504,7 @@ export const shopifyProductResult = () => [
         created_datetime: '2021-07-13T10:04:58.337021+00:00',
         updated_datetime: '2021-09-09T14:12:08.026291+00:00',
         deleted_datetime: null,
+        handle: null,
     },
     {
         id: 21,
@@ -1600,6 +1601,7 @@ export const shopifyProductResult = () => [
         created_datetime: '2021-07-13T15:40:30.331578+00:00',
         updated_datetime: '2021-09-09T14:12:08.232429+00:00',
         deleted_datetime: null,
+        handle: null,
     },
 ]
 

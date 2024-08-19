@@ -150,4 +150,82 @@ describe('<ShopifyProductLine/>', () => {
         getByText('Back').click()
         expect(getByText('Automations', {exact: false})).toBeInTheDocument()
     })
+    it('should call productClicked with the correct variant image URL when a variant is clicked', async () => {
+        const shopifyProduct = shopifyProductResult()[0]
+
+        mockServer.onGet('/api/integrations/1/product/').reply(200, {
+            data: [shopifyProduct],
+        })
+
+        const {getByText} = render(
+            <Provider store={store}>
+                <ShopifyProductLine {...minProps} />
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(getByText(/Black shirt/i)).toBeDefined()
+        })
+
+        fireEvent.click(getByText(/Black shirt/i))
+
+        await waitFor(() => {
+            expect(getByText(/781A899/i)).toBeDefined()
+        })
+
+        fireEvent.click(getByText(/781A899/i))
+
+        await waitFor(() => {
+            expect(minProps.productClicked).toHaveBeenCalledWith({
+                imageUrl:
+                    'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt.jpg?v=1626170834',
+                price: '25.00',
+                link: 'https://undefined/products/?variant=39923189973201',
+                productTitle: 'Black shirt',
+                variantTitle: ' Size: XL',
+                fullProductTitle: 'Black shirt-XL',
+                productId: 1,
+                variantId: 39923189973201,
+            })
+        })
+    })
+    it('should call productClicked with the correct product image URL when a variant is clicked', async () => {
+        const shopifyProduct = shopifyProductResult()[0]
+
+        mockServer.onGet('/api/integrations/1/product/').reply(200, {
+            data: [shopifyProduct],
+        })
+
+        const {getByText} = render(
+            <Provider store={store}>
+                <ShopifyProductLine {...minProps} />
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(getByText(/Black shirt/i)).toBeDefined()
+        })
+
+        fireEvent.click(getByText(/Black shirt/i))
+
+        await waitFor(() => {
+            expect(getByText(/781A896/i)).toBeDefined()
+        })
+
+        fireEvent.click(getByText(/781A896/i))
+
+        await waitFor(() => {
+            expect(minProps.productClicked).toHaveBeenCalledWith({
+                imageUrl:
+                    'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt.jpg?v=1626170834',
+                price: '25.00',
+                link: 'https://undefined/products/?variant=39923189874897',
+                productTitle: 'Black shirt',
+                variantTitle: ' Size: S',
+                fullProductTitle: 'Black shirt-S',
+                productId: 1,
+                variantId: 39923189874897,
+            })
+        })
+    })
 })
