@@ -1,23 +1,42 @@
 import MockAdapter from 'axios-mock-adapter'
 
+import {InternalAxiosRequestConfig} from 'axios'
 import {apiClient} from 'models/aiAgent/resources/account-configuration'
-
 import {
     getAIAgentTicketMessagesFeedback,
     submitAIAgentTicketMessagesFeedback,
     deleteAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/resources'
+import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
+import {assumeMock} from 'utils/testing'
 import {SubmitMessageFeedback, DeleteMessageFeedback} from '../types'
 import {ReportIssueOption} from '../constants'
 
 const mockedServer = new MockAdapter(apiClient)
 
+jest.mock('utils/gorgiasAppsAuth', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}))
+
+const mockedGorgiasAppsAuthInterceptor = assumeMock(gorgiasAppsAuthInterceptor)
+
 describe('AI Agent Feedback resources', () => {
     beforeEach(() => {
         mockedServer.reset()
+
+        const mockInterceptor = jest.fn(
+            (config: InternalAxiosRequestConfig<any>) => {
+                config.headers.Authorization = 'Bearer mock-token'
+                return Promise.resolve(config)
+            }
+        )
+
+        // Mock the default export of the gorgiasAppsAuthInterceptor
+        mockedGorgiasAppsAuthInterceptor.mockImplementation(mockInterceptor)
     })
 
-    it.skip('should resolve with the ticket messages feedback on success', async () => {
+    it('should resolve with the ticket messages feedback on success', async () => {
         const messageIds = [1, 2]
         const expectedFeedback = {
             shopName: 'sf-bicycle',
@@ -33,7 +52,7 @@ describe('AI Agent Feedback resources', () => {
         expect(feedback.data).toEqual(expectedFeedback)
     })
 
-    it.skip('should reject an error on fail', () => {
+    it('should reject an error on fail', () => {
         const messageIds = [1, 2]
         mockedServer
             .onGet(`/feedback/messages?ids=${messageIds.join(',')}`)
@@ -44,7 +63,7 @@ describe('AI Agent Feedback resources', () => {
         ).rejects.toEqual(new Error('Request failed with status code 503'))
     })
 
-    it.skip('should resolve with the feedback on success', async () => {
+    it('should resolve with the feedback on success', async () => {
         const messageId = 456
         const feedbackToSubmit: SubmitMessageFeedback = {
             feedbackOnResource: [
@@ -72,7 +91,7 @@ describe('AI Agent Feedback resources', () => {
         expect(feedback.data).toEqual(feedbackToSubmit)
     })
 
-    it.skip('should delete the feedback on success', async () => {
+    it('should delete the feedback on success', async () => {
         const messageId = 456
         const feedbackToDelete: DeleteMessageFeedback = {
             feedbackOnResource: [],
