@@ -16,8 +16,8 @@ const mockedTicketTags = assumeMock(TicketTags)
 
 jest.mock('hooks/useElementSize', () => jest.fn())
 jest.mock(
-    'pages/tickets/detail/components/TicketDetails/TagSearchDropdown',
-    () => () => 'TagSearchDropdownMock'
+    'pages/tickets/detail/components/TicketDetails/TagDropdown',
+    () => () => 'TagDropdownMock'
 )
 
 const useElementSizeMock = useElementSize as jest.Mock
@@ -53,7 +53,7 @@ describe('<AddTagsAction />', () => {
             </Provider>
         )
 
-        expect(getByText('TagSearchDropdownMock')).toBeInTheDocument()
+        expect(getByText('TagDropdownMock')).toBeInTheDocument()
         expect(getByText(tag1)).toBeInTheDocument()
         expect(getByText(tag2)).toBeInTheDocument()
     })

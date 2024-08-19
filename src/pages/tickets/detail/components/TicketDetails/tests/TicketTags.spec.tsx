@@ -26,7 +26,7 @@ jest.mock('hooks/useElementSize')
 const useElementSizeMock = useElementSize as jest.Mock
 useElementSizeMock.mockReturnValue([160, 100])
 
-jest.mock('../TagSearchDropdown', () => () => 'TagSearchDropdownMock')
+jest.mock('../TagDropdown', () => () => 'TagDropdownMock')
 
 describe('<TicketTags />', () => {
     const user = fromJS(fromJS(agents[0])) as Map<any, any>

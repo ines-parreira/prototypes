@@ -2,6 +2,8 @@ import React from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 
+import css from './BulkActions.less'
+
 export default function CloseTickets({
     isDisabled,
     onClick,
@@ -11,6 +13,7 @@ export default function CloseTickets({
 }) {
     return (
         <IconButton
+            className={css.button}
             size="small"
             fillStyle="ghost"
             intent="secondary"

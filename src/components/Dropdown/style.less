@@ -1,0 +1,27 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .search {
+        padding: @layout-spacing-xs @layout-spacing-xs 0 @layout-spacing-xs;
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        max-height: 320px;
+        scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-0);
+        scrollbar-width: thin;
+    }
+
+    .item {
+        align-content: center;
+        overflow: hidden;
+        display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        > * {
+            cursor: pointer;
+        }
+    }
+}

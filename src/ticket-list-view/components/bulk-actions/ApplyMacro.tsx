@@ -6,6 +6,8 @@ import IconButton from 'pages/common/components/button/IconButton'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import {getActiveView} from 'state/views/selectors'
 
+import css from './BulkActions.less'
+
 type Props = {
     onComplete: () => void
     ticketIds: number[]
@@ -31,6 +33,7 @@ export default function ApplyMacro({onComplete, ticketIds}: Props) {
     return (
         <>
             <IconButton
+                className={css.button}
                 size="small"
                 fillStyle="ghost"
                 intent="secondary"

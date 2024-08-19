@@ -13,7 +13,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import TicketTag from 'pages/common/components/TicketTag'
 import ThemeContext from 'theme/ThemeContext'
 
-import TagSearchDropdown from './TagSearchDropdown'
+import TagDropdown from './TagDropdown'
 import css from './TicketTags.less'
 
 type Props = {
@@ -98,8 +98,8 @@ const TicketTags = ({
                     )}
                 >
                     {!isDisabled && (
-                        <TagSearchDropdown
-                            addTag={addTag}
+                        <TagDropdown
+                            addTag={({name}) => addTag(name!)}
                             shouldBindKeys={shouldBindKeys}
                             ticketTags={ticketTags}
                             transparent={transparent}

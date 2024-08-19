@@ -1,5 +1,6 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {JobType} from '@gorgias/api-queries'
+import cn from 'classnames'
 
 import {Update, useBulkAction} from 'jobs'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -111,7 +112,9 @@ export default function BulkActions({
             />
             <ApplyMacro onComplete={onComplete} ticketIds={ticketIds} />
             <IconButton
-                className={isDropdownOpen ? css.moreButtonOpen : undefined}
+                className={cn(css.button, {
+                    [css.isOpen]: isDropdownOpen,
+                })}
                 ref={dropdownButtonRef}
                 size="small"
                 fillStyle="ghost"

@@ -1,7 +1,7 @@
 import React, {ContextType} from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
-import DropdownItem, {Props} from '../DropdownItem'
+import DropdownItem, {Props as DropdownItemProps} from '../DropdownItem'
 import {DropdownContext} from '../Dropdown'
 
 const minProps = {
@@ -19,7 +19,7 @@ const mockContext: ContextType<typeof DropdownContext> = {
 }
 
 const MockedComponent = (
-    props: Props<string>,
+    props: DropdownItemProps<string>,
     context: ContextType<typeof DropdownContext>
 ) => {
     return (
@@ -203,9 +203,33 @@ describe('<DropdownItem />', () => {
         )
 
         fireEvent.keyDown(container.firstChild!, {key: 'ArrowDown'})
-        expect(container.lastChild).toEqual(document.activeElement)
+        expect(container.lastChild).toHaveFocus()
         fireEvent.keyDown(container.lastChild!, {key: 'ArrowUp'})
-        expect(container.firstChild).toEqual(document.activeElement)
+        expect(container.firstChild).toHaveFocus()
+        fireEvent.keyDown(container.firstChild!, {key: 'ArrowUp'})
+        expect(container.lastChild).toHaveFocus()
+        fireEvent.keyDown(container.lastChild!, {key: 'ArrowUp'})
+        expect(container.firstChild).toHaveFocus()
+    })
+
+    it('should early exit if onKeyDown callback is provided', () => {
+        const onKeyDown = jest.fn()
+        const {getByText} = render(
+            <DropdownContext.Provider value={mockContext}>
+                <DropdownItem {...minProps} />
+                <DropdownItem
+                    {...minProps}
+                    option={{label: 'Bar', value: 'bar'}}
+                    onKeyDown={onKeyDown}
+                />
+            </DropdownContext.Provider>
+        )
+
+        fireEvent.keyDown(getByText(/Foo/), {key: 'ArrowDown'})
+        expect(getByText(/Bar/)).toHaveFocus()
+        fireEvent.keyDown(getByText(/Bar/), {key: 'ArrowDown'})
+        expect(onKeyDown).toHaveBeenCalled()
+        expect(getByText(/Foo/)).not.toHaveFocus()
     })
 
     it('should render a selection icon', () => {

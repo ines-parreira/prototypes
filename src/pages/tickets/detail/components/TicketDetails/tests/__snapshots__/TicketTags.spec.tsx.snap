@@ -11,7 +11,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
     <div
       class="tags"
     >
-      TagSearchDropdownMock
+      TagDropdownMock
       <div
         style="order: 0;"
       >

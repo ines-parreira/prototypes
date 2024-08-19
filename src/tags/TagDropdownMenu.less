@@ -1,0 +1,24 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .dropdown {
+        width: 240px;
+    }
+
+    .createTag {
+        position: relative;
+        margin: @layout-spacing-xs;
+        width: auto;
+
+        &:before {
+            position: absolute;
+            content: '';
+            display: block;
+            top: -8px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--neutral-grey-3);
+        }
+    }
+}

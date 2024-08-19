@@ -131,6 +131,12 @@ export const DropdownItem = <T extends boolean | number | string | null>(
                     onToggle(false)
                 }
             }
+
+            if (onKeyDown) {
+                onKeyDown(event)
+                return
+            }
+
             if (event.key === 'ArrowUp') {
                 if (currentItem?.previousElementSibling) {
                     ;(
@@ -151,8 +157,6 @@ export const DropdownItem = <T extends boolean | number | string | null>(
                     ).focus()
                 }
             }
-
-            onKeyDown?.(event)
         },
         [onKeyDown, isDisabled, onClick, shouldCloseOnSelect, onToggle]
     )

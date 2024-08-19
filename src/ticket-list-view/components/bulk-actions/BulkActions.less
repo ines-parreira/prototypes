@@ -1,15 +1,22 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
 :local {
     .bulkActions {
         display: flex;
-        font-size: 16px;
-    }
-
-    .moreButtonOpen.moreButtonOpen.moreButtonOpen {
-        background-color: var(--neutral-grey-3);
-        color: var(--neutral-grey-6);
+        gap: @layout-spacing-xxs;
     }
 
     .delete {
         color: var(--feedback-error);
+    }
+
+    .button.button.button {
+        font-size: 16px;
+        padding: 0 4px;
+
+        &.isOpen {
+            background-color: var(--neutral-grey-3);
+            color: var(--neutral-grey-6);
+        }
     }
 }
