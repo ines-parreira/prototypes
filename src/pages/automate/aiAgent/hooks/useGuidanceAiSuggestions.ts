@@ -35,6 +35,7 @@ export const useGuidanceAiSuggestions = ({helpCenterId, shopName}: Props) => {
         return data
             .filter((aiGuidance) => aiGuidance.review_action !== 'created')
             .map((aiGuidance) => mapAIGuidanceDTOToAIGuidance(aiGuidance))
+            .sort((a, b) => a.name.localeCompare(b.name))
     }, [data, storeIntegrationId])
 
     const isAllAIGuidancesUsed =

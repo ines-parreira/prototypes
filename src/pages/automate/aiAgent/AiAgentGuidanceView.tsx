@@ -12,6 +12,7 @@ import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
 import {DATA_TEST_ID} from './constants'
+import AiGuidanceEmptyState from './components/AiGuidanceEmptyState/AiGuidanceEmptyState'
 
 type Props = {
     helpCenterId: number
@@ -31,8 +32,10 @@ export const AiAgentGuidanceView = ({
 
     const {
         guidanceArticles,
+        guidanceAISuggestions,
         isLoading,
         isEmptyStateNoAIGuidances,
+        isEmptyStateAIGuidances,
         isGuidancesOnly,
     } = useGuidanceAiSuggestions({
         helpCenterId,
@@ -105,6 +108,14 @@ export const AiAgentGuidanceView = ({
         )
     }
 
+    if (isEmptyStateAIGuidances) {
+        return (
+            <AiGuidanceEmptyState
+                aiGuidances={guidanceAISuggestions}
+                shopName={shopName}
+            />
+        )
+    }
     if (isGuidancesOnly) {
         return (
             <div>

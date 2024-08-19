@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import history from 'pages/history'
 import {reportError} from 'utils/errors'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {renderWithRouter} from 'utils/testing'
@@ -20,6 +21,7 @@ import {useStoreConfiguration} from '../hooks/useStoreConfiguration'
 import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
 import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
 
+jest.mock('pages/history')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('sanitize-html', () => () => jest.fn())
 jest.mock('utils/errors', () => ({
@@ -173,7 +175,7 @@ describe('<AiAgentGuidanceContainer />', () => {
         expect(screen.getByText('Create From Template')).toBeInTheDocument()
     })
 
-    it.skip('should render empty state component with ai guidances', () => {
+    it('should render empty state component with ai guidances', () => {
         mockedUseGuidanceAiSuggestions.mockReturnValue({
             ...defaultGuidanceAiSuggestionsProps,
             isEmptyStateAIGuidances: true,
@@ -184,6 +186,15 @@ describe('<AiAgentGuidanceContainer />', () => {
         expect(
             screen.getByTestId(DATA_TEST_ID.EmptyStateAIGuidances)
         ).toBeInTheDocument()
+
+        const createCustomGuidanceButton = screen.getByText(
+            'Create Custom Guidance'
+        )
+        userEvent.click(createCustomGuidanceButton)
+
+        expect(history.push).toHaveBeenCalledWith(
+            '/app/automation/shopify/test-shop/ai-agent/guidance/new'
+        )
     })
 
     describe("when there's guidance articles", () => {

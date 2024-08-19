@@ -1,0 +1,137 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+@import '~css/new/mixins.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .aiGuidancesContainer {
+        padding: @layout-spacing-m;
+    }
+
+    .aiGuidancesListHeader {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: @layout-spacing-s;
+    }
+
+    .buttons {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .bannerContainer {
+        padding: 0 64px;
+        background-color: var(--main-latte);
+        min-height: 260px;
+    }
+
+    .innerContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: @layout-spacing-l;
+        flex: 1;
+        max-width: 1070px;
+    }
+
+    .imageWrapper {
+        min-height: 260px;
+        max-width: 500px;
+        padding: 35px 44px;
+        flex: 1;
+    }
+
+    .content {
+        display: flex;
+        gap: @layout-spacing-xs;
+        flex-direction: column;
+        flex: 1;
+        max-width: 500px;
+        min-width: 328px;
+
+        @media @mobiles {
+            max-width: none;
+            min-width: none;
+            width: 100%;
+        }
+
+        @media @tablets {
+            max-width: none;
+            min-width: none;
+            width: 100%;
+        }
+    }
+
+    .title {
+        .heading-section-semibold();
+        margin-bottom: 0;
+    }
+
+    .subtitle {
+        margin-bottom: 0;
+        color: var(--neutral-grey-5);
+    }
+
+    .img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .autoAwesome {
+        color: var(--accessory-magenta-3);
+        font-size: 16px;
+        padding-right: 4px;
+    }
+
+    @media (max-width: 1200px) {
+        .aiGuidancesListHeader {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .buttons {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: @layout-spacing-xs;
+        }
+
+        .bannerContainer {
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+        }
+        .innerContainer {
+            justify-content: left;
+        }
+        .imageWrapper {
+            display: none;
+        }
+    }
+
+    @media (min-width: 992px) and (max-width: 1200px) {
+        .aiGuidancesListHeader {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: @layout-spacing-s;
+        }
+
+        .buttons {
+            margin-top: 0;
+            display: flex;
+            flex-wrap: nowrap;
+            width: auto;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .bannerContainer {
+            padding: 0 16px;
+        }
+    }
+}

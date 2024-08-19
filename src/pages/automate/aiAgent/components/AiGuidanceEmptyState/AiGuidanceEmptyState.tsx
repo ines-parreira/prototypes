@@ -1,0 +1,90 @@
+import React from 'react'
+
+import {Link} from 'react-router-dom'
+import classNames from 'classnames'
+import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
+import history from 'pages/history'
+import Button from 'pages/common/components/button/Button'
+import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
+import {AIGuidance} from 'pages/automate/aiAgent/types'
+import {GuidanceAiSuggestionsList} from 'pages/automate/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {DATA_TEST_ID} from 'pages/automate/aiAgent/constants'
+
+import css from './AiGuidanceEmptyState.less'
+
+type Props = {
+    aiGuidances: AIGuidance[]
+    shopName: string
+}
+const AiGuidanceEmptyState = ({aiGuidances, shopName}: Props) => {
+    const {routes} = useAiAgentNavigation({shopName})
+
+    const onNewClick = () => {
+        history.push(routes.newGuidanceArticle)
+    }
+
+    return (
+        <div
+            className={css.container}
+            data-testid={DATA_TEST_ID.EmptyStateAIGuidances}
+        >
+            <div className={css.bannerContainer}>
+                <div className={css.innerContainer}>
+                    <div className={css.content}>
+                        <div>
+                            <Badge type={ColorType.Magenta}>
+                                <i
+                                    className={classNames(
+                                        'material-icons',
+                                        css.autoAwesome
+                                    )}
+                                >
+                                    auto_awesome
+                                </i>
+                                AI Generated
+                            </Badge>
+                        </div>
+                        <p className={css.title}>
+                            Add Guidance to tell AI Agent how to handle specific
+                            topics or inquiries, and when to escalate tickets to
+                            your team.
+                        </p>
+                        <p className={css.subtitle}>
+                            Leverage AI generated Guidance based on the unique
+                            interactions you have with your customers.
+                        </p>
+                    </div>
+                    <div className={css.imageWrapper}>
+                        <img
+                            className={css.img}
+                            src={imgSrc}
+                            alt="Guidance Empty State"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className={css.aiGuidancesContainer}>
+                <div className={css.aiGuidancesListHeader}>
+                    <h3 className="heading-section-semibold mb-1">
+                        Top recommendations based on your tickets
+                    </h3>
+                    <div className={css.buttons}>
+                        <Button intent="secondary" onClick={onNewClick}>
+                            Create Custom Guidance
+                        </Button>
+                        <Link to={routes.guidanceLibrary}>
+                            <Button>Browse Suggestions</Button>
+                        </Link>
+                    </div>
+                </div>
+                <GuidanceAiSuggestionsList
+                    guidanceAiSuggestions={aiGuidances}
+                    shopName={shopName}
+                />
+            </div>
+        </div>
+    )
+}
+
+export default AiGuidanceEmptyState
