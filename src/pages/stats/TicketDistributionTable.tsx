@@ -92,10 +92,10 @@ export const TicketDistributionTable = ({
                                 <DistributionCategoryCell
                                     key={item.category}
                                     progress={item.gaugePercentage}
-                                    width={getWidth(300, 140)}
+                                    width={getWidth(320, 160)}
                                     category={item.category}
                                 />
-                                <BodyCell justifyContent="right" width={100}>
+                                <BodyCell justifyContent="right" width={80}>
                                     <DrillDownModalTrigger
                                         metricData={{
                                             title: `${
@@ -139,7 +139,7 @@ export const TicketDistributionTable = ({
                                         {OUTSIDE_TOP_DATA.title}
                                     </GaugeAddon>
                                 </BodyCell>
-                                <BodyCell justifyContent="right" width={100}>
+                                <BodyCell justifyContent="right" width={80}>
                                     {formatMetricValue(
                                         outsideTopTotal,
                                         'decimal',
@@ -159,11 +159,11 @@ export const TicketDistributionTable = ({
                         <TableBodyRow className={css.lastRow}>
                             <BodyCell
                                 className={css.total}
-                                width={getWidth(300, 140)}
+                                width={getWidth(320, 160)}
                             >
                                 Total
                             </BodyCell>
-                            <BodyCell justifyContent="right" width={100}>
+                            <BodyCell justifyContent="right" width={80}>
                                 <DrillDownModalTrigger
                                     metricData={{
                                         title: `${selectedCustomField.label} | Total`,

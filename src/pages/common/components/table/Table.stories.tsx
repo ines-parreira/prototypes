@@ -4,6 +4,7 @@ import {Meta, Story} from '@storybook/react'
 import GaugeAddon from 'pages/stats/GaugeAddon'
 
 import {OrderDirection} from 'models/api/types'
+import {DistributionCategoryCell} from 'pages/stats/DistributionCategoryCell'
 import HeaderCell from './cells/HeaderCell'
 import HeaderCellProperty from './cells/HeaderCellProperty'
 import BodyCell from './cells/BodyCell'
@@ -104,25 +105,42 @@ const TableWithGauges: Story<ComponentProps<typeof TableWrapper>> = (props) => (
         <TableBody>
             {new Array(10).fill(null).map((_, rowIndex) => (
                 <TableBodyRow key={rowIndex}>
-                    {tableColumns.map((_, index) => (
-                        <BodyCell key={index}>
-                            <GaugeAddon
-                                progress={Math.floor(Math.random() * 100 + 1)}
-                                color="#EAF1FF"
-                                show={index === 0}
-                            >
-                                Lorem ipsum dolor sit.
-                            </GaugeAddon>
-                        </BodyCell>
-                    ))}
+                    {tableColumns.map((_, index) => {
+                        const customWidth = Math.floor(Math.random() * 100 + 1)
+                        return (
+                            <BodyCell key={index}>
+                                <GaugeAddon
+                                    progress={customWidth}
+                                    color="#EAF1FF"
+                                    show={index === 0}
+                                >
+                                    {customWidth}% Lorem ipsum dolor sit.
+                                </GaugeAddon>
+                            </BodyCell>
+                        )
+                    })}
                 </TableBodyRow>
             ))}
             <TableBodyRow>
-                <BodyCell key="summary">
-                    <GaugeAddon progress={75} color="#EDEAFF">
+                <DistributionCategoryCell
+                    category="Lorem ipsum dolor dolor sit, lorem ipsum dolor dolor sit."
+                    progress={25}
+                >
+                    <BodyCell key="summary">
+                        Lorem ipsum dolor dolor sit, lorem ipsum dolor dolor
+                        sit.
+                    </BodyCell>
+                </DistributionCategoryCell>
+                <DistributionCategoryCell
+                    category="Lorem ipsum dolor dolor sit."
+                    progress={100}
+                >
+                    <BodyCell key="summary">
                         Lorem ipsum dolor dolor sit.
-                    </GaugeAddon>
-                </BodyCell>
+                    </BodyCell>
+                </DistributionCategoryCell>
+                <BodyCell key="summary">Lorem ipsum dolor dolor sit.</BodyCell>
+                <BodyCell key="summary">Lorem ipsum dolor dolor sit.</BodyCell>
             </TableBodyRow>
         </TableBody>
     </TableWrapper>
