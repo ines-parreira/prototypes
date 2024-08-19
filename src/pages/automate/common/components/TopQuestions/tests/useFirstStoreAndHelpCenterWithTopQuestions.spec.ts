@@ -1,6 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {waitFor} from '@testing-library/react'
-import {ShopifyIntegration} from 'models/integration/types'
+import {StoreIntegration} from 'models/integration/types'
 import {AIArticle, HelpCenter} from 'models/helpCenter/types'
 import {assumeMock} from 'utils/testing'
 import {NonEmptyArray} from 'types'
@@ -70,14 +70,14 @@ const mockArticles: AIArticle[] = [
 
 const storesWithHelpCentersFixture: StoreWithHelpCenters[] = [
     {
-        store: {id: 1, name: 'Store 1'} as ShopifyIntegration,
+        store: {id: 1, name: 'Store 1'} as StoreIntegration,
         helpCenters: [
             {id: 11, name: 'Help Center 11'},
             {id: 12, name: 'Help Center 12'},
         ] as unknown as NonEmptyArray<HelpCenter>,
     },
     {
-        store: {id: 2, name: 'Store 2'} as ShopifyIntegration,
+        store: {id: 2, name: 'Store 2'} as StoreIntegration,
         helpCenters: [
             {id: 21, name: 'Help Center 21'},
             {id: 22, name: 'Help Center 22'},
@@ -85,7 +85,7 @@ const storesWithHelpCentersFixture: StoreWithHelpCenters[] = [
         ] as unknown as NonEmptyArray<HelpCenter>,
     },
     {
-        store: {id: 3, name: 'Store 3'} as ShopifyIntegration,
+        store: {id: 3, name: 'Store 3'} as StoreIntegration,
         helpCenters: [
             {id: 31, name: 'Help Center 31'},
         ] as unknown as NonEmptyArray<HelpCenter>,

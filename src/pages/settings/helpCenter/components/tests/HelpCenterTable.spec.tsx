@@ -5,17 +5,23 @@ import _keyBy from 'lodash/keyBy'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {Locale} from 'models/helpCenter/types'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {IntegrationType} from 'models/integration/constants'
 import {HelpCenterTable} from '../HelpCenterTable'
 import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
+import {useStoreIntegrationByShopName} from '../../hooks/useStoreIntegrationByShopName'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
 }))
+jest.mock('../../hooks/useStoreIntegrationByShopName')
 
 describe('<HelpCenterTable />', () => {
     const mockedOnClick = jest.fn()
     const mockedDuplicateHelpCenter = jest.fn()
+    const mockedUseStoreIntegrationByShopName = jest.mocked(
+        useStoreIntegrationByShopName
+    )
 
     const props: ComponentProps<typeof HelpCenterTable> = {
         isLoading: false,
@@ -25,6 +31,17 @@ describe('<HelpCenterTable />', () => {
         duplicateHelpCenter: mockedDuplicateHelpCenter,
     }
 
+    beforeEach(() => {
+        jest.resetAllMocks()
+        mockedUseStoreIntegrationByShopName.mockReturnValue({
+            id: 1,
+            name: 'My Shop',
+            type: IntegrationType.Shopify,
+        } as unknown as ReturnType<typeof useStoreIntegrationByShopName>)
+        mockFlags({
+            [FeatureFlagKey.HelpCenterCreationWizard]: false,
+        })
+    })
     it('should display the table correctly when loading', () => {
         const {container} = render(
             <HelpCenterTable {...props} isLoading={true} />

@@ -263,51 +263,53 @@ describe('replaceUploadUrls', () => {
 })
 
 describe('getValidStoreIntegrationId', () => {
-    it('should return null if shopifyIntegrations array is empty', () => {
-        const shopifyIntegrations = [] as unknown as ShopifyIntegration[]
-        const storeIntegration = {id: 1} as unknown as StoreIntegration
+    it('should return null if allStoreIntegrations array is empty', () => {
+        const allStoreIntegrations = [] as unknown as StoreIntegration[]
+        const helpCenterShopName = 'My Shop'
         expect(
-            getValidStoreIntegrationId(shopifyIntegrations, storeIntegration)
+            getValidStoreIntegrationId(allStoreIntegrations, helpCenterShopName)
         ).toBeNull()
     })
 
-    it('should return null if shopifyIntegrations is null', () => {
-        const shopifyIntegrations = null as unknown as ShopifyIntegration[]
-        const storeIntegration = {id: 1} as StoreIntegration
+    it('should return null if allStoreIntegrations is null', () => {
+        const allStoreIntegrations = null as unknown as StoreIntegration[]
+        const helpCenterShopName = 'My Shop'
         expect(
-            getValidStoreIntegrationId(shopifyIntegrations, storeIntegration)
+            getValidStoreIntegrationId(allStoreIntegrations, helpCenterShopName)
         ).toBeNull()
     })
 
-    it('should return null if shopifyIntegrations is undefined', () => {
-        const shopifyIntegrations = undefined as unknown as ShopifyIntegration[]
-        const storeIntegration = {id: 1} as StoreIntegration
+    it('should return null if allStoreIntegrations is undefined', () => {
+        const allStoreIntegrations = undefined as unknown as StoreIntegration[]
+        const helpCenterShopName = 'My Shop'
         expect(
-            getValidStoreIntegrationId(shopifyIntegrations, storeIntegration)
+            getValidStoreIntegrationId(allStoreIntegrations, helpCenterShopName)
         ).toBeNull()
     })
 
-    it('should return the default shopifyIntegration id if there is only one shopifyIntegrations', () => {
-        const shopifyIntegrations = [{id: 1}] as unknown as ShopifyIntegration[]
-        expect(getValidStoreIntegrationId(shopifyIntegrations)).toBe(1)
+    it('should return the default storeIntegration id if there is only one store integrations', () => {
+        const allStoreIntegrations = [{id: 1}] as unknown as StoreIntegration[]
+        expect(getValidStoreIntegrationId(allStoreIntegrations, null)).toBe(1)
     })
 
-    it('should return the id of the storeIntegration if there are multiple integrations and storeIntegration is provided', () => {
-        const shopifyIntegrations = [
+    it('should return the id of the storeIntegration with the match shopName if there are multiple integrations', () => {
+        const allStoreIntegrations = [
+            {id: 1, name: 'Test Shop'},
+            {id: 2, name: 'My Shop'},
+        ] as unknown as ShopifyIntegration[]
+        const helpCenterShopName = 'My Shop'
+        expect(
+            getValidStoreIntegrationId(allStoreIntegrations, helpCenterShopName)
+        ).toBe(2)
+    })
+
+    it('should return null if there are multiple integrations but helpCenterShopName is null', () => {
+        const allStoreIntegrations = [
             {id: 1},
             {id: 2},
         ] as unknown as ShopifyIntegration[]
-        const storeIntegration = {id: 3} as unknown as StoreIntegration
         expect(
-            getValidStoreIntegrationId(shopifyIntegrations, storeIntegration)
-        ).toBe(3)
-    })
-
-    it('should return null if there are multiple integrations but storeIntegration is undefined', () => {
-        const shopifyIntegrations = [
-            {id: 1},
-            {id: 2},
-        ] as unknown as ShopifyIntegration[]
-        expect(getValidStoreIntegrationId(shopifyIntegrations)).toBeNull()
+            getValidStoreIntegrationId(allStoreIntegrations, null)
+        ).toBeNull()
     })
 })

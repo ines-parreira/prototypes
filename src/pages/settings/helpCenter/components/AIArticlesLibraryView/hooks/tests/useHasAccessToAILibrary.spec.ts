@@ -1,22 +1,29 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {mockFlags} from 'jest-launchdarkly-mock'
-import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
+import {fromJS} from 'immutable'
 import {assumeMock} from 'utils/testing'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import {StoreState} from 'state/types'
+import {IntegrationType} from 'models/integration/constants'
 import {useHasAccessToAILibrary} from '../useHasAccessToAILibrary'
 
-jest.mock('pages/stats/convert/hooks/useShopifyIntegrations')
+jest.mock('hooks/useAppSelector')
 
-const mockedUseShopifyIntegrations = assumeMock(useShopifyIntegrations)
+const mockedUseAppSelector = assumeMock(useAppSelector)
 
 describe('useHasAccessToAILibrary', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        mockedUseShopifyIntegrations.mockImplementation(
-            () =>
-                [{id: 1}, {id: 2}] as unknown as ReturnType<
-                    typeof useShopifyIntegrations
-                >
+        mockedUseAppSelector.mockImplementation((selector) =>
+            selector({
+                integrations: fromJS({
+                    integrations: [
+                        {id: 1, type: IntegrationType.Shopify},
+                        {id: 2, type: IntegrationType.BigCommerce},
+                    ],
+                }),
+            } as unknown as StoreState)
         )
         mockFlags({
             [FeatureFlagKey.ObservabilityShowAILibraryForMultiBrands]: true,
@@ -47,11 +54,12 @@ describe('useHasAccessToAILibrary', () => {
             [FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore]:
                 false,
         })
-        mockedUseShopifyIntegrations.mockImplementation(
-            () =>
-                [{id: 1}] as unknown as ReturnType<
-                    typeof useShopifyIntegrations
-                >
+        mockedUseAppSelector.mockImplementation((selector) =>
+            selector({
+                integrations: fromJS({
+                    integrations: [{id: 1, type: IntegrationType.Shopify}],
+                }),
+            } as unknown as StoreState)
         )
 
         const {result} = renderHook(() => useHasAccessToAILibrary())

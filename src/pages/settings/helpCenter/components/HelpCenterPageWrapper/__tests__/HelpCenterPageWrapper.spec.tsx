@@ -19,6 +19,10 @@ import {billingState} from 'fixtures/billing'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {FeatureFlagKey} from 'config/featureFlags'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
+import {useHasAccessToAILibrary} from '../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+
+jest.mock('../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
+;(useHasAccessToAILibrary as jest.Mock).mockReturnValue(true)
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(

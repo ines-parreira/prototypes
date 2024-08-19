@@ -17,6 +17,7 @@ import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersR
 import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 import * as helpCenterApi from '../../hooks/useHelpCenterApi'
+import {useHasAccessToAILibrary} from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -34,6 +35,9 @@ const defaultState: Partial<RootState> = {
     billing: fromJS(billingState),
 }
 const store = mockStore(defaultState)
+
+jest.mock('../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
+;(useHasAccessToAILibrary as jest.Mock).mockReturnValue(true)
 
 jest.spyOn(helpCenterApi, 'useAbilityChecker').mockReturnValue({
     isPassingRulesCheck: () => true,

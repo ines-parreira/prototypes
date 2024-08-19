@@ -1,19 +1,18 @@
 import {useMemo} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import {HelpCenter} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/constants'
-import {ShopifyIntegration} from 'models/integration/types'
+import {StoreIntegration} from 'models/integration/types'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getStoreIntegrations} from 'state/integrations/selectors'
 import {NonEmptyArray} from 'types'
 
 export type StoreWithHelpCenters = {
-    store: ShopifyIntegration
+    store: StoreIntegration
     helpCenters: NonEmptyArray<HelpCenter>
 }
 
-const useHelpCentersByStoreId = (storesIntegrations: ShopifyIntegration[]) => {
+const useHelpCentersByStoreId = (storesIntegrations: StoreIntegration[]) => {
     const {helpCenters, isLoading} = useHelpCenterList({
         per_page: HELP_CENTER_MAX_CREATION,
         type: 'faq',
@@ -50,10 +49,7 @@ export const useTopQuestionsStoresWithHelpCenters = (): {
     isLoading: boolean
     storesWithHelpCenters: StoreWithHelpCenters[]
 } => {
-    // note: help-centers can only be connected to shopify stores at the moment, so we only show shopify integrations
-    const storesIntegrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.Shopify])
-    )
+    const storesIntegrations = useAppSelector(getStoreIntegrations)
 
     const {helpCentersByStoreId, isLoading: isLoadingHelpCenters} =
         useHelpCentersByStoreId(storesIntegrations)

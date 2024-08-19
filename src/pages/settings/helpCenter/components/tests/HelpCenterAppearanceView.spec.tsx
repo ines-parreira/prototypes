@@ -23,10 +23,14 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {HelpCenterAppearanceView} from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
 import {getHelpCenterTranslationsResponseFixture} from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import {HelpCenterTranslationProvider} from '../../providers/HelpCenterTranslation'
+import {useHasAccessToAILibrary} from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
+
+jest.mock('../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
+;(useHasAccessToAILibrary as jest.Mock).mockReturnValue(true)
 
 jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
     return {

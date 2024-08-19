@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {chain} from 'lodash'
+import {fromJS} from 'immutable'
 import {assumeMock} from 'utils/testing'
 import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
@@ -13,16 +14,16 @@ import {
     AIArticlesListFixture,
 } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
-import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/constants'
+import {StoreState} from 'state/types'
 import {useGetHelpCenterArticles} from '../useGetHelpCenterArticles'
 import {findArticleByKey} from '../../HelpCenterCreationWizardUtils'
 
 jest.mock('pages/settings/helpCenter/queries')
 jest.mock('models/helpCenter/queries')
 jest.mock('pages/settings/helpCenter/hooks/useConditionalGetAIArticles')
-jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
-jest.mock('pages/automate/common/hooks/useShopifyIntegrations')
+jest.mock('hooks/useAppSelector')
 
 const mockedUseGetArticleTemplates = assumeMock(useGetArticleTemplates)
 const mockedUseGetHelpCenterArticleList = assumeMock(
@@ -31,10 +32,7 @@ const mockedUseGetHelpCenterArticleList = assumeMock(
 const mockedUseConditionalGetAIArticles = assumeMock(
     useConditionalGetAIArticles
 )
-const mockedUseSelfServiceStoreIntegration = assumeMock(
-    useSelfServiceStoreIntegration
-)
-const mockedUseShopifyIntegrations = assumeMock(useShopifyIntegrations)
+const mockedUseAppSelector = assumeMock(useAppSelector)
 
 describe('useGetHelpCenterArticles', () => {
     beforeEach(() => {
@@ -51,17 +49,15 @@ describe('useGetHelpCenterArticles', () => {
                 isLoading: false,
             } as unknown as ReturnType<typeof useGetHelpCenterArticleList>
         })
-        mockedUseSelfServiceStoreIntegration.mockImplementation(() => {
-            return {
-                id: 1,
-                name: 'My Shop',
-            } as unknown as ReturnType<typeof useSelfServiceStoreIntegration>
-        })
-        mockedUseShopifyIntegrations.mockImplementation(
-            () =>
-                [{id: 1}, {id: 2}] as unknown as ReturnType<
-                    typeof useShopifyIntegrations
-                >
+        mockedUseAppSelector.mockImplementation((selector) =>
+            selector({
+                integrations: fromJS({
+                    integrations: [
+                        {id: 1, type: IntegrationType.Shopify, name: 'My Shop'},
+                        {id: 2, type: IntegrationType.Magento2, name: 'Shop X'},
+                    ],
+                }),
+            } as unknown as StoreState)
         )
     })
 
@@ -207,11 +203,18 @@ describe('useGetHelpCenterArticles', () => {
         })
 
         it('should return ai articles when a single store account does not have store connection', () => {
-            mockedUseShopifyIntegrations.mockImplementation(
-                () =>
-                    [{id: 1}] as unknown as ReturnType<
-                        typeof useShopifyIntegrations
-                    >
+            mockedUseAppSelector.mockImplementation((selector) =>
+                selector({
+                    integrations: fromJS({
+                        integrations: [
+                            {
+                                id: 1,
+                                type: IntegrationType.Shopify,
+                                name: 'My Shop',
+                            },
+                        ],
+                    }),
+                } as unknown as StoreState)
             )
 
             const {result} = renderHook(() =>
@@ -225,9 +228,6 @@ describe('useGetHelpCenterArticles', () => {
             )
         })
         it('should return empty array of articles when multi-store does not have store connection', () => {
-            mockedUseSelfServiceStoreIntegration.mockImplementation(() => {
-                return undefined
-            })
             mockedUseConditionalGetAIArticles.mockImplementation(() => {
                 return {
                     fetchedArticles: null,

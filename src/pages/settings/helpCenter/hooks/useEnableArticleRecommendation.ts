@@ -3,10 +3,9 @@ import {HelpCenter} from 'models/helpCenter/types'
 import {fetchSelfServiceConfigurationSSP} from 'models/selfServiceConfiguration/resources'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters/selectors'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import {getStoreIntegrations} from 'state/integrations/selectors'
 import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -17,9 +16,7 @@ export const useEnableArticleRecommendation = () => {
         (helpCenter) => !helpCenter.deactivated_datetime
     )
     const hasAutomate = useAppSelector(getHasAutomate)
-    const shopifyIntegrations = useAppSelector(
-        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
-    )
+    const storeIntegrations = useAppSelector(getStoreIntegrations)
     const dispatch = useAppDispatch()
 
     const {handleSelfServiceConfigurationUpdate} =
@@ -52,19 +49,19 @@ export const useEnableArticleRecommendation = () => {
             return
         }
 
-        const shopifyIntegration = shopifyIntegrations.find(
-            (shopifyIntegration) =>
-                shopifyIntegration.meta.shop_name === newHelpCenter.shop_name
+        const storeIntegration = storeIntegrations.find(
+            (storeIntegrations) =>
+                storeIntegrations.name === newHelpCenter.shop_name
         )
 
-        if (!shopifyIntegration) {
+        if (!storeIntegration) {
             return
         }
 
         try {
             const res = await fetchSelfServiceConfigurationSSP(
-                shopifyIntegration.name,
-                shopifyIntegration.type
+                storeIntegration.name,
+                storeIntegration.type
             )
 
             if (res.articleRecommendationHelpCenterId) {
@@ -76,7 +73,7 @@ export const useEnableArticleRecommendation = () => {
                     draft.articleRecommendationHelpCenterId = newHelpCenter.id
                 },
                 {},
-                shopifyIntegration.id
+                storeIntegration.id
             )
         } catch (err) {
             console.error(err)

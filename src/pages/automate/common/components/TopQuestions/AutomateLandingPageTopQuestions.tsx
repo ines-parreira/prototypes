@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import moment from 'moment'
-import {ShopifyIntegration} from 'models/integration/types'
+import {StoreIntegration} from 'models/integration/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {useTopQuestionsFilters} from './useTopQuestionsFilters'
@@ -21,7 +21,7 @@ import {useTopQuestionsArticles} from './useTopQuestionsArticles'
 import {useTopQuestionsViewedOnPage} from './useTopQuestionsViewedOnPage'
 
 type TopQuestionsSectionWithFiltersProps = {
-    selectedStore: ShopifyIntegration
+    selectedStore: StoreIntegration
     selectedHelpCenter: HelpCenter
     storeFilter: TopQuestionsSectionProps['storeFilter']
     helpCenterFilter: TopQuestionsSectionProps['helpCenterFilter']

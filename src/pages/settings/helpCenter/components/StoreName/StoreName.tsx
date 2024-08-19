@@ -1,15 +1,16 @@
 import React from 'react'
 
 import {getIconFromType} from 'state/integrations/helpers'
-import {IntegrationType} from 'models/integration/constants'
-
+import {useStoreIntegrationByShopName} from '../../hooks/useStoreIntegrationByShopName'
 import css from './StoreName.less'
 
 export type StoreNameType = {
     name: string | null
 }
 const StoreName = ({name}: StoreNameType) => {
-    if (!name) {
+    const storeIntegration = useStoreIntegrationByShopName(name ?? '')
+
+    if (!name || !storeIntegration) {
         return <div className={css.noStore}>No store connected</div>
     }
 
@@ -18,8 +19,7 @@ const StoreName = ({name}: StoreNameType) => {
             <img
                 height={16}
                 width={16}
-                // we only support Shopify shops for now
-                src={getIconFromType(IntegrationType.Shopify)}
+                src={getIconFromType(storeIntegration.type)}
                 alt="logo"
             />
             <span className={css.storeNameLabel}>{name}</span>

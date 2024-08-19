@@ -8,12 +8,11 @@ import {
     Locale,
 } from 'models/helpCenter/types'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
-import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {IntegrationType} from 'models/integration/constants'
 import {useHasEmailToStoreConnection} from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
 import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import useAppSelector from 'hooks/useAppSelector'
+import {getStoreIntegrations} from 'state/integrations/selectors'
 import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
 import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
 
@@ -32,18 +31,18 @@ export const useHelpCenterAIArticlesLibrary = (
             FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore
         ]
 
-    const shopifyIntegrations = useShopifyIntegrations()
-    const hasMultiStores = shopifyIntegrations.length > 1
+    const allStoreIntegrations = useAppSelector(getStoreIntegrations)
+    const hasMultiStores = allStoreIntegrations.length > 1
 
-    const storeIntegration = useSelfServiceStoreIntegration(
-        IntegrationType.Shopify,
-        helpCenterShopName ?? ''
+    const storeIntegrationId = getValidStoreIntegrationId(
+        allStoreIntegrations,
+        helpCenterShopName
     )
 
     const {
         hasEmailToStoreConnection,
         isLoading: isLoadingEmailToStoreConnection,
-    } = useHasEmailToStoreConnection(storeIntegration?.id)
+    } = useHasEmailToStoreConnection(storeIntegrationId ?? undefined)
 
     const showLinkToConnectEmailToStore = useMemo(
         () =>
@@ -56,11 +55,6 @@ export const useHelpCenterAIArticlesLibrary = (
             hasEmailToStoreConnection,
             isLoadingEmailToStoreConnection,
         ]
-    )
-
-    const storeIntegrationId = getValidStoreIntegrationId(
-        shopifyIntegrations,
-        storeIntegration
     )
 
     const {fetchedArticles: fetchedArticles, isLoading: isLoading} =
@@ -143,7 +137,7 @@ export const useHelpCenterAIArticlesLibrary = (
             fetchedArticlesCount >= MINIMUM_AI_ARTICLES,
         showLinkToArticleTemplates: fetchedArticlesCount < MINIMUM_AI_ARTICLES,
         hasStoreConnectionOrDefaultStore: hasMultiStores
-            ? !!storeIntegration
+            ? !!storeIntegrationId
             : true,
         showLinkToConnectEmailToStore,
         markArticleAsReviewed: (

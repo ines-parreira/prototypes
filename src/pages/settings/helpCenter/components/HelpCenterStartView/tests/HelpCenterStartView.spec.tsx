@@ -11,6 +11,7 @@ import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {account} from 'fixtures/account'
+import {IntegrationType} from 'models/integration/constants'
 import HelpCenterStartView from '../HelpCenterStartView'
 import {useHelpCenterList} from '../../../hooks/useHelpCenterList'
 
@@ -81,6 +82,12 @@ describe('<HelpCenterStartView />', () => {
             },
         } as any,
         currentAccount: fromJS(account),
+        integrations: fromJS({
+            integrations: [
+                {id: 1, type: IntegrationType.Shopify, name: 'My Shop'},
+                {id: 2, type: IntegrationType.BigCommerce, name: 'Test Shop'},
+            ],
+        }),
     }
     const props = {}
 

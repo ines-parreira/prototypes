@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import moment from 'moment'
 import {Card} from '@gorgias/analytics-ui-kit'
 import StatsPage from 'pages/stats/StatsPage'
-import {ShopifyIntegration} from 'models/integration/types'
+import {StoreIntegration} from 'models/integration/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {
     AllRecommendationsStatus,
@@ -21,7 +21,7 @@ import {useTopQuestionsViewedOnPage} from './TopQuestions/useTopQuestionsViewedO
 const ITEMS_PER_PAGE = 15
 
 type AutomateAllRecommendationsViewProps = {
-    selectedStore: ShopifyIntegration
+    selectedStore: StoreIntegration
     selectedHelpCenter: HelpCenter
     currentPage: number
     onPageChange: (page: number) => void

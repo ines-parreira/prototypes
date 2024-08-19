@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useMemo, useState} from 'react'
-import {ShopifyIntegration} from 'models/integration/types'
+import {StoreIntegration} from 'models/integration/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {
     StoreWithHelpCenters,
@@ -47,7 +47,7 @@ export const useTopQuestionsFilters = ({
     searchFirstMatchingStoreAndHelpCenter,
 }: Props) => {
     const [selectedStore, setSelectedStoreRaw] = useState<
-        ShopifyIntegration | undefined
+        StoreIntegration | undefined
     >(undefined)
 
     const [selectedHelpCenter, setSelectedHelpCenter] = useState<
@@ -133,7 +133,7 @@ export const useTopQuestionsFilters = ({
     ])
 
     const setSelectedStore: React.Dispatch<
-        React.SetStateAction<ShopifyIntegration | undefined>
+        React.SetStateAction<StoreIntegration | undefined>
     > = useCallback(
         (setter) => {
             const newSelectedStore =

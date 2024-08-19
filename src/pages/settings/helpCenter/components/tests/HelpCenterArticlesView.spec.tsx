@@ -23,6 +23,10 @@ import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfS
 import HelpCenterArticlesView from '../HelpCenterArticlesView'
 import {SearchContextProvider} from '../../providers/SearchContext'
 import {useHelpCenterCategories} from '../../hooks/useHelpCenterCategories'
+import {useHasAccessToAILibrary} from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+
+jest.mock('../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
+;(useHasAccessToAILibrary as jest.Mock).mockReturnValue(true)
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {

@@ -1,8 +1,9 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
-import {Integration} from 'models/integration/types'
+import {StoreIntegration} from 'models/integration/types'
+import useAppSelector from 'hooks/useAppSelector'
+import {getStoreIntegrations} from 'state/integrations/selectors'
 
 export const useHasAccessToAILibrary = () => {
     const showForMultiBrands =
@@ -11,8 +12,9 @@ export const useHasAccessToAILibrary = () => {
         useFlags()[
             FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore
         ]
-    const shopifyIntegrations: Integration[] = useShopifyIntegrations()
-    const hasMultiBrands = shopifyIntegrations.length > 1
+    const allStoreIntegrations: StoreIntegration[] =
+        useAppSelector(getStoreIntegrations)
+    const hasMultiBrands = allStoreIntegrations.length > 1
 
     return (
         (!!showForMultiBrands && !!isAIArticlesForMultiStoreEnabled) ||

@@ -1,13 +1,13 @@
 import {useEffect, useState} from 'react'
 import {HelpCenter} from 'models/helpCenter/types'
-import {ShopifyIntegration} from 'models/integration/types'
+import {StoreIntegration} from 'models/integration/types'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
 import {isAIArticleWithoutReviewAction} from './utils'
 import {StoreWithHelpCenters} from './useTopQuestionsStoresWithHelpCenters'
 import {useHasEmailToStoreConnection} from './useHasEmailToStoreConnection'
 
 type FirstMatchingStoreAndHelpCenter = {
-    firstMatchingStore: ShopifyIntegration
+    firstMatchingStore: StoreIntegration
     firstMatchingHelpCenter: HelpCenter
 }
 

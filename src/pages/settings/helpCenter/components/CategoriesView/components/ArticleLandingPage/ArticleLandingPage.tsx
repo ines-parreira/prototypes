@@ -17,10 +17,8 @@ import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelp
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
-import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {IntegrationType} from 'models/integration/constants'
-import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {getStoreIntegrations} from 'state/integrations/selectors'
 import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
 import {ImportSection} from '../../../Imports/components/ImportSection'
 import {LanguageSelect} from '../../../LanguageSelect'
@@ -53,14 +51,10 @@ const ArticleLandingPageComponent = ({
 
     const helpCenter = useCurrentHelpCenter()
     const supportedLocales = helpCenter.supported_locales
-    const shopifyIntegrations = useShopifyIntegrations()
-    const storeIntegration = useSelfServiceStoreIntegration(
-        IntegrationType.Shopify,
-        helpCenter.shop_name ?? ''
-    )
+    const allStoreIntegrations = useAppSelector(getStoreIntegrations)
     const storeIntegrationId = getValidStoreIntegrationId(
-        shopifyIntegrations,
-        storeIntegration
+        allStoreIntegrations,
+        helpCenter.shop_name
     )
     const {fetchedArticles: aiArticles, isLoading: isAIArticlesLoading} =
         useConditionalGetAIArticles({

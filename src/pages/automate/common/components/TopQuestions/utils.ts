@@ -1,7 +1,7 @@
 import {Dispatch, SetStateAction} from 'react'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
 import {sortAIArticlesByTicketsCount} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/AIArticlesLibraryUtils'
-import {ShopifyIntegration} from 'models/integration/types'
+import {StoreIntegration} from 'models/integration/types'
 import {AIArticle, HelpCenter} from 'models/helpCenter/types'
 import {TopQuestion, TopQuestionsSectionProps} from './TopQuestionsSection'
 
@@ -32,8 +32,8 @@ export const filteredSortedTopQuestionsFromFetchedArticles = (
 }
 
 export const makeStoreFilter = (
-    stores: ShopifyIntegration[],
-    setSelectedStore: Dispatch<SetStateAction<ShopifyIntegration | undefined>>
+    stores: StoreIntegration[],
+    setSelectedStore: Dispatch<SetStateAction<StoreIntegration | undefined>>
 ): TopQuestionsSectionProps['storeFilter'] =>
     stores.length > 1
         ? {

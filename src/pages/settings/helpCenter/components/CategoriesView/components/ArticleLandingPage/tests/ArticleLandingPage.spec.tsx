@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
 
+import {fromJS} from 'immutable'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {RootState, StoreDispatch} from 'state/types'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -13,8 +14,8 @@ import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelp
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
+import {IntegrationType} from 'models/integration/constants'
+import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import ArticleLandingPage from '../ArticleLandingPage'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
@@ -30,22 +31,8 @@ jest.mock('../../../../Imports/components/ImportSection', () => ({
         return <div>Import Content</div>
     },
 }))
-
-jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
-;(useSelfServiceStoreIntegration as jest.Mock).mockReturnValue({
-    id: 1,
-    name: 'My Shop',
-})
-
-jest.mock('pages/automate/common/hooks/useShopifyIntegrations')
-;(useShopifyIntegrations as jest.Mock).mockReturnValue([
-    {
-        id: 1,
-    },
-    {
-        id: 2,
-    },
-])
+jest.mock('pages/settings/helpCenter/utils/helpCenter.utils')
+;(getValidStoreIntegrationId as jest.Mock).mockReturnValue(1)
 
 const queryClient = mockQueryClient()
 
@@ -70,14 +57,17 @@ const initialState: Partial<RootState> = {
                 },
             },
         },
-    } as any,
+    },
     ui: {
         helpCenter: {
             currentId: 1,
             currentLanguage: 'en-US',
         },
-    } as any,
-}
+    },
+    integrations: fromJS({
+        integrations: [{id: 1, type: IntegrationType.Shopify, name: 'My Shop'}],
+    }),
+} as unknown as RootState
 
 describe('<ArticleLandingPage />', () => {
     it('should render', () => {
@@ -127,12 +117,7 @@ describe('<ArticleLandingPage />', () => {
 
         expect(onCreateArticle).toHaveBeenCalled()
     })
-    it('should render when help center does not have a store connection', () => {
-        jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
-        ;(useSelfServiceStoreIntegration as jest.Mock).mockReturnValue(
-            undefined
-        )
-
+    it('should render when an account has a single Shopify integration', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore(initialState)}>
@@ -155,14 +140,8 @@ describe('<ArticleLandingPage />', () => {
             screen.getByText('Choose a customizable article template:')
         ).toBeInTheDocument()
     })
-    it('should render when an account has a single Shopify integration', () => {
-        jest.mock('pages/automate/common/hooks/useShopifyIntegrations')
-        ;(useShopifyIntegrations as jest.Mock).mockReturnValue([
-            {
-                id: 1,
-            },
-        ])
-
+    it('should render when help center does not have a store connection', () => {
+        ;(getValidStoreIntegrationId as jest.Mock).mockReturnValue(null)
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore(initialState)}>

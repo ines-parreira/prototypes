@@ -3,11 +3,13 @@ import {screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {IntegrationType} from 'models/integration/constants'
 import {useHelpCenterList} from '../../../hooks/useHelpCenterList'
 import ManageHelpCenters, {ManageHelpCentersProps} from '../ManageHelpCenters'
 
@@ -70,6 +72,12 @@ describe('<ManageHelpCenters />', () => {
                 },
             },
         } as any,
+        integrations: fromJS({
+            integrations: [
+                {id: 1, type: IntegrationType.Shopify, name: 'My Shop'},
+                {id: 2, type: IntegrationType.BigCommerce, name: 'Test Shop'},
+            ],
+        }),
     }
 
     it('should render the component', () => {
