@@ -1,5 +1,6 @@
 import React, {ReactElement} from 'react'
 
+import {CookiesProvider} from 'react-cookie'
 import {NotificationsProvider} from 'common/notifications'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {SpotlightProvider} from 'providers/ui/SpotlightProvider'
@@ -21,7 +22,11 @@ export default function Core({children}: Props) {
                     <SpotlightProvider>
                         <VoiceDeviceProvider>
                             <SplitTicketViewProvider>
-                                <App>{children}</App>
+                                <CookiesProvider
+                                    defaultSetOptions={{path: '/'}}
+                                >
+                                    <App>{children}</App>
+                                </CookiesProvider>
                             </SplitTicketViewProvider>
                         </VoiceDeviceProvider>
                     </SpotlightProvider>

@@ -1,25 +1,32 @@
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {render, screen} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 
 import {QueryClientProvider} from '@tanstack/react-query'
+import {useCookies} from 'react-cookie'
 import {assumeMock} from 'utils/testing'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
 import {TicketMessage} from 'models/ticket/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {Feedback} from 'models/aiAgentFeedback/types'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import AIAgentMessageFeedback, {
     FEEDBACK_MESSAGE_ACTIONS_TEST_ID,
     FEEDBACK_MESSAGE_GUIDANCE_TEST_ID,
     FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID,
+    FeedbackResourceSection,
+    TOOLTIP_COOKIE_NAME,
 } from '../AIAgentMessageFeedback'
 import {messageFeedback} from './fixtures'
 
 jest.mock('state/ui/ticketAIAgentFeedback')
-const queryClient = mockQueryClient()
+jest.mock('react-cookie')
+jest.mock('hooks/useHasAgentPrivileges')
 
+const queryClient = mockQueryClient()
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
 
 const mockMessage = {
@@ -37,10 +44,37 @@ const store = mockStore({
     },
 } as RootState)
 
+const mockSetCookie = jest.fn()
+const mockHandleSubmitFeedback = jest.fn()
+
 describe('AIAgentMessageFeedback', () => {
     beforeEach(() => {
         getSelectedAIMessageMock.mockReturnValue(mockMessage)
+        ;(useCookies as jest.Mock).mockReturnValue([
+            {TOOLTIP_COOKIE_NAME: false},
+            mockSetCookie,
+        ])
+        ;(useHasAgentPrivileges as jest.Mock).mockReturnValue(true)
     })
+
+    const resource = {
+        id: 1,
+        name: 'Sample Resource',
+        feedback: 'thumbs_up' as const,
+    }
+    const renderFeedbackResourceComponent = (
+        feedback: Feedback = 'thumbs_up'
+    ) =>
+        render(
+            <FeedbackResourceSection
+                resource={{...resource, feedback}}
+                resourceType="guidance"
+                handleSubmitFeedback={mockHandleSubmitFeedback}
+                href="https://example.com"
+                dataTestId="feedback-section"
+                resourceId={1}
+            />
+        )
 
     it.each([
         {testId: FEEDBACK_MESSAGE_ACTIONS_TEST_ID, name: 'Actions'},
@@ -98,5 +132,58 @@ describe('AIAgentMessageFeedback', () => {
             .querySelector('.feedback i.material-icons-outlined')?.parentElement
         expect(feedbackActionsElement).not.toHaveClass('positiveFeedback')
         expect(feedbackActionsElement).not.toHaveClass('negativeFeedback')
+    })
+
+    it('does not call handleSubmitFeedback with thumbs_down when thumbs down button is clicked', () => {
+        renderFeedbackResourceComponent('thumbs_down')
+        const thumbsButton = screen.getByTitle('Mark as Incorrect')
+        fireEvent.click(thumbsButton)
+
+        expect(mockHandleSubmitFeedback).not.toHaveBeenCalledWith()
+        expect(mockSetCookie).not.toHaveBeenCalledWith()
+    })
+
+    it('calls handleSubmitFeedback with thumbs_up when thumbs up button is clicked', () => {
+        renderFeedbackResourceComponent('thumbs_down')
+        const thumbsButton = screen.getByTitle('Mark as Correct')
+        fireEvent.click(thumbsButton)
+
+        expect(mockHandleSubmitFeedback).toHaveBeenCalledWith(
+            resource.id,
+            'guidance',
+            'thumbs_up'
+        )
+    })
+
+    it('does not display the tooltip when the cookie is set', () => {
+        ;(useCookies as jest.Mock).mockImplementation(() => [
+            {[TOOLTIP_COOKIE_NAME]: true},
+            mockSetCookie,
+        ])
+        renderFeedbackResourceComponent('thumbs_up')
+        const thumbsButton = screen.getByTitle('Mark as Correct')
+        fireEvent.click(thumbsButton)
+        const tooltip = screen.queryByTestId(`thumbs_up-${resource.id}`)
+        expect(tooltip).toBeNull()
+    })
+
+    it('calls setCookie when handleBlur is triggered and cookie is not set', () => {
+        renderFeedbackResourceComponent('thumbs_up')
+        const thumbsButton = screen.getByTitle('Mark as Correct')
+        fireEvent.blur(thumbsButton)
+
+        expect(mockSetCookie).toHaveBeenCalledWith(TOOLTIP_COOKIE_NAME, true)
+    })
+
+    it('does not call setCookie when handleBlur is triggered and cookie is already set', () => {
+        ;(useCookies as jest.Mock).mockImplementation(() => [
+            {[TOOLTIP_COOKIE_NAME]: true},
+            mockSetCookie,
+        ])
+        renderFeedbackResourceComponent('thumbs_up')
+        const thumbsButton = screen.getByTitle('Mark as Correct')
+        fireEvent.blur(thumbsButton)
+
+        expect(mockSetCookie).not.toHaveBeenCalled()
     })
 })

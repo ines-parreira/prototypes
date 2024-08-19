@@ -2,6 +2,8 @@ import React, {useEffect, useMemo, useState} from 'react'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {Tooltip} from '@gorgias/ui-kit'
+import {useCookies} from 'react-cookie'
 import {ReportIssueOption} from 'models/aiAgentFeedback/constants'
 import {
     DeleteMessageFeedback,
@@ -53,98 +55,135 @@ type FeedbackResourceSectionProps = {
     ) => void
     href?: string
     dataTestId?: string
+    resourceId: number | string
 }
 
-const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> = ({
-    resource,
-    resourceType,
-    handleSubmitFeedback,
-    href,
-    dataTestId,
-}) => {
-    const hasAgentPrivileges = useHasAgentPrivileges()
+export const TOOLTIP_COOKIE_NAME =
+    'helpdesk-show-ticket-ai-agent-message-feedback-tooltip'
 
-    return (
-        <a
-            href={hasAgentPrivileges ? href : undefined}
-            target="_blank"
-            rel="noreferrer noopener"
-            className={classNames(css.section, {
-                [css.clickable]: hasAgentPrivileges,
-            })}
-            data-testid={dataTestId}
-        >
-            <div className={css.sectionText}>
-                <div className={css.text}>{resource.name}</div>
-                <i className={classNames('material-icons', css.openIcon)}>
-                    open_in_new
-                </i>
-            </div>
-            <div className={css.feedback}>
-                <IconButton
-                    fillStyle="fill"
-                    intent="secondary"
-                    size="small"
-                    iconClassName={
-                        resource.feedback === 'thumbs_up'
-                            ? 'material-icons'
-                            : 'material-icons-outlined'
-                    }
-                    className={classNames({
-                        [css.positiveFeedback]:
-                            resource.feedback === 'thumbs_up',
-                    })}
-                    onClick={(ev) => {
-                        ev.preventDefault()
+export const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> =
+    ({
+        resource,
+        resourceType,
+        handleSubmitFeedback,
+        href,
+        dataTestId,
+        resourceId,
+    }) => {
+        const hasAgentPrivileges = useHasAgentPrivileges()
+        const [cookies, setCookie] = useCookies([TOOLTIP_COOKIE_NAME])
 
-                        if (resource.feedback === 'thumbs_up') {
-                            return
+        const handleClick = (ev: React.MouseEvent, buttonType: Feedback) => {
+            ev.preventDefault()
+
+            if (resource.feedback === buttonType) {
+                return
+            }
+
+            handleSubmitFeedback(resource.id, resourceType, buttonType)
+        }
+
+        const handleBlur = () => {
+            if (!cookies[TOOLTIP_COOKIE_NAME]) {
+                setCookie(TOOLTIP_COOKIE_NAME, true)
+            }
+        }
+
+        return (
+            <a
+                href={hasAgentPrivileges ? href : undefined}
+                target="_blank"
+                rel="noreferrer noopener"
+                className={classNames(css.section, {
+                    [css.clickable]: hasAgentPrivileges,
+                })}
+                data-testid={dataTestId}
+            >
+                <div className={css.sectionText}>
+                    <div className={css.text}>{resource.name}</div>
+                    <i className={classNames('material-icons', css.openIcon)}>
+                        open_in_new
+                    </i>
+                </div>
+                <div className={css.feedback}>
+                    <IconButton
+                        fillStyle="fill"
+                        intent="secondary"
+                        size="small"
+                        iconClassName={
+                            resource.feedback === 'thumbs_up'
+                                ? 'material-icons'
+                                : 'material-icons-outlined'
                         }
-
-                        handleSubmitFeedback(
-                            resource.id,
-                            resourceType,
-                            'thumbs_up'
-                        )
-                    }}
-                    title="Mark as Correct"
-                >
-                    thumb_up
-                </IconButton>
-                <IconButton
-                    fillStyle="fill"
-                    intent="secondary"
-                    size="small"
-                    iconClassName={
-                        resource.feedback === 'thumbs_down'
-                            ? 'material-icons'
-                            : 'material-icons-outlined'
-                    }
-                    className={classNames({
-                        [css.negativeFeedback]:
-                            resource.feedback === 'thumbs_down',
-                    })}
-                    onClick={(ev) => {
-                        ev.preventDefault()
-
-                        if (resource.feedback === 'thumbs_down') {
-                            return
+                        className={classNames({
+                            [css.positiveFeedback]:
+                                resource.feedback === 'thumbs_up',
+                        })}
+                        onClick={(ev) => {
+                            handleClick(ev, 'thumbs_up')
+                        }}
+                        onBlur={handleBlur}
+                        title="Mark as Correct"
+                        id={`thumbs_up-${resourceId}-${resourceType}`}
+                    >
+                        thumb_up
+                    </IconButton>
+                    {!cookies[TOOLTIP_COOKIE_NAME] && (
+                        <Tooltip
+                            target={`thumbs_up-${resourceId}-${resourceType}`}
+                            placement="bottom-start"
+                            className={css.tooltip}
+                            data-testid={`thumbs_up-${resourceId}`}
+                            trigger={['click']}
+                        >
+                            Thanks for the feedback! AI Agent will be{' '}
+                            <span className={css.tooltipSpecialText}>
+                                more likely
+                            </span>{' '}
+                            to use this on similar tickets in future
+                        </Tooltip>
+                    )}
+                    <IconButton
+                        fillStyle="fill"
+                        intent="secondary"
+                        size="small"
+                        iconClassName={
+                            resource.feedback === 'thumbs_down'
+                                ? 'material-icons'
+                                : 'material-icons-outlined'
                         }
-
-                        handleSubmitFeedback(
-                            resource.id,
-                            resourceType,
-                            'thumbs_down'
-                        )
-                    }}
-                    title="Mark as Incorrect"
-                >
-                    thumb_down
-                </IconButton>
-            </div>
-        </a>
-    )
-}
+                        className={classNames({
+                            [css.negativeFeedback]:
+                                resource.feedback === 'thumbs_down',
+                        })}
+                        onClick={(ev) => {
+                            handleClick(ev, 'thumbs_down')
+                        }}
+                        onBlur={handleBlur}
+                        title="Mark as Incorrect"
+                        id={`thumbs-down-${resourceId}-${resourceType}`}
+                    >
+                        thumb_down
+                    </IconButton>
+                    {!cookies[TOOLTIP_COOKIE_NAME] && (
+                        <Tooltip
+                            target={`thumbs-down-${resourceId}-${resourceType}`}
+                            placement="bottom-start"
+                            className={css.tooltip}
+                            data-testid={`thumbs-down-${resourceId}`}
+                            trigger={['click']}
+                        >
+                            Thanks for the feedback! AI Agent will be{' '}
+                            <span className={css.tooltipSpecialText}>
+                                less likely
+                            </span>{' '}
+                            to use this on similar tickets in future
+                        </Tooltip>
+                    )}
+                </div>
+            </a>
+        )
+    }
 
 type Props = {
     messageFeedback: MessageFeedback
@@ -307,6 +346,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                     messageFeedback.shopName
                                 )}
                                 dataTestId={FEEDBACK_MESSAGE_ACTIONS_TEST_ID}
+                                resourceId={action.id}
                             />
                         ))}
                     </div>
@@ -326,6 +366,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                     messageFeedback.shopName
                                 )}
                                 dataTestId={FEEDBACK_MESSAGE_GUIDANCE_TEST_ID}
+                                resourceId={guidance.id}
                             />
                         ))}
                     </div>
@@ -341,6 +382,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                 handleSubmitFeedback={handleSubmitFeedback}
                                 href={getKnowledgeUrl(knowledge)}
                                 dataTestId={FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID}
+                                resourceId={knowledge.id}
                             />
                         ))}
                     </div>
