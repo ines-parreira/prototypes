@@ -1,18 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ShopifyIntegration/> render() should correctly send the updated integration meta to the backend 1`] = `
-[
-  [
-    Immutable.Map {
-      "meta": Immutable.Map {
-        "sync_customer_notes": false,
-        "default_address_phone_matching_enabled": true,
-      },
-    },
-  ],
-]
-`;
-
 exports[`<ShopifyIntegration/> render() should render a loader because the integration is loading 1`] = `
 <div>
   <div
@@ -201,6 +188,32 @@ exports[`<ShopifyIntegration/> render() should send only the sync_customer_notes
     Immutable.Map {
       "meta": Immutable.Map {
         "sync_customer_notes": false,
+      },
+    },
+  ],
+]
+`;
+
+exports[`<ShopifyIntegration/> render() when enabling DSA phone matching, should send all the integration meta after asking for confirmation 1`] = `
+[
+  [
+    Immutable.Map {
+      "meta": Immutable.Map {
+        "sync_customer_notes": false,
+        "default_address_phone_matching_enabled": true,
+      },
+    },
+  ],
+]
+`;
+
+exports[`<ShopifyIntegration/> render() when not enabling DSA phone matching, should send all the integration meta without asking for confirmation 1`] = `
+[
+  [
+    Immutable.Map {
+      "meta": Immutable.Map {
+        "sync_customer_notes": false,
+        "default_address_phone_matching_enabled": false,
       },
     },
   ],
