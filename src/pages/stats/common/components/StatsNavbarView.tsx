@@ -27,8 +27,6 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.AnalyticsSLAs]
     const isAutoQAEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
-    const newChannelsReport: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewChannelsReport]
     const liveCallQueueEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.LiveCallQueue]
 
@@ -138,19 +136,7 @@ export default function StatsNavbarView() {
                             {...COMMON_NAV_LINK_PROPS}
                             to="/app/stats/channels"
                         >
-                            {newChannelsReport ? (
-                                <>
-                                    Channels{' '}
-                                    <Badge
-                                        type={ColorType.Blue}
-                                        className={cssNavbar.badge}
-                                    >
-                                        {NEW_NAV_LABEL}
-                                    </Badge>
-                                </>
-                            ) : (
-                                'Channels'
-                            )}
+                            Channels
                         </NavbarLink>
                     </div>
 
@@ -207,13 +193,7 @@ export default function StatsNavbarView() {
                                 {...COMMON_NAV_LINK_PROPS}
                                 to="/app/stats/slas"
                             >
-                                SLAs{' '}
-                                <Badge
-                                    type={ColorType.Blue}
-                                    className={cssNavbar.badge}
-                                >
-                                    {NEW_NAV_LABEL}
-                                </Badge>
+                                SLAs
                             </NavbarLink>
                         </div>
                     )}
