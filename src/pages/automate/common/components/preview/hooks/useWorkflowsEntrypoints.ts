@@ -28,6 +28,13 @@ const useWorkflowsEntrypoints: (channelLanguage: string) => {
         language: channelLanguage,
     })
     useEffect(() => {
+        if (
+            !enabledWorkflowIdsInChannel ||
+            enabledWorkflowIdsInChannel.length === 0
+        ) {
+            setEntrypoints([])
+            return
+        }
         enabledWorkflowIdsInChannel &&
             entrypointLabelByWorkflowId &&
             setEntrypoints(
