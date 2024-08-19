@@ -25,8 +25,11 @@ const useHelpCenterCustomDomainHostnames = (helpCenterId?: number) => {
             } = await client.listCustomDomains({
                 help_center_id: helpCenterId,
             })
+            const activeCustomDomains = customDomains.filter(
+                (domain) => domain.status === 'active'
+            )
             setCustomDomainHostnames(
-                customDomains.map((domain) => domain.hostname)
+                activeCustomDomains.map((domain) => domain.hostname)
             )
         } catch (err) {
             void dispatch(

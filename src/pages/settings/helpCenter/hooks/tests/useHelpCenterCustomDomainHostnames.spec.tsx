@@ -33,7 +33,10 @@ describe('useHelpCenterCustomDomainUrls', () => {
     })
 
     it('should set loading state and fetch custom domains', async () => {
-        const mockDomains = [{hostname: 'example.com'}, {hostname: 'test.com'}]
+        const mockDomains = [
+            {hostname: 'example.com', status: 'active'},
+            {hostname: 'test.com', status: 'active'},
+        ]
         mockedListCustomDomains.mockResolvedValueOnce({
             data: {data: mockDomains},
         })
@@ -47,6 +50,29 @@ describe('useHelpCenterCustomDomainUrls', () => {
             expect(result.current.customDomainHostnames).toEqual([
                 'example.com',
                 'test.com',
+            ])
+        )
+        expect(result.current.isLoading).toBe(false)
+    })
+
+    it('should not set customDomainHostnames if the custom domain is not active', async () => {
+        const mockDomains = [
+            {hostname: 'example.com', status: 'pending'},
+            {hostname: 'test.com', status: 'unknown'},
+            {hostname: 'active-domain.com', status: 'active'},
+        ]
+        mockedListCustomDomains.mockResolvedValueOnce({
+            data: {data: mockDomains},
+        })
+
+        const {result, waitFor} = renderHook(() =>
+            useHelpCenterCustomDomainHostnames(1)
+        )
+
+        await waitFor(() => expect(result.current.isLoading).toBe(true))
+        await waitFor(() =>
+            expect(result.current.customDomainHostnames).toEqual([
+                'active-domain.com',
             ])
         )
         expect(result.current.isLoading).toBe(false)
