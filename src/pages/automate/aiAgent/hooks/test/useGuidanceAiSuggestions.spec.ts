@@ -1,23 +1,21 @@
 import {renderHook} from '@testing-library/react-hooks'
-import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
+import {fromJS} from 'immutable'
 import {assumeMock} from 'utils/testing'
-import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {useGetAIGeneratedGuidances} from 'models/aiAgent/queries'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/constants'
+import {StoreState} from 'state/types'
 import {useGuidanceAiSuggestions} from '../useGuidanceAiSuggestions'
 import {useGuidanceArticles} from '../useGuidanceArticles'
 import {getGuidanceArticleFixture} from '../../fixtures/guidanceArticle.fixture'
 import {getAIGuidanceFixture} from '../../fixtures/aiGuidance.fixture'
 
 jest.mock('../useGuidanceArticles')
-jest.mock('pages/automate/common/hooks/useShopifyIntegrations')
-jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
 jest.mock('models/aiAgent/queries')
+jest.mock('hooks/useAppSelector')
 
 const mockedUseGuidanceArticles = assumeMock(useGuidanceArticles)
-const mockedUseShopifyIntegrations = assumeMock(useShopifyIntegrations)
-const mockedUseSelfServiceStoreIntegration = assumeMock(
-    useSelfServiceStoreIntegration
-)
+const mockedUseAppSelector = assumeMock(useAppSelector)
 const mockedUseGetAIGeneratedGuidances = (
     data: any,
     error: Error | null = null,
@@ -51,18 +49,15 @@ describe('useGuidanceAiSuggestions', () => {
             guidanceArticles,
             isGuidanceArticleListLoading: false,
         })
-        mockedUseShopifyIntegrations.mockImplementation(
-            () =>
-                [{id: 1}] as unknown as ReturnType<
-                    typeof useShopifyIntegrations
-                >
+        mockedUseAppSelector.mockImplementation((selector) =>
+            selector({
+                integrations: fromJS({
+                    integrations: [
+                        {id: 1, type: IntegrationType.Shopify, name: 'My Shop'},
+                    ],
+                }),
+            } as unknown as StoreState)
         )
-        mockedUseSelfServiceStoreIntegration.mockImplementation(() => {
-            return {
-                id: 1,
-                name: 'My Shop',
-            } as unknown as ReturnType<typeof useSelfServiceStoreIntegration>
-        })
     })
 
     it('should return isGuidancesOnly true', () => {
