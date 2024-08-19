@@ -194,4 +194,76 @@ describe('useGuidanceAiSuggestions', () => {
         expect(result.current.isGuidancesOnly).toEqual(false)
         expect(result.current.isGuidancesAndAIGuidances).toEqual(false)
     })
+
+    it('should get ai guidance by id', () => {
+        mockedUseGuidanceArticles.mockReturnValue({
+            guidanceArticles: [],
+            isGuidanceArticleListLoading: false,
+        })
+
+        const aiGuidances = [
+            {...getAIGuidanceFixture('1'), review_action: 'none'},
+            {...getAIGuidanceFixture('2'), review_action: 'none'},
+        ]
+
+        mockedUseGetAIGeneratedGuidances(aiGuidances)
+
+        const {result} = renderHook(() =>
+            useGuidanceAiSuggestions({
+                helpCenterId,
+                shopName,
+            })
+        )
+
+        const aiGuidanceSuggestion = result.current.getAiGuidanceById('1')
+
+        expect(aiGuidanceSuggestion).toBeDefined()
+        expect(aiGuidanceSuggestion?.name).toBe('Name 1')
+    })
+
+    it('should return null when there are no AI guidances', () => {
+        mockedUseGuidanceArticles.mockReturnValue({
+            guidanceArticles: [],
+            isGuidanceArticleListLoading: false,
+        })
+
+        const aiGuidances = null
+
+        mockedUseGetAIGeneratedGuidances(aiGuidances)
+
+        const {result} = renderHook(() =>
+            useGuidanceAiSuggestions({
+                helpCenterId,
+                shopName,
+            })
+        )
+
+        const aiGuidanceSuggestion = result.current.getAiGuidanceById('1')
+
+        expect(aiGuidanceSuggestion).toBeNull()
+    })
+
+    it('should return null when there is no AI Guidance found by id', () => {
+        mockedUseGuidanceArticles.mockReturnValue({
+            guidanceArticles: [],
+            isGuidanceArticleListLoading: false,
+        })
+
+        const aiGuidances = [
+            {...getAIGuidanceFixture('1'), review_action: 'none'},
+            {...getAIGuidanceFixture('2'), review_action: 'none'},
+        ]
+
+        mockedUseGetAIGeneratedGuidances(aiGuidances)
+
+        const {result} = renderHook(() =>
+            useGuidanceAiSuggestions({
+                helpCenterId,
+                shopName,
+            })
+        )
+
+        const aiGuidanceSuggestion = result.current.getAiGuidanceById('10')
+        expect(aiGuidanceSuggestion).toBeNull()
+    })
 })

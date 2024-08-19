@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import {useCallback, useMemo} from 'react'
 import {IntegrationType} from 'models/integration/constants'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
@@ -52,6 +52,21 @@ export const useGuidanceAiSuggestions = ({helpCenterId, shopName}: Props) => {
 
     const hasAIGuidancesFromAPI = !!data && data.length > 0
 
+    const getAiGuidanceById = useCallback(
+        (aiGuidanceId: string) => {
+            if (!data || !aiGuidanceId) {
+                return null
+            }
+            const aiGuidanceSuggestion = data.find(
+                (aiGuidance) => aiGuidance.key === aiGuidanceId
+            )
+            return aiGuidanceSuggestion
+                ? mapAIGuidanceDTOToAIGuidance(aiGuidanceSuggestion)
+                : null
+        },
+        [data]
+    )
+
     return {
         guidanceArticles,
         isLoading,
@@ -64,5 +79,6 @@ export const useGuidanceAiSuggestions = ({helpCenterId, shopName}: Props) => {
         isGuidancesOnly: !hasAIGuidancesFromAPI && guidanceArticles.length > 0,
         isGuidancesAndAIGuidances:
             hasAIGuidancesFromAPI && guidanceArticles.length > 0,
+        getAiGuidanceById,
     }
 }

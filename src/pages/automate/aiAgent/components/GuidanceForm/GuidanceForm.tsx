@@ -30,6 +30,7 @@ type Props = {
     onSubmit: (fields: GuidanceFormFields) => Promise<void>
     onDelete?: () => Promise<void>
     initialFields?: GuidanceFormFields
+    isAiGuidanceSuggestions?: boolean
 }
 
 export const GuidanceForm = ({
@@ -39,6 +40,7 @@ export const GuidanceForm = ({
     initialFields,
     onDelete,
     actionType,
+    isAiGuidanceSuggestions,
 }: Props) => {
     const dispatch = useAppDispatch()
     const {routes} = useAiAgentNavigation({shopName})
@@ -216,6 +218,20 @@ export const GuidanceForm = ({
             </div>
 
             <div className={css.alertContainer}>
+                {isAiGuidanceSuggestions && (
+                    <Alert type={AlertType.Info} icon className={css.alert}>
+                        <p>
+                            AI-generated Guidance is crafted from your past
+                            tickets. It reflects how the AI Agent will behave in
+                            specific scenarios, using insights from your
+                            existing resources.{' '}
+                            <b>
+                                Please review it thoroughly to maximize its
+                                benefits.
+                            </b>
+                        </p>
+                    </Alert>
+                )}
                 <Alert type={AlertType.Info} icon className={css.alert}>
                     <p>
                         Give your AI Agent instructions on how to handle
@@ -223,10 +239,22 @@ export const GuidanceForm = ({
                     </p>
                     <p>
                         Instructions can be context specific, for example:{' '}
-                        <b>
-                            “For pricing questions, you will point customers to
-                            our pricing page: https://example.com/pricing”
-                        </b>
+                        <i>
+                            <b>
+                                “For pricing questions, you will point customers
+                                to our pricing page:
+                                https://example.com/pricing”
+                            </b>
+                        </i>
+                    </p>
+                    <p>
+                        Instructions can also be general:{' '}
+                        <i>
+                            <b>
+                                “Always end by asking if they need more help, no
+                                matter what they asked.”
+                            </b>
+                        </i>
                     </p>
                 </Alert>
             </div>

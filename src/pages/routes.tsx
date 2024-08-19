@@ -200,6 +200,7 @@ import WorkflowAnalyticsContainer from './automate/workflows/analytics/WorkflowA
 import AutomateAllRecommendationsContainer from './automate/common/components/AutomateAllRecommendationsContainer'
 import LiveVoice from './stats/voice/pages/LiveVoice'
 import {AiAgentGuidanceLibraryContainer} from './automate/aiAgent/AiAgentGuidanceLibraryContainer'
+import {AiAgentGuidanceAiSuggestionNewContainer} from './automate/aiAgent/AiAgentGuidanceAiSuggestionNewContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1479,6 +1480,14 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                                 path={`${path}/guidance/templates/:templateId`}
                                 component={AiAgentGuidanceTemplateNewContainer}
                             />
+                            {isAiAgentAIGeneratedGuidancesEnabled && (
+                                <Route
+                                    path={`${path}/guidance/library/:aiGuidanceId`}
+                                    component={
+                                        AiAgentGuidanceAiSuggestionNewContainer
+                                    }
+                                />
+                            )}
                             <Route
                                 path={`${path}/guidance/templates`}
                                 component={AiAgentGuidanceTemplatesContainer}

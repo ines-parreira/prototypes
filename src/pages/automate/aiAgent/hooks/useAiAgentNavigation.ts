@@ -18,6 +18,8 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
             guidanceLibrary: `/app/automation/shopify/${shopName}/ai-agent/guidance/library`,
             newGuidanceTemplateArticle: (templateId: string) =>
                 `/app/automation/shopify/${shopName}/ai-agent/guidance/templates/${templateId}`,
+            newGuidanceAiSuggestionArticle: (aiGuidanceId: string) =>
+                `/app/automation/shopify/${shopName}/ai-agent/guidance/library/${aiGuidanceId}`,
             actions: `/app/automation/shopify/${shopName}/ai-agent/actions`,
             newAction: (templateId?: string) =>
                 `/app/automation/shopify/${shopName}/ai-agent/actions/new${

@@ -80,7 +80,7 @@ describe('<GuidanceAiSuggestionsList />', () => {
         userEvent.click(aiGuidanceSuggestion)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test/ai-agent/guidance/new'
+            '/app/automation/shopify/test/ai-agent/guidance/library/ai_guidance_id1'
         )
     })
 

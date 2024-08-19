@@ -72,6 +72,7 @@ const defaultGuidanceAiSuggestionsProps: ReturnType<
     isEmptyStateAIGuidances: false,
     isGuidancesOnly: false,
     isGuidancesAndAIGuidances: false,
+    getAiGuidanceById: jest.fn(),
 }
 
 const mockStore = configureMockStore([thunk])

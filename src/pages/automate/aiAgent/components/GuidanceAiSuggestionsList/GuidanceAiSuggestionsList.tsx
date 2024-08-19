@@ -21,8 +21,8 @@ export const GuidanceAiSuggestionsList = ({
 }: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
 
-    const onAiSuggestionClick = () => {
-        history.push(routes.newGuidanceArticle)
+    const onAiSuggestionClick = (aiGuidanceId: string) => {
+        history.push(routes.newGuidanceAiSuggestionArticle(aiGuidanceId))
     }
 
     if (!guidanceAiSuggestions?.length && !showBanner) {
@@ -42,7 +42,7 @@ export const GuidanceAiSuggestionsList = ({
             {guidanceAiSuggestions.map((guidance: AIGuidance) => (
                 <li key={guidance.key}>
                     <GuidanceAiSuggestionCard
-                        onClick={() => onAiSuggestionClick()}
+                        onClick={() => onAiSuggestionClick(guidance.key)}
                         guidanceAiSuggestion={guidance}
                     />
                 </li>
