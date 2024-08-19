@@ -6,14 +6,15 @@ import IconButton from 'pages/common/components/button/IconButton'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import {getActiveView} from 'state/views/selectors'
 
-import css from './BulkActions.less'
+import css from './style.less'
 
 type Props = {
+    isDisabled: boolean
     onComplete: () => void
     ticketIds: number[]
 }
 
-export default function ApplyMacro({onComplete, ticketIds}: Props) {
+export default function ApplyMacro({isDisabled, onComplete, ticketIds}: Props) {
     const activeView = useAppSelector(getActiveView)
     const [isMacroModalOpen, setIsMacroModalOpen] = useState(false)
 
@@ -39,10 +40,10 @@ export default function ApplyMacro({onComplete, ticketIds}: Props) {
                 intent="secondary"
                 onClick={onOpenModal}
                 title="Apply macro"
+                isDisabled={isDisabled}
             >
                 bolt
             </IconButton>
-
             {isMacroModalOpen && (
                 <MacroContainer
                     activeView={activeView}

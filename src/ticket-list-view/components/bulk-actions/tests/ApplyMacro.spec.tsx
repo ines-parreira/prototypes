@@ -38,6 +38,7 @@ jest.mock(
 
 describe('<ApplyMacro />', () => {
     const minProps = {
+        isDisabled: false,
         onComplete: jest.fn(),
         ticketIds: [],
     }
@@ -81,5 +82,16 @@ describe('<ApplyMacro />', () => {
         fireEvent.click(getByText('onComplete'))
 
         expect(minProps.onComplete).toHaveBeenCalledWith(mockItemsIds)
+    })
+
+    it('should be disabled', () => {
+        const {getByText, queryByText} = render(
+            <Provider store={mockStore({})}>
+                <ApplyMacro {...minProps} isDisabled />
+            </Provider>
+        )
+
+        getByText('bolt').click()
+        expect(queryByText('MacroContainer')).not.toBeInTheDocument()
     })
 })

@@ -1,11 +1,9 @@
 import React, {ComponentProps} from 'react'
-import {getQueriesForElement, render, waitFor} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import {JobType} from '@gorgias/api-queries'
-import {fromJS} from 'immutable'
 
 import {useBulkAction} from 'jobs'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import {TagDropdownMenu} from 'tags'
 import {assumeMock} from 'utils/testing'
 
 import ApplyMacro from '../ApplyMacro'
@@ -15,27 +13,33 @@ import CloseTickets from '../CloseTickets'
 jest.mock(
     '../ApplyMacro',
     () =>
-        ({onComplete}: ComponentProps<typeof ApplyMacro>) =>
-            <div onClick={onComplete}>ApplyMacro</div>
+        ({isDisabled, onComplete}: ComponentProps<typeof ApplyMacro>) =>
+            (
+                <button disabled={isDisabled} onClick={onComplete}>
+                    ApplyMacro
+                </button>
+            )
 )
 jest.mock(
     '../CloseTickets',
     () =>
         ({isDisabled, onClick}: ComponentProps<typeof CloseTickets>) =>
             (
-                <div onClick={onClick}>
+                <button disabled={isDisabled} onClick={onClick}>
                     CloseTickets
-                    {isDisabled}
-                </div>
+                </button>
             )
 )
-
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch')
-const useAppDispatchMock = useAppDispatch as jest.Mock
-
-jest.mock('hooks/useAppSelector')
-const useAppSelectorMock = useAppSelector as jest.Mock
+jest.mock(
+    'tags/TagDropdownMenu',
+    () =>
+        ({onClick}: ComponentProps<typeof TagDropdownMenu>) =>
+            (
+                <button onClick={() => onClick({name: 'tag'})}>
+                    TagDropdownMenu
+                </button>
+            )
+)
 
 const mockCreateJob = jest.fn()
 jest.mock('jobs/useBulkAction')
@@ -43,13 +47,12 @@ const useBulkActionMock = assumeMock(useBulkAction)
 
 describe('<BulkActions />', () => {
     const minProps = {
+        hasSelectedAll: true,
         onComplete: jest.fn(),
         selectedTickets: {},
     }
 
     beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(mockedDispatch)
-        useAppSelectorMock.mockReturnValue(fromJS({}))
         useBulkActionMock.mockReturnValue({
             createJob: mockCreateJob,
             isLoading: false,
@@ -81,6 +84,7 @@ describe('<BulkActions />', () => {
         const {getByText} = render(
             <BulkActions
                 {...minProps}
+                hasSelectedAll={false}
                 selectedTickets={{
                     1: true,
                     2: false,
@@ -93,11 +97,9 @@ describe('<BulkActions />', () => {
     })
 
     it('should trigger a job for marking as unread tickets', () => {
-        useAppSelectorMock.mockReturnValue(fromJS({}))
-
-        const {getByText, baseElement} = render(<BulkActions {...minProps} />)
+        const {getByText} = render(<BulkActions {...minProps} />)
         getByText('more_horiz').click()
-        getQueriesForElement(baseElement).getByText('Mark as unread').click()
+        screen.queryByText('Mark as unread')?.click()
 
         expect(mockCreateJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
             updates: {is_unread: true},
@@ -105,11 +107,9 @@ describe('<BulkActions />', () => {
     })
 
     it('should trigger a job for marking as read tickets', () => {
-        useAppSelectorMock.mockReturnValue(fromJS({}))
-
-        const {getByText, baseElement} = render(<BulkActions {...minProps} />)
+        const {getByText} = render(<BulkActions {...minProps} />)
         getByText('more_horiz').click()
-        getQueriesForElement(baseElement).getByText('Mark as read').click()
+        screen.queryByText('Mark as read')?.click()
 
         expect(mockCreateJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
             updates: {is_unread: false},
@@ -117,11 +117,9 @@ describe('<BulkActions />', () => {
     })
 
     it('should trigger a job for exporting tickets', () => {
-        useAppSelectorMock.mockReturnValue(fromJS({}))
-
-        const {getByText, baseElement} = render(<BulkActions {...minProps} />)
+        const {getByText} = render(<BulkActions {...minProps} />)
         getByText('more_horiz').click()
-        getQueriesForElement(baseElement).getByText('Export tickets').click()
+        screen.queryByText('Export tickets')?.click()
 
         expect(mockCreateJob).toHaveBeenCalledWith(
             JobType.ExportTicket,
@@ -130,14 +128,37 @@ describe('<BulkActions />', () => {
     })
 
     it('should trigger a job for deleting tickets', () => {
-        useAppSelectorMock.mockReturnValue(fromJS({}))
-
-        const {getByText, baseElement} = render(<BulkActions {...minProps} />)
+        const {getByText} = render(<BulkActions {...minProps} />)
         getByText('more_horiz').click()
-        getQueriesForElement(baseElement).getByText('Delete').click()
+        screen.queryByText('Delete')?.click()
 
         expect(mockCreateJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
             updates: {trashed_datetime: expect.any(String)},
         })
+    })
+
+    it('should disable bulk action buttons', () => {
+        const {getByText} = render(
+            <BulkActions {...minProps} hasSelectedAll={false} />
+        )
+        getByText('more_horiz').click()
+        expect(screen.queryByText('Mark as read')).not.toBeInTheDocument
+
+        getByText('CloseTickets').click()
+        expect(mockCreateJob).not.toHaveBeenCalled()
+    })
+
+    it('should trigger a job for applying a tag', () => {
+        const {getByText} = render(<BulkActions {...minProps} />)
+        getByText('more_horiz').click()
+        getByText('Add tag').click()
+        expect(screen.getByText('arrow_back')).toBeInTheDocument
+        getByText('TagDropdownMenu').click()
+
+        expect(mockCreateJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
+            updates: {tags: ['tag']},
+        })
+        expect(screen.queryByText('TagDropdownMenu')).not.toBeInTheDocument
+        expect(screen.queryByText('Add tag')).not.toBeInTheDocument
     })
 })

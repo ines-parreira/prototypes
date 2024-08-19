@@ -2,7 +2,7 @@ import React from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 
-import css from './BulkActions.less'
+import css from './style.less'
 
 export default function CloseTickets({
     isDisabled,

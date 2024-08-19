@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, waitFor} from '@testing-library/react'
+import {render} from '@testing-library/react'
 
 import CloseTickets from '../CloseTickets'
 
@@ -15,10 +15,17 @@ describe('<CloseTickets />', () => {
         expect(getByText('check_circle')).toBeInTheDocument()
     })
 
-    it('should trigger callback on click', async () => {
+    it('should trigger callback on click', () => {
         const {getByText} = render(<CloseTickets {...minProps} />)
         getByText('check_circle').click()
 
-        await waitFor(() => expect(minProps.onClick).toHaveBeenCalled())
+        expect(minProps.onClick).toHaveBeenCalled()
+    })
+
+    it('should be disabled', () => {
+        const {getByText} = render(<CloseTickets {...minProps} isDisabled />)
+        getByText('check_circle').click()
+
+        expect(minProps.onClick).not.toHaveBeenCalled()
     })
 })

@@ -256,6 +256,7 @@ export default function TicketListView({
                         )}
                     </div>
                     <BulkActions
+                        hasSelectedAll={hasSelectedAll}
                         selectedTickets={selectedTickets}
                         onComplete={clear}
                     />
