@@ -76,8 +76,12 @@ export const statsSlice = createSlice({
                             ? payload
                             : customFieldFilter
                 )
+            } else {
+                state.filters.customFields = [
+                    ...(state.filters.customFields ?? []),
+                    payload,
+                ]
             }
-            state.filters.customFields = [payload]
         },
     },
 })

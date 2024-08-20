@@ -1,4 +1,5 @@
 import {AnyAction} from 'redux'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     withDefaultCustomFieldAndLogicalOperator,
     withDefaultLogicalOperator,
@@ -112,25 +113,36 @@ describe('stats reducer', () => {
     })
 
     describe('mergeCustomFieldsFilter', () => {
-        const state = {
+        const initialCustomField = withDefaultCustomFieldAndLogicalOperator({
+            values: [],
+            customFieldId: 2,
+        })
+        const defaultState = {
             ...initialState,
             filters: {
                 ...initialState.filters,
-                customFields: [
-                    withDefaultCustomFieldAndLogicalOperator({
-                        values: [],
-                        customFieldId: 2,
-                    }),
-                ],
+                customFields: [initialCustomField],
             },
         }
         const newCustomField = withDefaultCustomFieldAndLogicalOperator({
             values: ['first:field'],
             customFieldId: 1,
         })
+        const sameCustomField = withDefaultCustomFieldAndLogicalOperator({
+            values: ['other:field'],
+            customFieldId: 2,
+        })
 
-        it('should merge custom fields by replacing state with new customFields', () => {
+        it('should merge custom fields by replacing empty state with new customFields', () => {
+            const state = {
+                ...defaultState,
+                filters: {
+                    ...initialState.filters,
+                    customFields: undefined,
+                },
+            }
             const action = mergeCustomFieldsFilter(newCustomField)
+
             expect(statsSlice.reducer(state, action)).toEqual({
                 filters: {
                     ...initialState.filters,
@@ -139,17 +151,48 @@ describe('stats reducer', () => {
             })
         })
 
-        const sameCustomField = withDefaultCustomFieldAndLogicalOperator({
-            values: ['first:field'],
-            customFieldId: 2,
+        it('should merge custom fields by replacing state with new customFields', () => {
+            const action = mergeCustomFieldsFilter(newCustomField)
+
+            expect(statsSlice.reducer(defaultState, action)).toEqual({
+                filters: {
+                    ...initialState.filters,
+                    customFields: [initialCustomField, newCustomField],
+                },
+            })
         })
 
         it('should merge custom fields by changing its payload', () => {
             const action = mergeCustomFieldsFilter(sameCustomField)
-            expect(statsSlice.reducer(state, action)).toEqual({
+
+            expect(statsSlice.reducer(defaultState, action)).toEqual({
                 filters: {
                     ...initialState.filters,
                     customFields: [sameCustomField],
+                },
+            })
+        })
+
+        it('should merge custom fields keeping all fields in state', () => {
+            const state = {
+                ...defaultState,
+                filters: {
+                    ...initialState.filters,
+                    customFields: [initialCustomField, newCustomField],
+                },
+            }
+            const updatedCustomField = {
+                values: ['first:field', 'second:field'],
+                operator: LogicalOperatorEnum.ONE_OF,
+                customFieldId: initialCustomField.customFieldId,
+            }
+
+            const action = mergeCustomFieldsFilter(updatedCustomField)
+
+            expect(statsSlice.reducer(state, action)).toEqual({
+                filters: {
+                    ...initialState.filters,
+                    customFields: [updatedCustomField, newCustomField],
                 },
             })
         })
