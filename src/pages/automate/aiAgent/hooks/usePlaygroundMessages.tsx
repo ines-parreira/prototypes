@@ -64,9 +64,9 @@ export const usePlaygroundMessages = ({
             {
                 sender: AI_AGENT_SENDER,
                 type: MessageType.MESSAGE,
-                message: `Hey${
+                message: `Hi${
                     currentUserFirstName ? ` ${currentUserFirstName}` : ''
-                }!<br/><br/>Welcome to your new AI Agent playground. <b>You can send messages just like your customers do to see how AI Agent responds!</b> Get started by selecting a customer email below and writing your first message.`,
+                }!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question.`,
                 createdDatetime: new Date().toISOString(),
             },
         ],
