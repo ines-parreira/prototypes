@@ -85,6 +85,7 @@ export default function Ticket({
         [ticket, onSelect]
     )
 
+    const excerptRef = useRef<HTMLDivElement | null>(null)
     const sourceRef = useRef<HTMLImageElement | null>(null)
 
     if (hasBulkActions) {
@@ -172,9 +173,21 @@ export default function Ticket({
                                     <div className={css.subjectNew}>
                                         {ticket.subject}
                                     </div>
-                                    <div className={css.excerptNew}>
+                                    <div
+                                        ref={excerptRef}
+                                        className={css.excerptNew}
+                                    >
                                         {ticket.excerpt}
                                     </div>
+                                    {ticket.excerpt !== '' && (
+                                        <Tooltip
+                                            delay={200}
+                                            placement="top"
+                                            target={excerptRef}
+                                        >
+                                            {ticket.excerpt}
+                                        </Tooltip>
+                                    )}
                                 </div>
                             </>
                         )}
