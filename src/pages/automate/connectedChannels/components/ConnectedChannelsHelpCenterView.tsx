@@ -111,6 +111,7 @@ export const ConnectedChannelsHelpCenterView = ({
                     /* If help center is provided, it means we are in the help center context, so we don't need to show the dropdown */
                     <CurrentlyViewingDropdown
                         onConnect={noop}
+                        appId={currentChannel.value.id}
                         channelType="help-center"
                         channels={helpCenterChannels}
                         value={selectedChannel ?? ''}

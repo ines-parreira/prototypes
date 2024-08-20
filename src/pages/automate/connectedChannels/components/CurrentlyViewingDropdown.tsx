@@ -23,18 +23,21 @@ const renderIconByChannelType = (channelType: ChannelType) => {
     }
 }
 
-const getLinkAndLabel = (channelType: ChannelType) => {
+const getLinkAndLabel = (channelType: ChannelType, id: string | number) => {
     switch (channelType) {
         case 'chat':
-            return {link: '/app/settings/channels/gorgias_chat', label: 'Chat'}
+            return {
+                link: `/app/settings/channels/gorgias_chat/${id}`,
+                label: 'Chat',
+            }
         case 'help-center':
             return {
-                link: '/app/settings/help-center',
+                link: `/app/settings/help-center/${id}/articles`,
                 label: 'Help Center',
             }
         case 'contact-form':
             return {
-                link: '/app/settings/contact-form',
+                link: `/app/settings/contact-form/${id}`,
                 label: 'Contact Form',
             }
     }
@@ -43,6 +46,7 @@ interface Props<T> {
     channelType: ChannelType
     value: string | number
     label: string
+    appId: string | number
     channels: T[]
     showConnectCallToAction?: boolean
     onConnect?: () => void
@@ -57,6 +61,7 @@ export const CurrentlyViewingDropdown = <T,>({
     channels,
     value,
     label,
+    appId,
     showConnectCallToAction,
     onSelectedChannelChange,
     renderOption,
@@ -64,7 +69,7 @@ export const CurrentlyViewingDropdown = <T,>({
     const [isSelectOpen, setIsSelectOpen] = React.useState(false)
     const targetRef = React.useRef<HTMLButtonElement>(null)
 
-    const {link, label: channelTypeLabel} = getLinkAndLabel(channelType)
+    const {link, label: channelTypeLabel} = getLinkAndLabel(channelType, appId)
 
     return (
         <div className={css.currentlyViewingDropdown}>
@@ -92,7 +97,12 @@ export const CurrentlyViewingDropdown = <T,>({
                     <i className="material-icons">keyboard_arrow_down</i>
                 </Button>
                 <Button intent="secondary" fillStyle="ghost">
-                    <Link to={link} className={css.channelTypeSettingsLink}>
+                    <Link
+                        to={link}
+                        className={css.channelTypeSettingsLink}
+                        target="_blank"
+                        role="link"
+                    >
                         <ButtonIconLabel icon="open_in_new" position="right">
                             {channelTypeLabel} Settings
                         </ButtonIconLabel>

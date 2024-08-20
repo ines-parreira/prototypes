@@ -28,7 +28,7 @@ export const selfServiceConfiguration1: SelfServiceConfiguration = {
         exceptions: [],
     },
     quickResponsePolicies: [],
-    articleRecommendationHelpCenterId: null,
+    articleRecommendationHelpCenterId: 30,
 }
 
 export const selfServiceConfiguration2: SelfServiceConfiguration = {

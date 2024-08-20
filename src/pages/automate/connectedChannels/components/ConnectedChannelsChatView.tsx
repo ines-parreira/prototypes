@@ -14,6 +14,7 @@ import Spinner from 'pages/common/components/Spinner'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {AutomateFeatures} from 'pages/automate/common/types'
+import {useGetHelpCenter} from 'models/helpCenter/queries'
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import {FlowsSettings} from './FlowsSettings'
 import css from './ConnectedChannelsChatView.less'
@@ -47,6 +48,21 @@ export const ConnectedChannelsChatView = ({
         isFetchPending: isSelfServiceConfigurationFetchPending,
     } = useSelfServiceConfiguration(shopType, shopName)
     const {data: workflowConfigurations = []} = useGetWorkflowConfigurations()
+
+    const {data: helpCenterData, isError: helpCenterIsError} = useGetHelpCenter(
+        selfServiceConfiguration?.articleRecommendationHelpCenterId ?? 0,
+        {},
+        {
+            enabled:
+                !!selfServiceConfiguration?.articleRecommendationHelpCenterId,
+            retry: 1,
+        }
+    )
+
+    const isHelpCenterSelfServiceDeleted =
+        !!helpCenterData?.deleted_datetime ||
+        helpCenterIsError ||
+        !selfServiceConfiguration?.articleRecommendationHelpCenterId
 
     const channels = useSelfServiceChannels(shopType, shopName)
 
@@ -186,6 +202,7 @@ export const ConnectedChannelsChatView = ({
                         channelType="chat"
                         channels={chatChannels}
                         value={selectedChannel ?? ''}
+                        appId={currentChannel.value.id}
                         label={currentChannel.value.name}
                         onSelectedChannelChange={(value) =>
                             setSelectedChannel(String(value))
@@ -268,7 +285,11 @@ export const ConnectedChannelsChatView = ({
                     subtitle="Requires an active Help Center with published articles"
                     labelSubtitle="Automatically send Help Center articles in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
                     enabled={isArticleRecommendationEnabled}
+                    disabled={isHelpCenterSelfServiceDeleted}
                     externalLinkUrl={`/app/automation/${shopType}/${shopName}/article-recommendation`}
+                    showConfigurationRequiredAlert={
+                        isHelpCenterSelfServiceDeleted
+                    }
                     onToggle={updateSettings('articleRecommendation')}
                 />
             </div>

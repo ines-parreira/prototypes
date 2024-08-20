@@ -21,6 +21,7 @@ import history from 'pages/history'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import {useGetHelpCenter} from 'models/helpCenter/queries'
 import {ConnectedChannelsChatView} from '../components/ConnectedChannelsChatView'
 import {initialState as articlesState} from '../../../../state/entities/helpCenter/articles'
 import {initialState as categoriesState} from '../../../../state/entities/helpCenter/categories'
@@ -388,7 +389,18 @@ jest.mock('react-router-dom', () => ({
     })),
 }))
 
+const mockHelpCenterFixture = getSingleHelpCenterResponseFixture
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+jest.mock('models/helpCenter/queries', () => ({
+    ...jest.requireActual('models/helpCenter/queries'),
+    useGetHelpCenter: jest.fn(() => ({
+        data: mockHelpCenterFixture,
+        isLoading: false,
+    })),
+}))
+
 const mockStore = configureMockStore([thunk])
+const useGetHelpCenterMock = useGetHelpCenter as jest.Mock
 
 const defaultState = {
     integrations: fromJS({
@@ -869,7 +881,12 @@ describe('ConnectedChannelsView', () => {
             isFetchPending: false,
             handleChatApplicationAutomationSettingsUpdate: handleUpdate,
         })
-
+        ;(useGetHelpCenter as jest.Mock).mockReturnValue({
+            data: {
+                ...mockHelpCenterFixture,
+            },
+            isLoading: false,
+        })
         renderWithQueryClientProvider(
             <Router history={history}>
                 <Provider store={mockedStore}>
@@ -1060,5 +1077,25 @@ describe('ConnectedChannelsView', () => {
             </Router>
         )
         expect(screen.getByText(/Go to Chat/i)).toBeInTheDocument()
+    })
+
+    it('should render "Configuration Required" warning when the help center is not configured', () => {
+        useGetHelpCenterMock.mockReturnValue({
+            data: {
+                ...mockHelpCenterFixture,
+                deleted_datetime: '2024-07-12T12:44:21.004402+00:00',
+            },
+            isLoading: false,
+        })
+
+        renderWithQueryClientProvider(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <ConnectedChannelsChatView />
+                </Provider>
+            </Router>
+        )
+
+        expect(screen.getByText(/Configuration Required/i)).toBeInTheDocument()
     })
 })

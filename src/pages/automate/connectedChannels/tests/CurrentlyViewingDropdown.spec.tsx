@@ -31,6 +31,7 @@ describe('CurrentlyViewingDropdown', () => {
             <CurrentlyViewingDropdown
                 channelType="chat"
                 value=""
+                appId="123"
                 label="Select a Channel"
                 channels={mockChannels}
                 onConnect={jest.fn()}
@@ -48,6 +49,7 @@ describe('CurrentlyViewingDropdown', () => {
             <CurrentlyViewingDropdown
                 channelType="chat"
                 value=""
+                appId="123"
                 label="Select a Channel"
                 channels={mockChannels}
                 onConnect={jest.fn()}
@@ -71,6 +73,7 @@ describe('CurrentlyViewingDropdown', () => {
             <CurrentlyViewingDropdown
                 channelType="chat"
                 value=""
+                appId="123"
                 label="Select a Channel"
                 channels={mockChannels}
                 onConnect={jest.fn()}
@@ -85,5 +88,66 @@ describe('CurrentlyViewingDropdown', () => {
         fireEvent.click(screen.getByText('Channel 1'))
 
         expect(onSelectedChannelChange).toHaveBeenCalledWith('channel-1')
+    })
+
+    it('opens the correct link when clicked on "Chat Settings" link', () => {
+        render(
+            <CurrentlyViewingDropdown
+                channelType="chat"
+                value=""
+                appId="123"
+                label="Select a Channel"
+                channels={mockChannels}
+                onConnect={jest.fn()}
+                onSelectedChannelChange={jest.fn()}
+                renderOption={renderOption}
+            />
+        )
+
+        expect(screen.getByText('Chat Settings')).toBeInTheDocument()
+        expect(screen.getByRole('link')).toHaveAttribute(
+            'to',
+            '/app/settings/channels/gorgias_chat/123'
+        )
+    })
+
+    it('opens the correct link when clicked on "Help Center" link', () => {
+        render(
+            <CurrentlyViewingDropdown
+                channelType="help-center"
+                value=""
+                appId="123"
+                label="Select a Channel"
+                channels={mockChannels}
+                onConnect={jest.fn()}
+                onSelectedChannelChange={jest.fn()}
+                renderOption={renderOption}
+            />
+        )
+        expect(screen.getByText('Help Center Settings')).toBeInTheDocument()
+        expect(screen.getByRole('link')).toHaveAttribute(
+            'to',
+            '/app/settings/help-center/123/articles'
+        )
+    })
+
+    it('opens the correct link when clicked on "Contact Form" link', () => {
+        render(
+            <CurrentlyViewingDropdown
+                channelType="contact-form"
+                value=""
+                appId="123"
+                label="Select a Channel"
+                channels={mockChannels}
+                onConnect={jest.fn()}
+                onSelectedChannelChange={jest.fn()}
+                renderOption={renderOption}
+            />
+        )
+        expect(screen.getByText('Contact Form Settings')).toBeInTheDocument()
+        expect(screen.getByRole('link')).toHaveAttribute(
+            'to',
+            '/app/settings/contact-form/123'
+        )
     })
 })

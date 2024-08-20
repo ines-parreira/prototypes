@@ -113,6 +113,7 @@ export const ConnectedChannelsContactFormView = ({
                         onConnect={noop}
                         channelType="contact-form"
                         channels={contactFormChannels}
+                        appId={currentChannel.value.id}
                         value={selectedChannel ?? ''}
                         label={currentChannel?.value?.name}
                         onSelectedChannelChange={(value) =>
