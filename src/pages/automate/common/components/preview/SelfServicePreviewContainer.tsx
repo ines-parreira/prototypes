@@ -20,6 +20,7 @@ type Props<T extends SelfServiceChannel> = {
     }
     children: (channel: T) => void
     previewUrl?: string
+    contentContainerClassName?: string
 }
 
 const SelfServicePreviewContainer = <T extends SelfServiceChannel>({
@@ -29,6 +30,7 @@ const SelfServicePreviewContainer = <T extends SelfServiceChannel>({
     alert,
     children,
     previewUrl,
+    contentContainerClassName,
 }: Props<T>) => {
     const history = useHistory()
 
@@ -36,7 +38,7 @@ const SelfServicePreviewContainer = <T extends SelfServiceChannel>({
 
     return (
         <div className={css.container}>
-            <div className={css.contentContainer}>
+            <div className={contentContainerClassName ?? css.contentContainer}>
                 {previewUrl ? (
                     <PreviewChannelButton channel={channel} url={previewUrl} />
                 ) : null}

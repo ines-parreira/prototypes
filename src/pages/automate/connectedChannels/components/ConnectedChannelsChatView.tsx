@@ -1,7 +1,7 @@
 import React, {useCallback, useMemo} from 'react'
 import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
-import {noop} from 'lodash'
+import {noop, startCase} from 'lodash'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {TicketChannel} from 'business/types/ticket'
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
@@ -104,10 +104,14 @@ export const ConnectedChannelsChatView = ({
 
                 if (!applicationAutomationSettings) return
 
-                void handleChatApplicationAutomationSettingsUpdate({
-                    ...applicationsAutomationSettings[selectedChannel],
-                    [key]: {enabled: value},
-                })
+                const readableKey = startCase(key)
+                void handleChatApplicationAutomationSettingsUpdate(
+                    {
+                        ...applicationsAutomationSettings[selectedChannel],
+                        [key]: {enabled: value},
+                    },
+                    `${readableKey} ${value ? 'enabled' : 'disabled'}`
+                )
             },
         [
             applicationsAutomationSettings,
@@ -195,6 +199,7 @@ export const ConnectedChannelsChatView = ({
                 )}
                 <FlowsSettings
                     channelType="chat"
+                    channel={currentChannel}
                     shopType={shopType}
                     shopName={shopName}
                     workflowEntrypoints={
@@ -206,7 +211,13 @@ export const ConnectedChannelsChatView = ({
                     enabledQuickResponses={enabledQuickResponses}
                     configurations={workflowConfigurations ?? []}
                     automationSettingsWorkflows={automationSettingsWorkflows}
-                    onChange={(nextEntrypoints) => {
+                    onChange={(nextEntrypoints, action) => {
+                        const readableAction =
+                            action === 'add'
+                                ? 'added'
+                                : action === 'remove'
+                                ? 'removed'
+                                : 'order updated'
                         logEvent(
                             SegmentEvent.AutomateChannelUpdateFromChannels,
                             {
@@ -216,13 +227,18 @@ export const ConnectedChannelsChatView = ({
                         const applicationAutomationSettings =
                             applicationsAutomationSettings?.[selectedChannel!]
 
-                        void handleChatApplicationAutomationSettingsUpdate({
-                            ...applicationAutomationSettings,
-                            workflows: {
-                                ...applicationAutomationSettings.workflows,
-                                entrypoints: nextEntrypoints,
+                        void handleChatApplicationAutomationSettingsUpdate(
+                            {
+                                ...applicationAutomationSettings,
+                                workflows: {
+                                    ...applicationAutomationSettings.workflows,
+                                    entrypoints: nextEntrypoints,
+                                },
                             },
-                        })
+                            `${
+                                action === 'reorder' ? 'Flows' : 'Flow'
+                            } ${readableAction}`
+                        )
                     }}
                 />
 
@@ -262,6 +278,7 @@ export const ConnectedChannelsChatView = ({
                     channel={currentChannel}
                     selfServiceConfiguration={selfServiceConfiguration}
                     storeIntegration={storeIntegration}
+                    contentContainerClassName={css.previewContentContainer}
                 />
             )}
         </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 import {Link} from 'react-router-dom'
 import IconButton from 'pages/common/components/button/IconButton'
 import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
@@ -17,6 +17,7 @@ interface Props {
     onMove: (dragIndex: number, hoverIndex: number) => void
     onDrop: () => void
     onCancel: () => void
+    languagesMismatchWarning?: React.ReactNode
 }
 
 export const FlowSettingsItem = ({
@@ -25,6 +26,7 @@ export const FlowSettingsItem = ({
     url,
     index,
     channelType,
+    languagesMismatchWarning,
     id,
     onMove,
     onDrop,
@@ -45,18 +47,39 @@ export const FlowSettingsItem = ({
             style={{opacity: isDragging ? 0 : 1}}
             className={css.container}
         >
-            <li
-                key={id}
-                data-handler-id={handlerId}
-                ref={dragRef as any}
-                className={css.workflowListItem}
-            >
-                <i className={classNames('material-icons', css.dragIcon)}>
+            <li key={id} className={css.workflowListItem}>
+                <i
+                    className={classNames('material-icons', css.dragIcon)}
+                    ref={dragRef as any}
+                >
                     drag_indicator
                 </i>
 
-                <div>
-                    <Label>{label}</Label>
+                <div data-handler-id={handlerId}>
+                    <div className={css.workflowListItemContent}>
+                        <Label>{label}</Label>
+
+                        {languagesMismatchWarning && (
+                            <>
+                                <i
+                                    className={classNames(
+                                        'material-icons',
+                                        css.warningIcon
+                                    )}
+                                    id="languages-mismatch-warning"
+                                >
+                                    warning
+                                </i>
+                                <Tooltip
+                                    trigger={['hover']}
+                                    placement="top"
+                                    target="languages-mismatch-warning"
+                                >
+                                    {languagesMismatchWarning}
+                                </Tooltip>
+                            </>
+                        )}
+                    </div>
 
                     <span className={css.workflowTriggerName}>
                         {triggerName}

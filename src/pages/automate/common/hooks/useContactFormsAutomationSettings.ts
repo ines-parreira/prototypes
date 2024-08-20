@@ -77,7 +77,8 @@ const useContactFormsAutomationSettings = (contactFormIds: number[]) => {
     ] = useAsyncFn(
         async (
             contactFormId: number,
-            automationSettings: Partial<ContactFormAutomationSettings>
+            automationSettings: Partial<ContactFormAutomationSettings>,
+            notificationMessage?: string
         ) => {
             try {
                 await upsertAutomationSettingsByContactFormId(
@@ -87,7 +88,7 @@ const useContactFormsAutomationSettings = (contactFormIds: number[]) => {
 
                 void dispatch(
                     notify({
-                        message: 'Successfully updated',
+                        message: notificationMessage ?? 'Successfully updated',
                         status: NotificationStatus.Success,
                     })
                 )

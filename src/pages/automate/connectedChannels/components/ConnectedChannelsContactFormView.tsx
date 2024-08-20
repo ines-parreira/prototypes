@@ -66,12 +66,15 @@ export const ConnectedChannelsContactFormView = ({
 
     const updateSettings = useCallback(
         (value: boolean) => {
-            void handleContactFormAutomationSettingsUpdate({
-                ...automationSettings,
-                order_management: {
-                    enabled: value,
+            void handleContactFormAutomationSettingsUpdate(
+                {
+                    ...automationSettings,
+                    order_management: {
+                        enabled: value,
+                    },
                 },
-            })
+                `Order Management ${value ? 'enabled' : 'disabled'}`
+            )
         },
         [automationSettings, handleContactFormAutomationSettingsUpdate]
     )
@@ -124,6 +127,7 @@ export const ConnectedChannelsContactFormView = ({
 
                 <FlowsSettings
                     channelType="contact-form"
+                    channel={currentChannel}
                     shopType={shopType}
                     shopName={shopName}
                     workflowEntrypoints={
@@ -139,21 +143,35 @@ export const ConnectedChannelsContactFormView = ({
                             enabled: workflow.enabled,
                         })
                     )}
-                    onChange={(nextEntrypoints) => {
+                    onChange={(nextEntrypoints, action) => {
+                        const readableAction =
+                            action === 'add'
+                                ? 'added'
+                                : action === 'remove'
+                                ? 'removed'
+                                : 'order updated'
                         logEvent(
                             SegmentEvent.AutomateChannelUpdateFromChannels,
                             {
                                 page: 'Channels',
+                                channel: 'Contact Form',
                             }
                         )
 
-                        void handleContactFormAutomationSettingsUpdate({
-                            ...automationSettings,
-                            workflows: nextEntrypoints.map((entrypoint) => ({
-                                id: entrypoint.workflow_id,
-                                enabled: entrypoint.enabled,
-                            })),
-                        })
+                        void handleContactFormAutomationSettingsUpdate(
+                            {
+                                ...automationSettings,
+                                workflows: nextEntrypoints.map(
+                                    (entrypoint) => ({
+                                        id: entrypoint.workflow_id,
+                                        enabled: entrypoint.enabled,
+                                    })
+                                ),
+                            },
+                            `${
+                                action === 'reorder' ? 'Flows' : 'Flow'
+                            } ${readableAction}`
+                        )
                     }}
                 />
 
@@ -172,6 +190,7 @@ export const ConnectedChannelsContactFormView = ({
                     channel={currentChannel}
                     selfServiceConfiguration={selfServiceConfiguration}
                     storeIntegration={storeIntegration}
+                    contentContainerClassName={css.previewContentContainer}
                 />
             )}
         </div>

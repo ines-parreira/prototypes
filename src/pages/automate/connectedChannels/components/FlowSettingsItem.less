@@ -11,7 +11,7 @@
     .dragIcon {
         color: var(--neutral-grey-5);
         cursor: grab;
-        font-size: 20px;
+        font-size: 20px !important;
     }
 
     .container {
@@ -28,7 +28,7 @@
     .workflowListItem {
         display: flex;
         align-items: center;
-        gap: @layout-spacing-xs;
+        gap: @layout-spacing-s;
     }
 
     .workflowListItemButtons {
@@ -36,5 +36,16 @@
         display: flex;
         justify-content: flex-end;
         gap: @layout-spacing-xxs;
+    }
+
+    .workflowListItemContent {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+    }
+
+    .warningIcon {
+        color: var(--feedback-warning);
+        font-size: 16px !important;
     }
 }

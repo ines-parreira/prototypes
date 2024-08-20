@@ -6,8 +6,17 @@
         flex: 1 1 auto;
         display: grid;
         grid-template-columns: minmax(480px, 1000px) 1fr;
-        overflow: hidden;
-        overflow-x: auto;
+    }
+
+    .previewContentContainer {
+        position: sticky;
+        max-width: 684px;
+        width: 100%;
+
+        gap: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .loadingContainer {

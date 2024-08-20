@@ -56,7 +56,9 @@ describe('CurrentlyViewingDropdown', () => {
             />
         )
 
-        fireEvent.click(screen.getByRole('button'))
+        fireEvent.click(
+            screen.getByRole('button', {name: /Currently viewing/i})
+        )
 
         expect(screen.getByText('Channel 1')).toBeInTheDocument()
         expect(screen.getByText('Channel 2')).toBeInTheDocument()
@@ -77,29 +79,11 @@ describe('CurrentlyViewingDropdown', () => {
             />
         )
 
-        fireEvent.click(screen.getByRole('button'))
+        fireEvent.click(
+            screen.getByRole('button', {name: /Currently viewing/i})
+        )
         fireEvent.click(screen.getByText('Channel 1'))
 
         expect(onSelectedChannelChange).toHaveBeenCalledWith('channel-1')
-    })
-
-    test('renders Add channel item', () => {
-        render(
-            <CurrentlyViewingDropdown
-                channelType="chat"
-                value=""
-                label="Select a Channel"
-                channels={mockChannels}
-                onConnect={jest.fn()}
-                onSelectedChannelChange={jest.fn()}
-                renderOption={renderOption}
-            />
-        )
-
-        fireEvent.click(screen.getByRole('button'))
-
-        expect(
-            screen.getByText('Connect another Chat to this store')
-        ).toBeInTheDocument()
     })
 })

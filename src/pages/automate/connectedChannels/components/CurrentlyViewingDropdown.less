@@ -8,6 +8,12 @@
         gap: @layout-spacing-xs;
     }
 
+    .currentlyViewingDropdownHeader {
+        display: flex;
+        gap: @layout-spacing-xs;
+        align-items: center;
+    }
+
     .dropdownButton {
         border: 1px solid #e0e0e0 !important;
         width: 100%;
@@ -15,10 +21,14 @@
         gap: @layout-spacing-xs;
     }
 
-    .chatItemIcon {
+    .channelTypeSettingsLink,
+    .channelTypeSettingsLink:hover {
+        color: var(--neutral-grey-5);
+    }
+
+    .channelIcon {
         color: var(--neutral-grey-4);
-        width: 16px;
-        height: 16px;
+        font-size: 20px !important;
     }
 
     .dropdownItem {

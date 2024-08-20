@@ -78,7 +78,10 @@ const useHelpCentersAutomationSettings = (
         {loading: isUpdatePending},
         handleHelpCenterAutomationSettingsUpdate,
     ] = useAsyncFn(
-        async (automationSettings: Partial<HelpCenterAutomationSettings>) => {
+        async (
+            automationSettings: Partial<HelpCenterAutomationSettings>,
+            notificationMessage?: string
+        ) => {
             if (!client) {
                 return
             }
@@ -100,7 +103,8 @@ const useHelpCentersAutomationSettings = (
                 if (withNotifications) {
                     void dispatch(
                         notify({
-                            message: 'Successfully updated',
+                            message:
+                                notificationMessage ?? 'Successfully updated',
                             status: NotificationStatus.Success,
                         })
                     )

@@ -336,4 +336,20 @@ describe('ConnectedChannelsContactFormView', () => {
             expect(screen.queryByText('Currently viewing')).toBeNull()
         })
     })
+
+    it('should render an empty state when there are no channels', () => {
+        ;(useSelfServiceHelpCenterChannels as jest.Mock).mockReturnValue([])
+
+        render(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <ConnectedChannelsHelpCenterView />
+                    </QueryClientProvider>
+                </Provider>
+            </Router>
+        )
+
+        expect(screen.getByText(/Go to Help Center/i)).toBeInTheDocument()
+    })
 })

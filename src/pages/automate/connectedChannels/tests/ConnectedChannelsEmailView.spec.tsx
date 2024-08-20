@@ -79,6 +79,72 @@ describe('ConnectedChannelsEmailView', () => {
         ).toHaveAttribute('href', `/app/automation/shopType/shopName/ai-agent`)
     })
 
+    it('should call upsertStoreConfiguration with correct parameters when enabling AI agent', () => {
+        const handleUpsertStoreConfiguration = jest.fn()
+        const storeConfiguration = {
+            deactivatedDatetime: '2021-09-28T10:00:00Z',
+        }
+        ;(useStoreConfiguration as jest.Mock).mockReturnValue({
+            storeConfiguration,
+            isLoading: false,
+        })
+        ;(useStoreConfigurationMutation as jest.Mock).mockReturnValue({
+            upsertStoreConfiguration: handleUpsertStoreConfiguration,
+            error: null,
+        })
+
+        renderWithQueryClientProvider(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <ConnectedChannelsEmailView />
+                </Provider>
+            </Router>
+        )
+
+        fireEvent.click(screen.getByRole('switch', {name: /enable/i}))
+
+        expect(handleUpsertStoreConfiguration).toHaveBeenCalledWith({
+            ...storeConfiguration,
+            trialModeActivatedDatetime: null,
+            deactivatedDatetime: null,
+        })
+    })
+
+    it('should call upsertStoreConfiguration with correct parameters when disabling AI agent', () => {
+        const handleUpsertStoreConfiguration = jest.fn()
+        const storeConfiguration = {
+            deactivatedDatetime: null,
+        }
+        ;(useStoreConfiguration as jest.Mock).mockReturnValue({
+            storeConfiguration,
+            isLoading: false,
+        })
+        ;(useStoreConfigurationMutation as jest.Mock).mockReturnValue({
+            upsertStoreConfiguration: handleUpsertStoreConfiguration,
+            error: null,
+        })
+
+        renderWithQueryClientProvider(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <ConnectedChannelsEmailView />
+                </Provider>
+            </Router>
+        )
+
+        expect(screen.getByRole('switch')).toBeChecked()
+
+        fireEvent.click(screen.getByRole('switch'))
+
+        expect(handleUpsertStoreConfiguration).toHaveBeenCalledWith(
+            expect.objectContaining({
+                ...storeConfiguration,
+                trialModeActivatedDatetime: null,
+                deactivatedDatetime: expect.any(String),
+            })
+        )
+    })
+
     it('should show enabled state when AI agent is enabled', () => {
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
             storeConfiguration: {

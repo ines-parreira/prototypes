@@ -47,7 +47,8 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
         handleChatApplicationAutomationSettingsUpdate,
     ] = useAsyncFn(
         async (
-            applicationAutomationSettings: ChatApplicationAutomationSettings
+            applicationAutomationSettings: ChatApplicationAutomationSettings,
+            notificationMessage?: string
         ) => {
             try {
                 const {
@@ -71,7 +72,7 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
 
                 void dispatch(
                     notify({
-                        message: 'Successfully updated',
+                        message: notificationMessage ?? 'Successfully updated',
                         status: NotificationStatus.Success,
                     })
                 )

@@ -17,12 +17,19 @@ const useContactFormAutomationSettings = (contactFormId: number) => {
         (
             automationSettings: Parameters<
                 typeof handleContactFormAutomationSettingsUpdate
-            >[1]
+            >[1],
+            notificationMessage?: string
         ) =>
-            handleContactFormAutomationSettingsUpdate(
-                contactFormId,
-                automationSettings
-            ),
+            notificationMessage
+                ? handleContactFormAutomationSettingsUpdate(
+                      contactFormId,
+                      automationSettings,
+                      notificationMessage
+                  )
+                : handleContactFormAutomationSettingsUpdate(
+                      contactFormId,
+                      automationSettings
+                  ),
         [contactFormId, handleContactFormAutomationSettingsUpdate]
     )
     const automationSettings =

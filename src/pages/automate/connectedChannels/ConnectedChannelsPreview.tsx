@@ -25,12 +25,14 @@ type Props = {
     channel?: SelfServiceChannel
     selfServiceConfiguration: SelfServiceConfiguration
     storeIntegration?: StoreIntegration
+    contentContainerClassName?: string
 }
 
 const ConnectedChannelsPreview = ({
     channel,
     selfServiceConfiguration,
     storeIntegration,
+    contentContainerClassName,
 }: Props) => {
     const history = useMemo(
         () =>
@@ -119,7 +121,11 @@ const ConnectedChannelsPreview = ({
     }, [channel, storeIntegration])
 
     return (
-        <SelfServicePreviewContainer channel={channel} previewUrl={previewUrl}>
+        <SelfServicePreviewContainer
+            channel={channel}
+            previewUrl={previewUrl}
+            contentContainerClassName={contentContainerClassName}
+        >
             {(channel) => (
                 <SelfServicePreviewContext.Provider
                     value={{

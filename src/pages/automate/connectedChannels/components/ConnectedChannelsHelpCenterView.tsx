@@ -65,12 +65,15 @@ export const ConnectedChannelsHelpCenterView = ({
 
     const updateSettings = useCallback(
         () => (value: boolean) => {
-            void handleHelpCenterAutomationSettingsUpdate({
-                ...automationSettings,
-                order_management: {
-                    enabled: value,
+            void handleHelpCenterAutomationSettingsUpdate(
+                {
+                    ...automationSettings,
+                    order_management: {
+                        enabled: value,
+                    },
                 },
-            })
+                `Order Management ${value ? 'enabled' : 'disabled'}`
+            )
         },
         [automationSettings, handleHelpCenterAutomationSettingsUpdate]
     )
@@ -124,6 +127,7 @@ export const ConnectedChannelsHelpCenterView = ({
 
                 <FlowsSettings
                     channelType="help-center"
+                    channel={currentChannel}
                     shopType={shopType}
                     shopName={shopName}
                     workflowEntrypoints={
@@ -139,7 +143,14 @@ export const ConnectedChannelsHelpCenterView = ({
                             enabled: workflow.enabled,
                         })
                     )}
-                    onChange={(nextEntrypoints) => {
+                    onChange={(nextEntrypoints, action) => {
+                        const readableAction =
+                            action === 'add'
+                                ? 'added'
+                                : action === 'remove'
+                                ? 'removed'
+                                : 'order updated'
+
                         logEvent(
                             SegmentEvent.AutomateChannelUpdateFromChannels,
                             {
@@ -147,13 +158,20 @@ export const ConnectedChannelsHelpCenterView = ({
                             }
                         )
 
-                        void handleHelpCenterAutomationSettingsUpdate({
-                            ...automationSettings,
-                            workflows: nextEntrypoints.map((entrypoint) => ({
-                                id: entrypoint.workflow_id,
-                                enabled: entrypoint.enabled,
-                            })),
-                        })
+                        void handleHelpCenterAutomationSettingsUpdate(
+                            {
+                                ...automationSettings,
+                                workflows: nextEntrypoints.map(
+                                    (entrypoint) => ({
+                                        id: entrypoint.workflow_id,
+                                        enabled: entrypoint.enabled,
+                                    })
+                                ),
+                            },
+                            `${
+                                action === 'reorder' ? 'Flows' : 'Flow'
+                            } ${readableAction}`
+                        )
                     }}
                 />
 
@@ -172,6 +190,7 @@ export const ConnectedChannelsHelpCenterView = ({
                     channel={currentChannel}
                     selfServiceConfiguration={selfServiceConfiguration}
                     storeIntegration={storeIntegration}
+                    contentContainerClassName={css.previewContentContainer}
                 />
             )}
         </div>

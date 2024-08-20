@@ -108,7 +108,9 @@ export const PreviewChannelButton = ({
                 isDisabled={!!disableMessage}
                 data-testid="preview-button"
             >
-                <ButtonIconLabel icon="open_in_new">Test</ButtonIconLabel>
+                <ButtonIconLabel icon="open_in_new" position="right">
+                    Test
+                </ButtonIconLabel>
             </Button>
         </>
     )

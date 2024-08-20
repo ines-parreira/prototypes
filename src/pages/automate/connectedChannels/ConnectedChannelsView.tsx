@@ -20,8 +20,8 @@ export const ConnectedChannelsView = () => {
         shopType: string
         shopName: string
     }>()
-    const baseUrl = `/app/automation/${shopType}/${shopName}/connected-channels`
 
+    const baseUrl = `/app/automation/${shopType}/${shopName}/connected-channels`
     const headerNavbarItems = [
         {
             title: AVAILABLE_CHANNELS.CHAT,
@@ -57,28 +57,41 @@ export const ConnectedChannelsView = () => {
                 </SecondaryNavbar>
             </div>
 
-            <Switch>
-                <Route
-                    path={path}
-                    exact
-                    component={() => <ConnectedChannelsChatView />}
-                />
-                <Route
-                    path={`${path}/help-center`}
-                    component={() => <ConnectedChannelsHelpCenterView />}
-                    exact
-                />
-                <Route
-                    path={`${path}/contact-form`}
-                    component={() => <ConnectedChannelsContactFormView />}
-                    exact
-                />
-                <Route
-                    path={`${path}/email`}
-                    component={() => <ConnectedChannelsEmailView />}
-                    exact
-                />
-            </Switch>
+            <div
+                className={css.settingsContainer}
+                ref={(e) => {
+                    if (!e) return
+                    const isOverflowing = e.scrollHeight > e.clientHeight
+                    if (isOverflowing) {
+                        e.classList.remove(css.fullHeight)
+                    } else {
+                        e.classList.add(css.fullHeight)
+                    }
+                }}
+            >
+                <Switch>
+                    <Route
+                        path={path}
+                        exact
+                        component={() => <ConnectedChannelsChatView />}
+                    />
+                    <Route
+                        path={`${path}/help-center`}
+                        component={() => <ConnectedChannelsHelpCenterView />}
+                        exact
+                    />
+                    <Route
+                        path={`${path}/contact-form`}
+                        component={() => <ConnectedChannelsContactFormView />}
+                        exact
+                    />
+                    <Route
+                        path={`${path}/email`}
+                        component={() => <ConnectedChannelsEmailView />}
+                        exact
+                    />
+                </Switch>
+            </div>
         </div>
     )
 }

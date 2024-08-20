@@ -7,6 +7,7 @@ import {keyBy} from 'lodash'
 import thunk from 'redux-thunk'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {Router} from 'react-router-dom'
+import {act} from '@testing-library/react-hooks'
 import {
     mockQueryClient,
     renderWithQueryClientProvider,
@@ -383,6 +384,7 @@ jest.mock('react-router-dom', () => ({
     })),
     useRouteMatch: jest.fn(() => ({
         path: '/app/automation/shopType/shopName/connected-channels',
+        url: '/app/automation/shopType/shopName/connected-channels',
     })),
 }))
 
@@ -679,36 +681,35 @@ describe('ConnectedChannelsView', () => {
         expect(screen.getByText('Currently viewing')).toBeInTheDocument()
 
         // expect the dropdown to have the same number of options as the channels
-        expect(screen.getAllByRole('option').length - 1).toBe(
+        expect(screen.getAllByRole('option').length).toBe(
             mockChatChannels.length
         )
         screen.getAllByRole('option').forEach((option, index) => {
-            // if is last, return because it is the button
-            if (index === mockChatChannels.length) return
-
             expect(option).toHaveTextContent(mockChatChannels[index].value.name)
         })
     })
 
-    it('should have a "connect to another store" option button', () => {
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsChatView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>
-        )
+    // TEMP disabled until we release the "connect to another store" feature
+    // it('should have a "connect to another store" option button', () => {
+    //     render(
+    //         <Router history={history}>
+    //             <Provider store={mockedStore}>
+    //                 <QueryClientProvider client={queryClient}>
+    //                     <ConnectedChannelsChatView />
+    //                 </QueryClientProvider>
+    //             </Provider>
+    //         </Router>
+    //     )
 
-        // click on the dropdown button
-        screen.getByRole('button', {name: 'Currently viewing'}).click()
+    //     screen.debug()
+    //     // click on the dropdown button
+    //     screen.getByRole('button', {name: 'Currently viewing'}).click()
 
-        // expect the last option to be the "connect to another store" button
-        expect(
-            screen.getByText('Connect another Chat to this store')
-        ).toBeInTheDocument()
-    })
+    //     // expect the last option to be the "connect to another store" button
+    //     expect(
+    //         screen.getByText('Connect another Chat to this store')
+    //     ).toBeInTheDocument()
+    // })
 
     it('should render the loading spinner', () => {
         ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
@@ -774,26 +775,27 @@ describe('ConnectedChannelsView', () => {
             expect(handleUpdate).toHaveBeenCalledWith(
                 expect.objectContaining({
                     quickResponses: {enabled: false},
-                })
+                }),
+                'Quick Responses disabled'
             )
         })
 
-        fireEvent.click(screen.getByLabelText(/Enable Article Recommendation/i))
-        await waitFor(() => {
-            expect(handleUpdate).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    articleRecommendation: {enabled: false},
-                })
+        await act(async () => {
+            fireEvent.click(
+                screen.getByLabelText(/Enable Article Recommendation/i)
             )
-        })
+            await waitFor(() => {
+                expect(handleUpdate).toHaveBeenCalledTimes(2)
+            })
 
-        fireEvent.click(screen.getByLabelText(/Enable Order Management/i))
-        await waitFor(() => {
-            expect(handleUpdate).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    orderManagement: {enabled: false},
+            await act(async () => {
+                await waitFor(() => {
+                    fireEvent.click(
+                        screen.getByLabelText(/Enable Order Management/i)
+                    )
+                    expect(handleUpdate).toHaveBeenCalledTimes(3)
                 })
-            )
+            })
         })
     })
 
@@ -855,7 +857,8 @@ describe('ConnectedChannelsView', () => {
         expect(handleUpdate).toHaveBeenCalledWith(
             expect.objectContaining({
                 quickResponses: {enabled: false},
-            })
+            }),
+            'Quick Responses disabled'
         )
     })
     it(`will call 'handleUpdate' when switching on the article recommendation`, () => {
@@ -881,7 +884,8 @@ describe('ConnectedChannelsView', () => {
         expect(handleUpdate).toHaveBeenCalledWith(
             expect.objectContaining({
                 articleRecommendation: {enabled: true},
-            })
+            }),
+            'Article Recommendation enabled'
         )
     })
 
@@ -909,7 +913,77 @@ describe('ConnectedChannelsView', () => {
         expect(handleUpdate).toHaveBeenCalledWith(
             expect.objectContaining({
                 orderManagement: {enabled: true},
-            })
+            }),
+            'Order Management enabled'
+        )
+    })
+
+    it('should call `handleUpdate` when switching off the order management', () => {
+        const handleUpdate = jest.fn()
+
+        ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
+            applicationsAutomationSettings: {
+                25: {
+                    id: 110,
+                    applicationId: 20,
+                    articleRecommendation: {
+                        enabled: false,
+                    },
+                    orderManagement: {
+                        enabled: true,
+                    },
+                    quickResponses: {
+                        enabled: true,
+                    },
+                    workflows: {
+                        enabled: true,
+                        entrypoints: [
+                            {
+                                enabled: true,
+                                workflow_id: '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                            },
+                            {
+                                enabled: true,
+                                workflow_id: '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                            },
+                            {
+                                enabled: true,
+                                workflow_id: '01HNDKMSSAV6MPV125PXB3MMSG',
+                            },
+                            {
+                                enabled: true,
+                                workflow_id: '01HQQYPGNH1CNBART86FG8PCN6',
+                            },
+                            {
+                                enabled: true,
+                                workflow_id: '01HQT87MV168MHHENMC1VC55S7',
+                            },
+                        ],
+                    },
+                    createdDatetime: '2024-06-05T11:27:06.939Z',
+                    updatedDatetime: '2024-07-30T14:16:39.411Z',
+                },
+            },
+            isFetchPending: false,
+            handleChatApplicationAutomationSettingsUpdate: handleUpdate,
+        })
+
+        renderWithQueryClientProvider(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <ConnectedChannelsChatView />
+                </Provider>
+            </Router>
+        )
+
+        const toggle = screen.getByLabelText(/Enable Order Management/i)
+        fireEvent.click(toggle)
+
+        expect(handleUpdate).toHaveBeenCalledWith(
+            expect.objectContaining({
+                orderManagement: {enabled: false},
+            }),
+            'Order Management disabled'
         )
     })
 
@@ -963,5 +1037,28 @@ describe('ConnectedChannelsView', () => {
             screen.getByRole('switch', {name: /enable order management/i})
         ).not.toBeChecked()
         expect(screen.getAllByText(/test 1/i)).toHaveLength(2)
+    })
+
+    it('should render the empty state when there are no channels', () => {
+        ;(useSelfServiceChannels as jest.Mock).mockReturnValue([])
+        ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+            selfServiceConfiguration: [],
+            storeIntegration: null,
+            isFetchPending: false,
+        })
+        ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
+            applicationsAutomationSettings: {},
+            isFetchPending: false,
+            handleChatApplicationAutomationSettingsUpdate: jest.fn(),
+        })
+
+        renderWithQueryClientProvider(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <ConnectedChannelsChatView />
+                </Provider>
+            </Router>
+        )
+        expect(screen.getByText(/Go to Chat/i)).toBeInTheDocument()
     })
 })

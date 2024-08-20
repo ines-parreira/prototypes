@@ -360,12 +360,11 @@ describe('ConnectedChannelsContactFormView', () => {
         expect(screen.getByText('Currently viewing')).toBeInTheDocument()
 
         // expect the dropdown to have the same number of options as the channels
-        expect(screen.getAllByRole('option').length - 1).toBe(
+        expect(screen.getAllByRole('option')).toHaveLength(
             mockContactFormChannels.length
         )
         screen.getAllByRole('option').forEach((option, index) => {
             // if is last, return because it is the button
-            if (index === mockContactFormChannels.length) return
 
             expect(option).toHaveTextContent(
                 mockContactFormChannels[index].value.name
@@ -373,27 +372,7 @@ describe('ConnectedChannelsContactFormView', () => {
         })
     })
 
-    it('should have a "connect to another store" option button', () => {
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsContactFormView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>
-        )
-
-        // click on the dropdown button
-        screen.getByRole('button', {name: 'Currently viewing'}).click()
-
-        // expect the last option to be the "connect to another store" button
-        expect(
-            screen.getByText('Connect another Contact Form to this store')
-        ).toBeInTheDocument()
-    })
-
-    it(`will call 'handleUpdate' when switching on the order management`, () => {
+    it(`will call 'handleUpdate' when switching off the order management`, () => {
         const handleUpdate = jest.fn()
 
         ;(useContactFormAutomationSettings as jest.Mock).mockReturnValue({
@@ -434,7 +413,54 @@ describe('ConnectedChannelsContactFormView', () => {
                     {enabled: true, id: '01HQTDDBN1A75R9TH8PCQS4ARA'},
                     {enabled: true, id: '01HNWV4Y52TZD1T42HQP4JGPY5'},
                 ],
-            })
+            }),
+            'Order Management enabled'
+        )
+    })
+
+    it(`will call 'handleUpdate' when switching on the order management`, () => {
+        const handleUpdate = jest.fn()
+
+        ;(useContactFormAutomationSettings as jest.Mock).mockReturnValue({
+            automationSettings: {
+                workflows: [
+                    {
+                        id: '01HQTDDBN1A75R9TH8PCQS4ARA',
+                        enabled: true,
+                    },
+                    {
+                        id: '01HNWV4Y52TZD1T42HQP4JGPY5',
+                        enabled: true,
+                    },
+                ],
+                order_management: {
+                    enabled: true,
+                },
+            },
+            isFetchPending: false,
+            handleContactFormAutomationSettingsUpdate: handleUpdate,
+        })
+
+        renderWithQueryClientProvider(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <ConnectedChannelsContactFormView />
+                </Provider>
+            </Router>
+        )
+
+        const toggle = screen.getByLabelText(/Enable Order Management/i)
+        fireEvent.click(toggle)
+
+        expect(handleUpdate).toHaveBeenCalledWith(
+            expect.objectContaining({
+                order_management: {enabled: false},
+                workflows: [
+                    {enabled: true, id: '01HQTDDBN1A75R9TH8PCQS4ARA'},
+                    {enabled: true, id: '01HNWV4Y52TZD1T42HQP4JGPY5'},
+                ],
+            }),
+            'Order Management disabled'
         )
     })
 
@@ -457,5 +483,21 @@ describe('ConnectedChannelsContactFormView', () => {
         )
 
         expect(screen.queryAllByRole('option').length).toBe(0)
+    })
+
+    it('should render an empty state when there are no channels', () => {
+        ;(
+            useSelfServiceStandaloneContactFormChannels as jest.Mock
+        ).mockReturnValue([])
+
+        renderWithQueryClientProvider(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <ConnectedChannelsContactFormView />
+                </Provider>
+            </Router>
+        )
+
+        expect(screen.getByText(/Go to Contact Form/i)).toBeInTheDocument()
     })
 })

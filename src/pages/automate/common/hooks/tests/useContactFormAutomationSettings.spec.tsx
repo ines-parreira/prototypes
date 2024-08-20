@@ -71,4 +71,31 @@ describe('useContactFormAutomationSettings()', () => {
             automationSettings
         )
     })
+
+    it('should allow to update Automate settings with notification message', () => {
+        const mockHandleContactFormAutomationSettingsUpdate = jest.fn()
+
+        mockUseContactFormsAutomationSettings.mockReturnValue({
+            contactFormsAutomationSettings: {},
+            handleContactFormAutomationSettingsUpdate:
+                mockHandleContactFormAutomationSettingsUpdate,
+        })
+
+        const {result} = renderHook(() =>
+            useContactFormAutomationSettings(contactFormId)
+        )
+
+        act(() => {
+            void result.current.handleContactFormAutomationSettingsUpdate(
+                automationSettings,
+                'wow'
+            )
+        })
+
+        expect(mockHandleContactFormAutomationSettingsUpdate).toBeCalledWith(
+            contactFormId,
+            automationSettings,
+            'wow'
+        )
+    })
 })

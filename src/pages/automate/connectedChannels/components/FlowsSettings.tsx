@@ -3,6 +3,7 @@ import {Label, Tooltip} from '@gorgias/ui-kit'
 import {isEqual, keyBy, startCase} from 'lodash'
 import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {Link} from 'react-router-dom'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {Components} from 'rest_api/workflows_api/client.generated'
 import Button from 'pages/common/components/button/Button'
@@ -12,11 +13,32 @@ import Search from 'pages/common/components/Search'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import {useListWorkflowEntryPoints} from 'models/workflows/queries'
 import {FeatureFlagKey} from 'config/featureFlags'
-import css from './FlowsSettings.less'
-import {FlowSettingsDropdownItem} from './FlowSettingsDropdownItem'
+import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import {ChannelLanguage} from 'pages/automate/common/types'
+import {TicketChannel} from 'business/types/ticket'
+import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
+import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 import {FlowSettingsItem} from './FlowSettingsItem'
+import {FlowSettingsDropdownItem} from './FlowSettingsDropdownItem'
+import css from './FlowsSettings.less'
 
 const FLOWS_LIMIT = 6
+const getChannelLanguages = (
+    channel: SelfServiceChannel
+): ChannelLanguage[] => {
+    switch (channel.type) {
+        case TicketChannel.Chat:
+            return getLanguagesFromChatConfig(
+                channel.value.meta
+            ) as ChannelLanguage[]
+        case TicketChannel.HelpCenter:
+            return channel.value.supported_locales
+        case TicketChannel.ContactForm:
+            return [channel.value.default_locale]
+    }
+    return []
+}
+
 type Workflow = {
     workflow_id: string
     enabled: boolean
@@ -28,9 +50,13 @@ interface Props {
     primaryLanguage: string
     shopName: string
     shopType: string
+    channel: SelfServiceChannel
     channelType: string
     enabledQuickResponses?: number
-    onChange?: (updatedWorkflows: Workflow[]) => void
+    onChange?: (
+        updatedWorkflows: Workflow[],
+        action: 'add' | 'remove' | 'reorder'
+    ) => void
 }
 export const FlowsSettings = ({
     workflowEntrypoints,
@@ -40,6 +66,7 @@ export const FlowsSettings = ({
     shopName,
     shopType,
     channelType,
+    channel,
     enabledQuickResponses = 0,
     onChange,
 }: Props) => {
@@ -89,6 +116,12 @@ export const FlowsSettings = ({
         language: primaryLanguage,
     })
 
+    const {getLanguagesMismatchWarning} = useLanguagesMismatchWarnings(
+        channel.type,
+        channel.value.id,
+        getChannelLanguages(channel)
+    )
+
     const handleFlowItemMove = useCallback(
         (dragIndex: number, hoverIndex: number) => {
             const nextDirtyEntrypoints =
@@ -112,7 +145,7 @@ export const FlowsSettings = ({
     const handleFlowItemDrop = useCallback(() => {
         if (dirtyEntrypoints.length === 0) return
         if (!isEqual(dirtyEntrypoints, enabledWorkflows)) {
-            onChange?.(dirtyEntrypoints)
+            onChange?.(dirtyEntrypoints, 'reorder')
             setDirtyEntrypoints([])
         }
     }, [dirtyEntrypoints, enabledWorkflows, onChange])
@@ -121,6 +154,15 @@ export const FlowsSettings = ({
         if (!workflowEntrypoints) return []
         const items = workflows
             .filter((w) => !w.enabled)
+            .filter((item) => {
+                const warningOrError = getLanguagesMismatchWarning(
+                    item.workflow_id
+                )
+
+                return warningOrError && warningOrError.type === 'error'
+                    ? false
+                    : true
+            })
             .map((w) => configurationsMap[w.workflow_id])
 
         if (searchQuery === '') return items
@@ -134,6 +176,7 @@ export const FlowsSettings = ({
         )
     }, [
         workflows,
+        getLanguagesMismatchWarning,
         configurationsMap,
         searchQuery,
         workflowEntrypoints,
@@ -141,10 +184,23 @@ export const FlowsSettings = ({
     ])
     const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
     const currentFlowsCount = enabledWorkflows.length + enabledQuickResponses
-
+    const items =
+        dirtyEntrypoints.length > 0 ? dirtyEntrypoints : enabledWorkflows
     return (
         <div className="full-width">
-            <Label>Flows</Label>
+            <div className={css.labelWrapper}>
+                <Label className={css.label}>Flows</Label>
+
+                <Link
+                    to={`/app/automation/${shopType}/${shopName}/flows`}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <i className={classnames('material-icons', css.icon)}>
+                        open_in_new
+                    </i>
+                </Link>
+            </div>
             <span>
                 {sunsetQuickResponses
                     ? `Display up to ${FLOWS_LIMIT} Flows on your Chat to proactively resolve top customer requests.`
@@ -154,30 +210,45 @@ export const FlowsSettings = ({
             </span>
 
             <ul className={css.enabledWorkflowList}>
-                {enabledWorkflows.map((workflow, index) => (
-                    <FlowSettingsItem
-                        channelType={channelType}
-                        index={index}
-                        label={configurationsMap[workflow.workflow_id].name}
-                        triggerName={
-                            entrypointLabelByWorkflowId?.[workflow.workflow_id]
-                        }
-                        onMove={handleFlowItemMove}
-                        onDrop={handleFlowItemDrop}
-                        onCancel={() => setDirtyEntrypoints([])}
-                        key={workflow.workflow_id}
-                        id={workflow.workflow_id}
-                        url={`/app/automation/${shopType}/${shopName}/flows/edit/${workflow.workflow_id}`}
-                        onDelete={() =>
-                            onChange?.(
-                                enabledWorkflows.filter(
-                                    (w) =>
-                                        w.workflow_id !== workflow.workflow_id
+                {items.map((workflow, index) => {
+                    const languagesMismatchWarning =
+                        getLanguagesMismatchWarning(workflow.workflow_id)
+
+                    return (
+                        <FlowSettingsItem
+                            channelType={channelType}
+                            index={index}
+                            label={configurationsMap[workflow.workflow_id].name}
+                            triggerName={
+                                entrypointLabelByWorkflowId?.[
+                                    workflow.workflow_id
+                                ]
+                            }
+                            languagesMismatchWarning={
+                                languagesMismatchWarning &&
+                                languagesMismatchWarning.type === 'warning'
+                                    ? languagesMismatchWarning.message
+                                    : undefined
+                            }
+                            onMove={handleFlowItemMove}
+                            onDrop={handleFlowItemDrop}
+                            onCancel={() => setDirtyEntrypoints([])}
+                            key={workflow.workflow_id}
+                            id={workflow.workflow_id}
+                            url={`/app/automation/${shopType}/${shopName}/flows/edit/${workflow.workflow_id}`}
+                            onDelete={() =>
+                                onChange?.(
+                                    enabledWorkflows.filter(
+                                        (w) =>
+                                            w.workflow_id !==
+                                            workflow.workflow_id
+                                    ),
+                                    'remove'
                                 )
-                            )
-                        }
-                    />
-                ))}
+                            }
+                        />
+                    )
+                })}
             </ul>
 
             <Button
@@ -228,13 +299,16 @@ export const FlowsSettings = ({
                             }
                             onEnable={() => {
                                 setIsFlowSelectorDropdownOpen(false)
-                                onChange?.([
-                                    ...enabledWorkflows,
-                                    {
-                                        workflow_id: configuration.id,
-                                        enabled: true,
-                                    },
-                                ])
+                                onChange?.(
+                                    [
+                                        ...enabledWorkflows,
+                                        {
+                                            workflow_id: configuration.id,
+                                            enabled: true,
+                                        },
+                                    ],
+                                    'add'
+                                )
                             }}
                         />
                     ))}

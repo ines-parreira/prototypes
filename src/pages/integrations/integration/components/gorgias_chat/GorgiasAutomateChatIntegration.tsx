@@ -8,6 +8,7 @@ import {ConnectedChannelsChatView} from 'pages/automate/connectedChannels/compon
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import GorgiasChatIntegrationHeader from './GorgiasChatIntegrationHeader'
+import css from './GorgiasAutomateChatIntegration.less'
 
 interface Props {
     integration: Map<any, any>
@@ -24,7 +25,7 @@ export const GorgiasAutomateChatIntegration = ({integration}: Props) => {
         (integration) => integration.id === shopIntegrationId
     )
     return (
-        <div className="full-width">
+        <div className={css.container}>
             <PageHeader
                 title={
                     <Breadcrumb>

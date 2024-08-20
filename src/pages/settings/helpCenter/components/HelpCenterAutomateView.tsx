@@ -10,7 +10,8 @@ export const HelpCenterAutomateView = () => {
     return (
         <HelpCenterPageWrapper
             helpCenter={helpCenter}
-            wrapperClassName={css.container}
+            pageWrapperClassName={css.container}
+            fluidContainer={false}
         >
             <ConnectedChannelsHelpCenterView
                 helpCenter={helpCenter}
