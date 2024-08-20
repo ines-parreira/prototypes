@@ -2,6 +2,7 @@ import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {List, Map, fromJS} from 'immutable'
 import {act} from 'react-dom/test-utils'
+import {Tag} from '@gorgias/api-queries'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import {TagDropdownMenu} from 'tags'
@@ -19,9 +20,9 @@ jest.mock(
             (
                 <div onClick={onClick}>
                     {'filterBy test: angry ' +
-                        filterBy?.({name: 'angry'}).toString()}
+                        filterBy?.({name: 'angry'} as Tag).toString()}
                     {'filterBy test: pop ' +
-                        filterBy?.({name: 'pop'}).toString()}
+                        filterBy?.({name: 'pop'} as Tag).toString()}
                     TagDropdownMenuMock
                 </div>
             )

@@ -38,7 +38,7 @@ const TagDropdown = ({
     )
 
     const filterBy = useCallback(
-        (tag: Tag) => !existingTagNames.contains(tag.name!),
+        (tag: Tag) => !existingTagNames.contains(tag.name),
         [existingTagNames]
     )
 
