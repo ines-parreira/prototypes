@@ -30,7 +30,7 @@ describe('<EmailDomainVerification/>', () => {
                 address: 'test@gorgias.com',
             },
         } as any,
-        loading: fromJS({}),
+        loading: {},
     }
 
     const getEmailDomain = ({verified} = {verified: true}): EmailDomain => ({
@@ -151,7 +151,29 @@ describe('<EmailDomainVerification/>', () => {
     })
 
     describe('when the domain does not exist', () => {
-        it('should render the domain creation form', () => {
+        it('should render the domain creation form for mailgun integrations', () => {
+            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
+                () => ({
+                    ...defaultHookState,
+                    domain: undefined,
+                })
+            )
+            renderComponent({
+                integration: {
+                    id: 1,
+                    meta: {
+                        address: 'test@gorgias.com',
+                        provider: 'mailgun',
+                    },
+                } as any,
+                loading: {},
+            })
+
+            expect(screen.getByText('DKIM key size')).toBeInTheDocument()
+            expect(screen.getByText('Add Domain')).toBeInTheDocument()
+        })
+
+        it('should render the loader while the integration details are loading', () => {
             jest.spyOn(hook, 'useDomainVerification').mockImplementation(
                 () => ({
                     ...defaultHookState,
@@ -159,10 +181,22 @@ describe('<EmailDomainVerification/>', () => {
                 })
             )
 
-            renderComponent()
+            renderComponent({
+                integration: {
+                    id: 1,
+                    meta: {
+                        address: 'test@gorgias.com',
+                        provider: 'mailgun',
+                    },
+                } as any,
+                loading: {
+                    integration: true,
+                },
+            })
 
-            expect(screen.getByText('DKIM key size')).toBeInTheDocument()
-            expect(screen.getByText('Add Domain')).toBeInTheDocument()
+            expect(screen.getByTestId('loader')).toBeInTheDocument()
+            expect(screen.queryByText('DKIM key size')).not.toBeInTheDocument()
+            expect(screen.queryByText('Add Domain')).not.toBeInTheDocument()
         })
     })
 

@@ -1,9 +1,13 @@
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {FormGroup, Label} from 'reactstrap'
 
 import {useUpdateEmailIntegrationDomain} from '@gorgias/api-queries'
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {isGorgiasApiError} from 'models/api/types'
+import {NotificationStatus} from 'state/notifications/types'
+import {notify} from 'state/notifications/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
 
 import {
     DEFAULT_EMAIL_DKIM_KEY_SIZE,
@@ -25,7 +29,8 @@ export type Props = {
     onDeleteDomain?: () => void
 }
 
-export default function EmailDomainVerification({integration}: Props) {
+export default function EmailDomainVerificationForm({integration}: Props) {
+    const dispatch = useAppDispatch()
     const [dkimKeySize, setDkimKeySize] = useState(DEFAULT_EMAIL_DKIM_KEY_SIZE)
 
     const provider = integration.meta?.provider || ''
@@ -34,7 +39,19 @@ export default function EmailDomainVerification({integration}: Props) {
 
     const isSendgrid = provider === EmailProvider.Sendgrid
 
-    const {mutate: updateDomain, isLoading} = useUpdateEmailIntegrationDomain()
+    const onError = useCallback(
+        (error) => {
+            const message =
+                (isGorgiasApiError(error) && error.response?.data.error.msg) ||
+                'Failed to create domain'
+            void dispatch(notify({message, status: NotificationStatus.Error}))
+        },
+        [dispatch]
+    )
+
+    const {mutate: updateDomain, isLoading} = useUpdateEmailIntegrationDomain({
+        mutation: {onError},
+    })
 
     return (
         <>

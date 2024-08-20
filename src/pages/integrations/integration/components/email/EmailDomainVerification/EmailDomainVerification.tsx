@@ -19,6 +19,7 @@ import {
 } from 'models/integration/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchIntegration} from 'state/integrations/actions'
+import {EmailProvider} from 'models/integration/constants'
 import {getDomainFromEmailAddress, isBaseEmailAddress} from '../helpers'
 import RecordsTable from './components/RecordsTable'
 import EmailDomainVerificationForm from './components/EmailDomainVerificationForm'
@@ -42,8 +43,10 @@ export default function EmailDomainVerification({
     const dispatch = useAppDispatch()
 
     const address = integration.meta?.address || ''
+    const provider = integration.meta?.provider || ''
     const domainName = getDomainFromEmailAddress(address)
     const isBaseIntegration = isBaseEmailAddress(address)
+    const isMailgun = provider === EmailProvider.Mailgun
 
     const onDelete = useCallback(() => {
         void fetchIntegration(`${integration.id}`, integration.type)(dispatch)
@@ -70,12 +73,16 @@ export default function EmailDomainVerification({
         )
     }
 
-    if ((loading?.integration || isFetching) && !domain) {
-        return <Loader data-testid="loader" />
+    if (isMailgun && !domain) {
+        if (loading?.integration) {
+            return <Loader data-testid="loader" />
+        }
+
+        return <EmailDomainVerificationForm integration={integration} />
     }
 
-    if (!domain) {
-        return <EmailDomainVerificationForm integration={integration} />
+    if (loading?.integration || isFetching || !domain) {
+        return <Loader data-testid="loader" />
     }
 
     return (
