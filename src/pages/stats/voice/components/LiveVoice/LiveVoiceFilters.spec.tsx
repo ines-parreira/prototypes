@@ -3,6 +3,7 @@ import {render, cleanup, screen} from '@testing-library/react'
 import * as uiStatsSelectors from 'state/ui/stats/selectors'
 import * as statsSelectors from 'state/stats/selectors'
 import * as integrationsSelectors from 'state/integrations/selectors'
+
 import LiveVoiceFilters from './LiveVoiceFilters'
 
 jest.mock('pages/stats/common/filters/IntegrationsFilter', () => () => (

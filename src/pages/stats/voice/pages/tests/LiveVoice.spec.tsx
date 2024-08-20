@@ -2,12 +2,14 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import LiveVoice from '../LiveVoice'
 
-jest.mock('pages/stats/voice/components/LiveVoiceFilters', () => () => (
-    <div>LiveVoiceFilters</div>
-))
-jest.mock('pages/stats/voice/components/LiveVoiceAgentsList', () => () => (
-    <div>LiveVoiceAgentsList</div>
-))
+jest.mock(
+    'pages/stats/voice/components/LiveVoice/LiveVoiceFilters',
+    () => () => <div>LiveVoiceFilters</div>
+)
+jest.mock(
+    'pages/stats/voice/components/LiveVoice/LiveVoiceAgentsSection',
+    () => () => <div>LiveVoiceAgentsSection</div>
+)
 jest.mock(
     'pages/stats/StatsPage',
     () =>
@@ -21,6 +23,6 @@ describe('LiveVoice', () => {
     it('should render all sections', () => {
         const {getByText} = renderComponent()
         expect(getByText('LiveVoiceFilters')).toBeInTheDocument()
-        expect(getByText('LiveVoiceAgentsList')).toBeInTheDocument()
+        expect(getByText('LiveVoiceAgentsSection')).toBeInTheDocument()
     })
 })
