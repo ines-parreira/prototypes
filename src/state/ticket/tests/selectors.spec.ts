@@ -219,7 +219,7 @@ describe('ticket selectors', () => {
             id: 1,
             from_agent: true,
             sender: {
-                email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS,
+                email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
             },
             opened_datetime: '2017-07-25T22:00:00',
             sent_datetime: '2017-07-25T21:01:00',

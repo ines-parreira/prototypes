@@ -15,7 +15,7 @@ describe('agents selectors', () => {
     const automationBotAgent = {
         id: 3,
         role: {name: UserRole.Bot},
-        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS,
+        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
     }
     const allAgents = [{id: 1}, {id: 2}, automationBotAgent]
     let state: RootState

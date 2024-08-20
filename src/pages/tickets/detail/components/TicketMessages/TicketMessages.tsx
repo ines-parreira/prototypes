@@ -70,7 +70,7 @@ export default function TicketMessages({
 
     const isAIAgentMessage =
         isFeedbackToAiAgentEnabled &&
-        message.sender.email === AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS
+        AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(message.sender.email)
 
     const isAIAgentInternalNote = isAIAgentMessage && !message.public
 

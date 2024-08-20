@@ -14,7 +14,9 @@ export const useAIAgentUserId = (): string | undefined => {
                 .find(
                     (agent) =>
                         agent.role.name === UserRole.Bot &&
-                        agent.email === AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS
+                        AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(
+                            agent.email
+                        )
                 )
                 ?.id?.toString(),
         [agents]

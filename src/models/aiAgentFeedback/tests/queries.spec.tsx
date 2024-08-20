@@ -42,7 +42,7 @@ const store = mockStore({
                 id: 1,
                 created_datetime: '2024-06-26T05:37:16+00:00',
                 sender: {
-                    email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS,
+                    email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
                 },
                 from_agent: true,
             },
@@ -50,7 +50,7 @@ const store = mockStore({
                 id: 2,
                 created_datetime: '2024-06-26T05:37:16+00:00',
                 sender: {
-                    email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS,
+                    email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
                 },
                 from_agent: true,
             },

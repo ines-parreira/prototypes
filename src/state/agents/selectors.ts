@@ -15,7 +15,7 @@ export const isHumanAgent = (agent: Map<any, any>) =>
 
 export const isAutomationBot = (agent: Map<any, any>) =>
     agent.getIn(['role', 'name'], '') === UserRole.Bot &&
-    agent.get('email', '') === AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS
+    AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(agent.get('email', ''))
 
 export const isHumanOrAutomationBotAgent = (agent: Map<any, any>) =>
     isHumanAgent(agent) || isAutomationBot(agent)

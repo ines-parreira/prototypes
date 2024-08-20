@@ -123,8 +123,9 @@ export const getAIAgentMessages = createImmutableSelector(
             .filter(
                 (m) =>
                     m!.get('from_agent') === true &&
-                    m!.getIn(['sender', 'email']) ===
-                        AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS
+                    AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(
+                        m!.getIn(['sender', 'email'])
+                    )
             )
             .toJS() || []) as TicketMessage[]
 )
