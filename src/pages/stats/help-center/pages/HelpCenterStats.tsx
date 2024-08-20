@@ -46,7 +46,6 @@ import {useStatsFilters} from 'pages/stats/help-center/hooks/useStatsFilters'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {useGridSize} from 'hooks/useGridSize'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
-import {isFilterWithLogicalOperator} from 'models/reporting/queryFactories/utils'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 
@@ -76,14 +75,10 @@ const HelpCenterStatsComponent = ({
         ? statsFiltersWithLogicalOperators
         : statsFilters
 
-    const helpCentersFromState = Array.isArray(cleanStatsFilters.helpCenters)
-        ? cleanStatsFilters.helpCenters
-        : cleanStatsFilters.helpCenters?.values
-
     const selectedHelpCenter =
-        helpCenters.find((helpCenter) => {
-            helpCentersFromState?.includes(helpCenter.id)
-        }) ?? helpCenters[0]
+        helpCenters.find((helpCenter) =>
+            statsFilters.helpCenters?.includes(helpCenter.id)
+        ) ?? helpCenters[0]
 
     const selectedHelpCenterDomain = getHelpCenterDomain(selectedHelpCenter)
     const onLanguageFilterChange = (localeCodes: string[]) => {
@@ -91,7 +86,7 @@ const HelpCenterStatsComponent = ({
     }
 
     const isEndDateBeforeStartCollectionEvents = moment(
-        cleanStatsFilters.period.start_datetime
+        statsFilters.period.start_datetime
     ).isBefore(DATE_WHEN_START_COLLECTION_EVENTS)
 
     const {hasNewArticles: showAIBanner} = useHelpCenterAIArticlesLibrary(
@@ -104,16 +99,6 @@ const HelpCenterStatsComponent = ({
 
     const getGridCellSize = useGridSize()
 
-    const localCodes: string[] = useMemo(() => {
-        return (
-            (isFilterWithLogicalOperator(cleanStatsFilters.localeCodes || [])
-                ? !Array.isArray(cleanStatsFilters.localeCodes) &&
-                  cleanStatsFilters.localeCodes?.values
-                : Array.isArray(cleanStatsFilters.localeCodes) &&
-                  cleanStatsFilters.localeCodes) || []
-        )
-    }, [cleanStatsFilters.localeCodes])
-
     return (
         <div className="full-width">
             <StatsPage
@@ -125,14 +110,14 @@ const HelpCenterStatsComponent = ({
                                 supportedLocales={
                                     selectedHelpCenter.supported_locales
                                 }
-                                selectedLocaleCodes={localCodes}
+                                selectedLocaleCodes={statsFilters.localeCodes}
                                 onFilterChange={onLanguageFilterChange}
                             />
                             <PeriodStatsFilter
                                 initialSettings={{
                                     maxSpan: 365,
                                 }}
-                                value={cleanStatsFilters.period}
+                                value={statsFilters.period}
                                 variant="ghost"
                             />
                         </>
