@@ -68,13 +68,15 @@ const defaultGuidanceAiSuggestionsProps: ReturnType<
 > = {
     guidanceArticles: [],
     guidanceAISuggestions: [],
-    isLoading: false,
+    isLoadingAiGuidances: false,
+    isLoadingGuidanceArticleList: false,
     isAllAIGuidancesUsed: false,
     isEmptyStateNoAIGuidances: false,
     isEmptyStateAIGuidances: false,
     isGuidancesOnly: false,
     isGuidancesAndAIGuidances: false,
     getAiGuidanceById: jest.fn(),
+    invalidateAiGuidances: jest.fn(),
 }
 
 const mockStore = configureMockStore([thunk])
@@ -155,7 +157,7 @@ describe('<AiAgentGuidanceContainer />', () => {
     it('should render loader when guidance articles are loading', () => {
         mockedUseGuidanceAiSuggestions.mockReturnValue({
             ...defaultGuidanceAiSuggestionsProps,
-            isLoading: true,
+            isLoadingAiGuidances: true,
         })
 
         renderComponent()
@@ -198,7 +200,7 @@ describe('<AiAgentGuidanceContainer />', () => {
     })
 
     describe("when there's guidance articles", () => {
-        it.skip('should render guidances and AI guidances', () => {
+        it('should render guidances and AI guidances', () => {
             const guidanceArticles = [getGuidanceArticleFixture(1)]
             mockedUseGuidanceAiSuggestions.mockReturnValue({
                 ...defaultGuidanceAiSuggestionsProps,
@@ -209,10 +211,17 @@ describe('<AiAgentGuidanceContainer />', () => {
 
             renderComponent()
 
-            expect(
-                screen.getByTestId(DATA_TEST_ID.GuidancesAndAIGuidances)
-            ).toBeInTheDocument()
             expect(screen.getByText('AI Guidance 1')).toBeInTheDocument()
+
+            expect(
+                screen.queryByRole('button', {name: 'Create From Template'})
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('button', {name: 'Browse Suggestions'})
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', {name: 'Create Custom Guidance'})
+            ).toBeInTheDocument()
         })
 
         it('should render guidance list', () => {
@@ -281,7 +290,7 @@ describe('<AiAgentGuidanceContainer />', () => {
                 .map((_, index) => getGuidanceArticleFixture(index))
             mockedUseGuidanceAiSuggestions.mockReturnValue({
                 ...defaultGuidanceAiSuggestionsProps,
-                isGuidancesOnly: true,
+                isGuidancesAndAIGuidances: false,
                 guidanceArticles,
             })
 

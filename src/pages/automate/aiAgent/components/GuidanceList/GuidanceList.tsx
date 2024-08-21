@@ -95,13 +95,15 @@ export const GuidanceList = ({
         <TableWrapper>
             <TableHead>
                 <HeaderCellProperty
-                    title="Guidance"
+                    title="My Guidance"
+                    titleClassName={css.titleCell}
                     onClick={() => onSortClick('title')}
                     isOrderedBy={sortState.column === 'title'}
                     direction={sortState.direction}
                 />
                 <HeaderCellProperty
                     title="Last updated"
+                    titleClassName={css.titleCell}
                     onClick={() => onSortClick('lastUpdated')}
                     isOrderedBy={sortState.column === 'lastUpdated'}
                     direction={sortState.direction}

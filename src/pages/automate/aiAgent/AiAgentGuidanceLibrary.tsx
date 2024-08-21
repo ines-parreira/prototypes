@@ -20,16 +20,17 @@ export const AiAgentGuidanceLibrary = ({helpCenterId, shopName}: Props) => {
     const {guidanceTemplates} = useGuidanceTemplates()
     const {routes} = useAiAgentNavigation({shopName})
 
-    const {guidanceAISuggestions, isLoading} = useGuidanceAiSuggestions({
-        helpCenterId,
-        shopName,
-    })
+    const {guidanceAISuggestions, isLoadingAiGuidances} =
+        useGuidanceAiSuggestions({
+            helpCenterId,
+            shopName,
+        })
 
     const onNewClick = () => {
         history.push(routes.newGuidanceArticle)
     }
 
-    if (isLoading) {
+    if (isLoadingAiGuidances) {
         return <Loader data-testid="loader" />
     }
 

@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useState} from 'react'
 import {Redirect} from 'react-router-dom'
 import {LocaleCode} from 'models/helpCenter/types'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -23,11 +23,13 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
     locale,
 }: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
+    const [onSubmitLoading, setOnSubmitLoading] = useState(false)
 
-    const {getAiGuidanceById, isLoading} = useGuidanceAiSuggestions({
-        helpCenterId: guidanceHelpCenterId,
-        shopName,
-    })
+    const {getAiGuidanceById, isLoadingAiGuidances, invalidateAiGuidances} =
+        useGuidanceAiSuggestions({
+            helpCenterId: guidanceHelpCenterId,
+            shopName,
+        })
 
     const aiGuidanceSuggestion = getAiGuidanceById(aiGuidanceId)
 
@@ -37,6 +39,7 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
         })
 
     const onSubmit = async (guidanceFormFields: GuidanceFormFields) => {
+        setOnSubmitLoading(true)
         await createGuidanceArticle(
             mapGuidanceFormFieldsToGuidanceArticle(
                 guidanceFormFields,
@@ -44,6 +47,8 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
                 aiGuidanceSuggestion?.key
             )
         )
+        await invalidateAiGuidances()
+        setOnSubmitLoading(false)
     }
 
     const initialFields = useMemo(
@@ -55,7 +60,7 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
         [aiGuidanceSuggestion]
     )
 
-    if (isLoading) {
+    if (isLoadingAiGuidances) {
         return <Loader data-testid="loader" />
     }
 
@@ -69,7 +74,7 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
             shopName={shopName}
             initialFields={initialFields}
             onSubmit={onSubmit}
-            isLoading={isGuidanceArticleUpdating}
+            isLoading={isGuidanceArticleUpdating || onSubmitLoading}
             isAiGuidanceSuggestions
         />
     )

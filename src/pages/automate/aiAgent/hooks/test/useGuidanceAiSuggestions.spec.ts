@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
+import {QueryClient, useQueryClient} from '@tanstack/react-query'
 import {assumeMock} from 'utils/testing'
 import {useGetAIGeneratedGuidances} from 'models/aiAgent/queries'
 import useAppSelector from 'hooks/useAppSelector'
@@ -13,7 +14,9 @@ import {getAIGuidanceFixture} from '../../fixtures/aiGuidance.fixture'
 jest.mock('../useGuidanceArticles')
 jest.mock('models/aiAgent/queries')
 jest.mock('hooks/useAppSelector')
+jest.mock('@tanstack/react-query')
 
+const useQueryClientMock = assumeMock(useQueryClient)
 const mockedUseGuidanceArticles = assumeMock(useGuidanceArticles)
 const mockedUseAppSelector = assumeMock(useAppSelector)
 const mockedUseGetAIGeneratedGuidances = (
@@ -43,8 +46,16 @@ const helpCenterId = 123
 const shopName = 'example-shop'
 
 describe('useGuidanceAiSuggestions', () => {
+    const invalidateQueriesMock = jest.fn()
+
     beforeEach(() => {
         jest.resetAllMocks()
+        useQueryClientMock.mockImplementation(
+            () =>
+                ({
+                    invalidateQueries: invalidateQueriesMock,
+                } as unknown as QueryClient)
+        )
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles,
             isGuidanceArticleListLoading: false,
@@ -71,7 +82,7 @@ describe('useGuidanceAiSuggestions', () => {
         )
 
         expect(result.current.guidanceArticles).toEqual(guidanceArticles)
-        expect(result.current.isLoading).toEqual(false)
+        expect(result.current.isLoadingAiGuidances).toEqual(false)
         expect(result.current.guidanceAISuggestions).toEqual([])
         expect(result.current.isAllAIGuidancesUsed).toEqual(false)
         expect(result.current.isEmptyStateNoAIGuidances).toEqual(false)
@@ -96,7 +107,7 @@ describe('useGuidanceAiSuggestions', () => {
         )
 
         expect(result.current.guidanceArticles).toEqual(guidanceArticles)
-        expect(result.current.isLoading).toEqual(false)
+        expect(result.current.isLoadingAiGuidances).toEqual(false)
         expect(result.current.guidanceAISuggestions).toEqual([aiGuidances[0]])
         expect(result.current.isAllAIGuidancesUsed).toEqual(false)
         expect(result.current.isEmptyStateNoAIGuidances).toEqual(false)
@@ -121,7 +132,7 @@ describe('useGuidanceAiSuggestions', () => {
         )
 
         expect(result.current.guidanceArticles).toEqual([])
-        expect(result.current.isLoading).toEqual(false)
+        expect(result.current.isLoadingAiGuidances).toEqual(false)
         expect(result.current.guidanceAISuggestions).toEqual([])
         expect(result.current.isAllAIGuidancesUsed).toEqual(false)
         expect(result.current.isEmptyStateNoAIGuidances).toEqual(true)
@@ -151,7 +162,7 @@ describe('useGuidanceAiSuggestions', () => {
         )
 
         expect(result.current.guidanceArticles).toEqual([])
-        expect(result.current.isLoading).toEqual(false)
+        expect(result.current.isLoadingAiGuidances).toEqual(false)
         expect(result.current.guidanceAISuggestions).toEqual(aiGuidances)
         expect(result.current.isAllAIGuidancesUsed).toEqual(false)
         expect(result.current.isEmptyStateNoAIGuidances).toEqual(false)
@@ -181,7 +192,7 @@ describe('useGuidanceAiSuggestions', () => {
         )
 
         expect(result.current.guidanceArticles).toEqual([])
-        expect(result.current.isLoading).toEqual(false)
+        expect(result.current.isLoadingAiGuidances).toEqual(false)
         expect(result.current.guidanceAISuggestions).toEqual([])
         expect(result.current.isAllAIGuidancesUsed).toEqual(true)
         expect(result.current.isEmptyStateNoAIGuidances).toEqual(false)
@@ -260,5 +271,27 @@ describe('useGuidanceAiSuggestions', () => {
 
         const aiGuidanceSuggestion = result.current.getAiGuidanceById('10')
         expect(aiGuidanceSuggestion).toBeNull()
+    })
+
+    it('should invalidate ai guidances query', async () => {
+        mockedUseGuidanceArticles.mockReturnValue({
+            guidanceArticles: [],
+            isGuidanceArticleListLoading: false,
+        })
+        const aiGuidances = [
+            {...getAIGuidanceFixture('1'), review_action: 'none'},
+            {...getAIGuidanceFixture('2'), review_action: 'none'},
+        ]
+
+        mockedUseGetAIGeneratedGuidances(aiGuidances)
+
+        const {result} = renderHook(() =>
+            useGuidanceAiSuggestions({
+                helpCenterId,
+                shopName,
+            })
+        )
+        await result.current.invalidateAiGuidances()
+        expect(invalidateQueriesMock).toHaveBeenCalled()
     })
 })

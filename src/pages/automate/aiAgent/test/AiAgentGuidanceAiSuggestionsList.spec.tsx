@@ -97,7 +97,7 @@ describe('<GuidanceAiSuggestionsList />', () => {
         userEvent.click(seeAllSuggestionsCard)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test/ai-agent/guidance/templates'
+            '/app/automation/shopify/test/ai-agent/guidance/library'
         )
     })
 })

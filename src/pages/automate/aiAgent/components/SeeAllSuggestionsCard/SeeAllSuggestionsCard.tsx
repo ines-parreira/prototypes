@@ -13,7 +13,7 @@ export const SeeAllSuggestionsCard = ({shopName}: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
 
     const onSeeAllSugestionsClick = () => {
-        history.push(routes.guidanceTemplates)
+        history.push(routes.guidanceLibrary)
     }
 
     return (

@@ -105,7 +105,7 @@ export const GuidanceForm = ({
                     message: 'Guidance successfully saved',
                 })
             )
-
+            resetForm()
             history.push(redirectTo)
         } catch (err) {
             void dispatch(

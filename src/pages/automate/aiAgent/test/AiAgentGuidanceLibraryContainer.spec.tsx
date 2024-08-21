@@ -43,7 +43,8 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
         mockedUseGuidanceTemplates.mockReturnValue({guidanceTemplates: []})
         mockedUseGuidanceAiSuggestions.mockReturnValue({
             guidanceAISuggestions: [],
-            isLoading: false,
+            isLoadingAiGuidances: false,
+            isLoadingGuidanceArticleList: false,
         } as any)
     })
 
@@ -63,7 +64,8 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
 
         mockedUseGuidanceAiSuggestions.mockReturnValue({
             guidanceAISuggestions: [aiGuidance],
-            isLoading: false,
+            isLoadingAiGuidances: false,
+            isLoadingGuidanceArticleList: false,
         } as any)
 
         renderComponent()
@@ -96,7 +98,8 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
 
         mockedUseGuidanceAiSuggestions.mockReturnValue({
             guidanceAISuggestions: [aiGuidance],
-            isLoading: false,
+            isLoadingAiGuidances: false,
+            isLoadingGuidanceArticleList: false,
         } as any)
 
         renderComponent()
@@ -114,7 +117,8 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
     it('should display the loader until ai guidance suggestions are fetched', () => {
         mockedUseGuidanceAiSuggestions.mockReturnValue({
             guidanceAISuggestions: null,
-            isLoading: true,
+            isLoadingAiGuidances: true,
+            isLoadingGuidanceArticleList: false,
         } as any)
 
         renderComponent()

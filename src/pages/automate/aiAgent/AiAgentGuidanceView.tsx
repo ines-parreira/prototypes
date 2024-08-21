@@ -13,6 +13,7 @@ import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
 import {DATA_TEST_ID} from './constants'
 import AiGuidanceEmptyState from './components/AiGuidanceEmptyState/AiGuidanceEmptyState'
+import {GuidanceTopRecommendations} from './components/GuidanceTopRecommendations/GuidanceTopRecommendations'
 
 type Props = {
     helpCenterId: number
@@ -33,10 +34,12 @@ export const AiAgentGuidanceView = ({
     const {
         guidanceArticles,
         guidanceAISuggestions,
-        isLoading,
+        isLoadingAiGuidances,
+        isLoadingGuidanceArticleList,
         isEmptyStateNoAIGuidances,
         isEmptyStateAIGuidances,
-        isGuidancesOnly,
+        isGuidancesAndAIGuidances,
+        invalidateAiGuidances,
     } = useGuidanceAiSuggestions({
         helpCenterId,
         shopName,
@@ -49,6 +52,7 @@ export const AiAgentGuidanceView = ({
     const onDelete = async (articleId: number) => {
         try {
             await deleteGuidanceArticle(articleId)
+            await invalidateAiGuidances()
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
@@ -96,7 +100,14 @@ export const AiAgentGuidanceView = ({
         history.push(routes.guidanceArticleEdit(articleId))
     }
 
-    if (isLoading) {
+    const onBrowseSuggestions = () => {
+        history.push(routes.guidanceLibrary)
+    }
+
+    if (
+        isLoadingGuidanceArticleList ||
+        (!guidanceArticles.length && isLoadingAiGuidances)
+    ) {
         return <Loader data-testid={DATA_TEST_ID.Loader} />
     }
 
@@ -116,23 +127,28 @@ export const AiAgentGuidanceView = ({
             />
         )
     }
-    if (isGuidancesOnly) {
-        return (
-            <div>
-                <GuidanceHeader
-                    onCreateGuidanceClick={onCreateGuidanceClick}
-                    onCreateFromTemplate={onCreateFromTemplate}
-                    guidanceArticlesLength={guidanceArticles.length}
-                />
-                <GuidanceList
-                    guidanceArticles={guidanceArticles}
-                    onDelete={onDelete}
-                    onRowClick={onGuidanceArticleClick}
-                    onChangeVisibility={onChangeVisibility}
-                />
-            </div>
-        )
-    }
 
-    return null
+    return (
+        <div>
+            <GuidanceHeader
+                onCreateGuidanceClick={onCreateGuidanceClick}
+                onCreateFromTemplate={onCreateFromTemplate}
+                onBrowseSuggestions={onBrowseSuggestions}
+                guidanceArticlesLength={guidanceArticles.length}
+                hasAiGuidanceSuggestions={isGuidancesAndAIGuidances}
+                isLoading={isLoadingAiGuidances}
+            />
+            <GuidanceTopRecommendations
+                isLoading={isLoadingAiGuidances}
+                aiGuidances={guidanceAISuggestions}
+                shopName={shopName}
+            />
+            <GuidanceList
+                guidanceArticles={guidanceArticles}
+                onDelete={onDelete}
+                onRowClick={onGuidanceArticleClick}
+                onChangeVisibility={onChangeVisibility}
+            />
+        </div>
+    )
 }

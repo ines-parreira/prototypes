@@ -115,7 +115,7 @@ describe('<PublicSourcesSection />', () => {
         )
     })
 
-    it('should disable add button when limit riched', () => {
+    it('should disable add button when limit reached', () => {
         const sources = Array.from({length: 10}, (_, i) => createSource(i + 1))
 
         renderComponent({sourceItems: sources})

@@ -1,6 +1,10 @@
 import {useCallback, useMemo} from 'react'
+import {useQueryClient} from '@tanstack/react-query'
 import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {useGetAIGeneratedGuidances} from 'models/aiAgent/queries'
+import {
+    aiGeneratedGuidanceKeys,
+    useGetAIGeneratedGuidances,
+} from 'models/aiAgent/queries'
 import useAppSelector from 'hooks/useAppSelector'
 import {getStoreIntegrations} from 'state/integrations/selectors'
 import {mapAIGuidanceDTOToAIGuidance} from '../utils/guidance.utils'
@@ -12,8 +16,12 @@ type Props = {
 }
 
 export const useGuidanceAiSuggestions = ({helpCenterId, shopName}: Props) => {
-    const {guidanceArticles, isGuidanceArticleListLoading} =
-        useGuidanceArticles(helpCenterId)
+    const queryClient = useQueryClient()
+
+    const {
+        guidanceArticles,
+        isGuidanceArticleListLoading: isLoadingGuidanceArticleList,
+    } = useGuidanceArticles(helpCenterId)
 
     const allStoreIntegrations = useAppSelector(getStoreIntegrations)
     const storeIntegrationId = getValidStoreIntegrationId(
@@ -21,12 +29,20 @@ export const useGuidanceAiSuggestions = ({helpCenterId, shopName}: Props) => {
         shopName
     )
 
-    const {data, isLoading: isLoadingAIGuidances} = useGetAIGeneratedGuidances(
-        helpCenterId,
-        storeIntegrationId
-    )
+    const invalidateAiGuidances = async () => {
+        await queryClient.invalidateQueries({
+            queryKey: aiGeneratedGuidanceKeys.listWithStore(
+                helpCenterId,
+                storeIntegrationId
+            ),
+        })
+    }
 
-    const isLoading = isGuidanceArticleListLoading || isLoadingAIGuidances
+    const {data, isLoading: isLoadingAiGuidances} = useGetAIGeneratedGuidances(
+        helpCenterId,
+        storeIntegrationId,
+        {retry: false, refetchOnWindowFocus: false}
+    )
 
     const aiGuidances = useMemo(() => {
         if (!data || !storeIntegrationId) {
@@ -60,7 +76,8 @@ export const useGuidanceAiSuggestions = ({helpCenterId, shopName}: Props) => {
 
     return {
         guidanceArticles,
-        isLoading,
+        isLoadingAiGuidances,
+        isLoadingGuidanceArticleList,
         guidanceAISuggestions: aiGuidances,
         isAllAIGuidancesUsed,
         isEmptyStateNoAIGuidances:
@@ -71,5 +88,6 @@ export const useGuidanceAiSuggestions = ({helpCenterId, shopName}: Props) => {
         isGuidancesAndAIGuidances:
             hasAIGuidancesFromAPI && guidanceArticles.length > 0,
         getAiGuidanceById,
+        invalidateAiGuidances,
     }
 }

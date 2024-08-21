@@ -14,35 +14,48 @@ const CREATE_GUIDANCE_BUTTON_ID = 'create-guidance-button'
 type Props = {
     onCreateGuidanceClick: () => void
     onCreateFromTemplate: () => void
+    onBrowseSuggestions: () => void
     guidanceArticlesLength: number
+    hasAiGuidanceSuggestions: boolean
+    isLoading: boolean
 }
 
 export const GuidanceHeader = ({
     onCreateGuidanceClick,
     onCreateFromTemplate,
+    onBrowseSuggestions,
     guidanceArticlesLength,
+    hasAiGuidanceSuggestions,
+    isLoading,
 }: Props) => {
-    const isGuidanceArticleLimitRiched =
+    const isGuidanceArticleLimitReached =
         guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT
     const isGuidanceArticleLimitWarning =
         guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT_WARNING
     const {guidanceTemplates} = useGuidanceTemplates()
     const isGuidanceTemplatesEmpty = guidanceTemplates.length === 0
+
+    const displayCreateGuidanceButton =
+        isLoading || (!hasAiGuidanceSuggestions && isGuidanceTemplatesEmpty)
+
     return (
         <>
             <div className={css.container}>
-                <p data-candu-id="ai-agent-guidance-has-guidance-articles">
-                    Guidance is internal-facing knowledge that allows you to
-                    customize AI Agent's behavior and fine-tune how it handles
-                    customer requests.
+                <p
+                    className={css.textGroup}
+                    data-candu-id="ai-agent-guidance-has-guidance-articles"
+                >
+                    Add Guidance to tell AI Agent how to handle specific topics
+                    or inquiries, and when to escalate tickets to your team.
                 </p>
 
                 <div className={css.btnGroup}>
-                    {isGuidanceTemplatesEmpty ? (
+                    {displayCreateGuidanceButton ? (
                         <Button
-                            isDisabled={isGuidanceArticleLimitRiched}
-                            disabled={isGuidanceArticleLimitRiched}
+                            isDisabled={isGuidanceArticleLimitReached}
+                            disabled={isGuidanceArticleLimitReached}
                             onClick={onCreateGuidanceClick}
+                            intent="secondary"
                             id={CREATE_GUIDANCE_BUTTON_ID}
                         >
                             Create Guidance
@@ -50,8 +63,8 @@ export const GuidanceHeader = ({
                     ) : (
                         <>
                             <Button
-                                isDisabled={isGuidanceArticleLimitRiched}
-                                disabled={isGuidanceArticleLimitRiched}
+                                isDisabled={isGuidanceArticleLimitReached}
+                                disabled={isGuidanceArticleLimitReached}
                                 onClick={onCreateGuidanceClick}
                                 intent="secondary"
                                 id={CREATE_GUIDANCE_BUTTON_ID}
@@ -59,16 +72,22 @@ export const GuidanceHeader = ({
                                 Create Custom Guidance
                             </Button>
 
-                            <Button
-                                isDisabled={isGuidanceArticleLimitRiched}
-                                disabled={isGuidanceArticleLimitRiched}
-                                onClick={onCreateFromTemplate}
-                            >
-                                Create From Template
-                            </Button>
+                            {hasAiGuidanceSuggestions ? (
+                                <Button onClick={onBrowseSuggestions}>
+                                    Browse Suggestions
+                                </Button>
+                            ) : (
+                                <Button
+                                    isDisabled={isGuidanceArticleLimitReached}
+                                    disabled={isGuidanceArticleLimitReached}
+                                    onClick={onCreateFromTemplate}
+                                >
+                                    Create From Template
+                                </Button>
+                            )}
                         </>
                     )}
-                    {isGuidanceArticleLimitRiched && (
+                    {isGuidanceArticleLimitReached && (
                         <Tooltip
                             target={CREATE_GUIDANCE_BUTTON_ID}
                             placement="bottom"
