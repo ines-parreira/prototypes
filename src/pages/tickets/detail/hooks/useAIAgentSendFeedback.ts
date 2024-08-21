@@ -97,33 +97,7 @@ export const useAIAgentSendFeedback = () => {
         })
 
     const {mutateAsync: deleteAIAgentTicketMessagesFeedback} =
-        useDeleteAIAgentTicketMessagesFeedback()
-
-    const queryClient = useQueryClient()
-    const dispatch = useAppDispatch()
-
-    const aiAgentSendFeedback = async (
-        message: TicketMessage,
-        payload: SubmitMessageFeedback
-    ) => {
-        await submitAIAgentTicketMessagesFeedback([message.id!, payload], {
-            onError: () => {
-                void dispatch(
-                    notify({
-                        message:
-                            'There was an error sending the feedback. Please try again.',
-                        status: NotificationStatus.Error,
-                    })
-                )
-            },
-        })
-    }
-
-    const aiAgentDeleteFeedback = async (
-        message: TicketMessage,
-        payload: DeleteMessageFeedback
-    ) => {
-        await deleteAIAgentTicketMessagesFeedback([message.id!, payload], {
+        useDeleteAIAgentTicketMessagesFeedback({
             onSuccess: () => {
                 void queryClient.invalidateQueries({
                     queryKey: aiAgentFeedbackKeys.detail(messageIds),
@@ -139,18 +113,30 @@ export const useAIAgentSendFeedback = () => {
                 )
             },
         })
+
+    const queryClient = useQueryClient()
+    const dispatch = useAppDispatch()
+
+    const aiAgentSendFeedback = async (
+        message: TicketMessage,
+        payload: SubmitMessageFeedback
+    ) => {
+        await submitAIAgentTicketMessagesFeedback([message.id!, payload])
+    }
+
+    const aiAgentDeleteFeedback = async (
+        message: TicketMessage,
+        payload: DeleteMessageFeedback
+    ) => {
+        await deleteAIAgentTicketMessagesFeedback([message.id!, payload])
     }
 
     return {
         aiAgentSendFeedback: useCallback(aiAgentSendFeedback, [
-            dispatch,
             submitAIAgentTicketMessagesFeedback,
         ]),
         aiAgentDeleteFeedback: useCallback(aiAgentDeleteFeedback, [
-            dispatch,
-            queryClient,
             deleteAIAgentTicketMessagesFeedback,
-            messageIds,
         ]),
     }
 }

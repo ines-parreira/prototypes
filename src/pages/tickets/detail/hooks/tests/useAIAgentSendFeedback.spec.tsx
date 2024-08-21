@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {fromJS} from 'immutable'
+import {waitFor} from '@testing-library/react'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {TicketMessage} from 'models/ticket/types'
 import {
@@ -12,12 +13,22 @@ import {
     useDeleteAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/queries'
 import {assumeMock} from 'utils/testing'
-import {SubmitMessageFeedback} from 'models/aiAgentFeedback/types'
+import {
+    DeleteMessageFeedback,
+    SubmitMessageFeedback,
+} from 'models/aiAgentFeedback/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {useAIAgentSendFeedback} from '../useAIAgentSendFeedback'
 
 const queryClient = mockQueryClient()
 
 jest.mock('models/aiAgentFeedback/queries')
+
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('state/notifications/actions')
 
 const mockStore = configureMockStore([thunk])
 const store = {
@@ -34,6 +45,34 @@ const mockedUseDeleteAIAgentTicketMessagesFeedback = assumeMock(
     useDeleteAIAgentTicketMessagesFeedback
 )
 
+const message = {
+    ticket_id: '1',
+    id: '2',
+} as unknown as TicketMessage
+
+const payload: SubmitMessageFeedback = {
+    feedbackOnMessage: [],
+    feedbackOnResource: [
+        {
+            resourceType: 'soft_action',
+            resourceId: 3,
+            type: 'binary',
+            feedback: 'thumbs_up',
+        },
+    ],
+}
+
+const deletePayload: DeleteMessageFeedback = {
+    feedbackOnMessage: [
+        {
+            type: 'resource',
+            resourceType: 'article',
+            resourceId: 1,
+        },
+    ],
+    feedbackOnResource: [],
+}
+
 describe('useAIAgentSendFeedback', () => {
     beforeEach(() => {
         mockedUseSubmitAIAgentTicketMessagesFeedback.mockReturnValue({
@@ -48,21 +87,8 @@ describe('useAIAgentSendFeedback', () => {
     })
 
     it('should send feedback', async () => {
-        const message = {
-            ticket_id: '1',
-            id: '2',
-        } as unknown as TicketMessage
-        const payload: SubmitMessageFeedback = {
-            feedbackOnMessage: [],
-            feedbackOnResource: [
-                {
-                    resourceType: 'soft_action',
-                    resourceId: 3,
-                    type: 'binary',
-                    feedback: 'thumbs_up',
-                },
-            ],
-        }
+        const cancelQueryMock = jest.spyOn(queryClient, 'cancelQueries')
+        const getQueryDataMock = jest.spyOn(queryClient, 'getQueryData')
 
         const {result} = renderHook(() => useAIAgentSendFeedback(), {
             wrapper: ({children}) => (
@@ -74,6 +100,155 @@ describe('useAIAgentSendFeedback', () => {
 
         await result.current.aiAgentSendFeedback(message, payload)
 
-        expect(mockedUseSubmitAIAgentTicketMessagesFeedback).toHaveBeenCalled()
+        mockedUseSubmitAIAgentTicketMessagesFeedback.mock.calls[0][0]
+            ?.onMutate!([2, payload])
+
+        await waitFor(() => {
+            expect(cancelQueryMock).toHaveBeenCalled()
+            expect(getQueryDataMock).toHaveBeenCalled()
+
+            expect(
+                mockedUseSubmitAIAgentTicketMessagesFeedback
+            ).toHaveBeenCalled()
+        })
+    })
+
+    it('should send notification on error', async () => {
+        const setQueryDataMock = jest.spyOn(queryClient, 'setQueryData')
+
+        const {result} = renderHook(() => useAIAgentSendFeedback(), {
+            wrapper: ({children}) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(store)}>{children}</Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        await result.current.aiAgentSendFeedback(message, payload)
+
+        mockedUseSubmitAIAgentTicketMessagesFeedback.mock.calls[0][0]?.onError!(
+            {error: new Error('error')},
+            [1, payload],
+            [2, payload]
+        )
+
+        expect(setQueryDataMock).toHaveBeenCalled()
+
+        expect(notify).toHaveBeenCalledWith({
+            message:
+                'There was an error sending the feedback. Please try again.',
+            status: NotificationStatus.Error,
+        })
+    })
+
+    it('should not call setQueryData on error if context is undefined', async () => {
+        const setQueryDataMock = jest.spyOn(queryClient, 'setQueryData')
+
+        const {result} = renderHook(() => useAIAgentSendFeedback(), {
+            wrapper: ({children}) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(store)}>{children}</Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        await result.current.aiAgentSendFeedback(message, payload)
+
+        mockedUseSubmitAIAgentTicketMessagesFeedback.mock.calls[0][0]?.onError!(
+            {error: new Error('error')},
+            [1, payload],
+            undefined
+        )
+
+        expect(setQueryDataMock).not.toHaveBeenCalled()
+    })
+
+    it('should invalidate query on success', async () => {
+        const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
+
+        const {result} = renderHook(() => useAIAgentSendFeedback(), {
+            wrapper: ({children}) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(store)}>{children}</Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        await result.current.aiAgentSendFeedback(message, payload)
+
+        mockedUseSubmitAIAgentTicketMessagesFeedback.mock.calls[0][0]
+            ?.onSuccess!(
+            axiosSuccessResponse(payload),
+            [1, payload],
+            [2, payload]
+        )
+
+        expect(invalidateQueryMock).toHaveBeenCalled()
+    })
+
+    it('should delete feedback', async () => {
+        const {result} = renderHook(() => useAIAgentSendFeedback(), {
+            wrapper: ({children}) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(store)}>{children}</Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        await result.current.aiAgentDeleteFeedback(message, {
+            feedbackOnMessage: [
+                {type: 'resource', resourceType: 'article', resourceId: 1},
+            ],
+            feedbackOnResource: [],
+        })
+
+        expect(mockedUseDeleteAIAgentTicketMessagesFeedback).toHaveBeenCalled()
+    })
+
+    it('should invalidate query on delete success', async () => {
+        const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
+
+        const {result} = renderHook(() => useAIAgentSendFeedback(), {
+            wrapper: ({children}) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(store)}>{children}</Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        await result.current.aiAgentDeleteFeedback(message, deletePayload)
+
+        mockedUseDeleteAIAgentTicketMessagesFeedback.mock.calls[0][0]
+            ?.onSuccess!(
+            axiosSuccessResponse(deletePayload),
+            [1, deletePayload],
+            [2, deletePayload]
+        )
+
+        await waitFor(() => expect(invalidateQueryMock).toHaveBeenCalled())
+    })
+
+    it('should dispatch a notification on delete error', async () => {
+        const {result} = renderHook(() => useAIAgentSendFeedback(), {
+            wrapper: ({children}) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(store)}>{children}</Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        await result.current.aiAgentDeleteFeedback(message, deletePayload)
+
+        mockedUseDeleteAIAgentTicketMessagesFeedback.mock.calls[0][0]?.onError!(
+            {error: new Error('error')},
+            [1, deletePayload],
+            [2, deletePayload]
+        )
+
+        expect(notify).toHaveBeenCalledWith({
+            message:
+                'There was an error deleting the feedback. Please try again.',
+            status: NotificationStatus.Error,
+        })
     })
 })
