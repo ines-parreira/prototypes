@@ -86,6 +86,7 @@ const ReportIssueSelect: React.FC<Props> = ({
                             ref={floatingRef}
                             target={selectInputBoxRef}
                             value={value}
+                            className={css.dropdown}
                         >
                             {reportIssueOptions.map((option) => (
                                 <DropdownItem

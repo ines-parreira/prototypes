@@ -9,6 +9,11 @@ import {
 import FeedbackReportIssue from '../FeedbackReportIssue'
 
 describe('FeedbackReportIssue', () => {
+    const getFirstEnumValue = (): ReportIssueOption => {
+        const enumValues = Object.values(ReportIssueOption) as string[]
+        return enumValues[0] as ReportIssueOption
+    }
+
     it('displays tags for each value', () => {
         const allOptions = Object.values(ReportIssueOption)
 
@@ -60,19 +65,16 @@ describe('FeedbackReportIssue', () => {
         const dropdownItem = getAllByTestId('dropdown-item')
         fireEvent.click(dropdownItem[0])
 
-        expect(onChange).toHaveBeenCalledWith([
-            ReportIssueOption.IncorrectLanguageUsed,
-        ])
+        const firstElement = getFirstEnumValue()
+        expect(onChange).toHaveBeenCalledWith([firstElement])
     })
 
     it('should remove option when clicked', () => {
         const onChange = jest.fn()
 
+        const firstElement = getFirstEnumValue()
         const {getAllByTestId, getByRole} = render(
-            <FeedbackReportIssue
-                value={[ReportIssueOption.IncorrectLanguageUsed]}
-                onChange={onChange}
-            />
+            <FeedbackReportIssue value={[firstElement]} onChange={onChange} />
         )
 
         const listBox = getByRole('listbox')
