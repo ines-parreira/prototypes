@@ -780,24 +780,12 @@ describe('ConnectedChannelsView', () => {
             </Router>
         )
 
-        const toggle = screen.getByLabelText(/Enable Quick Responses/i)
-        fireEvent.click(toggle)
-
-        await waitFor(() => {
-            expect(handleUpdate).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    quickResponses: {enabled: false},
-                }),
-                'Quick Responses disabled'
-            )
-        })
-
         await act(async () => {
             fireEvent.click(
                 screen.getByLabelText(/Enable Article Recommendation/i)
             )
             await waitFor(() => {
-                expect(handleUpdate).toHaveBeenCalledTimes(2)
+                expect(handleUpdate).toHaveBeenCalledTimes(1)
             })
 
             await act(async () => {
@@ -846,33 +834,6 @@ describe('ConnectedChannelsView', () => {
         expect(screen.queryByText(/Test/i)).not.toBeInTheDocument()
     })
 
-    it(`will call 'handleUpdate' when switching off the quick-responses`, () => {
-        const handleUpdate = jest.fn()
-        ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
-            applicationsAutomationSettings:
-                applicationAutomationSettingsFixture,
-            isFetchPending: false,
-            handleChatApplicationAutomationSettingsUpdate: handleUpdate,
-        })
-
-        renderWithQueryClientProvider(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <ConnectedChannelsChatView />
-                </Provider>
-            </Router>
-        )
-
-        const toggle = screen.getByLabelText(/Enable Quick Responses/i)
-        fireEvent.click(toggle)
-
-        expect(handleUpdate).toHaveBeenCalledWith(
-            expect.objectContaining({
-                quickResponses: {enabled: false},
-            }),
-            'Quick Responses disabled'
-        )
-    })
     it(`will call 'handleUpdate' when switching on the article recommendation`, () => {
         const handleUpdate = jest.fn()
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
@@ -1044,9 +1005,6 @@ describe('ConnectedChannelsView', () => {
 
         expect(screen.queryByText(/currently viewing/i)).not.toBeInTheDocument()
         expect(screen.queryByText(/forum/i)).not.toBeInTheDocument()
-        expect(
-            screen.getByRole('switch', {name: /enable quick responses/i})
-        ).not.toBeChecked()
         expect(
             screen.getByRole('switch', {name: /enable article recommendation/i})
         ).not.toBeChecked()

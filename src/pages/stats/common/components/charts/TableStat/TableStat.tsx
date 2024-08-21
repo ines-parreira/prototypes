@@ -360,29 +360,9 @@ export class TableStat extends Component<
                     return `${value}%`
                 }
 
-                const flowId = metric.get('flow_id') as string
-                const isQuickResponseEnabled = this._doesQuickResponseExist(
-                    flowId,
-                    shopName,
-                    shopType
-                )
-
                 return (
                     <div className={css.flexAlignCenter}>
                         <div className={css.percentageValue}>{value}% </div>
-                        {isQuickResponseEnabled && (
-                            <Link
-                                to={{
-                                    pathname: `/app/automation/${shopType}/${shopName}/quick-responses`,
-                                    search: `?quickResponseId=${flowId}`,
-                                    state: {
-                                        from: 'stats-automate-performance-by-features',
-                                    },
-                                }}
-                            >
-                                Edit Quick Response
-                            </Link>
-                        )}
                     </div>
                 )
             }

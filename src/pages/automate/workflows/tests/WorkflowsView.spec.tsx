@@ -199,9 +199,8 @@ describe('<WorkflowsView />', () => {
         })
     })
 
-    it('should render correctly when sunsetQuickResponses is true', async () => {
+    it('should render correctly', async () => {
         mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.SunsetQuickResponses]: true,
             [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
             [FeatureFlagKey.MigrateQuickResponseToFlows]: false,
         })
@@ -259,9 +258,8 @@ describe('<WorkflowsView />', () => {
         expect(mockRemoveWorkflowFromStore).toHaveBeenCalledWith('a', 1)
     })
 
-    it('should render correctly when sunsetQuickResponses is true and workflowslength is 0', async () => {
+    it('should render correctly when workflowslength is 0', async () => {
         mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.SunsetQuickResponses]: true,
             [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
             [FeatureFlagKey.MigrateQuickResponseToFlows]: false,
         })
@@ -355,9 +353,8 @@ describe('<WorkflowsView />', () => {
         expect(navLink).not.toHaveClass('active')
     })
 
-    it('should render correctly when sunsetQuickResponses is true', async () => {
+    it('should render correctly ', async () => {
         mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.SunsetQuickResponses]: true,
             [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
             [FeatureFlagKey.MigrateQuickResponseToFlows]: false,
         })

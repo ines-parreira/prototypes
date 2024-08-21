@@ -2,13 +2,11 @@ import React from 'react'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {Link} from 'react-router-dom'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 
 import ArrowBackwardIcon from 'assets/img/icons/arrow-backward.svg'
 
 import PageHeader from 'pages/common/components/PageHeader'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {FLOWS} from '../common/components/constants'
 import WorkflowTemplateCard from './components/WorkflowTemplateCard'
 import {WORKFLOW_TEMPLATES_LIST} from './workflowTemplates'
@@ -27,32 +25,25 @@ const WorkflowTemplatesView = ({
     goToNewWorkflowFromTemplatePage,
     workflowsUrl,
 }: Props) => {
-    const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
-
     return (
         <div className="full-width overflow-auto">
             <div className={css.pageHeaderContainer}>
-                {sunsetQuickResponses && (
-                    <PageHeader
-                        title={
-                            <Breadcrumb>
-                                <BreadcrumbItem>
-                                    <Link to={workflowsUrl}>{FLOWS}</Link>
-                                </BreadcrumbItem>
-                                <BreadcrumbItem active>
-                                    Flow Templates
-                                </BreadcrumbItem>
-                            </Breadcrumb>
-                        }
-                    >
-                        <Button
-                            onClick={goToNewWorkflowPage}
-                            intent="secondary"
-                        >
-                            Create Custom Flow
-                        </Button>
-                    </PageHeader>
-                )}
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to={workflowsUrl}>{FLOWS}</Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                Flow Templates
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                >
+                    <Button onClick={goToNewWorkflowPage} intent="secondary">
+                        Create Custom Flow
+                    </Button>
+                </PageHeader>
             </div>
             <Container fluid className={css.container}>
                 <div className={css.backWrapper}>
@@ -63,33 +54,9 @@ const WorkflowTemplatesView = ({
                 </div>
 
                 <div className={css.descriptionContainer}>
-                    {sunsetQuickResponses ? (
-                        <div className={css.heading}>
-                            Choose a template and customize it to fit your needs
-                        </div>
-                    ) : (
-                        <div>
-                            <h1
-                                className={css.title}
-                                data-candu-id="flow-templates"
-                            >
-                                Flow templates
-                            </h1>
-
-                            <div className={css.description}>
-                                Start with a Flow template that you can
-                                customize to fit your needs:
-                            </div>
-                        </div>
-                    )}
-                    {!sunsetQuickResponses && (
-                        <Button
-                            onClick={goToNewWorkflowPage}
-                            intent="secondary"
-                        >
-                            Create Custom Flow
-                        </Button>
-                    )}
+                    <div className={css.heading}>
+                        Choose a template and customize it to fit your needs
+                    </div>
                 </div>
 
                 <div className={css.templatesContainer}>

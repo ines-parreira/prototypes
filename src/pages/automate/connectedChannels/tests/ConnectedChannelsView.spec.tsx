@@ -393,9 +393,9 @@ describe('ConnectedChannelsView', () => {
 
                 expect(
                     screen.getAllByText(
-                        'Display up to 6 Flows or Quick Responses on your Chat to proactively resolve top customer requests.'
+                        'Display up to 6 Flows on your Chat to proactively resolve top customer requests.'
                     )
-                ).toHaveLength(2)
+                ).toHaveLength(1)
                 expect(screen.getByText(/forum/i)).toBeInTheDocument()
             })
         })
@@ -420,7 +420,7 @@ describe('ConnectedChannelsView', () => {
 
                 expect(
                     screen.getByText(
-                        'Display up to 6 Flows or Quick Responses on your Help Center to proactively resolve top customer requests.'
+                        'Display up to 6 Flows on your Help Center to proactively resolve top customer requests.'
                     )
                 ).toBeInTheDocument()
                 expect(screen.getByText(/live_help/i)).toBeInTheDocument()
@@ -449,7 +449,7 @@ describe('ConnectedChannelsView', () => {
                 ).toBeInTheDocument()
                 expect(
                     screen.getByText(
-                        'Display up to 6 Flows or Quick Responses on your Contact Form to proactively resolve top customer requests.'
+                        'Display up to 6 Flows on your Contact Form to proactively resolve top customer requests.'
                     )
                 ).toBeInTheDocument()
                 expect(

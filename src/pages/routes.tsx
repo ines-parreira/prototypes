@@ -187,7 +187,7 @@ import {AiAgentGuidanceDetailContainer} from 'pages/automate/aiAgent/AiAgentGuid
 import {AiAgentGuidanceTemplatesContainer} from 'pages/automate/aiAgent/AiAgentGuidanceTemplatesContainer'
 import {AiAgentGuidanceTemplateNewContainer} from 'pages/automate/aiAgent/AiAgentGuidanceTemplateNewContainer'
 import {AiAgentErrorBoundary} from 'pages/automate/aiAgent/providers/AiAgentErrorBoundary'
-import QuickResponsesViewContainer from 'pages/automate/quickResponses/QuickResponsesViewContainer'
+
 import WorkflowTemplatesViewContainer from 'pages/automate/workflows/WorkflowTemplatesViewContainer'
 import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
@@ -1583,17 +1583,6 @@ function AutomationContent() {
                 )}
             />
 
-            {!isImprovedNavigationEnabled && (
-                <Route
-                    path={`${path}/:shopType/:shopName/quick-responses`}
-                    exact
-                    component={memoizedWithUserRoleRequired(
-                        QuickResponsesViewContainer,
-                        AGENT_ROLE
-                    )}
-                />
-            )}
-
             <Route
                 path={`${path}/:shopType/:shopName/flows/new`}
                 exact
@@ -1669,22 +1658,8 @@ function AutomationContent() {
             )}
 
             <Route
-                path={[
-                    `${path}/:shopType/:shopName/flows`,
-                    `${path}/:shopType/:shopName/quick-responses`,
-                ]}
+                path={[`${path}/:shopType/:shopName/flows`]}
                 render={(props) => {
-                    if (
-                        props.match.path ===
-                            `${path}/:shopType/:shopName/quick-responses` &&
-                        isImprovedNavigationEnabled === true
-                    ) {
-                        return (
-                            <Redirect
-                                to={`${path}/${props.match.params.shopType}/${props.match.params.shopName}/flows/quick-responses`}
-                            />
-                        )
-                    }
                     return React.createElement(
                         memoizedWithUserRoleRequired(
                             WorkflowsViewContainer,

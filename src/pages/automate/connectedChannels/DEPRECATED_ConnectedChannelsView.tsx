@@ -87,9 +87,6 @@ const DEPRECATED_ConnectedChannelsView = () => {
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
-    const isImprovedNavigationEnabled =
-        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
-
     useEffectOnce(() => {
         if (!changeAutomateSettingButtomPosition) return
         logEvent(SegmentEvent.AutomateSettingPageViewed, {
@@ -109,9 +106,6 @@ const DEPRECATED_ConnectedChannelsView = () => {
                     selfServiceConfiguration?.workflowsEntrypoints ?? [],
                 workflowsUrl: `/app/automation/${shopType}/${shopName}/flows`,
                 articleRecommendationUrl: `/app/automation/${shopType}/${shopName}/article-recommendation`,
-                quickResponsesUrl: `/app/automation/${shopType}/${shopName}${
-                    isImprovedNavigationEnabled ? '/flows' : ''
-                }/quick-responses`,
                 enabledQuickResponsesCount:
                     selfServiceConfiguration?.quickResponsePolicies.filter(
                         (quickResponse) => !quickResponse.deactivatedDatetime
@@ -121,7 +115,6 @@ const DEPRECATED_ConnectedChannelsView = () => {
                 articleRecommendationHelpCenterId,
                 helpCenterArticlesCount,
                 shopType,
-                isImprovedNavigationEnabled,
                 shopName,
                 selfServiceConfiguration?.workflowsEntrypoints,
                 selfServiceConfiguration?.quickResponsePolicies,

@@ -48,7 +48,6 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         isOrderManagementAvailable,
         articleRecommendationUrl,
         enabledQuickResponsesCount,
-        quickResponsesUrl,
         workflowConfigurations: configurations,
         workflowsEntrypoints: allEntrypoints,
     } = useConnectedChannelsViewContext()
@@ -128,10 +127,8 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                 allEntrypoints={allEntrypoints}
                 limitTooltipMessage={
                     <>
-                        You have reached the maximum number of enabled Flows in
-                        this channel. Disable a Flow or{' '}
-                        <Link to={quickResponsesUrl}>Quick Response</Link> in
-                        order to enable this Flow.
+                        You’ve reached the maximum number of Flows to display on
+                        this channel.
                     </>
                 }
                 onChange={(nextEntrypoints) => {

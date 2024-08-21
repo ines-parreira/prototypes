@@ -4,12 +4,12 @@ import {List, fromJS} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import {v4 as uuidv4} from 'uuid'
 
+import QuickResponsesAccordion from 'pages/automate/quickResponses/components/QuickResponsesAccordion'
 import {toImmutable} from 'common/utils'
 
 import QuickResponsesViewContext, {
     QuickResponsesViewContextType,
 } from 'pages/automate/quickResponses/QuickResponsesViewContext'
-import QuickResponsesAccordion from 'pages/automate/quickResponses/components/QuickResponsesAccordion'
 
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 

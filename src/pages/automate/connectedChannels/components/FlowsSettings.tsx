@@ -2,7 +2,6 @@ import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {Label, Tooltip} from '@gorgias/ui-kit'
 import {isEqual, keyBy, startCase} from 'lodash'
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Link} from 'react-router-dom'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {Components} from 'rest_api/workflows_api/client.generated'
@@ -12,7 +11,6 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import Search from 'pages/common/components/Search'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import {useListWorkflowEntryPoints} from 'models/workflows/queries'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import {ChannelLanguage} from 'pages/automate/common/types'
 import {TicketChannel} from 'business/types/ticket'
@@ -182,7 +180,6 @@ export const FlowsSettings = ({
         workflowEntrypoints,
         entrypointLabelByWorkflowId,
     ])
-    const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
     const currentFlowsCount = enabledWorkflows.length + enabledQuickResponses
     const items =
         dirtyEntrypoints.length > 0 ? dirtyEntrypoints : enabledWorkflows
@@ -202,9 +199,7 @@ export const FlowsSettings = ({
                 </Link>
             </div>
             <span>
-                {sunsetQuickResponses
-                    ? `Display up to ${FLOWS_LIMIT} Flows on your Chat to proactively resolve top customer requests.`
-                    : `Display up to ${FLOWS_LIMIT} Flows or Quick Responses on your
+                {`Display up to ${FLOWS_LIMIT} Flows on your
                 ${startCase(channelType.replace('-', ' '))} to proactively
                 resolve top customer requests.`}
             </span>
@@ -269,9 +264,9 @@ export const FlowsSettings = ({
                     placement="top"
                     target="add-flow-button"
                 >
-                    {sunsetQuickResponses
-                        ? 'You’ve reached the maximum number of Flows to display on this channel.'
-                        : 'You’ve reached the maximum number of Quick Responses and Flows to display on this channel.'}
+                    {
+                        'You’ve reached the maximum number of Flows to display on this channel.'
+                    }
                 </Tooltip>
             )}
             <Dropdown

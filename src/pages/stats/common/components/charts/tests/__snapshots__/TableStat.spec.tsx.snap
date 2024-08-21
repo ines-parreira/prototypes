@@ -784,11 +784,6 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
               30
               % 
             </div>
-            <a
-              to="[object Object]"
-            >
-              Edit Quick Response
-            </a>
           </div>
         </span>
       </td>
@@ -1399,11 +1394,6 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
               30
               % 
             </div>
-            <a
-              to="[object Object]"
-            >
-              Edit Quick Response
-            </a>
           </div>
         </span>
       </td>
@@ -2207,11 +2197,6 @@ exports[`TableStat should render a table chart 1`] = `
               30
               % 
             </div>
-            <a
-              to="[object Object]"
-            >
-              Edit Quick Response
-            </a>
           </div>
         </span>
       </td>
@@ -3071,11 +3056,6 @@ exports[`TableStat should render a table with the expand button and one line vis
               30
               % 
             </div>
-            <a
-              to="[object Object]"
-            >
-              Edit Quick Response
-            </a>
           </div>
         </span>
       </td>

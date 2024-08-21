@@ -4,7 +4,6 @@ import classNames from 'classnames'
 import {v4 as uuidv4} from 'uuid'
 import {Label} from '@gorgias/ui-kit'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import history from 'pages/history'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -36,7 +35,6 @@ import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/qu
 import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 import useHelpCenterOfShop from '../../../hooks/useHelpCenterOfShop'
@@ -184,13 +182,8 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         data: selfServiceConfiguration,
         isLoading: isLoadingSelfServiceConfiguration,
     } = useGetSelfServiceConfiguration(shopName, storeIntegration?.type)
-    const isMigrateQuickResponseToFlows =
-        useFlags()[FeatureFlagKey.MigrateQuickResponseToFlows]
-    const isSunsetQuickResponses =
-        useFlags()[FeatureFlagKey.SunsetQuickResponses]
 
-    const showQuickResponseSetupInWizard =
-        !isMigrateQuickResponseToFlows && !isSunsetQuickResponses
+    const showQuickResponseSetupInWizard = false
 
     useMemo(() => {
         if (!selfServiceConfiguration) {

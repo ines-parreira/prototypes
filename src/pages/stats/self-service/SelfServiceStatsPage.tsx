@@ -159,8 +159,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
 
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
-    const isSunsetQuickResponses =
-        useFlags()[FeatureFlagKey.SunsetQuickResponses]
 
     const [workflowsPerformance, isFetchingWorkflowsPerformance] =
         useStatResource<TwoDimensionalChart>({
@@ -335,7 +333,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             />
                         )}
                     </StatWrapper>
-                    {isSunsetQuickResponses && isDateAfter15thOfAug ? (
+                    {isDateAfter15thOfAug ? (
                         <></>
                     ) : (
                         <StatWrapper
@@ -345,9 +343,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
                             }
                             statDataLabelOverride={
-                                isSunsetQuickResponses
-                                    ? 'Quick Responses performance (removed)'
-                                    : undefined
+                                'Quick Responses performance (removed)'
                             }
                             statsFilters={pageStatsFilters}
                             helpText={

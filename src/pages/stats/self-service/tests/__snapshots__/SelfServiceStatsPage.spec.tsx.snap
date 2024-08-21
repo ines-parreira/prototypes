@@ -674,7 +674,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           <h5
             class="mb-0 d-flex header"
           >
-            Quick Responses performance
+            Quick Responses performance (removed)
             <span>
               <i
                 class="material-icons ml-2 helpIcon"
@@ -1630,7 +1630,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           <h5
             class="mb-0 d-flex header"
           >
-            Quick Responses performance
+            Quick Responses performance (removed)
             <span>
               <i
                 class="material-icons ml-2 helpIcon"

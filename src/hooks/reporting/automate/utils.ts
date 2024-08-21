@@ -123,7 +123,6 @@ export function getAutomateColorsForEventType(eventType: string): string {
             return classicColors.Accessory.Navy_text.value
         case DisplayEventType.WORKFLOWS:
             return classicColors.Main.Variations.Primary_3.value
-        case DisplayEventType.QUICK_RESPONSES:
         case DisplayEventType.QUICK_RESPONSES_DEPRECATED:
             return classicColors.Feedback.Variations.Warning_3.value
         case DisplayEventType.ARTICLE_RECOMMENDATION:
@@ -221,16 +220,14 @@ export const getAutomateStatsByMeasure = (
 export function automateInteractionsByEventTypeToTimeSeries(
     filter: StatsFilters,
     granularity: ReportingGranularity,
-    interactionsDataByEventType?: Record<string, TimeSeriesDataItem[][]>,
-    sunsetQuickResponses?: boolean
+    interactionsDataByEventType?: Record<string, TimeSeriesDataItem[][]>
 ): TimeSeriesDataItem[][] {
     if (!interactionsDataByEventType) return []
 
     const allEventTypesData = addNonExistingEventTypesForGraph(
         interactionsDataByEventType,
         filter,
-        granularity,
-        sunsetQuickResponses ? [AutomateEventType.QUICK_RESPONSE_STARTED] : []
+        granularity
     )
 
     const mergedData = mergeAutomateDataByEventType(allEventTypesData, [

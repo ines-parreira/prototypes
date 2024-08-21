@@ -1,5 +1,3 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {
     FLOWS,
@@ -11,7 +9,6 @@ import {AutomatedInteractionByFeatures} from 'pages/stats/types'
 export enum DisplayEventType {
     AI_AGENT = 'AI Agent',
     WORKFLOWS = FLOWS,
-    QUICK_RESPONSES = QUICK_RESPONSES_LABEL,
     QUICK_RESPONSES_DEPRECATED = QUICK_RESPONSES_LABEL + ' (deprecated)',
     ARTICLE_RECOMMENDATION = ARTICLE_RECOMMENDATION_LABEL,
     TRACK_ORDER = 'Track order',
@@ -24,17 +21,13 @@ export const useAutomateStatsMeasureLabelMap = (): Record<
     AutomatedInteractionByFeatures,
     string
 > => {
-    const isSunsetQuickResponses =
-        useFlags()[FeatureFlagKey.SunsetQuickResponses]
     return {
         [AutomationBillingEventMeasure.AutomatedInteractionsByAIAgent]:
             DisplayEventType.AI_AGENT,
         [AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows]:
             DisplayEventType.WORKFLOWS,
         [AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse]:
-            isSunsetQuickResponses
-                ? DisplayEventType.QUICK_RESPONSES_DEPRECATED
-                : DisplayEventType.QUICK_RESPONSES,
+            DisplayEventType.QUICK_RESPONSES_DEPRECATED,
         [AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation]:
             DisplayEventType.ARTICLE_RECOMMENDATION,
         [AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder]:

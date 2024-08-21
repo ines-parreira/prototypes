@@ -260,22 +260,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </div>
           <div
             class="link-wrapper isNested"
-            data-candu-id="automate-link-quick-responses"
-          >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="[object Object]"
-            >
-              <span
-                class="item-name"
-              >
-                Quick Responses
-              </span>
-            </a>
-          </div>
-          <div
-            class="link-wrapper isNested"
             data-candu-id="automate-link-order-management"
           >
             <a
@@ -381,21 +365,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
                 class="item-name"
               >
                 Flows
-              </span>
-            </a>
-          </div>
-          <div
-            class="link-wrapper isNested"
-          >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="[object Object]"
-            >
-              <span
-                class="item-name"
-              >
-                Quick Responses
               </span>
             </a>
           </div>
@@ -727,30 +696,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
                   class="item-name"
                 >
                   Flows
-                </span>
-              </div>
-              <i
-                class="material-icons md-2 icon"
-              >
-                arrow_circle_up
-              </i>
-            </a>
-          </div>
-          <div
-            class="link-wrapper isNested"
-          >
-            <a
-              class="link item"
-              data-active-class-name="active"
-              href="/app/automation/quick-responses"
-            >
-              <div
-                class="name"
-              >
-                <span
-                  class="item-name"
-                >
-                  Quick Responses
                 </span>
               </div>
               <i
@@ -1336,22 +1281,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </div>
           <div
             class="link-wrapper isNested"
-            data-candu-id="automate-link-quick-responses"
-          >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="[object Object]"
-            >
-              <span
-                class="item-name"
-              >
-                Quick Responses
-              </span>
-            </a>
-          </div>
-          <div
-            class="link-wrapper isNested"
             data-candu-id="automate-link-order-management"
           >
             <a
@@ -1457,21 +1386,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
                 class="item-name"
               >
                 Flows
-              </span>
-            </a>
-          </div>
-          <div
-            class="link-wrapper isNested"
-          >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="[object Object]"
-            >
-              <span
-                class="item-name"
-              >
-                Quick Responses
               </span>
             </a>
           </div>
@@ -1790,30 +1704,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
                   class="item-name"
                 >
                   Flows
-                </span>
-              </div>
-              <i
-                class="material-icons md-2 icon"
-              >
-                arrow_circle_up
-              </i>
-            </a>
-          </div>
-          <div
-            class="link-wrapper isNested"
-          >
-            <a
-              class="link item"
-              data-active-class-name="active"
-              href="/app/automation/quick-responses"
-            >
-              <div
-                class="name"
-              >
-                <span
-                  class="item-name"
-                >
-                  Quick Responses
                 </span>
               </div>
               <i

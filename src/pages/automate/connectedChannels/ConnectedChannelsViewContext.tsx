@@ -13,7 +13,6 @@ export type ConnectedChannelsViewContextType = {
     >
     workflowsUrl: string
     articleRecommendationUrl: string
-    quickResponsesUrl: string
     enabledQuickResponsesCount: number
 }
 
@@ -26,7 +25,6 @@ const ConnectedChannelsViewContext =
         workflowsEntrypoints: [],
         workflowsUrl: '',
         articleRecommendationUrl: '',
-        quickResponsesUrl: '',
         enabledQuickResponsesCount: 0,
     })
 

@@ -1,8 +1,6 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {assetsUrl} from 'utils'
 import {CarouselData} from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {AutomateFeatures} from '../types'
 
 export type PaywallFeature = {
@@ -22,7 +20,6 @@ export const usePaywallConfig = (
     automateFeature: AutomateFeatures,
     customCta?: React.ReactNode
 ): PaywallFeature => {
-    const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
     switch (automateFeature) {
         case AutomateFeatures.Automate:
             return {
@@ -50,9 +47,8 @@ export const usePaywallConfig = (
                         imageUrl: assetsUrl(
                             '/img/paywalls/screens/automate_paywall_flows.png'
                         ),
-                        description: sunsetQuickResponses
-                            ? 'Build personalized, automated interactions with Flows.'
-                            : 'Build personalized, automated interactions with Flows and Quick Responses.',
+                        description:
+                            'Build personalized, automated interactions with Flows.',
                     },
                     {
                         imageUrl: assetsUrl(

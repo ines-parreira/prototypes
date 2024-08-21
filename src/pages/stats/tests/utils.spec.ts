@@ -298,9 +298,6 @@ describe('getAutomateColorsForEventType', () => {
             getAutomateColorsForEventType(DisplayEventType.WORKFLOWS)
         ).toEqual(classicColors.Main.Variations.Primary_3.value)
         expect(
-            getAutomateColorsForEventType(DisplayEventType.QUICK_RESPONSES)
-        ).toEqual(classicColors.Feedback.Variations.Warning_3.value)
-        expect(
             getAutomateColorsForEventType(
                 DisplayEventType.QUICK_RESPONSES_DEPRECATED
             )

@@ -131,32 +131,27 @@ const CancelAAOModal = ({
                         You'll lose access to Automate and AI features like:
                     </div>
                     <div className={css.features}>
-                        {automateFeatures
-                            .filter((feature) => !feature.disabled)
-                            .map((feature) => (
-                                <div
-                                    className={css.feature}
-                                    key={feature.title}
-                                >
-                                    <div className={css.icon}>
-                                        {feature.icon ? (
-                                            <i className="material-icons">
-                                                {feature.icon}
-                                            </i>
-                                        ) : (
-                                            <img src={feature.iconUrl} alt="" />
-                                        )}
+                        {automateFeatures.map((feature) => (
+                            <div className={css.feature} key={feature.title}>
+                                <div className={css.icon}>
+                                    {feature.icon ? (
+                                        <i className="material-icons">
+                                            {feature.icon}
+                                        </i>
+                                    ) : (
+                                        <img src={feature.iconUrl} alt="" />
+                                    )}
+                                </div>
+                                <div>
+                                    <div className={css.featureName}>
+                                        {feature.title}
                                     </div>
-                                    <div>
-                                        <div className={css.featureName}>
-                                            {feature.title}
-                                        </div>
-                                        <div className={css.featureDescription}>
-                                            {feature.description}
-                                        </div>
+                                    <div className={css.featureDescription}>
+                                        {feature.description}
                                     </div>
                                 </div>
-                            ))}
+                            </div>
+                        ))}
                     </div>
                 </ModalBody>
                 <ModalActionsFooter>

@@ -8,7 +8,6 @@ import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
 
 import {QueryClientProvider} from '@tanstack/react-query'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
@@ -45,7 +44,6 @@ import {useGetSelfServiceConfigurations} from 'models/selfServiceConfiguration/q
 import {useGetAIArticles} from 'pages/settings/helpCenter/queries'
 import {downloadStat} from 'models/stat/resources'
 import {saveFileAsDownloaded} from 'utils/file'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 const mockSelfServiceConfigurations = [
     {
@@ -116,7 +114,7 @@ jest.mock('models/stat/resources', () => ({
 jest.mock('utils/file', () => ({
     saveFileAsDownloaded: jest.fn(),
 }))
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<
     typeof useStatResource
@@ -586,10 +584,7 @@ describe('<SelfServiceStatsPage />', () => {
         )
     })
 
-    it('should not hide quick response if date filter before 15th of Aug 2024 and sunset qr flag is true', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.SunsetQuickResponses]: true,
-        })
+    it('should not hide quick response if date filter before 15th of Aug 2024', () => {
         useStatResourceMock.mockImplementation(({resourceName}) => {
             if (resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE) {
                 return [selfServiceQuickResponsePerformance, false, _noop]
@@ -644,66 +639,8 @@ describe('<SelfServiceStatsPage />', () => {
             getByText('Quick Responses performance (removed)')
         ).toBeInTheDocument()
     })
-    it('should not hide quick response if date filter after 15th of Aug 2024 and sunset qr flag is false', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.SunsetQuickResponses]: false,
-        })
-        useStatResourceMock.mockImplementation(({resourceName}) => {
-            if (resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE) {
-                return [selfServiceQuickResponsePerformance, false, _noop]
-            } else if (
-                resourceName === SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
-            ) {
-                return [
-                    selfServiceArticleRecommendationPerformance,
-                    false,
-                    _noop,
-                ]
-            } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
-                return [selfServiceTopReportedIssues, false, _noop]
-            } else if (resourceName === SELF_SERVICE_WORKFLOWS_PERFORMANCE) {
-                return [selfServiceFlowsPerformance, false, _noop]
-            }
-            return [
-                selfServiceProductsWithMostIssuesAndReturnRequests,
-                false,
-                _noop,
-            ]
-        })
 
-        mockedUseWorkflowConfigurations.mockReturnValue({
-            isLoading: false,
-            data: WFConfigData,
-        } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
-
-        const {getByText} = renderWithRouter(
-            <QueryClientProvider client={mockClient}>
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        stats: {
-                            filters: fromLegacyStatsFilters({
-                                period: {
-                                    start_datetime: '2024-08-16T00:00:00.000Z',
-                                    end_datetime: '2024-08-20T23:59:59.999Z',
-                                },
-                                integrations: [
-                                    integrationsState.integrations[0].id,
-                                ],
-                            }),
-                        },
-                    })}
-                >
-                    <SelfServiceStatsPage />
-                </Provider>
-            </QueryClientProvider>
-        )
-        expect(getByText('Quick Responses performance')).toBeInTheDocument()
-    })
-    it('should hide quick response if date filter after 15th of Aug 2024 and sunset qr flag is true', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.SunsetQuickResponses]: true,
-        })
+    it('should hide quick response if date filter after 15th of Aug 2024 ', () => {
         useStatResourceMock.mockImplementation(({resourceName}) => {
             if (resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE) {
                 return [selfServiceQuickResponsePerformance, false, _noop]

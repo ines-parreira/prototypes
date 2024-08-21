@@ -2,12 +2,9 @@ import {render, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {rule} from '../../../../../../fixtures/rule'
 import {MemberExpressionContainer} from '../MemberExpression'
 
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 describe('<MemberExpression/>', () => {
     const minProps = {
         object: {
@@ -133,9 +130,6 @@ describe('<MemberExpression/>', () => {
         ).toMatchSnapshot()
     })
     it('should exclude quick resppnses from the drop down', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.SunsetQuickResponses]: true,
-        })
         const {getByText, queryByText} = render(
             <MemberExpressionContainer {...minProps} />
         )

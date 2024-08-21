@@ -6,16 +6,15 @@ import {createDragDropManager} from 'dnd-core'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
 import {act} from 'react-dom/test-utils'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {FeatureFlagKey} from 'config/featureFlags'
+
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 import {FlowsSettings} from '../components/FlowsSettings'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('pages/automate/workflows/hooks/useLanguagesMismatchWarnings')
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+
 const mockUseLanguagesMismatchWarnings =
     useLanguagesMismatchWarnings as jest.MockedFunction<
         typeof useLanguagesMismatchWarnings
@@ -375,7 +374,7 @@ describe('FlowsSettings', () => {
             await waitFor(() => {
                 expect(
                     screen.getByText(
-                        /reached the maximum number of Quick Responses and Flows to display on this channel/i
+                        /You’ve reached the maximum number of Flows to display on this channel./i
                     )
                 ).toBeInTheDocument()
             })
@@ -582,74 +581,60 @@ describe('FlowsSettings', () => {
             await waitFor(() => {
                 expect(
                     screen.getByText(
-                        /reached the maximum number of Quick Responses and Flows to display on this channel/i
+                        /reached the maximum number of Flows to display on this channel/i
                     )
                 ).toBeInTheDocument()
             })
         })
     })
 
-    it.each([[true], [false]])(
-        'Should render text based on the quick response sunset flag if true',
-        (flag) => {
-            mockUseFlags.mockReturnValue({
-                [FeatureFlagKey.SunsetQuickResponses]: flag,
-            })
-            const {getByText, queryByText} = renderWithQueryClientProvider(
-                <DndProvider manager={manager}>
-                    <FlowsSettings
-                        channelType="chat"
-                        shopType="shopify"
-                        channel={channelMock as any}
-                        shopName="Shop Name"
-                        workflowEntrypoints={[
-                            {
-                                workflow_id: '1',
-                            },
-                            {
-                                workflow_id: '2',
-                            },
-                        ]}
-                        primaryLanguage="en"
-                        configurations={[
-                            {
-                                id: '1',
-                                name: 'Flow 1',
-                            } as any,
-                            {
-                                id: '2',
-                                name: 'Flow 2',
-                            },
-                        ]}
-                        automationSettingsWorkflows={[
-                            {
-                                workflow_id: '1',
-                                enabled: false,
-                            },
-                            {
-                                workflow_id: '2',
-                                enabled: false,
-                            },
-                        ]}
-                        onChange={jest.fn()}
-                    />
-                </DndProvider>
+    it('Should render text based on the quick response sunset flag if true', () => {
+        const {getByText} = renderWithQueryClientProvider(
+            <DndProvider manager={manager}>
+                <FlowsSettings
+                    channelType="chat"
+                    shopType="shopify"
+                    channel={channelMock as any}
+                    shopName="Shop Name"
+                    workflowEntrypoints={[
+                        {
+                            workflow_id: '1',
+                        },
+                        {
+                            workflow_id: '2',
+                        },
+                    ]}
+                    primaryLanguage="en"
+                    configurations={[
+                        {
+                            id: '1',
+                            name: 'Flow 1',
+                        } as any,
+                        {
+                            id: '2',
+                            name: 'Flow 2',
+                        },
+                    ]}
+                    automationSettingsWorkflows={[
+                        {
+                            workflow_id: '1',
+                            enabled: false,
+                        },
+                        {
+                            workflow_id: '2',
+                            enabled: false,
+                        },
+                    ]}
+                    onChange={jest.fn()}
+                />
+            </DndProvider>
+        )
+        expect(
+            getByText(
+                `Display up to 6 Flows on your Chat to proactively resolve top customer requests.`
             )
-            if (flag) {
-                expect(
-                    getByText(
-                        `Display up to 6 Flows on your Chat to proactively resolve top customer requests.`
-                    )
-                ).toBeInTheDocument()
-            } else {
-                expect(
-                    queryByText(
-                        `Display up to 6 Flows on your Chat to proactively resolve top customer requests.`
-                    )
-                ).not.toBeInTheDocument()
-            }
-        }
-    )
+        ).toBeInTheDocument()
+    })
 
     it('should take into account the enabledQuickResponses prop and disable the add-flow button', () => {
         renderWithQueryClientProvider(

@@ -1,4 +1,3 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {StatsFilters} from 'models/stat/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
@@ -20,7 +19,6 @@ import {
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {automationRate} from './automateStatsFormulae'
 import {
     AutomateTimeseries as CalculatedTimeseries,
@@ -42,7 +40,6 @@ export const useAutomateMetricsTimeseriesV2 = (
     timezone: string,
     granularity: ReportingGranularity
 ): CalculatedTimeseries => {
-    const sunsetQuickResponses = useFlags()[FeatureFlagKey.SunsetQuickResponses]
     const aiAgentUserId = useAIAgentUserId()
 
     const automatedInteractionsData = useAutomationDatasetTimeSeries(
@@ -61,8 +58,7 @@ export const useAutomateMetricsTimeseriesV2 = (
         automateInteractionsByEventTypeToTimeSeries(
             filters,
             granularity,
-            automatedInteractionsDataByEventType.data,
-            sunsetQuickResponses
+            automatedInteractionsDataByEventType.data
         )
 
     const billableTicketData = useBillableTicketDatasetTimeSeries(

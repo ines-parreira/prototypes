@@ -21,7 +21,6 @@ import {
     CHANNELS,
     FLOWS,
     ORDER_MANAGEMENT,
-    QUICK_RESPONSES,
     TRAIN_MY_AI,
 } from './constants'
 
@@ -161,30 +160,6 @@ const AutomateNavbarSectionBlock = ({
                             </span>
                         </NavbarLink>
                     </div>
-
-                    {!isImprovedNavigationEnabled && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
-                            )}
-                            {...(shouldRenderCanduIds && {
-                                ['data-candu-id']:
-                                    'automate-link-quick-responses',
-                            })}
-                        >
-                            <NavbarLink
-                                to={{
-                                    pathname: `/app/automation/${shopType}/${shopName}/quick-responses`,
-                                    state: {from: FROM_LOCATION},
-                                }}
-                            >
-                                <span className={cssNavbar['item-name']}>
-                                    {QUICK_RESPONSES}
-                                </span>
-                            </NavbarLink>
-                        </div>
-                    )}
                 </>
             ) : (
                 <>
@@ -194,16 +169,6 @@ const AutomateNavbarSectionBlock = ({
                     >
                         <span className={cssNavbar['item-name']}>{FLOWS}</span>
                     </AutomateNavbarPaywallNavbarLink>
-                    {!isImprovedNavigationEnabled && (
-                        <AutomateNavbarPaywallNavbarLink
-                            to="/app/automation/quick-responses"
-                            isNested
-                        >
-                            <span className={cssNavbar['item-name']}>
-                                {QUICK_RESPONSES}
-                            </span>
-                        </AutomateNavbarPaywallNavbarLink>
-                    )}
                 </>
             )}
             {shopType === 'shopify' && (

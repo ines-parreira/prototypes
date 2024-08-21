@@ -105,7 +105,6 @@ export enum FeatureFlagKey {
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     ShopifyDefaultAddressPhoneMatching = 'shopify-default-address-phone-matching',
-    SunsetQuickResponses = 'sunset-quick-responses',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketNavigationArrows = 'ticket-navigation-arrows',

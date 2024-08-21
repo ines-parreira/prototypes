@@ -29,7 +29,6 @@ const AutomateNavbarView = () => {
         path: [
             '/app/automation/:shopType/:shopName/ai-agent',
             '/app/automation/:shopType/:shopName/flows',
-            '/app/automation/:shopType/:shopName/quick-responses',
             '/app/automation/:shopType/:shopName/order-management',
             '/app/automation/:shopType/:shopName/article-recommendation',
             '/app/automation/:shopType/:shopName/connected-channels',
