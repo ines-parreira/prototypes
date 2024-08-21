@@ -17,18 +17,22 @@ const tableColumns = [
     {
         key: 'col1',
         title: 'column 1',
+        progress: 10,
     },
     {
         key: 'col2',
         title: 'column 2',
+        progress: 43,
     },
     {
         key: 'col3',
         title: 'column 3',
+        progress: 100,
     },
     {
         key: 'col4',
         title: 'column 4',
+        progress: 50,
     },
 ]
 
@@ -105,20 +109,16 @@ const TableWithGauges: Story<ComponentProps<typeof TableWrapper>> = (props) => (
         <TableBody>
             {new Array(10).fill(null).map((_, rowIndex) => (
                 <TableBodyRow key={rowIndex}>
-                    {tableColumns.map((_, index) => {
-                        const customWidth = Math.floor(Math.random() * 100 + 1)
-                        return (
-                            <BodyCell key={index}>
-                                <GaugeAddon
-                                    progress={customWidth}
-                                    color="#EAF1FF"
-                                    show={index === 0}
-                                >
-                                    {customWidth}% Lorem ipsum dolor sit.
-                                </GaugeAddon>
-                            </BodyCell>
-                        )
-                    })}
+                    {tableColumns.map((item, index) => (
+                        <BodyCell key={index}>
+                            <GaugeAddon
+                                progress={item.progress}
+                                color="#EAF1FF"
+                            >
+                                {item.progress}% Lorem ipsum dolor sit.
+                            </GaugeAddon>
+                        </BodyCell>
+                    ))}
                 </TableBodyRow>
             ))}
             <TableBodyRow>
@@ -133,7 +133,7 @@ const TableWithGauges: Story<ComponentProps<typeof TableWrapper>> = (props) => (
                 </DistributionCategoryCell>
                 <DistributionCategoryCell
                     category="Lorem ipsum dolor dolor sit."
-                    progress={100}
+                    progress={0}
                 >
                     <BodyCell key="summary">
                         Lorem ipsum dolor dolor sit.
