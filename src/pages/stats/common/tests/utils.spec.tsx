@@ -15,7 +15,6 @@ import {ReportingGranularity} from 'models/reporting/types'
 
 import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
 import {
-    findChannelNameKey,
     formatDuration,
     formatMetricTrend,
     formatMetricValue,
@@ -38,7 +37,7 @@ import {
     lastWeekDateRange,
     StartDayOfWeek,
     getDateRangePickerLabel,
-} from '../utils'
+} from 'pages/stats/common/utils'
 
 const mockStore = configureMockStore([thunk])
 
@@ -210,18 +209,6 @@ describe('stats components utils', () => {
         ])('should match template for precision %i', (precision, expected) => {
             const duration = 24 * 3600 * 31 + 24 * 3600 + 3600 + 60 + 1
             expect(formatDuration(duration, precision)).toBe(expected)
-        })
-    })
-
-    describe('findChannelNameKey', () => {
-        it('should return the correct channel name key', () => {
-            const key = findChannelNameKey('Facebook Mention')
-            expect(key).toBe(TicketChannel.FacebookMention)
-        })
-
-        it('should return undefined when key is unknown', () => {
-            const key = findChannelNameKey('Something else')
-            expect(key).toBeUndefined()
         })
     })
 

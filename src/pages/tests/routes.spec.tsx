@@ -1,16 +1,19 @@
-import React, {ComponentType, ReactNode} from 'react'
+import React, {ComponentType, PropsWithChildren, ReactNode} from 'react'
 import {createBrowserHistory} from 'history'
-import {act, screen} from '@testing-library/react'
+import {act, render, screen} from '@testing-library/react'
+import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import LiveOverview from 'pages/stats/LiveOverview'
+import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
 
 import {logPageChange} from 'common/segment'
 import {user} from 'fixtures/users'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {useFlag} from 'common/flags'
 
-import Routes from '../routes'
+import Routes from 'pages/routes'
 
 jest.mock('common/segment')
 const logPageMock = assumeMock(logPageChange)
@@ -70,6 +73,21 @@ jest.mock(
     'pages/automate/actionsPlatform/ActionsPlatformEditAppFormView',
     () => () => <div>ActionsPlatformEditAppFormView</div>
 )
+jest.mock(
+    'pages/stats/DefaultStatsFilters',
+    () =>
+        ({children}: PropsWithChildren<any>) =>
+            (
+                <>
+                    <div>Default stats filters</div>
+                    <>{children}</>
+                </>
+            )
+)
+jest.mock('pages/stats/support-performance/channels/ChannelsReport')
+const ChannelsReportMock = assumeMock(ChannelsReport)
+jest.mock('pages/stats/LiveOverview')
+const LiveOverviewMock = assumeMock(LiveOverview)
 
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
@@ -79,6 +97,9 @@ describe('<Routes/>', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
         mockHistory.replace('/app')
+
+        ChannelsReportMock.mockImplementation(() => <div />)
+        LiveOverviewMock.mockImplementation(() => <div />)
     })
 
     afterEach(() => {
@@ -314,6 +335,20 @@ describe('<Routes/>', () => {
             expect(
                 screen.queryByText('ActionsPlatformEditAppFormView')
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('StatsRoutes', () => {
+        it('should render Channels page', () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <MemoryRouter initialEntries={['/app/stats/channels']}>
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>
+            )
+
+            expect(ChannelsReportMock).toHaveBeenCalled()
         })
     })
 })

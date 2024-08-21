@@ -1,8 +1,6 @@
-import {findKey} from 'lodash'
 import _isNumber from 'lodash/isNumber'
 import moment, {Moment} from 'moment-timezone'
 import {useContext, useMemo} from 'react'
-import {TicketChannel} from 'business/types/ticket'
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
 
 import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
@@ -16,16 +14,16 @@ import {
     DatetimeOperator,
     EqualityOperator,
 } from 'state/rules/types'
-import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {RootState} from 'state/types'
 import {ViewFilter} from 'state/views/types'
 import {formatDatetime} from 'utils'
 import {DateTimeResultFormatType} from 'constants/datetime'
-import StatsFiltersContext from '../StatsFiltersContext'
+import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 
 export const DEFAULT_LOCALE = 'en-US'
 export const NOT_AVAILABLE_TEXT = 'N/A'
 export const NOT_AVAILABLE_PLACEHOLDER = '-'
+
 export enum StartDayOfWeek {
     Sunday = 'sunday',
     Monday = 'monday',
@@ -198,15 +196,6 @@ export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {
 
         return filters
     }, [periodFilterLeft, tagsState, statsFilters])
-}
-
-export const findChannelNameKey = (
-    channelName: string
-): TicketChannel | undefined => {
-    return findKey(
-        TICKET_CHANNEL_NAMES,
-        (name) => name.toLowerCase() === channelName.toLowerCase()
-    ) as TicketChannel | undefined
 }
 
 export type MetricValueFormat =

@@ -57,7 +57,6 @@ describe('StatsNavbarView', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsAutoQA]: false,
             [FeatureFlagKey.AnalyticsSLAs]: false,
-            [FeatureFlagKey.AnalyticsNewChannelsReport]: false,
             [FeatureFlagKey.LiveCallQueue]: false,
         })
     })
@@ -182,9 +181,6 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the New Channels Reports', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewChannelsReport]: true,
-        })
         const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>

@@ -1,5 +1,6 @@
 import React, {ComponentProps} from 'react'
-import ChannelsReport, {
+import {
+    ChannelsReport,
     CHANNELS_REPORT_PAGE_TITLE,
 } from 'pages/stats/support-performance/channels/ChannelsReport'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'

@@ -102,7 +102,6 @@ import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
 import ImportPhoneNumber from 'pages/tasks/detail/ImportPhoneNumber'
-import SupportPerformanceChannels from 'pages/stats/SupportPerformanceChannels'
 import SupportPerformanceAgents from 'pages/stats/SupportPerformanceAgents'
 import SupportPerformanceSatisfaction from 'pages/stats/SupportPerformanceSatisfaction'
 import SupportPerformanceRevenue from 'pages/stats/SupportPerformanceRevenue'
@@ -179,7 +178,7 @@ import {
 } from 'pages/convert/campaigns/containers/CampaignTemplateCustomizeView'
 import PanelLayout from 'pages/PanelLayout'
 import ServiceLevelAgreements from 'pages/stats/sla/ServiceLevelAgreements'
-import ChannelsReport from 'pages/stats/support-performance/channels/ChannelsReport'
+import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
 import {AiAgentGuidanceContainer} from 'pages/automate/aiAgent/AiAgentGuidanceContainer'
 import {AiAgentGuidanceNewContainer} from 'pages/automate/aiAgent/AiAgentGuidanceNewContainer'
 import {AiAgentAccountConfigurationProvider} from 'pages/automate/aiAgent/providers/AiAgentAccountConfigurationProvider'
@@ -492,8 +491,6 @@ export function StatsRoutes() {
         useFlags()[FeatureFlagKey.AnalyticsSLAs]
     const isAutoQAEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
-    const newChannelsReport: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewChannelsReport]
     const isLiveVoiceEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.LiveCallQueue]
 
@@ -591,22 +588,16 @@ export function StatsRoutes() {
                         />
                     )}
                 />
-                {newChannelsReport !== undefined && (
-                    <Route
-                        exact
-                        path={`${path}/channels`}
-                        render={() => (
-                            <App
-                                content={
-                                    newChannelsReport
-                                        ? ChannelsReport
-                                        : SupportPerformanceChannels
-                                }
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                )}
+                <Route
+                    exact
+                    path={`${path}/channels`}
+                    render={() => (
+                        <App
+                            content={ChannelsReport}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
                 {!!isSLAsEnabled && (
                     <Route
                         exact

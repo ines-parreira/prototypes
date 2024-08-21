@@ -6,23 +6,15 @@ import _merge from 'lodash/merge'
 import _isString from 'lodash/isString'
 import {ChartType, Scale, TooltipItem, defaults} from 'chart.js'
 import classNames from 'classnames'
-import {TicketChannel} from 'business/types/ticket'
 
-import analyticsColors from 'assets/css/new/stats/modern.json'
 import {toImmutable} from 'common/utils'
-import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
-import {
-    findChannelNameKey,
-    formatDuration,
-    formatNumber,
-} from 'pages/stats/common/utils'
+import {formatDuration, formatNumber} from 'pages/stats/common/utils'
 import TicketTag from 'pages/common/components/TicketTag'
 import {IntentName} from 'models/intent/types'
 import {humanizeString, lightenDarkenColor} from 'utils'
 import StatCurrentDate from 'pages/stats/common/components/StatCurrentDate'
 import TicketsClosedPerAgentViewLink from 'pages/stats/common/TicketsClosedPerAgentViewLink'
 import TicketsCreatedPerTagViewLink from 'pages/stats/common/TicketsCreatedPerTagViewLink'
-import TicketsCreatedPerChannelViewLink from 'pages/stats/common/TicketsCreatedPerChannelViewLink'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
@@ -42,9 +34,6 @@ export const SUPPORT_VOLUME = 'support-volume'
 export const RESOLUTION_TIME = 'resolution-time'
 export const FIRST_RESPONSE_TIME = 'first-response-time'
 export const TICKETS_PER_TAG = 'tickets-per-tag'
-export const TICKETS_CREATED_PER_CHANNEL = 'tickets-created-per-channel'
-export const TICKETS_CREATED_PER_CHANNEL_PER_DAY =
-    'tickets-created-per-channel-per-day'
 export const TICKETS_CLOSED_PER_AGENT = 'tickets-closed-per-agent'
 export const TICKETS_CLOSED_PER_AGENT_PER_DAY =
     'tickets-closed-per-agent-per-day'
@@ -109,96 +98,6 @@ export const colors = [
     '#8398cb',
     '#24ae23',
 ]
-
-const ChannelLabelsAndColorCodes: Record<
-    TicketChannel,
-    {label: string; color: string}
-> = {
-    [TicketChannel.InstagramComment]: {
-        label: 'Instagram Comment',
-        color: '#5c9dbb',
-    },
-    [TicketChannel.InstagramAdComment]: {
-        label: 'Instagram Ad Comment',
-        color: '#4ca4d9',
-    },
-    [TicketChannel.InstagramMention]: {
-        label: 'Instagram Mention',
-        color: '#64A7D0',
-    },
-    [TicketChannel.InstagramDirectMessage]: {
-        label: 'Instagram Direct Message',
-        color: '#249ae0',
-    },
-    [TicketChannel.Facebook]: {
-        label: 'Facebook',
-        color: '#4872db',
-    },
-    [TicketChannel.FacebookMessenger]: {
-        label: 'Facebook Messenger',
-        color: '#1787fb',
-    },
-    [TicketChannel.FacebookRecommendations]: {
-        label: 'Facebook Recommendations',
-        color: '#4887cd',
-    },
-    [TicketChannel.FacebookMention]: {
-        label: 'Facebook Mention',
-        color: analyticsColors.analytics.data.blue.value,
-    },
-    [TicketChannel.HelpCenter]: {
-        label: 'Help Center',
-        color: '#9ce0e0',
-    },
-    [TicketChannel.Twitter]: {
-        label: 'Twitter',
-        color: '#00aced',
-    },
-    [TicketChannel.TwitterDirectMessage]: {
-        label: 'Twitter Direct Message',
-        color: '#0089b3',
-    },
-    [TicketChannel.Chat]: {
-        label: 'Chat',
-        color: '#ffb584',
-    },
-    [TicketChannel.Email]: {
-        label: 'Email',
-        color: '#ff5eab',
-    },
-    [TicketChannel.ContactForm]: {
-        label: 'Contact Form',
-        color: analyticsColors.analytics.data.magenta.value,
-    },
-    [TicketChannel.InternalNote]: {
-        label: 'Internal Note',
-        color: analyticsColors.analytics.data.yellow.value,
-    },
-    [TicketChannel.Api]: {
-        label: 'Gorgias API',
-        color: '#e88850',
-    },
-    [TicketChannel.Aircall]: {
-        label: 'Aircall',
-        color: '#34ba28',
-    },
-    [TicketChannel.Phone]: {
-        label: 'Phone',
-        color: '#ffe03f',
-    },
-    [TicketChannel.YotpoReview]: {
-        label: 'Yotpo',
-        color: '#064296',
-    },
-    [TicketChannel.Sms]: {
-        label: 'SMS',
-        color: '#69c473',
-    },
-    [TicketChannel.WhatsApp]: {
-        label: 'WhatsApp',
-        color: '#25D366',
-    },
-}
 
 export const chartMaxHeight = 360
 export const chartPointRadius = 4
@@ -693,74 +592,6 @@ export const stats = toImmutable<
         } as StatConfigCallbacks<
             ReactElement<JSX.IntrinsicElements['i']> | ReactText
         >,
-    },
-    [TICKETS_CREATED_PER_CHANNEL]: {
-        helpText: 'Number of tickets created per channel',
-        style: 'table',
-        downloadable: true,
-        callbacks: {
-            cell: ({value, axis, line}) => {
-                if (axis.name.toLowerCase() === 'total') {
-                    const channelName = (line.get(0) as Map<any, any>).get(
-                        'value'
-                    ) as string
-
-                    return (
-                        <TicketsCreatedPerChannelViewLink
-                            channelName={channelName}
-                        >
-                            {value}
-                        </TicketsCreatedPerChannelViewLink>
-                    )
-                }
-
-                if (axis.name.toLocaleLowerCase() === 'channel') {
-                    const channelName = (line.get(0) as Map<any, any>).get(
-                        'value'
-                    ) as string
-
-                    const channelNameKey = findChannelNameKey(channelName)
-                    return channelNameKey
-                        ? TICKET_CHANNEL_NAMES[channelNameKey]
-                        : channelName
-                }
-
-                return value
-            },
-        } as StatConfigCallbacks,
-    },
-    [TICKETS_CREATED_PER_CHANNEL_PER_DAY]: {
-        helpText: 'Number of tickets created per channel per day',
-        style: 'bar',
-        downloadable: true,
-        lines: ChannelLabelsAndColorCodes,
-        options: (legend: Map<any, any>) => ({
-            scales: {
-                x: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    stacked: true,
-                    grid: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb,
-                    }),
-                },
-
-                y: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    stacked: true,
-                    ticks: defaultTicks,
-                    min: 0,
-                    suggestedMax: 1,
-                    grid: defaultYAxeGridLines,
-                },
-            },
-        }),
     },
     [CURRENT_DATE]: {
         style: 'element',

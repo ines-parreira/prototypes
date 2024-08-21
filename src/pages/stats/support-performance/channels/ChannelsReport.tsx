@@ -15,7 +15,7 @@ import StatsPage from 'pages/stats/StatsPage'
 export const CHANNELS_REPORT_PAGE_TITLE = 'Channels'
 export const CHANNEL_PERFORMANCE_TABLE_TITLE = 'Channel performance'
 
-export default function ChannelsReport() {
+export function ChannelsReport() {
     const getGridCellSize = useGridSize()
 
     return (
