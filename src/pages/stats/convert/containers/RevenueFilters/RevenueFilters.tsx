@@ -5,7 +5,7 @@ import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStats
 
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 
-import {CampaignMultiSelect} from 'pages/stats/convert/components/CampaignMultiSelect'
+import {DEPRECATED_CampaignMultiSelect} from 'pages/stats/convert/components/CampaignMultiSelect'
 import {IntegrationMultiSelect} from 'pages/stats/convert/components/IntegrationMultiSelect'
 
 import css from './RevenueFilters.less'
@@ -38,7 +38,7 @@ export const RevenueFilters = () => {
             )}
 
             <div className={css.filterItem}>
-                <CampaignMultiSelect
+                <DEPRECATED_CampaignMultiSelect
                     campaigns={campaigns}
                     selected={selectedCampaigns}
                     onChangeItem={onChangeCampaigns}

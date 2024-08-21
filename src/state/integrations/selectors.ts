@@ -187,7 +187,7 @@ export const getIntegrationsByTypes = <T extends Integration['type']>(
     })
 
 export const DEPRECATED_getIntegrationsByTypes = (
-    types: readonly IntegrationType[] | IntegrationType[] | IntegrationType
+    types: readonly IntegrationType[] | IntegrationType
 ) =>
     createSelector(DEPRECATED_getIntegrations, (integrations) => {
         const formattedTypes = !_isArray(types) ? [types] : types

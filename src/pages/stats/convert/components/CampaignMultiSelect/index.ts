@@ -1,1 +1,1 @@
-export * from './CampaignMultiSelect'
+export * from './DEPRECATED_CampaignMultiSelect'

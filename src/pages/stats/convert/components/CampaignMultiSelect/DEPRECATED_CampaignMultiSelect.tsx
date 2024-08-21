@@ -11,7 +11,7 @@ type Props = {
     onChangeItem: ComponentProps<typeof SelectStatsFilter>['onChange']
 }
 
-export const CampaignMultiSelect = ({
+export const DEPRECATED_CampaignMultiSelect = ({
     campaigns,
     selected,
     onChangeItem,
