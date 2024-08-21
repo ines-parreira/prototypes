@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {Redirect} from 'react-router-dom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -6,6 +6,8 @@ import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegr
 import {NotificationStatus} from 'state/notifications/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {notify} from 'state/notifications/actions'
+import {useGetHelpCenterList} from 'models/helpCenter/queries'
+import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {useStoreConfiguration} from '../hooks/useStoreConfiguration'
 
 import {AiAgentLayout} from '../components/AiAgentLayout/AiAgentLayout'
@@ -23,11 +25,28 @@ export const AiAgentConfigurationView = ({
     accountDomain,
 }: AiAgentConfigurationViewProps) => {
     const dispatch = useAppDispatch()
-    const {storeConfiguration, isLoading} = useStoreConfiguration({
-        shopName,
-        accountDomain,
-    })
+    const {storeConfiguration, isLoading: isStoreConfigLoading} =
+        useStoreConfiguration({
+            shopName,
+            accountDomain,
+        })
     const {integration} = useShopifyIntegrationAndScope(shopName)
+
+    const {data: helpCenterListData, isLoading: isLoadingHelpCenters} =
+        useGetHelpCenterList(
+            {type: 'faq', per_page: HELP_CENTER_MAX_CREATION},
+            {
+                staleTime: 1000 * 60 * 5,
+            }
+        )
+
+    const helpCenters = useMemo(
+        () =>
+            (helpCenterListData?.data.data ?? []).filter(
+                (hc) => hc.shop_name === shopName || hc.shop_name === null
+            ),
+        [helpCenterListData, shopName]
+    )
 
     if (!integration) {
         void dispatch(
@@ -40,8 +59,8 @@ export const AiAgentConfigurationView = ({
         return <Redirect to="/app/automation" />
     }
 
-    if (isLoading) {
-        return <Loader />
+    if (isStoreConfigLoading || isLoadingHelpCenters) {
+        return <Loader data-testid="loader" />
     }
 
     const integrationNeedMorePermissions =
@@ -70,6 +89,7 @@ export const AiAgentConfigurationView = ({
                     shopName={shopName}
                     accountDomain={accountDomain}
                     storeConfiguration={storeConfiguration}
+                    faqHelpCenters={helpCenters}
                 />
             </div>
         </AiAgentLayout>

@@ -8,6 +8,8 @@ import history from 'pages/history'
 import {reportError} from 'utils/errors'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {renderWithRouter} from 'utils/testing'
+import {useGetHelpCenterList} from 'models/helpCenter/queries'
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {AiAgentGuidanceContainer} from '../AiAgentGuidanceContainer'
 import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
 import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
@@ -43,10 +45,13 @@ jest.mock('../hooks/useStoreConfiguration', () => ({
 
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 
+jest.mock('models/helpCenter/queries')
+
 const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 const mockedUseStoreConfiguration = jest.mocked(useStoreConfiguration)
 const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)
+const mockUseGetHelpCenterList = jest.mocked(useGetHelpCenterList)
 
 const helpCenter = {...getHelpCentersResponseFixture.data[0], type: 'guidance'}
 const defaultGuidanceArticleProps: ReturnType<typeof useGuidanceArticles> = {
@@ -119,6 +124,12 @@ describe('<AiAgentGuidanceContainer />', () => {
         mockedUseGuidanceAiSuggestions.mockReturnValue(
             defaultGuidanceAiSuggestionsProps
         )
+        mockUseGetHelpCenterList.mockReturnValue({
+            data: axiosSuccessResponse({
+                data: [helpCenter],
+            }),
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetHelpCenterList>)
     })
 
     it('should render loader', () => {
@@ -126,6 +137,15 @@ describe('<AiAgentGuidanceContainer />', () => {
             storeConfiguration: undefined,
             isLoading: true,
         })
+        renderComponent()
+        expect(screen.getByTestId('loader')).toBeInTheDocument
+    })
+
+    it('should render loader if help centers are loading', () => {
+        mockUseGetHelpCenterList.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+        } as unknown as ReturnType<typeof useGetHelpCenterList>)
         renderComponent()
         expect(screen.getByTestId('loader')).toBeInTheDocument
     })

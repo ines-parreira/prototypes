@@ -18,7 +18,6 @@ import {StoreConfiguration, Tag} from 'models/aiAgent/types'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 
 import HelpCenterSelect, {
@@ -38,6 +37,7 @@ import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {SegmentEvent, logEvent} from 'common/segment'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import {getHasAutomate} from 'state/billing/selectors'
+import {HelpCenter} from 'models/helpCenter/types'
 import {
     useConfigurationForm,
     validateConfigurationFormValues,
@@ -84,15 +84,17 @@ type Props = {
     shopName: string
     accountDomain: string
     storeConfiguration?: StoreConfiguration
+    faqHelpCenters: HelpCenter[]
 }
 
 export const StoreConfigForm = ({
     shopName,
     accountDomain,
     storeConfiguration,
+    faqHelpCenters,
 }: Props) => {
     const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
-    const faqHelpCenters = useAppSelector(getHelpCenterFAQList)
+
     const hasAutomate = useAppSelector(getHasAutomate)
     const dispatch = useAppDispatch()
     const isCreate = storeConfiguration === undefined

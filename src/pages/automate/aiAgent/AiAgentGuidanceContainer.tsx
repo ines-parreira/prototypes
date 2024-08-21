@@ -3,10 +3,11 @@ import {Link, useParams} from 'react-router-dom'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getHelpCenterGuidanceList} from 'state/entities/helpCenter/helpCenters/selectors'
 import Loader from 'pages/common/components/Loader/Loader'
 import {reportError} from 'utils/errors'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import {useGetHelpCenterList} from 'models/helpCenter/queries'
+import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import AutomateViewContent from '../common/components/AutomateViewContent'
 import {AiAgentGuidanceView} from './AiAgentGuidanceView'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
@@ -21,28 +22,36 @@ export const AiAgentGuidanceContainer = () => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
-    const {storeConfiguration, isLoading} = useStoreConfiguration({
-        shopName,
-        accountDomain,
-    })
-    const guidanceHelpCenters = useAppSelector(getHelpCenterGuidanceList)
+    const {storeConfiguration, isLoading: isStoreConfigLoading} =
+        useStoreConfiguration({
+            shopName,
+            accountDomain,
+        })
+
+    const {data: helpCenterListData, isLoading: isLoadingHelpCenters} =
+        useGetHelpCenterList(
+            {type: 'guidance', per_page: HELP_CENTER_MAX_CREATION},
+            {
+                staleTime: 1000 * 60 * 5,
+            }
+        )
 
     const {routes} = useAiAgentNavigation({shopName})
 
     const guidanceHelpCenter = useMemo(
         () =>
             storeConfiguration
-                ? guidanceHelpCenters.find(
+                ? (helpCenterListData?.data.data ?? []).find(
                       (helpCenter) =>
                           helpCenter.id ===
                           storeConfiguration.guidanceHelpCenterId
                   )
                 : undefined,
-        [guidanceHelpCenters, storeConfiguration]
+        [helpCenterListData, storeConfiguration]
     )
 
     useEffect(() => {
-        if (isLoading) {
+        if (isStoreConfigLoading || isLoadingHelpCenters) {
             return
         }
 
@@ -57,9 +66,15 @@ export const AiAgentGuidanceContainer = () => {
                 }
             )
         }
-    }, [guidanceHelpCenter, isLoading, shopName, storeConfiguration])
+    }, [
+        guidanceHelpCenter,
+        isStoreConfigLoading,
+        isLoadingHelpCenters,
+        shopName,
+        storeConfiguration,
+    ])
 
-    if (isLoading) {
+    if (isStoreConfigLoading || isLoadingHelpCenters) {
         return <Loader data-testid="loader" />
     }
 

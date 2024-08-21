@@ -16,6 +16,7 @@ import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResource
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {useGetOrCreateSnippetHelpCenter} from 'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import {getHasAutomate} from 'state/billing/selectors'
+import {HelpCenter} from 'models/helpCenter/types'
 import {StoreConfigForm} from '../StoreConfigForm'
 import {useStoreConfigurationMutation} from '../../../hooks/useStoreConfigurationMutation'
 
@@ -68,16 +69,6 @@ const defaultState = {
             },
         ],
     }),
-    entities: {
-        helpCenter: {
-            helpCenters: {
-                helpCentersById: {
-                    '1': {id: 1, name: 'help center 1', type: 'faq'},
-                    '2': {id: 2, name: 'help center 2', type: 'faq'},
-                },
-            },
-        },
-    },
 }
 
 const renderComponent = (
@@ -88,6 +79,12 @@ const renderComponent = (
             <StoreConfigForm
                 shopName="test-shop"
                 accountDomain="test-domain"
+                faqHelpCenters={
+                    [
+                        {id: 1, name: 'help center 1', type: 'faq'},
+                        {id: 2, name: 'help center 2', type: 'faq'},
+                    ] as unknown as HelpCenter[]
+                }
                 {...props}
             />
         </Provider>
