@@ -3,6 +3,7 @@ import {Label, Tooltip} from '@gorgias/ui-kit'
 import {isEqual, keyBy, startCase} from 'lodash'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {Components} from 'rest_api/workflows_api/client.generated'
 import Button from 'pages/common/components/button/Button'
@@ -16,6 +17,7 @@ import {ChannelLanguage} from 'pages/automate/common/types'
 import {TicketChannel} from 'business/types/ticket'
 import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {FlowSettingsItem} from './FlowSettingsItem'
 import {FlowSettingsDropdownItem} from './FlowSettingsDropdownItem'
 import css from './FlowsSettings.less'
@@ -180,9 +182,13 @@ export const FlowsSettings = ({
         workflowEntrypoints,
         entrypointLabelByWorkflowId,
     ])
+    // If the Flows recommendation feature flag is enabled, we won't limit the merchant to 6 flows
+    const hasUnlimitedFlows = useFlags()[FeatureFlagKey.MLFlowsRecommendation]
+
     const currentFlowsCount = enabledWorkflows.length + enabledQuickResponses
     const items =
         dirtyEntrypoints.length > 0 ? dirtyEntrypoints : enabledWorkflows
+
     return (
         <div className="full-width">
             <div className={css.labelWrapper}>
@@ -249,7 +255,9 @@ export const FlowsSettings = ({
             <Button
                 id="add-flow-button"
                 intent="secondary"
-                isDisabled={currentFlowsCount >= FLOWS_LIMIT}
+                isDisabled={
+                    currentFlowsCount >= FLOWS_LIMIT && !hasUnlimitedFlows
+                }
                 ref={dropdownTargetRef}
                 onClick={() => setIsFlowSelectorDropdownOpen((prev) => !prev)}
             >
@@ -258,7 +266,7 @@ export const FlowsSettings = ({
                     arrow_drop_down
                 </i>
             </Button>
-            {currentFlowsCount >= FLOWS_LIMIT && (
+            {currentFlowsCount >= FLOWS_LIMIT && !hasUnlimitedFlows && (
                 <Tooltip
                     trigger={['hover']}
                     placement="top"

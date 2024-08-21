@@ -6,14 +6,17 @@ import {createDragDropManager} from 'dnd-core'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
 import {act} from 'react-dom/test-utils'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {FlowsSettings} from '../components/FlowsSettings'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('pages/automate/workflows/hooks/useLanguagesMismatchWarnings')
+const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 
 const mockUseLanguagesMismatchWarnings =
     useLanguagesMismatchWarnings as jest.MockedFunction<
@@ -381,6 +384,53 @@ describe('FlowsSettings', () => {
         })
     })
 
+    it('should not show the maximum reached message when the limit is reached if the flows recommendation is enabled', () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.MLFlowsRecommendation]: true,
+        })
+
+        renderWithQueryClientProvider(
+            <DndProvider manager={manager}>
+                <FlowsSettings
+                    channelType="chat"
+                    channel={channelMock as any}
+                    shopType="shopify"
+                    shopName="Shop Name"
+                    enabledQuickResponses={0}
+                    workflowEntrypoints={[
+                        {workflow_id: '1'},
+                        {workflow_id: '2'},
+                        {workflow_id: '3'},
+                        {workflow_id: '4'},
+                        {workflow_id: '5'},
+                        {workflow_id: '6'},
+                    ]}
+                    primaryLanguage="en"
+                    configurations={[
+                        {id: '1', name: 'Flow 1'} as any,
+                        {id: '2', name: 'Flow 2'} as any,
+                        {id: '3', name: 'Flow 3'} as any,
+                        {id: '4', name: 'Flow 4'} as any,
+                        {id: '5', name: 'Flow 5'} as any,
+                        {id: '6', name: 'Flow 6'} as any,
+                    ]}
+                    automationSettingsWorkflows={[
+                        {workflow_id: '1', enabled: true},
+                        {workflow_id: '2', enabled: true},
+                        {workflow_id: '3', enabled: true},
+                        {workflow_id: '4', enabled: true},
+                        {workflow_id: '5', enabled: true},
+                        {workflow_id: '6', enabled: true},
+                    ]}
+                    onChange={jest.fn()}
+                />
+            </DndProvider>
+        )
+
+        const addFlowButton = screen.getByRole('button', {name: /add flow/i})
+        expect(addFlowButton).toHaveAttribute('aria-disabled', 'false')
+    })
+
     it('should call onChange when a flow is selected', () => {
         const onChange = jest.fn()
         renderWithQueryClientProvider(
@@ -488,6 +538,9 @@ describe('FlowsSettings', () => {
     })
 
     it('should disable the add flow button when limit is reached', async () => {
+        ;(useFlags as jest.Mock).mockReturnValue({
+            [FeatureFlagKey.MLFlowsRecommendation]: false,
+        })
         renderWithQueryClientProvider(
             <DndProvider manager={manager}>
                 <FlowsSettings
