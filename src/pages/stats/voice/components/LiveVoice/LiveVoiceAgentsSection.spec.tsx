@@ -1,5 +1,5 @@
 import React from 'react'
-import {cleanup, render, screen} from '@testing-library/react'
+import {cleanup, fireEvent, render, screen} from '@testing-library/react'
 import {useListLiveCallQueueAgents} from '@gorgias/api-queries'
 import {assumeMock} from 'utils/testing'
 
@@ -48,13 +48,17 @@ describe('LiveVoiceAgentsSection', () => {
     })
 
     it('should display no data available', () => {
+        const refetch = jest.fn()
         useListLiveCallQueueAgentsMock.mockReturnValue({
             data: {data: {data: []}},
             isLoading: false,
+            refetch,
         } as any)
 
         renderComponent()
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
+        fireEvent.click(screen.getByRole('button', {name: 'Try again'}))
+        expect(refetch).toHaveBeenCalled()
     })
 })
