@@ -51,7 +51,7 @@ export const ABTestSettingsPage: React.FC<Props> = ({
                     />
                     <div className={css.pushToRight}>
                         <a
-                            href="https://docs.gorgias.com/en-US/gorgias-convert-101-440584"
+                            href="https://link.gorgias.com/a99"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={css.externalLink}
