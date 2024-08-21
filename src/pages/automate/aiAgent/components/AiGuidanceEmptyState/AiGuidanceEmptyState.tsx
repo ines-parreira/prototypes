@@ -1,6 +1,5 @@
 import React from 'react'
 
-import {Link} from 'react-router-dom'
 import classNames from 'classnames'
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
 import history from 'pages/history'
@@ -11,6 +10,7 @@ import {GuidanceAiSuggestionsList} from 'pages/automate/aiAgent/components/Guida
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {DATA_TEST_ID} from 'pages/automate/aiAgent/constants'
 
+import {SegmentEvent, logEvent} from 'common/segment'
 import css from './AiGuidanceEmptyState.less'
 
 type Props = {
@@ -22,6 +22,13 @@ const AiGuidanceEmptyState = ({aiGuidances, shopName}: Props) => {
 
     const onNewClick = () => {
         history.push(routes.newGuidanceArticle)
+    }
+
+    const onBrowseSuggestions = () => {
+        logEvent(SegmentEvent.AiAgentGuidanceLibraryViewed, {
+            source: 'browse_suggestions',
+        })
+        history.push(routes.guidanceLibrary)
     }
 
     return (
@@ -73,14 +80,15 @@ const AiGuidanceEmptyState = ({aiGuidances, shopName}: Props) => {
                         <Button intent="secondary" onClick={onNewClick}>
                             Create Custom Guidance
                         </Button>
-                        <Link to={routes.guidanceLibrary}>
-                            <Button>Browse Suggestions</Button>
-                        </Link>
+                        <Button onClick={onBrowseSuggestions}>
+                            Browse Suggestions
+                        </Button>
                     </div>
                 </div>
                 <GuidanceAiSuggestionsList
                     guidanceAiSuggestions={aiGuidances}
                     shopName={shopName}
+                    source="empty"
                 />
             </div>
         </div>

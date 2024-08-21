@@ -1,5 +1,6 @@
 import React from 'react'
 import history from 'pages/history'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {AIGuidance} from '../../types'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import {SeeAllSuggestionsCard} from '../SeeAllSuggestionsCard/SeeAllSuggestionsCard'
@@ -11,6 +12,7 @@ type Props = {
     shopName: string
     showBanner?: boolean
     showAllSuggestionsCard?: boolean
+    source?: string
 }
 
 export const GuidanceAiSuggestionsList = ({
@@ -18,11 +20,17 @@ export const GuidanceAiSuggestionsList = ({
     shopName,
     showBanner,
     showAllSuggestionsCard,
+    source,
 }: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
 
-    const onAiSuggestionClick = (aiGuidanceId: string) => {
-        history.push(routes.newGuidanceAiSuggestionArticle(aiGuidanceId))
+    const onAiSuggestionClick = (aiGuidance: AIGuidance) => {
+        logEvent(SegmentEvent.AiAgentGuidanceCardClicked, {
+            source: source ?? 'library',
+            type: 'ai',
+            name: aiGuidance.name,
+        })
+        history.push(routes.newGuidanceAiSuggestionArticle(aiGuidance.key))
     }
 
     if (!guidanceAiSuggestions?.length && !showBanner) {
@@ -42,7 +50,7 @@ export const GuidanceAiSuggestionsList = ({
             {guidanceAiSuggestions.map((guidance: AIGuidance) => (
                 <li key={guidance.key}>
                     <GuidanceAiSuggestionCard
-                        onClick={() => onAiSuggestionClick(guidance.key)}
+                        onClick={() => onAiSuggestionClick(guidance)}
                         guidanceAiSuggestion={guidance}
                     />
                 </li>

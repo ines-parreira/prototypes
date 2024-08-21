@@ -58,6 +58,15 @@ export const AiAgentGuidanceDetailView = ({
         [guidanceArticle]
     )
 
+    const sourceType = useMemo(() => {
+        const templateKey = guidanceArticle?.templateKey
+
+        if (templateKey?.includes('ai_guidance')) return 'ai'
+        if (templateKey?.includes('template_guidance')) return 'template'
+
+        return 'scratch'
+    }, [guidanceArticle])
+
     if (!guidanceArticle) {
         return <Loader data-testid="article-loader" />
     }
@@ -81,6 +90,7 @@ export const AiAgentGuidanceDetailView = ({
                 isLoading={
                     isGuidanceArticleUpdating || isGuidanceArticleLoading
                 }
+                sourceType={sourceType}
             />
         </AiAgentLayout>
     )

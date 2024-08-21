@@ -39,6 +39,7 @@ export const GuidanceTopRecommendations = ({
                 guidanceAiSuggestions={aiGuidances.slice(0, 3)}
                 shopName={shopName}
                 showAllSuggestionsCard
+                source="recommendations"
             />
         </div>
     )

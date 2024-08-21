@@ -2,6 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import css from './SeeAllSuggestionsCard.less'
 
@@ -13,6 +14,9 @@ export const SeeAllSuggestionsCard = ({shopName}: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
 
     const onSeeAllSugestionsClick = () => {
+        logEvent(SegmentEvent.AiAgentGuidanceLibraryViewed, {
+            source: 'see_all_suggestions',
+        })
         history.push(routes.guidanceLibrary)
     }
 

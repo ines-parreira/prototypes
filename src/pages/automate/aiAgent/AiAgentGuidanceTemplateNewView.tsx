@@ -49,6 +49,7 @@ export const AiAgentGuidanceTemplateNewView = ({
             initialFields={initialFields}
             onSubmit={onSubmit}
             isLoading={isGuidanceArticleUpdating}
+            sourceType="template"
         />
     )
 }

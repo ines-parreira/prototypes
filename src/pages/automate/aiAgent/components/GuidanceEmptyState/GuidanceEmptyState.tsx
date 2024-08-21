@@ -6,10 +6,12 @@ import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {useGuidanceTemplates} from '../../hooks/useGuidanceTemplates'
 import {GuidanceTemplateCard} from '../GuidanceTemplateCard/GuidanceTemplateCard'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import {CreateNewGuidanceCard} from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
+import {GuidanceTemplate} from '../../types'
 import css from './GuidanceEmptyState.less'
 
 const SHOW_TEMPLATES_COUNT = 7
@@ -24,8 +26,13 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
     const onNewClick = () => {
         history.push(routes.newGuidanceArticle)
     }
-    const onGuidanceTemplateClick = (templateId: string) => {
-        history.push(routes.newGuidanceTemplateArticle(templateId))
+    const onGuidanceTemplateClick = (template: GuidanceTemplate) => {
+        logEvent(SegmentEvent.AiAgentGuidanceCardClicked, {
+            source: 'empty',
+            type: 'template',
+            name: template.name,
+        })
+        history.push(routes.newGuidanceTemplateArticle(template.id))
     }
 
     const isShowMoreTemplates = guidanceTemplates.length > SHOW_TEMPLATES_COUNT
@@ -92,7 +99,7 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
                                 <li key={template.id}>
                                     <GuidanceTemplateCard
                                         onClick={() =>
-                                            onGuidanceTemplateClick(template.id)
+                                            onGuidanceTemplateClick(template)
                                         }
                                         guidanceTemplate={template}
                                     />

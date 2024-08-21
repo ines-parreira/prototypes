@@ -11,6 +11,8 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {NotificationStatus} from 'state/notifications/types'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import {SegmentEvent, logEvent} from 'common/segment'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {GuidanceEditor} from '../GuidanceEditor/GuidanceEditor'
 
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
@@ -30,7 +32,7 @@ type Props = {
     onSubmit: (fields: GuidanceFormFields) => Promise<void>
     onDelete?: () => Promise<void>
     initialFields?: GuidanceFormFields
-    isAiGuidanceSuggestions?: boolean
+    sourceType: 'ai' | 'template' | 'scratch'
 }
 
 export const GuidanceForm = ({
@@ -40,7 +42,7 @@ export const GuidanceForm = ({
     initialFields,
     onDelete,
     actionType,
-    isAiGuidanceSuggestions,
+    sourceType,
 }: Props) => {
     const dispatch = useAppDispatch()
     const {routes} = useAiAgentNavigation({shopName})
@@ -58,6 +60,13 @@ export const GuidanceForm = ({
     const onChangeVisibility = (isVisible: boolean) => {
         setFormState((prevState) => ({...prevState, isVisible}))
     }
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.AiAgentGuidanceEditorViewed, {
+            sourceType,
+            name: initialFields?.name,
+        })
+    })
 
     const isFormDirty = !_isEqual(initialFormState, formState)
 
@@ -105,6 +114,7 @@ export const GuidanceForm = ({
                     message: 'Guidance successfully saved',
                 })
             )
+            logEvents()
             resetForm()
             history.push(redirectTo)
         } catch (err) {
@@ -123,6 +133,19 @@ export const GuidanceForm = ({
 
     const onSaveAndTest = async () => {
         await handleSubmit({redirectTo: routes.test})
+    }
+
+    const logEvents = () => {
+        const event =
+            actionType === 'create'
+                ? SegmentEvent.AiAgentGuidanceCreated
+                : SegmentEvent.AiAgentGuidanceEdited
+
+        logEvent(event, {
+            sourceType,
+            name: formState.name,
+            draft: formState.isVisible ? 'enabled' : 'disabled',
+        })
     }
 
     return (
@@ -218,7 +241,7 @@ export const GuidanceForm = ({
             </div>
 
             <div className={css.alertContainer}>
-                {isAiGuidanceSuggestions && (
+                {sourceType === 'ai' && (
                     <Alert type={AlertType.Info} icon className={css.alert}>
                         <p>
                             AI-generated Guidance is crafted from your past

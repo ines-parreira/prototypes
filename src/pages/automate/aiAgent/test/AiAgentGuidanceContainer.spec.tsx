@@ -219,6 +219,22 @@ describe('<AiAgentGuidanceContainer />', () => {
         )
     })
 
+    it('should redirect to guidance library page on click', () => {
+        mockedUseGuidanceAiSuggestions.mockReturnValue({
+            ...defaultGuidanceAiSuggestionsProps,
+            isEmptyStateAIGuidances: true,
+        })
+
+        renderComponent()
+
+        const browseSuggestions = screen.getByText('Browse Suggestions')
+        userEvent.click(browseSuggestions)
+
+        expect(history.push).toHaveBeenCalledWith(
+            '/app/automation/shopify/test-shop/ai-agent/guidance/library'
+        )
+    })
+
     describe("when there's guidance articles", () => {
         it('should render guidances and AI guidances', () => {
             const guidanceArticles = [getGuidanceArticleFixture(1)]

@@ -93,7 +93,7 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
         expect(screen.getByText('Create custom Guidance')).toBeInTheDocument()
     })
 
-    it('should redirect to new guidance page on click', () => {
+    it('should redirect to new ai guidance page on click', () => {
         const aiGuidance = getAIGuidanceFixture('ai_guidance_id1')
 
         mockedUseGuidanceAiSuggestions.mockReturnValue({
@@ -111,6 +111,32 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
 
         expect(history.push).toHaveBeenCalledWith(
             '/app/automation/shopify/test-shop/ai-agent/guidance/new'
+        )
+    })
+
+    it('should redirect to new template guidance page on click', () => {
+        const aiGuidance = getAIGuidanceFixture('ai_guidance_id1')
+        const template = getGuidanceTemplateFixture('order-status')
+
+        mockedUseGuidanceTemplates.mockReturnValue({
+            guidanceTemplates: [template],
+        })
+
+        mockedUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceAISuggestions: [aiGuidance],
+            isLoadingAiGuidances: false,
+            isLoadingGuidanceArticleList: false,
+        } as any)
+
+        renderComponent()
+
+        const templateGuidanceElement = screen.getByText(
+            'Damaged or defective item'
+        )
+        userEvent.click(templateGuidanceElement)
+
+        expect(history.push).toHaveBeenCalledWith(
+            '/app/automation/shopify/test-shop/ai-agent/guidance/templates/order-status'
         )
     })
 

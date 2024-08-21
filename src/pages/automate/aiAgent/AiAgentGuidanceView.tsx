@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Loader from 'pages/common/components/Loader/Loader'
 import useAppDispatch from 'hooks/useAppDispatch'
 import history from 'pages/history'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import {LocaleCode} from 'models/helpCenter/types'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {GuidanceEmptyState} from './components/GuidanceEmptyState/GuidanceEmptyState'
 import {GuidanceList} from './components/GuidanceList/GuidanceList'
 import {GuidanceHeader} from './components/GuidanceHeader/GuidanceHeader'
@@ -44,6 +45,17 @@ export const AiAgentGuidanceView = ({
         helpCenterId,
         shopName,
     })
+
+    useEffect(() => {
+        if (isLoadingAiGuidances) return
+        logEvent(SegmentEvent.AiAgentGuidancePageViewed, {
+            empty: isEmptyStateNoAIGuidances || isEmptyStateAIGuidances,
+        })
+    }, [
+        isLoadingAiGuidances,
+        isEmptyStateNoAIGuidances,
+        isEmptyStateAIGuidances,
+    ])
 
     const {routes} = useAiAgentNavigation({shopName})
 
@@ -101,6 +113,9 @@ export const AiAgentGuidanceView = ({
     }
 
     const onBrowseSuggestions = () => {
+        logEvent(SegmentEvent.AiAgentGuidanceLibraryViewed, {
+            source: 'browse_suggestions',
+        })
         history.push(routes.guidanceLibrary)
     }
 

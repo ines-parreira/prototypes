@@ -1,5 +1,6 @@
 import React from 'react'
 import history from 'pages/history'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {GuidanceTemplate} from '../../types'
 import {GuidanceTemplateCard} from '../GuidanceTemplateCard/GuidanceTemplateCard'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
@@ -9,13 +10,23 @@ import css from './GuidanceTemplatesList.less'
 type Props = {
     guidanceTemplates: GuidanceTemplate[]
     shopName: string
+    source?: string
 }
 
-export const GuidanceTemplatesList = ({guidanceTemplates, shopName}: Props) => {
+export const GuidanceTemplatesList = ({
+    guidanceTemplates,
+    shopName,
+    source,
+}: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
 
-    const onTemplateClick = (templateId: string) => {
-        history.push(routes.newGuidanceTemplateArticle(templateId))
+    const onTemplateClick = (template: GuidanceTemplate) => {
+        logEvent(SegmentEvent.AiAgentGuidanceCardClicked, {
+            source: source ?? 'library',
+            type: 'template',
+            name: template.name,
+        })
+        history.push(routes.newGuidanceTemplateArticle(template.id))
     }
 
     return (
@@ -23,7 +34,7 @@ export const GuidanceTemplatesList = ({guidanceTemplates, shopName}: Props) => {
             {guidanceTemplates.map((template) => (
                 <li key={template.id}>
                     <GuidanceTemplateCard
-                        onClick={() => onTemplateClick(template.id)}
+                        onClick={() => onTemplateClick(template)}
                         guidanceTemplate={template}
                     />
                 </li>
