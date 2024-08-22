@@ -7,4 +7,25 @@
         flex-direction: column;
         gap: @layout-spacing-xl;
     }
+
+    .connectStoreDescription {
+        margin-top: @layout-spacing-xxs;
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .storeOption {
+        display: flex;
+        align-items: center;
+    }
+
+    .storeIcon {
+        width: 20px;
+        margin-right: 10px;
+    }
+
+    .error {
+        .caption-regular();
+        color: var(--feedback-error);
+        margin-top: @layout-spacing-xxs;
+    }
 }

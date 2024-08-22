@@ -1,17 +1,25 @@
 import React from 'react'
+import classnames from 'classnames'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import css from './HelpCenterWizardOrderManagement.less'
 
 type HelpCenterWizardArticleRecProps = {
-    onChange: (enabled: boolean) => void
-    enabled: boolean
+    onChange: (isToggled: boolean) => void
+    isToggled: boolean
+    isDisabled?: boolean
 }
 
 const HelpCenterWizardOrderManagement = ({
     onChange,
-    enabled,
+    isToggled,
+    isDisabled = false,
 }: HelpCenterWizardArticleRecProps) => {
     return (
-        <div>
+        <div
+            className={classnames({
+                [css.disabled]: isDisabled,
+            })}
+        >
             <div className="heading-section-semibold mb-1">
                 Order management
             </div>
@@ -21,7 +29,8 @@ const HelpCenterWizardOrderManagement = ({
             </div>
             <ToggleInput
                 name="order-management"
-                isToggled={enabled}
+                isDisabled={isDisabled}
+                isToggled={isToggled}
                 onClick={onChange}
             >
                 Allow customers to manage orders from my Help Center

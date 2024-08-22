@@ -14,7 +14,7 @@ import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import {StoreState} from 'state/types'
 import {chatIntegrationFixtures} from 'fixtures/chat'
-import {shopifyIntegration} from 'fixtures/integrations'
+import {bigCommerceIntegration, shopifyIntegration} from 'fixtures/integrations'
 import {Integration} from 'models/integration/types'
 import {proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan} from 'fixtures/productPrices'
 import {
@@ -24,8 +24,6 @@ import {
     NEXT_ACTION,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {
@@ -56,6 +54,7 @@ const helpCenterFixture = {
     ...getHelpCentersResponseFixture.data[0],
     shop_name: shopifyIntegration.name,
 }
+const mockOnFormUpdate = jest.fn()
 const mockOnSave = jest.fn()
 const mockOnAction = jest.fn()
 const mockOnAutomationSettingsUpdate = jest.fn()
@@ -76,7 +75,7 @@ const defaultHelpCenter: HelpCenterCreationWizard = {
 }
 const mockedUseHelpCenterWizardHook = {
     helpCenter: defaultHelpCenter,
-    handleFormUpdate: jest.fn(),
+    handleFormUpdate: mockOnFormUpdate,
     handleSave: mockOnSave,
     handleAction: mockOnAction,
     isLoading: false,
@@ -112,7 +111,11 @@ const renderComponent = (
     fixtures?: {integrations?: Integration[]; helpCenter?: HelpCenter}
 ) => {
     const {
-        integrations = [shopifyIntegration, ...chatIntegrationFixtures],
+        integrations = [
+            shopifyIntegration,
+            bigCommerceIntegration,
+            ...chatIntegrationFixtures,
+        ],
         helpCenter = helpCenterFixture,
     } = fixtures ?? {}
     const defaultStore = {
@@ -203,26 +206,27 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
         renderComponent({})
 
         expect(screen.getAllByText('Automate')[0]).toBeInTheDocument()
+        expect(screen.getByText('Connect a store')).toBeInTheDocument()
         expect(screen.getByText('Order management')).toBeInTheDocument()
     })
 
-    it('should show error state when no store integration', () => {
+    it('should hide Automation items when no store integration', () => {
         const helpCenter = {
             ...helpCenterFixture,
             shop_name: null,
         }
         renderComponent({}, {helpCenter})
 
+        expect(screen.getByText('Connect a store')).toBeInTheDocument()
         expect(screen.queryByText('Order management')).not.toBeInTheDocument()
-
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            status: NotificationStatus.Error,
-            message: 'No integration found for shop ',
-        })
+        expect(
+            screen.queryByText('Article Recommendation')
+        ).not.toBeInTheDocument()
+        expect(screen.queryByText('Flows')).not.toBeInTheDocument()
     })
 
     describe('order management', () => {
-        it('should render disabled order management when order management in help center disabled', () => {
+        it('should render toggle off order management when order management in help center disabled', () => {
             const helpCenter = {
                 ...helpCenterFixture,
                 self_service_deactivated_datetime: null,
@@ -235,7 +239,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 )
             ).toBeChecked()
         })
-        it('should render enabled order management when order management is enabled', () => {
+        it('should render toggle on order management when order management is enabled', () => {
             const helpCenter = {
                 ...helpCenterFixture,
                 self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
@@ -272,7 +276,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
     })
 
     describe('article recommendation', () => {
-        it('should be enabled by default when no article recomm with different help center', () => {
+        it('should be toggled on by default when no article recomm with different help center', () => {
             mockedUseSelfServiceConfiguration.mockReturnValue({
                 ...defaultUseSelfServiceConfiguration,
                 selfServiceConfiguration: {
@@ -296,7 +300,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             ).toBeInTheDocument()
         })
 
-        it('should be disabled by default when article recomm with different help center', () => {
+        it('should be toggled off by default when article recomm with different help center', () => {
             mockedUseSelfServiceConfiguration.mockReturnValue({
                 ...defaultUseSelfServiceConfiguration,
                 selfServiceConfiguration: {
@@ -322,7 +326,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             ).toBeInTheDocument()
         })
 
-        it('should be enabled when article recomm with same help center', () => {
+        it('should be toggled on when article recomm with same help center', () => {
             mockedUseSelfServiceConfiguration.mockReturnValue({
                 ...defaultUseSelfServiceConfiguration,
                 selfServiceConfiguration: {
@@ -349,7 +353,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             ).toBeChecked()
         })
 
-        it('should hide article recommendation whe no chat integrations', () => {
+        it('should hide article recommendation when there is no chat integrations', () => {
             renderComponent(
                 {},
                 {
@@ -381,7 +385,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
     })
 
     describe('flows', () => {
-        it('should not render flows section when no shopify integration', () => {
+        it('should not render flows section when no store integrations', () => {
             renderComponent(
                 {},
                 {
@@ -455,6 +459,23 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
     })
 
     describe('on save', () => {
+        it('should call handleSave when store selected is changed', async () => {
+            renderComponent({})
+
+            expect(screen.getByText('Connect a store')).toBeInTheDocument()
+            fireEvent.click(screen.getByText('bigCommerce store'))
+
+            await waitFor(() => expect(mockOnFormUpdate).toBeCalled())
+            expect(mockOnFormUpdate).toHaveBeenCalledWith({
+                shopName: 'bigCommerce store',
+            })
+
+            await waitFor(() => expect(mockOnSave).toBeCalled())
+            expect(mockOnSave).toHaveBeenCalledWith({
+                stepName: HelpCenterCreationWizardStep.Automate,
+                payload: {shopName: 'bigCommerce store'},
+            })
+        })
         it('should call handleSave when clicked finished', async () => {
             const draft = {}
 

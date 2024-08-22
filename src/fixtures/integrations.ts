@@ -69,6 +69,53 @@ export const shopifyIntegration: Integration = {
     managed: false,
 }
 
+export const bigCommerceIntegration: Integration = {
+    user: {id: 0},
+    deleted_datetime: null,
+    meta: {
+        sync_customer_notes: true,
+        shop_id: 1,
+        shop_phone: '', // Provide a valid value for the shop_phone property
+        shop_domain: 'bigCommerce.bigcommerce.com',
+        currency: 'EUR',
+        shop_display_name: 'bigCommerce store',
+        shop_plan: 'partner_test',
+        store_hash: 'big-commerce-store',
+        oauth: {
+            scope: '',
+            status: 'success',
+            error: '',
+        },
+        import_state: {
+            customers: {
+                is_over: true,
+                oldest_created_at: '2023-04-19T05:13:38-04:00',
+            },
+            products: {
+                is_over: true,
+                oldest_created_at: '2023-04-19T05:10:00-04:00',
+            },
+            external_orders: {
+                is_over: true,
+                oldest_created_at: '2023-04-19T05:10:00-04:00',
+            },
+        },
+        webhooks: [],
+        need_scope_update: false,
+    },
+    deactivated_datetime: null,
+    name: 'bigCommerce store',
+    uri: '/api/integrations/9/',
+    decoration: null,
+    locked_datetime: null,
+    created_datetime: '2023-06-22T11:31:46.841843+00:00',
+    type: IntegrationType.BigCommerce,
+    id: 8,
+    description: null,
+    updated_datetime: '2023-09-07T11:28:13.345251+00:00',
+    managed: false,
+}
+
 export const baseHttp: HttpIntegrationMeta = {
     headers: {
         Authorization: 'Bearer a57sd4as6d4',

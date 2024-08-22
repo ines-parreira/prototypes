@@ -3,7 +3,7 @@ import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
 import {logEvent} from 'common/segment/segment'
 import {SegmentEvent} from 'common/segment'
 
-type UseHelpCenterAutomationFormState = {
+export type UseHelpCenterAutomationFormState = {
     orderManagementEnabled: boolean
     articleRecommendationEnabled: boolean
     flows: Entrypoint[]

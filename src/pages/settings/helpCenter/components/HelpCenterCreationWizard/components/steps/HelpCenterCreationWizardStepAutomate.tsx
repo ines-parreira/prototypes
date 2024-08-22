@@ -1,5 +1,14 @@
-import React, {useEffect} from 'react'
+import React, {
+    forwardRef,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 
+import {Label} from '@gorgias/ui-kit'
 import {
     HELP_CENTER_STEPS_DESCRIPTIONS,
     HELP_CENTER_STEPS_LABELS,
@@ -15,16 +24,19 @@ import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelp
 import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
-import {reportError} from 'utils/errors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import {useStoreOptions} from 'pages/settings/helpCenter/hooks/useStoreOptions'
+import store from 'assets/img/icons/store.svg'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
 import HelpCenterWizardOrderManagement from '../HelpCenterWizardOrderManagement/HelpCenterWizardOrderManagement'
-import {useHelpCenterAutomationForm} from '../../hooks/useHelpCenterAutomationForm'
+import {
+    UseHelpCenterAutomationFormState,
+    useHelpCenterAutomationForm,
+} from '../../hooks/useHelpCenterAutomationForm'
 import HelpCenterWizardArticleRec from '../HelpCenterWizardArticleRec/HelpCenterWizardArticleRec'
 import HelpCenterWizardFlows from '../HelpCenterWizardFlows/HelpCenterWizardFlows'
 import HelpCenterWizardAutomationPreview from '../HelpCenterWizardAutomationPreview/HelpCenterWizardAutomationPreview'
@@ -34,40 +46,260 @@ import css from './HelpCenterCreationWizardStepAutomate.less'
 
 type Props = {
     helpCenter: HelpCenter
-    isUpdate: boolean
-    helpCenterShopIntegration: StoreIntegration
+    isUpdate?: boolean
 }
 
-const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
-    helpCenter,
-    helpCenterShopIntegration,
-}) => {
-    const helpCenterShopIntegrationName = getShopNameFromStoreIntegration(
-        helpCenterShopIntegration
-    )
+type HelpCenterCreationWizardAutomateItemsProps = Props & {
+    storeIntegration: StoreIntegration
+    storeIntegrationName: string
+    isHelpCenterWizardLoading: boolean
+    state: UseHelpCenterAutomationFormState
+    updateOrderManagementEnabled: (enabled: boolean) => void
+    updateArticleRecommendationEnabled: (enabled: boolean) => void
+    updateFlows: (flows: Entrypoint[]) => void
+    setIsSelfServiceConfigurationLoading: (isLoading: boolean) => void
+}
+
+type HelpCenterCreationWizardAutomateItemsRef = () => Promise<void>
+
+const HelpCenterCreationWizardAutomateItems = forwardRef<
+    HelpCenterCreationWizardAutomateItemsRef,
+    HelpCenterCreationWizardAutomateItemsProps
+>(
+    (
+        {
+            helpCenter,
+            storeIntegration,
+            storeIntegrationName,
+            isHelpCenterWizardLoading,
+            state,
+            updateOrderManagementEnabled,
+            updateArticleRecommendationEnabled,
+            updateFlows,
+            setIsSelfServiceConfigurationLoading,
+        },
+        ref
+    ) => {
+        const {
+            isFetchPending: isSelfServiceConfigurationPending,
+            isUpdatePending: isSelfServiceConfigurationUpdating,
+            handleSelfServiceConfigurationUpdate,
+            selfServiceConfiguration,
+        } = useSelfServiceConfiguration(
+            storeIntegration.type,
+            storeIntegrationName,
+            // Avoid notifications about the self service configuration
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            () => {}
+        )
+
+        useEffect(() => {
+            setIsSelfServiceConfigurationLoading(
+                isSelfServiceConfigurationPending ||
+                    isSelfServiceConfigurationUpdating
+            )
+        }, [
+            isSelfServiceConfigurationPending,
+            isSelfServiceConfigurationUpdating,
+            setIsSelfServiceConfigurationLoading,
+        ])
+
+        const isArticleRecomAlreadyEnabled =
+            !!selfServiceConfiguration?.articleRecommendationHelpCenterId &&
+            // we have different help center in the self service configuration. This prevents from case when user clicks "Save and customize later"
+            selfServiceConfiguration?.articleRecommendationHelpCenterId !==
+                helpCenter.id
+
+        const chatIntegrations = useAppSelector(
+            getIntegrationsByTypes([IntegrationType.GorgiasChat])
+        )
+
+        const {
+            automationSettings,
+            handleHelpCenterAutomationSettingsUpdate,
+            isFetchPending,
+        } = useHelpCenterAutomationSettings(helpCenter.id, false)
+
+        useEffect(() => {
+            const shouldEnableOrderManagement =
+                storeIntegration.type === IntegrationType.Shopify &&
+                helpCenter.self_service_deactivated_datetime === null
+            if (!isFetchPending) {
+                updateOrderManagementEnabled(shouldEnableOrderManagement)
+            }
+        }, [
+            helpCenter.self_service_deactivated_datetime,
+            isFetchPending,
+            storeIntegration.type,
+            updateOrderManagementEnabled,
+        ])
+
+        useEffect(() => {
+            const helpCenterFlows = automationSettings.workflows
+            if (!isFetchPending && helpCenterFlows) {
+                updateFlows(
+                    helpCenterFlows.map((flow) => ({
+                        workflow_id: flow.id,
+                        enabled: flow.enabled,
+                    }))
+                )
+            }
+        }, [automationSettings.workflows, isFetchPending, updateFlows])
+
+        useEffect(() => {
+            if (!isFetchPending && chatIntegrations.length > 0) {
+                updateArticleRecommendationEnabled(
+                    !isArticleRecomAlreadyEnabled
+                )
+            }
+        }, [
+            chatIntegrations.length,
+            isArticleRecomAlreadyEnabled,
+            isFetchPending,
+            updateArticleRecommendationEnabled,
+        ])
+
+        const onSave = useCallback(async () => {
+            const automationSettings = mapEntrypointsToAutomationSettings(
+                state.flows
+            )
+            await handleHelpCenterAutomationSettingsUpdate(automationSettings)
+
+            // These 2 conditions help avoid the case when AR toggle disabled but we have different HC in the selfServiceConfiguration
+            if (
+                state.articleRecommendationEnabled &&
+                selfServiceConfiguration?.articleRecommendationHelpCenterId !==
+                    helpCenter.id
+            ) {
+                await handleSelfServiceConfigurationUpdate((draft) => {
+                    draft.articleRecommendationHelpCenterId = helpCenter.id
+                })
+            }
+
+            if (
+                !state.articleRecommendationEnabled &&
+                selfServiceConfiguration?.articleRecommendationHelpCenterId ===
+                    helpCenter.id
+            ) {
+                await handleSelfServiceConfigurationUpdate((draft) => {
+                    draft.articleRecommendationHelpCenterId = undefined
+                })
+            }
+        }, [
+            handleHelpCenterAutomationSettingsUpdate,
+            handleSelfServiceConfigurationUpdate,
+            helpCenter.id,
+            selfServiceConfiguration?.articleRecommendationHelpCenterId,
+            state.articleRecommendationEnabled,
+            state.flows,
+        ])
+
+        useImperativeHandle(ref, () => onSave, [onSave])
+
+        const isLoading =
+            isHelpCenterWizardLoading ||
+            isSelfServiceConfigurationPending ||
+            isSelfServiceConfigurationUpdating
+
+        const isFormDisabled = !automationSettings || isLoading
+
+        const hasActiveChat = !!chatIntegrations.length
+
+        return (
+            <>
+                {storeIntegration?.type === IntegrationType.Shopify && (
+                    <HelpCenterWizardOrderManagement
+                        onChange={updateOrderManagementEnabled}
+                        isToggled={state.orderManagementEnabled}
+                        isDisabled={isFormDisabled}
+                    />
+                )}
+                {hasActiveChat && (
+                    <HelpCenterWizardArticleRec
+                        isArticleRecomAlreadyEnabled={
+                            isArticleRecomAlreadyEnabled
+                        }
+                        articleRecommendationEnabled={
+                            state.articleRecommendationEnabled
+                        }
+                        onArticleRecommendationEnabledChange={
+                            updateArticleRecommendationEnabled
+                        }
+                        isSectionDisabled={isFormDisabled}
+                    />
+                )}
+
+                <HelpCenterWizardFlows
+                    helpCenterId={helpCenter.id}
+                    shopType={storeIntegration.type}
+                    shopName={storeIntegrationName}
+                    supportedLocales={helpCenter.supported_locales}
+                    flows={state.flows}
+                    onChange={updateFlows}
+                    isLoading={isFetchPending}
+                    isDisabled={isFormDisabled}
+                />
+            </>
+        )
+    }
+)
+
+const HelpCenterCreationWizardStepAutomate = ({helpCenter}: Props) => {
+    const [selectedStoreIntegration, setSelectedStoreIntegration] =
+        useState<StoreIntegration>()
+    const [
+        isSelfServiceConfigurationLoading,
+        setIsSelfServiceConfigurationLoading,
+    ] = useState(false)
+    const [shouldDisplayFormErrors, setShouldDisplayFormErrors] =
+        useState(false)
+    const automateItemsRef =
+        useRef<HelpCenterCreationWizardAutomateItemsRef>(null)
 
     const {
-        isFetchPending: isSelfServiceConfigurationPending,
-        isUpdatePending: isSelfServiceConfigurationUpdating,
-        handleSelfServiceConfigurationUpdate,
-        selfServiceConfiguration,
-    } = useSelfServiceConfiguration(
-        helpCenterShopIntegration.type,
-        helpCenterShopIntegrationName,
-        // Avoid notifications about the self service configuration
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        () => {}
+        isLoading: isHelpCenterWizardLoading,
+        handleAction,
+        handleSave,
+        handleFormUpdate,
+    } = useHelpCenterCreationWizard(
+        helpCenter,
+        HelpCenterCreationWizardStep.Automate
     )
 
-    const isArticleRecomAlreadyEnabled =
-        !!selfServiceConfiguration?.articleRecommendationHelpCenterId &&
-        // we have different help center in the self service configuration. This prevents from case when user clicks "Save and customize later"
-        selfServiceConfiguration?.articleRecommendationHelpCenterId !==
-            helpCenter.id
-
-    const chatIntegrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.GorgiasChat])
+    const allStoreIntegrations = useAppSelector(
+        getIntegrationsByTypes([
+            IntegrationType.Shopify,
+            IntegrationType.BigCommerce,
+            IntegrationType.Magento2,
+        ])
     )
+
+    const shopifyIntegrations = useMemo(
+        () =>
+            allStoreIntegrations.filter(
+                (storeIntegration) =>
+                    storeIntegration.type === IntegrationType.Shopify
+            ),
+        [allStoreIntegrations]
+    )
+
+    useEffectOnce(() => {
+        const foundIntegration = allStoreIntegrations.find(
+            (integration) => integration.name === helpCenter.shop_name
+        )
+        if (foundIntegration) {
+            setSelectedStoreIntegration(foundIntegration)
+        }
+    })
+
+    const integrationOptions = useStoreOptions({
+        option: css['storeOption'],
+        icon: css['storeIcon'],
+    })
+
+    const selectedStoreIntegrationName = selectedStoreIntegration
+        ? getShopNameFromStoreIntegration(selectedStoreIntegration)
+        : ''
 
     const {
         state,
@@ -76,9 +308,9 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
         updateFlows,
     } = useHelpCenterAutomationForm({
         orderManagementEnabled:
-            helpCenter.self_service_deactivated_datetime === null &&
-            helpCenterShopIntegration.type === IntegrationType.Shopify,
+            helpCenter.self_service_deactivated_datetime === null,
     })
+
     const {data: helpCenterArticles} = useGetHelpCenterArticleList(
         helpCenter.id,
         {
@@ -86,110 +318,79 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
             locale: helpCenter.default_locale,
         }
     )
-    const {
-        isLoading: isHelpCenterWizardLoading,
-        handleAction,
-        handleSave,
-    } = useHelpCenterCreationWizard(
-        helpCenter,
-        HelpCenterCreationWizardStep.Automate
-    )
-    const {
-        automationSettings,
-        handleHelpCenterAutomationSettingsUpdate,
-        isFetchPending,
-    } = useHelpCenterAutomationSettings(helpCenter.id, false)
 
-    useEffect(() => {
-        const helpCenterFlows = automationSettings.workflows
-        if (!isFetchPending && helpCenterFlows) {
-            updateFlows(
-                helpCenterFlows.map((flow) => ({
-                    workflow_id: flow.id,
-                    enabled: flow.enabled,
-                }))
-            )
-        }
-    }, [automationSettings.workflows, isFetchPending, updateFlows])
+    const isStoreRequired = !!shopifyIntegrations.length
 
-    useEffect(() => {
-        if (!isFetchPending && chatIntegrations.length > 0) {
-            updateArticleRecommendationEnabled(!isArticleRecomAlreadyEnabled)
-        }
-    }, [
-        chatIntegrations.length,
-        isArticleRecomAlreadyEnabled,
-        isFetchPending,
-        updateArticleRecommendationEnabled,
-    ])
+    const isInvalidForm = isStoreRequired && !selectedStoreIntegration
 
     const onSave = async () => {
-        const automationSettings = mapEntrypointsToAutomationSettings(
-            state.flows
-        )
-        await handleHelpCenterAutomationSettingsUpdate(automationSettings)
-
-        // These 2 conditions help avoid the case when AR toggle disabled but we have different HC in the selfServiceConfiguration
-        if (
-            state.articleRecommendationEnabled &&
-            selfServiceConfiguration?.articleRecommendationHelpCenterId !==
-                helpCenter.id
-        ) {
-            await handleSelfServiceConfigurationUpdate((draft) => {
-                draft.articleRecommendationHelpCenterId = helpCenter.id
-            })
-        }
-
-        if (
-            !state.articleRecommendationEnabled &&
-            selfServiceConfiguration?.articleRecommendationHelpCenterId ===
-                helpCenter.id
-        ) {
-            await handleSelfServiceConfigurationUpdate((draft) => {
-                draft.articleRecommendationHelpCenterId = undefined
-            })
+        if (automateItemsRef.current) {
+            await automateItemsRef.current()
         }
     }
 
     const onFooterAction = async (buttonClicked: FOOTER_BUTTONS) => {
+        if (buttonClicked !== FOOTER_BUTTONS.BACK) {
+            setShouldDisplayFormErrors(isInvalidForm)
+        }
         switch (buttonClicked) {
             case FOOTER_BUTTONS.BACK:
                 handleAction(NEXT_ACTION.PREVIOUS_STEP)
                 break
             case FOOTER_BUTTONS.FINISH:
-                await onSave()
-                handleSave({
-                    redirectTo: NEXT_ACTION.NEW_HELP_CENTER,
-                    payload: {
-                        wizardCompleted: true,
-                        orderManagementEnabled: state.orderManagementEnabled,
-                    },
-                    successModalParams: {
-                        articlesCount: helpCenterArticles?.data.length,
-                        isArticleRecommendationEnabled:
-                            state.articleRecommendationEnabled,
-                    },
-                })
+                if (!isInvalidForm) {
+                    await onSave()
+                    handleSave({
+                        redirectTo: NEXT_ACTION.NEW_HELP_CENTER,
+                        payload: {
+                            wizardCompleted: true,
+                            orderManagementEnabled:
+                                state.orderManagementEnabled,
+                        },
+                        successModalParams: {
+                            articlesCount: helpCenterArticles?.data.length,
+                            isArticleRecommendationEnabled:
+                                state.articleRecommendationEnabled,
+                        },
+                    })
+                }
                 break
             case FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER:
-                await onSave()
-                handleSave({
-                    redirectTo: NEXT_ACTION.BACK_HOME,
-                    stepName: HelpCenterCreationWizardStep.Automate,
-                    payload: {
-                        orderManagementEnabled: state.orderManagementEnabled,
-                    },
-                })
+                if (!isInvalidForm) {
+                    await onSave()
+                    handleSave({
+                        redirectTo: NEXT_ACTION.BACK_HOME,
+                        stepName: HelpCenterCreationWizardStep.Automate,
+                        payload: {
+                            orderManagementEnabled:
+                                state.orderManagementEnabled,
+                        },
+                    })
+                }
                 break
             default:
                 break
         }
     }
 
+    const handleStoreChange = (shopName: string) => {
+        const storeIntegration = allStoreIntegrations.find(
+            (integration) => integration.name === shopName
+        )
+        if (storeIntegration) {
+            setSelectedStoreIntegration(storeIntegration)
+            handleFormUpdate({shopName})
+            handleSave({
+                stepName: HelpCenterCreationWizardStep.Automate,
+                payload: {
+                    shopName,
+                },
+            })
+        }
+    }
+
     const isLoading =
-        isHelpCenterWizardLoading ||
-        isSelfServiceConfigurationPending ||
-        isSelfServiceConfigurationUpdating
+        isHelpCenterWizardLoading || isSelfServiceConfigurationLoading
 
     return (
         <WizardStepSkeleton
@@ -207,104 +408,70 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
                 />
             }
             preview={
-                <HelpCenterWizardAutomationPreview
-                    shopType={helpCenterShopIntegration.type}
-                    shopName={helpCenterShopIntegrationName}
-                    helpCenter={helpCenter}
-                    flows={state.flows}
-                    orderManagementEnabled={state.orderManagementEnabled}
-                />
+                selectedStoreIntegration ? (
+                    <HelpCenterWizardAutomationPreview
+                        shopType={selectedStoreIntegration.type}
+                        shopName={selectedStoreIntegrationName}
+                        helpCenter={helpCenter}
+                        flows={state.flows}
+                        orderManagementEnabled={state.orderManagementEnabled}
+                    />
+                ) : undefined
             }
         >
             <div className={css.container}>
-                {helpCenterShopIntegration.type === IntegrationType.Shopify && (
-                    <HelpCenterWizardOrderManagement
-                        onChange={updateOrderManagementEnabled}
-                        enabled={state.orderManagementEnabled}
+                <div>
+                    <Label isRequired={isStoreRequired}>Connect a store</Label>
+                    <div className={css.connectStoreDescription}>
+                        A store connection is required to enable Automate
+                        features.
+                    </div>
+                    <SelectField
+                        fullWidth
+                        placeholder="Select a store"
+                        customIcon={
+                            !selectedStoreIntegration && (
+                                <img
+                                    src={store}
+                                    className={css['storeIcon']}
+                                    alt="store logo"
+                                />
+                            )
+                        }
+                        value={selectedStoreIntegration?.name}
+                        onChange={(value) => {
+                            handleStoreChange(value as string)
+                        }}
+                        options={integrationOptions}
+                        showSelectedOption={allStoreIntegrations.length === 1}
+                        isSearchable={false}
                     />
-                )}
-                {chatIntegrations.length > 0 && (
-                    <HelpCenterWizardArticleRec
-                        isArticleRecomAlreadyEnabled={
-                            isArticleRecomAlreadyEnabled
+                    {shouldDisplayFormErrors && !selectedStoreIntegration && (
+                        <div className={css.error}>This field is required.</div>
+                    )}
+                </div>
+                {!isHelpCenterWizardLoading && selectedStoreIntegration && (
+                    <HelpCenterCreationWizardAutomateItems
+                        ref={automateItemsRef}
+                        helpCenter={helpCenter}
+                        storeIntegration={selectedStoreIntegration}
+                        storeIntegrationName={selectedStoreIntegrationName}
+                        isHelpCenterWizardLoading={isHelpCenterWizardLoading}
+                        state={state}
+                        updateOrderManagementEnabled={
+                            updateOrderManagementEnabled
                         }
-                        articleRecommendationEnabled={
-                            state.articleRecommendationEnabled
-                        }
-                        onArticleRecommendationEnabledChange={
+                        updateArticleRecommendationEnabled={
                             updateArticleRecommendationEnabled
                         }
-                    />
-                )}
-
-                {helpCenterShopIntegration && (
-                    <HelpCenterWizardFlows
-                        helpCenterId={helpCenter.id}
-                        shopType={helpCenterShopIntegration.type}
-                        shopName={helpCenterShopIntegrationName}
-                        supportedLocales={helpCenter.supported_locales}
-                        flows={state.flows}
-                        onChange={updateFlows}
-                        isLoading={isFetchPending}
+                        updateFlows={updateFlows}
+                        setIsSelfServiceConfigurationLoading={
+                            setIsSelfServiceConfigurationLoading
+                        }
                     />
                 )}
             </div>
         </WizardStepSkeleton>
-    )
-}
-
-const HelpCenterCreationWizardStepAutomate = (
-    props: Omit<Props, 'helpCenterShopIntegration'>
-) => {
-    const integrations = useAppSelector(
-        getIntegrationsByTypes([
-            IntegrationType.Shopify,
-            IntegrationType.BigCommerce,
-            IntegrationType.Magento2,
-        ])
-    )
-
-    const helpCenterShopName = props.helpCenter.shop_name
-
-    const helpCenterShopIntegration = integrations.find(
-        (integration) => integration.name === helpCenterShopName
-    )
-    const dispatch = useAppDispatch()
-
-    // This should be the case, but we want to be sure
-    useEffectOnce(() => {
-        if (!helpCenterShopIntegration) {
-            reportError(
-                new Error(
-                    'Shop integration not found for Help Center Wizard Automation'
-                ),
-                {
-                    tags: {
-                        section: 'help-center-wizard',
-                        team: 'automate-obs',
-                    },
-                }
-            )
-            void dispatch(
-                notify({
-                    message: `No integration found for shop ${
-                        helpCenterShopName ?? ''
-                    }`,
-                    status: NotificationStatus.Error,
-                })
-            )
-        }
-    })
-
-    if (!helpCenterShopIntegration) {
-        return null
-    }
-
-    return (
-        <HelpCenterCreationWizardStepAutomateComponent
-            {...props}
-            helpCenterShopIntegration={helpCenterShopIntegration}
-        />
     )
 }
 

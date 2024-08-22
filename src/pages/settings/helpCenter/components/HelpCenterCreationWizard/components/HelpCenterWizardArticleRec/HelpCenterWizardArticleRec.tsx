@@ -6,12 +6,14 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import css from './HelpCenterWizardArticleRec.less'
 
 type HelpCenterWizardArticleRecProps = {
+    isSectionDisabled?: boolean
     articleRecommendationEnabled: boolean
     isArticleRecomAlreadyEnabled: boolean
     onArticleRecommendationEnabledChange: (enabled: boolean) => void
 }
 
 const HelpCenterWizardArticleRec = ({
+    isSectionDisabled = false,
     articleRecommendationEnabled,
     onArticleRecommendationEnabledChange,
     isArticleRecomAlreadyEnabled,
@@ -21,7 +23,11 @@ const HelpCenterWizardArticleRec = ({
     }
 
     return (
-        <div>
+        <div
+            className={classnames({
+                [css.disabled]: isSectionDisabled,
+            })}
+        >
             <div className="heading-section-semibold mb-4">
                 Article Recommendation
             </div>
@@ -41,6 +47,7 @@ const HelpCenterWizardArticleRec = ({
                     isToggled={articleRecommendationEnabled}
                     onClick={handleArticleRecommendationEnabledChange}
                     caption="At least 1 published article is required"
+                    isDisabled={isSectionDisabled}
                 >
                     <i
                         className={classnames(

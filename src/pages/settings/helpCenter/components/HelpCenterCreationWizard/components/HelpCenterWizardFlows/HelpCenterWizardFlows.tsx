@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 
+import classnames from 'classnames'
 import {TicketChannel} from 'business/types/ticket'
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
@@ -26,6 +27,7 @@ type HelpCenterWizardFlowsProps = {
     flows: Entrypoint[]
     onChange: (entrypoints: Entrypoint[]) => void
     isLoading: boolean
+    isDisabled?: boolean
 }
 
 const HelpCenterWizardFlows = ({
@@ -36,6 +38,7 @@ const HelpCenterWizardFlows = ({
     onChange,
     flows,
     isLoading,
+    isDisabled = false,
 }: HelpCenterWizardFlowsProps) => {
     const [isShowMore, setIsShowMore] = useState(false)
 
@@ -69,7 +72,11 @@ const HelpCenterWizardFlows = ({
     }
 
     return (
-        <div>
+        <div
+            className={classnames({
+                [css.disabled]: isDisabled,
+            })}
+        >
             <div className="heading-page-semibold mb-1">Flows</div>
             <div className="mb-4">
                 Enable up to 6 flows on your Help Center. Only flows matching

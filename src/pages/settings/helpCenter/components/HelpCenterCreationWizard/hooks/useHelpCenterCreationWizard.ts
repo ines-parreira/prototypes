@@ -326,6 +326,7 @@ export const useHelpCenterCreationWizard = (
                 )
                 break
             case HelpCenterCreationWizardStep.Branding:
+            case HelpCenterCreationWizardStep.Automate:
                 dispatch(
                     helpCenterUpdated({
                         ...payload,
