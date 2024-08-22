@@ -1,7 +1,7 @@
 import {fromJS, Map, List} from 'immutable'
+import {Tag} from '@gorgias/api-queries'
 
 import {PaginationMeta} from 'models/api/types'
-import {Tag} from 'models/tag/types'
 import {GorgiasAction} from 'state/types'
 
 import * as constants from './constants'

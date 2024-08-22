@@ -14,13 +14,13 @@ export default function TeamDropdownItem({item}: {item: Item}) {
     )
 
     return (
-        <div className={css.avatarItem}>
+        <div className={css.item}>
             {emoji ? (
                 <Emoji emoji={emoji} size={20} sheetSize={32} forceSize />
             ) : (
                 <Avatar name={item.name} shape="round" size={20} />
             )}
-            {item.name}
+            <div className={css.name}>{item.name}</div>
         </div>
     )
 }

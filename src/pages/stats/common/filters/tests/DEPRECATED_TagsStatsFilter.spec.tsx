@@ -5,13 +5,13 @@ import {Provider} from 'react-redux'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 import {Action} from 'redux'
+import {ListTagsOrderBy} from '@gorgias/api-queries'
 
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {fetchTags} from 'models/tag/resources'
-import {TagSortableProperties} from 'models/tag/types'
 import {OrderDirection} from 'models/api/types'
 import * as tagsActions from 'state/entities/tags/actions'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
@@ -153,8 +153,8 @@ describe('DEPRECATED_TagsStatsFilter', () => {
             expect(fetchTags).toHaveBeenCalledTimes(1)
             expect(fetchTags).toHaveBeenLastCalledWith(
                 {
-                    cursor: null,
-                    orderBy: `${TagSortableProperties.Name}:${OrderDirection.Asc}`,
+                    cursor: undefined,
+                    order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Asc}`,
                     search: 'bar',
                 },
                 expect.anything()
@@ -180,8 +180,8 @@ describe('DEPRECATED_TagsStatsFilter', () => {
             await waitFor(() =>
                 expect(fetchTags).toHaveBeenLastCalledWith(
                     {
-                        cursor: null,
-                        orderBy: `${TagSortableProperties.Name}:${OrderDirection.Asc}`,
+                        cursor: undefined,
+                        order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Asc}`,
                         search: 'foo',
                     },
                     expect.anything()

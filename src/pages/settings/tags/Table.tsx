@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
+import {ListTagsOrderBy, Tag} from '@gorgias/api-queries'
 
-import {Tag, TagSortableProperties} from 'models/tag/types'
+import {ORDER_BY, OrderBy} from 'models/tag/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {
     getMeta,
@@ -16,10 +17,8 @@ import Row from './Row'
 import css from './Table.less'
 import TableActions from './TableActions/TableActions'
 
-const sortableColumns = Object.values(TagSortableProperties)
-
-function isSortable(value: string): value is TagSortableProperties {
-    return sortableColumns.includes(value as TagSortableProperties)
+function isSortable(value: string): value is OrderBy {
+    return ORDER_BY.includes(value as OrderBy)
 }
 
 type Props = {
@@ -30,7 +29,7 @@ type Props = {
     onBulkDelete: () => void
     onMerge: () => void
     onSelectAll: () => void
-    onSort: (sort: TagSortableProperties, direction: boolean) => void
+    onSort: (sort: OrderBy, direction: boolean) => void
     refresh: (args?: {refreshPreviousPage?: boolean}) => void
     reverse: boolean
     sort: string
@@ -42,7 +41,7 @@ export class TableContainer extends Component<Props> {
         columns: [
             {
                 title: 'Tag',
-                field: 'name',
+                field: ListTagsOrderBy.Name,
             },
             {
                 title: 'Description',
@@ -50,7 +49,7 @@ export class TableContainer extends Component<Props> {
             },
             {
                 title: 'Tickets',
-                field: TagSortableProperties.Usage,
+                field: ListTagsOrderBy.Usage,
             },
         ],
     }

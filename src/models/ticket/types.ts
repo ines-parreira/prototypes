@@ -1,3 +1,5 @@
+import {Tag} from '@gorgias/api-queries'
+
 import {
     TicketChannel,
     TicketMessageSourceType,
@@ -11,7 +13,6 @@ import {CustomFields} from 'models/customField/types'
 import {Event} from 'models/event/types'
 import {Integration} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
-import {Tag} from 'models/tag/types'
 import {Team} from 'models/team/types'
 
 export type Ticket = {

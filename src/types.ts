@@ -1,4 +1,5 @@
 import {Map} from 'immutable'
+import {Tag} from '@gorgias/api-queries'
 
 import {RecentChatTicket} from 'business/types/recentChats'
 import {User} from 'config/types/user'
@@ -10,7 +11,6 @@ import {
 } from 'models/integration/types'
 import {NewPhoneNumber, OldPhoneNumber} from 'models/phoneNumber/types'
 import {Section} from 'models/section/types'
-import {Tag} from 'models/tag/types'
 import {Team} from 'models/team/types'
 import {View} from 'models/view/types'
 import {Account} from 'state/currentAccount/types'

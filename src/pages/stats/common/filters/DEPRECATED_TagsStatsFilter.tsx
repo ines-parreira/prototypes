@@ -23,6 +23,11 @@ type Props = {
 export const tagsStatsFilterLabels = {
     plural: 'tags',
     singular: 'tag',
+    dropdownMenuProps: {
+        style: {
+            maxHeight: 'unset',
+        },
+    },
 }
 
 export default function DEPRECATED_TagsStatsFilter({

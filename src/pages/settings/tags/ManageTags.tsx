@@ -10,6 +10,12 @@ import classnames from 'classnames'
 import {Container, Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import axios, {AxiosError, CancelToken} from 'axios'
 import {Map} from 'immutable'
+import {
+    ListTagsOrderBy,
+    ListTagsParams,
+    OrderDirection,
+    Tag,
+} from '@gorgias/api-queries'
 
 import {useAppNode} from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -17,9 +23,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {CursorDirection, CursorMeta, OrderDirection} from 'models/api/types'
+import {CursorDirection, CursorMeta} from 'models/api/types'
 import {fetchTags} from 'models/tag/resources'
-import {FetchTagsOptions, Tag, TagSortableProperties} from 'models/tag/types'
+import {OrderBy, OrderByOrderDir} from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -46,7 +52,7 @@ const ManageTags = () => {
     const areAllTagsSelected = useAppSelector(getSelectAll)
 
     const [meta, setMeta] = useState<CursorMeta | null>(null)
-    const [sort, setSort] = useState(TagSortableProperties.Usage)
+    const [sort, setSort] = useState<OrderBy>(ListTagsOrderBy.Usage)
     const [reverse, setReverse] = useState(true)
     const [search, setSearch] = useState('')
     const [newTag, setNewTag] = useState('')
@@ -74,36 +80,31 @@ const ManageTags = () => {
             direction,
             refreshPreviousPage,
         }: {
-            orderBy?: TagSortableProperties
-            orderDir?: FetchTagsOptions['orderDir']
-            search?: FetchTagsOptions['search']
+            orderBy?: OrderBy
+            orderDir?: OrderDirection
+            search?: ListTagsParams['search']
             direction?: CursorDirection
             refreshPreviousPage?: boolean
         } = {}) => {
-            const params: FetchTagsOptions = {
-                cursor: null,
-                orderBy: `${orderBy}:${orderDir}`,
+            const params = {
+                cursor:
+                    (direction === CursorDirection.PrevCursor ||
+                        refreshPreviousPage) &&
+                    meta?.prev_cursor
+                        ? meta.prev_cursor
+                        : direction === CursorDirection.NextCursor &&
+                          meta?.next_cursor
+                        ? meta.next_cursor
+                        : undefined,
+                order_by: `${orderBy}:${orderDir}` as OrderByOrderDir,
                 search,
-            }
-
-            if (
-                (direction === CursorDirection.PrevCursor ||
-                    refreshPreviousPage) &&
-                meta?.prev_cursor
-            ) {
-                params.cursor = meta?.prev_cursor
-            } else if (
-                direction === CursorDirection.NextCursor &&
-                meta?.next_cursor
-            ) {
-                params.cursor = meta?.next_cursor
             }
 
             try {
                 const res = await fetchTags(params, {cancelToken})
                 setMeta(res.data.meta)
                 setTags(res.data.data)
-                setSort(orderBy || TagSortableProperties.Usage)
+                setSort(orderBy || ListTagsOrderBy.UsageDescNameDesc)
                 setReverse(orderDir === OrderDirection.Asc ? false : true)
             } catch (error) {
                 if (axios.isCancel(error)) {
@@ -132,7 +133,7 @@ const ManageTags = () => {
         {loading: true}
     )
 
-    const onSort = (sort: TagSortableProperties, reverse: boolean) => {
+    const onSort = (sort: OrderBy, reverse: boolean) => {
         void fetchPage({
             orderBy: sort,
             orderDir: reverse ? OrderDirection.Desc : OrderDirection.Asc,

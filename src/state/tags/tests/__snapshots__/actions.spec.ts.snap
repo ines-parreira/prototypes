@@ -47,7 +47,7 @@ exports[`tags actions create 1`] = `
 [
   {
     "tag": {
-      "id": 1,
+      "name": "tag",
     },
     "type": "CREATE_TAG_START",
   },

@@ -1,7 +1,8 @@
+import {Tag} from '@gorgias/api-queries'
+
 import {TicketStatus} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import {MacroActionName} from 'models/macroAction/types'
-import {Tag} from 'models/tag/types'
 import {TicketMessage} from 'models/ticket/types'
 import {TicketEventEnum} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import {getTags} from 'state/tags/selectors'

@@ -4,8 +4,8 @@ import {fromJS, Map} from 'immutable'
 import {Form} from 'reactstrap'
 import classNames from 'classnames'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import {Tag, TagDecoration} from '@gorgias/api-queries'
 
-import {Tag, TagDecoration} from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ColorPicker from 'pages/common/components/ColorPicker/ColorPicker'
@@ -29,8 +29,8 @@ type Props = {
     WithColorTokens
 
 type State = {
-    name?: string
-    description?: string
+    name: string
+    description: string | null
     decoration: TagDecoration
 }
 
@@ -86,7 +86,7 @@ export class Row extends Component<Props, State> {
 
         const updatedRow = {
             ...row,
-            name: name!,
+            name,
             description,
             decoration,
         }
@@ -160,7 +160,7 @@ export class Row extends Component<Props, State> {
                                 <div className="mr-2">
                                     <TextInput
                                         size={100}
-                                        value={description}
+                                        value={description ?? undefined}
                                         onChange={this._changeDescription}
                                     />
                                 </div>

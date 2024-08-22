@@ -78,14 +78,25 @@ const TagDropdownMenu = ({filterBy, onClick}: Props) => {
             staleTime: STALE_TIME,
         }
     )
-    const tags = useMemo(
-        () => tagsResponse.data?.data.data ?? [],
-        [tagsResponse]
+
+    const loadMore = useCallback(() => {
+        if (tagsResponse.hasNextPage) {
+            void tagsResponse.fetchNextPage()
+        }
+    }, [tagsResponse])
+
+    const aggregatedTagsData = useMemo(
+        () =>
+            tagsResponse.data?.pages?.reduce((acc, page) => {
+                return [...acc, ...page.data.data]
+            }, [] as Tag[]) ?? [],
+        [tagsResponse.data?.pages]
     )
 
     const data = useMemo(
-        () => (filterBy ? tags.filter(filterBy) : tags),
-        [filterBy, tags]
+        () =>
+            filterBy ? aggregatedTagsData.filter(filterBy) : aggregatedTagsData,
+        [filterBy, aggregatedTagsData]
     )
 
     const handleOnClick = useCallback(
@@ -105,7 +116,7 @@ const TagDropdownMenu = ({filterBy, onClick}: Props) => {
     )
 
     const isLoading = useMemo(
-        () => tagsResponse.isLoading || search !== debouncedSearch,
+        () => tagsResponse.isFetching || search !== debouncedSearch,
         [tagsResponse, search, debouncedSearch]
     )
 
@@ -113,8 +124,8 @@ const TagDropdownMenu = ({filterBy, onClick}: Props) => {
         () =>
             hasUserRole &&
             search !== '' &&
-            !tags.find((tag) => tag.name === search),
-        [hasUserRole, search, tags]
+            !aggregatedTagsData.find((tag) => tag.name === search),
+        [hasUserRole, search, aggregatedTagsData]
     )
 
     const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
@@ -132,6 +143,7 @@ const TagDropdownMenu = ({filterBy, onClick}: Props) => {
             shouldRender:
                 !tagsResponse.isInitialLoading && search === debouncedSearch,
             isLoading,
+            loadMore,
             onClick: handleOnClick,
             search,
             setSearch,
@@ -142,6 +154,7 @@ const TagDropdownMenu = ({filterBy, onClick}: Props) => {
             debouncedSearch,
             handleOnClick,
             isLoading,
+            loadMore,
             search,
             setSearch,
             tagsResponse.isInitialLoading,

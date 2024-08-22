@@ -1,10 +1,12 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
+import {ListTagsOrderBy} from '@gorgias/api-queries'
 
 import {tags as tagsFixtures} from 'fixtures/tag'
 import client from 'models/api/resources'
 import {OrderDirection} from 'models/api/types'
+
 import {
     createTag,
     deleteTag,
@@ -12,7 +14,6 @@ import {
     fetchTags,
     updateTag,
 } from '../resources'
-import {TagSortableProperties} from '../types'
 
 const mockedServer = new MockAdapter(client)
 
@@ -54,7 +55,7 @@ describe('tag resources', () => {
             await expect(
                 fetchTags(
                     {
-                        orderBy: `${TagSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
+                        order_by: `${ListTagsOrderBy.CreatedDatetime}:${OrderDirection.Asc}`,
                     },
                     {cancelToken: source.token}
                 )
@@ -69,7 +70,7 @@ describe('tag resources', () => {
                     meta,
                 })
                 await fetchTags({
-                    orderBy: `${TagSortableProperties.Usage}:${direction}`,
+                    order_by: `${ListTagsOrderBy.Usage}:${direction}`,
                 })
                 expect(mockedServer.history.get[0].params).toMatchSnapshot()
             }

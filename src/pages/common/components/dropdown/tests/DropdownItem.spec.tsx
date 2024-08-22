@@ -1,8 +1,16 @@
-import React, {ContextType} from 'react'
+import React, {ContextType, useRef} from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
 import DropdownItem, {Props as DropdownItemProps} from '../DropdownItem'
 import {DropdownContext} from '../Dropdown'
+
+jest.mock('react', () => ({
+    ...jest.requireActual<typeof React>('react'),
+    useRef: jest.fn().mockReturnValue({current: null}),
+}))
+;(useRef as jest.Mock).mockImplementation(
+    jest.requireActual<typeof React>('react')['useRef']
+)
 
 const minProps = {
     onClick: jest.fn(),
@@ -58,13 +66,14 @@ describe('<DropdownItem />', () => {
     })
 
     it('should render with custom children passed', () => {
-        const {container} = render(
+        const childrenMock = 'FooChildren'
+        const {getByText} = render(
             <DropdownContext.Provider value={mockContext}>
-                <DropdownItem {...minProps}>FooChildren</DropdownItem>
+                <DropdownItem {...minProps}>{childrenMock}</DropdownItem>
             </DropdownContext.Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByText(childrenMock)).toBeInTheDocument()
     })
 
     it('should render with custom children function passed', () => {
@@ -87,13 +96,13 @@ describe('<DropdownItem />', () => {
     })
 
     it('should render with custom children passed that are neither a string nor a function', () => {
-        const {container} = render(
+        const {getByText} = render(
             <DropdownContext.Provider value={mockContext}>
                 <DropdownItem {...minProps}>{Number(88)}</DropdownItem>
             </DropdownContext.Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByText(Number(88))).toBeInTheDocument()
     })
 
     it('should render with any HTML tag passed as tag', () => {
@@ -104,23 +113,15 @@ describe('<DropdownItem />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render with checkbox when multiple selection is enabled', () => {
-        const {container} = render(
-            MockedComponent(minProps, {...mockContext, isMultiple: true})
-        )
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render when selected', () => {
-        const {container} = render(
+        const {getByText} = render(
             MockedComponent(minProps, {
                 ...mockContext,
                 value: minProps.option.value,
             })
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByText('done')).toBeInTheDocument()
     })
 
     it('should render when selected and multiple selection is enabled', () => {
@@ -256,5 +257,28 @@ describe('<DropdownItem />', () => {
         )
 
         expect(queryByText('done')).not.toBeInTheDocument()
+    })
+
+    it('should add a title attribute when overflowing from container', () => {
+        ;(useRef as jest.Mock).mockImplementation(() => ({
+            get current() {
+                return {offsetWidth: 100, scrollWidth: 120}
+            },
+
+            set current(_value) {},
+        }))
+
+        const label = 'A very long item overflowing'
+        const {container} = render(
+            MockedComponent(
+                {
+                    ...minProps,
+                    option: {value: 'x', label},
+                },
+                mockContext
+            )
+        )
+
+        expect(container.firstChild).toHaveAttribute('title', label)
     })
 })

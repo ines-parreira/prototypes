@@ -1,4 +1,4 @@
-import {Tag} from 'models/tag/types'
+import {Tag} from '@gorgias/api-queries'
 
 export const tags = [
     {
@@ -41,4 +41,4 @@ export const tags = [
         usage: 0,
         uri: '/api/tags/3/',
     },
-] as unknown as Tag[]
+] as Tag[]

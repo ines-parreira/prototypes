@@ -1,12 +1,13 @@
 import axios, {AxiosError, AxiosRequestConfig} from 'axios'
 import {List} from 'immutable'
+import {ListTagsParams, Tag} from '@gorgias/api-queries'
 
 import client from 'models/api/resources'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import type {StoreDispatch} from 'state/types'
 import {fetchTags as fetchTagsResources} from 'models/tag/resources'
-import {FetchTagsOptions, Tag, TagDraft} from 'models/tag/types'
+import {OrderByOrderDir, TagDraft} from 'models/tag/types'
 import GorgiasApi from 'services/gorgiasApi'
 import {createErrorNotification} from 'state/utils'
 
@@ -20,7 +21,9 @@ export function addTags(tags: Array<string> | string) {
 }
 
 export function fetchTags(
-    options: FetchTagsOptions = {},
+    options: Omit<ListTagsParams, 'order_by'> & {
+        order_by?: OrderByOrderDir
+    } = {},
     config: AxiosRequestConfig = {}
 ) {
     return async (dispatch: StoreDispatch) => {

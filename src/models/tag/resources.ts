@@ -1,32 +1,47 @@
 import {AxiosRequestConfig} from 'axios'
+import {
+    ListTagsOrderBy,
+    ListTagsParams,
+    OrderDirection,
+    Tag,
+} from '@gorgias/api-queries'
 
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
-import {deepMapKeysToSnakeCase} from 'models/api/utils'
 
-import {Tag, TagDraft, FetchTagsOptions, TagSortableProperties} from './types'
+import {OrderByOrderDir, TagDraft} from './types'
+
+const USAGE_ORDER_BYS = [
+    `${ListTagsOrderBy.Usage}:${OrderDirection.Asc}`,
+    `${ListTagsOrderBy.Usage}:${OrderDirection.Desc}`,
+] as const
+type UsageOrderBy = typeof USAGE_ORDER_BYS[number]
+
+function isMissingSecondOrderBy(value?: string): value is UsageOrderBy {
+    return !!USAGE_ORDER_BYS.find((orderBy) => orderBy === value)
+}
 
 export const fetchTags = async (
-    options: FetchTagsOptions = {},
+    params: Omit<ListTagsParams, 'order_by'> & {
+        order_by?: OrderByOrderDir | ListTagsParams['order_by']
+    } = {},
     config: AxiosRequestConfig = {}
 ) => {
-    const params: Record<string, unknown> = deepMapKeysToSnakeCase({
-        ...options,
-        ...(!options.limit ? {limit: 30} : {}),
-    })
-
-    // when sorting by usage, the second sorting attribute needs to be defined explicitly
-    if (options.orderBy?.startsWith(TagSortableProperties.Usage)) {
-        const orderDir = options.orderBy.split(':')[1]
-        params.order_by =
-            (params.order_by as string) +
-            `,${TagSortableProperties.Name}:${orderDir}`
-    }
-
     return await client.get<ApiListResponseCursorPagination<Tag[]>>(
         '/api/tags/',
         {
-            params,
+            params: {
+                limit: 30,
+                ...params,
+                // when sorting by usage, the second sorting attribute needs to be defined explicitly
+                ...(isMissingSecondOrderBy(params.order_by)
+                    ? {
+                          order_by: `${params.order_by},${
+                              ListTagsOrderBy.Name
+                          }:${params.order_by.split(':')[1] as OrderDirection}`,
+                      }
+                    : {}),
+            },
             ...config,
         }
     )

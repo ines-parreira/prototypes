@@ -1,9 +1,8 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-
 import {fromJS} from 'immutable'
+import {Tag} from '@gorgias/api-queries'
 
 import {GorgiasAction} from 'state/types'
-import {Tag} from 'models/tag/types'
 
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'

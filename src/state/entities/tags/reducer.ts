@@ -1,6 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit'
-
-import {Tag} from 'models/tag/types'
+import {Tag} from '@gorgias/api-queries'
 
 import {TagsState} from './types'
 import {

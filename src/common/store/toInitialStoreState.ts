@@ -1,7 +1,7 @@
+import {Tag} from '@gorgias/api-queries'
 import {fromJS} from 'immutable'
 
 import {NewPhoneNumber, OldPhoneNumber} from 'models/phoneNumber/types'
-import {Tag} from 'models/tag/types'
 import {View} from 'models/view/types'
 import {recentViewsStorage} from 'state/views/utils'
 import {GorgiasInitialState, InitialRootState} from 'types'

@@ -5,7 +5,8 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Tag} from 'models/tag/types'
+import {Tag} from '@gorgias/api-queries'
+
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {
     TAGS_FETCH_ERROR_MESSAGE,

@@ -4,13 +4,14 @@ import {fireEvent, render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
+import {Tag} from '@gorgias/api-queries'
 
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Tag} from 'models/tag/types'
 import {createTag} from 'models/tag/resources'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {RootState} from 'state/types'
+
 import TagsSelect from '../TagsSelect'
-import {RootState} from '../../../../../../state/types'
-import SelectField from '../../../../forms/SelectField/SelectField'
 
 const mockStore = configureMockStore([thunk])
 

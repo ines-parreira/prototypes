@@ -66,12 +66,16 @@ describe('<TagDropdownMenu />', () => {
         jest.useFakeTimers()
         mockUseListTags.mockReturnValue({
             data: {
-                data: {
-                    data: [
-                        {id: 1, name: 'exchange'},
-                        {id: 2, name: 'refund'},
-                    ],
-                },
+                pages: [
+                    {
+                        data: {
+                            data: [
+                                {id: 1, name: 'exchange'},
+                                {id: 2, name: 'refund'},
+                            ],
+                        },
+                    },
+                ],
             },
         })
     })
@@ -82,7 +86,7 @@ describe('<TagDropdownMenu />', () => {
 
     it('should display loader', () => {
         mockUseListTags.mockReturnValue({
-            isLoading: true,
+            isFetching: true,
         })
 
         const {getByText} = renderWithWrappers(props)

@@ -28,8 +28,16 @@
         width: 240px;
     }
 
-    .avatarItem {
+    .item {
         display: flex;
         gap: @layout-spacing-xs;
+
+        .name {
+            align-content: center;
+            overflow: hidden;
+            display: inline-block;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     }
 }

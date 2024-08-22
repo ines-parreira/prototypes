@@ -18,7 +18,7 @@ exports[`DEPRECATED_TagsStatsFilter should render the selected tags 1`] = `
     aria-hidden="true"
     class="dropdown-menu dropdown-menu-right"
     role="menu"
-    style="padding: 0px; width: auto; min-width: 16.428571428571427em; max-width: 28.571428571428573em; z-index: 1051; max-height: 400px; overflow: auto;"
+    style="padding: 0px; max-height: unset; width: auto; min-width: 16.428571428571427em; max-width: 28.571428571428573em; z-index: 1051; overflow: auto;"
     tabindex="-1"
   >
     <h6

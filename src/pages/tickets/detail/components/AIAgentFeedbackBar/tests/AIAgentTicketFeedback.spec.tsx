@@ -2,22 +2,17 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {render} from '@testing-library/react'
+import {Tag} from '@gorgias/api-queries'
 
 import {assumeMock} from 'utils/testing'
-
 import {RootState, StoreDispatch} from 'state/types'
 import {getAIAgentMessages} from 'state/ticket/selectors'
-
 import {TicketFeedback} from 'models/aiAgentFeedback/types'
 import {TicketMessage} from 'models/ticket/types'
-import {Tag} from 'models/tag/types'
-
 import {useAIAgentMessageEvents} from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
 
 import {TicketEventEnum} from '../types'
-
 import AIAgentTicketFeedback from '../AIAgentTicketFeedback'
-
 import {messageFeedback} from './fixtures'
 
 jest.mock('state/ticket/selectors')

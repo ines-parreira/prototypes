@@ -1,8 +1,9 @@
 import {List, Map} from 'immutable'
 import {AnyAction} from 'redux'
 import {ThunkDispatch} from 'redux-thunk'
-import {EntityType, ViewType} from 'models/view/types'
+import {Tag} from '@gorgias/api-queries'
 
+import {EntityType, ViewType} from 'models/view/types'
 import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
 import {
     EmailDomain,
@@ -14,7 +15,6 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import {OrderDirection, PaginationMeta} from 'models/api/types'
-import {Tag} from 'models/tag/types'
 import {TicketEvent} from 'models/ticket/types'
 import {Customer} from 'models/customer/types'
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'

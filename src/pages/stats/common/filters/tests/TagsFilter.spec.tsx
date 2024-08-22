@@ -2,6 +2,8 @@ import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {Provider} from 'react-redux'
+import {Tag} from '@gorgias/api-queries'
+
 import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
 import {
     FILTER_DESELECT_ALL_LABEL,
@@ -10,7 +12,6 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {Tag} from 'models/tag/types'
 import {tags} from 'fixtures/tag'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {TagsFilter} from 'pages/stats/common/filters/TagsFilter'

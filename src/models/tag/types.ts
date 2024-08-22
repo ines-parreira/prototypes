@@ -1,36 +1,14 @@
-import {
-    ApiPaginationParams,
-    MetaSortOptions,
-    OrderParams,
-} from 'models/api/types'
+import {ListTagsOrderBy, OrderDirection, Tag} from '@gorgias/api-queries'
 
-export type TagDecoration = {
-    color?: string
-}
+export type TagDraft = Pick<Tag, 'name'> & Partial<Pick<Tag, 'description'>>
 
-export type TagDraft = {
-    name: string
-    description?: string
-}
+export const ORDER_BY = [
+    ListTagsOrderBy.CreatedDatetime,
+    ListTagsOrderBy.Name,
+    ListTagsOrderBy.Usage,
+] as const
 
-export type Tag = Omit<TagDraft, 'description'> & {
-    created_datetime: string
-    decoration: TagDecoration
-    deleted_datetime: Maybe<string>
-    description: Maybe<string>
-    id: number
-    uri: string
-    usage: number
-}
+type OrderByTuple = typeof ORDER_BY
+export type OrderBy = OrderByTuple[number]
 
-export enum TagSortableProperties {
-    CreatedDatetime = 'created_datetime',
-    Name = 'name',
-    UpdatedDatetime = 'updated_datetime',
-    Usage = 'usage',
-}
-
-export type FetchTagsOptions = ApiPaginationParams &
-    OrderParams<TagSortableProperties | MetaSortOptions> & {
-        search?: string
-    }
+export type OrderByOrderDir = `${OrderBy}:${OrderDirection}`

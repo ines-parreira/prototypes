@@ -25,7 +25,7 @@ const defaultColors = [
 ]
 
 export type Props = {
-    value?: string
+    value?: string | null
     defaultValue?: string
     onChange: (value: string) => void
     colors?: string[]
@@ -94,7 +94,7 @@ export default function ColorPicker({
             <Input
                 data-testid="color-picker-input"
                 className={css.input}
-                value={value}
+                value={value ?? undefined}
                 onChange={(evt) => {
                     onChange(evt.target.value.trim())
                 }}

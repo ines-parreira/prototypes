@@ -10,6 +10,7 @@ import React, {
     ForwardedRef,
     KeyboardEvent,
     useRef,
+    useState,
 } from 'react'
 import classnames from 'classnames'
 import _isString from 'lodash/isString'
@@ -55,6 +56,7 @@ export const DropdownItem = <T extends boolean | number | string | null>(
 ) => {
     const itemRef = useRef<HTMLElement>(null)
     useImperativeHandle(ref, () => itemRef.current!)
+    const [title, setTitle] = useState<string>()
 
     const dropdownContext = useContext(DropdownContext)
 
@@ -101,6 +103,14 @@ export const DropdownItem = <T extends boolean | number | string | null>(
         const currentItem = itemRef.current
         if (autoFocus && !currentItem?.previousElementSibling) {
             currentItem?.focus()
+        }
+
+        if (
+            currentItem &&
+            currentItem.offsetWidth < currentItem.scrollWidth &&
+            typeof option.value === 'string'
+        ) {
+            setTitle(option.label)
         }
     })
 
@@ -185,6 +195,7 @@ export const DropdownItem = <T extends boolean | number | string | null>(
             }
             ref={itemRef}
             tabIndex={0}
+            title={title}
             {...rest}
         >
             {isMultiple && !hasSubItems && (

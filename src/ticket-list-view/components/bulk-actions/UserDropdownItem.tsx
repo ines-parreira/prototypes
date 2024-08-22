@@ -21,9 +21,9 @@ export default function UserDropdownItem({item}: {item: Item}) {
     )
 
     return (
-        <div className={css.avatarItem}>
+        <div className={css.item}>
             <Avatar name={item.name} url={url} shape="round" size={20} />
-            {item.name}
+            <div className={css.name}>{item.name}</div>
         </div>
     )
 }

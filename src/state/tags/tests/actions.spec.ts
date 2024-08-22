@@ -4,10 +4,11 @@ import {fromJS, Map} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import _isEqual from 'lodash/isEqual'
 import axios from 'axios'
+import {ListTagsOrderBy, Tag} from '@gorgias/api-queries'
 
 import client from 'models/api/resources'
 import {OrderDirection} from 'models/api/types'
-import {TagSortableProperties, Tag, TagDraft} from 'models/tag/types'
+import {TagDraft} from 'models/tag/types'
 import {StoreDispatch} from 'state/types'
 import * as actions from 'state/tags/actions'
 import * as types from 'state/tags/constants'
@@ -77,7 +78,7 @@ describe('tags actions', () => {
             })
             return store.dispatch(
                 actions.fetchTags({
-                    orderBy: `${TagSortableProperties.Usage}:${OrderDirection.Asc}`,
+                    order_by: `${ListTagsOrderBy.Usage}:${OrderDirection.Asc}`,
                 })
             )
         })
@@ -98,7 +99,7 @@ describe('tags actions', () => {
             })
             return store.dispatch(
                 actions.fetchTags({
-                    orderBy: `${TagSortableProperties.Name}:${OrderDirection.Asc}`,
+                    order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Asc}`,
                     search: 'something',
                 })
             )
@@ -134,7 +135,7 @@ describe('tags actions', () => {
             return store
                 .dispatch(
                     actions.fetchTags({
-                        orderBy: `${TagSortableProperties.Name}:${OrderDirection.Desc}`,
+                        order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Desc}`,
                     })
                 )
                 .then(() => {
@@ -188,7 +189,7 @@ describe('tags actions', () => {
     it('create', () => {
         mockServer.onPost('/api/tags/').reply(200, {id: 1})
         return store
-            .dispatch(actions.create({id: 1} as unknown as TagDraft))
+            .dispatch(actions.create({name: 'tag'} as TagDraft))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 

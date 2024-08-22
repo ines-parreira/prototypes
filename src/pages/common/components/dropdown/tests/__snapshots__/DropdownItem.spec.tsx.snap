@@ -12,21 +12,6 @@ exports[`<DropdownItem /> should render 1`] = `
 </li>
 `;
 
-exports[`<DropdownItem /> should render when selected 1`] = `
-<li
-  class="item"
-  role="option"
-  tabindex="0"
->
-  Foo
-  <span
-    class="icon material-icons"
-  >
-    done
-  </span>
-</li>
-`;
-
 exports[`<DropdownItem /> should render when selected and multiple selection is enabled 1`] = `
 <li
   class="item"
@@ -38,13 +23,13 @@ exports[`<DropdownItem /> should render when selected and multiple selection is 
   >
     <label
       class="Label--label--QAnfT label"
-      for="checkbox-2"
+      for="checkbox-1"
     >
       <input
         checked=""
         class="input"
-        id="checkbox-2"
-        name="checkbox-2"
+        id="checkbox-1"
+        name="checkbox-1"
         tabindex="-1"
         type="checkbox"
       />
@@ -62,50 +47,4 @@ exports[`<DropdownItem /> should render with any HTML tag passed as tag 1`] = `
 >
   Foo
 </div>
-`;
-
-exports[`<DropdownItem /> should render with checkbox when multiple selection is enabled 1`] = `
-<li
-  class="item"
-  role="option"
-  tabindex="0"
->
-  <div
-    class="checkbox"
-  >
-    <label
-      class="Label--label--QAnfT label"
-      for="checkbox-1"
-    >
-      <input
-        class="input"
-        id="checkbox-1"
-        name="checkbox-1"
-        tabindex="-1"
-        type="checkbox"
-      />
-    </label>
-  </div>
-  Foo
-</li>
-`;
-
-exports[`<DropdownItem /> should render with custom children passed 1`] = `
-<li
-  class="item"
-  role="option"
-  tabindex="0"
->
-  FooChildren
-</li>
-`;
-
-exports[`<DropdownItem /> should render with custom children passed that are neither a string nor a function 1`] = `
-<li
-  class="item"
-  role="option"
-  tabindex="0"
->
-  88
-</li>
 `;

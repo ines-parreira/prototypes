@@ -1,30 +1,36 @@
 import {useEffect} from 'react'
-import {
-    HttpError,
-    HttpResponse,
-    ListTags200,
-    useListTags as useListTagsQuery,
-} from '@gorgias/api-queries'
-import {QueryKey, UseQueryOptions} from '@tanstack/react-query'
+import {queryKeys} from '@gorgias/api-queries'
+import {useInfiniteQuery, UseInfiniteQueryOptions} from '@tanstack/react-query'
 
 import {handleError} from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {fetchTags} from 'models/tag/resources'
 
 export default function useListTags(
-    params?: Parameters<typeof useListTagsQuery>[0],
-    query?: UseQueryOptions<
-        HttpResponse<ListTags200, unknown>,
-        HttpError<unknown, unknown>,
-        HttpResponse<ListTags200, unknown>,
-        QueryKey
+    params?: Parameters<typeof fetchTags>[0],
+    query?: UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof fetchTags>>,
+        unknown
     >
 ) {
     const dispatch = useAppDispatch()
-    const response = useListTagsQuery<
-        HttpResponse<ListTags200, unknown>,
-        HttpError<unknown, unknown>
-    >(params, {
-        query,
+    const response = useInfiniteQuery({
+        queryKey: queryKeys.tags.listTags(
+            params?.search
+                ? {
+                      search: params.search,
+                  }
+                : undefined
+        ),
+        queryFn: async ({pageParam}) =>
+            fetchTags({
+                ...params,
+                cursor: pageParam,
+            }),
+        getNextPageParam: (lastPage) => {
+            return lastPage.data.meta.next_cursor
+        },
+        ...query,
     })
 
     useEffect(() => {
