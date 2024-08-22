@@ -442,6 +442,10 @@ export default function TemplateActionsForm({
                         <div>
                             <Button
                                 isLoading={
+                                    isActionUpserting ||
+                                    storeAppsIsInitialLoading
+                                }
+                                isDisabled={
                                     (!isNewAction && !formState.isDirty) ||
                                     isActionUpserted ||
                                     isDeletingAction ||
