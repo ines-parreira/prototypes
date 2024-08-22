@@ -2,6 +2,7 @@ import React, {useCallback, useMemo} from 'react'
 import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
 import {noop} from 'lodash'
+
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import Spinner from 'pages/common/components/Spinner'
@@ -10,6 +11,7 @@ import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSel
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import {HelpCenter} from 'models/helpCenter/types'
 import {AutomateFeatures} from 'pages/automate/common/types'
+import {IntegrationType} from 'models/integration/types'
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import {FlowsSettings} from './FlowsSettings'
 import css from './ConnectedChannelsChatView.less'
@@ -176,14 +178,16 @@ export const ConnectedChannelsHelpCenterView = ({
                     }}
                 />
 
-                <FeatureSettings
-                    title="Order Management"
-                    label="Enable Order Management"
-                    labelSubtitle="Allow customers to track and manage their orders directly within your Help Center."
-                    enabled={isOrderManagementEnabled}
-                    externalLinkUrl={`/app/automation/${shopType}/${shopName}/order-management`}
-                    onToggle={updateSettings()}
-                />
+                {shopType === IntegrationType.Shopify && (
+                    <FeatureSettings
+                        title="Order Management"
+                        label="Enable Order Management"
+                        labelSubtitle="Allow customers to track and manage their orders directly within your Help Center."
+                        enabled={isOrderManagementEnabled}
+                        externalLinkUrl={`/app/automation/${shopType}/${shopName}/order-management`}
+                        onToggle={updateSettings()}
+                    />
+                )}
             </div>
 
             {selfServiceConfiguration && (

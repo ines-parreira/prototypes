@@ -205,12 +205,11 @@ const DEPRECATED_ConnectedChannelsView = () => {
                     {!hasChatChannel && (
                         <NoChannelsAlert channelType={TicketChannel.Chat} />
                     )}
-                    {!hasHelpCenterChannel &&
-                        shopType === IntegrationType.Shopify && (
-                            <NoChannelsAlert
-                                channelType={TicketChannel.HelpCenter}
-                            />
-                        )}
+                    {!hasHelpCenterChannel && (
+                        <NoChannelsAlert
+                            channelType={TicketChannel.HelpCenter}
+                        />
+                    )}
                     {!hasContactFormChannel && (
                         <NoChannelsAlert
                             channelType={TicketChannel.ContactForm}

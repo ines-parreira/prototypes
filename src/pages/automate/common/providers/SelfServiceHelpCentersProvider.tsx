@@ -4,7 +4,6 @@ import {useParams} from 'react-router-dom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {helpCentersFetched} from 'state/entities/helpCenter/helpCenters'
-import {IntegrationType} from 'models/integration/constants'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
@@ -14,14 +13,13 @@ type Props = {
 }
 
 const SelfServiceHelpCentersProvider = ({children}: Props) => {
-    const {shopType = IntegrationType.Shopify, shopName} =
-        useParams<{shopType?: string; shopName: string}>()
+    const {shopName} = useParams<{shopName: string}>()
 
     const {client} = useHelpCenterApi()
     const dispatch = useAppDispatch()
 
     const handleFetchHelpCenters = useCallback(async () => {
-        if (!client || shopType !== IntegrationType.Shopify) {
+        if (!client) {
             return
         }
 
@@ -42,7 +40,7 @@ const SelfServiceHelpCentersProvider = ({children}: Props) => {
                 })
             )
         }
-    }, [client, shopType, shopName, dispatch])
+    }, [client, shopName, dispatch])
 
     useEffect(() => {
         void handleFetchHelpCenters()

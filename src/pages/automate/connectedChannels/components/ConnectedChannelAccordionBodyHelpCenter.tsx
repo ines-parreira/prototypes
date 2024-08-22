@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react'
 
+import {useParams} from 'react-router-dom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
@@ -14,6 +15,7 @@ import {getHasAutomate} from 'state/billing/selectors'
 import {TicketChannel} from 'business/types/ticket'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {IntegrationType} from 'models/integration/constants'
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import {
     MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
@@ -31,6 +33,9 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
     const {client} = useHelpCenterApi()
     const dispatch = useAppDispatch()
     const hasAutomate = useAppSelector(getHasAutomate)
+    const {shopType} = useParams<{
+        shopType: string
+    }>()
 
     const {automationSettings, handleHelpCenterAutomationSettingsUpdate} =
         useHelpCentersAutomationSettings(channel.value.id)
@@ -127,13 +132,17 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
                 }}
             />
 
-            <ConnectedChannelFeatureToggle
-                name={ORDER_MANAGEMENT}
-                value={channel.value.self_service_deactivated_datetime === null}
-                disabled={updatingHelpCenter || !hasAutomate}
-                onChange={updateHelpCenter}
-                action={!hasAutomate && <AutomateSubscriptionAction />}
-            />
+            {shopType === IntegrationType.Shopify && (
+                <ConnectedChannelFeatureToggle
+                    name={ORDER_MANAGEMENT}
+                    value={
+                        channel.value.self_service_deactivated_datetime === null
+                    }
+                    disabled={updatingHelpCenter || !hasAutomate}
+                    onChange={updateHelpCenter}
+                    action={!hasAutomate && <AutomateSubscriptionAction />}
+                />
+            )}
         </>
     )
 }
