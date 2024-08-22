@@ -12,10 +12,12 @@ import {
 } from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
+import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     agentFilter,
     calculatePercentage,
@@ -148,6 +150,37 @@ describe('reporting utils', () => {
                     member: HelpCenterTrackingEventMember.LocaleCode,
                     operator: ReportingFilterOperator.Equals,
                     values: ['en-us'],
+                },
+            ])
+        })
+
+        it('should convert StatsFilters to an array of ReportingFilter with help center with logical operator', () => {
+            expect(
+                statsFiltersToReportingFilters(HelpCenterStatsFiltersMembers, {
+                    period: {
+                        start_datetime: '2021-05-29T00:00:00.000+02:00',
+                        end_datetime: '2021-06-04T23:59:59.000+02:00',
+                    },
+                    helpCenters: withLogicalOperator(
+                        [1],
+                        LogicalOperatorEnum.NOT_ONE_OF
+                    ),
+                })
+            ).toEqual([
+                {
+                    member: HelpCenterTrackingEventMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: ['2021-05-29T00:00:00.000'],
+                },
+                {
+                    member: HelpCenterTrackingEventMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: ['2021-06-04T23:59:59.000'],
+                },
+                {
+                    member: HelpCenterTrackingEventMember.HelpCenterId,
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: ['1'],
                 },
             ])
         })

@@ -45,7 +45,7 @@ import AIBanner from 'pages/stats/help-center/components/AIBanner'
 import {useStatsFilters} from 'pages/stats/help-center/hooks/useStatsFilters'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {useGridSize} from 'hooks/useGridSize'
-import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 
@@ -65,9 +65,9 @@ const HelpCenterStatsComponent = ({
     const timezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
-    const {cleanStatsFilters: statsFiltersWithLogicalOperators} =
-        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-
+    const statsFiltersWithLogicalOperators = useAppSelector(
+        getPageStatsFiltersWithLogicalOperators
+    )
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersHelpCenter]
 
