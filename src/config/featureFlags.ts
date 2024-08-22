@@ -6,6 +6,7 @@ export enum FeatureFlagKey {
     AgentActivityTracking = 'agent-activity-tracking',
     AiAgentTrialMode = 'ai-agent-trial-mode-allowed',
     AiAgentAIGeneratedGuidances = 'ai-agent-ai-generated-guidances',
+    AiAgentSupportContactForm = 'ai-agent-contact-form-support',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
     AnalyticsAutoQA = 'analytics-auto-qa',
     AnalyticsNewFilters = 'analytics-new-filters',

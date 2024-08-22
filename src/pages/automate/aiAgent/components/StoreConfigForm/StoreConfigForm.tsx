@@ -94,6 +94,8 @@ export const StoreConfigForm = ({
     faqHelpCenters,
 }: Props) => {
     const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
+    const isContactFormSupportEnabled =
+        useFlags()[FeatureFlagKey.AiAgentSupportContactForm]
 
     const hasAutomate = useAppSelector(getHasAutomate)
     const dispatch = useAppDispatch()
@@ -594,8 +596,9 @@ export const StoreConfigForm = ({
                             emailItems={emailItems}
                         />
                         <div className={css.formInputFooterInfo}>
-                            Select one or more email addresses for AI Agent to
-                            use.
+                            {isContactFormSupportEnabled
+                                ? 'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.'
+                                : 'Select one or more email addresses for AI Agent to use.'}
                         </div>
                     </div>
 

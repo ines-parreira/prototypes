@@ -146,12 +146,26 @@ describe('<StoreConfigForm />', () => {
         })
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: false,
+            [FeatureFlagKey.AiAgentSupportContactForm]: false,
         })
     })
     it('should render the component', () => {
         renderComponent({})
 
         expect(screen.getByText('General settings')).toBeInTheDocument()
+    })
+
+    it('should render new email integration tooltip', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentSupportContactForm]: true,
+        })
+
+        renderComponent({})
+        expect(
+            screen.getByText(
+                'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.'
+            )
+        ).toBeInTheDocument()
     })
 
     it('should deactivate AI agent if agentMode is in trial and AiAgentTrialMode flag is false', () => {
