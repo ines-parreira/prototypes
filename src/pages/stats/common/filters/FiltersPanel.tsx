@@ -119,6 +119,7 @@ export const FiltersPanel = ({
 
     useEffect(() => {
         if (
+            optionalFilters.includes(FilterKey.CustomFields) &&
             customFieldFilters.length > 0 &&
             !activeFilters.find(
                 (filter) => filter.type === FilterKey.CustomFields
@@ -126,7 +127,7 @@ export const FiltersPanel = ({
         ) {
             setActiveFilters([...activeFilters, ...customFieldFilters])
         }
-    }, [activeFilters, customFieldFilters])
+    }, [activeFilters, customFieldFilters, optionalFilters])
 
     const options = activeFilters
         .filter((filter) => !filter.active)
