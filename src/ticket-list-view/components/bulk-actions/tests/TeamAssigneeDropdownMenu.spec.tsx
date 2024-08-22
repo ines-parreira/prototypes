@@ -2,16 +2,16 @@ import React, {ComponentProps, ContextType} from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import useListUsers from 'users/useListUsers'
 
 import {focusOnNextItem} from 'components/Dropdown'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
 import useSearch from 'search/useSearch'
+import useListTeams from 'teams/useListTeams'
 import {assumeMock} from 'utils/testing'
 
-import UserAssigneeDropdownMenu from '../UserAssigneeDropdownMenu'
-import UserDropdownItem from '../UserDropdownItem'
+import TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
+import TeamDropdownItem from '../TeamDropdownItem'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -21,21 +21,21 @@ useAppDispatchMock.mockReturnValue(dispatchMock)
 jest.mock('components/Dropdown/focusOnNextItem')
 const mockFocusOnNextItem = focusOnNextItem as jest.Mock
 
-jest.mock('users/useListUsers')
-const mockUseListUsers = useListUsers as jest.Mock
+jest.mock('teams/useListTeams')
+const mockUseListTeams = useListTeams as jest.Mock
 
 jest.mock('search/useSearch')
 const mockUseSearch = useSearch as jest.Mock
 
 jest.mock('pages/common/components/Spinner', () => () => 'SpinnerMock')
+const queryClient = mockQueryClient()
+
 jest.mock(
-    '../UserDropdownItem',
+    '../TeamDropdownItem',
     () =>
-        ({item}: ComponentProps<typeof UserDropdownItem>) =>
+        ({item}: ComponentProps<typeof TeamDropdownItem>) =>
             <div>{item.name}</div>
 )
-
-const queryClient = mockQueryClient()
 
 const mockContext: ContextType<typeof DropdownContext> = {
     isMultiple: false,
@@ -46,7 +46,7 @@ const mockContext: ContextType<typeof DropdownContext> = {
     onQueryChange: jest.fn(),
 }
 
-describe('<UserAssigneeDropdownMenu />', () => {
+describe('<TeamAssigneeDropdownMenu />', () => {
     const mockFetchNextPage = jest.fn()
     const props = {
         onClick: jest.fn(),
@@ -55,20 +55,20 @@ describe('<UserAssigneeDropdownMenu />', () => {
         render(
             <DropdownContext.Provider value={mockContext}>
                 <QueryClientProvider client={queryClient}>
-                    <UserAssigneeDropdownMenu {...props} />
+                    <TeamAssigneeDropdownMenu {...props} />
                 </QueryClientProvider>
             </DropdownContext.Provider>
         )
 
     beforeEach(() => {
-        mockUseListUsers.mockReturnValue({
+        mockUseListTeams.mockReturnValue({
             data: {
                 pages: [
                     {
                         data: {
                             data: [
-                                {id: 8, name: 'Agent numero uno'},
-                                {id: 23, name: 'Backup agent'},
+                                {id: 11, name: 'Super agents'},
+                                {id: 29, name: 'Chat team'},
                             ],
                         },
                     },
@@ -87,24 +87,24 @@ describe('<UserAssigneeDropdownMenu />', () => {
     })
 
     it('should load', () => {
-        mockUseListUsers.mockReturnValue({
+        mockUseListTeams.mockReturnValue({
             isFetching: true,
         })
 
         renderWithWrapper()
 
         expect(screen.getByText('SpinnerMock')).toBeInTheDocument()
-        expect(screen.getByText(/Clear assignee/)).toBeInTheDocument()
+        expect(screen.queryByText(/Clear assignee/)).toBeInTheDocument()
     })
 
-    it('should display users', () => {
+    it('should display teams', () => {
         renderWithWrapper()
 
-        expect(screen.getByText('Agent numero uno')).toBeInTheDocument()
-        expect(screen.getByText('Backup agent')).toBeInTheDocument()
+        expect(screen.getByText('Super agents')).toBeInTheDocument()
+        expect(screen.getByText('Chat team')).toBeInTheDocument()
     })
 
-    it('should trigger user request for searched term', async () => {
+    it('should trigger team request for searched term', async () => {
         renderWithWrapper()
 
         fireEvent.change(screen.getByPlaceholderText(/Search/), {
@@ -150,28 +150,28 @@ describe('<UserAssigneeDropdownMenu />', () => {
         expect(screen.getByPlaceholderText(/Search/)).toHaveValue('')
     })
 
-    it('should assign user on click', () => {
+    it('should assign team on click', () => {
         renderWithWrapper()
 
-        screen.getByText('Agent numero uno').click()
+        screen.getByText('Super agents').click()
 
         expect(props.onClick).toHaveBeenCalledWith({
-            id: 8,
-            name: 'Agent numero uno',
+            id: 11,
+            name: 'Super agents',
         })
         expect(screen.getByPlaceholderText(/Search/)).toHaveValue('')
     })
 
-    it('should assign user on keyboard event', () => {
+    it('should assign team on keyboard event', () => {
         renderWithWrapper()
 
-        fireEvent.keyDown(screen.getByText('Agent numero uno'), {
+        fireEvent.keyDown(screen.getByText('Super agents'), {
             key: 'Enter',
         })
 
         expect(props.onClick).toHaveBeenCalledWith({
-            id: 8,
-            name: 'Agent numero uno',
+            id: 11,
+            name: 'Super agents',
         })
         expect(screen.getByPlaceholderText(/Search/)).toHaveValue('')
     })

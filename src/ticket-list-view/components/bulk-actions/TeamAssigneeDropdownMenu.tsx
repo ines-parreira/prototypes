@@ -5,16 +5,17 @@ import React, {
     useRef,
     useState,
 } from 'react'
+import {ListTeamsOrderBy} from '@gorgias/api-queries'
 
-import {User} from 'config/types/user'
 import Button from 'pages/common/components/button/Button'
 import {Body, Context, focusOnNextItem, Item} from 'components/Dropdown'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import useSearch from 'search/useSearch'
+import {Team} from 'models/team/types'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
-import useListUsers from 'users/useListUsers'
+import useSearch from 'search/useSearch'
+import useListTeams from 'teams/useListTeams'
 
-import UserDropdownItem from './UserDropdownItem'
+import TeamDropdownItem from './TeamDropdownItem'
 import css from './style.less'
 
 type Props = {
@@ -24,7 +25,7 @@ type Props = {
 const LIMIT_ITEMS_SEARCH = 30
 const STALE_TIME = 5 * 60 * 1000 // 5 minutes
 
-const UserAssigneeDropdownMenu = ({onClick}: Props) => {
+const TeamAssigneeDropdownMenu = ({onClick}: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
     const [search, setSearch] = useState('')
     const [debouncedSearch, setDebouncedSearch] = useState('')
@@ -36,9 +37,10 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
         300
     )
 
-    const usersResponse = useListUsers(
+    const teamsResponse = useListTeams(
         {
             limit: LIMIT_ITEMS_SEARCH,
+            orderBy: ListTeamsOrderBy.NameAsc,
         },
         {
             refetchOnWindowFocus: false,
@@ -48,25 +50,24 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
     )
 
     const loadMore = useCallback(() => {
-        if (usersResponse.hasNextPage && !search) {
-            void usersResponse.fetchNextPage()
+        if (teamsResponse.hasNextPage && !search) {
+            void teamsResponse.fetchNextPage()
         }
-    }, [search, usersResponse])
+    }, [search, teamsResponse])
 
-    const aggregatedUsersData = useMemo(
+    const aggregatedTeamsData = useMemo(
         () =>
-            usersResponse.data?.pages?.reduce(
-                (acc, page) => [...acc, ...page.data.data],
-                [] as User[]
-            ),
-        [usersResponse.data?.pages]
+            teamsResponse.data?.pages?.reduce((acc, page) => {
+                return [...acc, ...page.data.data]
+            }, [] as Team[]),
+        [teamsResponse.data?.pages]
     )
 
     const searchResponse = useSearch(
         {
             query: debouncedSearch,
             size: LIMIT_ITEMS_SEARCH,
-            type: 'agent',
+            type: 'team',
         },
         {
             refetchOnWindowFocus: false,
@@ -75,23 +76,23 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
         }
     )
 
-    const data: Pick<User, 'id' | 'name' | 'email'>[] | User[] = useMemo(
+    const data = useMemo(
         () =>
             search
                 ? (searchResponse.data?.data.data as Pick<
-                      User,
-                      'id' | 'name' | 'email'
+                      Team,
+                      'id' | 'name'
                   >[]) ?? []
-                : aggregatedUsersData ?? [],
-        [search, searchResponse, aggregatedUsersData]
+                : aggregatedTeamsData ?? [],
+        [search, searchResponse, aggregatedTeamsData]
     )
 
     const isLoading = useMemo(
         () =>
             debouncedSearch !== search ||
-            usersResponse.isFetching ||
+            teamsResponse.isFetching ||
             searchResponse.isFetching,
-        [debouncedSearch, search, searchResponse, usersResponse]
+        [debouncedSearch, search, searchResponse, teamsResponse]
     )
 
     const handleOnClick = useCallback(
@@ -103,15 +104,25 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
         [onClick]
     )
 
+    const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            handleOnClick(null)
+        } else {
+            focusOnNextItem(e, wrapperRef)
+        }
+    }
+
     const contextValue = useMemo(
         () => ({
             data,
             debouncedSearch,
-            shouldRender:
-                !usersResponse.isInitialLoading && (!search || !isLoading),
             isLoading,
-            onClick: handleOnClick,
             loadMore,
+            onClick: handleOnClick,
+            shouldRender:
+                !teamsResponse.isInitialLoading &&
+                (!search || !isLoading) &&
+                debouncedSearch === search,
             search,
             setSearch,
             wrapperRef,
@@ -123,25 +134,15 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
             isLoading,
             loadMore,
             search,
-            setSearch,
-            usersResponse.isInitialLoading,
-            wrapperRef,
+            teamsResponse.isInitialLoading,
         ]
     )
-
-    const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            handleOnClick(null)
-        } else {
-            focusOnNextItem(e, wrapperRef)
-        }
-    }
 
     return (
         <Context.Provider value={contextValue}>
             <div className={css.dropdownMenu} ref={wrapperRef}>
                 <Body
-                    onRenderItem={(item) => <UserDropdownItem item={item} />}
+                    onRenderItem={(item) => <TeamDropdownItem item={item} />}
                 />
                 <DropdownFooter
                     onClick={() => handleOnClick(null)}
@@ -156,4 +157,4 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
     )
 }
 
-export default UserAssigneeDropdownMenu
+export default TeamAssigneeDropdownMenu

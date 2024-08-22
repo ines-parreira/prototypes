@@ -9,7 +9,7 @@ import {getHumanAgentsJS} from 'state/agents/selectors'
 
 import css from './style.less'
 
-export default function DropdownItem({item}: {item: Item}) {
+export default function UserDropdownItem({item}: {item: Item}) {
     const users = useAppSelector(getHumanAgentsJS)
 
     const url = useMemo(

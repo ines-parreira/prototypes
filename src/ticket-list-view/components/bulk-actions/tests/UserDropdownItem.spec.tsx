@@ -3,12 +3,12 @@ import {render, screen} from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
 
-import DropdownItem from '../DropdownItem'
+import UserDropdownItem from '../UserDropdownItem'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
 
-describe('<DropdownItem />', () => {
+describe('<UserDropdownItem />', () => {
     const props = {
         item: {
             name: 'Homer Simpson',
@@ -23,7 +23,7 @@ describe('<DropdownItem />', () => {
     })
 
     it('should render with avatar from item', () => {
-        render(<DropdownItem {...props} />)
+        render(<UserDropdownItem {...props} />)
 
         expect(screen.getByAltText('avatar').getAttribute('src')).toBe(
             props.item.meta.profile_picture_url
@@ -35,7 +35,7 @@ describe('<DropdownItem />', () => {
         useAppSelectorMock.mockReturnValue([props.item])
 
         render(
-            <DropdownItem
+            <UserDropdownItem
                 item={{
                     name: 'Homer Simpson',
                 }}

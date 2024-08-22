@@ -9,6 +9,7 @@ import {assumeMock} from 'utils/testing'
 import ApplyMacro from '../ApplyMacro'
 import BulkActions from '../BulkActions'
 import CloseTickets from '../CloseTickets'
+import TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
 import UserAssigneeDropdownMenu from '../UserAssigneeDropdownMenu'
 
 jest.mock(
@@ -38,6 +39,16 @@ jest.mock(
             (
                 <button onClick={() => onClick({name: 'tag'})}>
                     TagDropdownMenu
+                </button>
+            )
+)
+jest.mock(
+    '../TeamAssigneeDropdownMenu',
+    () =>
+        ({onClick}: ComponentProps<typeof TeamAssigneeDropdownMenu>) =>
+            (
+                <button onClick={() => onClick({id: 8})}>
+                    TeamAssigneeDropdownMenu
                 </button>
             )
 )
@@ -185,5 +196,19 @@ describe('<BulkActions />', () => {
         })
         expect(screen.queryByText('TagDropdownMenu')).not.toBeInTheDocument
         expect(screen.queryByText('Assign to')).not.toBeInTheDocument
+    })
+
+    it('should trigger a job for assigning a team', () => {
+        const {getByText} = render(<BulkActions {...minProps} />)
+        getByText('more_horiz').click()
+        getByText('Assign to team').click()
+        expect(screen.getByText('arrow_back')).toBeInTheDocument
+        getByText('TeamAssigneeDropdownMenu').click()
+
+        expect(mockCreateJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
+            updates: {assignee_team_id: 8},
+        })
+        expect(screen.queryByText('TagDropdownMenu')).not.toBeInTheDocument
+        expect(screen.queryByText('Assign to team')).not.toBeInTheDocument
     })
 })

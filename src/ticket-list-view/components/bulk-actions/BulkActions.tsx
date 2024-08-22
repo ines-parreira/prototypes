@@ -14,6 +14,7 @@ import {getMoment} from 'utils/date'
 
 import ApplyMacro from './ApplyMacro'
 import CloseTickets from './CloseTickets'
+import TeamAssigneeDropdownMenu from './TeamAssigneeDropdownMenu'
 import UserAssigneeDropdownMenu from './UserAssigneeDropdownMenu'
 import css from './style.less'
 
@@ -32,7 +33,7 @@ export enum Action {
     Delete = 'delete',
 }
 
-const jobs: Record<Action | 'tag' | 'agent', Job> = {
+const jobs: Record<Action | 'tag' | 'agent' | 'team', Job> = {
     tag: {
         label: 'Add tag',
         type: JobType.UpdateTicket,
@@ -51,6 +52,15 @@ const jobs: Record<Action | 'tag' | 'agent', Job> = {
                           name: agent.name!,
                       }
                     : null,
+            },
+        }),
+    },
+    team: {
+        label: 'Assign to team',
+        type: JobType.UpdateTicket,
+        params: (team?: Item | null) => ({
+            updates: {
+                assignee_team_id: team?.id ?? null,
             },
         }),
     },
@@ -92,9 +102,9 @@ const dropdownItems = Object.entries(jobs).map(([key, value]) => ({
 }))
 
 function isItemNested(
-    value: Action | 'agent' | 'tag'
-): value is 'tag' | 'agent' {
-    return ['agent', 'tag'].includes(value)
+    value: Action | 'agent' | 'tag' | 'team'
+): value is 'tag' | 'agent' | 'team' {
+    return ['agent', 'tag', 'team'].includes(value)
 }
 
 export default function BulkActions({
@@ -108,7 +118,7 @@ export default function BulkActions({
 }) {
     const dropdownButtonRef = useRef(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const [level, setLevel] = useState<'agent' | 'tag' | null>(null)
+    const [level, setLevel] = useState<'agent' | 'team' | 'tag' | null>(null)
 
     const ticketIds = useMemo(
         () =>
@@ -151,7 +161,7 @@ export default function BulkActions({
     )
 
     const onClick = useCallback(
-        (value: Action | 'agent' | 'tag', options?: Item | null) => {
+        (value: Action | 'agent' | 'tag' | 'team', options?: Item | null) => {
             if (!level && isItemNested(value)) {
                 setLevel(value)
                 return
@@ -225,8 +235,12 @@ export default function BulkActions({
                             <TagDropdownMenu
                                 onClick={(item) => onClick(level, item)}
                             />
-                        ) : (
+                        ) : level === 'agent' ? (
                             <UserAssigneeDropdownMenu
+                                onClick={(item) => onClick(level, item)}
+                            />
+                        ) : (
+                            <TeamAssigneeDropdownMenu
                                 onClick={(item) => onClick(level, item)}
                             />
                         )}
