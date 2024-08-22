@@ -13,6 +13,8 @@ import TwoFactorAuthenticationModal from 'pages/settings/yourProfile/twoFactorAu
 import {has2FaEnabled as has2FaEnabledSelector} from 'state/currentUser/selectors'
 import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import useSearch from 'hooks/useSearch'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import TwoFactorAuthenticationDisableModal from './TwoFactorAuthenticationDisableModal'
 
 export default function TwoFactorAuthenticationSection() {
@@ -79,9 +81,22 @@ export default function TwoFactorAuthenticationSection() {
                 <TwoFactorAuthenticationModal
                     isOpen={is2FASetupModalOpen}
                     initialBannerText={
-                        is2FAEnforced
-                            ? 'For security reasons, your admin requires you to setup two-factor authentication in order to access your account.'
-                            : undefined
+                        is2FAEnforced ? (
+                            <>
+                                For security reasons, your admin requires you to
+                                set up two-factor authentication to access your
+                                account by{' '}
+                                <b>
+                                    <DatetimeLabel
+                                        dateTime={twoFAEnforcedDatetime!}
+                                        labelFormat={
+                                            DateAndTimeFormatting.LongDateWithYear
+                                        }
+                                    />
+                                </b>
+                                .
+                            </>
+                        ) : undefined
                     }
                     initialBannerType={is2FARequired ? 'error' : 'info'}
                     onCancel={() => {

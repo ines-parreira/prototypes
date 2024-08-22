@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import classnames from 'classnames'
 import errorIcon from 'assets/img/icons/error.svg'
 import infoIcon from 'assets/img/icons/info.svg'
@@ -10,7 +10,7 @@ type BannerType = 'info' | 'error' | 'success'
 type OwnProps = {
     currentStep: number
     errorText?: string
-    initialBannerText?: string | null
+    initialBannerText?: ReactNode
     initialBannerType?: BannerType
 }
 
@@ -20,7 +20,7 @@ export default function ModalBanners({
     initialBannerText,
     initialBannerType,
 }: OwnProps) {
-    const getBanner = (bannerType: BannerType, bannerText: string) => {
+    const getBanner = (bannerType: BannerType, bannerText: ReactNode) => {
         const bannerTypeToClassMapper = {
             info: css.bannerInfo,
             error: css.bannerError,

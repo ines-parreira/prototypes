@@ -6,6 +6,7 @@ import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
+import {AccountSettingType} from 'state/currentAccount/types'
 import TwoFactorAuthenticationSection from '../TwoFactorAuthenticationSection'
 import {OwnProps} from '../TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 
@@ -16,6 +17,11 @@ jest.mock(
             props.isOpen && (
                 <div>
                     TwoFactorAuthenticationModal mocked
+                    {props.initialBannerText ? (
+                        <p data-testid="banner-text">
+                            {props.initialBannerText}
+                        </p>
+                    ) : null}
                     <button type="button" onClick={props.onFinish}>
                         Finish action mocked
                     </button>
@@ -104,5 +110,38 @@ describe('<TwoFactorAuthenticationSection />', () => {
                 }
             }
         )
+
+        it('should show the enforcement message', () => {
+            jest.resetAllMocks()
+            const store = mockStore({
+                currentAccount: fromJS({
+                    settings: [
+                        {
+                            type: AccountSettingType.Access,
+                            data: {
+                                two_fa_enforced_datetime: '2024-08-16T15:00:00',
+                            },
+                        },
+                    ],
+                }),
+                currentUser: fromJS({
+                    has_2fa_enabled: false,
+                }),
+            })
+
+            const {getByTestId} = renderWithRouter(
+                <Provider store={store}>
+                    <TwoFactorAuthenticationSection />
+                </Provider>,
+                {
+                    path: 'app/settings/password-2fa',
+                    route: 'app/settings/password-2fa?enforce_2fa_setup_modal=true',
+                }
+            )
+
+            expect(getByTestId('banner-text').textContent).toContain(
+                'by August 16, 2024.'
+            )
+        })
     })
 })

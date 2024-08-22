@@ -1,4 +1,10 @@
-import React, {useCallback, useState, useEffect, useMemo} from 'react'
+import React, {
+    useCallback,
+    useState,
+    useEffect,
+    useMemo,
+    ReactNode,
+} from 'react'
 import {AxiosError} from 'axios'
 import {dismissNotification} from 'reapop'
 
@@ -36,7 +42,7 @@ export type OwnProps = {
     isOpen: boolean
     onCancel?: () => void
     onFinish?: () => void
-    initialBannerText?: string
+    initialBannerText?: ReactNode
     initialBannerType?: 'info' | 'error'
     isUpdate?: boolean
 }
