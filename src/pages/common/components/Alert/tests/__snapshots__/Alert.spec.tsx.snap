@@ -112,6 +112,30 @@ exports[`<Alert /> should render an alert with custom actions 1`] = `
 </div>
 `;
 
+exports[`<Alert /> should render icon for ai alert type 1`] = `
+<div
+  class="alert ai"
+>
+  <div
+    class="iconContainer"
+  >
+    <img
+      alt="icon"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+  </div>
+</div>
+`;
+
 exports[`<Alert /> should render icon for error alert type 1`] = `
 <div
   class="alert error"

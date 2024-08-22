@@ -1,6 +1,7 @@
 import React, {ReactNode, MouseEvent, isValidElement} from 'react'
 import classnames from 'classnames'
 
+import autoAwesomeIcon from 'assets/img/icons/auto_awesome.svg'
 import infoIcon from 'assets/img/icons/info.svg'
 import successIcon from 'assets/img/icons/success.svg'
 import warningIcon from 'assets/img/icons/warning2.svg'
@@ -17,6 +18,7 @@ export enum AlertType {
     Warning = 'warning',
     Error = 'error',
     Loading = 'loading',
+    Ai = 'ai',
 }
 
 const alertIcon = {
@@ -29,6 +31,7 @@ const alertIcon = {
             <Spinner color="dark" />
         </span>
     ),
+    [AlertType.Ai]: autoAwesomeIcon,
 }
 
 export type Props = {

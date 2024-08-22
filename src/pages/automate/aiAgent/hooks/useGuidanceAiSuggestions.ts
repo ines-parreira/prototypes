@@ -1,4 +1,4 @@
-import {useCallback, useMemo} from 'react'
+import {useMemo} from 'react'
 import {useQueryClient} from '@tanstack/react-query'
 import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {
@@ -59,21 +59,6 @@ export const useGuidanceAiSuggestions = ({helpCenterId, shopName}: Props) => {
 
     const hasAIGuidancesFromAPI = !!data && data.length > 0
 
-    const getAiGuidanceById = useCallback(
-        (aiGuidanceId: string) => {
-            if (!data || !aiGuidanceId) {
-                return null
-            }
-            const aiGuidanceSuggestion = data.find(
-                (aiGuidance) => aiGuidance.key === aiGuidanceId
-            )
-            return aiGuidanceSuggestion
-                ? mapAIGuidanceDTOToAIGuidance(aiGuidanceSuggestion)
-                : null
-        },
-        [data]
-    )
-
     return {
         guidanceArticles,
         isLoadingAiGuidances,
@@ -87,7 +72,6 @@ export const useGuidanceAiSuggestions = ({helpCenterId, shopName}: Props) => {
         isGuidancesOnly: !hasAIGuidancesFromAPI && guidanceArticles.length > 0,
         isGuidancesAndAIGuidances:
             hasAIGuidancesFromAPI && guidanceArticles.length > 0,
-        getAiGuidanceById,
         invalidateAiGuidances,
     }
 }

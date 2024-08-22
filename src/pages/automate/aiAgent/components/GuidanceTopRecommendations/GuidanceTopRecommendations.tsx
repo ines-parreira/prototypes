@@ -38,7 +38,7 @@ export const GuidanceTopRecommendations = ({
             <GuidanceAiSuggestionsList
                 guidanceAiSuggestions={aiGuidances.slice(0, 3)}
                 shopName={shopName}
-                showAllSuggestionsCard
+                showAllSuggestionsCard={aiGuidances.length > 3}
                 source="recommendations"
             />
         </div>

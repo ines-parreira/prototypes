@@ -25,13 +25,21 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
     const {routes} = useAiAgentNavigation({shopName})
     const [onSubmitLoading, setOnSubmitLoading] = useState(false)
 
-    const {getAiGuidanceById, isLoadingAiGuidances, invalidateAiGuidances} =
+    const {guidanceAISuggestions, isLoadingAiGuidances, invalidateAiGuidances} =
         useGuidanceAiSuggestions({
             helpCenterId: guidanceHelpCenterId,
             shopName,
         })
 
-    const aiGuidanceSuggestion = getAiGuidanceById(aiGuidanceId)
+    const aiGuidanceSuggestion = useMemo(() => {
+        if (!guidanceAISuggestions || !aiGuidanceId) {
+            return null
+        }
+        const aiGuidanceSuggestion = guidanceAISuggestions.find(
+            (aiGuidance) => aiGuidance.key === aiGuidanceId
+        )
+        return aiGuidanceSuggestion
+    }, [aiGuidanceId, guidanceAISuggestions])
 
     const {createGuidanceArticle, isGuidanceArticleUpdating} =
         useGuidanceArticleMutation({
@@ -51,14 +59,14 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
         setOnSubmitLoading(false)
     }
 
-    const initialFields = useMemo(
-        () => ({
-            name: aiGuidanceSuggestion?.name || '',
-            content: aiGuidanceSuggestion?.content || '',
+    const initialFields = useMemo(() => {
+        if (!aiGuidanceSuggestion) return
+        return {
+            name: aiGuidanceSuggestion.name,
+            content: aiGuidanceSuggestion.content,
             isVisible: true,
-        }),
-        [aiGuidanceSuggestion]
-    )
+        }
+    }, [aiGuidanceSuggestion])
 
     if (isLoadingAiGuidances) {
         return <Loader data-testid="loader" />

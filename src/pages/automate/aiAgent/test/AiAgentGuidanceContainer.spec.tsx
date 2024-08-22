@@ -80,7 +80,6 @@ const defaultGuidanceAiSuggestionsProps: ReturnType<
     isEmptyStateAIGuidances: false,
     isGuidancesOnly: false,
     isGuidancesAndAIGuidances: false,
-    getAiGuidanceById: jest.fn(),
     invalidateAiGuidances: jest.fn(),
 }
 

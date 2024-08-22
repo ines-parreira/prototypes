@@ -108,14 +108,17 @@ export const GuidanceForm = ({
     const handleSubmit = async ({redirectTo}: {redirectTo: string}) => {
         try {
             await onSubmit(formState)
+            const notificationMessage =
+                actionType === 'update'
+                    ? 'Guidance successfully saved'
+                    : 'Guidance successfully created'
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
-                    message: 'Guidance successfully saved',
+                    message: notificationMessage,
                 })
             )
             logEvents()
-            resetForm()
             history.push(redirectTo)
         } catch (err) {
             void dispatch(
@@ -241,13 +244,13 @@ export const GuidanceForm = ({
             </div>
 
             <div className={css.alertContainer}>
-                {sourceType === 'ai' && (
-                    <Alert type={AlertType.Info} icon className={css.alert}>
+                {actionType === 'create' && sourceType === 'ai' && (
+                    <Alert type={AlertType.Ai} icon className={css.alert}>
                         <p>
                             AI-generated Guidance is crafted from your past
-                            tickets. It reflects how the AI Agent will behave in
-                            specific scenarios, using insights from your
-                            existing resources.{' '}
+                            tickets, addressing the most commonly surfaced
+                            scenarios using insights from your existing
+                            knowledge sources.{' '}
                             <b>
                                 Please review it thoroughly to maximize its
                                 benefits.

@@ -56,9 +56,10 @@ describe('<AiAgentGuidanceAiSuggestionNewContainer />', () => {
             defaultGuidanceArticleMutationProps
         )
         mockedUseGuidanceAiSuggestions.mockReturnValue({
-            getAiGuidanceById: () => aiGuidanceSuggestion,
-            isLoadingAiGuidances: false,
-            isLoadingGuidanceArticleList: false,
+            guidanceAISuggestions: [
+                getAIGuidanceFixture('id-1'),
+                getAIGuidanceFixture('id-2'),
+            ],
         } as any)
     })
 
@@ -72,7 +73,6 @@ describe('<AiAgentGuidanceAiSuggestionNewContainer />', () => {
 
     it('should render loader when fetching AI guidances', () => {
         mockedUseGuidanceAiSuggestions.mockReturnValue({
-            getAiGuidanceById: () => aiGuidanceSuggestion,
             isLoadingAiGuidances: true,
             isLoadingGuidanceArticleList: false,
         } as any)
