@@ -47,7 +47,6 @@ export const Role = ({
                             className={css.radioTile}
                             isSelected={role === key}
                             {...orderedRole}
-                            darkenCaption
                             isDisabled={isDisabled}
                             onClick={() =>
                                 setAgentState((previousState) => ({

@@ -77,7 +77,7 @@ const Headers = ({
                 </div>
             ))}
             {headers.length > 0 && (
-                <Caption error={error} darken>
+                <Caption error={error}>
                     Key and value pairs to be added as headers in all requests
                 </Caption>
             )}

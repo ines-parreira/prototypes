@@ -16,7 +16,6 @@ type Props = RadioFieldOption & {
     className?: string
     isSelected?: boolean
     isDisabled?: boolean
-    darkenCaption?: boolean
     onChange?: (value: string) => void
 } & Omit<
         InputHTMLAttributes<HTMLInputElement>,
@@ -33,7 +32,6 @@ function RadioButton(
         value,
         onChange,
         id,
-        darkenCaption = false,
         ...props
     }: Props,
     forwardedRef: ForwardedRef<HTMLInputElement>
@@ -60,11 +58,7 @@ function RadioButton(
                 />
                 {label}
             </Label>
-            {!!caption && (
-                <Caption className={css.caption} darken={darkenCaption}>
-                    {caption}
-                </Caption>
-            )}
+            {!!caption && <Caption className={css.caption}>{caption}</Caption>}
         </div>
     )
 }

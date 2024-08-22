@@ -110,7 +110,6 @@ function ParameterComponent({
                     rows={1}
                     placeholder="e.g. Value 1; Value 2; Value 3"
                     autoRowHeight
-                    darkenCaption
                     onChange={(value) =>
                         debouncedOnChange(`${indexedPath}.value`, value)
                     }

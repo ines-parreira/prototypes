@@ -434,7 +434,6 @@ export const StoreConfigForm = ({
                         ) : (
                             <ToggleInput
                                 isToggled={isAIAgentToggled}
-                                darkenCaption
                                 onClick={() => {
                                     updateValue(
                                         'deactivatedDatetime',
@@ -654,7 +653,6 @@ export const StoreConfigForm = ({
                     </div>
                     <div className={css.formGroup}>
                         <ToggleInput
-                            darkenCaption
                             className={css.featureToggle}
                             isToggled={isHandoffToggled}
                             onClick={() => {

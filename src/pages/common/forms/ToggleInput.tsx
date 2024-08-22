@@ -21,7 +21,6 @@ type Props = {
     isToggled: boolean
     isDisabled?: boolean
     isLoading?: boolean
-    darkenCaption?: boolean
     name?: string
     onClick?: (nextValue: boolean, event: MouseEvent<HTMLLabelElement>) => void
     dataCanduId?: string
@@ -38,7 +37,6 @@ const ToggleInput = ({
     isToggled,
     isDisabled = false,
     isLoading = false,
-    darkenCaption = false,
     name,
     onClick,
     dataCanduId,
@@ -88,11 +86,7 @@ const ToggleInput = ({
                 )}
                 {children}
             </Label>
-            {!!caption && (
-                <Caption className={css.caption} darken={darkenCaption}>
-                    {caption}
-                </Caption>
-            )}
+            {!!caption && <Caption className={css.caption}>{caption}</Caption>}
         </div>
     )
 }

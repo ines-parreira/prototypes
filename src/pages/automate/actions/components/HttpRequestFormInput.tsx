@@ -117,7 +117,6 @@ export default function HttpRequestFormInput({
                             onBlur={httpUrl.onBlur}
                         />
                         <Caption
-                            darken
                             error={httpUrlState?.error?.message}
                             className={css.caption}
                         />
@@ -262,7 +261,6 @@ export default function HttpRequestFormInput({
 
                 <TextArea
                     className={css.formItem}
-                    darkenCaption
                     label="Request results explanation for AI Agent (optional)"
                     isDisabled={disabled}
                     onChange={outputDescription.onChange}

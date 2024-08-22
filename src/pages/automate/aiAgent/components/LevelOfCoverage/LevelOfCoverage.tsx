@@ -46,7 +46,6 @@ export const LevelOfCoverage = ({
 
             <div className={css.radioButtonGroup}>
                 <PreviewRadioButton
-                    darkenCaption
                     value="level-of-coverage-beginner"
                     isSelected={
                         effectiveCoverageLevel === CoverageLevel.BEGINNER
@@ -58,7 +57,6 @@ export const LevelOfCoverage = ({
                     }}
                 />
                 <PreviewRadioButton
-                    darkenCaption
                     value="level-of-coverage-advanced"
                     isSelected={
                         effectiveCoverageLevel === CoverageLevel.ADVANCED

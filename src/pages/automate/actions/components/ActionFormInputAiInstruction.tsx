@@ -21,7 +21,6 @@ export default function ActionFormInputAiInstructions<
             placeholder="e.g. Update the customer’s shipping address with a new address"
             isDisabled={field.disabled}
             caption="Describe what the Action does."
-            darkenCaption
             error={fieldState.error?.message}
             {...field}
         />

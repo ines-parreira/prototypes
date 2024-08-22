@@ -66,7 +66,6 @@ const ActionsPlatformAppForm = ({
                                 value={value ?? ''}
                                 onChange={onChange}
                                 caption="URL with instructions on how to find an API key."
-                                darkenCaption
                                 placeholder="https://link.gorgias.com/xyz"
                             />
                         )}

@@ -267,7 +267,6 @@ export default function CustomActionsForm({
                             name="requiresConfirmation"
                             render={({field: {onChange, value}}) => (
                                 <CheckBox
-                                    darkenCaption
                                     isDisabled={isActionUpserting}
                                     isChecked={value}
                                     onChange={onChange}

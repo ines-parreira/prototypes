@@ -31,7 +31,6 @@ export default function ActionFormInputName<
             type="text"
             placeholder="e.g. Update shipping address"
             caption={caption}
-            darkenCaption
             error={fieldState.error?.message}
             {...field}
         />
