@@ -59,7 +59,7 @@ import {
     AgentsTableViewIdentifier,
     TableSetting,
 } from 'state/ui/stats/types'
-import {TooltipData} from './types'
+import {TooltipData} from 'pages/stats/types'
 
 export const TableColumnsOrder: AgentsTableColumn[] = [
     AgentsTableColumn.AgentName,

@@ -10,16 +10,14 @@ import {
     submitAgentTableConfigView,
     submitSetting,
 } from 'state/currentAccount/actions'
-import {
-    getAgentsTableConfigSettingsJS,
-    getAgentsTableActiveView,
-} from 'state/currentAccount/selectors'
+import {getAgentsTableConfigSettingsJS} from 'state/currentAccount/selectors'
 import {AccountSettingType} from 'state/currentAccount/types'
 import {AgentsTableColumn, TableView} from 'state/ui/stats/types'
 
 export const useAgentTableSetting = () =>
     useTableConfigSetting(
-        getAgentsTableActiveView,
+        getAgentsTableConfigSettingsJS,
+        agentPerformanceTableActiveView,
         TableColumnsOrderWithOnlineTime,
         submitAgentTableConfigView
     )

@@ -2,12 +2,29 @@ import {CombinedState} from 'redux'
 import {Selector} from 'reselect'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {AccountSettingTableConfig} from 'state/currentAccount/types'
 
 import {RootState, StoreDispatch, StoreState} from 'state/types'
 import {TableColumnSet, TableView} from 'state/ui/stats/types'
 
+const getActiveViewFromTableSetting = <T extends TableColumnSet>(
+    setting: AccountSettingTableConfig<T> | undefined
+): TableView<T> | undefined => {
+    if (setting !== undefined) {
+        const currentSettings = setting.data
+        return currentSettings.views.find(
+            (view) => view.id === currentSettings.active_view
+        )
+    }
+    return setting
+}
+
 export const useTableConfigSetting = <T extends TableColumnSet>(
-    tableSettingSelector: Selector<RootState, TableView<T>>,
+    tableSettingSelector: Selector<
+        RootState,
+        AccountSettingTableConfig<T> | undefined
+    >,
+    fallbackView: TableView<T>,
     columnsOrder: T[],
     submitActiveViewAction: (
         activeView: TableView<T>
@@ -17,7 +34,9 @@ export const useTableConfigSetting = <T extends TableColumnSet>(
     ) => Promise<ReturnType<StoreDispatch>>
 ) => {
     const dispatch = useAppDispatch()
-    const currentView = useAppSelector(tableSettingSelector)
+    const tableConfig = useAppSelector(tableSettingSelector)
+    const currentView =
+        getActiveViewFromTableSetting(tableConfig) || fallbackView
 
     const currentViewColumnsInOrder = currentView.metrics
         .map((metric) => metric.id)

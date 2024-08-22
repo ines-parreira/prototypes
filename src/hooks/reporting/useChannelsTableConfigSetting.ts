@@ -1,14 +1,16 @@
 import {useTableConfigSetting} from 'hooks/reporting/useTableConfigSetting'
 import {
+    channelsReportTableActiveView,
     ChannelsTableColumns,
     columnsOrder,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {submitChannelsTableConfigView} from 'state/currentAccount/actions'
-import {getChannelsTableActiveView} from 'state/currentAccount/selectors'
+import {getChannelsTableConfigSettingsJS} from 'state/currentAccount/selectors'
 
 export const useChannelsTableSetting = () =>
     useTableConfigSetting<ChannelsTableColumns>(
-        getChannelsTableActiveView,
+        getChannelsTableConfigSettingsJS,
+        channelsReportTableActiveView,
         columnsOrder,
         submitChannelsTableConfigView
     )

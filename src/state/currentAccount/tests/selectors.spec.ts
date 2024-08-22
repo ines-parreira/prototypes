@@ -1,11 +1,5 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map} from 'immutable'
-import {agentPerformanceTableActiveView} from 'pages/stats/AgentsTableConfig'
-import {channelsReportTableActiveView} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {
-    getAgentsTableActiveView,
-    getChannelsTableActiveView,
-} from 'state/currentAccount/selectors'
 
 import * as selectors from 'state/currentAccount/selectors'
 import {initialState} from 'state/currentAccount/reducers'
@@ -268,72 +262,6 @@ describe('current account selectors', () => {
 
         it('should return an empty map when state is empty', () => {
             expect(selector({} as RootState)).toEqualImmutable(fromJS({}))
-        })
-    })
-
-    describe('getAgentsTableActiveView', () => {
-        const viewId = 'someView'
-        const view = {
-            id: viewId,
-            name: 'Some name',
-            metrics: [],
-        }
-        const agentsTableSetting = {
-            id: 'someId',
-            type: AccountSettingType.AgentsTableConfig,
-            data: {
-                active_view: viewId,
-                views: [view],
-            },
-        }
-
-        it('should return active view from Agents Table Setting', () => {
-            const state = setStateWith(
-                defaultState,
-                ['settings'],
-                fromJS([agentsTableSetting])
-            )
-
-            expect(getAgentsTableActiveView(state)).toEqual(view)
-        })
-
-        it('should return default view when no Agents Table Setting', () => {
-            expect(getAgentsTableActiveView(defaultState)).toEqual(
-                agentPerformanceTableActiveView
-            )
-        })
-    })
-
-    describe('getChannelsTableActiveView', () => {
-        const viewId = 'someView'
-        const view = {
-            id: viewId,
-            name: 'Some name',
-            metrics: [],
-        }
-        const agentsTableSetting = {
-            id: 'someId',
-            type: AccountSettingType.ChannelsTableConfig,
-            data: {
-                active_view: viewId,
-                views: [view],
-            },
-        }
-
-        it('should return active view from Agents Table Setting', () => {
-            const state = setStateWith(
-                defaultState,
-                ['settings'],
-                fromJS([agentsTableSetting])
-            )
-
-            expect(getChannelsTableActiveView(state)).toEqual(view)
-        })
-
-        it('should return default view when no Agents Table Setting', () => {
-            expect(getChannelsTableActiveView(defaultState)).toEqual(
-                channelsReportTableActiveView
-            )
         })
     })
 

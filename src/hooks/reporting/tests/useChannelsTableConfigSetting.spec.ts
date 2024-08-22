@@ -1,9 +1,12 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
 import {useTableConfigSetting} from 'hooks/reporting/useTableConfigSetting'
-import {columnsOrder} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {
+    channelsReportTableActiveView,
+    columnsOrder,
+} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {submitChannelsTableConfigView} from 'state/currentAccount/actions'
-import {getChannelsTableActiveView} from 'state/currentAccount/selectors'
+import {getChannelsTableConfigSettingsJS} from 'state/currentAccount/selectors'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useTableConfigSetting')
@@ -14,7 +17,8 @@ describe('useChannelsTableConfigSetting.ts', () => {
         renderHook(() => useChannelsTableSetting())
 
         expect(useTableConfigSettingMock).toHaveBeenCalledWith(
-            getChannelsTableActiveView,
+            getChannelsTableConfigSettingsJS,
+            channelsReportTableActiveView,
             columnsOrder,
             submitChannelsTableConfigView
         )
