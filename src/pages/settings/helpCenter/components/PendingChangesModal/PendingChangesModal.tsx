@@ -1,11 +1,11 @@
 import {UnregisterCallback} from 'history'
-import React, {ReactFragment, useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {CloseModal} from '../articles/CloseModal'
 
 type PendingChangesModalProps = {
     when: boolean
-    message?: string | ReactFragment
+    message?: string
     show?: boolean
     onDiscard?: () => void
     onContinueEditing?: () => void

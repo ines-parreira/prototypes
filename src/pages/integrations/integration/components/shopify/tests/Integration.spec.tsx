@@ -186,6 +186,7 @@ describe('<ShopifyIntegration/>', () => {
         )
 
         it('should correctly update the sync customers option based on integration data, after we fetch it', () => {
+            // first, simulate still waiting for the integration data
             jest.spyOn(ToggleInput, 'default').mockImplementation(
                 ({
                     name,
@@ -195,7 +196,7 @@ describe('<ShopifyIntegration/>', () => {
                 )
             )
 
-            // first, simulate still waiting for the integration data
+            // then, simulate the integration data being fetched
             const component = renderWithRouter(
                 <Provider store={store}>
                     <Integration
@@ -205,7 +206,6 @@ describe('<ShopifyIntegration/>', () => {
                 </Provider>
             )
 
-            // then, simulate the integration data being fetched
             component.rerenderComponent(
                 <Provider store={store}>
                     <Integration
@@ -265,7 +265,7 @@ describe('<ShopifyIntegration/>', () => {
             ).toMatchSnapshot()
         })
 
-        it('when enabling DSA phone matching, should send all the integration meta after asking for confirmation', () => {
+        it('should correctly send the updated integration meta to the backend', () => {
             mockFlags({
                 [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: true,
             })
@@ -301,147 +301,9 @@ describe('<ShopifyIntegration/>', () => {
             fireEvent.click(
                 screen.getByRole('button', {name: 'Update Connection'})
             )
-
-            screen.getByText(/Save changes\?/i)
-            fireEvent.click(screen.getByRole('button', {name: 'Save Changes'}))
-
             expect(
                 updateOrCreateIntegrationRequest.mock.calls
             ).toMatchSnapshot()
-        })
-
-        it('when not enabling DSA phone matching, should send all the integration meta without asking for confirmation', () => {
-            mockFlags({
-                [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: true,
-            })
-            jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
-            const updateOrCreateIntegrationRequest =
-                actions.updateOrCreateIntegrationRequest as jest.Mock
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <Integration
-                        {...minProps}
-                        integration={fromJS({
-                            meta: {
-                                sync_customer_notes: true,
-                                default_address_phone_matching_enabled: true,
-                            },
-                        })}
-                    />
-                </Provider>
-            )
-
-            fireEvent.click(
-                screen.getByRole('checkbox', {
-                    name: 'Synchronize customer notes between Gorgias and Shopify',
-                })
-            )
-            fireEvent.click(
-                screen.getByRole('checkbox', {
-                    name: 'Match customer by Shopify default address phone number',
-                })
-            )
-
-            fireEvent.click(
-                screen.getByRole('button', {name: 'Update Connection'})
-            )
-
-            expect(screen.queryByText(/Save changes\?/i)).toBeNull()
-
-            expect(
-                updateOrCreateIntegrationRequest.mock.calls
-            ).toMatchSnapshot()
-        })
-
-        it('when enabling DSA phone matching, the modal should allow to discard changes', () => {
-            mockFlags({
-                [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: true,
-            })
-            jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
-            const updateOrCreateIntegrationRequest =
-                actions.updateOrCreateIntegrationRequest as jest.Mock
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <Integration
-                        {...minProps}
-                        integration={fromJS({
-                            meta: {
-                                default_address_phone_matching_enabled: false,
-                            },
-                        })}
-                    />
-                </Provider>
-            )
-
-            fireEvent.click(
-                screen.getByRole('checkbox', {
-                    name: 'Match customer by Shopify default address phone number',
-                })
-            )
-
-            fireEvent.click(
-                screen.getByRole('button', {name: 'Update Connection'})
-            )
-
-            screen.getByText(/Save changes\?/i)
-            fireEvent.click(
-                screen.getByRole('button', {name: 'Discard Changes'})
-            )
-
-            expect(
-                screen.getByRole('switch', {
-                    name: 'Match customer by Shopify default address phone number',
-                })
-            ).toHaveAttribute('aria-checked', 'false')
-
-            expect(updateOrCreateIntegrationRequest.mock.calls).toEqual([])
-        })
-
-        it('when enabling DSA phone matching, the modal should allow to go back to editing', () => {
-            mockFlags({
-                [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: true,
-            })
-            jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
-            const updateOrCreateIntegrationRequest =
-                actions.updateOrCreateIntegrationRequest as jest.Mock
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <Integration
-                        {...minProps}
-                        integration={fromJS({
-                            meta: {
-                                default_address_phone_matching_enabled: false,
-                            },
-                        })}
-                    />
-                </Provider>
-            )
-
-            fireEvent.click(
-                screen.getByRole('checkbox', {
-                    name: 'Match customer by Shopify default address phone number',
-                })
-            )
-
-            fireEvent.click(
-                screen.getByRole('button', {name: 'Update Connection'})
-            )
-
-            screen.getByText(/Save changes\?/i)
-            fireEvent.click(
-                screen.getByRole('button', {name: 'Back To Editing'})
-            )
-
-            expect(
-                screen.getByRole('switch', {
-                    name: 'Match customer by Shopify default address phone number',
-                })
-            ).toHaveAttribute('aria-checked', 'true')
-
-            expect(updateOrCreateIntegrationRequest.mock.calls).toEqual([])
         })
     })
 })

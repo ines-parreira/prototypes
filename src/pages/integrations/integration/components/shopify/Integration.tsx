@@ -24,7 +24,6 @@ import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAu
 import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
 import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
 import {FeatureFlagKey} from 'config/featureFlags'
-import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 
 type Props = {
     integration: Map<any, any>
@@ -60,71 +59,32 @@ export default function Integration({
         false
     )
 
-    const [isConfirmationModalShown, setIsConfirmationModalShown] =
-        useState(false)
-
-    const saveIntegrationMeta = useCallback(async () => {
-        await dispatch(
-            updateOrCreateIntegrationRequest(
-                integration.mergeDeep({
-                    meta: isShopifyDefaultAddressPhoneMatchingEnabled
-                        ? {
-                              sync_customer_notes: syncCustomerNotes,
-                              default_address_phone_matching_enabled:
-                                  defaultAddressPhoneMatchingEnabled,
-                          }
-                        : {sync_customer_notes: syncCustomerNotes},
-                })
-            )
-        )
-    }, [
-        dispatch,
-        integration,
-        isShopifyDefaultAddressPhoneMatchingEnabled,
-        syncCustomerNotes,
-        defaultAddressPhoneMatchingEnabled,
-    ])
-
     const handleUpdate = useCallback(
-        async (evt: FormEvent<HTMLFormElement>) => {
+        (evt: FormEvent<HTMLFormElement>) => {
             evt.preventDefault()
 
-            const isDefaultAddressPhoneMatchingBeingEnabled =
-                defaultAddressPhoneMatchingEnabled &&
-                integrationDefaultAddressPhoneMatchingEnabled !==
-                    defaultAddressPhoneMatchingEnabled
-            if (isDefaultAddressPhoneMatchingBeingEnabled) {
-                setIsConfirmationModalShown(true)
-            } else {
-                await saveIntegrationMeta()
-            }
+            void dispatch(
+                updateOrCreateIntegrationRequest(
+                    integration.mergeDeep({
+                        meta: isShopifyDefaultAddressPhoneMatchingEnabled
+                            ? {
+                                  sync_customer_notes: syncCustomerNotes,
+                                  default_address_phone_matching_enabled:
+                                      defaultAddressPhoneMatchingEnabled,
+                              }
+                            : {sync_customer_notes: syncCustomerNotes},
+                    })
+                )
+            )
         },
         [
-            setIsConfirmationModalShown,
-            saveIntegrationMeta,
+            dispatch,
+            integration,
+            isShopifyDefaultAddressPhoneMatchingEnabled,
+            syncCustomerNotes,
             defaultAddressPhoneMatchingEnabled,
-            integrationDefaultAddressPhoneMatchingEnabled,
         ]
     )
-
-    const onConfirmationModalSave = async () => {
-        try {
-            await saveIntegrationMeta()
-        } finally {
-            setIsConfirmationModalShown(false)
-        }
-    }
-
-    const onConfirmationModalDiscard = () => {
-        setSyncCustomerNotes(integrationSyncCustomerNotes)
-        setDefaultAddressPhoneMatchingEnabled(
-            integrationDefaultAddressPhoneMatchingEnabled
-        )
-        setIsConfirmationModalShown(false)
-    }
-
-    const onConfirmationModalContinueEditing = () =>
-        setIsConfirmationModalShown(false)
 
     useEffect(() => {
         // important, otherwise the value will remain the default one, since at the start we will not yet have the integration data loaded
@@ -297,24 +257,6 @@ export default function Integration({
                     <BackToConvertButton />
                 </Col>
             </Row>
-            <PendingChangesModal
-                when={areIntegrationOptionsDirty}
-                show={isConfirmationModalShown}
-                onSave={onConfirmationModalSave}
-                onDiscard={onConfirmationModalDiscard}
-                onContinueEditing={onConfirmationModalContinueEditing}
-                message={
-                    <>
-                        Matching customers by default address can lead to
-                        incorrectly merged customers, especially if the number
-                        is shared across multiple customers. Are you sure you
-                        want to activate this setting?{' '}
-                        <a href="https://docs.gorgias.com/en-US/shopify-faqs-81985">
-                            Learn more
-                        </a>
-                    </>
-                }
-            />
         </Container>
     )
 }
