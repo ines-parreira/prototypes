@@ -355,6 +355,8 @@ export const getSummaryQuery = (column: AgentsTableColumn): MetricQueryHook => {
 
 export const agentIdFields = [
     TicketMember.AssigneeUserId,
+    TicketMember.MessageSenderId,
+    TicketMember.MessageSenderIdToExclude,
     TicketMessagesMember.FirstHelpdeskMessageUserId,
     HelpdeskMessageMember.SenderId,
     AgentTimeTrackingMember.UserId,

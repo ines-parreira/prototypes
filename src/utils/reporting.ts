@@ -79,6 +79,11 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     tags: TicketMember.Tags,
 }
 
+export const HelpdeskTicketsRepliedStatsFiltersMembers: StatsFiltersMembers = {
+    ...HelpdeskMessagesStatsFiltersMembers,
+    agents: TicketMember.MessageSenderId,
+}
+
 export const AutomateStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: AutomationBillingEventMember.PeriodStart,
     periodEnd: AutomationBillingEventMember.PeriodEnd,

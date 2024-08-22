@@ -1,4 +1,5 @@
 import _flatMap from 'lodash/flatMap'
+import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
 import {CustomFieldFilter, WithLogicalOperator} from 'models/stat/types'
@@ -62,6 +63,8 @@ export const toLowerCaseString = (value: string | number) =>
 
 const NotEqualsMap = {
     [TicketMember.CustomField]: TicketMember.CustomFieldToExclude,
+    [TicketMember.Tags]: TicketMember.TagsToExclude,
+    [TicketMember.MessageSenderId]: TicketMember.MessageSenderIdToExclude,
 }
 
 export const addOptionalFilter = (
@@ -80,25 +83,27 @@ export const addOptionalFilter = (
         const values = filter.map((customFieldFilter) => {
             if (
                 customFieldFilter.operator === LogicalOperatorEnum.NOT_ONE_OF &&
-                filterDefaults.member === TicketMember.CustomField
+                (filterDefaults.member === TicketMember.CustomField ||
+                    filterDefaults.member === TicketMember.Tags ||
+                    filterDefaults.member === TicketMember.MessageSenderId)
             ) {
                 return {
-                    values: customFieldFilter.values.map(toLowerCaseString),
                     member: NotEqualsMap[filterDefaults.member],
+                    values: customFieldFilter.values.map(toLowerCaseString),
                     operator: FilterOperatorMap[customFieldFilter.operator],
                 }
             } else if (
                 customFieldFilter.operator === LogicalOperatorEnum.ALL_OF
             ) {
                 return customFieldFilter.values.map((value) => ({
-                    values: [toLowerCaseString(value)],
                     member: filterDefaults.member,
+                    values: [toLowerCaseString(value)],
                     operator: FilterOperatorMap[customFieldFilter.operator],
                 }))
             }
             return {
-                values: customFieldFilter.values.map(toLowerCaseString),
                 member: filterDefaults.member,
+                values: customFieldFilter.values.map(toLowerCaseString),
                 operator: FilterOperatorMap[customFieldFilter.operator],
             }
         })
@@ -110,10 +115,33 @@ export const addOptionalFilter = (
         }
         if (filter.operator === LogicalOperatorEnum.ALL_OF) {
             reportingFilters = filter.values.map((value) => ({
-                values: [toLowerCaseString(value)],
                 member: filterDefaults.member,
+                values: [toLowerCaseString(value)],
                 operator: FilterOperatorMap[filter.operator],
             }))
+        } else if (
+            filter.operator === LogicalOperatorEnum.NOT_ONE_OF &&
+            (filterDefaults.member === TicketMember.Tags ||
+                filterDefaults.member === TicketMember.MessageSenderId)
+        ) {
+            reportingFilters = [
+                {
+                    member: NotEqualsMap[filterDefaults.member],
+                    values: filter.values.map(toLowerCaseString),
+                    operator: FilterOperatorMap[filter.operator],
+                },
+            ]
+        } else if (
+            filter.operator === LogicalOperatorEnum.NOT_ONE_OF &&
+            filterDefaults.member === HelpdeskMessageMember.SenderId
+        ) {
+            reportingFilters = [
+                {
+                    member: filterDefaults.member,
+                    values: [...filter.values.map(toLowerCaseString), null],
+                    operator: FilterOperatorMap[filter.operator],
+                },
+            ]
         } else {
             reportingFilters = [
                 {

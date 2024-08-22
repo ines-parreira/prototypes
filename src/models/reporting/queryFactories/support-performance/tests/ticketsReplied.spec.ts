@@ -171,7 +171,7 @@ describe('ticketsRepliedMetricPerAgent', () => {
         expect(
             ticketsRepliedMetricPerAgentQueryFactory(statsFilters, timezone)
         ).toEqual({
-            dimensions: [HelpdeskMessageDimension.SenderId],
+            dimensions: [TicketDimension.MessageSenderId],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
                 {
@@ -240,7 +240,7 @@ describe('ticketsRepliedMetricPerAgent', () => {
                 sorting
             )
         ).toEqual({
-            dimensions: [HelpdeskMessageDimension.SenderId],
+            dimensions: [TicketDimension.MessageSenderId],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
                 {
@@ -289,7 +289,7 @@ describe('ticketsRepliedMetricPerAgent', () => {
                     values: statsFilters.channels,
                 },
                 {
-                    member: HelpdeskMessageMember.SenderId,
+                    member: TicketMember.MessageSenderId,
                     operator: ReportingFilterOperator.Equals,
                     values: agents?.map(String),
                 },

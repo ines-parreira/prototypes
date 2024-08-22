@@ -19,7 +19,7 @@ import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     getFilterDateRange,
-    HelpdeskMessagesStatsFiltersMembers,
+    HelpdeskTicketsRepliedStatsFiltersMembers,
     NotSpamNorTrashedTicketsFilter,
     perDimensionQueryFactory,
     PublicHelpdeskAndApiMessagesFilter,
@@ -59,7 +59,7 @@ export const ticketsRepliedQueryFactory = (
         },
         ...PublicHelpdeskAndApiMessagesFilter,
         ...statsFiltersToReportingFilters(
-            HelpdeskMessagesStatsFiltersMembers,
+            HelpdeskTicketsRepliedStatsFiltersMembers,
             filters
         ),
     ],
@@ -89,7 +89,7 @@ export const ticketsRepliedTimeSeriesQueryFactory = (
 export const ticketsRepliedMetricPerAgentQueryFactory =
     perDimensionQueryFactory(
         ticketsRepliedQueryFactory,
-        HelpdeskMessageDimension.SenderId
+        TicketDimension.MessageSenderId
     )
 
 export const ticketsRepliedMetricPerChannelQueryFactory =

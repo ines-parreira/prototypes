@@ -1,4 +1,5 @@
 import _flatMap from 'lodash/flatMap'
+import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
     addOptionalFilter,
@@ -80,36 +81,6 @@ describe('utils', () => {
                 filter,
                 filterDefaults
             )
-            // examples of result shapes for each logical operator
-            // // ALL OF
-            // const cubeFilter = [
-            //     {
-            //         values: ['123'],
-            //         member: filterDefaults.member,
-            //         operator: ReportingFilterOperator.Equals,
-            //     },
-            //     {
-            //         values: ['456'],
-            //         member: filterDefaults.member,
-            //         operator: ReportingFilterOperator.Equals,
-            //     }
-            // ]
-            // // ONE OF
-            // const cubeFilter = [
-            //     {
-            //         values: ['123', '456'],
-            //         member: filterDefaults.member,
-            //         operator: ReportingFilterOperator.Equals,
-            //     },
-            // ]
-            // // NOT ONE OF
-            // const cubeFilter = [
-            //     {
-            //         values: ['123', '456'],
-            //         member: filterDefaults.member,
-            //         operator: ReportingFilterOperator.NotEquals,
-            //     },
-            // ]
 
             expect(updatedFilters).toEqual(
                 filter.values.map((value) => ({
@@ -209,6 +180,69 @@ describe('utils', () => {
                     operator: FilterOperatorMap[value.operator],
                 }))
             )
+        })
+
+        it('should use alternative member for tags with NOT_ONE_OF operator', () => {
+            const filters: ReportingFilter[] = []
+            const filter = {
+                values: ['123', '456'],
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+            }
+
+            const updatedFilters = addOptionalFilter(filters, filter, {
+                member: TicketMember.Tags,
+                operator: ReportingFilterOperator.Equals,
+            })
+
+            expect(updatedFilters).toEqual([
+                {
+                    member: TicketMember.TagsToExclude,
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: filter.values,
+                },
+            ])
+        })
+
+        it('should use alternative member for messageSenderId with NOT_ONE_OF operator', () => {
+            const filters: ReportingFilter[] = []
+            const filter = {
+                values: ['123', '456'],
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+            }
+
+            const updatedFilters = addOptionalFilter(filters, filter, {
+                member: TicketMember.MessageSenderId,
+                operator: ReportingFilterOperator.Equals,
+            })
+
+            expect(updatedFilters).toEqual([
+                {
+                    member: TicketMember.MessageSenderIdToExclude,
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: filter.values,
+                },
+            ])
+        })
+
+        it('should add null value for HelpdeskMessageMember.SenderId with NOT_ONE_OF', () => {
+            const filters: ReportingFilter[] = []
+            const filter = {
+                values: ['123', '456'],
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+            }
+
+            const updatedFilters = addOptionalFilter(filters, filter, {
+                member: HelpdeskMessageMember.SenderId,
+                operator: ReportingFilterOperator.Equals,
+            })
+
+            expect(updatedFilters).toEqual([
+                {
+                    member: HelpdeskMessageMember.SenderId,
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: [...filter.values, null],
+                },
+            ])
         })
 
         it.each([

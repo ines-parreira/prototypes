@@ -33,7 +33,7 @@ export enum ReportingFilterOperator {
 export type ReportingFilter = {
     member: Cubes['filters']
     operator: ReportingFilterOperator
-    values: string[]
+    values: (string | null)[]
 }
 
 export enum ReportingGranularity {
