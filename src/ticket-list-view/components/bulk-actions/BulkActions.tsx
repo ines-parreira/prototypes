@@ -2,8 +2,8 @@ import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {JobType} from '@gorgias/api-queries'
 import cn from 'classnames'
 
-import {Update, useBulkAction} from 'jobs'
 import {Item} from 'components/Dropdown'
+import {Update, useBulkAction} from 'jobs'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -14,6 +14,7 @@ import {getMoment} from 'utils/date'
 
 import ApplyMacro from './ApplyMacro'
 import CloseTickets from './CloseTickets'
+import UserAssigneeDropdownMenu from './UserAssigneeDropdownMenu'
 import css from './style.less'
 
 type Job = {
@@ -31,12 +32,26 @@ export enum Action {
     Delete = 'delete',
 }
 
-const jobs: Record<Action | 'tag', Job> = {
+const jobs: Record<Action | 'tag' | 'agent', Job> = {
     tag: {
         label: 'Add tag',
         type: JobType.UpdateTicket,
         params: (tag?: Item | null) => ({
             updates: {tags: [tag!.name!]},
+        }),
+    },
+    agent: {
+        label: 'Assign to',
+        type: JobType.UpdateTicket,
+        params: (agent?: Item | null) => ({
+            updates: {
+                assignee_user: agent
+                    ? {
+                          id: agent.id!,
+                          name: agent.name!,
+                      }
+                    : null,
+            },
         }),
     },
     mark_as_unread: {
@@ -76,8 +91,10 @@ const dropdownItems = Object.entries(jobs).map(([key, value]) => ({
     value: key as Action,
 }))
 
-function isItemNested(value: Action | 'tag'): value is 'tag' {
-    return ['tag'].includes(value)
+function isItemNested(
+    value: Action | 'agent' | 'tag'
+): value is 'tag' | 'agent' {
+    return ['agent', 'tag'].includes(value)
 }
 
 export default function BulkActions({
@@ -91,7 +108,7 @@ export default function BulkActions({
 }) {
     const dropdownButtonRef = useRef(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const [level, setLevel] = useState<'tag' | null>(null)
+    const [level, setLevel] = useState<'agent' | 'tag' | null>(null)
 
     const ticketIds = useMemo(
         () =>
@@ -134,7 +151,7 @@ export default function BulkActions({
     )
 
     const onClick = useCallback(
-        (value: Action | 'tag', options?: Item | null) => {
+        (value: Action | 'agent' | 'tag', options?: Item | null) => {
             if (!level && isItemNested(value)) {
                 setLevel(value)
                 return
@@ -204,8 +221,12 @@ export default function BulkActions({
                         >
                             Back
                         </DropdownHeader>
-                        {level === 'tag' && (
+                        {level === 'tag' ? (
                             <TagDropdownMenu
+                                onClick={(item) => onClick(level, item)}
+                            />
+                        ) : (
+                            <UserAssigneeDropdownMenu
                                 onClick={(item) => onClick(level, item)}
                             />
                         )}

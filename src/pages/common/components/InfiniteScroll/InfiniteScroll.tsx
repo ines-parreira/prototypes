@@ -1,39 +1,53 @@
-import React, {ReactNode, useCallback, useEffect, useRef, useState} from 'react'
+import React, {
+    HTMLProps,
+    ReactNode,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 import classnames from 'classnames'
 
-import Loader from 'pages/common/components/Loader/Loader'
-
 import css from 'pages/common/components/InfiniteScroll/InfiniteScroll.less'
+
+import Spinner from '../Spinner'
 
 type Props = {
     children: ReactNode
     className?: string
+    isLoading?: boolean
+    loaderSize?: number
     onLoad: () => Promise<any>
     shouldLoadMore?: boolean
     threshold?: number
-    loaderSize?: number
 }
 
 const InfiniteScroll = ({
     children,
     className = '',
+    isLoading,
+    loaderSize,
     onLoad = () => Promise.resolve(),
     shouldLoadMore = true,
     threshold = 50,
-    loaderSize = 40,
-}: Props): JSX.Element => {
-    const [isLoading, setIsLoading] = useState(false)
+    ...props
+}: Props & HTMLProps<HTMLDivElement>) => {
+    const [internalIsLoading, setInternalIsLoading] = useState(false)
     const ref = useRef<HTMLDivElement>(null)
+    const isLoadingState = useMemo(
+        () => isLoading ?? internalIsLoading,
+        [internalIsLoading, isLoading]
+    )
 
     const handleLoad = useCallback(async () => {
         const {current} = ref
 
-        if (!shouldLoadMore || isLoading || !current) {
+        if (!shouldLoadMore || isLoadingState || !current) {
             return
         }
 
         const {clientHeight, scrollHeight, scrollTop} = current
-
         const containerScroll = scrollTop + clientHeight
 
         if (
@@ -42,11 +56,17 @@ const InfiniteScroll = ({
             (clientHeight === scrollHeight ||
                 containerScroll + threshold >= scrollHeight)
         ) {
-            setIsLoading(true)
+            setInternalIsLoading(true)
             await onLoad()
-            setIsLoading(false)
+            setInternalIsLoading(false)
         }
-    }, [isLoading, onLoad, setIsLoading, shouldLoadMore, threshold])
+    }, [
+        isLoadingState,
+        onLoad,
+        setInternalIsLoading,
+        shouldLoadMore,
+        threshold,
+    ])
 
     useEffect(() => {
         void handleLoad()
@@ -57,24 +77,21 @@ const InfiniteScroll = ({
         <div
             ref={ref}
             onScroll={handleLoad}
-            className={classnames(
-                css.component,
-                {
-                    [css.loading]: isLoading,
-                },
-                className
-            )}
+            className={classnames(css.component, className)}
+            {...props}
         >
             {children}
-            <Loader
-                className={css.loader}
-                minHeight="0"
-                size={`${loaderSize}px`}
-            />
+            {isLoadingState && (
+                <div className={css.wrapper}>
+                    <Spinner
+                        className={css.spinner}
+                        style={{...(loaderSize ? {width: loaderSize} : {})}}
+                        color="gloom"
+                    />
+                </div>
+            )}
         </div>
     )
 }
-
-InfiniteScroll.displayName = 'InfiniteScroll'
 
 export default InfiniteScroll

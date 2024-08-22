@@ -1,4 +1,4 @@
-import React, {ContextType} from 'react'
+import React, {ComponentProps, ContextType} from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
 import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
@@ -30,14 +30,18 @@ const mockContext = {
     search: '',
     setSearch: jest.fn(),
     debouncedSearch: '',
+    shouldRender: true,
 }
 
 describe('<Body />', () => {
-    const renderWithContexts = (context: ContextType<typeof Context>) =>
+    const renderWithContexts = (
+        context: ContextType<typeof Context>,
+        props?: ComponentProps<typeof Body>
+    ) =>
         render(
             <DropdownContext.Provider value={mockDropdownContext}>
                 <Context.Provider value={context}>
-                    <Body />
+                    <Body {...props} />
                 </Context.Provider>
             </DropdownContext.Provider>
         )
@@ -58,6 +62,16 @@ describe('<Body />', () => {
         expect(getAllByRole('listitem').length).toBe(1)
         expect(getAllByRole('listitem')[0]).toBe(getByPlaceholderText('Search'))
         expect(getByText('No results')).toBeInTheDocument()
+    })
+
+    it('should not render any content when data is not available', () => {
+        const {queryByText, queryAllByRole} = renderWithContexts({
+            ...mockContext,
+            shouldRender: false,
+        })
+
+        expect(queryAllByRole('listitem').length).toBe(1)
+        expect(queryByText('No results')).not.toBeInTheDocument()
     })
 
     it('should handle click on item', () => {
@@ -97,5 +111,15 @@ describe('<Body />', () => {
             key: 'ArrowDown',
         })
         expect(mockFocusOnNextItem).toHaveBeenCalled()
+    })
+
+    it('should use custom item rendering function', () => {
+        const onRenderItemMock = jest.fn()
+        renderWithContexts(mockContext, {
+            onRenderItem: onRenderItemMock,
+        })
+
+        expect(onRenderItemMock).toHaveBeenNthCalledWith(1, mockContext.data[0])
+        expect(onRenderItemMock).toHaveBeenNthCalledWith(2, mockContext.data[1])
     })
 })

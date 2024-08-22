@@ -1,4 +1,7 @@
-import {UserRole} from 'config/types/user'
+import {
+    ListUsersRelationshipsItem,
+    ListUsersRolesItem,
+} from '@gorgias/api-queries'
 import {ApiPaginationParams, OrderParams} from 'models/api/types'
 
 export enum AgentSortableProperties {
@@ -20,8 +23,8 @@ export type FetchAgentsOptions = Omit<
         id?: number
         email?: string
         externalId?: string
-        roles?: UserRole[]
-        relationships?: AgentsRelationshipsParam
+        roles?: ListUsersRolesItem[]
+        relationships?: ListUsersRelationshipsItem[]
     }
 
 export const DateFormattingSetting = {

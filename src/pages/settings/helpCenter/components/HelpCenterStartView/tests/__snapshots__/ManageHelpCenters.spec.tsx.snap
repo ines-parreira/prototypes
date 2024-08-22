@@ -551,19 +551,6 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
           </table>
         </div>
       </div>
-      <div
-        class="container loader"
-      >
-        <div
-          class="inner"
-          style="min-height: 0;"
-        >
-          <i
-            class="icon-custom icon-circle-o-notch md-spin"
-            style="font-size: 30px;"
-          />
-        </div>
-      </div>
     </div>
   </div>
 </div>

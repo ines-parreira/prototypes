@@ -2,12 +2,13 @@
     position: relative;
     overflow: auto;
 
-    .loader {
-        display: none;
-        height: 56px;
-    }
+    .wrapper {
+        padding: 5px;
+        display: flex;
 
-    &.loading .loader {
-        display: block;
+        .spinner {
+            margin: 20px auto;
+            width: 40px;
+        }
     }
 }

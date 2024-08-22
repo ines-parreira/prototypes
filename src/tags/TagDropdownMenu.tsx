@@ -129,6 +129,8 @@ const TagDropdownMenu = ({filterBy, onClick}: Props) => {
         () => ({
             data,
             debouncedSearch,
+            shouldRender:
+                !tagsResponse.isInitialLoading && search === debouncedSearch,
             isLoading,
             onClick: handleOnClick,
             search,
@@ -142,6 +144,7 @@ const TagDropdownMenu = ({filterBy, onClick}: Props) => {
             isLoading,
             search,
             setSearch,
+            tagsResponse.isInitialLoading,
             wrapperRef,
         ]
     )

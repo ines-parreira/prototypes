@@ -24,19 +24,6 @@ exports[`MacroList component should render active and disabled macros 1`] = `
   >
     Pizza Margherita
   </div>
-  <div
-    class="container loader"
-  >
-    <div
-      class="inner"
-      style="min-height: 0;"
-    >
-      <i
-        class="icon-custom icon-circle-o-notch md-spin"
-        style="font-size: 40px;"
-      />
-    </div>
-  </div>
 </div>
 `;
 
@@ -63,19 +50,6 @@ exports[`MacroList component should render the macro list 1`] = `
     class="item"
   >
     Pizza Margherita
-  </div>
-  <div
-    class="container loader"
-  >
-    <div
-      class="inner"
-      style="min-height: 0;"
-    >
-      <i
-        class="icon-custom icon-circle-o-notch md-spin"
-        style="font-size: 40px;"
-      />
-    </div>
   </div>
 </div>
 `;

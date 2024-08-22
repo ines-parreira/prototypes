@@ -1,9 +1,15 @@
-import React, {KeyboardEvent, useCallback, useContext, useRef} from 'react'
+import React, {
+    KeyboardEvent,
+    ReactNode,
+    useCallback,
+    useContext,
+    useRef,
+} from 'react'
 import cn from 'classnames'
 
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import dropdownItemCss from 'pages/common/components/dropdown/DropdownItem.less'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 
@@ -11,7 +17,7 @@ import Context, {Item} from './Context'
 import focusOnNextItem from './focusOnNextItem'
 import css from './style.less'
 
-const Body = () => {
+const Body = ({onRenderItem}: {onRenderItem?: (label: Item) => ReactNode}) => {
     const context = useContext(Context)
     if (!context) {
         throw new Error(
@@ -19,7 +25,16 @@ const Body = () => {
         )
     }
     const searchInputRef = useRef<HTMLInputElement>(null)
-    const {data, isLoading, onClick, search, setSearch, wrapperRef} = context
+    const {
+        data,
+        isLoading,
+        loadMore,
+        onClick,
+        search,
+        setSearch,
+        shouldRender,
+        wrapperRef,
+    } = context
 
     const handleClick = useCallback(
         (item: Item) => {
@@ -51,45 +66,51 @@ const Body = () => {
                     autoFocus
                 />
             </div>
-            <DropdownBody
-                className={css.body}
+            <InfiniteScroll
                 isLoading={isLoading}
+                onLoad={() => {
+                    loadMore?.()
+                    return Promise.resolve()
+                }}
+                className={css.body}
                 role="list"
             >
-                {!!data?.length ? (
-                    data.map((item, i) => {
-                        const name = item.name
-                        return (
-                            <DropdownItem
-                                key={item.id}
-                                className={css.item}
-                                option={{
-                                    label: name || '',
-                                    value: name || '',
-                                }}
-                                onClick={() => handleClick(item)}
-                                role="listitem"
-                                onKeyDown={
-                                    i === 0 || i === data.length - 1
-                                        ? onKeyDown
-                                        : undefined
-                                }
-                            >
-                                {name}
-                            </DropdownItem>
-                        )
-                    })
-                ) : (
-                    <div
-                        className={cn(
-                            dropdownItemCss.item,
-                            dropdownItemCss.disabled
-                        )}
-                    >
-                        No results
-                    </div>
-                )}
-            </DropdownBody>
+                {shouldRender ? (
+                    !!data?.length ? (
+                        data.map((item, i) => {
+                            const name = item.name
+                            return (
+                                <DropdownItem
+                                    key={item.id}
+                                    className={css.item}
+                                    option={{
+                                        label: name || '',
+                                        value: name || '',
+                                    }}
+                                    onClick={() => handleClick(item)}
+                                    role="listitem"
+                                    onKeyDown={
+                                        i === 0 || i === data.length - 1
+                                            ? onKeyDown
+                                            : undefined
+                                    }
+                                >
+                                    {onRenderItem ? onRenderItem(item) : name}
+                                </DropdownItem>
+                            )
+                        })
+                    ) : (
+                        <div
+                            className={cn(
+                                dropdownItemCss.item,
+                                dropdownItemCss.disabled
+                            )}
+                        >
+                            No results
+                        </div>
+                    )
+                ) : null}
+            </InfiniteScroll>
         </>
     )
 }

@@ -3,7 +3,9 @@ import {fireEvent, render, waitFor} from '@testing-library/react'
 
 import InfiniteScroll from '../InfiniteScroll'
 
-describe('InfiniteScroll component', () => {
+jest.mock('pages/common/components/Spinner', () => () => 'SpinnerMock')
+
+describe('<InfiniteScroll />', () => {
     const originalClientHeight = Object.getOwnPropertyDescriptor(
         Element.prototype,
         'clientHeight'
@@ -44,67 +46,43 @@ describe('InfiniteScroll component', () => {
         )
     })
 
+    const mockChildren = 'Pizza Pepperoni'
     const minProps: ComponentProps<typeof InfiniteScroll> = {
         onLoad: jest.fn(),
         shouldLoadMore: true,
-        children: <div>Pizza Pepperoni</div>,
+        children: <div>{mockChildren}</div>,
     }
 
-    it('should display infinite scroll with children', () => {
-        const {container} = render(<InfiniteScroll {...minProps} />)
-        expect(container.firstChild).toMatchSnapshot()
+    it('should display children', () => {
+        const {getByText} = render(<InfiniteScroll {...minProps} />)
+
+        expect(getByText(mockChildren)).toBeInTheDocument()
     })
 
     it('should trigger load on scroll to bottom', async () => {
-        const load = jest.fn()
-        const {container} = render(
-            <InfiniteScroll
-                {...minProps}
-                onLoad={() => {
-                    load()
-                    return Promise.resolve()
-                }}
-            />
-        )
+        const {container} = render(<InfiniteScroll {...minProps} />)
 
         fireEvent.scroll(container.firstChild!, {target: {scrollTop: 200}})
 
-        await waitFor(() => expect(load).toBeCalled())
+        await waitFor(() => expect(minProps.onLoad).toBeCalled())
     })
 
     it('should not trigger load when not scrolled to bottom', async () => {
-        const load = jest.fn()
-        const {container} = render(
-            <InfiniteScroll
-                {...minProps}
-                onLoad={() => {
-                    load()
-                    return Promise.resolve()
-                }}
-            />
-        )
+        const {container} = render(<InfiniteScroll {...minProps} />)
 
         fireEvent.scroll(container.firstChild!, {target: {scrollTop: 10}})
-        await waitFor(() => expect(load).not.toBeCalled())
+        await waitFor(() => expect(minProps.onLoad).not.toBeCalled())
     })
 
     it('should trigger load on scroll to bottom with different threshold', async () => {
-        const load = jest.fn()
         const {container} = render(
-            <InfiniteScroll
-                {...minProps}
-                threshold={1}
-                onLoad={() => {
-                    load()
-                    return Promise.resolve()
-                }}
-            />
+            <InfiniteScroll {...minProps} threshold={1} />
         )
 
         fireEvent.scroll(container.firstChild!, {
             target: {scrollTop: 100},
         })
-        await waitFor(() => expect(load).toBeCalled())
+        await waitFor(() => expect(minProps.onLoad).toBeCalled())
     })
 
     it('should not trigger load with shouldLoadMore=false', async () => {
@@ -121,7 +99,7 @@ describe('InfiniteScroll component', () => {
         )
 
         fireEvent.scroll(container.firstChild!, {target: {scrollTop: 50}})
-        await waitFor(() => expect(load).not.toBeCalled())
+        await waitFor(() => expect(minProps.onLoad).not.toBeCalled())
     })
 
     it('should call onLoad when is able to load more', async () => {
@@ -143,5 +121,12 @@ describe('InfiniteScroll component', () => {
         await waitFor(() => expect(first).toHaveBeenCalledTimes(1))
         rerender(<InfiniteScroll {...props} onLoad={second} />)
         await waitFor(() => expect(second).toHaveBeenCalledTimes(1))
+    })
+
+    it('should use external isLoading prop', async () => {
+        const {getByText} = render(<InfiniteScroll {...minProps} isLoading />)
+
+        await waitFor(() => expect(minProps.onLoad).not.toBeCalled())
+        expect(getByText('SpinnerMock')).toBeInTheDocument()
     })
 })

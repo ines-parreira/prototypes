@@ -21,7 +21,7 @@ import {StandaloneBanner} from '../StandaloneBanner'
 import HelpCenterTable from '../HelpCenterTable'
 
 import {useSupportedLocales} from '../../providers/SupportedLocales'
-import {HELP_CENTERS_PER_PAGE, HELP_CENTER_BASE_PATH} from '../../constants'
+import {HELP_CENTER_BASE_PATH} from '../../constants'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 
 import css from './HelpCenterStartView.less'
@@ -166,7 +166,6 @@ export const ManageHelpCenters = ({
             <InfiniteScroll
                 onLoad={fetchMore}
                 shouldLoadMore={!isLoading && hasMore}
-                loaderSize={HELP_CENTERS_PER_PAGE}
                 className={css.infiniteScroll}
             >
                 <div className={css.container}>

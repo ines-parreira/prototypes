@@ -98,7 +98,7 @@ export default function WhatsAppMessageTemplateNavigator() {
             <InfiniteScroll
                 className={css.list}
                 shouldLoadMore={false}
-                onLoad={refetch}
+                onLoad={() => refetch()}
             >
                 {templates.map((template) => (
                     <div
