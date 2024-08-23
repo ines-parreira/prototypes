@@ -2,6 +2,7 @@ import {act, renderHook} from '@testing-library/react-hooks'
 import {useUpdateChannelConnection} from 'models/convert/channelConnection/queries'
 import {assumeMock} from 'utils/testing'
 import {ChannelConnection} from 'models/convert/channelConnection/types'
+import * as segment from 'common/segment'
 import {useUtm} from '../useUtm'
 
 jest.mock('models/convert/channelConnection/queries')
@@ -189,5 +190,33 @@ describe('useUtm', () => {
         act(() => onUtmEnabledChange(false))
         await hook.result.current.onUtmApply(false)
         expect(mockOutboundCall).not.toBeCalled()
+    })
+
+    it('should call event when utm is applied', async () => {
+        const saved = false
+        const enabled = true
+        const value = '?foo=bar'
+        const mockLogEvent = jest.spyOn(segment, 'logEvent')
+        useUpdateChannelConnectionMock.mockReturnValue({
+            mutateAsync: jest.fn(),
+            isLoading: false,
+        } as any)
+        const hook = renderHook(() =>
+            useUtm({
+                ...(baseChannelConnection as ChannelConnection),
+            })
+        )
+        const {onUtmEnabledChange, onUtmQueryStringChange} = hook.result.current
+        act(() => onUtmEnabledChange(enabled))
+        act(() => onUtmQueryStringChange(value))
+        await hook.result.current.onUtmApply(saved)
+        expect(mockLogEvent).toBeCalledWith(
+            segment.SegmentEvent.ConvertUtmApplied,
+            {
+                saved,
+                enabled,
+                value,
+            }
+        )
     })
 })

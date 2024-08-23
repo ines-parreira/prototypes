@@ -82,6 +82,7 @@ export enum SegmentEvent {
     ContactFormRedirectToFlows = 'contact-form/redirect-to-flows',
     ConvertBillingProductRemoved = 'convert/billing-product-removed',
     ConvertBillingProductScheduledDowngrade = 'convert/billing-product-scheduled-downgrade',
+    ConvertUtmApplied = 'convert/utm-applied',
     CustomActionButtonClicked = 'widget/custom-button/button-clicked',
     CustomActionButtonsParameterEditorOpened = 'widget/custom-button/action-parameter-editor-opened',
     CustomActionButtonsDropdownChanged = 'widget/custom-button/dropdown-changed',
