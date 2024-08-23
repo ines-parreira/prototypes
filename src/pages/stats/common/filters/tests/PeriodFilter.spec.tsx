@@ -9,7 +9,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 import {formatDatetime} from 'utils'
 import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
-import PeriodFilter from 'pages/stats/common/filters/PeriodFilter'
+import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
 import {RootState} from 'state/types'
 import {getNewSetOfRanges} from 'pages/stats/constants'
 

@@ -1,6 +1,7 @@
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {screen} from '@testing-library/react'
+import * as PeriodFilter from 'pages/stats/common/filters/PeriodFilter'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 import {useGetCustomFieldDefinitions} from 'models/customField/queries'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
@@ -34,6 +35,14 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
 jest.mock('models/customField/queries')
 const useGetCustomFieldDefinitionsMock = assumeMock(
     useGetCustomFieldDefinitions
+)
+
+jest.mock(
+    'pages/stats/common/filters/PeriodFilter',
+    () =>
+        ({
+            ...jest.requireActual('pages/stats/common/filters/PeriodFilter'),
+        } as Record<string, unknown>)
 )
 
 const defaultState = {
@@ -249,6 +258,36 @@ describe('FiltersPanel', () => {
                 optionalFilters={customFieldsFilters}
             />,
             state
+        )
+    })
+
+    it('should allow passing some initialSettings to the PeriodFilter', () => {
+        const spy = jest.fn().mockImplementation(() => null)
+        ;(PeriodFilter as {PeriodFilterWithState: any}).PeriodFilterWithState =
+            spy
+
+        const periodFilterInitialSettings = {
+            maxSpan: 123,
+            tooltipMessageForPreviousPeriod: 'someString',
+        }
+        renderWithStore(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={optionalFilters}
+                filterSettingsOverrides={{
+                    [FilterKey.Period]: {
+                        initialSettings: periodFilterInitialSettings,
+                    },
+                }}
+            />,
+            defaultState
+        )
+
+        expect(spy).toHaveBeenCalledWith(
+            expect.objectContaining({
+                initialSettings: periodFilterInitialSettings,
+            }),
+            {}
         )
     })
 })

@@ -30,7 +30,7 @@ type Props = {
     tooltipMessageForPreviousPeriod?: string
 } & RemovableFilter
 
-export default function PeriodFilter({
+export function PeriodFilter({
     initialSettings: initialSettingsProp,
     value,
     tooltipMessageForPreviousPeriod,

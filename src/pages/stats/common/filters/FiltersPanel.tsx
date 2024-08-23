@@ -1,4 +1,5 @@
 import React, {
+    ComponentProps,
     createElement,
     useCallback,
     useEffect,
@@ -28,6 +29,12 @@ import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/sta
 type Props = {
     persistentFilters?: StaticFilter[]
     optionalFilters?: FilterKey[]
+    filterSettingsOverrides?: {
+        [FilterKey.Period]: Omit<
+            ComponentProps<typeof PeriodFilterWithState>,
+            'value'
+        >
+    }
 }
 
 export const UNSUPPORTED_FILTER_PLACEHOLDER = 'placeholder'
@@ -96,6 +103,7 @@ type ActiveFilter =
 export const FiltersPanel = ({
     persistentFilters = [],
     optionalFilters = [],
+    filterSettingsOverrides,
 }: Props) => {
     const {cleanStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithLogicalOperatorsWithTimezone
@@ -200,6 +208,7 @@ export const FiltersPanel = ({
                         filter.type === FilterKey.CustomFields
                             ? filter.customFieldId
                             : 0,
+                    ...getFilterSettings(filter.key, filterSettingsOverrides),
                 })
             )}
             {options.length > 0 && (
@@ -207,4 +216,16 @@ export const FiltersPanel = ({
             )}
         </div>
     )
+}
+
+const getFilterSettings = (
+    filterKey: string,
+    settings?: {
+        [FilterKey.Period]: ComponentProps<typeof PeriodFilterWithState>
+    }
+) => {
+    if (filterKey === String(FilterKey.Period)) {
+        return settings?.[FilterKey.Period]
+    }
+    return undefined
 }

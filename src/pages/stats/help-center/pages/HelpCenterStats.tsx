@@ -136,6 +136,13 @@ const HelpCenterStatsComponent = ({
                                     FilterKey.HelpCenters,
                                     FilterKey.LocaleCodes,
                                 ]}
+                                filterSettingsOverrides={{
+                                    [FilterKey.Period]: {
+                                        initialSettings: {
+                                            maxSpan: 365,
+                                        },
+                                    },
+                                }}
                             />
                         </DashboardGridCell>
                     </DashboardSection>
