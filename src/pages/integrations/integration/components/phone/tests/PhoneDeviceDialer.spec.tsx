@@ -1,6 +1,6 @@
-import {screen, fireEvent, waitFor} from '@testing-library/react'
+import {screen, fireEvent} from '@testing-library/react'
 import React from 'react'
-import {SearchType, useSearch} from '@gorgias/api-queries'
+import {useSearch} from '@gorgias/api-queries'
 import {isValidPhoneNumber} from 'libphonenumber-js'
 import {Provider} from 'react-redux'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
@@ -92,7 +92,7 @@ const useDialerOutboundCallMock = assumeMock(useDialerOutboundCall)
 describe('PhoneDeviceDialer', () => {
     const useSearchMockValue = {
         mutate: jest.fn(),
-        isLoading: false,
+        isFetching: false,
         data: undefined,
         reset: jest.fn(),
     }
@@ -183,12 +183,12 @@ describe('PhoneDeviceDialer', () => {
         expect(screen.getByTestId('mock-text-input')).toHaveValue('testAddress')
     })
 
-    it('calls searchCustomers when input value is changed and value is longer than 3 characters', async () => {
+    it('enables searchCustomers when input value is changed and value is longer than 3 characters', () => {
         jest.useFakeTimers()
         const searchCustomersMock = jest.fn()
         useSearchMock.mockReturnValue({
             mutate: searchCustomersMock,
-            isLoading: false,
+            isFetching: false,
             data: {data: {data: []}},
         } as any)
         renderComponent()
@@ -196,25 +196,19 @@ describe('PhoneDeviceDialer', () => {
         const inputElement: HTMLInputElement =
             screen.getByTestId('mock-phone-input')
 
+        expect(useSearchMock.mock.lastCall?.[1]?.query?.enabled).toBe(false)
         fireEvent.change(inputElement, {target: {value: '1234567890'}})
 
         jest.advanceTimersByTime(1000)
-        await waitFor(() => {
-            expect(searchCustomersMock).toHaveBeenCalledWith({
-                data: {
-                    type: SearchType.CustomerChannelPhone,
-                    query: '1234567890',
-                },
-            })
-        })
+        expect(useSearchMock.mock.lastCall?.[1]?.query?.enabled).toBe(true)
     })
 
-    it('does not call searchCustomers when input value is changed and value is shorter than 3 characters', () => {
+    it('does not enable searchCustomers when input value is changed and value is shorter than 5 characters', () => {
         jest.useFakeTimers()
         const searchCustomersMock = jest.fn()
         useSearchMock.mockReturnValue({
             mutate: searchCustomersMock,
-            isLoading: false,
+            isFetching: false,
             data: {data: {data: []}},
             reset: jest.fn(),
         } as any)
@@ -223,16 +217,36 @@ describe('PhoneDeviceDialer', () => {
         const inputElement: HTMLInputElement =
             screen.getByTestId('mock-phone-input')
 
-        fireEvent.change(inputElement, {target: {value: '12'}})
+        fireEvent.change(inputElement, {target: {value: '1234'}})
 
         jest.advanceTimersByTime(1000)
-        expect(searchCustomersMock).not.toHaveBeenCalled()
+        expect(useSearchMock.mock.lastCall?.[1]?.query?.enabled).toBe(false)
     })
 
-    it('calls searchCustomers with empty query when customer search input is cleared', async () => {
+    it('does not enable searchCustomers when input value is changed and shorter than 3 characters and search type is text', () => {
+        jest.useFakeTimers()
+        const searchCustomersMock = jest.fn()
+        useSearchMock.mockReturnValue({
+            mutate: searchCustomersMock,
+            isFetching: false,
+            data: {data: {data: []}},
+            reset: jest.fn(),
+        } as any)
+        renderComponent()
+
+        const inputElement: HTMLInputElement =
+            screen.getByTestId('mock-phone-input')
+
+        fireEvent.change(inputElement, {target: {value: 'ab'}})
+
+        jest.advanceTimersByTime(1000)
+        expect(useSearchMock.mock.lastCall?.[1]?.query?.enabled).toBe(false)
+    })
+
+    it('disables searchCustomers when customer search input is cleared', () => {
         const useSearchMockValue = {
             mutate: jest.fn(),
-            isLoading: false,
+            isFetching: false,
             data: undefined,
             reset: jest.fn(),
         }
@@ -241,13 +255,14 @@ describe('PhoneDeviceDialer', () => {
 
         const phoneInputElement: HTMLInputElement =
             screen.getByTestId('mock-phone-input')
+        fireEvent.change(phoneInputElement, {target: {value: '1234'}})
+        jest.advanceTimersByTime(1000)
 
         fireEvent.change(phoneInputElement, {target: {value: 'test'}})
         fireEvent.click(screen.getByRole('button', {name: 'close'}))
+        jest.advanceTimersByTime(1000)
 
-        await waitFor(() => {
-            expect(useSearchMockValue.reset).toHaveBeenCalled()
-        })
+        expect(useSearchMock.mock.lastCall?.[1]?.query?.enabled).toBe(false)
     })
 
     it('displays Call button as enabled by default', () => {
@@ -327,31 +342,9 @@ describe('PhoneDeviceDialer', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('resets search mutation when input value is shorter than 5 characters for phone number search', () => {
-        renderComponent()
-
-        const inputElement: HTMLInputElement =
-            screen.getByTestId('mock-phone-input')
-
-        fireEvent.change(inputElement, {target: {value: '1234'}})
-
-        expect(useSearchMockValue.reset).toHaveBeenCalled()
-    })
-
-    it('resets search mutation when input value is shorter than 3 characters for customer search', () => {
-        renderComponent()
-
-        const inputElement: HTMLInputElement =
-            screen.getByTestId('mock-phone-input')
-
-        fireEvent.change(inputElement, {target: {value: 'ab'}})
-
-        expect(useSearchMockValue.reset).toHaveBeenCalled()
-    })
-
     it('renders PhoneDeviceDialerBody with isLoading true only if isSearchTypeCustomer is true', () => {
         useSearchMock.mockReturnValue({
-            isLoading: true,
+            isFetching: true,
             data: {data: {data: []}},
         } as any)
 

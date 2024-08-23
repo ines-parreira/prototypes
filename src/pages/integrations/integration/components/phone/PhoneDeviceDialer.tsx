@@ -31,16 +31,27 @@ export default function PhoneDeviceDialer({onCallInitiated}: Props) {
     const [phoneNumberInputError, setPhoneNumberInputError] = useState<string>()
     const phoneNumberInputRef = createRef<PhoneNumberInputHandle>()
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
+    const [query, setQuery] = useState('')
     const [selectedIntegration, setSelectedIntegration] = useState(
         phoneIntegrations[0]
     )
 
-    const {
-        mutate: searchCustomers,
-        isLoading: isSearchingCustomers,
-        data: data,
-        reset: resetMutation,
-    } = useSearch()
+    const isSearchTypeCustomer = /[a-zA-Z]/.test(inputValue)
+
+    const {isFetching: isSearchingCustomers, data: data} = useSearch(
+        {
+            type: SearchType.CustomerChannelPhone,
+            query,
+        },
+        {
+            query: {
+                enabled:
+                    (isSearchTypeCustomer && query.length >= 3) ||
+                    (!isSearchTypeCustomer && query.length >= 5),
+                staleTime: 30 * 1000,
+            },
+        }
+    )
 
     const makeCall = useDialerOutboundCall({
         inputValue,
@@ -52,34 +63,16 @@ export default function PhoneDeviceDialer({onCallInitiated}: Props) {
         ? data?.data.data.filter(isUserSearchResult)
         : []
 
-    const isSearchTypeCustomer = /[a-zA-Z]/.test(inputValue)
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const debouncedSearchCustomers = useCallback(
-        debounce((input: string) => {
-            void searchCustomers({
-                data: {
-                    type: SearchType.CustomerChannelPhone,
-                    query: input,
-                },
-            })
-        }, SEARCH_DEBOUNCE_VALUE),
-        [searchCustomers]
+        debounce(setQuery, SEARCH_DEBOUNCE_VALUE),
+        [setQuery]
     )
 
     const handleChange = (value: string) => {
         setInputValue(value)
         setSelectedCustomer(null)
         setPhoneNumberInputError(undefined)
-
-        if (
-            (isSearchTypeCustomer && value.length < 3) ||
-            (!isSearchTypeCustomer && value.length < 5)
-        ) {
-            debouncedSearchCustomers.cancel()
-            resetMutation()
-            return
-        }
 
         debouncedSearchCustomers(value)
     }
