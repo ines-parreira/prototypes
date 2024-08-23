@@ -8,10 +8,10 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {notify} from 'state/notifications/actions'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import {useStoreConfiguration} from '../hooks/useStoreConfiguration'
 
 import {AiAgentLayout} from '../components/AiAgentLayout/AiAgentLayout'
 import {StoreConfigForm} from '../components/StoreConfigForm/StoreConfigForm'
+import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
 import css from './AiAgentConfigurationView.less'
 
 const READ_FULFILLMENTS_PERMISSION = 'read_fulfillments'
@@ -25,11 +25,10 @@ export const AiAgentConfigurationView = ({
     accountDomain,
 }: AiAgentConfigurationViewProps) => {
     const dispatch = useAppDispatch()
-    const {storeConfiguration, isLoading: isStoreConfigLoading} =
-        useStoreConfiguration({
-            shopName,
-            accountDomain,
-        })
+
+    const {isLoading: isStoreConfigLoading} =
+        useAiAgentStoreConfigurationContext()
+
     const {integration} = useShopifyIntegrationAndScope(shopName)
 
     const {data: helpCenterListData, isLoading: isLoadingHelpCenters} =
@@ -88,7 +87,6 @@ export const AiAgentConfigurationView = ({
                 <StoreConfigForm
                     shopName={shopName}
                     accountDomain={accountDomain}
-                    storeConfiguration={storeConfiguration}
                     faqHelpCenters={helpCenters}
                 />
             </div>

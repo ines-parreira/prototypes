@@ -58,8 +58,8 @@ import {EmailIntegrationListSelection} from '../EmailIntegrationListSelection/Em
 import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection'
 import TagList from '../TicketTag/TagList'
 
-import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
 import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
+import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 import css from './StoreConfigForm.less'
 import {
     getFormValuesFromStoreConfiguration,
@@ -83,14 +83,12 @@ const INITIAL_FORM_VALUES = {
 type Props = {
     shopName: string
     accountDomain: string
-    storeConfiguration?: StoreConfiguration
     faqHelpCenters: HelpCenter[]
 }
 
 export const StoreConfigForm = ({
     shopName,
     accountDomain,
-    storeConfiguration,
     faqHelpCenters,
 }: Props) => {
     const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
@@ -99,6 +97,12 @@ export const StoreConfigForm = ({
 
     const hasAutomate = useAppSelector(getHasAutomate)
     const dispatch = useAppDispatch()
+    const {
+        storeConfiguration,
+        isPendingCreateOrUpdate,
+        createStoreConfiguration,
+        updateStoreConfiguration,
+    } = useAiAgentStoreConfigurationContext()
     const isCreate = storeConfiguration === undefined
 
     // because this selector is a function which return function we need to memoized it before send to reselect
@@ -130,8 +134,7 @@ export const StoreConfigForm = ({
     const {formValues, isFormDirty, resetForm, updateValue} =
         useConfigurationForm(defaultFormValues)
     const [publicUrls, setPublicUrls] = useState<string[]>([])
-    const {isLoading, createStoreConfiguration, upsertStoreConfiguration} =
-        useStoreConfigurationMutation({shopName, accountDomain})
+
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
 
@@ -144,7 +147,7 @@ export const StoreConfigForm = ({
             updateValue('trialModeActivatedDatetime', null)
 
             try {
-                await upsertStoreConfiguration({
+                await updateStoreConfiguration({
                     ...storeConfiguration,
                     deactivatedDatetime,
                     trialModeActivatedDatetime: null,
@@ -171,7 +174,7 @@ export const StoreConfigForm = ({
         [
             isCreate,
             updateValue,
-            upsertStoreConfiguration,
+            updateStoreConfiguration,
             storeConfiguration,
             dispatch,
         ]
@@ -208,7 +211,7 @@ export const StoreConfigForm = ({
             if (isCreate) {
                 await createStoreConfiguration(configurationToSubmit)
             } else {
-                await upsertStoreConfiguration({
+                await updateStoreConfiguration({
                     ...storeConfiguration,
                     ...configurationToSubmit,
                 })
@@ -757,7 +760,10 @@ export const StoreConfigForm = ({
                 <section>
                     <Button
                         onClick={handleOnSave}
-                        isDisabled={isLoading || (!isFormDirty && !isCreate)}
+                        isDisabled={
+                            isPendingCreateOrUpdate ||
+                            (!isFormDirty && !isCreate)
+                        }
                         className="mb-3"
                     >
                         Save Changes

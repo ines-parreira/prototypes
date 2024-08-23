@@ -1,8 +1,6 @@
 import React, {useEffect, useMemo} from 'react'
 import {Link, useParams} from 'react-router-dom'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import Loader from 'pages/common/components/Loader/Loader'
 import {reportError} from 'utils/errors'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
@@ -13,20 +11,15 @@ import {AiAgentGuidanceView} from './AiAgentGuidanceView'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
 import css from './AiAgentGuidanceContainer.less'
-import {useStoreConfiguration} from './hooks/useStoreConfiguration'
+import {useAiAgentStoreConfigurationContext} from './providers/AiAgentStoreConfigurationContext'
 
 export const AiAgentGuidanceContainer = () => {
     const {shopName} = useParams<{
         shopName: string
     }>()
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountDomain = currentAccount.get('domain')
 
     const {storeConfiguration, isLoading: isStoreConfigLoading} =
-        useStoreConfiguration({
-            shopName,
-            accountDomain,
-        })
+        useAiAgentStoreConfigurationContext()
 
     const {data: helpCenterListData, isLoading: isLoadingHelpCenters} =
         useGetHelpCenterList(

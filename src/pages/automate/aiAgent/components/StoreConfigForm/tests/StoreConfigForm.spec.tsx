@@ -17,12 +17,13 @@ import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/
 import {useGetOrCreateSnippetHelpCenter} from 'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import {getHasAutomate} from 'state/billing/selectors'
 import {HelpCenter} from 'models/helpCenter/types'
+import {StoreConfiguration} from 'models/aiAgent/types'
+import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
 import {StoreConfigForm} from '../StoreConfigForm'
-import {useStoreConfigurationMutation} from '../../../hooks/useStoreConfigurationMutation'
 
 jest.mock('state/notifications/actions')
-jest.mock('../../../hooks/useStoreConfigurationMutation', () => ({
-    useStoreConfigurationMutation: jest.fn(),
+jest.mock('../../../providers/AiAgentStoreConfigurationContext', () => ({
+    useAiAgentStoreConfigurationContext: jest.fn(),
 }))
 jest.mock('../../../hooks/useGetOrCreateSnippetHelpCenter', () => ({
     useGetOrCreateSnippetHelpCenter: jest.fn(),
@@ -39,8 +40,8 @@ jest.mock('state/billing/selectors', () => ({
     getHasAutomate: jest.fn(),
 }))
 
-const mockedUseStoreConfigurationMutation = jest.mocked(
-    useStoreConfigurationMutation
+const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
+    useAiAgentStoreConfigurationContext
 )
 const mockedUseGetOrCreateSnippetHelpCenter = jest.mocked(
     useGetOrCreateSnippetHelpCenter
@@ -70,6 +71,13 @@ const defaultState = {
         ],
     }),
 }
+
+const mockUpdateStoreConfiguration = jest
+    .fn()
+    .mockImplementation((c: StoreConfiguration) => c)
+const mockCreateStoreConfiguration = jest
+    .fn()
+    .mockImplementation((c: StoreConfiguration) => c)
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof StoreConfigForm>>
@@ -117,11 +125,12 @@ describe('<StoreConfigForm />', () => {
     }
     beforeEach(() => {
         mockGetHasAutomate.mockReturnValue(true)
-        mockedUseStoreConfigurationMutation.mockReturnValue({
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration,
             isLoading: false,
-            createStoreConfiguration: () => Promise.resolve(),
-            upsertStoreConfiguration: () => Promise.resolve(),
-            error: null,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: mockCreateStoreConfiguration,
+            isPendingCreateOrUpdate: false,
         })
         mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue(null)
         mockedUseConfigurationForm.mockReturnValue({
@@ -169,19 +178,9 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should deactivate AI agent if agentMode is in trial and AiAgentTrialMode flag is false', () => {
-        const mockMutation = {
-            isLoading: false,
-            createStoreConfiguration: jest.fn(),
-            upsertStoreConfiguration: jest.fn(),
-            error: null,
-        }
-        mockedUseStoreConfigurationMutation.mockReturnValue(mockMutation)
+        renderComponent({})
 
-        renderComponent({
-            storeConfiguration,
-        })
-
-        expect(mockMutation.upsertStoreConfiguration).toHaveBeenCalledWith({
+        expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
             ...storeConfiguration,
             deactivatedDatetime: expect.any(String),
             trialModeActivatedDatetime: null,
@@ -189,8 +188,31 @@ describe('<StoreConfigForm />', () => {
 
         const actualDeactivatedDatetime =
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            mockMutation.upsertStoreConfiguration.mock.calls[0][0]
-                .deactivatedDatetime
+            mockUpdateStoreConfiguration.mock.calls[0][0].deactivatedDatetime
+        const actualDate = new Date(actualDeactivatedDatetime)
+        const now = new Date()
+
+        expect(actualDate.getTime()).toBeCloseTo(now.getTime(), -3)
+        expect(mockDispatch).not.toHaveBeenCalled()
+        expect(notify).not.toHaveBeenCalledWith({
+            message:
+                'AI Agent has been disabled, because no Knowledge source is connected.',
+            status: NotificationStatus.Warning,
+        })
+    })
+
+    it('should deactivate AI agent if agentMode is in trial and AiAgentTrialMode flag is false', () => {
+        renderComponent({})
+
+        expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
+            ...storeConfiguration,
+            deactivatedDatetime: expect.any(String),
+            trialModeActivatedDatetime: null,
+        })
+
+        const actualDeactivatedDatetime =
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            mockUpdateStoreConfiguration.mock.calls[0][0].deactivatedDatetime
         const actualDate = new Date(actualDeactivatedDatetime)
         const now = new Date()
 
@@ -205,40 +227,28 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should not deactivate AI agent if agentMode is in trial and AiAgentTrialMode flag is true', () => {
-        const mockMutation = {
-            isLoading: false,
-            createStoreConfiguration: jest.fn(),
-            upsertStoreConfiguration: jest.fn(),
-            error: null,
-        }
-        mockedUseStoreConfigurationMutation.mockReturnValue(mockMutation)
-
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: true,
         })
 
-        renderComponent({
-            storeConfiguration,
-        })
+        renderComponent({})
 
-        expect(mockMutation.upsertStoreConfiguration).not.toHaveBeenCalled()
+        expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
     })
 
     it('should call reportError when upsertStoreConfiguration throws an error', async () => {
-        const mockMutation = {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration,
             isLoading: false,
-            createStoreConfiguration: jest.fn(),
-            upsertStoreConfiguration: jest
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest
                 .fn()
                 .mockRejectedValue(new Error('Test error')),
-            error: null,
-        }
-        mockedUseStoreConfigurationMutation.mockReturnValue(mockMutation)
+            isPendingCreateOrUpdate: false,
+        })
 
         try {
-            renderComponent({
-                storeConfiguration,
-            })
+            renderComponent({})
 
             await waitFor(() => {
                 expect(reportError).toHaveBeenCalledWith(expect.any(Error), {
@@ -252,13 +262,18 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should call deactivateAiAgent and dispatch notification when no knowledge base', async () => {
-        const mockMutation = {
-            isLoading: false,
-            createStoreConfiguration: jest.fn(),
-            upsertStoreConfiguration: jest.fn(),
-            error: null,
+        const mockStoreIntegration = {
+            ...storeConfiguration,
+            helpCenterId: null,
+            deactivatedDatetime: null,
         }
-        mockedUseStoreConfigurationMutation.mockReturnValue(mockMutation)
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: mockStoreIntegration,
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: mockCreateStoreConfiguration,
+            isPendingCreateOrUpdate: false,
+        })
 
         const helpCenter = getHelpCentersResponseFixture.data[0]
         mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue(helpCenter)
@@ -271,18 +286,10 @@ describe('<StoreConfigForm />', () => {
             isSourceItemsListLoading: false,
         } as unknown as ReturnType<typeof usePublicResources>)
 
-        const mockStoreIntegration = {
-            ...storeConfiguration,
-            helpCenterId: null,
-            deactivatedDatetime: null,
-        }
-
-        renderComponent({
-            storeConfiguration: mockStoreIntegration,
-        })
+        renderComponent({})
 
         await waitFor(() => {
-            expect(mockMutation.upsertStoreConfiguration).toHaveBeenCalledWith({
+            expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
                 ...mockStoreIntegration,
                 deactivatedDatetime: expect.any(String),
                 trialModeActivatedDatetime: null,

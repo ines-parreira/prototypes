@@ -1,5 +1,5 @@
 import React from 'react'
-import {screen} from '@testing-library/react'
+import {act, fireEvent, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
@@ -19,7 +19,7 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import AiAgentViewContainer from '../AiAgentViewContainer'
 import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
 import {useGetOrCreateSnippetHelpCenter} from '../hooks/useGetOrCreateSnippetHelpCenter'
-import {useStoreConfiguration} from '../hooks/useStoreConfiguration'
+import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
 
 jest.mock('launchdarkly-react-client-sdk')
 
@@ -39,11 +39,13 @@ const mockUseGetOrCreateSnippetHelpCenter = jest.mocked(
 jest.mock('hooks/useAppDispatch')
 const mockUseAppDispatch = useAppDispatch as jest.Mock
 
-jest.mock('../hooks/useStoreConfiguration')
-const mockUseStoreConfiguration = assumeMock(useStoreConfiguration)
-
 jest.mock('models/helpCenter/queries')
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
+
+jest.mock('../providers/AiAgentStoreConfigurationContext')
+const mockUseAiAgentStoreConfigurationContext = jest.mocked(
+    useAiAgentStoreConfigurationContext
+)
 
 const mockStore = configureMockStore([thunk])
 
@@ -72,6 +74,14 @@ const defaultState = {
             },
         ],
     }),
+}
+
+const mockedAiAgentStoreConfigurationContext = {
+    isLoading: false,
+    storeConfiguration: undefined,
+    updateStoreConfiguration: jest.fn(),
+    createStoreConfiguration: jest.fn(),
+    isPendingCreateOrUpdate: false,
 }
 
 const getHelpCenterListResponse = {
@@ -111,8 +121,8 @@ describe('AiAgentViewContainer', () => {
     })
 
     it('renders loader if loading store configuration', () => {
-        mockUseStoreConfiguration.mockReturnValue({
-            storeConfiguration: undefined,
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...mockedAiAgentStoreConfigurationContext,
             isLoading: true,
         })
         mockUseGetHelpCenterList.mockReturnValue(getHelpCenterListResponse)
@@ -122,10 +132,11 @@ describe('AiAgentViewContainer', () => {
     })
 
     it('renders loader if loading help centers', () => {
-        mockUseStoreConfiguration.mockReturnValue({
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...mockedAiAgentStoreConfigurationContext,
             storeConfiguration: getStoreConfigurationFixture(),
-            isLoading: false,
         })
+
         mockUseGetHelpCenterList.mockReturnValue({
             isLoading: true,
         } as unknown as ReturnType<typeof useGetHelpCenterList>)
@@ -135,13 +146,89 @@ describe('AiAgentViewContainer', () => {
     })
 
     it('renders configuration', () => {
-        mockUseStoreConfiguration.mockReturnValue({
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...mockedAiAgentStoreConfigurationContext,
             storeConfiguration: getStoreConfigurationFixture(),
-            isLoading: false,
         })
         mockUseGetHelpCenterList.mockReturnValue(getHelpCenterListResponse)
 
         renderComponent()
+
         expect(screen.getByText('Save Changes')).toBeInTheDocument
+        expect(screen.getByText('Enable AI Agent')).toBeInTheDocument
+    })
+
+    it('enables and disables configuration from the main toggle', () => {
+        const storeConfiguration = getStoreConfigurationFixture()
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...mockedAiAgentStoreConfigurationContext,
+            storeConfiguration,
+        })
+        mockUseGetHelpCenterList.mockReturnValue(getHelpCenterListResponse)
+
+        const {rerender} = renderComponent()
+
+        act(() => {
+            fireEvent.click(screen.getByText('Enable AI Agent'))
+        })
+
+        expect(
+            mockedAiAgentStoreConfigurationContext.updateStoreConfiguration
+        ).toHaveBeenCalledWith({
+            ...storeConfiguration,
+            deactivatedDatetime: expect.any(String),
+        })
+
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...mockedAiAgentStoreConfigurationContext,
+            storeConfiguration: {
+                ...storeConfiguration,
+                deactivatedDatetime: new Date().toISOString(),
+            },
+        })
+
+        rerender(
+            <Provider store={mockStore(defaultState)}>
+                <AiAgentViewContainer />
+            </Provider>
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Enable AI Agent'))
+        })
+
+        expect(
+            mockedAiAgentStoreConfigurationContext.updateStoreConfiguration
+        ).toHaveBeenCalledWith({
+            ...storeConfiguration,
+            deactivatedDatetime: null,
+        })
+    })
+
+    it('hides the toggle if in trial mode', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentTrialMode]: true,
+        })
+
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...mockedAiAgentStoreConfigurationContext,
+            storeConfiguration: getStoreConfigurationFixture(),
+        })
+        mockUseGetHelpCenterList.mockReturnValue(getHelpCenterListResponse)
+
+        renderComponent()
+        expect(screen.queryByText('Enable AI Agent')).not.toBeInTheDocument()
+
+        mockFlags({
+            [FeatureFlagKey.AiAgentTrialMode]: false,
+        })
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...mockedAiAgentStoreConfigurationContext,
+            storeConfiguration: getStoreConfigurationFixture({
+                trialModeActivatedDatetime: new Date().toISOString(),
+            }),
+        })
+        renderComponent()
+        expect(screen.queryByText('Enable AI Agent')).not.toBeInTheDocument()
     })
 })
