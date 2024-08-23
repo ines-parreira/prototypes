@@ -56,8 +56,11 @@ describe('createCampaignPayload', () => {
             shopifyProducts: [],
             discountOffers: [],
             productRecommendations: [],
+            canAddUtm: false,
             isActive: false,
             isEditMode: false,
+            utmQueryString: '',
+            utmEnabled: true,
         })
 
         expect(payload.status).toEqual('inactive')
@@ -82,6 +85,9 @@ describe('createCampaignPayload', () => {
             productRecommendations: [campaignProductRecommendationAttachment],
             isActive: true,
             isEditMode: false,
+            canAddUtm: false,
+            utmQueryString: '',
+            utmEnabled: true,
         })
 
         expect(payload.attachments).toEqual([
@@ -130,6 +136,9 @@ describe('createCampaignPayload', () => {
             productRecommendations: [campaignProductRecommendationAttachment],
             isActive: false,
             isEditMode: true,
+            canAddUtm: false,
+            utmQueryString: '',
+            utmEnabled: true,
         })
 
         expect(payload.status).toEqual('active')

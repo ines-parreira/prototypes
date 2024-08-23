@@ -34,6 +34,7 @@ import {
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {useAreConvertLLMProductRecommendationsEnabled} from 'pages/convert/common/hooks/useAreConvertLLMProductRecommendationsEnabled'
+import useCanAddUtm from 'pages/convert/common/hooks/useUtmFlag'
 import css from './CampaignMessage.less'
 
 type Props = {
@@ -226,6 +227,7 @@ export const CampaignMessage = memo(
             return actions
         }, [attachments, isConvertSubscriber])
 
+        const canAddUtm = useCanAddUtm(isConvertSubscriber)
         return (
             <div>
                 {showAgentSelector && (
@@ -298,6 +300,7 @@ export const CampaignMessage = memo(
                         canAddProductAutomations={canAddProductRecommendation}
                         currentShopifyIntegration={shopifyIntegration}
                         sortAttachments={true}
+                        canAddUtm={canAddUtm}
                     />
                     <TicketAttachments
                         context="campaign-message"

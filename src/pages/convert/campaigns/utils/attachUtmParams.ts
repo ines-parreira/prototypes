@@ -1,3 +1,4 @@
+import {parse} from 'qs'
 import {attachSearchParamsToUrl} from 'utils/url'
 import {getLDClient} from 'utils/launchDarkly'
 
@@ -7,12 +8,15 @@ import {CampaignProduct} from '../types/CampaignProduct'
 
 import {extractLinksFromText} from './extractLinksFromText'
 
-export function shouldAppendUtmParam(isConvertSubscriber: boolean): boolean {
+export function shouldAppendUtmParam(
+    isConvertSubscriber: boolean,
+    utmEnabled: boolean = true
+): boolean {
     const shouldDisableUtmParams = Boolean(
         getLDClient().allFlags()[FeatureFlagKey.RevenueDisableUtmParams]
     )
 
-    return isConvertSubscriber && !shouldDisableUtmParams
+    return isConvertSubscriber && !shouldDisableUtmParams && utmEnabled
 }
 
 export function removeRevenueUtmFromUrl(url: string): string {
@@ -21,56 +25,83 @@ export function removeRevenueUtmFromUrl(url: string): string {
     urlInstance.searchParams.delete('utm_source')
     urlInstance.searchParams.delete('utm_medium')
     urlInstance.searchParams.delete('utm_campaign')
+    urlInstance.searchParams.delete('utm_term')
+    urlInstance.searchParams.delete('utm_content')
 
     return decodeURI(urlInstance.toString())
 }
 
-export function attachUtmToCampaignProduct(
-    product: CampaignProduct,
+export function attachUtmToUrl(
+    url: string,
     campaignName: string,
-    isConvertSubscriber: boolean
+    isConvertSubscriber: boolean,
+    utmEnabled: boolean = true,
+    utmQueryString: string = ''
 ): string {
-    if (shouldAppendUtmParam(isConvertSubscriber)) {
-        return attachSearchParamsToUrl(product.url, {
+    if (shouldAppendUtmParam(isConvertSubscriber, utmEnabled)) {
+        if (utmQueryString.length > 0) {
+            const cleanUrl = removeRevenueUtmFromUrl(url)
+            const {...parameters} = parse(utmQueryString, {
+                ignoreQueryPrefix: true,
+            })
+            return attachSearchParamsToUrl(
+                cleanUrl,
+                parameters as Record<string, string>
+            )
+        }
+        return attachSearchParamsToUrl(url, {
             utm_source: 'Gorgias',
             utm_medium: 'ChatCampaign',
             utm_campaign: campaignName,
         })
     }
 
-    return removeRevenueUtmFromUrl(product.url)
+    return removeRevenueUtmFromUrl(url)
+}
+
+export function attachUtmToCampaignProduct(
+    product: CampaignProduct,
+    campaignName: string,
+    isConvertSubscriber: boolean,
+    utmEnabled: boolean,
+    utmQueryString: string
+): string {
+    return attachUtmToUrl(
+        product.url,
+        campaignName,
+        isConvertSubscriber,
+        utmEnabled,
+        utmQueryString
+    )
 }
 
 export function replaceUrlsWithUtmUrl(
     html: string,
     campaignName: string,
-    isConvertSubscriber: boolean
+    isConvertSubscriber: boolean,
+    canAddUtm: boolean
 ) {
     let output = html
     const links = extractLinksFromText(html)
 
-    if (!isConvertSubscriber) {
+    if (canAddUtm || !isConvertSubscriber) {
         return output
     }
 
-    if (shouldAppendUtmParam(isConvertSubscriber)) {
-        const linksWithUtm = links.map((url) =>
-            attachSearchParamsToUrl(url, {
-                utm_source: 'Gorgias',
-                utm_medium: 'ChatCampaign',
-                utm_campaign: campaignName,
-            })
-        )
-
-        links.forEach((url, index) => {
-            output = output.replace(url, linksWithUtm[index])
+    if (!shouldAppendUtmParam(isConvertSubscriber, true)) {
+        links.forEach((url) => {
+            output = output.replace(url, removeRevenueUtmFromUrl(url))
         })
 
         return output
     }
 
-    links.forEach((url) => {
-        output = output.replace(url, removeRevenueUtmFromUrl(url))
+    const linksWithUtm = links.map((url) =>
+        attachUtmToUrl(url, campaignName, isConvertSubscriber)
+    )
+
+    links.forEach((url, index) => {
+        output = output.replace(url, linksWithUtm[index])
     })
 
     return output

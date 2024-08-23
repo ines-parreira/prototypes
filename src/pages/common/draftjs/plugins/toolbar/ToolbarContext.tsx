@@ -35,6 +35,7 @@ export type ToolbarContextType = {
     canAddProductCard: boolean
     canAddProductLink: boolean
     canAddProductAutomations: boolean
+    canAddUtm: boolean
     toolbarTour: Record<string, TooltipTourConfigurationType> | undefined
     disableOutOfStockProducts: boolean
     disableVariantSelection: boolean
@@ -64,6 +65,7 @@ export const ToolbarContext = createContext<ToolbarContextType>({
     onAddUniqueDiscountOfferAttachment: _noop,
     canAddProductLink: false,
     canAddProductAutomations: false,
+    canAddUtm: false,
     toolbarTour: undefined,
     disableOutOfStockProducts: false,
     disableVariantSelection: false,

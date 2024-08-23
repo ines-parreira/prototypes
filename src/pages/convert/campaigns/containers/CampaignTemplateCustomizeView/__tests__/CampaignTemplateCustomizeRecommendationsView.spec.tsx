@@ -14,6 +14,8 @@ import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
+import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
+import {utmConfiguration} from 'fixtures/utmConfiguration'
 import CampaignTemplateCustomizeRecommendationsView from '../CampaignTemplateCustomizeRecommendationsView'
 
 const mockStore = configureMockStore()
@@ -21,6 +23,7 @@ const mockStore = configureMockStore()
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
+jest.mock('pages/convert/common/hooks/useUtmFlag')
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
@@ -47,6 +50,9 @@ jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
         return <div data-testid="mock-convert-subscription-modal" />
     })
 })
+
+jest.mock('pages/convert/campaigns/hooks/useUtm.ts')
+const useUtmMock = assumeMock(useUtm)
 
 const defaultState = {
     integrations: fromJS({
@@ -78,6 +84,7 @@ describe('CampaignTemplateCustomizeView', () => {
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
+        useUtmMock.mockReturnValue(utmConfiguration)
 
         window.HTMLElement.prototype.scrollTo = jest.fn()
     })

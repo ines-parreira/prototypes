@@ -26,6 +26,8 @@ const MOCK_PRODUCT: CampaignProduct = {
 }
 
 const MOCK_CAMPAIGN_NAME = 'Jest Campaign'
+const MOCK_UTM_QUERY_STRING = ''
+const MOCK_UTM_ENABLED = true
 
 describe('shouldAppendUtmParam', () => {
     it('returns false only for exact excepted merchants', () => {
@@ -35,6 +37,10 @@ describe('shouldAppendUtmParam', () => {
             [FeatureFlagKey.RevenueDisableUtmParams]: true,
         })
         expect(shouldAppendUtmParam(true)).toEqual(false)
+    })
+
+    it('returns false if utm is not enabled', () => {
+        expect(shouldAppendUtmParam(true, false)).toEqual(false)
     })
 })
 
@@ -48,7 +54,9 @@ describe('attachUtmToCampaignProduct', () => {
                 attachUtmToCampaignProduct(
                     MOCK_PRODUCT,
                     MOCK_CAMPAIGN_NAME,
-                    true
+                    true,
+                    MOCK_UTM_ENABLED,
+                    MOCK_UTM_QUERY_STRING
                 )
             ).toEqual(MOCK_PRODUCT.url)
         })
@@ -63,7 +71,13 @@ describe('attachUtmToCampaignProduct', () => {
         const expectedFullUrl = `${MOCK_PRODUCT.url}?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignNameConcat}`
 
         expect(
-            attachUtmToCampaignProduct(MOCK_PRODUCT, MOCK_CAMPAIGN_NAME, true)
+            attachUtmToCampaignProduct(
+                MOCK_PRODUCT,
+                MOCK_CAMPAIGN_NAME,
+                true,
+                MOCK_UTM_ENABLED,
+                MOCK_UTM_QUERY_STRING
+            )
         ).toEqual(expectedFullUrl)
     })
 })
@@ -85,20 +99,28 @@ describe('replaceUrlsWithUtmUrl', () => {
         const campaignNameConcat = MOCK_CAMPAIGN_NAME.replace(' ', '%20')
         const expectedFullUrl = `${MOCK_PRODUCT.url}?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignNameConcat}`
 
-        expect(replaceUrlsWithUtmUrl(html, MOCK_CAMPAIGN_NAME, true)).toEqual(
-            `<p><a href="${expectedFullUrl}">Mock product</a></p>`
-        )
+        expect(
+            replaceUrlsWithUtmUrl(html, MOCK_CAMPAIGN_NAME, true, false)
+        ).toEqual(`<p><a href="${expectedFullUrl}">Mock product</a></p>`)
     })
 
     it('does not replace the url if the merchant does not accept utm params', () => {
-        allFlagsMock.mockReturnValue({
+        allFlagsMock.mockReturnValueOnce({
             [FeatureFlagKey.RevenueDisableUtmParams]: true,
         })
 
         const html = `<p><a href="${MOCK_PRODUCT.url}">Mock product</a></p>`
 
-        expect(replaceUrlsWithUtmUrl(html, MOCK_CAMPAIGN_NAME, true)).toEqual(
-            html
-        )
+        expect(
+            replaceUrlsWithUtmUrl(html, MOCK_CAMPAIGN_NAME, true, false)
+        ).toEqual(html)
+    })
+
+    it('should skip replacing completly if the canAddUtm flag is true', () => {
+        const html = `<p><a href="${MOCK_PRODUCT.url}">Mock product</a></p>`
+
+        expect(
+            replaceUrlsWithUtmUrl(html, MOCK_CAMPAIGN_NAME, true, true)
+        ).toEqual(html)
     })
 })

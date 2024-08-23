@@ -10,7 +10,9 @@ export function transformProductToAttachment(
         campaignName: string
         currency?: string
     },
-    isConvertSubscriber: boolean
+    isConvertSubscriber: boolean,
+    utmEnabled: boolean = true,
+    utmQueryString: string = ''
 ): CampaignAttachment {
     return {
         contentType: AttachmentEnum.Product,
@@ -24,7 +26,9 @@ export function transformProductToAttachment(
             product_link: attachUtmToCampaignProduct(
                 product,
                 context.campaignName,
-                isConvertSubscriber
+                isConvertSubscriber,
+                utmEnabled,
+                utmQueryString
             ),
             variant_name: product?.variant_name,
             position: product?.position,

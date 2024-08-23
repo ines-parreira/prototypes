@@ -2111,6 +2111,13 @@
                             {"type": "null"}
                         ],
                         "title": "Campaign Id"
+                    },
+                    "generated_campaign_id": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 36},
+                            {"type": "null"}
+                        ],
+                        "title": "Generated Campaign Id"
                     }
                 },
                 "type": "object",
@@ -3184,6 +3191,16 @@
                         "title": "Is Onboarded",
                         "default": false
                     },
+                    "utm_query_string": {
+                        "type": "string",
+                        "title": "Utm Query String",
+                        "default": ""
+                    },
+                    "utm_enabled": {
+                        "type": "boolean",
+                        "title": "Utm Enabled",
+                        "default": true
+                    },
                     "channel": {"$ref": "#/components/schemas/ChannelType"}
                 },
                 "type": "object",
@@ -3213,6 +3230,16 @@
                         "type": "boolean",
                         "title": "Is Onboarded",
                         "default": false
+                    },
+                    "utm_query_string": {
+                        "type": "string",
+                        "title": "Utm Query String",
+                        "default": ""
+                    },
+                    "utm_enabled": {
+                        "type": "boolean",
+                        "title": "Utm Enabled",
+                        "default": true
                     },
                     "channel": {"$ref": "#/components/schemas/ChannelType"},
                     "account_id": {"type": "integer", "title": "Account Id"},
@@ -3245,6 +3272,16 @@
                         "type": "boolean",
                         "title": "Is Onboarded",
                         "default": false
+                    },
+                    "utm_query_string": {
+                        "type": "string",
+                        "title": "Utm Query String",
+                        "default": ""
+                    },
+                    "utm_enabled": {
+                        "type": "boolean",
+                        "title": "Utm Enabled",
+                        "default": true
                     }
                 },
                 "type": "object",
@@ -3591,7 +3628,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-janbalaz.eu.ngrok.io/loader.js"
+                        "default": "https://bundle-joaotavares.eu.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",
@@ -3675,6 +3712,14 @@
                     "newest"
                 ],
                 "title": "ProductRecommendationScenarioType"
+            },
+            "PublicABGroupResponseSchema": {
+                "properties": {
+                    "status": {"$ref": "#/components/schemas/ABGroupStatus"}
+                },
+                "type": "object",
+                "required": ["status"],
+                "title": "PublicABGroupResponseSchema"
             },
             "PublicCampaignResponseSchema": {
                 "properties": {
@@ -3776,6 +3821,21 @@
                             {"type": "null"}
                         ],
                         "title": "Deleted Datetime"
+                    },
+                    "variants": {
+                        "items": {
+                            "$ref": "#/components/schemas/PublicCampaignVariantResponseSchema"
+                        },
+                        "type": "array",
+                        "title": "Variants"
+                    },
+                    "ab_group": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/PublicABGroupResponseSchema"
+                            },
+                            {"type": "null"}
+                        ]
                     }
                 },
                 "type": "object",
@@ -3788,10 +3848,65 @@
                     "id",
                     "is_light",
                     "created_datetime",
-                    "updated_datetime"
+                    "updated_datetime",
+                    "variants"
                 ],
                 "title": "PublicCampaignResponseSchema",
                 "description": "Contains only fields allowed to be seen by the public, e.g. no channel_connection_id."
+            },
+            "PublicCampaignVariantResponseSchema": {
+                "properties": {
+                    "message_text": {
+                        "type": "string",
+                        "maxLength": 2048,
+                        "title": "Message Text"
+                    },
+                    "message_html": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 4096},
+                            {"type": "null"}
+                        ],
+                        "title": "Message Html"
+                    },
+                    "attachments": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Output"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output"
+                                        }
+                                    ],
+                                    "discriminator": {
+                                        "propertyName": "contentType",
+                                        "mapping": {
+                                            "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Output",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                        }
+                                    }
+                                },
+                                "type": "array"
+                            },
+                            {"type": "null"}
+                        ],
+                        "title": "Attachments"
+                    },
+                    "id": {"type": "string", "title": "Id"}
+                },
+                "type": "object",
+                "required": ["message_text", "id"],
+                "title": "PublicCampaignVariantResponseSchema"
             },
             "RecommendationItemSchema": {
                 "properties": {

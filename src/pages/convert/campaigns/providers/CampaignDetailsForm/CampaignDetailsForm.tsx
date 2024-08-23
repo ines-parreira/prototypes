@@ -49,6 +49,8 @@ import {transformAttachmentsToProductRecommendations} from 'pages/convert/campai
 import {CampaignProductRecommendation} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import useCanAddUtm from 'pages/convert/common/hooks/useUtmFlag'
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
 
 import {usePristineSteps} from '../../hooks/usePristineSteps'
@@ -74,6 +76,7 @@ import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
 import {transformCampaignAttachmentsToDetails} from '../../utils/transformCampaignAttachmentsToDetails'
 import {CampaignDiscountOffer} from '../../types/CampaignDiscountOffer'
 import {transformAttachmentsToDiscountOffers} from '../../utils/transformAttachmentsToDiscountOffers'
+import {useUtm} from '../../hooks/useUtm'
 import {CampaignDetailsFormApi, CampaignDetailsFormProvider} from './context'
 
 import {
@@ -139,6 +142,10 @@ export const CampaignDetailsForm = ({
     className,
 }: Props) => {
     const dispatch = useAppDispatch()
+
+    const {channelConnection} = useGetOrCreateChannelConnection(
+        integration.toJS()
+    )
 
     const [formValidationState, setFormValidationState] = useState<
         Record<string, boolean>
@@ -363,6 +370,10 @@ export const CampaignDetailsForm = ({
         [agents]
     )
 
+    const utmProps = useUtm(channelConnection, campaignData.name)
+    const {appliedUtmEnabled, appliedUtmQueryString} = utmProps
+    const canAddUtm = useCanAddUtm(isConvertSubscriber)
+
     const handleSaveCampaign = async (activate = false) => {
         if (!isCampaignValid) return
 
@@ -385,6 +396,9 @@ export const CampaignDetailsForm = ({
                 productRecommendations: productRecommendations,
                 isEditMode: isEditMode,
                 isActive: activate,
+                canAddUtm: canAddUtm,
+                utmEnabled: appliedUtmEnabled,
+                utmQueryString: appliedUtmQueryString,
             })
 
             if (isEditMode) {
@@ -525,8 +539,9 @@ export const CampaignDetailsForm = ({
             ({
                 isEditMode,
                 configuration: wizardConfiguration,
+                utmConfiguration: utmProps,
             } as CampaignFormConfigurationType),
-        [isEditMode, wizardConfiguration]
+        [isEditMode, wizardConfiguration, utmProps]
     )
 
     const isLightCampaign = campaign?.is_light

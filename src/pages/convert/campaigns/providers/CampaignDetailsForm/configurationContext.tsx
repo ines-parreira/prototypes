@@ -4,11 +4,13 @@ import {
     WizardConfiguration,
     WizardStepConfiguration,
     ToolbarActionConfiguration,
+    UtmConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
 export interface CampaignFormConfigurationType {
     isEditMode: boolean
     configuration?: WizardConfiguration
+    utmConfiguration?: UtmConfiguration
     getStepConfiguration: (step: string) => WizardStepConfiguration | undefined
     getTourConfiguration: () =>
         | Record<string, ToolbarActionConfiguration>

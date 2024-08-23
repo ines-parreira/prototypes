@@ -27,6 +27,9 @@ type CreateCampaignPayloadType = {
     shopifyIntegration: Map<any, any>
     isEditMode: boolean
     isActive: boolean
+    canAddUtm: boolean
+    utmEnabled: boolean
+    utmQueryString: string
 }
 
 export const createCampaignPayload = ({
@@ -40,6 +43,9 @@ export const createCampaignPayload = ({
     isConvertSubscriber = false,
     isEditMode = false,
     isActive = false,
+    canAddUtm = false,
+    utmEnabled = true,
+    utmQueryString = '',
 }: CreateCampaignPayloadType): Campaign => {
     const payload: Campaign = produce(campaignData, (draft) => {
         const trimmedCampaignName = _trim(draft.name)
@@ -48,7 +54,8 @@ export const createCampaignPayload = ({
         draft.message_html = replaceUrlsWithUtmUrl(
             campaignData.message_html || '',
             trimmedCampaignName,
-            isConvertSubscriber
+            isConvertSubscriber,
+            canAddUtm
         )
         draft.triggers = triggers.filter((trigger) => {
             return trigger.type !== CampaignTriggerType.SingleInView
@@ -83,7 +90,9 @@ export const createCampaignPayload = ({
                             'currency',
                         ]),
                     },
-                    isConvertSubscriber
+                    isConvertSubscriber,
+                    utmEnabled,
+                    utmQueryString
                 )
             })
 

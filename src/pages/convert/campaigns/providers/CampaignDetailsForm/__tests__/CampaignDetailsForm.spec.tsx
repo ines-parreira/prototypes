@@ -26,9 +26,13 @@ import {assumeMock} from 'utils/testing'
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
 import {AttachmentEnum} from 'common/types'
-import {CampaignDetailsForm} from '../CampaignDetailsForm'
 
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {channelConnection} from 'fixtures/channelConnection'
+import {utmConfiguration} from 'fixtures/utmConfiguration'
+import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
 import {Campaign} from '../../../types/Campaign'
+import {CampaignDetailsForm} from '../CampaignDetailsForm'
 
 jest.mock('utils/launchDarkly')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
@@ -44,6 +48,12 @@ jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
     })
 })
 jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
+jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
+jest.mock('pages/convert/campaigns/hooks/useUtm.ts')
+const useGetOrCreateChannelConnectionMock = assumeMock(
+    useGetOrCreateChannelConnection
+)
+const useUtmMock = assumeMock(useUtm)
 const useGetPreviewProductsMock = assumeMock(useGetPreviewProducts)
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {integrations: fromJS(integrationsState)} as RootState
@@ -96,6 +106,13 @@ const isConvertSubscriberSpy = jest.spyOn(
 )
 
 describe('<CampaignDetailsForm />', () => {
+    beforeAll(() => {
+        useGetOrCreateChannelConnectionMock.mockReturnValue({
+            channelConnection: channelConnection,
+        } as any)
+        useUtmMock.mockReturnValue(utmConfiguration)
+    })
+
     beforeEach(() => {
         mockFlags({})
 

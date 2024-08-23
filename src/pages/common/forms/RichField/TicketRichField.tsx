@@ -2,7 +2,8 @@ import React, {ForwardedRef, forwardRef, useMemo} from 'react'
 import {fromJS} from 'immutable'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import ToolbarContext, {
+import {
+    ToolbarContext,
     ToolbarContextType,
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 import useAppSelector from 'hooks/useAppSelector'
@@ -40,6 +41,7 @@ type Props = {
     supportsUniqueDiscountOffer?: boolean
     canAddUniqueDiscountOffer?: boolean
     canAddProductAutomations?: boolean
+    canAddUtm?: boolean
     sortAttachments?: boolean
     currentShopifyIntegration?: ShopifyIntegration
 } & RichFieldProps
@@ -54,6 +56,7 @@ const TicketRichField = (
         supportsUniqueDiscountOffer = false,
         canAddUniqueDiscountOffer = false,
         canAddProductAutomations = false,
+        canAddUtm = false,
         sortAttachments = false,
         toolbarTour,
         currentShopifyIntegration,
@@ -103,6 +106,7 @@ const TicketRichField = (
                 !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES.includes(
                     newMessageChannel
                 ),
+            canAddUtm: canAddUtm,
             supportsUniqueDiscountOffer,
             canAddUniqueDiscountOffer,
             onInsertDiscountCodeOpen: () => {
@@ -187,6 +191,7 @@ const TicketRichField = (
             supportsUniqueDiscountOffer,
             canAddUniqueDiscountOffer,
             canAddProductAutomations,
+            canAddUtm,
             sortAttachments,
         ]
     )

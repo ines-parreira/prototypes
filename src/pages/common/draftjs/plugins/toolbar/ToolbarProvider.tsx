@@ -2,7 +2,7 @@ import React, {ReactNode, useMemo} from 'react'
 import _noop from 'lodash/noop'
 import {List} from 'immutable'
 
-import ToolbarContext, {ToolbarContextType} from './ToolbarContext'
+import {ToolbarContext, ToolbarContextType} from './ToolbarContext'
 
 type Props = {
     children?: ReactNode
@@ -21,6 +21,7 @@ const ToolbarProvider = ({
     canAddProductCard = false,
     canAddProductLink = false,
     canAddProductAutomations = false,
+    canAddUtm = false,
     toolbarTour = {},
     disableOutOfStockProducts = false,
     disableVariantSelection = false,
@@ -48,6 +49,7 @@ const ToolbarProvider = ({
             canAddProductCard,
             canAddProductLink,
             canAddProductAutomations,
+            canAddUtm,
             toolbarTour,
             disableOutOfStockProducts,
             disableVariantSelection,
@@ -74,6 +76,7 @@ const ToolbarProvider = ({
             canAddProductCard,
             canAddProductLink,
             canAddProductAutomations,
+            canAddUtm,
             toolbarTour,
             disableOutOfStockProducts,
             disableVariantSelection,

@@ -6,7 +6,10 @@ import {IntegrationProvider} from 'pages/convert/campaigns/containers/Integratio
 
 import Triggers from 'pages/convert/onboarding/components/SimpleCampaignEditor/components/Triggers'
 import TextEditor from 'pages/convert/onboarding/components/SimpleCampaignEditor/components/TextEditor'
-import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {
+    UtmConfiguration,
+    WizardConfiguration,
+} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import {
     CampaigFormConfigurationProvider,
     CampaignFormConfigurationType,
@@ -19,6 +22,7 @@ type Props = {
     integration: Map<any, any>
     shopifyIntegration: Map<any, any>
     wizardConfiguration?: WizardConfiguration
+    utmConfiguration?: UtmConfiguration
     isConvertSubscriber?: boolean
     onCampaignUpdate: (data: any) => void
 }
@@ -30,6 +34,7 @@ export const SimpleCampaignEditor: React.FC<Props> = (props) => {
         integration,
         shopifyIntegration,
         wizardConfiguration,
+        utmConfiguration,
         onCampaignUpdate,
     } = props
 
@@ -38,8 +43,9 @@ export const SimpleCampaignEditor: React.FC<Props> = (props) => {
             ({
                 isEditMode: false,
                 configuration: wizardConfiguration,
+                utmConfiguration: utmConfiguration,
             } as CampaignFormConfigurationType),
-        [wizardConfiguration]
+        [wizardConfiguration, utmConfiguration]
     )
 
     return (

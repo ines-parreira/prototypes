@@ -54,6 +54,8 @@ import {transformAttachmentsToProductRecommendations} from 'pages/convert/campai
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
 
+import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
+import useCanAddUtm from 'pages/convert/common/hooks/useUtmFlag'
 import css from './ConvertSimplifiedEditorModal.less'
 
 type Props = {
@@ -184,6 +186,10 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
         setCampaign(data)
     }
 
+    const utmProps = useUtm(channelConnection, campaign?.name || '')
+    const {appliedUtmEnabled, appliedUtmQueryString} = utmProps
+    const canAddUtm = useCanAddUtm(isConvertSubscriber)
+
     const onSubmit = async (activate = false) => {
         if (!campaign || !channelConnection) {
             return
@@ -202,6 +208,9 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
             productRecommendations: productRecommendations,
             isActive: activate,
             isEditMode: !!campaign?.id,
+            canAddUtm: canAddUtm,
+            utmEnabled: appliedUtmEnabled,
+            utmQueryString: appliedUtmQueryString,
         })
 
         try {
@@ -264,6 +273,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
                                 integration={integration}
                                 shopifyIntegration={storeIntegration}
                                 wizardConfiguration={wizardConfiguration}
+                                utmConfiguration={utmProps}
                             />
                         </div>
 

@@ -21,6 +21,7 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import {CampaignMessage} from '../CampaignMessage'
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
+jest.mock('pages/convert/common/hooks/useUtmFlag')
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {

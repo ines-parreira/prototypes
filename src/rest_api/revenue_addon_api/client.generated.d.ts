@@ -29,6 +29,10 @@ declare namespace Components {
              * Campaign Id
              */
             campaign_id?: string | null
+            /**
+             * Generated Campaign Id
+             */
+            generated_campaign_id?: string | null
         }
         /**
          * ABGroupStatus
@@ -399,7 +403,7 @@ declare namespace Components {
             /**
              * Meta
              */
-            meta?: any | null
+            meta?: {} | null
             /**
              * Triggers
              */
@@ -419,7 +423,7 @@ declare namespace Components {
             /**
              * Variants
              */
-            variants?: CampaignVariantRequestSchema[] | null
+            variants?: CampaignVariantRequestSchema[]
         }
         /**
          * CampaignPatchRequestSchema
@@ -469,7 +473,7 @@ declare namespace Components {
             /**
              * Meta
              */
-            meta?: any | null
+            meta?: {} | null
             /**
              * Triggers
              */
@@ -530,7 +534,7 @@ declare namespace Components {
             /**
              * Meta
              */
-            meta?: any | null
+            meta?: {} | null
             /**
              * Id
              */
@@ -725,6 +729,14 @@ declare namespace Components {
              * Is Onboarded
              */
             is_onboarded?: boolean
+            /**
+             * Utm Query String
+             */
+            utm_query_string?: string
+            /**
+             * Utm Enabled
+             */
+            utm_enabled?: boolean
             channel: ChannelType
         }
         /**
@@ -751,6 +763,14 @@ declare namespace Components {
              * Is Onboarded
              */
             is_onboarded?: boolean
+            /**
+             * Utm Query String
+             */
+            utm_query_string?: string
+            /**
+             * Utm Enabled
+             */
+            utm_enabled?: boolean
             channel: ChannelType
             /**
              * Account Id
@@ -788,6 +808,14 @@ declare namespace Components {
              * Is Onboarded
              */
             is_onboarded?: boolean
+            /**
+             * Utm Query String
+             */
+            utm_query_string?: string
+            /**
+             * Utm Enabled
+             */
+            utm_enabled?: boolean
         }
         /**
          * ChannelType
@@ -1040,7 +1068,7 @@ declare namespace Components {
             /**
              * Config
              */
-            config: any
+            config: {}
             /**
              * Created Datetime
              */
@@ -1061,7 +1089,7 @@ declare namespace Components {
             /**
              * Config
              */
-            config: any
+            config: {}
         }
         /**
          * JWTTokenSchema
@@ -1121,6 +1149,12 @@ declare namespace Components {
             | 'best_seller'
             | 'newest'
         /**
+         * PublicABGroupResponseSchema
+         */
+        export interface PublicABGroupResponseSchema {
+            status: ABGroupStatus
+        }
+        /**
          * PublicCampaignResponseSchema
          * Contains only fields allowed to be seen by the public, e.g. no channel_connection_id.
          */
@@ -1164,7 +1198,7 @@ declare namespace Components {
             /**
              * Meta
              */
-            meta?: any | null
+            meta?: {} | null
             /**
              * Triggers
              */
@@ -1189,6 +1223,39 @@ declare namespace Components {
              * Deleted Datetime
              */
             deleted_datetime?: string /* date-time */ | null
+            /**
+             * Variants
+             */
+            variants: PublicCampaignVariantResponseSchema[]
+            ab_group?: PublicABGroupResponseSchema | null
+        }
+        /**
+         * PublicCampaignVariantResponseSchema
+         */
+        export interface PublicCampaignVariantResponseSchema {
+            /**
+             * Message Text
+             */
+            message_text: string
+            /**
+             * Message Html
+             */
+            message_html?: string | null
+            /**
+             * Attachments
+             */
+            attachments?:
+                | (
+                      | CampaignAttachmentProductSchemaOutput
+                      | CampaignAttachmentDiscountOfferSchema
+                      | CampaignAttachmentVisitorFormSchemaOutput
+                      | CampaignAttachmentProductRecommendationSchemaOutput
+                  )[]
+                | null
+            /**
+             * Id
+             */
+            id: string
         }
         /**
          * RecommendationItemSchema
@@ -1411,7 +1478,7 @@ declare namespace Components {
             /**
              * Meta
              */
-            meta?: any
+            meta?: {}
             /**
              * Alias
              */

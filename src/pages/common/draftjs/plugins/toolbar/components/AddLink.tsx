@@ -1,5 +1,5 @@
 import {EditorState, Modifier} from 'draft-js'
-import React, {Component, KeyboardEvent, ContextType} from 'react'
+import React, {Component, KeyboardEvent, ContextType, useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import ReactPlayer from 'react-player'
 
@@ -19,9 +19,12 @@ import {
 import {linkEditionEnded, linkEditionStarted} from 'state/ui/editor/actions'
 import {linkify} from 'utils/linkify'
 
+import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
+import {attachUtmToUrl} from 'pages/convert/campaigns/utils/attachUtmParams'
+import {UtmConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import {getTooltipTourConfiguration} from '../utils'
 import {ActionInjectedProps, ActionName} from '../types'
-
 import {
     ToolbarContextType,
     withToolbarContext,
@@ -30,6 +33,29 @@ import {
 import Popover from './ButtonPopover'
 
 import css from './AddLink.less'
+import AddUtm from './AddUtm'
+
+const tabs = [
+    {value: 'url', label: 'URL'},
+    {value: 'utm', label: 'UTM'},
+]
+
+const CampaignFormContextInterceptor = (props: {
+    appliedUtmUpdatedCallback: (
+        appliedUtmQueryString: string,
+        appliedUtmEnabled: boolean
+    ) => void
+}) => {
+    const {utmConfiguration} = useCampaignFormContext()
+    const {appliedUtmEnabled, appliedUtmQueryString} =
+        utmConfiguration as UtmConfiguration
+    const {appliedUtmUpdatedCallback} = props
+    useEffect(() => {
+        appliedUtmUpdatedCallback(appliedUtmQueryString, appliedUtmEnabled)
+    }, [appliedUtmEnabled, appliedUtmQueryString, appliedUtmUpdatedCallback])
+
+    return <></>
+}
 
 type Props = {
     entityKey?: string
@@ -51,6 +77,12 @@ export class AddLinkContainer extends Component<Props> {
     static contextType = ToolbarContext
     context!: ContextType<typeof ToolbarContext>
 
+    state = {
+        activeTab: tabs[0].value,
+        appliedUtmQueryString: '',
+        appliedUtmEnabled: false,
+    }
+
     componentDidUpdate(prevProps: Props) {
         const {isOpen, linkEditionEnded, linkEditionStarted} = this.props
 
@@ -59,6 +91,34 @@ export class AddLinkContainer extends Component<Props> {
         } else if (prevProps.isOpen && !isOpen) {
             linkEditionEnded()
         }
+    }
+
+    _getUtmAppliedState = (
+        appliedUtmQueryString: string,
+        appliedUtmEnabled: boolean
+    ) => {
+        if (
+            this.state &&
+            (appliedUtmQueryString !== this.state.appliedUtmQueryString ||
+                appliedUtmEnabled !== this.state.appliedUtmEnabled)
+        ) {
+            this.setState({
+                appliedUtmQueryString: appliedUtmQueryString,
+                appliedUtmEnabled: appliedUtmEnabled,
+            })
+        }
+    }
+
+    _updateUrlWithConfiguredUtm = (url: string) => {
+        if (!this.context.canAddUtm) return url
+        const {appliedUtmQueryString, appliedUtmEnabled} = this.state
+        return attachUtmToUrl(
+            url,
+            '',
+            true,
+            appliedUtmEnabled,
+            appliedUtmQueryString
+        )
     }
 
     _isValid = (): boolean =>
@@ -120,11 +180,8 @@ export class AddLinkContainer extends Component<Props> {
             ? this._updateLink()
             : this._insertLink()
 
-        if (
-            newEditorState &&
+        if (newEditorState && !this.props.entityKey) {
             // Do not append a video if we are in `Update Link` mode.
-            !this.props.entityKey
-        ) {
             this._insertExtraVideoIfApplicable(newEditorState)
         }
 
@@ -141,7 +198,8 @@ export class AddLinkContainer extends Component<Props> {
         }
 
         // Use linkify to add protocol to the url
-        const parsedUrl = linkifyWithTemplate(url)
+        const preParsedUrl = linkifyWithTemplate(url)
+        const parsedUrl = this._updateUrlWithConfiguredUtm(preParsedUrl)
 
         // Update url
         contentState = contentState.replaceEntityData(entityKey, {
@@ -182,7 +240,8 @@ export class AddLinkContainer extends Component<Props> {
     _insertLink = (): EditorState | null => {
         const {url, text} = this.props
         // Use linkify to add protocol to the url
-        const parsedUrl = linkifyWithTemplate(url)
+        const preParsedUrl = linkifyWithTemplate(url)
+        const parsedUrl = this._updateUrlWithConfiguredUtm(preParsedUrl)
 
         let editorState = this.props.getEditorState()
         const selection = editorState.getSelection()
@@ -234,6 +293,14 @@ export class AddLinkContainer extends Component<Props> {
         onInsertVideoAddedFromInsertLink()
     }
 
+    navigateToFirstTab = () => {
+        this.setState({activeTab: tabs[0].value})
+    }
+
+    onAddUtmApply = () => {
+        this.navigateToFirstTab()
+    }
+
     render() {
         const {toolbarTour} = this.context
         const tour = getTooltipTourConfiguration(ActionName.Link, toolbarTour)
@@ -248,30 +315,54 @@ export class AddLinkContainer extends Component<Props> {
                 onOpen={this._onPopoverOpen}
                 onClose={this.props.onClose}
             >
-                <div className={css.wrapper} onKeyDown={this._onKeyDown}>
-                    <DEPRECATED_InputField
-                        className={css.field}
-                        label="Link text"
-                        placeholder="Ex. Help Center Article"
-                        onChange={this.props.onTextChange}
-                        value={this.props.text}
-                        autoFocus={!this.props.text}
+                {this.context.canAddUtm && (
+                    <>
+                        <TabNavigator
+                            activeTab={this.state.activeTab}
+                            onTabChange={(value: string) =>
+                                this.setState({activeTab: value})
+                            }
+                            tabs={tabs}
+                        />
+                        <CampaignFormContextInterceptor
+                            appliedUtmUpdatedCallback={this._getUtmAppliedState}
+                        />
+                    </>
+                )}
+                {this.state.activeTab === 'url' || !this.context.canAddUtm ? (
+                    <div className={css.wrapper} onKeyDown={this._onKeyDown}>
+                        <DEPRECATED_InputField
+                            className={css.field}
+                            label="Link text"
+                            placeholder="Ex. Help Center Article"
+                            onChange={this.props.onTextChange}
+                            value={this.props.text}
+                            autoFocus={!this.props.text}
+                        />
+                        <DEPRECATED_InputField
+                            className={css.field}
+                            label="URL"
+                            placeholder="https://help.domain.com/article"
+                            onChange={this.props.onUrlChange}
+                            value={this.props.url}
+                            autoFocus={!!this.props.text}
+                        />
+                        <Button
+                            isDisabled={!this._isValid()}
+                            onClick={this._submit}
+                        >
+                            {this.props.entityKey
+                                ? 'Update Link'
+                                : 'Insert Link'}
+                        </Button>
+                    </div>
+                ) : (
+                    <AddUtm
+                        {...this.context}
+                        onKeyDown={this._onKeyDown}
+                        onApply={this.onAddUtmApply}
                     />
-                    <DEPRECATED_InputField
-                        className={css.field}
-                        label="URL"
-                        placeholder="https://help.domain.com/article"
-                        onChange={this.props.onUrlChange}
-                        value={this.props.url}
-                        autoFocus={!!this.props.text}
-                    />
-                    <Button
-                        isDisabled={!this._isValid()}
-                        onClick={this._submit}
-                    >
-                        {this.props.entityKey ? 'Update Link' : 'Insert Link'}
-                    </Button>
-                </div>
+                )}
             </Popover>
         )
     }

@@ -42,3 +42,14 @@ export type WizardConfiguration = {
     toolbarConfiguration?: Record<string, ToolbarActionConfiguration>
     labels?: Partial<Record<Label, string>>
 }
+
+export type UtmConfiguration = {
+    utmEnabled: boolean
+    utmQueryString: string
+    appliedUtmQueryString: string
+    appliedUtmEnabled: boolean
+    onUtmEnabledChange: (value: boolean) => void
+    onUtmQueryStringChange: (string: string) => void
+    onUtmApply: (save: boolean) => Promise<void>
+    onUtmReset: () => void
+}

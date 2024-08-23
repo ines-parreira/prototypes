@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import {assumeMock} from 'utils/testing'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {channelConnection} from 'fixtures/channelConnection'
+import {utmConfiguration} from 'fixtures/utmConfiguration'
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {campaign} from 'fixtures/campaign'
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
@@ -14,12 +15,17 @@ import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS} from 'pages/convert/campaigns/templates/library/linkValuableResourcesToHelpVisitors'
 import {SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD} from 'pages/convert/campaigns/templates/library/suggestBundlesWhenSingleItemInCart'
+import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
 import CampaignTemplateCustomizeLibraryView from '../CampaignTemplateCustomizeLibraryView'
 
 const mockStore = configureMockStore()
 
+jest.mock('pages/convert/campaigns/hooks/useUtm.ts')
+const useUtmMock = assumeMock(useUtm)
+
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
+jest.mock('pages/convert/common/hooks/useUtmFlag')
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
@@ -96,6 +102,7 @@ describe('CampaignTemplateCustomizeView', () => {
                 mutateAsync: jest.fn(),
             } as unknown as ReturnType<typeof useUpdateCampaign>
         })
+        useUtmMock.mockReturnValue(utmConfiguration)
         jest.spyOn(
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
