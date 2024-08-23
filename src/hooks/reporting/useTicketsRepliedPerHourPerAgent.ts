@@ -1,8 +1,6 @@
 import {useMemo} from 'react'
-import {
-    HelpdeskMessageDimension,
-    HelpdeskMessageMeasure,
-} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {
     calculateMetricPerHour,
@@ -27,7 +25,7 @@ export const useTicketsRepliedPerHourPerAgent = (
     sorting?: OrderDirection,
     agentAssigneeId?: string
 ): MetricWithDecile => {
-    const senderId = HelpdeskMessageDimension.SenderId
+    const senderId = TicketMember.MessageSenderId
     const userIdField = AgentTimeTrackingDimension.UserId
     const ticketCountField = HelpdeskMessageMeasure.TicketCount
     const onlineTimeField = AgentTimeTrackingMeasure.OnlineTime

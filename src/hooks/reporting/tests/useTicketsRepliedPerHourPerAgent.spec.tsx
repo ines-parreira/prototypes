@@ -9,10 +9,8 @@ import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {
-    HelpdeskMessageDimension,
-    HelpdeskMessageMeasure,
-} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
@@ -46,7 +44,7 @@ describe('useTicketsRepliedPerHourPerAgent.ts', () => {
                 {
                     [HelpdeskMessageMeasure.TicketCount]:
                         String(ticketsRepliedValue),
-                    [HelpdeskMessageDimension.SenderId]: String(agent.id),
+                    [TicketMember.MessageSenderId]: String(agent.id),
                 },
             ],
         },
@@ -95,7 +93,7 @@ describe('useTicketsRepliedPerHourPerAgent.ts', () => {
                         [HelpdeskMessageMeasure.TicketCount]: String(
                             ticketsRepliedValue / (onlineTimeValue / 60 / 60)
                         ),
-                        [HelpdeskMessageDimension.SenderId]: String(agent.id),
+                        [TicketMember.MessageSenderId]: String(agent.id),
                     },
                 ],
                 decile: 9,
@@ -123,7 +121,7 @@ describe('useTicketsRepliedPerHourPerAgent.ts', () => {
                         [HelpdeskMessageMeasure.TicketCount]: String(
                             ticketsRepliedValue / (onlineTimeValue / 60 / 60)
                         ),
-                        [HelpdeskMessageDimension.SenderId]: String(agent.id),
+                        [TicketMember.MessageSenderId]: String(agent.id),
                     },
                 ],
                 decile: 9,
