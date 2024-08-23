@@ -47,9 +47,10 @@ const CancellationReasons = (props: Props) => {
         if (!primaryReasonIsOther && !secondaryReasonIsOther) {
             return null
         }
+
         return (
             <OtherReason
-                isRequired={primaryReasonIsOther}
+                isRequired={primaryReasonIsOther || secondaryReasonIsOther}
                 handleOtherReasonChange={updateOtherReason}
                 currentReason={reasonsState.otherReason?.label || null}
             />

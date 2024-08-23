@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, within, screen} from '@testing-library/react'
 import CancellationReasons from '../CancellationReasons'
 import {DEFAULT_STATE} from '../../reducers'
 import {CommonReasonLabel, HelpdeskPrimaryReasonLabel} from '../../constants'
@@ -191,5 +191,29 @@ describe('CancellationReasons - Helpdesk', () => {
             type: CancellationReasonsActionType.OtherReasonUpdated,
             otherReason: newOtherReason,
         })
+    })
+
+    it('should show the additional details as required when "Other" is selected as secondary reason', () => {
+        render(
+            <div>
+                <CancellationReasons
+                    reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
+                    reasonsState={{
+                        ...DEFAULT_STATE,
+                        primaryReason: {
+                            label: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
+                        },
+                        secondaryReason: {label: CommonReasonLabel.Other},
+                    }}
+                    dispatchCancellationReasonsAction={jest.fn() as any}
+                />
+            </div>
+        )
+
+        expect(
+            within(
+                screen.getByText('Please share any additional details')
+            ).getByText('*')
+        ).toBeVisible()
     })
 })

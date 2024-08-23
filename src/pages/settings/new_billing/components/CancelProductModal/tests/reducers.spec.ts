@@ -39,6 +39,28 @@ describe('cancellationReasonsReducer', () => {
         })
     })
 
+    it('should update the secondary reason with "Other" and return the state uncompleted', () => {
+        const primaryReason = {label: 'primary'}
+        const secondaryReason = {label: CommonReasonLabel.Other}
+        expect(
+            cancellationReasonsReducer(
+                {
+                    ...DEFAULT_STATE,
+                    primaryReason: primaryReason,
+                },
+                {
+                    type: CancellationReasonsActionType.SecondaryReasonSelected,
+                    secondaryReason: secondaryReason,
+                }
+            )
+        ).toEqual({
+            primaryReason: primaryReason,
+            secondaryReason: secondaryReason,
+            otherReason: null,
+            completed: false,
+        })
+    })
+
     it('should update the primary reason with "I prefer not to say" and return the completed state', () => {
         expect(
             cancellationReasonsReducer(DEFAULT_STATE, {

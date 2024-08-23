@@ -23,7 +23,10 @@ const isReasonsSelectionCompleted = (
         return true
     }
 
-    if (primaryReason?.label === CommonReasonLabel.Other) {
+    if (
+        primaryReason?.label === CommonReasonLabel.Other ||
+        secondaryReason?.label === CommonReasonLabel.Other
+    ) {
         return !!otherReason?.label
     }
 

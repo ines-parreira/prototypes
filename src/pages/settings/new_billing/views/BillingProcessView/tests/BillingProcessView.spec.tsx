@@ -4,6 +4,8 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
 import {QueryClientProvider} from '@tanstack/react-query'
+import {screen, waitFor, within} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     HELPDESK_PRODUCT_ID,
@@ -13,6 +15,10 @@ import {
 } from 'fixtures/productPrices'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {
+    CommonReasonLabel,
+    HelpdeskPrimaryReasonLabel,
+} from 'pages/settings/new_billing/components/CancelProductModal/constants'
 import BillingProcessView from '../BillingProcessView'
 import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
 
@@ -166,5 +172,115 @@ describe('UsageAndPlansView', () => {
             },
             {}
         )
+    })
+
+    it('should be required to add additional details to the cancellation reason when "Other" is selected as secondary reason', async () => {
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <BillingProcessView
+                        currentUsage={currentProductsUsage}
+                        contactBilling={jest.fn()}
+                        dispatchBillingError={jest.fn()}
+                        setDefaultMessage={jest.fn()}
+                        setIsModalOpen={jest.fn()}
+                        periodEnd="2021-01-01"
+                        isTrialing={false}
+                        isCurrentSubscriptionCanceled={true}
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        const cancelAutoRenewalButton = screen.getByRole('button', {
+            name: 'Cancel auto-renewal',
+        })
+
+        expect(
+            screen.queryByText('Cancel Helpdesk auto-renewal')
+        ).not.toBeInTheDocument()
+
+        userEvent.click(cancelAutoRenewalButton)
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Cancel Helpdesk auto-renewal')
+            ).toBeVisible()
+        })
+
+        expect(
+            screen.queryByText(
+                'Your opinion means a lot to us. Please tell us why you are cancelling your plan.'
+            )
+        ).not.toBeInTheDocument()
+
+        userEvent.click(screen.getByText('Continue cancelling'))
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Your opinion means a lot to us. Please tell us why you are cancelling your plan.'
+                )
+            ).toBeVisible()
+        })
+
+        userEvent.click(
+            within(screen.getByRole('listbox')).getByText('arrow_drop_down')
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('option', {
+                    name: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
+                })
+            ).toBeVisible()
+        })
+
+        expect(
+            screen.queryByText('Could you please share more?')
+        ).not.toBeInTheDocument()
+
+        userEvent.click(
+            screen.getByRole('option', {
+                name: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
+            })
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Could you please share more?')
+            ).toBeVisible()
+        })
+
+        expect(
+            screen.queryByText('Please share any additional details')
+        ).not.toBeInTheDocument()
+
+        userEvent.click(
+            screen.getByRole('radio', {
+                name: CommonReasonLabel.Other,
+            })
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Please share any additional details')
+            ).toBeVisible()
+        })
+
+        expect(
+            screen.getByRole('button', {name: 'Continue cancelling'})
+        ).toHaveClass('isDisabled')
+
+        await userEvent.type(
+            screen.getByPlaceholderText("It didn't work out for me because..."),
+            'Some other reason'
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: 'Continue cancelling'})
+            ).not.toHaveClass('isDisabled')
+        })
     })
 })
