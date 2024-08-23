@@ -249,8 +249,7 @@ export const GuidanceForm = ({
                         <p>
                             AI-generated Guidance is crafted from your past
                             tickets, addressing the most commonly surfaced
-                            scenarios using insights from your existing
-                            knowledge sources.{' '}
+                            scenarios.{' '}
                             <b>
                                 Please review it thoroughly to maximize its
                                 benefits.
