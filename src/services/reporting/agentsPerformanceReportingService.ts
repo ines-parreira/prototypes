@@ -31,7 +31,7 @@ import {
 } from 'pages/stats/common/utils'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {createCsv, saveZippedFiles} from 'utils/file'
-import {DATE_TIME_FORMAT} from './constants'
+import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 
 export const SUMMARY_ROW_AGENT_COLUMN_LABEL = 'Average'
 
@@ -41,6 +41,7 @@ type AgentIdentifierDimension =
     | HelpdeskMessageMember.SenderId
     | HelpdeskMessageDimension.SenderId
     | AgentTimeTrackingDimension.UserId
+    | TicketDimension.MessageSenderId
 
 type AgentReportMetrics =
     | HelpdeskMessageCubeWithJoins['dimensions']
@@ -140,6 +141,7 @@ export const saveReport = async (
     const MedianResolutionTime = TicketMessagesMeasure.MedianResolutionTime
     const TicketCount = TicketMeasure.TicketCount
     const SenderId = HelpdeskMessageDimension.SenderId
+    const MessageSenderId = TicketDimension.MessageSenderId
     const HelpdeskTicketCount = HelpdeskMessageMeasure.TicketCount
     const MessageCount = HelpdeskMessageMeasure.MessageCount
     const OnlineTime = AgentTimeTrackingMeasure.OnlineTime
@@ -199,7 +201,7 @@ export const saveReport = async (
         [AgentsTableColumn.RepliedTickets]: {
             column: AgentsTableColumn.RepliedTickets,
             metricData: data.ticketsRepliedMetric,
-            idField: SenderId,
+            idField: MessageSenderId,
             metricField: HelpdeskTicketCount,
             summaryData: summary.ticketsRepliedMetric.data?.value,
         },
@@ -213,7 +215,7 @@ export const saveReport = async (
         [AgentsTableColumn.RepliedTicketsPerHour]: {
             column: AgentsTableColumn.RepliedTicketsPerHour,
             metricData: data.repliedTicketsPerHourMetric,
-            idField: SenderId,
+            idField: MessageSenderId,
             metricField: HelpdeskTicketCount,
             summaryData: summary.repliedTicketsPerHourMetric.data?.value,
         },
