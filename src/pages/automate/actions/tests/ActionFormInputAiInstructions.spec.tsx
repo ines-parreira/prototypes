@@ -18,8 +18,9 @@ const Form = (props: any) => {
 
 describe('ActionFormInputAiInstructions', () => {
     it('renders the component with the provided caption and label', async () => {
-        const caption = 'Describe what the Action does.'
-        const label = 'AI Agent instructions'
+        const caption =
+            'Describe what the Action does and give AI Agent additional directions on how to perform this Action.'
+        const label = 'Instructions for AI Agent'
         const errorMessage = 'Test Error Message'
 
         const {getByText, getByLabelText, findByText} = render(

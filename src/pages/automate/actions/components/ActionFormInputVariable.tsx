@@ -30,10 +30,11 @@ export default function ActionFormInputVariable({
 }: Props) {
     return (
         <div className={css.inputVariables}>
-            <Label>Input variables (Optional)</Label>
+            <Label>Collect information from the customer (optional)</Label>
             <p>
-                List any information AI Agent needs to collect from the
-                conversation for this Action.
+                List any information AI Agent should ask the customer before
+                performing this Action. Note: AI Agent already knows the
+                customer’s email and order number.
             </p>
             <div className={css.customInputsContainer}>
                 {customInputs.map((input, index) => {
@@ -144,7 +145,7 @@ export default function ActionFormInputVariable({
                                                 target={id}
                                                 placement="top-end"
                                             >
-                                                This input is required by{' '}
+                                                This information is required by{' '}
                                                 {_.upperFirst(actionAppType)} to
                                                 perform this Action.
                                             </Tooltip>
@@ -157,8 +158,12 @@ export default function ActionFormInputVariable({
                 })}
                 {customInputs.length > 0 && (
                     <div className={css.formInputFooterInfo}>
-                        Data type, input name, instructions for AI Agent to ask
-                        for the input
+                        <span>Data type/format</span>
+                        <span>Variable name</span>
+                        <span>
+                            Instructions for AI Agent to collect this
+                            information
+                        </span>
                     </div>
                 )}
                 <div>
@@ -168,7 +173,9 @@ export default function ActionFormInputVariable({
                         onClick={onAddInput}
                         size="small"
                     >
-                        <ButtonIconLabel icon="add">Add Input</ButtonIconLabel>
+                        <ButtonIconLabel icon="add">
+                            Add information
+                        </ButtonIconLabel>
                     </Button>
                 </div>
             </div>

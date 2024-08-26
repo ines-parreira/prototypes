@@ -19,12 +19,9 @@
             gap: @layout-spacing-xs;
 
             .customInputItem {
-                display: flex;
+                display: grid;
+                grid-template-columns: 110px 160px 1fr 20px;
                 gap: @layout-spacing-xs;
-
-                & > div:first-child {
-                    min-width: 140px;
-                }
             }
 
             .disabled {
@@ -47,6 +44,9 @@
         .formInputFooterInfo {
             .caption-regular();
             color: var(--neutral-grey-5);
+            display: grid;
+            grid-template-columns: 110px 160px 1fr;
+            gap: @layout-spacing-xs;
         }
     }
 }
