@@ -202,7 +202,6 @@ describe('<WorkflowsView />', () => {
     it('should render correctly', async () => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
-            [FeatureFlagKey.MigrateQuickResponseToFlows]: false,
         })
 
         useStoreWorkflowsMock.mockReturnValue({
@@ -261,7 +260,6 @@ describe('<WorkflowsView />', () => {
     it('should render correctly when workflowslength is 0', async () => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
-            [FeatureFlagKey.MigrateQuickResponseToFlows]: false,
         })
 
         useStoreWorkflowsMock.mockReturnValue({
@@ -356,7 +354,6 @@ describe('<WorkflowsView />', () => {
     it('should render correctly ', async () => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
-            [FeatureFlagKey.MigrateQuickResponseToFlows]: false,
         })
 
         useStoreWorkflowsMock.mockReturnValue({

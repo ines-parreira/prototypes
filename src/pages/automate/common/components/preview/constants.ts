@@ -5,7 +5,6 @@ import chainBracelet from 'assets/img/self-service/chain-bracelet.png'
 
 export const SELF_SERVICE_PREVIEW_ROUTES = {
     HOME: '/',
-    QUICK_RESPONSE: '/quick-response',
     ORDERS: '/orders',
     TRACK: '/track',
     TRACK_UNFULFILLED_MESSAGE: '/track-unfulfilled-message',

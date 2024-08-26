@@ -1,7 +1,5 @@
-import React, {useMemo, useRef, useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import {Map, fromJS} from 'immutable'
-import classNames from 'classnames'
-import {v4 as uuidv4} from 'uuid'
 import {Label} from '@gorgias/ui-kit'
 
 import history from 'pages/history'
@@ -20,13 +18,12 @@ import {
 } from 'models/integration/types'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
-import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import {upsertChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Button from 'pages/common/components/button/Button'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import SelfServiceChatIntegrationQuickResponsePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationQuickResponsePage'
+
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import SelfServiceChatIntegrationHomePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationHomePage'
 import HelpCenterSelect from 'pages/automate/common/components/HelpCenterSelect'
@@ -43,29 +40,11 @@ import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPrevie
 import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
 
 import css from './GorgiasChatCreationWizardStepAutomate.less'
-import GorgiasChatCreationWizardQuickResponses from './components/GorgiasChatCreationWizardQuickResponses'
-import GorgiasChatCreationWizardQuickResponseNotConfiguredModal, {
-    GorgiasChatCreationWizardQuickResponseNotConfiguredModalHandle,
-} from './components/GorgiasChatCreationWizardQuickResponseNotConfiguredModal'
-import GorgiasChatCreationWizardQuickResponseNotEnabledModal, {
-    GorgiasChatCreationWizardQuickResponseNotEnabledModalHandle,
-} from './components/GorgiasChatCreationWizardQuickResponseNotEnabledModal'
 
 type SubmitForm = {
     type: IntegrationType.GorgiasChat
     id: number
     meta: Record<string, any>
-}
-
-const draftQuickResponse: QuickResponsePolicy = {
-    id: '',
-    title: 'What is your shipping policy?',
-    deactivatedDatetime: new Date().toISOString(),
-    responseMessageContent: {
-        html: '',
-        text: '',
-        attachments: fromJS([]),
-    },
 }
 
 type Props = {
@@ -86,16 +65,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
     const dispatch = useAppDispatch()
 
     const {goToNextStep, goToPreviousStep} = useNavigateWizardSteps()
-
-    const quickResponseNotConfiguredModalRef =
-        useRef<GorgiasChatCreationWizardQuickResponseNotConfiguredModalHandle>(
-            null
-        )
-
-    const quickResponseNotEnabledModalRef =
-        useRef<GorgiasChatCreationWizardQuickResponseNotEnabledModalHandle>(
-            null
-        )
 
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
@@ -119,21 +88,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         currentIsArticleRecommendationEnabled,
         setCurrentIsArticleRecommendationEnabled,
     ] = useState<boolean>()
-
-    const [currentIsQuickResponsesEnabled, setCurrentIsQuickResponsesEnabled] =
-        useState<boolean>()
-
-    const [quickResponseHasError, setQuickResponseHasError] = useState(false)
-
-    const initialQuickResponses =
-        gorgiasChatIntegration?.meta.wizard?.quick_response_ids || []
-
-    const [quickResponses, setQuickResponses] = useState<QuickResponsePolicy[]>(
-        []
-    )
-    const [expandedQuickResponseId, setExpandedQuickResponseId] = useState<
-        string | null
-    >(null)
 
     const appId = gorgiasChatIntegration
         ? gorgiasChatIntegration.meta.app_id
@@ -183,35 +137,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         isLoading: isLoadingSelfServiceConfiguration,
     } = useGetSelfServiceConfiguration(shopName, storeIntegration?.type)
 
-    const showQuickResponseSetupInWizard = false
-
-    useMemo(() => {
-        if (!selfServiceConfiguration) {
-            return
-        }
-
-        if (initialQuickResponses.length) {
-            setQuickResponses(
-                selfServiceConfiguration?.quickResponsePolicies.filter(({id}) =>
-                    initialQuickResponses.includes(id)
-                )
-            )
-        } else {
-            const draftPolicy =
-                selfServiceConfiguration?.quickResponsePolicies.find(
-                    ({title}) => title === draftQuickResponse.title
-                )
-
-            if (draftPolicy) {
-                setQuickResponses([draftPolicy])
-            } else {
-                setQuickResponses([{...draftQuickResponse, id: uuidv4()}])
-            }
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selfServiceConfiguration])
-
     const {isLoadingHelpCenters, helpCenters} = useHelpCenterOfShop(
         storeIntegration?.name,
         storeIntegration?.type
@@ -226,14 +151,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
 
     const [helpCenterId, setHelpCenterId] = useState<number | undefined>()
 
-    const hasActiveQuickResponsePoliciesInitially =
-        selfServiceConfiguration &&
-        selfServiceConfiguration.quickResponsePolicies.some(
-            (quickResponse) =>
-                !quickResponse.deactivatedDatetime &&
-                !initialQuickResponses.includes(quickResponse.id)
-        )
-
     const isOrderManagementEnabled =
         currentIsOrderManagementEnabled ??
         !!automationSettings?.orderManagement?.enabled
@@ -241,10 +158,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
     const isArticleRecommendationEnabled =
         currentIsArticleRecommendationEnabled ??
         !!automationSettings?.articleRecommendation?.enabled
-
-    const isQuickResponsesEnabled =
-        currentIsQuickResponsesEnabled ??
-        !!automationSettings?.quickResponses?.enabled
 
     const isFormDisabled =
         !storeIntegration ||
@@ -260,8 +173,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
     const isPristine =
         currentStoreIntegration === undefined &&
         currentIsArticleRecommendationEnabled === undefined &&
-        currentIsOrderManagementEnabled === undefined &&
-        currentIsQuickResponsesEnabled === undefined
+        currentIsOrderManagementEnabled === undefined
 
     const {handleSelfServiceConfigurationUpdate} =
         useSelfServiceConfigurationUpdate({
@@ -287,11 +199,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
             },
             orderManagement: {enabled: isOrderManagementEnabled},
             quickResponses: {
-                enabled: hasActiveQuickResponsePoliciesInitially
-                    ? isQuickResponsesEnabled
-                    : quickResponses.filter(
-                          ({deactivatedDatetime}) => !deactivatedDatetime
-                      ).length > 0,
+                enabled: false,
             },
             workflows: {enabled: !!automationSettings?.workflows?.enabled},
         })
@@ -300,22 +208,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
     }
 
     const updateSSConfiguration = async () => {
-        const quickResponseIds = quickResponses.map(({id}) => id)
-
-        const removedQuickResponseIds = initialQuickResponses.filter(
-            (id) => !quickResponseIds.includes(id)
-        )
-
-        const quickResponsePolicies = hasActiveQuickResponsePoliciesInitially
-            ? selfServiceConfiguration.quickResponsePolicies
-            : [
-                  ...quickResponses,
-                  ...selfServiceConfiguration!.quickResponsePolicies.filter(
-                      ({id}) =>
-                          !quickResponseIds.includes(id) &&
-                          !removedQuickResponseIds.includes(id)
-                  ),
-              ]
         if (!storeIntegration || !selfServiceConfiguration) return
 
         await handleSelfServiceConfigurationUpdate(
@@ -334,7 +226,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                             ? isOrderManagementEnabled
                             : selfServiceConfiguration.trackOrderPolicy.enabled,
                 }
-                draft.quickResponsePolicies = quickResponsePolicies
             },
             {},
             storeIntegration.id
@@ -354,36 +245,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
             })
     }
 
-    const onSave = (
-        shouldGoToNextStep = false,
-        isContinueLater = false,
-        bypassQuickResponseErrors = false
-    ) => {
-        if (
-            !hasActiveQuickResponsePoliciesInitially &&
-            shouldGoToNextStep &&
-            !bypassQuickResponseErrors
-        ) {
-            const hasQuickResponsesWithoutResponse = quickResponses.some(
-                ({responseMessageContent: {text, html, attachments}}) =>
-                    !text && !html && attachments.isEmpty()
-            )
-
-            if (hasQuickResponsesWithoutResponse) {
-                quickResponseNotConfiguredModalRef.current?.open()
-                return Promise.reject('at least one quick response is empty')
-            }
-
-            const hasQuickResponsesDisabled = quickResponses.some(
-                ({deactivatedDatetime}) => deactivatedDatetime
-            )
-
-            if (hasQuickResponsesDisabled) {
-                quickResponseNotEnabledModalRef.current?.open()
-                return Promise.reject('at least one quick response is disabled')
-            }
-        }
-
+    const onSave = (shouldGoToNextStep = false, isContinueLater = false) => {
         const form: SubmitForm = {
             type: IntegrationType.GorgiasChat,
             id: integration.get('id'),
@@ -393,10 +255,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                     shouldGoToNextStep
                         ? GorgiasChatCreationWizardSteps.Installation
                         : GorgiasChatCreationWizardSteps.Automate
-                )
-                .setIn(
-                    ['wizard', 'quick_response_ids'],
-                    quickResponses.map(({id}) => id)
                 )
                 .set(
                     'shop_name',
@@ -425,7 +283,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                 {
                     isOrderManagementEnabled,
                     isArticleRecommendationEnabled,
-                    isQuickResponsesEnabled,
                 }
             )
 
@@ -450,13 +307,8 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         )
     }
 
-    const expandedQuickResponse = quickResponses.find(
-        (quickResponse) => quickResponse.id === expandedQuickResponseId
-    )
-
     const selfServicePreviewContext = useMemo(() => {
         return {
-            quickResponse: expandedQuickResponse,
             selfServiceConfiguration: selfServiceConfiguration && {
                 ...selfServiceConfiguration,
                 trackOrderPolicy: {enabled: isOrderManagementEnabled},
@@ -472,27 +324,16 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                     ...selfServiceConfiguration.returnOrderPolicy,
                     enabled: false,
                 },
-                quickResponsePolicies: hasActiveQuickResponsePoliciesInitially
-                    ? isQuickResponsesEnabled
-                        ? selfServiceConfiguration.quickResponsePolicies
-                        : []
-                    : quickResponses,
             },
-            hoveredQuickResponseId: expandedQuickResponse?.id,
             isArticleRecommendationEnabled,
         }
     }, [
-        quickResponses,
         selfServiceConfiguration,
-        expandedQuickResponse,
         isOrderManagementEnabled,
         isArticleRecommendationEnabled,
-        hasActiveQuickResponsePoliciesInitially,
-        isQuickResponsesEnabled,
     ])
 
-    const isPreviewHomePage = !expandedQuickResponse
-
+    const isPreviewHomePage = true
     return (
         <>
             <UnsavedChangesPrompt
@@ -516,17 +357,12 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                         <SelfServicePreviewContext.Provider
                             value={selfServicePreviewContext}
                         >
-                            {gorgiasChatIntegration &&
-                                (expandedQuickResponse ? (
-                                    <SelfServiceChatIntegrationQuickResponsePage
-                                        integration={gorgiasChatIntegration}
-                                    />
-                                ) : (
-                                    <SelfServiceChatIntegrationHomePage
-                                        integration={gorgiasChatIntegration}
-                                        disableAnimations
-                                    />
-                                ))}
+                            {gorgiasChatIntegration && (
+                                <SelfServiceChatIntegrationHomePage
+                                    integration={gorgiasChatIntegration}
+                                    disableAnimations
+                                />
+                            )}
                         </SelfServicePreviewContext.Provider>
                     </GorgiasChatCreationWizardPreview>
                 }
@@ -556,7 +392,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                                 </Button>
                                 <Button
                                     onClick={() => onSave(true)}
-                                    isDisabled={quickResponseHasError}
                                     isLoading={isFormSubmitting}
                                 >
                                     Next
@@ -656,57 +491,8 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                                 )}
                         </div>
                     )}
-                    {showQuickResponseSetupInWizard && (
-                        <div className={css.section}>
-                            <div
-                                className={classNames(
-                                    css.sectionHeading,
-                                    css.sectionHeadingWithDescription
-                                )}
-                            >
-                                Quick Responses
-                            </div>
-                            <p className={css.sectionDescription}>
-                                Display buttons in your Chat with common
-                                questions that customers can click for an
-                                instant response.
-                            </p>
-                            {hasActiveQuickResponsePoliciesInitially ? (
-                                <ToggleInput
-                                    onClick={setCurrentIsQuickResponsesEnabled}
-                                    isToggled={isQuickResponsesEnabled}
-                                    isDisabled={isFormDisabled}
-                                >
-                                    Display Quick Responses in Chat
-                                </ToggleInput>
-                            ) : (
-                                <GorgiasChatCreationWizardQuickResponses
-                                    storeIntegration={storeIntegration}
-                                    isUpdatePending={isFormSubmitting}
-                                    onChange={setQuickResponseHasError}
-                                    quickResponses={quickResponses}
-                                    setQuickResponses={setQuickResponses}
-                                    expandedQuickResponseId={
-                                        expandedQuickResponseId
-                                    }
-                                    setExpandedQuickResponseId={
-                                        setExpandedQuickResponseId
-                                    }
-                                    isDisabled={isFormDisabled}
-                                />
-                            )}
-                        </div>
-                    )}
                 </>
             </GorgiasChatCreationWizardStep>
-            <GorgiasChatCreationWizardQuickResponseNotConfiguredModal
-                ref={quickResponseNotConfiguredModalRef}
-                onSave={() => onSave(true, false, true)}
-            />
-            <GorgiasChatCreationWizardQuickResponseNotEnabledModal
-                ref={quickResponseNotEnabledModalRef}
-                onSave={() => onSave(true, false, true)}
-            />
         </>
     )
 }

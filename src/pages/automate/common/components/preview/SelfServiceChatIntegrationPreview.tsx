@@ -14,7 +14,7 @@ import {
 } from 'config/integrations/gorgias_chat'
 
 import SelfServiceChatIntegrationHomePage from './SelfServiceChatIntegrationHomePage'
-import SelfServiceChatIntegrationQuickResponsePage from './SelfServiceChatIntegrationQuickResponsePage'
+
 import SelfServiceChatIntegrationTrackPage from './SelfServiceChatIntegrationTrackPage'
 import SelfServiceChatIntegrationTrackUnfulfillResponsePage from './SelfServiceChatIntegrationTrackUnfulfillResponsePage'
 import SelfServiceChatIntegrationOrdersPage from './SelfServiceChatIntegrationOrdersPage'
@@ -83,10 +83,7 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
             showGoBackButton={
                 location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.HOME
             }
-            enableAnimations={
-                !isInitialEntry ||
-                location.pathname === SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE
-            }
+            enableAnimations={!isInitialEntry}
             showBackground={false}
             isWidgetConversation={
                 location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.HOME
@@ -105,9 +102,6 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
             <React.Fragment key={location.key}>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.HOME} exact>
                     <SelfServiceChatIntegrationHomePage {...props} />
-                </Route>
-                <Route path={SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE} exact>
-                    <SelfServiceChatIntegrationQuickResponsePage {...props} />
                 </Route>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.ORDERS} exact>
                     <SelfServiceChatIntegrationOrdersPage {...props} />
