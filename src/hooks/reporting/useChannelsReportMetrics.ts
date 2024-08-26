@@ -1,4 +1,5 @@
 import {useMemo} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     useClosedTicketsMetricPerChannel,
     useCreatedTicketsMetricPerChannel,
@@ -12,12 +13,26 @@ import {
 import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
 import {usePercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/usePercentageOfCreatedTicketsMetricPerChannel'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 export const useChannelsReportMetrics = () => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
+    const isAnalyticsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+
+    const {cleanStatsFilters: LegacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : LegacyStatsFilters
+
     const {sortedChannels: channels, isLoading} = useSortedChannels()
 
     const createdTicketsMetricPerChannel = useCreatedTicketsMetricPerChannel(

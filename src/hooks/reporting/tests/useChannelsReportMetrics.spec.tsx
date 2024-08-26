@@ -2,6 +2,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
 import React from 'react'
 import {Provider} from 'react-redux'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {channels} from 'fixtures/channels'
 import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
 import {useChannelsReportMetrics} from 'hooks/reporting/useChannelsReportMetrics'
@@ -19,6 +20,8 @@ import {
     useTicketsRepliedMetricPerChannel,
 } from 'hooks/reporting/metricsPerChannel'
 import {usePercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/usePercentageOfCreatedTicketsMetricPerChannel'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('hooks/reporting/support-performance/useSortedChannels')
 
@@ -61,9 +64,15 @@ describe('useChannelsReportMetrics', () => {
         end_datetime: periodEnd.toISOString(),
         start_datetime: periodStart.toISOString(),
     }
+    const mockedTags = ['a', 'b']
+    const mockedChannels = [1, 2, 3]
     const state = {
         stats: {
-            filters: {period},
+            filters: {
+                period,
+                channels: withDefaultLogicalOperator(mockedChannels),
+                tags: withDefaultLogicalOperator(mockedTags),
+            },
         },
         ui: {
             stats: uiStatsInitialState,
@@ -99,6 +108,8 @@ describe('useChannelsReportMetrics', () => {
     }
 
     beforeEach(() => {
+        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: false})
+
         useSortedChannelsMock.mockReturnValue({
             sortedChannels: channels,
             isLoading: false,
@@ -126,5 +137,37 @@ describe('useChannelsReportMetrics', () => {
         })
 
         expect(result.current).toEqual(expectedMetrics)
+    })
+
+    it('should call one of hooks with the legacy stats filters', () => {
+        renderHook(() => useChannelsReportMetrics(), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(state)}> {children} </Provider>
+            ),
+        })
+
+        expect(useClosedTicketsMetricPerChannelMock.mock.calls[0][0]).toEqual(
+            expect.objectContaining({
+                tags: mockedTags,
+                channels: mockedChannels,
+            })
+        )
+    })
+
+    it('should call one of hooks with stats filters with default logical operator', () => {
+        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
+
+        renderHook(() => useChannelsReportMetrics(), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(state)}> {children} </Provider>
+            ),
+        })
+
+        expect(useClosedTicketsMetricPerChannelMock.mock.calls[0][0]).toEqual(
+            expect.objectContaining({
+                tags: withDefaultLogicalOperator(mockedTags),
+                channels: withDefaultLogicalOperator(mockedChannels),
+            })
+        )
     })
 })

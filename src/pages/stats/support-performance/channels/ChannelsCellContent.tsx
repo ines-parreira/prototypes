@@ -1,5 +1,6 @@
 import classnames from 'classnames'
 import React from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {METRIC_COLUMN_WIDTH} from 'pages/stats/AgentsTableConfig'
@@ -20,7 +21,11 @@ import {
     LeadColumn,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {getHeatmapMode} from 'state/ui/stats/channelsSlice'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 export const ChannelsCellContent = ({
     column,
@@ -37,10 +42,19 @@ export const ChannelsCellContent = ({
     width: number
     useMetric: MetricPerChannelQueryHook
 }) => {
+    const isAnalyticsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+
     const isHeatmapMode = useAppSelector(getHeatmapMode)
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
+    const {cleanStatsFilters: LegacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : LegacyStatsFilters
+
     const {isFetching, data} = useMetric(
         cleanStatsFilters,
         userTimezone,
@@ -88,6 +102,7 @@ export const ChannelsCellContent = ({
                         metricName: column,
                         perChannel: channel.slug,
                     }}
+                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {cellContent}
                 </DrillDownModalTrigger>

@@ -1,5 +1,6 @@
 import React from 'react'
 import {screen} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {formatMetricValue} from 'pages/stats/common/utils'
 import {ChannelsCellContent} from 'pages/stats/support-performance/channels/ChannelsCellContent'
 import {
@@ -14,19 +15,30 @@ import {RootState} from 'state/types'
 import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {renderWithStore} from 'utils/testing'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('@gorgias/ui-kit', () => ({
     Tooltip: () => <div />,
 }))
 
 describe('<ChannelsCellContent />', () => {
+    const mockedHelpCenters = [1, 2, 3]
+    const mockedTags = [4, 5, 6]
     const defaultState = {
-        [statsSlice.name]: statsInitialState,
+        [statsSlice.name]: {
+            filters: {
+                ...statsInitialState.filters,
+                helpCenters: withDefaultLogicalOperator(mockedHelpCenters),
+                tags: withDefaultLogicalOperator(mockedTags),
+            },
+        },
         ui: {
             stats: uiStatsInitialState,
             [channelsSlice.name]: initialState,
         },
-    } as RootState
+    } as Partial<RootState>
+
     const channel = {
         id: '',
         name: 'Some channel',
@@ -37,6 +49,10 @@ describe('<ChannelsCellContent />', () => {
         updated_datetime: null,
     }
     const column = ChannelsTableColumns.TicketHandleTime
+
+    beforeEach(() => {
+        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: false})
+    })
 
     it('should render loading placeholder', () => {
         const metricHook = () => ({
@@ -131,12 +147,74 @@ describe('<ChannelsCellContent />', () => {
                 ...defaultState,
                 ui: {
                     ...defaultState.ui,
-                    [channelsSlice.name]: {...initialState, heatmapMode: true},
+                    [channelsSlice.name]: {
+                        ...initialState,
+                        heatmapMode: true,
+                    },
                 },
-            }
+            } as RootState
         )
 
         expect(document.querySelector(`.p${decile}`)).toBeInTheDocument()
         expect(document.querySelector('.heatmap')).toBeInTheDocument()
+    })
+
+    it('should check if use metric hook is called with legacy stats filters', () => {
+        const metricHook = jest.fn(() => ({
+            isFetching: true,
+            isError: false,
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+            },
+        }))
+
+        renderWithStore(
+            <ChannelsCellContent
+                channel={channel}
+                column={column}
+                width={0}
+                useMetric={metricHook}
+            />,
+            defaultState
+        )
+
+        expect((metricHook.mock.calls[0] as Record<string, any>[])[0]).toEqual(
+            expect.objectContaining({
+                tags: mockedTags,
+                helpCenters: mockedHelpCenters,
+            })
+        )
+    })
+
+    it('should check if use metric hook is called with stats filters with logical operator', () => {
+        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
+        const metricHook = jest.fn(() => ({
+            isFetching: true,
+            isError: false,
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+            },
+        }))
+
+        renderWithStore(
+            <ChannelsCellContent
+                channel={channel}
+                column={column}
+                width={0}
+                useMetric={metricHook}
+            />,
+            defaultState
+        )
+
+        expect((metricHook.mock.calls[0] as Record<string, any>[])[0]).toEqual(
+            expect.objectContaining({
+                tags: withDefaultLogicalOperator(mockedTags),
+                helpCenters: withDefaultLogicalOperator(mockedHelpCenters),
+            })
+        )
     })
 })
