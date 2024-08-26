@@ -4,6 +4,7 @@ import {
     fireEvent,
     render,
     RenderResult,
+    screen,
     waitFor,
     within,
 } from '@testing-library/react'
@@ -13,6 +14,7 @@ import {Provider} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {UserRole} from 'config/types/user'
+import {Update} from 'jobs'
 import {ticket} from 'fixtures/ticket'
 import {user} from 'fixtures/users'
 import {JobType} from 'models/job/types'
@@ -33,6 +35,7 @@ jest.mock('state/views/actions')
 jest.mock('state/tickets/actions')
 jest.mock('pages/history')
 jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -48,7 +51,6 @@ const shortcutManagerMock = shortcutManager as jest.Mocked<
 const shortcutEventMock = {
     preventDefault: jest.fn(),
 } as unknown as jest.Mocked<Event>
-const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 const mockStore = configureMockStore()
 
@@ -141,16 +143,17 @@ describe('TicketListActions component', () => {
     )
 
     it('should render teams in assign team dropdown', () => {
-        const {container} = render(
+        const teams = [
+            {id: 4, name: 'foo'},
+            {id: 5, name: 'bar'},
+            {id: 6, name: 'baz'},
+        ]
+        render(
             <Provider
                 store={mockStore({
                     ...state,
                     teams: fromJS({
-                        all: [
-                            {id: 4, name: 'foo'},
-                            {id: 5, name: 'bar'},
-                            {id: 6, name: 'baz'},
-                        ],
+                        all: teams,
                     }),
                 })}
             >
@@ -161,20 +164,26 @@ describe('TicketListActions component', () => {
             </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('Assign to team')).toBeInTheDocument()
+        expect(screen.getByText('Could not find any agent')).toBeInTheDocument()
+        expect(screen.getByText(teams[0].name)).toBeInTheDocument()
+        expect(screen.getByText(teams[1].name)).toBeInTheDocument()
+        expect(screen.getByText(teams[2].name)).toBeInTheDocument()
+        expect(screen.getAllByText('Clear assignee')).toHaveLength(2)
     })
 
     it('should render agents options in assign agent dropdown', () => {
-        const {container} = render(
+        const agents = [
+            {id: 4, name: 'foo'},
+            {id: 5, name: 'bar'},
+            {id: 6, name: 'baz'},
+        ]
+        render(
             <Provider
                 store={mockStore({
                     ...state,
                     agents: fromJS({
-                        all: [
-                            {id: 4, name: 'foo'},
-                            {id: 5, name: 'bar'},
-                            {id: 6, name: 'baz'},
-                        ],
+                        all: agents,
                     }),
                 })}
             >
@@ -185,7 +194,12 @@ describe('TicketListActions component', () => {
             </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('Assign to me')).toBeInTheDocument()
+        expect(screen.getByText('Could not find any team')).toBeInTheDocument()
+        expect(screen.getByText(agents[0].name)).toBeInTheDocument()
+        expect(screen.getByText(agents[1].name)).toBeInTheDocument()
+        expect(screen.getByText(agents[2].name)).toBeInTheDocument()
+        expect(screen.getAllByText('Clear assignee')).toHaveLength(2)
     })
 
     it('should render the delete action for lead and admin agents', () => {
@@ -326,7 +340,17 @@ describe('TicketListActions component', () => {
         expect(shortcutManagerMock.bind).toHaveBeenCalled()
         const [[component, actions]] = shortcutManagerMock.bind.mock.calls
         expect(component).toBe('TicketListActions')
-        expect(Object.keys(actions!)).toMatchSnapshot()
+        expect(Object.keys(actions!)).toEqual([
+            'OPEN_TICKET',
+            'CLOSE_TICKET',
+            'OPEN_ASSIGNEE',
+            'OPEN_TAGS',
+            'OPEN_MACRO',
+            'DELETE_TICKET',
+            'HIDE_POPOVER',
+            'MARK_TICKET_READ',
+            'MARK_TICKET_UNREAD',
+        ])
     })
 
     it('should unbind keyboard shortcuts on mount', () => {
@@ -548,7 +572,8 @@ describe('TicketListActions component', () => {
             props: ComponentProps<typeof TicketListActions>
         ) => ComponentProps<typeof TicketListActions>,
         (renderResult: RenderResult) => void | Promise<void>,
-        {updates: any}
+        {updates: XOR<Update>},
+        string
     ]
 
     describe.each([
@@ -561,6 +586,7 @@ describe('TicketListActions component', () => {
                 fireEvent.click(getByText('Close'))
             },
             {updates: {status: 'closed'}},
+            'status',
         ],
         [
             JobType.UpdateTicket,
@@ -571,6 +597,7 @@ describe('TicketListActions component', () => {
                 fireEvent.click(getByText('Open'))
             },
             {updates: {status: 'open'}},
+            'status',
         ],
         [
             JobType.UpdateTicket,
@@ -594,6 +621,7 @@ describe('TicketListActions component', () => {
                     },
                 },
             },
+            'assignee_user',
         ],
         [
             JobType.UpdateTicket,
@@ -621,6 +649,7 @@ describe('TicketListActions component', () => {
                     },
                 },
             },
+            'assignee_user',
         ],
         [
             JobType.UpdateTicket,
@@ -635,6 +664,7 @@ describe('TicketListActions component', () => {
                     assignee_user: null,
                 },
             },
+            'assignee_user',
         ],
         [
             JobType.UpdateTicket,
@@ -659,6 +689,7 @@ describe('TicketListActions component', () => {
                     assignee_team_id: 1,
                 },
             },
+            'assignee_team_id',
         ],
         [
             JobType.UpdateTicket,
@@ -673,6 +704,7 @@ describe('TicketListActions component', () => {
                     assignee_team_id: null,
                 },
             },
+            'assignee_team_id',
         ],
         [
             JobType.UpdateTicket,
@@ -689,6 +721,7 @@ describe('TicketListActions component', () => {
                     tags: ['refund'],
                 },
             },
+            'tags',
         ],
         [
             JobType.UpdateTicket,
@@ -710,6 +743,7 @@ describe('TicketListActions component', () => {
                     trashed_datetime: null,
                 },
             },
+            'untrash',
         ],
         [
             JobType.DeleteTicket,
@@ -728,6 +762,7 @@ describe('TicketListActions component', () => {
                 fireEvent.click(getByText('Confirm'))
             },
             {},
+            'delete',
         ],
         [
             JobType.UpdateTicket,
@@ -743,6 +778,7 @@ describe('TicketListActions component', () => {
                     trashed_datetime: expect.anything(),
                 },
             },
+            'trash',
         ],
         [
             JobType.UpdateTicket,
@@ -755,6 +791,7 @@ describe('TicketListActions component', () => {
             {
                 updates: {status: 'open'},
             },
+            'status',
         ],
         [
             JobType.UpdateTicket,
@@ -767,6 +804,7 @@ describe('TicketListActions component', () => {
             {
                 updates: {status: 'closed'},
             },
+            'status',
         ],
         [
             JobType.UpdateTicket,
@@ -792,6 +830,7 @@ describe('TicketListActions component', () => {
                     is_unread: false,
                 },
             },
+            'is_unread',
         ],
         [
             JobType.UpdateTicket,
@@ -817,6 +856,7 @@ describe('TicketListActions component', () => {
                     is_unread: true,
                 },
             },
+            'is_unread',
         ],
         [
             JobType.UpdateTicket,
@@ -842,6 +882,7 @@ describe('TicketListActions component', () => {
                     is_unread: false,
                 },
             },
+            'is_unread',
         ],
         [
             JobType.UpdateTicket,
@@ -867,6 +908,7 @@ describe('TicketListActions component', () => {
                     is_unread: true,
                 },
             },
+            'is_unread',
         ],
     ] as CreateJobTestSuite[])(
         'create %s job on %s',
@@ -876,7 +918,8 @@ describe('TicketListActions component', () => {
             getState,
             getTestProps,
             testActions,
-            jobParams
+            jobParams,
+            eventName
         ) => {
             const suiteProps = getTestProps({
                 ...props,
@@ -910,6 +953,16 @@ describe('TicketListActions component', () => {
                     suiteProps.selectedItemsIds,
                     jobType,
                     jobParams
+                )
+                expect(logEventMock).toHaveBeenCalledWith(
+                    SegmentEvent.BulkAction,
+                    {
+                        type: eventName,
+                        location: 'full-width-mode',
+                        ...('is_unread' === eventName || 'status' === eventName
+                            ? {value: jobParams.updates[eventName]}
+                            : {}),
+                    }
                 )
             })
 

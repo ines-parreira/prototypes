@@ -10,6 +10,7 @@ import React, {
 import {useLocation, useParams} from 'react-router-dom'
 import {List} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {SearchRankSource} from 'hooks/useSearchRankScenario'
@@ -60,6 +61,10 @@ const TicketList = () => {
     const onComplete = useCallback(
         (ids: List<any>) => {
             dispatch(updateSelectedItemsIds(ids))
+            logEvent(SegmentEvent.BulkAction, {
+                type: 'apply-macro',
+                location: 'full-width-mode',
+            })
         },
         [dispatch]
     )

@@ -253,10 +253,23 @@ export const TicketListActions = ({
         }
     }
 
-    const bulkUpdate = (key: string, value: any) => {
+    const bulkUpdate = (
+        key:
+            | 'assignee_team_id'
+            | 'assignee_user'
+            | 'is_unread'
+            | 'status'
+            | 'tags',
+        value: any
+    ) => {
         if (!hasSelectedItems) {
             return
         }
+        logEvent(SegmentEvent.BulkAction, {
+            type: key,
+            location: 'full-width-mode',
+            ...('is_unread' === key || 'status' === key ? {value} : {}),
+        })
         void createJob(JobType.UpdateTicket, {updates: {[key]: value}})
     }
 
@@ -264,10 +277,18 @@ export const TicketListActions = ({
         logEvent(SegmentEvent.TicketExport, {
             type: 'bulk-action-export',
         })
+        logEvent(SegmentEvent.BulkAction, {
+            type: 'export',
+            location: 'full-width-mode',
+        })
         void createJob(JobType.ExportTicket, {})
     }
 
     const bulkTrash = () => {
+        logEvent(SegmentEvent.BulkAction, {
+            type: 'trash',
+            location: 'full-width-mode',
+        })
         toggleTrashConfirmation(false)
         void createJob(JobType.UpdateTicket, {
             updates: {trashed_datetime: moment.utc()},
@@ -275,12 +296,20 @@ export const TicketListActions = ({
     }
 
     const bulkUnTrash = () => {
+        logEvent(SegmentEvent.BulkAction, {
+            type: 'untrash',
+            location: 'full-width-mode',
+        })
         void createJob(JobType.UpdateTicket, {
             updates: {trashed_datetime: null},
         })
     }
 
     const bulkDelete = () => {
+        logEvent(SegmentEvent.BulkAction, {
+            type: 'delete',
+            location: 'full-width-mode',
+        })
         setIsDeleteConfirmationOpen(false)
         void createJob(JobType.DeleteTicket, {})
     }
