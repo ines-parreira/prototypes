@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useRef} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import IconButton from 'pages/common/components/button/IconButton'
 
@@ -11,17 +12,22 @@ export default function CloseTickets({
     onClick: () => void
     isDisabled: boolean
 }) {
+    const ref = useRef(null)
+
     return (
-        <IconButton
-            className={css.button}
-            size="small"
-            fillStyle="ghost"
-            intent="secondary"
-            onClick={onClick}
-            isDisabled={isDisabled}
-            title="Close tickets"
-        >
-            check_circle
-        </IconButton>
+        <>
+            <IconButton
+                ref={ref}
+                className={css.button}
+                size="small"
+                fillStyle="ghost"
+                intent="secondary"
+                onClick={onClick}
+                isDisabled={isDisabled}
+            >
+                check_circle
+            </IconButton>
+            <Tooltip target={ref}>Close tickets</Tooltip>
+        </>
     )
 }

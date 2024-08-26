@@ -1,5 +1,6 @@
 import {fromJS, List} from 'immutable'
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useCallback, useMemo, useRef, useState} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -15,6 +16,7 @@ type Props = {
 }
 
 export default function ApplyMacro({isDisabled, onComplete, ticketIds}: Props) {
+    const ref = useRef(null)
     const activeView = useAppSelector(getActiveView)
     const [isMacroModalOpen, setIsMacroModalOpen] = useState(false)
 
@@ -34,16 +36,17 @@ export default function ApplyMacro({isDisabled, onComplete, ticketIds}: Props) {
     return (
         <>
             <IconButton
+                ref={ref}
                 className={css.button}
                 size="small"
                 fillStyle="ghost"
                 intent="secondary"
                 onClick={onOpenModal}
-                title="Apply macro"
                 isDisabled={isDisabled}
             >
                 bolt
             </IconButton>
+            <Tooltip target={ref}>Apply macro</Tooltip>
             {isMacroModalOpen && (
                 <MacroContainer
                     activeView={activeView}
