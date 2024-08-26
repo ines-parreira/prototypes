@@ -8,7 +8,7 @@ import MockAdapter from 'axios-mock-adapter'
 import {RootState} from 'state/types'
 import {macros} from 'fixtures/macro'
 import client from 'models/api/resources'
-import MacroSelect from '../MacroSelect'
+import MacroSelect from 'pages/common/components/ast/widget/MacroSelect'
 
 const mockStore = configureMockStore([thunk])
 
@@ -30,9 +30,28 @@ describe('<MacroSelect/>', () => {
             items: macros,
         }),
     }
+
     it('should render', async () => {
         mockServer.onGet('/api/macros/').reply(200, {
             data: macros,
+            meta: {
+                prev_cursor: null,
+                next_cursor: null,
+            },
+        })
+        const {container} = render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroSelect {...minProps} />
+            </Provider>
+        )
+        await waitFor(() => expect(spy).toHaveBeenCalledTimes(1))
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render when no macros available', async () => {
+        const macroWithNullActions = {...macros[0], actions: null}
+        mockServer.onGet('/api/macros/').reply(200, {
+            data: [macroWithNullActions],
             meta: {
                 prev_cursor: null,
                 next_cursor: null,

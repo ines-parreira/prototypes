@@ -10,8 +10,8 @@ import useCancellableRequest from 'hooks/useCancellableRequest'
 import {Macro} from 'state/macro/types'
 
 import {ActionTemplateExecution} from 'config'
-import Select from './ReactSelect'
-import {useOptions} from './hooks'
+import Select from 'pages/common/components/ast/widget/ReactSelect'
+import {useOptions} from 'pages/common/components/ast/widget/hooks'
 
 type OwnProps = {
     onChange: (value: any) => void
@@ -69,7 +69,7 @@ const MacroSelect = ({
         // Filter out macros with external actions
         return (
             macroOptions.filter((macro: Map<any, any>) =>
-                (macro.get('actions') as List<any>)
+                ((macro.get('actions', fromJS([])) as List<any>) ?? fromJS([]))
                     .filter(
                         (action: Map<any, any>) =>
                             getActionTemplate(action.get('name'))?.execution ===
