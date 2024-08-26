@@ -52,7 +52,6 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
-import {IntegrationType} from 'models/integration/types'
 import client from 'models/api/resources'
 import {
     Ticket as TicketResponse,
@@ -73,7 +72,6 @@ import {
     MacroActionName,
     MacroActionType,
 } from 'models/macroAction/types'
-import {isBaseEmailAddress} from 'pages/integrations/integration/components/email/helpers'
 import {FullTicketStateWithoutImmutable} from 'state/ticket/types'
 import {DiscountCode} from 'models/discountCodes/types'
 import {
@@ -402,33 +400,6 @@ export const setSender =
                     channels,
                     integrations,
                     defaultSettings
-                ) || fromJS({})
-        }
-
-        if (
-            !_sender.isEmpty() &&
-            _sender.get('type') === 'email' &&
-            !_sender.get('verified')
-        ) {
-            if (!isBaseEmailAddress(_sender.get('address') as string)) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: `You cannot send messages using ${
-                            _sender.get('address') as string
-                        }, because this address is not verified yet.`,
-                    })
-                )
-            }
-            _sender =
-                channels.find(
-                    (channel: Map<any, any>) =>
-                        channel.get('verified') === true &&
-                        [
-                            IntegrationType.Email,
-                            IntegrationType.Gmail,
-                            IntegrationType.Outlook,
-                        ].includes(channel.get('type'))
                 ) || fromJS({})
         }
 

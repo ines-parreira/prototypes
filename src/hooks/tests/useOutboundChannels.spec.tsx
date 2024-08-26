@@ -612,9 +612,9 @@ describe('useSendersForSelectedChannel()', () => {
                                 id: 123,
                                 type: 'app',
                                 application_id: '64785607477d0a11fc731bfa',
-                                name: 'The Shop',
+                                name: 'Sender Shop',
                                 meta: {
-                                    address: 'theshop',
+                                    address: 'sendershop',
                                 },
                             },
                         ],
@@ -626,6 +626,7 @@ describe('useSendersForSelectedChannel()', () => {
                     name: 'Sender Shop',
                     displayName: 'Sender Shop (sendershop)',
                     channel: 'tiktok-shop',
+                    isDeactivated: false,
                 })
             })
 
@@ -648,9 +649,9 @@ describe('useSendersForSelectedChannel()', () => {
                                 id: 123,
                                 type: 'app',
                                 application_id: '64785607477d0a11fc731bfa',
-                                name: 'The Shop',
+                                name: 'Sender Shop',
                                 meta: {
-                                    address: 'theshop',
+                                    address: 'sendershop',
                                 },
                             },
                         ],
@@ -662,6 +663,7 @@ describe('useSendersForSelectedChannel()', () => {
                     name: 'Sender Shop',
                     displayName: 'Sender Shop (sendershop)',
                     channel: 'tiktok-shop',
+                    isDeactivated: false,
                 })
                 result?.current.selectSender({
                     address: 'anothershop',

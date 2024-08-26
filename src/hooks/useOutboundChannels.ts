@@ -17,11 +17,7 @@ import {
 
 import {Application, getApplications} from 'services/applications'
 import {Source, SourceAddress, Ticket} from 'models/ticket/types'
-import {
-    isSource,
-    isSourceAddress,
-    isTicketMessageSourceType,
-} from 'models/ticket/predicates'
+import {isSource, isTicketMessageSourceType} from 'models/ticket/predicates'
 import {Integration, IntegrationType} from 'models/integration/types'
 import {TicketMessageSourceType} from 'business/types/ticket'
 
@@ -40,6 +36,7 @@ import {humanizeAddress} from 'state/ticket/utils'
 export type Sender = SourceAddress & {
     displayName: string
     isDeactivated?: boolean
+    verified?: boolean
     channel?: Maybe<ChannelIdentifier>
 }
 
@@ -204,10 +201,13 @@ export function useSendersForSelectedChannel(): {
               )
             : []
     )
-    const from = useAppSelector(getNewMessageSourceProperty('from')).toJS()
-    const selectedSender = isSourceAddress(from)
-        ? sourceAddressToSender(from, selectedChannel)
-        : undefined
+    const from: SourceAddress = useAppSelector(
+        getNewMessageSourceProperty('from')
+    )?.toJS()
+
+    const selectedSender = senders.find(
+        (sender) => sender.address === from?.address
+    )
 
     const selectSender = (sender: Sender) => {
         dispatch(setSender(sender.address))

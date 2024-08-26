@@ -1,15 +1,19 @@
+import React, {ReactNode} from 'react'
+import {Link} from 'react-router-dom'
+import {Sender} from 'hooks/useOutboundChannels'
+import {getReconnectUrl} from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/utils'
 import {NotificationStatus} from '../state/notifications/types'
 
 import {humanize} from './format'
 import {Notification} from './types/notification'
 import {TicketMessageSourceType} from './types/ticket'
 
-//TODO(@Mehdi) Instagram DM specific, Remove this when we do https://github.com/gorgias/gorgias/issues/7516
 export function canReply(
+    sender: Maybe<Sender>,
     messageType: TicketMessageSourceType,
     attachmentCount: number,
-    explicitReason: Maybe<string>
-): Maybe<Notification> {
+    explicitReason?: Maybe<string>
+): Maybe<{message: ReactNode; status: NotificationStatus.Warning}> {
     if (!!explicitReason) {
         return {
             message: explicitReason,
@@ -17,6 +21,49 @@ export function canReply(
         }
     }
 
+    if (sender?.channel === 'email' && sender?.verified === false) {
+        return {
+            message: (
+                <>
+                    The email address <strong>{sender.address}</strong>
+                    <strong> is not verified</strong>
+                    <br />
+                    <br />
+                    To send a response, please go to Email Settings, select your
+                    email and complete the outbound verification process.
+                    <br />
+                    Once verified, you'll be able to communicate with customers
+                    using this email.
+                </>
+            ),
+            status: NotificationStatus.Warning,
+        }
+    }
+
+    if (sender?.isDeactivated) {
+        return {
+            message: (
+                <>
+                    <strong>{sender.address}</strong>
+                    <strong> was disconnected</strong> due to a password change,
+                    email provider outage, or other changes made to your account
+                    <br />
+                    <br />
+                    <Link to={getReconnectUrl(sender.channel)}>
+                        Reconnect
+                    </Link>{' '}
+                    the integration to respond to this customer.
+                    <br />
+                    <br />
+                    <strong>Note</strong>: Login credentials may be required to
+                    reconnect.
+                </>
+            ),
+            status: NotificationStatus.Warning,
+        }
+    }
+
+    //TODO(@Mehdi) Instagram DM specific, Remove this when we do https://github.com/gorgias/gorgias/issues/7516
     const isInvalid =
         (messageType === TicketMessageSourceType.InstagramDirectMessage &&
             attachmentCount > 0) ||

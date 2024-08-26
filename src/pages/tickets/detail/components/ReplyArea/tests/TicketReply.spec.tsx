@@ -11,7 +11,7 @@ import {TicketMessageSourceType} from 'business/types/ticket'
 
 import {TicketReply} from '../TicketReply'
 
-jest.unmock('business/ticket.ts')
+jest.unmock('business/ticket')
 
 jest.mock('lodash/uniqueId', () => (id: number) => `${id}42`)
 

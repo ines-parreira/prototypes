@@ -5,6 +5,7 @@ import {List, Map} from 'immutable'
 import {canReply} from 'business/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {useSendersForSelectedChannel} from 'hooks/useOutboundChannels'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {deleteAttachment} from 'state/newMessage/actions'
 import {
@@ -42,8 +43,9 @@ export function TicketReply({
     const dispatch = useAppDispatch()
     const newMessageAttachments = useAppSelector(getNewMessageAttachments)
     const newMessageType = useAppSelector(getNewMessageType)
-
+    const {selectedSender} = useSendersForSelectedChannel()
     const canReplyResult = canReply(
+        selectedSender,
         newMessageType,
         newMessageAttachments.size,
         ticket.getIn(['reply_options', newMessageType, 'reason'])
