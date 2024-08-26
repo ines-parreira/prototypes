@@ -51,7 +51,7 @@ describe('resolvedTicketsQueryFactory', () => {
                 {
                     member: TicketQAScoreDimension.DimensionName,
                     operator: ReportingFilterOperator.Equals,
-                    values: ['resolution'],
+                    values: ['resolution_completeness'],
                 },
                 {
                     member: TicketQAScoreDimension.Prediction,
@@ -90,7 +90,7 @@ describe('resolvedTicketsQueryFactory', () => {
                 {
                     member: TicketQAScoreDimension.DimensionName,
                     operator: ReportingFilterOperator.Equals,
-                    values: ['resolution'],
+                    values: ['resolution_completeness'],
                 },
                 {
                     member: TicketQAScoreDimension.Prediction,
@@ -139,7 +139,7 @@ describe('resolvedTicketsDrillDownQueryFactory', () => {
                 {
                     member: TicketQAScoreDimension.DimensionName,
                     operator: ReportingFilterOperator.Equals,
-                    values: ['resolution'],
+                    values: ['resolution_completeness'],
                 },
                 {
                     member: TicketQAScoreDimension.Prediction,
@@ -175,7 +175,7 @@ describe('resolvedTicketsDrillDownQueryFactory', () => {
                 {
                     member: TicketQAScoreDimension.DimensionName,
                     operator: ReportingFilterOperator.Equals,
-                    values: ['resolution'],
+                    values: ['resolution_completeness'],
                 },
                 {
                     member: TicketQAScoreDimension.Prediction,

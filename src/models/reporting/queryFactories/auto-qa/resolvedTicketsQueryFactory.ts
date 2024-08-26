@@ -33,7 +33,7 @@ export const resolvedTicketsQueryFactory = (
         {
             member: TicketQAScoreDimension.DimensionName,
             operator: ReportingFilterOperator.Equals,
-            values: ['resolution'],
+            values: ['resolution_completeness'],
         },
         {
             member: TicketQAScoreDimension.Prediction,
