@@ -356,6 +356,7 @@ export default function TemplateActionsForm({
                                 }
                                 description={templateConfiguration.description}
                                 name={templateConfiguration.name}
+                                canduId={`template-action-banner-${templateConfiguration.id}`}
                             />
                         )}
                     </header>
@@ -522,6 +523,11 @@ export default function TemplateActionsForm({
                         )}
                     </div>
                 </section>
+            </div>
+            <div>
+                <div
+                    data-candu-id={`template-action-video-${templateConfiguration.id}`}
+                />
             </div>
         </ToolbarContext.Provider>
     )

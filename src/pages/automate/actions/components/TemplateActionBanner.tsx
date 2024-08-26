@@ -6,18 +6,20 @@ import css from './TemplateActionBanner.less'
 type Props = {
     name: string
     description?: string | null
+    canduId?: string
     actionAppConfiguration: ActionAppConfiguration
 }
 
 export default function TemplateActionBanner({
     description,
     name,
+    canduId,
     actionAppConfiguration,
 }: Props) {
     const appImageUrl = useGetAppImageUrl(actionAppConfiguration)
 
     return (
-        <div className={css.container}>
+        <div className={css.container} data-candu-id={canduId}>
             <div>
                 {!appImageUrl ? (
                     <div className={css.appIcon}></div>
