@@ -25,7 +25,6 @@ import {JobType} from '@gorgias/api-queries'
 import {useAppNode} from 'appNode'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {UserRole} from 'config/types/user'
-import {AGENT_ROLE} from 'config/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
@@ -106,6 +105,10 @@ export const TicketListActions = ({
         useState(false)
     const [isLaunchingJob, setIsLaunchingJob] = useState(false)
     const appNode = useAppNode()
+    const hasAgentRole = useMemo(
+        () => hasRole(currentUser, UserRole.Agent),
+        [currentUser]
+    )
 
     const hasSelectedItems = !selectedItemsIds.isEmpty()
     const isDisabled = !hasSelectedItems || isLaunchingJob || !areFiltersValid
@@ -350,10 +353,7 @@ export const TicketListActions = ({
         },
         DELETE_TICKET: {
             action: () => {
-                if (
-                    !hasSelectedItems ||
-                    !hasRole(currentUser, UserRole.Agent)
-                ) {
+                if (!hasSelectedItems || !hasAgentRole) {
                     return
                 }
                 toggleTrashConfirmation()
@@ -415,11 +415,11 @@ export const TicketListActions = ({
         )
 
         if (!isInEnum && tagsSearchQuery) {
-            if (!tags.isEmpty() && hasRole(currentUser, UserRole.Agent)) {
+            if (!tags.isEmpty() && hasAgentRole) {
                 options = options.push(<DropdownItem key="divider" divider />)
             }
 
-            options = hasRole(currentUser, UserRole.Agent)
+            options = hasAgentRole
                 ? options.push(
                       <DropdownItem
                           key="create"
@@ -753,13 +753,14 @@ export const TicketListActions = ({
                                 Mark as unread
                             </DropdownItem>
                         )}
-                        {hasRole(currentUser, AGENT_ROLE) && (
-                            <DropdownItem type="button" onClick={bulkExport}>
-                                Export tickets
-                            </DropdownItem>
-                        )}
-                        {hasRole(currentUser, UserRole.Agent) && (
+                        {hasAgentRole && (
                             <>
+                                <DropdownItem
+                                    type="button"
+                                    onClick={bulkExport}
+                                >
+                                    Export tickets
+                                </DropdownItem>
                                 <DropdownItem divider />
                                 {isActiveViewTrashView ? (
                                     [

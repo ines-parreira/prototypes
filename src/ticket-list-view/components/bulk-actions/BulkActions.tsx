@@ -3,15 +3,20 @@ import {JobType} from '@gorgias/api-queries'
 import cn from 'classnames'
 
 import {Item} from 'components/Dropdown'
+import useAppSelector from 'hooks/useAppSelector'
 import {Update, useBulkAction} from 'jobs'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import {getCurrentUserState} from 'state/currentUser/selectors'
+import {isActiveViewTrashView as getIsActiveViewTrashView} from 'state/views/selectors'
 import {TagDropdownMenu} from 'tags'
+import {hasRole} from 'utils'
 import {getMoment} from 'utils/date'
 
+import {UserRole} from 'config/types/user'
 import ApplyMacro from './ApplyMacro'
 import CloseTickets from './CloseTickets'
 import TeamAssigneeDropdownMenu from './TeamAssigneeDropdownMenu'
@@ -30,10 +35,15 @@ export enum Action {
     MarkAsUnread = 'mark_as_unread',
     MarkAsRead = 'mark_as_read',
     ExportTickets = 'export_tickets',
+    Untrash = 'untrash',
     Delete = 'delete',
+    Trash = 'trash',
 }
 
-const jobs: Record<Action | 'tag' | 'agent' | 'team', Job> = {
+const getActions = (
+    hasAgentRole: boolean,
+    isActiveViewTrashView: boolean
+): Record<string, Job> => ({
     tag: {
         label: 'Add tag',
         type: JobType.UpdateTicket,
@@ -82,24 +92,52 @@ const jobs: Record<Action | 'tag' | 'agent' | 'team', Job> = {
             },
         }),
     },
-    export_tickets: {
-        label: 'Export tickets',
-        type: JobType.ExportTicket,
-    },
-    delete: {
-        label: 'Delete',
-        type: JobType.UpdateTicket,
-        params: () => ({
-            updates: {trashed_datetime: getMoment().toISOString()},
-        }),
-        className: 'delete',
-    },
-}
+    ...(hasAgentRole
+        ? {
+              export_tickets: {
+                  label: 'Export tickets',
+                  type: JobType.ExportTicket,
+              },
+          }
+        : {}),
+    ...(hasAgentRole
+        ? isActiveViewTrashView
+            ? {
+                  untrash: {
+                      label: 'Undelete',
+                      type: JobType.UpdateTicket,
+                      params: () => ({
+                          updates: {
+                              trashed_datetime: null,
+                          },
+                      }),
+                  },
+                  delete: {
+                      label: 'Delete forever',
+                      type: JobType.DeleteTicket,
+                      className: 'delete',
+                  },
+              }
+            : {
+                  trash: {
+                      label: 'Delete',
+                      type: JobType.UpdateTicket,
+                      params: () => ({
+                          updates: {
+                              trashed_datetime: getMoment().toISOString(),
+                          },
+                      }),
+                      className: 'delete',
+                  },
+              }
+        : {}),
+})
 
-const dropdownItems = Object.entries(jobs).map(([key, value]) => ({
-    ...value,
-    value: key as Action,
-}))
+const getDropdownItems = (actions: ReturnType<typeof getActions>) =>
+    Object.entries(actions).map(([key, value]) => ({
+        ...value,
+        value: key as Action,
+    }))
 
 function isItemNested(
     value: Action | 'agent' | 'tag' | 'team'
@@ -119,6 +157,14 @@ export default function BulkActions({
     const dropdownButtonRef = useRef(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [level, setLevel] = useState<'agent' | 'team' | 'tag' | null>(null)
+    const currentUser = useAppSelector(getCurrentUserState)
+    const hasAgentRole = useMemo(
+        () => hasRole(currentUser, UserRole.Agent),
+        [currentUser]
+    )
+    const isActiveViewTrashView = useAppSelector(getIsActiveViewTrashView)
+    const actions = getActions(hasAgentRole, isActiveViewTrashView)
+    const dropdownItems = getDropdownItems(actions)
 
     const ticketIds = useMemo(
         () =>
@@ -166,18 +212,17 @@ export default function BulkActions({
                 setLevel(value)
                 return
             }
-            const params = jobs[value].params?.(options)
+            const params = actions[value].params?.(options)
 
             void launchJob({
-                type: jobs[value].type,
+                type: actions[value].type,
                 params,
             })
-
             if (level) {
                 toggle(false)
             }
         },
-        [launchJob, level, toggle]
+        [actions, launchJob, level, toggle]
     )
 
     const onClickBack = useCallback(() => {

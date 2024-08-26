@@ -243,11 +243,12 @@ describe('TicketListActions component', () => {
             </Provider>
         )
 
+        expect(getByText('Export tickets')).toBeInTheDocument()
         expect(getByText('Delete forever')).toBeInTheDocument()
         expect(getByText('Undelete')).toBeInTheDocument()
     })
 
-    it('should not render the delete button for basic, lite and observer agents', () => {
+    it('should not render the delete and export buttons for user below agent role', () => {
         const {queryByText} = render(
             <Provider
                 store={mockStore({
@@ -264,43 +265,6 @@ describe('TicketListActions component', () => {
         )
 
         expect(queryByText('Delete')).not.toBeInTheDocument()
-    })
-
-    it('should render export tickets button for agents', () => {
-        const {getByText} = render(
-            <Provider
-                store={mockStore({
-                    ...state,
-                    currentUser: fromJS({
-                        id: 1,
-                        name: 'Peter Parker',
-                        role: {id: 1, name: UserRole.Agent},
-                    }),
-                })}
-            >
-                <TicketListActions {...props} selectedItemsIds={fromJS([])} />
-            </Provider>
-        )
-
-        expect(getByText('Export tickets')).toBeInTheDocument()
-    })
-
-    it('should not render export tickets button for lite agents', () => {
-        const {queryByText} = render(
-            <Provider
-                store={mockStore({
-                    ...state,
-                    currentUser: fromJS({
-                        id: 1,
-                        name: 'Peter Parker',
-                        role: {id: 1, name: UserRole.LiteAgent},
-                    }),
-                })}
-            >
-                <TicketListActions {...props} selectedItemsIds={fromJS([])} />
-            </Provider>
-        )
-
         expect(queryByText('Export tickets')).not.toBeInTheDocument()
     })
 
