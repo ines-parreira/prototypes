@@ -586,8 +586,9 @@ describe('useSendersForSelectedChannel()', () => {
                     address: 'theshop',
                     name: 'The Shop',
                     displayName: 'The Shop (theshop)',
-                    isDeactivated: false,
                     channel: 'tiktok-shop',
+                    isDeactivated: false,
+                    isDefault: false,
                 },
             ])
         })
@@ -627,6 +628,7 @@ describe('useSendersForSelectedChannel()', () => {
                     displayName: 'Sender Shop (sendershop)',
                     channel: 'tiktok-shop',
                     isDeactivated: false,
+                    isDefault: false,
                 })
             })
 
@@ -664,6 +666,7 @@ describe('useSendersForSelectedChannel()', () => {
                     displayName: 'Sender Shop (sendershop)',
                     channel: 'tiktok-shop',
                     isDeactivated: false,
+                    isDefault: false,
                 })
                 result?.current.selectSender({
                     address: 'anothershop',

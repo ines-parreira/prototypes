@@ -36,6 +36,7 @@ import {humanizeAddress} from 'state/ticket/utils'
 export type Sender = SourceAddress & {
     displayName: string
     isDeactivated?: boolean
+    isDefault?: boolean
     verified?: boolean
     channel?: Maybe<ChannelIdentifier>
 }

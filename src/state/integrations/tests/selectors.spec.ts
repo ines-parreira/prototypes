@@ -330,12 +330,9 @@ describe('integrations selectors', () => {
             ).toEqual(
                 fromJS([
                     {
-                        id: 1,
-                        type: state.integrations.getIn([
-                            'integrations',
-                            '0',
-                            'type',
-                        ]),
+                        preferred: undefined,
+                        isDeactivated: false,
+                        verified: false,
                         name: state.integrations.getIn([
                             'integrations',
                             '0',
@@ -347,18 +344,19 @@ describe('integrations selectors', () => {
                             'meta',
                             'address',
                         ]),
-                        preferred: undefined,
+                        isDefault: false,
                         signature: undefined,
-                        verified: false,
-                        isDeactivated: false,
+                        type: state.integrations.getIn([
+                            'integrations',
+                            '0',
+                            'type',
+                        ]),
+                        id: 1,
                     },
                     {
-                        id: 5,
-                        type: state.integrations.getIn([
-                            'integrations',
-                            '4',
-                            'type',
-                        ]),
+                        preferred: undefined,
+                        isDeactivated: true,
+                        verified: false,
                         name: state.integrations.getIn([
                             'integrations',
                             '4',
@@ -370,10 +368,14 @@ describe('integrations selectors', () => {
                             'meta',
                             'address',
                         ]),
-                        preferred: undefined,
+                        isDefault: false,
                         signature: undefined,
-                        verified: false,
-                        isDeactivated: true,
+                        type: state.integrations.getIn([
+                            'integrations',
+                            '4',
+                            'type',
+                        ]),
+                        id: 5,
                     },
                 ])
             )
@@ -876,6 +878,7 @@ describe('integrations selectors', () => {
                     address: 'theshop',
                     name: 'The Shop',
                     isDeactivated: false,
+                    isDefault: false,
                 },
             ])
         })

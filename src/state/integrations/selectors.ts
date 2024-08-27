@@ -31,6 +31,7 @@ import {
     ChannelLike,
     getChannelById,
     getChannelBySlug,
+    toChannel,
 } from 'services/channels'
 import {SourceAddress} from 'models/ticket/types'
 import {
@@ -43,6 +44,7 @@ import {
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
 import {nestedReplace} from 'tickets/common/utils'
+import {getDefaultIntegrationSettings} from 'state/currentAccount/selectors'
 
 import {IntegrationListItem, IntegrationsState} from './types'
 
@@ -330,7 +332,8 @@ export const getEmailChannels = createSelector(
     (state: RootState) => state.ticket || fromJS({}),
     getCurrentUserState,
     getEmailIntegrations,
-    (currentTicket, currentUser, integrations) => {
+    getDefaultIntegrationSettings,
+    (currentTicket, currentUser, integrations, defaultIntegrations) => {
         return integrations.map((integration: Map<any, any>) => {
             let type = integration.get('type')
 
@@ -359,6 +362,9 @@ export const getEmailChannels = createSelector(
                     integration.get('type') !== IntegrationType.Email ||
                     integration.getIn(['meta', 'verified'], false),
                 isDeactivated: !!integration.get('deactivated_datetime'),
+                isDefault:
+                    defaultIntegrations?.data?.[IntegrationType.Email] ===
+                    integration.get('id'),
             }) as Map<any, any>
         }) as List<any>
     }
@@ -478,10 +484,12 @@ export const getSendersForChannel =
                 : []
         }
 
+        const defaultIntegrations = getDefaultIntegrationSettings(state)
         const applications = getApplicationsByChannel(channelLike)
         const integrations = getIntegrationsByType<AppIntegration>(
             IntegrationType.App
         )(state)
+        const channelSlug = toChannel(channelLike)?.slug
 
         return applications
             .map((application) =>
@@ -491,10 +499,13 @@ export const getSendersForChannel =
                 )
             )
             .filter(isAppIntegration)
-            .map(({name, meta: {address}, deactivated_datetime}) => ({
+            .map(({id, name, meta: {address}, deactivated_datetime}) => ({
                 address,
                 name,
                 isDeactivated: !!deactivated_datetime,
+                isDefault:
+                    channelSlug &&
+                    defaultIntegrations?.data?.[channelSlug] === id,
             }))
     }
 

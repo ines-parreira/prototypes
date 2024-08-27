@@ -4,10 +4,17 @@ import {render, waitFor, fireEvent} from '@testing-library/react'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import * as useOutboundChannels from 'hooks/useOutboundChannels'
 import history from 'pages/history'
+import {useFlag} from 'common/flags'
+import {assumeMock} from 'utils/testing'
 
 import SenderSelectField from '../SenderSelectField'
 
 jest.mock('pages/history')
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
+const mockUseFlag = assumeMock(useFlag)
 
 const initialState = {
     senders: [
@@ -16,12 +23,14 @@ const initialState = {
             address: 'john@shop.com',
             displayName: 'John (john@shop.com)',
             channel: 'email',
+            isDefault: true,
         },
         {
             name: 'Mary',
             address: 'mary@shop.com',
             displayName: 'Mary (mary@shop.com)',
             channel: 'email',
+            isDefault: false,
         },
     ],
     selectedSender: {
@@ -59,6 +68,15 @@ describe('<SenderSelectField />', () => {
         await waitFor(() => {
             const [input] = container.getElementsByClassName('input')
             expect(input.textContent).toBe('John (john@shop.com)')
+        })
+    })
+
+    it('should render the default tag for the default integration', async () => {
+        mockUseFlag.mockReturnValue(true)
+        const {getByText} = render(<SenderSelectField />)
+        fireEvent.click(getByText('arrow_drop_down'))
+        await waitFor(() => {
+            expect(getByText('DEFAULT')).toBeInTheDocument()
         })
     })
 

@@ -602,21 +602,22 @@ describe('ticket utils', () => {
                             channels,
                             integrationsWithSelectedEmail
                         )
-                    ).toMatchInlineSnapshot(`
-                    Immutable.Map {
-                      "id": 1,
-                      "type": "email",
-                      "name": "Acme Support",
-                      "address": "support@acme.gorgias.io",
-                      "preferred": true,
-                      "signature": Immutable.Map {
-                        "text": "cheers, ",
-                        "html": "cheers, <strong></strong>",
-                      },
-                      "verified": true,
-                      "isDeactivated": false,
-                    }
-                `)
+                    ).toEqual(
+                        fromJS({
+                            preferred: true,
+                            isDeactivated: false,
+                            verified: true,
+                            name: 'Acme Support',
+                            address: 'support@acme.gorgias.io',
+                            isDefault: false,
+                            signature: {
+                                text: 'cheers, ',
+                                html: 'cheers, <strong></strong>',
+                            },
+                            type: 'email',
+                            id: 1,
+                        })
+                    )
                 }
             )
 
@@ -633,21 +634,22 @@ describe('ticket utils', () => {
                             channels,
                             integrationsWithSelectedEmail
                         )
-                    ).toMatchInlineSnapshot(`
-                    Immutable.Map {
-                      "id": 1,
-                      "type": "email",
-                      "name": "Acme Support",
-                      "address": "support@acme.gorgias.io",
-                      "preferred": true,
-                      "signature": Immutable.Map {
-                        "text": "cheers, ",
-                        "html": "cheers, <strong></strong>",
-                      },
-                      "verified": true,
-                      "isDeactivated": false,
-                    }
-                `)
+                    ).toEqual(
+                        fromJS({
+                            preferred: true,
+                            isDeactivated: false,
+                            verified: true,
+                            name: 'Acme Support',
+                            address: 'support@acme.gorgias.io',
+                            isDefault: false,
+                            signature: {
+                                text: 'cheers, ',
+                                html: 'cheers, <strong></strong>',
+                            },
+                            type: 'email',
+                            id: 1,
+                        })
+                    )
                 }
             )
         })
