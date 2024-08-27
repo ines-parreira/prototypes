@@ -61,7 +61,11 @@
         .formInputFooterInfo {
             .caption-regular();
             color: var(--neutral-grey-5);
-            margin-top: 4px;
+            margin-top: @layout-spacing-xxs;
+
+            &.error {
+                color: var(--feedback-error);
+            }
         }
         .featureToggle {
             margin-bottom: @layout-spacing-xxs;

@@ -67,7 +67,10 @@ export const validateConfigurationFormValues = (
         }
     }
 
-    if (formValues.signature === null || formValues.signature.length === 0) {
+    if (
+        formValues.signature === null ||
+        formValues.signature.trim().length === 0
+    ) {
         throw new Error('Signature can not be empty')
     }
 

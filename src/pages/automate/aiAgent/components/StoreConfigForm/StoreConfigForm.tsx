@@ -12,6 +12,7 @@ import _get from 'lodash/get'
 import {List} from 'immutable'
 import {Label} from '@gorgias/ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import classnames from 'classnames'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {reportError} from 'utils/errors'
 import {StoreConfiguration, Tag} from 'models/aiAgent/types'
@@ -104,6 +105,7 @@ export const StoreConfigForm = ({
         updateStoreConfiguration,
     } = useAiAgentStoreConfigurationContext()
     const isCreate = storeConfiguration === undefined
+    const [isBlurred, setIsBlurred] = useState(false)
 
     // because this selector is a function which return function we need to memoized it before send to reselect
     const selector = useMemo(
@@ -354,6 +356,14 @@ export const StoreConfigForm = ({
         formValues.trialModeActivatedDatetime,
     ])
 
+    const isSignatureValid = useMemo(() => {
+        return !isBlurred || !!formValues.signature?.trim().length
+    }, [formValues.signature, isBlurred])
+
+    const isEmailIntegrationsValid = useMemo(() => {
+        return !!formValues.monitoredEmailIntegrations?.length
+    }, [formValues.monitoredEmailIntegrations])
+
     return (
         <>
             <UnsavedChangesPrompt
@@ -597,9 +607,16 @@ export const StoreConfigForm = ({
                             }
                             onSelectionChange={handleSelectEmailIntegration}
                             emailItems={emailItems}
+                            hasError={!isEmailIntegrationsValid}
                         />
-                        <div className={css.formInputFooterInfo}>
-                            {isContactFormSupportEnabled
+                        <div
+                            className={classnames(css.formInputFooterInfo, {
+                                [css.error]: !isEmailIntegrationsValid,
+                            })}
+                        >
+                            {!isEmailIntegrationsValid
+                                ? 'At least one email is required.'
+                                : isContactFormSupportEnabled
                                 ? 'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.'
                                 : 'Select one or more email addresses for AI Agent to use.'}
                         </div>
@@ -610,7 +627,7 @@ export const StoreConfigForm = ({
                             isRequired={true}
                             className={css.subsectionHeader}
                         >
-                            Email signature
+                            Signature
                             <IconTooltip className={css.icon}>
                                 This will override the current email signature
                                 in your email settings.
@@ -627,16 +644,25 @@ export const StoreConfigForm = ({
                             onChange={(value: unknown) => {
                                 if (typeof value !== 'string') return
                                 updateValue('signature', value)
+                                setIsBlurred(false)
                             }}
+                            onBlur={() => setIsBlurred(true)}
                             maxLength={SIGNATURE_MAX_LENGTH}
+                            error={
+                                !isSignatureValid
+                                    ? 'Email signature is required.'
+                                    : undefined
+                            }
                         />
-                        <div className={css.formInputFooterInfo}>
-                            At the end of emails you can disclose that the
-                            message was created by AI, or provide a custom name
-                            for AI Agent. Do not include greetings (e.g. "Best
-                            regards"). Greetings will already be included in the
-                            message above the signature.
-                        </div>
+                        {isSignatureValid && (
+                            <div className={css.formInputFooterInfo}>
+                                At the end of emails you can disclose that the
+                                message was created by AI, or provide a custom
+                                name for AI Agent. Do not include greetings
+                                (e.g. "Best regards"). Greetings will already be
+                                included in the message above the signature.
+                            </div>
+                        )}
                     </div>
                 </section>
 

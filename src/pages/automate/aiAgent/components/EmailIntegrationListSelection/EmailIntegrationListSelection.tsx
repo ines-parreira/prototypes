@@ -22,10 +22,11 @@ type EmailIntegrationListSelectionProps = {
      * Email integration list to compute the dropdown items
      */
     emailItems: EmailItem[]
+    hasError?: boolean
 }
 
 export const EmailIntegrationListSelection: React.FC<EmailIntegrationListSelectionProps> =
-    ({onSelectionChange, selectedIds, emailItems}) => {
+    ({onSelectionChange, selectedIds, emailItems, hasError = false}) => {
         // refs to work with the selector component
         const floatingRef = useRef<HTMLDivElement>(null)
         const targetRef = useRef<HTMLDivElement>(null)
@@ -60,6 +61,7 @@ export const EmailIntegrationListSelection: React.FC<EmailIntegrationListSelecti
                 label={selectedEmailLabels}
                 onToggle={setIsDropdownOpened}
                 placeholder="Select one or more email addresses"
+                hasError={hasError}
                 ref={targetRef}
             >
                 <SelectInputBoxContext.Consumer>

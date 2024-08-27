@@ -1,4 +1,4 @@
-import {screen, waitFor} from '@testing-library/react'
+import {fireEvent, screen, waitFor} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
@@ -117,7 +117,7 @@ describe('<StoreConfigForm />', () => {
             id: 1,
             email: 'test@mail.com',
         },
-        monitoredEmailIntegrations: [],
+        monitoredEmailIntegrations: [{id: 1, email: MOCK_EMAIL_ADDRESS}],
         silentHandover: false,
         ticketSampleRate: 100,
         dryRun: false,
@@ -139,7 +139,9 @@ describe('<StoreConfigForm />', () => {
                 trialModeActivatedDatetime: '2024-07-30T12:55:07.585Z',
                 ticketSampleRate: null,
                 silentHandover: false,
-                monitoredEmailIntegrations: [],
+                monitoredEmailIntegrations: [
+                    {id: 1, email: MOCK_EMAIL_ADDRESS},
+                ],
                 tags: [],
                 excludedTopics: [],
                 signature: 'This response was created by AI',
@@ -164,7 +166,7 @@ describe('<StoreConfigForm />', () => {
         expect(screen.getByText('General settings')).toBeInTheDocument()
     })
 
-    it('should render new email integration tooltip', () => {
+    it('should render new email integration caption', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentSupportContactForm]: true,
         })
@@ -302,5 +304,93 @@ describe('<StoreConfigForm />', () => {
                 status: NotificationStatus.Warning,
             })
         })
+    })
+
+    it('should render error email integration caption when there is none selected', () => {
+        mockedUseConfigurationForm.mockReturnValue({
+            formValues: {
+                deactivatedDatetime: null,
+                trialModeActivatedDatetime: '2024-07-30T12:55:07.585Z',
+                ticketSampleRate: null,
+                silentHandover: false,
+                monitoredEmailIntegrations: null,
+                tags: [],
+                excludedTopics: [],
+                signature: 'This response was created by AI',
+                toneOfVoice: 'Friendly',
+                customToneOfVoiceGuidance:
+                    "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
+                helpCenterId: 1,
+            },
+            resetForm: jest.fn(),
+            isFormDirty: false,
+            updateValue: jest.fn(),
+            isFieldDirty: jest.fn(),
+        })
+
+        renderComponent({})
+        expect(
+            screen.getByText('At least one email is required.')
+        ).toBeInTheDocument()
+    })
+
+    it('should render default email signature when signature in form values is null', () => {
+        mockedUseConfigurationForm.mockReturnValue({
+            formValues: {
+                deactivatedDatetime: null,
+                trialModeActivatedDatetime: '2024-07-30T12:55:07.585Z',
+                ticketSampleRate: null,
+                silentHandover: false,
+                monitoredEmailIntegrations: [],
+                tags: [],
+                excludedTopics: [],
+                signature: null,
+                toneOfVoice: 'Friendly',
+                customToneOfVoiceGuidance:
+                    "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
+                helpCenterId: 1,
+            },
+            resetForm: jest.fn(),
+            isFormDirty: false,
+            updateValue: jest.fn(),
+            isFieldDirty: jest.fn(),
+        })
+
+        renderComponent({})
+        expect(
+            screen.getByText('This response was created by AI')
+        ).toBeInTheDocument()
+    })
+
+    it('should render error email signature caption when signature is empty', () => {
+        mockedUseConfigurationForm.mockReturnValue({
+            formValues: {
+                deactivatedDatetime: null,
+                trialModeActivatedDatetime: '2024-07-30T12:55:07.585Z',
+                ticketSampleRate: null,
+                silentHandover: false,
+                monitoredEmailIntegrations: [],
+                tags: [],
+                excludedTopics: [],
+                signature: '',
+                toneOfVoice: 'Friendly',
+                customToneOfVoiceGuidance:
+                    "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
+                helpCenterId: 1,
+            },
+            resetForm: jest.fn(),
+            isFormDirty: false,
+            updateValue: jest.fn(),
+            isFieldDirty: jest.fn(),
+        })
+
+        renderComponent({})
+
+        const textArea = screen.getByPlaceholderText('AI Agent email signature')
+        fireEvent.blur(textArea)
+
+        expect(
+            screen.getByText('Email signature is required.')
+        ).toBeInTheDocument()
     })
 })
