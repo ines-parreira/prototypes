@@ -728,7 +728,7 @@ export const StoreConfigForm = ({
                                     excludedTopics.toJS()
                                 )
                             }}
-                            placeholder="Topic"
+                            placeholder="e.g. Invoice and billing, Data privacy, or Complaints"
                             maxLength={EXCLUDED_TOPIC_MAX_LENGTH}
                             maxItems={MAX_EXCLUDED_TOPICS}
                             addLabel="Add Topic"
