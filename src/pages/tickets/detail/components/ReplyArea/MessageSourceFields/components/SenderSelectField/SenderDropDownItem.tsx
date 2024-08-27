@@ -31,7 +31,6 @@ const SenderDropDownItem = ({
                 value: sender.address,
             }}
             onClick={() => onSelect(sender)}
-            isDisabled={sender?.isDeactivated}
             shouldCloseOnSelect
         >
             <span className={css.label}>

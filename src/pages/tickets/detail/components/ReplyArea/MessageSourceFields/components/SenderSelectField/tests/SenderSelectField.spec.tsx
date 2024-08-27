@@ -151,28 +151,11 @@ describe('<SenderSelectField />', () => {
             ).toBeInTheDocument()
         })
 
-        it('it should not allow selecting deactivated integrations', async () => {
-            const {container, getByText, queryByText} = render(
-                <SenderSelectField />
-            )
-            fireEvent.click(getByText('arrow_drop_down'))
-            expect(
-                queryByText('Old John (old-john@shop.com)')
-            ).toBeInTheDocument()
-            fireEvent.click(getByText('Old John (old-john@shop.com)'))
-            await waitFor(() => {
-                const [input] = container.getElementsByClassName('input')
-                expect(input.textContent).toBe('John (john@shop.com)')
-            })
-        })
-
         it('it should render a reconnect button for deactivated integrations', () => {
-            const {container, getByText, queryByText} = render(
-                <SenderSelectField />
-            )
+            const {container, getByText} = render(<SenderSelectField />)
             fireEvent.click(getByText('arrow_drop_down'))
             expect(
-                queryByText('Old John (old-john@shop.com)')
+                getByText('Old John (old-john@shop.com)')
             ).toBeInTheDocument()
             const [button] = container.getElementsByTagName('button')
             expect(button).toBeInTheDocument()
