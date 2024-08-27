@@ -90,6 +90,7 @@ describe('<EmailIntegrationList/>', () => {
         jest.resetAllMocks()
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.EnableEmailToStoreMapping]: false,
+            [FeatureFlagKey.DefaultEmailAddress]: false,
         }))
     })
 
@@ -271,6 +272,11 @@ describe('<EmailIntegrationList/>', () => {
         })
 
         it('should render the default badge if an integration is set as default', async () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.EnableEmailToStoreMapping]: false,
+                [FeatureFlagKey.DefaultEmailAddress]: true,
+            }))
+
             const get = fetchEmailDomainsMock.mockResolvedValueOnce([
                 {
                     name: 'gorgias-test.com',

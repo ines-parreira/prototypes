@@ -57,6 +57,9 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
     const showStoreMapping: boolean | undefined =
         useFlags()[FeatureFlagKey.EnableEmailToStoreMapping]
 
+    const showDefaultIntegration: boolean | undefined =
+        useFlags()[FeatureFlagKey.DefaultEmailAddress]
+
     const [isLoadingDomains, setIsLoadingDomains] = useState(false)
     const [emailDomains, setEmailDomains] = useState<EmailDomain[]>([])
 
@@ -122,6 +125,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
 
         const isBaseIntegration = isBaseEmailIntegration(integration.toJS())
         const isDefault =
+            showDefaultIntegration &&
             defaultIntegrations?.data?.email === integration.get('id')
 
         const integrationType:
