@@ -1,10 +1,10 @@
 import React, {KeyboardEvent, useCallback, useState} from 'react'
 import {Button} from 'reactstrap'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import InputField from 'pages/common/forms/input/InputField'
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import {UtmConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import CheckBox from 'pages/common/forms/CheckBox'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import css from './AddUtm.less'
 
 export type AddUtmProps = {
@@ -63,15 +63,15 @@ const AddUtm = (props: AddUtmProps) => {
             >
                 Enable UTM tracking
             </ToggleInput>
-            <InputField
+            <DEPRECATED_InputField
                 label="UTM Tracking"
                 className={css.formItem + ' form-item'}
                 value={utmQueryString}
                 onChange={onUtmQueryStringChange}
                 placeholder="?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=campaignName"
                 autoFocus={!utmQueryString}
-                isDisabled={!utmEnabled}
-            ></InputField>
+                disabled={!utmEnabled}
+            ></DEPRECATED_InputField>
             <CheckBox
                 className={css.formItem + ' form-item'}
                 isChecked={save}
