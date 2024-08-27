@@ -44,7 +44,6 @@ export default function LLMPromptTriggerEditor({
                         isRequired
                         placeholder="e.g. Update the customer’s shipping address with a new address"
                         caption="Describe what the Action does."
-                        darkenCaption
                         value={nodeInEdition.data.instructions}
                         onChange={(nextValue) => {
                             dispatch({
@@ -54,7 +53,6 @@ export default function LLMPromptTriggerEditor({
                         }}
                     />
                     <CheckBox
-                        darkenCaption
                         isChecked={nodeInEdition.data.requires_confirmation}
                         onChange={(nextValue) => {
                             dispatch({

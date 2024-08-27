@@ -95,7 +95,6 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
                             className={css.name}
                             placeholder="e.g. Update shipping address"
                             caption="Provide a name for this Action template."
-                            darkenCaption
                             value={visualBuilderGraphDirty.name}
                             onChange={(nextValue) => {
                                 dispatch({
