@@ -1545,9 +1545,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
       },
     },
     "extra": Immutable.Map {
-      "facebook": Immutable.Map {
-        "max_account_ads": 100,
-      },
       "gorgias_chat": Immutable.Map {
         "bundleUrl": "https://chat-bundle.test.gorgias.chat",
         "chatUrl": "chat-api.test.gorgias.chat",

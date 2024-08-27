@@ -35,11 +35,7 @@ export type IntegrationAuthentication<T extends IntegrationType> =
           }
 
 export type IntegrationExtra<T extends IntegrationType> =
-    T extends IntegrationType.Facebook
-        ? {
-              max_account_ads: number
-          }
-        : T extends IntegrationType.GorgiasChat
+    T extends IntegrationType.GorgiasChat
         ? {
               bundleUrl: string
               chatUrl: string

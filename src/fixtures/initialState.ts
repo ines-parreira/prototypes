@@ -83,9 +83,6 @@ export const initialState: GorgiasInitialState = {
             },
         },
         extra: {
-            [IntegrationType.Facebook]: {
-                max_account_ads: 100,
-            },
             [IntegrationType.GorgiasChat]: {
                 bundleUrl: 'https://chat-bundle.test.gorgias.chat',
                 chatUrl: 'chat-api.test.gorgias.chat',

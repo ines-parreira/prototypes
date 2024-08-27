@@ -268,16 +268,6 @@ export const getIntegrationTypeExtraState = (
             fromJS({})
     )
 
-export const getFacebookMaxAccountAds = createSelector(
-    DEPRECATED_getIntegrationsState,
-    (state) =>
-        (state.getIn([
-            'extra',
-            IntegrationType.Facebook,
-            'max_account_ads',
-        ]) as number) || 0
-)
-
 export const getEmailIntegrations = createSelector(
     DEPRECATED_getIntegrations,
     (state) =>

@@ -50,7 +50,6 @@ export type GorgiasInitialState = {
             [K in IntegrationType]: IntegrationAuthentication<K>
         }>
         extra: {
-            [IntegrationType.Facebook]: IntegrationExtra<IntegrationType.Facebook>
             [IntegrationType.GorgiasChat]: IntegrationExtra<IntegrationType.GorgiasChat>
         }
         integrations: Integration[]
