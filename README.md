@@ -84,20 +84,21 @@ This is because the is no registry configured with access to the package @gorgia
 
 #### Possible solution
 
-- Ensure you have yarn installed, if not [Yarn installation](https://yarnpkg.com/getting-started/install)
-- Configure registry for gorgias packages. For this:
-  - follow https://github.com/gorgias/gorgias/blob/main/README.md#setup-npm-to-access-private-packages to configure npm access to GitHub registry
-  - create your ~/.yarnrc.yml file
+-   Ensure you have yarn installed, if not [Yarn installation](https://yarnpkg.com/getting-started/install)
+-   Configure registry for gorgias packages. For this:
 
-  ```bash
-  npmRegistryServer: "https://registry.yarnpkg.com"
-  npmScopes:
-    gorgias:
-      npmPublishRegistry: https://npm.pkg.github.com/
-      npmRegistryServer: https://npm.pkg.github.com/
-      npmAlwaysAuth: true
-      npmAuthToken: _YOUR_TOKEN_
-  ```
+    -   follow https://github.com/gorgias/gorgias/blob/main/README.md#setup-npm-to-access-private-packages to configure npm access to GitHub registry
+    -   create your ~/.yarnrc.yml file
+
+    ```bash
+    npmRegistryServer: "https://registry.yarnpkg.com"
+    npmScopes:
+      gorgias:
+        npmPublishRegistry: https://npm.pkg.github.com/
+        npmRegistryServer: https://npm.pkg.github.com/
+        npmAlwaysAuth: true
+        npmAuthToken: _YOUR_TOKEN_
+    ```
 
     -   `npmAuthToken` can be found in your ~/.npmrc
 
@@ -143,3 +144,8 @@ export NODE_OPTIONS=--openssl-legacy-provider
 ```
 
 before running `yarn install` or `yarn serve`. Should work without errors.
+
+### Revert PR was blocked by Codecov
+
+To disable the check that prevents your PR from merging, make sure
+that the name of the branch starts with `revert/`.

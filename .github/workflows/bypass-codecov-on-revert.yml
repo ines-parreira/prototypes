@@ -1,0 +1,38 @@
+name: Bypass Codecov on revert
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  bypass-codecov-on-revert:
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+
+    steps:
+      - name: Check if the source branch is a revert branch
+        id: check_revert_branch
+        run: |
+          if [[ "${{ github.head_ref }}" == revert/* ]]; then
+            echo "IsRevert=true" >> $GITHUB_ENV
+          else
+            echo "IsRevert=false" >> $GITHUB_ENV
+          fi
+
+      - name: Set Codecov status checks to success if revert branch
+        if: env.IsRevert == 'true'
+        run: |
+          gh api -X POST \
+            repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
+            -f state=success \
+            -f context="codecov/patch" \
+            -f description="Revert branch detected, skipping check."
+          gh api -X POST \
+            repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
+            -f state=success \
+            -f context="codecov/project" \
+            -f description="Revert branch detected, skipping check."

@@ -1,5 +1,4 @@
 codecov:
-  # codecov will always report
   require_ci_to_pass: false
   notify:
     after_n_builds: 8
@@ -8,30 +7,17 @@ codecov:
 coverage:
   status:
     project:
-      # applies to every branch except main, should be always higher compared to the main
       default:
         target: auto
         threshold: 0.5%
         if_ci_failed: error
-
-      # special case to avoid failing main on code coverage
-      main:
-        target: auto
-        threshold: 1%
         branches:
-          - main
-        if_not_found: success # don't block if no coverage for HEAD is found
-        if_ci_failed: success # don't block just because of coverage
+          - '!revert*'
 
-      # special case for staging, codecov won't fail it
-      staging:
-        informational: true
-        branches:
-          - staging
-
-    # coverage of the patch should be strict
     patch:
       default:
         target: 80%
-        threshold: 0.5% # to prevent the occasional jitter seen in reports
-        if_ci_failed: error # fail on the coverage not matching requirements
+        threshold: 0.5%
+        if_ci_failed: error
+        branches:
+          - '!revert*'
