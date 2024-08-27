@@ -10,6 +10,11 @@ import {
 
 import css from './LiveVoiceAgentsList.less'
 import {AgentStatusCategory, groupAgentsByStatus} from './utils'
+import LiveVoiceAgentRow from './LiveVoiceAgentRow'
+
+type Props = {
+    agents: LiveCallQueueAgent[]
+}
 
 export default function LiveVoiceAgentsList({agents}: Props) {
     const data: WithChildren<Data>[] = useMemo(() => {
@@ -76,28 +81,9 @@ type CategoryData = {
 
 type Data = CategoryData | AgentData
 
-type Props = {
-    agents: LiveCallQueueAgent[]
-}
-
 const Row = (row: WithChildren<Data>) =>
     row.type === DataType.Category ? (
-        <CategoryRow category={row} />
+        <BodyCell innerClassName={css.categoryCell}>{row.label}</BodyCell>
     ) : (
-        <AgentRow agent={row} />
+        <LiveVoiceAgentRow agent={row.agent} />
     )
-
-const CategoryRow = ({category}: {category: CategoryData}) => {
-    return (
-        <BodyCell innerClassName={css.categoryCell}>{category.label}</BodyCell>
-    )
-}
-
-const AgentRow = ({agent}: {agent: AgentData}) => {
-    return (
-        <>
-            <BodyCell>{agent.agent.name}</BodyCell>
-            <BodyCell>icon</BodyCell>
-        </>
-    )
-}

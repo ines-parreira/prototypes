@@ -33,9 +33,9 @@ export const getFormattedDurationEndedCall = (
 }
 
 export const getFormattedDurationOngoingCall = (
-    voiceCall: VoiceCall
+    startedDatetime: string
 ): string => {
-    const startedMoment = stringToDatetime(voiceCall.started_datetime)
+    const startedMoment = stringToDatetime(startedDatetime)
     const now = getMoment()
     const durationInSeconds = now.diff(startedMoment, 'seconds')
 

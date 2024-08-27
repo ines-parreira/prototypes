@@ -53,31 +53,21 @@ describe('voice call utils', () => {
             getMomentSpy.mockReturnValue(
                 momentUtils.stringToDatetime('2023-01-01 10:10:10') as any
             )
-            expect(
-                getFormattedDurationOngoingCall({
-                    started_datetime: '2023-01-01 10:10:10',
-                } as VoiceCall)
-            ).toBe('00:00')
-            expect(
-                getFormattedDurationOngoingCall({
-                    started_datetime: '2023-01-01 10:10:09',
-                } as VoiceCall)
-            ).toBe('00:01')
-            expect(
-                getFormattedDurationOngoingCall({
-                    started_datetime: '2023-01-01 10:09:10',
-                } as VoiceCall)
-            ).toBe('01:00')
-            expect(
-                getFormattedDurationOngoingCall({
-                    started_datetime: '2023-01-01 09:10:10',
-                } as VoiceCall)
-            ).toBe('01:00:00')
-            expect(
-                getFormattedDurationOngoingCall({
-                    started_datetime: '2023-01-01 09:09:09',
-                } as VoiceCall)
-            ).toBe('01:01:01')
+            expect(getFormattedDurationOngoingCall('2023-01-01 10:10:10')).toBe(
+                '00:00'
+            )
+            expect(getFormattedDurationOngoingCall('2023-01-01 10:10:09')).toBe(
+                '00:01'
+            )
+            expect(getFormattedDurationOngoingCall('2023-01-01 10:09:10')).toBe(
+                '01:00'
+            )
+            expect(getFormattedDurationOngoingCall('2023-01-01 09:10:10')).toBe(
+                '01:00:00'
+            )
+            expect(getFormattedDurationOngoingCall('2023-01-01 09:09:09')).toBe(
+                '01:01:01'
+            )
         })
     })
 

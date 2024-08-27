@@ -16,7 +16,7 @@ export default function TicketVoiceCallDuration({
     voiceCall,
 }: TicketVoiceCallDurationProps) {
     const [ongoingCallDuration, setOngoingCallDuration] = useState(
-        getFormattedDurationOngoingCall(voiceCall)
+        getFormattedDurationOngoingCall(voiceCall.started_datetime)
     )
     const isFinalStatus = isFinalVoiceCallStatus(voiceCall.status)
 
@@ -25,7 +25,9 @@ export default function TicketVoiceCallDuration({
             return
         }
 
-        setOngoingCallDuration(getFormattedDurationOngoingCall(voiceCall))
+        setOngoingCallDuration(
+            getFormattedDurationOngoingCall(voiceCall.started_datetime)
+        )
     }, 1000)
 
     const isMissedInboundCall =

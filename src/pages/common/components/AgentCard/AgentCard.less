@@ -1,0 +1,27 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: row;
+        gap: @layout-spacing-xs;
+        padding: @layout-spacing-s 0;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .name {
+        .body-medium();
+        color: var(--main-primary);
+    }
+
+    .description {
+        .caption-regular();
+        color: var(--neutral-grey-4);
+    }
+}

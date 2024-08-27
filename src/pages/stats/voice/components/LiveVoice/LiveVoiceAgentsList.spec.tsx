@@ -5,6 +5,10 @@ import LiveVoiceAgentsList from './LiveVoiceAgentsList'
 import {AgentStatusCategory, groupAgentsByStatus} from './utils'
 
 jest.mock('pages/stats/voice/components/LiveVoice/utils')
+jest.mock(
+    'pages/stats/voice/components/LiveVoice/LiveVoiceAgentRow',
+    () => () => <div>LiveVoiceAgentRow</div>
+)
 
 const groupAgentsByStatusMock = assumeMock(groupAgentsByStatus)
 
