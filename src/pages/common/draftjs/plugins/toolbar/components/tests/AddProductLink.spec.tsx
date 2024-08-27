@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
 import {integrationsStateWithShopify} from 'fixtures/integrations'
-
+import * as ToolbarContext from '../../ToolbarContext'
 import ToolbarProvider from '../../ToolbarProvider'
 import AddProductLink from '../AddProductLink'
 
@@ -81,6 +81,38 @@ describe('<AddProductLink/>', () => {
         fireEvent.click(getByText(/shopify/i))
         expect(container).toMatchSnapshot()
         unmount()
+    })
+
+    it('should render the selected integration automatically if a currentShopifyIntegration is provided', () => {
+        let integrations = integrationsStateWithShopify.get(
+            'integrations'
+        ) as List<any>
+        integrations = integrations.push(integrations.toArray()[0])
+        const currentShopifyIntegration = integrations.toArray()[0]
+        const originalImplementation = ToolbarContext.useToolbarContext
+        const mockToolbarContext = jest.spyOn(
+            ToolbarContext,
+            'useToolbarContext'
+        )
+        mockToolbarContext.mockImplementation(() => ({
+            ...originalImplementation(),
+            currentShopifyIntegration,
+            shopifyIntegrations: integrations,
+        }))
+        const {getByText} = render(
+            <Provider store={store}>
+                <AddProductLink
+                    getEditorState={minProps.getEditorState}
+                    setEditorState={minProps.setEditorState}
+                />
+            </Provider>
+        )
+        fireEvent.click(getByText(/shopify/i))
+
+        // If the component exists, the correct page was rendered
+        fireEvent.focus(getByText(/PRODUCTS/))
+
+        mockToolbarContext.mockRestore()
     })
 
     it('should render the product automations when single integration and is allowed to show it', () => {

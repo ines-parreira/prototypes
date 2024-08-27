@@ -2,7 +2,7 @@ import React, {useCallback, useState, useMemo} from 'react'
 import classnames from 'classnames'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
-import {Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {IntegrationType} from 'models/integration/constants'
 import ShopifyProductLine from 'pages/common/components/ShopifyProductLine/ShopifyProductLine'
@@ -45,6 +45,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
         canAddProductCard,
         canAddProductLink,
         canAddProductAutomations,
+        currentShopifyIntegration,
         disableOutOfStockProducts,
         disableVariantSelection,
         onAddProductCardAttachment,
@@ -57,6 +58,12 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
     const [isOpen, setOpen] = useState(false)
     const [pickedShopifyIntegration, setPickedShopifyIntegration] = useState(
         () => {
+            if (currentShopifyIntegration) {
+                return mapIntegrationToPickedShopifyIntegration(
+                    fromJS(currentShopifyIntegration)
+                )
+            }
+
             if (shopifyIntegrations.size === 1) {
                 return mapIntegrationToPickedShopifyIntegration(
                     shopifyIntegrations.get(0) as Map<any, any>
