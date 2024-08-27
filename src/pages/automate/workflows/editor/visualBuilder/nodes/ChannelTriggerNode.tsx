@@ -8,18 +8,30 @@ import {
     VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import {TriggerButtonNodeType} from '../../../models/visualBuilderGraph.types'
 import css from './Node.less'
 
 type Props = VisualBuilderNodeProps & {
     label: string
+    isErrored: boolean
 }
 
-const TriggerButtonNode = memo(function TriggerButtonNode({label}: Props) {
+const ChannelTriggerNode = memo(function ChannelTriggerNode({
+    label,
+    isErrored,
+    isSelected,
+    shouldShowErrors,
+}: Props) {
     return (
         <div>
-            <div className={css.node} style={{height: 98}}>
+            <div
+                className={classNames(css.node, {
+                    [css.nodeErrored]: shouldShowErrors && isErrored,
+                    [css.nodeSelected]: isSelected,
+                })}
+                style={{height: 98}}
+            >
                 <Handle
                     type="target"
                     position={Position.Top}
@@ -29,7 +41,15 @@ const TriggerButtonNode = memo(function TriggerButtonNode({label}: Props) {
                     <div className={'w-100'}>
                         <Badge type={ColorType.Light}>start flow</Badge>
                     </div>
-                    <Label className={css.nodeTitle}>{label}</Label>
+                    <Label className={css.nodeTitle}>
+                        {label.length > 0 ? (
+                            label
+                        ) : (
+                            <span className={css.clickToAdd}>
+                                Trigger button
+                            </span>
+                        )}
+                    </Label>
                 </div>
                 <Handle
                     type="source"
@@ -41,11 +61,18 @@ const TriggerButtonNode = memo(function TriggerButtonNode({label}: Props) {
     )
 })
 
-export default function TriggerButtonNodeWrapper(
-    node: NodeProps<TriggerButtonNodeType['data']>
+export default function ChannelTriggerNodeWrapper(
+    node: NodeProps<ChannelTriggerNodeType['data']>
 ) {
     const label = node.data.label
+    const isErrored = label.length === 0
     const commonProps = useVisualBuilderNodeProps(node)
 
-    return <TriggerButtonNode {...commonProps} label={label} />
+    return (
+        <ChannelTriggerNode
+            {...commonProps}
+            label={label}
+            isErrored={isErrored}
+        />
+    )
 }

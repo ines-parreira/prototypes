@@ -105,7 +105,7 @@ export const TestFlowEditor = ({
             wfConfigurationOriginal.entrypoint?.label_tkey ?? '',
             selectedLanguage
         ) ||
-        (startFlowNode.type === 'trigger_button'
+        (startFlowNode.type === 'channel_trigger'
             ? startFlowNode.data.label
             : '')
 

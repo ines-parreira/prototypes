@@ -103,7 +103,6 @@ describe('useStoreWorkflows', () => {
                         a: {
                             id: 'a',
                             internal_id: 'a',
-                            account_id: 1,
                             is_draft: false,
                             name: 'a',
                             initial_step_id: 'a',
@@ -123,7 +122,6 @@ describe('useStoreWorkflows', () => {
                 {
                     id: 'a',
                     internal_id: 'a',
-                    account_id: 1,
                     is_draft: false,
                     name: 'a',
                     initial_step_id: 'a',

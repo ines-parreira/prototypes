@@ -2,7 +2,6 @@ import {ulid} from 'ulidx'
 import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
 
 export const workflowConfigurationFactory = (
-    accountId: number,
     workflowId: string
 ): WorkflowConfiguration => {
     const messageStepId = ulid()
@@ -10,7 +9,6 @@ export const workflowConfigurationFactory = (
     return {
         id: workflowId,
         internal_id: ulid(),
-        account_id: accountId,
         is_draft: true,
         name: '',
         initial_step_id: messageStepId,

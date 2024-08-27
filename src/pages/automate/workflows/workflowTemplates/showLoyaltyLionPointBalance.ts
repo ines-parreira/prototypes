@@ -13,13 +13,11 @@ export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
     label: WorkflowTemplateLabelType.ThirdPartyActions,
     getConfiguration: (
         id: string,
-        accountId: number,
         integrationId: number
     ): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Show LoyaltyLion points balance',
-            account_id: accountId,
             entrypoint: {
                 label: 'How many loyalty points do I have?',
                 label_tkey: ulid(),

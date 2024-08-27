@@ -8,26 +8,37 @@ import {
 
 import {
     AutomatedMessageNodeType,
+    CancelSubscriptionNodeType,
+    ChannelTriggerNodeType,
     EndNodeType,
     FileUploadNodeType,
+    isTriggerNodeType,
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
+    SkipChargeNodeType,
     TextReplyNodeType,
-    TriggerButtonNodeType,
+    UpdateShippingAddressNodeType,
+    VisualBuilderEdge,
     VisualBuilderGraph,
     VisualBuilderNode,
 } from '../../models/visualBuilderGraph.types'
 import {getWorkflowVariableListForNode} from '../../models/variables.model'
 import {
     buildAutomatedMessageNode,
+    buildCancelOrderNode,
+    buildCancelSubscriptionNode,
     buildEndNode,
     buildFileUploadNode,
     buildOrderLineItemSelectionNode,
     buildOrderSelectionNode,
+    buildRefundOrderNode,
     buildShopperAuthenticationNode,
+    buildSkipChargeNode,
     buildTextReplyNode,
+    buildUpdateShippingAddressNode,
     computeNodesPositions,
     deleteBranch,
+    getFallibleNodeSuccessConditions,
     greyOutBranch,
 } from './utils'
 
@@ -41,8 +52,8 @@ export type VisualBuilderBaseAction =
           name: string
       }
     | {
-          type: 'SET_TRIGGER_BUTTON_LABEL'
-          triggerButtonNodeId: string
+          type: 'SET_CHANNEL_TRIGGER_LABEL'
+          channelTriggerNodeId: string
           label: string
       }
     | {
@@ -119,6 +130,84 @@ export type VisualBuilderBaseAction =
           nodeId: string
           isGreyedOut: boolean
       }
+    | {
+          type: 'SET_NODE_EDITING_ID'
+          nodeId: string
+      }
+    | {
+          type: 'CLOSE_EDITOR'
+      }
+    | {
+          type: 'INSERT_CANCEL_ORDER_NODE'
+          beforeNodeId: string
+          customerId: string
+          orderExternalId: string
+          integrationId: string
+      }
+    | {
+          type: 'INSERT_REFUND_ORDER_NODE'
+          beforeNodeId: string
+          customerId: string
+          orderExternalId: string
+          integrationId: string
+      }
+    | {
+          type: 'INSERT_UPDATE_SHIPPING_ADDRESS_NODE'
+          beforeNodeId: string
+          customerId: string
+          orderExternalId: string
+          integrationId: string
+      }
+    | {
+          type: 'SET_UPDATE_SHIPPING_ADDRESS_NODE_SETTINGS'
+          updateShippingAddressNodeId: string
+          name: string
+          address1: string
+          address2: string
+          city: string
+          zip: string
+          province: string
+          country: string
+          phone: string
+          lastName: string
+          firstName: string
+      }
+    | {
+          type: 'SET_BRANCH_IDS_EDITING'
+          branchIds: VisualBuilderEdge['id'][]
+      }
+    | {
+          type: 'ADD_BRANCH_ID_EDITING'
+          branchId: VisualBuilderEdge['id']
+      }
+    | {
+          type: 'SET_APP'
+          app: NonNullable<VisualBuilderGraph['apps']>[number]
+      }
+    | {
+          type: 'INSERT_CANCEL_SUBSCRIPTION_NODE'
+          beforeNodeId: string
+          customerId: string
+          integrationId: string
+      }
+    | {
+          type: 'INSERT_SKIP_CHARGE_NODE'
+          beforeNodeId: string
+          customerId: string
+          integrationId: string
+      }
+    | {
+          type: 'SET_CANCEL_SUBSCRIPTION_NODE_SETTINGS'
+          cancelSubscriptionNodeId: string
+          subscriptionId: string
+          reason: string
+      }
+    | {
+          type: 'SET_SKIP_CHARGE_NODE_SETTINGS'
+          skipChargeNodeId: string
+          subscriptionId: string
+          chargeId: string
+      }
 
 export function baseReducer(
     graph: VisualBuilderGraph,
@@ -127,16 +216,30 @@ export function baseReducer(
     switch (action.type) {
         case 'RESET_GRAPH':
             return computeNodesPositions(action.graph)
+        case 'SET_NODE_EDITING_ID':
+            return produce(graph, (draft) => {
+                if (draft.nodeEditingId !== action.nodeId) {
+                    draft.nodeEditingId = action.nodeId
+                    draft.choiceEventIdEditing = null
+                    draft.branchIdsEditing = []
+                }
+            })
         case 'SET_NAME':
             return produce(graph, (draft) => {
                 draft.name = action.name
             })
-        case 'SET_TRIGGER_BUTTON_LABEL':
+        case 'CLOSE_EDITOR':
+            return produce(graph, (draft) => {
+                draft.nodeEditingId = null
+                draft.choiceEventIdEditing = null
+                draft.branchIdsEditing = []
+            })
+        case 'SET_CHANNEL_TRIGGER_LABEL':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    (n): n is TriggerButtonNodeType =>
-                        n.id === action.triggerButtonNodeId &&
-                        n.type === 'trigger_button'
+                    (n): n is ChannelTriggerNodeType =>
+                        n.id === action.channelTriggerNodeId &&
+                        n.type === 'channel_trigger'
                 )
                 if (node) node.data.label = action.label
             })
@@ -297,8 +400,8 @@ export function baseReducer(
                     }
                 })
             )
-
         case 'DELETE_BRANCH': {
+            const triggerNode = graph.nodes.find(isTriggerNodeType)!
             const nextGraph = deleteBranch(graph, action.nodeId, {
                 keepIncomingEdge: true,
             })
@@ -308,7 +411,11 @@ export function baseReducer(
                         (e) => e.target === action.nodeId
                     )
                     if (!incomingEdge) return
-                    const endNode = buildEndNode()
+                    const endNode = buildEndNode(
+                        triggerNode.type === 'llm_prompt_trigger'
+                            ? 'end'
+                            : 'ask-for-feedback'
+                    )
                     draft.nodes.push(endNode)
                     incomingEdge.target = endNode.id
                 })
@@ -317,6 +424,103 @@ export function baseReducer(
         case 'GREY_OUT_BRANCH': {
             return greyOutBranch(graph, action.nodeId, action.isGreyedOut)
         }
+        case 'INSERT_CANCEL_ORDER_NODE':
+            return computeNodesPositions(
+                insertFallibleNode(
+                    graph,
+                    buildCancelOrderNode(action),
+                    action.beforeNodeId
+                )
+            )
+        case 'INSERT_REFUND_ORDER_NODE':
+            return computeNodesPositions(
+                insertFallibleNode(
+                    graph,
+                    buildRefundOrderNode(action),
+                    action.beforeNodeId
+                )
+            )
+        case 'INSERT_UPDATE_SHIPPING_ADDRESS_NODE':
+            return computeNodesPositions(
+                insertFallibleNode(
+                    graph,
+                    buildUpdateShippingAddressNode(action),
+                    action.beforeNodeId
+                )
+            )
+        case 'INSERT_CANCEL_SUBSCRIPTION_NODE':
+            return computeNodesPositions(
+                insertFallibleNode(
+                    graph,
+                    buildCancelSubscriptionNode(action),
+                    action.beforeNodeId
+                )
+            )
+        case 'INSERT_SKIP_CHARGE_NODE':
+            return computeNodesPositions(
+                insertFallibleNode(
+                    graph,
+                    buildSkipChargeNode(action),
+                    action.beforeNodeId
+                )
+            )
+        case 'SET_BRANCH_IDS_EDITING':
+            return produce(graph, (draft) => {
+                draft.branchIdsEditing = action.branchIds
+            })
+        case 'ADD_BRANCH_ID_EDITING':
+            return produce(graph, (draft) => {
+                draft.branchIdsEditing ??= []
+                draft.branchIdsEditing.push(action.branchId)
+            })
+        case 'SET_APP':
+            return produce(graph, (draft) => {
+                draft.apps = [action.app]
+            })
+        case 'SET_UPDATE_SHIPPING_ADDRESS_NODE_SETTINGS':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is UpdateShippingAddressNodeType =>
+                        n.id === action.updateShippingAddressNodeId
+                )
+
+                if (node) {
+                    node.data.name = action.name
+                    node.data.address1 = action.address1
+                    node.data.address2 = action.address2
+                    node.data.city = action.city
+                    node.data.zip = action.zip
+                    node.data.province = action.province
+                    node.data.country = action.country
+                    node.data.phone = action.phone
+                    node.data.lastName = action.lastName
+                    node.data.firstName = action.firstName
+                }
+            })
+        case 'SET_CANCEL_SUBSCRIPTION_NODE_SETTINGS':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is CancelSubscriptionNodeType =>
+                        n.id === action.cancelSubscriptionNodeId
+                )
+
+                if (node) {
+                    node.data.subscriptionId = action.subscriptionId
+                    node.data.reason = action.reason
+                }
+            })
+        case 'SET_SKIP_CHARGE_NODE_SETTINGS':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is SkipChargeNodeType =>
+                        n.id === action.skipChargeNodeId
+                )
+
+                if (node) {
+                    node.data.subscriptionId = action.subscriptionId
+                    node.data.chargeId = action.chargeId
+                }
+            })
     }
 }
 
@@ -336,5 +540,63 @@ function insertNodeBefore(
             target: beforeNodeId,
         }
         draft.edges.push(newEdge)
+
+        if (
+            nodeToInsert.type !== 'refund_order' &&
+            nodeToInsert.type !== 'cancel_order'
+        ) {
+            draft.nodeEditingId = nodeToInsert.id
+            draft.choiceEventIdEditing = null
+            draft.branchIdsEditing = []
+        }
+    })
+}
+
+function insertFallibleNode(
+    graph: VisualBuilderGraph,
+    nodeToInsert: VisualBuilderNode,
+    beforeNodeId: string
+) {
+    const triggerNode = graph.nodes.find(isTriggerNodeType)!
+
+    return produce(graph, (draft) => {
+        const edge = draft.edges.find((e) => e.target === beforeNodeId)
+        if (!edge) return
+        const endNode = buildEndNode(
+            triggerNode.type === 'llm_prompt_trigger' ? 'end' : 'create-ticket'
+        )
+
+        draft.nodes.push(nodeToInsert, endNode)
+        edge.target = nodeToInsert.id
+        draft.edges.push(
+            {
+                ...buildEdgeCommonProperties(),
+                source: nodeToInsert.id,
+                target: beforeNodeId,
+                data: {
+                    name: 'Success',
+                    conditions: getFallibleNodeSuccessConditions(
+                        nodeToInsert.id
+                    ),
+                },
+            },
+            {
+                ...buildEdgeCommonProperties(),
+                source: nodeToInsert.id,
+                target: endNode.id,
+                data: {
+                    name: 'Error',
+                },
+            }
+        )
+
+        if (
+            nodeToInsert.type !== 'refund_order' &&
+            nodeToInsert.type !== 'cancel_order'
+        ) {
+            draft.nodeEditingId = nodeToInsert.id
+            draft.choiceEventIdEditing = null
+            draft.branchIdsEditing = []
+        }
     })
 }

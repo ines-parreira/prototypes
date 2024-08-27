@@ -11,14 +11,10 @@ export const SHELF_LIFE_INFORMATION: WorkflowTemplate = {
     name: 'Shelf life information',
     description: 'Provide guidance around the shelf life of your products.',
     label: WorkflowTemplateLabelType.ProductQuestion,
-    getConfiguration: (
-        id: string,
-        accountId: number
-    ): WorkflowConfiguration => {
+    getConfiguration: (id: string): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Shelf life information',
-            account_id: accountId,
             entrypoint: {
                 label: "🌱 What's your products' shelf life?",
                 label_tkey: ulid(),

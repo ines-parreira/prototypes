@@ -17,12 +17,18 @@ import {
     isVisualBuilderHttpRequestAction,
     httpRequestReducer,
 } from './httpRequestReducer'
+import {
+    isVisualBuilderLLMPromptTriggerAction,
+    llmPromptTriggerReducer,
+    VisualBuilderLLMPromptTriggerAction,
+} from './llmPromptTriggerReducer'
 
 export type VisualBuilderGraphAction =
     | VisualBuilderBaseAction
     | VisualBuilderChoicesAction
     | VisualBuilderHttpRequestAction
     | VisualBuilderConditionsAction
+    | VisualBuilderLLMPromptTriggerAction
 
 export function useVisualBuilderGraphReducer(initialState: VisualBuilderGraph) {
     return useReducer(reducer, initialState)
@@ -40,6 +46,9 @@ export function reducer(
     }
     if (isVisualBuilderConditionAction(action)) {
         return conditionsReducer(graph, action)
+    }
+    if (isVisualBuilderLLMPromptTriggerAction(action)) {
+        return llmPromptTriggerReducer(graph, action)
     }
     return baseReducer(graph, action)
 }

@@ -1,9 +1,8 @@
 import React from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Tooltip} from '@gorgias/ui-kit'
+
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 interface Props {
     isDirty: boolean
@@ -16,24 +15,19 @@ export const WorkflowAnalyticsActionButtons = ({
     isDirty,
     onTest,
 }: Props) => {
-    const isPreviewTestButtonVisible =
-        useFlags()[FeatureFlagKey.FlowsPreviewTestButton]
-
     return (
         <>
-            {isPreviewTestButtonVisible && (
-                <Button
-                    onClick={() => onTest(!isDirty)}
-                    intent="secondary"
-                    isDisabled={isTestDisabled}
-                    id="test-disabled"
-                >
-                    <ButtonIconLabel icon="play_circle" position="left">
-                        Test
-                    </ButtonIconLabel>
-                </Button>
-            )}
-            {isPreviewTestButtonVisible && isTestDisabled && (
+            <Button
+                onClick={() => onTest(!isDirty)}
+                intent="secondary"
+                isDisabled={isTestDisabled}
+                id="test-disabled"
+            >
+                <ButtonIconLabel icon="play_circle" position="left">
+                    Test
+                </ButtonIconLabel>
+            </Button>
+            {isTestDisabled && (
                 <Tooltip target="test-disabled">
                     Connect a Chat to this store to test and make sure it’s not
                     hidden. Testing is currently available for Chat only.

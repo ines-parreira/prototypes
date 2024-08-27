@@ -706,6 +706,16 @@
                         "required": true,
                         "in": "query",
                         "schema": {"type": "array"}
+                    },
+                    {
+                        "name": "is_draft",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "minItems": 1,
+                            "default": ["false"],
+                            "type": "array"
+                        }
                     }
                 ],
                 "responses": {
@@ -2612,6 +2622,45 @@
                                                     "integration_id",
                                                     "subscription_id",
                                                     "charge_id"
+                                                ],
+                                                "additionalProperties": false
+                                            }
+                                        },
+                                        "required": ["id", "kind", "settings"],
+                                        "additionalProperties": false
+                                    },
+                                    {
+                                        "type": ["object"],
+                                        "properties": {
+                                            "id": {
+                                                "type": ["string"],
+                                                "maxLength": 26
+                                            },
+                                            "kind": {
+                                                "type": ["string"],
+                                                "enum": ["remove-item"]
+                                            },
+                                            "settings": {
+                                                "type": ["object"],
+                                                "properties": {
+                                                    "customer_id": {
+                                                        "type": ["string"]
+                                                    },
+                                                    "order_external_id": {
+                                                        "type": ["string"]
+                                                    },
+                                                    "integration_id": {
+                                                        "type": ["string"]
+                                                    },
+                                                    "product_variant_id": {
+                                                        "type": ["string"]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "customer_id",
+                                                    "order_external_id",
+                                                    "integration_id",
+                                                    "product_variant_id"
                                                 ],
                                                 "additionalProperties": false
                                             }
@@ -4565,6 +4614,45 @@
                                                 "integration_id",
                                                 "subscription_id",
                                                 "charge_id"
+                                            ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": ["id", "kind", "settings"],
+                                    "additionalProperties": false
+                                },
+                                {
+                                    "type": ["object"],
+                                    "properties": {
+                                        "id": {
+                                            "type": ["string"],
+                                            "maxLength": 26
+                                        },
+                                        "kind": {
+                                            "type": ["string"],
+                                            "enum": ["remove-item"]
+                                        },
+                                        "settings": {
+                                            "type": ["object"],
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "order_external_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "integration_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "product_variant_id": {
+                                                    "type": ["string"]
+                                                }
+                                            },
+                                            "required": [
+                                                "customer_id",
+                                                "order_external_id",
+                                                "integration_id",
+                                                "product_variant_id"
                                             ],
                                             "additionalProperties": false
                                         }
@@ -7168,6 +7256,45 @@
                                     },
                                     "required": ["id", "kind", "settings"],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": ["object"],
+                                    "properties": {
+                                        "id": {
+                                            "type": ["string"],
+                                            "maxLength": 26
+                                        },
+                                        "kind": {
+                                            "type": ["string"],
+                                            "enum": ["remove-item"]
+                                        },
+                                        "settings": {
+                                            "type": ["object"],
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "order_external_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "integration_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "product_variant_id": {
+                                                    "type": ["string"]
+                                                }
+                                            },
+                                            "required": [
+                                                "customer_id",
+                                                "order_external_id",
+                                                "integration_id",
+                                                "product_variant_id"
+                                            ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": ["id", "kind", "settings"],
+                                    "additionalProperties": false
                                 }
                             ]
                         }
@@ -9745,6 +9872,45 @@
                                                 "integration_id",
                                                 "subscription_id",
                                                 "charge_id"
+                                            ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": ["id", "kind", "settings"],
+                                    "additionalProperties": false
+                                },
+                                {
+                                    "type": ["object"],
+                                    "properties": {
+                                        "id": {
+                                            "type": ["string"],
+                                            "maxLength": 26
+                                        },
+                                        "kind": {
+                                            "type": ["string"],
+                                            "enum": ["remove-item"]
+                                        },
+                                        "settings": {
+                                            "type": ["object"],
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "order_external_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "integration_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "product_variant_id": {
+                                                    "type": ["string"]
+                                                }
+                                            },
+                                            "required": [
+                                                "customer_id",
+                                                "order_external_id",
+                                                "integration_id",
+                                                "product_variant_id"
                                             ],
                                             "additionalProperties": false
                                         }
@@ -12349,6 +12515,45 @@
                                                 "integration_id",
                                                 "subscription_id",
                                                 "charge_id"
+                                            ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": ["id", "kind", "settings"],
+                                    "additionalProperties": false
+                                },
+                                {
+                                    "type": ["object"],
+                                    "properties": {
+                                        "id": {
+                                            "type": ["string"],
+                                            "maxLength": 26
+                                        },
+                                        "kind": {
+                                            "type": ["string"],
+                                            "enum": ["remove-item"]
+                                        },
+                                        "settings": {
+                                            "type": ["object"],
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "order_external_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "integration_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "product_variant_id": {
+                                                    "type": ["string"]
+                                                }
+                                            },
+                                            "required": [
+                                                "customer_id",
+                                                "order_external_id",
+                                                "integration_id",
+                                                "product_variant_id"
                                             ],
                                             "additionalProperties": false
                                         }
@@ -16303,7 +16508,7 @@
                                 }
                             },
                             "done": {"type": ["boolean", "null"]},
-                            "success": {"type": ["boolean"]},
+                            "success": {"type": ["boolean", "null"]},
                             "state": {
                                 "type": ["object"],
                                 "properties": {
@@ -18852,6 +19057,44 @@
                                                                             "success",
                                                                             "at"
                                                                         ]
+                                                                    },
+                                                                    {
+                                                                        "type": [
+                                                                            "object"
+                                                                        ],
+                                                                        "properties": {
+                                                                            "kind": {
+                                                                                "type": [
+                                                                                    "string"
+                                                                                ],
+                                                                                "enum": [
+                                                                                    "remove-item"
+                                                                                ]
+                                                                            },
+                                                                            "success": {
+                                                                                "type": [
+                                                                                    "boolean"
+                                                                                ]
+                                                                            },
+                                                                            "error": {
+                                                                                "type": [
+                                                                                    "object",
+                                                                                    "null"
+                                                                                ],
+                                                                                "additionalProperties": {}
+                                                                            },
+                                                                            "at": {
+                                                                                "type": [
+                                                                                    "string"
+                                                                                ],
+                                                                                "format": "date-time"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "kind",
+                                                                            "success",
+                                                                            "at"
+                                                                        ]
                                                                     }
                                                                 ]
                                                             }
@@ -19055,6 +19298,36 @@
                                                             "type": ["string"],
                                                             "enum": [
                                                                 "skip-charge"
+                                                            ]
+                                                        },
+                                                        "success": {
+                                                            "type": ["boolean"]
+                                                        },
+                                                        "error": {
+                                                            "type": [
+                                                                "object",
+                                                                "null"
+                                                            ],
+                                                            "additionalProperties": {}
+                                                        },
+                                                        "at": {
+                                                            "type": ["string"],
+                                                            "format": "date-time"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "kind",
+                                                        "success",
+                                                        "at"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": ["object"],
+                                                    "properties": {
+                                                        "kind": {
+                                                            "type": ["string"],
+                                                            "enum": [
+                                                                "remove-item"
                                                             ]
                                                         },
                                                         "success": {
@@ -20087,7 +20360,6 @@
                             "trigger",
                             "entrypoint",
                             "channel_actions",
-                            "success",
                             "state",
                             "outputs"
                         ],
@@ -22924,6 +23196,44 @@
                                                                             "success",
                                                                             "at"
                                                                         ]
+                                                                    },
+                                                                    {
+                                                                        "type": [
+                                                                            "object"
+                                                                        ],
+                                                                        "properties": {
+                                                                            "kind": {
+                                                                                "type": [
+                                                                                    "string"
+                                                                                ],
+                                                                                "enum": [
+                                                                                    "remove-item"
+                                                                                ]
+                                                                            },
+                                                                            "success": {
+                                                                                "type": [
+                                                                                    "boolean"
+                                                                                ]
+                                                                            },
+                                                                            "error": {
+                                                                                "type": [
+                                                                                    "object",
+                                                                                    "null"
+                                                                                ],
+                                                                                "additionalProperties": {}
+                                                                            },
+                                                                            "at": {
+                                                                                "type": [
+                                                                                    "string"
+                                                                                ],
+                                                                                "format": "date-time"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "kind",
+                                                                            "success",
+                                                                            "at"
+                                                                        ]
                                                                     }
                                                                 ]
                                                             }
@@ -23127,6 +23437,36 @@
                                                             "type": ["string"],
                                                             "enum": [
                                                                 "skip-charge"
+                                                            ]
+                                                        },
+                                                        "success": {
+                                                            "type": ["boolean"]
+                                                        },
+                                                        "error": {
+                                                            "type": [
+                                                                "object",
+                                                                "null"
+                                                            ],
+                                                            "additionalProperties": {}
+                                                        },
+                                                        "at": {
+                                                            "type": ["string"],
+                                                            "format": "date-time"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "kind",
+                                                        "success",
+                                                        "at"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": ["object"],
+                                                    "properties": {
+                                                        "kind": {
+                                                            "type": ["string"],
+                                                            "enum": [
+                                                                "remove-item"
                                                             ]
                                                         },
                                                         "success": {
@@ -27382,7 +27722,7 @@
                                 }
                             },
                             "done": {"type": ["boolean", "null"]},
-                            "success": {"type": ["boolean"]},
+                            "success": {"type": ["boolean", "null"]},
                             "state": {
                                 "type": ["object"],
                                 "properties": {
@@ -29931,6 +30271,44 @@
                                                                             "success",
                                                                             "at"
                                                                         ]
+                                                                    },
+                                                                    {
+                                                                        "type": [
+                                                                            "object"
+                                                                        ],
+                                                                        "properties": {
+                                                                            "kind": {
+                                                                                "type": [
+                                                                                    "string"
+                                                                                ],
+                                                                                "enum": [
+                                                                                    "remove-item"
+                                                                                ]
+                                                                            },
+                                                                            "success": {
+                                                                                "type": [
+                                                                                    "boolean"
+                                                                                ]
+                                                                            },
+                                                                            "error": {
+                                                                                "type": [
+                                                                                    "object",
+                                                                                    "null"
+                                                                                ],
+                                                                                "additionalProperties": {}
+                                                                            },
+                                                                            "at": {
+                                                                                "type": [
+                                                                                    "string"
+                                                                                ],
+                                                                                "format": "date-time"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "kind",
+                                                                            "success",
+                                                                            "at"
+                                                                        ]
                                                                     }
                                                                 ]
                                                             }
@@ -30134,6 +30512,36 @@
                                                             "type": ["string"],
                                                             "enum": [
                                                                 "skip-charge"
+                                                            ]
+                                                        },
+                                                        "success": {
+                                                            "type": ["boolean"]
+                                                        },
+                                                        "error": {
+                                                            "type": [
+                                                                "object",
+                                                                "null"
+                                                            ],
+                                                            "additionalProperties": {}
+                                                        },
+                                                        "at": {
+                                                            "type": ["string"],
+                                                            "format": "date-time"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "kind",
+                                                        "success",
+                                                        "at"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": ["object"],
+                                                    "properties": {
+                                                        "kind": {
+                                                            "type": ["string"],
+                                                            "enum": [
+                                                                "remove-item"
                                                             ]
                                                         },
                                                         "success": {
@@ -31166,7 +31574,6 @@
                             "trigger",
                             "entrypoint",
                             "channel_actions",
-                            "success",
                             "state",
                             "outputs"
                         ],
@@ -33947,6 +34354,44 @@
                                                                             "success",
                                                                             "at"
                                                                         ]
+                                                                    },
+                                                                    {
+                                                                        "type": [
+                                                                            "object"
+                                                                        ],
+                                                                        "properties": {
+                                                                            "kind": {
+                                                                                "type": [
+                                                                                    "string"
+                                                                                ],
+                                                                                "enum": [
+                                                                                    "remove-item"
+                                                                                ]
+                                                                            },
+                                                                            "success": {
+                                                                                "type": [
+                                                                                    "boolean"
+                                                                                ]
+                                                                            },
+                                                                            "error": {
+                                                                                "type": [
+                                                                                    "object",
+                                                                                    "null"
+                                                                                ],
+                                                                                "additionalProperties": {}
+                                                                            },
+                                                                            "at": {
+                                                                                "type": [
+                                                                                    "string"
+                                                                                ],
+                                                                                "format": "date-time"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "kind",
+                                                                            "success",
+                                                                            "at"
+                                                                        ]
                                                                     }
                                                                 ]
                                                             }
@@ -34150,6 +34595,36 @@
                                                             "type": ["string"],
                                                             "enum": [
                                                                 "skip-charge"
+                                                            ]
+                                                        },
+                                                        "success": {
+                                                            "type": ["boolean"]
+                                                        },
+                                                        "error": {
+                                                            "type": [
+                                                                "object",
+                                                                "null"
+                                                            ],
+                                                            "additionalProperties": {}
+                                                        },
+                                                        "at": {
+                                                            "type": ["string"],
+                                                            "format": "date-time"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "kind",
+                                                        "success",
+                                                        "at"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": ["object"],
+                                                    "properties": {
+                                                        "kind": {
+                                                            "type": ["string"],
+                                                            "enum": [
+                                                                "remove-item"
                                                             ]
                                                         },
                                                         "success": {
@@ -36739,6 +37214,45 @@
                                                     "integration_id",
                                                     "subscription_id",
                                                     "charge_id"
+                                                ],
+                                                "additionalProperties": false
+                                            }
+                                        },
+                                        "required": ["id", "kind", "settings"],
+                                        "additionalProperties": false
+                                    },
+                                    {
+                                        "type": ["object"],
+                                        "properties": {
+                                            "id": {
+                                                "type": ["string"],
+                                                "maxLength": 26
+                                            },
+                                            "kind": {
+                                                "type": ["string"],
+                                                "enum": ["remove-item"]
+                                            },
+                                            "settings": {
+                                                "type": ["object"],
+                                                "properties": {
+                                                    "customer_id": {
+                                                        "type": ["string"]
+                                                    },
+                                                    "order_external_id": {
+                                                        "type": ["string"]
+                                                    },
+                                                    "integration_id": {
+                                                        "type": ["string"]
+                                                    },
+                                                    "product_variant_id": {
+                                                        "type": ["string"]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "customer_id",
+                                                    "order_external_id",
+                                                    "integration_id",
+                                                    "product_variant_id"
                                                 ],
                                                 "additionalProperties": false
                                             }
@@ -39363,6 +39877,45 @@
                                     },
                                     "required": ["id", "kind", "settings"],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": ["object"],
+                                    "properties": {
+                                        "id": {
+                                            "type": ["string"],
+                                            "maxLength": 26
+                                        },
+                                        "kind": {
+                                            "type": ["string"],
+                                            "enum": ["remove-item"]
+                                        },
+                                        "settings": {
+                                            "type": ["object"],
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "order_external_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "integration_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "product_variant_id": {
+                                                    "type": ["string"]
+                                                }
+                                            },
+                                            "required": [
+                                                "customer_id",
+                                                "order_external_id",
+                                                "integration_id",
+                                                "product_variant_id"
+                                            ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": ["id", "kind", "settings"],
+                                    "additionalProperties": false
                                 }
                             ]
                         }
@@ -41950,6 +42503,45 @@
                                     },
                                     "required": ["id", "kind", "settings"],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": ["object"],
+                                    "properties": {
+                                        "id": {
+                                            "type": ["string"],
+                                            "maxLength": 26
+                                        },
+                                        "kind": {
+                                            "type": ["string"],
+                                            "enum": ["remove-item"]
+                                        },
+                                        "settings": {
+                                            "type": ["object"],
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "order_external_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "integration_id": {
+                                                    "type": ["string"]
+                                                },
+                                                "product_variant_id": {
+                                                    "type": ["string"]
+                                                }
+                                            },
+                                            "required": [
+                                                "customer_id",
+                                                "order_external_id",
+                                                "integration_id",
+                                                "product_variant_id"
+                                            ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": ["id", "kind", "settings"],
+                                    "additionalProperties": false
                                 }
                             ]
                         }
@@ -43568,6 +44160,47 @@
                                     },
                                     "required": ["id", "kind", "settings"],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": ["object"],
+                                    "properties": {
+                                        "id": {
+                                            "type": ["string"],
+                                            "maxLength": 26
+                                        },
+                                        "kind": {
+                                            "type": ["string"],
+                                            "enum": ["conditions"]
+                                        },
+                                        "settings": {
+                                            "type": ["object"],
+                                            "properties": {
+                                                "name": {
+                                                    "type": ["string"],
+                                                    "maxLength": 100
+                                                }
+                                            },
+                                            "required": ["name"],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": ["id", "kind", "settings"],
+                                    "additionalProperties": false
+                                },
+                                {
+                                    "type": ["object"],
+                                    "properties": {
+                                        "id": {
+                                            "type": ["string"],
+                                            "maxLength": 26
+                                        },
+                                        "kind": {
+                                            "type": ["string"],
+                                            "enum": ["end"]
+                                        }
+                                    },
+                                    "required": ["id", "kind"],
+                                    "additionalProperties": false
                                 }
                             ]
                         }
@@ -45012,6 +45645,47 @@
                                         }
                                     },
                                     "required": ["id", "kind", "settings"],
+                                    "additionalProperties": false
+                                },
+                                {
+                                    "type": ["object"],
+                                    "properties": {
+                                        "id": {
+                                            "type": ["string"],
+                                            "maxLength": 26
+                                        },
+                                        "kind": {
+                                            "type": ["string"],
+                                            "enum": ["conditions"]
+                                        },
+                                        "settings": {
+                                            "type": ["object"],
+                                            "properties": {
+                                                "name": {
+                                                    "type": ["string"],
+                                                    "maxLength": 100
+                                                }
+                                            },
+                                            "required": ["name"],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": ["id", "kind", "settings"],
+                                    "additionalProperties": false
+                                },
+                                {
+                                    "type": ["object"],
+                                    "properties": {
+                                        "id": {
+                                            "type": ["string"],
+                                            "maxLength": 26
+                                        },
+                                        "kind": {
+                                            "type": ["string"],
+                                            "enum": ["end"]
+                                        }
+                                    },
+                                    "required": ["id", "kind"],
                                     "additionalProperties": false
                                 }
                             ]
@@ -46504,6 +47178,47 @@
                                         },
                                         "required": ["id", "kind", "settings"],
                                         "additionalProperties": false
+                                    },
+                                    {
+                                        "type": ["object"],
+                                        "properties": {
+                                            "id": {
+                                                "type": ["string"],
+                                                "maxLength": 26
+                                            },
+                                            "kind": {
+                                                "type": ["string"],
+                                                "enum": ["conditions"]
+                                            },
+                                            "settings": {
+                                                "type": ["object"],
+                                                "properties": {
+                                                    "name": {
+                                                        "type": ["string"],
+                                                        "maxLength": 100
+                                                    }
+                                                },
+                                                "required": ["name"],
+                                                "additionalProperties": false
+                                            }
+                                        },
+                                        "required": ["id", "kind", "settings"],
+                                        "additionalProperties": false
+                                    },
+                                    {
+                                        "type": ["object"],
+                                        "properties": {
+                                            "id": {
+                                                "type": ["string"],
+                                                "maxLength": 26
+                                            },
+                                            "kind": {
+                                                "type": ["string"],
+                                                "enum": ["end"]
+                                            }
+                                        },
+                                        "required": ["id", "kind"],
+                                        "additionalProperties": false
                                     }
                                 ]
                             }
@@ -47979,6 +48694,47 @@
                                         }
                                     },
                                     "required": ["id", "kind", "settings"],
+                                    "additionalProperties": false
+                                },
+                                {
+                                    "type": ["object"],
+                                    "properties": {
+                                        "id": {
+                                            "type": ["string"],
+                                            "maxLength": 26
+                                        },
+                                        "kind": {
+                                            "type": ["string"],
+                                            "enum": ["conditions"]
+                                        },
+                                        "settings": {
+                                            "type": ["object"],
+                                            "properties": {
+                                                "name": {
+                                                    "type": ["string"],
+                                                    "maxLength": 100
+                                                }
+                                            },
+                                            "required": ["name"],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": ["id", "kind", "settings"],
+                                    "additionalProperties": false
+                                },
+                                {
+                                    "type": ["object"],
+                                    "properties": {
+                                        "id": {
+                                            "type": ["string"],
+                                            "maxLength": 26
+                                        },
+                                        "kind": {
+                                            "type": ["string"],
+                                            "enum": ["end"]
+                                        }
+                                    },
+                                    "required": ["id", "kind"],
                                     "additionalProperties": false
                                 }
                             ]

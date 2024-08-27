@@ -11,14 +11,10 @@ export const ADD_EMAIL_TO_KLAVIYO_LIST: WorkflowTemplate = {
     name: 'Add email to Klaviyo list',
     description: 'Requires HTTP request set up and Klaviyo account.',
     label: WorkflowTemplateLabelType.ThirdPartyActions,
-    getConfiguration: (
-        id: string,
-        accountId: number
-    ): WorkflowConfiguration => {
+    getConfiguration: (id: string): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Add email to Klaviyo list',
-            account_id: accountId,
             entrypoint: {
                 label: 'Keep me informed about updates and promotions',
                 label_tkey: ulid(),

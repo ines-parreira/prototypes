@@ -11,14 +11,10 @@ export const PRODUCT_INGREDIENTS: WorkflowTemplate = {
     name: 'Product ingredients',
     description: 'Tell customers about the ingredients used in your products.',
     label: WorkflowTemplateLabelType.ProductQuestion,
-    getConfiguration: (
-        id: string,
-        accountId: number
-    ): WorkflowConfiguration => {
+    getConfiguration: (id: string): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Product ingredients',
-            account_id: accountId,
             entrypoint: {
                 label: '🤔 What type of ingredients do you use?',
                 label_tkey: ulid(),

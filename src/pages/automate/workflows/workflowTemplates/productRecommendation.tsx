@@ -12,14 +12,10 @@ export const PRODUCT_RECOMMENDATION: WorkflowTemplate = {
     description:
         'Ask customers questions and recommend specific products based on their answers.',
     label: WorkflowTemplateLabelType.ProductQuestion,
-    getConfiguration: (
-        id: string,
-        accountId: number
-    ): WorkflowConfiguration => {
+    getConfiguration: (id: string): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Product recommendation',
-            account_id: accountId,
             entrypoint: {
                 label: 'What shoe is right for me?',
                 label_tkey: ulid(),

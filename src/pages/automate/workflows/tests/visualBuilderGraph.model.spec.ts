@@ -10,12 +10,10 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 transformVisualBuilderGraphIntoWfConfiguration(g)
             )
         )
-        const {id, account_id, is_draft, name, internal_id, initial_step_id} =
-            transformed
+        const {id, is_draft, name, internal_id, initial_step_id} = transformed
         expect(transformed).toEqual(
             expect.objectContaining({
                 id,
-                account_id,
                 is_draft,
                 name,
                 internal_id,

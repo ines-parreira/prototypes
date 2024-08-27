@@ -3,7 +3,7 @@ import Immutable from 'immutable'
 import {Label} from '@gorgias/ui-kit'
 
 import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
 import {getHumanAgents} from 'state/agents/selectors'
@@ -23,7 +23,7 @@ type EndNodeEditorProps = {
 export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
     const users = useAppSelector(getHumanAgents)
     const teams = useAppSelector(getTeams)
-    const {dispatch} = useWorkflowEditorContext()
+    const {dispatch} = useVisualBuilderContext()
     const handleAddTag = (tag: string) => {
         const {action, ticketTags, ticketAssigneeUserId, ticketAssigneeTeamId} =
             nodeInEdition.data

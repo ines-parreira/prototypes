@@ -44,6 +44,7 @@ const WorkflowVariableDropdown = ({
             'http_request',
             'shopper_authentication',
             'custom_input',
+            'app',
         ],
     } = useToolbarContext()
 

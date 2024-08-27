@@ -9,7 +9,7 @@ import usePrevious from 'hooks/usePrevious'
 import useKey from 'hooks/useKey'
 
 import css from './NodeEditorDrawer.less'
-import TriggerButtonEditor from './editors/TriggerButtonEditor'
+import ChannelTriggerEditor from './editors/ChannelTriggerEditor'
 import MultipleChoicesEditor from './editors/MultipleChoicesEditor'
 import AutomatedMessageEditor from './editors/AutomatedMessageEditor'
 import TextReplyEditor from './editors/TextReplyEditor'
@@ -23,6 +23,10 @@ import NodeEditorDrawerContext, {
 import ShopperAuthenticationEditor from './editors/ShopperAuthenticationEditor/ShopperAuthenticationEditor'
 import ConditionsNodeEditor from './editors/ConditionsNodeEditor/ConditionsNodeEditor'
 import OrderLineItemSelectionEditor from './editors/OrderLineItemSelectionEditor'
+import LLMPromptTriggerEditor from './editors/LLMPromptTriggerEditor'
+import UpdateShippingAddressEditor from './editors/UpdateShippingAddressEditor'
+import CancelSubscriptionEditor from './editors/CancelSubscriptionEditor'
+import SkipChargeEditor from './editors/SkipChargeEditor'
 
 type Props = {
     nodeInEdition?: VisualBuilderNode | null
@@ -76,65 +80,94 @@ const NodeEditorDrawer = ({nodeInEdition, onClose}: Props) => {
             portalRootId="app-root"
             transitionDurationMs={300}
         >
-            <NodeEditorDrawerContext.Provider value={contextValue}>
-                <TranslationsPreviewProvider key={nodeInEdition?.id}>
-                    {memoizedNodeInEdition?.type === 'trigger_button' && (
-                        <TriggerButtonEditor
+            <NodeEditorDrawerContext.Provider
+                key={nodeInEdition?.id}
+                value={contextValue}
+            >
+                {memoizedNodeInEdition?.type === 'channel_trigger' && (
+                    <TranslationsPreviewProvider>
+                        <ChannelTriggerEditor
                             nodeInEdition={memoizedNodeInEdition}
                         />
-                    )}
-
-                    {memoizedNodeInEdition?.type === 'automated_message' && (
+                    </TranslationsPreviewProvider>
+                )}
+                {memoizedNodeInEdition?.type === 'automated_message' && (
+                    <TranslationsPreviewProvider>
                         <AutomatedMessageEditor
                             nodeInEdition={memoizedNodeInEdition}
                         />
-                    )}
-                    {memoizedNodeInEdition?.type === 'multiple_choices' && (
+                    </TranslationsPreviewProvider>
+                )}
+                {memoizedNodeInEdition?.type === 'multiple_choices' && (
+                    <TranslationsPreviewProvider>
                         <MultipleChoicesEditor
                             nodeInEdition={memoizedNodeInEdition}
                         />
-                    )}
-                    {memoizedNodeInEdition?.type === 'text_reply' && (
+                    </TranslationsPreviewProvider>
+                )}
+                {memoizedNodeInEdition?.type === 'text_reply' && (
+                    <TranslationsPreviewProvider>
                         <TextReplyEditor
                             nodeInEdition={memoizedNodeInEdition}
                         />
-                    )}
-                    {memoizedNodeInEdition?.type === 'file_upload' && (
+                    </TranslationsPreviewProvider>
+                )}
+                {memoizedNodeInEdition?.type === 'file_upload' && (
+                    <TranslationsPreviewProvider>
                         <FileUploadEditor
                             nodeInEdition={memoizedNodeInEdition}
                         />
-                    )}
-                    {memoizedNodeInEdition?.type === 'order_selection' && (
+                    </TranslationsPreviewProvider>
+                )}
+                {memoizedNodeInEdition?.type === 'order_selection' && (
+                    <TranslationsPreviewProvider>
                         <OrderSelectionEditor
                             nodeInEdition={memoizedNodeInEdition}
                         />
-                    )}
-                    {memoizedNodeInEdition?.type ===
-                        'shopper_authentication' && (
-                        <ShopperAuthenticationEditor
-                            nodeInEdition={memoizedNodeInEdition}
-                        />
-                    )}
-                    {memoizedNodeInEdition?.type === 'http_request' && (
-                        <HttpRequestEditor
-                            nodeInEdition={memoizedNodeInEdition}
-                        />
-                    )}
-                    {memoizedNodeInEdition?.type === 'conditions' && (
-                        <ConditionsNodeEditor
-                            nodeInEdition={memoizedNodeInEdition}
-                        />
-                    )}
-                    {memoizedNodeInEdition?.type ===
-                        'order_line_item_selection' && (
+                    </TranslationsPreviewProvider>
+                )}
+                {memoizedNodeInEdition?.type === 'shopper_authentication' && (
+                    <ShopperAuthenticationEditor
+                        nodeInEdition={memoizedNodeInEdition}
+                    />
+                )}
+                {memoizedNodeInEdition?.type === 'http_request' && (
+                    <HttpRequestEditor nodeInEdition={memoizedNodeInEdition} />
+                )}
+                {memoizedNodeInEdition?.type === 'conditions' && (
+                    <ConditionsNodeEditor
+                        nodeInEdition={memoizedNodeInEdition}
+                    />
+                )}
+                {memoizedNodeInEdition?.type ===
+                    'order_line_item_selection' && (
+                    <TranslationsPreviewProvider>
                         <OrderLineItemSelectionEditor
                             nodeInEdition={memoizedNodeInEdition}
                         />
-                    )}
-                    {memoizedNodeInEdition?.type === 'end' && (
-                        <EndNodeEditor nodeInEdition={memoizedNodeInEdition} />
-                    )}
-                </TranslationsPreviewProvider>
+                    </TranslationsPreviewProvider>
+                )}
+                {memoizedNodeInEdition?.type === 'end' && (
+                    <EndNodeEditor nodeInEdition={memoizedNodeInEdition} />
+                )}
+                {memoizedNodeInEdition?.type === 'llm_prompt_trigger' && (
+                    <LLMPromptTriggerEditor
+                        nodeInEdition={memoizedNodeInEdition}
+                    />
+                )}
+                {memoizedNodeInEdition?.type === 'update_shipping_address' && (
+                    <UpdateShippingAddressEditor
+                        nodeInEdition={memoizedNodeInEdition}
+                    />
+                )}
+                {memoizedNodeInEdition?.type === 'cancel_subscription' && (
+                    <CancelSubscriptionEditor
+                        nodeInEdition={memoizedNodeInEdition}
+                    />
+                )}
+                {memoizedNodeInEdition?.type === 'skip_charge' && (
+                    <SkipChargeEditor nodeInEdition={memoizedNodeInEdition} />
+                )}
             </NodeEditorDrawerContext.Provider>
         </Drawer>
     )

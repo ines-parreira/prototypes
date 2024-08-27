@@ -101,13 +101,13 @@ export type WorkflowStepHttpRequest = {
         name: string
         url: string
         method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
-        headers?: Record<string, string>
-        body?: string
+        headers?: Record<string, string> | null
+        body?: string | null
         variables: {
             id: string
             name: string
             jsonpath: string
-            data_type: 'string' | 'number' | 'boolean' | 'date'
+            data_type?: 'string' | 'number' | 'boolean' | 'date' | null
         }[]
     }
 }
@@ -125,6 +125,68 @@ export type WorkflowStepOrderLineItemSelection = {
     }
 }
 
+export type WorkflowStepCancelOrder = {
+    id: string
+    kind: 'cancel-order'
+    settings: {
+        customer_id: string
+        order_external_id: string
+        integration_id: string
+    }
+}
+
+export type WorkflowStepRefundOrder = {
+    id: string
+    kind: 'refund-order'
+    settings: {
+        customer_id: string
+        order_external_id: string
+        integration_id: string
+    }
+}
+
+export type WorkflowStepUpdateShippingAddress = {
+    id: string
+    kind: 'update-shipping-address'
+    settings: {
+        customer_id: string
+        order_external_id: string
+        integration_id: string
+        name: string
+        address1: string
+        address2: string
+        city: string
+        zip: string
+        province: string
+        country: string
+        phone: string
+        last_name: string
+        first_name: string
+    }
+}
+
+export type WorkflowStepCancelSubscription = {
+    id: string
+    kind: 'cancel-subscription'
+    settings: {
+        customer_id: string
+        integration_id: string
+        subscription_id: string
+        reason: string
+    }
+}
+
+export type WorkflowStepSkipCharge = {
+    id: string
+    kind: 'skip-charge'
+    settings: {
+        customer_id: string
+        integration_id: string
+        subscription_id: string
+        charge_id: string
+    }
+}
+
 export type WorkflowStep =
     | WorkflowStepTextInput
     | WorkflowStepAttachmentsInput
@@ -138,6 +200,11 @@ export type WorkflowStep =
     | WorkflowStepEnd
     | WorkflowStepConditions
     | WorkflowStepOrderLineItemSelection
+    | WorkflowStepCancelOrder
+    | WorkflowStepRefundOrder
+    | WorkflowStepUpdateShippingAddress
+    | WorkflowStepCancelSubscription
+    | WorkflowStepSkipCharge
 
 export type WorkflowTransition = {
     id: string
@@ -147,7 +214,7 @@ export type WorkflowTransition = {
         id: string
         kind: 'choices'
     }>
-    name?: string
+    name?: string | null
     conditions?: ConditionsSchema
 }
 
@@ -173,7 +240,6 @@ export type LanguageCode = typeof supportedLanguages[number]['code']
 export type WorkflowConfiguration = {
     id: string
     internal_id: string
-    account_id: number
     is_draft: boolean
     name: string
     initial_step_id: string
@@ -181,7 +247,62 @@ export type WorkflowConfiguration = {
     entrypoint?: {
         label: string
         label_tkey: string
-    }
+    } | null
+    triggers?: (
+        | {
+              kind: 'llm-prompt'
+              settings: {
+                  custom_inputs: {
+                      id: string
+                      name: string
+                      instructions: string
+                      data_type: 'string' | 'number' | 'date' | 'boolean'
+                  }[]
+                  object_inputs: (
+                      | {
+                            kind: 'customer'
+                            integration_id: number | string
+                        }
+                      | {
+                            kind: 'order'
+                            integration_id: number | string
+                        }
+                  )[]
+                  conditions?: ConditionsSchema | null
+                  outputs: {
+                      id: string
+                      description: string
+                      path: string
+                  }[]
+              }
+          }
+        | {
+              kind: 'channel'
+              settings: Record<string, unknown>
+          }
+    )[]
+    entrypoints?: {
+        deactivated_datetime?: string | null
+        kind: 'llm-conversation'
+        trigger: 'llm-prompt'
+        settings: {
+            requires_confirmation: boolean
+            instructions: string
+        }
+    }[]
+    apps?: (
+        | {
+              type: 'shopify'
+          }
+        | {
+              type: 'recharge'
+          }
+        | {
+              app_id: string
+              api_key?: string | null
+              type: 'app'
+          }
+    )[]
     steps: WorkflowStep[]
     transitions: WorkflowTransition[]
     available_languages: LanguageCode[]
@@ -214,7 +335,6 @@ export type WorkflowTemplate = {
     label: WorkflowTemplateLabelType
     getConfiguration: (
         id: string,
-        accountId: number, // TODO: it shouldn't be a user input
         integrationId: number
     ) => WorkflowConfiguration
 }

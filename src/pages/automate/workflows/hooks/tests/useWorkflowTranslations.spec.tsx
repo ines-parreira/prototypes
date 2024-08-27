@@ -76,15 +76,20 @@ describe('useWorkflowTranslations', () => {
         const b = new WorkflowConfigurationBuilder({
             id: 'test',
             name: 'test',
-            account_id: 1,
             entrypoint: {
                 label: 'english text',
                 label_tkey: graphTriggerLabelTkey,
             },
-            initialMessage: {
-                content: {
-                    html: 'test',
-                    text: 'test',
+            initialStep: {
+                id: ulid(),
+                kind: 'message',
+                settings: {
+                    message: {
+                        content: {
+                            html: 'test',
+                            text: 'test',
+                        },
+                    },
                 },
             },
         })
@@ -117,7 +122,7 @@ describe('useWorkflowTranslations', () => {
             graph = result.current.switchLanguage(graph, 'fr-FR')
         })
         expect(
-            graph.nodes[0].type === 'trigger_button' &&
+            graph.nodes[0].type === 'channel_trigger' &&
                 graph.nodes[0].data.label === ''
         ).toBeTruthy()
         expect(result.current).toEqual(
@@ -154,7 +159,7 @@ describe('useWorkflowTranslations', () => {
         // we switched to french that was not existing in available_languages, now it exists
         // we simulate the prop change passed as hook argument
         rerender(['en-US', 'fr-FR'])
-        assert(graph.nodes[0].type === 'trigger_button')
+        assert(graph.nodes[0].type === 'channel_trigger')
         graph.nodes[0].data.label = 'french text'
 
         await act(async () => {
@@ -205,7 +210,7 @@ describe('useWorkflowTranslations', () => {
         // we switched to french that was not existing in available_languages, now it exists
         // we simulate the prop change passed as hook argument
         rerender(['en-US', 'fr-FR'])
-        assert(graph.nodes[0].type === 'trigger_button')
+        assert(graph.nodes[0].type === 'channel_trigger')
         graph.nodes[0].data.label = 'french text'
 
         // remove node

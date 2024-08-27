@@ -31,11 +31,25 @@ export const workflowsConfigurationDefinitionKeys = {
         [...workflowsConfigurationDefinitionKeys.all(), 'list'] as const,
     list: (params: Paths.WfConfigurationControllerList.QueryParameters) =>
         [...workflowsConfigurationDefinitionKeys.lists(), params] as const,
-    get: (id: string) => [...workflowsConfigurationDefinitionKeys.all(), id],
+    get: (id?: string) => [...workflowsConfigurationDefinitionKeys.all(), id],
 }
 
 export const workflowsConfigurationTemplateDefinitionKeys = {
     all: () => [WORKFLOWS_CONFIGURATION_TEMPLATE_QUERY_KEY] as const,
+    lists: () =>
+        [
+            ...workflowsConfigurationTemplateDefinitionKeys.all(),
+            'list',
+        ] as const,
+    list: (
+        params: Paths.WfConfigurationTemplateControllerList.QueryParameters
+    ) =>
+        [
+            ...workflowsConfigurationTemplateDefinitionKeys.lists(),
+            params,
+        ] as const,
+    get: (id: string) =>
+        [WORKFLOWS_CONFIGURATION_TEMPLATE_QUERY_KEY, id] as const,
 }
 
 export const storeWorkflowsAppDefinitionKeys = {
@@ -62,20 +76,18 @@ export const actionsAppDefinitionKeys = {
 }
 
 export const useGetWorkflowConfigurationTemplates = (
-    triggers: string[],
+    params: Paths.WfConfigurationTemplateControllerList.QueryParameters,
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationTemplateControllerList.Responses.$200>
     >
 ) => {
     return useQuery({
-        queryKey: workflowsConfigurationTemplateDefinitionKeys.all(),
+        queryKey: workflowsConfigurationTemplateDefinitionKeys.list(params),
         queryFn: async () => {
             const client = await getGorgiasWfApiClient()
             const response =
                 await client.WfConfigurationTemplateController_list(
-                    {
-                        triggers,
-                    },
+                    params,
                     {},
                     {
                         paramsSerializer: {
@@ -87,6 +99,51 @@ export const useGetWorkflowConfigurationTemplates = (
         },
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
+
+export const useGetWorkflowConfigurationTemplate = (
+    id: string,
+    overrides?: UseQueryOptions<
+        Awaited<Paths.WfConfigurationTemplateControllerGet.Responses.$200>
+    >
+) => {
+    return useQuery({
+        queryKey: workflowsConfigurationTemplateDefinitionKeys.get(id),
+        queryFn: async () => {
+            const client = await getGorgiasWfApiClient()
+            const response = await client.WfConfigurationTemplateController_get(
+                {
+                    id,
+                },
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: true,
+                    },
+                }
+            )
+            return response.data
+        },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
+
+export const useUpsertWorkflowConfigurationTemplate = (
+    overrides?: MutationOverrides<
+        OperationMethods['WfConfigurationTemplateController_upsert']
+    >
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.WfConfigurationTemplateController_upsert(
+                ...params
+            )
+        },
         ...overrides,
     })
 }

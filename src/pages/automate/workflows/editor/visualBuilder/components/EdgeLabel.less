@@ -55,4 +55,20 @@
             outline: 1px solid var(--accessory-yellow-3);
         }
     }
+
+    .cancel_order,
+    .refund_order,
+    .update_shipping_address,
+    .cancel_subscription,
+    .skip_charge {
+        .caption-semibold();
+        .base();
+
+        color: var(--neutral-grey-5);
+        background: var(--neutral-grey-2);
+
+        &.isSelected {
+            outline: 1px solid var(--neutral-grey-5);
+        }
+    }
 }

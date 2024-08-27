@@ -13,7 +13,7 @@ import css from './VisualBuilderActionTag.less'
 type Props = {
     nodeType: Exclude<
         NonNullable<VisualBuilderNode['type']>,
-        'trigger_button' | 'end'
+        'channel_trigger' | 'llm_prompt_trigger' | 'end'
     >
 }
 

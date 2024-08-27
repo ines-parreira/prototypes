@@ -2,6 +2,7 @@ import {produce} from 'immer'
 
 import {
     ConditionsNodeType,
+    isTriggerNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
@@ -38,7 +39,7 @@ export type VisualBuilderConditionsAction =
           nodeId: string
           data: {
               conditions?: ConditionsSchema | null
-              name?: string
+              name?: string | null
           }
       }
     | {
@@ -119,11 +120,17 @@ export function conditionsReducer(
 }
 
 function insertCondition(graph: VisualBuilderGraph, beforeEndNodeId: string) {
+    const triggerNode = graph.nodes.find(isTriggerNodeType)!
+
     return produce(graph, (draft) => {
         const edge = draft.edges.find((e) => e.target === beforeEndNodeId)
         if (!edge) return
         const conditionsNode = buildConditionsNode()
-        const endNode = buildEndNode()
+        const endNode = buildEndNode(
+            triggerNode.type === 'llm_prompt_trigger'
+                ? 'end'
+                : 'ask-for-feedback'
+        )
         draft.nodes.push(conditionsNode, endNode)
         edge.target = conditionsNode.id
         draft.edges.push(
@@ -147,6 +154,9 @@ function insertCondition(graph: VisualBuilderGraph, beforeEndNodeId: string) {
                 },
             }
         )
+        draft.nodeEditingId = conditionsNode.id
+        draft.choiceEventIdEditing = null
+        draft.branchIdsEditing = []
     })
 }
 
@@ -182,11 +192,19 @@ function addConditionBranch(
     conditionNodeId: string,
     edgeId: string
 ) {
+    const triggerNode = graph.nodes.find(isTriggerNodeType)!
+
     return produce(graph, (draft) => {
         const node = draft.nodes.find((node) => node.id === conditionNodeId)
         if (!node) return
 
-        draft.nodes.push(buildEndNode())
+        draft.nodes.push(
+            buildEndNode(
+                triggerNode.type === 'llm_prompt_trigger'
+                    ? 'end'
+                    : 'ask-for-feedback'
+            )
+        )
         const edges = draft.edges.filter(
             (edge) => edge.source === conditionNodeId
         )

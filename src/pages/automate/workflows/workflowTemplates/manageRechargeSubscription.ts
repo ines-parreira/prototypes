@@ -13,13 +13,11 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
     label: WorkflowTemplateLabelType.ThirdPartyActions,
     getConfiguration: (
         id: string,
-        accountId: number,
         integrationId: number
     ): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Manage Recharge Subscription',
-            account_id: accountId,
             entrypoint: {
                 label: "I'd like to manage my subscription",
                 label_tkey: ulid(),

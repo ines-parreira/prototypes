@@ -9,7 +9,6 @@ import {
 export function mockWorkflowConfiguration(uid: string): WorkflowConfiguration {
     return {
         id: uid,
-        account_id: 1,
         internal_id: `int-${uid}`,
         name: uid,
         is_draft: false,

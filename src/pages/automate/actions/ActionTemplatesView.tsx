@@ -19,7 +19,9 @@ export default function ActionTemplatesView() {
     }>()
 
     const {data: templateConfigurations, isInitialLoading} =
-        useGetWorkflowConfigurationTemplates(['llm-prompt'])
+        useGetWorkflowConfigurationTemplates({
+            triggers: ['llm-prompt'],
+        })
 
     useEffectOnce(() => {
         logEvent(SegmentEvent.AutomateActionsTemplatesVisited)

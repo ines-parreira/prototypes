@@ -54,7 +54,6 @@ import css from './WorkflowEditorView.less'
 import {WorkflowEditorActionButtons} from './WorkflowEditorActionButtons'
 
 type WorkflowEditorViewProps = {
-    currentAccountId: number
     shopType: string
     shopName: string
     workflowId: string
@@ -69,7 +68,6 @@ type WorkflowEditorViewProps = {
 }
 
 function WorkflowEditorViewWrapped({
-    currentAccountId,
     workflowId,
     isNewWorkflow,
     onSave,
@@ -346,7 +344,6 @@ function WorkflowEditorViewWrapped({
             const template = WORKFLOW_TEMPLATES[templateSlug]
             const configuration = template.getConfiguration(
                 workflowId,
-                currentAccountId,
                 storeIntegrationId
             )
             workflowEditorContext.dispatch({
@@ -502,7 +499,16 @@ function WorkflowEditorViewWrapped({
                             </ToggleButton.Option>
                         </ToggleButton.Wrapper>
                     )}
-                    <WorkflowVisualBuilder isNewWorkflow={isNewWorkflow} />
+                    <WorkflowVisualBuilder
+                        isNewWorkflow={isNewWorkflow}
+                        visualBuilderGraph={
+                            workflowEditorContext.visualBuilderGraph
+                        }
+                        dispatch={workflowEditorContext.dispatch}
+                        shouldShowErrors={
+                            workflowEditorContext.shouldShowErrors
+                        }
+                    />
                 </Container>
                 <UnsavedChangesPrompt
                     onSave={() => (isDraft ? handleSave() : handlePublish())}

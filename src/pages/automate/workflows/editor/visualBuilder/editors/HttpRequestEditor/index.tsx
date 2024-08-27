@@ -1,9 +1,11 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import _uniq from 'lodash/uniq'
 import {Label, Tooltip} from '@gorgias/ui-kit'
-
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import {
+    HttpRequestNodeType,
+    isTriggerNodeType,
+} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {
     extractVariablesFromNode,
@@ -15,8 +17,13 @@ import {Drawer} from 'pages/common/components/Drawer'
 import Button from 'pages/common/components/button/Button'
 import useIsHttpRequestNodeErrored from 'pages/automate/workflows/hooks/useIsHttpRequestNodeErrored'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-
+import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
 import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import {saveFileAsDownloaded} from 'utils/file'
+import {NotificationStatus} from 'state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+
 import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
 import TextareaWithVariables from '../../components/variables/TextareaWithVariables'
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
@@ -29,6 +36,7 @@ import Variables from './Variables'
 import TestRequestModal from './TestRequestModal'
 import useSendTestRequest from './useSendTestRequest'
 import TestRequestModalWithInputs from './TestRequestModalWithInputs'
+import Outputs from './Outputs'
 
 const nameTextLimit = 100
 
@@ -41,10 +49,8 @@ export default function HttpRequestEditor({
         dispatch,
         visualBuilderGraph,
         checkNewVisualBuilderNode,
-        handleDownloadHttpRequestEventLogs,
         getVariableListInChildren,
-        isDownloadPending,
-    } = useWorkflowEditorContext()
+    } = useVisualBuilderContext()
     const {isErrored} = useIsHttpRequestNodeErrored(nodeInEdition, true)
     const {isLoading: isTestRequestLoading, sendTestRequest} =
         useSendTestRequest(nodeInEdition.data, (result) => {
@@ -60,7 +66,43 @@ export default function HttpRequestEditor({
         () => getVariableListInChildren(nodeInEdition.id),
         [getVariableListInChildren, nodeInEdition.id]
     )
+    const appDispatch = useAppDispatch()
+    const {mutateAsync: downloadEventLogs, isLoading: isDownloadPending} =
+        useDownloadWorkflowConfigurationStepLogs()
+    const handleDownloadHttpRequestEventLogs = useCallback(async () => {
+        try {
+            const {data} = await downloadEventLogs([
+                {
+                    internal_id:
+                        visualBuilderGraph.wfConfigurationOriginal.internal_id,
+                    step_id: nodeInEdition.id,
+                },
+            ])
 
+            saveFileAsDownloaded(
+                `${
+                    nodeInEdition.data.name ?? 'Request name'
+                }-event-logs-${new Date().toISOString()}.csv`,
+                data,
+                'text/csv'
+            )
+        } catch {
+            void appDispatch(
+                notify({
+                    message: 'Failed to download event logs.',
+                    allowHTML: true,
+                    showDismissButton: true,
+                    status: NotificationStatus.Error,
+                })
+            )
+        }
+    }, [
+        downloadEventLogs,
+        visualBuilderGraph.wfConfigurationOriginal.internal_id,
+        appDispatch,
+        nodeInEdition.id,
+        nodeInEdition.data.name,
+    ])
     const downloadLogsButtonRef = useRef<HTMLButtonElement>(null)
 
     useEffect(() => {
@@ -122,27 +164,36 @@ export default function HttpRequestEditor({
         [dispatch, nodeInEdition.id]
     )
 
+    const triggerNode = useMemo(
+        () => visualBuilderGraph.nodes.find(isTriggerNodeType)!,
+        [visualBuilderGraph.nodes]
+    )
+
     return (
         <>
             <NodeEditorDrawerHeader nodeInEdition={nodeInEdition}>
-                <Button
-                    ref={downloadLogsButtonRef}
-                    fillStyle="ghost"
-                    intent="secondary"
-                    isLoading={isDownloadPending}
-                    isDisabled={isNodeNew}
-                    onClick={() => {
-                        void handleDownloadHttpRequestEventLogs(nodeInEdition)
-                    }}
-                >
-                    <ButtonIconLabel icon="download">
-                        Download Event logs
-                    </ButtonIconLabel>
-                </Button>
-                {isNodeNew && (
-                    <Tooltip target={downloadLogsButtonRef}>
-                        Save this flow in order to download event logs.
-                    </Tooltip>
+                {triggerNode.type === 'channel_trigger' && (
+                    <>
+                        <Button
+                            ref={downloadLogsButtonRef}
+                            fillStyle="ghost"
+                            intent="secondary"
+                            isLoading={isDownloadPending}
+                            isDisabled={isNodeNew}
+                            onClick={() => {
+                                void handleDownloadHttpRequestEventLogs()
+                            }}
+                        >
+                            <ButtonIconLabel icon="download">
+                                Download Event logs
+                            </ButtonIconLabel>
+                        </Button>
+                        {isNodeNew && (
+                            <Tooltip target={downloadLogsButtonRef}>
+                                Save this flow in order to download event logs.
+                            </Tooltip>
+                        )}
+                    </>
                 )}
             </NodeEditorDrawerHeader>
             <Drawer.Content>
@@ -323,6 +374,41 @@ export default function HttpRequestEditor({
                             onAdd={handleAddVariable}
                         />
                     </div>
+                    {triggerNode.type === 'llm_prompt_trigger' && (
+                        <div className={css.formField}>
+                            <Label>
+                                Request results explanation for AI Agent
+                                (optional)
+                            </Label>
+                            <Outputs
+                                nodeId={nodeInEdition.id}
+                                outputs={nodeInEdition.data.outputs}
+                                variables={nodeInEdition.data.variables}
+                                onChange={(index, output) => {
+                                    dispatch({
+                                        type: 'SET_HTTP_REQUEST_OUTPUT',
+                                        httpRequestNodeId: nodeInEdition.id,
+                                        index,
+                                        output,
+                                    })
+                                }}
+                                onDelete={(index) => {
+                                    dispatch({
+                                        type: 'DELETE_HTTP_REQUEST_OUTPUT',
+                                        httpRequestNodeId: nodeInEdition.id,
+                                        index,
+                                    })
+                                }}
+                                onAdd={(variableId) => {
+                                    dispatch({
+                                        type: 'ADD_HTTP_REQUEST_OUTPUT',
+                                        httpRequestNodeId: nodeInEdition.id,
+                                        variableId,
+                                    })
+                                }}
+                            />
+                        </div>
+                    )}
                 </div>
             </Drawer.Content>
             {variables.length > 0 ? (

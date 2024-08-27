@@ -1,6 +1,6 @@
 import 'reactflow/dist/style.css'
 
-import React, {PropsWithChildren, useCallback, useEffect, useMemo} from 'react'
+import React, {Dispatch, PropsWithChildren, useCallback, useMemo} from 'react'
 import {
     Controls,
     MiniMap,
@@ -10,19 +10,18 @@ import {
     useNodesInitialized,
     useReactFlow,
 } from 'reactflow'
-import _keyBy from 'lodash/keyBy'
 import classNames from 'classnames'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import Loader from 'pages/common/components/Loader/Loader'
-import usePrevious from 'hooks/usePrevious'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
 import {TestFlowEditor} from '../../editor/visualBuilder/editors/TestFlowEditor'
 
-import TriggerButtonNode from './nodes/TriggerButtonNode'
+import {withVisualBuilderContext} from '../../hooks/useVisualBuilder'
+import {VisualBuilderGraph} from '../../models/visualBuilderGraph.types'
+import {VisualBuilderGraphAction} from '../../hooks/useVisualBuilderGraphReducer'
+import ChannelTriggerNode from './nodes/ChannelTriggerNode'
 import EndNode from './nodes/EndNode'
 
 import CustomEdge from './CustomEdge'
@@ -31,7 +30,7 @@ import css from './WorkflowVisualBuilder.less'
 import AnalyticsNode from './nodes/AnalyticsNode'
 
 const nodeTypes = {
-    trigger_button: TriggerButtonNode,
+    channel_trigger: ChannelTriggerNode,
     automated_message: AnalyticsNode,
     conditions: AnalyticsNode,
     multiple_choices: AnalyticsNode,
@@ -48,46 +47,27 @@ const edgeTypes = {
     custom: CustomEdge,
 }
 
-export function WorkflowVisualBuilderWrapped() {
+type Props = {
+    visualBuilderGraph: VisualBuilderGraph
+    dispatch: Dispatch<VisualBuilderGraphAction>
+}
+
+export const WorkflowVisualBuilderWrapped: React.FC<Props> = () => {
     const {
         isFetchPending,
         visualBuilderGraph,
-        visualBuilderNodeIdEditing,
         isTesting,
-        setVisualBuilderNodeIdEditing,
         setIsTesting,
         setZoom,
     } = useWorkflowEditorContext()
     const reactFlow = useReactFlow()
     const [searchParams] = useSearchParam('zoom')
 
-    const isPreviewDrawerVisible =
-        useFlags()[FeatureFlagKey.FlowsPreviewTestButton]
-
-    const visualBuilderGraphPrevious = usePrevious(visualBuilderGraph)
-
     const startFlowNode = useMemo(
-        () => visualBuilderGraph.nodes.find((n) => n.type === 'trigger_button'),
+        () =>
+            visualBuilderGraph.nodes.find((n) => n.type === 'channel_trigger'),
         [visualBuilderGraph.nodes]
     )
-
-    useEffect(() => {
-        if (!visualBuilderNodeIdEditing || !visualBuilderGraphPrevious?.nodes) {
-            return
-        }
-        const existingNodes = _keyBy(visualBuilderGraphPrevious.nodes, 'id')
-        const addedNode = visualBuilderGraph.nodes.find(
-            (node) => !(node.id in existingNodes)
-        )
-        if (addedNode && addedNode.type !== 'end') {
-            setVisualBuilderNodeIdEditing(addedNode.id)
-        }
-    }, [
-        visualBuilderGraphPrevious?.nodes,
-        visualBuilderGraph?.nodes,
-        visualBuilderNodeIdEditing,
-        setVisualBuilderNodeIdEditing,
-    ])
 
     const onDrawerTestEditorClose = useCallback(() => {
         setIsTesting(false)
@@ -172,7 +152,7 @@ export function WorkflowVisualBuilderWrapped() {
                             />
                         </ReactFlow>
                     </div>
-                    {startFlowNode && isPreviewDrawerVisible && (
+                    {startFlowNode && (
                         <TestFlowEditor
                             startFlowNode={startFlowNode}
                             isAuthenticationBannerVisible={
@@ -196,4 +176,6 @@ function withProviders<T>(Component: React.FC<T>): React.FC<T> {
     )
 }
 
-export default withProviders(WorkflowVisualBuilderWrapped)
+export default withProviders(
+    withVisualBuilderContext(WorkflowVisualBuilderWrapped)
+)

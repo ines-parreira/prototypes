@@ -11,7 +11,7 @@ import {
     createWorkflowChannelSupportContextForPreview,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 
-import TriggerButtonNode from '../nodes/TriggerButtonNode'
+import ChannelTriggerNode from '../nodes/ChannelTriggerNode'
 import AutomatedMessageNode from '../nodes/AutomatedMessageNode'
 import MultipleChoicesNode from '../nodes/MultipleChoicesNode'
 import EndNode from '../nodes/EndNode'
@@ -32,7 +32,7 @@ type VisualBuilderTemplatePreviewProps = {
 }
 
 const nodeTypes = {
-    trigger_button: TriggerButtonNode,
+    channel_trigger: ChannelTriggerNode,
     automated_message: AutomatedMessageNode,
     multiple_choices: MultipleChoicesNode,
     text_reply: TextReplyNode,

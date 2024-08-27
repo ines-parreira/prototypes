@@ -11,14 +11,10 @@ export const RETURN_AND_EXCHANGE_POLICY: WorkflowTemplate = {
     name: 'Return and exchange policy',
     description: 'Provide return and exchange policies based on location.',
     label: WorkflowTemplateLabelType.Policies,
-    getConfiguration: (
-        id: string,
-        accountId: number
-    ): WorkflowConfiguration => {
+    getConfiguration: (id: string): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Return and exchange policy',
-            account_id: accountId,
             entrypoint: {
                 label: `🔙 What's your return and exchange policy?`,
                 label_tkey: ulid(),

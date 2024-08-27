@@ -11,14 +11,10 @@ export const WARRANTY_POLICY: WorkflowTemplate = {
     name: 'Warranty policy',
     description: 'Provide warranty information based on product.',
     label: WorkflowTemplateLabelType.Policies,
-    getConfiguration: (
-        id: string,
-        accountId: number
-    ): WorkflowConfiguration => {
+    getConfiguration: (id: string): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Warranty policy',
-            account_id: accountId,
             entrypoint: {
                 label: `🏅 What's your warranty policy?`,
                 label_tkey: ulid(),

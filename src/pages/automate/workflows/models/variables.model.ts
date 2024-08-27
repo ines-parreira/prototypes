@@ -11,16 +11,11 @@ import {
     WorkflowVariableGroup,
 } from './variables.types'
 import {
+    isTriggerNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
     VisualBuilderNode,
 } from './visualBuilderGraph.types'
-import {LanguageCode} from './workflowConfiguration.types'
-
-type GraphVariablesValidationResult = {
-    error: string
-    lang: LanguageCode
-} | null
 
 const templateEngine = new Liquid({
     timezoneOffset: 0,
@@ -104,9 +99,353 @@ export function parseWorkflowVariable(
     return variable
 }
 
+export const buildWorkflowVariableFromApp = (
+    graph: VisualBuilderGraph
+):
+    | WorkflowVariable
+    | WorkflowVariableGroup
+    | WorkflowVariableList
+    | undefined => {
+    if (graph.apps?.[0]?.type === 'app') {
+        return {
+            name: 'App API key',
+            value: `apps.${graph.apps?.[0]?.app_id}.api_key`,
+            nodeType: 'app',
+            type: 'string',
+        }
+    }
+}
+
+export const buildWorkflowVariableFromTrigger = (
+    graph: VisualBuilderGraph
+):
+    | WorkflowVariable
+    | WorkflowVariableGroup
+    | WorkflowVariableList
+    | undefined => {
+    const triggerNode = graph.nodes.find(isTriggerNodeType)!
+
+    if (triggerNode.type === 'llm_prompt_trigger') {
+        const {
+            data: {custom_inputs},
+        } = triggerNode
+
+        const customInputs: WorkflowVariableGroup = {
+            name: 'Inputs',
+            nodeType: 'custom_input',
+            variables: custom_inputs
+                .filter((input) => input && input.name)
+                .map((input) => ({
+                    name: input.name,
+                    value: `custom_inputs.${input.id}`,
+                    nodeType: 'custom_input',
+                    type: input.data_type,
+                })),
+        }
+
+        return [
+            ...(customInputs.variables.length ? [customInputs] : []),
+            {
+                name: 'Existing customer',
+                nodeType: 'shopper_authentication',
+                variables: [
+                    {
+                        name: 'Customer id',
+                        value: 'objects.customer.id',
+                        nodeType: 'shopper_authentication',
+                        type: 'number',
+                    },
+                    {
+                        name: 'Customer first name',
+                        value: 'objects.customer.firstname',
+                        nodeType: 'shopper_authentication',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Customer last name',
+                        value: 'objects.customer.lastname',
+                        nodeType: 'shopper_authentication',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Customer full name',
+                        value: 'objects.customer.name',
+                        nodeType: 'shopper_authentication',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Customer email',
+                        value: 'objects.customer.email',
+                        nodeType: 'shopper_authentication',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Customer phone number',
+                        value: 'objects.customer.phone_number',
+                        nodeType: 'shopper_authentication',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Customer tags',
+                        value: 'objects.customer.tags_stringified',
+                        nodeType: 'shopper_authentication',
+                        type: 'string',
+                    },
+                ],
+            },
+            {
+                name: 'Order',
+                nodeType: 'order_selection',
+                variables: [
+                    {
+                        name: 'Order id',
+                        value: 'objects.order.external_id',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Ecommerce customer id',
+                        value: 'objects.order.shopper_external_id',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Currency',
+                        value: 'objects.order.currency.code',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Total discounts',
+                        value: 'objects.order.discount_amount',
+                        nodeType: 'order_selection',
+                        type: 'number',
+                    },
+                    {
+                        name: 'Subtotal price',
+                        value: 'objects.order.subtotal_amount',
+                        nodeType: 'order_selection',
+                        type: 'number',
+                    },
+                    {
+                        name: 'Shipping price',
+                        value: 'objects.order.shipping_amount',
+                        nodeType: 'order_selection',
+                        type: 'number',
+                    },
+                    {
+                        name: 'Total tax',
+                        value: 'objects.order.tax_amount',
+                        nodeType: 'order_selection',
+                        format: 'currency',
+                        type: 'number',
+                    },
+                    {
+                        name: 'Fulfillment status',
+                        value: 'objects.order.external_fulfillment_status',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Fulfillment last updated date',
+                        value: 'objects.order.fulfillments.0.updated_datetime',
+                        nodeType: 'order_selection',
+                        type: 'date',
+                    },
+                    {
+                        name: 'Payment status',
+                        value: 'objects.order.external_payment_status',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Order status',
+                        value: 'objects.order.external_status',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Cancellation date',
+                        value: 'objects.order.cancelled_datetime',
+                        nodeType: 'order_selection',
+                        type: 'date',
+                    },
+                    {
+                        name: 'Billing address line 1',
+                        value: 'objects.order.billing_address.line_1',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Billing address line 2',
+                        value: 'objects.order.billing_address.line_2',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Billing address city',
+                        value: 'objects.order.billing_address.city',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Billing address state',
+                        value: 'objects.order.billing_address.state',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Billing address country',
+                        value: 'objects.order.billing_address.country',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Billing address zip code',
+                        value: 'objects.order.billing_address.zip_code',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Billing address first name',
+                        value: 'objects.order.billing_address.first_name',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Billing address last name',
+                        value: 'objects.order.billing_address.last_name',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Billing address phone number',
+                        value: 'objects.order.billing_address.phone_number',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Shipping address line 1',
+                        value: 'objects.order.shipping_address.line_1',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Shipping address line 2',
+                        value: 'objects.order.shipping_address.line_2',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Shipping address city',
+                        value: 'objects.order.shipping_address.city',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Shipping address state',
+                        value: 'objects.order.shipping_address.state',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Shipping address country',
+                        value: 'objects.order.shipping_address.country',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Shipping address zip code',
+                        value: 'objects.order.shipping_address.zip_code',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Shipping address first name',
+                        value: 'objects.order.shipping_address.first_name',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Shipping address last name',
+                        value: 'objects.order.shipping_address.last_name',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Shipping address phone number',
+                        value: 'objects.order.shipping_address.phone_number',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Shipment status',
+                        value: 'objects.order.fulfillments.0.external_shipment_status',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Tracking url',
+                        value: 'objects.order.tracking_url',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Tracking number',
+                        value: 'objects.order.tracking_number',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Shipping date',
+                        value: 'objects.order.shipping_datetime',
+                        nodeType: 'order_selection',
+                        type: 'date',
+                    },
+                    {
+                        name: 'Shipping method id',
+                        value: 'objects.order.shipping_lines.0.external_method_id',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Shipping method name',
+                        value: 'objects.order.shipping_lines.0.method_name',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Order number',
+                        value: 'objects.order.name',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Order total amount',
+                        value: 'objects.order.total_amount',
+                        nodeType: 'order_selection',
+                        type: 'number',
+                        format: 'currency',
+                    },
+                    {
+                        name: 'Order date',
+                        value: 'objects.order.created_datetime',
+                        nodeType: 'order_selection',
+                        type: 'date',
+                    },
+                ],
+            },
+        ]
+    }
+}
+
 export const buildWorkflowVariableFromNode = (
     node: VisualBuilderNode
-): WorkflowVariable | WorkflowVariableGroup | undefined => {
+):
+    | WorkflowVariable
+    | WorkflowVariableGroup
+    | WorkflowVariableList
+    | undefined => {
     const formatVariableName = (text: string) =>
         text.replace(workflowVariableRegex, '{...}')
 
@@ -331,6 +670,12 @@ export const buildWorkflowVariableFromNode = (
                     type: 'string',
                 },
                 {
+                    name: 'Shipping address phone number',
+                    value: `steps_state.${node.id}.order.shipping_address.phone_number`,
+                    nodeType: 'order_selection',
+                    type: 'string',
+                },
+                {
                     name: 'Shipment status',
                     value: `steps_state.${node.id}.order.fulfillments.0.external_shipment_status`,
                     nodeType: 'order_selection',
@@ -443,6 +788,13 @@ export const buildWorkflowVariableFromNode = (
             nodeType: 'http_request',
             name: name || 'Request name',
             variables: variables
+                .filter(
+                    (
+                        variable
+                    ): variable is Omit<typeof variable, 'data_type'> & {
+                        data_type: NonNullable<typeof variable.data_type>
+                    } => !!variable.data_type
+                )
                 .map((variable) => ({
                     name: variable.name || 'Name',
                     value: `steps_state.${node.id}.content.${variable.id}`,
@@ -482,6 +834,41 @@ export const buildWorkflowVariableFromNode = (
             type: 'array',
             nodeType: 'file_upload',
         }
+    } else if (node.type === 'cancel_order') {
+        return {
+            name: 'Cancel order success',
+            nodeType: 'cancel_order',
+            value: `steps_state.${node.id}.success`,
+            type: 'boolean',
+        }
+    } else if (node.type === 'refund_order') {
+        return {
+            name: 'Refund order success',
+            nodeType: 'refund_order',
+            value: `steps_state.${node.id}.success`,
+            type: 'boolean',
+        }
+    } else if (node.type === 'update_shipping_address') {
+        return {
+            name: 'Edit order shipping address success',
+            nodeType: 'update_shipping_address',
+            value: `steps_state.${node.id}.success`,
+            type: 'boolean',
+        }
+    } else if (node.type === 'cancel_subscription') {
+        return {
+            name: 'Cancel subscription success',
+            nodeType: 'cancel_subscription',
+            value: `steps_state.${node.id}.success`,
+            type: 'boolean',
+        }
+    } else if (node.type === 'skip_charge') {
+        return {
+            name: 'Skip next subscription shipment success',
+            nodeType: 'skip_charge',
+            value: `steps_state.${node.id}.success`,
+            type: 'boolean',
+        }
     }
 }
 
@@ -507,10 +894,33 @@ export function getWorkflowVariableListForNode(
 
     const workflowVariableList: WorkflowVariableList = []
 
+    const triggerVariable = buildWorkflowVariableFromTrigger(g)
+    const appVariable = buildWorkflowVariableFromApp(g)
+
+    if (triggerVariable) {
+        if (Array.isArray(triggerVariable)) {
+            workflowVariableList.push(...triggerVariable)
+        } else {
+            workflowVariableList.push(triggerVariable)
+        }
+    }
+
+    if (appVariable) {
+        if (Array.isArray(appVariable)) {
+            workflowVariableList.push(...appVariable)
+        } else {
+            workflowVariableList.push(appVariable)
+        }
+    }
+
     for (const ancestor of ancestors.reverse()) {
         const variable = buildWorkflowVariableFromNode(ancestor)
         if (variable) {
-            workflowVariableList.push(variable)
+            if (Array.isArray(variable)) {
+                workflowVariableList.push(...variable)
+            } else {
+                workflowVariableList.push(variable)
+            }
         }
     }
     return workflowVariableList
@@ -579,6 +989,83 @@ export function extractVariablesFromNode(
                     }, []) ?? []
             break
         }
+        case 'cancel_order':
+        case 'refund_order':
+            variables = [
+                ...extractVariablesFromText(node.data.customerId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.orderExternalId).map(
+                    (variable) => variable.value
+                ),
+            ]
+            break
+        case 'update_shipping_address':
+            variables = [
+                ...extractVariablesFromText(node.data.customerId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.orderExternalId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.name).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.address1).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.address2).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.city).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.zip).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.province).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.country).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.phone).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.lastName).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.firstName).map(
+                    (variable) => variable.value
+                ),
+            ]
+            break
+        case 'cancel_subscription':
+            variables = [
+                ...extractVariablesFromText(node.data.customerId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.subscriptionId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.reason).map(
+                    (variable) => variable.value
+                ),
+            ]
+            break
+        case 'skip_charge':
+            variables = [
+                ...extractVariablesFromText(node.data.customerId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.subscriptionId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.chargeId).map(
+                    (variable) => variable.value
+                ),
+            ]
+            break
     }
 
     return variables
@@ -611,34 +1098,17 @@ export function hasNodesWithInvalidLiquidSyntax(g: VisualBuilderGraph) {
 }
 
 export function checkGraphVariablesValidity(
-    g: VisualBuilderGraph,
-    translateGraph: (
-        g: VisualBuilderGraph,
-        lang: LanguageCode
-    ) => VisualBuilderGraph
-): GraphVariablesValidationResult {
-    if (!g.available_languages.length) return null
-
-    let validationResult: GraphVariablesValidationResult = null
-
-    for (const lang of g.available_languages) {
-        const translatedGraph = translateGraph(g, lang)
-
-        if (hasNodesWithInvalidVariables(translatedGraph)) {
-            validationResult = {
-                error: 'Remove unavailable variables in order to save',
-                lang,
-            }
-            break
-        } else if (hasNodesWithInvalidLiquidSyntax(translatedGraph)) {
-            validationResult = {
-                error: 'Remove variable errors in order to save.',
-                lang,
-            }
-            break
-        }
+    g: VisualBuilderGraph
+): Maybe<string> {
+    if (hasNodesWithInvalidVariables(g)) {
+        return 'Remove unavailable variables in order to save'
     }
-    return validationResult
+
+    if (hasNodesWithInvalidLiquidSyntax(g)) {
+        return 'Remove variable errors in order to save.'
+    }
+
+    return null
 }
 
 function isValidLiquidSyntax(string: string) {
@@ -673,6 +1143,29 @@ export function isValidLiquidSyntaxInNode(
                 (node.data.formUrlencoded ?? []).every((item) =>
                     isValidLiquidSyntax(item.value)
                 )
+            )
+        case 'update_shipping_address':
+            return (
+                isValidLiquidSyntax(node.data.name) &&
+                isValidLiquidSyntax(node.data.address1) &&
+                isValidLiquidSyntax(node.data.address2) &&
+                isValidLiquidSyntax(node.data.city) &&
+                isValidLiquidSyntax(node.data.zip) &&
+                isValidLiquidSyntax(node.data.province) &&
+                isValidLiquidSyntax(node.data.country) &&
+                isValidLiquidSyntax(node.data.phone) &&
+                isValidLiquidSyntax(node.data.lastName) &&
+                isValidLiquidSyntax(node.data.firstName)
+            )
+        case 'cancel_subscription':
+            return (
+                isValidLiquidSyntax(node.data.subscriptionId) &&
+                isValidLiquidSyntax(node.data.reason)
+            )
+        case 'skip_charge':
+            return (
+                isValidLiquidSyntax(node.data.subscriptionId) &&
+                isValidLiquidSyntax(node.data.chargeId)
             )
         default:
             return true

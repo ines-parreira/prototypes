@@ -10,7 +10,7 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
         {
             ...buildNodeCommonProperties(),
             id: 'trigger_button1',
-            type: 'trigger_button',
+            type: 'channel_trigger',
             data: {
                 label: 'entrypoint',
                 label_tkey: 'entrypoint_tkey',
@@ -217,7 +217,6 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
     available_languages: ['en-US'],
     wfConfigurationOriginal: {
         id: '1',
-        account_id: 1,
         is_draft: false,
         name: 'my workflow',
         internal_id: '1',
@@ -232,4 +231,7 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
         transitions: [],
         available_languages: ['en-US'],
     },
+    nodeEditingId: null,
+    choiceEventIdEditing: null,
+    branchIdsEditing: [],
 }

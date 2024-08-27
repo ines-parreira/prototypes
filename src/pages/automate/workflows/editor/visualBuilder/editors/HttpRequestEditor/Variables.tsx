@@ -37,94 +37,104 @@ const Variables = ({
 
     return (
         <div className={css.keyValueContainer}>
-            {variables.map((variable, index) => (
-                <div
-                    key={variable.id}
-                    className={classNames(
-                        css.keyValueRow,
-                        css.variablesKeyValueRow
-                    )}
-                >
-                    <TextInput
-                        value={variable.name}
-                        className={css.textInput}
-                        placeholder="Variable name"
-                        onChange={(name) => {
-                            onChange(index, {...variable, name})
-                        }}
-                    />
-                    <TextInput
-                        value={variable.jsonpath}
-                        className={css.textInput}
-                        placeholder="JSONPath"
-                        onChange={(jsonpath) => {
-                            onChange(index, {...variable, jsonpath})
-                        }}
-                    />
-                    <SelectField
-                        showSelectedOption
-                        value={variable.data_type}
-                        onChange={(type) => {
-                            onChange(index, {
-                                ...variable,
-                                data_type: type as
-                                    | 'string'
-                                    | 'number'
-                                    | 'boolean'
-                                    | 'date',
-                            })
-                        }}
-                        options={[
-                            {label: 'String', value: 'string'},
-                            {label: 'Number', value: 'number'},
-                            {label: 'Boolean', value: 'boolean'},
-                            {label: 'Date', value: 'date'},
-                        ]}
-                    />
-                    <ConfirmationPopover
-                        placement="top"
-                        buttonProps={{
-                            intent: 'destructive',
-                        }}
-                        cancelButtonProps={{intent: 'secondary'}}
-                        showCancelButton={true}
-                        title={`Delete "${variables[currentDeleteIndex]?.name}"?`}
-                        content="This variable is used in other steps below. Deleting this step will result in unavailable variables and cannot be undone."
-                        onConfirm={() => {
-                            onDelete(currentDeleteIndex)
-                        }}
-                        onCancel={() => {
-                            setCurrentDeleteIndex(-1)
-                        }}
-                    >
-                        {({uid, onDisplayConfirmation}) => (
-                            <IconButton
-                                id={uid}
-                                intent="destructive"
-                                fillStyle="ghost"
-                                ref={anchorRef}
-                                className={css.deleteIcon}
-                                onClick={(e) => {
-                                    if (
-                                        variablesInChildren?.find(
-                                            ({value}) =>
-                                                value ===
-                                                `steps_state.${nodeId}.content.${variable.id}`
-                                        )
-                                    ) {
-                                        setCurrentDeleteIndex(index)
-                                        onDisplayConfirmation(e)
-                                    } else {
-                                        onDelete(index)
-                                    }
-                                }}
-                            >
-                                close
-                            </IconButton>
+            {variables.map((variable, index) => {
+                const dataType = variable.data_type || 'json'
+
+                return (
+                    <div
+                        key={variable.id}
+                        className={classNames(
+                            css.keyValueRow,
+                            css.variablesKeyValueRow
                         )}
-                    </ConfirmationPopover>
-                </div>
-            ))}
+                    >
+                        <TextInput
+                            value={variable.name}
+                            className={css.textInput}
+                            placeholder="Variable name"
+                            onChange={(name) => {
+                                onChange(index, {...variable, name})
+                            }}
+                        />
+                        <TextInput
+                            value={variable.jsonpath}
+                            className={css.textInput}
+                            placeholder="JSONPath"
+                            onChange={(jsonpath) => {
+                                onChange(index, {...variable, jsonpath})
+                            }}
+                        />
+                        <SelectField
+                            showSelectedOption
+                            value={dataType}
+                            onChange={(type) => {
+                                const dataType =
+                                    type === 'json'
+                                        ? null
+                                        : (type as
+                                              | 'string'
+                                              | 'number'
+                                              | 'boolean'
+                                              | 'date')
+
+                                onChange(index, {
+                                    ...variable,
+                                    data_type: dataType,
+                                })
+                            }}
+                            options={[
+                                {label: 'String', value: 'string'},
+                                {label: 'Number', value: 'number'},
+                                {label: 'Boolean', value: 'boolean'},
+                                {label: 'Date', value: 'date'},
+                                {label: 'JSON', value: 'json'},
+                            ]}
+                        />
+                        <ConfirmationPopover
+                            placement="top"
+                            buttonProps={{
+                                intent: 'destructive',
+                            }}
+                            cancelButtonProps={{intent: 'secondary'}}
+                            showCancelButton={true}
+                            title={`Delete "${variables[currentDeleteIndex]?.name}"?`}
+                            content="This variable is used in other steps below. Deleting this step will result in unavailable variables and cannot be undone."
+                            onConfirm={() => {
+                                onDelete(currentDeleteIndex)
+                            }}
+                            onCancel={() => {
+                                setCurrentDeleteIndex(-1)
+                            }}
+                        >
+                            {({uid, onDisplayConfirmation}) => (
+                                <IconButton
+                                    id={uid}
+                                    intent="destructive"
+                                    fillStyle="ghost"
+                                    ref={anchorRef}
+                                    className={css.deleteIcon}
+                                    onClick={(e) => {
+                                        if (
+                                            variablesInChildren?.find(
+                                                ({value}) =>
+                                                    value ===
+                                                    `steps_state.${nodeId}.content.${variable.id}`
+                                            )
+                                        ) {
+                                            setCurrentDeleteIndex(index)
+                                            onDisplayConfirmation(e)
+                                        } else {
+                                            onDelete(index)
+                                        }
+                                    }}
+                                >
+                                    close
+                                </IconButton>
+                            )}
+                        </ConfirmationPopover>
+                    </div>
+                )
+            })}
             {variables.length > 0 && (
                 <div className={css.description}>
                     Variable name and{' '}

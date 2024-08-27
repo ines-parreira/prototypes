@@ -12,7 +12,7 @@ import {CustomInput} from '../types'
 import css from './ActionFormInputVariable.less'
 
 type Props = {
-    isDisabled: boolean
+    isDisabled?: boolean
     customInputs: CustomInput[]
     onDeleteInput: (index: number) => void
     onAddInput: () => void

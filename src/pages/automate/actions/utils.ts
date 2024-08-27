@@ -211,6 +211,12 @@ export const orderVariables: WorkflowVariable[] = [
         nodeType: 'order_selection',
         type: 'string',
     },
+    {
+        name: 'Shipping address phone number',
+        value: 'objects.order.shipping_address.phone_number',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
     shipmentStatus,
     {
         name: 'Tracking url',
@@ -340,7 +346,7 @@ function getConditionsType(trigger: LlmPromptTrigger) {
     return null
 }
 
-export function tranformCustomInputToWorkflowVariable(
+export function transformCustomInputToWorkflowVariable(
     customInputs: CustomInput[]
 ) {
     return customInputs
@@ -358,7 +364,7 @@ export function tranformCustomInputToWorkflowVariable(
 
 export function getInputVariables(customInputs: CustomInput[]) {
     const customInputsWorkflowVariables =
-        tranformCustomInputToWorkflowVariable(customInputs)
+        transformCustomInputToWorkflowVariable(customInputs)
 
     const customVariableGroup: WorkflowVariableGroup = {
         name: 'Inputs',

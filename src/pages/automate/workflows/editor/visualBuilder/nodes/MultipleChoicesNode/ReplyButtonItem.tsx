@@ -6,7 +6,7 @@ import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 import TextInput from 'pages/common/forms/input/TextInput'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 
 import css from './ReplyButtonItem.less'
 
@@ -42,10 +42,7 @@ export default function ReplyButtonItem({
     placeholder,
 }: ReplyButtonItemProps) {
     const [ref, setRef] = useState<HTMLInputElement | null>(null)
-    const {
-        visualBuilderChoiceEventIdEditing,
-        setVisualBuilderChoiceEventIdEditing,
-    } = useWorkflowEditorContext()
+    const {visualBuilderGraph, dispatch} = useVisualBuilderContext()
     const dndType = 'workflow-multiple-choices-reply-button'
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {position: index, type: dndType},
@@ -54,10 +51,10 @@ export default function ReplyButtonItem({
     )
 
     useEffect(() => {
-        if (eventId === visualBuilderChoiceEventIdEditing) {
+        if (eventId === visualBuilderGraph.choiceEventIdEditing) {
             ref?.focus({preventScroll: true})
         }
-    }, [ref, eventId, visualBuilderChoiceEventIdEditing])
+    }, [ref, eventId, visualBuilderGraph.choiceEventIdEditing])
 
     return (
         <div
@@ -80,10 +77,16 @@ export default function ReplyButtonItem({
                 maxLength={choiceTextLimit}
                 placeholder={placeholder}
                 onFocus={() => {
-                    setVisualBuilderChoiceEventIdEditing(eventId)
+                    dispatch({
+                        type: 'SET_CHOICE_EVENT_EDITING_ID',
+                        eventId,
+                    })
                 }}
                 onBlur={() => {
-                    setVisualBuilderChoiceEventIdEditing(null)
+                    dispatch({
+                        type: 'SET_CHOICE_EVENT_EDITING_ID',
+                        eventId: null,
+                    })
                 }}
             />
             <ConfirmationPopover

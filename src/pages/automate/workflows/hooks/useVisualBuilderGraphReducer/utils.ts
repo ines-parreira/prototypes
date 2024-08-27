@@ -1,7 +1,7 @@
 import {ulid} from 'ulidx'
 import {produce} from 'immer'
-import {FlextreeNode, flextree} from 'd3-flextree'
-import {Node, Position} from 'reactflow'
+import {flextree} from 'd3-flextree'
+import _keyBy from 'lodash/keyBy'
 
 import {WorkflowTransition} from '../../models/workflowConfiguration.types'
 
@@ -11,17 +11,24 @@ import {
 } from '../../models/visualBuilderGraph.model'
 import {
     AutomatedMessageNodeType,
+    CancelOrderNodeType,
+    CancelSubscriptionNodeType,
     ConditionsNodeType,
     EndNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
+    isTriggerNodeType,
     MultipleChoicesNodeType,
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
+    RefundOrderNodeType,
     ShopperAuthenticationNodeType,
+    SkipChargeNodeType,
     TextReplyNodeType,
+    UpdateShippingAddressNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
+    VisualBuilderNode,
 } from '../../models/visualBuilderGraph.types'
 
 export function greyOutBranch(
@@ -173,26 +180,16 @@ export const buildConditionsNode = (): ConditionsNodeType => {
     }
 }
 
-export const buildEndNode = (): EndNodeType => {
+export const buildEndNode = (
+    action: EndNodeType['data']['action']
+): EndNodeType => {
     const id = ulid()
     return {
         ...buildNodeCommonProperties(),
         id,
         type: 'end',
         data: {
-            action: 'ask-for-feedback',
-        },
-    }
-}
-
-export const buildCreateTicketEndNode = (): EndNodeType => {
-    const id = ulid()
-    return {
-        ...buildNodeCommonProperties(),
-        id,
-        type: 'end',
-        data: {
-            action: 'create-ticket',
+            action,
         },
     }
 }
@@ -262,6 +259,115 @@ export const buildOrderLineItemSelectionNode =
         }
     }
 
+export const buildCancelOrderNode = ({
+    customerId,
+    orderExternalId,
+    integrationId,
+}: Omit<CancelOrderNodeType['data'], 'isGreyedOut'>): CancelOrderNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'cancel_order',
+        data: {
+            customerId,
+            orderExternalId,
+            integrationId,
+        },
+    }
+}
+
+export const buildRefundOrderNode = ({
+    customerId,
+    orderExternalId,
+    integrationId,
+}: Omit<CancelOrderNodeType['data'], 'isGreyedOut'>): RefundOrderNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'refund_order',
+        data: {
+            customerId,
+            orderExternalId,
+            integrationId,
+        },
+    }
+}
+
+export const buildUpdateShippingAddressNode = ({
+    customerId,
+    orderExternalId,
+    integrationId,
+}: Pick<
+    UpdateShippingAddressNodeType['data'],
+    'customerId' | 'orderExternalId' | 'integrationId'
+>): UpdateShippingAddressNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'update_shipping_address',
+        data: {
+            customerId,
+            orderExternalId,
+            integrationId,
+            name: '',
+            address1: '',
+            address2: '',
+            city: '',
+            zip: '',
+            province: '',
+            country: '',
+            phone: '',
+            lastName: '',
+            firstName: '',
+        },
+    }
+}
+
+export const buildCancelSubscriptionNode = ({
+    customerId,
+    integrationId,
+}: Pick<
+    CancelSubscriptionNodeType['data'],
+    'customerId' | 'integrationId'
+>): CancelSubscriptionNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'cancel_subscription',
+        data: {
+            customerId,
+            integrationId,
+            subscriptionId: '',
+            reason: '',
+        },
+    }
+}
+
+export const buildSkipChargeNode = ({
+    customerId,
+    integrationId,
+}: Pick<
+    SkipChargeNodeType['data'],
+    'customerId' | 'integrationId'
+>): SkipChargeNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'skip_charge',
+        data: {
+            customerId,
+            integrationId,
+            subscriptionId: '',
+            chargeId: '',
+        },
+    }
+}
+
 const nodeWidth = 300
 const nodeHeight = 98
 const nodeGap = 36
@@ -269,64 +375,58 @@ const nodeGap = 36
 export function computeNodesPositions(
     g: VisualBuilderGraph
 ): VisualBuilderGraph {
-    const layout = flextree<Node>({
-        // the node size configures the spacing between the nodes ([width, height])
+    const layout = flextree<VisualBuilderNode>({
         nodeSize: (node) => {
             const width = node.data.width || nodeWidth
             const height =
                 node.data.height ||
                 (node.data.type === 'shopper_authentication' ? 80 : nodeHeight)
+
             return [width, height + nodeGap * 2]
         },
-        // this is needed for creating equal space between all nodes horizontally
         spacing: nodeGap,
     })
-    const root = layout.hierarchy(
-        g.nodes.find((n) => n.type === 'trigger_button')!,
-        (node) => {
-            const outgoingEdges = g.edges.filter((e) => e.source === node.id)
-            const childrenNodesIds = outgoingEdges.map((e) => e.target)
-            return childrenNodesIds.map(
-                (childrenId) => g.nodes.find(({id}) => id === childrenId)!
-            )
-        }
-    )
+
+    const nodesById = _keyBy(g.nodes, 'id')
+
+    const triggerNode = g.nodes.find(isTriggerNodeType)
+
+    if (!triggerNode) {
+        throw new Error()
+    }
+
+    const root = layout.hierarchy(triggerNode, (node) => {
+        return g.edges
+            .filter((edge) => edge.source === node.id)
+            .map((edge) => nodesById[edge.target])
+    })
+
     layout(root)
-    const layoutedNodes: Record<string, {x: number; y: number}> = {}
-    root.each<FlextreeNode<Node>>(({data, x, y}) => {
-        layoutedNodes[data.id] = {x, y}
-    })
 
-    // set the React Flow nodes with the positions from the layout
+    const flextreeNodesById = _keyBy(root.nodes, 'data.id')
+
     const nextNodes = g.nodes.map((node) => {
-        // find the node in the hierarchy with the same id and get its coordinates
-        const {x, y} = layoutedNodes?.[node.id] || {
-            x: node.position.x,
-            y: node.position.y,
-        }
+        const x = flextreeNodesById[node.id]?.x ?? node.position.x
+        const y = flextreeNodesById[node.id]?.y ?? node.position.y
 
-        return {
-            ...node,
-            sourcePosition: Position.Bottom,
-            targetPosition: Position.Top,
-            position: {x, y},
-        }
+        return {...node, position: {x, y}}
     })
+
     return {
         ...g,
         nodes: nextNodes,
     }
 }
 
-export function getHttpRequestSuccessConditions(
-    httpRequestNodeId: string
+export function getFallibleNodeSuccessConditions(
+    nodeId: string
 ): WorkflowTransition['conditions'] {
     return {
         and: [
             {
                 equals: [
                     {
-                        var: `steps_state.${httpRequestNodeId}.success`,
+                        var: `steps_state.${nodeId}.success`,
                     },
                     true,
                 ],

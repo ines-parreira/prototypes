@@ -94,7 +94,7 @@ export default function ActionsRow({action}: Props) {
     }
 
     const {data: templateConfigurations} = useGetWorkflowConfigurationTemplates(
-        ['llm-prompt']
+        {triggers: ['llm-prompt']}
     )
 
     const isCustomAction = !action.template_internal_id

@@ -109,6 +109,7 @@ describe('getAvailableFlowVariables', () => {
                     nodes: [
                         {
                             id: 'trigger_button1',
+                            type: 'channel_trigger',
                         },
                     ],
                     edges: [{target: 'conditions_end1'}],

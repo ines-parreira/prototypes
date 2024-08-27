@@ -20,9 +20,12 @@ export default function CreateActionFormView() {
     const {
         data: templateConfigurations,
         isInitialLoading: isTemplateConfigurationsLoading,
-    } = useGetWorkflowConfigurationTemplates(['llm-prompt'], {
-        enabled: !!templateConfigurationId,
-    })
+    } = useGetWorkflowConfigurationTemplates(
+        {triggers: ['llm-prompt']},
+        {
+            enabled: !!templateConfigurationId,
+        }
+    )
 
     const [templateConfiguration, newActionConfiguration] = useMemo(() => {
         const template = templateConfigurations?.find(

@@ -192,6 +192,7 @@ const TestRequestResult = ({
                                 path: variable.jsonpath,
                                 json,
                             }) ?? ''
+                        const dataType = variable.data_type || 'json'
 
                         return (
                             <div key={variable.id} className={css.variable}>
@@ -226,22 +227,31 @@ const TestRequestResult = ({
                                 />
                                 <SelectField
                                     showSelectedOption
-                                    value={variable.data_type}
+                                    value={dataType}
                                     onChange={(type) => {
+                                        const dataType =
+                                            type === 'json'
+                                                ? null
+                                                : (type as
+                                                      | 'string'
+                                                      | 'number'
+                                                      | 'boolean'
+                                                      | 'date')
+
                                         onChangeVariable(index, {
                                             ...variable,
-                                            data_type: type as
-                                                | 'string'
-                                                | 'number'
-                                                | 'boolean'
-                                                | 'date',
+                                            data_type: dataType,
                                         })
                                     }}
                                     options={[
                                         {label: 'String', value: 'string'},
                                         {label: 'Number', value: 'number'},
-                                        {label: 'Boolean', value: 'boolean'},
+                                        {
+                                            label: 'Boolean',
+                                            value: 'boolean',
+                                        },
                                         {label: 'Date', value: 'date'},
+                                        {label: 'JSON', value: 'json'},
                                     ]}
                                 />
                                 <ConfirmationPopover
@@ -249,7 +259,9 @@ const TestRequestResult = ({
                                     buttonProps={{
                                         intent: 'destructive',
                                     }}
-                                    cancelButtonProps={{intent: 'secondary'}}
+                                    cancelButtonProps={{
+                                        intent: 'secondary',
+                                    }}
                                     showCancelButton={true}
                                     title={`Delete "${variables[currentDeleteIndex]?.name}"?`}
                                     content="This variable is used in other steps below. Deleting this step will result in unavailable variables and cannot be undone."

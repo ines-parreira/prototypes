@@ -4,8 +4,8 @@ import {Label} from '@gorgias/ui-kit'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {Drawer} from 'pages/common/components/Drawer'
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {TriggerButtonNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
 import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
@@ -16,10 +16,10 @@ import css from './NodeEditor.less'
 
 const textLimit = 50
 
-export default function TriggerButtonEditor({
+export default function ChannelTriggerEditor({
     nodeInEdition,
 }: {
-    nodeInEdition: TriggerButtonNodeType
+    nodeInEdition: ChannelTriggerNodeType
 }) {
     const {onClose} = useNodeEditorDrawerContext()
     const {previewLanguage} = useTranslationsPreviewContext()
@@ -27,7 +27,7 @@ export default function TriggerButtonEditor({
     useEffect(() => {
         inputRef?.focus({preventScroll: true})
     }, [inputRef])
-    const {dispatch, isFetchPending, isSavePending} = useWorkflowEditorContext()
+    const {dispatch} = useVisualBuilderContext()
 
     return (
         <>
@@ -51,13 +51,12 @@ export default function TriggerButtonEditor({
                                 maxLength={textLimit}
                                 onChange={(inputValue) =>
                                     dispatch({
-                                        type: 'SET_TRIGGER_BUTTON_LABEL',
-                                        triggerButtonNodeId: nodeInEdition.id,
+                                        type: 'SET_CHANNEL_TRIGGER_LABEL',
+                                        channelTriggerNodeId: nodeInEdition.id,
                                         label: inputValue,
                                     })
                                 }
                                 value={nodeInEdition.data.label ?? ''}
-                                isDisabled={isFetchPending || isSavePending}
                             />
                             <div className={css.description}>
                                 The flow will be triggered when customers click

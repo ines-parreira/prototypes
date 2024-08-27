@@ -5,29 +5,30 @@ import {formatDatetime} from 'utils'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
+import {DraftBadge} from 'pages/automate/workflows/components/DraftBadge'
 
-import {ActionTemplate} from '../types'
-import {GetAppFromTemplateApp} from '../hooks/useGetAppFromTemplateApp'
+import {ActionTemplate, App} from '../types'
 
 import css from './ActionsPlatformTemplatesTableRow.less'
 
 type Props = {
-    template: Pick<ActionTemplate, 'apps' | 'name' | 'updated_datetime'>
-    getAppFromTemplateApp: GetAppFromTemplateApp
+    template: Pick<
+        ActionTemplate,
+        'apps' | 'is_draft' | 'name' | 'updated_datetime'
+    >
+    app?: App
+    onClick: () => void
 }
 
-const ActionsPlatformTemplatesTableRow = ({
-    template,
-    getAppFromTemplateApp,
-}: Props) => {
-    const app = getAppFromTemplateApp(template.apps[0])
+const ActionsPlatformTemplatesTableRow = ({template, app, onClick}: Props) => {
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.CompactDate
     )
 
     return (
-        <TableBodyRow>
-            <BodyCell>
+        <TableBodyRow onClick={onClick}>
+            <BodyCell innerClassName={css.nameCell}>
+                {template.is_draft && <DraftBadge />}
                 <img
                     src={app?.icon}
                     alt={app?.name}

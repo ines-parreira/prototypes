@@ -72,7 +72,6 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             id: '1',
             internal_id: '1',
             is_draft: false,
-            account_id: 1,
             name: 'test',
             initial_step_id: 'choices1',
             entrypoint: {
@@ -119,7 +118,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             expect.arrayContaining([
                 expect.objectContaining({
                     id: expect.any(String),
-                    type: 'trigger_button',
+                    type: 'channel_trigger',
                     data: expect.objectContaining({
                         label: 'entrypoint',
                         label_tkey: 'entrypoint_tkey',
@@ -182,7 +181,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             ])
         )
         const [
-            {id: triggerButtonNodeId},
+            {id: channelTriggerNodeId},
             {id: multipleChoicesId},
             {id: automatedMessage1NodeId},
             {id: end1NodeId},
@@ -194,7 +193,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             expect.arrayContaining([
                 expect.objectContaining({
                     id: expect.any(String),
-                    source: triggerButtonNodeId,
+                    source: channelTriggerNodeId,
                     target: multipleChoicesId,
                 }),
                 expect.objectContaining({

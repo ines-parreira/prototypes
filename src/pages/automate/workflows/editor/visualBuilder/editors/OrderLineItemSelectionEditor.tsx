@@ -6,7 +6,7 @@ import {MessageContent} from 'pages/automate/workflows/models/workflowConfigurat
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {OrderLineItemSelectionNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 
 import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
 import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
@@ -21,7 +21,7 @@ export default function OrderLineItemSelectionEditor({
 }: {
     nodeInEdition: OrderLineItemSelectionNodeType
 }) {
-    const {dispatch, visualBuilderGraph} = useWorkflowEditorContext()
+    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
     const {previewLanguage} = useTranslationsPreviewContext()
     const handleUpdateContent = useCallback(
         (content: MessageContent) => {

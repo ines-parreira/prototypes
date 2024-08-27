@@ -1,6 +1,6 @@
 import 'reactflow/dist/style.css'
 
-import React, {PropsWithChildren, useCallback, useEffect, useMemo} from 'react'
+import React, {Dispatch, PropsWithChildren, useCallback, useMemo} from 'react'
 import {
     Controls,
     MiniMap,
@@ -11,19 +11,19 @@ import {
     useNodesInitialized,
     useReactFlow,
 } from 'reactflow'
-import _keyBy from 'lodash/keyBy'
 import classNames from 'classnames'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import Loader from 'pages/common/components/Loader/Loader'
-import usePrevious from 'hooks/usePrevious'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
+import {withVisualBuilderContext} from '../../hooks/useVisualBuilder'
+import {VisualBuilderGraph} from '../../models/visualBuilderGraph.types'
+import {VisualBuilderGraphAction} from '../../hooks/useVisualBuilderGraphReducer'
 import {VisualBuilderBackground} from './components/VisualBuilderBackground'
 
-import TriggerButtonNode from './nodes/TriggerButtonNode'
+import ChannelTriggerNode from './nodes/ChannelTriggerNode'
+import LLMPromptTriggerNode from './nodes/LLMPromptTriggerNode'
 import AutomatedMessageNode from './nodes/AutomatedMessageNode'
 import MultipleChoicesNode from './nodes/MultipleChoicesNode'
 import EndNode from './nodes/EndNode'
@@ -43,7 +43,8 @@ import {TestFlowEditor} from './editors/TestFlowEditor'
 import WorkflowsPublisher from './publisher/WorkflowsPublisher'
 
 const nodeTypes = {
-    trigger_button: TriggerButtonNode,
+    channel_trigger: ChannelTriggerNode,
+    llm_prompt_trigger: LLMPromptTriggerNode,
     automated_message: AutomatedMessageNode,
     conditions: ConditionsNode,
     multiple_choices: MultipleChoicesNode,
@@ -62,76 +63,51 @@ const edgeTypes = {
 
 interface Props {
     isNewWorkflow: boolean
+    visualBuilderGraph: VisualBuilderGraph
+    dispatch: Dispatch<VisualBuilderGraphAction>
+    shouldShowErrors: boolean
 }
 
 export function WorkflowVisualBuilderWrapped({isNewWorkflow}: Props) {
     const {
         isFetchPending,
         visualBuilderGraph,
-        visualBuilderNodeIdEditing,
         isTesting,
-        setVisualBuilderNodeIdEditing,
-        setVisualBuilderChoiceEventIdEditing,
-        setVisualBuilderBranchIdsEditing,
         setIsTesting,
         setZoom,
+        dispatch,
     } = useWorkflowEditorContext()
     const reactFlow = useReactFlow()
     const [searchParams] = useSearchParam('zoom')
 
-    const isPreviewDrawerVisible =
-        useFlags()[FeatureFlagKey.FlowsPreviewTestButton]
-
-    const visualBuilderNodeEditing = visualBuilderNodeIdEditing
+    const visualBuilderNodeEditing = visualBuilderGraph.nodeEditingId
         ? visualBuilderGraph.nodes.find(
-              (n) => n.id === visualBuilderNodeIdEditing
+              (n) => n.id === visualBuilderGraph.nodeEditingId
           )
         : null
 
-    const visualBuilderGraphPrevious = usePrevious(visualBuilderGraph)
-
     const startFlowNode = useMemo(
-        () => visualBuilderGraph.nodes.find((n) => n.type === 'trigger_button'),
+        () =>
+            visualBuilderGraph.nodes.find((n) => n.type === 'channel_trigger'),
         [visualBuilderGraph.nodes]
     )
 
-    useEffect(() => {
-        if (!visualBuilderNodeIdEditing || !visualBuilderGraphPrevious?.nodes) {
-            return
-        }
-        const existingNodes = _keyBy(visualBuilderGraphPrevious.nodes, 'id')
-        const addedNode = visualBuilderGraph.nodes.find(
-            (node) => !(node.id in existingNodes)
-        )
-        if (addedNode && addedNode.type !== 'end') {
-            setVisualBuilderNodeIdEditing(addedNode.id)
-        }
-    }, [
-        visualBuilderGraphPrevious?.nodes,
-        visualBuilderGraph?.nodes,
-        visualBuilderNodeIdEditing,
-        setVisualBuilderNodeIdEditing,
-    ])
-
     const onDrawerEditorClose = useCallback(() => {
-        setVisualBuilderNodeIdEditing(null)
-        setVisualBuilderChoiceEventIdEditing(null)
-        setVisualBuilderBranchIdsEditing([])
-    }, [
-        setVisualBuilderNodeIdEditing,
-        setVisualBuilderChoiceEventIdEditing,
-        setVisualBuilderBranchIdsEditing,
-    ])
+        dispatch({type: 'CLOSE_EDITOR'})
+    }, [dispatch])
 
     const onDrawerTestEditorClose = useCallback(() => {
         setIsTesting(false)
     }, [setIsTesting])
 
     const handleNodeClick = useCallback<NodeMouseHandler>(
-        (_e, node) => {
-            setVisualBuilderNodeIdEditing(node.id)
+        (_event, node) => {
+            dispatch({
+                type: 'SET_NODE_EDITING_ID',
+                nodeId: node.id,
+            })
         },
-        [setVisualBuilderNodeIdEditing]
+        [dispatch]
     )
 
     const areNodesInitialized = useNodesInitialized()
@@ -219,18 +195,16 @@ export function WorkflowVisualBuilderWrapped({isNewWorkflow}: Props) {
                         nodeInEdition={visualBuilderNodeEditing}
                         onClose={onDrawerEditorClose}
                     />
-                    {startFlowNode &&
-                        isPreviewDrawerVisible &&
-                        !isNewWorkflow && (
-                            <TestFlowEditor
-                                startFlowNode={startFlowNode}
-                                isAuthenticationBannerVisible={
-                                    hasNodeWithShopperAuthentication
-                                }
-                                isTesting={isTesting}
-                                onClose={onDrawerTestEditorClose}
-                            />
-                        )}
+                    {startFlowNode && !isNewWorkflow && (
+                        <TestFlowEditor
+                            startFlowNode={startFlowNode}
+                            isAuthenticationBannerVisible={
+                                hasNodeWithShopperAuthentication
+                            }
+                            isTesting={isTesting}
+                            onClose={onDrawerTestEditorClose}
+                        />
+                    )}
                     <WorkflowsPublisher />
                 </>
             )}
@@ -246,4 +220,6 @@ function withProviders<T>(Component: React.FC<T>): React.FC<T> {
     )
 }
 
-export default withProviders(WorkflowVisualBuilderWrapped)
+export default withProviders(
+    withVisualBuilderContext(WorkflowVisualBuilderWrapped)
+)

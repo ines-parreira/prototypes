@@ -237,7 +237,15 @@ export default function WorkflowAnalytics({
                                 .updated_datetime!
                         }
                     />
-                    <WorkflowVisualBuilder />
+                    <WorkflowVisualBuilder
+                        visualBuilderGraph={
+                            workflowEditorContext.visualBuilderGraph
+                        }
+                        dispatch={workflowEditorContext.dispatch}
+                        shouldShowErrors={
+                            workflowEditorContext.shouldShowErrors
+                        }
+                    />
                 </Container>
             </div>
         </WorkflowChannelSupportContext.Provider>

@@ -39,7 +39,7 @@ export default function ActionView() {
     const {
         data: templateConfigurations,
         isInitialLoading: istemplateConfigurationsInitialLoading,
-    } = useGetWorkflowConfigurationTemplates(['llm-prompt'])
+    } = useGetWorkflowConfigurationTemplates({triggers: ['llm-prompt']})
 
     useEffect(() => {
         if (isError) {

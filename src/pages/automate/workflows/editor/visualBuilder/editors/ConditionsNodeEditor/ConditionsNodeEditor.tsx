@@ -7,7 +7,7 @@ import {
     VisualBuilderEdge,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import InputField from 'pages/common/forms/input/InputField'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
 import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
@@ -28,13 +28,8 @@ export default function ConditionsNodeEditor({
 }: {
     nodeInEdition: ConditionsNodeType
 }) {
-    const {
-        visualBuilderGraph,
-        dispatch,
-        shouldShowErrors,
-        visualBuilderBranchIdsEditing,
-        setVisualBuilderBranchIdsEditing,
-    } = useWorkflowEditorContext()
+    const {visualBuilderGraph, dispatch, shouldShowErrors} =
+        useVisualBuilderContext()
 
     const edges = visualBuilderGraph.edges.filter(
         (edge) => edge.source === nodeInEdition.id
@@ -56,8 +51,10 @@ export default function ConditionsNodeEditor({
             conditionNodeId: nodeInEdition.id,
             edgeId,
         })
-
-        setVisualBuilderBranchIdsEditing((prevState) => [...prevState, edgeId])
+        dispatch({
+            type: 'ADD_BRANCH_ID_EDITING',
+            branchId: edgeId,
+        })
     }
 
     const handleBranchDelete = (edgeId: string) => () => {
@@ -232,8 +229,15 @@ export default function ConditionsNodeEditor({
                         {edges.length > 0 && (
                             <SortableAccordion
                                 onReorder={handleReorderBranchItems}
-                                expandedItem={visualBuilderBranchIdsEditing}
-                                onChange={setVisualBuilderBranchIdsEditing}
+                                expandedItem={
+                                    visualBuilderGraph.branchIdsEditing
+                                }
+                                onChange={(branchIds) => {
+                                    dispatch({
+                                        type: 'SET_BRANCH_IDS_EDITING',
+                                        branchIds,
+                                    })
+                                }}
                             >
                                 {branches.map((item) => {
                                     const type =
@@ -258,7 +262,7 @@ export default function ConditionsNodeEditor({
                                                 hasMultipleChildren={hasMultipleChildren(
                                                     item
                                                 )}
-                                                name={item.data?.name}
+                                                name={item.data?.name ?? ''}
                                                 branchId={item.id}
                                                 availableVariables={
                                                     workflowVariables

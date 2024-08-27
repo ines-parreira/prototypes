@@ -11,14 +11,10 @@ export const SUBSCRIPTION_MANAGEMENT: WorkflowTemplate = {
     name: 'Subscription management',
     description: 'Help customers make changes to their subscriptions.',
     label: WorkflowTemplateLabelType.SubscriptionManagement,
-    getConfiguration: (
-        id: string,
-        accountId: number
-    ): WorkflowConfiguration => {
+    getConfiguration: (id: string): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Subscription management',
-            account_id: accountId,
             entrypoint: {
                 label: `🗓️ I need help managing my subscription`,
                 label_tkey: ulid(),

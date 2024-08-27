@@ -12,13 +12,6 @@ const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
 
 mockUseGetDateAndTimeFormat.mockReturnValue('MM/DD/YYYY')
 
-const mockGetAppFromTemplateApp = jest.fn().mockReturnValue({
-    icon: '/assets/img/integrations/shopify.png',
-    id: 'shopify',
-    name: 'Shopify',
-    type: IntegrationType.Shopify,
-})
-
 describe('<ActionsPlatformTemplatesTableRow />', () => {
     it('should render template row', () => {
         render(
@@ -27,8 +20,15 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
                     name: 'test',
                     apps: [{type: 'shopify'}],
                     updated_datetime: '2024-08-02T08:18:51.611Z',
+                    is_draft: false,
                 }}
-                getAppFromTemplateApp={mockGetAppFromTemplateApp}
+                app={{
+                    icon: '/assets/img/integrations/shopify.png',
+                    id: 'shopify',
+                    name: 'Shopify',
+                    type: IntegrationType.Shopify,
+                }}
+                onClick={jest.fn()}
             />
         )
 
@@ -38,5 +38,27 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
             '/assets/img/integrations/shopify.png'
         )
         expect(screen.getByText('08/02/2024')).toBeInTheDocument()
+    })
+
+    it('should render draft template row', () => {
+        render(
+            <ActionsPlatformTemplatesTableRow
+                template={{
+                    name: 'test',
+                    apps: [{type: 'shopify'}],
+                    updated_datetime: '2024-08-02T08:18:51.611Z',
+                    is_draft: true,
+                }}
+                app={{
+                    icon: '/assets/img/integrations/shopify.png',
+                    id: 'shopify',
+                    name: 'Shopify',
+                    type: IntegrationType.Shopify,
+                }}
+                onClick={jest.fn()}
+            />
+        )
+
+        expect(screen.getByText('draft')).toBeInTheDocument()
     })
 })

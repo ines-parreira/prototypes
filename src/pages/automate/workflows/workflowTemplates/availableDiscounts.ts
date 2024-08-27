@@ -12,14 +12,10 @@ export const AVAILABLE_DISCOUNTS: WorkflowTemplate = {
     description:
         'Share available discounts or loyalty program information with customers.',
     label: WorkflowTemplateLabelType.PaymentAndDiscounts,
-    getConfiguration: (
-        id: string,
-        accountId: number
-    ): WorkflowConfiguration => {
+    getConfiguration: (id: string): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Available discounts',
-            account_id: accountId,
             entrypoint: {
                 label: '💰 Do you offer any discounts?',
                 label_tkey: ulid(),

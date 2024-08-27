@@ -10,6 +10,8 @@ import _omitBy from 'lodash/omitBy'
 import {
     WorkflowConfiguration,
     WorkflowStepAttachmentsInput,
+    WorkflowStepCancelOrder,
+    WorkflowStepCancelSubscription,
     WorkflowStepChoices,
     WorkflowStepConditions,
     WorkflowStepEnd,
@@ -19,8 +21,11 @@ import {
     WorkflowStepMessage,
     WorkflowStepOrderLineItemSelection,
     WorkflowStepOrderSelection,
+    WorkflowStepRefundOrder,
     WorkflowStepShopperAuthentication,
+    WorkflowStepSkipCharge,
     WorkflowStepTextInput,
+    WorkflowStepUpdateShippingAddress,
 } from './workflowConfiguration.types'
 import {
     VisualBuilderEdge,
@@ -31,6 +36,7 @@ import {
     isHttpRequestNodeType,
 } from './visualBuilderGraph.types'
 import {
+    extractVariablesFromNode,
     getWorkflowVariableListForNode,
     parseWorkflowVariable,
     unescapeUrlEncodedVariables,
@@ -40,12 +46,13 @@ import {WorkflowVariableList} from './variables.types'
 
 export const buildEdgeCommonProperties: () => Pick<
     Edge,
-    'id' | 'type' | 'style' | 'interactionWidth'
+    'id' | 'type' | 'style' | 'interactionWidth' | 'data'
 > & {id: string} = () => ({
     id: ulid(),
     type: 'custom',
     style: {stroke: '#D2D7DE'},
     interactionWidth: 0,
+    data: {},
 })
 
 export const buildNodeCommonProperties: () => Pick<Node, 'id' | 'position'> =
@@ -90,14 +97,26 @@ export function areGraphsEqual(
                         return {id: node.id, type: node.type, data}
                     })
                     .sort((a, b) => a.id.localeCompare(b.id)),
-                edges: g.edges.map(({source, target, data}) => ({
-                    source,
-                    target,
-                    data,
-                })),
+                edges: g.edges
+                    .map(({source, target, data}) => ({
+                        source,
+                        target,
+                        data,
+                    }))
+                    .sort((a, b) =>
+                        `${a.source}-${a.target}`.localeCompare(
+                            `${b.source}-${b.target}`
+                        )
+                    ),
             },
-            ['wfConfigurationOriginal']
+            [
+                'wfConfigurationOriginal',
+                'nodeEditingId',
+                'choiceEventIdEditing',
+                'branchIdsEditing',
+            ]
         )
+
     return _isEqual(essentialGraph(g1), essentialGraph(g2))
 }
 
@@ -199,6 +218,59 @@ export function cleanConditionsFromEmptyVariables(
     return conditions
 }
 
+function setObjectInputs(
+    g: VisualBuilderGraph,
+    node: VisualBuilderNode,
+    trigger: Extract<
+        NonNullable<WorkflowConfiguration['triggers']>[number],
+        {kind: 'llm-prompt'}
+    >
+) {
+    const variables = extractVariablesFromNode(node)
+    const availableVariables = getWorkflowVariableListForNode(g, node.id)
+
+    variables
+        .map((variable) => parseWorkflowVariable(variable, availableVariables))
+        .forEach((variable) => {
+            switch (variable?.nodeType) {
+                case 'shopper_authentication':
+                    if (
+                        trigger.settings.object_inputs.every(
+                            (input) => input.kind !== 'customer'
+                        )
+                    ) {
+                        trigger.settings.object_inputs.unshift({
+                            kind: 'customer',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        })
+                    }
+                    break
+                case 'order_selection':
+                    if (
+                        trigger.settings.object_inputs.every(
+                            (input) => input.kind !== 'customer'
+                        )
+                    ) {
+                        trigger.settings.object_inputs.unshift({
+                            kind: 'customer',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        })
+                    }
+                    if (
+                        trigger.settings.object_inputs.every(
+                            (input) => input.kind !== 'order'
+                        )
+                    ) {
+                        trigger.settings.object_inputs.push({
+                            kind: 'order',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        })
+                    }
+                    break
+            }
+        })
+}
+
 export function transformVisualBuilderGraphIntoWfConfiguration(
     g: VisualBuilderGraph,
     isDraft = true
@@ -211,16 +283,52 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
     c.steps = []
     c.transitions = []
     c.is_draft = isDraft
+    c.apps = g.apps
     const stepIdByNodeId: Record<string, string> = {}
     walkVisualBuilderGraph(
         g,
         g.nodes[0].id,
         (node, {previousNode, incomingEdge}) => {
-            if (node.type === 'trigger_button') {
+            if (node.type === 'channel_trigger') {
                 c.entrypoint = {
                     label: node.data.label,
                     label_tkey: node.data.label_tkey,
                 }
+                return
+            } else if (node.type === 'llm_prompt_trigger') {
+                c.triggers = [
+                    {
+                        kind: 'llm-prompt',
+                        settings: {
+                            custom_inputs: node.data.custom_inputs,
+                            object_inputs: [],
+                            conditions:
+                                node.data.conditionsType === 'or'
+                                    ? {
+                                          [node.data.conditionsType]:
+                                              node.data.conditions,
+                                      }
+                                    : node.data.conditionsType === 'and'
+                                    ? {
+                                          [node.data.conditionsType]:
+                                              node.data.conditions,
+                                      }
+                                    : null,
+                            outputs: [],
+                        },
+                    },
+                ]
+                c.entrypoints = [
+                    {
+                        kind: 'llm-conversation',
+                        trigger: 'llm-prompt',
+                        settings: {
+                            requires_confirmation:
+                                node.data.requires_confirmation,
+                            instructions: node.data.instructions,
+                        },
+                    },
+                ]
                 return
             } else if (node.type === 'automated_message') {
                 const step: WorkflowStepMessage = {
@@ -374,6 +482,14 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 }
                 c.steps.push(step)
                 stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt' && node.data.outputs) {
+                    trigger.settings.outputs.push(...node.data.outputs)
+
+                    setObjectInputs(g, node, trigger)
+                }
             } else if (node.type === 'shopper_authentication') {
                 const step: WorkflowStepShopperAuthentication = {
                     id: node.id,
@@ -396,6 +512,138 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 }
                 c.steps.push(step)
                 stepIdByNodeId[node.id] = step.id
+            } else if (node.type === 'cancel_order') {
+                const step: WorkflowStepCancelOrder = {
+                    id: node.id,
+                    kind: 'cancel-order',
+                    settings: {
+                        customer_id: node.data.customerId,
+                        order_external_id: node.data.orderExternalId,
+                        integration_id: node.data.integrationId,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        description: '',
+                        path: `steps_state.${node.id}.success`,
+                    })
+
+                    setObjectInputs(g, node, trigger)
+                }
+            } else if (node.type === 'refund_order') {
+                const step: WorkflowStepRefundOrder = {
+                    id: node.id,
+                    kind: 'refund-order',
+                    settings: {
+                        customer_id: node.data.customerId,
+                        order_external_id: node.data.orderExternalId,
+                        integration_id: node.data.integrationId,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        description: '',
+                        path: `steps_state.${node.id}.success`,
+                    })
+
+                    setObjectInputs(g, node, trigger)
+                }
+            } else if (node.type === 'update_shipping_address') {
+                const step: WorkflowStepUpdateShippingAddress = {
+                    id: node.id,
+                    kind: 'update-shipping-address',
+                    settings: {
+                        customer_id: node.data.customerId,
+                        order_external_id: node.data.orderExternalId,
+                        integration_id: node.data.integrationId,
+                        name: node.data.name,
+                        address1: node.data.address1,
+                        address2: node.data.address2,
+                        city: node.data.city,
+                        zip: node.data.zip,
+                        province: node.data.province,
+                        country: node.data.country,
+                        phone: node.data.phone,
+                        last_name: node.data.lastName,
+                        first_name: node.data.firstName,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        description: '',
+                        path: `steps_state.${node.id}.success`,
+                    })
+
+                    setObjectInputs(g, node, trigger)
+                }
+            } else if (node.type === 'cancel_subscription') {
+                const step: WorkflowStepCancelSubscription = {
+                    id: node.id,
+                    kind: 'cancel-subscription',
+                    settings: {
+                        customer_id: node.data.customerId,
+                        integration_id: node.data.integrationId,
+                        subscription_id: node.data.subscriptionId,
+                        reason: node.data.reason,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        description: '',
+                        path: `steps_state.${node.id}.success`,
+                    })
+
+                    setObjectInputs(g, node, trigger)
+                }
+            } else if (node.type === 'skip_charge') {
+                const step: WorkflowStepSkipCharge = {
+                    id: node.id,
+                    kind: 'skip-charge',
+                    settings: {
+                        customer_id: node.data.customerId,
+                        integration_id: node.data.integrationId,
+                        subscription_id: node.data.subscriptionId,
+                        charge_id: node.data.chargeId,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        description: '',
+                        path: `steps_state.${node.id}.success`,
+                    })
+
+                    setObjectInputs(g, node, trigger)
+                }
             } else {
                 return
             }
@@ -425,7 +673,15 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
 export function getIncoming(
     visualBuilderGraph: VisualBuilderGraph,
     currentNodeId: string,
-    type: 'choice' | 'conditions' | 'http_request'
+    type:
+        | 'choice'
+        | 'conditions'
+        | 'http_request'
+        | 'cancel_order'
+        | 'refund_order'
+        | 'update_shipping_address'
+        | 'cancel_subscription'
+        | 'skip_charge'
 ) {
     const incomingEdge = visualBuilderGraph.edges.find(
         ({target}) => target === currentNodeId
@@ -476,6 +732,22 @@ export function getIncoming(
                     isFallback: !incomingEdge.data?.conditions,
                 }
             }
+            break
+        }
+        case 'cancel_order':
+        case 'refund_order':
+        case 'update_shipping_address':
+        case 'cancel_subscription':
+        case 'skip_charge': {
+            const branchName = incomingEdge.data?.name
+
+            if (previousNode && previousNode.type === type) {
+                return {
+                    label: branchName,
+                    nodeId: previousNode.id,
+                }
+            }
+
             break
         }
         case 'conditions': {

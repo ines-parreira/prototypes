@@ -305,6 +305,15 @@ declare namespace Components {
           subscription_id: string;
           charge_id: string;
         };
+      } | {
+        id: string;
+        kind: "remove-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+        };
       })[];
       transitions: {
         id: string;
@@ -801,6 +810,15 @@ declare namespace Components {
           subscription_id: string;
           charge_id: string;
         };
+      } | {
+        id: string;
+        kind: "remove-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+        };
       })[];
       transitions: {
         id: string;
@@ -1066,6 +1084,15 @@ declare namespace Components {
           subscription_id: string;
           charge_id: string;
         };
+      } | {
+        id: string;
+        kind: "conditions";
+        settings: {
+          name: string;
+        };
+      } | {
+        id: string;
+        kind: "end";
       })[];
       transitions: {
         id: string;
@@ -1682,6 +1709,13 @@ declare namespace Components {
                   [name: string]: any;
                 } | null;
                 at: string; // date-time
+              } | {
+                kind: "remove-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | null;
+                at: string; // date-time
               };
             } | null;
             at: string; // date-time
@@ -1723,6 +1757,13 @@ declare namespace Components {
             at: string; // date-time
           } | {
             kind: "skip-charge";
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | null;
+            at: string; // date-time
+          } | {
+            kind: "remove-item";
             success: boolean;
             error?: {
               [name: string]: any;
@@ -2202,6 +2243,15 @@ declare namespace Components {
           subscription_id: string;
           charge_id: string;
         };
+      } | {
+        id: string;
+        kind: "remove-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+        };
       })[];
       transitions: {
         id: string;
@@ -2508,6 +2558,15 @@ declare namespace Components {
           subscription_id: string;
           charge_id: string;
         };
+      } | {
+        id: string;
+        kind: "conditions";
+        settings: {
+          name: string;
+        };
+      } | {
+        id: string;
+        kind: "end";
       })[];
       transitions: {
         id: string;
@@ -2969,6 +3028,15 @@ declare namespace Components {
           integration_id: string;
           subscription_id: string;
           charge_id: string;
+        };
+      } | {
+        id: string;
+        kind: "remove-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
         };
       })[];
       transitions: {
@@ -3601,7 +3669,7 @@ declare namespace Components {
         } | null;
       })[];
       done?: boolean | null;
-      success: boolean;
+      success?: boolean | null;
       state: {
         steps_state?: {
           [name: string]: {
@@ -3984,6 +4052,13 @@ declare namespace Components {
                   [name: string]: any;
                 } | null;
                 at: string; // date-time
+              } | {
+                kind: "remove-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | null;
+                at: string; // date-time
               };
             } | null;
             at: string; // date-time
@@ -4025,6 +4100,13 @@ declare namespace Components {
             at: string; // date-time
           } | {
             kind: "skip-charge";
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | null;
+            at: string; // date-time
+          } | {
+            kind: "remove-item";
             success: boolean;
             error?: {
               [name: string]: any;
@@ -4674,7 +4756,7 @@ declare namespace Components {
         } | null;
       })[];
       done?: boolean | null;
-      success: boolean;
+      success?: boolean | null;
       state: {
         steps_state?: {
           [name: string]: {
@@ -5057,6 +5139,13 @@ declare namespace Components {
                   [name: string]: any;
                 } | null;
                 at: string; // date-time
+              } | {
+                kind: "remove-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | null;
+                at: string; // date-time
               };
             } | null;
             at: string; // date-time
@@ -5098,6 +5187,13 @@ declare namespace Components {
             at: string; // date-time
           } | {
             kind: "skip-charge";
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | null;
+            at: string; // date-time
+          } | {
+            kind: "remove-item";
             success: boolean;
             error?: {
               [name: string]: any;
@@ -5719,6 +5815,13 @@ declare namespace Components {
                   [name: string]: any;
                 } | null;
                 at: string; // date-time
+              } | {
+                kind: "remove-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | null;
+                at: string; // date-time
               };
             } | null;
             at: string; // date-time
@@ -5760,6 +5863,13 @@ declare namespace Components {
             at: string; // date-time
           } | {
             kind: "skip-charge";
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | null;
+            at: string; // date-time
+          } | {
+            kind: "remove-item";
             success: boolean;
             error?: {
               [name: string]: any;
@@ -6246,6 +6356,15 @@ declare namespace Components {
           subscription_id: string;
           charge_id: string;
         };
+      } | {
+        id: string;
+        kind: "remove-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+        };
       })[];
       transitions: {
         id: string;
@@ -6719,6 +6838,15 @@ declare namespace Components {
           integration_id: string;
           subscription_id: string;
           charge_id: string;
+        };
+      } | {
+        id: string;
+        kind: "remove-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
         };
       })[];
       transitions: {
@@ -7195,6 +7323,15 @@ declare namespace Components {
           subscription_id: string;
           charge_id: string;
         };
+      } | {
+        id: string;
+        kind: "remove-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+        };
       })[];
       transitions: {
         id: string;
@@ -7669,6 +7806,15 @@ declare namespace Components {
           subscription_id: string;
           charge_id: string;
         };
+      } | {
+        id: string;
+        kind: "remove-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+        };
       })[];
       transitions: {
         id: string;
@@ -7933,6 +8079,15 @@ declare namespace Components {
           subscription_id: string;
           charge_id: string;
         };
+      } | {
+        id: string;
+        kind: "conditions";
+        settings: {
+          name: string;
+        };
+      } | {
+        id: string;
+        kind: "end";
       })[];
       transitions: {
         id: string;
@@ -8195,6 +8350,15 @@ declare namespace Components {
           subscription_id: string;
           charge_id: string;
         };
+      } | {
+        id: string;
+        kind: "conditions";
+        settings: {
+          name: string;
+        };
+      } | {
+        id: string;
+        kind: "end";
       })[];
       transitions: {
         id: string;
@@ -8720,10 +8884,12 @@ declare namespace Paths {
   }
   namespace WfConfigurationTemplateControllerList {
     namespace Parameters {
+      export type IsDraft = any[];
       export type Triggers = any[];
     }
     export interface QueryParameters {
       triggers: Parameters.Triggers;
+      is_draft?: Parameters.IsDraft;
     }
     namespace Responses {
       export type $200 = Components.Schemas.ListWfConfigurationTemplatesResponseDto;

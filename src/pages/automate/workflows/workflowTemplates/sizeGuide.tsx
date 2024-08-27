@@ -12,14 +12,10 @@ export const SIZE_GUIDE: WorkflowTemplate = {
     description:
         'Provide customers with sizing guidance based on product type.',
     label: WorkflowTemplateLabelType.ProductQuestion,
-    getConfiguration: (
-        id: string,
-        accountId: number
-    ): WorkflowConfiguration => {
+    getConfiguration: (id: string): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Size guide',
-            account_id: accountId,
             entrypoint: {
                 label: '📏 How do I choose the right size?',
                 label_tkey: ulid(),

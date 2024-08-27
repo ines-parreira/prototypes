@@ -12,7 +12,7 @@ import {
     VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 
 import {OrderSelectionNodeType} from '../../../models/visualBuilderGraph.types'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
@@ -74,7 +74,7 @@ export default function OrderSelectionNodeWrapper(
     node: NodeProps<OrderSelectionNodeType['data']>
 ) {
     const {content} = node.data
-    const {checkInvalidVariablesForNode} = useWorkflowEditorContext()
+    const {checkInvalidVariablesForNode} = useVisualBuilderContext()
     const hasInvalidVariables = useMemo(
         () =>
             checkInvalidVariablesForNode({

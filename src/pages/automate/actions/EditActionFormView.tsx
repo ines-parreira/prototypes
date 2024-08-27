@@ -64,9 +64,12 @@ export default function EditActionFormView() {
     const {
         data: templateConfigurations,
         isInitialLoading: isTemplateConfigurationsLoading,
-    } = useGetWorkflowConfigurationTemplates(['llm-prompt'], {
-        enabled: !!configurationData?.template_internal_id,
-    })
+    } = useGetWorkflowConfigurationTemplates(
+        {triggers: ['llm-prompt']},
+        {
+            enabled: !!configurationData?.template_internal_id,
+        }
+    )
 
     const templateConfiguration = useMemo(
         () =>

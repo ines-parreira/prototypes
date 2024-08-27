@@ -13,10 +13,10 @@ import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/compon
 import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 
 import {MessageContent} from '../../../models/workflowConfiguration.types'
 
+import {useVisualBuilderContext} from '../../../hooks/useVisualBuilder'
 import css from './MessageContentFormField.less'
 
 type MessageContentFormFieldProps = {
@@ -43,10 +43,10 @@ export default function MessageContentFormField({
     workflowVariables,
 }: MessageContentFormFieldProps) {
     const storeIntegration = useSelfServiceStoreIntegrationContext()
-    const {visualBuilderChoiceEventIdEditing} = useWorkflowEditorContext()
+    const {visualBuilderGraph} = useVisualBuilderContext()
     const [textareaRef, setTextareaRef] = useState<RichField | null>(null)
     useEffect(() => {
-        if (!visualBuilderChoiceEventIdEditing) {
+        if (!visualBuilderGraph.nodeEditingId) {
             textareaRef?.focusEditor()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

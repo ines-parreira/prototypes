@@ -56,6 +56,10 @@ export type VisualBuilderChoicesAction =
           eventId: string
           isGreyedOut: boolean
       }
+    | {
+          type: 'SET_CHOICE_EVENT_EDITING_ID'
+          eventId: string | null
+      }
 
 // bridge between type system and runtime
 // allow to keep a type safe list of all action types for this reducer
@@ -70,6 +74,7 @@ const visualBuilderChoiceActionTypes: ActionTypes = {
     INSERT_MULTIPLE_CHOICES_NODE: true,
     DELETE_MULTIPLE_CHOICES_CHOICE: true,
     GREY_OUT_CHOICE_CHILDREN: true,
+    SET_CHOICE_EVENT_EDITING_ID: true,
 }
 
 export function isVisualBuilderChoiceAction(action: {
@@ -93,6 +98,10 @@ export function choicesReducer(
                 if (node) {
                     node.data.content = action.content
                 }
+            })
+        case 'SET_CHOICE_EVENT_EDITING_ID':
+            return produce(graph, (draft) => {
+                draft.choiceEventIdEditing = action.eventId
             })
         case 'INSERT_MULTIPLE_CHOICES_NODE':
             return computeNodesPositions(
@@ -153,7 +162,7 @@ export function choicesReducer(
                         label_tkey: ulid(),
                         label: '',
                     })
-                    draft.nodes.push(buildEndNode())
+                    draft.nodes.push(buildEndNode('ask-for-feedback'))
                     draft.edges.push({
                         ...buildEdgeCommonProperties(),
                         source: action.multipleChoicesNodeId,
@@ -242,7 +251,7 @@ function insertMultipleChoices(
         const edge = draft.edges.find((e) => e.target === beforeEndNodeId)
         if (!edge) return
         const multipleChoicesNode = buildMultipleChoicesNode()
-        const endNode = buildEndNode()
+        const endNode = buildEndNode('ask-for-feedback')
         draft.nodes.push(multipleChoicesNode, endNode)
         edge.target = multipleChoicesNode.id
         draft.edges.push(
@@ -269,5 +278,8 @@ function insertMultipleChoices(
                 },
             }
         )
+        draft.nodeEditingId = multipleChoicesNode.id
+        draft.choiceEventIdEditing = null
+        draft.branchIdsEditing = []
     })
 }

@@ -11,14 +11,10 @@ export const PRODUCT_UNIQUE_ATTRIBUTES: WorkflowTemplate = {
     name: 'Product unique attributes',
     description: 'Tell customers what makes your product unique.',
     label: WorkflowTemplateLabelType.ProductQuestion,
-    getConfiguration: (
-        id: string,
-        accountId: number
-    ): WorkflowConfiguration => {
+    getConfiguration: (id: string): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Product unique attributes',
-            account_id: accountId,
             entrypoint: {
                 label: '🤩 What makes [product] different from others?',
                 label_tkey: ulid(),

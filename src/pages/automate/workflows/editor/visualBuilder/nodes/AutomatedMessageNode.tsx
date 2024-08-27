@@ -4,7 +4,7 @@ import {Handle, Position, NodeProps} from 'reactflow'
 import {Label} from '@gorgias/ui-kit'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     workflowVariableRegex,
     isValidLiquidSyntaxInNode,
@@ -74,7 +74,7 @@ export default function AutomatedMessageNodeWrapper(
     node: NodeProps<AutomatedMessageNodeType['data']>
 ) {
     const {content} = node.data
-    const {checkInvalidVariablesForNode} = useWorkflowEditorContext()
+    const {checkInvalidVariablesForNode} = useVisualBuilderContext()
 
     const hasInvalidVariables = useMemo(
         () =>

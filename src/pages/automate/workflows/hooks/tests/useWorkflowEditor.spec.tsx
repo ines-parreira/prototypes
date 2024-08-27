@@ -1,6 +1,5 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 import React, {ReactChildren} from 'react'
-import _noop from 'lodash/noop'
 import {QueryClientProvider} from '@tanstack/react-query'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -118,7 +117,7 @@ describe('useWorkflowEditor', () => {
     })
     it('generates an empty workflow configuration when is new', () => {
         const {result} = renderHook(
-            () => useWorkflowEditor(1, 'a', true, _noop),
+            () => useWorkflowEditor('a', true),
             renderHookOptions
         )
         expect(result.current.configuration.name).toEqual('')
@@ -126,7 +125,7 @@ describe('useWorkflowEditor', () => {
 
     it('should be a draft when is new', () => {
         const {result} = renderHook(
-            () => useWorkflowEditor(1, 'a', true, _noop),
+            () => useWorkflowEditor('a', true),
             renderHookOptions
         )
         expect(result.current.configuration.is_draft).toBe(true)
@@ -188,7 +187,7 @@ describe('useWorkflowEditor', () => {
         } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
         const {result, waitForNextUpdate} = renderHook(
-            () => useWorkflowEditor(1, 'a', false, _noop),
+            () => useWorkflowEditor('a', false),
             renderHookOptions
         )
         await waitForNextUpdate()
@@ -261,7 +260,7 @@ describe('useWorkflowEditor', () => {
         } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
         const {result, waitForNextUpdate, rerender} = renderHook(
-            () => useWorkflowEditor(1, 'a', false, _noop),
+            () => useWorkflowEditor('a', false),
             renderHookOptions
         )
         // wait for asynchronous effect to update the local configuration

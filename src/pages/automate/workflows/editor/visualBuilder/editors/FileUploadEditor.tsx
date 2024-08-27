@@ -3,7 +3,7 @@ import {Label} from '@gorgias/ui-kit'
 
 import {Drawer} from 'pages/common/components/Drawer'
 import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {FileUploadNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
@@ -21,7 +21,7 @@ export default function FileUploadEditor({
 }: {
     nodeInEdition: FileUploadNodeType
 }) {
-    const {dispatch, visualBuilderGraph} = useWorkflowEditorContext()
+    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
     const {previewLanguage} = useTranslationsPreviewContext()
     const handleUpdateContent = useCallback(
         (content: MessageContent) => {

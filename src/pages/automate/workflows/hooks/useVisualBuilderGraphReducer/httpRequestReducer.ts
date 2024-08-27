@@ -14,14 +14,15 @@ import {
 } from '../../models/visualBuilderGraph.model'
 import {
     HttpRequestNodeType,
+    isTriggerNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
 import {
-    buildCreateTicketEndNode,
     computeNodesPositions,
     buildHttpRequestNode,
-    getHttpRequestSuccessConditions,
+    getFallibleNodeSuccessConditions,
+    buildEndNode,
 } from './utils'
 
 export type VisualBuilderHttpRequestAction =
@@ -112,6 +113,22 @@ export type VisualBuilderHttpRequestAction =
           type: 'RESET_HTTP_REQUEST_TEST_REQUEST_RESULT'
           httpRequestNodeId: string
       }
+    | {
+          type: 'ADD_HTTP_REQUEST_OUTPUT'
+          httpRequestNodeId: string
+          variableId: string
+      }
+    | {
+          type: 'SET_HTTP_REQUEST_OUTPUT'
+          httpRequestNodeId: string
+          index: number
+          output: NonNullable<HttpRequestNodeType['data']['outputs']>[number]
+      }
+    | {
+          type: 'DELETE_HTTP_REQUEST_OUTPUT'
+          httpRequestNodeId: string
+          index: number
+      }
 
 // bridge between type system and runtime
 // allow to keep a type safe list of all action types for this reducer
@@ -136,6 +153,9 @@ const visualBuilderHttpRequestActionTypes: ActionTypes = {
     DELETE_HTTP_REQUEST_VARIABLE: true,
     SET_HTTP_REQUEST_TEST_REQUEST_RESULT: true,
     RESET_HTTP_REQUEST_TEST_REQUEST_RESULT: true,
+    ADD_HTTP_REQUEST_OUTPUT: true,
+    SET_HTTP_REQUEST_OUTPUT: true,
+    DELETE_HTTP_REQUEST_OUTPUT: true,
 }
 
 export function isVisualBuilderHttpRequestAction(action: {
@@ -339,6 +359,8 @@ export function httpRequestReducer(
                         n.type === 'http_request'
                 )
                 if (node && node.data.variables[action.index]) {
+                    const variable = node.data.variables[action.index]
+
                     node.data.variables.splice(action.index, 1)
 
                     draft.edges.forEach((edge) => {
@@ -353,6 +375,18 @@ export function httpRequestReducer(
                                 )
                         }
                     })
+
+                    if (node.data.outputs) {
+                        const index = node.data.outputs.findIndex(
+                            (output) =>
+                                output.path ===
+                                `steps_state.${node.id}.content.${variable.id}`
+                        )
+
+                        if (index !== -1) {
+                            node.data.outputs.splice(index, 1)
+                        }
+                    }
                 }
             })
         case 'SET_HTTP_REQUEST_TEST_REQUEST_RESULT':
@@ -377,6 +411,47 @@ export function httpRequestReducer(
                     delete node.data.testRequestResult
                 }
             })
+        case 'ADD_HTTP_REQUEST_OUTPUT':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is HttpRequestNodeType =>
+                        n.id === action.httpRequestNodeId &&
+                        n.type === 'http_request'
+                )
+
+                if (node) {
+                    node.data.outputs ??= []
+                    node.data.outputs.push({
+                        id: ulid(),
+                        path: `steps_state.${node.id}.content.${action.variableId}`,
+                        description: '',
+                    })
+                }
+            })
+        case 'SET_HTTP_REQUEST_OUTPUT':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is HttpRequestNodeType =>
+                        n.id === action.httpRequestNodeId &&
+                        n.type === 'http_request'
+                )
+
+                if (node && node.data.outputs?.[action.index]) {
+                    node.data.outputs[action.index] = action.output
+                }
+            })
+        case 'DELETE_HTTP_REQUEST_OUTPUT':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is HttpRequestNodeType =>
+                        n.id === action.httpRequestNodeId &&
+                        n.type === 'http_request'
+                )
+
+                if (node) {
+                    node.data.outputs?.splice(action.index, 1)
+                }
+            })
     }
 }
 
@@ -394,7 +469,7 @@ function rebuildCondition(
         if (schema[0].var && schema[0].var.includes(variable.id)) {
             const varSchema = schema[0]
             const conditionSchema = buildConditionSchemaByVariableType(
-                variable.data_type,
+                variable.data_type!,
                 varSchema.var
             )
 
@@ -598,11 +673,16 @@ function rebuildGraphForVariableChange(
 }
 
 function insertHttpRequest(graph: VisualBuilderGraph, beforeEndNodeId: string) {
+    const triggerNode = graph.nodes.find(isTriggerNodeType)!
+
     return produce(graph, (draft) => {
         const edge = draft.edges.find((e) => e.target === beforeEndNodeId)
         if (!edge) return
         const httpRequestNode = buildHttpRequestNode()
-        const endNode = buildCreateTicketEndNode()
+        const endNode = buildEndNode(
+            triggerNode.type === 'llm_prompt_trigger' ? 'end' : 'create-ticket'
+        )
+
         draft.nodes.push(httpRequestNode, endNode)
         edge.target = httpRequestNode.id
         draft.edges.push(
@@ -612,7 +692,7 @@ function insertHttpRequest(graph: VisualBuilderGraph, beforeEndNodeId: string) {
                 target: beforeEndNodeId,
                 data: {
                     name: 'Success',
-                    conditions: getHttpRequestSuccessConditions(
+                    conditions: getFallibleNodeSuccessConditions(
                         httpRequestNode.id
                     ),
                 },
@@ -626,5 +706,8 @@ function insertHttpRequest(graph: VisualBuilderGraph, beforeEndNodeId: string) {
                 },
             }
         )
+        draft.nodeEditingId = httpRequestNode.id
+        draft.choiceEventIdEditing = null
+        draft.branchIdsEditing = []
     })
 }

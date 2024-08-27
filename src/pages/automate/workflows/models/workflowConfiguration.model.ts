@@ -1,22 +1,29 @@
 import {ulid} from 'ulidx'
 import _omit from 'lodash/omit'
-import {getHttpRequestSuccessConditions} from '../hooks/useVisualBuilderGraphReducer/utils'
+import _isNil from 'lodash/isNil'
+import {getFallibleNodeSuccessConditions} from '../hooks/useVisualBuilderGraphReducer/utils'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from './visualBuilderGraph.model'
 import {
     AutomatedMessageNodeType,
+    CancelOrderNodeType,
+    CancelSubscriptionNodeType,
+    ChannelTriggerNodeType,
     ConditionsNodeType,
     EndNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
+    LLMPromptTriggerNodeType,
     MultipleChoicesNodeType,
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
+    RefundOrderNodeType,
     ShopperAuthenticationNodeType,
+    SkipChargeNodeType,
     TextReplyNodeType,
-    TriggerButtonNodeType,
+    UpdateShippingAddressNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
     VisualBuilderNode,
@@ -35,6 +42,7 @@ import {
     WorkflowStepHelpfulPrompt,
     WorkflowStepOrderSelection,
     WorkflowStepShopperAuthentication,
+    WorkflowStepEnd,
 } from './workflowConfiguration.types'
 
 export function walkWorkflowConfigurationGraph(
@@ -93,19 +101,59 @@ function injectTkeysInChoicesIfNotExist(
     })
 }
 
-export function transformWorkflowConfigurationIntoVisualBuilderGraph(
+function getTriggerNode(
     c: WorkflowConfiguration
-): VisualBuilderGraph {
-    const triggerButtonNode: TriggerButtonNodeType = {
+): ChannelTriggerNodeType | LLMPromptTriggerNodeType {
+    const trigger = c.triggers?.[0]
+    const entrypoint = c.entrypoints?.[0]
+
+    if (trigger?.kind === 'llm-prompt' && entrypoint) {
+        let conditionsType: LLMPromptTriggerNodeType['data']['conditionsType'] =
+            null
+        let conditions: LLMPromptTriggerNodeType['data']['conditions'] = []
+
+        if (trigger.settings.conditions) {
+            if (trigger.settings.conditions['or']) {
+                conditionsType = 'or'
+                conditions = trigger.settings.conditions['or']
+            } else if (trigger.settings.conditions['and']) {
+                conditionsType = 'and'
+                conditions = trigger.settings.conditions['and']
+            }
+        }
+
+        return {
+            ...buildNodeCommonProperties(),
+            id: 'trigger_button',
+            type: 'llm_prompt_trigger',
+            data: {
+                instructions: entrypoint.settings.instructions,
+                requires_confirmation:
+                    entrypoint.settings.requires_confirmation,
+                custom_inputs: trigger.settings.custom_inputs,
+                object_inputs: trigger.settings.object_inputs,
+                conditionsType,
+                conditions,
+            },
+        }
+    }
+
+    return {
         ...buildNodeCommonProperties(),
         id: 'trigger_button',
-        type: 'trigger_button',
+        type: 'channel_trigger',
         data: {
             label: c.entrypoint?.label ?? '',
             label_tkey: c.entrypoint?.label_tkey ?? ulid(),
         },
     }
-    const nodes: VisualBuilderNode[] = [triggerButtonNode]
+}
+
+export function transformWorkflowConfigurationIntoVisualBuilderGraph(
+    c: WorkflowConfiguration
+): VisualBuilderGraph {
+    const triggerNode = getTriggerNode(c)
+    const nodes: VisualBuilderNode[] = [triggerNode]
     const edges: VisualBuilderEdge[] = []
     const nodeIdByStepId: Record<string, string> = {}
 
@@ -237,6 +285,14 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 'content-type'
             ] as HttpRequestNodeType['data']['bodyContentType']
 
+            const trigger = c.triggers?.[0]
+            const variablesOutputPaths = new Set(
+                step.settings.variables.map(
+                    (variable) =>
+                        `steps_state.${step.id}.content.${variable.id}`
+                )
+            )
+
             const n: HttpRequestNodeType = {
                 ...buildNodeCommonProperties(),
                 id: step.id,
@@ -250,18 +306,26 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     ).map(([name, value]) => ({name, value})),
                     json:
                         bodyContentType === 'application/json'
-                            ? step.settings.body
+                            ? step.settings.body ?? undefined
                             : undefined,
                     formUrlencoded:
                         bodyContentType === 'application/x-www-form-urlencoded'
                             ? Array.from(
                                   new URLSearchParams(
-                                      step.settings.body
+                                      step.settings.body ?? undefined
                                   ).entries()
                               ).map(([key, value]) => ({key, value}))
                             : undefined,
                     bodyContentType: bodyContentType,
                     variables: step.settings.variables,
+                    ...(trigger?.kind === 'llm-prompt'
+                        ? {
+                              outputs: trigger.settings.outputs.filter(
+                                  (output) =>
+                                      variablesOutputPaths.has(output.path)
+                              ),
+                          }
+                        : {}),
                 },
             }
             nodeIdByStepId[step.id] = n.id
@@ -290,6 +354,88 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
 
             nodeIdByStepId[step.id] = node.id
             nodes.push(node)
+        } else if (step.kind === 'cancel-order') {
+            const node: CancelOrderNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'cancel_order',
+                data: {
+                    customerId: step.settings.customer_id,
+                    orderExternalId: step.settings.order_external_id,
+                    integrationId: step.settings.integration_id,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
+        } else if (step.kind === 'refund-order') {
+            const node: RefundOrderNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'refund_order',
+                data: {
+                    customerId: step.settings.customer_id,
+                    orderExternalId: step.settings.order_external_id,
+                    integrationId: step.settings.integration_id,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
+        } else if (step.kind === 'update-shipping-address') {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'update_shipping_address',
+                data: {
+                    customerId: step.settings.customer_id,
+                    orderExternalId: step.settings.order_external_id,
+                    integrationId: step.settings.integration_id,
+                    name: step.settings.name,
+                    address1: step.settings.address1,
+                    address2: step.settings.address2,
+                    city: step.settings.city,
+                    zip: step.settings.zip,
+                    province: step.settings.province,
+                    country: step.settings.country,
+                    phone: step.settings.phone,
+                    lastName: step.settings.last_name,
+                    firstName: step.settings.first_name,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
+        } else if (step.kind === 'cancel-subscription') {
+            const node: CancelSubscriptionNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'cancel_subscription',
+                data: {
+                    customerId: step.settings.customer_id,
+                    integrationId: step.settings.integration_id,
+                    subscriptionId: step.settings.subscription_id,
+                    reason: step.settings.reason,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
+        } else if (step.kind === 'skip-charge') {
+            const node: SkipChargeNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'skip_charge',
+                data: {
+                    customerId: step.settings.customer_id,
+                    integrationId: step.settings.integration_id,
+                    subscriptionId: step.settings.subscription_id,
+                    chargeId: step.settings.charge_id,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
         } else {
             return
         }
@@ -302,16 +448,22 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 source: nodeIdByStepId[previousStep.id],
                 target: n.id,
                 data: {
-                    event: incomingTransition?.event,
-                    name: incomingTransition?.name,
-                    conditions: incomingTransition?.conditions,
+                    ...(!_isNil(incomingTransition?.event)
+                        ? {event: incomingTransition.event}
+                        : undefined),
+                    ...(!_isNil(incomingTransition?.name)
+                        ? {name: incomingTransition.name}
+                        : undefined),
+                    ...(!_isNil(incomingTransition?.conditions)
+                        ? {conditions: incomingTransition.conditions}
+                        : undefined),
                 },
             })
         } else {
             edges.push({
                 ...buildEdgeCommonProperties(),
-                id: `${triggerButtonNode.id}-${n.id}`,
-                source: triggerButtonNode.id,
+                id: `${triggerNode.id}-${n.id}`,
+                source: triggerNode.id,
                 target: n.id,
             })
         }
@@ -323,6 +475,10 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
         nodes,
         edges,
         wfConfigurationOriginal: c,
+        apps: c.apps,
+        nodeEditingId: null,
+        choiceEventIdEditing: null,
+        branchIdsEditing: [],
     }
 }
 
@@ -333,33 +489,15 @@ export class WorkflowConfigurationBuilder {
     private _selection: WorkflowStep
     constructor({
         name,
-        initialStep: initialStepArg,
-        initialMessage,
+        initialStep,
         ...configuration
     }:
-        | (
-              | {
-                    initialStep?: never
-                    initialMessage: WorkflowStepMessage['settings']['message']
-                }
-              | {
-                    initialStep: WorkflowStep
-                    initialMessage?: never
-                }
-          ) &
-              Pick<
-                  WorkflowConfiguration,
-                  'name' | 'account_id' | 'entrypoint' | 'id'
-              >) {
-        const initialStep = initialStepArg
-            ? initialStepArg
-            : ({
-                  id: ulid(),
-                  kind: 'message',
-                  settings: {
-                      message: initialMessage,
-                  },
-              } as WorkflowStepMessage)
+        | {
+              initialStep: WorkflowStep
+          } & Pick<
+              WorkflowConfiguration,
+              'name' | 'entrypoint' | 'id' | 'triggers' | 'entrypoints'
+          >) {
         this.data = {
             internal_id: ulid(),
             name,
@@ -498,7 +636,7 @@ export class WorkflowConfigurationBuilder {
             step,
             label,
             type === 'success'
-                ? getHttpRequestSuccessConditions(this._selection.id)
+                ? getFallibleNodeSuccessConditions(this._selection.id)
                 : undefined
         )
     }
@@ -517,7 +655,7 @@ export class WorkflowConfigurationBuilder {
             step,
             label,
             type === 'success'
-                ? getHttpRequestSuccessConditions(this._selection.id)
+                ? getFallibleNodeSuccessConditions(this._selection.id)
                 : undefined
         )
     }
@@ -539,7 +677,7 @@ export class WorkflowConfigurationBuilder {
             step,
             label,
             type === 'success'
-                ? getHttpRequestSuccessConditions(this._selection.id)
+                ? getFallibleNodeSuccessConditions(this._selection.id)
                 : undefined
         )
     }
@@ -560,7 +698,22 @@ export class WorkflowConfigurationBuilder {
             step,
             label,
             type === 'success'
-                ? getHttpRequestSuccessConditions(this._selection.id)
+                ? getFallibleNodeSuccessConditions(this._selection.id)
+                : undefined
+        )
+    }
+
+    insertHttpRequestConditionAndEndStepAndSelect(type: 'error' | 'success') {
+        const step: WorkflowStepEnd = {
+            id: ulid(),
+            kind: 'end',
+        }
+        const label = type === 'error' ? 'Error' : 'Success'
+        this.insertConditionsAndStepTargetAndSelect(
+            step,
+            label,
+            type === 'success'
+                ? getFallibleNodeSuccessConditions(this._selection.id)
                 : undefined
         )
     }
@@ -623,6 +776,20 @@ export class WorkflowConfigurationBuilder {
             id: ulid(),
             kind: 'text-input',
             settings,
+        }
+        this.data.steps.push(step)
+        this.data.transitions.push({
+            id: ulid(),
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+        })
+        this._selection = step
+    }
+
+    insertEndStepAndSelect() {
+        const step: WorkflowStepEnd = {
+            id: ulid(),
+            kind: 'end',
         }
         this.data.steps.push(step)
         this.data.transitions.push({

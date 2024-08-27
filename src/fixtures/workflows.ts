@@ -5,7 +5,6 @@ export const createWorkflowConfigurationShallow = (
     props?: Partial<WorkflowConfigurationShallow>
 ): WorkflowConfigurationShallow => ({
     id,
-    account_id: 1,
     available_languages: ['en-US'],
     internal_id: '0',
     is_draft: false,

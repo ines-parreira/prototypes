@@ -10,12 +10,9 @@ import React, {
 
 import {useQueryClient} from '@tanstack/react-query'
 import {validateHttpHeaderName, validateWebhookURL} from 'utils'
-import {saveFileAsDownloaded} from 'utils/file'
-import {Notification, NotificationStatus} from 'state/notifications/types'
 import useThrottledValue from 'hooks/useThrottledValue'
 import {WorkflowStepMetricsMap} from 'hooks/reporting/automate/utils'
 import {
-    useDownloadWorkflowConfigurationStepLogs,
     useUpsertWorkflowConfiguration,
     useFetchWorkflowConfiguration,
     workflowsConfigurationDefinitionKeys,
@@ -28,27 +25,15 @@ import {
     WorkflowTransition,
 } from '../models/workflowConfiguration.types'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
-import {
-    HttpRequestNodeType,
-    MultipleChoicesNodeType,
-    VisualBuilderEdge,
-    VisualBuilderGraph,
-    VisualBuilderNode,
-} from '../models/visualBuilderGraph.types'
+import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
 import {
     areGraphsEqual,
     transformVisualBuilderGraphIntoWfConfiguration,
-    walkVisualBuilderGraph,
 } from '../models/visualBuilderGraph.model'
 import {
     getWorkflowVariableListForNode,
-    parseWorkflowVariable,
     checkGraphVariablesValidity,
-    buildWorkflowVariableFromNode,
-    findVariable,
-    extractVariablesFromNode,
     validateJSONWithVariables,
-    findManyVariables,
 } from '../models/variables.model'
 import {
     getPayloadSizeToLimitRate,
@@ -56,7 +41,7 @@ import {
 } from '../utils/payloadSize'
 import {MAX_CONFIGURATION_SIZE_IN_BYTES} from '../constants'
 import {ConditionSchema} from '../models/conditions.types'
-import {WorkflowVariable, WorkflowVariableList} from '../models/variables.types'
+import {WorkflowVariableList} from '../models/variables.types'
 import {WorkflowConfigurationUpsertDto} from '../types'
 import {workflowConfigurationFactory} from './utils'
 import {
@@ -81,18 +66,7 @@ export type WorkflowEditorContext = {
     handleSave: () => Promise<string | undefined>
     handlePublish: () => Promise<string | undefined>
     handleDiscard: () => void
-    checkInvalidConditionsForNode: (
-        node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>
-    ) => boolean
-    checkInvalidVariablesForNode: (
-        node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>
-    ) => boolean
-    checkNodeHasVariablesUsedInChildren: (nodeId: string) => boolean
     dispatch: React.Dispatch<VisualBuilderGraphAction>
-    visualBuilderNodeIdEditing: VisualBuilderNode['id'] | null
-    setVisualBuilderNodeIdEditing: (
-        visualBuilderNodeIdEditing: VisualBuilderNode['id'] | null
-    ) => void
     currentLanguage: LanguageCode
     switchLanguage: (nextLanguage: LanguageCode) => void
     translateKey: (tkey: string, languageCode: LanguageCode) => string
@@ -104,27 +78,8 @@ export type WorkflowEditorContext = {
     shouldShowErrors: boolean
     setShouldShowErrors: (b: boolean) => void
     setIsTesting: (isTesting: boolean) => void
-    getVariableListInChildren: (nodeId: string) => WorkflowVariable[]
-    visualBuilderChoiceEventIdEditing:
-        | MultipleChoicesNodeType['data']['choices'][number]['event_id']
-        | null
-    setVisualBuilderChoiceEventIdEditing: React.Dispatch<
-        React.SetStateAction<
-            | MultipleChoicesNodeType['data']['choices'][number]['event_id']
-            | null
-        >
-    >
-    visualBuilderBranchIdsEditing: VisualBuilderEdge['id'][]
-    setVisualBuilderBranchIdsEditing: React.Dispatch<
-        React.SetStateAction<VisualBuilderEdge['id'][]>
-    >
     translationSizeToLimitRate: number
     configurationSizeToLimitRate: number
-    handleDownloadHttpRequestEventLogs: (
-        node: HttpRequestNodeType
-    ) => Promise<void>
-    isDownloadPending: boolean
-    checkNewVisualBuilderNode: (nodeId: string) => boolean
     isFlowPublishingInChannels: boolean
     setFlowPublishingInChannels: (flag: boolean) => void
     zoom: number
@@ -149,20 +104,16 @@ export function useWorkflowEditorContext() {
 export const withWorkflowEditorContext =
     <
         WrappedProps extends JSX.IntrinsicAttributes & {
-            currentAccountId: number
             workflowId: string
             isNewWorkflow: boolean
-            notifyMerchant: (message: Notification) => void
         }
     >(
         Component: React.FC<WrappedProps>
     ) =>
     (props: WrappedProps) => {
         const contextValue = useWorkflowEditor(
-            props.currentAccountId,
             props.workflowId,
-            props.isNewWorkflow,
-            props.notifyMerchant
+            props.isNewWorkflow
         )
         return (
             <WorkflowEditorContext.Provider value={contextValue}>
@@ -172,10 +123,8 @@ export const withWorkflowEditorContext =
     }
 
 export function useWorkflowEditor(
-    currentAccountId: number,
     workflowId: string,
-    isNew: boolean,
-    notifyMerchant: (message: Notification) => void
+    isNew: boolean
 ): WorkflowEditorContext {
     const queryClient = useQueryClient()
 
@@ -186,37 +135,18 @@ export function useWorkflowEditor(
         useFetchWorkflowConfiguration()
     const [isSavePending, setIsSavePending] = useState(false)
     const [isPublishPending, setIsPublishPending] = useState(false)
-    const [isDownloadPending, setIsDownloadPending] = useState(false)
     const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const [isTesting, setIsTesting] = useState(false)
     const [isFlowPublishingInChannels, setFlowPublishingInChannels] =
         useState(false)
-    const [visualBuilderNodeIdEditing, setVisualBuilderNodeIdEditing] =
-        useState<VisualBuilderNode['id'] | null>(null)
-    const [
-        visualBuilderChoiceEventIdEditing,
-        setVisualBuilderChoiceEventIdEditing,
-    ] = useState<
-        MultipleChoicesNodeType['data']['choices'][number]['event_id'] | null
-    >(null)
-    const [visualBuilderBranchIdsEditing, setVisualBuilderBranchIdsEditing] =
-        useState<VisualBuilderEdge['id'][]>([])
     const [remoteConfiguration, setRemoteConfiguration] =
         useState<Maybe<WorkflowConfiguration>>(null)
     const workflowFactoryInstance = useRef(
-        workflowConfigurationFactory(currentAccountId, workflowId)
+        workflowConfigurationFactory(workflowId)
     )
     const [zoom, setZoom] = useState(1)
     const [workflowStepMetrics, setWorkflowStepMetrics] =
         useState<WorkflowStepMetricsMap | null>(null)
-
-    const handleSetVisualBuilderNodeIdEditing = useCallback(
-        (visualBuilderNodeIdEditing: VisualBuilderNode['id'] | null) => {
-            setVisualBuilderNodeIdEditing(visualBuilderNodeIdEditing)
-            setVisualBuilderBranchIdsEditing([])
-        },
-        []
-    )
 
     const configuration = remoteConfiguration || workflowFactoryInstance.current
 
@@ -258,15 +188,18 @@ export function useWorkflowEditor(
     )
 
     useEffect(() => {
-        if (visualBuilderNodeIdEditing !== null && isTesting) {
+        if (visualBuilderGraphDirty.nodeEditingId !== null && isTesting) {
             setIsTesting(false)
         }
-    }, [isTesting, visualBuilderNodeIdEditing])
+    }, [isTesting, visualBuilderGraphDirty.nodeEditingId])
     useEffect(() => {
-        if (visualBuilderNodeIdEditing && isFlowPublishingInChannels) {
+        if (
+            visualBuilderGraphDirty.nodeEditingId &&
+            isFlowPublishingInChannels
+        ) {
             setFlowPublishingInChannels(false)
         }
-    }, [isFlowPublishingInChannels, visualBuilderNodeIdEditing])
+    }, [isFlowPublishingInChannels, visualBuilderGraphDirty.nodeEditingId])
     useEffect(() => {
         async function fetch() {
             if (!isNew) {
@@ -357,7 +290,7 @@ export function useWorkflowEditor(
                     {}
                 )
 
-            const error = validate(
+            const error = validateConfiguration(
                 configurationDirty,
                 isPublishing,
                 availableVariablesByStepId
@@ -366,21 +299,26 @@ export function useWorkflowEditor(
             if (error) return error
             if (configurationDirty.is_draft && !isPublishing) return null
 
-            const graphVariablesError = checkGraphVariablesValidity(
-                visualBuilderGraphDirty,
-                translateGraph
-            )
-
-            if (graphVariablesError) {
-                const nextGraph = switchLanguage(
+            for (const lang of visualBuilderGraphDirty.available_languages) {
+                const translatedGraph = translateGraph(
                     visualBuilderGraphDirty,
-                    graphVariablesError.lang
+                    lang
                 )
-                dispatch({
-                    type: 'RESET_GRAPH',
-                    graph: nextGraph,
-                })
-                return graphVariablesError.error
+
+                const graphVariablesError =
+                    checkGraphVariablesValidity(translatedGraph)
+
+                if (graphVariablesError) {
+                    const nextGraph = switchLanguage(
+                        visualBuilderGraphDirty,
+                        lang
+                    )
+                    dispatch({
+                        type: 'RESET_GRAPH',
+                        graph: nextGraph,
+                    })
+                    return graphVariablesError
+                }
             }
 
             const incompleteLangs = getLangsOfIncompleteTranslations(
@@ -539,8 +477,7 @@ export function useWorkflowEditor(
     const handleDiscard = useCallback(() => {
         const nextGraph = computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph(
-                remoteConfiguration ??
-                    workflowConfigurationFactory(currentAccountId, workflowId)
+                remoteConfiguration ?? workflowConfigurationFactory(workflowId)
             )
         )
         dispatch({
@@ -548,128 +485,7 @@ export function useWorkflowEditor(
             graph: nextGraph,
         })
         discardTranslations()
-    }, [
-        remoteConfiguration,
-        currentAccountId,
-        workflowId,
-        dispatch,
-        discardTranslations,
-    ])
-
-    const checkInvalidVariablesForNode = useCallback(
-        (node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>) => {
-            const variables = extractVariablesFromNode(node)
-            if (variables.length === 0) return false
-            const availableVariables = getWorkflowVariableListForNode(
-                visualBuilderGraphDirty,
-                node.id
-            )
-
-            return variables
-                .map((variable) =>
-                    parseWorkflowVariable(variable, availableVariables)
-                )
-                .some((v) => v === null)
-        },
-        [visualBuilderGraphDirty]
-    )
-
-    const checkInvalidConditionsForNode = useCallback(
-        (node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>) => {
-            const conditions = visualBuilderGraphDirty.edges
-                .filter(
-                    (edge) => edge.source === node.id && edge.data?.conditions
-                )
-                .map((edge) => ({
-                    conditions: edge?.data?.conditions?.and
-                        ? edge?.data.conditions?.and
-                        : edge.data?.conditions?.or ?? [],
-                    name: edge.data?.name,
-                }))
-
-            const errors = validateConditionSteps(conditions)
-
-            return errors
-        },
-        [visualBuilderGraphDirty]
-    )
-
-    const getVariableListInChildren = useCallback(
-        (nodeId: string) => {
-            const currentNode = visualBuilderGraphDirty.nodes.find(
-                (n) => n.id === nodeId
-            )
-
-            if (!currentNode) return []
-
-            const nodeVariable = buildWorkflowVariableFromNode(currentNode)
-
-            if (!nodeVariable) return []
-
-            const availableVariables: WorkflowVariable[] = []
-
-            walkVisualBuilderGraph(
-                visualBuilderGraphDirty,
-                nodeId,
-                (childNode) => {
-                    const variables = extractVariablesFromNode(
-                        childNode,
-                        visualBuilderGraphDirty.edges
-                    )
-
-                    if (variables.length === 0) return
-
-                    availableVariables.push(
-                        ...findManyVariables([nodeVariable], (v) => {
-                            if ('value' in v && variables.includes(v.value)) {
-                                return v
-                            }
-                        })
-                    )
-                }
-            )
-
-            return availableVariables
-        },
-        [visualBuilderGraphDirty]
-    )
-
-    const checkNodeHasVariablesUsedInChildren = useCallback(
-        (nodeId: string) => {
-            const currentNode = visualBuilderGraphDirty.nodes.find(
-                (n) => n.id === nodeId
-            )
-
-            if (!currentNode) return false
-
-            const nodeVariable = buildWorkflowVariableFromNode(currentNode)
-            if (!nodeVariable) return false
-
-            let found = false
-
-            walkVisualBuilderGraph(
-                visualBuilderGraphDirty,
-                nodeId,
-                (childNode) => {
-                    if (found) return
-
-                    const variables = extractVariablesFromNode(childNode)
-                    if (variables.length === 0) return
-
-                    found = Boolean(
-                        findVariable([nodeVariable], (v) => {
-                            if ('value' in v && variables.includes(v.value)) {
-                                return v
-                            }
-                        })
-                    )
-                }
-            )
-
-            return found
-        },
-        [visualBuilderGraphDirty]
-    )
+    }, [remoteConfiguration, workflowId, dispatch, discardTranslations])
 
     const switchLanguageCallback = useCallback(
         (nextLanguage: LanguageCode) => {
@@ -698,52 +514,6 @@ export function useWorkflowEditor(
         },
         [deleteTranslation, visualBuilderGraphDirty, dispatch]
     )
-    const {mutateAsync} = useDownloadWorkflowConfigurationStepLogs()
-    const handleDownloadHttpRequestEventLogs = useCallback(
-        async (node: HttpRequestNodeType) => {
-            setIsDownloadPending(true)
-
-            try {
-                const {data} = await mutateAsync([
-                    {
-                        internal_id:
-                            visualBuilderGraphDirty.wfConfigurationOriginal
-                                .internal_id,
-                        step_id: node.id,
-                    },
-                ])
-
-                saveFileAsDownloaded(
-                    `${
-                        node.data.name ?? 'Request name'
-                    }-event-logs-${new Date().toISOString()}.csv`,
-                    data,
-                    'text/csv'
-                )
-            } catch {
-                notifyMerchant({
-                    status: NotificationStatus.Error,
-                    title: 'Failed to download event logs.',
-                })
-            } finally {
-                setIsDownloadPending(false)
-            }
-        },
-        [
-            mutateAsync,
-            visualBuilderGraphDirty.wfConfigurationOriginal.internal_id,
-            notifyMerchant,
-        ]
-    )
-    const checkNewVisualBuilderNode = useCallback(
-        (nodeId: string) => {
-            if (isNew) {
-                return true
-            }
-            return !visualBuilderGraph.nodes.some((node) => node.id === nodeId)
-        },
-        [isNew, visualBuilderGraph.nodes]
-    )
 
     return {
         hookError,
@@ -753,17 +523,11 @@ export function useWorkflowEditor(
         isSavePending,
         isPublishPending,
         isDirty: isVisualBuilderGraphDirty,
-        checkInvalidVariablesForNode,
-        checkNodeHasVariablesUsedInChildren,
-        checkInvalidConditionsForNode,
-        getVariableListInChildren,
         handleValidate,
         handleSave,
         handlePublish,
         handleDiscard,
         dispatch,
-        visualBuilderNodeIdEditing,
-        setVisualBuilderNodeIdEditing: handleSetVisualBuilderNodeIdEditing,
         translateKey,
         currentLanguage,
         switchLanguage: switchLanguageCallback,
@@ -772,16 +536,9 @@ export function useWorkflowEditor(
         setShouldShowErrors,
         isTesting,
         setIsTesting,
-        visualBuilderChoiceEventIdEditing,
-        setVisualBuilderChoiceEventIdEditing,
         translateGraph,
         translationSizeToLimitRate: currentTranslationSizeToLimitRate ?? 0,
         configurationSizeToLimitRate: configurationDirtySizeToLimitRate ?? 0,
-        handleDownloadHttpRequestEventLogs,
-        isDownloadPending,
-        checkNewVisualBuilderNode,
-        setVisualBuilderBranchIdsEditing,
-        visualBuilderBranchIdsEditing,
         isFlowPublishingInChannels,
         setFlowPublishingInChannels,
         zoom,
@@ -802,7 +559,9 @@ function isHttpRequestStepIncomplete({
         return true
     }
 
-    if (Object.entries(headers).some(([k, v]) => !k.trim() || !v.trim())) {
+    if (
+        Object.entries(headers ?? {}).some(([k, v]) => !k.trim() || !v.trim())
+    ) {
         return true
     }
 
@@ -810,8 +569,8 @@ function isHttpRequestStepIncomplete({
         return true
     }
 
-    if (headers['content-type'] === 'application/x-www-form-urlencoded') {
-        const entries = Array.from(new URLSearchParams(body).entries())
+    if (headers?.['content-type'] === 'application/x-www-form-urlencoded') {
+        const entries = Array.from(new URLSearchParams(body ?? '').entries())
 
         if (entries.some(([k, v]) => !k.trim() || !v.trim())) {
             return true
@@ -821,36 +580,38 @@ function isHttpRequestStepIncomplete({
     return false
 }
 
-function validateConditionSteps(
-    transition: Array<
-        Pick<WorkflowTransition, 'name'> & {
-            conditions: Array<ConditionSchema>
-        }
-    >
+export function validateConditionSteps(
+    transition: (Pick<WorkflowTransition, 'name'> & {
+        conditions: ConditionSchema[]
+    })[]
 ): boolean {
     return transition.some(({conditions, name}) => {
         if (!name) return true
 
-        if (conditions.length === 0) return true
-
-        return conditions.some((condition) => {
-            const key = Object.keys(condition)[0] as AllKeys<typeof condition>
-            const schema = condition[key]
-
-            if (!schema) {
-                return true
-            }
-
-            if (key === 'exists' || key === 'doesNotExist') {
-                return false
-            }
-
-            return schema[1] == null
-        })
+        return validateConditions(conditions)
     })
 }
 
-function validate(
+export function validateConditions(conditions: ConditionSchema[]): boolean {
+    if (conditions.length === 0) return true
+
+    return conditions.some((condition) => {
+        const key = Object.keys(condition)[0] as AllKeys<typeof condition>
+        const schema = condition[key]
+
+        if (!schema) {
+            return true
+        }
+
+        if (key === 'exists' || key === 'doesNotExist') {
+            return false
+        }
+
+        return schema[1] == null
+    })
+}
+
+export function validateConfiguration(
     conf: WorkflowConfiguration,
     isPublishing: boolean,
     availableVariablesByStepId: Record<WorkflowStep['id'], WorkflowVariableList>
@@ -887,6 +648,22 @@ function validate(
         return 'Fix errors in conditional step in order to save'
     }
 
+    if (
+        conf.triggers?.find((trigger) => {
+            if (trigger.kind === 'llm-prompt' && trigger.settings.conditions) {
+                return validateConditions(
+                    trigger.settings.conditions?.and
+                        ? trigger.settings.conditions?.and
+                        : trigger.settings.conditions?.or ?? []
+                )
+            }
+
+            return false
+        })
+    ) {
+        return 'Fix errors in conditions in order to save'
+    }
+
     const httpRequestSteps = conf.steps.filter(
         (s): s is WorkflowStepHttpRequest => s.kind === 'http-request'
     )
@@ -907,7 +684,38 @@ function validate(
                 s.kind === 'choices' &&
                 s.settings.choices.find((c) => !c.label.trim())
         ) ||
-        httpRequestSteps.find((s) => isHttpRequestStepIncomplete(s.settings))
+        httpRequestSteps.find((s) => isHttpRequestStepIncomplete(s.settings)) ||
+        conf.steps.find(
+            (s) =>
+                s.kind === 'update-shipping-address' &&
+                (!s.settings.name.trim() ||
+                    !s.settings.address1.trim() ||
+                    !s.settings.address2.trim() ||
+                    !s.settings.city.trim() ||
+                    !s.settings.zip.trim() ||
+                    !s.settings.province.trim() ||
+                    !s.settings.country.trim() ||
+                    !s.settings.phone.trim() ||
+                    !s.settings.last_name.trim() ||
+                    !s.settings.first_name.trim())
+        ) ||
+        conf.steps.find(
+            (s) =>
+                s.kind === 'cancel-subscription' &&
+                (!s.settings.subscription_id.trim() ||
+                    !s.settings.reason.trim())
+        ) ||
+        conf.steps.find(
+            (s) =>
+                s.kind === 'skip-charge' &&
+                (!s.settings.subscription_id.trim() ||
+                    !s.settings.charge_id.trim())
+        ) ||
+        conf.entrypoints?.find(
+            (entrypoint) =>
+                entrypoint.kind === 'llm-conversation' &&
+                !entrypoint.settings.instructions.trim()
+        )
     ) {
         return 'Complete or delete incomplete steps in order to publish'
     }
@@ -956,7 +764,7 @@ export function createWorkflowEditorContextForPreview(
 ): WorkflowEditorContext {
     return {
         hookError: null,
-        configuration: workflowConfigurationFactory(0, 'id'),
+        configuration: workflowConfigurationFactory('id'),
         visualBuilderGraph,
         isFetchPending: false,
         isSavePending: false,
@@ -966,17 +774,11 @@ export function createWorkflowEditorContextForPreview(
         setIsTesting: () => null,
         isFlowPublishingInChannels: false,
         setFlowPublishingInChannels: () => null,
-        getVariableListInChildren: () => [],
-        checkInvalidVariablesForNode: () => false,
-        checkNodeHasVariablesUsedInChildren: () => false,
-        checkInvalidConditionsForNode: () => false,
         handleValidate: () => null,
         handleSave: () => Promise.resolve(''),
         handlePublish: () => Promise.resolve(''),
         handleDiscard: () => null,
         dispatch: () => null,
-        visualBuilderNodeIdEditing: null,
-        setVisualBuilderNodeIdEditing: () => null,
         translateKey: () => '',
         currentLanguage: 'en-US',
         switchLanguage: () => {
@@ -989,16 +791,9 @@ export function createWorkflowEditorContextForPreview(
         setShouldShowErrors: () => {
             // noop
         },
-        visualBuilderChoiceEventIdEditing: null,
-        setVisualBuilderChoiceEventIdEditing: () => null,
         translateGraph: (graph) => graph,
         translationSizeToLimitRate: 0,
         configurationSizeToLimitRate: 0,
-        handleDownloadHttpRequestEventLogs: () => Promise.resolve(),
-        isDownloadPending: false,
-        checkNewVisualBuilderNode: () => false,
-        visualBuilderBranchIdsEditing: [],
-        setVisualBuilderBranchIdsEditing: () => null,
         zoom: 1,
         setZoom: () => null,
     }

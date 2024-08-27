@@ -8,7 +8,7 @@ import {
     isValidLiquidSyntaxInNode,
     validateJSONWithVariables,
 } from '../models/variables.model'
-import {useWorkflowEditorContext} from './useWorkflowEditor'
+import {useVisualBuilderContext} from './useVisualBuilder'
 
 export default function useIsHttpRequestNodeErrored(
     node: Pick<HttpRequestNodeType, 'id' | 'data'>,
@@ -24,7 +24,7 @@ export default function useIsHttpRequestNodeErrored(
         variables,
     } = node.data
     const {checkInvalidVariablesForNode, visualBuilderGraph} =
-        useWorkflowEditorContext()
+        useVisualBuilderContext()
     const hasInvalidVariables = useMemo(
         () =>
             checkInvalidVariablesForNode({

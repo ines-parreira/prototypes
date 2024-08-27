@@ -6,7 +6,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {Notification} from 'state/notifications/types'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
@@ -19,9 +18,6 @@ import WorkflowEditorView from './WorkflowEditorView'
 const PERFORMANCE_BY_FEATURE_ROUTE = 'stats-automate-performance-by-features'
 
 export default function WorkflowEditorViewContainer() {
-    const currentAccountId: number = useAppSelector(getCurrentAccountState).get(
-        'id'
-    )
     const {shopType, shopName, editWorkflowId} = useParams<{
         shopType: string
         shopName: string
@@ -123,7 +119,6 @@ export default function WorkflowEditorViewContainer() {
     return (
         <ErrorBoundary sentryTags={{section: 'workflows'}}>
             <WorkflowEditorView
-                currentAccountId={currentAccountId}
                 workflowId={workflowId}
                 isNewWorkflow={isNewWorkflow}
                 onNewWorkflowCreated={handleNewWorkflowCreated}

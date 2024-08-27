@@ -10,7 +10,7 @@ import {
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 
 import {ConditionsNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
 import EdgeBlock from '../components/EdgeBlock'
 
@@ -70,7 +70,7 @@ export default function ConditionsNodeWrapper(
     node: NodeProps<ConditionsNodeType['data']>
 ) {
     const {checkInvalidVariablesForNode, checkInvalidConditionsForNode} =
-        useWorkflowEditorContext()
+        useVisualBuilderContext()
 
     const hasInvalidVariables = useMemo(
         () =>

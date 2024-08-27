@@ -8,8 +8,12 @@ import {ActionTriggerType} from 'pages/automate/workflows/models/variables.types
 import {EndNodeType, VisualBuilderNode} from './models/visualBuilderGraph.types'
 
 export const colorByVisualBuilderNodeType: Record<
-    | Exclude<NonNullable<VisualBuilderNode['type']>, 'trigger_button' | 'end'>
-    | ActionTriggerType,
+    | Exclude<
+          NonNullable<VisualBuilderNode['type']>,
+          'channel_trigger' | 'llm_prompt_trigger' | 'end'
+      >
+    | ActionTriggerType
+    | 'app',
     {color: string; backgroundColor: string}
 > = {
     automated_message: {
@@ -52,11 +56,39 @@ export const colorByVisualBuilderNodeType: Record<
         color: 'var(--neutral-grey-5)',
         backgroundColor: 'var(--neutral-grey-2)',
     },
+    cancel_order: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
+    refund_order: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
+    update_shipping_address: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
+    cancel_subscription: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
+    skip_charge: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
+    app: {
+        color: 'var(--accessory-orange-3)',
+        backgroundColor: 'var(--accessory-orange-1)',
+    },
 }
 
 export const iconByVisualBuilderNodeType: Record<
-    | Exclude<NonNullable<VisualBuilderNode['type']>, 'trigger_button' | 'end'>
-    | ActionTriggerType,
+    | Exclude<
+          NonNullable<VisualBuilderNode['type']>,
+          'channel_trigger' | 'llm_prompt_trigger' | 'end'
+      >
+    | ActionTriggerType
+    | 'app',
     ReactNode
 > = {
     automated_message: <i className="material-icons">chat_bubble</i>,
@@ -69,13 +101,19 @@ export const iconByVisualBuilderNodeType: Record<
     conditions: <img src={conditionsMergeIcon} alt="merge" />,
     order_line_item_selection: <i className="material-icons">label</i>,
     custom_input: <i className="material-icons">input</i>,
+    cancel_order: <i className="material-icons">delete</i>,
+    refund_order: <i className="material-icons">history</i>,
+    update_shipping_address: <i className="material-icons">local_shipping</i>,
+    cancel_subscription: <i className="material-icons">unsubscribe</i>,
+    skip_charge: <i className="material-icons">skip_next</i>,
+    app: <i className="material-icons">key</i>,
 }
 
 export const labelByVisualBuilderNodeType: Record<
     NonNullable<VisualBuilderNode['type']>,
     string
 > = {
-    trigger_button: 'Start flow',
+    channel_trigger: 'Start Flow',
     automated_message: 'Automated answer',
     multiple_choices: 'Multiple choice',
     text_reply: 'Collect text reply',
@@ -84,8 +122,14 @@ export const labelByVisualBuilderNodeType: Record<
     http_request: 'HTTP request',
     shopper_authentication: 'Customer login',
     conditions: 'Conditions',
-    end: 'End flow',
+    end: 'End Flow',
     order_line_item_selection: 'Item selection',
+    cancel_order: 'Cancel order',
+    refund_order: 'Refund order',
+    update_shipping_address: 'Edit order shipping address',
+    cancel_subscription: 'Cancel subscription',
+    skip_charge: 'Skip next subscription shipment',
+    llm_prompt_trigger: 'Start Flow',
 }
 
 export const endNodeActionLabelByAction: Record<

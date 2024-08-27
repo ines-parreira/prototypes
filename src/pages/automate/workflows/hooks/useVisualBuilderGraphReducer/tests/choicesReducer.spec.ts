@@ -40,7 +40,7 @@ describe('choicesReducer', () => {
         expect(walkedNodes).toEqual([
             {
                 id: 'trigger_button1',
-                type: 'trigger_button',
+                type: 'channel_trigger',
             },
             {
                 id: expect.any(String),

@@ -1,9 +1,9 @@
 import {useCallback} from 'react'
 
-import {ActionTemplate, App} from '../types'
+import {ActionTemplateApp, App} from '../types'
 
 export type GetAppFromTemplateApp = (
-    templateApp: ActionTemplate['apps'][number]
+    templateApp: ActionTemplateApp
 ) => App | undefined
 
 type Props = {

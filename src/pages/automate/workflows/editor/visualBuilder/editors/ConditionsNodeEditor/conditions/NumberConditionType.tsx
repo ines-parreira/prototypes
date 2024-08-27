@@ -23,7 +23,7 @@ const getDisplayValue = (
 ) => {
     switch (format) {
         case 'currency':
-            return value * 100
+            return value / 100
         default:
             return value
     }
@@ -35,7 +35,7 @@ const getValueFromDisplayValue = (
 ) => {
     switch (format) {
         case 'currency':
-            return displayValue / 100
+            return displayValue * 100
         default:
             return displayValue
     }

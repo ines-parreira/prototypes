@@ -17,6 +17,12 @@ export type WorkflowVariable = {
         | 'order_selection'
         | 'http_request'
         | 'shopper_authentication'
+        | 'cancel_order'
+        | 'refund_order'
+        | 'update_shipping_address'
+        | 'cancel_subscription'
+        | 'skip_charge'
+        | 'app'
         | ActionTriggerType
     type: WorkflowVariableType
     format?: WorkflowVariableFormat

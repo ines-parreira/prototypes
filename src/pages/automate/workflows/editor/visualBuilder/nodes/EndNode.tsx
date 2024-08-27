@@ -1,10 +1,12 @@
 import classNames from 'classnames'
-import React, {memo} from 'react'
+import React, {memo, useMemo} from 'react'
 import {Handle, NodeProps, Position} from 'reactflow'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {useWorkflowChannelSupportContext} from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
+import {
+    EndNodeType,
+    isTriggerNodeType,
+} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
     VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
@@ -16,16 +18,17 @@ import {
 
 import EdgeBlock from '../components/EdgeBlock'
 
+import {useVisualBuilderContext} from '../../../hooks/useVisualBuilder'
 import css from './Node.less'
 
 type Props = VisualBuilderNodeProps & {
-    isShopperInputFeatureEnabled: boolean
     action: EndNodeType['data']['action']
+    actions: EndNodeType['data']['action'][]
 }
 
 const EndNode = memo(function EndNode({
-    isShopperInputFeatureEnabled,
     action,
+    actions,
     isGreyedOut,
     isSelected,
     edgeProps,
@@ -37,11 +40,11 @@ const EndNode = memo(function EndNode({
                 className={classNames(css.node, css.endNode, {
                     [css.nodeGreyedOut]: isGreyedOut,
                     [css.nodeSelected]: isSelected,
-                    [css.notClickable]: !isShopperInputFeatureEnabled,
+                    [css.notClickable]: actions.length === 1,
                 })}
-                onClick={(e) => {
-                    if (!isShopperInputFeatureEnabled) {
-                        e.stopPropagation()
+                onClick={(event) => {
+                    if (actions.length === 1) {
+                        event.stopPropagation()
                     }
                 }}
             >
@@ -69,16 +72,22 @@ const EndNode = memo(function EndNode({
 })
 
 export default function EndNodeWrapper(node: NodeProps<EndNodeType['data']>) {
-    const {getSupportedChannels} = useWorkflowChannelSupportContext()
-    const isShopperInputFeatureEnabled =
-        getSupportedChannels('text_reply').length > 0
     const commonProps = useVisualBuilderNodeProps(node)
 
+    const {visualBuilderGraph} = useVisualBuilderContext()
+
+    const triggerNode = visualBuilderGraph.nodes.find(isTriggerNodeType)!
+
+    const actions = useMemo<EndNodeType['data']['action'][]>(() => {
+        switch (triggerNode.type!) {
+            case 'llm_prompt_trigger':
+                return ['end']
+            case 'channel_trigger':
+                return ['end', 'ask-for-feedback', 'create-ticket']
+        }
+    }, [triggerNode.type])
+
     return (
-        <EndNode
-            {...commonProps}
-            isShopperInputFeatureEnabled={isShopperInputFeatureEnabled}
-            action={node.data.action}
-        />
+        <EndNode {...commonProps} action={node.data.action} actions={actions} />
     )
 }

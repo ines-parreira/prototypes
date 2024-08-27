@@ -61,10 +61,6 @@
     .notClickable {
         cursor: grab;
 
-        * {
-            cursor: grab !important;
-        }
-
         &:hover {
             box-shadow: none;
         }
@@ -91,7 +87,7 @@
         -webkit-line-clamp: 2;
         line-clamp: 2;
         -webkit-box-orient: vertical;
-        cursor: pointer;
+        cursor: inherit;
         overflow-wrap: anywhere;
     }
 

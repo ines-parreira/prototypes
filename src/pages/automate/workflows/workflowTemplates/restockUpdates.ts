@@ -12,14 +12,10 @@ export const RESTOCK_UPDATES: WorkflowTemplate = {
     description:
         'Let customers know when to expect restocks and how they can stay informed of updates.',
     label: WorkflowTemplateLabelType.ProductQuestion,
-    getConfiguration: (
-        id: string,
-        accountId: number
-    ): WorkflowConfiguration => {
+    getConfiguration: (id: string): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
             name: 'Restock updates',
-            account_id: accountId,
             entrypoint: {
                 label: '💪 How often do you restock?',
                 label_tkey: ulid(),

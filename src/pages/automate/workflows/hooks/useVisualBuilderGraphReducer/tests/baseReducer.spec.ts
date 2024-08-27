@@ -1,24 +1,24 @@
 import {visualBuilderGraphSimpleChoicesFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 import {
     AutomatedMessageNodeType,
+    ChannelTriggerNodeType,
     FileUploadNodeType,
     TextReplyNodeType,
-    TriggerButtonNodeType,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import {baseReducer} from '../baseReducer'
 
 describe('baseReducer', () => {
-    test('SET_TRIGGER_BUTTON_LABEL', () => {
+    test('SET_CHANNEL_TRIGGER_LABEL', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
         const nextG = baseReducer(g, {
-            type: 'SET_TRIGGER_BUTTON_LABEL',
-            triggerButtonNodeId: 'trigger_button1',
+            type: 'SET_CHANNEL_TRIGGER_LABEL',
+            channelTriggerNodeId: 'trigger_button1',
             label: 'new entrypoint',
         })
         expect(
             nextG.nodes.find(
-                (n): n is TriggerButtonNodeType => n.type === 'trigger_button'
+                (n): n is ChannelTriggerNodeType => n.type === 'channel_trigger'
             )?.data.label
         ).toEqual('new entrypoint')
     })
