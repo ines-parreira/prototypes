@@ -53,23 +53,17 @@ const ConnectedChannelsPreview = ({
     )
 
     let isArticleRecommendationEnabled = false
-    let areQuickResponsesEnabled = false
     let isOrderManagementEnabled = false
     let workflowsEntrypoints:
         | {workflow_id: string; enabled: boolean}[]
         | undefined
 
     if (channel?.type === TicketChannel.Chat) {
-        const {
-            articleRecommendation,
-            orderManagement,
-            quickResponses,
-            workflows,
-        } = applicationsAutomationSettings[channel.value.meta.app_id!]
+        const {articleRecommendation, orderManagement, workflows} =
+            applicationsAutomationSettings[channel.value.meta.app_id!]
 
         isArticleRecommendationEnabled = articleRecommendation.enabled
         isOrderManagementEnabled = orderManagement.enabled
-        areQuickResponsesEnabled = quickResponses.enabled
         workflowsEntrypoints = workflows.entrypoints
     } else if (channel?.type === TicketChannel.HelpCenter) {
         isOrderManagementEnabled =
@@ -155,9 +149,6 @@ const ConnectedChannelsPreview = ({
                                       ...selfServiceConfiguration.returnOrderPolicy,
                                       enabled: false,
                                   },
-                            quickResponsePolicies: areQuickResponsesEnabled
-                                ? selfServiceConfiguration.quickResponsePolicies
-                                : [],
                         },
                         isArticleRecommendationEnabled:
                             isArticleRecommendationEnabled &&

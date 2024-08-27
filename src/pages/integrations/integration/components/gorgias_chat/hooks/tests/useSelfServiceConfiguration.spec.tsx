@@ -48,10 +48,9 @@ describe('useSelfServiceConfiguration', () => {
         })
     })
 
-    it('returns false when quickResponses, canTrackOrders, and canManageOrders are all false', async () => {
+    it('returns false when canTrackOrders, and canManageOrders are all false', async () => {
         const selfServiceConfiguration = {
             ...initialSelfServiceConfiguration,
-            quickResponsePolicies: [],
             trackOrderPolicy: {enabled: false},
             reportIssuePolicy: {enabled: false, cases: []},
             cancelOrderPolicy: {enabled: false},
@@ -90,48 +89,9 @@ describe('useSelfServiceConfiguration', () => {
         )
     })
 
-    it('returns true when quickResponses is not empty', async () => {
-        const selfServiceConfiguration = {
-            ...initialSelfServiceConfiguration,
-            quickResponsePolicies: [{deactivatedDatetime: null}],
-            trackOrderPolicy: {enabled: false},
-            reportIssuePolicy: {enabled: false},
-            cancelOrderPolicy: {enabled: false},
-            returnOrderPolicy: {enabled: false},
-        }
-
-        const useGetSelfServiceConfigurationsMock = jest.spyOn(
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            require('models/selfServiceConfiguration/queries'),
-            'useGetSelfServiceConfiguration'
-        )
-
-        useGetSelfServiceConfigurationsMock.mockImplementationOnce(() => ({
-            data: selfServiceConfiguration,
-            isLoading: false,
-        }))
-
-        const {result} = renderHook(
-            () => useSelfServiceConfiguration(integration),
-            {
-                wrapper: withQueryClient,
-            }
-        )
-
-        await act(() =>
-            waitFor(() =>
-                expect(result.current).toEqual({
-                    selfServiceConfigurationEnabled: true,
-                    selfServiceConfiguration,
-                })
-            )
-        )
-    })
-
     it('returns true when canTrackOrders is true', async () => {
         const selfServiceConfiguration = {
             ...initialSelfServiceConfiguration,
-            quickResponsePolicies: [],
             trackOrderPolicy: {enabled: true},
             reportIssuePolicy: {enabled: false},
             cancelOrderPolicy: {enabled: false},
@@ -169,7 +129,6 @@ describe('useSelfServiceConfiguration', () => {
     it('returns true when canManageOrders is true', async () => {
         const selfServiceConfiguration = {
             ...initialSelfServiceConfiguration,
-            quickResponsePolicies: [],
             trackOrderPolicy: {enabled: false},
             reportIssuePolicy: {enabled: true},
             cancelOrderPolicy: {enabled: true},

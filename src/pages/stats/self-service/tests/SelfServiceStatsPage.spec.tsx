@@ -70,7 +70,6 @@ const mockSelfServiceConfigurations = [
             eligibilities: [],
             exceptions: [],
         },
-        quickResponsePolicies: [],
         articleRecommendationHelpCenterId: null,
     },
 ]

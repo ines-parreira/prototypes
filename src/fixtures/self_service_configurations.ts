@@ -27,7 +27,6 @@ export const selfServiceConfiguration1: SelfServiceConfiguration = {
         eligibilities: [],
         exceptions: [],
     },
-    quickResponsePolicies: [],
     articleRecommendationHelpCenterId: 30,
 }
 
@@ -55,7 +54,6 @@ export const selfServiceConfiguration2: SelfServiceConfiguration = {
         eligibilities: [],
         exceptions: [],
     },
-    quickResponsePolicies: [],
     articleRecommendationHelpCenterId: null,
 }
 

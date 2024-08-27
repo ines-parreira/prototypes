@@ -18,7 +18,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationType} from 'models/integration/constants'
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import {
-    MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
+    MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
 } from '../../common/components/constants'
 import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
@@ -114,7 +114,7 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
                 channelId={`contact-form-${channel.value.id}`}
                 integrationId={channel.value.id}
                 channelLanguages={channel.value.supported_locales}
-                maxActiveWorkflows={MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}
+                maxActiveWorkflows={MAX_ACTIVE_FLOWS}
                 entrypoints={workflowsEntrypoints}
                 limitTooltipMessage="You have reached the maximum number of enabled Flows in this channel. Disable another Flow in order to enable this Flow."
                 onChange={(nextEntrypoints) => {

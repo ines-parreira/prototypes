@@ -6,7 +6,6 @@ import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkfl
 import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {TicketChannel} from 'business/types/ticket'
 import useKey from 'hooks/useKey'
 import EditorDrawerHeader from '../EditorDrawerHeader'
@@ -29,14 +28,7 @@ export default function WorkflowsPublisher() {
         shopName: string
     }>()
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
-    const {selfServiceConfiguration} = useSelfServiceConfiguration(
-        shopType,
-        shopName
-    )
-    const enabledQuickResponsesCount =
-        selfServiceConfiguration?.quickResponsePolicies.filter(
-            (quickResponse) => !quickResponse.deactivatedDatetime
-        ).length ?? 0
+
     const helpCentersChannels = useSelfServiceHelpCenterChannels(
         shopType,
         shopName
@@ -96,9 +88,6 @@ export default function WorkflowsPublisher() {
                         <ChatChannels
                             configuration={configuration}
                             chatChannels={chatChannels}
-                            enabledQuickResponsesCount={
-                                enabledQuickResponsesCount
-                            }
                         />
                     ) : (
                         <NoChannelsAlert

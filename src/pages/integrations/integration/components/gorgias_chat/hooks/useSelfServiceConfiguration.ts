@@ -28,10 +28,7 @@ const useSelfServiceConfiguration = (
 
     const selfServiceConfigurationEnabled = useMemo(() => {
         if (_isEmpty(selfServiceConfiguration)) return false
-        const quickResponses =
-            selfServiceConfiguration?.quickResponsePolicies.filter(
-                (quickResponse) => !quickResponse.deactivatedDatetime
-            ) ?? []
+
         const canTrackOrders =
             selfServiceConfiguration?.trackOrderPolicy.enabled
         const canManageOrders =
@@ -40,7 +37,7 @@ const useSelfServiceConfiguration = (
             selfServiceConfiguration?.cancelOrderPolicy.enabled ||
             selfServiceConfiguration?.returnOrderPolicy.enabled
 
-        if (!quickResponses.length && !canManageOrders && !canTrackOrders) {
+        if (!canManageOrders && !canTrackOrders) {
             return false
         }
         return true

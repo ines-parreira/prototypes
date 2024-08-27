@@ -198,9 +198,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                 enabled: isArticleRecommendationEnabled,
             },
             orderManagement: {enabled: isOrderManagementEnabled},
-            quickResponses: {
-                enabled: false,
-            },
             workflows: {enabled: !!automationSettings?.workflows?.enabled},
         })
 

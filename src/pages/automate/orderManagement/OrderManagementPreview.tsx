@@ -50,7 +50,6 @@ const OrderManagementPreview = ({
         >
             {(channel) => {
                 let isOrderManagementDisabled = true
-                let areQuickResponsesEnabled = false
                 let workflowsEntrypoints: SelfServicePreviewContextType['workflowsEntrypoints']
 
                 if (channel.type === TicketChannel.Chat) {
@@ -62,9 +61,6 @@ const OrderManagementPreview = ({
                             .enabled === false
                     workflowsEntrypoints =
                         applicationAutomationSettings?.workflows.entrypoints
-                    areQuickResponsesEnabled =
-                        applicationAutomationSettings?.quickResponses
-                            .enabled === true
                 } else if (channel.type === TicketChannel.HelpCenter) {
                     isOrderManagementDisabled = Boolean(
                         channel.value.self_service_deactivated_datetime
@@ -96,12 +92,7 @@ const OrderManagementPreview = ({
                 return (
                     <SelfServicePreviewContext.Provider
                         value={{
-                            selfServiceConfiguration: {
-                                ...selfServiceConfiguration,
-                                quickResponsePolicies: areQuickResponsesEnabled
-                                    ? selfServiceConfiguration.quickResponsePolicies
-                                    : [],
-                            },
+                            selfServiceConfiguration,
                             hoveredOrderManagementFlow,
                             orderManagementFlow: 'trackOrderPolicy',
                             workflowsEntrypoints,

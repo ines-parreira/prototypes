@@ -64,7 +64,6 @@ jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
                 enabled: true,
                 cases: [],
             },
-            quickResponsePolicies: [],
             trackOrderPolicy: {
                 enabled: true,
             },

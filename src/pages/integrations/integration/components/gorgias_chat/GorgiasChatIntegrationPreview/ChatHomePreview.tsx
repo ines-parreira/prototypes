@@ -11,8 +11,6 @@ import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import {GorgiasChatAvatarSettings} from 'models/integration/types'
 
-import List from 'gorgias-design-system/List/List'
-import ListItem from 'gorgias-design-system/List/ListItem'
 import Card from 'gorgias-design-system/Cards/Card'
 import Conversation from 'gorgias-design-system/HomepageModules/Conversation/Conversation'
 import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
@@ -49,10 +47,6 @@ const ChatHomePreview: React.FC<Props> = ({
     variant = 'collapsed',
     privacyPolicyDisclaimerText = '',
 }) => {
-    const quickResponses =
-        selfServiceConfiguration?.quickResponsePolicies?.filter(
-            (quickResponse) => !quickResponse.deactivatedDatetime
-        ) ?? []
     const canTrackOrders = selfServiceConfiguration?.trackOrderPolicy?.enabled
     const canManageOrders =
         canTrackOrders ||
@@ -123,17 +117,6 @@ const ChatHomePreview: React.FC<Props> = ({
 
     return (
         <div className={css.contentContainer}>
-            {quickResponses.length > 0 && (
-                <List>
-                    {quickResponses.map((quickResponse) => (
-                        <ListItem
-                            key={quickResponse.id}
-                            label={quickResponse.title}
-                            trailIcon={<ChevronRightIcon />}
-                        />
-                    ))}
-                </List>
-            )}
             {canManageOrders && (
                 <StyledCard
                     leadIcon={<BoxIcon />}

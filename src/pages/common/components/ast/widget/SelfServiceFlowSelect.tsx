@@ -95,18 +95,6 @@ export function SelfServiceFlowSelect({
                 })
             }
         })
-    } else if (flowType === 'quick-response') {
-        selfServiceConfigurations.forEach((config) => {
-            config.quickResponsePolicies.forEach((flow) => {
-                if (!availableFlows.has(flow.title)) {
-                    availableFlows.add(flow.title)
-                    options = options.push({
-                        value: flow.id,
-                        label: flow.title,
-                    })
-                }
-            })
-        })
     }
 
     options = options.sort(

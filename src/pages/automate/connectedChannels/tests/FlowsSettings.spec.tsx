@@ -113,7 +113,6 @@ describe('FlowsSettings', () => {
                     channel={channelMock as any}
                     shopType="shopify"
                     shopName="Shop Name"
-                    enabledQuickResponses={0}
                     workflowEntrypoints={[
                         {
                             workflow_id: '1',
@@ -159,7 +158,6 @@ describe('FlowsSettings', () => {
                     shopType="shopify"
                     shopName="Shop Name"
                     channel={channelMock as any}
-                    enabledQuickResponses={0}
                     workflowEntrypoints={[
                         {
                             workflow_id: '1',
@@ -268,7 +266,6 @@ describe('FlowsSettings', () => {
                     channel={channelMock as any}
                     shopType="shopify"
                     shopName="Shop Name"
-                    enabledQuickResponses={0}
                     workflowEntrypoints={[
                         {workflow_id: '1'},
                         {workflow_id: '2'},
@@ -303,7 +300,6 @@ describe('FlowsSettings', () => {
                     channel={channelMock as any}
                     shopType="shopify"
                     shopName="Shop Name"
-                    enabledQuickResponses={0}
                     workflowEntrypoints={[
                         {workflow_id: '1'},
                         {workflow_id: '2'},
@@ -338,7 +334,6 @@ describe('FlowsSettings', () => {
                     channel={channelMock as any}
                     shopType="shopify"
                     shopName="Shop Name"
-                    enabledQuickResponses={0}
                     workflowEntrypoints={[
                         {workflow_id: '1'},
                         {workflow_id: '2'},
@@ -396,7 +391,6 @@ describe('FlowsSettings', () => {
                     channel={channelMock as any}
                     shopType="shopify"
                     shopName="Shop Name"
-                    enabledQuickResponses={0}
                     workflowEntrypoints={[
                         {workflow_id: '1'},
                         {workflow_id: '2'},
@@ -687,64 +681,6 @@ describe('FlowsSettings', () => {
                 `Display up to 6 Flows on your Chat to proactively resolve top customer requests.`
             )
         ).toBeInTheDocument()
-    })
-
-    it('should take into account the enabledQuickResponses prop and disable the add-flow button', () => {
-        renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    shopType="shopify"
-                    channel={channelMock as any}
-                    shopName="Shop Name"
-                    enabledQuickResponses={3}
-                    workflowEntrypoints={[
-                        {
-                            workflow_id: '1',
-                        },
-                        {
-                            workflow_id: '2',
-                        },
-                        {
-                            workflow_id: '3',
-                        },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        {
-                            id: '1',
-                            name: 'Flow 1',
-                        } as any,
-                        {
-                            id: '2',
-                            name: 'Flow 2',
-                        },
-                        {
-                            id: '3',
-                            name: 'Flow 3',
-                        },
-                    ]}
-                    automationSettingsWorkflows={[
-                        {
-                            workflow_id: '1',
-                            enabled: true,
-                        },
-                        {
-                            workflow_id: '2',
-                            enabled: true,
-                        },
-                        {
-                            workflow_id: '3',
-                            enabled: true,
-                        },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>
-        )
-
-        const addFlowButton = screen.getByRole('button', {name: /add flow/i})
-        expect(addFlowButton).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('should should show warning when there is a language mismatch', () => {

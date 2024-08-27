@@ -285,12 +285,6 @@ const selfServiceConfigurationsData = [
     {
         shopName: 'test-shop',
         type: 'shopify',
-        quickResponsePolicies: [
-            {
-                id: 'fakeflowId',
-                deactivatedDatetime: null,
-            },
-        ],
     } as SelfServiceConfiguration,
 ]
 

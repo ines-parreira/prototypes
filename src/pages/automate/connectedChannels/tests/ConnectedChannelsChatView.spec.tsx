@@ -35,7 +35,6 @@ const mockChatChannels = [
                 shop_type: 'shopify',
                 wizard: {
                     installation_method: 'manual',
-                    quick_response_ids: [],
                     status: 'published',
                     step: 'installation',
                 },
@@ -109,7 +108,6 @@ const mockChatChannels = [
                 shop_type: 'shopify',
                 wizard: {
                     installation_method: 'manual',
-                    quick_response_ids: [],
                     status: 'published',
                     step: 'installation',
                 },
@@ -183,7 +181,6 @@ const mockChatChannels = [
                 shop_type: 'shopify',
                 wizard: {
                     installation_method: 'manual',
-                    quick_response_ids: [],
                     status: 'published',
                     step: 'installation',
                 },
@@ -342,9 +339,6 @@ const applicationAutomationSettingsFixture = {
         orderManagement: {
             enabled: false,
         },
-        quickResponses: {
-            enabled: true,
-        },
         workflows: {
             enabled: true,
             entrypoints: [
@@ -436,9 +430,6 @@ const mockedStore = mockStore({
                 orderManagement: {
                     enabled: false,
                 },
-                quickResponses: {
-                    enabled: true,
-                },
                 workflows: {
                     enabled: true,
                     entrypoints: [
@@ -476,9 +467,6 @@ const mockedStore = mockStore({
                 orderManagement: {
                     enabled: false,
                 },
-                quickResponses: {
-                    enabled: true,
-                },
                 workflows: {
                     enabled: true,
                     entrypoints: [
@@ -514,9 +502,6 @@ const mockedStore = mockStore({
                     enabled: false,
                 },
                 orderManagement: {
-                    enabled: false,
-                },
-                quickResponses: {
                     enabled: false,
                 },
                 workflows: {
@@ -582,9 +567,6 @@ describe('ConnectedChannelsView', () => {
                     },
                     orderManagement: {
                         enabled: false,
-                    },
-                    quickResponses: {
-                        enabled: true,
                     },
                     workflows: {
                         enabled: true,
@@ -910,9 +892,6 @@ describe('ConnectedChannelsView', () => {
                     orderManagement: {
                         enabled: true,
                     },
-                    quickResponses: {
-                        enabled: true,
-                    },
                     workflows: {
                         enabled: true,
                         entrypoints: [
@@ -974,9 +953,6 @@ describe('ConnectedChannelsView', () => {
                 [23]: {
                     ...applicationAutomationSettingsFixture[25],
                     id: 23,
-                    quickResponses: {
-                        enabled: false,
-                    },
                     articleRecommendation: {
                         enabled: false,
                     },

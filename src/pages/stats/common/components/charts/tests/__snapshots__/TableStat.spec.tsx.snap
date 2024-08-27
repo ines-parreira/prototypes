@@ -761,12 +761,6 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           class="cell-wrapper cell-content"
         >
           title
-           
-          <span
-            class="material-icons quickResponseEnabled"
-          >
-            circle
-          </span>
         </span>
       </td>
       <td
@@ -1371,12 +1365,6 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           class="cell-wrapper cell-content"
         >
           title
-           
-          <span
-            class="material-icons quickResponseEnabled"
-          >
-            circle
-          </span>
         </span>
       </td>
       <td
@@ -2174,12 +2162,6 @@ exports[`TableStat should render a table chart 1`] = `
           class="cell-wrapper cell-content"
         >
           title
-           
-          <span
-            class="material-icons quickResponseEnabled"
-          >
-            circle
-          </span>
         </span>
       </td>
       <td
@@ -3033,12 +3015,6 @@ exports[`TableStat should render a table with the expand button and one line vis
           class="cell-wrapper cell-content"
         >
           title
-           
-          <span
-            class="material-icons quickResponseEnabled"
-          >
-            circle
-          </span>
         </span>
       </td>
       <td

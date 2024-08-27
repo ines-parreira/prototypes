@@ -1509,10 +1509,6 @@ export const newMessageResetFromMessage = createAction<{
     replyAreaState: ReplyAreaState
 }>(constants.NEW_MESSAGE_RESET_FROM_MESSAGE)
 
-export const newMessageQuickResponseFlow = createAction<{
-    attachments: List<any>
-}>(constants.NEW_MESSAGE_QUICK_RESPONSE_FLOW)
-
 export const setShowConvertToForwardPopover = createAction<boolean>(
     constants.NEW_MESSAGE_SHOW_CONVERT_TO_FORWARD_POPOVER
 )

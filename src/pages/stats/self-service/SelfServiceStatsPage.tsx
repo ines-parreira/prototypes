@@ -157,9 +157,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         .filter((config) => config.articleRecommendationHelpCenterId)
         .map((config) => config.articleRecommendationHelpCenterId)
 
-    const isImprovedNavigationEnabled =
-        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
-
     const [workflowsPerformance, isFetchingWorkflowsPerformance] =
         useStatResource<TwoDimensionalChart>({
             statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
@@ -232,11 +229,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
 
     const buildCtaRedirectUrl = useCallback(
         (
-            feature:
-                | 'orderManagement'
-                | 'quickResponses'
-                | 'articleRecommendation'
-                | 'trainMyAi'
+            feature: 'orderManagement' | 'articleRecommendation' | 'trainMyAi'
         ) => {
             if (!storeIntegrations.length) return '/app/automation/'
 
@@ -247,12 +240,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             switch (feature) {
                 case 'orderManagement':
                     return `/app/automation/${firstIntegration.type}/${firstIntegrationShopName}/order-management`
-                case 'quickResponses':
-                    return `/app/automation/${
-                        firstIntegration.type
-                    }/${firstIntegrationShopName}${
-                        isImprovedNavigationEnabled ? '/flows' : ''
-                    }/quick-responses`
                 case 'articleRecommendation':
                     return `/app/automation/${firstIntegration.type}/${firstIntegrationShopName}/article-recommendation`
                 case 'trainMyAi':
@@ -261,7 +248,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                     return '/app/automation/'
             }
         },
-        [storeIntegrations, isImprovedNavigationEnabled]
+        [storeIntegrations]
     )
 
     const allSectionsNoData =

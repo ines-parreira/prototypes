@@ -109,7 +109,7 @@ export const ConnectedChannelsChatView = ({
         !automationExistsInChannel
 
     const updateSettings = useCallback(
-        (key: 'articleRecommendation' | 'orderManagement' | 'quickResponses') =>
+        (key: 'articleRecommendation' | 'orderManagement') =>
             (value: boolean) => {
                 if (!selectedChannel) return
 
@@ -140,15 +140,6 @@ export const ConnectedChannelsChatView = ({
         return (
             applicationsAutomationSettings?.[selectedChannel]?.workflows
                 ?.entrypoints ?? []
-        )
-    }, [applicationsAutomationSettings, selectedChannel])
-
-    const isQuickResponsesEnabled = useMemo(() => {
-        if (!selectedChannel) return false
-
-        return (
-            applicationsAutomationSettings?.[selectedChannel]?.quickResponses
-                .enabled ?? false
         )
     }, [applicationsAutomationSettings, selectedChannel])
 
@@ -183,12 +174,6 @@ export const ConnectedChannelsChatView = ({
         )
     }
 
-    const enabledQuickResponses = isQuickResponsesEnabled
-        ? selfServiceConfiguration?.quickResponsePolicies.filter(
-              (qr) => !qr.deactivatedDatetime
-          ).length ?? 0
-        : 0
-
     return (
         <div className={classNames('full-width', css.container)}>
             <div className={css.settingsContainer}>
@@ -221,7 +206,6 @@ export const ConnectedChannelsChatView = ({
                     primaryLanguage={getPrimaryLanguageFromChatConfig(
                         currentChannel.value.meta
                     )}
-                    enabledQuickResponses={enabledQuickResponses}
                     configurations={workflowConfigurations ?? []}
                     automationSettingsWorkflows={automationSettingsWorkflows}
                     onChange={(nextEntrypoints, action) => {

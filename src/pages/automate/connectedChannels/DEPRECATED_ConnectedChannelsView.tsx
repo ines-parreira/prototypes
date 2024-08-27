@@ -106,10 +106,6 @@ const DEPRECATED_ConnectedChannelsView = () => {
                     selfServiceConfiguration?.workflowsEntrypoints ?? [],
                 workflowsUrl: `/app/automation/${shopType}/${shopName}/flows`,
                 articleRecommendationUrl: `/app/automation/${shopType}/${shopName}/article-recommendation`,
-                enabledQuickResponsesCount:
-                    selfServiceConfiguration?.quickResponsePolicies.filter(
-                        (quickResponse) => !quickResponse.deactivatedDatetime
-                    ).length ?? 0,
             }),
             [
                 articleRecommendationHelpCenterId,
@@ -117,7 +113,6 @@ const DEPRECATED_ConnectedChannelsView = () => {
                 shopType,
                 shopName,
                 selfServiceConfiguration?.workflowsEntrypoints,
-                selfServiceConfiguration?.quickResponsePolicies,
                 workflowConfigurations,
             ]
         )

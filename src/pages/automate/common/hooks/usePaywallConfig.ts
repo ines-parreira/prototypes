@@ -99,7 +99,7 @@ export const usePaywallConfig = (
                             '/img/paywalls/screens/automate_paywall_flows.png'
                         ),
                         description:
-                            'Build personalized, automated interactions with Flows and Quick Responses.',
+                            'Build personalized, automated interactions with Flows.',
                     },
                     {
                         imageUrl: assetsUrl(

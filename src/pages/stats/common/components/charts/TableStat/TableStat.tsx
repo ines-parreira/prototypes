@@ -79,23 +79,6 @@ export class TableStat extends Component<
             .replace(/%/g, 'percent')
             .replace(/ /g, '-')}-tooltip`
 
-    _doesQuickResponseExist = (
-        flowId: string,
-        shopName: string,
-        shopType: string
-    ) => {
-        const quickReponsePolicies = this.props.selfServiceConfigurations?.find(
-            (selfServiceConfiguration) =>
-                selfServiceConfiguration.shopName === shopName &&
-                selfServiceConfiguration.type === shopType
-        )?.quickResponsePolicies
-        const quickReponse = quickReponsePolicies?.find(
-            (quickReponsePolicy) => quickReponsePolicy.id === flowId
-        )
-
-        return !!quickReponse
-    }
-
     _getShopTypeAndShopName = (shopIntegrationId: number) => {
         const shopIntegration = this.props.integrations?.find(
             (integration) => integration.id === shopIntegrationId
@@ -534,28 +517,7 @@ export class TableStat extends Component<
                     return value
                 }
 
-                const flowId = metric.get('flow_id') as string
-                const isQuickResponseEnabled = this._doesQuickResponseExist(
-                    flowId,
-                    shopName,
-                    shopType
-                )
-
-                return (
-                    <>
-                        {value}{' '}
-                        {isQuickResponseEnabled && (
-                            <span
-                                className={classnames(
-                                    'material-icons',
-                                    css.quickResponseEnabled
-                                )}
-                            >
-                                circle
-                            </span>
-                        )}
-                    </>
-                )
+                return <>{value}</>
             }
             default:
                 return callback(callbackData, callbackContext)

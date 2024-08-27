@@ -144,7 +144,6 @@ export type SelfServiceConfiguration = {
     trackOrderPolicy: SelfServiceConfigurationTrackOrderPolicy
     cancelOrderPolicy: SelfServiceConfigurationCancelOrderPolicy
     returnOrderPolicy: SelfServiceConfigurationReturnOrderPolicy
-    quickResponsePolicies: QuickResponsePolicy[]
     articleRecommendationHelpCenterId: Maybe<number>
     workflowsEntrypoints?: Maybe<{workflow_id: string}[]>
 }

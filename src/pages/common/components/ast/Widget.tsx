@@ -504,9 +504,6 @@ export class Widget extends Component<Props, State> {
             if (left.includes('order_management_flow')) {
                 widget.type = 'self-service-order-management-flow-select'
             }
-            if (left.includes('quick_response_flow')) {
-                widget.type = 'self-service-quick-response-flow-select'
-            }
             if (left.includes('store_integration_id')) {
                 widget.type = 'self-service-store-integration-select'
             }
@@ -665,15 +662,6 @@ export class Widget extends Component<Props, State> {
                         className={className}
                         onChange={this._handleChange}
                         flowType={'order-management'}
-                    />
-                )
-            case 'self-service-quick-response-flow-select':
-                return (
-                    <SelfServiceFlowSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                        flowType={'quick-response'}
                     />
                 )
             case 'self-service-store-integration-select':

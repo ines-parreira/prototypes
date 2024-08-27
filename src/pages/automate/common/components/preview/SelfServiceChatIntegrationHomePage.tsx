@@ -25,7 +25,7 @@ import ListItem from 'gorgias-design-system/List/ListItem'
 import Card from 'gorgias-design-system/Cards/Card'
 import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
 import ConversationAvatars from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationAvatars'
-import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../constants'
+import {MAX_ACTIVE_FLOWS} from '../constants'
 import css from './SelfServiceChatIntegrationHomePage.less'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
@@ -46,7 +46,6 @@ const SelfServiceChatIntegrationHomePage = ({
     const history = useHistory()
     const {
         selfServiceConfiguration,
-        hoveredQuickResponseId,
         hoveredOrderManagementFlow,
         isArticleRecommendationEnabled,
     } = useSelfServicePreviewContext()
@@ -58,10 +57,6 @@ const SelfServiceChatIntegrationHomePage = ({
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
     const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
 
-    const quickResponses =
-        selfServiceConfiguration?.quickResponsePolicies.filter(
-            (quickResponse) => !quickResponse.deactivatedDatetime
-        ) ?? []
     const canTrackOrders = selfServiceConfiguration?.trackOrderPolicy.enabled
     const canManageOrders =
         canTrackOrders ||
@@ -71,11 +66,7 @@ const SelfServiceChatIntegrationHomePage = ({
     const isInitialEntry = history.length === 1
 
     let variant = 'collapsed'
-    if (
-        !quickResponses.length &&
-        !canManageOrders &&
-        !workflowsEntrypoints.length
-    ) {
+    if (!canManageOrders && !workflowsEntrypoints.length) {
         variant = 'expanded'
     }
 
@@ -140,10 +131,6 @@ const SelfServiceChatIntegrationHomePage = ({
             />
         )
     }
-    const maxActiveWorkflows = Math.max(
-        MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS - quickResponses.length,
-        0
-    )
 
     return (
         <div
@@ -152,11 +139,10 @@ const SelfServiceChatIntegrationHomePage = ({
             })}
         >
             <div className={css.contentContainer}>
-                {(quickResponses.length > 0 ||
-                    workflowsEntrypoints.length > 0) && (
+                {workflowsEntrypoints.length > 0 && (
                     <List>
                         {workflowsEntrypoints
-                            .slice(0, maxActiveWorkflows)
+                            .slice(0, MAX_ACTIVE_FLOWS)
                             .map((entrypoint) => (
                                 <ListItem
                                     key={entrypoint.workflow_id}
@@ -164,18 +150,6 @@ const SelfServiceChatIntegrationHomePage = ({
                                     trailIcon={<ChevronRightIcon />}
                                 />
                             ))}
-                        {quickResponses.map((quickResponse) => (
-                            <ListItem
-                                key={quickResponse.id}
-                                label={quickResponse.title}
-                                trailIcon={<ChevronRightIcon />}
-                                className={
-                                    quickResponse.id === hoveredQuickResponseId
-                                        ? 'active'
-                                        : ''
-                                }
-                            />
-                        ))}
                     </List>
                 )}
                 {canManageOrders && (

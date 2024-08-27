@@ -43,18 +43,6 @@ const createSelfServiceConfigurationFixtures = (
             eligibilities: [],
             exceptions: [],
         },
-        quickResponsePolicies: [
-            {
-                deactivatedDatetime: null,
-                id: 'ded6b39b-a85c-487e-8658-3f380d238528',
-                title: 'When do you usually restock?',
-                responseMessageContent: {
-                    html: '<div>Every month</div>',
-                    text: 'Every month',
-                    attachments: fromJS([]),
-                },
-            },
-        ],
         articleRecommendationHelpCenterId: null,
     }))
 }

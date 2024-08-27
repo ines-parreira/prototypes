@@ -19,7 +19,6 @@ describe('resources.ts', () => {
             const mockResponse = {
                 data: {
                     articleRecommendation: true,
-                    quickResponses: true,
                     orderManagement: true,
                     workflows: [],
                 },
@@ -52,7 +51,6 @@ describe('resources.ts', () => {
             const mockResponse = {
                 data: {
                     articleRecommendation: true,
-                    quickResponses: true,
                     orderManagement: true,
                     workflows: [],
                 },
@@ -83,7 +81,6 @@ describe('resources.ts', () => {
             const mockResponse = {
                 data: {
                     articleRecommendation: true,
-                    quickResponses: true,
                     orderManagement: true,
                     workflows: [],
                 },
@@ -99,7 +96,6 @@ describe('resources.ts', () => {
 
             const payload: any = {
                 articleRecommendation: true,
-                quickResponses: true,
                 orderManagement: true,
                 workflows: [],
             }

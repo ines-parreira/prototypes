@@ -2,7 +2,6 @@ import {createContext, useContext} from 'react'
 
 import {
     PolicyKey,
-    QuickResponsePolicy,
     ReportIssueCaseReason,
     ResponseMessageContent,
     SelfServiceConfiguration,
@@ -10,8 +9,6 @@ import {
 
 export type SelfServicePreviewContextType = {
     selfServiceConfiguration?: SelfServiceConfiguration
-    quickResponse?: QuickResponsePolicy
-    hoveredQuickResponseId?: Maybe<QuickResponsePolicy['id']>
     hoveredOrderManagementFlow?: Maybe<PolicyKey>
     hasHoveredReportOrderIssueScenario?: boolean
     orderManagementFlow?: PolicyKey

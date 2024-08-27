@@ -12,7 +12,6 @@ const applicationAutomationSettings1: ChatApplicationAutomationSettings = {
     applicationId: 10,
     articleRecommendation: {enabled: true},
     orderManagement: {enabled: true},
-    quickResponses: {enabled: true},
     workflows: {enabled: true},
     createdDatetime: '2022-10-08T09:01:01.054322+00:00',
     updatedDatetime: '2022-10-08T09:01:01.054322+00:00',
@@ -23,7 +22,6 @@ const applicationAutomationSettings2: ChatApplicationAutomationSettings = {
     applicationId: 15,
     articleRecommendation: {enabled: false},
     orderManagement: {enabled: false},
-    quickResponses: {enabled: false},
     workflows: {enabled: false},
     createdDatetime: '2023-01-10T10:11:00.077382+00:00',
     updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
@@ -50,9 +48,6 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                     orderManagement: {
                         enabled: true,
                     },
-                    quickResponses: {
-                        enabled: true,
-                    },
                     workflows: {
                         enabled: true,
                     },
@@ -64,9 +59,6 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                         enabled: false,
                     },
                     orderManagement: {
-                        enabled: false,
-                    },
-                    quickResponses: {
                         enabled: false,
                     },
                     workflows: {
@@ -99,9 +91,6 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                     orderManagement: {
                         enabled: true,
                     },
-                    quickResponses: {
-                        enabled: true,
-                    },
                     workflows: {
                         enabled: true,
                     },
@@ -113,9 +102,6 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                         enabled: false,
                     },
                     orderManagement: {
-                        enabled: false,
-                    },
-                    quickResponses: {
                         enabled: false,
                     },
                     workflows: {
@@ -152,9 +138,6 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                     orderManagement: {
                         enabled: true,
                     },
-                    quickResponses: {
-                        enabled: true,
-                    },
                     workflows: {
                         enabled: true,
                     },
@@ -167,9 +150,6 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                     },
                     orderManagement: {
                         enabled: true,
-                    },
-                    quickResponses: {
-                        enabled: false,
                     },
                     workflows: {
                         enabled: false,
@@ -199,9 +179,6 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                     orderManagement: {
                         enabled: true,
                     },
-                    quickResponses: {
-                        enabled: true,
-                    },
                     workflows: {
                         enabled: true,
                     },
@@ -213,9 +190,6 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                         enabled: false,
                     },
                     orderManagement: {
-                        enabled: false,
-                    },
-                    quickResponses: {
                         enabled: false,
                     },
                     workflows: {

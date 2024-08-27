@@ -2,7 +2,7 @@ import React, {useCallback, useMemo} from 'react'
 import _ from 'lodash'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from 'pages/automate/common/components/constants'
+import {MAX_ACTIVE_FLOWS} from 'pages/automate/common/components/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     SelfServiceChannel,
@@ -40,8 +40,6 @@ type Props = {
     isLoading: boolean
     workflows: Workflow[]
     handleAutomationSettingUpdate: (workflows: Workflow[]) => void
-    enabledQuickResponsesCount?: number
-    isQuickResponseEnabled?: boolean
     onlySupportedChannels: SelfServiceChannelType[]
     configuration: WorkflowConfiguration
 }
@@ -50,8 +48,6 @@ const ChannelToggle = ({
     workflows,
     isLoading,
     handleAutomationSettingUpdate,
-    isQuickResponseEnabled,
-    enabledQuickResponsesCount = 0,
     onlySupportedChannels,
     configuration,
 }: Props) => {
@@ -112,24 +108,10 @@ const ChannelToggle = ({
         ).length
         if (isChat) {
             if (isMLFlowRecommendationEnabled) return false
-            return (
-                enabledFlowsCount >=
-                Math.max(
-                    MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS -
-                        enabledQuickResponsesCount *
-                            Number(isQuickResponseEnabled),
-                    0
-                )
-            )
+            return enabledFlowsCount >= MAX_ACTIVE_FLOWS
         }
-        return enabledFlowsCount >= MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS
-    }, [
-        clonedWorkflows,
-        isChat,
-        isMLFlowRecommendationEnabled,
-        enabledQuickResponsesCount,
-        isQuickResponseEnabled,
-    ])
+        return enabledFlowsCount >= MAX_ACTIVE_FLOWS
+    }, [clonedWorkflows, isChat, isMLFlowRecommendationEnabled])
 
     return (
         <div>

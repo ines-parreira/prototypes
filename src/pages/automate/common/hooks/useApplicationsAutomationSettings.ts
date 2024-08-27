@@ -51,18 +51,13 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
             notificationMessage?: string
         ) => {
             try {
-                const {
-                    articleRecommendation,
-                    quickResponses,
-                    orderManagement,
-                    workflows,
-                } = applicationAutomationSettings
+                const {articleRecommendation, orderManagement, workflows} =
+                    applicationAutomationSettings
 
                 const res = await upsertChatApplicationAutomationSettings(
                     applicationAutomationSettings.applicationId.toString(),
                     {
                         articleRecommendation,
-                        quickResponses,
                         orderManagement,
                         workflows,
                     }

@@ -18,7 +18,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import {
     ARTICLE_RECOMMENDATION,
-    MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
+    MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
 } from '../../common/components/constants'
 import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
@@ -47,7 +47,6 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         isHelpCenterEmpty,
         isOrderManagementAvailable,
         articleRecommendationUrl,
-        enabledQuickResponsesCount,
         workflowConfigurations: configurations,
         workflowsEntrypoints: allEntrypoints,
     } = useConnectedChannelsViewContext()
@@ -56,11 +55,11 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
     const applicationAutomationSettings =
         applicationsAutomationSettings[applicationId]
 
-    const {articleRecommendation, orderManagement, quickResponses, workflows} =
+    const {articleRecommendation, orderManagement, workflows} =
         applicationAutomationSettings
 
     const updateSettings =
-        (key: 'articleRecommendation' | 'orderManagement' | 'quickResponses') =>
+        (key: 'articleRecommendation' | 'orderManagement') =>
         (value: boolean) =>
             handleChatApplicationAutomationSettingsUpdate({
                 ...applicationAutomationSettings,
@@ -103,12 +102,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
     const maxActiveWorkflows =
         isMLFlowRecommendationEnabled && workflows?.entrypoints?.length
             ? workflows.entrypoints.length
-            : Math.max(
-                  MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS -
-                      enabledQuickResponsesCount *
-                          Number(quickResponses.enabled),
-                  0
-              )
+            : MAX_ACTIVE_FLOWS
 
     const channelLanguages = getLanguagesFromChatConfig(
         channel.value.meta

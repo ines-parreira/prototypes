@@ -8,7 +8,7 @@ import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import {
-    MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
+    MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
 } from '../../common/components/constants'
 import useAppSelector from '../../../../hooks/useAppSelector'
@@ -66,7 +66,7 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
                 integrationId={channel.value.id}
                 channelLanguages={[channel.value.default_locale]}
                 entrypoints={workflowsEntrypoints}
-                maxActiveWorkflows={MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}
+                maxActiveWorkflows={MAX_ACTIVE_FLOWS}
                 limitTooltipMessage="You have reached the maximum number of enabled Flows in this channel. Disable another Flow in order to enable this Flow."
                 onChange={(nextEntrypoints) => {
                     logEvent(SegmentEvent.AutomateChannelUpdateFromChannels, {

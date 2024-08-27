@@ -51,7 +51,6 @@ export const selfServiceConfigurationFixture = {
         exceptions: [],
         shop_name: 'acme',
     },
-    quickResponsePolicies: [],
     articleRecommendationHelpCenterId: 22,
     workflowsEntrypoints: [
         {

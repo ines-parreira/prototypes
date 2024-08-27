@@ -155,9 +155,6 @@ const mockedStore = mockStore({
                 orderManagement: {
                     enabled: false,
                 },
-                quickResponses: {
-                    enabled: true,
-                },
                 workflows: {
                     enabled: true,
                     entrypoints: [
@@ -194,9 +191,6 @@ const mockedStore = mockStore({
                 },
                 orderManagement: {
                     enabled: false,
-                },
-                quickResponses: {
-                    enabled: true,
                 },
                 workflows: {
                     enabled: true,

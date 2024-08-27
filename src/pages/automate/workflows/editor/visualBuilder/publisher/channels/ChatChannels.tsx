@@ -10,7 +10,6 @@ import useOnlySupportedChannels from '../helper/useOnlySupportedChannels'
 import ChannelToggle from './ChannelToggle'
 
 const ChannelItem = ({
-    enabledQuickResponsesCount,
     channel,
     onlySupportedChannels,
     configuration,
@@ -19,7 +18,6 @@ const ChannelItem = ({
     handleChatApplicationAutomationSettingsUpdate,
 }: {
     appId: string
-    enabledQuickResponsesCount: number
     channel: SelfServiceChatChannel
     onlySupportedChannels: SelfServiceChannelType[]
     configuration: WorkflowConfiguration
@@ -29,18 +27,15 @@ const ChannelItem = ({
         chatApplicationAutomationSettings: ChatApplicationAutomationSettings
     ) => Promise<void>
 }) => {
-    const {entrypoints, quickResponsesEnabled} = useMemo(() => {
+    const {entrypoints} = useMemo(() => {
         if (!applicationAutomationSettings) {
             return {
                 entrypoints: [],
-                quickResponsesEnabled: false,
             }
         }
         return {
             entrypoints:
                 applicationAutomationSettings.workflows.entrypoints || [],
-            quickResponsesEnabled:
-                applicationAutomationSettings.quickResponses.enabled,
         }
     }, [applicationAutomationSettings])
 
@@ -67,20 +62,16 @@ const ChannelItem = ({
             isLoading={isLoading}
             workflows={entrypoints}
             handleAutomationSettingUpdate={handleChatUpdate}
-            enabledQuickResponsesCount={enabledQuickResponsesCount}
-            isQuickResponseEnabled={quickResponsesEnabled}
             onlySupportedChannels={onlySupportedChannels}
         />
     )
 }
 
 const ChatChannels = ({
-    enabledQuickResponsesCount,
     chatChannels,
     configuration,
 }: {
     configuration: WorkflowConfiguration
-    enabledQuickResponsesCount: number
     chatChannels: SelfServiceChatChannel[]
 }) => {
     const onlySupportedChannels = useOnlySupportedChannels(
@@ -117,7 +108,6 @@ const ChatChannels = ({
                             handleChatApplicationAutomationSettingsUpdate
                         }
                         isLoading={isUpdatePending || isFetchPending}
-                        enabledQuickResponsesCount={enabledQuickResponsesCount}
                         key={channel.value.id}
                         channel={channel}
                         appId={channel.value.meta.app_id}

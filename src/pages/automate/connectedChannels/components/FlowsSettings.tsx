@@ -52,7 +52,6 @@ interface Props {
     shopType: string
     channel: SelfServiceChannel
     channelType: string
-    enabledQuickResponses?: number
     onChange?: (
         updatedWorkflows: Workflow[],
         action: 'add' | 'remove' | 'reorder'
@@ -67,7 +66,6 @@ export const FlowsSettings = ({
     shopType,
     channelType,
     channel,
-    enabledQuickResponses = 0,
     onChange,
 }: Props) => {
     const [dirtyEntrypoints, setDirtyEntrypoints] = useState<Workflow[]>([])
@@ -185,7 +183,7 @@ export const FlowsSettings = ({
     // If the Flows recommendation feature flag is enabled, we won't limit the merchant to 6 flows
     const hasUnlimitedFlows = useFlags()[FeatureFlagKey.MLFlowsRecommendation]
 
-    const currentFlowsCount = enabledWorkflows.length + enabledQuickResponses
+    const currentFlowsCount = enabledWorkflows.length
     const items =
         dirtyEntrypoints.length > 0 ? dirtyEntrypoints : enabledWorkflows
 
