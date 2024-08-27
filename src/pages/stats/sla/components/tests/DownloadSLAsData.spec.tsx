@@ -55,92 +55,92 @@ const useTicketSlaAchievementRateTrendMock = assumeMock(
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
+const defaultStatsFilters: LegacyStatsFilters = {
+    period: {
+        start_datetime: '2021-02-03T00:00:00.000Z',
+        end_datetime: '2021-02-03T23:59:59.999Z',
+    },
+    channels: [TicketChannel.Chat],
+    integrations: [integrationsState.integrations[0].id],
+    agents: [agents[0].id],
+    tags: [1],
+}
+
+const defaultState = {
+    stats: {
+        filters: fromLegacyStatsFilters(defaultStatsFilters),
+    },
+    ui: {
+        stats: uiStatsInitialState,
+        [drillDownSlice.name]: initialState,
+    },
+} as RootState
+
+const defaultMetricTrend: MetricTrend = {
+    isFetching: false,
+    isError: true,
+    data: {
+        value: 456,
+        prevValue: 123,
+    },
+}
+const breachedTicketsSLAsMetricTrend = {
+    ...defaultMetricTrend,
+    data: {
+        value: 95,
+        prevValue: 100,
+    },
+}
+const satisfiedTicketsSLAsMetricTrend = {
+    ...defaultMetricTrend,
+    data: {
+        value: 97,
+        prevValue: 100,
+    },
+}
+const slaTicketAchievementRateMetricTrend = {
+    ...defaultMetricTrend,
+    data: {
+        value: 98,
+        prevValue: 100,
+    },
+}
+
+const satisfiedOrBreachedTimeSeries = {
+    isFetching: false,
+    isError: false,
+    data: {
+        [TicketSLAStatus.Breached]: [
+            [
+                {
+                    dateTime: '2022-02-02T12:45:33.122',
+                    value: 200,
+                    label: TicketSLAStatus.Satisfied,
+                },
+            ],
+        ],
+        [TicketSLAStatus.Pending]: [
+            [
+                {
+                    dateTime: '2022-02-02T12:45:33.122',
+                    value: 400,
+                    label: TicketSLAStatus.Pending,
+                },
+            ],
+        ],
+        [TicketSLAStatus.Satisfied]: [
+            [
+                {
+                    dateTime: '2022-02-02T12:45:33.122',
+                    value: 600,
+                    label: TicketSLAStatus.Satisfied,
+                },
+            ],
+        ],
+    },
+} as UseQueryResult<Record<TicketSLAStatus, TimeSeriesDataItem[][]>>
+
 describe('DownloadSLAsData', () => {
-    const defaultStatsFilters: LegacyStatsFilters = {
-        period: {
-            start_datetime: '2021-02-03T00:00:00.000Z',
-            end_datetime: '2021-02-03T23:59:59.999Z',
-        },
-        channels: [TicketChannel.Chat],
-        integrations: [integrationsState.integrations[0].id],
-        agents: [agents[0].id],
-        tags: [1],
-    }
-
-    const defaultState = {
-        stats: {
-            filters: fromLegacyStatsFilters(defaultStatsFilters),
-        },
-        ui: {
-            stats: uiStatsInitialState,
-            [drillDownSlice.name]: initialState,
-        },
-    } as RootState
-
-    const defaultMetricTrend: MetricTrend = {
-        isFetching: false,
-        isError: true,
-        data: {
-            value: 456,
-            prevValue: 123,
-        },
-    }
-    const breachedTicketsSLAsMetricTrend = {
-        ...defaultMetricTrend,
-        data: {
-            value: 95,
-            prevValue: 100,
-        },
-    }
-    const satisfiedTicketsSLAsMetricTrend = {
-        ...defaultMetricTrend,
-        data: {
-            value: 97,
-            prevValue: 100,
-        },
-    }
-    const slaTicketAchievementRateMetricTrend = {
-        ...defaultMetricTrend,
-        data: {
-            value: 98,
-            prevValue: 100,
-        },
-    }
-
-    const satisfiedOrBreachedTimeSeries = {
-        isFetching: false,
-        isError: false,
-        data: {
-            [TicketSLAStatus.Breached]: [
-                [
-                    {
-                        dateTime: '2022-02-02T12:45:33.122',
-                        value: 200,
-                        label: TicketSLAStatus.Satisfied,
-                    },
-                ],
-            ],
-            [TicketSLAStatus.Pending]: [
-                [
-                    {
-                        dateTime: '2022-02-02T12:45:33.122',
-                        value: 400,
-                        label: TicketSLAStatus.Pending,
-                    },
-                ],
-            ],
-            [TicketSLAStatus.Satisfied]: [
-                [
-                    {
-                        dateTime: '2022-02-02T12:45:33.122',
-                        value: 600,
-                        label: TicketSLAStatus.Satisfied,
-                    },
-                ],
-            ],
-        },
-    } as UseQueryResult<Record<TicketSLAStatus, TimeSeriesDataItem[][]>>
-
     beforeEach(() => {
         jest.resetAllMocks()
         useBreachedSlaTicketsTrendMock.mockReturnValue(
@@ -161,6 +161,42 @@ describe('DownloadSLAsData', () => {
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
                 <DownloadSLAsData />
+            </Provider>
+        )
+
+        fireEvent.click(getByText(DOWNLOAD_DATA_BUTTON_LABEL))
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.StatDownloadClicked,
+            expect.objectContaining({
+                name: 'all-metrics',
+            })
+        )
+        expect(saveReportMock).toHaveBeenCalled()
+    })
+})
+
+describe('DownloadSLAsData with AnalyticsNewFilters', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+        useBreachedSlaTicketsTrendMock.mockReturnValue(
+            breachedTicketsSLAsMetricTrend
+        )
+        useSatisfiedSlaTicketsTrendMock.mockReturnValue(
+            satisfiedTicketsSLAsMetricTrend
+        )
+        useTicketSlaAchievementRateTrendMock.mockReturnValue(
+            slaTicketAchievementRateMetricTrend
+        )
+        useSatisfiedOrBreachedTicketsTimeSeriesMock.mockReturnValue(
+            satisfiedOrBreachedTimeSeries
+        )
+    })
+
+    it('should send event to segment and call saveReport on download data button click', () => {
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <DownloadSLAsData hidden />
             </Provider>
         )
 

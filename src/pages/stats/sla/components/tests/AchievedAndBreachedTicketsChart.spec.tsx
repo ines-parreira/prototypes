@@ -29,54 +29,55 @@ const useSatisfiedAndBreachedTicketsTimeSeriesMock = assumeMock(
     useSatisfiedOrBreachedTicketsTimeSeries
 )
 
-describe('<AchievedAndBreachedTicketsChart />', () => {
-    const defaultState = {
-        stats: {
-            filters: {
-                period: {
-                    start_datetime: '2021-02-03T00:00:00.000Z',
-                    end_datetime: '2021-02-07T23:59:59.999Z',
-                },
+const defaultState = {
+    stats: {
+        filters: {
+            period: {
+                start_datetime: '2021-02-03T00:00:00.000Z',
+                end_datetime: '2021-02-07T23:59:59.999Z',
             },
         },
-        ui: {
-            stats: uiStatsInitialState,
-        },
-    }
-    const exampleData: Record<string, TimeSeriesDataItem[][]> = {
-        [TicketSLAStatus.Breached]: [
-            [
-                {
-                    dateTime: '2021-02-03T00:00:00.000Z',
-                    value: 123,
-                },
-                {
-                    dateTime: '2021-02-04T00:00:00.000Z',
-                    value: 456,
-                },
-                {
-                    dateTime: '2021-02-05T00:00:00.000Z',
-                    value: 789,
-                },
-            ],
+    },
+    ui: {
+        stats: uiStatsInitialState,
+    },
+}
+const exampleData: Record<string, TimeSeriesDataItem[][]> = {
+    [TicketSLAStatus.Breached]: [
+        [
+            {
+                dateTime: '2021-02-03T00:00:00.000Z',
+                value: 123,
+            },
+            {
+                dateTime: '2021-02-04T00:00:00.000Z',
+                value: 456,
+            },
+            {
+                dateTime: '2021-02-05T00:00:00.000Z',
+                value: 789,
+            },
         ],
-        [TicketSLAStatus.Satisfied]: [
-            [
-                {
-                    dateTime: '2021-02-03T00:00:00.000Z',
-                    value: 654,
-                },
-                {
-                    dateTime: '2021-02-04T00:00:00.000Z',
-                    value: 987,
-                },
-                {
-                    dateTime: '2021-02-05T00:00:00.000Z',
-                    value: 321,
-                },
-            ],
+    ],
+    [TicketSLAStatus.Satisfied]: [
+        [
+            {
+                dateTime: '2021-02-03T00:00:00.000Z',
+                value: 654,
+            },
+            {
+                dateTime: '2021-02-04T00:00:00.000Z',
+                value: 987,
+            },
+            {
+                dateTime: '2021-02-05T00:00:00.000Z',
+                value: 321,
+            },
         ],
-    }
+    ],
+}
+
+describe('<AchievedAndBreachedTicketsChart />', () => {
     beforeEach(() => {
         BarChartMock.mockReturnValue(() => null)
         useSatisfiedAndBreachedTicketsTimeSeriesMock.mockReturnValue({
@@ -94,6 +95,71 @@ describe('<AchievedAndBreachedTicketsChart />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <AchievedAndBreachedTicketsChart />
+            </Provider>
+        )
+
+        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+    })
+
+    it('should render the title and hint', async () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <AchievedAndBreachedTicketsChart />
+            </Provider>
+        )
+        userEvent.hover(screen.getByText('info'))
+
+        expect(screen.getByText(CHART_TITLE)).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText(HINT)).toBeInTheDocument()
+        })
+    })
+
+    it('should render the data as stacked BarChart', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <AchievedAndBreachedTicketsChart />
+            </Provider>
+        )
+
+        expect(BarChartMock).toHaveBeenCalledWith(
+            expect.objectContaining({isStacked: true}),
+            {}
+        )
+        expect(BarChartMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: formatLabeledTimeSeriesData(
+                    [
+                        exampleData[TicketSLAStatus.Satisfied][0],
+                        exampleData[TicketSLAStatus.Breached][0],
+                    ],
+                    CHART_FIELDS.map((metric) => metric.label),
+                    ReportingGranularity.Day
+                ),
+            }),
+            {}
+        )
+    })
+})
+
+describe('<AchievedAndBreachedTicketsChart /> with AnalyticsNewFilters', () => {
+    beforeEach(() => {
+        BarChartMock.mockReturnValue(() => null)
+        useSatisfiedAndBreachedTicketsTimeSeriesMock.mockReturnValue({
+            data: exampleData,
+            isLoading: false,
+        } as any)
+    })
+
+    it('should render the loading skeleton', () => {
+        useSatisfiedAndBreachedTicketsTimeSeriesMock.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+        } as any)
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <AchievedAndBreachedTicketsChart isAnalyticsNewFilters />
             </Provider>
         )
 

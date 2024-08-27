@@ -9,12 +9,24 @@ import {
     useSatisfiedSlaTicketsTrend,
 } from 'hooks/reporting/sla/useSLAsTicketsTrends'
 import {saveReport} from 'services/reporting/SLAsReportingService'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 
-export const DownloadSLAsData = () => {
-    const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(
+export const DownloadSLAsData = ({hidden = false}: {hidden?: boolean}) => {
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+    const {
+        cleanStatsFilters: statsFiltersWithLogicalOperators,
+        userTimezone,
+        granularity,
+    } = useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = hidden
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
 
     const slaAchievementRateTrend = useTicketSlaAchievementRateTrend()
     const slaBreachedTickets = useBreachedSlaTicketsTrend()

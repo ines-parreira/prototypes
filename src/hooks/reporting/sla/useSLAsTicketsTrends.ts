@@ -1,13 +1,28 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import useAppSelector from 'hooks/useAppSelector'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 
 export const useBreachedSlaTicketsTrend = (): MetricTrend => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
+    const isAnalyticsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
 
     return useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
         cleanStatsFilters,
@@ -18,9 +33,19 @@ export const useBreachedSlaTicketsTrend = (): MetricTrend => {
 }
 
 export const useSatisfiedSlaTicketsTrend = (): MetricTrend => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
+    const isAnalyticsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
 
     return useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
         cleanStatsFilters,

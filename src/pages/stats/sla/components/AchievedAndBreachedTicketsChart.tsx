@@ -6,7 +6,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 import {formatLabeledTimeSeriesData} from 'pages/stats/common/utils'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 
 import analyticsColors from 'assets/css/new/stats/modern.json'
 
@@ -30,10 +33,24 @@ export const CHART_FIELDS = [
     },
 ]
 
-export const AchievedAndBreachedTicketsChart = () => {
-    const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(
+export const AchievedAndBreachedTicketsChart = ({
+    isAnalyticsNewFilters = false,
+}: {
+    isAnalyticsNewFilters?: boolean
+}) => {
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+    const {
+        cleanStatsFilters: statsFiltersWithLogicalOperators,
+        userTimezone,
+        granularity,
+    } = useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
+
     const {data, isLoading} = useSatisfiedOrBreachedTicketsTimeSeries(
         cleanStatsFilters,
         userTimezone,
