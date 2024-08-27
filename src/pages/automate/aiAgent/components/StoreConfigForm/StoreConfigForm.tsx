@@ -635,6 +635,7 @@ export const StoreConfigForm = ({
                         </Label>
                         <TextArea
                             id="signature-text-area"
+                            innerClassName={css.formInputEditor}
                             placeholder="AI Agent email signature"
                             value={
                                 formValues.signature !== null
