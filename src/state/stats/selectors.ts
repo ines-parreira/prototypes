@@ -8,9 +8,10 @@ import {
 } from 'models/stat/types'
 import {
     DEPRECATED_getIntegrationsByTypes,
+    getIntegrationsByTypes,
     getMessagingAndAppIntegrations,
 } from 'state/integrations/selectors'
-import {Integration} from 'models/integration/types'
+import {Integration, IntegrationType} from 'models/integration/types'
 import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
 import {makeGetPlainJS} from 'utils'
 
@@ -18,6 +19,7 @@ import {RootState} from 'state/types'
 
 import {STATS_STORE_INTEGRATION_TYPES} from 'state/stats/constants'
 import {statsSlice} from 'state/stats/statsSlice'
+import {getHasAutomate} from 'state/billing/selectors'
 
 export const getStats = (state: RootState) => state[statsSlice.name]
 
@@ -80,6 +82,17 @@ const makeMessagingStatsFilterWithLogicalOperatorsSelector = (
 export const getStatsMessagingAndAppIntegrations = makeGetPlainJS<
     Integration[]
 >(getMessagingAndAppIntegrations)
+
+export const getStoreIntegrations = (state: RootState) =>
+    getIntegrationsByTypes(
+        getHasAutomate(state)
+            ? [
+                  IntegrationType.Shopify,
+                  IntegrationType.BigCommerce,
+                  IntegrationType.Magento2,
+              ]
+            : [IntegrationType.Shopify]
+    )(state)
 
 export const getMessagingAndAppIntegrationsStatsFilter =
     makeMessagingStatsFilterSelector(getStatsMessagingAndAppIntegrations)

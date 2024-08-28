@@ -1,4 +1,4 @@
-import {FilterKey} from 'models/stat/types'
+import {FilterComponentKey, FilterKey} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 export const channelsFilterLogicalOperators = [
@@ -26,7 +26,7 @@ export const campaignsFilterLogicalOperators = [
     LogicalOperatorEnum.NOT_ONE_OF,
 ]
 
-export const FilterLabels: Record<FilterKey, string> = {
+export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.Period]: 'Date',
     [FilterKey.Integrations]: 'Integration',
     [FilterKey.Tags]: 'Tag',
@@ -39,6 +39,7 @@ export const FilterLabels: Record<FilterKey, string> = {
     [FilterKey.CustomFields]: 'Custom Field',
     [FilterKey.Score]: 'Score',
     [FilterKey.SlaPolicies]: 'Sla Policy',
+    [FilterComponentKey.Store]: 'Report on',
 }
 
 export const tagsFilterLogicalOperators = [

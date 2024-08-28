@@ -1,6 +1,7 @@
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import * as PeriodFilter from 'pages/stats/common/filters/PeriodFilter'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 import {useGetCustomFieldDefinitions} from 'models/customField/queries'
@@ -9,7 +10,7 @@ import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButto
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {FilterKey, StaticFilter} from 'models/stat/types'
+import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
 import {
     FiltersPanel,
     UNSUPPORTED_FILTER_PLACEHOLDER,
@@ -20,6 +21,9 @@ import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/
 import {HelpCenter} from 'models/helpCenter/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {customFieldsMockReponse} from 'fixtures/customField'
+import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
+import {IntegrationType} from 'models/integration/constants'
+import {billingState} from 'fixtures/billing'
 
 const mockedLocales = [
     {name: 'English', code: 'en-US'},
@@ -72,6 +76,14 @@ const defaultState = {
             },
         },
     },
+    integrations: fromJS({
+        integrations: [
+            getIntegration(1, IntegrationType.Shopify),
+            getIntegration(2, IntegrationType.Magento2),
+            getIntegration(3, IntegrationType.Shopify),
+        ],
+    }),
+    billing: fromJS(billingState),
 } as RootState
 
 describe('FiltersPanel without data', () => {
@@ -105,6 +117,7 @@ describe('FiltersPanel', () => {
         FilterKey.Agents,
         FilterKey.HelpCenters,
         FilterKey.LocaleCodes,
+        FilterComponentKey.Store,
     ]
 
     beforeEach(() => {
@@ -123,7 +136,6 @@ describe('FiltersPanel', () => {
                 />,
                 defaultState
             )
-
             expect(
                 screen.getByText(new RegExp(FilterLabels[filter]))
             ).toBeInTheDocument()

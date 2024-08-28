@@ -17,6 +17,10 @@ export enum FilterKey {
     Tags = 'tags',
 }
 
+export enum FilterComponentKey {
+    Store = 'store',
+}
+
 export type StaticFilter =
     | FilterKey.Agents
     | FilterKey.Campaigns
@@ -29,6 +33,7 @@ export type StaticFilter =
     | FilterKey.Score
     | FilterKey.SlaPolicies
     | FilterKey.Tags
+    | FilterComponentKey.Store
 
 export interface Period {
     end_datetime: string

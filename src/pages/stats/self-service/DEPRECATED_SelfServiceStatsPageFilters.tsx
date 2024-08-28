@@ -3,11 +3,11 @@ import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import SelfServiceIntegrationsFilter from 'pages/stats/self-service/SelfServiceIntegrationsFilter'
+import DEPRECATED_SelfServiceIntegrationsFilter from 'pages/stats/self-service/DEPRECATED_SelfServiceIntegrationsFilter'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {getStatsFilters} from 'state/stats/selectors'
 
-export const SelfServiceStatsPageFilters = () => {
+export const DEPRECATED_SelfServiceStatsPageFilters = () => {
     const dispatch = useAppDispatch()
 
     const statsFilters = useAppSelector(getStatsFilters)
@@ -21,7 +21,7 @@ export const SelfServiceStatsPageFilters = () => {
 
     return (
         <>
-            <SelfServiceIntegrationsFilter
+            <DEPRECATED_SelfServiceIntegrationsFilter
                 onChange={handleIntegrationsFilterChange}
                 value={statsFilters.integrations}
             />

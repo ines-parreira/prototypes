@@ -16,8 +16,14 @@ import {
     getPageStatsFilters,
     getPageStatsFiltersWithLogicalOperators,
     getStatsFiltersWithInitialStoreIntegration,
+    getStoreIntegrations,
 } from 'state/stats/selectors'
 import {initialState} from 'state/stats/statsSlice'
+import {initialState as billingInitialState} from 'state/billing/reducers'
+
+import * as billingFixtures from 'fixtures/billing'
+import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
+import {automationSubscriptionProductPrices} from 'fixtures/account'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =
@@ -90,6 +96,50 @@ describe('stats selectors', () => {
                 }),
             }
             expect(selector(state)).toEqual(expectedIntegrations)
+        })
+    })
+
+    describe('getStoreIntegrations', () => {
+        it('should return only Shopify store integrations', () => {
+            const state = {
+                billing: billingInitialState.mergeDeep(
+                    billingFixtures.billingState
+                ),
+                integrations: fromJS({
+                    integrations: [
+                        getIntegration(1, IntegrationType.Shopify),
+                        getIntegration(2, IntegrationType.BigCommerce),
+                    ],
+                }),
+            } as RootState
+            expect(getStoreIntegrations(state)).toEqual([
+                getIntegration(1, IntegrationType.Shopify),
+            ])
+        })
+
+        it('should return other store integrations values', () => {
+            const state = {
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: automationSubscriptionProductPrices,
+                    },
+                }),
+                billing: billingInitialState.mergeDeep(
+                    billingFixtures.billingState
+                ),
+                integrations: fromJS({
+                    integrations: [
+                        getIntegration(1, IntegrationType.Shopify),
+                        getIntegration(2, IntegrationType.BigCommerce),
+                        getIntegration(3, IntegrationType.Magento2),
+                    ],
+                }),
+            } as RootState
+            expect(getStoreIntegrations(state)).toEqual([
+                getIntegration(1, IntegrationType.Shopify),
+                getIntegration(2, IntegrationType.BigCommerce),
+                getIntegration(3, IntegrationType.Magento2),
+            ])
         })
     })
 

@@ -1,20 +1,21 @@
 import React from 'react'
 
+import css from 'pages/stats/self-service/DEPRECATED_SelfServiceIntegrationsFilter.less'
 import {Value} from 'pages/common/forms/SelectField/types'
-import {LegacyStatsFilters} from 'models/stat/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import {getIconFromType} from 'state/integrations/helpers'
-
-import SelectFilter from '../common/SelectFilter'
-
-import css from './SelfServiceIntegrationsFilter.less'
+import SelectFilter from 'pages/stats/common/SelectFilter'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 type Props = {
     value: LegacyStatsFilters['integrations']
     onChange: (value: LegacyStatsFilters['integrations']) => void
 }
 
-const SelfServiceIntegrationsFilter = ({value = [], onChange}: Props) => {
+const DEPRECATED_SelfServiceIntegrationsFilter = ({
+    value = [],
+    onChange,
+}: Props) => {
     const storeIntegrations = useStoreIntegrations()
 
     return (
@@ -42,4 +43,4 @@ const SelfServiceIntegrationsFilter = ({value = [], onChange}: Props) => {
     )
 }
 
-export default SelfServiceIntegrationsFilter
+export default DEPRECATED_SelfServiceIntegrationsFilter

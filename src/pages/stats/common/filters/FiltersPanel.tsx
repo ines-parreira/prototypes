@@ -9,7 +9,12 @@ import React, {
 import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
-import {FilterKey, StaticFilter, StatsFilters} from 'models/stat/types'
+import {
+    FilterComponentKey,
+    FilterKey,
+    StaticFilter,
+    StatsFilters,
+} from 'models/stat/types'
 import {AddFilterButton} from 'pages/stats/common/filters/AddFilterButton'
 import {AgentsFiltersWithState} from 'pages/stats/common/filters/AgentsFilter'
 import {ChannelsFilterWithState} from 'pages/stats/common/filters/ChannelsFilter'
@@ -20,6 +25,7 @@ import {IntegrationsFilterWithState} from 'pages/stats/common/filters/Integratio
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
 import {HelpCenterFilterWithState} from 'pages/stats/common/filters/HelpCenterFilter'
 import {HelpCenterLanguageFilterWithState} from 'pages/stats/common/filters/HelpCenterLanguageFilter'
+import {StoreFilterWithState} from 'pages/stats/common/filters/StoreFilter'
 import {
     activeParams,
     selectDropdownTextFields,
@@ -39,7 +45,7 @@ type Props = {
 
 export const UNSUPPORTED_FILTER_PLACEHOLDER = 'placeholder'
 
-export const renderFilter = (filter: FilterKey) => {
+export const renderFilter = (filter: FilterKey | FilterComponentKey) => {
     switch (filter) {
         case FilterKey.Period:
             return PeriodFilterWithState
@@ -57,6 +63,8 @@ export const renderFilter = (filter: FilterKey) => {
             return HelpCenterFilterWithState
         case FilterKey.LocaleCodes:
             return HelpCenterLanguageFilterWithState
+        case FilterComponentKey.Store:
+            return StoreFilterWithState
         default:
             return () => <div>{UNSUPPORTED_FILTER_PLACEHOLDER}</div>
     }

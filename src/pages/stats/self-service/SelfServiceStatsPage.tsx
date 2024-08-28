@@ -32,7 +32,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {useGetAIArticles} from 'pages/settings/helpCenter/queries'
-import {SelfServiceStatsPageFilters} from 'pages/stats/self-service/SelfServiceStatsPageFilters'
+import {DEPRECATED_SelfServiceStatsPageFilters} from 'pages/stats/self-service/DEPRECATED_SelfServiceStatsPageFilters'
 import {AccountFeature} from 'state/currentAccount/types'
 import {getIntegrations} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
@@ -274,7 +274,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             title={PAGE_TITLE_PERFORMANCE_BY_FEATURES}
             description={PAGE_DESCRIPTION}
             helpUrl={HELP_URL}
-            titleExtra={<SelfServiceStatsPageFilters />}
+            titleExtra={<DEPRECATED_SelfServiceStatsPageFilters />}
         >
             {pageStatsFilters && (
                 <>
