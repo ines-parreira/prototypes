@@ -25,6 +25,7 @@ describe('new-customer-playground util', () => {
                 "id": "233881",
                 "integration_id": "2",
                 "intents": "[]",
+                "meta": "",
                 "source": "{"from":{"address":"oliver.smith@foobar.com","name":"Oliver Smith"},"to":[{"address":"Test Address","name":""}],"type":"email"}",
                 "subject": "",
               },

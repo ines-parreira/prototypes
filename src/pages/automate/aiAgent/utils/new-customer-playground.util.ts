@@ -83,6 +83,7 @@ const createMockTicketMessage = ({
         type: 'email',
     },
     subject,
+    meta: '',
 })
 
 export const createMockHttpIntegrationPayload = ({
@@ -115,6 +116,7 @@ export const createMockHttpIntegrationPayload = ({
             type: 'email',
         }),
         subject,
+        meta: '',
     },
     ticket: {
         account: {

@@ -2,6 +2,7 @@ export type CreatePlaygroundMessage = {
     bodyText: string
     fromAgent: boolean
     createdDatetime: string
+    meta: string
 }
 
 export type CreatePlaygroundBody = {
@@ -14,6 +15,7 @@ export type CreatePlaygroundBody = {
     account_id: number
     email_integration_id: number
     email_integration_address: string
+    meta: string
     messages: CreatePlaygroundMessage[]
     created_datetime: string
     // Property for AI Agent to identify actions
@@ -53,6 +55,7 @@ export type MockTicketMessage = {
         type: 'email'
     }
     subject: string
+    meta: string
 }
 
 export type CreatePlaygroundRequest = Omit<CreatePlaygroundBody, 'messages'> & {
@@ -96,6 +99,7 @@ export type AiAgentInput = {
         body_text: string
         integration_id: string
         created_datetime: string
+        meta: string
     }
 }
 

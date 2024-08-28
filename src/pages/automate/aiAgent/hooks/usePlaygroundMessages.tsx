@@ -144,10 +144,12 @@ export const usePlaygroundMessages = ({
                                         : '',
                                 fromAgent: m.sender === AI_AGENT_SENDER,
                                 createdDatetime: m.createdDatetime,
+                                meta: '',
                             })),
                         subject: formValues.subject ?? '',
                         http_integration_id: httpIntegrationId,
                         account_id: accountId,
+                        meta: '',
                         email_integration_id: emailIntegration.id,
                         email_integration_address: emailIntegration.email,
                         _action_serialized_state:
