@@ -727,27 +727,30 @@ export const applyMacro =
         const isMacroForwardByEmailEnabled =
             !!flags?.[FeatureFlagKey.MacroForwardByEmail]
 
-        const renderedMacro = macro.update('actions', (actions: List<any>) =>
-            actions
-                .filter(
-                    (action: Map<any, any>) =>
-                        isMacroForwardByEmailEnabled ||
-                        action.get('name') !== MacroActionName.ForwardByEmail
-                )
-                .map((action: Map<any, any>) =>
-                    action.update(
-                        'arguments',
-                        (args: List<any>) =>
-                            nestedReplace(
-                                args,
-                                state.ticket,
-                                state.currentUser,
-                                ((args: Notification) => {
-                                    return dispatch(notify(args))
-                                }) as any
-                            ) as List<any>
+        const renderedMacro = macro.update(
+            'actions',
+            (actions: List<any> | null) =>
+                actions
+                    ?.filter(
+                        (action: Map<any, any>) =>
+                            isMacroForwardByEmailEnabled ||
+                            action.get('name') !==
+                                MacroActionName.ForwardByEmail
                     )
-                )
+                    .map((action: Map<any, any>) =>
+                        action.update(
+                            'arguments',
+                            (args: List<any>) =>
+                                nestedReplace(
+                                    args,
+                                    state.ticket,
+                                    state.currentUser,
+                                    ((args: Notification) => {
+                                        return dispatch(notify(args))
+                                    }) as any
+                                ) as List<any>
+                        )
+                    )
         )
 
         dispatch({

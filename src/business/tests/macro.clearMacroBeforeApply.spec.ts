@@ -42,7 +42,7 @@ describe('Business', () => {
 
             it('should clear attachments when applied on chat with more than one', () => {
                 // Given
-                macro.actions[0].arguments.attachments?.push({
+                macro.actions?.[0].arguments.attachments?.push({
                     url: 'https://dev.gorgias.io/img2.png',
                 })
 

@@ -35,6 +35,7 @@ import {
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER,
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS,
 } from 'state/ticket/constants'
+import {NotificationStatus} from 'state/notifications/types'
 import {initialState} from '../reducers'
 import * as actions from '../actions'
 
@@ -530,7 +531,7 @@ describe('ticket actions', () => {
         ).toMatchSnapshot()
     })
 
-    it('applyMacro()', () => {
+    describe('applyMacro()', () => {
         const macro = fromJS({
             id: 1,
             actions: [
@@ -549,16 +550,32 @@ describe('ticket actions', () => {
                         tags: 'refund, billing',
                     },
                 },
+                {
+                    arguments: {
+                        tags: '{{ticket.customer.integrations.magento2}}',
+                    },
+                },
             ],
         })
 
-        store = mockStore({
-            ticket: initialState.set('id', 1),
-            currentUser: fromJS({id: 1}),
+        it('dispatches actions', () => {
+            store = mockStore({
+                ticket: initialState.set('id', 1),
+                currentUser: fromJS({id: 1}),
+            })
+
+            return store
+                .dispatch(actions.applyMacro(macro, 1))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
         })
-        return store
-            .dispatch(actions.applyMacro(macro, 1))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+
+        it('notifies a warning', () => {
+            void store.dispatch(actions.applyMacro(macro, 1))
+            expect(notify).toBeCalledWith({
+                type: NotificationStatus.Warning,
+                title: 'This customer does not have any Magento2 information',
+            })
+        })
     })
 
     it('clearAppliedMacro()', () => {

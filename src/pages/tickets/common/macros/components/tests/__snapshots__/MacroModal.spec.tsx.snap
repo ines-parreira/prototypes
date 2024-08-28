@@ -4,6 +4,7 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
 <div>
   <div>
     Manage Macros
+    ModalHeaderMock
   </div>
   <div>
     <div
@@ -16,18 +17,19 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
           class="list content col-3"
         >
           <div>
-            MacroModalList
+            MacroModalListMock
           </div>
         </div>
         <div
           class="content col-9"
         >
           <div>
-            MacroEdit
+            MacroEditMock
           </div>
         </div>
       </div>
     </div>
+    ModalBodyMock
   </div>
   <div
     class="wrapper footer"

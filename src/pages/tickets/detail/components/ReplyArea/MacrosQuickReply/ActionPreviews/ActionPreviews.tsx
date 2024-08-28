@@ -1,23 +1,21 @@
 import React, {ComponentType} from 'react'
-
 import {fromJS} from 'immutable'
-
 import classnames from 'classnames'
-
 import {getActionTemplate} from 'utils'
 
+import {ActionTemplateExecution} from 'config'
+import {MacroDraft} from 'models/macro/types'
 import {MacroAction, MacroActionName} from 'models/macroAction/types'
 import Preview from 'pages/tickets/common/macros/Preview'
 
-import {ActionTemplateExecution} from 'config'
+import {ComplexActionPreview} from './ComplexActionPreview'
 import TagActionPreview from './TagActionPreview'
 import {SimpleActionPreview} from './SimpleActionPreview'
-import {ComplexActionPreview} from './ComplexActionPreview'
 
 import css from './ActionPreviews.less'
 
 type Props = {
-    actions: MacroAction[]
+    actions: MacroDraft['actions']
     textPreviewMinWidth: number
 }
 
@@ -54,25 +52,25 @@ const ACTION_COMPONENT_MAPPER: Record<
 }
 
 export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {
-    const setResponseTextAction = actions.find(
+    const setResponseTextAction = actions?.find(
         (action) => action.name === MacroActionName.SetResponseText
     )
 
-    const simpleActions = actions.filter(
+    const simpleActions = actions?.filter(
         (action) =>
             action.name !== MacroActionName.SetResponseText &&
             getActionTemplate(action.name)?.execution !==
                 ActionTemplateExecution.External
     )
 
-    const complexActions = actions.filter(
+    const complexActions = actions?.filter(
         (action) =>
             getActionTemplate(action.name)?.execution ===
             ActionTemplateExecution.External
     )
 
-    const hasSimpleActions = simpleActions.length > 0
-    const hasComplexActions = complexActions.length > 0
+    const hasSimpleActions = !!simpleActions?.length
+    const hasComplexActions = !!complexActions?.length
 
     return (
         <>
@@ -90,7 +88,7 @@ export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {
                         [css.leftBorder]: setResponseTextAction,
                     })}
                 >
-                    {simpleActions.map((action) => {
+                    {simpleActions?.map((action) => {
                         const ActionPreview =
                             ACTION_COMPONENT_MAPPER[
                                 action.name as AvailableActions

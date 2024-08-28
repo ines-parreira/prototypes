@@ -39,13 +39,13 @@ import MacroEditLanguage from './MacroEditLanguage'
 import css from './MacroEdit.less'
 
 type Props = {
-    actions: List<any>
+    actions: List<any> | null
     agents: List<any>
     className?: string
     currentMacro: Map<any, any>
     name: string
     language: string | null
-    setActions: (actions: List<any>) => void
+    setActions: (actions?: List<any> | null) => void
     setName: (name: string) => void
     setLanguage: (language: string | null) => void
     flags: LDFlagSet
@@ -57,12 +57,12 @@ export class MacroEdit extends Component<Props> {
         action.get('name') === MacroActionName.AddTags
 
     componentWillReceiveProps() {
-        if (!this.props.actions.find(this._isTagAction))
+        if (!this.props.actions?.find(this._isTagAction))
             this._addAction(MacroActionName.AddTags)
     }
 
     _extractText = () => {
-        const action: Map<any, any> = this.props.actions.find(
+        const action: Map<any, any> = this.props.actions?.find(
             (action: Map<any, any>) =>
                 action.get('name') === MacroActionName.SetResponseText
         )
@@ -72,24 +72,24 @@ export class MacroEdit extends Component<Props> {
     }
 
     _updateActionArguments = (index: number, args = fromJS({})) => {
-        const actions = this.props.actions.setIn([index, 'arguments'], args)
+        const actions = this.props.actions?.setIn([index, 'arguments'], args)
         this.props.setActions(actions)
     }
 
     _updateActionTitle = (index: number, title: string) => {
-        const actions = this.props.actions.setIn([index, 'title'], title)
+        const actions = this.props.actions?.setIn([index, 'title'], title)
         this.props.setActions(actions)
     }
 
     _addAction = (actionName: MacroActionName) => {
-        const actions = this.props.actions.push(
+        const actions = this.props.actions?.push(
             generateDefaultAction(actionName)
         )
         this.props.setActions(actions)
     }
 
     _deleteAction = (index: number) => {
-        const actions = this.props.actions.delete(index)
+        const actions = this.props.actions?.delete(index)
         this.props.setActions(actions)
     }
 
@@ -100,7 +100,7 @@ export class MacroEdit extends Component<Props> {
             MacroActionName.AddInternalNote,
         ]
 
-        const currentAction = this.props.actions.get(index) as Map<any, any>
+        const currentAction = this.props.actions?.get(index) as Map<any, any>
         let newAction = generateDefaultAction(actionName)!
 
         if (
@@ -122,12 +122,12 @@ export class MacroEdit extends Component<Props> {
             newAction = newAction.set('arguments', args)
         }
 
-        const actions = this.props.actions.set(index, newAction)
+        const actions = this.props.actions?.set(index, newAction)
         this.props.setActions(actions)
     }
 
     _addAttachment = (index: number, files: Attachment[]) => {
-        const actions = this.props.actions.updateIn(
+        const actions = this.props.actions?.updateIn(
             [index, 'arguments', 'attachments'],
             (attachments: List<any>) => attachments.concat(fromJS(files))
         )
@@ -135,7 +135,7 @@ export class MacroEdit extends Component<Props> {
     }
 
     _deleteAttachment = (actionIndex: number, fileIndex: number) => {
-        const actions = this.props.actions.updateIn(
+        const actions = this.props.actions?.updateIn(
             [actionIndex, 'arguments', 'attachments'],
             (attachments: List<any>) => attachments.delete(fileIndex)
         )
@@ -161,7 +161,7 @@ export class MacroEdit extends Component<Props> {
             .filter(
                 (action) =>
                     action.name === MacroActionName.SetCustomFieldValue ||
-                    !this.props.actions.find(
+                    !this.props.actions?.find(
                         (usedActions: Map<any, any>) =>
                             usedActions.get('name') === action.name
                     )
@@ -215,7 +215,7 @@ export class MacroEdit extends Component<Props> {
         if (index == null || action == null) return
         let config
 
-        switch (action.get('name')) {
+        switch (action.get('name') as MacroActionName) {
             case MacroActionName.SetStatus:
                 config = {
                     title: 'Set status',
@@ -354,7 +354,7 @@ export class MacroEdit extends Component<Props> {
                     ),
                 }
                 break
-            case 'http':
+            case MacroActionName.Http:
                 config = {
                     title: 'HTTP WebHook',
                     content: (
@@ -499,7 +499,7 @@ export class MacroEdit extends Component<Props> {
                         </div>
                     </div>
                     {this.props.actions
-                        .filter(
+                        ?.filter(
                             (action: Map<any, any>) =>
                                 isMacroForwardByEmailEnabled ||
                                 action.get('name') !==
@@ -538,9 +538,9 @@ export class MacroEdit extends Component<Props> {
                                     }
 
                                     // remove actions that have already been used
-                                    const filteredActions = actions.filter(
+                                    const filteredActions = actions?.filter(
                                         (action) =>
-                                            !this.props.actions.find(
+                                            !this.props.actions?.find(
                                                 (usedActions: Map<any, any>) =>
                                                     usedActions.get('name') ===
                                                     action

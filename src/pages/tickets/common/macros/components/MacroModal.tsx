@@ -282,16 +282,16 @@ export class MacroModalContainer extends Component<Props, State> {
         })
     }
 
-    _setActions = (actions: List<any>) => {
+    _setActions = (actions?: List<any> | null) => {
         // filter actions that exist in configuration
-        const filteredActions = actions.filter((action: Map<any, any>) =>
+        const filteredActions = actions?.filter((action: Map<any, any>) =>
             DEFAULT_ACTIONS.includes(action.get('name'))
         )
 
         // keep only one action by type
         const uniqActions = fromJS(
             _uniqWith(
-                filteredActions.toJS(),
+                filteredActions ? filteredActions.toJS() : {},
                 (first: Record<string, unknown>, second) => {
                     if (
                         this.multipleActionsNames.includes(

@@ -189,7 +189,7 @@ export function MacrosSettingsTableContainer({
                         const to = `/app/settings/macros/${macroId}`
 
                         const tags = macro.actions
-                            .filter(
+                            ?.filter(
                                 (action) =>
                                     action.name === MacroActionName.AddTags
                             )
@@ -200,7 +200,7 @@ export function MacrosSettingsTableContainer({
                             }, [])
                             .map((tag) => tag.trim())
 
-                        if (options.tags?.length) {
+                        if (options.tags?.length && tags) {
                             const idx = tags.findIndex(
                                 (tag) => tag === options.tags![0]
                             )
@@ -212,7 +212,7 @@ export function MacrosSettingsTableContainer({
                         }
 
                         const tagId = `tags-${macroId}`
-                        const tag = tags.length ? (
+                        const tag = tags?.length ? (
                             <div className="flex" id={tagId}>
                                 <TicketTag>{tags[0]}</TicketTag>
                                 {tags.length > 1 && (

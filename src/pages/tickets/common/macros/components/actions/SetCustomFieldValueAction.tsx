@@ -8,7 +8,7 @@ import css from './SetCustomFieldValueAction.less'
 
 type Props = {
     action: Map<string, any>
-    actions: List<Map<string, any>>
+    actions: List<Map<string, any>> | null
     index: number
     updateActionArgs: (index: number, args: Map<string, any>) => void
 }
@@ -25,7 +25,7 @@ const SetCustomFieldValueAction = ({
 
     const idsAlreadySet = useMemo(() => {
         return actions
-            .map((action?: Map<any, any>) => {
+            ?.map((action?: Map<any, any>) => {
                 return Number.parseInt(
                     action?.getIn(['arguments', 'custom_field_id'], '') || '',
                     10

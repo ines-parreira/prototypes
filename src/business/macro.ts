@@ -1,9 +1,15 @@
 import {fromJS, Map, List} from 'immutable'
 
-import {NotificationStatus} from '../state/notifications/types'
+import {MacroActionName} from 'models/macroAction/types'
+import {NotificationStatus} from 'state/notifications/types'
 
 import {TicketMessageSourceType} from './types/ticket'
-import {MacroClearingResult, MacroActionName} from './types/macro'
+import {Notification} from './types/notification'
+
+export type MacroClearingResult = {
+    macro: Map<any, any>
+    notification?: Notification
+}
 
 // Public functions
 export function clearMacroBeforeApply(

@@ -16,7 +16,7 @@ export type Macro = MacroDraft & {
 }
 
 export type MacroDraft = {
-    actions: MacroAction[]
+    actions: MacroAction[] | null
     name: string
     language: string | null
 }

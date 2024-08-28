@@ -37,7 +37,7 @@ type Props = {
         | typeof MacroActionName.SetResponseText
         | typeof MacroActionName.ForwardByEmail
     action: Map<string, any>
-    actions?: List<any>
+    actions?: List<any> | null
     index: number
     tabIndex?: number
     ignoredVariables?: string[]

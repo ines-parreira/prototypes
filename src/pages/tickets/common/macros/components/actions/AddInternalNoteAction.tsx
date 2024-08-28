@@ -31,7 +31,7 @@ import css from './AddInternalNoteAction.less'
 
 type Props = {
     action: Map<any, any>
-    actions?: List<any>
+    actions?: List<any> | null
     updateActionArgs: (index: number, args: Map<any, any>) => void
     index: number
     renderVariables?: boolean

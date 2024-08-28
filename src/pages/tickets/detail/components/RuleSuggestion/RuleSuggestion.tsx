@@ -52,7 +52,7 @@ type Props = {
 }
 
 export type RuleSuggestionData = {
-    actions: RuleAction[]
+    actions: RuleAction[] | null
     slug: string
 }
 

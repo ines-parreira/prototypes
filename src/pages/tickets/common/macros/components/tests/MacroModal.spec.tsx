@@ -1,17 +1,19 @@
 import React, {ComponentProps, ReactNode} from 'react'
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import {fromJS, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import MockDate from 'mockdate'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 
+import {MacroActionName} from 'models/macroAction/types'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import {createJob} from 'state/tickets/actions'
 import {RootState} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
+import MacroEdit from '../MacroEdit'
 import MacroModal from '../MacroModal'
 
 const mockStore = configureMockStore([thunk])
@@ -24,19 +26,49 @@ mockCreateJob.mockImplementation(
     () => () => Promise.resolve(null as unknown as UpsertNotificationAction)
 )
 
-jest.mock('../MacroModalList', () => () => <div>MacroModalList</div>)
-jest.mock('../MacroEdit', () => () => <div>MacroEdit</div>)
+jest.mock('../MacroModalList', () => () => <div>MacroModalListMock</div>)
+const mockActions = fromJS([
+    {
+        name: MacroActionName.Http,
+    },
+    {
+        name: MacroActionName.Http,
+    },
+    {
+        name: MacroActionName.AddAttachments,
+    },
+    {
+        name: MacroActionName.AddAttachments,
+    },
+])
+jest.mock(
+    '../MacroEdit',
+    () =>
+        ({actions, setActions}: ComponentProps<typeof MacroEdit>) =>
+            (
+                <div onClick={() => setActions(mockActions)}>
+                    MacroEditMock
+                    {actions?.map((action: Map<any, any>, i) => (
+                        <div key={i}>{action.get('name')}</div>
+                    ))}
+                </div>
+            )
+)
 
 jest.mock('pages/common/components/modal/Modal', () => {
     return ({children}: {children: ReactNode}) => <div>{children}</div>
 })
 
 jest.mock('pages/common/components/modal/ModalHeader', () => {
-    return ({title}: ComponentProps<typeof ModalHeader>) => <div>{title}</div>
+    return ({title}: ComponentProps<typeof ModalHeader>) => (
+        <div>{title}ModalHeaderMock</div>
+    )
 })
 
 jest.mock('pages/common/components/modal/ModalBody', () => {
-    return ({children}: {children: ReactNode}) => <div>{children}</div>
+    return ({children}: {children: ReactNode}) => (
+        <div>{children}ModalBodyMock</div>
+    )
 })
 
 const date = '2021-01-24T17:30:00.000Z'
@@ -88,7 +120,7 @@ describe('<MacroModal />', () => {
     })
 
     it('should update selected items after job completion', async () => {
-        const {getByText} = render(
+        render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroModal
                     {...props}
@@ -98,12 +130,29 @@ describe('<MacroModal />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText(/Apply macro to 2/))
+        fireEvent.click(screen.getByText(/Apply macro to 2/))
 
         await waitFor(() => {
             expect(createJob).toHaveBeenCalled()
             expect(props.closeModal).toHaveBeenCalled()
             expect(props.onComplete).toHaveBeenCalledWith(fromJS([]))
         })
+    })
+
+    it('should update actions on MacroEdit change', () => {
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroModal {...props} />
+            </Provider>
+        )
+
+        expect(
+            screen.queryByText(MacroActionName.AddAttachments)
+        ).not.toBeInTheDocument()
+        fireEvent.click(screen.getByText('MacroEditMock'))
+        expect(screen.getAllByText(MacroActionName.Http)).toHaveLength(2)
+        expect(
+            screen.getByText(MacroActionName.AddAttachments)
+        ).toBeInTheDocument()
     })
 })

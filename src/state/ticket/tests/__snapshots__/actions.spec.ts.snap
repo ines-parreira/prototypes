@@ -11,7 +11,7 @@ exports[`ticket actions addTags() 1`] = `
 ]
 `;
 
-exports[`ticket actions applyMacro() 1`] = `
+exports[`ticket actions applyMacro() dispatches actions 1`] = `
 [
   {
     "macro": Immutable.Map {
@@ -30,6 +30,11 @@ exports[`ticket actions applyMacro() 1`] = `
           "name": "addTags",
           "arguments": Immutable.Map {
             "tags": "refund, billing",
+          },
+        },
+        Immutable.Map {
+          "arguments": Immutable.Map {
+            "tags": "",
           },
         },
       ],
@@ -114,6 +119,11 @@ exports[`ticket actions applyMacro() 1`] = `
           "name": "addTags",
           "arguments": Immutable.Map {
             "tags": "refund, billing",
+          },
+        },
+        Immutable.Map {
+          "arguments": Immutable.Map {
+            "tags": "{{ticket.customer.integrations.magento2}}",
           },
         },
       ],

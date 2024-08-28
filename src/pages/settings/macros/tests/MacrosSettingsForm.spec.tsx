@@ -1,9 +1,9 @@
 import {waitFor, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import React, {ComponentProps} from 'react'
 import * as ReactRouterDom from 'react-router-dom'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {macros as macrosFixtures} from 'fixtures/macro'
 import {
     createMacro,
@@ -11,26 +11,53 @@ import {
     fetchMacro,
     updateMacro,
 } from 'models/macro/resources'
-import {getDefaultMacro} from 'state/macro/utils'
-import {NotificationStatus} from 'state/notifications/types'
-import history from 'pages/history'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-
 import {Macro} from 'models/macro/types'
 import {MacroActionName, MacroActionType} from 'models/macroAction/types'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import history from 'pages/history'
+import MacroEdit from 'pages/tickets/common/macros/components/MacroEdit'
+import {getDefaultMacro} from 'state/macro/utils'
+import {NotificationStatus} from 'state/notifications/types'
+
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
 
-jest.mock('../../../history')
-jest.mock('../../../../models/macro/resources')
+jest.mock('pages/history')
+jest.mock('models/macro/resources')
 jest.mock(
     'pages/common/components/button/ConfirmButton',
     () =>
         ({children, onConfirm}: ComponentProps<typeof ConfirmButton>) =>
             <div onClick={onConfirm}>{children}</div>
 )
+const mockActions = fromJS([
+    {
+        name: MacroActionName.Http,
+    },
+    {
+        name: MacroActionName.Http,
+    },
+    {
+        name: MacroActionName.AddAttachments,
+    },
+    {
+        name: MacroActionName.AddAttachments,
+    },
+])
+jest.mock('pages/common/components/Loader/Loader', () => () => (
+    <div>LoaderMock</div>
+))
 jest.mock(
-    '../../../tickets/common/macros/components/MacroEdit',
-    () => () => 'MacroEdit'
+    'pages/tickets/common/macros/components/MacroEdit',
+    () =>
+        ({actions, setActions}: ComponentProps<typeof MacroEdit>) =>
+            (
+                <div onClick={() => setActions(mockActions)}>
+                    <span>MacroEditMock</span>
+                    {actions?.map((action: Map<any, any>, i) => (
+                        <span key={i}>{action.get('name') as string}</span>
+                    ))}
+                </div>
+            )
 )
 jest.mock('hooks/useHasAgentPrivileges')
 jest.mock(
@@ -101,29 +128,32 @@ describe('<MacrosSettingsForm/>', () => {
 
     it('should render an empty form when no macro id', () => {
         mockUseParams.mockReturnValue({})
-        const {container} = render(
-            <MacrosSettingsFormContainer {...minProps} />
-        )
+        render(<MacrosSettingsFormContainer {...minProps} />)
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('Add macro')).toBeInTheDocument()
+        expect(screen.getByText('Create macro')).toBeInTheDocument()
     })
 
     it('should display a loader when fetching a macro', () => {
-        const {container} = render(
-            <MacrosSettingsFormContainer {...minProps} />
-        )
+        render(<MacrosSettingsFormContainer {...minProps} />)
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('LoaderMock')).toBeInTheDocument()
     })
 
-    it('should render a filled form when passed macro id', () => {
-        const {container} = render(
+    it('should render a filled form when passed macro id', async () => {
+        render(
             <MacrosSettingsFormContainer
-                {...{...minProps, macros: {'1': macrosFixtures[0]}}}
+                {...minProps}
+                macros={{'1': macrosFixtures[0]}}
             />
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument()
+        )
+        expect(screen.getByText('Update macro')).toBeInTheDocument()
+        expect(screen.getByText('Duplicate macro')).toBeInTheDocument()
+        expect(screen.getByText('Delete macro')).toBeInTheDocument()
     })
 
     it('should notify the user when failed to fetch the macro', async () => {
@@ -147,7 +177,7 @@ describe('<MacrosSettingsForm/>', () => {
         mockUseParams.mockReturnValue({})
         render(<MacrosSettingsFormContainer {...minProps} />)
 
-        screen.getAllByRole('button')[0].click()
+        screen.getByText('Create macro').click()
         expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
             ...getDefaultMacro().toJS(),
             language: null,
@@ -176,7 +206,7 @@ describe('<MacrosSettingsForm/>', () => {
         )
 
         await waitFor(() => {
-            screen.getAllByRole('button')[0].click()
+            screen.getByText('Update macro').click()
 
             expect(mockUpdateMacro).toHaveBeenNthCalledWith(
                 1,
@@ -252,7 +282,7 @@ describe('<MacrosSettingsForm/>', () => {
         )
 
         await waitFor(() => {
-            screen.getAllByRole('button')[0].click()
+            screen.getByText('Update macro').click()
 
             expect(mockUpdateMacro).toHaveBeenNthCalledWith(1, {
                 ...customFieldsMacro,
@@ -288,9 +318,9 @@ describe('<MacrosSettingsForm/>', () => {
         render(<MacrosSettingsFormContainer {...minProps} />)
 
         await waitFor(() => {
-            screen.getAllByRole('button')[0].click()
+            screen.getByText('Create macro').click()
         })
-        expect(mockNotify).toHaveBeenNthCalledWith(1, {
+        expect(mockNotify).toHaveBeenCalledWith({
             message: `${message} ${error1Reason}, ${error2Reason}`,
             status: NotificationStatus.Error,
         })
@@ -311,10 +341,10 @@ describe('<MacrosSettingsForm/>', () => {
         )
 
         await waitFor(() => {
-            screen.getAllByRole('button')[0].click()
+            screen.getByText('Update macro').click()
         })
 
-        expect(mockNotify).toHaveBeenNthCalledWith(2, {
+        expect(mockNotify).toHaveBeenCalledWith({
             message: `${message} `,
             status: NotificationStatus.Error,
         })
@@ -324,8 +354,9 @@ describe('<MacrosSettingsForm/>', () => {
         mockUseParams.mockReturnValue({})
         render(<MacrosSettingsFormContainer {...minProps} />)
 
-        screen.getAllByRole('button')[0].click()
-        screen.getAllByRole('button')[0].click()
+        screen.getByText('Create macro').click()
+        screen.getByText('Create macro').click()
+
         expect(mockCreateMacro).toHaveBeenCalledTimes(1)
     })
 
@@ -353,11 +384,13 @@ describe('<MacrosSettingsForm/>', () => {
     })
 
     it('should notify when failing to delete macro', async () => {
+        const mockMessage =
+            'Cannot delete macro because it is used in the following places:'
         mockDeleteMacro.mockRejectedValue({
             response: {
                 data: {
                     error: {
-                        msg: 'Cannot delete macro because it is used in the following places:',
+                        msg: mockMessage,
                         data: {
                             Rules: ['Rule1', 'Rule2'],
                         },
@@ -375,10 +408,14 @@ describe('<MacrosSettingsForm/>', () => {
         )
 
         await waitFor(() => {
-            screen.getAllByRole('button')[0].click()
-
-            expect(mockNotify.mock.calls[1]).toMatchSnapshot()
+            screen.getByText('Delete macro').click()
         })
+        expect(mockNotify).toHaveBeenCalledWith(
+            expect.objectContaining({
+                title: mockMessage,
+                status: NotificationStatus.Error,
+            })
+        )
     })
 
     it('should duplicate macro and redirect ', async () => {
@@ -392,7 +429,7 @@ describe('<MacrosSettingsForm/>', () => {
             />
         )
         await waitFor(() => {
-            screen.getAllByRole('button')[1].click()
+            screen.getByText('Duplicate macro').click()
             const {actions, name} = macrosFixtures[0]
             expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
                 actions,
@@ -427,12 +464,30 @@ describe('<MacrosSettingsForm/>', () => {
         )
 
         await waitFor(() => {
-            screen.getAllByRole('button')[1].click()
-
+            screen.getByText('Duplicate macro').click()
             expect(mockNotify).toHaveBeenNthCalledWith(2, {
                 message: 'Failed to duplicate macro.',
                 status: NotificationStatus.Error,
             })
         })
+    })
+
+    it('should update actions of macro form', async () => {
+        render(
+            <MacrosSettingsFormContainer
+                {...minProps}
+                macros={{
+                    '1': macrosFixtures[0],
+                }}
+            />
+        )
+
+        await waitFor(() => {
+            screen.getByText('MacroEditMock').click()
+        })
+        expect(screen.getAllByText(MacroActionName.Http)).toHaveLength(2)
+        expect(
+            screen.getByText(MacroActionName.AddAttachments)
+        ).toBeInTheDocument()
     })
 })

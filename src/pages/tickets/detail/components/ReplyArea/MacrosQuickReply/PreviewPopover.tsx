@@ -3,7 +3,7 @@ import _noop from 'lodash/noop'
 import {Popover, PopoverBody} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
-import {MacroAction} from 'models/macroAction/types'
+import {MacroDraft} from 'models/macro/types'
 
 import {ActionPreviews} from './ActionPreviews/ActionPreviews'
 import css from './PreviewPopover.less'
@@ -11,7 +11,7 @@ import css from './PreviewPopover.less'
 type Props = {
     isOpen: boolean
     targetId: string
-    actions: MacroAction[]
+    actions: MacroDraft['actions']
 }
 
 export const PreviewPopover = ({isOpen, targetId, actions}: Props) => {

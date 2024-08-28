@@ -64,6 +64,7 @@ export function MacrosSettingsFormContainer({
     const [macroForm, setMacroForm] = useState<MacroDraft>(
         getDefaultMacro().toJS()
     )
+
     const [{loading: isFetchPending}, handleMacroFetch] =
         useAsyncFn(async () => {
             if (!macroId) {
@@ -80,39 +81,46 @@ export function MacrosSettingsFormContainer({
                 history.push('/app/settings/macros')
             }
         }, [macroId])
-    const handleActionsChange = (actions: List<any>) => {
-        const filteredActions = actions.filter((action: Map<any, any>) =>
+
+    const handleActionsChange = (actions?: List<any> | null) => {
+        const filteredActions = actions?.filter((action: Map<any, any>) =>
             DEFAULT_ACTIONS.includes(action.get('name'))
         )
 
         setMacroForm({
             ...macroForm,
-            actions: _uniqWith(filteredActions.toJS(), (first, second) => {
-                if (
-                    first.name === 'http' ||
-                    first.name === MacroActionName.SetCustomFieldValue
-                ) {
-                    return false
-                }
+            actions: _uniqWith(
+                filteredActions ? filteredActions.toJS() : {},
+                (first, second) => {
+                    if (
+                        first.name === MacroActionName.Http ||
+                        first.name === MacroActionName.SetCustomFieldValue
+                    ) {
+                        return false
+                    }
 
-                return first.name === second.name
-            }),
+                    return first.name === second.name
+                }
+            ),
         })
     }
+
     const [{loading: isSubmitPending}, handleFormSubmit] =
         useAsyncFn(async () => {
             const {actions, language} = macroForm
 
             const macroFormData = {
                 ...macroForm,
-                actions: actions.filter(
-                    (action) =>
-                        (action.name !== MacroActionName.AddTags ||
-                            action.arguments.tags) &&
-                        (action.arguments.custom_field_id === undefined ||
-                            (action.arguments.custom_field_id !== undefined &&
-                                action.arguments.value !== ''))
-                ),
+                actions:
+                    actions?.filter(
+                        (action) =>
+                            (action.name !== MacroActionName.AddTags ||
+                                action.arguments.tags) &&
+                            (action.arguments.custom_field_id === undefined ||
+                                (action.arguments.custom_field_id !==
+                                    undefined &&
+                                    action.arguments.value !== ''))
+                    ) ?? null,
                 language: language || null,
             }
 
@@ -193,12 +201,14 @@ export function MacrosSettingsFormContainer({
             })
         }
     })
+
     useEffect(() => {
         if (macroId) {
             void handleMacroFetch()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [macroId])
+
     useEffect(() => {
         if (macroId && macros[macroId]) {
             const {actions, name, language} = macros[macroId]
