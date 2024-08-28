@@ -77,6 +77,7 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     integrations: TicketMessagesMember.Integration,
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,
+    customFields: TicketMember.CustomField,
 }
 
 export const HelpdeskTicketsRepliedStatsFiltersMembers: StatsFiltersMembers = {

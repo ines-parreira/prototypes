@@ -80,33 +80,36 @@ export const addOptionalFilter = (
     }
     let reportingFilters
     if (isCustomFieldFilter(filter)) {
-        const values = filter.map((customFieldFilter) => {
-            if (
-                customFieldFilter.operator === LogicalOperatorEnum.NOT_ONE_OF &&
-                (filterDefaults.member === TicketMember.CustomField ||
-                    filterDefaults.member === TicketMember.Tags ||
-                    filterDefaults.member === TicketMember.MessageSenderId)
-            ) {
+        const values = filter
+            .filter((f) => f.values.length > 0)
+            .map((customFieldFilter) => {
+                if (
+                    customFieldFilter.operator ===
+                        LogicalOperatorEnum.NOT_ONE_OF &&
+                    (filterDefaults.member === TicketMember.CustomField ||
+                        filterDefaults.member === TicketMember.Tags ||
+                        filterDefaults.member === TicketMember.MessageSenderId)
+                ) {
+                    return {
+                        member: NotEqualsMap[filterDefaults.member],
+                        values: customFieldFilter.values.map(toLowerCaseString),
+                        operator: FilterOperatorMap[customFieldFilter.operator],
+                    }
+                } else if (
+                    customFieldFilter.operator === LogicalOperatorEnum.ALL_OF
+                ) {
+                    return customFieldFilter.values.map((value) => ({
+                        member: filterDefaults.member,
+                        values: [toLowerCaseString(value)],
+                        operator: FilterOperatorMap[customFieldFilter.operator],
+                    }))
+                }
                 return {
-                    member: NotEqualsMap[filterDefaults.member],
+                    member: filterDefaults.member,
                     values: customFieldFilter.values.map(toLowerCaseString),
                     operator: FilterOperatorMap[customFieldFilter.operator],
                 }
-            } else if (
-                customFieldFilter.operator === LogicalOperatorEnum.ALL_OF
-            ) {
-                return customFieldFilter.values.map((value) => ({
-                    member: filterDefaults.member,
-                    values: [toLowerCaseString(value)],
-                    operator: FilterOperatorMap[customFieldFilter.operator],
-                }))
-            }
-            return {
-                member: filterDefaults.member,
-                values: customFieldFilter.values.map(toLowerCaseString),
-                operator: FilterOperatorMap[customFieldFilter.operator],
-            }
-        })
+            })
 
         reportingFilters = _flatMap(values)
     } else if (isFilterWithLogicalOperator(filter)) {
