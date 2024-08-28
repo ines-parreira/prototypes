@@ -1,5 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
+import {VoiceCallDirection} from '@gorgias/api-queries'
 import {
     getDisplayInboundVoiceCallStatus,
     getDisplayOutboundVoiceCallStatus,
@@ -29,7 +30,7 @@ const VoiceCallStatusLabel = ({
     lastAnsweredByAgentId,
 }: Props) => {
     const status =
-        direction === 'inbound'
+        direction === VoiceCallDirection.Inbound
             ? getDisplayInboundVoiceCallStatus(
                   voiceCallStatus,
                   lastAnsweredByAgentId

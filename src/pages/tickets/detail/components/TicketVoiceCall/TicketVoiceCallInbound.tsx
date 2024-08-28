@@ -13,7 +13,7 @@ type Props = {
 }
 
 export default function TicketVoiceCallInbound({voiceCall}: Props) {
-    const {customer} = useCustomerDetails(voiceCall.customer_id)
+    const {customer} = useCustomerDetails({customerId: voiceCall.customer_id})
 
     return (
         <TicketVoiceCallContainer

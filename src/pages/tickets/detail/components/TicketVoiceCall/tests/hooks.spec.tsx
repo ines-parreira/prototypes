@@ -39,12 +39,15 @@ const createCustomerDetailsWrapper =
 describe('hooks', () => {
     describe('useCustomerDetails', () => {
         it('should return customer from store when it exists and call customer is same as ticket customer', () => {
-            const {result} = renderHook(() => useCustomerDetails(1), {
-                wrapper: createCustomerDetailsWrapper({
-                    id: 1,
-                    name: 'Customer Name',
-                }),
-            })
+            const {result} = renderHook(
+                () => useCustomerDetails({customerId: 1}),
+                {
+                    wrapper: createCustomerDetailsWrapper({
+                        id: 1,
+                        name: 'Customer Name',
+                    }),
+                }
+            )
 
             expect(result.current.customer).toEqual({
                 id: 1,
@@ -56,12 +59,15 @@ describe('hooks', () => {
             useGetCustomerSpy.mockReturnValue({
                 data: {data: {id: 2, name: 'Customer Name API'}},
             } as any)
-            const {result} = renderHook(() => useCustomerDetails(2), {
-                wrapper: createCustomerDetailsWrapper({
-                    id: 1,
-                    name: 'Customer Name',
-                }),
-            })
+            const {result} = renderHook(
+                () => useCustomerDetails({customerId: 2}),
+                {
+                    wrapper: createCustomerDetailsWrapper({
+                        id: 1,
+                        name: 'Customer Name',
+                    }),
+                }
+            )
             expect(result.current.customer).toEqual({
                 id: 2,
                 name: 'Customer Name API',
@@ -72,11 +78,36 @@ describe('hooks', () => {
             useGetCustomerSpy.mockReturnValue({
                 error: {response: {status: 404}},
             } as any)
-            const {result} = renderHook(() => useCustomerDetails(1), {
-                wrapper: createCustomerDetailsWrapper({}),
-            })
+            const {result} = renderHook(
+                () => useCustomerDetails({customerId: 1}),
+                {
+                    wrapper: createCustomerDetailsWrapper({}),
+                }
+            )
 
             expect(result.current.error).toEqual({response: {status: 404}})
+        })
+
+        it('should not disable query when isEnabled is true', () => {
+            renderHook(
+                () => useCustomerDetails({customerId: 1, isEnabled: true}),
+                {
+                    wrapper: createCustomerDetailsWrapper({}),
+                }
+            )
+
+            expect(useGetCustomerSpy.mock.calls?.[0]?.[1]?.enabled).toBe(true)
+        })
+
+        it('should disable query when isEnabled is false', () => {
+            renderHook(
+                () => useCustomerDetails({customerId: 1, isEnabled: false}),
+                {
+                    wrapper: createCustomerDetailsWrapper({}),
+                }
+            )
+
+            expect(useGetCustomerSpy.mock.calls?.[0]?.[1]?.enabled).toBe(false)
         })
     })
 

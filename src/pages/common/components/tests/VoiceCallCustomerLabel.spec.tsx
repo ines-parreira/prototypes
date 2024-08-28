@@ -40,4 +40,21 @@ describe('VoiceCallCustomerLabel', () => {
 
         expect(screen.getByText('CustomerLabel 1234567890')).toBeInTheDocument()
     })
+
+    it('should display name prop and call useCustomerDetails with enabled=false when customer name is provided', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+
+        renderComponent({
+            customerId: 1,
+            customerName: 'NameProp',
+            phoneNumber: '1234567890',
+        })
+
+        expect(useCustomerDetailsSpy.mock.calls?.[0]?.[0]?.isEnabled).toBe(
+            false
+        )
+        expect(screen.getByText('CustomerLabel NameProp')).toBeInTheDocument()
+    })
 })

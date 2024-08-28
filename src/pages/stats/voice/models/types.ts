@@ -1,3 +1,4 @@
+import {VoiceCallDirection} from '@gorgias/api-queries'
 import {
     VoiceCallDimension,
     VoiceCallMeasure,
@@ -8,7 +9,7 @@ import {VoiceCallStatus} from 'models/voiceCall/types'
 export type VoiceCallStatListItem = {
     [VoiceCallDimension.AgentId]: string | null
     [VoiceCallDimension.CustomerId]: string | null
-    [VoiceCallDimension.Direction]: string
+    [VoiceCallDimension.Direction]: VoiceCallDirection
     [VoiceCallDimension.IntegrationId]: string | null
     [VoiceCallDimension.CreatedAt]: string
     [VoiceCallDimension.Status]: VoiceCallStatus
@@ -27,20 +28,21 @@ export type VoiceCallStatListItem = {
 
 export type VoiceCallSummary = {
     agentId: number | null
-    customerId: number | null
-    direction: string
+    customerId?: number | null
+    customerName?: string
+    direction: VoiceCallDirection
     integrationId: number | null
     createdAt: string
     status: VoiceCallStatus
-    duration: number | null
-    ticketId: number | null
+    duration?: number | null
+    ticketId?: number | null
     phoneNumberDestination: string
     phoneNumberSource: string
     talkTime: number | null
     waitTime: number | null
-    voicemailAvailable: boolean | null
+    voicemailAvailable?: boolean | null
     voicemailUrl: string | null
-    callRecordingAvailable: boolean | null
+    callRecordingAvailable?: boolean | null
     callRecordingUrl: string | null
 }
 

@@ -28,9 +28,14 @@ const InboundVoiceCallActivity = ({voiceCall}: Props) => {
                         [css.hasAgent]: !!voiceCall.agentId,
                     })}
                     withTooltip={true}
+                    customerName={voiceCall.customerName}
                 />
             ) : (
-                <CustomerLabel customer={voiceCall.phoneNumberSource} />
+                <CustomerLabel
+                    customer={
+                        voiceCall.customerName ?? voiceCall.phoneNumberSource
+                    }
+                />
             )}
             <div>
                 {isFinalVoiceCallStatus(voiceCall.status)
@@ -86,9 +91,15 @@ const OutboundVoiceCallActivity = ({voiceCall}: Props) => {
                     phoneNumber={voiceCall.phoneNumberDestination}
                     className={css.customerLabel}
                     withTooltip={true}
+                    customerName={voiceCall.customerName}
                 />
             ) : (
-                <CustomerLabel customer={voiceCall.phoneNumberDestination} />
+                <CustomerLabel
+                    customer={
+                        voiceCall.customerName ??
+                        voiceCall.phoneNumberDestination
+                    }
+                />
             )}
         </div>
     )

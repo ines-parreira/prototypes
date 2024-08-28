@@ -142,25 +142,48 @@ describe('VoiceCallActivity', () => {
     it.each([
         {
             customerId: '2',
+            customerName: undefined,
             customerHookData: undefined,
             phoneNumberSource: '+123456789',
             expectedLabel: '+123456789',
         },
         {
             customerId: null,
+            customerName: undefined,
             customerHookData: 'test',
             phoneNumberSource: 'phone number source',
             expectedLabel: 'phone number source',
         },
         {
             customerId: null,
+            customerName: undefined,
             customerHookData: 'test',
             phoneNumberSource: null,
             expectedLabel: 'Unknown customer',
         },
+        {
+            customerId: 1,
+            customerName: 'NameProp',
+            customerHookData: 'test',
+            phoneNumberSource: null,
+            expectedLabel: 'NameProp',
+        },
+        {
+            customerId: null,
+            customerName: 'NameProp',
+            customerHookData: 'test',
+            phoneNumberSource: '123',
+            expectedLabel: 'NameProp',
+        },
     ])(
         'should render inbound call activity with customer data missing',
-        ({customerHookData, customerId, phoneNumberSource, expectedLabel}) => {
+        ({
+            customerHookData,
+            customerId,
+            phoneNumberSource,
+            expectedLabel,
+            customerName,
+        }) => {
             useCustomerDetailsSpy.mockReturnValue({
                 customer: customerHookData,
             } as any)
@@ -170,6 +193,7 @@ describe('VoiceCallActivity', () => {
 
             const voiceCall = {
                 agentId: null,
+                customerName: customerName,
                 customerId: customerId,
                 phoneNumberDestination: '+123456789',
                 phoneNumberSource: phoneNumberSource,
@@ -290,21 +314,38 @@ describe('VoiceCallActivity', () => {
     it.each([
         {
             customerId: '2',
+            customerName: undefined,
             customerHookData: undefined,
             phoneNumberDestination: '+123456789',
             expectedLabel: '+123456789',
         },
         {
             customerId: null,
+            customerName: undefined,
             customerHookData: 'test',
             phoneNumberDestination: 'phone number destination',
             expectedLabel: 'phone number destination',
         },
         {
             customerId: null,
+            customerName: undefined,
             customerHookData: 'test',
             phoneNumberDestination: null,
             expectedLabel: 'Unknown customer',
+        },
+        {
+            customerId: 1,
+            customerName: 'NameProp',
+            customerHookData: 'test',
+            phoneNumberDestination: null,
+            expectedLabel: 'NameProp',
+        },
+        {
+            customerId: null,
+            customerName: 'NameProp',
+            customerHookData: 'test',
+            phoneNumberDestination: '123',
+            expectedLabel: 'NameProp',
         },
     ])(
         `should render outbound call activity with customer data missing`,
@@ -313,6 +354,7 @@ describe('VoiceCallActivity', () => {
             customerId,
             phoneNumberDestination,
             expectedLabel,
+            customerName,
         }) => {
             useCustomerDetailsSpy.mockReturnValue({
                 customer: customerHookData,
@@ -324,6 +366,7 @@ describe('VoiceCallActivity', () => {
             const voiceCall = {
                 agentId: 1,
                 customerId: customerId,
+                customerName: customerName,
                 phoneNumberSource: '123',
                 phoneNumberDestination: phoneNumberDestination,
                 status: VoiceCallStatus.Completed,

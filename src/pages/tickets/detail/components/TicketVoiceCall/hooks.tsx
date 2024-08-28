@@ -5,7 +5,13 @@ import {useGetAgent} from 'models/agents/queries'
 import {Customer} from 'models/customer/types'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 
-export function useCustomerDetails(customerId: number) {
+export function useCustomerDetails({
+    customerId,
+    isEnabled = true,
+}: {
+    customerId: number
+    isEnabled?: boolean
+}) {
     const ticketCustomer: Customer | undefined =
         useAppSelector(getTicketCustomer)?.toJS()
     const isCallCustomerSameAsTicketCustomer = customerId === ticketCustomer?.id
@@ -20,6 +26,7 @@ export function useCustomerDetails(customerId: number) {
         initialData: customerDetails
             ? axiosSuccessResponse(customerDetails)
             : undefined,
+        enabled: isEnabled,
     })
 
     return {

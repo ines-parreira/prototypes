@@ -1,6 +1,9 @@
 import {
     LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItemStatus,
+    LiveCallQueueVoiceCall,
+    VoiceCallDirection,
+    VoiceCallStatus,
 } from '@gorgias/api-queries'
 import {
     groupAgentsByStatus,
@@ -8,6 +11,8 @@ import {
     getOldestCall,
     isAgentBusy,
     isAgentAvailable,
+    isLiveInboundVoiceCallAnswered,
+    formatVoiceCallsData,
 } from './utils'
 
 describe('utils', () => {
@@ -241,6 +246,113 @@ describe('utils', () => {
             const result = getOldestCall(agent)
 
             expect(result).toBe(null)
+        })
+    })
+
+    describe('formatVoiceCallsData', () => {
+        it('should format voice calls data correctly for inbound calls', () => {
+            const voiceCall = {
+                id: 1,
+                last_answered_by_agent_id: 1,
+                status: VoiceCallStatus.Answered,
+                phone_number_source: '123456789',
+                phone_number_destination: '987654321',
+                created_datetime: '2021-08-01T10:00:00Z',
+                customer_id: 2,
+                customer_name: 'Customer 2',
+                direction: VoiceCallDirection.Inbound,
+                integration_id: 3,
+                duration: 60,
+                ticket_id: 4,
+                has_voicemail: true,
+                has_call_recording: true,
+            } as LiveCallQueueVoiceCall
+
+            const result = formatVoiceCallsData([voiceCall])
+            expect(result).toEqual([
+                {
+                    agentId: 1,
+                    customerId: 2,
+                    customerName: 'Customer 2',
+                    direction: VoiceCallDirection.Inbound,
+                    integrationId: 3,
+                    createdAt: '2021-08-01T10:00:00Z',
+                    status: VoiceCallStatus.Answered,
+                    duration: 60,
+                    ticketId: 4,
+                    phoneNumberDestination: '987654321',
+                    phoneNumberSource: '123456789',
+                    talkTime: null,
+                    waitTime: null,
+                    voicemailAvailable: true,
+                    voicemailUrl: null,
+                    callRecordingAvailable: true,
+                    callRecordingUrl: null,
+                },
+            ])
+        })
+
+        it('should format voice calls data correctly for outbound calls', () => {
+            const voiceCall = {
+                id: 1,
+                initiated_by_agent_id: 1,
+                status: VoiceCallStatus.Answered,
+                phone_number_source: '123456789',
+                phone_number_destination: '987654321',
+                created_datetime: '2021-08-01T10:00:00Z',
+                customer_id: 2,
+                customer_name: 'Customer 2',
+                direction: VoiceCallDirection.Outbound,
+                integration_id: 3,
+                duration: 60,
+                ticket_id: 4,
+                has_voicemail: true,
+                has_call_recording: true,
+            } as LiveCallQueueVoiceCall
+
+            const result = formatVoiceCallsData([voiceCall])
+            expect(result).toEqual([
+                {
+                    agentId: 1,
+                    customerId: 2,
+                    customerName: 'Customer 2',
+                    direction: VoiceCallDirection.Outbound,
+                    integrationId: 3,
+                    createdAt: '2021-08-01T10:00:00Z',
+                    status: VoiceCallStatus.Answered,
+                    duration: 60,
+                    ticketId: 4,
+                    phoneNumberDestination: '987654321',
+                    phoneNumberSource: '123456789',
+                    talkTime: null,
+                    waitTime: null,
+                    voicemailAvailable: true,
+                    voicemailUrl: null,
+                    callRecordingAvailable: true,
+                    callRecordingUrl: null,
+                },
+            ])
+        })
+    })
+
+    describe('isLiveInboundVoiceCallAnswered', () => {
+        it('should return true for status Answered', () => {
+            const result = isLiveInboundVoiceCallAnswered(
+                VoiceCallStatus.Answered
+            )
+
+            expect(result).toBe(true)
+        })
+
+        it.each([
+            VoiceCallStatus.Ringing,
+            VoiceCallStatus.Initiated,
+            VoiceCallStatus.Queued,
+            VoiceCallStatus.InProgress,
+        ])('should return false for status %s', (status) => {
+            const result = isLiveInboundVoiceCallAnswered(status)
+
+            expect(result).toBe(false)
         })
     })
 })

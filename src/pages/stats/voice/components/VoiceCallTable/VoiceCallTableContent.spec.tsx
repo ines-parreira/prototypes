@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
+import {VoiceCallDirection} from '@gorgias/api-queries'
 import {assumeMock} from 'utils/testing'
 import {VoiceCallStatus} from 'models/voiceCall/types'
 import {RootState, StoreDispatch} from 'state/types'
@@ -48,7 +49,7 @@ const data = [
     {
         agentId: 1,
         customerId: 1,
-        direction: 'inbound',
+        direction: VoiceCallDirection.Inbound,
         integrationId: 1,
         createdAt: '2022-12-21T15:21:47.87.000',
         status: VoiceCallStatus.Completed,
@@ -66,7 +67,7 @@ const data = [
     {
         agentId: 2,
         customerId: 2,
-        direction: 'outbound',
+        direction: VoiceCallDirection.Outbound,
         integrationId: 2,
         createdAt: '2022-12-25T10:21:00.00.000',
         status: VoiceCallStatus.Missed,
@@ -84,7 +85,7 @@ const data = [
     {
         agentId: 3,
         customerId: 3,
-        direction: 'inbound',
+        direction: VoiceCallDirection.Inbound,
         integrationId: null,
         createdAt: '2022-12-26T10:21:00.00.000',
         status: VoiceCallStatus.Missed,

@@ -14,7 +14,7 @@ type Props = {
 
 export default function TicketVoiceCallOutbound({voiceCall}: Props) {
     const {data: agent} = useAgentDetails(voiceCall.initiated_by_agent_id)
-    const {customer} = useCustomerDetails(voiceCall.customer_id)
+    const {customer} = useCustomerDetails({customerId: voiceCall.customer_id})
 
     return (
         <TicketVoiceCallContainer

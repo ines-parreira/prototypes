@@ -12,6 +12,7 @@ import css from './VoiceCallCustomerLabel.less'
 
 type CustomerLabelProps = {
     customerId: number
+    customerName?: string
     phoneNumber: string
     className?: string
     withTooltip?: boolean
@@ -19,17 +20,22 @@ type CustomerLabelProps = {
 
 export default function VoiceCallCustomerLabel({
     customerId,
+    customerName,
     phoneNumber,
     className,
     withTooltip = false,
 }: CustomerLabelProps) {
-    const {customer, error} = useCustomerDetails(customerId)
+    const {customer, error} = useCustomerDetails({
+        customerId,
+        isEnabled: customerName ? false : true,
+    })
     const formattedPhoneNumber = formatPhoneNumberInternational(phoneNumber)
     const generatedId = useId()
     const id = `voice-call-customer-label-${generatedId}`
 
-    const displayedValue =
+    const customerDataOrPhoneNumber =
         error || isEmpty(customer) ? formattedPhoneNumber : fromJS(customer)
+    const displayedValue = customerName || customerDataOrPhoneNumber
 
     const label = <CustomerLabel customer={displayedValue} />
 
