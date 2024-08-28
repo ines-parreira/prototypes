@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {UserRole} from 'config/types/user'
 import {useBulkAction} from 'jobs'
 import {assumeMock} from 'utils/testing'
@@ -14,6 +15,9 @@ import ApplyMacro from '../ApplyMacro'
 import BulkActions from '../BulkActions'
 import CloseTickets from '../CloseTickets'
 import MoreActions from '../MoreActions'
+
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 jest.mock(
     '../ApplyMacro',
@@ -43,7 +47,13 @@ jest.mock(
             (
                 <button
                     disabled={isDisabled}
-                    onClick={() => launchJob(mockJobType)}
+                    onClick={() =>
+                        launchJob({
+                            label: 'Delete',
+                            type: mockJobType,
+                            event: 'delete',
+                        })
+                    }
                 >
                     MoreActions
                 </button>
@@ -140,6 +150,12 @@ describe('<BulkActions />', () => {
 
         await waitFor(() =>
             expect(mockCreateJob).toHaveBeenCalledWith(mockJobType, undefined)
+        )
+        await waitFor(() =>
+            expect(logEventMock).toHaveBeenCalledWith(SegmentEvent.BulkAction, {
+                type: 'delete',
+                location: 'split-view-mode',
+            })
         )
     })
 })

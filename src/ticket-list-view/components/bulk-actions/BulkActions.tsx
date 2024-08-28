@@ -1,6 +1,7 @@
 import React, {useCallback, useMemo} from 'react'
 import {JobType} from '@gorgias/api-queries'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {Item} from 'components/Dropdown'
 import {Update, useBulkAction} from 'jobs'
 
@@ -15,6 +16,7 @@ type Job = {
     params?: (item?: Item | null) => {updates: XOR<Update>}
     className?: string
     subItem?: string
+    event: string
 }
 
 export enum Action {
@@ -58,30 +60,52 @@ export default function BulkActions({
 
     const launchJob = useCallback(
         async (
-            type: Job['type'],
+            action: Pick<Job, 'type' | 'event'>,
             params?: {
                 updates: XOR<Update>
             }
         ) => {
-            await createJob(type, params)
+            await createJob(action.type, params)
+            const [entry] = Object.entries(params?.updates ?? {})
+
+            logEvent(SegmentEvent.BulkAction, {
+                type: action.event,
+                location: 'split-view-mode',
+                ...(['is_unread', 'status'].includes(entry?.[0])
+                    ? {
+                          value: entry?.[1] as
+                              | Update['status']
+                              | Update['is_unread'],
+                      }
+                    : {}),
+            })
             onComplete()
         },
         [createJob, onComplete]
     )
+
+    const onApplyMacro = useCallback(() => {
+        logEvent(SegmentEvent.BulkAction, {
+            type: 'apply-macro',
+            location: 'split-view-mode',
+        })
+        onComplete()
+    }, [onComplete])
 
     return (
         <div className={css.bulkActions}>
             <CloseTickets
                 isDisabled={isLoading || isDisabled}
                 onClick={() =>
-                    launchJob(JobType.UpdateTicket, {
-                        updates: {status: 'closed'},
-                    })
+                    launchJob(
+                        {type: JobType.UpdateTicket, event: 'status'},
+                        {updates: {status: 'closed'}}
+                    )
                 }
             />
             <ApplyMacro
                 isDisabled={isLoading || isDisabled}
-                onComplete={onComplete}
+                onComplete={onApplyMacro}
                 ticketIds={ticketIds}
             />
             <MoreActions

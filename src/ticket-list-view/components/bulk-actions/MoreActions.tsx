@@ -35,6 +35,7 @@ type Job = {
     params?: (item?: Item | null) => {updates: XOR<Update>}
     className?: string
     subItem?: string
+    event: string
 }
 
 export enum Action {
@@ -56,6 +57,7 @@ const getActions = (
         params: (tag?: Item | null) => ({
             updates: {tags: [tag!.name!]},
         }),
+        event: 'tags',
     },
     agent: {
         label: 'Assign to',
@@ -70,6 +72,7 @@ const getActions = (
                     : null,
             },
         }),
+        event: 'assignee_user',
     },
     team: {
         label: 'Assign to team',
@@ -79,6 +82,7 @@ const getActions = (
                 assignee_team_id: team?.id ?? null,
             },
         }),
+        event: 'assignee_team_id',
     },
     mark_as_unread: {
         label: 'Mark as unread',
@@ -88,6 +92,7 @@ const getActions = (
                 is_unread: true,
             },
         }),
+        event: 'is_unread',
     },
     mark_as_read: {
         label: 'Mark as read',
@@ -97,12 +102,14 @@ const getActions = (
                 is_unread: false,
             },
         }),
+        event: 'is_unread',
     },
     ...(hasUserRole
         ? {
               export_tickets: {
                   label: 'Export tickets',
                   type: JobType.ExportTicket,
+                  event: 'export',
               },
           }
         : {}),
@@ -117,11 +124,13 @@ const getActions = (
                               trashed_datetime: null,
                           },
                       }),
+                      event: 'untrash',
                   },
                   delete: {
                       label: 'Delete forever',
                       type: JobType.DeleteTicket,
                       className: 'delete',
+                      event: 'delete',
                   },
               }
             : {
@@ -134,6 +143,7 @@ const getActions = (
                           },
                       }),
                       className: 'delete',
+                      event: 'trash',
                   },
               }
         : {}),
@@ -160,7 +170,7 @@ export default function MoreActions({
     isDisabled: boolean
     isLoading: boolean
     launchJob: (
-        type: Job['type'],
+        action: Job,
         params?: {
             updates: XOR<Update>
         }
@@ -173,12 +183,12 @@ export default function MoreActions({
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [level, setLevel] = useState<'agent' | 'team' | 'tag' | null>(null)
     const currentUser = useAppSelector(getCurrentUserState)
-    const hasUserRole = useMemo(
+    const hasAgentRole = useMemo(
         () => hasRole(currentUser, UserRole.Agent),
         [currentUser]
     )
     const isActiveViewTrashView = useAppSelector(getIsActiveViewTrashView)
-    const actions = getActions(hasUserRole, isActiveViewTrashView)
+    const actions = getActions(hasAgentRole, isActiveViewTrashView)
     const dropdownItems = getDropdownItems(actions)
 
     const toggle = useCallback((value: boolean) => {
@@ -193,7 +203,7 @@ export default function MoreActions({
                 const action = isActiveViewTrashView
                     ? actions['delete']
                     : actions['trash']
-                void launchJob(action.type, action.params?.())
+                void launchJob(action, action.params?.())
             },
         }),
         [actions, isActiveViewTrashView, launchJob]
@@ -210,7 +220,7 @@ export default function MoreActions({
                 setIsConfirmationPopoverOpen(true)
             } else {
                 const params = actions[value].params?.(options)
-                void launchJob(actions[value].type, params)
+                void launchJob(actions[value], params)
             }
 
             if (level) {

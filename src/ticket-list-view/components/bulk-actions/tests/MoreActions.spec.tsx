@@ -76,9 +76,13 @@ describe('<MoreActions />', () => {
         screen.getByText('more_horiz').click()
         screen.getByText('Mark as unread').click()
 
-        expect(minProps.launchJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
-            updates: {is_unread: true},
-        })
+        expect(minProps.launchJob).toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: JobType.UpdateTicket,
+                label: 'Mark as unread',
+            }),
+            {updates: {is_unread: true}}
+        )
     })
 
     it('should trigger a job for marking as read tickets', () => {
@@ -86,9 +90,13 @@ describe('<MoreActions />', () => {
         screen.getByText('more_horiz').click()
         screen.getByText('Mark as read').click()
 
-        expect(minProps.launchJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
-            updates: {is_unread: false},
-        })
+        expect(minProps.launchJob).toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: JobType.UpdateTicket,
+                label: 'Mark as read',
+            }),
+            {updates: {is_unread: false}}
+        )
     })
 
     it('should trigger a job for exporting tickets', () => {
@@ -97,7 +105,10 @@ describe('<MoreActions />', () => {
         screen.getByText('Export tickets').click()
 
         expect(minProps.launchJob).toHaveBeenCalledWith(
-            JobType.ExportTicket,
+            expect.objectContaining({
+                type: JobType.ExportTicket,
+                label: 'Export tickets',
+            }),
             undefined
         )
     })
@@ -108,9 +119,13 @@ describe('<MoreActions />', () => {
         screen.getByText('Delete').click()
         screen.getByText('Confirm').click()
 
-        expect(minProps.launchJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
-            updates: {trashed_datetime: expect.any(String)},
-        })
+        expect(minProps.launchJob).toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: JobType.UpdateTicket,
+                label: 'Delete',
+            }),
+            {updates: {trashed_datetime: expect.any(String)}}
+        )
     })
 
     it('should trigger a job for untrashing tickets', () => {
@@ -125,11 +140,13 @@ describe('<MoreActions />', () => {
         screen.getByText('more_horiz').click()
         screen.getByText('Undelete').click()
 
-        expect(minProps.launchJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
-            updates: {
-                trashed_datetime: null,
-            },
-        })
+        expect(minProps.launchJob).toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: JobType.UpdateTicket,
+                label: 'Undelete',
+            }),
+            {updates: {trashed_datetime: null}}
+        )
     })
 
     it('should trigger a job for deleting tickets', () => {
@@ -146,7 +163,10 @@ describe('<MoreActions />', () => {
         screen.getByText('Confirm').click()
 
         expect(minProps.launchJob).toHaveBeenCalledWith(
-            JobType.DeleteTicket,
+            expect.objectContaining({
+                type: JobType.DeleteTicket,
+                label: 'Delete forever',
+            }),
             undefined
         )
     })
@@ -167,9 +187,13 @@ describe('<MoreActions />', () => {
         expect(screen.getByText('arrow_back')).toBeInTheDocument
         screen.getByText('TagDropdownMenu').click()
 
-        expect(minProps.launchJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
-            updates: {tags: ['tag']},
-        })
+        expect(minProps.launchJob).toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: JobType.UpdateTicket,
+                label: 'Add tag',
+            }),
+            {updates: {tags: ['tag']}}
+        )
         expect(screen.queryByText('TagDropdownMenu')).not.toBeInTheDocument
         expect(screen.queryByText('Add tag')).not.toBeInTheDocument
     })
@@ -181,9 +205,13 @@ describe('<MoreActions />', () => {
         expect(screen.getByText('arrow_back')).toBeInTheDocument
         getByText('UserAssigneeDropdownMenu').click()
 
-        expect(minProps.launchJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
-            updates: {assignee_user: {id: 3, name: 'user'}},
-        })
+        expect(minProps.launchJob).toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: JobType.UpdateTicket,
+                label: 'Assign to',
+            }),
+            {updates: {assignee_user: {id: 3, name: 'user'}}}
+        )
         expect(screen.queryByText('TagDropdownMenu')).not.toBeInTheDocument
         expect(screen.queryByText('Assign to')).not.toBeInTheDocument
     })
@@ -195,9 +223,15 @@ describe('<MoreActions />', () => {
         expect(screen.getByText('arrow_back')).toBeInTheDocument
         screen.getByText('TeamAssigneeDropdownMenu').click()
 
-        expect(minProps.launchJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
-            updates: {assignee_team_id: 8},
-        })
+        expect(minProps.launchJob).toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: JobType.UpdateTicket,
+                label: 'Assign to team',
+            }),
+            {
+                updates: {assignee_team_id: 8},
+            }
+        )
         expect(screen.queryByText('TagDropdownMenu')).not.toBeInTheDocument
         expect(screen.queryByText('Assign to team')).not.toBeInTheDocument
     })
@@ -236,21 +270,19 @@ describe('<MoreActions />', () => {
         renderWithStore({...minProps, selectionCount: 1})
         screen.getByText('more_horiz').click()
         screen.getByText('Delete').click()
-        screen.getByText('Confirm').click()
 
-        expect(minProps.launchJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
-            updates: {trashed_datetime: expect.any(String)},
-        })
+        expect(
+            screen.getByText('Are you sure you want to delete 1 ticket?')
+        ).toBeInTheDocument()
     })
 
     it('should display plural noun', () => {
         renderWithStore(minProps)
         screen.getByText('more_horiz').click()
         screen.getByText('Delete').click()
-        screen.getByText('Confirm').click()
 
-        expect(minProps.launchJob).toHaveBeenCalledWith(JobType.UpdateTicket, {
-            updates: {trashed_datetime: expect.any(String)},
-        })
+        expect(
+            screen.getByText('Are you sure you want to delete tickets?')
+        ).toBeInTheDocument()
     })
 })
