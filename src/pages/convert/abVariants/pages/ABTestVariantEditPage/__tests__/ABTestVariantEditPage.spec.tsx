@@ -126,10 +126,10 @@ describe('<ABTestVariantEditPage />', () => {
 
             expect(getByText('Set up the basics')).toBeInTheDocument()
             expect(
-                getByRole('button', {name: 'Update Campaign'})
+                getByRole('button', {name: 'Update Control'})
             ).toBeInTheDocument()
 
-            userEvent.click(getByRole('button', {name: 'Update Campaign'}))
+            userEvent.click(getByRole('button', {name: 'Update Control'}))
 
             // Should get whole campaign data
             expect(onUpdateMock).toBeCalledWith(fromJS(campaignData))

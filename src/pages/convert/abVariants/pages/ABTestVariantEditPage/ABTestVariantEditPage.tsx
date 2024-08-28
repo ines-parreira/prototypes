@@ -146,6 +146,15 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
     }, [data, variantId, isControlVersion])
 
     const wizardConfiguration = useMemo(() => {
+        if (isControlVersion) {
+            return {
+                labels: {
+                    [Label.Update]: 'Update Control',
+                    [Label.Duplicate]: 'Duplicate Variant',
+                },
+            }
+        }
+
         return {
             defaultStepOpened: CampaignStepsKeys.Message,
             stepConfiguration: {
@@ -161,7 +170,7 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
                 [Label.Duplicate]: 'Duplicate Variant',
             },
         }
-    }, [])
+    }, [isControlVersion])
 
     useEffect(() => {
         if (!addVariant) {
@@ -193,6 +202,7 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
         backUrl: backUrl,
         openedStep: CampaignStepsKeys.Message,
         disableActions: !canModifyObjects,
+        wizardConfiguration: wizardConfiguration,
         banners: !canModifyObjects && !isTestCompleted && (
             <Alert type={AlertType.Warning}>
                 Variants cannot be edited when a test is running. To edit your
@@ -212,7 +222,6 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
             duplicateCampaign:
                 variantId !== undefined ? handleDuplicateVariant : undefined,
             onDiscard: handleDiscardVariant,
-            wizardConfiguration: wizardConfiguration,
             allowActivate: false,
             allowChangeSection: false,
         }

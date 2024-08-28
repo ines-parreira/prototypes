@@ -159,7 +159,7 @@ describe('ABGroupView', () => {
         )
 
         act(() => {
-            userEvent.click(getByRole('button', {name: 'Update Campaign'}))
+            userEvent.click(getByRole('button', {name: 'Update Control'}))
         })
 
         expect(updateCampaignMock).toBeCalledWith([
