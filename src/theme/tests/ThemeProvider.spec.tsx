@@ -1,10 +1,10 @@
 import {render} from '@testing-library/react'
 import React, {useContext} from 'react'
 
-import Provider from '../Provider'
+import ThemeProvider from '../ThemeProvider'
 import ThemeContext from '../ThemeContext'
 
-describe('Provider', () => {
+describe('ThemeProvider', () => {
     it('should provide the theme context and render its children', () => {
         let theme
         const TestComponent = () => {
@@ -14,9 +14,9 @@ describe('Provider', () => {
         }
 
         const {getByText} = render(
-            <Provider>
+            <ThemeProvider>
                 <TestComponent />
-            </Provider>
+            </ThemeProvider>
         )
 
         expect(getByText('Test component')).toBeInTheDocument()

@@ -7,7 +7,7 @@ type Props = {
     children: ReactElement | ReactElement[]
 }
 
-export default function Provider({children}: Props) {
+export default function ThemeProvider({children}: Props) {
     const context = useThemeContext()
 
     return (

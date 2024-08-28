@@ -1,0 +1,29 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .popover {
+        display: flex;
+        border-radius: 4px;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        max-width: 420px;
+        background: var(--neutral-grey-0);
+        padding: @layout-spacing-s;
+        z-index: 3;
+        filter: drop-shadow(1px 1px 4px rgba(22, 22, 22, 0.1));
+
+        &.dark {
+            filter: unset;
+            border: 1px solid var(--neutral-grey-2);
+        }
+    }
+
+    .content {
+        .body-regular();
+    }
+
+    .button {
+        align-self: flex-end;
+    }
+}

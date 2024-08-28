@@ -213,9 +213,7 @@ export default function TicketListView({
 
     const selectionCount = useMemo(
         () =>
-            hasSelectedAll
-                ? viewCount || 0
-                : Object.keys(selectedTickets).length,
+            hasSelectedAll ? viewCount : Object.keys(selectedTickets).length,
         [hasSelectedAll, selectedTickets, viewCount]
     )
 
@@ -249,8 +247,9 @@ export default function TicketListView({
                             isChecked={hasSelectedAll}
                             onChange={onSelectAll}
                         />
-                        {selectionCount > 0 ? (
-                            <span>{selectionCount} selected</span>
+                        {hasSelectedAll ||
+                        Object.keys(selectedTickets).length > 0 ? (
+                            <span>{selectionCount ?? '?'} selected</span>
                         ) : (
                             <span>Select all</span>
                         )}
@@ -259,6 +258,7 @@ export default function TicketListView({
                         hasSelectedAll={hasSelectedAll}
                         selectedTickets={selectedTickets}
                         onComplete={clear}
+                        selectionCount={selectionCount}
                     />
                 </div>
             )}

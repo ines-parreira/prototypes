@@ -1,4 +1,4 @@
-export {default as ThemeProvider} from './Provider'
+export {default as ThemeProvider} from './ThemeProvider'
 export {Theme, Themes} from './types'
 export type {ThemeValue, AcceptedThemes} from './types'
 export {default as useSetTheme} from './useSetTheme'

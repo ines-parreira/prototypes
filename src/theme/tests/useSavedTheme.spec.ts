@@ -1,13 +1,13 @@
 import {renderHook} from '@testing-library/react-hooks'
 
-import Provider from '../Provider'
-import useTheme from '../useTheme'
+import Provider from '../ThemeProvider'
+import useSavedTheme from '../useSavedTheme'
 
 jest.unmock('theme/useTheme.ts')
 
 describe('useSavedTheme', () => {
     it('should throw an error when used outside of the provider', () => {
-        const {result} = renderHook(() => useTheme())
+        const {result} = renderHook(() => useSavedTheme())
 
         expect(result.error).toEqual(
             new Error('`useTheme` may not be used outside of a ThemeProvider')
@@ -15,7 +15,7 @@ describe('useSavedTheme', () => {
     })
 
     it('should return the saved theme', () => {
-        const {result} = renderHook(() => useTheme(), {wrapper: Provider})
+        const {result} = renderHook(() => useSavedTheme(), {wrapper: Provider})
 
         expect(result.current).toBe('modern light')
     })

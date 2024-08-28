@@ -16,25 +16,6 @@ const storyConfig: Meta = {
     title: 'General/Dropdown/Dropdown',
     component: Dropdown,
     argTypes: {
-        placement: {
-            control: {
-                type: 'select',
-            },
-            options: [
-                'top',
-                'right',
-                'bottom',
-                'left',
-                'top-start',
-                'right-start',
-                'bottom-start',
-                'left-start',
-                'top-end',
-                'right-end',
-                'bottom-end',
-                'left-end',
-            ],
-        },
         value: {
             control: {type: null},
         },

@@ -1,6 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 
-import Provider from '../Provider'
+import Provider from '../ThemeProvider'
 import useTheme from '../useTheme'
 
 jest.unmock('theme/useTheme.ts')
