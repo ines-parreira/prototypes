@@ -21,7 +21,6 @@ const ActionsPlatformTemplatesView = () => {
         isInitialLoading: isGetTemplatesInitialLoading,
     } = useGetWorkflowConfigurationTemplates({
         triggers: ['llm-prompt'],
-        is_draft: [0, 1],
     })
     const {apps, isLoading: areAppsLoading} = useApps()
     const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})

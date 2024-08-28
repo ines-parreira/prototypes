@@ -267,6 +267,10 @@ export type WorkflowConfiguration = {
                             kind: 'order'
                             integration_id: number | string
                         }
+                      | {
+                            kind: 'product'
+                            integration_id: number | string
+                        }
                   )[]
                   conditions?: ConditionsSchema | null
                   outputs: {

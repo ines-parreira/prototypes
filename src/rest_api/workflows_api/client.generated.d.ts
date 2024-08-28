@@ -405,6 +405,12 @@ declare namespace Components {
           } | {
             kind: "order";
             integration_id: number | string;
+          } | {
+            kind: "product";
+            integration_id: number | string;
+            name: string;
+            instructions: string;
+            id: string;
           })[];
           conditions?: {
             or: ({
@@ -910,6 +916,12 @@ declare namespace Components {
           } | {
             kind: "order";
             integration_id: number | string;
+          } | {
+            kind: "product";
+            integration_id: number | string;
+            name: string;
+            instructions: string;
+            id: string;
           })[];
           conditions?: {
             or: ({
@@ -1184,6 +1196,12 @@ declare namespace Components {
           } | {
             kind: "order";
             integration_id: number | string;
+          } | {
+            kind: "product";
+            integration_id: number | string;
+            name: string;
+            instructions: string;
+            id: string;
           })[];
           conditions?: {
             or: ({
@@ -1319,6 +1337,22 @@ declare namespace Components {
               instructions: string;
               data_type: "string";
             };
+            products?: {
+              [name: string]: {
+                name: string;
+                instructions: string;
+                inputs: {
+                  product_id: {
+                    instructions: string;
+                    data_type: "string";
+                  };
+                  product_variant_id: {
+                    instructions: string;
+                    data_type: "string";
+                  };
+                };
+              };
+            };
           };
         };
       } | null;
@@ -1412,6 +1446,13 @@ declare namespace Components {
                   product?: {
                     external_id: string;
                     images: string[];
+                    name?: string | null;
+                    external_type?: string | null;
+                    variants?: {
+                      external_id: string;
+                      quantity?: number | null;
+                      name?: string | null;
+                    }[] | null;
                   } | null;
                 }[];
                 fulfillments?: {
@@ -1423,6 +1464,8 @@ declare namespace Components {
                   external_method_id?: string | null;
                   method_name?: string | null;
                 }[] | null;
+                tags_stringified?: string | null;
+                note?: string | null;
               }[];
               tags_stringified?: string | null;
             };
@@ -1483,6 +1526,13 @@ declare namespace Components {
                 product?: {
                   external_id: string;
                   images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
                 } | null;
               }[];
               fulfillments?: {
@@ -1494,6 +1544,8 @@ declare namespace Components {
                 external_method_id?: string | null;
                 method_name?: string | null;
               }[] | null;
+              tags_stringified?: string | null;
+              note?: string | null;
             };
             at: string; // date-time
           } | {
@@ -1582,6 +1634,13 @@ declare namespace Components {
                       product?: {
                         external_id: string;
                         images: string[];
+                        name?: string | null;
+                        external_type?: string | null;
+                        variants?: {
+                          external_id: string;
+                          quantity?: number | null;
+                          name?: string | null;
+                        }[] | null;
                       } | null;
                     }[];
                     fulfillments?: {
@@ -1593,6 +1652,8 @@ declare namespace Components {
                       external_method_id?: string | null;
                       method_name?: string | null;
                     }[] | null;
+                    tags_stringified?: string | null;
+                    note?: string | null;
                   }[];
                   tags_stringified?: string | null;
                 };
@@ -1653,6 +1714,13 @@ declare namespace Components {
                     product?: {
                       external_id: string;
                       images: string[];
+                      name?: string | null;
+                      external_type?: string | null;
+                      variants?: {
+                        external_id: string;
+                        quantity?: number | null;
+                        name?: string | null;
+                      }[] | null;
                     } | null;
                   }[];
                   fulfillments?: {
@@ -1664,6 +1732,8 @@ declare namespace Components {
                     external_method_id?: string | null;
                     method_name?: string | null;
                   }[] | null;
+                  tags_stringified?: string | null;
+                  note?: string | null;
                 };
                 at: string; // date-time
               } | {
@@ -1841,6 +1911,13 @@ declare namespace Components {
                 product?: {
                   external_id: string;
                   images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
                 } | null;
               }[];
               fulfillments?: {
@@ -1852,6 +1929,8 @@ declare namespace Components {
                 external_method_id?: string | null;
                 method_name?: string | null;
               }[] | null;
+              tags_stringified?: string | null;
+              note?: string | null;
             }[];
             tags_stringified?: string | null;
           } | null;
@@ -1909,6 +1988,13 @@ declare namespace Components {
               product?: {
                 external_id: string;
                 images: string[];
+                name?: string | null;
+                external_type?: string | null;
+                variants?: {
+                  external_id: string;
+                  quantity?: number | null;
+                  name?: string | null;
+                }[] | null;
               } | null;
             }[];
             fulfillments?: {
@@ -1920,6 +2006,26 @@ declare namespace Components {
               external_method_id?: string | null;
               method_name?: string | null;
             }[] | null;
+            tags_stringified?: string | null;
+            note?: string | null;
+          } | null;
+          products?: {
+            [name: string]: {
+              external_id: string;
+              images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
+              selected_variant?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              } | null;
+            };
           } | null;
         } | null;
         custom_inputs?: {
@@ -1935,6 +2041,17 @@ declare namespace Components {
         };
       } | null;
     };
+    export type HttpRequestEventsResponseDto = {
+      id: string;
+      request_url: string;
+      request_method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+      request_body?: string | null;
+      request_headers?: string | null;
+      request_datetime: string; // date-time
+      response_status_code: number;
+      response_headers?: string | null;
+      response_body?: string | null;
+    }[];
     export type ListAppResponseDto = ({
       id: string;
       auth_type: "api-key";
@@ -2343,6 +2460,12 @@ declare namespace Components {
           } | {
             kind: "order";
             integration_id: number | string;
+          } | {
+            kind: "product";
+            integration_id: number | string;
+            name: string;
+            instructions: string;
+            id: string;
           })[];
           conditions?: {
             or: ({
@@ -2472,6 +2595,22 @@ declare namespace Components {
           order_number?: {
             instructions: string;
             data_type: "string";
+          };
+          products?: {
+            [name: string]: {
+              name: string;
+              instructions: string;
+              inputs: {
+                product_id: {
+                  instructions: string;
+                  data_type: "string";
+                };
+                product_variant_id: {
+                  instructions: string;
+                  data_type: "string";
+                };
+              };
+            };
           };
         };
       };
@@ -2658,6 +2797,12 @@ declare namespace Components {
           } | {
             kind: "order";
             integration_id: number | string;
+          } | {
+            kind: "product";
+            integration_id: number | string;
+            name: string;
+            instructions: string;
+            id: string;
           })[];
           conditions?: {
             or: ({
@@ -3201,6 +3346,13 @@ declare namespace Components {
             product?: {
               external_id: string;
               images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
             } | null;
           }[];
           fulfillments?: {
@@ -3212,6 +3364,8 @@ declare namespace Components {
             external_method_id?: string | null;
             method_name?: string | null;
           }[] | null;
+          tags_stringified?: string | null;
+          note?: string | null;
         } | null;
       } | {
         items: {
@@ -3334,6 +3488,13 @@ declare namespace Components {
             product?: {
               external_id: string;
               images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
             } | null;
           }[];
           fulfillments?: {
@@ -3345,6 +3506,8 @@ declare namespace Components {
             external_method_id?: string | null;
             method_name?: string | null;
           }[] | null;
+          tags_stringified?: string | null;
+          note?: string | null;
         }[];
         message?: {
           html: string;
@@ -3406,6 +3569,13 @@ declare namespace Components {
             product?: {
               external_id: string;
               images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
             } | null;
           }[];
           fulfillments?: {
@@ -3417,6 +3587,8 @@ declare namespace Components {
             external_method_id?: string | null;
             method_name?: string | null;
           }[] | null;
+          tags_stringified?: string | null;
+          note?: string | null;
         };
         message?: {
           html: string;
@@ -3466,6 +3638,22 @@ declare namespace Components {
             order_number?: {
               instructions: string;
               data_type: "string";
+            };
+            products?: {
+              [name: string]: {
+                name: string;
+                instructions: string;
+                inputs: {
+                  product_id: {
+                    instructions: string;
+                    data_type: "string";
+                  };
+                  product_variant_id: {
+                    instructions: string;
+                    data_type: "string";
+                  };
+                };
+              };
             };
           };
         };
@@ -3579,6 +3767,13 @@ declare namespace Components {
             product?: {
               external_id: string;
               images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
             } | null;
           }[];
           fulfillments?: {
@@ -3590,6 +3785,8 @@ declare namespace Components {
             external_method_id?: string | null;
             method_name?: string | null;
           }[] | null;
+          tags_stringified?: string | null;
+          note?: string | null;
         }[];
         message?: {
           html: string;
@@ -3651,6 +3848,13 @@ declare namespace Components {
             product?: {
               external_id: string;
               images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
             } | null;
           }[];
           fulfillments?: {
@@ -3662,6 +3866,8 @@ declare namespace Components {
             external_method_id?: string | null;
             method_name?: string | null;
           }[] | null;
+          tags_stringified?: string | null;
+          note?: string | null;
         };
         message?: {
           html: string;
@@ -3755,6 +3961,13 @@ declare namespace Components {
                   product?: {
                     external_id: string;
                     images: string[];
+                    name?: string | null;
+                    external_type?: string | null;
+                    variants?: {
+                      external_id: string;
+                      quantity?: number | null;
+                      name?: string | null;
+                    }[] | null;
                   } | null;
                 }[];
                 fulfillments?: {
@@ -3766,6 +3979,8 @@ declare namespace Components {
                   external_method_id?: string | null;
                   method_name?: string | null;
                 }[] | null;
+                tags_stringified?: string | null;
+                note?: string | null;
               }[];
               tags_stringified?: string | null;
             };
@@ -3826,6 +4041,13 @@ declare namespace Components {
                 product?: {
                   external_id: string;
                   images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
                 } | null;
               }[];
               fulfillments?: {
@@ -3837,6 +4059,8 @@ declare namespace Components {
                 external_method_id?: string | null;
                 method_name?: string | null;
               }[] | null;
+              tags_stringified?: string | null;
+              note?: string | null;
             };
             at: string; // date-time
           } | {
@@ -3925,6 +4149,13 @@ declare namespace Components {
                       product?: {
                         external_id: string;
                         images: string[];
+                        name?: string | null;
+                        external_type?: string | null;
+                        variants?: {
+                          external_id: string;
+                          quantity?: number | null;
+                          name?: string | null;
+                        }[] | null;
                       } | null;
                     }[];
                     fulfillments?: {
@@ -3936,6 +4167,8 @@ declare namespace Components {
                       external_method_id?: string | null;
                       method_name?: string | null;
                     }[] | null;
+                    tags_stringified?: string | null;
+                    note?: string | null;
                   }[];
                   tags_stringified?: string | null;
                 };
@@ -3996,6 +4229,13 @@ declare namespace Components {
                     product?: {
                       external_id: string;
                       images: string[];
+                      name?: string | null;
+                      external_type?: string | null;
+                      variants?: {
+                        external_id: string;
+                        quantity?: number | null;
+                        name?: string | null;
+                      }[] | null;
                     } | null;
                   }[];
                   fulfillments?: {
@@ -4007,6 +4247,8 @@ declare namespace Components {
                     external_method_id?: string | null;
                     method_name?: string | null;
                   }[] | null;
+                  tags_stringified?: string | null;
+                  note?: string | null;
                 };
                 at: string; // date-time
               } | {
@@ -4184,6 +4426,13 @@ declare namespace Components {
                 product?: {
                   external_id: string;
                   images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
                 } | null;
               }[];
               fulfillments?: {
@@ -4195,6 +4444,8 @@ declare namespace Components {
                 external_method_id?: string | null;
                 method_name?: string | null;
               }[] | null;
+              tags_stringified?: string | null;
+              note?: string | null;
             }[];
             tags_stringified?: string | null;
           } | null;
@@ -4252,6 +4503,13 @@ declare namespace Components {
               product?: {
                 external_id: string;
                 images: string[];
+                name?: string | null;
+                external_type?: string | null;
+                variants?: {
+                  external_id: string;
+                  quantity?: number | null;
+                  name?: string | null;
+                }[] | null;
               } | null;
             }[];
             fulfillments?: {
@@ -4263,6 +4521,26 @@ declare namespace Components {
               external_method_id?: string | null;
               method_name?: string | null;
             }[] | null;
+            tags_stringified?: string | null;
+            note?: string | null;
+          } | null;
+          products?: {
+            [name: string]: {
+              external_id: string;
+              images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
+              selected_variant?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              } | null;
+            };
           } | null;
         } | null;
         custom_inputs?: {
@@ -4304,6 +4582,12 @@ declare namespace Components {
         order_external_id?: string | null;
         order_name?: string | null;
         order_number?: string | null;
+        products?: {
+          [name: string]: {
+            product_id?: string | null;
+            product_variant_id?: string | null;
+          };
+        } | null;
       } | null;
       user_journey_id?: string | null;
       callback_url?: string | null; // uri
@@ -4421,6 +4705,13 @@ declare namespace Components {
             product?: {
               external_id: string;
               images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
             } | null;
           }[];
           fulfillments?: {
@@ -4432,6 +4723,8 @@ declare namespace Components {
             external_method_id?: string | null;
             method_name?: string | null;
           }[] | null;
+          tags_stringified?: string | null;
+          note?: string | null;
         }[];
         message?: {
           html: string;
@@ -4493,6 +4786,13 @@ declare namespace Components {
             product?: {
               external_id: string;
               images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
             } | null;
           }[];
           fulfillments?: {
@@ -4504,6 +4804,8 @@ declare namespace Components {
             external_method_id?: string | null;
             method_name?: string | null;
           }[] | null;
+          tags_stringified?: string | null;
+          note?: string | null;
         };
         message?: {
           html: string;
@@ -4553,6 +4855,22 @@ declare namespace Components {
             order_number?: {
               instructions: string;
               data_type: "string";
+            };
+            products?: {
+              [name: string]: {
+                name: string;
+                instructions: string;
+                inputs: {
+                  product_id: {
+                    instructions: string;
+                    data_type: "string";
+                  };
+                  product_variant_id: {
+                    instructions: string;
+                    data_type: "string";
+                  };
+                };
+              };
             };
           };
         };
@@ -4666,6 +4984,13 @@ declare namespace Components {
             product?: {
               external_id: string;
               images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
             } | null;
           }[];
           fulfillments?: {
@@ -4677,6 +5002,8 @@ declare namespace Components {
             external_method_id?: string | null;
             method_name?: string | null;
           }[] | null;
+          tags_stringified?: string | null;
+          note?: string | null;
         }[];
         message?: {
           html: string;
@@ -4738,6 +5065,13 @@ declare namespace Components {
             product?: {
               external_id: string;
               images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
             } | null;
           }[];
           fulfillments?: {
@@ -4749,6 +5083,8 @@ declare namespace Components {
             external_method_id?: string | null;
             method_name?: string | null;
           }[] | null;
+          tags_stringified?: string | null;
+          note?: string | null;
         };
         message?: {
           html: string;
@@ -4842,6 +5178,13 @@ declare namespace Components {
                   product?: {
                     external_id: string;
                     images: string[];
+                    name?: string | null;
+                    external_type?: string | null;
+                    variants?: {
+                      external_id: string;
+                      quantity?: number | null;
+                      name?: string | null;
+                    }[] | null;
                   } | null;
                 }[];
                 fulfillments?: {
@@ -4853,6 +5196,8 @@ declare namespace Components {
                   external_method_id?: string | null;
                   method_name?: string | null;
                 }[] | null;
+                tags_stringified?: string | null;
+                note?: string | null;
               }[];
               tags_stringified?: string | null;
             };
@@ -4913,6 +5258,13 @@ declare namespace Components {
                 product?: {
                   external_id: string;
                   images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
                 } | null;
               }[];
               fulfillments?: {
@@ -4924,6 +5276,8 @@ declare namespace Components {
                 external_method_id?: string | null;
                 method_name?: string | null;
               }[] | null;
+              tags_stringified?: string | null;
+              note?: string | null;
             };
             at: string; // date-time
           } | {
@@ -5012,6 +5366,13 @@ declare namespace Components {
                       product?: {
                         external_id: string;
                         images: string[];
+                        name?: string | null;
+                        external_type?: string | null;
+                        variants?: {
+                          external_id: string;
+                          quantity?: number | null;
+                          name?: string | null;
+                        }[] | null;
                       } | null;
                     }[];
                     fulfillments?: {
@@ -5023,6 +5384,8 @@ declare namespace Components {
                       external_method_id?: string | null;
                       method_name?: string | null;
                     }[] | null;
+                    tags_stringified?: string | null;
+                    note?: string | null;
                   }[];
                   tags_stringified?: string | null;
                 };
@@ -5083,6 +5446,13 @@ declare namespace Components {
                     product?: {
                       external_id: string;
                       images: string[];
+                      name?: string | null;
+                      external_type?: string | null;
+                      variants?: {
+                        external_id: string;
+                        quantity?: number | null;
+                        name?: string | null;
+                      }[] | null;
                     } | null;
                   }[];
                   fulfillments?: {
@@ -5094,6 +5464,8 @@ declare namespace Components {
                     external_method_id?: string | null;
                     method_name?: string | null;
                   }[] | null;
+                  tags_stringified?: string | null;
+                  note?: string | null;
                 };
                 at: string; // date-time
               } | {
@@ -5271,6 +5643,13 @@ declare namespace Components {
                 product?: {
                   external_id: string;
                   images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
                 } | null;
               }[];
               fulfillments?: {
@@ -5282,6 +5661,8 @@ declare namespace Components {
                 external_method_id?: string | null;
                 method_name?: string | null;
               }[] | null;
+              tags_stringified?: string | null;
+              note?: string | null;
             }[];
             tags_stringified?: string | null;
           } | null;
@@ -5339,6 +5720,13 @@ declare namespace Components {
               product?: {
                 external_id: string;
                 images: string[];
+                name?: string | null;
+                external_type?: string | null;
+                variants?: {
+                  external_id: string;
+                  quantity?: number | null;
+                  name?: string | null;
+                }[] | null;
               } | null;
             }[];
             fulfillments?: {
@@ -5350,6 +5738,26 @@ declare namespace Components {
               external_method_id?: string | null;
               method_name?: string | null;
             }[] | null;
+            tags_stringified?: string | null;
+            note?: string | null;
+          } | null;
+          products?: {
+            [name: string]: {
+              external_id: string;
+              images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
+              selected_variant?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              } | null;
+            };
           } | null;
         } | null;
         custom_inputs?: {
@@ -5380,6 +5788,12 @@ declare namespace Components {
         order_external_id?: string | null;
         order_name?: string | null;
         order_number?: string | null;
+        products?: {
+          [name: string]: {
+            product_id?: string | null;
+            product_variant_id?: string | null;
+          };
+        } | null;
       } | null;
       user_journey_id?: string | null;
       callback_url?: string | null; // uri
@@ -5424,6 +5838,22 @@ declare namespace Components {
             order_number?: {
               instructions: string;
               data_type: "string";
+            };
+            products?: {
+              [name: string]: {
+                name: string;
+                instructions: string;
+                inputs: {
+                  product_id: {
+                    instructions: string;
+                    data_type: "string";
+                  };
+                  product_variant_id: {
+                    instructions: string;
+                    data_type: "string";
+                  };
+                };
+              };
             };
           };
         };
@@ -5518,6 +5948,13 @@ declare namespace Components {
                   product?: {
                     external_id: string;
                     images: string[];
+                    name?: string | null;
+                    external_type?: string | null;
+                    variants?: {
+                      external_id: string;
+                      quantity?: number | null;
+                      name?: string | null;
+                    }[] | null;
                   } | null;
                 }[];
                 fulfillments?: {
@@ -5529,6 +5966,8 @@ declare namespace Components {
                   external_method_id?: string | null;
                   method_name?: string | null;
                 }[] | null;
+                tags_stringified?: string | null;
+                note?: string | null;
               }[];
               tags_stringified?: string | null;
             };
@@ -5589,6 +6028,13 @@ declare namespace Components {
                 product?: {
                   external_id: string;
                   images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
                 } | null;
               }[];
               fulfillments?: {
@@ -5600,6 +6046,8 @@ declare namespace Components {
                 external_method_id?: string | null;
                 method_name?: string | null;
               }[] | null;
+              tags_stringified?: string | null;
+              note?: string | null;
             };
             at: string; // date-time
           } | {
@@ -5688,6 +6136,13 @@ declare namespace Components {
                       product?: {
                         external_id: string;
                         images: string[];
+                        name?: string | null;
+                        external_type?: string | null;
+                        variants?: {
+                          external_id: string;
+                          quantity?: number | null;
+                          name?: string | null;
+                        }[] | null;
                       } | null;
                     }[];
                     fulfillments?: {
@@ -5699,6 +6154,8 @@ declare namespace Components {
                       external_method_id?: string | null;
                       method_name?: string | null;
                     }[] | null;
+                    tags_stringified?: string | null;
+                    note?: string | null;
                   }[];
                   tags_stringified?: string | null;
                 };
@@ -5759,6 +6216,13 @@ declare namespace Components {
                     product?: {
                       external_id: string;
                       images: string[];
+                      name?: string | null;
+                      external_type?: string | null;
+                      variants?: {
+                        external_id: string;
+                        quantity?: number | null;
+                        name?: string | null;
+                      }[] | null;
                     } | null;
                   }[];
                   fulfillments?: {
@@ -5770,6 +6234,8 @@ declare namespace Components {
                     external_method_id?: string | null;
                     method_name?: string | null;
                   }[] | null;
+                  tags_stringified?: string | null;
+                  note?: string | null;
                 };
                 at: string; // date-time
               } | {
@@ -5947,6 +6413,13 @@ declare namespace Components {
                 product?: {
                   external_id: string;
                   images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
                 } | null;
               }[];
               fulfillments?: {
@@ -5958,6 +6431,8 @@ declare namespace Components {
                 external_method_id?: string | null;
                 method_name?: string | null;
               }[] | null;
+              tags_stringified?: string | null;
+              note?: string | null;
             }[];
             tags_stringified?: string | null;
           } | null;
@@ -6015,6 +6490,13 @@ declare namespace Components {
               product?: {
                 external_id: string;
                 images: string[];
+                name?: string | null;
+                external_type?: string | null;
+                variants?: {
+                  external_id: string;
+                  quantity?: number | null;
+                  name?: string | null;
+                }[] | null;
               } | null;
             }[];
             fulfillments?: {
@@ -6026,6 +6508,26 @@ declare namespace Components {
               external_method_id?: string | null;
               method_name?: string | null;
             }[] | null;
+            tags_stringified?: string | null;
+            note?: string | null;
+          } | null;
+          products?: {
+            [name: string]: {
+              external_id: string;
+              images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
+              selected_variant?: {
+                external_id: string;
+                quantity?: number | null;
+                name?: string | null;
+              } | null;
+            };
           } | null;
         } | null;
         custom_inputs?: {
@@ -6453,6 +6955,12 @@ declare namespace Components {
           } | {
             kind: "order";
             integration_id: number | string;
+          } | {
+            kind: "product";
+            integration_id: number | string;
+            name: string;
+            instructions: string;
+            id: string;
           })[];
           conditions?: {
             or: ({
@@ -6939,6 +7447,12 @@ declare namespace Components {
           } | {
             kind: "order";
             integration_id: number | string;
+          } | {
+            kind: "product";
+            integration_id: number | string;
+            name: string;
+            instructions: string;
+            id: string;
           })[];
           conditions?: {
             or: ({
@@ -7420,6 +7934,12 @@ declare namespace Components {
           } | {
             kind: "order";
             integration_id: number | string;
+          } | {
+            kind: "product";
+            integration_id: number | string;
+            name: string;
+            instructions: string;
+            id: string;
           })[];
           conditions?: {
             or: ({
@@ -7906,6 +8426,12 @@ declare namespace Components {
           } | {
             kind: "order";
             integration_id: number | string;
+          } | {
+            kind: "product";
+            integration_id: number | string;
+            name: string;
+            instructions: string;
+            id: string;
           })[];
           conditions?: {
             or: ({
@@ -8176,6 +8702,12 @@ declare namespace Components {
           } | {
             kind: "order";
             integration_id: number | string;
+          } | {
+            kind: "product";
+            integration_id: number | string;
+            name: string;
+            instructions: string;
+            id: string;
           })[];
           conditions?: {
             or: ({
@@ -8450,6 +8982,12 @@ declare namespace Components {
           } | {
             kind: "order";
             integration_id: number | string;
+          } | {
+            kind: "product";
+            integration_id: number | string;
+            name: string;
+            instructions: string;
+            id: string;
           })[];
           conditions?: {
             or: ({
@@ -8819,6 +9357,19 @@ declare namespace Paths {
       export type $201 = Components.Schemas.DuplicateWfConfigurationResponseDto;
     }
   }
+  namespace WfConfigurationControllerExportExecutionLogs {
+    namespace Parameters {
+      export type ExecutionId = string;
+      export type InternalId = string;
+    }
+    export interface PathParameters {
+      internal_id: Parameters.InternalId;
+      execution_id: Parameters.ExecutionId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.HttpRequestEventsResponseDto;
+    }
+  }
   namespace WfConfigurationControllerExportStepLogs {
     namespace Parameters {
       export type InternalId = string;
@@ -8884,12 +9435,10 @@ declare namespace Paths {
   }
   namespace WfConfigurationTemplateControllerList {
     namespace Parameters {
-      export type IsDraft = any[];
       export type Triggers = any[];
     }
     export interface QueryParameters {
       triggers: Parameters.Triggers;
-      is_draft?: Parameters.IsDraft;
     }
     namespace Responses {
       export type $200 = Components.Schemas.ListWfConfigurationTemplatesResponseDto;
@@ -9054,6 +9603,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
+  /**
+   * WfConfigurationController_exportExecutionLogs
+   */
+  'WfConfigurationController_exportExecutionLogs'(
+    parameters?: Parameters<Paths.WfConfigurationControllerExportExecutionLogs.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfConfigurationControllerExportExecutionLogs.Responses.$200>
   /**
    * WfConfigurationTranslationsController_get
    */
@@ -9316,6 +9873,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
+  }
+  ['/configurations/{internal_id}/executions/{execution_id}/logs']: {
+    /**
+     * WfConfigurationController_exportExecutionLogs
+     */
+    'get'(
+      parameters?: Parameters<Paths.WfConfigurationControllerExportExecutionLogs.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfConfigurationControllerExportExecutionLogs.Responses.$200>
   }
   ['/configurations/{internal_id}/translations/{lang}']: {
     /**

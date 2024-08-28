@@ -36,6 +36,10 @@ export type LLMPromptTriggerNodeType = Node<
                   kind: 'order'
                   integration_id: number | string
               }
+            | {
+                  kind: 'product'
+                  integration_id: number | string
+              }
         )[]
         conditionsType: keyof ConditionsSchema | null
         conditions: ConditionSchema[]
