@@ -7,6 +7,7 @@ import {
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     defaultStatsFilters,
     initialState as initialStatsFiltersState,
@@ -235,6 +236,38 @@ describe('agentPerformanceSlice', () => {
                 filteredAgents.length
             )
         })
+
+        it('should not return excluded agents if StatsFilter.agents has not-one-of operator', () => {
+            const filteredAgents = [1, 2]
+            const cleanStatsFilters = {
+                period: {
+                    start_datetime: '1970-01-01T00:00:00+00:00',
+                    end_datetime: '1970-01-01T00:00:00+00:00',
+                },
+                agents: {
+                    values: filteredAgents,
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                },
+            }
+            const state = {
+                agents: fromJS({all: fromJS(agents)}),
+                ui: {
+                    [agentPerformanceSlice.name]: initialState,
+                    stats: {
+                        ...initialUiStatsState,
+                        cleanStatsFilters: cleanStatsFilters,
+                    },
+                },
+                stats: {
+                    filters: cleanStatsFilters,
+                },
+            } as unknown as RootState
+
+            expect(getFilteredAgents(state).length).toEqual(
+                agents.filter((agent) => !filteredAgents.includes(agent.id))
+                    .length
+            )
+        })
     })
 
     describe('getSortedAgents', () => {
@@ -382,6 +415,7 @@ describe('agentPerformanceSlice', () => {
                 ).pop()
             ).toEqual(noDataAgent)
         })
+
         it('should not contain undefined or empty values throughout the result if the lastSortingMetric has more agents than the filtered ones', () => {
             const agents = personNames.map((name, idx) => ({id: idx, name}))
             const lastSortingMetric = agents.map((agent) => ({

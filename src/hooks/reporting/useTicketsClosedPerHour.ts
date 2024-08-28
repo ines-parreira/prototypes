@@ -3,17 +3,14 @@ import {
     useClosedTicketsMetric,
     useOnlineTimeMetric,
 } from 'hooks/reporting/metrics'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
 } from 'hooks/reporting/useMessagesSentPerHour'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 export const useTicketsClosedPerHour = (): Metric => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const closedTickets = useClosedTicketsMetric(
         periodAndAgentOnlyFilters(cleanStatsFilters),
         userTimezone

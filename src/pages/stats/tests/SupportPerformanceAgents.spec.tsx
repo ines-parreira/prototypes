@@ -1,6 +1,9 @@
 import {render, screen} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {MemoryRouter} from 'react-router-dom'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {TableColumnsOrder} from 'pages/stats/AgentsTableConfig'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -15,7 +18,7 @@ import {assumeMock} from 'utils/testing'
 import SupportPerformanceAgents, {
     AGENT_PERFORMANCE_SECTION_TITLE,
     AGENTS_PAGE_TITLE,
-} from '../SupportPerformanceAgents'
+} from 'pages/stats/SupportPerformanceAgents'
 
 jest.unmock('react-router-dom')
 
@@ -24,7 +27,8 @@ jest.mock('pages/stats/AgentsTable.tsx')
 const AgentsTableMock = assumeMock(AgentsTable)
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
-
+jest.mock('pages/stats/common/filters/FiltersPanel.tsx')
+const FiltersPanelMock = assumeMock(FiltersPanel)
 jest.mock('pages/stats/AgentsPerformanceCardExtra.tsx')
 const AgentsPerformanceCardExtraMock = assumeMock(AgentsPerformanceCardExtra)
 jest.mock('pages/stats/AgentsShoutouts.tsx')
@@ -44,6 +48,7 @@ const componentMock = () => <div />
 
 describe('SupportPerformanceAgents', () => {
     SupportPerformanceFiltersMock.mockImplementation(componentMock)
+    FiltersPanelMock.mockImplementation(componentMock)
     AgentsShoutoutsMock.mockImplementation(componentMock)
     AgentsPerformanceCardExtraMock.mockImplementation(componentMock)
     AgentsTableMock.mockImplementation(componentMock)
@@ -104,5 +109,21 @@ describe('SupportPerformanceAgents', () => {
 
         expect(AgentsPerformanceCardExtraMock).toHaveBeenCalled()
         expect(AgentsShoutoutsMock).toHaveBeenCalled()
+    })
+
+    it('should render New FiltersPanel and hide legacy filters', () => {
+        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
+
+        render(
+            <MemoryRouter>
+                <SupportPerformanceAgents />
+            </MemoryRouter>
+        )
+
+        expect(SupportPerformanceFiltersMock).toHaveBeenCalledWith(
+            expect.objectContaining({hidden: true}),
+            {}
+        )
+        expect(FiltersPanelMock).toHaveBeenCalled()
     })
 })

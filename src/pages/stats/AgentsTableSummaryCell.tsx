@@ -1,4 +1,5 @@
 import React from 'react'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {
@@ -11,7 +12,6 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 
@@ -25,9 +25,7 @@ export const AgentsTableSummaryCell = ({
     column: AgentsTableColumn
 }) => {
     const {format, perAgent} = AgentsColumnConfig[column]
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const agents = useAppSelector(getSortedAgents)
 
     const {data, isFetching} = useMetric(cleanStatsFilters, userTimezone)

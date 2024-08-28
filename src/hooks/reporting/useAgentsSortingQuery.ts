@@ -1,5 +1,6 @@
 import {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import {opposite, OrderDirection} from 'models/api/types'
@@ -12,7 +13,6 @@ import {
     sortingLoading,
     sortingSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 
 export const useAgentsSortingQuery = (
@@ -25,9 +25,7 @@ export const useAgentsSortingQuery = (
     ) => MetricWithDecile
 ) => {
     const dispatch = useDispatch()
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     useResetPageOnQueryUpdate()
 
     const sorting = useAppSelector(getAgentSorting)
@@ -76,7 +74,7 @@ export const useAgentsSortingQuery = (
 
 const useResetPageOnQueryUpdate = () => {
     const dispatch = useDispatch()
-    const {cleanStatsFilters} = useAppSelector(getCleanStatsFiltersWithTimezone)
+    const {cleanStatsFilters} = useNewStatsFilters()
 
     useEffect(() => {
         dispatch(pageSet(1))

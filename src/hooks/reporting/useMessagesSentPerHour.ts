@@ -3,14 +3,13 @@ import {
     useMessagesSentMetric,
     useOnlineTimeMetric,
 } from 'hooks/reporting/metrics'
-import useAppSelector from 'hooks/useAppSelector'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     AgentOnlyFilters,
     Period,
     LegacyStatsFilters,
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 export const periodAndAgentOnlyFilters = (statsFilters: {
     period: Period
@@ -34,9 +33,7 @@ export const calculateMetricPerHour = (metric: number, seconds: number) =>
     seconds === 0 ? 0 : metric / secondsToHours(seconds)
 
 export const useMessagesSentPerHour = (): Metric => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const messagesSent = useMessagesSentMetric(
         periodAndAgentOnlyFilters(cleanStatsFilters),
         userTimezone

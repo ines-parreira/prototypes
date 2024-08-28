@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -12,7 +13,6 @@ import {
     getHeatmapMode,
     isSortingMetricLoading,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {User} from 'config/types/user'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
@@ -23,9 +23,7 @@ export const ClosedTicketsPerHourCellContent = ({
     agent: User
     bodyCellProps?: PropsWithRef<BodyCellProps>
 }) => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const {data, isFetching} = useTicketsClosedPerHourPerAgent(
         cleanStatsFilters,

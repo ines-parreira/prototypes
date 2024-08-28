@@ -1,14 +1,13 @@
 import React from 'react'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {ShoutoutConfig} from 'pages/stats/AgentsShoutoutsConfig'
 
-import useAppSelector from 'hooks/useAppSelector'
 import Shoutout, {
     SHOUTOUT_HEIGHT_PX,
 } from 'pages/common/components/Shoutout/Shoutout'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 export default function AgentsShoutout({
     useQuery,
@@ -17,9 +16,7 @@ export default function AgentsShoutout({
     measure,
     formatValue,
 }: ShoutoutConfig) {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const queryResult = useQuery(cleanStatsFilters, userTimezone, queryOrder)
 
     const data = useShoutoutTopResults(queryResult, formatValue, measure)

@@ -1,9 +1,9 @@
 import {useMemo} from 'react'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
 import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
 import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
 import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
-import useAppSelector from 'hooks/useAppSelector'
 import {
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
@@ -15,12 +15,8 @@ import {
     useTicketAverageHandleTimeMetric,
 } from 'hooks/reporting/metrics'
 
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-
 export function useAgentsSummaryMetrics() {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const customerSatisfactionMetric = useCustomerSatisfactionMetric(
         cleanStatsFilters,
         userTimezone

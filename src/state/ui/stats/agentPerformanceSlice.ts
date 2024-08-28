@@ -4,6 +4,7 @@ import {User} from 'config/types/user'
 import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {agentIdFields} from 'pages/stats/AgentsTableConfig'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {isMetricForAgent} from 'pages/stats/common/utils'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 
@@ -102,16 +103,27 @@ export const getHeatmapMode = (state: RootState) =>
 export const getFilteredAgents = createSelector(
     getHumanAndAutomationBotAgentsJS,
     getCleanStatsFilters,
-    (agents, filters) =>
-        filters !== null && filters?.agents && filters.agents.values.length > 0
-            ? _intersectionBy(
-                  agents,
-                  filters?.agents.values.map((agentId: number) => ({
-                      id: agentId,
-                  })),
-                  'id'
-              )
-            : agents
+    (agents, filters) => {
+        if (
+            filters !== null &&
+            filters?.agents &&
+            filters.agents.values.length > 0
+        ) {
+            if (filters.agents.operator === LogicalOperatorEnum.NOT_ONE_OF) {
+                return agents.filter(
+                    (agent) => !filters.agents?.values.includes(agent.id)
+                )
+            }
+            return _intersectionBy(
+                agents,
+                filters.agents.values.map((agentId: number) => ({
+                    id: agentId,
+                })),
+                'id'
+            )
+        }
+        return agents
+    }
 )
 
 export const getSortedAgents = createSelector(

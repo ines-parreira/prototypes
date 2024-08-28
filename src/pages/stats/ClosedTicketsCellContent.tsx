@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -17,7 +18,6 @@ import {
     isSortingMetricLoading,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {User} from 'config/types/user'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {buildAgentMetric} from 'state/ui/stats/drillDownSlice'
 import {DrillDownModalTrigger} from './DrillDownModalTrigger'
@@ -29,9 +29,8 @@ export const ClosedTicketsCellContent = ({
     agent: User
     bodyCellProps?: PropsWithRef<BodyCellProps>
 }) => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {isAnalyticsNewFilters, cleanStatsFilters, userTimezone} =
+        useNewStatsFilters()
     const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const {data, isFetching} = useClosedTicketsMetricPerAgent(
         cleanStatsFilters,
@@ -65,6 +64,7 @@ export const ClosedTicketsCellContent = ({
                         AgentsTableColumn.ClosedTickets,
                         agent
                     )}
+                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {formatMetricValue(
                         metricValue,

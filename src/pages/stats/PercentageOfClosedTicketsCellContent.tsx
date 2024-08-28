@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
@@ -16,7 +17,6 @@ import {
     getHeatmapMode,
     isSortingMetricLoading,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {buildAgentMetric} from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'
@@ -29,9 +29,8 @@ export const PercentageOfClosedTicketsCellContent = ({
     agent: User
     bodyCellProps?: PropsWithRef<BodyCellProps>
 }) => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {isAnalyticsNewFilters, cleanStatsFilters, userTimezone} =
+        useNewStatsFilters()
     const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const {data, isFetching} = usePercentageOfClosedTicketsMetricPerAgent(
         cleanStatsFilters,
@@ -64,6 +63,7 @@ export const PercentageOfClosedTicketsCellContent = ({
                         AgentsTableColumn.PercentageOfClosedTickets,
                         agent
                     )}
+                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {formatMetricValue(
                         data?.value,

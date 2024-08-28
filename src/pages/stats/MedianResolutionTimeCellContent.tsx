@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useMedianResolutionTimeMetricPerAgent} from 'hooks/reporting/metricsPerAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -12,7 +13,6 @@ import {
     getHeatmapMode,
     isSortingMetricLoading,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {buildAgentMetric} from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'
@@ -26,9 +26,8 @@ export const MedianResolutionTimeCellContent = ({
     agent: User
     bodyCellProps?: PropsWithRef<BodyCellProps>
 }) => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {isAnalyticsNewFilters, cleanStatsFilters, userTimezone} =
+        useNewStatsFilters()
     const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const {data, isFetching} = useMedianResolutionTimeMetricPerAgent(
         cleanStatsFilters,
@@ -62,6 +61,7 @@ export const MedianResolutionTimeCellContent = ({
                         AgentsTableColumn.MedianResolutionTime,
                         agent
                     )}
+                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {formatMetricValue(
                         metricValue,

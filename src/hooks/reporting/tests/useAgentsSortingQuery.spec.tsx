@@ -44,10 +44,6 @@ describe('useAgentsSortingQuery', () => {
         })
     })
 
-    afterEach(() => {
-        jest.resetAllMocks()
-    })
-
     describe('sorting callback', () => {
         it('should change the sorting column', () => {
             const store = mockStore(defaultState)
