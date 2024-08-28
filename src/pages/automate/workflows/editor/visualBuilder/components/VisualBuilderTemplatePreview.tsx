@@ -10,6 +10,10 @@ import {
     WorkflowChannelSupportContext,
     createWorkflowChannelSupportContextForPreview,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
+import {
+    createVisualBuilderContextForPreview,
+    VisualBuilderContext,
+} from 'pages/automate/workflows/hooks/useVisualBuilder'
 
 import ChannelTriggerNode from '../nodes/ChannelTriggerNode'
 import AutomatedMessageNode from '../nodes/AutomatedMessageNode'
@@ -91,6 +95,9 @@ function withProviders<T extends {visualBuilderGraph: VisualBuilderGraph}>(
             createWorkflowChannelSupportContextForPreview()
         const selfServiceStoreIntegrationContextValue =
             createSelfServiceStoreIntegrationContextForPreview()
+        const visualBuilderContextValue = createVisualBuilderContextForPreview(
+            props.visualBuilderGraph
+        )
         return (
             <WorkflowEditorContext.Provider value={workflowEditorContextValue}>
                 <WorkflowChannelSupportContext.Provider
@@ -99,9 +106,13 @@ function withProviders<T extends {visualBuilderGraph: VisualBuilderGraph}>(
                     <StoreIntegrationContext.Provider
                         value={selfServiceStoreIntegrationContextValue}
                     >
-                        <ReactFlowProvider>
-                            <Component {...props} />
-                        </ReactFlowProvider>
+                        <VisualBuilderContext.Provider
+                            value={visualBuilderContextValue}
+                        >
+                            <ReactFlowProvider>
+                                <Component {...props} />
+                            </ReactFlowProvider>
+                        </VisualBuilderContext.Provider>
                     </StoreIntegrationContext.Provider>
                 </WorkflowChannelSupportContext.Provider>
             </WorkflowEditorContext.Provider>

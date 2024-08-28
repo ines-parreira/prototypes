@@ -31,6 +31,7 @@ Object.defineProperty(window, 'ResizeObserver', {
         return {
             observe: () => null,
             disconnect: () => null,
+            unobserve: () => null,
         }
     },
     writable: true,

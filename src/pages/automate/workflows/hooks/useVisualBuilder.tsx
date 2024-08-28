@@ -5,6 +5,8 @@ import React, {
     useContext,
     useMemo,
 } from 'react'
+import _noop from 'lodash/noop'
+
 import {
     VisualBuilderGraph,
     VisualBuilderNode,
@@ -19,6 +21,7 @@ import {
     getWorkflowVariableListForNode,
     parseWorkflowVariable,
 } from '../models/variables.model'
+import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import {validateConditionSteps} from './useWorkflowEditor'
 import {VisualBuilderGraphAction} from './useVisualBuilderGraphReducer'
 
@@ -80,9 +83,6 @@ export function useVisualBuilder(
     dispatch: Dispatch<VisualBuilderGraphAction>,
     shouldShowErrors: boolean
 ): VisualBuilderContext {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const initialVisualBuilderGraph = useMemo(() => visualBuilderGraph, [])
-
     const checkInvalidVariablesForNode = useCallback(
         (node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>) => {
             const variables = extractVariablesFromNode(node)
@@ -214,11 +214,17 @@ export function useVisualBuilder(
 
     const checkNewVisualBuilderNode = useCallback(
         (nodeId: string) => {
-            return !initialVisualBuilderGraph.nodes.some(
-                (node) => node.id === nodeId
+            if (!visualBuilderGraph.wfConfigurationOriginal.updated_datetime) {
+                return true
+            }
+
+            const graph = transformWorkflowConfigurationIntoVisualBuilderGraph(
+                visualBuilderGraph.wfConfigurationOriginal
             )
+
+            return !graph.nodes.some((node) => node.id === nodeId)
         },
-        [initialVisualBuilderGraph]
+        [visualBuilderGraph.wfConfigurationOriginal]
     )
 
     return useMemo<VisualBuilderContext>(
@@ -243,4 +249,19 @@ export function useVisualBuilder(
             shouldShowErrors,
         ]
     )
+}
+
+export function createVisualBuilderContextForPreview(
+    visualBuilderGraph: VisualBuilderGraph
+): VisualBuilderContext {
+    return {
+        visualBuilderGraph,
+        checkInvalidConditionsForNode: () => false,
+        checkInvalidVariablesForNode: () => false,
+        checkNodeHasVariablesUsedInChildren: () => false,
+        dispatch: _noop,
+        getVariableListInChildren: () => [],
+        checkNewVisualBuilderNode: () => false,
+        shouldShowErrors: false,
+    }
 }
