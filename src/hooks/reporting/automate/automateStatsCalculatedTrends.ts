@@ -2,8 +2,48 @@ import {
     automationRate,
     decreaseInFirstResponseTime,
     decreaseInResolutionTime,
+    automationRateUnfilteredDenominator,
 } from './automateStatsFormulae'
 import {TrendData} from './types'
+
+export const getAutomationRateUnfilteredDenominatorTrend = ({
+    isFetching,
+    isError,
+    filteredAutomatedInteractions,
+    allAutomatedInteractions,
+    allAutomatedInteractionsByAutoResponders,
+    billableTicketsCount,
+}: {
+    isFetching: boolean
+    isError: boolean
+    filteredAutomatedInteractions: TrendData
+    allAutomatedInteractions: TrendData
+    allAutomatedInteractionsByAutoResponders: TrendData
+    billableTicketsCount: TrendData
+}) => {
+    return {
+        isFetching,
+        isError,
+        data: {
+            value: automationRateUnfilteredDenominator({
+                filteredAutomatedInteractions:
+                    filteredAutomatedInteractions?.value,
+                allAutomatedInteractions: allAutomatedInteractions?.value,
+                allAutomatedInteractionsByAutoResponders:
+                    allAutomatedInteractionsByAutoResponders?.value,
+                billableTicketsCount: billableTicketsCount?.value,
+            }),
+            prevValue: automationRateUnfilteredDenominator({
+                filteredAutomatedInteractions:
+                    filteredAutomatedInteractions?.prevValue,
+                allAutomatedInteractions: allAutomatedInteractions?.prevValue,
+                allAutomatedInteractionsByAutoResponders:
+                    allAutomatedInteractionsByAutoResponders?.prevValue,
+                billableTicketsCount: billableTicketsCount?.prevValue,
+            }),
+        },
+    }
+}
 
 export const getAutomationRateTrend = (
     isFetching: boolean,

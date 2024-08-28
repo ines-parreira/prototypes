@@ -161,7 +161,22 @@ describe('useAutomationDatasetV2', () => {
         it('should calculate automation rate correctly', () => {
             useMultipleMetricsTrendsMock
                 .mockReturnValueOnce({
-                    // automatedInteractionsData
+                    // filteredAutomatedInteractionsData
+                    data: {
+                        'AutomationDataset.automatedInteractions': {
+                            value: 10021,
+                            prevValue: 0,
+                        },
+                        'AutomationDataset.automatedInteractionsByAutoResponders':
+                            {
+                                value: 1108,
+                                prevValue: 0,
+                            },
+                    },
+                    isFetched: true,
+                } as any)
+                .mockReturnValueOnce({
+                    // allAutomatedInteractionsData
                     data: {
                         'AutomationDataset.automatedInteractions': {
                             value: 10021,

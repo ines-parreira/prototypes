@@ -1,5 +1,6 @@
 import {
     getAutomationRateTrend,
+    getAutomationRateUnfilteredDenominatorTrend,
     getDecreaseInFirstResponseTimeTrend,
     getDecreaseInResolutionTimeTrend,
 } from '../automateStatsCalculatedTrends'
@@ -34,6 +35,22 @@ describe('Wrapper Functions for Trends Calculation', () => {
             )
             expect(result.data.value).toBe(0)
             expect(result.data.prevValue).toBe(0)
+        })
+    })
+
+    describe('getAutomationRateUnfilteredDenominatorTrend', () => {
+        it('calculates automation rate with unfiltered denominator values', () => {
+            const result = getAutomationRateUnfilteredDenominatorTrend({
+                isFetching: false,
+                isError: false,
+                filteredAutomatedInteractions: interactions,
+                billableTicketsCount: billableTickets,
+                allAutomatedInteractions: {value: 50, prevValue: 100},
+                allAutomatedInteractionsByAutoResponders:
+                    interactionsByAutoResponders,
+            })
+            expect(result.data.value).toBeCloseTo(2.5, 3)
+            expect(result.data.prevValue).toBeCloseTo(3.08, 2)
         })
     })
 

@@ -8,6 +8,7 @@ import {
     calculateRate,
     calculateSumOfAutomatedInteractions,
     calculateSumOfDropoff,
+    automationRateUnfilteredDenominator,
 } from '../automateStatsFormulae'
 
 describe('Metrics Calculation Functions', () => {
@@ -31,6 +32,75 @@ describe('Metrics Calculation Functions', () => {
         })
         it('should return 0 not Infinity if all parameters are 1 ,0 1', () => {
             expect(automationRate(1, 0, 1)).toBe(1)
+        })
+    })
+
+    describe('automationRateUnfilteredDenominator', () => {
+        it('returns 0 if any parameter is null', () => {
+            expect(
+                automationRateUnfilteredDenominator({
+                    filteredAutomatedInteractions: 15,
+                    allAutomatedInteractions: null,
+                    allAutomatedInteractionsByAutoResponders: 5,
+                    billableTicketsCount: 5,
+                })
+            ).toBe(0)
+
+            expect(
+                automationRateUnfilteredDenominator({
+                    filteredAutomatedInteractions: null,
+                    allAutomatedInteractions: 10,
+                    allAutomatedInteractionsByAutoResponders: 5,
+                    billableTicketsCount: 5,
+                })
+            ).toBe(0)
+
+            expect(
+                automationRateUnfilteredDenominator({
+                    filteredAutomatedInteractions: 15,
+                    allAutomatedInteractions: 10,
+                    allAutomatedInteractionsByAutoResponders: null,
+                    billableTicketsCount: 5,
+                })
+            ).toBe(0)
+
+            expect(
+                automationRateUnfilteredDenominator({
+                    filteredAutomatedInteractions: 15,
+                    allAutomatedInteractions: 10,
+                    allAutomatedInteractionsByAutoResponders: 5,
+                    billableTicketsCount: null,
+                })
+            ).toBe(0)
+
+            expect(
+                automationRateUnfilteredDenominator({
+                    filteredAutomatedInteractions: null,
+                    allAutomatedInteractions: null,
+                    allAutomatedInteractionsByAutoResponders: null,
+                    billableTicketsCount: null,
+                })
+            ).toBe(0)
+        })
+
+        it('calculates automation rate with unfiltered denominator', () => {
+            expect(
+                automationRateUnfilteredDenominator({
+                    filteredAutomatedInteractions: 15,
+                    allAutomatedInteractions: 20,
+                    allAutomatedInteractionsByAutoResponders: 2,
+                    billableTicketsCount: 0,
+                })
+            ).toBe(1)
+
+            expect(
+                automationRateUnfilteredDenominator({
+                    filteredAutomatedInteractions: 15,
+                    allAutomatedInteractions: 25,
+                    allAutomatedInteractionsByAutoResponders: 5,
+                    billableTicketsCount: 10,
+                })
+            ).toBe(0.5)
         })
     })
 

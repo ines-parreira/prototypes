@@ -6,6 +6,38 @@ const infinityNanToZero = (value: number) => {
 
 const nonNegative = (value: number) => (value < 0 ? 0 : value)
 
+export const automationRateUnfilteredDenominator = ({
+    filteredAutomatedInteractions,
+    allAutomatedInteractions,
+    allAutomatedInteractionsByAutoResponders,
+    billableTicketsCount,
+}: {
+    filteredAutomatedInteractions: number | null
+    allAutomatedInteractions: number | null
+    allAutomatedInteractionsByAutoResponders: number | null
+    billableTicketsCount: number | null
+}): number => {
+    if (
+        filteredAutomatedInteractions == null ||
+        allAutomatedInteractions == null ||
+        billableTicketsCount == null ||
+        allAutomatedInteractionsByAutoResponders == null
+    ) {
+        return 0
+    }
+
+    if (billableTicketsCount === 0 && filteredAutomatedInteractions > 0) {
+        return 1
+    }
+
+    return infinityNanToZero(
+        filteredAutomatedInteractions /
+            (allAutomatedInteractions +
+                billableTicketsCount -
+                allAutomatedInteractionsByAutoResponders)
+    )
+}
+
 export const automationRate = (
     automatedInteractions: number | null,
     billableTicketCount: number | null,

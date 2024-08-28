@@ -1,4 +1,6 @@
-import {StatsFilters} from 'models/stat/types'
+import {useMemo} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FilterKey, StatsFilters} from 'models/stat/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {getPreviousPeriod} from 'utils/reporting'
@@ -19,7 +21,11 @@ import {
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {automationRate} from './automateStatsFormulae'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    automationRate,
+    automationRateUnfilteredDenominator,
+} from './automateStatsFormulae'
 import {
     AutomateTimeseries as CalculatedTimeseries,
     AutomateTrendMetrics,
@@ -30,6 +36,7 @@ import {
 } from './utils'
 import {
     getAutomationRateTrend,
+    getAutomationRateUnfilteredDenominatorTrend,
     getDecreaseInFirstResponseTimeTrend,
     getDecreaseInResolutionTimeTrend,
 } from './automateStatsCalculatedTrends'
@@ -40,26 +47,44 @@ export const useAutomateMetricsTimeseriesV2 = (
     timezone: string,
     granularity: ReportingGranularity
 ): CalculatedTimeseries => {
+    const isAutomateNonFilteredDenominatorInAutomationRate:
+        | boolean
+        | undefined =
+        useFlags()[
+            FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
+        ]
+
     const aiAgentUserId = useAIAgentUserId()
 
-    const automatedInteractionsData = useAutomationDatasetTimeSeries(
+    const onlyPeriodFilter = useMemo(
+        () => ({[FilterKey.Period]: filters.period}),
+        [filters.period]
+    )
+
+    const filteredAutomatedInteractionsData = useAutomationDatasetTimeSeries(
         filters,
         timezone,
         granularity
     )
-    const automatedInteractionsDataByEventType =
+    const filteredAutomatedInteractionsDataByEventType =
         useAutomationDatasetByEventTypeTimeSeries(
             filters,
             timezone,
             granularity
         )
 
-    const interactionsDataByEventTypeTimeSeries =
+    const filteredInteractionsDataByEventTypeTimeSeries =
         automateInteractionsByEventTypeToTimeSeries(
             filters,
             granularity,
-            automatedInteractionsDataByEventType.data
+            filteredAutomatedInteractionsDataByEventType.data
         )
+
+    const allAutomatedInteractionsData = useAutomationDatasetTimeSeries(
+        onlyPeriodFilter,
+        timezone,
+        granularity
+    )
 
     const billableTicketData = useBillableTicketDatasetTimeSeries(
         filters,
@@ -68,40 +93,65 @@ export const useAutomateMetricsTimeseriesV2 = (
         aiAgentUserId
     )
 
-    const automatedInteractions = getAutomateStatsByMeasure(
+    const filteredAutomatedInteractionsSeries = getAutomateStatsByMeasure(
         AutomationDatasetMeasure.AutomatedInteractions,
-        automatedInteractionsData.data
+        filteredAutomatedInteractionsData.data
     )
-    const interactionsByAutoResponders = getAutomateStatsByMeasure(
-        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
-        automatedInteractionsData.data
+    const filteredInteractionsByAutoRespondersSeries =
+        getAutomateStatsByMeasure(
+            AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+            filteredAutomatedInteractionsData.data
+        )
+
+    const allAutomatedInteractionsSeries = getAutomateStatsByMeasure(
+        AutomationDatasetMeasure.AutomatedInteractions,
+        allAutomatedInteractionsData.data
     )
 
-    const billableTicketCounts = getAutomateStatsByMeasure(
+    const allAutomatedInteractionsByAutoRespondersSeries =
+        getAutomateStatsByMeasure(
+            AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+            allAutomatedInteractionsData.data
+        )
+
+    const billableTicketCountsSeries = getAutomateStatsByMeasure(
         BillableTicketDatasetMeasure.BillableTicketCount,
         billableTicketData.data
     )
 
     const automationRates: TimeSeriesDataItem[] = []
     if (
-        automatedInteractionsData.isFetched &&
+        filteredAutomatedInteractionsData.isFetched &&
         billableTicketData.isFetched &&
-        automatedInteractions?.length &&
-        billableTicketCounts?.length
+        allAutomatedInteractionsData.isFetched &&
+        filteredAutomatedInteractionsSeries?.length &&
+        billableTicketCountsSeries?.length
     ) {
-        automatedInteractions?.forEach((timeSeries, index) => {
-            const automatedInteractions = timeSeries.value
-            const automatedInteractionsByAutoResponders =
-                interactionsByAutoResponders?.[index].value
-            const billableTicketCount = billableTicketCounts?.[index].value
+        filteredAutomatedInteractionsSeries?.forEach((timeSeries, index) => {
+            const filteredAutomatedInteractions = timeSeries.value
+            const filteredAutomatedInteractionsByAutoResponders =
+                filteredInteractionsByAutoRespondersSeries?.[index].value
+            const billableTicketCount =
+                billableTicketCountsSeries?.[index].value
+            const allAutomatedInteractions =
+                allAutomatedInteractionsSeries?.[index].value
+            const allAutomatedInteractionsByAutoResponders =
+                allAutomatedInteractionsByAutoRespondersSeries?.[index].value
 
             automationRates.push({
                 dateTime: timeSeries.dateTime,
-                value: automationRate(
-                    automatedInteractions,
-                    billableTicketCount,
-                    automatedInteractionsByAutoResponders
-                ),
+                value: isAutomateNonFilteredDenominatorInAutomationRate
+                    ? automationRateUnfilteredDenominator({
+                          filteredAutomatedInteractions,
+                          allAutomatedInteractions,
+                          allAutomatedInteractionsByAutoResponders,
+                          billableTicketsCount: billableTicketCount,
+                      })
+                    : automationRate(
+                          filteredAutomatedInteractions,
+                          billableTicketCount,
+                          filteredAutomatedInteractionsByAutoResponders
+                      ),
                 label: AUTOMATION_RATE_LABEL,
             })
         })
@@ -109,17 +159,17 @@ export const useAutomateMetricsTimeseriesV2 = (
 
     const calculatedData: CalculatedTimeseries = {
         isFetching:
-            automatedInteractionsData.isFetching ||
+            filteredAutomatedInteractionsData.isFetching ||
             billableTicketData.isFetching ||
-            automatedInteractionsDataByEventType.isFetching,
+            filteredAutomatedInteractionsDataByEventType.isFetching,
         isError:
-            automatedInteractionsData.isError ||
+            filteredAutomatedInteractionsData.isError ||
             billableTicketData.isError ||
-            automatedInteractionsDataByEventType.isError,
+            filteredAutomatedInteractionsDataByEventType.isError,
         automationRateTimeSeries: [automationRates],
-        automatedInteractionTimeSeries: [automatedInteractions],
+        automatedInteractionTimeSeries: [filteredAutomatedInteractionsSeries],
         automatedInteractionByEventTypesTimeSeries:
-            interactionsDataByEventTypeTimeSeries,
+            filteredInteractionsDataByEventTypeTimeSeries,
     }
 
     return calculatedData
@@ -129,12 +179,32 @@ export const useAutomateMetricsTrendV2 = (
     filters: StatsFilters,
     timezone: string
 ): Record<AutomateTrendMetrics, MetricTrend> => {
+    const isAutomateNonFilteredDenominatorInAutomationRate:
+        | boolean
+        | undefined =
+        useFlags()[
+            FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
+        ]
+
+    const onlyPeriodFilter = useMemo(
+        () => ({[FilterKey.Period]: filters.period}),
+        [filters.period]
+    )
+
     const aiAgentUserId = useAIAgentUserId()
 
-    const automatedInteractionsData = useMultipleMetricsTrends(
+    const filteredAutomatedInteractionsData = useMultipleMetricsTrends(
         automationDatasetQueryFactory(filters, timezone),
         automationDatasetQueryFactory(
             {...filters, period: getPreviousPeriod(filters.period)},
+            timezone
+        )
+    )
+
+    const allAutomatedInteractionsData = useMultipleMetricsTrends(
+        automationDatasetQueryFactory(onlyPeriodFilter, timezone),
+        automationDatasetQueryFactory(
+            {period: getPreviousPeriod(filters.period)},
             timezone
         )
     )
@@ -173,12 +243,21 @@ export const useAutomateMetricsTrendV2 = (
         )
     )
 
-    const automatedInteractions =
-        automatedInteractionsData.data?.[
+    const filteredAutomatedInteractions =
+        filteredAutomatedInteractionsData.data?.[
             AutomationDatasetMeasure.AutomatedInteractions
         ]
-    const automatedInteractionsByAutoResponders =
-        automatedInteractionsData.data?.[
+    const allAutomatedInteractions =
+        allAutomatedInteractionsData.data?.[
+            AutomationDatasetMeasure.AutomatedInteractions
+        ]
+
+    const filteredAutomatedInteractionsByAutoResponders =
+        filteredAutomatedInteractionsData.data?.[
+            AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders
+        ]
+    const allAutomatedInteractionsByAutoResponders =
+        allAutomatedInteractionsData.data?.[
             AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders
         ]
 
@@ -202,29 +281,47 @@ export const useAutomateMetricsTrendV2 = (
         ticketDatasetResolvedByAIAgent.data?.[
             BillableTicketDatasetMeasure.TotalResolutionTime
         ]
+
     const isFetching =
-        automatedInteractionsData.isFetching ||
-        ticketDatasetExcludingAIAgent.isFetching
+        filteredAutomatedInteractionsData.isFetching ||
+        allAutomatedInteractionsData.isFetching ||
+        ticketDatasetExcludingAIAgent.isFetching ||
+        ticketDatasetIncludingAIAgent.isFetching ||
+        ticketDatasetResolvedByAIAgent.isFetching
+
     const isError =
-        automatedInteractionsData.isError ||
-        ticketDatasetExcludingAIAgent.isError
+        filteredAutomatedInteractionsData.isError ||
+        allAutomatedInteractionsData.isError ||
+        ticketDatasetExcludingAIAgent.isError ||
+        ticketDatasetIncludingAIAgent.isError ||
+        ticketDatasetResolvedByAIAgent.isError
+
     return {
         automatedInteractionTrend: {
             isFetching,
             isError,
-            data: automatedInteractions,
+            data: filteredAutomatedInteractions,
         },
-        automationRateTrend: getAutomationRateTrend(
-            isFetching,
-            isError,
-            automatedInteractions,
-            billableTicketsExcludingAIAgent,
-            automatedInteractionsByAutoResponders
-        ),
+        automationRateTrend: isAutomateNonFilteredDenominatorInAutomationRate
+            ? getAutomationRateUnfilteredDenominatorTrend({
+                  isFetching,
+                  isError,
+                  filteredAutomatedInteractions,
+                  allAutomatedInteractions,
+                  allAutomatedInteractionsByAutoResponders,
+                  billableTicketsCount: billableTicketsExcludingAIAgent,
+              })
+            : getAutomationRateTrend(
+                  isFetching,
+                  isError,
+                  filteredAutomatedInteractions,
+                  billableTicketsExcludingAIAgent,
+                  filteredAutomatedInteractionsByAutoResponders
+              ),
         decreaseInFirstResponseTimeTrend: getDecreaseInFirstResponseTimeTrend(
             isFetching,
             isError,
-            automatedInteractions,
+            filteredAutomatedInteractions,
             billableTicketsExcludingAIAgent,
             firstResponseTimeExcludingAIAgent,
             firstResponseTimeIncludingAIAgent
@@ -232,7 +329,7 @@ export const useAutomateMetricsTrendV2 = (
         decreaseInResolutionTimeTrend: getDecreaseInResolutionTimeTrend(
             isFetching,
             isError,
-            automatedInteractions,
+            filteredAutomatedInteractions,
             billableTicketsExcludingAIAgent,
             resolutionTimeExcludingAIAgent,
             resolutionTimeResolvedByAIAgent

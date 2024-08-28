@@ -14,6 +14,7 @@ export enum FeatureFlagKey {
     AnalyticsNewFiltersAutomate = 'analytics-new-filters-automate',
     AnalyticsSLAs = 'analytics-slas-report',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
+    AutomateNonFilteredDenominatorInAutomationRate = 'use-non-filtered-automated-interactions-in-automation-rate-denominator',
     NewChannelsView = 'new-channels-view',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
