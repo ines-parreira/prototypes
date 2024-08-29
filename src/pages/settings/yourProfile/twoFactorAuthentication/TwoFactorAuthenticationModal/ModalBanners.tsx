@@ -3,9 +3,10 @@ import classnames from 'classnames'
 import errorIcon from 'assets/img/icons/error.svg'
 import infoIcon from 'assets/img/icons/info.svg'
 import successIcon from 'assets/img/icons/success.svg'
+import warningIcon from 'assets/img/icons/warning2.svg'
 import css from './ModalBanners.less'
 
-type BannerType = 'info' | 'error' | 'success'
+type BannerType = 'info' | 'warning' | 'error' | 'success'
 
 type OwnProps = {
     currentStep: number
@@ -23,12 +24,14 @@ export default function ModalBanners({
     const getBanner = (bannerType: BannerType, bannerText: ReactNode) => {
         const bannerTypeToClassMapper = {
             info: css.bannerInfo,
+            warning: css.bannerWarning,
             error: css.bannerError,
             success: css.bannerSuccess,
         }
 
         const bannerTypeToIconMapper = {
             info: infoIcon,
+            warning: warningIcon,
             error: errorIcon,
             success: successIcon,
         }

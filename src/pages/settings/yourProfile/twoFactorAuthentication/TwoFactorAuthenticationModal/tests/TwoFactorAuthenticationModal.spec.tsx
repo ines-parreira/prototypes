@@ -59,20 +59,20 @@ const renderInitialModal = async (baseElement: HTMLElement) => {
     // Wait until the show class is added to the modal
     await waitForModal(baseElement)
 
-    // wait for the loading elements to disappear
-    await waitFor(() => {
-        expect(() => screen.queryAllByText('Loading...')).toHaveLength(0)
-        expect(screen.getByText(/Continue/).getAttribute('disabled')).toBe(null)
-    })
+    // Navigate to QR code step
+    const continueButton = screen.getByText('Continue')
+    fireEvent.click(continueButton)
+
+    // Wait for the loading elements to disappear
+    await waitForElementToBeRemoved(() => screen.getAllByText('Loading...'))
+    expect(screen.getByText('Back').parentElement).not.toHaveAttribute(
+        'aria-disabled',
+        'true'
+    )
 }
 
 const validateInput = async (baseElement: HTMLElement) => {
     await renderInitialModal(baseElement)
-
-    // Navigate to step 2
-    const continueButton = screen.getByText(/Continue/)
-    fireEvent.click(continueButton)
-
     fillVerificationCode()
     fillPassword()
     await continueToNextStep()
@@ -94,7 +94,7 @@ const fillPassword = () => {
 
 const continueToNextStep = async () => {
     // Try to navigate to step 3 in order to trigger validation
-    const continueButton = screen.getByText(/Continue/)
+    const continueButton = screen.getByText('Continue')
     fireEvent.click(continueButton)
 
     // wait for the loading spinners to disappear
@@ -112,7 +112,10 @@ const handleInputValidationFailed = async (baseElement: HTMLElement) => {
     fireEvent.change(inputField, {target: {value: '123457'}})
 
     await waitFor(() => {
-        expect(screen.getByText(/Continue/).getAttribute('disabled')).toBe(null)
+        expect(screen.getByText('Continue').parentElement).not.toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
     })
 
     expect(baseElement).toMatchSnapshot(
@@ -139,6 +142,17 @@ describe('<TwoFactorAuthenticationModal />', () => {
                     />
                 </Provider>
             )
+            expect(baseElement).toMatchSnapshot()
+        })
+
+        it('should render modal with app setup step', async () => {
+            const {baseElement} = render(
+                <Provider store={mockStore()}>
+                    <TwoFactorAuthenticationModal {...minProps} />
+                </Provider>
+            )
+
+            await waitForModal(baseElement)
             expect(baseElement).toMatchSnapshot()
         })
 
@@ -195,17 +209,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 </Provider>
             )
 
-            await waitFor(() =>
-                expect(
-                    baseElement.getElementsByClassName('modal show').length
-                ).toBe(1)
-            )
-
-            await waitFor(() => {
-                expect(() => screen.queryAllByText('Loading...')).toHaveLength(
-                    0
-                )
-            })
+            await waitForModal(baseElement)
 
             // Wait for the qrcode library to render the image
             await screen.findByText(
@@ -231,16 +235,6 @@ describe('<TwoFactorAuthenticationModal />', () => {
             )
 
             await renderInitialModal(baseElement)
-
-            const continueButton = screen.getByText(/Continue/)
-            fireEvent.click(continueButton)
-
-            // wait for the loading spinners to disappear
-            await waitFor(() => {
-                expect(() => screen.queryAllByText('Loading...')).toHaveLength(
-                    0
-                )
-            })
 
             expect(baseElement).toMatchSnapshot()
         })
@@ -324,6 +318,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
                 await validateInput(baseElement)
 
+                expect(
+                    screen.getByText("I've saved my recovery codes")
+                ).toBeInTheDocument()
                 expect(baseElement).toMatchSnapshot('Recovery codes step')
             })
 
@@ -358,11 +355,11 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
                 await waitFor(() => {
                     expect(
-                        screen.getByText(/Continue/).getAttribute('disabled')
+                        screen.getByText('Continue').getAttribute('disabled')
                     ).toBe(null)
                 })
 
-                const continueButton = screen.getByText(/Continue/)
+                const continueButton = screen.getByText('Continue')
                 fireEvent.click(continueButton)
 
                 expect(onFinishMock).toHaveBeenCalled()
@@ -393,14 +390,14 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 await validateInput(baseElement)
 
                 // click on the X button from the modal header
-                const closeButton = screen.getByText(/×/)
+                const closeButton = screen.getByText('×')
                 fireEvent.click(closeButton)
 
                 expect(onFinish).toHaveBeenCalled()
             })
         })
 
-        it('should render modal with QR code step after pressing back button', async () => {
+        it('should render modal with app setup step after pressing back button', async () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
             const {baseElement} = render(
                 <Provider store={mockStore()}>
@@ -410,33 +407,11 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
             await renderInitialModal(baseElement)
 
-            const continueButton = screen.getByText(/Continue/)
-            fireEvent.click(continueButton)
-
-            // wait for the loading spinners to disappear
-            await waitFor(() => {
-                expect(() => screen.queryAllByText('Loading...')).toHaveLength(
-                    0
-                )
-            })
-
-            const backButton = screen.getByText(/Back/)
+            const backButton = screen.getByText('Back')
             fireEvent.click(backButton)
 
-            // wait for the loading spinners to disappear
-            await waitFor(() => {
-                expect(() => screen.queryAllByText('Loading...')).toHaveLength(
-                    0
-                )
-            })
-
-            // Wait for the qrcode library to render the image
-            await screen.findByAltText('The QR Code to scan')
-
+            await screen.findByText('Have your mobile device ready')
             expect(baseElement).toMatchSnapshot()
-            expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.TwoFaModalBackToQrCode
-            )
         })
 
         it('should call onCancel() when the modal is dismissed', async () => {
@@ -453,9 +428,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 </Provider>
             )
 
-            await renderInitialModal(baseElement)
+            await waitForModal(baseElement)
 
-            const cancelButton = await screen.findByText(/Cancel/)
+            const cancelButton = await screen.findByText('Remind Me Later')
             fireEvent.click(cancelButton)
 
             expect(onCancelMock).toHaveBeenCalled()
@@ -488,9 +463,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 </Provider>
             )
 
-            await renderInitialModal(baseElement)
+            await waitForModal(baseElement)
 
-            expect(screen.queryByText(/Cancel/)).toBeNull()
+            expect(screen.queryByText('Remind Me Later')).toBeNull()
         })
 
         it('should render the modal with a validation code step first on update before other steps', async () => {
@@ -561,6 +536,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
             await waitForModal(baseElement)
             fillVerificationCode()
             fillPassword()
+            await continueToNextStep()
             await continueToNextStep()
 
             // Wait for the qrcode library to render the image

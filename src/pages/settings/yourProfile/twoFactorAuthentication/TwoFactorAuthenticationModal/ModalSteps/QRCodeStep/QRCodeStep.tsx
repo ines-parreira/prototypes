@@ -8,8 +8,10 @@ import React, {
 import QRCode from 'qrcode'
 
 import classnames from 'classnames'
-import {AuthenticatorData} from '../../../../../../../models/twoFactorAuthentication/types'
-import Loader from '../../../../../../common/components/Loader/Loader'
+import {AuthenticatorData} from 'models/twoFactorAuthentication/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import InputField from 'pages/common/forms/input/InputField'
+import settingsCss from 'pages/settings/settings.less'
 import modalStepsCss from '../ModalSteps.less'
 import css from './QRCodeStep.less'
 import CantScanQRCode from './CantScanQRCode'
@@ -19,6 +21,9 @@ type OwnProps = {
     errorText?: string
     setErrorText: Dispatch<SetStateAction<string>>
     setIsLoading: Dispatch<SetStateAction<boolean>>
+    setVerificationCode: Dispatch<SetStateAction<string>>
+    setUserPassword: Dispatch<SetStateAction<string>>
+    hasPassword?: boolean
 }
 
 export default function QRCodeStep({
@@ -26,6 +31,9 @@ export default function QRCodeStep({
     errorText,
     setErrorText,
     setIsLoading,
+    setVerificationCode,
+    setUserPassword,
+    hasPassword = false,
 }: OwnProps) {
     const [qrCodeImageUrl, setQrCodeImageUrl] = useState('')
 
@@ -66,31 +74,13 @@ export default function QRCodeStep({
 
     return (
         <>
-            <div className={modalStepsCss.headingBold}>
-                Step 1: Download an authenticator app
-            </div>
-            <div className={modalStepsCss.textSection}>
-                Download and install any authenticator app (
-                <a
-                    href="https://support.google.com/accounts/answer/1066447"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    Eg. Google Authenticator
-                </a>
-                ) on your phone.
-            </div>
             <div
                 className={classnames(
                     modalStepsCss.headingBold,
-                    modalStepsCss.mt24
+                    settingsCss.mb16
                 )}
             >
-                Step 2: Scan the QR code
-            </div>
-            <div className={modalStepsCss.textSection}>
-                Open the authenticator app and scan the image below using your
-                phone’s camera.
+                Scan the QR code with your authenticator app
             </div>
             {qrCodeImageUrl && (
                 <>
@@ -113,6 +103,57 @@ export default function QRCodeStep({
                     />
                 </div>
             )}
+
+            <div
+                className={classnames(
+                    modalStepsCss.headingBold,
+                    modalStepsCss.mt24
+                )}
+            >
+                Enter one-time code below
+            </div>
+            {hasPassword && (
+                <>
+                    <div
+                        className={classnames(
+                            css.textSection,
+                            settingsCss.mb16
+                        )}
+                    >
+                        Enter your password.
+                    </div>
+                    <InputField
+                        type="password"
+                        name="userPassword"
+                        placeholder="Enter your password"
+                        onChange={(value) => {
+                            setUserPassword(value)
+                            setErrorText('')
+                        }}
+                    />
+                </>
+            )}
+            <div
+                className={classnames(
+                    modalStepsCss.textSection,
+                    settingsCss.mb16
+                )}
+            >
+                The unique one-time code will appear that regenerates every 30
+                seconds.
+            </div>
+            <InputField
+                // keeping this as text because if the type is "number"
+                // the 0 from 0 leading numbers is removed ( 012345 -> 12345 )
+                // and the code becomes invalid
+                type="text"
+                name="verificationCode"
+                placeholder="Enter 6-digit verification code from app or recovery code"
+                onChange={(value) => {
+                    setVerificationCode(value)
+                    setErrorText('')
+                }}
+            />
         </>
     )
 }

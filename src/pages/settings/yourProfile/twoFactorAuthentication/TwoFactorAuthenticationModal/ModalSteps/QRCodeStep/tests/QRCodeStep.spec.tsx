@@ -1,12 +1,16 @@
 import React from 'react'
-import {render, screen, waitFor} from '@testing-library/react'
-import {authenticatorData} from '../../../../../../../../fixtures/authenticatorData'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {authenticatorData} from 'fixtures/authenticatorData'
+import {AuthenticatorData} from 'models/twoFactorAuthentication/types'
 import QRCodeStep from '../QRCodeStep'
-import {AuthenticatorData} from '../../../../../../../../models/twoFactorAuthentication/types'
 
 jest.mock('../CantScanQRCode', () => () => <div>Can't scan QR code mocked</div>)
 
 describe('<QRCodeStep />', () => {
+    const setErrorTextMock = jest.fn()
+    const setVerificationCodeMock = jest.fn()
+    const setPasswordMock = jest.fn()
+
     describe('render()', () => {
         const waitForLoadingToEnd = async () => {
             await waitFor(() => {
@@ -27,7 +31,9 @@ describe('<QRCodeStep />', () => {
                 <QRCodeStep
                     authenticatorData={authenticatorData}
                     errorText={''}
-                    setErrorText={jest.fn()}
+                    setErrorText={setErrorTextMock}
+                    setVerificationCode={setVerificationCodeMock}
+                    setUserPassword={setPasswordMock}
                     setIsLoading={jest.fn()}
                 />
             )
@@ -42,7 +48,9 @@ describe('<QRCodeStep />', () => {
                 <QRCodeStep
                     authenticatorData={authenticatorData}
                     errorText={''}
-                    setErrorText={jest.fn()}
+                    setErrorText={setErrorTextMock}
+                    setVerificationCode={setVerificationCodeMock}
+                    setUserPassword={setPasswordMock}
                     setIsLoading={jest.fn()}
                 />
             )
@@ -60,7 +68,9 @@ describe('<QRCodeStep />', () => {
                 <QRCodeStep
                     authenticatorData={{} as AuthenticatorData}
                     errorText={'foo error banner'}
-                    setErrorText={jest.fn()}
+                    setErrorText={setErrorTextMock}
+                    setVerificationCode={setVerificationCodeMock}
+                    setUserPassword={setPasswordMock}
                     setIsLoading={jest.fn()}
                 />
             )
@@ -68,6 +78,27 @@ describe('<QRCodeStep />', () => {
             await waitForLoadingToEnd()
 
             expect(container).toMatchSnapshot()
+        })
+
+        it('should trigger actions on input change', () => {
+            const {getByPlaceholderText} = render(
+                <QRCodeStep
+                    authenticatorData={authenticatorData}
+                    setVerificationCode={setVerificationCodeMock}
+                    setUserPassword={setPasswordMock}
+                    setErrorText={setErrorTextMock}
+                    setIsLoading={jest.fn()}
+                />
+            )
+
+            const inputField = getByPlaceholderText(
+                'Enter 6-digit verification code from app or recovery code'
+            ) as HTMLInputElement
+
+            fireEvent.change(inputField, {target: {value: '123456'}})
+
+            expect(setVerificationCodeMock).toHaveBeenCalled()
+            expect(setErrorTextMock).toHaveBeenCalled()
         })
     })
 })

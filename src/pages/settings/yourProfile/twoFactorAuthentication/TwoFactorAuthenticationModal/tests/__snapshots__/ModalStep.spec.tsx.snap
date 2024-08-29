@@ -2,13 +2,13 @@
 
 exports[`<ModalStep /> render() should render the appropriate step 1`] = `
 <div>
-  QRCode step mocked
+  App Setup step mocked
 </div>
 `;
 
 exports[`<ModalStep /> render() should render the appropriate step 2`] = `
 <div>
-  Validate Verification Code step mocked
+  QRCode step mocked
 </div>
 `;
 

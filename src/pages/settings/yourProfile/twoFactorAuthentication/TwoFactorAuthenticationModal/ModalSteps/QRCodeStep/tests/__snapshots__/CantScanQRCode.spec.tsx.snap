@@ -32,21 +32,19 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
         Can't scan the QR code?
       </span>
     </button>
-  </div>
-  <div
-    class="mt-2"
-  >
     <div
-      class="mb-2"
+      class="mt-3 mb-3 text-center"
     >
-      Manually enter the information below into your authenticator app:
+      Manually enter the information below into your authenticator app
     </div>
-    <div>
+    <div
+      class="authenticatorData"
+    >
       <label
         class="Label--label--QAnfT control-label mb-2"
         for="authenticatorField0"
       >
-        Secret key
+        Secret Key
       </label>
       <span
         class="mb-3 full-width wrapper group horizontal"
@@ -86,12 +84,14 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
         </button>
       </span>
     </div>
-    <div>
+    <div
+      class="authenticatorData"
+    >
       <label
         class="Label--label--QAnfT control-label mb-2"
         for="authenticatorField1"
       >
-        Account name
+        Account Name
       </label>
       <span
         class="mb-3 full-width wrapper group horizontal"
@@ -131,7 +131,9 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
         </button>
       </span>
     </div>
-    <div>
+    <div
+      class="authenticatorData"
+    >
       <label
         class="Label--label--QAnfT control-label mb-2"
         for="authenticatorField2"

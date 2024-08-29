@@ -43,7 +43,7 @@ export type OwnProps = {
     onCancel?: () => void
     onFinish?: () => void
     initialBannerText?: ReactNode
-    initialBannerType?: 'info' | 'error'
+    initialBannerType?: 'info' | 'warning' | 'error'
     isUpdate?: boolean
 }
 
@@ -109,7 +109,6 @@ export default function TwoFactorAuthenticationModal({
             return
         }
 
-        logEvent(SegmentEvent.TwoFaModalBackToQrCode)
         resetModalState()
     }, [step, resetModalState])
 
@@ -270,16 +269,16 @@ export default function TwoFactorAuthenticationModal({
                         <Button
                             intent="secondary"
                             onClick={handleCancel}
-                            isLoading={isLoading}
+                            isDisabled={isLoading}
                         >
-                            Cancel
+                            Remind Me Later
                         </Button>
                     )}
                     {step === 2 && (
                         <Button
                             intent="secondary"
                             onClick={handleBack}
-                            isLoading={isLoading}
+                            isDisabled={isLoading}
                         >
                             Back
                         </Button>

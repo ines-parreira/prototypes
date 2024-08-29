@@ -98,7 +98,7 @@ export default function TwoFactorAuthenticationSection() {
                             </>
                         ) : undefined
                     }
-                    initialBannerType={is2FARequired ? 'error' : 'info'}
+                    initialBannerType={is2FARequired ? 'error' : 'warning'}
                     onCancel={() => {
                         setIs2FASetupModalOpen(false)
                     }}

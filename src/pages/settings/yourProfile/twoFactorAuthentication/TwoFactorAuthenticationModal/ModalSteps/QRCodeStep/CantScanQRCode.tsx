@@ -16,8 +16,8 @@ type OwnProps = {
 const authenticatorDataKeyLabelMapper: {
     [key in keyof AuthenticatorData]: string
 } = {
-    secret_key: 'Secret key',
-    account_name: 'Account name',
+    secret_key: 'Secret Key',
+    account_name: 'Account Name',
     uri: 'URL',
 }
 
@@ -54,27 +54,25 @@ export default function CantScanQRCode({authenticatorData}: OwnProps) {
     }, [timeoutReference])
 
     return (
-        <>
-            <div className={css.cantScanQrCodeContainer}>
-                <Button
-                    fillStyle="ghost"
-                    intent="primary"
-                    onClick={() =>
-                        setDisplayAuthenticatorData(!displayAuthenticatorData)
-                    }
-                >
-                    Can't scan the QR code?
-                </Button>
-            </div>
+        <div className={css.cantScanQrCodeContainer}>
+            <Button
+                fillStyle="ghost"
+                intent="primary"
+                onClick={() =>
+                    setDisplayAuthenticatorData(!displayAuthenticatorData)
+                }
+            >
+                Can't scan the QR code?
+            </Button>
             {displayAuthenticatorData && (
-                <div className="mt-2">
-                    <div className="mb-2">
+                <>
+                    <div className="mt-3 mb-3 text-center">
                         Manually enter the information below into your
-                        authenticator app:
+                        authenticator app
                     </div>
                     {Object.entries(authenticatorDataKeyLabelMapper).map(
                         ([key, label], index) => (
-                            <div key={index}>
+                            <div key={index} className={css.authenticatorData}>
                                 <Label
                                     className="control-label mb-2"
                                     htmlFor={`authenticatorField${index}`}
@@ -111,8 +109,8 @@ export default function CantScanQRCode({authenticatorData}: OwnProps) {
                             </div>
                         )
                     )}
-                </div>
+                </>
             )}
-        </>
+        </div>
     )
 }

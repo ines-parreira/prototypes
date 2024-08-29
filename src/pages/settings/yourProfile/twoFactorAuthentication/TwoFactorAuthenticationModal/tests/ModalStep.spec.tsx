@@ -4,6 +4,10 @@ import ModalStep from '../ModalStep'
 import {authenticatorData} from '../../../../../../fixtures/authenticatorData'
 import {recoveryCodes as recoveryCodesFixture} from '../../../../../../fixtures/recoveryCodes'
 
+jest.mock('../ModalSteps/AppSetupStep/AppSetupStep', () => () => (
+    <div>App Setup step mocked</div>
+))
+
 jest.mock('../ModalSteps/QRCodeStep/QRCodeStep', () => () => (
     <div>QRCode step mocked</div>
 ))

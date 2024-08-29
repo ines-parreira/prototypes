@@ -3,32 +3,9 @@
 exports[`<QRCodeStep /> render() should render the component with the loading component 1`] = `
 <div>
   <div
-    class="headingBold"
+    class="headingBold mb16"
   >
-    Step 1: Download an authenticator app
-  </div>
-  <div
-    class="textSection"
-  >
-    Download and install any authenticator app (
-    <a
-      href="https://support.google.com/accounts/answer/1066447"
-      rel="noreferrer"
-      target="_blank"
-    >
-      Eg. Google Authenticator
-    </a>
-    ) on your phone.
-  </div>
-  <div
-    class="headingBold mt24"
-  >
-    Step 2: Scan the QR code
-  </div>
-  <div
-    class="textSection"
-  >
-    Open the authenticator app and scan the image below using your phone’s camera.
+    Scan the QR code with your authenticator app
   </div>
   
   <div
@@ -53,38 +30,39 @@ exports[`<QRCodeStep /> render() should render the component with the loading co
       </div>
     </div>
   </div>
+  <div
+    class="headingBold mt24"
+  >
+    Enter one-time code below
+  </div>
+  <div
+    class="textSection mb16"
+  >
+    The unique one-time code will appear that regenerates every 30 seconds.
+  </div>
+  <div>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        id="input-text-1"
+        name="verificationCode"
+        placeholder="Enter 6-digit verification code from app or recovery code"
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<QRCodeStep /> render() should render the component with the qr code 1`] = `
 <div>
   <div
-    class="headingBold"
+    class="headingBold mb16"
   >
-    Step 1: Download an authenticator app
-  </div>
-  <div
-    class="textSection"
-  >
-    Download and install any authenticator app (
-    <a
-      href="https://support.google.com/accounts/answer/1066447"
-      rel="noreferrer"
-      target="_blank"
-    >
-      Eg. Google Authenticator
-    </a>
-    ) on your phone.
-  </div>
-  <div
-    class="headingBold mt24"
-  >
-    Step 2: Scan the QR code
-  </div>
-  <div
-    class="textSection"
-  >
-    Open the authenticator app and scan the image below using your phone’s camera.
+    Scan the QR code with your authenticator app
   </div>
   <div
     class="qrCodeContainer"
@@ -98,39 +76,64 @@ exports[`<QRCodeStep /> render() should render the component with the qr code 1`
   <div>
     Can't scan QR code mocked
   </div>
+  <div
+    class="headingBold mt24"
+  >
+    Enter one-time code below
+  </div>
+  <div
+    class="textSection mb16"
+  >
+    The unique one-time code will appear that regenerates every 30 seconds.
+  </div>
+  <div>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        id="input-text-3"
+        name="verificationCode"
+        placeholder="Enter 6-digit verification code from app or recovery code"
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<QRCodeStep /> render() should render the component without the qrcode container 1`] = `
 <div>
   <div
-    class="headingBold"
+    class="headingBold mb16"
   >
-    Step 1: Download an authenticator app
+    Scan the QR code with your authenticator app
   </div>
-  <div
-    class="textSection"
-  >
-    Download and install any authenticator app (
-    <a
-      href="https://support.google.com/accounts/answer/1066447"
-      rel="noreferrer"
-      target="_blank"
-    >
-      Eg. Google Authenticator
-    </a>
-    ) on your phone.
-  </div>
+  
   <div
     class="headingBold mt24"
   >
-    Step 2: Scan the QR code
+    Enter one-time code below
   </div>
   <div
-    class="textSection"
+    class="textSection mb16"
   >
-    Open the authenticator app and scan the image below using your phone’s camera.
+    The unique one-time code will appear that regenerates every 30 seconds.
   </div>
-  
+  <div>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        id="input-text-5"
+        name="verificationCode"
+        placeholder="Enter 6-digit verification code from app or recovery code"
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
 </div>
 `;

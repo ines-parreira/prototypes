@@ -3,6 +3,7 @@ import {
     AuthenticatorData,
     RecoveryCode,
 } from '../../../../../models/twoFactorAuthentication/types'
+import AppSetupStep from './ModalSteps/AppSetupStep/AppSetupStep'
 import QRCodeStep from './ModalSteps/QRCodeStep/QRCodeStep'
 import ValidateVerificationCodeStep from './ModalSteps/ValidateVerificationCodeStep/ValidateVerificationCodeStep'
 import RecoveryCodesStep from './ModalSteps/RecoveryCodesStep/RecoveryCodesStep'
@@ -46,20 +47,16 @@ export default function ModalStep({
                 />
             )
         case 1:
+            return <AppSetupStep />
+        case 2:
             return (
                 <QRCodeStep
                     authenticatorData={authenticatorData}
+                    setVerificationCode={setVerificationCode}
+                    setUserPassword={setUserPassword}
                     errorText={errorText}
                     setErrorText={setErrorText}
                     setIsLoading={setIsLoading}
-                />
-            )
-        case 2:
-            return (
-                <ValidateVerificationCodeStep
-                    setVerificationCode={setVerificationCode}
-                    setUserPassword={setUserPassword}
-                    setErrorText={setErrorText}
                     hasPassword={userHasPassword}
                 />
             )

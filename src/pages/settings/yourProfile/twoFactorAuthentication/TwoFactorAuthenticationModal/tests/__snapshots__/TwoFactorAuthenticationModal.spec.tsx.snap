@@ -340,10 +340,36 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 </div>
               </div>
               <div
-                class="headingBold"
+                class="headingBold mb16"
               >
-                Step 3: 
-                Verify your code
+                Scan the QR code with your authenticator app
+              </div>
+              <div
+                class="qrCodeContainer"
+              >
+                <img
+                  alt="The QR Code to scan"
+                  id="qrCodeImage"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATZSURBVO3BQY4cSRIEQdNA/f/Lun30UwCJ9GoOuSaCP1K15KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVr0yUtAfpOaGyCTmk1AbtRMQJ5QMwH5TWreOKladFK16KRq0SfL1GwC8oSaCcgTam7UPKFmk5pNQDadVC06qVp0UrXoky8D8oSaJ4A8oeYJIJOaCcik5jcBeULNN51ULTqpWnRSteiTf4yaCcgEZFJzo+YJIJOaCcik5l9yUrXopGrRSdWiT/5xam6AvKFmAjIBuQEyqfmbnVQtOqladFK16JMvU/ObgExqJiCbgNyo+SY1/yUnVYtOqhadVC36ZBmQP0nNBGRSMwGZ1ExAJjUTkEnNBGRSMwGZ1NwA+S87qVp0UrXopGrRJy+p+ZsAmdRMQCY1E5BJzTep+ZucVC06qVp0UrXok5eATGomIJvUTGpu1NwAmdRMQJ4AMql5A8gmNd90UrXopGrRSdUi/JEXgNyomYDcqNkE5Ak1N0Bu1NwA+SY1N0Bu1LxxUrXopGrRSdUi/JE/CMikZgLyhpoJyKTmTwIyqZmA3KiZgExqftNJ1aKTqkUnVYs+eQnIjZobNTdqboBMajYBmdRMQCY1E5BJzZ8EZFKz6aRq0UnVopOqRZ+8pGYCcgNkUjMBuVEzqbkBMql5Qs0TQCY1TwCZ1LwB5DedVC06qVp0UrUIf+QFIJOaCcikZhOQJ9RMQN5QMwH5L1FzA2RS88ZJ1aKTqkUnVYs+WQbkBsikZgJyo+ZGzQ2QSc0E5Akgk5oJyKRmAjKpmYBMam6APKFm00nVopOqRSdViz75MjU3QG7UPAFkk5oJyKTmRs2Nmhs1E5A3gExqNp1ULTqpWnRStQh/ZBGQGzU3QG7UPAFkUjMBmdRMQG7UTEAmNb8JyI2abzqpWnRSteikatEnLwG5UTMBmdTcqJmATGomIDdAnlAzAZmATGomIE+omYC8oeYGyKTmjZOqRSdVi06qFn2yTM0TQCY1E5BJzQTkRs0NkCfU3AC5UTMBuVEzAZnUvKFm00nVopOqRSdViz75MiBvqLlR84aaGyCTmgnIpOZPAjKpuQEyqXnjpGrRSdWik6pFn/wyNROQCcgTaiYgk5obIJOaSc2NmgnIpGYCcgPkCSCTmgnIpOabTqoWnVQtOqlahD/yFwMyqXkDyBNqboBMaiYgk5ongExqJiBPqHnjpGrRSdWik6pFn7wE5DepmdRMQCY1N0B+E5AngExqnlDzm06qFp1ULTqpWvTJMjWbgNwAmdTcAHlCzRtqboDcqPkmIJOaN06qFp1ULTqpWvTJlwF5Qs2fpGYC8oaaJ4C8AeRGzTedVC06qVp0UrXok38ckCeATGpugExqboBMar4JyI2aTSdVi06qFp1ULfrk/5yaCcgEZJOaCcikZgIyqZmATGpugExqNp1ULTqpWnRSteiTL1PzTWomIJOaCcgbaiYgN0AmNTdAJjUTkEnNjZoJyDedVC06qVp0UrXok2VAfhOQGyCTmhs1E5AbNROQSc0EZFIzAZmAvAFkUvNNJ1WLTqoWnVQtwh+pWnJSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQt+h8x8UUwJOxn0QAAAABJRU5ErkJggg=="
+                />
+              </div>
+              <div
+                class="cantScanQrCodeContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost primary medium"
+                  type="button"
+                >
+                  <span>
+                    Can't scan the QR code?
+                  </span>
+                </button>
+              </div>
+              <div
+                class="headingBold mt24"
+              >
+                Enter one-time code below
               </div>
               <div
                 class="textSection mb16"
@@ -356,7 +382,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-9"
+                    id="input-text-13"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
@@ -367,7 +393,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter a verification code from your authenticator app or a recovery code
+                The unique one-time code will appear that regenerates every 30 seconds.
               </div>
               <div>
                 <div
@@ -375,7 +401,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-11"
+                    id="input-text-15"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -468,10 +494,36 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
             >
               
               <div
-                class="headingBold"
+                class="headingBold mb16"
               >
-                Step 3: 
-                Verify your code
+                Scan the QR code with your authenticator app
+              </div>
+              <div
+                class="qrCodeContainer"
+              >
+                <img
+                  alt="The QR Code to scan"
+                  id="qrCodeImage"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATZSURBVO3BQY4cSRIEQdNA/f/Lun30UwCJ9GoOuSaCP1K15KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVr0yUtAfpOaGyCTmk1AbtRMQJ5QMwH5TWreOKladFK16KRq0SfL1GwC8oSaCcgTam7UPKFmk5pNQDadVC06qVp0UrXoky8D8oSaJ4A8oeYJIJOaCcik5jcBeULNN51ULTqpWnRSteiTf4yaCcgEZFJzo+YJIJOaCcik5l9yUrXopGrRSdWiT/5xam6AvKFmAjIBuQEyqfmbnVQtOqladFK16JMvU/ObgExqJiCbgNyo+SY1/yUnVYtOqhadVC36ZBmQP0nNBGRSMwGZ1ExAJjUTkEnNBGRSMwGZ1NwA+S87qVp0UrXopGrRJy+p+ZsAmdRMQCY1E5BJzTep+ZucVC06qVp0UrXok5eATGomIJvUTGpu1NwAmdRMQJ4AMql5A8gmNd90UrXopGrRSdUi/JEXgNyomYDcqNkE5Ak1N0Bu1NwA+SY1N0Bu1LxxUrXopGrRSdUi/JE/CMikZgLyhpoJyKTmTwIyqZmA3KiZgExqftNJ1aKTqkUnVYs+eQnIjZobNTdqboBMajYBmdRMQCY1E5BJzZ8EZFKz6aRq0UnVopOqRZ+8pGYCcgNkUjMBuVEzqbkBMql5Qs0TQCY1TwCZ1LwB5DedVC06qVp0UrUIf+QFIJOaCcikZhOQJ9RMQN5QMwH5L1FzA2RS88ZJ1aKTqkUnVYs+WQbkBsikZgJyo+ZGzQ2QSc0E5Akgk5oJyKRmAjKpmYBMam6APKFm00nVopOqRSdViz75MjU3QG7UPAFkk5oJyKTmRs2Nmhs1E5A3gExqNp1ULTqpWnRStQh/ZBGQGzU3QG7UPAFkUjMBmdRMQG7UTEAmNb8JyI2abzqpWnRSteikatEnLwG5UTMBmdTcqJmATGomIDdAnlAzAZmATGomIE+omYC8oeYGyKTmjZOqRSdVi06qFn2yTM0TQCY1E5BJzQTkRs0NkCfU3AC5UTMBuVEzAZnUvKFm00nVopOqRSdViz75MiBvqLlR84aaGyCTmgnIpOZPAjKpuQEyqXnjpGrRSdWik6pFn/wyNROQCcgTaiYgk5obIJOaSc2NmgnIpGYCcgPkCSCTmgnIpOabTqoWnVQtOqlahD/yFwMyqXkDyBNqboBMaiYgk5ongExqJiBPqHnjpGrRSdWik6pFn7wE5DepmdRMQCY1N0B+E5AngExqnlDzm06qFp1ULTqpWvTJMjWbgNwAmdTcAHlCzRtqboDcqPkmIJOaN06qFp1ULTqpWvTJlwF5Qs2fpGYC8oaaJ4C8AeRGzTedVC06qVp0UrXok38ckCeATGpugExqboBMar4JyI2aTSdVi06qFp1ULfrk/5yaCcgEZJOaCcikZgIyqZmATGpugExqNp1ULTqpWnRSteiTL1PzTWomIJOaCcgbaiYgN0AmNTdAJjUTkEnNjZoJyDedVC06qVp0UrXok2VAfhOQGyCTmhs1E5AbNROQSc0EZFIzAZmAvAFkUvNNJ1WLTqoWnVQtwh+pWnJSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQt+h8x8UUwJOxn0QAAAABJRU5ErkJggg=="
+                />
+              </div>
+              <div
+                class="cantScanQrCodeContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost primary medium"
+                  type="button"
+                >
+                  <span>
+                    Can't scan the QR code?
+                  </span>
+                </button>
+              </div>
+              <div
+                class="headingBold mt24"
+              >
+                Enter one-time code below
               </div>
               <div
                 class="textSection mb16"
@@ -484,7 +536,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-9"
+                    id="input-text-13"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
@@ -495,7 +547,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter a verification code from your authenticator app or a recovery code
+                The unique one-time code will appear that regenerates every 30 seconds.
               </div>
               <div>
                 <div
@@ -503,7 +555,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-11"
+                    id="input-text-15"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -611,10 +663,36 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 </div>
               </div>
               <div
-                class="headingBold"
+                class="headingBold mb16"
               >
-                Step 3: 
-                Verify your code
+                Scan the QR code with your authenticator app
+              </div>
+              <div
+                class="qrCodeContainer"
+              >
+                <img
+                  alt="The QR Code to scan"
+                  id="qrCodeImage"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATZSURBVO3BQY4cSRIEQdNA/f/Lun30UwCJ9GoOuSaCP1K15KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVr0yUtAfpOaGyCTmk1AbtRMQJ5QMwH5TWreOKladFK16KRq0SfL1GwC8oSaCcgTam7UPKFmk5pNQDadVC06qVp0UrXoky8D8oSaJ4A8oeYJIJOaCcik5jcBeULNN51ULTqpWnRSteiTf4yaCcgEZFJzo+YJIJOaCcik5l9yUrXopGrRSdWiT/5xam6AvKFmAjIBuQEyqfmbnVQtOqladFK16JMvU/ObgExqJiCbgNyo+SY1/yUnVYtOqhadVC36ZBmQP0nNBGRSMwGZ1ExAJjUTkEnNBGRSMwGZ1NwA+S87qVp0UrXopGrRJy+p+ZsAmdRMQCY1E5BJzTep+ZucVC06qVp0UrXok5eATGomIJvUTGpu1NwAmdRMQJ4AMql5A8gmNd90UrXopGrRSdUi/JEXgNyomYDcqNkE5Ak1N0Bu1NwA+SY1N0Bu1LxxUrXopGrRSdUi/JE/CMikZgLyhpoJyKTmTwIyqZmA3KiZgExqftNJ1aKTqkUnVYs+eQnIjZobNTdqboBMajYBmdRMQCY1E5BJzZ8EZFKz6aRq0UnVopOqRZ+8pGYCcgNkUjMBuVEzqbkBMql5Qs0TQCY1TwCZ1LwB5DedVC06qVp0UrUIf+QFIJOaCcikZhOQJ9RMQN5QMwH5L1FzA2RS88ZJ1aKTqkUnVYs+WQbkBsikZgJyo+ZGzQ2QSc0E5Akgk5oJyKRmAjKpmYBMam6APKFm00nVopOqRSdViz75MjU3QG7UPAFkk5oJyKTmRs2Nmhs1E5A3gExqNp1ULTqpWnRStQh/ZBGQGzU3QG7UPAFkUjMBmdRMQG7UTEAmNb8JyI2abzqpWnRSteikatEnLwG5UTMBmdTcqJmATGomIDdAnlAzAZmATGomIE+omYC8oeYGyKTmjZOqRSdVi06qFn2yTM0TQCY1E5BJzQTkRs0NkCfU3AC5UTMBuVEzAZnUvKFm00nVopOqRSdViz75MiBvqLlR84aaGyCTmgnIpOZPAjKpuQEyqXnjpGrRSdWik6pFn/wyNROQCcgTaiYgk5obIJOaSc2NmgnIpGYCcgPkCSCTmgnIpOabTqoWnVQtOqlahD/yFwMyqXkDyBNqboBMaiYgk5ongExqJiBPqHnjpGrRSdWik6pFn7wE5DepmdRMQCY1N0B+E5AngExqnlDzm06qFp1ULTqpWvTJMjWbgNwAmdTcAHlCzRtqboDcqPkmIJOaN06qFp1ULTqpWvTJlwF5Qs2fpGYC8oaaJ4C8AeRGzTedVC06qVp0UrXok38ckCeATGpugExqboBMar4JyI2aTSdVi06qFp1ULfrk/5yaCcgEZJOaCcikZgIyqZmATGpugExqNp1ULTqpWnRSteiTL1PzTWomIJOaCcgbaiYgN0AmNTdAJjUTkEnNjZoJyDedVC06qVp0UrXok2VAfhOQGyCTmhs1E5AbNROQSc0EZFIzAZmAvAFkUvNNJ1WLTqoWnVQtwh+pWnJSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQt+h8x8UUwJOxn0QAAAABJRU5ErkJggg=="
+                />
+              </div>
+              <div
+                class="cantScanQrCodeContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost primary medium"
+                  type="button"
+                >
+                  <span>
+                    Can't scan the QR code?
+                  </span>
+                </button>
+              </div>
+              <div
+                class="headingBold mt24"
+              >
+                Enter one-time code below
               </div>
               <div
                 class="textSection mb16"
@@ -627,7 +705,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-5"
+                    id="input-text-9"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
@@ -638,7 +716,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter a verification code from your authenticator app or a recovery code
+                The unique one-time code will appear that regenerates every 30 seconds.
               </div>
               <div>
                 <div
@@ -646,7 +724,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-7"
+                    id="input-text-11"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -739,10 +817,36 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
             >
               
               <div
-                class="headingBold"
+                class="headingBold mb16"
               >
-                Step 3: 
-                Verify your code
+                Scan the QR code with your authenticator app
+              </div>
+              <div
+                class="qrCodeContainer"
+              >
+                <img
+                  alt="The QR Code to scan"
+                  id="qrCodeImage"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATZSURBVO3BQY4cSRIEQdNA/f/Lun30UwCJ9GoOuSaCP1K15KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVr0yUtAfpOaGyCTmk1AbtRMQJ5QMwH5TWreOKladFK16KRq0SfL1GwC8oSaCcgTam7UPKFmk5pNQDadVC06qVp0UrXoky8D8oSaJ4A8oeYJIJOaCcik5jcBeULNN51ULTqpWnRSteiTf4yaCcgEZFJzo+YJIJOaCcik5l9yUrXopGrRSdWiT/5xam6AvKFmAjIBuQEyqfmbnVQtOqladFK16JMvU/ObgExqJiCbgNyo+SY1/yUnVYtOqhadVC36ZBmQP0nNBGRSMwGZ1ExAJjUTkEnNBGRSMwGZ1NwA+S87qVp0UrXopGrRJy+p+ZsAmdRMQCY1E5BJzTep+ZucVC06qVp0UrXok5eATGomIJvUTGpu1NwAmdRMQJ4AMql5A8gmNd90UrXopGrRSdUi/JEXgNyomYDcqNkE5Ak1N0Bu1NwA+SY1N0Bu1LxxUrXopGrRSdUi/JE/CMikZgLyhpoJyKTmTwIyqZmA3KiZgExqftNJ1aKTqkUnVYs+eQnIjZobNTdqboBMajYBmdRMQCY1E5BJzZ8EZFKz6aRq0UnVopOqRZ+8pGYCcgNkUjMBuVEzqbkBMql5Qs0TQCY1TwCZ1LwB5DedVC06qVp0UrUIf+QFIJOaCcikZhOQJ9RMQN5QMwH5L1FzA2RS88ZJ1aKTqkUnVYs+WQbkBsikZgJyo+ZGzQ2QSc0E5Akgk5oJyKRmAjKpmYBMam6APKFm00nVopOqRSdViz75MjU3QG7UPAFkk5oJyKTmRs2Nmhs1E5A3gExqNp1ULTqpWnRStQh/ZBGQGzU3QG7UPAFkUjMBmdRMQG7UTEAmNb8JyI2abzqpWnRSteikatEnLwG5UTMBmdTcqJmATGomIDdAnlAzAZmATGomIE+omYC8oeYGyKTmjZOqRSdVi06qFn2yTM0TQCY1E5BJzQTkRs0NkCfU3AC5UTMBuVEzAZnUvKFm00nVopOqRSdViz75MiBvqLlR84aaGyCTmgnIpOZPAjKpuQEyqXnjpGrRSdWik6pFn/wyNROQCcgTaiYgk5obIJOaSc2NmgnIpGYCcgPkCSCTmgnIpOabTqoWnVQtOqlahD/yFwMyqXkDyBNqboBMaiYgk5ongExqJiBPqHnjpGrRSdWik6pFn7wE5DepmdRMQCY1N0B+E5AngExqnlDzm06qFp1ULTqpWvTJMjWbgNwAmdTcAHlCzRtqboDcqPkmIJOaN06qFp1ULTqpWvTJlwF5Qs2fpGYC8oaaJ4C8AeRGzTedVC06qVp0UrXok38ckCeATGpugExqboBMar4JyI2aTSdVi06qFp1ULfrk/5yaCcgEZJOaCcikZgIyqZmATGpugExqNp1ULTqpWnRSteiTL1PzTWomIJOaCcgbaiYgN0AmNTdAJjUTkEnNjZoJyDedVC06qVp0UrXok2VAfhOQGyCTmhs1E5AbNROQSc0EZFIzAZmAvAFkUvNNJ1WLTqoWnVQtwh+pWnJSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQt+h8x8UUwJOxn0QAAAABJRU5ErkJggg=="
+                />
+              </div>
+              <div
+                class="cantScanQrCodeContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost primary medium"
+                  type="button"
+                >
+                  <span>
+                    Can't scan the QR code?
+                  </span>
+                </button>
+              </div>
+              <div
+                class="headingBold mt24"
+              >
+                Enter one-time code below
               </div>
               <div
                 class="textSection mb16"
@@ -755,7 +859,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-5"
+                    id="input-text-9"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
@@ -766,7 +870,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter a verification code from your authenticator app or a recovery code
+                The unique one-time code will appear that regenerates every 30 seconds.
               </div>
               <div>
                 <div
@@ -774,7 +878,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-7"
+                    id="input-text-11"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -871,50 +975,11 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
             <div
               class="modal-body"
             >
-              <div
-                class="banner bannerInfo"
-              >
-                <img
-                  alt="icon"
-                  class="icon"
-                  src="test-file-stub"
-                />
-                <div
-                  class="bannerText"
-                >
-                  <span>
-                    Default initialBannerText
-                  </span>
-                </div>
-              </div>
               
               <div
-                class="headingBold"
+                class="headingBold mb16"
               >
-                Step 1: Download an authenticator app
-              </div>
-              <div
-                class="textSection"
-              >
-                Download and install any authenticator app (
-                <a
-                  href="https://support.google.com/accounts/answer/1066447"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Eg. Google Authenticator
-                </a>
-                ) on your phone.
-              </div>
-              <div
-                class="headingBold mt24"
-              >
-                Step 2: Scan the QR code
-              </div>
-              <div
-                class="textSection"
-              >
-                Open the authenticator app and scan the image below using your phone’s camera.
+                Scan the QR code with your authenticator app
               </div>
               <div
                 class="qrCodeContainer"
@@ -938,6 +1003,30 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                   </span>
                 </button>
               </div>
+              <div
+                class="headingBold mt24"
+              >
+                Enter one-time code below
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                The unique one-time code will appear that regenerates every 30 seconds.
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-1"
+                    name="verificationCode"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
             </div>
             <div
               class="modal-footer"
@@ -948,12 +1037,12 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 type="button"
               >
                 <span>
-                  Cancel
+                  Back
                 </span>
               </button>
               <button
-                aria-disabled="false"
-                class="wrapper fill primary medium"
+                aria-disabled="true"
+                class="wrapper fill primary medium isDisabled"
                 type="button"
               >
                 <span>
@@ -1056,32 +1145,57 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               <div
                 class="headingBold"
               >
-                Step 1: Download an authenticator app
+                Have your mobile device ready
               </div>
               <div
-                class="textSection"
+                class="textSection mb16"
               >
-                Download and install any authenticator app (
+                Download any authenticator app to your mobile device. Possible options are
+                 
                 <a
                   href="https://support.google.com/accounts/answer/1066447"
                   rel="noreferrer"
                   target="_blank"
                 >
-                  Eg. Google Authenticator
+                  Google Authenticator
                 </a>
-                ) on your phone.
+                ,
+                 
+                <a
+                  href="https://www.microsoft.com/en-us/security/mobile-authenticator-app"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Microsoft Authenticator
+                </a>
+                ,
+                 
+                <a
+                  href="https://authy.com/"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Authy
+                </a>
+                , or
+                 
+                <a
+                  href="https://duo.com/product/multi-factor-authentication-mfa/duo-mobile-app"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Duo
+                </a>
+                .
               </div>
               <div
-                class="headingBold mt24"
+                class="stepImage"
               >
-                Step 2: Scan the QR code
+                <img
+                  alt=""
+                  src="test-file-stub"
+                />
               </div>
-              <div
-                class="textSection"
-              >
-                Open the authenticator app and scan the image below using your phone’s camera.
-              </div>
-              
             </div>
             <div
               class="modal-footer"
@@ -1092,7 +1206,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 type="button"
               >
                 <span>
-                  Cancel
+                  Remind Me Later
                 </span>
               </button>
               <button
@@ -1165,50 +1279,11 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
             <div
               class="modal-body"
             >
-              <div
-                class="banner bannerInfo"
-              >
-                <img
-                  alt="icon"
-                  class="icon"
-                  src="test-file-stub"
-                />
-                <div
-                  class="bannerText"
-                >
-                  <span>
-                    Default initialBannerText
-                  </span>
-                </div>
-              </div>
               
               <div
-                class="headingBold"
+                class="headingBold mb16"
               >
-                Step 1: Download an authenticator app
-              </div>
-              <div
-                class="textSection"
-              >
-                Download and install any authenticator app (
-                <a
-                  href="https://support.google.com/accounts/answer/1066447"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Eg. Google Authenticator
-                </a>
-                ) on your phone.
-              </div>
-              <div
-                class="headingBold mt24"
-              >
-                Step 2: Scan the QR code
-              </div>
-              <div
-                class="textSection"
-              >
-                Open the authenticator app and scan the image below using your phone’s camera.
+                Scan the QR code with your authenticator app
               </div>
               <div
                 class="qrCodeContainer"
@@ -1232,155 +1307,29 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                   </span>
                 </button>
               </div>
-            </div>
-            <div
-              class="modal-footer"
-            >
-              <button
-                aria-disabled="false"
-                class="wrapper fill secondary medium"
-                type="button"
-              >
-                <span>
-                  Cancel
-                </span>
-              </button>
-              <button
-                aria-disabled="false"
-                class="wrapper fill primary medium"
-                type="button"
-              >
-                <span>
-                  Continue
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="modal-backdrop show"
-      />
-    </div>
-  </div>
-</body>
-`;
-
-exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR code step after pressing back button 1`] = `
-<body
-  class="modal-open"
->
-  <div />
-  <div
-    style="position: relative; z-index: 1050; display: block;"
-    tabindex="-1"
-  >
-    <div
-      class=""
-    >
-      <div
-        class="modal show"
-        role="dialog"
-        style="display: block;"
-        tabindex="-1"
-      >
-        <div
-          class="modal-dialog"
-          role="document"
-          style="max-width: 600px;"
-        >
-          <div
-            class="modal-content"
-          >
-            <div
-              class="modal-header"
-            >
-              <h5
-                class="modal-title"
-              >
-                Setup 2FA
-              </h5>
-              <button
-                aria-label="Close"
-                class="close"
-                type="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  ×
-                </span>
-              </button>
-            </div>
-            <div
-              class="modal-body"
-            >
-              <div
-                class="banner bannerInfo"
-              >
-                <img
-                  alt="icon"
-                  class="icon"
-                  src="test-file-stub"
-                />
-                <div
-                  class="bannerText"
-                >
-                  <span>
-                    Default initialBannerText
-                  </span>
-                </div>
-              </div>
-              
-              <div
-                class="headingBold"
-              >
-                Step 1: Download an authenticator app
-              </div>
-              <div
-                class="textSection"
-              >
-                Download and install any authenticator app (
-                <a
-                  href="https://support.google.com/accounts/answer/1066447"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Eg. Google Authenticator
-                </a>
-                ) on your phone.
-              </div>
               <div
                 class="headingBold mt24"
               >
-                Step 2: Scan the QR code
+                Enter one-time code below
               </div>
               <div
-                class="textSection"
+                class="textSection mb16"
               >
-                Open the authenticator app and scan the image below using your phone’s camera.
+                The unique one-time code will appear that regenerates every 30 seconds.
               </div>
-              <div
-                class="qrCodeContainer"
-              >
-                <img
-                  alt="The QR Code to scan"
-                  id="qrCodeImage"
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATZSURBVO3BQY4cSRIEQdNA/f/Lun30UwCJ9GoOuSaCP1K15KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVr0yUtAfpOaGyCTmk1AbtRMQJ5QMwH5TWreOKladFK16KRq0SfL1GwC8oSaCcgTam7UPKFmk5pNQDadVC06qVp0UrXoky8D8oSaJ4A8oeYJIJOaCcik5jcBeULNN51ULTqpWnRSteiTf4yaCcgEZFJzo+YJIJOaCcik5l9yUrXopGrRSdWiT/5xam6AvKFmAjIBuQEyqfmbnVQtOqladFK16JMvU/ObgExqJiCbgNyo+SY1/yUnVYtOqhadVC36ZBmQP0nNBGRSMwGZ1ExAJjUTkEnNBGRSMwGZ1NwA+S87qVp0UrXopGrRJy+p+ZsAmdRMQCY1E5BJzTep+ZucVC06qVp0UrXok5eATGomIJvUTGpu1NwAmdRMQJ4AMql5A8gmNd90UrXopGrRSdUi/JEXgNyomYDcqNkE5Ak1N0Bu1NwA+SY1N0Bu1LxxUrXopGrRSdUi/JE/CMikZgLyhpoJyKTmTwIyqZmA3KiZgExqftNJ1aKTqkUnVYs+eQnIjZobNTdqboBMajYBmdRMQCY1E5BJzZ8EZFKz6aRq0UnVopOqRZ+8pGYCcgNkUjMBuVEzqbkBMql5Qs0TQCY1TwCZ1LwB5DedVC06qVp0UrUIf+QFIJOaCcikZhOQJ9RMQN5QMwH5L1FzA2RS88ZJ1aKTqkUnVYs+WQbkBsikZgJyo+ZGzQ2QSc0E5Akgk5oJyKRmAjKpmYBMam6APKFm00nVopOqRSdViz75MjU3QG7UPAFkk5oJyKTmRs2Nmhs1E5A3gExqNp1ULTqpWnRStQh/ZBGQGzU3QG7UPAFkUjMBmdRMQG7UTEAmNb8JyI2abzqpWnRSteikatEnLwG5UTMBmdTcqJmATGomIDdAnlAzAZmATGomIE+omYC8oeYGyKTmjZOqRSdVi06qFn2yTM0TQCY1E5BJzQTkRs0NkCfU3AC5UTMBuVEzAZnUvKFm00nVopOqRSdViz75MiBvqLlR84aaGyCTmgnIpOZPAjKpuQEyqXnjpGrRSdWik6pFn/wyNROQCcgTaiYgk5obIJOaSc2NmgnIpGYCcgPkCSCTmgnIpOabTqoWnVQtOqlahD/yFwMyqXkDyBNqboBMaiYgk5ongExqJiBPqHnjpGrRSdWik6pFn7wE5DepmdRMQCY1N0B+E5AngExqnlDzm06qFp1ULTqpWvTJMjWbgNwAmdTcAHlCzRtqboDcqPkmIJOaN06qFp1ULTqpWvTJlwF5Qs2fpGYC8oaaJ4C8AeRGzTedVC06qVp0UrXok38ckCeATGpugExqboBMar4JyI2aTSdVi06qFp1ULfrk/5yaCcgEZJOaCcikZgIyqZmATGpugExqNp1ULTqpWnRSteiTL1PzTWomIJOaCcgbaiYgN0AmNTdAJjUTkEnNjZoJyDedVC06qVp0UrXok2VAfhOQGyCTmhs1E5AbNROQSc0EZFIzAZmAvAFkUvNNJ1WLTqoWnVQtwh+pWnJSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQt+h8x8UUwJOxn0QAAAABJRU5ErkJggg=="
-                />
-              </div>
-              <div
-                class="cantScanQrCodeContainer"
-              >
-                <button
-                  aria-disabled="false"
-                  class="wrapper ghost primary medium"
-                  type="button"
+              <div>
+                <div
+                  class="wrapper"
                 >
-                  <span>
-                    Can't scan the QR code?
-                  </span>
-                </button>
+                  <input
+                    class="input"
+                    id="input-text-3"
+                    name="verificationCode"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
+                    type="text"
+                    value=""
+                  />
+                </div>
               </div>
             </div>
             <div
@@ -1392,12 +1341,12 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR c
                 type="button"
               >
                 <span>
-                  Cancel
+                  Back
                 </span>
               </button>
               <button
-                aria-disabled="false"
-                class="wrapper fill primary medium"
+                aria-disabled="true"
+                class="wrapper fill primary medium isDisabled"
                 type="button"
               >
                 <span>
@@ -1467,10 +1416,36 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
             >
               
               <div
-                class="headingBold"
+                class="headingBold mb16"
               >
-                Step 3: 
-                Verify your code
+                Scan the QR code with your authenticator app
+              </div>
+              <div
+                class="qrCodeContainer"
+              >
+                <img
+                  alt="The QR Code to scan"
+                  id="qrCodeImage"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATZSURBVO3BQY4cSRIEQdNA/f/Lun30UwCJ9GoOuSaCP1K15KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVr0yUtAfpOaGyCTmk1AbtRMQJ5QMwH5TWreOKladFK16KRq0SfL1GwC8oSaCcgTam7UPKFmk5pNQDadVC06qVp0UrXoky8D8oSaJ4A8oeYJIJOaCcik5jcBeULNN51ULTqpWnRSteiTf4yaCcgEZFJzo+YJIJOaCcik5l9yUrXopGrRSdWiT/5xam6AvKFmAjIBuQEyqfmbnVQtOqladFK16JMvU/ObgExqJiCbgNyo+SY1/yUnVYtOqhadVC36ZBmQP0nNBGRSMwGZ1ExAJjUTkEnNBGRSMwGZ1NwA+S87qVp0UrXopGrRJy+p+ZsAmdRMQCY1E5BJzTep+ZucVC06qVp0UrXok5eATGomIJvUTGpu1NwAmdRMQJ4AMql5A8gmNd90UrXopGrRSdUi/JEXgNyomYDcqNkE5Ak1N0Bu1NwA+SY1N0Bu1LxxUrXopGrRSdUi/JE/CMikZgLyhpoJyKTmTwIyqZmA3KiZgExqftNJ1aKTqkUnVYs+eQnIjZobNTdqboBMajYBmdRMQCY1E5BJzZ8EZFKz6aRq0UnVopOqRZ+8pGYCcgNkUjMBuVEzqbkBMql5Qs0TQCY1TwCZ1LwB5DedVC06qVp0UrUIf+QFIJOaCcikZhOQJ9RMQN5QMwH5L1FzA2RS88ZJ1aKTqkUnVYs+WQbkBsikZgJyo+ZGzQ2QSc0E5Akgk5oJyKRmAjKpmYBMam6APKFm00nVopOqRSdViz75MjU3QG7UPAFkk5oJyKTmRs2Nmhs1E5A3gExqNp1ULTqpWnRStQh/ZBGQGzU3QG7UPAFkUjMBmdRMQG7UTEAmNb8JyI2abzqpWnRSteikatEnLwG5UTMBmdTcqJmATGomIDdAnlAzAZmATGomIE+omYC8oeYGyKTmjZOqRSdVi06qFn2yTM0TQCY1E5BJzQTkRs0NkCfU3AC5UTMBuVEzAZnUvKFm00nVopOqRSdViz75MiBvqLlR84aaGyCTmgnIpOZPAjKpuQEyqXnjpGrRSdWik6pFn/wyNROQCcgTaiYgk5obIJOaSc2NmgnIpGYCcgPkCSCTmgnIpOabTqoWnVQtOqlahD/yFwMyqXkDyBNqboBMaiYgk5ongExqJiBPqHnjpGrRSdWik6pFn7wE5DepmdRMQCY1N0B+E5AngExqnlDzm06qFp1ULTqpWvTJMjWbgNwAmdTcAHlCzRtqboDcqPkmIJOaN06qFp1ULTqpWvTJlwF5Qs2fpGYC8oaaJ4C8AeRGzTedVC06qVp0UrXok38ckCeATGpugExqboBMar4JyI2aTSdVi06qFp1ULfrk/5yaCcgEZJOaCcikZgIyqZmATGpugExqNp1ULTqpWnRSteiTL1PzTWomIJOaCcgbaiYgN0AmNTdAJjUTkEnNjZoJyDedVC06qVp0UrXok2VAfhOQGyCTmhs1E5AbNROQSc0EZFIzAZmAvAFkUvNNJ1WLTqoWnVQtwh+pWnJSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQt+h8x8UUwJOxn0QAAAABJRU5ErkJggg=="
+                />
+              </div>
+              <div
+                class="cantScanQrCodeContainer"
+              >
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost primary medium"
+                  type="button"
+                >
+                  <span>
+                    Can't scan the QR code?
+                  </span>
+                </button>
+              </div>
+              <div
+                class="headingBold mt24"
+              >
+                Enter one-time code below
               </div>
               <div
                 class="textSection mb16"
@@ -1483,7 +1458,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                 >
                   <input
                     class="input"
-                    id="input-text-1"
+                    id="input-text-5"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
@@ -1494,7 +1469,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
               <div
                 class="textSection mb16"
               >
-                Enter a verification code from your authenticator app or a recovery code
+                The unique one-time code will appear that regenerates every 30 seconds.
               </div>
               <div>
                 <div
@@ -1502,7 +1477,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                 >
                   <input
                     class="input"
-                    id="input-text-3"
+                    id="input-text-7"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -1544,7 +1519,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
 </body>
 `;
 
-exports[`<TwoFactorAuthenticationModal /> render() should render modal with the QR code step because the code is valid 1`] = `
+exports[`<TwoFactorAuthenticationModal /> render() should render modal with app setup step after pressing back button 1`] = `
 <body
   class="modal-open"
 >
@@ -1613,30 +1588,145 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
               <div
                 class="headingBold"
               >
-                Step 1: Download an authenticator app
+                Have your mobile device ready
               </div>
               <div
-                class="textSection"
+                class="textSection mb16"
               >
-                Download and install any authenticator app (
+                Download any authenticator app to your mobile device. Possible options are
+                 
                 <a
                   href="https://support.google.com/accounts/answer/1066447"
                   rel="noreferrer"
                   target="_blank"
                 >
-                  Eg. Google Authenticator
+                  Google Authenticator
                 </a>
-                ) on your phone.
+                ,
+                 
+                <a
+                  href="https://www.microsoft.com/en-us/security/mobile-authenticator-app"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Microsoft Authenticator
+                </a>
+                ,
+                 
+                <a
+                  href="https://authy.com/"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Authy
+                </a>
+                , or
+                 
+                <a
+                  href="https://duo.com/product/multi-factor-authentication-mfa/duo-mobile-app"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Duo
+                </a>
+                .
               </div>
               <div
-                class="headingBold mt24"
+                class="stepImage"
               >
-                Step 2: Scan the QR code
+                <img
+                  alt=""
+                  src="test-file-stub"
+                />
               </div>
-              <div
-                class="textSection"
+            </div>
+            <div
+              class="modal-footer"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper fill secondary medium"
+                type="button"
               >
-                Open the authenticator app and scan the image below using your phone’s camera.
+                <span>
+                  Remind Me Later
+                </span>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper fill primary medium"
+                type="button"
+              >
+                <span>
+                  Continue
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationModal /> render() should render modal with the QR code step because the code is valid 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal show"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Setup 2FA
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              
+              <div
+                class="headingBold mb16"
+              >
+                Scan the QR code with your authenticator app
               </div>
               <div
                 class="qrCodeContainer"
@@ -1660,6 +1750,49 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                   </span>
                 </button>
               </div>
+              <div
+                class="headingBold mt24"
+              >
+                Enter one-time code below
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter your password.
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-44"
+                    name="userPassword"
+                    placeholder="Enter your password"
+                    type="password"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                The unique one-time code will appear that regenerates every 30 seconds.
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-46"
+                    name="verificationCode"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
             </div>
             <div
               class="modal-footer"
@@ -1670,7 +1803,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                 type="button"
               >
                 <span>
-                  Cancel
+                  Back
                 </span>
               </button>
               <button
@@ -1760,7 +1893,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-30"
+                    id="input-text-34"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
@@ -1779,7 +1912,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-32"
+                    id="input-text-36"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -1878,7 +2011,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-34"
+                    id="input-text-38"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -1977,7 +2110,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-34"
+                    id="input-text-38"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -1989,6 +2122,160 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
             <div
               class="modal-footer"
             >
+              <button
+                aria-disabled="false"
+                class="wrapper fill primary medium"
+                type="button"
+              >
+                <span>
+                  Continue
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationModal /> render() should render modal with app setup step 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal show"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Setup 2FA
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              <div
+                class="banner bannerInfo"
+              >
+                <img
+                  alt="icon"
+                  class="icon"
+                  src="test-file-stub"
+                />
+                <div
+                  class="bannerText"
+                >
+                  <span>
+                    Default initialBannerText
+                  </span>
+                </div>
+              </div>
+              
+              <div
+                class="headingBold"
+              >
+                Have your mobile device ready
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Download any authenticator app to your mobile device. Possible options are
+                 
+                <a
+                  href="https://support.google.com/accounts/answer/1066447"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Google Authenticator
+                </a>
+                ,
+                 
+                <a
+                  href="https://www.microsoft.com/en-us/security/mobile-authenticator-app"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Microsoft Authenticator
+                </a>
+                ,
+                 
+                <a
+                  href="https://authy.com/"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Authy
+                </a>
+                , or
+                 
+                <a
+                  href="https://duo.com/product/multi-factor-authentication-mfa/duo-mobile-app"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Duo
+                </a>
+                .
+              </div>
+              <div
+                class="stepImage"
+              >
+                <img
+                  alt=""
+                  src="test-file-stub"
+                />
+              </div>
+            </div>
+            <div
+              class="modal-footer"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper fill secondary medium"
+                type="button"
+              >
+                <span>
+                  Remind Me Later
+                </span>
+              </button>
               <button
                 aria-disabled="false"
                 class="wrapper fill primary medium"
