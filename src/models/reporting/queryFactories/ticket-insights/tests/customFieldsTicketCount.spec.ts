@@ -1,5 +1,5 @@
 import {OrderDirection} from 'models/api/types'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
@@ -9,6 +9,7 @@ import {
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
     customFieldsTicketCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {getCustomFieldValueSerializer} from 'models/reporting/queryFactories/utils'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -187,9 +188,11 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         customFieldId
                     ).filters,
                     {
-                        member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                        operator: ReportingFilterOperator.In,
-                        values: customFieldsValueStrings,
+                        member: TicketMember.CustomField,
+                        operator: ReportingFilterOperator.Equals,
+                        values: customFieldsValueStrings.map(
+                            getCustomFieldValueSerializer(Number(customFieldId))
+                        ),
                     },
                     TicketDrillDownFilter,
                 ],

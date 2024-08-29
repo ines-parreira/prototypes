@@ -94,7 +94,7 @@ describe('utils', () => {
         it('should produce multiple entries for ALL_OF operator for a custom field', () => {
             const filter: CustomFieldFilter[] = [
                 {
-                    values: ['123:one', '456:two'],
+                    values: ['123:One', '456:Two'],
                     operator: LogicalOperatorEnum.ALL_OF,
                     customFieldId: 123,
                 },
@@ -115,7 +115,7 @@ describe('utils', () => {
                 _flatMap(
                     filter.map((value) =>
                         filter[0].values.map((val) => ({
-                            values: [toLowerCaseString(val)],
+                            values: [String(val)],
                             member: filterDefaults.member,
                             operator: FilterOperatorMap[value.operator],
                         }))
@@ -127,7 +127,7 @@ describe('utils', () => {
         it('should produce multiple entries for NOT_ONE_OF operator for a custom field', () => {
             const filter: CustomFieldFilter[] = [
                 {
-                    values: ['123:one', '456:two'],
+                    values: ['123:One', '456:Two'],
                     operator: LogicalOperatorEnum.NOT_ONE_OF,
                     customFieldId: 123,
                 },

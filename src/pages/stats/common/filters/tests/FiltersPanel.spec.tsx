@@ -10,7 +10,11 @@ import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButto
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
+import {FilterKey, StaticFilter} from 'models/stat/types'
+import {
+    initialState as ticketInsightsSliceStatsInitialState,
+    ticketInsightsSlice,
+} from 'state/ui/stats/ticketInsightsSlice'
 import {
     FiltersPanel,
     UNSUPPORTED_FILTER_PLACEHOLDER,
@@ -61,6 +65,14 @@ const defaultState = {
     },
     ui: {
         stats: uiStatsInitialState,
+        [ticketInsightsSlice.name]: {
+            ...ticketInsightsSliceStatsInitialState,
+            selectedCustomField: {
+                id: 1,
+                label: '',
+                isLoading: false,
+            },
+        },
     },
     entities: {
         tags: {},
@@ -117,7 +129,6 @@ describe('FiltersPanel', () => {
         FilterKey.Agents,
         FilterKey.HelpCenters,
         FilterKey.LocaleCodes,
-        FilterComponentKey.Store,
     ]
 
     beforeEach(() => {

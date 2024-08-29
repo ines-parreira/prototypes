@@ -39,6 +39,7 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.CustomFields]: 'Custom Field',
     [FilterKey.Score]: 'Score',
     [FilterKey.SlaPolicies]: 'Sla Policy',
+    [FilterComponentKey.CustomField]: 'Report on',
     [FilterComponentKey.Store]: 'Report on',
 }
 

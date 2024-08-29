@@ -31,6 +31,7 @@ import {
     selectDropdownTextFields,
 } from 'pages/stats/CustomFieldSelect'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+import {CustomFieldFilter} from 'pages/stats/common/filters/CustomFieldFilter'
 
 type Props = {
     persistentFilters?: StaticFilter[]
@@ -63,6 +64,8 @@ export const renderFilter = (filter: FilterKey | FilterComponentKey) => {
             return HelpCenterFilterWithState
         case FilterKey.LocaleCodes:
             return HelpCenterLanguageFilterWithState
+        case FilterComponentKey.CustomField:
+            return CustomFieldFilter
         case FilterComponentKey.Store:
             return StoreFilterWithState
         default:

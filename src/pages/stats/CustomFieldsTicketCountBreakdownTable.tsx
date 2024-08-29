@@ -1,9 +1,9 @@
 import classNames from 'classnames'
 import React, {UIEventHandler, useEffect, useMemo, useState} from 'react'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {BREAKDOWN_FIELD} from 'hooks/reporting/withBreakdown'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import {OrderDirection} from 'models/api/types'
 import {NumberedPagination} from 'pages/common/components/Paginations'
@@ -22,7 +22,6 @@ import {
 } from 'pages/stats/CustomFieldsTicketCountDataRowContent'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {setOrder, TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
 import {formatDates} from './utils'
 
@@ -52,7 +51,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
     const setOrdering = (column: TicketInsightsOrder['column']) =>
         dispatch(setOrder({column}))
 
-    const {granularity} = useAppSelector(getCleanStatsFiltersWithTimezone)
+    const {granularity} = useNewStatsFilters()
     const {
         data: customFieldDataRows,
         dateTimes,

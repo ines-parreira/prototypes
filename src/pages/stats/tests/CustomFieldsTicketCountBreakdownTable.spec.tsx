@@ -14,7 +14,6 @@ import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
 import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
 import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
 import {
     CUSTOM_FIELD_COLUMN_LABEL,
     CUSTOM_FIELDS_PER_PAGE,
@@ -24,7 +23,10 @@ import {
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {
     initialState,
     setOrder,
@@ -44,6 +46,9 @@ jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )
+const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
+)
 jest.mock('pages/stats/NoDataAvailable')
 const NoDataAvailableMock = assumeMock(NoDataAvailable)
 
@@ -55,7 +60,7 @@ const componentMock = () => <div />
 
 describe('<CustomFieldsTicketCountBreakdownTable />', () => {
     const customField = {id: 123, label: 'someLabel'}
-    const defaultStatsFilters: LegacyStatsFilters = {
+    const defaultStatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
             end_datetime: '2021-05-30T23:59:59+02:00',
@@ -150,6 +155,13 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             cleanStatsFilters: defaultStatsFilters,
             granularity: ReportingGranularity.Day,
         })
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
+            {
+                userTimezone: 'someTimezone',
+                cleanStatsFilters: defaultStatsFilters,
+                granularity: ReportingGranularity.Day,
+            }
+        )
         useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
             data: exampleData,
             dateTimes,

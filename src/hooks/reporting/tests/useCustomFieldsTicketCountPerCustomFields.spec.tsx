@@ -16,7 +16,10 @@ import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {
     getCustomFieldsOrder,
     getValueMode,
@@ -33,6 +36,9 @@ const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
 jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
+)
+const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
 )
 jest.mock('state/ui/stats/ticketInsightsSlice')
 const getCustomFieldOrderMock = assumeMock(getCustomFieldsOrder)
@@ -85,6 +91,13 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
         })
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
+            {
+                cleanStatsFilters: defaultStatsFilters,
+                userTimezone: 'UTC',
+                granularity: ReportingGranularity.Day,
+            }
+        )
         useCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
             data,
             isLoading,

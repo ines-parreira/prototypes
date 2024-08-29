@@ -14,14 +14,16 @@ import {
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import CustomFieldsFilter, {
-    getCustomFieldValueSerializer,
     CustomFieldsFilterFilterWithState,
 } from 'pages/stats/common/filters/CustomFieldsFilter'
 import {initialState, mergeCustomFieldsFilter} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {FilterKey} from 'models/stat/types'
-import {withDefaultCustomFieldAndLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {
+    getCustomFieldValueSerializer,
+    withDefaultCustomFieldAndLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 
 const customFieldId = 123
 const filterName = 'Some Custom Field Name'

@@ -2,17 +2,15 @@ import _flatten from 'lodash/flatten'
 import _fromPairs from 'lodash/fromPairs'
 import _sortBy from 'lodash/sortBy'
 import {useMemo} from 'react'
+import {TICKET_CUSTOM_FIELDS_API_SEPARATOR} from 'models/reporting/queryFactories/utils'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import {TicketCustomFieldsDimension} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {OrderDirection} from 'models/api/types'
-import {
-    TICKET_CUSTOM_FIELDS_API_SEPARATOR,
-    TICKET_CUSTOM_FIELDS_NEW_SEPARATOR,
-} from 'pages/stats/utils'
+import {TICKET_CUSTOM_FIELDS_NEW_SEPARATOR} from 'pages/stats/utils'
 
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import {periodToReportingGranularity} from 'utils/reporting'
 import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
@@ -20,9 +18,7 @@ import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
 const DATASET_VISIBILITY_ITEMS = 3
 
 export const useTicketsFieldTrend = (topAmount = 10) => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const granularity = periodToReportingGranularity(cleanStatsFilters.period)
 

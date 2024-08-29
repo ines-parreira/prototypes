@@ -1,4 +1,5 @@
 import React from 'react'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -6,7 +7,6 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {getCustomFieldsOrder} from 'state/ui/stats/ticketInsightsSlice'
 import {formatDates} from 'pages/stats/utils'
 import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
@@ -21,9 +21,7 @@ export const DownloadTicketFieldsDataButton = ({
 }: {
     selectedCustomFieldId: number
 }) => {
-    const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
     const order = useAppSelector(getCustomFieldsOrder)
     const dateTimes = getPeriodDateTimes(
         getFilterDateRange(cleanStatsFilters.period),

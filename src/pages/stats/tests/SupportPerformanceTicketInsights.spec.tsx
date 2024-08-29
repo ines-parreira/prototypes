@@ -1,9 +1,12 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {render, screen} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -13,7 +16,8 @@ import {CustomFieldSelect} from 'pages/stats/CustomFieldSelect'
 import {DownloadTicketFieldsDataButton} from 'pages/stats/DownloadTicketFieldsDataButton'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
-import SupportPerformanceTicketInsights, {
+import {
+    SupportPerformanceTicketInsights,
     TICKET_INSIGHTS_PAGE_TITLE,
 } from 'pages/stats/SupportPerformanceTicketInsights'
 import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
@@ -32,10 +36,10 @@ import {CustomFieldsTicketCountBreakdownReport} from '../CustomFieldsTicketCount
 
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
-
+jest.mock('pages/stats/common/filters/FiltersPanel.tsx')
+const FiltersPanelMock = assumeMock(FiltersPanel)
 jest.mock('pages/stats/CustomFieldSelect.tsx')
 const CustomFieldSelectMock = assumeMock(CustomFieldSelect)
-
 jest.mock('pages/stats/TicketDistributionTable.tsx')
 const TicketDistributionTableMock = assumeMock(TicketDistributionTable)
 jest.mock('pages/stats/TicketInsightsFieldTrend.tsx')
@@ -83,6 +87,7 @@ describe('<SupportPerformanceTicketInsights />', () => {
 
     beforeEach(() => {
         SupportPerformanceFiltersMock.mockImplementation(componentMock)
+        FiltersPanelMock.mockImplementation(componentMock)
         CustomFieldSelectMock.mockImplementation(componentMock)
         TicketDistributionTableMock.mockImplementation(componentMock)
         TicketInsightsFieldTrendMock.mockImplementation(componentMock)
@@ -115,7 +120,21 @@ describe('<SupportPerformanceTicketInsights />', () => {
         expect(SupportPerformanceFiltersMock).toHaveBeenCalled()
     })
 
+    it('should render the Filters Panel when behind the flag', () => {
+        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceTicketInsights />
+            </Provider>
+        )
+
+        expect(FiltersPanel).toHaveBeenCalled()
+    })
+
     it('should render the CustomFieldSelect', () => {
+        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: false})
+
         render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceTicketInsights />

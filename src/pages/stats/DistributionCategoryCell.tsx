@@ -1,6 +1,7 @@
 import React, {PropsWithRef} from 'react'
 
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import {TICKET_CUSTOM_FIELDS_API_SEPARATOR} from 'models/reporting/queryFactories/utils'
 
 import GaugeAddon from 'pages/stats/GaugeAddon'
 
@@ -8,10 +9,7 @@ import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
 import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
-import {
-    TICKET_CUSTOM_FIELDS_API_SEPARATOR,
-    TICKET_CUSTOM_FIELDS_NEW_SEPARATOR,
-} from './utils'
+import {TICKET_CUSTOM_FIELDS_NEW_SEPARATOR} from 'pages/stats/utils'
 
 type Props = {
     category: string

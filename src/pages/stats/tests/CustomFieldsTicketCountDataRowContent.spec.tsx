@@ -10,7 +10,10 @@ import {
     MOBILE_EXPAND_COLUMN_WIDTH,
     DEFAULT_MARGIN,
 } from 'pages/stats/CustomFieldsTicketCountDataRowContent'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {
     getHeatmapMode,
     getValueMode,
@@ -43,10 +46,13 @@ jest.mock(
 
 const getValueModeMock = assumeMock(getValueMode)
 const getHeatmapModeMock = assumeMock(getHeatmapMode)
-jest.mock('state/ui/stats/selectors')
 
+jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
+)
+const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
 )
 const getSelectedCustomFieldMock = assumeMock(getSelectedCustomField)
 
@@ -81,6 +87,17 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
                 },
             },
         } as any)
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
+            {
+                granularity: ReportingGranularity.Week,
+                cleanStatsFilters: {
+                    period: {
+                        start_datetime: '2021-02-03T00:00:00.000Z',
+                        end_datetime: '2021-02-03T23:59:59.999Z',
+                    },
+                },
+            } as any
+        )
         getSelectedCustomFieldMock.mockReturnValue({
             id: 123,
             label: 'someLabel',

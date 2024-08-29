@@ -156,7 +156,7 @@ import SelfServiceHelpCentersProvider from 'pages/automate/common/providers/Self
 import OrderManagementPreviewProvider from 'pages/automate/orderManagement/OrderManagementPreviewProvider'
 import ConnectedChannelsViewContainer from 'pages/automate/connectedChannels/ConnectedChannelsViewContainer'
 import SelfServiceContactFormsProvider from 'pages/automate/common/providers/SelfServiceContactFormsProvider'
-import SupportPerformanceTicketInsights from 'pages/stats/SupportPerformanceTicketInsights'
+import {SupportPerformanceTicketInsights} from 'pages/stats/SupportPerformanceTicketInsights'
 import AutomateStatsPaywall from 'pages/stats/AutomateStatsPaywall'
 import TrainMyAiViewContainer from 'pages/automate/trainMyAi/TrainMyAiViewContainer'
 import ActionsViewContainer from 'pages/automate/actions/ActionsViewContainer'

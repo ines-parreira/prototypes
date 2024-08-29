@@ -1,4 +1,5 @@
 import _flatMap from 'lodash/flatMap'
+import {CustomFieldValue} from 'models/customField/types'
 import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
@@ -92,7 +93,7 @@ export const addOptionalFilter = (
                 ) {
                     return {
                         member: NotEqualsMap[filterDefaults.member],
-                        values: customFieldFilter.values.map(toLowerCaseString),
+                        values: customFieldFilter.values.map(String),
                         operator: FilterOperatorMap[customFieldFilter.operator],
                     }
                 } else if (
@@ -100,13 +101,13 @@ export const addOptionalFilter = (
                 ) {
                     return customFieldFilter.values.map((value) => ({
                         member: filterDefaults.member,
-                        values: [toLowerCaseString(value)],
+                        values: [String(value)],
                         operator: FilterOperatorMap[customFieldFilter.operator],
                     }))
                 }
                 return {
                     member: filterDefaults.member,
-                    values: customFieldFilter.values.map(toLowerCaseString),
+                    values: customFieldFilter.values.map(String),
                     operator: FilterOperatorMap[customFieldFilter.operator],
                 }
             })
@@ -204,3 +205,9 @@ export function withDefaultCustomFieldAndLogicalOperator({
         operator,
     }
 }
+
+export const TICKET_CUSTOM_FIELDS_API_SEPARATOR = '::'
+
+export const getCustomFieldValueSerializer =
+    (customFieldId: number) => (field: CustomFieldValue) =>
+        `${customFieldId}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}${field}`

@@ -1,5 +1,6 @@
 import {useMemo} from 'react'
 import _zip from 'lodash/zip'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
@@ -19,7 +20,6 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
 
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {
     getCustomFieldsOrder,
     TicketInsightsOrder,
@@ -58,9 +58,7 @@ export const useCustomFieldsTicketCountPerCustomFields = (
     const breakdownField = BREAKDOWN_FIELD
     const valueField = VALUE_FIELD
 
-    const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
     const order = useAppSelector(getCustomFieldsOrder)
     const dateTimes = getPeriodDateTimes(
         getFilterDateRange(cleanStatsFilters.period),

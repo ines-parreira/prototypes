@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import heatmapCss from 'pages/stats/heatmap.less'
 import {
     BREAKDOWN_FIELD,
@@ -9,7 +10,6 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import css from 'pages/stats/BreakdownTable.less'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {
     getHeatmapMode,
     getValueMode,
@@ -74,7 +74,7 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
     const valueMode = useAppSelector(getValueMode)
     const isHeatmapMode = useAppSelector(getHeatmapMode) && level === 0
     const hasChildren = Array.isArray(children) && children.length > 0
-    const {granularity} = useAppSelector(getCleanStatsFiltersWithTimezone)
+    const {isAnalyticsNewFilters, granularity} = useNewStatsFilters()
     const isMobile = useScreenSize() === SCREEN_SIZE.SMALL
 
     return (
@@ -134,6 +134,7 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                         customFieldId: selectedCustomField?.id || null,
                         customFieldValue: initialCustomFieldValue,
                     }}
+                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {formatAccordingToValueMode(valueMode)({
                         value: value,
@@ -183,6 +184,7 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                                 granularity
                             ),
                         }}
+                        useNewFilterData={isAnalyticsNewFilters}
                     >
                         {formatAccordingToValueMode(valueMode)(data)}
                     </DrillDownModalTrigger>

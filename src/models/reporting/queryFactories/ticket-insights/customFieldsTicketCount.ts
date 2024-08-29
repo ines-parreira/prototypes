@@ -7,6 +7,7 @@ import {
     TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {getCustomFieldValueSerializer} from 'models/reporting/queryFactories/utils'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
@@ -98,9 +99,13 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
             ...(customFieldsValueStrings !== null
                 ? [
                       {
-                          member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                          operator: ReportingFilterOperator.In,
-                          values: customFieldsValueStrings,
+                          member: TicketDimension.CustomField,
+                          operator: ReportingFilterOperator.Equals,
+                          values: customFieldsValueStrings.map(
+                              getCustomFieldValueSerializer(
+                                  Number(customFieldId)
+                              )
+                          ),
                       },
                   ]
                 : []),

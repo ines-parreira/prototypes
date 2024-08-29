@@ -21,10 +21,10 @@ import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
 import {
     DistributionCategoryCell,
     formatCategory,
-} from './DistributionCategoryCell'
-import {NoDataAvailable} from './NoDataAvailable'
+} from 'pages/stats/DistributionCategoryCell'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
-import css from './TicketDistributionTable.less'
+import css from 'pages/stats/TicketDistributionTable.less'
 
 export const OUTSIDE_TOP_DATA = {
     title: 'Outside of Top used',
@@ -33,8 +33,10 @@ export const OUTSIDE_TOP_DATA = {
 
 export const TicketDistributionTable = ({
     selectedCustomField,
+    isAnalyticsNewFilters = false,
 }: {
     selectedCustomField: {id: number; label: string}
+    isAnalyticsNewFilters?: boolean
 }) => {
     const {
         isFetching,
@@ -109,6 +111,7 @@ export const TicketDistributionTable = ({
                                                 selectedCustomField.id,
                                             customFieldValue: [item.category],
                                         }}
+                                        useNewFilterData={isAnalyticsNewFilters}
                                     >
                                         {formatMetricValue(
                                             item.value,
@@ -172,6 +175,7 @@ export const TicketDistributionTable = ({
                                         customFieldId: selectedCustomField.id,
                                         customFieldValue: null,
                                     }}
+                                    useNewFilterData={isAnalyticsNewFilters}
                                 >
                                     {formatMetricValue(ticketsCountTotal)}
                                 </DrillDownModalTrigger>

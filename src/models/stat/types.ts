@@ -19,6 +19,7 @@ export enum FilterKey {
 
 export enum FilterComponentKey {
     Store = 'store',
+    CustomField = 'customField',
 }
 
 export type StaticFilter =
@@ -33,6 +34,7 @@ export type StaticFilter =
     | FilterKey.Score
     | FilterKey.SlaPolicies
     | FilterKey.Tags
+    | FilterComponentKey.CustomField
     | FilterComponentKey.Store
 
 export interface Period {

@@ -1,19 +1,20 @@
-import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
+import React, {useCallback} from 'react'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
-import {CustomField, CustomFieldValue} from 'models/customField/types'
-import {
-    activeParams,
-    selectDropdownTextFields,
-} from 'pages/stats/CustomFieldSelect'
-import {emptyCustomFieldFilter} from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
-import {DropdownOption} from 'pages/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {CustomField} from 'models/customField/types'
+import {getCustomFieldValueSerializer} from 'models/reporting/queryFactories/utils'
 import {CustomFieldFilter} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {customFieldsFilterLogicalOperators} from 'pages/stats/common/filters/constants'
+import {emptyCustomFieldFilter} from 'pages/stats/common/filters/helpers'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {
+    activeParams,
+    selectDropdownTextFields,
+} from 'pages/stats/CustomFieldSelect'
+import {DropdownOption} from 'pages/stats/types'
 import {getCustomFieldFilterById} from 'state/stats/selectors'
 import {mergeCustomFieldsFilter} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
@@ -24,10 +25,6 @@ type Props = {
     filterName: string
     customFieldId: number
 } & RemovableFilter
-
-export const getCustomFieldValueSerializer =
-    (customFieldId: number) => (field: CustomFieldValue) =>
-        `${customFieldId}::${field}`
 
 const getOptions = (activeFields: CustomField[], customFieldId: number) => {
     const dropdownFieldDefinition: CustomField | undefined = activeFields
