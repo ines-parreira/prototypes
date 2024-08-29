@@ -180,15 +180,15 @@ export const ABGroupContainer: React.FC<Props> = ({
                 }
             >
                 <div className={css.actions}>
+                    <Button
+                        intent="secondary"
+                        isDisabled={!canAddVariant}
+                        onClick={handleAddVariant}
+                    >
+                        Add Variant
+                    </Button>
                     {location.pathname.endsWith('/ab-variants') && (
                         <>
-                            <Button
-                                intent="secondary"
-                                isDisabled={!canAddVariant}
-                                onClick={handleAddVariant}
-                            >
-                                Add Variant
-                            </Button>
                             {campaign.ab_group?.status ===
                                 ABGroupStatus.Started && (
                                 <>
