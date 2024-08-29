@@ -5,7 +5,6 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {fromJS, Map} from 'immutable'
 import moment from 'moment'
 import {createMemoryHistory} from 'history'
-import _noop from 'lodash/noop'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -163,7 +162,6 @@ describe('TicketDetailContainer component', () => {
         fetchTicket: jest.fn(),
         findAndSetCustomer: jest.fn(),
         goToNextTicket: jest.fn(),
-        goToPrevTicket: jest.fn(),
         newMessage: fromJS({
             newMessage: {
                 source: {
@@ -242,11 +240,11 @@ describe('TicketDetailContainer component', () => {
         useSplitTicketViewMock.mockReturnValue({isEnabled: false})
         mockUseGoToPreviousTicket.mockReturnValue({
             goToTicket: mockGoToPreviousTicket,
-            isDisabled: false,
+            isEnabled: false,
         })
         mockUseGoToNextTicket.mockReturnValue({
             goToTicket: mockGoToNextTicket,
-            isDisabled: false,
+            isEnabled: false,
         })
     })
 
@@ -1153,88 +1151,72 @@ describe('TicketDetailContainer component', () => {
         await flushPromises()
     })
 
-    it.each<[string, string, boolean, () => jest.Mock, SegmentEvent, boolean]>([
+    it.each<
+        [
+            string,
+            string,
+            () => {goToTicket: jest.Mock; isEnabled: boolean},
+            SegmentEvent
+        ]
+    >([
         [
             'next',
             'GO_FORWARD',
-            true,
             () => {
-                return (minProps.goToNextTicket as jest.Mock).mockReturnValue(
-                    new Promise(_noop)
-                )
+                const mock = {
+                    goToTicket: mockGoToNextTicket,
+                    isEnabled: false,
+                }
+                mockUseGoToNextTicket.mockReturnValue(mock)
+                return mock
             },
             SegmentEvent.TicketKeyboardShortcutsNextNavigation,
-            false,
-        ],
-        [
-            'next',
-            'GO_FORWARD',
-            false,
-            () => {
-                return (minProps.goToNextTicket as jest.Mock).mockReturnValue(
-                    new Promise(_noop)
-                )
-            },
-            SegmentEvent.TicketKeyboardShortcutsNextNavigation,
-            false,
         ],
         [
             'next',
             'GO_FORWARD',
-            true,
-            () => mockGoToNextTicket,
+            () => {
+                const mock = {
+                    goToTicket: mockGoToNextTicket,
+                    isEnabled: false,
+                }
+                mockUseGoToNextTicket.mockReturnValue(mock)
+                return mock
+            },
             SegmentEvent.TicketKeyboardShortcutsNextNavigation,
-            true,
         ],
         [
             'prev',
             'GO_BACK',
-            true,
             () => {
-                return (minProps.goToPrevTicket as jest.Mock).mockReturnValue(
-                    new Promise(_noop)
-                )
+                const mock = {
+                    goToTicket: mockGoToPreviousTicket,
+                    isEnabled: false,
+                }
+                mockUseGoToPreviousTicket.mockReturnValue(mock)
+                return mock
             },
             SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
-            false,
         ],
         [
             'prev',
             'GO_BACK',
-            false,
             () => {
-                return (minProps.goToPrevTicket as jest.Mock).mockReturnValue(
-                    new Promise(_noop)
-                )
+                const mock = {
+                    goToTicket: mockGoToPreviousTicket,
+                    isEnabled: true,
+                }
+                mockUseGoToPreviousTicket.mockReturnValue(mock)
+                return mock
             },
             SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
-            false,
-        ],
-        [
-            'prev',
-            'GO_BACK',
-            true,
-            () => mockGoToPreviousTicket,
-            SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
-            true,
         ],
     ])(
         'should debounce %s ticket calls while call is already pending',
-        (
-            testName,
-            actionName,
-            isTicketNavigationAvailable,
-            testSetup,
-            trackedEvent,
-            isSplitTicketViewEnabled
-        ) => {
-            useSplitTicketViewMock.mockReturnValue({
-                isEnabled: isSplitTicketViewEnabled,
-            })
-            mockedDispatch.mockReturnValue(isTicketNavigationAvailable)
-
+        (testName, actionName, testSetup, trackedEvent) => {
             const execKeyboardAction =
                 makeExecuteKeyboardAction(shortcutManagerMock)
+
             const callMock = testSetup()
 
             renderWithRouter(
@@ -1252,12 +1234,8 @@ describe('TicketDetailContainer component', () => {
             execKeyboardAction(actionName)
             execKeyboardAction(actionName)
 
-            expect(callMock).toHaveBeenCalledTimes(
-                isTicketNavigationAvailable
-                    ? isSplitTicketViewEnabled
-                        ? 2
-                        : 1
-                    : 0
+            expect(callMock.goToTicket).toHaveBeenCalledTimes(
+                callMock.isEnabled ? 1 : 0
             )
 
             expect(logEvent).toHaveBeenCalledWith(trackedEvent)

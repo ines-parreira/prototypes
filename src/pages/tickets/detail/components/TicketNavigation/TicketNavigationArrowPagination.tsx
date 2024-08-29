@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -6,6 +6,8 @@ import {isTicketNavigationAvailable} from 'state/ticket/actions'
 import {ArrowPagination} from 'pages/common/components/Paginations'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
+import useAppSelector from 'hooks/useAppSelector'
+import {getActiveView} from 'state/views/selectors'
 
 import useGoToPreviousTicket from './hooks/useGoToPreviousTicket'
 import useGoToNextTicket from './hooks/useGoToNextTicket'
@@ -18,6 +20,12 @@ type Props = {
 export default function TicketNavigationArrowPagination({ticketId}: Props) {
     const dispatch = useAppDispatch()
 
+    const activeView = useAppSelector(getActiveView)
+    const isSearchView = useMemo(
+        () => activeView.get('search') != null,
+        [activeView]
+    )
+
     const paginationItemPreviousId = 'pagination-item-arrow-previous'
     const paginationItemNextId = 'pagination-item-arrow-next'
 
@@ -28,9 +36,10 @@ export default function TicketNavigationArrowPagination({ticketId}: Props) {
     const {goToTicket: goToNextTicket, isEnabled: isNextEnabled} =
         useGoToNextTicket(ticketId)
 
-    const shouldDisplayTicketArrows = isSplitTicketViewEnabled
-        ? isPreviousEnabled || isNextEnabled
-        : dispatch(isTicketNavigationAvailable(ticketId))
+    const shouldDisplayTicketArrows =
+        isSplitTicketViewEnabled && !isSearchView
+            ? isPreviousEnabled || isNextEnabled
+            : dispatch(isTicketNavigationAvailable(ticketId))
 
     return (
         <>
@@ -43,14 +52,8 @@ export default function TicketNavigationArrowPagination({ticketId}: Props) {
                         nextItemId={paginationItemNextId}
                         onClickPrevious={goToPrevTicket}
                         onClickNext={goToNextTicket}
-                        isPreviousDisabled={
-                            isSplitTicketViewEnabled
-                                ? !isPreviousEnabled
-                                : false
-                        }
-                        isNextDisabled={
-                            isSplitTicketViewEnabled ? !isNextEnabled : false
-                        }
+                        isPreviousDisabled={!isPreviousEnabled}
+                        isNextDisabled={!isNextEnabled}
                     />
                     <Tooltip
                         target={paginationItemPreviousId}

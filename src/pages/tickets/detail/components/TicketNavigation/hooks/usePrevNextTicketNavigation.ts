@@ -8,26 +8,26 @@ export default function usePrevNextTicketNavigation(
 ) {
     const dispatch = useAppDispatch()
 
-    const goToNextOrPrevTicket = (
+    const goToNextOrPrevTicket = async (
         direction: 'prev' | 'next',
         ticketNumber: string
     ) => {
         dispatch(clearTicket())
 
-        void dispatch(
+        await dispatch(
             _goToNextOrPrevTicket(parseFloat(ticketNumber), direction)
         )
     }
 
-    return () => {
+    return async () => {
         switch (direction) {
             case 'prev':
                 logEvent(SegmentEvent.TicketPreviousNavigation)
-                goToNextOrPrevTicket('prev', ticketNumber)
+                await goToNextOrPrevTicket('prev', ticketNumber)
                 break
             case 'next':
                 logEvent(SegmentEvent.TicketNextNavigation)
-                goToNextOrPrevTicket('next', ticketNumber)
+                await goToNextOrPrevTicket('next', ticketNumber)
                 break
         }
     }

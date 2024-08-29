@@ -46,8 +46,6 @@ import {
     fetchTicket,
     findAndSetCustomer,
     goToNextTicket,
-    goToPrevTicket,
-    isTicketNavigationAvailable,
     setCustomer,
     setStatus,
 } from 'state/ticket/actions'
@@ -64,7 +62,6 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import {Ticket} from 'models/ticket/types'
 import useKey from 'hooks/useKey'
 import Loader from 'pages/common/components/Loader/Loader'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {useListVoiceCalls} from 'models/voiceCall/queries'
 import {getSourceTypeOfResponse} from 'state/ticket/utils'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
@@ -101,7 +98,6 @@ export const TicketDetailContainer = ({
     fetchTicket,
     findAndSetCustomer,
     goToNextTicket,
-    goToPrevTicket,
     newMessage,
     newMessageSource,
     prepareTicketMessage,
@@ -238,29 +234,31 @@ export const TicketDetailContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const {isEnabled: isSplitTicketViewEnabled} = useSplitTicketView()
+    const {goToTicket: goToPrevious, isEnabled: isPrevEnabled} =
+        useGoToPreviousTicket(ticketIdParam)
 
-    const {goToTicket: goToPreviousTicketInTicketListPanel} =
-        useGoToPreviousTicket()
-
-    const {goToTicket: goToNextTicketInTicketListPanel} = useGoToNextTicket()
+    const {goToTicket: goToNext, isEnabled: isNextEnabled} =
+        useGoToNextTicket(ticketIdParam)
 
     const [{loading: isGoToPrevOrNextTicketPending}, goToPrevOrNextTicket] =
         useAsyncFn(
             async (direction: 'prev' | 'next') => {
                 // Disable Ticket navigation via keyboard shortcuts (`<-` & `->`) when
                 // we are on the ticket page via direct URL, or we are creating a new ticket
-                if (!dispatch(isTicketNavigationAvailable(ticketIdParam))) {
+                if (direction === 'prev' ? !isPrevEnabled : !isNextEnabled) {
                     return
                 }
 
-                const ticketNumber = parseInt(ticketIdParam)
                 clearTicket()
-                return direction === 'prev'
-                    ? goToPrevTicket(ticketNumber)
-                    : goToNextTicket(ticketNumber)
+                return direction === 'prev' ? goToPrevious() : goToNext()
             },
-            [ticketIdParam]
+            [
+                ticketIdParam,
+                goToPrevious,
+                goToNext,
+                isPrevEnabled,
+                isNextEnabled,
+            ]
         )
 
     const prepareAndSubmitNewTicket = ({status, resetMessage}: SubmitArgs) => {
@@ -394,9 +392,7 @@ export const TicketDetailContainer = ({
                         logEvent(
                             SegmentEvent.TicketKeyboardShortcutsPreviousNavigation
                         )
-                        isSplitTicketViewEnabled
-                            ? goToPreviousTicketInTicketListPanel()
-                            : void goToPrevOrNextTicket('prev')
+                        void goToPrevOrNextTicket('prev')
                     }
                 },
             },
@@ -406,9 +402,7 @@ export const TicketDetailContainer = ({
                         logEvent(
                             SegmentEvent.TicketKeyboardShortcutsNextNavigation
                         )
-                        isSplitTicketViewEnabled
-                            ? goToNextTicketInTicketListPanel()
-                            : void goToPrevOrNextTicket('next')
+                        void goToPrevOrNextTicket('next')
                     }
                 },
             },
@@ -680,7 +674,6 @@ const connector = connect(
         fetchTicket,
         findAndSetCustomer,
         goToNextTicket,
-        goToPrevTicket,
         prepare,
         prepareTicketMessage,
         sendTicketMessage,

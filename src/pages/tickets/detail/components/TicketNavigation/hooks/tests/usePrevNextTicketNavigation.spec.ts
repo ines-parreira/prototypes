@@ -28,14 +28,14 @@ describe('usePrevNextTicketNavigation', () => {
         useAppDispatchMock.mockReturnValue(dispatch)
     })
 
-    it('should test PREV navigation', () => {
+    it('should test PREV navigation', async () => {
         const {result} = renderHook(() =>
             usePrevNextTicketNavigation(prevDirection, ticketNumber)
         )
 
         expect(result.current).toEqual(expect.any(Function))
 
-        result.current()
+        await result.current()
 
         expect(logEventMock).toHaveBeenCalledTimes(1)
         expect(logEventMock).toHaveBeenCalledWith(
@@ -50,14 +50,14 @@ describe('usePrevNextTicketNavigation', () => {
         )
     })
 
-    it('should test NEXT navigation', () => {
+    it('should test NEXT navigation', async () => {
         const {result} = renderHook(() =>
             usePrevNextTicketNavigation(nextDirection, ticketNumber)
         )
 
         expect(result.current).toEqual(expect.any(Function))
 
-        result.current()
+        await result.current()
 
         expect(logEventMock).toHaveBeenCalledTimes(1)
         expect(logEventMock).toHaveBeenCalledWith(

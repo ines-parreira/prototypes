@@ -1,15 +1,22 @@
 import React, {ComponentProps} from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
 import {Tooltip} from '@gorgias/ui-kit'
+import {fromJS} from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as ticketActions from 'state/ticket/actions'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
+import useAppSelector from 'hooks/useAppSelector'
+
 import TicketNavigationArrowPagination from '../TicketNavigationArrowPagination'
 import useGoToNextTicket from '../hooks/useGoToNextTicket'
 import useGoToPreviousTicket from '../hooks/useGoToPreviousTicket'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => jest.fn())
+
+const useAppDispatchMock = useAppDispatch as jest.Mock
+const useAppSelectorMock = useAppSelector as jest.Mock
 
 jest.mock('@gorgias/ui-kit', () => {
     return {
@@ -33,16 +40,14 @@ const mockUseGoToNextTicket = useGoToNextTicket as jest.Mock
 describe('TicketNavigationArrowPagination', () => {
     const ticketId = '123'
 
-    let dispatch: jest.Mock
-    const useAppDispatchMock = useAppDispatch as jest.Mock
     const isTicketNavigationAvailableMock = jest.spyOn(
         ticketActions,
         'isTicketNavigationAvailable'
     )
 
     beforeEach(() => {
-        dispatch = jest.fn()
-        useAppDispatchMock.mockReturnValue(dispatch)
+        useAppSelectorMock.mockReturnValue(fromJS({}))
+        useAppDispatchMock.mockReturnValue(jest.fn())
         useSplitTicketViewMock.mockReturnValue({isEnabled: false})
 
         mockUseGoToPreviousTicket.mockReturnValue({
@@ -115,5 +120,18 @@ describe('TicketNavigationArrowPagination', () => {
 
         expect(screen.queryByText('Previous ticket')).toBeNull()
         expect(screen.queryByText('Next ticket')).toBeNull()
+    })
+
+    it('should not evaluate DTP related navigation if DTP is enabled, but search view is active', () => {
+        // refactor this test when isTicketNavigationAvailable is moved to a selector
+        // https://linear.app/gorgias/issue/HDKXP-1776/move-isviewactive-and-isticketnavigationavailable-to
+        const mockDispatch = jest.fn()
+        useSplitTicketViewMock.mockReturnValue({isEnabled: true})
+        useAppDispatchMock.mockImplementation(() => mockDispatch)
+        useAppSelectorMock.mockReturnValue(fromJS({search: ''}))
+
+        render(<TicketNavigationArrowPagination ticketId={ticketId} />)
+
+        expect(mockDispatch).toHaveBeenCalled()
     })
 })
