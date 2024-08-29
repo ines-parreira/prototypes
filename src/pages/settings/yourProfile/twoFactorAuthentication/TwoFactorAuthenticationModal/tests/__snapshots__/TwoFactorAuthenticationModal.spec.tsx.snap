@@ -67,6 +67,62 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               </div>
               
               <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step previousStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    <span
+                      class="checkIcon"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        check
+                      </i>
+                    </span>
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step previousStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    <span
+                      class="checkIcon"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        check
+                      </i>
+                    </span>
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
+              <div
                 class="textSection mb16"
               >
                 Before you leave, keep your recovery codes in a safe place. They are the only alternative ways to access your account.
@@ -340,6 +396,54 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 </div>
               </div>
               <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step previousStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    <span
+                      class="checkIcon"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        check
+                      </i>
+                    </span>
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
+              <div
                 class="headingBold mb16"
               >
                 Scan the QR code with your authenticator app
@@ -493,6 +597,54 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               class="modal-body"
             >
               
+              <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step previousStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    <span
+                      class="checkIcon"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        check
+                      </i>
+                    </span>
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
               <div
                 class="headingBold mb16"
               >
@@ -663,6 +815,54 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 </div>
               </div>
               <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step previousStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    <span
+                      class="checkIcon"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        check
+                      </i>
+                    </span>
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
+              <div
                 class="headingBold mb16"
               >
                 Scan the QR code with your authenticator app
@@ -816,6 +1016,54 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               class="modal-body"
             >
               
+              <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step previousStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    <span
+                      class="checkIcon"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        check
+                      </i>
+                    </span>
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
               <div
                 class="headingBold mb16"
               >
@@ -976,6 +1224,54 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               class="modal-body"
             >
               
+              <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step previousStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    <span
+                      class="checkIcon"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        check
+                      </i>
+                    </span>
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
               <div
                 class="headingBold mb16"
               >
@@ -1143,6 +1439,46 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 </div>
               </div>
               <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    1
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
+              <div
                 class="headingBold"
               >
                 Have your mobile device ready
@@ -1281,6 +1617,54 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
             >
               
               <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step previousStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    <span
+                      class="checkIcon"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        check
+                      </i>
+                    </span>
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
+              <div
                 class="headingBold mb16"
               >
                 Scan the QR code with your authenticator app
@@ -1416,6 +1800,54 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
             >
               
               <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step previousStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    <span
+                      class="checkIcon"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        check
+                      </i>
+                    </span>
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
+              <div
                 class="headingBold mb16"
               >
                 Scan the QR code with your authenticator app
@@ -1519,6 +1951,200 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
 </body>
 `;
 
+exports[`<TwoFactorAuthenticationModal /> render() should render modal with app setup step 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal show"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Setup 2FA
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              <div
+                class="banner bannerInfo"
+              >
+                <img
+                  alt="icon"
+                  class="icon"
+                  src="test-file-stub"
+                />
+                <div
+                  class="bannerText"
+                >
+                  <span>
+                    Default initialBannerText
+                  </span>
+                </div>
+              </div>
+              
+              <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    1
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
+              <div
+                class="headingBold"
+              >
+                Have your mobile device ready
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Download any authenticator app to your mobile device. Possible options are
+                 
+                <a
+                  href="https://support.google.com/accounts/answer/1066447"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Google Authenticator
+                </a>
+                ,
+                 
+                <a
+                  href="https://www.microsoft.com/en-us/security/mobile-authenticator-app"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Microsoft Authenticator
+                </a>
+                ,
+                 
+                <a
+                  href="https://authy.com/"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Authy
+                </a>
+                , or
+                 
+                <a
+                  href="https://duo.com/product/multi-factor-authentication-mfa/duo-mobile-app"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Duo
+                </a>
+                .
+              </div>
+              <div
+                class="stepImage"
+              >
+                <img
+                  alt=""
+                  src="test-file-stub"
+                />
+              </div>
+            </div>
+            <div
+              class="modal-footer"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper fill secondary medium"
+                type="button"
+              >
+                <span>
+                  Remind Me Later
+                </span>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper fill primary medium"
+                type="button"
+              >
+                <span>
+                  Continue
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
 exports[`<TwoFactorAuthenticationModal /> render() should render modal with app setup step after pressing back button 1`] = `
 <body
   class="modal-open"
@@ -1585,6 +2211,46 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                 </div>
               </div>
               
+              <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    1
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
               <div
                 class="headingBold"
               >
@@ -1723,6 +2389,75 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
               class="modal-body"
             >
               
+              <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step previousStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    <span
+                      class="checkIcon"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        check
+                      </i>
+                    </span>
+                  </span>
+                  Password
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step previousStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    <span
+                      class="checkIcon"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        check
+                      </i>
+                    </span>
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    4
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
               <div
                 class="headingBold mb16"
               >
@@ -1878,6 +2613,59 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
             >
               
               <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    1
+                  </span>
+                  Password
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    4
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
+              <div
                 class="headingBold"
               >
                 Verify your code
@@ -1996,6 +2784,59 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
             >
               
               <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    1
+                  </span>
+                  Password
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    4
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
+              <div
                 class="headingBold"
               >
                 Verify your code
@@ -2095,6 +2936,59 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
             >
               
               <div
+                class="wrapper mb-4"
+              >
+                <div
+                  class="step activeStep"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    1
+                  </span>
+                  Password
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    2
+                  </span>
+                  App setup
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    3
+                  </span>
+                  Verify
+                </div>
+                <div
+                  class="line"
+                />
+                <div
+                  class="step"
+                >
+                  <span
+                    class="stepIndex"
+                  >
+                    4
+                  </span>
+                  Recovery codes
+                </div>
+              </div>
+              <div
                 class="headingBold"
               >
                 Verify your code
@@ -2122,160 +3016,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
             <div
               class="modal-footer"
             >
-              <button
-                aria-disabled="false"
-                class="wrapper fill primary medium"
-                type="button"
-              >
-                <span>
-                  Continue
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="modal-backdrop show"
-      />
-    </div>
-  </div>
-</body>
-`;
-
-exports[`<TwoFactorAuthenticationModal /> render() should render modal with app setup step 1`] = `
-<body
-  class="modal-open"
->
-  <div />
-  <div
-    style="position: relative; z-index: 1050; display: block;"
-    tabindex="-1"
-  >
-    <div
-      class=""
-    >
-      <div
-        class="modal show"
-        role="dialog"
-        style="display: block;"
-        tabindex="-1"
-      >
-        <div
-          class="modal-dialog"
-          role="document"
-          style="max-width: 600px;"
-        >
-          <div
-            class="modal-content"
-          >
-            <div
-              class="modal-header"
-            >
-              <h5
-                class="modal-title"
-              >
-                Setup 2FA
-              </h5>
-              <button
-                aria-label="Close"
-                class="close"
-                type="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  ×
-                </span>
-              </button>
-            </div>
-            <div
-              class="modal-body"
-            >
-              <div
-                class="banner bannerInfo"
-              >
-                <img
-                  alt="icon"
-                  class="icon"
-                  src="test-file-stub"
-                />
-                <div
-                  class="bannerText"
-                >
-                  <span>
-                    Default initialBannerText
-                  </span>
-                </div>
-              </div>
-              
-              <div
-                class="headingBold"
-              >
-                Have your mobile device ready
-              </div>
-              <div
-                class="textSection mb16"
-              >
-                Download any authenticator app to your mobile device. Possible options are
-                 
-                <a
-                  href="https://support.google.com/accounts/answer/1066447"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Google Authenticator
-                </a>
-                ,
-                 
-                <a
-                  href="https://www.microsoft.com/en-us/security/mobile-authenticator-app"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Microsoft Authenticator
-                </a>
-                ,
-                 
-                <a
-                  href="https://authy.com/"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Authy
-                </a>
-                , or
-                 
-                <a
-                  href="https://duo.com/product/multi-factor-authentication-mfa/duo-mobile-app"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Duo
-                </a>
-                .
-              </div>
-              <div
-                class="stepImage"
-              >
-                <img
-                  alt=""
-                  src="test-file-stub"
-                />
-              </div>
-            </div>
-            <div
-              class="modal-footer"
-            >
-              <button
-                aria-disabled="false"
-                class="wrapper fill secondary medium"
-                type="button"
-              >
-                <span>
-                  Remind Me Later
-                </span>
-              </button>
               <button
                 aria-disabled="false"
                 class="wrapper fill primary medium"

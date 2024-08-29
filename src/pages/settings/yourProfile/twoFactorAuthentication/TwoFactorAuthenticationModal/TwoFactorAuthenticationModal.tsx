@@ -33,10 +33,12 @@ import {
 import {getTwoFAEnforcedDatetime} from 'state/currentAccount/selectors'
 import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import {TWO_FA_REQUIRED_NOTIFICATION_ID} from 'state/currentUser/constants'
+import Wizard from 'pages/common/components/wizard/Wizard'
 import css from './TwoFactorAuthenticationModal.less'
 import ModalContinueButton from './ModalContinueButton'
 import ModalStep from './ModalStep'
 import ModalBanners from './ModalBanners'
+import ModalWizardHeader from './ModalWizardHeader'
 
 export type OwnProps = {
     isOpen: boolean
@@ -254,6 +256,16 @@ export default function TwoFactorAuthenticationModal({
             })
     }, [has2FAEnabled, resetModalState])
 
+    const wizardSteps = useMemo(
+        () => ({
+            ...(isUpdate ? {password: 'Password'} : {}),
+            app_setup: 'App setup',
+            qr_code: 'Verify',
+            recovery_codes: 'Recovery codes',
+        }),
+        [isUpdate]
+    )
+
     return (
         <DEPRECATED_Modal
             isOpen={isOpen}
@@ -304,6 +316,15 @@ export default function TwoFactorAuthenticationModal({
                 initialBannerText={initialBannerText}
                 initialBannerType={initialBannerType}
             />
+            {/* TODO(Nicolas): use the Wizard for content as well */}
+            <Wizard steps={Object.keys(wizardSteps)}>
+                <ModalWizardHeader
+                    currentStep={step}
+                    isUpdate={isUpdate}
+                    labels={wizardSteps}
+                    className="mb-4"
+                />
+            </Wizard>
             <ModalStep
                 authenticatorData={authenticatorData}
                 currentStep={step}
