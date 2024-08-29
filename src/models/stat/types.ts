@@ -18,6 +18,7 @@ export enum FilterKey {
 }
 
 export enum FilterComponentKey {
+    BusiestTimesMetricSelectFilter = 'BusiestTimesMetricSelectFilter',
     Store = 'store',
     CustomField = 'customField',
 }
@@ -34,6 +35,7 @@ export type StaticFilter =
     | FilterKey.Score
     | FilterKey.SlaPolicies
     | FilterKey.Tags
+    | FilterComponentKey.BusiestTimesMetricSelectFilter
     | FilterComponentKey.CustomField
     | FilterComponentKey.Store
 

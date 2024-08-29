@@ -8,13 +8,15 @@ import {
     hourFromHourIndex,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import {ReportingGranularity} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
 import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
 import {
     BusiestTimeOfDaysMetrics,
     columnsOrder,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
@@ -22,9 +24,12 @@ jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )
+const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
+)
 
 describe('<BusiestTimesOfDaysTable />', () => {
-    const defaultStatsFilters: LegacyStatsFilters = {
+    const defaultStatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
             end_datetime: '2021-05-30T23:59:59+02:00',
@@ -37,6 +42,13 @@ describe('<BusiestTimesOfDaysTable />', () => {
             cleanStatsFilters: defaultStatsFilters,
             granularity: ReportingGranularity.Day,
         })
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
+            {
+                userTimezone: 'someTimezone',
+                cleanStatsFilters: defaultStatsFilters,
+                granularity: ReportingGranularity.Day,
+            }
+        )
     })
 
     const queryMock = jest.fn().mockReturnValue({data: [[]], isLoading: false})

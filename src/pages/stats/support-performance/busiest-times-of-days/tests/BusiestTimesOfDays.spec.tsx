@@ -1,5 +1,8 @@
-import {render, screen} from '@testing-library/react'
+import {screen} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
@@ -10,10 +13,14 @@ import {
     BUSIEST_TIME_OF_DAY_PAGE_TITLE,
     BusiestTimesOfDays,
 } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
-import {assumeMock} from 'utils/testing'
+import {RootState} from 'state/types'
+import {busiestTimesSlice, initialState} from 'state/ui/stats/busiestTimesSlice'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('pages/stats/SupportPerformanceFilters')
 const FiltersMock = assumeMock(SupportPerformanceFilters)
+jest.mock('pages/stats/common/filters/FiltersPanel')
+const FiltersPanelMock = assumeMock(FiltersPanel)
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
@@ -32,8 +39,15 @@ const BusiestTimesOfDaysDownloadDataButtonMock = assumeMock(
 const componentMock = () => <div />
 
 describe('BusiestTimesOfDays page', () => {
+    const defaultState = {
+        ui: {
+            [busiestTimesSlice.name]: initialState,
+        },
+    } as RootState
+
     beforeEach(() => {
         FiltersMock.mockImplementation(componentMock)
+        FiltersPanelMock.mockImplementation(componentMock)
         AnalyticsFooterMock.mockImplementation(componentMock)
         BusiestTimesOfDaysTableMock.mockImplementation(componentMock)
         BusiestTimesOfDaysDownloadDataButtonMock.mockImplementation(
@@ -44,7 +58,7 @@ describe('BusiestTimesOfDays page', () => {
     it('should render the page title', () => {
         const defaultMetric = BusiestTimeOfDaysMetrics.TicketsCreated
 
-        render(<BusiestTimesOfDays />)
+        renderWithStore(<BusiestTimesOfDays />, defaultState)
 
         expect(
             screen.getByText(BUSIEST_TIME_OF_DAY_PAGE_TITLE)
@@ -57,5 +71,13 @@ describe('BusiestTimesOfDays page', () => {
             },
             {}
         )
+    })
+
+    it('should render FiltersPanel with New Filters flag', () => {
+        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
+
+        renderWithStore(<BusiestTimesOfDays />, defaultState)
+
+        expect(FiltersPanelMock).toHaveBeenCalled()
     })
 })

@@ -1,4 +1,9 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useState} from 'react'
+import useAppSelector from 'hooks/useAppSelector'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {FilterComponentKey, FilterKey} from 'models/stat/types'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
 import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
 import {useGridSize} from 'hooks/useGridSize'
@@ -17,6 +22,7 @@ import {
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import Legend from 'pages/stats/common/components/Legend/Legend'
 import css from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
+import {getSelectedMetric} from 'state/ui/stats/busiestTimesSlice'
 
 export const BUSIEST_TIME_OF_DAY_PAGE_TITLE = 'Busiest times'
 const BUSIEST_TIME_OF_THE_WEEK_SECTION_LABEL = 'Busiest times of the week'
@@ -54,12 +60,11 @@ const busiestHoursHeatmapLegend = {
     shape: 'rectangle' as const,
 }
 export const BusiestTimesOfDays = () => {
+    const isAnalyticsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const getGridCellSize = useGridSize()
 
-    const [selectedMetric, setSelectedMetric] =
-        useState<BusiestTimeOfDaysMetrics>(
-            BusiestTimeOfDaysMetrics.TicketsCreated
-        )
+    const selectedMetric = useAppSelector(getSelectedMetric)
     const [isHeatmapMode, setIsHeatmapMode] = useState(true)
     const toggleHandler = () => setIsHeatmapMode(!isHeatmapMode)
 
@@ -69,18 +74,41 @@ export const BusiestTimesOfDays = () => {
                 title={BUSIEST_TIME_OF_DAY_PAGE_TITLE}
                 titleExtra={
                     <>
-                        <SupportPerformanceFilters />
+                        <SupportPerformanceFilters
+                            hidden={isAnalyticsNewFilters}
+                        />
                         <BusiestTimesOfDaysDownloadDataButton
                             useMetricQuery={getMetricQuery(selectedMetric)}
                         />
                     </>
                 }
             >
+                {isAnalyticsNewFilters && (
+                    <DashboardSection>
+                        <DashboardGridCell
+                            size={getGridCellSize(12)}
+                            className="pb-0"
+                        >
+                            <FiltersPanel
+                                persistentFilters={[
+                                    FilterKey.Period,
+                                    FilterComponentKey.BusiestTimesMetricSelectFilter,
+                                ]}
+                                optionalFilters={[
+                                    FilterKey.Channels,
+                                    FilterKey.Integrations,
+                                    FilterKey.Tags,
+                                    FilterKey.Agents,
+                                    FilterKey.CustomFields,
+                                ]}
+                            />
+                        </DashboardGridCell>
+                    </DashboardSection>
+                )}
                 <DashboardSection>
-                    <BusiestTimesOfDaysMetricSelect
-                        selectedMetric={selectedMetric}
-                        setSelectedMetric={setSelectedMetric}
-                    />
+                    {!isAnalyticsNewFilters && (
+                        <BusiestTimesOfDaysMetricSelect />
+                    )}
                     <DashboardGridCell size={getGridCellSize(12)}>
                         <ChartCard
                             noPadding

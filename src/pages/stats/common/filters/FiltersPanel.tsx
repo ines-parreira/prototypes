@@ -6,6 +6,7 @@ import React, {
     useMemo,
     useState,
 } from 'react'
+import {BusiestTimesMetricSelectFilter} from 'pages/stats/common/filters/BusiestTimesMetricSelectFilter'
 import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
@@ -64,6 +65,8 @@ export const renderFilter = (filter: FilterKey | FilterComponentKey) => {
             return HelpCenterFilterWithState
         case FilterKey.LocaleCodes:
             return HelpCenterLanguageFilterWithState
+        case FilterComponentKey.BusiestTimesMetricSelectFilter:
+            return BusiestTimesMetricSelectFilter
         case FilterComponentKey.CustomField:
             return CustomFieldFilter
         case FilterComponentKey.Store:

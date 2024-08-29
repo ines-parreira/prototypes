@@ -9,8 +9,12 @@ import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState} from 'state/types'
+import {
+    busiestTimesSlice,
+    initialState as busiestTimesInitialState,
+} from 'state/ui/stats/busiestTimesSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {FilterKey, StaticFilter} from 'models/stat/types'
+import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
 import {
     initialState as ticketInsightsSliceStatsInitialState,
     ticketInsightsSlice,
@@ -65,6 +69,7 @@ const defaultState = {
     },
     ui: {
         stats: uiStatsInitialState,
+        [busiestTimesSlice.name]: busiestTimesInitialState,
         [ticketInsightsSlice.name]: {
             ...ticketInsightsSliceStatsInitialState,
             selectedCustomField: {
@@ -129,6 +134,8 @@ describe('FiltersPanel', () => {
         FilterKey.Agents,
         FilterKey.HelpCenters,
         FilterKey.LocaleCodes,
+        FilterComponentKey.BusiestTimesMetricSelectFilter,
+        FilterComponentKey.Store,
     ]
 
     beforeEach(() => {

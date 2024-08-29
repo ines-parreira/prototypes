@@ -3,6 +3,10 @@ import {
     agentPerformanceSlice,
     AgentPerformanceState,
 } from 'state/ui/stats/agentPerformanceSlice'
+import {
+    busiestTimesSlice,
+    BusiestTimesState,
+} from 'state/ui/stats/busiestTimesSlice'
 import {ChannelsSlice, channelsSlice} from 'state/ui/stats/channelsSlice'
 import {
     ticketInsightsSlice,
@@ -37,6 +41,7 @@ const uiReducers = combineReducers<{
     [channelsSlice.name]: ChannelsSlice
     [ticketInsightsSlice.name]: TicketInsightsState
     [drillDownSlice.name]: DrillDownState
+    [busiestTimesSlice.name]: BusiestTimesState
 }>({
     editor,
     stats,
@@ -46,6 +51,7 @@ const uiReducers = combineReducers<{
     contactForm,
     ticketAIAgentFeedback,
     [agentPerformanceSlice.name]: agentPerformanceSlice.reducer,
+    [busiestTimesSlice.name]: busiestTimesSlice.reducer,
     [channelsSlice.name]: channelsSlice.reducer,
     [ticketInsightsSlice.name]: ticketInsightsSlice.reducer,
     [drillDownSlice.name]: drillDownSlice.reducer,

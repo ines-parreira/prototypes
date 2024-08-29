@@ -1,21 +1,29 @@
-import React, {useRef, useState} from 'react'
+import React, {useCallback, useRef, useState} from 'react'
+import {useDispatch} from 'react-redux'
+import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
+import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import css from 'pages/stats/CustomFieldSelect.less'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {
     metricLabels,
     metrics,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
-
-export const BusiestTimesOfDaysMetricSelect = ({
-    selectedMetric,
+import {
+    getSelectedMetric,
     setSelectedMetric,
-}: {
-    selectedMetric: BusiestTimeOfDaysMetrics
-    setSelectedMetric: (metric: BusiestTimeOfDaysMetrics) => void
-}) => {
+} from 'state/ui/stats/busiestTimesSlice'
+
+export const BusiestTimesOfDaysMetricSelect = () => {
+    const dispatch = useDispatch()
+    const selectedMetric = useAppSelector(getSelectedMetric)
+    const handleSelectMetric = useCallback(
+        (opt: BusiestTimeOfDaysMetrics) => {
+            dispatch(setSelectedMetric(opt))
+        },
+        [dispatch]
+    )
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef(null)
 
@@ -43,7 +51,7 @@ export const BusiestTimesOfDaysMetricSelect = ({
                         key={field}
                         className={css.dropdownItem}
                         onClick={() => {
-                            setSelectedMetric(field)
+                            handleSelectMetric(field)
                             setIsOpen(false)
                         }}
                         option={{value: field, label: metricLabels[field]}}
