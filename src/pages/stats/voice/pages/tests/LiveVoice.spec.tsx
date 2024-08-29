@@ -11,6 +11,10 @@ jest.mock(
     () => () => <div>LiveVoiceAgentsSection</div>
 )
 jest.mock(
+    'pages/stats/voice/components/LiveVoice/LiveVoiceCallTable',
+    () => () => <div>LiveVoiceCallTable</div>
+)
+jest.mock(
     'pages/stats/StatsPage',
     () =>
         ({children}: {children: React.ReactNode}) =>
@@ -24,5 +28,6 @@ describe('LiveVoice', () => {
         const {getByText} = renderComponent()
         expect(getByText('LiveVoiceFilters')).toBeInTheDocument()
         expect(getByText('LiveVoiceAgentsSection')).toBeInTheDocument()
+        expect(getByText('LiveVoiceCallTable')).toBeInTheDocument()
     })
 })

@@ -2,10 +2,14 @@ import {
     LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItem,
     LiveCallQueueVoiceCall,
+    VoiceCallDirection,
     VoiceCallStatus,
 } from '@gorgias/api-queries'
 import {VoiceCallStatus as LegacyVoiceCallStatus} from 'models/voiceCall/types'
+import {OrderDirection} from 'models/api/types'
 import {VoiceCallSummary} from '../../models/types'
+import {VoiceCallTableColumnName} from '../VoiceCallTable/constants'
+import {LiveVoiceStatusFilterOption} from './types'
 
 export enum AgentStatusCategory {
     Busy = 'Busy',
@@ -13,11 +17,13 @@ export enum AgentStatusCategory {
     Unavailable = 'Unavailable',
 }
 
-export enum LiveVoiceStatusFilterOption {
-    ALL = 'all',
-    IN_QUEUE = 'in_queue',
-    IN_PROGRESS = 'in_progress',
-}
+export const liveVoiceCallTableColumns: VoiceCallTableColumnName[] = [
+    VoiceCallTableColumnName.Activity,
+    VoiceCallTableColumnName.LiveStatus,
+    VoiceCallTableColumnName.OngoingTime,
+    VoiceCallTableColumnName.Integration,
+    VoiceCallTableColumnName.Ticket,
+]
 
 export const isAgentBusy = (agent: LiveCallQueueAgent): boolean => {
     return !!agent.call_statuses?.length
@@ -119,4 +125,53 @@ export const isLiveInboundVoiceCallAnswered = (
         default:
             return true
     }
+}
+
+export const isLiveOutboundCallRinging = (status: VoiceCallStatus): boolean => {
+    switch (status) {
+        case VoiceCallStatus.Ringing:
+        case VoiceCallStatus.InProgress:
+        case VoiceCallStatus.Queued:
+        case VoiceCallStatus.Initiated:
+            return true
+        default:
+            return false
+    }
+}
+
+export const filterLiveCallsByStatus = (
+    voiceCalls: LiveCallQueueVoiceCall[],
+    statusFilter: LiveVoiceStatusFilterOption
+): LiveCallQueueVoiceCall[] => {
+    switch (statusFilter) {
+        case LiveVoiceStatusFilterOption.ALL:
+            return voiceCalls
+        case LiveVoiceStatusFilterOption.IN_QUEUE:
+            return voiceCalls.filter(
+                (voiceCall) =>
+                    voiceCall.direction === VoiceCallDirection.Inbound &&
+                    !isLiveInboundVoiceCallAnswered(voiceCall.status)
+            )
+        case LiveVoiceStatusFilterOption.IN_PROGRESS:
+            return voiceCalls.filter(
+                (voiceCall) =>
+                    voiceCall.direction === VoiceCallDirection.Outbound ||
+                    isLiveInboundVoiceCallAnswered(voiceCall.status)
+            )
+    }
+}
+
+export const orderLiveVoiceCallsByOngoingTime = (
+    voiceCalls: LiveCallQueueVoiceCall[],
+    orderDirection: OrderDirection
+): LiveCallQueueVoiceCall[] => {
+    return voiceCalls.sort((voiceCallA, voiceCallB) =>
+        orderDirection === OrderDirection.Asc
+            ? voiceCallB.created_datetime.localeCompare(
+                  voiceCallA.created_datetime
+              )
+            : voiceCallA.created_datetime.localeCompare(
+                  voiceCallB.created_datetime
+              )
+    )
 }

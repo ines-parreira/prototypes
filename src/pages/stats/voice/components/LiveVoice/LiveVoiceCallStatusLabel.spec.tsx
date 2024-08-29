@@ -5,13 +5,17 @@ import {assumeMock} from 'utils/testing'
 import {VoiceCallStatus} from 'models/voiceCall/types'
 import {VoiceCallSummary} from '../../models/types'
 import LiveVoiceCallStatusLabel from './LiveVoiceCallStatusLabel'
-import {isLiveInboundVoiceCallAnswered} from './utils'
+import {
+    isLiveInboundVoiceCallAnswered,
+    isLiveOutboundCallRinging,
+} from './utils'
 
 jest.mock('./utils')
 
 const isLiveInboundVoiceCallAnsweredMock = assumeMock(
     isLiveInboundVoiceCallAnswered
 )
+const isLiveOutboundCallRingingMock = assumeMock(isLiveOutboundCallRinging)
 
 const renderComponent = (
     direction: VoiceCallDirection,
@@ -21,20 +25,48 @@ const renderComponent = (
 }
 
 describe('LiveVoiceCallStatusLabel', () => {
-    it('renders correctly when direction is inbound and status is answered', () => {
-        isLiveInboundVoiceCallAnsweredMock.mockReturnValue(true)
-        renderComponent('inbound', VoiceCallStatus.Answered)
-        expect(screen.getByText('In progress')).toBeInTheDocument()
+    describe('outbound calls', () => {
+        it('should render "Ringing" status for outbound calls that are ringing', () => {
+            isLiveOutboundCallRingingMock.mockReturnValue(true)
+
+            renderComponent(
+                VoiceCallDirection.Outbound,
+                VoiceCallStatus.Ringing
+            )
+
+            expect(screen.getByText('Ringing')).toBeInTheDocument()
+        })
+
+        it('should render "In progress" status for outbound calls that are not ringing', () => {
+            isLiveOutboundCallRingingMock.mockReturnValue(false)
+
+            renderComponent(
+                VoiceCallDirection.Outbound,
+                VoiceCallStatus.Connected
+            )
+
+            expect(screen.getByText('In progress')).toBeInTheDocument()
+        })
     })
 
-    it('renders correctly when direction is inbound and status is not answered', () => {
-        isLiveInboundVoiceCallAnsweredMock.mockReturnValue(false)
-        renderComponent('inbound', VoiceCallStatus.Queued)
-        expect(screen.getByText('In queue')).toBeInTheDocument()
-    })
+    describe('inbound calls', () => {
+        it('should render "In progress" status for inbound calls that are answered', () => {
+            isLiveInboundVoiceCallAnsweredMock.mockReturnValue(true)
 
-    it('renders correctly when direction is outbound', () => {
-        renderComponent('outbound', VoiceCallStatus.Answered)
-        expect(screen.getByText('In progress')).toBeInTheDocument()
+            renderComponent(
+                VoiceCallDirection.Inbound,
+                VoiceCallStatus.Answered
+            )
+
+            expect(screen.getByText('In progress')).toBeInTheDocument()
+        })
+
+        it('should render "In queue" status for inbound calls that are not answered', () => {
+            isLiveInboundVoiceCallAnsweredMock.mockReturnValue(false)
+
+            renderComponent(VoiceCallDirection.Inbound, VoiceCallStatus.Ringing)
+
+            expect(screen.getByText('In queue')).toBeInTheDocument()
+        })
     })
 })

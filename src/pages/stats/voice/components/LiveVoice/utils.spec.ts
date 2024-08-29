@@ -5,6 +5,7 @@ import {
     VoiceCallDirection,
     VoiceCallStatus,
 } from '@gorgias/api-queries'
+import {OrderDirection} from 'models/api/types'
 import {
     groupAgentsByStatus,
     AgentStatusCategory,
@@ -13,7 +14,11 @@ import {
     isAgentAvailable,
     isLiveInboundVoiceCallAnswered,
     formatVoiceCallsData,
+    filterLiveCallsByStatus,
+    orderLiveVoiceCallsByOngoingTime,
+    isLiveOutboundCallRinging,
 } from './utils'
+import {LiveVoiceStatusFilterOption} from './types'
 
 describe('utils', () => {
     describe('isAgentBusy', () => {
@@ -353,6 +358,125 @@ describe('utils', () => {
             const result = isLiveInboundVoiceCallAnswered(status)
 
             expect(result).toBe(false)
+        })
+    })
+
+    describe('isLiveOutboundCallRinging', () => {
+        it.each([
+            VoiceCallStatus.InProgress,
+            VoiceCallStatus.Ringing,
+            VoiceCallStatus.Initiated,
+            VoiceCallStatus.Queued,
+        ])('should return true for status %s', (status) => {
+            const result = isLiveOutboundCallRinging(status)
+
+            expect(result).toBe(true)
+        })
+
+        it.each([
+            VoiceCallStatus.Failed,
+            VoiceCallStatus.Canceled,
+            VoiceCallStatus.Busy,
+            VoiceCallStatus.NoAnswer,
+            VoiceCallStatus.Missed,
+            VoiceCallStatus.Answered,
+            VoiceCallStatus.Connected,
+            VoiceCallStatus.Completed,
+        ])('should return false for status %s', (status) => {
+            const result = isLiveOutboundCallRinging(status)
+
+            expect(result).toBe(false)
+        })
+    })
+
+    describe('filterLiveCallsByStatus', () => {
+        const inboundAnswered = {
+            direction: VoiceCallDirection.Inbound,
+            status: VoiceCallStatus.Answered,
+        }
+        const inboundRinging = {
+            direction: VoiceCallDirection.Inbound,
+            status: VoiceCallStatus.Ringing,
+        }
+        const outboundAnswered = {
+            direction: VoiceCallDirection.Outbound,
+            status: VoiceCallStatus.Answered,
+        }
+        const outboundRinging = {
+            direction: VoiceCallDirection.Outbound,
+            status: VoiceCallStatus.Ringing,
+        }
+        const voiceCalls = [
+            inboundAnswered,
+            inboundRinging,
+            outboundAnswered,
+            outboundRinging,
+        ] as LiveCallQueueVoiceCall[]
+
+        it('should return all voice calls for status ALL', () => {
+            const result = filterLiveCallsByStatus(
+                voiceCalls,
+                LiveVoiceStatusFilterOption.ALL
+            )
+
+            expect(result).toEqual(voiceCalls)
+        })
+
+        it('should return only inbound unanswered calls for status IN_QUEUE', () => {
+            const result = filterLiveCallsByStatus(
+                voiceCalls,
+                LiveVoiceStatusFilterOption.IN_QUEUE
+            )
+
+            expect(result).toEqual([inboundRinging])
+        })
+
+        it('should return outbound calls and inbound answered calls for status IN_PROGRESS', () => {
+            const result = filterLiveCallsByStatus(
+                voiceCalls,
+                LiveVoiceStatusFilterOption.IN_PROGRESS
+            )
+
+            expect(result).toEqual([
+                inboundAnswered,
+                outboundAnswered,
+                outboundRinging,
+            ])
+        })
+    })
+
+    describe('orderLiveVoiceCallsByOngoingTime', () => {
+        const voiceCalls = [
+            {
+                id: 1,
+                created_datetime: '2021-08-01T10:00:00Z',
+            },
+            {
+                id: 2,
+                created_datetime: '2021-08-01T10:01:00Z',
+            },
+            {
+                id: 3,
+                created_datetime: '2021-08-01T09:59:00Z',
+            },
+        ]
+
+        it('should order voice calls by ongoing time in ascending order', () => {
+            const result = orderLiveVoiceCallsByOngoingTime(
+                voiceCalls as LiveCallQueueVoiceCall[],
+                OrderDirection.Asc
+            )
+
+            expect(result.map((voiceCall) => voiceCall.id)).toEqual([2, 1, 3])
+        })
+
+        it('should order voice calls by ongoing time in descending order', () => {
+            const result = orderLiveVoiceCallsByOngoingTime(
+                voiceCalls as LiveCallQueueVoiceCall[],
+                OrderDirection.Desc
+            )
+
+            expect(result.map((voiceCall) => voiceCall.id)).toEqual([3, 1, 2])
         })
     })
 })

@@ -124,6 +124,17 @@ describe('VoiceCallTableContent', () => {
         expect(getByText('No voice calls')).toBeInTheDocument()
     })
 
+    it('should render custom no voice calls message when it is provided', () => {
+        const {getByText} = renderComponent({
+            data: [],
+            isFetching: false,
+            noDataTitle: 'Custom no data title',
+            noDataDescription: 'Custom no data description',
+        })
+        expect(getByText('Custom no data title')).toBeInTheDocument()
+        expect(getByText('Custom no data description')).toBeInTheDocument()
+    })
+
     it('should render table headers', () => {
         useVoiceCallCountMock.mockReturnValue({total: 100, totalPages: 10})
 
@@ -227,5 +238,14 @@ describe('VoiceCallTableContent', () => {
                 })
             ).not.toHaveClass('withShadow')
         })
+    })
+
+    it('should call onColumnClick when clicking on a header cell', () => {
+        const onColumnClick = jest.fn()
+        const {getByText} = renderComponent({onColumnClick} as any)
+
+        fireEvent.click(getByText('Activity'))
+
+        expect(onColumnClick).toHaveBeenCalledWith('Activity')
     })
 })

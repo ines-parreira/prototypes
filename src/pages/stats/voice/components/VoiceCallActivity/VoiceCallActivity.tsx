@@ -43,7 +43,7 @@ const InboundVoiceCallActivity = ({voiceCall}: Props) => {
                     : 'calling'}
             </div>
 
-            {voiceCall.agentId && (
+            {!!voiceCall.agentId && (
                 <div className={css.agent}>
                     <VoiceCallAgentLabel
                         agentId={voiceCall.agentId}
