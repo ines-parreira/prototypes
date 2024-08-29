@@ -22,10 +22,10 @@ import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {createJob as createJobTicket} from 'state/tickets/actions'
 import {
     createJob as createJobView,
-    fieldEnumSearch,
     updateSelectedItemsIds,
 } from 'state/views/actions'
 import {RootState, StoreState} from 'state/types'
+import {TagDropdownMenu} from 'tags'
 import {assumeMock, makeExecuteKeyboardAction} from 'utils/testing'
 
 import {TicketListActions} from '../TicketListActions'
@@ -42,7 +42,6 @@ jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 const mockedCreateJobTicket = assumeMock(createJobTicket)
 const mockedCreateJobView = assumeMock(createJobView)
-const mockedFieldEnumSearch = assumeMock(fieldEnumSearch)
 const mockedUpdateSelectedItemsIds = assumeMock(updateSelectedItemsIds)
 
 const shortcutManagerMock = shortcutManager as jest.Mocked<
@@ -53,6 +52,17 @@ const shortcutEventMock = {
 } as unknown as jest.Mocked<Event>
 
 const mockStore = configureMockStore()
+
+jest.mock(
+    'tags/TagDropdownMenu',
+    () =>
+        ({onClick}: ComponentProps<typeof TagDropdownMenu>) =>
+            (
+                <div onClick={() => onClick({name: 'tag added'})}>
+                    TagDropdownMenuMock
+                </div>
+            )
+)
 
 describe('TicketListActions component', () => {
     const state = {
@@ -76,13 +86,12 @@ describe('TicketListActions component', () => {
     ) => {
         const buttons = getAllByRole('button')
         for (const button of buttons) {
-            if (isEnabled) {
-                expect(button).toHaveAttribute('aria-disabled', 'false')
-            } else {
-                await waitFor(() =>
-                    expect(button).toHaveAttribute('aria-disabled', 'true')
+            await waitFor(() =>
+                expect(button).toHaveAttribute(
+                    'aria-disabled',
+                    (!isEnabled).toString()
                 )
-            }
+            )
         }
     }
 
@@ -394,69 +403,34 @@ describe('TicketListActions component', () => {
         expect(queryByRole('menu', {hidden: false})).toBe(null)
     })
 
-    it('should open tags dropdown on open tags shortcut', async () => {
-        mockedFieldEnumSearch.mockReturnValue(() =>
-            Promise.resolve(
-                fromJS([
-                    {
-                        id: 1,
-                        name: 'refund',
-                    },
-                ]) as List<any>
-            )
-        )
-        const {getByRole} = render(
+    it('should open and close tags dropdown on keyboard shortcut', () => {
+        render(
             <Provider store={store}>
                 <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
             </Provider>
         )
 
         hitShortcut('OPEN_TAGS')
-        const expendedMenu = getByRole('menu', {hidden: false})
-        await waitFor(() => {
-            expect(within(expendedMenu).queryByText('refund')).not.toBe(null)
-        })
-
+        expect(screen.getByText('TagDropdownMenuMock')).toBeInTheDocument()
         expect(shortcutEventMock.preventDefault).toHaveBeenLastCalledWith()
+
+        hitShortcut('HIDE_POPOVER')
+        expect(
+            screen.queryByText('TagDropdownMenuMock')
+        ).not.toBeInTheDocument()
     })
 
     it('should not open tags dropdown on open tags shortcut when no selected items', () => {
-        const {queryByRole} = render(
+        render(
             <Provider store={store}>
                 <TicketListActions {...props} />
             </Provider>
         )
 
         hitShortcut('OPEN_TAGS')
-
-        expect(queryByRole('menu', {hidden: false})).toBe(null)
-    })
-
-    it('should close tags dropdown on hide popover shortcut', async () => {
-        mockedFieldEnumSearch.mockReturnValue(() =>
-            Promise.resolve(
-                fromJS([
-                    {
-                        id: 1,
-                        name: 'refund',
-                    },
-                ]) as List<any>
-            )
-        )
-        const {getByRole, queryByRole} = render(
-            <Provider store={store}>
-                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
-            </Provider>
-        )
-
-        hitShortcut('OPEN_TAGS')
-        const expendedMenu = getByRole('menu', {hidden: false})
-        await waitFor(() => {
-            expect(within(expendedMenu).queryByText('refund')).not.toBe(null)
-        })
-        hitShortcut('HIDE_POPOVER')
-
-        expect(queryByRole('menu', {hidden: false})).toBe(null)
+        expect(
+            screen.queryByText('TagDropdownMenuMock')
+        ).not.toBeInTheDocument()
     })
 
     it('should call openMacroModal on open macro shortcut', () => {
@@ -675,14 +649,13 @@ describe('TicketListActions component', () => {
             'add tag dropdown item click',
             (state) => state,
             (props) => props,
-            async ({getByText}) => {
+            ({getByText}) => {
                 fireEvent.click(getByText('Add tag'))
-                await waitFor(() => getByText('refund'))
-                fireEvent.click(getByText('refund'))
+                fireEvent.click(getByText('TagDropdownMenuMock'))
             },
             {
                 updates: {
-                    tags: ['refund'],
+                    tags: ['tag added'],
                 },
             },
             'tags',
@@ -890,19 +863,6 @@ describe('TicketListActions component', () => {
                 selectedItemsIds: fromJS([1]),
             })
             const store = mockStore(getState(state as RootState))
-
-            beforeEach(() => {
-                mockedFieldEnumSearch.mockReturnValue(() =>
-                    Promise.resolve(
-                        fromJS([
-                            {
-                                id: 1,
-                                name: 'refund',
-                            },
-                        ]) as List<any>
-                    )
-                )
-            })
 
             it(`should create ${jobType} ticket job`, async () => {
                 const renderResult = render(
@@ -1326,59 +1286,5 @@ describe('TicketListActions component', () => {
 
         expect(queryByText('Mark as read')).toBe(null)
         expect(queryByText('Mark as unread')).not.toBe(null)
-    })
-
-    it('should allow tag creation for lead and admin agents', async () => {
-        mockedFieldEnumSearch.mockReturnValue(() =>
-            Promise.resolve(fromJS([]) as List<any>)
-        )
-        const {getByText, getByPlaceholderText, findByText} = render(
-            <Provider
-                store={mockStore({
-                    ...state,
-                    currentUser: fromJS({
-                        id: 1,
-                        name: 'Peter Parker',
-                        role: {id: 1, name: UserRole.Agent},
-                    }),
-                })}
-            >
-                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
-            </Provider>
-        )
-
-        fireEvent.click(getByText('Add tag'))
-        fireEvent.change(getByPlaceholderText(/Search tags/i), {
-            target: {value: 'Foo'},
-        })
-        expect(await findByText(/Create/i)).toBeTruthy()
-    })
-
-    it('should prevent tag creation for low-level agents', async () => {
-        mockedFieldEnumSearch.mockReturnValue(() =>
-            Promise.resolve(fromJS([]) as List<any>)
-        )
-
-        const {getByText, getByPlaceholderText, findByText} = render(
-            <Provider
-                store={mockStore({
-                    ...state,
-                    currentUser: fromJS({
-                        id: 1,
-                        name: 'Peter Parker',
-                        role: {id: 1, name: UserRole.BasicAgent},
-                    }),
-                })}
-            >
-                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
-            </Provider>
-        )
-
-        fireEvent.click(getByText('Add tag'))
-        fireEvent.change(getByPlaceholderText(/Search tags/i), {
-            target: {value: 'Foo'},
-        })
-
-        expect(await findByText(/Couldn't find the tag: Foo/i)).toBeTruthy()
     })
 })

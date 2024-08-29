@@ -1,10 +1,4 @@
-import React, {
-    MouseEvent,
-    ReactElement,
-    useCallback,
-    useMemo,
-    useState,
-} from 'react'
+import React, {MouseEvent, useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
@@ -18,8 +12,6 @@ import {
     PopoverHeader,
     UncontrolledButtonDropdown,
 } from 'reactstrap'
-import _debounce from 'lodash/debounce'
-import {CancelToken} from 'axios'
 import {JobType} from '@gorgias/api-queries'
 
 import {useAppNode} from 'appNode'
@@ -27,20 +19,17 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import {UserRole} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useCancellableRequest from 'hooks/useCancellableRequest'
 import useShortcuts from 'hooks/useShortcuts'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import Group from 'pages/common/components/layout/Group'
-import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
 
 import {
     createJob as createJobView,
-    fieldEnumSearch,
     updateSelectedItemsIds,
 } from 'state/views/actions'
 import {createJob as createJobTicket} from 'state/tickets/actions'
@@ -54,17 +43,17 @@ import {
 } from 'state/views/selectors'
 import {getHumanAgents} from 'state/agents/selectors'
 import {getTeams} from 'state/teams/selectors'
-
+import {TagDropdownMenu} from 'tags'
 import {hasRole} from 'utils'
 
 import css from 'pages/tickets/list/components/TicketListActions.less'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
 
 export const SHORTCUT_MANAGER_COMPONENT_NAME = 'TicketListActions'
 
 type Props = {
     openMacroModal: () => void
     selectedItemsIds: List<number>
-    searchTagsDebounceDelay?: number
 }
 
 enum ActionDropdown {
@@ -77,7 +66,6 @@ enum ActionDropdown {
 // TODO(agent-null-names): remove fallbacks in this component when https://github.com/gorgias/gorgias/issues/4413 is fixed
 export const TicketListActions = ({
     openMacroModal,
-    searchTagsDebounceDelay = 1000,
     selectedItemsIds,
 }: Props) => {
     const dispatch = useAppDispatch()
@@ -98,9 +86,8 @@ export const TicketListActions = ({
     )
     const [teamsSearchQuery, setTeamsSearchQuery] = useState('')
     const [agentsSearchQuery, setAgentsSearchQuery] = useState('')
-    const [tagsSearchQuery, setTagsSearchQuery] = useState('')
-    const [tags, setTags] = useState(fromJS([]) as List<Map<any, any>>)
-    const [isLoadingTags, setIsLoadingTags] = useState(false)
+    const tagDropdownButtonRef = useRef(null)
+
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
         useState(false)
     const [isLaunchingJob, setIsLaunchingJob] = useState(false)
@@ -182,57 +169,12 @@ export const TicketListActions = ({
         }
     }
 
-    const toggleTagsDropdown = async () => {
-        const isOpen = toggleDropdown(ActionDropdown.Tags)
-        if (isOpen) {
-            const search = ''
-            await queryTags(search)
-            setTagsSearchQuery(search)
-        }
-    }
-
-    const addTag = (name: string) => {
+    const addTag = (name?: string) => {
         if (!name) {
             return
         }
-
         bulkUpdate('tags', [name])
-        setTagsSearchQuery('')
     }
-
-    const searchTags = async (search: string) => {
-        setIsLoadingTags(true)
-        setTagsSearchQuery(search)
-        await queryTagsOnSearch(search)
-    }
-
-    const [fieldEnumSearchCancellable] = useCancellableRequest(
-        (cancelToken: CancelToken) => {
-            return (field: Map<any, any>, search: string) =>
-                fieldEnumSearch(field, search, cancelToken)()
-        }
-    )
-
-    const queryTags = async (search: string) => {
-        setIsLoadingTags(true)
-
-        const field = fromJS({
-            filter: {type: 'tag'},
-        })
-
-        const data = await fieldEnumSearchCancellable(field, search)
-        if (!data) {
-            return
-        }
-        setTags(data)
-        setIsLoadingTags(false)
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const queryTagsOnSearch = useCallback(
-        _debounce(queryTags, searchTagsDebounceDelay),
-        []
-    )
 
     const createJob = async (
         jobType: JobType,
@@ -334,12 +276,12 @@ export const TicketListActions = ({
             },
         },
         OPEN_TAGS: {
-            action: async (e: Event) => {
+            action: (e: Event) => {
                 if (!hasSelectedItems) {
                     return
                 }
                 e.preventDefault()
-                await toggleTagsDropdown()
+                toggleDropdown(ActionDropdown.Tags)
             },
         },
         OPEN_MACRO: {
@@ -387,60 +329,6 @@ export const TicketListActions = ({
 
     useShortcuts(SHORTCUT_MANAGER_COMPONENT_NAME, actions)
 
-    const renderTagsMenu = () => {
-        if (isLoadingTags) {
-            return (
-                <DropdownItem disabled>
-                    <i className="material-icons md-spin mr-2">refresh</i>
-                    Loading...
-                </DropdownItem>
-            )
-        }
-
-        let options = tags.map((tag) => {
-            const name = tag!.get('name')
-            return (
-                <DropdownItem
-                    key={name}
-                    type="button"
-                    onClick={() => bulkUpdate('tags', [tag!.get('name')])}
-                >
-                    {name}
-                </DropdownItem>
-            )
-        }) as List<ReactElement>
-
-        const isInEnum = !!tags.find(
-            (tag) => tag!.get('name') === tagsSearchQuery
-        )
-
-        if (!isInEnum && tagsSearchQuery) {
-            if (!tags.isEmpty() && hasAgentRole) {
-                options = options.push(<DropdownItem key="divider" divider />)
-            }
-
-            options = hasAgentRole
-                ? options.push(
-                      <DropdownItem
-                          key="create"
-                          type="button"
-                          onClick={() => addTag(tagsSearchQuery)}
-                      >
-                          <b>Create</b> {tagsSearchQuery}
-                      </DropdownItem>
-                  )
-                : tags.isEmpty()
-                ? options.push(
-                      <DropdownItem key="not_found" disabled>
-                          Couldn't find the tag: {tagsSearchQuery}
-                      </DropdownItem>
-                  )
-                : options
-        }
-
-        return options
-    }
-
     const toggleTrashConfirmation = (visible?: boolean | MouseEvent) => {
         const opens =
             visible !== undefined
@@ -455,376 +343,335 @@ export const TicketListActions = ({
     }
 
     return (
-        <div className="d-none d-md-inline-flex align-items-center">
-            <div className="d-inline-flex align-items-center">
-                <UncontrolledButtonDropdown className="mr-2">
-                    <Group>
-                        <Button
-                            intent="secondary"
-                            onClick={() => bulkUpdate('status', 'closed')}
-                            isDisabled={isDisabled}
-                            size="small"
-                        >
-                            Close
-                        </Button>
-                        <DropdownToggle tag="span" disabled={isDisabled}>
-                            <IconButton
-                                intent="secondary"
-                                size="small"
-                                isDisabled={isDisabled}
-                            >
-                                arrow_drop_down
-                            </IconButton>
-                        </DropdownToggle>
-                    </Group>
-                    <DropdownMenu right>
-                        <DropdownItem header>SET STATUS</DropdownItem>
-                        <DropdownItem
-                            key="open"
-                            type="button"
-                            onClick={() => bulkUpdate('status', 'open')}
-                        >
-                            Open
-                        </DropdownItem>
-                    </DropdownMenu>
-                </UncontrolledButtonDropdown>
-                <ButtonDropdown
-                    className="mr-2"
-                    isOpen={openDropdown === ActionDropdown.Agents}
-                    toggle={toggleAgentsDropdown}
-                    a11y={false}
-                >
-                    <Group>
-                        <Button
-                            intent="secondary"
-                            size="small"
-                            onClick={() =>
-                                bulkUpdate('assignee_user', {
-                                    id: currentUser.get('id'),
-                                    name: currentUser.get('name'),
-                                })
-                            }
-                            isDisabled={isDisabled}
-                        >
-                            Assign to me
-                        </Button>
-                        <DropdownToggle tag="span" disabled={isDisabled}>
-                            <IconButton
-                                intent="secondary"
-                                size="small"
-                                isDisabled={isDisabled}
-                            >
-                                arrow_drop_down
-                            </IconButton>
-                        </DropdownToggle>
-                    </Group>
-                    <DropdownMenu
-                        right
-                        className={css['assignee-dropdown-list']}
+        <div className={css.wrapper}>
+            <UncontrolledButtonDropdown>
+                <Group>
+                    <Button
+                        intent="secondary"
+                        onClick={() => bulkUpdate('status', 'closed')}
+                        isDisabled={isDisabled}
+                        size="small"
                     >
-                        <DropdownItem header className="mb-2">
-                            ASSIGN TO:
-                        </DropdownItem>
-                        <DropdownItem
-                            className="dropdown-item-input"
-                            toggle={false}
-                        >
-                            <TextInput
-                                placeholder="Search agents..."
-                                autoFocus
-                                value={agentsSearchQuery}
-                                onChange={setAgentsSearchQuery}
-                            />
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        {filteredAgents.isEmpty() ? (
-                            <DropdownItem header>
-                                Could not find any agent
-                            </DropdownItem>
-                        ) : (
-                            <div className={css['dropdown-list']}>
-                                {filteredAgents.map((agent) => (
-                                    <DropdownItem
-                                        key={agent!.get('id')}
-                                        type="button"
-                                        onClick={() => {
-                                            bulkUpdate('assignee_user', {
-                                                id: agent!.get('id'),
-                                                name: agent!.get('name'),
-                                            })
-                                        }}
-                                    >
-                                        <AgentLabel
-                                            name={
-                                                agent!.get('name') ||
-                                                agent!.get('email')
-                                            }
-                                            profilePictureUrl={agent!.getIn([
-                                                'meta',
-                                                'profile_picture_url',
-                                            ])}
-                                            shouldDisplayAvatar
-                                        />
-                                    </DropdownItem>
-                                ))}
-                            </div>
-                        )}
-                        <DropdownItem divider />
-                        <DropdownItem
-                            key="clear"
-                            type="button"
-                            onClick={() => bulkUpdate('assignee_user', null)}
-                        >
-                            <span
-                                className={classnames(
-                                    'text-warning',
-                                    css['clear-assignee']
-                                )}
-                            >
-                                Clear assignee
-                            </span>
-                        </DropdownItem>
-                    </DropdownMenu>
-                </ButtonDropdown>
-                <ButtonDropdown
-                    className="mr-2"
-                    isOpen={openDropdown === ActionDropdown.Teams}
-                    toggle={toggleTeamsDropdown}
-                    a11y={false}
-                >
+                        Close
+                    </Button>
                     <DropdownToggle tag="span" disabled={isDisabled}>
-                        <Button
+                        <IconButton
                             intent="secondary"
                             size="small"
                             isDisabled={isDisabled}
-                            className="skip-default"
                         >
-                            <ButtonIconLabel
-                                icon="arrow_drop_down"
-                                position="right"
-                            >
-                                Assign to team
-                            </ButtonIconLabel>
-                        </Button>
+                            arrow_drop_down
+                        </IconButton>
                     </DropdownToggle>
-                    <DropdownMenu
-                        right
-                        className={css['assignee-dropdown-list']}
+                </Group>
+                <DropdownMenu right>
+                    <DropdownItem header>SET STATUS</DropdownItem>
+                    <DropdownItem
+                        key="open"
+                        type="button"
+                        onClick={() => bulkUpdate('status', 'open')}
                     >
-                        <DropdownItem header className="mb-2">
-                            ASSIGN TO:
-                        </DropdownItem>
-                        <DropdownItem
-                            className="dropdown-item-input"
-                            toggle={false}
-                        >
-                            <TextInput
-                                placeholder="Search teams..."
-                                autoFocus
-                                value={teamsSearchQuery}
-                                onChange={setTeamsSearchQuery}
-                            />
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        {filteredTeams.isEmpty() ? (
-                            <DropdownItem header>
-                                Could not find any team
-                            </DropdownItem>
-                        ) : (
-                            <div className={css['dropdown-list']}>
-                                {filteredTeams.map((team) => (
-                                    <DropdownItem
-                                        key={team!.get('id')}
-                                        type="button"
-                                        className={css['teams-dropdown-item']}
-                                        onClick={() => {
-                                            bulkUpdate(
-                                                'assignee_team_id',
-                                                team!.get('id')
-                                            )
-                                        }}
-                                    >
-                                        <TeamLabel
-                                            name={team!.get('name')}
-                                            emoji={team!.getIn([
-                                                'decoration',
-                                                'emoji',
-                                            ])}
-                                            shouldDisplayAvatar
-                                        />
-                                    </DropdownItem>
-                                ))}
-                            </div>
-                        )}
-                        <DropdownItem divider />
-                        <DropdownItem
-                            key="clear"
-                            type="button"
-                            onClick={() => bulkUpdate('assignee_team_id', null)}
-                        >
-                            <span
-                                className={classnames(
-                                    'text-warning',
-                                    css['clear-assignee']
-                                )}
-                            >
-                                Clear assignee
-                            </span>
-                        </DropdownItem>
-                    </DropdownMenu>
-                </ButtonDropdown>
-                <ButtonDropdown
-                    className="mr-2"
-                    isOpen={openDropdown === ActionDropdown.Tags}
-                    toggle={toggleTagsDropdown}
-                    a11y={false}
-                >
-                    <DropdownToggle tag="span" disabled={isDisabled}>
-                        <Button
-                            intent="secondary"
-                            size="small"
-                            isDisabled={isDisabled}
-                            className="skip-default"
-                        >
-                            <ButtonIconLabel
-                                icon="arrow_drop_down"
-                                position="right"
-                            >
-                                Add tag
-                            </ButtonIconLabel>
-                        </Button>
-                    </DropdownToggle>
-                    <TagDropdownMenu
-                        right
-                        disabled={isDisabled}
-                        style={{padding: '0.5rem 4px'}}
+                        Open
+                    </DropdownItem>
+                </DropdownMenu>
+            </UncontrolledButtonDropdown>
+            <ButtonDropdown
+                isOpen={openDropdown === ActionDropdown.Agents}
+                toggle={toggleAgentsDropdown}
+                a11y={false}
+            >
+                <Group>
+                    <Button
+                        intent="secondary"
+                        size="small"
+                        onClick={() =>
+                            bulkUpdate('assignee_user', {
+                                id: currentUser.get('id'),
+                                name: currentUser.get('name'),
+                            })
+                        }
+                        isDisabled={isDisabled}
                     >
-                        <DropdownItem header className="mb-2">
-                            ADD TAG:
-                        </DropdownItem>
-                        <DropdownItem
-                            className="dropdown-item-input"
-                            toggle={false}
-                        >
-                            <TextInput
-                                placeholder="Search tags..."
-                                autoFocus
-                                value={tagsSearchQuery}
-                                onChange={searchTags}
-                            />
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        {renderTagsMenu()}
-                    </TagDropdownMenu>
-                </ButtonDropdown>
-                <UncontrolledButtonDropdown>
+                        Assign to me
+                    </Button>
                     <DropdownToggle tag="span" disabled={isDisabled}>
-                        <Button
+                        <IconButton
                             intent="secondary"
                             size="small"
                             isDisabled={isDisabled}
-                            className="skip-default"
                         >
-                            <ButtonIconLabel
-                                icon="arrow_drop_down"
-                                position="right"
-                            >
-                                More
-                            </ButtonIconLabel>
-                        </Button>
+                            arrow_drop_down
+                        </IconButton>
                     </DropdownToggle>
-                    <DropdownMenu right>
-                        <DropdownItem type="button" onClick={openMacroModal}>
-                            Apply macro
+                </Group>
+                <DropdownMenu right className={css['assignee-dropdown-list']}>
+                    <DropdownItem header className="mb-2">
+                        ASSIGN TO:
+                    </DropdownItem>
+                    <DropdownItem
+                        className="dropdown-item-input"
+                        toggle={false}
+                    >
+                        <TextInput
+                            placeholder="Search agents..."
+                            autoFocus
+                            value={agentsSearchQuery}
+                            onChange={setAgentsSearchQuery}
+                        />
+                    </DropdownItem>
+                    <DropdownItem divider />
+                    {filteredAgents.isEmpty() ? (
+                        <DropdownItem header>
+                            Could not find any agent
                         </DropdownItem>
-                        {isMarkAsReadActionAvailable && (
-                            <DropdownItem
-                                type="button"
-                                onClick={() => bulkUpdate('is_unread', false)}
-                            >
-                                Mark as read
-                            </DropdownItem>
-                        )}
-                        {isMarkAsUnreadActionAvailable && (
-                            <DropdownItem
-                                type="button"
-                                onClick={() => bulkUpdate('is_unread', true)}
-                            >
-                                Mark as unread
-                            </DropdownItem>
-                        )}
-                        {hasAgentRole && (
-                            <>
+                    ) : (
+                        <div className={css['dropdown-list']}>
+                            {filteredAgents.map((agent) => (
                                 <DropdownItem
+                                    key={agent!.get('id')}
                                     type="button"
-                                    onClick={bulkExport}
+                                    onClick={() => {
+                                        bulkUpdate('assignee_user', {
+                                            id: agent!.get('id'),
+                                            name: agent!.get('name'),
+                                        })
+                                    }}
                                 >
-                                    Export tickets
+                                    <AgentLabel
+                                        name={
+                                            agent!.get('name') ||
+                                            agent!.get('email')
+                                        }
+                                        profilePictureUrl={agent!.getIn([
+                                            'meta',
+                                            'profile_picture_url',
+                                        ])}
+                                        shouldDisplayAvatar
+                                    />
                                 </DropdownItem>
-                                <DropdownItem divider />
-                                {isActiveViewTrashView ? (
-                                    [
-                                        <DropdownItem
-                                            key="undelete-button"
-                                            type="button"
-                                            onClick={bulkUnTrash}
-                                        >
-                                            Undelete
-                                        </DropdownItem>,
-                                        <DropdownItem
-                                            key="delete-button"
-                                            type="button"
-                                            className="text-danger"
-                                            onClick={toggleDeleteConfirmation}
-                                        >
-                                            Delete forever
-                                        </DropdownItem>,
-                                    ]
-                                ) : (
+                            ))}
+                        </div>
+                    )}
+                    <DropdownItem divider />
+                    <DropdownItem
+                        key="clear"
+                        type="button"
+                        onClick={() => bulkUpdate('assignee_user', null)}
+                    >
+                        <span
+                            className={classnames(
+                                'text-warning',
+                                css['clear-assignee']
+                            )}
+                        >
+                            Clear assignee
+                        </span>
+                    </DropdownItem>
+                </DropdownMenu>
+            </ButtonDropdown>
+            <ButtonDropdown
+                isOpen={openDropdown === ActionDropdown.Teams}
+                toggle={toggleTeamsDropdown}
+                a11y={false}
+            >
+                <DropdownToggle tag="span" disabled={isDisabled}>
+                    <Button
+                        intent="secondary"
+                        size="small"
+                        isDisabled={isDisabled}
+                        className="skip-default"
+                    >
+                        <ButtonIconLabel
+                            icon="arrow_drop_down"
+                            position="right"
+                        >
+                            Assign to team
+                        </ButtonIconLabel>
+                    </Button>
+                </DropdownToggle>
+                <DropdownMenu right className={css['assignee-dropdown-list']}>
+                    <DropdownItem header className="mb-2">
+                        ASSIGN TO:
+                    </DropdownItem>
+                    <DropdownItem
+                        className="dropdown-item-input"
+                        toggle={false}
+                    >
+                        <TextInput
+                            placeholder="Search teams..."
+                            autoFocus
+                            value={teamsSearchQuery}
+                            onChange={setTeamsSearchQuery}
+                        />
+                    </DropdownItem>
+                    <DropdownItem divider />
+                    {filteredTeams.isEmpty() ? (
+                        <DropdownItem header>
+                            Could not find any team
+                        </DropdownItem>
+                    ) : (
+                        <div className={css['dropdown-list']}>
+                            {filteredTeams.map((team) => (
+                                <DropdownItem
+                                    key={team!.get('id')}
+                                    type="button"
+                                    className={css['teams-dropdown-item']}
+                                    onClick={() => {
+                                        bulkUpdate(
+                                            'assignee_team_id',
+                                            team!.get('id')
+                                        )
+                                    }}
+                                >
+                                    <TeamLabel
+                                        name={team!.get('name')}
+                                        emoji={team!.getIn([
+                                            'decoration',
+                                            'emoji',
+                                        ])}
+                                        shouldDisplayAvatar
+                                    />
+                                </DropdownItem>
+                            ))}
+                        </div>
+                    )}
+                    <DropdownItem divider />
+                    <DropdownItem
+                        key="clear"
+                        type="button"
+                        onClick={() => bulkUpdate('assignee_team_id', null)}
+                    >
+                        <span
+                            className={classnames(
+                                'text-warning',
+                                css['clear-assignee']
+                            )}
+                        >
+                            Clear assignee
+                        </span>
+                    </DropdownItem>
+                </DropdownMenu>
+            </ButtonDropdown>
+            <Button
+                ref={tagDropdownButtonRef}
+                intent="secondary"
+                size="small"
+                isDisabled={isDisabled}
+                onClick={() => toggleDropdown(ActionDropdown.Tags)}
+            >
+                <ButtonIconLabel icon="arrow_drop_down" position="right">
+                    Add tag
+                </ButtonIconLabel>
+            </Button>
+            <Dropdown
+                isOpen={openDropdown === ActionDropdown.Tags}
+                onToggle={() => toggleDropdown(ActionDropdown.Tags)}
+                target={tagDropdownButtonRef}
+                placement="bottom-start"
+            >
+                <TagDropdownMenu onClick={(item) => addTag(item.name)} />
+            </Dropdown>
+            <UncontrolledButtonDropdown>
+                <DropdownToggle tag="span" disabled={isDisabled}>
+                    <Button
+                        intent="secondary"
+                        size="small"
+                        isDisabled={isDisabled}
+                    >
+                        <ButtonIconLabel
+                            icon="arrow_drop_down"
+                            position="right"
+                        >
+                            More
+                        </ButtonIconLabel>
+                    </Button>
+                </DropdownToggle>
+                <DropdownMenu right>
+                    <DropdownItem type="button" onClick={openMacroModal}>
+                        Apply macro
+                    </DropdownItem>
+                    {isMarkAsReadActionAvailable && (
+                        <DropdownItem
+                            type="button"
+                            onClick={() => bulkUpdate('is_unread', false)}
+                        >
+                            Mark as read
+                        </DropdownItem>
+                    )}
+                    {isMarkAsUnreadActionAvailable && (
+                        <DropdownItem
+                            type="button"
+                            onClick={() => bulkUpdate('is_unread', true)}
+                        >
+                            Mark as unread
+                        </DropdownItem>
+                    )}
+                    {hasAgentRole && (
+                        <>
+                            <DropdownItem type="button" onClick={bulkExport}>
+                                Export tickets
+                            </DropdownItem>
+                            <DropdownItem divider />
+                            {isActiveViewTrashView ? (
+                                [
                                     <DropdownItem
+                                        key="undelete-button"
+                                        type="button"
+                                        onClick={bulkUnTrash}
+                                    >
+                                        Undelete
+                                    </DropdownItem>,
+                                    <DropdownItem
+                                        key="delete-button"
                                         type="button"
                                         className="text-danger"
-                                        onClick={toggleTrashConfirmation}
+                                        onClick={toggleDeleteConfirmation}
                                     >
-                                        Delete
-                                    </DropdownItem>
-                                )}
-                            </>
-                        )}
-                    </DropdownMenu>
-                    <div
-                        className={css['delete-popover-target']}
-                        id="bulk-more-button"
-                    />
-                </UncontrolledButtonDropdown>
-                <Popover
-                    placement="bottom"
-                    className="popoverDark"
-                    isOpen={isDeleteConfirmationOpen}
-                    target="bulk-more-button"
-                    toggle={toggleDeleteConfirmation}
-                    trigger="legacy"
-                    container={appNode ?? undefined}
-                >
-                    <PopoverHeader>Are you sure?</PopoverHeader>
-                    <PopoverBody>
-                        <p>
-                            Are you sure you want to delete {selectedCount}{' '}
-                            ticket{selectedCount && selectedCount > 1 && 's'}
-                            {isActiveViewTrashView && ' forever'}?
-                        </p>
-                        <Button
-                            type="submit"
-                            onClick={
-                                isActiveViewTrashView ? bulkDelete : bulkTrash
-                            }
-                            autoFocus
-                        >
-                            Confirm
-                        </Button>
-                    </PopoverBody>
-                </Popover>
-            </div>
+                                        Delete forever
+                                    </DropdownItem>,
+                                ]
+                            ) : (
+                                <DropdownItem
+                                    type="button"
+                                    className="text-danger"
+                                    onClick={toggleTrashConfirmation}
+                                >
+                                    Delete
+                                </DropdownItem>
+                            )}
+                        </>
+                    )}
+                </DropdownMenu>
+                <div
+                    className={css['delete-popover-target']}
+                    id="bulk-more-button"
+                />
+            </UncontrolledButtonDropdown>
+            <Popover
+                placement="bottom"
+                className="popoverDark"
+                isOpen={isDeleteConfirmationOpen}
+                target="bulk-more-button"
+                toggle={toggleDeleteConfirmation}
+                trigger="legacy"
+                container={appNode ?? undefined}
+            >
+                <PopoverHeader>Are you sure?</PopoverHeader>
+                <PopoverBody>
+                    <p>
+                        Are you sure you want to delete {selectedCount} ticket
+                        {selectedCount && selectedCount > 1 && 's'}
+                        {isActiveViewTrashView && ' forever'}?
+                    </p>
+                    <Button
+                        type="submit"
+                        onClick={isActiveViewTrashView ? bulkDelete : bulkTrash}
+                        autoFocus
+                    >
+                        Confirm
+                    </Button>
+                </PopoverBody>
+            </Popover>
         </div>
     )
 }
