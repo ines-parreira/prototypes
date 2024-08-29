@@ -9,6 +9,7 @@ import {
     CustomField,
     CustomFieldInput,
     CustomFieldManagedType,
+    isCustomFieldAIManagedType,
 } from 'models/customField/types'
 
 import css from './DropdownInput.less'
@@ -96,7 +97,7 @@ export function DropdownInputRow({
             style={{opacity: isDragging ? 0.3 : 1}}
         >
             <div className={css.inputContainer}>
-                {!isLast ? (
+                {!isLast && !isCustomFieldAIManagedType(field.managed_type) ? (
                     <div
                         ref={dragRef as React.RefObject<HTMLDivElement>}
                         className={classnames(
@@ -131,8 +132,9 @@ export function DropdownInputRow({
                     hasError={!!error}
                     data-testid={id}
                     onKeyDown={handleEnterKeyDown}
+                    isDisabled={isCustomFieldAIManagedType(field.managed_type)}
                 />
-                {!isLast && (
+                {!isLast && !isCustomFieldAIManagedType(field.managed_type) && (
                     <IconButton
                         onClick={() => onRemove(position)}
                         fillStyle="ghost"

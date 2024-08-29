@@ -25,6 +25,18 @@ export const VALUE_TYPES = [
     },
 ]
 
+export const AI_MANAGED_TYPES = {
+    AI_INTENT: 'ai_intent',
+    AI_OUTCOME: 'ai_outcome',
+}
+
+export const MANAGED_TYPES = {
+    CONTACT_REASON: 'contact_reason',
+    PRODUCT: 'product',
+    RESOLUTION: 'resolution',
+    ...AI_MANAGED_TYPES,
+}
+
 export const DROPDOWN_NESTING_DELIMITER = '::'
 
 const csvTemplateData = [

@@ -1,9 +1,14 @@
 import React, {memo} from 'react'
 
-import {CustomField, CustomFieldState} from 'models/customField/types'
+import {
+    CustomField,
+    CustomFieldState,
+    isCustomFieldAIManagedType,
+} from 'models/customField/types'
 import NumberField, {
     Props as NumberFieldProps,
 } from 'pages/tickets/detail/components/TicketFields/components/fields/NumberField'
+
 import TextField from './components/fields/TextField'
 import DropdownField from './components/fields/DropdownField'
 
@@ -13,12 +18,13 @@ type Props = {
 }
 
 function TicketField({fieldDefinition, fieldState}: Props) {
-    const {id, label, required, definition} = fieldDefinition
+    const {id, label, required, definition, managed_type} = fieldDefinition
     const baseFieldProps = {
         id,
         label,
         fieldState,
         isRequired: required,
+        isDisabled: isCustomFieldAIManagedType(managed_type),
     }
 
     if (

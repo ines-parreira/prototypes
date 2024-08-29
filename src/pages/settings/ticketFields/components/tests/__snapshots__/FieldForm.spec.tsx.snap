@@ -1177,3 +1177,178 @@ exports[`<FieldForm/> should render correctly 5`] = `
   </div>
 </form>
 `;
+
+exports[`<FieldForm/> should render correctly 6`] = `
+<form>
+  <div
+    class="formRow"
+  >
+    <label
+      class="Label--label--QAnfT formLabel"
+    >
+      Status
+    </label>
+    <div
+      class="badge upperCase"
+    >
+      ACTIVE
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+      for="input-text-34"
+    >
+      Name
+      <abbr
+        aria-label="required"
+        class="Label--abbr--Zx_yi"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper isDisabled"
+    >
+      <input
+        aria-describedby="input-text-34-caption"
+        class="input"
+        disabled=""
+        id="input-text-34"
+        name="label"
+        placeholder="e.g. Contact Reason"
+        required=""
+        type="text"
+        value="Contact reason"
+      />
+    </div>
+    <div
+      class="caption"
+      id="input-text-34-caption"
+    >
+      Visible to agents
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+      for="textarea-36"
+    >
+      Description
+    </label>
+    <textarea
+      aria-describedby="textarea-36-caption"
+      class="textarea"
+      disabled=""
+      id="textarea-36"
+      name="description"
+      placeholder="e.g. Reasons why customers reach out to us"
+      rows="1"
+    >
+      This is a managed input field
+    </textarea>
+    <div
+      class="caption"
+      id="textarea-36-caption"
+    >
+      Not visible to agents
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="Label--label--QAnfT formLabel"
+      for="type"
+    >
+      Type
+      <abbr
+        aria-label="required"
+        class="Label--abbr--Zx_yi"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper"
+      role="listbox"
+      tabindex="-1"
+    >
+      <div
+        class="inputWrapper isDisabled"
+      >
+        <div
+          class="input isGreyed"
+        >
+          Text
+        </div>
+        <i
+          class="affix suffix toggle material-icons"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+    <div
+      class="caption"
+    >
+      Field type can’t be changed once it’s been saved.
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="Label--label--QAnfT label"
+      for="input-text-37"
+    >
+      Placeholder
+    </label>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        id="input-text-37"
+        name="settings.placeholder"
+        type="text"
+        value="Some placeholder"
+      />
+    </div>
+  </div>
+  <div
+    class="buttons"
+  >
+    <div
+      class="leftGroup"
+    >
+      <button
+        aria-disabled="true"
+        class="wrapper fill primary medium isDisabled"
+        data-testid="save-button"
+        id="custom-fields-form-save-button"
+        type="button"
+      >
+        <span>
+          Save changes
+        </span>
+      </button>
+      <button
+        aria-disabled="true"
+        class="wrapper fill secondary medium isDisabled"
+        type="button"
+      >
+        <span>
+          Cancel
+        </span>
+      </button>
+    </div>
+  </div>
+</form>
+`;

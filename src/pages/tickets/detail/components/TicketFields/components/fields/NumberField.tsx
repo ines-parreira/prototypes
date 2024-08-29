@@ -26,6 +26,7 @@ export type Props = {
     min?: number
     max?: number
     isRequired?: boolean
+    isDisabled?: boolean
 }
 
 function isInRange(value?: number, min?: number, max?: number) {
@@ -53,6 +54,7 @@ export default function NumberField({
     min,
     max,
     isRequired,
+    isDisabled = false,
 }: Props) {
     const dispatch = useAppDispatch()
 
@@ -133,6 +135,7 @@ export default function NumberField({
                         handleChange(numberOrUndefined(nextValue))
                     }
                     hasError={hasError}
+                    isDisabled={isDisabled}
                     onFocus={() => {
                         setActive(true)
                         logEvent(

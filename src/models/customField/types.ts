@@ -1,4 +1,5 @@
 import {ApiPaginationParams} from 'models/api/types'
+import {AI_MANAGED_TYPES, MANAGED_TYPES} from './constants'
 
 export type ListParams = ApiPaginationParams & {
     archived?: boolean
@@ -45,7 +46,19 @@ interface CustomTypeDefinitionNumber {
     input_settings: CustomFieldInputSettingsNumber
 }
 
-export type CustomFieldManagedType = 'contact_reason' | 'product' | 'resolution'
+export type CustomFieldAIManagedType =
+    typeof AI_MANAGED_TYPES[keyof typeof AI_MANAGED_TYPES]
+
+export type CustomFieldManagedType =
+    typeof MANAGED_TYPES[keyof typeof MANAGED_TYPES]
+
+export function isCustomFieldAIManagedType(
+    managedType: string | null
+): managedType is CustomFieldAIManagedType {
+    return Boolean(
+        managedType && Object.values(AI_MANAGED_TYPES).includes(managedType)
+    )
+}
 
 export interface CustomFieldInput {
     object_type: 'Ticket' | 'Customer'

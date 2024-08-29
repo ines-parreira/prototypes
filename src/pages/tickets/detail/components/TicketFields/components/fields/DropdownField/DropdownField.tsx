@@ -30,6 +30,7 @@ type Props = Omit<
     | 'hasError'
     | 'inputId'
     | 'labelRef'
+    | 'isDisabled'
 > & {
     fieldState?: CustomFieldState
     isRequired?: boolean

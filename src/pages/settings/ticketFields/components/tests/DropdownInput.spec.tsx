@@ -7,7 +7,10 @@ import uniqueId from 'lodash/uniqueId'
 import {renderWithDnD} from 'utils/testing'
 
 import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
-import {ticketDropdownFieldDefinition} from 'fixtures/customField'
+import {
+    aiAgentManagedTicketDropdownFieldDefinition,
+    ticketDropdownFieldDefinition,
+} from 'fixtures/customField'
 import DropdownInput from '../DropdownInput'
 
 let idCount = 1
@@ -44,6 +47,30 @@ describe('<DropdownInput/>', () => {
             </Provider>
         )
         expect(container).toMatchSnapshot()
+    })
+
+    it('should render without csv import when manager', () => {
+        const props = {
+            field: aiAgentManagedTicketDropdownFieldDefinition,
+            value: [
+                'Option 1',
+                'Option 2',
+                `Option 3${delimiter}Sub 2${delimiter}Sub 3${delimiter}Sub 4${delimiter}Sub 5`,
+                0,
+                1,
+                123,
+                true,
+                false,
+            ],
+            onChange: jest.fn(),
+        }
+
+        const {queryByText} = renderWithDnD(
+            <Provider store={mockStore}>
+                <DropdownInput {...props} />
+            </Provider>
+        )
+        expect(queryByText('Import from CSV')).not.toBeInTheDocument()
     })
 
     it('should show an error for too much nesting', () => {

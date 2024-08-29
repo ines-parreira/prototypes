@@ -24,6 +24,7 @@ type Props = {
     fieldState?: CustomFieldState
     placeholder?: string
     isRequired?: boolean
+    isDisabled?: boolean
 }
 
 export default function TextField({
@@ -32,6 +33,7 @@ export default function TextField({
     fieldState,
     placeholder,
     isRequired,
+    isDisabled = false,
 }: Props) {
     const dispatch = useAppDispatch()
 
@@ -93,6 +95,7 @@ export default function TextField({
                     placeholder={placeholder}
                     onChange={handleChange}
                     hasError={hasError}
+                    isDisabled={isDisabled}
                     onFocus={() => {
                         setActive(true)
                         logEvent(

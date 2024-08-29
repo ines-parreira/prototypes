@@ -9,6 +9,7 @@ import {
     CustomField,
     CustomFieldInput,
     isCustomField,
+    isCustomFieldAIManagedType,
 } from 'models/customField/types'
 import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
 import InputField from 'pages/common/forms/input/InputField'
@@ -164,15 +165,18 @@ export default function FieldForm(props: FieldFormProps) {
                 value={form.description || undefined}
                 onChange={(val) => setValue('description', val)}
                 className={css.formRow}
+                isDisabled={isCustomFieldAIManagedType(form.managed_type)}
             />
-            <CheckBox
-                isChecked={form.required}
-                caption="Enable to prevent agents from closing the ticket if the field is left empty. Snooze and Send actions will still work."
-                onChange={(val) => setValue('required', val)}
-                className={css.formRow}
-            >
-                Required to close ticket
-            </CheckBox>
+            {!isCustomFieldAIManagedType(form.managed_type) && (
+                <CheckBox
+                    isChecked={form.required}
+                    caption="Enable to prevent agents from closing the ticket if the field is left empty. Snooze and Send actions will still work."
+                    onChange={(val) => setValue('required', val)}
+                    className={css.formRow}
+                >
+                    Required to close ticket
+                </CheckBox>
+            )}
             <div className={css.formRow}>
                 <Label htmlFor="type" className={css.formLabel} isRequired>
                     Type
@@ -227,13 +231,22 @@ export default function FieldForm(props: FieldFormProps) {
                         id={SAVE_BUTTON_ID}
                         intent="primary"
                         onClick={handleSubmit}
-                        isDisabled={!isFormValid}
+                        isDisabled={
+                            !isFormValid ||
+                            isCustomFieldAIManagedType(form.managed_type)
+                        }
                         isLoading={isLoading}
                         data-testid="save-button"
                     >
                         {props.submitLabel || 'Save changes'}
                     </Button>
-                    <Button intent="secondary" onClick={props.onClose}>
+                    <Button
+                        intent="secondary"
+                        onClick={props.onClose}
+                        isDisabled={isCustomFieldAIManagedType(
+                            form.managed_type
+                        )}
+                    >
                         Cancel
                     </Button>
                     <Tooltip disabled={!isFormDirty} target={SAVE_BUTTON_ID}>
@@ -241,50 +254,64 @@ export default function FieldForm(props: FieldFormProps) {
                         and macros. Make sure to edit the rules and macros, as
                         they will not be able to apply an invalid value.
                     </Tooltip>
+                    <Tooltip
+                        disabled={
+                            !isCustomFieldAIManagedType(form.managed_type)
+                        }
+                        target={SAVE_BUTTON_ID}
+                    >
+                        Note: This field is managed by AI Agent. You can not
+                        edit them.
+                    </Tooltip>
                 </div>
 
-                {isCustomField(props.field) && (
-                    <>
-                        {!props.field.deactivated_datetime && (
-                            <div className={css.rightGroup}>
+                {isCustomField(props.field) &&
+                    !isCustomFieldAIManagedType(props.field.managed_type) && (
+                        <>
+                            {!props.field.deactivated_datetime && (
+                                <div className={css.rightGroup}>
+                                    <Button
+                                        intent="secondary"
+                                        type="button"
+                                        isDisabled={isLoading}
+                                        isLoading={isLoading}
+                                        onClick={() =>
+                                            setArchiveModalVisible(true)
+                                        }
+                                    >
+                                        Archive field
+                                    </Button>
+
+                                    <ArchiveConfirmationModal
+                                        ticketFieldLabel={props.field.label}
+                                        isOpen={archiveModalVisible}
+                                        onConfirm={async () => {
+                                            await handleArchivingCustomField(
+                                                true
+                                            )
+                                            setArchiveModalVisible(false)
+                                        }}
+                                        onClose={() =>
+                                            setArchiveModalVisible(false)
+                                        }
+                                    />
+                                </div>
+                            )}
+                            {props.field.deactivated_datetime && (
                                 <Button
                                     intent="secondary"
                                     type="button"
                                     isDisabled={isLoading}
                                     isLoading={isLoading}
-                                    onClick={() => setArchiveModalVisible(true)}
-                                >
-                                    Archive field
-                                </Button>
-
-                                <ArchiveConfirmationModal
-                                    ticketFieldLabel={props.field.label}
-                                    isOpen={archiveModalVisible}
-                                    onConfirm={async () => {
-                                        await handleArchivingCustomField(true)
-                                        setArchiveModalVisible(false)
+                                    onClick={async () => {
+                                        await handleArchivingCustomField(false)
                                     }}
-                                    onClose={() =>
-                                        setArchiveModalVisible(false)
-                                    }
-                                />
-                            </div>
-                        )}
-                        {props.field.deactivated_datetime && (
-                            <Button
-                                intent="secondary"
-                                type="button"
-                                isDisabled={isLoading}
-                                isLoading={isLoading}
-                                onClick={async () => {
-                                    await handleArchivingCustomField(false)
-                                }}
-                            >
-                                Unarchive field
-                            </Button>
-                        )}
-                    </>
-                )}
+                                >
+                                    Unarchive field
+                                </Button>
+                            )}
+                        </>
+                    )}
             </div>
 
             {isFormDirty && (

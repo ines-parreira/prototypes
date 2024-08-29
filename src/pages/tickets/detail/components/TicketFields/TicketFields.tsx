@@ -15,7 +15,7 @@ import {
 
 import TicketField from './TicketField'
 import css from './TicketFields.less'
-import useHeight from './components/hooks/useHeight'
+import useHeight from './hooks/useHeight'
 
 function TicketFields() {
     const dispatch = useAppDispatch()

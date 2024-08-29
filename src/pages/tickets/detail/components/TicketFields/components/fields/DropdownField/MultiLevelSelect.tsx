@@ -55,6 +55,7 @@ type Props = {
     children?: React.ReactNode
     onToggle?: () => void
     isOpen?: boolean
+    isDisabled?: boolean
     values?: string[]
 }
 
@@ -76,6 +77,7 @@ export default function MultiLevelSelect({
     children,
     onToggle,
     isOpen,
+    isDisabled = false,
     values,
 }: Props) {
     const containerRef = useRef<HTMLSpanElement>(null)
@@ -189,7 +191,7 @@ export default function MultiLevelSelect({
                 >
                     {autoWidth && (
                         <span
-                            onClick={handleFocus}
+                            onClick={isDisabled ? undefined : handleFocus}
                             className={css.autoWidthSpan}
                         >
                             {isValueEmpty ? placeholder : displayValue}
@@ -205,6 +207,7 @@ export default function MultiLevelSelect({
                         ref={inputRef}
                         name={label}
                         value={displayValue}
+                        isDisabled={isDisabled}
                         placeholder={placeholder}
                         isActive={false}
                         onFocus={handleFocus}

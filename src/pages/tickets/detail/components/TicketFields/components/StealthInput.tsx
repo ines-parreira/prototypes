@@ -10,6 +10,7 @@ import css from './StealthInput.less'
 
 type Props = {
     isActive?: boolean
+    isDisabled?: boolean
     hasError?: boolean
     onChange?: (nextValue: string) => void
     id: string
@@ -18,6 +19,7 @@ type Props = {
 function StealthInput(
     {
         isActive: isExternalActive,
+        isDisabled = false,
         hasError = false,
         onChange,
         onFocus,
@@ -39,6 +41,7 @@ function StealthInput(
             id={id}
             ref={ref}
             type={type}
+            disabled={isDisabled}
             className={classnames(css.baseStyles, className, {
                 // beware, order can matter
                 [css.stealth]: !isActive,
@@ -48,13 +51,13 @@ function StealthInput(
             value={value}
             onChange={(event) => onChange?.(event.target.value)}
             onFocus={(evt) => {
-                if (!isActive) {
+                if (!isActive && !isDisabled) {
                     setInputActive(true)
                     onFocus?.(evt)
                 }
             }}
             onBlur={(evt) => {
-                if (isActive) {
+                if (isActive && !isDisabled) {
                     setInputActive(false)
                     onBlur?.(evt)
                 }

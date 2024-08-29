@@ -9,6 +9,7 @@ import {
     CustomField,
     CustomFieldInput,
     CustomFieldValue,
+    isCustomFieldAIManagedType,
 } from 'models/customField/types'
 import DropdownCSVImport from './DropdownCSVImport'
 import DropdownInputRow from './DropdownInputRow'
@@ -155,14 +156,16 @@ export function DropdownInput({field, value, onChange}: DropdownInputProps) {
                     Max 2,000 values and 5 nested children levels allowed.
                 </Tooltip>
 
-                <Button
-                    onClick={() => setImportOpen(true)}
-                    fillStyle="ghost"
-                    size="small"
-                    className={css.import}
-                >
-                    Import from CSV
-                </Button>
+                {!isCustomFieldAIManagedType(field.managed_type) && (
+                    <Button
+                        onClick={() => setImportOpen(true)}
+                        fillStyle="ghost"
+                        size="small"
+                        className={css.import}
+                    >
+                        Import from CSV
+                    </Button>
+                )}
             </span>
 
             {values.map((value, index: number) => (

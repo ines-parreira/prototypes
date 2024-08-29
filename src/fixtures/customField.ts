@@ -21,6 +21,12 @@ const fieldBaseDefinition = {
     deactivated_datetime: null,
 }
 
+const archivedFieldBaseDefinition = {
+    created_datetime: '2022-01-02T03:04:05.123456+00:00',
+    updated_datetime: '2022-01-02T03:04:05.123456+00:00',
+    deactivated_datetime: '2022-01-02T03:04:05.123456+00:00',
+}
+
 const ticketFieldBaseDefinition = {
     ...fieldBaseDefinition,
     required: false,
@@ -28,8 +34,29 @@ const ticketFieldBaseDefinition = {
     object_type: 'Ticket',
 } as const
 
+const archivedTicketFieldBaseDefinition = {
+    ...archivedFieldBaseDefinition,
+    required: false,
+    managed_type: null,
+    object_type: 'Ticket',
+} as const
+
 export const ticketInputFieldDefinition: CustomField = {
     ...ticketFieldBaseDefinition,
+    id: 123,
+    priority: 1,
+    label: 'Input field',
+    description: 'This is an input field',
+    definition: {
+        data_type: 'text',
+        input_settings: {
+            input_type: 'input',
+            placeholder: 'Some placeholder',
+        },
+    },
+}
+export const archivedTicketInputFieldDefinition: CustomField = {
+    ...archivedTicketFieldBaseDefinition,
     id: 123,
     priority: 1,
     label: 'Input field',
@@ -78,6 +105,26 @@ export const ticketDropdownFieldDefinition: CustomField = {
     },
 }
 
+export const aiAgentManagedTicketDropdownFieldDefinition: CustomField = {
+    ...ticketFieldBaseDefinition,
+    id: 2,
+    priority: 2,
+    label: 'Dropdown field',
+    managed_type: 'ai_intent',
+    description: 'This is a dropdown field',
+    definition: {
+        data_type: 'text',
+        input_settings: {
+            input_type: 'dropdown',
+            choices: [
+                'Choice 1',
+                'Choice 2',
+                'Choice 3::Sub 2::Sub 3::Sub 4::Sub 5',
+            ],
+        },
+    },
+}
+
 export const ticketBooleanDefinition: CustomField = {
     ...ticketFieldBaseDefinition,
     id: 2,
@@ -103,6 +150,38 @@ export const ticketFieldDefinitions: CustomField[] = [
 export const managedTicketInputFieldDefinition: CustomField = {
     ...ticketFieldBaseDefinition,
     managed_type: 'contact_reason',
+    id: 123,
+    priority: 1,
+    label: 'Contact reason',
+    description: 'This is a managed input field',
+    definition: {
+        data_type: 'text',
+        input_settings: {
+            input_type: 'input',
+            placeholder: 'Some placeholder',
+        },
+    },
+}
+
+export const managedProductTicketInputFieldDefinition: CustomField = {
+    ...ticketFieldBaseDefinition,
+    managed_type: 'product',
+    id: 123,
+    priority: 1,
+    label: 'Contact reason',
+    description: 'This is a managed input field',
+    definition: {
+        data_type: 'text',
+        input_settings: {
+            input_type: 'input',
+            placeholder: 'Some placeholder',
+        },
+    },
+}
+
+export const aiManagedTicketInputFieldDefinition: CustomField = {
+    ...ticketFieldBaseDefinition,
+    managed_type: 'ai_intent',
     id: 123,
     priority: 1,
     label: 'Contact reason',

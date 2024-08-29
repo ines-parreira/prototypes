@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
-import {CustomField} from 'models/customField/types'
+import {CustomField, isCustomFieldAIManagedType} from 'models/customField/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
@@ -46,11 +46,14 @@ export default function Row({
                 type: 'ticket-fields-row',
             }}
             shouldRenderDragHandle={
-                canReorder && !ticketField.deactivated_datetime
+                canReorder &&
+                !ticketField.deactivated_datetime &&
+                !isCustomFieldAIManagedType(ticketField.managed_type)
             }
             onMoveEntity={onMoveEntity}
             onDropEntity={onDropEntity}
         >
+            {isCustomFieldAIManagedType(ticketField.managed_type) && <td></td>}
             <td
                 className={classnames('link-full-td align-middle')}
                 id={`ticket-field-label-${ticketField.id}`}
@@ -91,47 +94,49 @@ export default function Row({
             </td>
 
             <td className={classnames('align-middle smallest', css.actions)}>
-                {!ticketField.deactivated_datetime && (
-                    <>
+                {!ticketField.deactivated_datetime &&
+                    !isCustomFieldAIManagedType(ticketField.managed_type) && (
+                        <>
+                            <IconButton
+                                className={classnames(css.actionButton, 'mr-1')}
+                                onClick={() => setArchiveModalVisible(true)}
+                                fillStyle="ghost"
+                                intent="secondary"
+                                isLoading={isLoading}
+                                title="Archive"
+                                id={`archive-ticket-field-${ticketField.id}`}
+                            >
+                                archive
+                            </IconButton>
+
+                            <ArchiveConfirmationModal
+                                ticketFieldLabel={ticketField.label}
+                                isOpen={archiveModalVisible}
+                                onConfirm={() => {
+                                    setArchiveModalVisible(false)
+                                    mutate(true)
+                                }}
+                                onClose={() => setArchiveModalVisible(false)}
+                            />
+                        </>
+                    )}
+
+                {ticketField.deactivated_datetime &&
+                    !isCustomFieldAIManagedType(ticketField.managed_type) && (
                         <IconButton
                             className={classnames(css.actionButton, 'mr-1')}
-                            onClick={() => setArchiveModalVisible(true)}
+                            onClick={() => {
+                                mutate(false)
+                            }}
                             fillStyle="ghost"
                             intent="secondary"
                             isLoading={isLoading}
-                            title="Archive"
-                            id={`archive-ticket-field-${ticketField.id}`}
+                            title="Unarchive"
+                            id={`restore-ticket-field-${ticketField.id}`}
                         >
-                            archive
+                            unarchive
                         </IconButton>
-
-                        <ArchiveConfirmationModal
-                            ticketFieldLabel={ticketField.label}
-                            isOpen={archiveModalVisible}
-                            onConfirm={() => {
-                                setArchiveModalVisible(false)
-                                mutate(true)
-                            }}
-                            onClose={() => setArchiveModalVisible(false)}
-                        />
-                    </>
-                )}
-
-                {ticketField.deactivated_datetime && (
-                    <IconButton
-                        className={classnames(css.actionButton, 'mr-1')}
-                        onClick={() => {
-                            mutate(false)
-                        }}
-                        fillStyle="ghost"
-                        intent="secondary"
-                        isLoading={isLoading}
-                        title="Unarchive"
-                        id={`restore-ticket-field-${ticketField.id}`}
-                    >
-                        unarchive
-                    </IconButton>
-                )}
+                    )}
             </td>
         </TableBodyRowDraggable>
     )

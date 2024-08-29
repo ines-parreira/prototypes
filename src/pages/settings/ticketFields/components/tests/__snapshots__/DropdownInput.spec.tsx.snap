@@ -452,7 +452,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
   </span>
   <div
     class="input"
-    data-handler-id="T26"
+    data-handler-id="T44"
     style="opacity: 1;"
   >
     <div
@@ -499,7 +499,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
   </div>
   <div
     class="input"
-    data-handler-id="T28"
+    data-handler-id="T46"
     style="opacity: 1;"
   >
     <div
@@ -541,7 +541,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
   </div>
   <div
     class="input"
-    data-handler-id="T30"
+    data-handler-id="T48"
     style="opacity: 1;"
   >
     <div
@@ -588,7 +588,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
   </div>
   <div
     class="input"
-    data-handler-id="T32"
+    data-handler-id="T50"
     style="opacity: 1;"
   >
     <div
@@ -630,7 +630,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
   </div>
   <div
     class="lastInput"
-    data-handler-id="T34"
+    data-handler-id="T52"
     style="opacity: 1;"
   >
     <div
@@ -710,7 +710,7 @@ exports[`<DropdownInput/> should show an error for too much nesting 1`] = `
   </span>
   <div
     class="input"
-    data-handler-id="T18"
+    data-handler-id="T36"
     style="opacity: 1;"
   >
     <div
@@ -752,7 +752,7 @@ exports[`<DropdownInput/> should show an error for too much nesting 1`] = `
   </div>
   <div
     class="input"
-    data-handler-id="T20"
+    data-handler-id="T38"
     style="opacity: 1;"
   >
     <div
@@ -794,7 +794,7 @@ exports[`<DropdownInput/> should show an error for too much nesting 1`] = `
   </div>
   <div
     class="input"
-    data-handler-id="T22"
+    data-handler-id="T40"
     style="opacity: 1;"
   >
     <div
@@ -841,7 +841,7 @@ exports[`<DropdownInput/> should show an error for too much nesting 1`] = `
   </div>
   <div
     class="lastInput"
-    data-handler-id="T24"
+    data-handler-id="T42"
     style="opacity: 1;"
   >
     <div

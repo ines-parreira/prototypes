@@ -1,5 +1,6 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
+
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
@@ -103,4 +104,63 @@ describe('<TicketField />', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    it.each([
+        {
+            ...ticketInputFieldDefinition,
+            definition: {
+                ...ticketInputFieldDefinition.definition,
+            },
+            should_be_disabled: false,
+        },
+        {
+            ...ticketInputFieldDefinition,
+            definition: {
+                ...ticketInputFieldDefinition.definition,
+            },
+            managed_type: 'contact_reason',
+            should_be_disabled: false,
+        },
+        {
+            ...ticketInputFieldDefinition,
+            definition: {
+                ...ticketInputFieldDefinition.definition,
+            },
+            managed_type: 'ai_intent',
+            should_be_disabled: true,
+        },
+    ])(
+        'should render enabled or disabled fields according to managed_type',
+        (customField) => {
+            const fieldState = {
+                ...baseFieldState,
+                value: getValueForDataType(customField.definition.data_type),
+                id: customField.id,
+            }
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <TicketField
+                            fieldDefinition={customField}
+                            fieldState={fieldState}
+                        />
+                    </Provider>
+                </QueryClientProvider>
+            )
+
+            if (customField.should_be_disabled) {
+                expect(
+                    screen
+                        .getByPlaceholderText('Some placeholder')
+                        .closest('input')
+                ).toBeDisabled()
+            } else {
+                expect(
+                    screen
+                        .getByPlaceholderText('Some placeholder')
+                        .closest('input')
+                ).toBeEnabled()
+            }
+        }
+    )
 })

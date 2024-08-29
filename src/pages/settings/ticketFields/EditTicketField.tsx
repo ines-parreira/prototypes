@@ -8,7 +8,8 @@ import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
 
-import Alert, {AlertType} from '../../common/components/Alert/Alert'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {isCustomFieldAIManagedType} from 'models/customField/types'
 import EditFieldForm from './components/EditFieldForm'
 
 export default function EditTicketField() {
@@ -43,16 +44,22 @@ export default function EditTicketField() {
                         <Alert icon type={AlertType.Info} className="mb-4">
                             Use this field to gain actionable insights into
                             customer inquiry trends.{' '}
-                            {field.managed_type === 'contact_reason'
+                            {isCustomFieldAIManagedType(field.managed_type)
+                                ? 'This field is managed by Gorgias AI Agent and cannot be edited'
+                                : field.managed_type === 'contact_reason'
                                 ? 'This field is powered by AI and can automatically be filled by Gorgias, '
                                 : 'For more details, '}
-                            <a
-                                href="https://docs.gorgias.com/en-US/273001-a7d86899ce5f4aef81ebbaa301d78b58"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                see this article
-                            </a>
+                            {!isCustomFieldAIManagedType(
+                                field.managed_type
+                            ) && (
+                                <a
+                                    href="https://docs.gorgias.com/en-US/273001-a7d86899ce5f4aef81ebbaa301d78b58"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    see this article
+                                </a>
+                            )}
                             .
                         </Alert>
                     )}
