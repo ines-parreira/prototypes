@@ -8,7 +8,7 @@ import {useGetStoreWorkflowsConfigurations} from 'models/workflows/queries'
 import {ResourceFeedbackOnMessage} from 'models/aiAgentFeedback/types'
 import {mapResourceLabelToType} from '../components/AIAgentFeedbackBar/utils'
 
-type Props = {
+export type UseAIAgentGetOtherResourcesProps = {
     articleHelpCenterId: number
     guidanceHelpCenterId: number
     snippetHelpCenterId: number
@@ -22,7 +22,7 @@ export const useAIAgentGetOtherResources = ({
     snippetHelpCenterId,
     shopName,
     shopType,
-}: Props) => {
+}: UseAIAgentGetOtherResourcesProps) => {
     /** Fetch articles */
     const getHelpCenterArticles = useGetHelpCenterArticleList(
         articleHelpCenterId,
@@ -130,7 +130,6 @@ export const useAIAgentGetOtherResources = ({
             const resourceType = mapResourceLabelToType(type)
 
             let resource: ResourceFeedbackOnMessage | undefined
-
             switch (resourceType) {
                 case 'soft_action': {
                     const softAction = actionsOptions.find(
@@ -207,6 +206,14 @@ export const useAIAgentGetOtherResources = ({
                             resourceType: 'external_snippet',
                             resourceId: snippet.value.toString(),
                         }
+                    }
+                    break
+                }
+                case 'other': {
+                    resource = {
+                        type: 'resource',
+                        resourceType: 'other',
+                        resourceId: '1',
                     }
                     break
                 }

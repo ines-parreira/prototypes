@@ -267,6 +267,10 @@ describe('useAIAgentGetOtherResources', () => {
                     resourceId: '6',
                 },
             ])
+
+            expect(getResourcesFromLabels(['Other'])).toEqual([
+                {type: 'resource', resourceType: 'other', resourceId: '1'},
+            ])
         })
     })
 })

@@ -5,6 +5,7 @@ import {fireEvent, render, screen} from '@testing-library/react'
 
 import {QueryClientProvider} from '@tanstack/react-query'
 import {useCookies} from 'react-cookie'
+import {fromJS} from 'immutable'
 import {assumeMock} from 'utils/testing'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
@@ -13,6 +14,8 @@ import {TicketMessage} from 'models/ticket/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {Feedback} from 'models/aiAgentFeedback/types'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import {ticket} from 'fixtures/ticket'
+import {user} from 'fixtures/users'
 import AIAgentMessageFeedback, {
     FEEDBACK_MESSAGE_ACTIONS_TEST_ID,
     FEEDBACK_MESSAGE_GUIDANCE_TEST_ID,
@@ -34,8 +37,14 @@ const mockMessage = {
     id: messageFeedback.messageId,
 } as unknown as TicketMessage
 
+const ticketsStore: Partial<RootState> = {
+    currentUser: fromJS(user),
+    ticket: fromJS(ticket),
+}
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
+    ...ticketsStore,
     ui: {
         ticketAIAgentFeedback: {
             activeTab: TicketAIAgentFeedbackTab.AIAgent,
@@ -43,6 +52,11 @@ const store = mockStore({
         },
     },
 } as RootState)
+jest.mock('state/ticket/actions', () => ({
+    addTags: jest.fn(),
+    removeTag: jest.fn(),
+}))
+store.dispatch = jest.fn()
 
 const mockSetCookie = jest.fn()
 const mockHandleSubmitFeedback = jest.fn()

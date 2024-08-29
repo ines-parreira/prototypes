@@ -85,7 +85,9 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should display display results when searching', async () => {
-        const {container} = render(<MultiLevelSelect {...initialProps} />)
+        const {container} = render(
+            <MultiLevelSelect {...initialProps} onApplyClick={jest.fn} />
+        )
 
         userEvent.click(screen.getByRole('textbox'))
         await userEvent.type(screen.getByPlaceholderText('Search'), 's1')

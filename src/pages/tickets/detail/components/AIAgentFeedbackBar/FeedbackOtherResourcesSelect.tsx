@@ -8,8 +8,10 @@ import {
     FeedbackOnMessage,
     ResourceFeedbackOnMessage,
 } from 'models/aiAgentFeedback/types'
-import MultiLevelSelect from '../TicketFields/components/fields/DropdownField/MultiLevelSelect'
 
+import {addTags, removeTag} from 'state/ticket/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import MultiLevelSelect from '../TicketFields/components/fields/DropdownField/MultiLevelSelect'
 import css from './FeedbackOtherResourcesSelect.less'
 import {RESOURCE_ICONS, RESOURCE_LABELS} from './constants'
 
@@ -18,6 +20,9 @@ const closeIcon = (
         close
     </i>
 )
+
+export const NO_RELEVANT_RESOURCES_LABEL = 'No relevant resources'
+export const AI_NO_RESOURCES_TAG = 'ai_no_resources'
 
 type Props = {
     helpCenterId: number
@@ -58,6 +63,7 @@ const FeedbackOtherResourcesSelect = ({
         shopType,
     })
 
+    const dispatch = useAppDispatch()
     const [values, setValues] = useState<string[]>([])
     const [tooltipIds, setTooltipIds] = useState<string[]>([])
 
@@ -111,6 +117,9 @@ const FeedbackOtherResourcesSelect = ({
                             )?.label
                         }`
                     }
+                    case 'other': {
+                        return NO_RELEVANT_RESOURCES_LABEL
+                    }
                 }
             }
             return ''
@@ -146,13 +155,33 @@ const FeedbackOtherResourcesSelect = ({
         [values]
     )
 
-    const handleOnToggle = useCallback(() => {
+    const handleSubmitNoRelevantResources = useCallback(
+        async (newValues: string[]) => {
+            if (newValues.includes(NO_RELEVANT_RESOURCES_LABEL)) {
+                await dispatch(addTags(AI_NO_RESOURCES_TAG))
+            }
+        },
+        [dispatch]
+    )
+
+    const handleRemoveNoRelevantResources = useCallback(
+        async (valuesToRemove: string[]) => {
+            if (valuesToRemove.includes(NO_RELEVANT_RESOURCES_LABEL)) {
+                await dispatch(removeTag(AI_NO_RESOURCES_TAG))
+            }
+        },
+        [dispatch]
+    )
+
+    const handleApply = useCallback(async () => {
         setIsOpen(false)
 
         // Submit the new values
         const newValuesToSubmit = values.filter(
             (value) => !initialFormattedValues.find((val) => val === value)
         )
+
+        await handleSubmitNoRelevantResources(newValuesToSubmit)
         const resources = getResourcesFromLabels(newValuesToSubmit)
         onSubmit(resources)
 
@@ -160,6 +189,8 @@ const FeedbackOtherResourcesSelect = ({
         const valuesToRemove = initialFormattedValues.filter(
             (value) => !values.find((val) => val === value)
         )
+
+        await handleRemoveNoRelevantResources(valuesToRemove)
         const resourcesToRemove = getResourcesFromLabels(valuesToRemove)
         onRemove(resourcesToRemove)
     }, [
@@ -168,20 +199,28 @@ const FeedbackOtherResourcesSelect = ({
         onSubmit,
         onRemove,
         values,
+        handleSubmitNoRelevantResources,
+        handleRemoveNoRelevantResources,
     ])
 
     const handleRemove = useCallback(
-        (valueToRemove: string) => {
+        async (valueToRemove: string) => {
             const newValues = values.filter((v) => v !== valueToRemove)
             setValues(newValues)
 
+            await handleRemoveNoRelevantResources([valueToRemove])
             const resource = getResourcesFromLabels([valueToRemove])
 
             if (resource) {
                 onRemove(resource)
             }
         },
-        [getResourcesFromLabels, onRemove, values]
+        [
+            getResourcesFromLabels,
+            onRemove,
+            values,
+            handleRemoveNoRelevantResources,
+        ]
     )
 
     const handleEllipsisChange = (isVisible: boolean, id: string) => {
@@ -220,11 +259,13 @@ const FeedbackOtherResourcesSelect = ({
                     ...macrosOptions.map(
                         (macro) => `${RESOURCE_LABELS.macro}${macro.label}`
                     ),
+                    NO_RELEVANT_RESOURCES_LABEL,
                 ]}
                 values={values}
                 label="dropdown"
                 isOpen={isOpen}
-                onToggle={handleOnToggle}
+                onToggle={() => setIsOpen(!isOpen)}
+                onApplyClick={handleApply}
             >
                 <Label className={css.label}>
                     Should AI Agent have used something else?

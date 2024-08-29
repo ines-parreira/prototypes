@@ -37,7 +37,7 @@ import {SearchInput} from './search/SearchInput'
 import css from './MultiLevelSelect.less'
 import {usePredictionIconPositionAdjuster} from './hooks/usePredictionIconPositionAdjuster'
 
-type Props = {
+export type MultiLevelSelectProps = {
     id: CustomFieldState['id']
     dropdownClassName?: string
     label: string
@@ -57,6 +57,7 @@ type Props = {
     isOpen?: boolean
     isDisabled?: boolean
     values?: string[]
+    onApplyClick?: () => void
 }
 
 export default function MultiLevelSelect({
@@ -79,7 +80,8 @@ export default function MultiLevelSelect({
     isOpen,
     isDisabled = false,
     values,
-}: Props) {
+    onApplyClick,
+}: MultiLevelSelectProps) {
     const containerRef = useRef<HTMLSpanElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
     const [inputRef, inputDimensions] = useDimensions()
@@ -373,6 +375,16 @@ export default function MultiLevelSelect({
                             Clear Selection
                         </Button>
                     </DropdownFooter>
+                )}
+
+                {/* Apply Button */}
+                {onApplyClick && currentBranch[CHOICE_VALUES_SYMBOL].size > 0 && (
+                    <div
+                        className={css.applyButtonContainer}
+                        onClick={onApplyClick}
+                    >
+                        <Button fillStyle={'ghost'}>Apply</Button>
+                    </div>
                 )}
             </Dropdown>
         </>

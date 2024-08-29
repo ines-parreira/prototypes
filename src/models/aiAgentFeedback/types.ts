@@ -53,6 +53,7 @@ export type ResourceFeedbackOnMessage = {
         | 'article'
         | 'macro'
         | 'external_snippet'
+        | 'other'
     resourceId: number | string
 }
 

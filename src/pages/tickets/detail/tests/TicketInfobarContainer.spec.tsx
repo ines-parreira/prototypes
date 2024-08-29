@@ -9,7 +9,7 @@ import userEvent from '@testing-library/user-event'
 
 import {selectContext, fetchWidgets} from 'state/widgets/actions'
 import {assumeMock, renderWithRouter} from 'utils/testing'
-import {StoreState} from 'state/types'
+import {RootState, StoreState} from 'state/types'
 import {
     changeActiveTab,
     changeTicketMessage,
@@ -18,6 +18,8 @@ import {
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getAIAgentMessages} from 'state/ticket/selectors'
+import {user} from 'fixtures/users'
+import {ticket} from 'fixtures/ticket'
 import {
     AI_AGENT_TAB,
     CUSTOMER_INFORMATION_TAB,
@@ -67,14 +69,26 @@ const mockedFetchWidgets = assumeMock(fetchWidgets)
 const mockedChangeActiveTab = assumeMock(changeActiveTab)
 const mockedChangeTicketMessage = assumeMock(changeTicketMessage)
 const mockedGetActiveTab = assumeMock(getActiveTab)
+
+const ticketsStore: Partial<RootState> = {
+    currentUser: fromJS(user),
+    ticket: fromJS(ticket),
+}
+
 const mockStore = configureMockStore([thunk])
 const state: Partial<StoreState> = {
+    ...ticketsStore,
     ui: {
         ticketAIAgentFeedback: {
             activeTab: TicketAIAgentFeedbackTab.CustomerInformation,
         },
     } as any,
 }
+
+jest.mock('state/ticket/actions', () => ({
+    addTags: jest.fn(),
+    removeTag: jest.fn(),
+}))
 const store = mockStore(state)
 store.dispatch = jest.fn()
 const dateAfterFeatureAvailable = '2025-01-01T00:00:00Z'

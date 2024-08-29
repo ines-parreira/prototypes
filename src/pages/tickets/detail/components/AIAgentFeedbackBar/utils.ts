@@ -40,8 +40,11 @@ export const mapResourceLabelToType = (label: string) => {
             return 'macro'
         case 'Hard action':
             return 'hard_action'
-        default:
+        // Special case for options at level 0, without a resource group
+        case undefined:
+            return 'other'
         case 'Soft action':
+        default:
             return 'soft_action'
     }
 }

@@ -187,6 +187,19 @@ exports[`<MultiLevelSelect /> should display display results when searching 1`] 
             </span>
           </button>
         </div>
+        <div
+          class="applyButtonContainer"
+        >
+          <button
+            aria-disabled="false"
+            class="wrapper ghost primary medium"
+            type="button"
+          >
+            <span>
+              Apply
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
