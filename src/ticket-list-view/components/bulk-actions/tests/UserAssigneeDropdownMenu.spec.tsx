@@ -5,18 +5,11 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import useListUsers from 'users/useListUsers'
 
 import {focusOnNextItem} from 'components/Dropdown'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
 import useSearch from 'search/useSearch'
-import {assumeMock} from 'utils/testing'
 
 import UserAssigneeDropdownMenu from '../UserAssigneeDropdownMenu'
 import UserDropdownItem from '../UserDropdownItem'
-
-jest.mock('hooks/useAppDispatch')
-const useAppDispatchMock = assumeMock(useAppDispatch)
-const dispatchMock = jest.fn()
-useAppDispatchMock.mockReturnValue(dispatchMock)
 
 jest.mock('components/Dropdown/focusOnNextItem')
 const mockFocusOnNextItem = focusOnNextItem as jest.Mock

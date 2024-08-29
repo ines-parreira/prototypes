@@ -8,6 +8,7 @@ import React, {
 import {JobType} from '@gorgias/api-queries'
 import cn from 'classnames'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {Item} from 'components/Dropdown'
 import {Popover} from 'components/Popover'
 import useAppSelector from 'hooks/useAppSelector'
@@ -26,26 +27,9 @@ import {getMoment} from 'utils/date'
 
 import {UserRole} from 'config/types/user'
 import TeamAssigneeDropdownMenu from './TeamAssigneeDropdownMenu'
-import UserAssigneeDropdownMenu from './UserAssigneeDropdownMenu'
 import css from './style.less'
-
-type Job = {
-    label: string
-    type: JobType
-    params?: (item?: Item | null) => {updates: XOR<Update>}
-    className?: string
-    subItem?: string
-    event: string
-}
-
-export enum Action {
-    MarkAsUnread = 'mark_as_unread',
-    MarkAsRead = 'mark_as_read',
-    ExportTickets = 'export_tickets',
-    Untrash = 'untrash',
-    Delete = 'delete',
-    Trash = 'trash',
-}
+import ApplyMacro from './ApplyMacro'
+import {Action, Job} from './types'
 
 const getActions = (
     hasUserRole: boolean,
@@ -58,21 +42,6 @@ const getActions = (
             updates: {tags: [tag!.name!]},
         }),
         event: 'tags',
-    },
-    agent: {
-        label: 'Assign to',
-        type: JobType.UpdateTicket,
-        params: (agent?: Item | null) => ({
-            updates: {
-                assignee_user: agent
-                    ? {
-                          id: agent.id!,
-                          name: agent.name!,
-                      }
-                    : null,
-            },
-        }),
-        event: 'assignee_user',
     },
     team: {
         label: 'Assign to team',
@@ -103,6 +72,9 @@ const getActions = (
             },
         }),
         event: 'is_unread',
+    },
+    macro: {
+        label: 'Apply macro',
     },
     ...(hasUserRole
         ? {
@@ -156,16 +128,18 @@ const getDropdownItems = (actions: ReturnType<typeof getActions>) =>
     }))
 
 function isItemNested(
-    value: Action | 'agent' | 'tag' | 'team'
-): value is 'tag' | 'agent' | 'team' {
-    return ['agent', 'tag', 'team'].includes(value)
+    value: Action
+): value is Action.Tag | Action.Team | Action.Macro {
+    return [Action.Tag, Action.Team, Action.Macro].includes(value)
 }
 
 export default function MoreActions({
     isDisabled,
     isLoading,
     launchJob,
+    onComplete,
     selectionCount,
+    ticketIds,
 }: {
     isDisabled: boolean
     isLoading: boolean
@@ -175,13 +149,18 @@ export default function MoreActions({
             updates: XOR<Update>
         }
     ) => Promise<void>
+    onComplete: () => void
     selectionCount: number | null
+    ticketIds: number[]
 }) {
     const dropdownButtonRef = useRef(null)
     const [isConfirmationPopoverOpen, setIsConfirmationPopoverOpen] =
         useState(false)
+    const [isMacroModalOpen, setIsMacroModalOpen] = useState(false)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const [level, setLevel] = useState<'agent' | 'team' | 'tag' | null>(null)
+    const [level, setLevel] = useState<
+        Action.Tag | Action.Team | Action.Macro | null
+    >(null)
     const currentUser = useAppSelector(getCurrentUserState)
     const hasAgentRole = useMemo(
         () => hasRole(currentUser, UserRole.Agent),
@@ -210,9 +189,12 @@ export default function MoreActions({
     )
 
     const onClick = useCallback(
-        (value: Action | 'agent' | 'tag' | 'team', options?: Item | null) => {
+        (value: Action, options?: Item | null) => {
             if (!level && isItemNested(value)) {
                 setLevel(value)
+                if (value === Action.Macro) {
+                    setIsMacroModalOpen(true)
+                }
                 return
             }
 
@@ -229,6 +211,14 @@ export default function MoreActions({
         },
         [actions, launchJob, level, toggle]
     )
+
+    const onApplyMacro = useCallback(() => {
+        logEvent(SegmentEvent.BulkAction, {
+            type: 'apply-macro',
+            location: 'split-view-mode',
+        })
+        onComplete()
+    }, [onComplete])
 
     const onClickBack = useCallback(() => {
         setLevel(null)
@@ -270,12 +260,8 @@ export default function MoreActions({
                         >
                             Back
                         </DropdownHeader>
-                        {level === 'tag' ? (
+                        {level === Action.Tag ? (
                             <TagDropdownMenu
-                                onClick={(item) => onClick(level, item)}
-                            />
-                        ) : level === 'agent' ? (
-                            <UserAssigneeDropdownMenu
                                 onClick={(item) => onClick(level, item)}
                             />
                         ) : (
@@ -298,7 +284,8 @@ export default function MoreActions({
                                 onClick={onClick}
                                 isDisabled={isLoading}
                                 shouldCloseOnSelect={
-                                    !isItemNested(option.value)
+                                    !isItemNested(option.value) ||
+                                    option.value === 'macro'
                                 }
                             >
                                 {option.label}
@@ -307,6 +294,13 @@ export default function MoreActions({
                     </DropdownBody>
                 )}
             </Dropdown>
+            {isMacroModalOpen && (
+                <ApplyMacro
+                    onApplyMacro={onApplyMacro}
+                    setIsOpen={setIsMacroModalOpen}
+                    ticketIds={ticketIds}
+                />
+            )}
             <Popover
                 target={dropdownButtonRef}
                 isOpen={isConfirmationPopoverOpen}

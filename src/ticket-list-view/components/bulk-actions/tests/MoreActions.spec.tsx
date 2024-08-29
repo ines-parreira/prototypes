@@ -4,14 +4,19 @@ import {JobType} from '@gorgias/api-queries'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-
 import {fromJS} from 'immutable'
-import {TagDropdownMenu} from 'tags'
 
+import {logEvent, SegmentEvent} from 'common/segment'
+import {assumeMock} from 'utils/testing'
+import {TagDropdownMenu} from 'tags'
 import {UserRole} from 'config/types/user'
+
+import ApplyMacro from '../ApplyMacro'
 import MoreActions from '../MoreActions'
 import TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
-import UserAssigneeDropdownMenu from '../UserAssigneeDropdownMenu'
+
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 jest.mock(
     'tags/TagDropdownMenu',
@@ -19,7 +24,7 @@ jest.mock(
         ({onClick}: ComponentProps<typeof TagDropdownMenu>) =>
             (
                 <button onClick={() => onClick({name: 'tag'})}>
-                    TagDropdownMenu
+                    TagDropdownMenuMock
                 </button>
             )
 )
@@ -29,19 +34,15 @@ jest.mock(
         ({onClick}: ComponentProps<typeof TeamAssigneeDropdownMenu>) =>
             (
                 <button onClick={() => onClick({id: 8})}>
-                    TeamAssigneeDropdownMenu
+                    TeamAssigneeDropdownMenuMock
                 </button>
             )
 )
 jest.mock(
-    '../UserAssigneeDropdownMenu',
+    '../ApplyMacro',
     () =>
-        ({onClick}: ComponentProps<typeof UserAssigneeDropdownMenu>) =>
-            (
-                <button onClick={() => onClick({id: 3, name: 'user'})}>
-                    UserAssigneeDropdownMenu
-                </button>
-            )
+        ({onApplyMacro}: ComponentProps<typeof ApplyMacro>) =>
+            <button onClick={() => onApplyMacro()}>ApplyMacroMock</button>
 )
 
 const mockStore = configureMockStore([thunk])
@@ -58,7 +59,9 @@ describe('<MoreActions />', () => {
         isDisabled: false,
         isLoading: false,
         launchJob: jest.fn(),
+        onComplete: jest.fn(),
         selectionCount: null,
+        ticketIds: [],
     }
 
     const renderWithStore = (
@@ -185,7 +188,7 @@ describe('<MoreActions />', () => {
         screen.getByText('more_horiz').click()
         screen.getByText('Add tag').click()
         expect(screen.getByText('arrow_back')).toBeInTheDocument
-        screen.getByText('TagDropdownMenu').click()
+        screen.getByText('TagDropdownMenuMock').click()
 
         expect(minProps.launchJob).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -194,26 +197,24 @@ describe('<MoreActions />', () => {
             }),
             {updates: {tags: ['tag']}}
         )
-        expect(screen.queryByText('TagDropdownMenu')).not.toBeInTheDocument
+        expect(screen.queryByText('TagDropdownMenuMock')).not.toBeInTheDocument
         expect(screen.queryByText('Add tag')).not.toBeInTheDocument
     })
 
-    it('should trigger a job for assigning a user', () => {
-        const {getByText} = renderWithStore()
-        getByText('more_horiz').click()
-        getByText('Assign to').click()
-        expect(screen.getByText('arrow_back')).toBeInTheDocument
-        getByText('UserAssigneeDropdownMenu').click()
+    it('should trigger a job for applying a macro', () => {
+        renderWithStore()
+        screen.getByText('more_horiz').click()
+        screen.getByText('Apply macro').click()
+        screen.getByText('ApplyMacroMock').click()
 
-        expect(minProps.launchJob).toHaveBeenCalledWith(
-            expect.objectContaining({
-                type: JobType.UpdateTicket,
-                label: 'Assign to',
-            }),
-            {updates: {assignee_user: {id: 3, name: 'user'}}}
-        )
-        expect(screen.queryByText('TagDropdownMenu')).not.toBeInTheDocument
-        expect(screen.queryByText('Assign to')).not.toBeInTheDocument
+        expect(minProps.onComplete).toHaveBeenCalledWith()
+        expect(logEventMock).toHaveBeenCalledWith(SegmentEvent.BulkAction, {
+            type: 'apply-macro',
+            location: 'split-view-mode',
+        })
+
+        expect(screen.queryByText('ApplyMacroMock')).not.toBeInTheDocument
+        expect(screen.queryByText('Apply macro')).not.toBeInTheDocument
     })
 
     it('should trigger a job for assigning a team', () => {
@@ -221,7 +222,7 @@ describe('<MoreActions />', () => {
         screen.getByText('more_horiz').click()
         screen.getByText('Assign to team').click()
         expect(screen.getByText('arrow_back')).toBeInTheDocument
-        screen.getByText('TeamAssigneeDropdownMenu').click()
+        screen.getByText('TeamAssigneeDropdownMenuMock').click()
 
         expect(minProps.launchJob).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -232,7 +233,7 @@ describe('<MoreActions />', () => {
                 updates: {assignee_team_id: 8},
             }
         )
-        expect(screen.queryByText('TagDropdownMenu')).not.toBeInTheDocument
+        expect(screen.queryByText('TagDropdownMenuMock')).not.toBeInTheDocument
         expect(screen.queryByText('Assign to team')).not.toBeInTheDocument
     })
 

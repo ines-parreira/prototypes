@@ -5,17 +5,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 
 import ApplyMacro from '../ApplyMacro'
 
 const mockStore = configureMockStore([thunk])
-
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch')
-const useAppDispatchMock = useAppDispatch as jest.Mock
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
@@ -27,7 +22,7 @@ jest.mock(
         ({onComplete, closeModal}: ComponentProps<typeof MacroContainer>) =>
             (
                 <div>
-                    MacroContainer
+                    MacroContainerMock
                     <div onClick={closeModal}>closeModal</div>
                     <div onClick={() => onComplete?.(mockItemsIds)}>
                         onComplete
@@ -38,38 +33,25 @@ jest.mock(
 
 describe('<ApplyMacro />', () => {
     const minProps = {
-        isDisabled: false,
-        onComplete: jest.fn(),
+        onApplyMacro: jest.fn(),
+        setIsOpen: jest.fn(),
         ticketIds: [],
     }
 
     beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(mockedDispatch)
         useAppSelectorMock.mockReturnValue(fromJS({}))
     })
 
-    it('should render', () => {
+    it('should open and close macro container', () => {
         const {getByText} = render(
             <Provider store={mockStore({})}>
                 <ApplyMacro {...minProps} />
             </Provider>
         )
 
-        expect(getByText('bolt')).toBeInTheDocument()
-    })
-
-    it('should open and close macro container', () => {
-        const {getByText, queryByText} = render(
-            <Provider store={mockStore({})}>
-                <ApplyMacro {...minProps} />
-            </Provider>
-        )
-
-        fireEvent.click(getByText('bolt'))
-
-        expect(getByText('MacroContainer')).toBeInTheDocument()
+        expect(getByText('MacroContainerMock')).toBeInTheDocument()
         fireEvent.click(getByText('closeModal'))
-        expect(queryByText('MacroContainer')).not.toBeInTheDocument()
+        expect(minProps.setIsOpen).toHaveBeenCalledWith(false)
     })
 
     it('should clear selected tickets once `apply macro` bulk action is applied', () => {
@@ -78,20 +60,8 @@ describe('<ApplyMacro />', () => {
                 <ApplyMacro {...minProps} />
             </Provider>
         )
-        fireEvent.click(getByText('bolt'))
         fireEvent.click(getByText('onComplete'))
 
-        expect(minProps.onComplete).toHaveBeenCalledWith(mockItemsIds)
-    })
-
-    it('should be disabled', () => {
-        const {getByText, queryByText} = render(
-            <Provider store={mockStore({})}>
-                <ApplyMacro {...minProps} isDisabled />
-            </Provider>
-        )
-
-        getByText('bolt').click()
-        expect(queryByText('MacroContainer')).not.toBeInTheDocument()
+        expect(minProps.onApplyMacro).toHaveBeenCalledWith(mockItemsIds)
     })
 })

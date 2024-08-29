@@ -11,7 +11,7 @@ import {UserRole} from 'config/types/user'
 import {useBulkAction} from 'jobs'
 import {assumeMock} from 'utils/testing'
 
-import ApplyMacro from '../ApplyMacro'
+import AssignUser from '../AssignUser'
 import BulkActions from '../BulkActions'
 import CloseTickets from '../CloseTickets'
 import MoreActions from '../MoreActions'
@@ -20,14 +20,10 @@ jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
 jest.mock(
-    '../ApplyMacro',
+    '../AssignUser',
     () =>
-        ({isDisabled, onComplete}: ComponentProps<typeof ApplyMacro>) =>
-            (
-                <button disabled={isDisabled} onClick={onComplete}>
-                    ApplyMacro
-                </button>
-            )
+        ({onClick}: ComponentProps<typeof AssignUser>) =>
+            <button onClick={onClick}>AssignUserMock</button>
 )
 jest.mock(
     '../CloseTickets',
@@ -35,7 +31,7 @@ jest.mock(
         ({isDisabled, onClick}: ComponentProps<typeof CloseTickets>) =>
             (
                 <button disabled={isDisabled} onClick={onClick}>
-                    CloseTickets
+                    CloseTicketsMock
                 </button>
             )
 )
@@ -55,7 +51,7 @@ jest.mock(
                         })
                     }
                 >
-                    MoreActions
+                    MoreActionsMock
                 </button>
             )
 )
@@ -104,28 +100,28 @@ describe('<BulkActions />', () => {
             hasSelectedAll: false,
         })
 
-        getByText('CloseTickets').click()
+        getByText('CloseTicketsMock').click()
         expect(mockCreateJob).not.toHaveBeenCalled()
     })
 
     it('should trigger bulk action to close tickets', async () => {
         const {getByText} = renderWithStore()
-        getByText('CloseTickets').click()
+        getByText('CloseTicketsMock').click()
 
         expect(mockCreateJob).toHaveBeenCalled()
         await waitFor(() => expect(minProps.onComplete).toHaveBeenCalled())
     })
 
-    it('should trigger bulk action to apply macro', () => {
+    it('should trigger bulk action to assign user', async () => {
         const {getByText} = renderWithStore()
-        getByText('ApplyMacro').click()
+        getByText('AssignUserMock').click()
 
-        expect(minProps.onComplete).toHaveBeenCalled()
+        await waitFor(() => expect(minProps.onComplete).toHaveBeenCalled())
     })
 
     it('should prepare job at view level', () => {
         const {getByText} = renderWithStore()
-        getByText('CloseTickets').click()
+        getByText('CloseTicketsMock').click()
 
         expect(useBulkActionMock).toHaveBeenCalledWith('view', [])
     })
@@ -139,14 +135,14 @@ describe('<BulkActions />', () => {
                 2: false,
             },
         })
-        getByText('CloseTickets').click()
+        getByText('CloseTicketsMock').click()
 
         expect(useBulkActionMock).toHaveBeenCalledWith('ticket', [1])
     })
 
     it('should trigger job when MoreActions calls it', async () => {
         const {getByText} = renderWithStore()
-        getByText('MoreActions').click()
+        getByText('MoreActionsMock').click()
 
         await waitFor(() =>
             expect(mockCreateJob).toHaveBeenCalledWith(mockJobType, undefined)

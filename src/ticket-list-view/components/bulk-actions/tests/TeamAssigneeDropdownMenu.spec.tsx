@@ -4,19 +4,12 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import {focusOnNextItem} from 'components/Dropdown'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
 import useSearch from 'search/useSearch'
 import useListTeams from 'teams/useListTeams'
-import {assumeMock} from 'utils/testing'
 
 import TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
 import TeamDropdownItem from '../TeamDropdownItem'
-
-jest.mock('hooks/useAppDispatch')
-const useAppDispatchMock = assumeMock(useAppDispatch)
-const dispatchMock = jest.fn()
-useAppDispatchMock.mockReturnValue(dispatchMock)
 
 jest.mock('components/Dropdown/focusOnNextItem')
 const mockFocusOnNextItem = focusOnNextItem as jest.Mock

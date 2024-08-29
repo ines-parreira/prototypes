@@ -2,31 +2,13 @@ import React, {useCallback, useMemo} from 'react'
 import {JobType} from '@gorgias/api-queries'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {Item} from 'components/Dropdown'
 import {Update, useBulkAction} from 'jobs'
 
-import ApplyMacro from './ApplyMacro'
+import AssignUser from './AssignUser'
 import CloseTickets from './CloseTickets'
 import MoreActions from './MoreActions'
 import css from './style.less'
-
-type Job = {
-    label: string
-    type: JobType
-    params?: (item?: Item | null) => {updates: XOR<Update>}
-    className?: string
-    subItem?: string
-    event: string
-}
-
-export enum Action {
-    MarkAsUnread = 'mark_as_unread',
-    MarkAsRead = 'mark_as_read',
-    ExportTickets = 'export_tickets',
-    Untrash = 'untrash',
-    Delete = 'delete',
-    Trash = 'trash',
-}
+import {Job} from './types'
 
 export default function BulkActions({
     hasSelectedAll,
@@ -65,7 +47,7 @@ export default function BulkActions({
                 updates: XOR<Update>
             }
         ) => {
-            await createJob(action.type, params)
+            await createJob(action.type!, params)
             const [entry] = Object.entries(params?.updates ?? {})
 
             logEvent(SegmentEvent.BulkAction, {
@@ -84,14 +66,6 @@ export default function BulkActions({
         [createJob, onComplete]
     )
 
-    const onApplyMacro = useCallback(() => {
-        logEvent(SegmentEvent.BulkAction, {
-            type: 'apply-macro',
-            location: 'split-view-mode',
-        })
-        onComplete()
-    }, [onComplete])
-
     return (
         <div className={css.bulkActions}>
             <CloseTickets
@@ -103,16 +77,31 @@ export default function BulkActions({
                     )
                 }
             />
-            <ApplyMacro
+            <AssignUser
                 isDisabled={isLoading || isDisabled}
-                onComplete={onApplyMacro}
-                ticketIds={ticketIds}
+                onClick={(agent) =>
+                    launchJob(
+                        {type: JobType.UpdateTicket, event: 'assignee_user'},
+                        {
+                            updates: {
+                                assignee_user: agent
+                                    ? {
+                                          id: agent.id!,
+                                          name: agent.name!,
+                                      }
+                                    : null,
+                            },
+                        }
+                    )
+                }
             />
             <MoreActions
                 isDisabled={isLoading || isDisabled}
                 isLoading={isLoading}
                 launchJob={launchJob}
                 selectionCount={selectionCount}
+                onComplete={onComplete}
+                ticketIds={ticketIds}
             />
         </div>
     )
