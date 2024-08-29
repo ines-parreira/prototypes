@@ -160,14 +160,14 @@
     }
 
     .svg {
-        fill: transparent;
+        width: 60%;
+        height: 100%;
         position: absolute;
-        top: 0;
-        left: 0;
+        mask-repeat: no-repeat;
+        mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="auto" height="auto" viewBox="0 0 700 900"><path d="M0 0 H250 C522.528 0 700 201.472 700 450 C700 698.528 522.528 900 250 900 H0 V0Z"/></svg>');
+        background-color: var(--neutral-grey-1);
 
-        @media @desktops {
-            .circle-variant();
-        }
+        .circle-variant();
     }
 }
 
@@ -277,7 +277,7 @@
     @class: ~'@{variantValue}';
 
     &.@{class} {
-        fill: @@circleColor;
+        background-color: @@circleColor;
     }
 
     .circle-variant(@i + 1);

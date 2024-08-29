@@ -5,6 +5,9 @@ exports[`<Paywall /> should not render the default upgrade CTA if a custom upgra
   class="full-width pageWrapper"
 >
   <div
+    class="svg default"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -13,17 +16,6 @@ exports[`<Paywall /> should not render the default upgrade CTA if a custom upgra
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg default"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -100,6 +92,9 @@ exports[`<Paywall /> should render a custom upgrade CTA 1`] = `
   class="full-width pageWrapper"
 >
   <div
+    class="svg default"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -108,17 +103,6 @@ exports[`<Paywall /> should render a custom upgrade CTA 1`] = `
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg default"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -198,6 +182,9 @@ exports[`<Paywall /> should render a page header with custom header element 1`] 
     Custom page header
   </div>
   <div
+    class="svg default"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -206,17 +193,6 @@ exports[`<Paywall /> should render a page header with custom header element 1`] 
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg default"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -295,6 +271,9 @@ exports[`<Paywall /> should render a page header with string header 1`] = `
     </h1>
   </div>
   <div
+    class="svg default"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -303,17 +282,6 @@ exports[`<Paywall /> should render a page header with string header 1`] = `
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg default"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -383,6 +351,9 @@ exports[`<Paywall /> should render a paywall theme with badge for Advanced paywa
   class="full-width pageWrapper"
 >
   <div
+    class="svg advanced"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -391,17 +362,6 @@ exports[`<Paywall /> should render a paywall theme with badge for Advanced paywa
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg advanced"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -471,6 +431,9 @@ exports[`<Paywall /> should render a paywall theme with badge for Basic paywall 
   class="full-width pageWrapper"
 >
   <div
+    class="svg basic"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -479,17 +442,6 @@ exports[`<Paywall /> should render a paywall theme with badge for Basic paywall 
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg basic"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -559,6 +511,9 @@ exports[`<Paywall /> should render a paywall theme with badge for Default paywal
   class="full-width pageWrapper"
 >
   <div
+    class="svg default"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -567,17 +522,6 @@ exports[`<Paywall /> should render a paywall theme with badge for Default paywal
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg default"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -647,6 +591,9 @@ exports[`<Paywall /> should render a paywall theme with badge for Enterprise pay
   class="full-width pageWrapper"
 >
   <div
+    class="svg enterprise"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -655,17 +602,6 @@ exports[`<Paywall /> should render a paywall theme with badge for Enterprise pay
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg enterprise"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -735,6 +671,9 @@ exports[`<Paywall /> should render a paywall theme with badge for Pro paywall ty
   class="full-width pageWrapper"
 >
   <div
+    class="svg pro"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -743,17 +682,6 @@ exports[`<Paywall /> should render a paywall theme with badge for Pro paywall ty
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg pro"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -823,6 +751,9 @@ exports[`<Paywall /> should render the default upgrade CTA 1`] = `
   class="full-width pageWrapper"
 >
   <div
+    class="svg default"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -831,17 +762,6 @@ exports[`<Paywall /> should render the default upgrade CTA 1`] = `
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg default"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -939,6 +859,9 @@ exports[`<Paywall /> should render with a legacy badge 1`] = `
   class="full-width pageWrapper"
 >
   <div
+    class="svg default"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -947,17 +870,6 @@ exports[`<Paywall /> should render with a legacy badge 1`] = `
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg default"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -1042,6 +954,9 @@ exports[`<Paywall /> should render with a testimonial 1`] = `
   class="full-width pageWrapper"
 >
   <div
+    class="svg default"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -1050,17 +965,6 @@ exports[`<Paywall /> should render with a testimonial 1`] = `
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg default"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -1172,6 +1076,9 @@ exports[`<Paywall /> should render with an add-on update type 1`] = `
   class="full-width pageWrapper"
 >
   <div
+    class="svg default"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -1180,17 +1087,6 @@ exports[`<Paywall /> should render with an add-on update type 1`] = `
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg default"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -1272,6 +1168,9 @@ exports[`<Paywall /> should render with minimal props 1`] = `
   class="full-width pageWrapper"
 >
   <div
+    class="svg default"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -1280,17 +1179,6 @@ exports[`<Paywall /> should render with minimal props 1`] = `
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg default"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -1360,6 +1248,9 @@ exports[`<Paywall /> should render with modal 1`] = `
   class="full-width pageWrapper"
 >
   <div
+    class="svg default"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -1368,17 +1259,6 @@ exports[`<Paywall /> should render with modal 1`] = `
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg default"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >

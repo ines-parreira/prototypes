@@ -15,6 +15,9 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
       </h1>
     </div>
     <div
+      class="svg pro"
+    />
+    <div
       class="page container-fluid"
     >
       <div
@@ -23,17 +26,6 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
         <div
           class="align-items-center mx-0 row"
         >
-          <svg
-            class="svg pro"
-            height="auto"
-            viewBox="0 0 824 900"
-            width="824"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-            />
-          </svg>
           <div
             class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
           >
@@ -141,6 +133,9 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
       </h1>
     </div>
     <div
+      class="svg advanced"
+    />
+    <div
       class="page container-fluid"
     >
       <div
@@ -149,17 +144,6 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
         <div
           class="align-items-center mx-0 row"
         >
-          <svg
-            class="svg advanced"
-            height="auto"
-            viewBox="0 0 824 900"
-            width="824"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-            />
-          </svg>
           <div
             class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
           >
@@ -268,6 +252,9 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
       </h1>
     </div>
     <div
+      class="svg basic"
+    />
+    <div
       class="page container-fluid"
     >
       <div
@@ -276,17 +263,6 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
         <div
           class="align-items-center mx-0 row"
         >
-          <svg
-            class="svg basic"
-            height="auto"
-            viewBox="0 0 824 900"
-            width="824"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-            />
-          </svg>
           <div
             class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
           >
@@ -394,6 +370,9 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
       </h1>
     </div>
     <div
+      class="svg enterprise"
+    />
+    <div
       class="page container-fluid"
     >
       <div
@@ -402,17 +381,6 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
         <div
           class="align-items-center mx-0 row"
         >
-          <svg
-            class="svg enterprise"
-            height="auto"
-            viewBox="0 0 824 900"
-            width="824"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-            />
-          </svg>
           <div
             class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
           >
@@ -521,6 +489,9 @@ exports[`HelpCenterPaywall should render the component correctly for when the pl
       </h1>
     </div>
     <div
+      class="svg default"
+    />
+    <div
       class="page container-fluid"
     >
       <div
@@ -529,17 +500,6 @@ exports[`HelpCenterPaywall should render the component correctly for when the pl
         <div
           class="align-items-center mx-0 row"
         >
-          <svg
-            class="svg default"
-            height="auto"
-            viewBox="0 0 824 900"
-            width="824"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-            />
-          </svg>
           <div
             class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
           >

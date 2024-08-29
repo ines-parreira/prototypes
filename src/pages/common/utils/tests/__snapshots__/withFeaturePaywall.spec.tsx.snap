@@ -15,6 +15,9 @@ exports[`withFeaturePaywall should not render the passed component when the feat
       </h1>
     </div>
     <div
+      class="svg pro"
+    />
+    <div
       class="page container-fluid"
     >
       <div
@@ -23,17 +26,6 @@ exports[`withFeaturePaywall should not render the passed component when the feat
         <div
           class="align-items-center mx-0 row"
         >
-          <svg
-            class="svg pro"
-            height="auto"
-            viewBox="0 0 824 900"
-            width="824"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-            />
-          </svg>
           <div
             class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
           >
@@ -178,6 +170,9 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
       </h1>
     </div>
     <div
+      class="svg pro"
+    />
+    <div
       class="page container-fluid"
     >
       <div
@@ -186,17 +181,6 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
         <div
           class="align-items-center mx-0 row"
         >
-          <svg
-            class="svg pro"
-            height="auto"
-            viewBox="0 0 824 900"
-            width="824"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-            />
-          </svg>
           <div
             class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
           >

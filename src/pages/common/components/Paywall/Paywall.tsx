@@ -70,24 +70,17 @@ const Paywall = ({
                 ) : (
                     <PageHeader title={pageHeader} />
                 ))}
-
+            {!hideBubble && (
+                <div
+                    className={classnames(
+                        css.svg,
+                        css[paywallTheme?.toLowerCase()]
+                    )}
+                />
+            )}
             <Container fluid className={classnames(css.page)}>
                 <div className={css.paywallContainer}>
                     <Row className="align-items-center mx-0">
-                        {!hideBubble && (
-                            <svg
-                                className={classnames(
-                                    css.svg,
-                                    css[paywallTheme?.toLowerCase()]
-                                )}
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="824"
-                                height="auto"
-                                viewBox="0 0 824 900"
-                            >
-                                <path d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z" />
-                            </svg>
-                        )}
                         <Col
                             xs={12}
                             lg={6}

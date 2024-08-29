@@ -14,6 +14,9 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
     </h1>
   </div>
   <div
+    class="svg enterprise"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -22,17 +25,6 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg enterprise"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -196,6 +188,9 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
     </h1>
   </div>
   <div
+    class="svg basic"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -204,17 +199,6 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg basic"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
@@ -382,6 +366,9 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
     </h1>
   </div>
   <div
+    class="svg pro"
+  />
+  <div
     class="page container-fluid"
   >
     <div
@@ -390,17 +377,6 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
       <div
         class="align-items-center mx-0 row"
       >
-        <svg
-          class="svg pro"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
         <div
           class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
