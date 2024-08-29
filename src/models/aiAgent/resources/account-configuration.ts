@@ -9,6 +9,7 @@ import {
     GetStoreConfigurationParams,
     StoreConfigurationResponse,
     UpsertStoreConfigurationPayload,
+    WelcomePageAcknowledgedResponse,
 } from '../types'
 import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 
@@ -107,5 +108,20 @@ export const createStoreSnippetHelpCenter = async (
 ) => {
     return await apiClient.post<HelpCenter | null>(
         `/accounts/${accountDomain}/stores/${storeName}/initialize-snippet`
+    )
+}
+
+/**
+ * Endpoints "/stores/<storeName>/welcome-page-acknowledged"
+ */
+export const getWelcomePageAcknowledged = async (storeName: string) => {
+    return await apiClient.get<WelcomePageAcknowledgedResponse>(
+        `/stores/${storeName}/welcome-page-acknowledged`
+    )
+}
+
+export const createWelcomePageAcknowledged = async (storeName: string) => {
+    return await apiClient.post<WelcomePageAcknowledgedResponse>(
+        `/stores/${storeName}/welcome-page-acknowledged`
     )
 }

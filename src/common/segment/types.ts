@@ -1,6 +1,7 @@
 export enum SegmentEvent {
     AiAgentConfigurationDisabled = 'ai-agent-configuration-disabled',
     AiAgentCopiedToEditor = 'ai-agent-copied-to-editor',
+    AiAgentEnabled = 'ai-agent-enabled',
     AiAgentGuidanceCardClicked = 'ai-agent-guidance-card-clicked',
     AiAgentGuidanceCreated = 'ai-agent-guidance-created',
     AiAgentGuidanceEdited = 'ai-agent-guidance-edited',
@@ -8,6 +9,8 @@ export enum SegmentEvent {
     AiAgentGuidanceLibraryViewed = 'ai-agent-guidance-library-viewed',
     AiAgentGuidancePageViewed = 'ai-agent-guidance-page-viewed',
     AiAgentTicketViewed = 'ai-agent-ticket-viewed',
+    AiAgentWelcomePageViewed = 'ai-agent-welcome-page-viewed',
+    AiAgentWelcomePageCtaClicked = 'ai-agent-welcome-page-cta-clicked',
     AnalyticsStatsDatepickerOpen = 'analytics/stats/datepicker-open',
     AutomateActionsAppAuthenticationModalOpened = 'automate/actions/app-authentication-modal-opened',
     AutomateActionsCreateCustomActionVisited = 'automate/actions/create-custom-action-visited',

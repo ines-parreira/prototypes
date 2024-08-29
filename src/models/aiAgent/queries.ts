@@ -10,8 +10,10 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {
     createStoreConfiguration,
     createStoreSnippetHelpCenter,
+    createWelcomePageAcknowledged,
     getAccountConfiguration,
     getStoreConfiguration,
+    getWelcomePageAcknowledged,
     upsertAccountConfiguration,
     upsertStoreConfiguration,
 } from './resources/account-configuration'
@@ -183,6 +185,32 @@ export const useGetAIGeneratedGuidances = <
         },
         enabled:
             !!client && storeIntegrationId !== null && helpCenterId !== null,
+        ...overrides,
+    })
+}
+
+// Welcome page
+export const getWelcomePageAcknowledgedKey = (storeName: string) =>
+    ['ai-agent-welcome-page-acknowledged', storeName] as const
+
+export const useGetWelcomePageAcknowledged = (
+    storeName: string,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getWelcomePageAcknowledged>>
+    >
+) => {
+    return useQuery({
+        queryKey: getWelcomePageAcknowledgedKey(storeName),
+        queryFn: () => getWelcomePageAcknowledged(storeName),
+        ...overrides,
+    })
+}
+
+export const useCreateWelcomePageAcknowledged = (
+    overrides?: MutationOverrides<typeof createWelcomePageAcknowledged>
+) => {
+    return useMutation({
+        mutationFn: ([storeName]) => createWelcomePageAcknowledged(storeName),
         ...overrides,
     })
 }

@@ -1,0 +1,369 @@
+import React from 'react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {AIAgentWelcomePageView} from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
+import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
+
+jest.mock('react-loading-skeleton', () => ({
+    __esModule: true,
+    default: () => <div>loading-skeleton</div>,
+}))
+
+jest.mock('../../hooks/useWelcomePageAcknowledgedMutation', () => ({
+    useWelcomePageAcknowledgedMutation: jest.fn(() => ({
+        isLoading: false,
+        useWelcomePageAcknowledgedMutation: jest.fn(),
+    })),
+}))
+
+jest.mock('hooks/useAppDispatch')
+
+jest.mock('state/notifications/actions', () => ({
+    notify: jest.fn(),
+}))
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {
+        AiAgentWelcomePageViewed: 'ai-agent-welcome-page-viewed',
+        AiAgentWelcomePageCtaClicked: 'ai-agent-welcome-page-cta-clicked',
+    },
+}))
+
+describe('<AIAgentWelcomePageView />', () => {
+    const assertText = (text: string, occurences = 1) => {
+        expect(screen.queryAllByText(text)).toHaveLength(occurences)
+    }
+
+    const assertHref = (href: string, occurences = 1) => {
+        const links = screen.queryAllByRole('link')
+        expect(
+            links.filter((link) => link.getAttribute('href') === href)
+        ).toHaveLength(occurences)
+    }
+
+    const assertButtonAndLearnMore = () => {
+        expect(
+            screen.getByText('Set Up AI Agent', {
+                selector: 'button span',
+            })
+        ).toBeInTheDocument()
+
+        const item1 = screen.getByText(
+            'Join our AI Agent Masterclass live webinar'
+        )
+        expect(item1).toContainElement(screen.getByText('ondemand_video'))
+        expect(item1).toHaveAttribute(
+            'href',
+            'https://app.getcontrast.io/sessions/gorgias-setting-up-ai-agent'
+        )
+
+        const item2 = screen.getByText('How to set up AI Agent')
+        expect(item2).toContainElement(screen.getByText('chrome_reader_mode'))
+        expect(item2).toHaveAttribute(
+            'href',
+            'https://docs.gorgias.com/en-US/articles/ai-agent-135134'
+        )
+    }
+
+    it('should render loading state correctly', async () => {
+        render(<AIAgentWelcomePageView shopName="my-store" state="loading" />)
+        expect(await screen.findAllByText('loading-skeleton')).toHaveLength(5)
+        expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    it('should render static state correctly', () => {
+        render(<AIAgentWelcomePageView shopName="my-store" state="static" />)
+
+        expect(
+            screen.getByText(
+                'Introducing AI Agent, your team’s newest member for seamless customer interactions who can:'
+            )
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Consume all your brand’s knowledge, identity and tone'
+            )
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('Follow Guidance built by you')
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Enhance team productivity, reducing workload & response times'
+            )
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Guide customers towards swift resolutions in seconds, not hours'
+            )
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Continuously improve based on your reviews & feedback'
+            )
+        ).toBeInTheDocument()
+
+        assertButtonAndLearnMore()
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentWelcomePageViewed,
+            {version: 'Basic', store: 'my-store'}
+        )
+    })
+
+    it('should call createWelcomePageAcknowledged with correct parameters on button click in static state', async () => {
+        const createWelcomePageAcknowledgedMock = jest.fn()
+        ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
+            createWelcomePageAcknowledged: createWelcomePageAcknowledgedMock,
+            isLoading: false,
+        })
+
+        render(<AIAgentWelcomePageView state="static" shopName="my-shop" />)
+
+        const button = screen.getByRole('button', {
+            name: /Set Up AI Agent/i,
+        })
+
+        fireEvent.click(button)
+
+        expect(createWelcomePageAcknowledgedMock).toHaveBeenCalledWith([
+            'my-shop',
+        ])
+
+        await waitFor(() =>
+            expect(logEvent).toHaveBeenLastCalledWith(
+                SegmentEvent.AiAgentWelcomePageCtaClicked,
+                {version: 'Basic', store: 'my-shop'}
+            )
+        )
+    })
+
+    it('should render dynamic state correctly when nothing is checked', () => {
+        render(
+            <AIAgentWelcomePageView
+                shopName="my-store"
+                state="dynamic"
+                emailConnected={{
+                    checked: false,
+                    link: 'welcome-page-connect-email-link',
+                }}
+                helpCenterCreated={{
+                    checked: false,
+                    link: 'welcome-page-create-help-center-link',
+                }}
+                helpCenter20Articles={{
+                    checked: false,
+                    link: 'welcome-page-add-articles-link',
+                }}
+            />
+        )
+
+        assertText(
+            'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps'
+        )
+        assertText('Connect an email to this store')
+        assertText('Create or import a Help Center')
+        assertText('Add 20+ articles to your Help Center')
+
+        assertHref('welcome-page-connect-email-link')
+        assertHref('welcome-page-create-help-center-link')
+        assertHref('welcome-page-add-articles-link')
+
+        assertText('1')
+        assertText('2')
+        assertText('3')
+
+        assertText('checked', 0)
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentWelcomePageViewed,
+            {version: 'Dynamic', store: 'my-store'}
+        )
+
+        assertButtonAndLearnMore()
+    })
+
+    it('should render dynamic state correctly when some are checked', () => {
+        render(
+            <AIAgentWelcomePageView
+                shopName="my-store"
+                state="dynamic"
+                emailConnected={{
+                    checked: false,
+                    link: 'welcome-page-connect-email-link',
+                }}
+                helpCenterCreated={{
+                    checked: true,
+                }}
+                helpCenter20Articles={{
+                    checked: true,
+                }}
+            />
+        )
+
+        assertText(
+            'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps'
+        )
+        assertText('Connect an email to this store')
+        assertText('Create or import a Help Center')
+        assertText('Add 20+ articles to your Help Center')
+
+        assertHref('welcome-page-connect-email-link')
+        assertHref('welcome-page-create-help-center-link', 0)
+        assertHref('welcome-page-add-articles-link', 0)
+
+        assertText('1')
+        assertText('2', 0)
+        assertText('3', 0)
+
+        assertText('checked', 2)
+    })
+
+    it('should render dynamic state correctly when all are checked', () => {
+        render(
+            <AIAgentWelcomePageView
+                shopName="my-store"
+                state="dynamic"
+                emailConnected={{
+                    checked: true,
+                }}
+                helpCenterCreated={{
+                    checked: true,
+                }}
+                helpCenter20Articles={{
+                    checked: true,
+                }}
+            />
+        )
+
+        assertText(
+            'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps'
+        )
+        assertText('Connect an email to this store')
+        assertText('Create or import a Help Center')
+        assertText('Add 20+ articles to your Help Center')
+
+        assertHref('welcome-page-connect-email-link', 0)
+        assertHref('welcome-page-create-help-center-link', 0)
+        assertHref('welcome-page-add-articles-link', 0)
+
+        assertText('1', 0)
+        assertText('2', 0)
+        assertText('3', 0)
+
+        assertText('checked', 3)
+    })
+
+    it('should call createWelcomePageAcknowledged with correct parameters on button click in static state', async () => {
+        const createWelcomePageAcknowledgedMock = jest.fn()
+        ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
+            createWelcomePageAcknowledged: createWelcomePageAcknowledgedMock,
+            isLoading: false,
+        })
+
+        render(
+            <AIAgentWelcomePageView
+                shopName="my-store"
+                state="dynamic"
+                emailConnected={{
+                    checked: true,
+                }}
+                helpCenterCreated={{
+                    checked: true,
+                }}
+                helpCenter20Articles={{
+                    checked: true,
+                }}
+            />
+        )
+
+        const button = screen.getByRole('button', {
+            name: /Set Up AI Agent/i,
+        })
+
+        fireEvent.click(button)
+
+        expect(createWelcomePageAcknowledgedMock).toHaveBeenCalledWith([
+            'my-store',
+        ])
+
+        await waitFor(() =>
+            expect(logEvent).toHaveBeenLastCalledWith(
+                SegmentEvent.AiAgentWelcomePageCtaClicked,
+                {version: 'Dynamic', store: 'my-store'}
+            )
+        )
+    })
+
+    it('should disable button when loading', () => {
+        const createWelcomePageAcknowledgedMock = jest.fn()
+        ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
+            createWelcomePageAcknowledged: createWelcomePageAcknowledgedMock,
+            isLoading: true,
+        })
+
+        render(<AIAgentWelcomePageView state="static" shopName="my-shop" />)
+
+        const button = screen.getByRole<HTMLButtonElement>('button', {
+            name: /Set Up AI Agent/i,
+        })
+
+        fireEvent.click(button)
+
+        expect(createWelcomePageAcknowledgedMock).not.toHaveBeenCalled()
+        expect(button.disabled).toBe(true)
+    })
+
+    it('should call dispatch with correct parameters on mutation failure', async () => {
+        const createWelcomePageAcknowledgedMock = jest
+            .fn()
+            .mockRejectedValueOnce(new Error('Test Error'))
+            .mockRejectedValueOnce('Some other error')
+
+        ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
+            createWelcomePageAcknowledged: createWelcomePageAcknowledgedMock,
+            isLoading: false,
+        })
+
+        const dispatchMock = jest.fn()
+        ;(useAppDispatch as jest.Mock).mockReturnValue(dispatchMock)
+
+        const notifyMock = jest.fn(() => 'notify-return')
+        ;(notify as jest.Mock).mockImplementation(notifyMock)
+
+        render(<AIAgentWelcomePageView state="static" shopName="my-shop" />)
+
+        const button = screen.getByRole('button', {
+            name: /Set Up AI Agent/i,
+        })
+
+        fireEvent.click(button)
+
+        await waitFor(() =>
+            expect(dispatchMock).toHaveBeenLastCalledWith('notify-return')
+        )
+
+        await waitFor(() =>
+            expect(notifyMock).toHaveBeenLastCalledWith({
+                message: 'Test Error',
+                status: 'error',
+            })
+        )
+
+        fireEvent.click(button)
+
+        await waitFor(() =>
+            expect(dispatchMock).toHaveBeenLastCalledWith('notify-return')
+        )
+
+        await waitFor(() =>
+            expect(notifyMock).toHaveBeenLastCalledWith({
+                message: 'An unknown error occurred',
+                status: 'error',
+            })
+        )
+    })
+})

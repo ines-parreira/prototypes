@@ -2,16 +2,31 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import React from 'react'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {renderHook} from '@testing-library/react-hooks'
+import * as reactQuery from '@tanstack/react-query'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {HelpCenterClient} from 'rest_api/help_center_api/client'
 import {getAIGuidanceFixture} from 'pages/automate/aiAgent/fixtures/aiGuidance.fixture'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useGetAIGeneratedGuidances} from '../queries'
+import {
+    getWelcomePageAcknowledgedKey,
+    useGetAIGeneratedGuidances,
+    useGetWelcomePageAcknowledged,
+    useCreateWelcomePageAcknowledged,
+} from '../queries'
 import * as guidanceResources from '../resources/guidances'
+import {
+    createWelcomePageAcknowledged,
+    getWelcomePageAcknowledged,
+} from '../resources/account-configuration'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),
+}))
+
+jest.mock('models/aiAgent/resources/account-configuration', () => ({
+    createWelcomePageAcknowledged: jest.fn(),
+    getWelcomePageAcknowledged: jest.fn(),
 }))
 
 mockFlags({
@@ -24,6 +39,10 @@ const getAIGeneratedGuidances = jest.spyOn(
     guidanceResources,
     'getAIGeneratedGuidances'
 )
+
+const useQuerySpy = jest.spyOn(reactQuery, 'useQuery')
+
+const useMutationSpy = jest.spyOn(reactQuery, 'useMutation')
 
 const queryClient = mockQueryClient()
 const wrapper = ({children}: any) => (
@@ -41,6 +60,8 @@ const mockedAIGuidances = [
 describe('queries', () => {
     beforeEach(() => {
         queryClient.clear()
+        useQuerySpy.mockClear()
+        useMutationSpy.mockClear()
     })
 
     describe('useGetAIGeneratedGuidances', () => {
@@ -102,6 +123,79 @@ describe('queries', () => {
             )
 
             expect(getAIGeneratedGuidances).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('getWelcomePageAcknowledgedKey', () => {
+        it('should return the correct key', () => {
+            const storeName = 'myStore'
+            const result = getWelcomePageAcknowledgedKey(storeName)
+
+            expect(result).toEqual([
+                'ai-agent-welcome-page-acknowledged',
+                storeName,
+            ])
+        })
+    })
+
+    describe('useGetWelcomePageAcknowledged', () => {
+        it('should call useQuery with the correct parameters', async () => {
+            const storeName = 'myStore'
+            const mockData = {acknowledged: true}
+            const overrides = {staleTime: 1000}
+
+            ;(getWelcomePageAcknowledged as jest.Mock).mockResolvedValue(
+                mockData
+            )
+
+            renderHook(
+                () => useGetWelcomePageAcknowledged(storeName, overrides),
+                {wrapper}
+            )
+
+            expect(useQuerySpy).toHaveBeenCalledWith({
+                queryKey: getWelcomePageAcknowledgedKey(storeName),
+                queryFn: expect.any(Function),
+                staleTime: 1000,
+            })
+
+            const queryFn = (
+                useQuerySpy.mock.calls[0][0] as unknown as {
+                    queryFn: () => any
+                }
+            ).queryFn
+
+            await expect(queryFn()).resolves.toEqual(mockData)
+        })
+    })
+
+    describe('useCreateWelcomePageAcknowledged', () => {
+        it('should call useMutation with the correct parameters', async () => {
+            const storeName = 'myStore'
+            const overrides = {cacheTime: 2000, retry: true}
+            const mockData = {acknowledged: true}
+
+            ;(createWelcomePageAcknowledged as jest.Mock).mockResolvedValue(
+                mockData
+            )
+
+            renderHook(() => useCreateWelcomePageAcknowledged(overrides), {
+                wrapper,
+            })
+
+            expect(useMutationSpy).toHaveBeenCalledWith({
+                mutationFn: expect.any(Function),
+                cacheTime: 2000,
+                retry: true,
+            })
+
+            const mutationFn = (
+                useMutationSpy.mock.calls[0][0] as unknown as {
+                    mutationFn: (args: [string]) => any
+                }
+            ).mutationFn
+
+            await expect(mutationFn([storeName])).resolves.toEqual(mockData)
         })
     })
 })

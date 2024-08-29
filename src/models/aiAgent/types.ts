@@ -67,6 +67,10 @@ export type Tag = {
     description: string
 }
 
+export type WelcomePageAcknowledgedResponse = {
+    acknowledged: boolean
+}
+
 type ConversationBot = {
     id: number
     email: string

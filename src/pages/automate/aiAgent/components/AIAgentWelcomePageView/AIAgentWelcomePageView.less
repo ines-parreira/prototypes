@@ -1,0 +1,127 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .pageContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .contentContainer {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        padding: @layout-spacing-m;
+        width: 100%;
+        max-width: 1154px;
+    }
+
+    .leftContainer {
+        flex: 1 1 50%;
+        padding: 0 @layout-spacing-l;
+    }
+
+    .rightContainer {
+        flex: 1 1 50%;
+        padding: 0 @layout-spacing-s;
+    }
+
+    .logo {
+        height: 40px;
+    }
+
+    .content {
+        padding-left: @layout-spacing-l;
+        display: flex;
+        gap: @layout-spacing-l;
+        flex-direction: column;
+    }
+
+    .description {
+        .heading-section-semibold();
+        color: var(--neutral-grey-6);
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .list {
+        .heading-subsection-regular();
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
+    .listItem {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .staticList {
+        color: var(--neutral-grey-5);
+    }
+
+    .checkIcon {
+        color: var(--feedback-success-3);
+        font-size: 24px;
+    }
+
+    .dynamicList {
+        color: var(--neutral-grey-6);
+    }
+
+    .itemNumber {
+        width: 24px;
+        height: 24px;
+        padding: 2px;
+        text-align: center;
+
+        .inner {
+            width: 20px;
+            height: 20px;
+            border-radius: 100px;
+            color: var(--neutral-grey-0);
+
+            &.number {
+                .body-medium();
+                background: var(--neutral-grey-4);
+            }
+
+            &.checked {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: var(--feedback-success-3);
+
+                i {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+    }
+
+    .openInNewIcon {
+        line-height: 24px;
+        font-size: 20px;
+        margin-left: @layout-spacing-xxs;
+        color: var(--neutral-grey-6);
+
+        &:hover,
+        &:active,
+        &:focus {
+            color: var(--neutral-grey-5);
+        }
+    }
+
+    .learnMore {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: @layout-spacing-xs;
+    }
+
+    .exampleImg {
+        max-width: 484px;
+        width: 100%;
+    }
+}

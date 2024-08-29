@@ -6,6 +6,7 @@ import {AI_AGENT} from 'pages/automate/common/components/constants'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import useId from 'hooks/useId'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 import css from './AiAgentLayout.less'
@@ -54,15 +55,21 @@ export const AiAgentLayout = ({
             <ToggleInput
                 isToggled={storeConfiguration.deactivatedDatetime === null}
                 isDisabled={isPendingCreateOrUpdate}
-                onClick={() =>
-                    updateStoreConfiguration({
+                onClick={async (isEnabled: boolean) => {
+                    await updateStoreConfiguration({
                         ...storeConfiguration,
                         deactivatedDatetime:
                             storeConfiguration.deactivatedDatetime === null
                                 ? new Date().toISOString()
                                 : null,
                     })
-                }
+
+                    if (isEnabled) {
+                        logEvent(SegmentEvent.AiAgentEnabled, {
+                            store: shopName,
+                        })
+                    }
+                }}
                 name={globalToggleAiAgentId}
                 dataCanduId="global-ai-agent-configuration-toggle"
             >
@@ -76,6 +83,7 @@ export const AiAgentLayout = ({
         globalToggleAiAgentId,
         isPendingCreateOrUpdate,
         trialModeAvailable,
+        shopName,
     ])
 
     return (

@@ -218,6 +218,17 @@ export const StoreConfigForm = ({
                     ...configurationToSubmit,
                 })
             }
+
+            if (
+                aiAgentMode === 'enabled' &&
+                (defaultFormValues.deactivatedDatetime !== null ||
+                    defaultFormValues.trialModeActivatedDatetime !== null)
+            ) {
+                logEvent(SegmentEvent.AiAgentEnabled, {
+                    store: shopName,
+                })
+            }
+
             void dispatch(
                 notify({
                     message: 'AI Agent configuration saved!',
