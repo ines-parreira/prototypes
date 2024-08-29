@@ -21,6 +21,7 @@ import {SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT} from './library/suggestSimilarPro
 import {OFFER_CHAT_WITH_TEAM_TO_FIND_BEST_FIT} from './library/offerChatWithTeamToFindBestFit'
 import {PROMOTE_QUIZZES_TO_HELP_VISIOTOR} from './library/promoteQuizzesToChooseProduct'
 import {LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS} from './library/linkValuableResourcesToHelpVisitors'
+import {CSM_CAMPAIGN_TEMPLATES} from './csmOnly'
 
 export const CAMPAIGN_TEMPLATES: Record<
     CampaignTemplate['slug'],
@@ -48,6 +49,7 @@ export const CAMPAIGN_TEMPLATES: Record<
     [PROMOTE_QUIZZES_TO_HELP_VISIOTOR.slug]: PROMOTE_QUIZZES_TO_HELP_VISIOTOR,
     [LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS.slug]:
         LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS,
+    ...CSM_CAMPAIGN_TEMPLATES,
 }
 
 export const CAMPAIGN_TEMPLATES_LIST = Object.values(CAMPAIGN_TEMPLATES)
@@ -102,9 +104,19 @@ const helpAndEducate: CampaignTemplateSectionType = {
     ],
 }
 
+const csmCampaigns: CampaignTemplateSectionType = {
+    title: 'CSM Templates',
+    description: '',
+    templates: Object.values(CSM_CAMPAIGN_TEMPLATES),
+}
+
 export const CAMPAIGN_SECTIONS: CampaignTemplateSectionType[] = [
     increaseConversionRate,
     increatseAvarageOrderValue,
     highlightProducts,
     helpAndEducate,
 ]
+
+if (window.USER_IMPERSONATED) {
+    CAMPAIGN_SECTIONS.push(csmCampaigns)
+}

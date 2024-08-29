@@ -41,6 +41,452 @@ exports[`CampaignTemplates get template configuration 2`] = `
 
 exports[`CampaignTemplates get template configuration 3`] = `
 {
+  "attachments": [],
+  "message_html": "<div><strong>Great choice!</strong> One of our favorites to go with: Complimentary product</div>",
+  "message_text": "Great choice! One of our favorites to go with: Complimentary product",
+  "meta": {
+    "delay": 5000,
+  },
+  "name": "[Increase AOV] Cross Sell complimentary item",
+  "status": "inactive",
+  "template_id": "csm-cross-sell-complimentary-item",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "notContains",
+      "type": "product_tags",
+      "value": "complimentary product",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "containsAll",
+      "type": "product_tags",
+      "value": "product",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "contains",
+      "type": "current_url",
+      "value": "/",
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 4`] = `
+{
+  "attachments": [],
+  "message_html": "<div>Welcome back! <strong>Don&#x27;t forget you can save up to 15%</strong> on your orders by becoming a <a href="http://test.com/?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=%5BTarget%20Return%20Customers%5D-%20Drive%20Loyalty%20program%20signups?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=%5BTarget%20Return%20Customers%5D-%20Drive%20Loyalty%20program%20signups" target="_blank">loyalty member</a>. </div><div><br></div><div>Already a member? <a href="http://test.com/" target="_blank">Sign in</a></div>",
+  "message_text": "Welcome back! Don't forget you can save up to 15% on your orders by becoming a loyalty member. 
+
+Already a member? Sign in",
+  "meta": {
+    "delay": 5000,
+  },
+  "name": "[Target Return Customers] Drive Loyalty program signups",
+  "status": "inactive",
+  "template_id": "csm-drive-loyalty-program-signups",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "notContains",
+      "type": "customer_tags",
+      "value": "vip",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "incognito_visitor",
+      "value": "false",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "amount_spent",
+      "value": "0",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "contains",
+      "type": "current_url",
+      "value": "/",
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 5`] = `
+{
+  "attachments": [],
+  "message_html": "<div>Use product cards to highlight the specific products highlighted in or relevant to the blog post. </div><div><br></div><div>Time spent is intentionally high to target folks who have a higher interest in the topic.</div>",
+  "message_text": "Use product cards to highlight the specific products highlighted in or relevant to the blog post. 
+
+Time spent is intentionally high to target folks who have a higher interest in the topic.",
+  "name": "[Increase Conversion][Blog content] Highlight products featured in blog",
+  "status": "inactive",
+  "template_id": "csm-highlight-products-featured-in-blog",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 42,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "contains",
+      "type": "current_url",
+      "value": [
+        "/blog",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 6`] = `
+{
+  "attachments": [],
+  "message_html": "<div><a href="http://collection.com/?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=%5BIncrease%20Conversion%5D%20Personalized%20experience%20by%20triggering%20with%20UTMs" target="_blank">Here&#x27;s the collection</a> you just saw on Instagram.</div><div><br></div><div>You can get a special $15 off any product in the range </div>",
+  "message_text": "Here's the collection you just saw on Instagram.
+
+You can get a special $15 off any product in the range ",
+  "name": "[Increase Conversion] Personalized experience by triggering with UTMs",
+  "status": "inactive",
+  "template_id": "csm-personalized-experience-by-triggering-with-utms",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "lt",
+      "type": "visit_count",
+      "value": 2,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 11,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "contains",
+      "type": "current_url",
+      "value": [
+        "/UTM_from_social_ad",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 7`] = `
+{
+  "attachments": [],
+  "message_html": "<div><strong>Want to be the first to get your hands on the drop? </strong></div><div><br></div><div>Comment &quot;Me first&quot; below and we&#x27;ll send you an early access code a week before the launch.</div><div><br></div><div>link to rules for subsequent automation:</div><div><a href="https://automationnation.gorgias.com/app/settings/rules/104113?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=%5BCapture%20and%20manage%20leads%5D-%20Presale%20landing%20page" target="_blank">1. Capture Lead</a></div><div><a href="https://automationnation.gorgias.com/app/settings/rules/104183?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=%5BCapture%20and%20manage%20leads%5D-%20Presale%20landing%20page" target="_blank">2. Automate Followup</a></div>",
+  "message_text": "Want to be the first to get your hands on the drop? 
+
+Comment "Me first" below and we'll send you an early access code a week before the launch.
+
+link to rules for subsequent automation:
+1. Capture Lead
+2. Automate Followup",
+  "meta": {
+    "delay": 0,
+  },
+  "name": "[Capture and manage leads] Presale landing page",
+  "status": "inactive",
+  "template_id": "csm-presale-landing-page",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 15,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "visit_count",
+      "value": 2,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "contains",
+      "type": "current_url",
+      "value": [
+        "/presale",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 8`] = `
+{
+  "attachments": [],
+  "message_html": "<div>Hope you&#x27;re loving the Model x surfboard!</div><div><br></div><div>We just launced a <strong>new set of fins</strong> that team USA is using in their model x at the Olympics. </div><div><br></div><div>Since you missed out on the bundle to save option, use code SECOND CHANCE for 5% off today.</div><div><br></div>",
+  "message_text": "Hope you're loving the Model x surfboard!
+
+We just launced a new set of fins that team USA is using in their model x at the Olympics. 
+
+Since you missed out on the bundle to save option, use code SECOND CHANCE for 5% off today.
+",
+  "name": "[Target Return Customers] Suggest Complimentary product to previous purchase",
+  "status": "inactive",
+  "template_id": "csm-suggest-complimentary-product-to-previous-purchase",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "incognito_visitor",
+      "value": "false",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "session_time",
+      "value": 10,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "contains",
+      "type": "current_url",
+      "value": [
+        "/collections",
+      ],
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "notContains",
+      "type": "ordered_products",
+      "value": [],
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "contains",
+      "type": "current_url",
+      "value": [
+        "/",
+      ],
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "containsAny",
+      "type": "ordered_products",
+      "value": [],
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 9`] = `
+{
+  "attachments": [],
+  "message_html": "<div>Unsure on [insert return reason here- i.e. sizing mismatch]? </div><div><br></div><div>Our team has you convered! reach out and chat below:</div>",
+  "message_text": "Unsure on [insert return reason here- i.e. sizing mismatch]? 
+
+Our team has you convered! reach out and chat below:",
+  "name": "[Prevent Returns] Target known return reasons on product (cart triggered) during business hours",
+  "status": "inactive",
+  "template_id": "csm-target-known-return-reasons-on-product-cart-triggered-during-business-hours",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "visit_count",
+      "value": 2,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "outside",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 10,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "containsAll",
+      "type": "product_tags",
+      "value": "specificproduct",
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 10`] = `
+{
+  "attachments": [],
+  "message_html": "<div>Unsure on [insert return reason here- i.e. sizing mismatch]? </div><div><br></div><div>Check out our [insert educational content here]</div>",
+  "message_text": "Unsure on [insert return reason here- i.e. sizing mismatch]? 
+
+Check out our [insert educational content here]",
+  "name": "[Prevent Returns] Target known return reasons on product (cart triggered) outside business hours",
+  "status": "inactive",
+  "template_id": "csm-target-known-return-reasons-on-product-cart-triggered-outside-business-hours",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "visit_count",
+      "value": 2,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 10,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "outside",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "containsAll",
+      "type": "product_tags",
+      "value": "specificproduct",
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 11`] = `
+{
+  "attachments": [],
+  "message_html": "<div>Unsure on [insert return reason here- i.e. sizing mismatch]? </div><div><br></div><div>Our team has you convered! reach out and chat below:</div>",
+  "message_text": "Unsure on [insert return reason here- i.e. sizing mismatch]? 
+
+Our team has you convered! reach out and chat below:",
+  "name": "[Prevent Returns] Target known return reasons on product (PDP triggered) during business hours",
+  "status": "inactive",
+  "template_id": "csm-target-known-return-reasons-on-product-during-business-hours",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "visit_count",
+      "value": 2,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "outside",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "contains",
+      "type": "current_url",
+      "value": [
+        "/specificproduct",
+      ],
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 10,
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 12`] = `
+{
+  "attachments": [],
+  "message_html": "<div>Unsure on [insert return reason here- i.e. sizing mismatch]? </div><div><br></div><div>Check out our [insert educational content here]</div>",
+  "message_text": "Unsure on [insert return reason here- i.e. sizing mismatch]? 
+
+Check out our [insert educational content here]",
+  "name": "[Prevent Returns] Target known return reasons on product (PDP triggered) outside of business hours",
+  "status": "inactive",
+  "template_id": "csm-target-known-return-reasons-on-product-outside-business-hours",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "outside",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "contains",
+      "type": "current_url",
+      "value": [
+        "/specificproduct",
+      ],
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 10,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "visit_count",
+      "value": 2,
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 13`] = `
+{
   "message_html": "<div>Hold on! Get <strong>10% off your first order</strong> with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>😉</div>",
   "message_text": "Hold on! Get 10% off your first order with code test-code 😉",
   "meta": {
@@ -79,7 +525,7 @@ exports[`CampaignTemplates get template configuration 3`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 4`] = `
+exports[`CampaignTemplates get template configuration 14`] = `
 {
   "defaultStepOpened": "message",
   "toolbarConfiguration": {
@@ -90,7 +536,7 @@ exports[`CampaignTemplates get template configuration 4`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 5`] = `
+exports[`CampaignTemplates get template configuration 15`] = `
 {
   "attachments": [
     {
@@ -141,7 +587,7 @@ You're almost there! Add our accessories for only $25!",
 }
 `;
 
-exports[`CampaignTemplates get template configuration 6`] = `
+exports[`CampaignTemplates get template configuration 16`] = `
 {
   "defaultStepOpened": "audience",
   "stepConfiguration": {
@@ -166,7 +612,7 @@ exports[`CampaignTemplates get template configuration 6`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 7`] = `
+exports[`CampaignTemplates get template configuration 17`] = `
 {
   "message_html": "<div>Need help with <strong>last-minute purchase</strong>? Leave us a message or check out our guide on <strong>custom express orders</strong> 🚚</div><div><br></div><div>We&#x27;ll be back at <strong>9AM tomorrow</strong> for you. </div>",
   "message_text": "Need help with last-minute purchase? Leave us a message or check out our guide on custom express orders 🚚
@@ -193,7 +639,7 @@ We'll be back at 9AM tomorrow for you. ",
 }
 `;
 
-exports[`CampaignTemplates get template configuration 8`] = `
+exports[`CampaignTemplates get template configuration 18`] = `
 {
   "defaultStepOpened": "message",
   "stepConfiguration": {
@@ -212,7 +658,7 @@ exports[`CampaignTemplates get template configuration 8`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 9`] = `
+exports[`CampaignTemplates get template configuration 19`] = `
 {
   "message_html": "<div>🔍 I can help you<strong> find the best fit for you</strong>! What are you looking for?</div>",
   "message_text": "🔍 I can help you find the best fit for you! What are you looking for?",
@@ -237,13 +683,13 @@ exports[`CampaignTemplates get template configuration 9`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 10`] = `
+exports[`CampaignTemplates get template configuration 20`] = `
 {
   "defaultStepOpened": "message",
 }
 `;
 
-exports[`CampaignTemplates get template configuration 11`] = `
+exports[`CampaignTemplates get template configuration 21`] = `
 {
   "message_html": "<div>🍀 You&#x27;re lucky today: <strong>10% off</strong> on your order over $150, with <strong>code <a data-discount-code="test-code" href="https://shopify.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong></div>",
   "message_text": "🍀 You're lucky today: 10% off on your order over $150, with code test-code",
@@ -284,7 +730,7 @@ exports[`CampaignTemplates get template configuration 11`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 12`] = `
+exports[`CampaignTemplates get template configuration 22`] = `
 {
   "defaultStepOpened": "audience",
   "stepConfiguration": {
@@ -309,7 +755,7 @@ exports[`CampaignTemplates get template configuration 12`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 13`] = `
+exports[`CampaignTemplates get template configuration 23`] = `
 {
   "message_html": "<div>👋 Do you have any questions? <em>I&#x27;m online </em>and <strong>ready to help you</strong> 🙂</div>",
   "message_text": "👋 Do you have any questions? I'm online and ready to help you 🙂",
@@ -340,7 +786,7 @@ exports[`CampaignTemplates get template configuration 13`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 14`] = `
+exports[`CampaignTemplates get template configuration 24`] = `
 {
   "attachments": [
     {
@@ -394,7 +840,7 @@ exports[`CampaignTemplates get template configuration 14`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 15`] = `
+exports[`CampaignTemplates get template configuration 25`] = `
 {
   "defaultStepOpened": "message",
   "toolbarConfiguration": {
@@ -405,7 +851,7 @@ exports[`CampaignTemplates get template configuration 15`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 16`] = `
+exports[`CampaignTemplates get template configuration 26`] = `
 {
   "message_html": "<div><strong>JUST IN! </strong>✨ Check out our brand-new launch! </div>",
   "message_text": "JUST IN! ✨ Check out our brand-new launch! ",
@@ -439,7 +885,7 @@ exports[`CampaignTemplates get template configuration 16`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 17`] = `
+exports[`CampaignTemplates get template configuration 27`] = `
 {
   "defaultStepOpened": "message",
   "stepConfiguration": {
@@ -458,7 +904,7 @@ exports[`CampaignTemplates get template configuration 17`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 18`] = `
+exports[`CampaignTemplates get template configuration 28`] = `
 {
   "message_html": "<div>🌟 Save <strong>10% OFF</strong> your order when you <strong>subscribe to our newsletter</strong> or <strong>our SMS alerts!</strong></div><div><br></div>",
   "message_text": "🌟 Save 10% OFF your order when you subscribe to our newsletter or our SMS alerts!",
@@ -504,7 +950,7 @@ exports[`CampaignTemplates get template configuration 18`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 19`] = `
+exports[`CampaignTemplates get template configuration 29`] = `
 {
   "defaultStepOpened": "message",
   "stepConfiguration": {
@@ -523,7 +969,7 @@ exports[`CampaignTemplates get template configuration 19`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 20`] = `
+exports[`CampaignTemplates get template configuration 30`] = `
 {
   "message_html": "<div>💡 Not sure which style to choose?</div><div><br></div><div><strong>Take our quiz</strong> or chat with our leather artisans now! 👇</div>",
   "message_text": "💡 Not sure which style to choose?
@@ -550,7 +996,7 @@ Take our quiz or chat with our leather artisans now! 👇",
 }
 `;
 
-exports[`CampaignTemplates get template configuration 21`] = `
+exports[`CampaignTemplates get template configuration 31`] = `
 {
   "defaultStepOpened": "message",
   "stepConfiguration": {
@@ -569,7 +1015,7 @@ exports[`CampaignTemplates get template configuration 21`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 22`] = `
+exports[`CampaignTemplates get template configuration 32`] = `
 {
   "message_html": "<div>Before you go, check out our <strong>latest items on sale for up to 30% OFF!</strong>💸</div>",
   "message_text": "Before you go, check out our latest items on sale for up to 30% OFF!💸",
@@ -615,7 +1061,7 @@ exports[`CampaignTemplates get template configuration 22`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 23`] = `
+exports[`CampaignTemplates get template configuration 33`] = `
 {
   "defaultStepOpened": "message",
   "stepConfiguration": {
@@ -634,7 +1080,7 @@ exports[`CampaignTemplates get template configuration 23`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 24`] = `
+exports[`CampaignTemplates get template configuration 34`] = `
 {
   "message_html": "<div>👉 <strong>Limited time offer</strong> — all under $99! </div><div><em>Pss: 5% extra discount with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>💸</em></div>",
   "message_text": "👉 Limited time offer — all under $99! 
@@ -669,7 +1115,7 @@ Pss: 5% extra discount with code SAVE5 💸",
 }
 `;
 
-exports[`CampaignTemplates get template configuration 25`] = `
+exports[`CampaignTemplates get template configuration 35`] = `
 {
   "defaultStepOpened": "message",
   "stepConfiguration": {
@@ -688,7 +1134,7 @@ exports[`CampaignTemplates get template configuration 25`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 26`] = `
+exports[`CampaignTemplates get template configuration 36`] = `
 {
   "message_html": "<div> 👋 Interested in this item? Check out our bundle, and<strong> save $10 </strong>😍</div>",
   "message_text": " 👋 Interested in this item? Check out our bundle, and save $10 😍",
@@ -729,7 +1175,7 @@ exports[`CampaignTemplates get template configuration 26`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 27`] = `
+exports[`CampaignTemplates get template configuration 37`] = `
 {
   "defaultStepOpened": "audience",
   "stepConfiguration": {
@@ -754,7 +1200,7 @@ exports[`CampaignTemplates get template configuration 27`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 28`] = `
+exports[`CampaignTemplates get template configuration 38`] = `
 {
   "message_html": "<div>This one is sold out, but we have<strong> similar styles ready for you </strong>✨</div>",
   "message_text": "This one is sold out, but we have similar styles ready for you ✨",
@@ -788,7 +1234,7 @@ exports[`CampaignTemplates get template configuration 28`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 29`] = `
+exports[`CampaignTemplates get template configuration 39`] = `
 {
   "defaultStepOpened": "audience",
   "stepConfiguration": {
