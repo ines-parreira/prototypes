@@ -68,6 +68,34 @@ describe('useBulkAction', () => {
         getNotificationPayload: getNotificationPayloadMock,
     } as unknown as ReturnType<typeof useNotificationPayload>)
 
+    it('should generate a notification for a singular ticket', () => {
+        renderHook(() => useBulkAction('ticket', [1]), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+
+        expect(useNotificationPayloadMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                objectType: 'ticket',
+            })
+        )
+    })
+
+    it('should generate a notification for multiple tickets', () => {
+        renderHook(() => useBulkAction('ticket', [1, 2]), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+
+        expect(useNotificationPayloadMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                objectType: 'tickets',
+            })
+        )
+    })
+
     it('should create job for a non-dirty view', () => {
         const {result} = renderHook(() => useBulkAction('view'), {
             wrapper: ({children}) => (

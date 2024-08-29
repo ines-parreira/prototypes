@@ -31,8 +31,11 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
     )
     const viewConfig = getConfigByType(activeView.type)
     const objectType = useMemo(
-        () => viewConfig.get('plural') as string,
-        [viewConfig]
+        () =>
+            ticketIds && ticketIds.length === 1
+                ? (viewConfig.get('singular') as string)
+                : (viewConfig.get('plural') as string),
+        [ticketIds, viewConfig]
     )
 
     const {getNotificationParams, getNotificationPayload} =

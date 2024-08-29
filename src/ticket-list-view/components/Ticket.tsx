@@ -181,7 +181,7 @@ export default function Ticket({
                                     </div>
                                     {ticket.excerpt !== '' && (
                                         <Tooltip
-                                            delay={200}
+                                            delay={300}
                                             placement="top"
                                             target={excerptRef}
                                         >

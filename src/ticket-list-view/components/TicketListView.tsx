@@ -246,13 +246,14 @@ export default function TicketListView({
                         <CheckBox
                             isChecked={hasSelectedAll}
                             onChange={onSelectAll}
-                        />
-                        {hasSelectedAll ||
-                        Object.keys(selectedTickets).length > 0 ? (
-                            <span>{selectionCount ?? '?'} selected</span>
-                        ) : (
-                            <span>Select all</span>
-                        )}
+                        >
+                            {hasSelectedAll ||
+                            Object.keys(selectedTickets).length > 0 ? (
+                                <>{selectionCount ?? '?'} selected</>
+                            ) : (
+                                <>Select all</>
+                            )}
+                        </CheckBox>
                     </div>
                     <BulkActions
                         hasSelectedAll={hasSelectedAll}
@@ -260,11 +261,6 @@ export default function TicketListView({
                         onComplete={clear}
                         selectionCount={selectionCount}
                     />
-                </div>
-            )}
-            {hasBulkActions && hasSelectedAll && (
-                <div className={css.allSelected}>
-                    All tickets in the view are selected
                 </div>
             )}
             <div className={css.list}>

@@ -504,28 +504,26 @@ describe('<TicketListView />', () => {
         expect(queryByText('BulkActions')).not.toBeInTheDocument()
     })
 
-    it('should display a message when select all is used', () => {
-        useFlagMock.mockReturnValue(true)
-        useSelectionMock.mockReturnValue({
-            hasSelectedAll: true,
-            onSelect: jest.fn(),
-            onSelectAll: jest.fn(),
-            selectedTickets: {},
-            clear: jest.fn(),
+    describe('selectionCount', () => {
+        it('should display select all when nothing is selected', () => {
+            useFlagMock.mockReturnValue(true)
+            useSelectionMock.mockReturnValue({
+                hasSelectedAll: false,
+                onSelect: jest.fn(),
+                onSelectAll: jest.fn(),
+                selectedTickets: {},
+                clear: jest.fn(),
+            })
+
+            const {getByText} = render(
+                <Provider store={store}>
+                    <TicketListView viewId={123} />
+                </Provider>
+            )
+
+            expect(getByText('Select all')).toBeInTheDocument()
         })
 
-        const {getByText} = render(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>
-        )
-
-        expect(
-            getByText('All tickets in the view are selected')
-        ).toBeInTheDocument()
-    })
-
-    describe('selectionCount', () => {
         it('should display unknown ticket count when not available (null)', () => {
             useFlagMock.mockReturnValue(true)
             useSelectionMock.mockReturnValue({
