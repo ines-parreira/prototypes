@@ -1,3 +1,4 @@
+import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import {FormValues} from './types'
 
 export const SIGNATURE_MAX_LENGTH = 250
@@ -47,4 +48,29 @@ export const DATA_TEST_ID = {
     EmptyStateAIGuidances: 'empty-state-with-ai-guidances',
     GuidancesOnly: 'guidances-only',
     GuidancesAndAIGuidances: 'guidances-and-ai-guidances',
+}
+
+export const AI_AGENT_STEPS_LABELS: Record<
+    AiAgentOnboardingWizardStep,
+    string
+> = {
+    [AiAgentOnboardingWizardStep.Education]: 'How AI Agent works',
+    [AiAgentOnboardingWizardStep.Personalize]: 'Personalize AI Agent',
+    [AiAgentOnboardingWizardStep.Knowledge]: 'Add knowledge',
+}
+
+export const AI_AGENT_STEPS_TITLES: Partial<
+    Record<AiAgentOnboardingWizardStep, string>
+> = {
+    [AiAgentOnboardingWizardStep.Personalize]: 'Personalize AI Agent',
+    [AiAgentOnboardingWizardStep.Knowledge]: 'Add knowledge to AI Agent',
+}
+
+export const AI_AGENT_STEPS_DESCRIPTIONS: Partial<
+    Record<AiAgentOnboardingWizardStep, string>
+> = {
+    [AiAgentOnboardingWizardStep.Personalize]:
+        'Set up AI Agent on at least one channel you want it to respond to.',
+    [AiAgentOnboardingWizardStep.Knowledge]:
+        'At least one knowledge source is required for AI Agent to reference when replying to customers. You can always add more later.',
 }

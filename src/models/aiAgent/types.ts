@@ -76,3 +76,9 @@ type EmailIntegration = {
     id: number
     email: string
 }
+
+export enum AiAgentOnboardingWizardStep {
+    Education = 'education',
+    Personalize = 'personalize',
+    Knowledge = 'knowledge',
+}

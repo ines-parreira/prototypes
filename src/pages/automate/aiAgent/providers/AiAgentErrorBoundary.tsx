@@ -5,12 +5,13 @@ import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 type Props = {
     children: ReactNode
     section: string
+    team?: string
 }
-export const AiAgentErrorBoundary = ({children, section}: Props) => {
+export const AiAgentErrorBoundary = ({children, section, team}: Props) => {
     return (
         <ErrorBoundary
             sentryTags={{
-                team: AI_AGENT_SENTRY_TEAM,
+                team: team ?? AI_AGENT_SENTRY_TEAM,
                 section,
             }}
         >

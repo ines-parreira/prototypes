@@ -197,12 +197,14 @@ import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/Act
 import ActionsPlatformEditAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformEditAppFormView'
 import ActionsPlatformEditTemplateViewContainer from 'pages/automate/actionsPlatform/ActionsPlatformEditTemplateViewContainer'
 import ActionsPlatformCreateTemplateView from 'pages/automate/actionsPlatform/ActionsPlatformCreateTemplateView'
+import {OBS_ADOPT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import WorkflowAnalyticsContainer from './automate/workflows/analytics/WorkflowAnalyticsContainer'
 import AutomateAllRecommendationsContainer from './automate/common/components/AutomateAllRecommendationsContainer'
 import LiveVoice from './stats/voice/pages/LiveVoice'
 import {AiAgentGuidanceLibraryContainer} from './automate/aiAgent/AiAgentGuidanceLibraryContainer'
 import {AiAgentGuidanceAiSuggestionNewContainer} from './automate/aiAgent/AiAgentGuidanceAiSuggestionNewContainer'
 import AiAgentStoreConfigurationProvider from './automate/aiAgent/providers/AiAgentStoreConfigurationProvider'
+import AiAgentOnboardingWizard from './automate/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1401,6 +1403,9 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
     const isAiAgentAIGeneratedGuidancesEnabled =
         useFlags()[FeatureFlagKey.AiAgentAIGeneratedGuidances]
 
+    const isAiAgentOnboardingWizardEnabled =
+        useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
+
     if (shopType !== 'shopify') {
         return <Redirect to="/app/automation" />
     }
@@ -1493,6 +1498,18 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                             />
                         </Switch>
                     </AiAgentErrorBoundary>
+                    {isAiAgentOnboardingWizardEnabled && (
+                        <AiAgentErrorBoundary
+                            section="ai-agent-onboarding-wizard"
+                            team={OBS_ADOPT_SENTRY_TEAM}
+                        >
+                            <Route
+                                path={`${path}/new`}
+                                exact
+                                component={AiAgentOnboardingWizard}
+                            />
+                        </AiAgentErrorBoundary>
+                    )}
                 </AiAgentStoreConfigurationProvider>
             </AiAgentAccountConfigurationProvider>
         </Switch>
