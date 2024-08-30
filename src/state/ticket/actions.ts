@@ -855,9 +855,11 @@ export const fetchTicket =
                         return Promise.resolve()
                     }
 
-                    const customerId = (
-                        fromJS(response) as Map<any, any>
-                    ).getIn(['customer', 'id']) as number
+                    const immutableTicket = fromJS(response) as Map<any, any>
+                    const customerId = immutableTicket.getIn([
+                        'customer',
+                        'id',
+                    ]) as number
 
                     if (parsedTicketId) {
                         socketManager.join(JoinEventType.Ticket, parsedTicketId)
@@ -897,7 +899,12 @@ export const fetchTicket =
                         dispatch(newMessageActions.prepare(cachedSourceType))
                     }
 
-                    const sourceTypeOfResponse = getSourceTypeOfResponse(
+                    let sourceTypeOfResponse = immutableTicket.getIn([
+                        'meta',
+                        'response_channel',
+                    ]) as TicketMessageSourceType | undefined
+
+                    sourceTypeOfResponse ??= getSourceTypeOfResponse(
                         response.messages,
                         response.via,
                         ticketId

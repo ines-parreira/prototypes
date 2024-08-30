@@ -2,11 +2,13 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map, List} from 'immutable'
 import {EditorState, ContentState, SelectionState} from 'draft-js'
 
+import {TicketVia} from '@gorgias/api-types'
 import {TicketMessageSourceType, TicketChannel} from 'business/types/ticket'
 import {ticket} from 'fixtures/ticket'
 import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
 import {GorgiasAction} from 'state/types'
 
+import {DEFAULT_SOURCE_TYPE} from 'tickets/common/config'
 import {
     newMessageResetFromMessage,
     restoreNewMessageBodyText,
@@ -18,6 +20,7 @@ import reducer, {makeNewMessage, initialState} from '../reducers'
 import * as responseUtils from '../responseUtils'
 import {NewMessage, ReplyAreaState} from '../types'
 
+import {NEW_MESSAGE_FETCH_TICKET_SUCCESS} from '../constants'
 import {getMessageContextSnapshot} from './testUtils'
 
 const {addEmailExtraContent} = emailExtraUtils
@@ -1017,6 +1020,55 @@ describe('new message reducer', () => {
                     >
                 ).toJS()
             ).toMatchSnapshot()
+        })
+    })
+
+    describe('NEW_MESSAGE_FETCH_TICKET_SUCCESS', () => {
+        it('should use the response channel from ticket meta', () => {
+            const SOURCE_TYPE = TicketMessageSourceType.Email
+            const ticket = {
+                messages: [],
+                via: TicketVia.Chat,
+                id: 1,
+                meta: {response_channel: SOURCE_TYPE},
+            }
+            const newState = (
+                reducer(initialState, {
+                    type: NEW_MESSAGE_FETCH_TICKET_SUCCESS,
+                    resp: ticket,
+                }).get('newMessage') as Map<any, any>
+            ).toJS()
+
+            expect(newState).toMatchObject({
+                channel: SOURCE_TYPE,
+                from_agent: true,
+                source: {
+                    type: SOURCE_TYPE,
+                },
+            })
+        })
+
+        it('should use the default channel if no response channel is provided', () => {
+            const ticket = {
+                messages: [],
+                via: TicketVia.Chat,
+                id: 1,
+                meta: {},
+            }
+            const newState = (
+                reducer(initialState, {
+                    type: NEW_MESSAGE_FETCH_TICKET_SUCCESS,
+                    resp: ticket,
+                }).get('newMessage') as Map<any, any>
+            ).toJS()
+
+            expect(newState).toMatchObject({
+                channel: DEFAULT_SOURCE_TYPE,
+                from_agent: true,
+                source: {
+                    type: DEFAULT_SOURCE_TYPE,
+                },
+            })
         })
     })
 })

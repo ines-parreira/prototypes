@@ -371,12 +371,15 @@ export default function reducer(
         }
 
         case types.NEW_MESSAGE_FETCH_TICKET_SUCCESS: {
-            const {messages, via, id} = action.resp as {
+            const {messages, via, id, meta} = action.resp as {
                 messages: unknown[]
+                meta: Record<string, unknown>
                 via: TicketVia
                 id: string
             }
-            const sourceType = getSourceTypeOfResponse(messages, via, id)
+            const sourceType =
+                (meta?.response_channel as TicketMessageSourceType) ??
+                getSourceTypeOfResponse(messages, via, id)
 
             return resetContentState(state).set(
                 'newMessage',
