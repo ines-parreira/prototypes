@@ -140,8 +140,9 @@ export const usePublicResourcesPooling = ({
                 })
             )
         } else {
-            const isConfigurationPage =
-                window.location.pathname === routes.configuration
+            const isConfigurationPage = window.location.pathname.startsWith(
+                routes.configuration()
+            )
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

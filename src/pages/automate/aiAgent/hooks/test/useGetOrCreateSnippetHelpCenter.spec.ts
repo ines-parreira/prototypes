@@ -56,7 +56,10 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
 
         await waitFor(() => result.current !== null)
 
-        expect(result.current).toEqual(mockHelpCenter)
+        expect(result.current).toEqual({
+            helpCenter: mockHelpCenter,
+            isLoading: false,
+        })
     })
 
     it('creates a new help center if none exists', async () => {
@@ -75,16 +78,19 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
         })
 
         expect(createHelpCenter).toHaveBeenCalledWith([accountDomain, shopName])
-        expect(result.current).toEqual(mockCreatedHelpCenter)
+        expect(result.current).toEqual({
+            helpCenter: mockCreatedHelpCenter,
+            isLoading: false,
+        })
     })
 
-    it('returns null if loading existing help center', () => {
+    it('returns loading if loading existing help center', () => {
         mockUseGetHelpCenterList(null, null, true)
         mockUseCreateStoreSnippetHelpCenter(jest.fn())
 
         const {result} = renderUseGetOrCreateSnippetHelpCenterHook()
 
-        expect(result.current).toBeNull()
+        expect(result.current).toEqual({helpCenter: null, isLoading: true})
     })
 
     it('returns null if error in fetching existing help center', () => {
@@ -93,6 +99,6 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
 
         const {result} = renderUseGetOrCreateSnippetHelpCenterHook()
 
-        expect(result.current).toBeNull()
+        expect(result.current).toEqual({isLoading: false, helpCenter: null})
     })
 })

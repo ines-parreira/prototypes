@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import {reportError} from 'utils/errors'
 import {useCreateStoreSnippetHelpCenter} from 'models/aiAgent/queries'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
@@ -13,7 +13,7 @@ type Props = {
 export const useGetOrCreateSnippetHelpCenter = ({
     accountDomain,
     shopName,
-}: Props): HelpCenter | null => {
+}: Props): {helpCenter: HelpCenter | null; isLoading: boolean} => {
     const [helpCenter, setHelpCenter] = useState<HelpCenter | null>(null)
 
     const {
@@ -78,5 +78,13 @@ export const useGetOrCreateSnippetHelpCenter = ({
         creationStatus,
     ])
 
-    return helpCenter
+    const values = useMemo(
+        () => ({
+            helpCenter,
+            isLoading: isLoadingHelpCenter || isCreatingHelpCenter,
+        }),
+        [helpCenter, isLoadingHelpCenter, isCreatingHelpCenter]
+    )
+
+    return values
 }

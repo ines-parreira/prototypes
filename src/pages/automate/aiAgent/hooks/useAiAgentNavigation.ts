@@ -11,7 +11,10 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
             test: `/app/automation/shopify/${shopName}/ai-agent/test`,
             guidance: `/app/automation/shopify/${shopName}/ai-agent/guidance`,
             newGuidanceArticle: `/app/automation/shopify/${shopName}/ai-agent/guidance/new`,
-            configuration: `/app/automation/shopify/${shopName}/ai-agent`,
+            configuration: (section?: 'knowledge' | 'email') =>
+                `/app/automation/shopify/${shopName}/ai-agent${
+                    section ? `?section=${section}` : ''
+                }`,
             guidanceArticleEdit: (articleId: number) =>
                 `/app/automation/shopify/${shopName}/ai-agent/guidance/${articleId}`,
             guidanceTemplates: `/app/automation/shopify/${shopName}/ai-agent/guidance/templates`,
@@ -33,7 +36,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
     const headerNavbarItems = useMemo(
         () => [
             {
-                route: routes.configuration,
+                route: routes.configuration(),
                 title: 'Configuration',
                 dataCanduId: 'ai-agent-navbar-configuration',
             },

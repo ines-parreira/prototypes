@@ -171,7 +171,10 @@ const setupMocks = ({
     })
 
     mockGetHasAutomate.mockReturnValue(false)
-    mockUseGetOrCreateSnippetHelpCenter.mockReturnValue(null)
+    mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
+        helpCenter: null,
+        isLoading: false,
+    })
 
     mockUseAppDispatch.mockReturnValue(jest.fn())
     mockUseWelcomePageAcknowledged.mockReturnValue({
@@ -196,6 +199,9 @@ const setupMocks = ({
 describe('AiAgentViewContainer', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        mockFlags({
+            [FeatureFlagKey.AiAgentTrialMode]: false,
+        })
     })
 
     it('renders loader if loading store configuration', () => {

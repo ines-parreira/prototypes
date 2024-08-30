@@ -6,6 +6,7 @@ type Props = {
     subtitle?: string
     isRequired?: boolean
     children: React.ReactNode
+    sectionRef?: React.RefObject<HTMLDivElement>
 }
 
 export const ConfigurationSection = ({
@@ -13,9 +14,10 @@ export const ConfigurationSection = ({
     subtitle,
     children,
     isRequired,
+    sectionRef,
 }: Props) => {
     return (
-        <section>
+        <section ref={sectionRef}>
             <h2
                 className={css.title}
                 data-candu-id="ai-agent-configuration-knowledge"

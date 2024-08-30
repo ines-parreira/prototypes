@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Link, Redirect, useParams} from 'react-router-dom'
+import {Redirect, useParams} from 'react-router-dom'
 import {isAxiosError} from 'axios'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -8,7 +8,6 @@ import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
-import {AccountConfigurationWithHttpIntegration} from 'models/aiAgent/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -16,10 +15,12 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import Button from 'pages/common/components/button/Button'
-import css from './AiAgentPlaygroundView.less'
+import {AccountConfigurationWithHttpIntegration} from 'models/aiAgent/types'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {PlaygroundChat} from './components/PlaygroundChat/PlaygroundChat'
+import {CheckPlaygroundPrerequisites} from './components/PlaygroundPrerequisites/PlaygroundPrerequisites'
+import {useGetOrCreateSnippetHelpCenter} from './hooks/useGetOrCreateSnippetHelpCenter'
+import {MissingEmailAndKnowledgeSourceAlert} from './components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts'
 
 type UrlParams = {
     shopName: string
@@ -63,6 +64,12 @@ export const AiAgentPlaygroundView = () => {
         refetchOnWindowFocus: false,
     })
 
+    const {helpCenter: snippetHelpCenter, isLoading: snippetHelpCenterLoading} =
+        useGetOrCreateSnippetHelpCenter({
+            accountDomain,
+            shopName,
+        })
+
     useEffect(() => {
         if (storeFetchError) {
             if (
@@ -86,13 +93,13 @@ export const AiAgentPlaygroundView = () => {
                     },
                 })
 
-                return history.push(routes.configuration)
+                return history.push(routes.configuration())
             }
         }
-    }, [storeFetchError, dispatch, shopName, routes.configuration])
+    }, [storeFetchError, dispatch, shopName, routes])
 
-    if (storeDataLoading || accountDataLoading) {
-        return <Loader />
+    if (storeDataLoading || accountDataLoading || snippetHelpCenterLoading) {
+        return <Loader data-testid="loader" />
     }
 
     if (
@@ -132,54 +139,26 @@ export const AiAgentPlaygroundView = () => {
         return <Redirect to={routes.automation} />
     }
 
-    if (storeConfigurationNotInitialized || !accountData || !storeData) {
-        return (
-            <div className={css.container}>
-                <div>
-                    <h1 className="heading-section-semibold">
-                        Test your AI Agent as a customer
-                    </h1>
-                    <p className="mb-0">
-                        Once AI Agent is set up, you can test how it will
-                        respond to your customers here.
-                    </p>
-                    <Link to={routes.configuration}>
-                        <Button>Configure AI Agent</Button>
-                    </Link>
-                </div>
-            </div>
-        )
-    }
-
-    const storeConfiguration = storeData.data.storeConfiguration
-
-    if (storeConfiguration.monitoredEmailIntegrations.length === 0) {
-        return (
-            <div className={css.container}>
-                <div>
-                    <h1 className="heading-section-semibold">
-                        Test your AI Agent as a customer
-                    </h1>
-                    <p>
-                        Select at least one email integration to be able to use
-                        test mode.
-                    </p>
-                    <Link to={routes.configuration}>
-                        <Button>Configure AI Agent</Button>
-                    </Link>
-                </div>
-            </div>
-        )
+    if (!accountData) {
+        return <MissingEmailAndKnowledgeSourceAlert shopName={shopName} />
     }
 
     return (
-        <PlaygroundChat
-            storeData={storeConfiguration}
-            accountData={
-                accountData.data
-                    .accountConfiguration as AccountConfigurationWithHttpIntegration
-            }
-            currentUserFirstName={currentUserFirstName}
-        />
+        <CheckPlaygroundPrerequisites
+            shopName={shopName}
+            storeConfiguration={storeData?.data?.storeConfiguration}
+            snippetHelpCenterId={snippetHelpCenter?.id}
+        >
+            {!storeConfigurationNotInitialized && storeData ? (
+                <PlaygroundChat
+                    storeData={storeData.data.storeConfiguration}
+                    accountData={
+                        accountData.data
+                            .accountConfiguration as AccountConfigurationWithHttpIntegration
+                    }
+                    currentUserFirstName={currentUserFirstName}
+                />
+            ) : null}
+        </CheckPlaygroundPrerequisites>
     )
 }

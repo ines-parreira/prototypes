@@ -77,7 +77,7 @@ export const AiAgentGuidanceContainer = () => {
                 <AutomateViewContent>
                     <Alert icon type={AlertType.Warning}>
                         Please configure your{' '}
-                        <Link to={routes.configuration}>
+                        <Link to={routes.configuration()}>
                             AI Agent settings{' '}
                         </Link>
                         first.

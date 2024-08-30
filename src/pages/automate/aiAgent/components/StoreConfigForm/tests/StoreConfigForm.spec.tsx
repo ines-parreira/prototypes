@@ -36,6 +36,7 @@ import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServi
 import {mockChatChannels} from 'pages/automate/aiAgent/fixtures/chatChannels.fixture'
 import {applicationsAutomationSettingsAiAgentEnabledFixture} from 'pages/automate/aiAgent/fixtures/applicationAutomationSettings.fixture'
 
+import {useSearchParam} from 'hooks/useSearchParam'
 import {initialState as articlesState} from '../../../../../../state/entities/helpCenter/articles'
 import {initialState as categoriesState} from '../../../../../../state/entities/helpCenter/categories'
 import {StoreConfigForm} from '../StoreConfigForm'
@@ -61,6 +62,12 @@ jest.mock('state/billing/selectors', () => ({
     getHasAutomate: jest.fn(),
 }))
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
+
+jest.mock('hooks/useSearchParam', () => ({
+    useSearchParam: jest.fn(),
+}))
+const mockUseSearchParam = jest.mocked(useSearchParam)
+const mockSetSearchParam = jest.fn()
 
 const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
     useAiAgentStoreConfigurationContext
@@ -233,7 +240,10 @@ describe('<StoreConfigForm />', () => {
             createStoreConfiguration: mockCreateStoreConfiguration,
             isPendingCreateOrUpdate: false,
         })
-        mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue(null)
+        mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue({
+            isLoading: false,
+            helpCenter: null,
+        })
         mockedUseConfigurationForm.mockReturnValue({
             formValues: initialFormValues,
             resetForm: jest.fn(),
@@ -246,6 +256,7 @@ describe('<StoreConfigForm />', () => {
             [FeatureFlagKey.AiAgentChat]: false,
             [FeatureFlagKey.AiAgentSupportContactForm]: false,
         })
+        mockUseSearchParam.mockReturnValue([null, mockSetSearchParam])
     })
     it('should render the component', () => {
         renderComponent({})
@@ -365,7 +376,10 @@ describe('<StoreConfigForm />', () => {
         })
 
         const helpCenter = getHelpCentersResponseFixture.data[0]
-        mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue(helpCenter)
+        mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue({
+            isLoading: false,
+            helpCenter,
+        })
 
         mockedUsePublicResources.mockReturnValue({
             sourceItems: [
@@ -531,7 +545,10 @@ describe('<StoreConfigForm />', () => {
             createStoreConfiguration: mockCreateStoreConfiguration,
             isPendingCreateOrUpdate: false,
         })
-        mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue(null)
+        mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue({
+            helpCenter: null,
+            isLoading: false,
+        })
         mockedUseConfigurationForm.mockReturnValue({
             formValues: {
                 ...initialFormValues,
@@ -592,5 +609,31 @@ describe('<StoreConfigForm />', () => {
         await waitFor(() => {
             expect(mockCreateStoreConfiguration).toHaveBeenCalled()
         })
+    })
+
+    it('scrolls to knowledge section if section query param equals knowledge', () => {
+        const mockScrollIntoView = jest.fn()
+        Element.prototype.scrollIntoView = mockScrollIntoView()
+
+        mockUseSearchParam.mockReturnValue(['knowledge', mockSetSearchParam])
+
+        renderComponent({})
+
+        expect(mockUseSearchParam).toHaveBeenCalledWith('section')
+        expect(mockScrollIntoView).toHaveBeenCalled()
+        expect(mockSetSearchParam).toHaveBeenCalledWith(null)
+    })
+
+    it('scrolls to email section if section query param equals email', () => {
+        const mockScrollIntoView = jest.fn()
+        Element.prototype.scrollIntoView = mockScrollIntoView()
+
+        mockUseSearchParam.mockReturnValue(['email', mockSetSearchParam])
+
+        renderComponent({})
+
+        expect(mockUseSearchParam).toHaveBeenCalledWith('section')
+        expect(mockScrollIntoView).toHaveBeenCalled()
+        expect(mockSetSearchParam).toHaveBeenCalledWith(null)
     })
 })

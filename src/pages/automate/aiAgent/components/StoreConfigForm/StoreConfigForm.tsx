@@ -4,6 +4,7 @@ import React, {
     useCallback,
     useEffect,
     useMemo,
+    useRef,
     useState,
 } from 'react'
 import {useId} from '@floating-ui/react'
@@ -47,6 +48,7 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import {HelpCenter} from 'models/helpCenter/types'
 
+import {useSearchParam} from 'hooks/useSearchParam'
 import {
     useConfigurationForm,
     validateConfigurationFormValues,
@@ -109,6 +111,32 @@ export const StoreConfigForm = ({
     const isAiAgentChatEnabled = useFlags()[FeatureFlagKey.AiAgentChat]
     const isContactFormSupportEnabled =
         useFlags()[FeatureFlagKey.AiAgentSupportContactForm]
+
+    const [sectionQueryParam, setSectionQueryParam] = useSearchParam('section')
+
+    const knowledgeSectionRef = useRef<HTMLDivElement>(null)
+    const emailSectionRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (
+            knowledgeSectionRef.current !== null &&
+            sectionQueryParam === 'knowledge'
+        ) {
+            knowledgeSectionRef.current?.scrollIntoView({behavior: 'smooth'})
+        } else if (
+            emailSectionRef.current !== null &&
+            sectionQueryParam === 'email'
+        ) {
+            emailSectionRef.current?.scrollIntoView({behavior: 'smooth'})
+        }
+
+        setSectionQueryParam(null)
+    }, [
+        sectionQueryParam,
+        knowledgeSectionRef,
+        emailSectionRef,
+        setSectionQueryParam,
+    ])
 
     const hasAutomate = useAppSelector(getHasAutomate)
     const dispatch = useAppDispatch()
@@ -353,7 +381,7 @@ export const StoreConfigForm = ({
     const isCustomToneOfVoiceSelected =
         formValues.toneOfVoice === ToneOfVoice.Custom
 
-    const snippetHelpCenter = useGetOrCreateSnippetHelpCenter({
+    const {helpCenter: snippetHelpCenter} = useGetOrCreateSnippetHelpCenter({
         accountDomain,
         shopName,
     })
@@ -620,6 +648,7 @@ export const StoreConfigForm = ({
                     title="Knowledge"
                     isRequired
                     subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
+                    sectionRef={knowledgeSectionRef}
                 >
                     <div className={css.formGroup}>
                         <Label className={css.label}>Help Center</Label>
@@ -645,7 +674,7 @@ export const StoreConfigForm = ({
                     ) : null}
                 </ConfigurationSection>
 
-                <section>
+                <section ref={emailSectionRef}>
                     <h2
                         className={css.sectionHeader}
                         data-candu-id="ai-agent-configuration-email-settings"
