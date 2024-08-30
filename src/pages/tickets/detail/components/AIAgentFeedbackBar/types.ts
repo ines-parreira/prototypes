@@ -4,3 +4,15 @@ export enum TicketEventEnum {
     SNOOZE = 'SNOOZE',
     TAGGED = 'TAGGED',
 }
+
+export enum ResourceSection {
+    ACTIONS = 'actions',
+    GUIDANCE = 'guidance',
+    KNOWLEDGE = 'knowledge',
+}
+
+export enum FeedbackStatus {
+    SAVED = 'saved',
+    SAVING = 'saving',
+    ERROR = 'error',
+}

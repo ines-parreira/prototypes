@@ -23,6 +23,7 @@ import AIAgentMessageFeedback, {
     FeedbackResourceSection,
     TOOLTIP_COOKIE_NAME,
 } from '../AIAgentMessageFeedback'
+import {ResourceSection} from '../types'
 import {messageFeedback} from './fixtures'
 
 jest.mock('state/ui/ticketAIAgentFeedback')
@@ -61,6 +62,25 @@ store.dispatch = jest.fn()
 const mockSetCookie = jest.fn()
 const mockHandleSubmitFeedback = jest.fn()
 
+const resource = {
+    id: 1,
+    name: 'Sample Resource',
+    feedback: 'thumbs_up' as const,
+}
+const resourceSection = 'someSection' as ResourceSection
+const renderFeedbackResourceComponent = (feedback: Feedback = 'thumbs_up') =>
+    render(
+        <FeedbackResourceSection
+            resource={{...resource, feedback}}
+            resourceType="guidance"
+            handleSubmitFeedback={mockHandleSubmitFeedback}
+            href="https://example.com"
+            dataTestId="feedback-section"
+            resourceId={1}
+            resourceSection={resourceSection}
+        />
+    )
+
 describe('AIAgentMessageFeedback', () => {
     beforeEach(() => {
         getSelectedAIMessageMock.mockReturnValue(mockMessage)
@@ -70,25 +90,6 @@ describe('AIAgentMessageFeedback', () => {
         ])
         ;(useHasAgentPrivileges as jest.Mock).mockReturnValue(true)
     })
-
-    const resource = {
-        id: 1,
-        name: 'Sample Resource',
-        feedback: 'thumbs_up' as const,
-    }
-    const renderFeedbackResourceComponent = (
-        feedback: Feedback = 'thumbs_up'
-    ) =>
-        render(
-            <FeedbackResourceSection
-                resource={{...resource, feedback}}
-                resourceType="guidance"
-                handleSubmitFeedback={mockHandleSubmitFeedback}
-                href="https://example.com"
-                dataTestId="feedback-section"
-                resourceId={1}
-            />
-        )
 
     it.each([
         {testId: FEEDBACK_MESSAGE_ACTIONS_TEST_ID, name: 'Actions'},
@@ -165,7 +166,8 @@ describe('AIAgentMessageFeedback', () => {
         expect(mockHandleSubmitFeedback).toHaveBeenCalledWith(
             resource.id,
             'guidance',
-            'thumbs_up'
+            'thumbs_up',
+            resourceSection
         )
     })
 

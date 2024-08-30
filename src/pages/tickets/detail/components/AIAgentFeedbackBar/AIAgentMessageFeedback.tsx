@@ -28,6 +28,7 @@ import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 
+import {getAgentMessageFeedbackStatus} from 'state/agents/selectors'
 import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
 import {useAIAgentSendFeedback} from '../../hooks/useAIAgentSendFeedback'
 
@@ -40,6 +41,8 @@ import FeedbackCreateResource from './FeedbackCreateResource'
 import FeedbackOtherResourcesSelect from './FeedbackOtherResourcesSelect'
 
 import css from './AIAgentFeedbackBar.less'
+import FeedbackStatusBadge from './FeedbackStatusBadge'
+import {FeedbackStatus, ResourceSection} from './types'
 
 export const FEEDBACK_MESSAGE_ACTIONS_TEST_ID = 'feedback-message-actions'
 export const FEEDBACK_MESSAGE_GUIDANCE_TEST_ID = 'feedback-message-guidance'
@@ -48,14 +51,39 @@ export const FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID = 'feedback-message-knowledge'
 type FeedbackResourceSectionProps = {
     resource: (Knowledge | Guidance | Action) & {feedback: Feedback}
     resourceType: FeedbackOnResource['resourceType']
+    resourceSection: ResourceSection
     handleSubmitFeedback: (
         resourceId: number | string,
         resourceType: FeedbackOnResource['resourceType'],
-        feedback: Feedback
+        feedback: Feedback,
+        resourceSection?: ResourceSection
     ) => void
     href?: string
     dataTestId?: string
     resourceId: number | string
+}
+
+type FeedbackSectionTitleContainerProps = {
+    resourceSection: ResourceSection
+    messageFeedbackStatus: Record<ResourceSection, FeedbackStatus>
+}
+const FeedbackSectionTitleContainer = ({
+    messageFeedbackStatus,
+    resourceSection,
+}: FeedbackSectionTitleContainerProps) => {
+    if (!messageFeedbackStatus || !messageFeedbackStatus[resourceSection]) {
+        return null
+    }
+
+    return (
+        <div className={css.sectionWithBadge}>
+            <div className={css.subtitle}>{resourceSection}</div>
+            <FeedbackStatusBadge
+                status={messageFeedbackStatus[resourceSection]}
+                resourceSection={resourceSection}
+            />
+        </div>
+    )
 }
 
 export const TOOLTIP_COOKIE_NAME =
@@ -65,6 +93,7 @@ export const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> =
     ({
         resource,
         resourceType,
+        resourceSection,
         handleSubmitFeedback,
         href,
         dataTestId,
@@ -80,7 +109,12 @@ export const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> =
                 return
             }
 
-            handleSubmitFeedback(resource.id, resourceType, buttonType)
+            handleSubmitFeedback(
+                resource.id,
+                resourceType,
+                buttonType,
+                resourceSection
+            )
         }
 
         const handleBlur = () => {
@@ -225,6 +259,10 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
     const {actions, guidance, knowledge} =
         useAIAgentResourcesWithFeedback(messageFeedback)
 
+    const messageFeedbackStatus = useAppSelector((state) =>
+        getAgentMessageFeedbackStatus(state)
+    )
+
     useEffect(() => {
         if (
             messageFeedback?.feedbackOnMessage &&
@@ -239,7 +277,8 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
     const handleSubmitFeedback = (
         resourceId: number | string,
         resourceType: FeedbackOnResource['resourceType'],
-        feedback: Feedback
+        feedback: Feedback,
+        resourceSection?: ResourceSection
     ) => {
         const payload: SubmitMessageFeedback = {
             feedbackOnMessage: [],
@@ -249,7 +288,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
         }
 
         if (selectedAIMessage) {
-            void submitFeedback(selectedAIMessage, payload)
+            void submitFeedback(selectedAIMessage, payload, resourceSection)
         }
     }
 
@@ -333,12 +372,16 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                 <div className={css.lineSeparator} />
                 {actions && actions.length > 0 && (
                     <div className={css.sectionContainer}>
-                        <div className={css.subtitle}>Actions</div>
+                        <FeedbackSectionTitleContainer
+                            messageFeedbackStatus={messageFeedbackStatus}
+                            resourceSection={ResourceSection.ACTIONS}
+                        />
                         {actions?.map((action) => (
                             <FeedbackResourceSection
                                 key={action.id}
                                 resource={action}
                                 resourceType={action.type}
+                                resourceSection={ResourceSection.ACTIONS}
                                 handleSubmitFeedback={handleSubmitFeedback}
                                 href={getActionUrl(
                                     action,
@@ -353,12 +396,16 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                 )}
                 {guidance && guidance.length > 0 && (
                     <div className={css.sectionContainer}>
-                        <div className={css.subtitle}>Guidance</div>
+                        <FeedbackSectionTitleContainer
+                            messageFeedbackStatus={messageFeedbackStatus}
+                            resourceSection={ResourceSection.GUIDANCE}
+                        />
                         {guidance?.map((guidance) => (
                             <FeedbackResourceSection
                                 key={guidance.id}
                                 resource={guidance}
                                 resourceType="guidance"
+                                resourceSection={ResourceSection.GUIDANCE}
                                 handleSubmitFeedback={handleSubmitFeedback}
                                 href={getGuidanceUrl(
                                     guidance,
@@ -373,12 +420,16 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                 )}
                 {knowledge && knowledge.length > 0 && (
                     <div className={css.sectionContainer}>
-                        <div className={css.subtitle}>Knowledge</div>
+                        <FeedbackSectionTitleContainer
+                            messageFeedbackStatus={messageFeedbackStatus}
+                            resourceSection={ResourceSection.KNOWLEDGE}
+                        />
                         {knowledge?.map((knowledge) => (
                             <FeedbackResourceSection
                                 key={knowledge.id}
                                 resource={knowledge}
                                 resourceType={knowledge.type}
+                                resourceSection={ResourceSection.KNOWLEDGE}
                                 handleSubmitFeedback={handleSubmitFeedback}
                                 href={getKnowledgeUrl(knowledge)}
                                 dataTestId={FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID}

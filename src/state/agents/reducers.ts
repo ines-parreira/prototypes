@@ -6,14 +6,24 @@ import {UserRole, User} from 'config/types/user'
 import {StoreAction} from '../types'
 import * as currentUserConstants from '../currentUser/constants'
 
+import {
+    FeedbackStatus,
+    ResourceSection,
+} from '../../pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import * as agentsConstants from './constants'
 import {AgentsState} from './types'
+
+export type MessageFeedbackStatusAction = {
+    resourceType: ResourceSection
+    status: FeedbackStatus
+}
 
 export const initialState: AgentsState = fromJS({
     all: [],
     pagination: [],
     locations: {},
     typingStatuses: {},
+    messageFeedbackStatus: {} as Record<ResourceSection, FeedbackStatus>,
 })
 
 export default function reducer(
@@ -89,6 +99,25 @@ export default function reducer(
             }
 
             return state.setIn(['all', existingAgentIndex], agent)
+        }
+
+        case agentsConstants.SET_AGENT_FEEDBACK_MESSAGE_STATUS: {
+            const {resourceType, status} =
+                action.data as MessageFeedbackStatusAction
+            // const feedbackStatusData = fromJS(action.data) as Map<string, unknown>;
+
+            return state.update(
+                'messageFeedbackStatus',
+                (
+                    messageFeedbackStatus: Record<
+                        ResourceSection,
+                        FeedbackStatus
+                    >
+                ) => ({
+                    ...messageFeedbackStatus,
+                    [resourceType]: status,
+                })
+            )
         }
 
         default:

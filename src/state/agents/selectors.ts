@@ -8,6 +8,10 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import {CurrentUser, RootState} from 'state/types'
 
 import {Agent, Agents, AgentsState} from 'state/agents/types'
+import {
+    FeedbackStatus,
+    ResourceSection,
+} from '../../pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from './constants'
 
 export const isHumanAgent = (agent: Map<any, any>) =>
@@ -245,3 +249,13 @@ export const isAgentTypingOnTicket = (ticketId?: string) =>
             )
         }
     )
+
+export const getAgentMessageFeedbackStatus = createSelector(
+    getState,
+    (state: AgentsState) => {
+        return state.get('messageFeedbackStatus') as Record<
+            ResourceSection,
+            FeedbackStatus
+        >
+    }
+)

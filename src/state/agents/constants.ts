@@ -15,3 +15,6 @@ export const AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS = [
     'bot@658d6f54fbff9b7c6f2d0321',
     'bot@658d6f54fbff9b7c6f2d0321.gorgias.com',
 ]
+
+export const SET_AGENT_FEEDBACK_MESSAGE_STATUS =
+    'SET_AGENT_FEEDBACK_MESSAGE_STATUS'

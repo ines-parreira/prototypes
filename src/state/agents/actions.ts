@@ -5,6 +5,10 @@ import {FetchAgentsOptions} from 'models/agents/types'
 import GorgiasApi from 'services/gorgiasApi'
 import {StoreDispatch} from 'state/types'
 
+import {
+    FeedbackStatus,
+    ResourceSection,
+} from '../../pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import * as constants from './constants'
 
 export function fetchUsers(options: FetchAgentsOptions = {}) {
@@ -58,4 +62,15 @@ export const setAgentsTypingStatuses = (
 ) => ({
     type: constants.SET_AGENTS_TYPING_STATUSES,
     data: locations,
+})
+
+export const setAgentFeedbackMessageStatus = (
+    status: FeedbackStatus | null,
+    resourceType: ResourceSection
+) => ({
+    type: constants.SET_AGENT_FEEDBACK_MESSAGE_STATUS,
+    data: {
+        status,
+        resourceType,
+    },
 })

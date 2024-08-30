@@ -20,7 +20,12 @@ import {
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import {setAgentFeedbackMessageStatus} from 'state/agents/actions'
 import {useAIAgentSendFeedback} from '../useAIAgentSendFeedback'
+import {
+    FeedbackStatus,
+    ResourceSection,
+} from '../../components/AIAgentFeedbackBar/types'
 
 const queryClient = mockQueryClient()
 
@@ -29,6 +34,15 @@ jest.mock('models/aiAgentFeedback/queries')
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
+jest.mock('state/notifications/actions')
+jest.mock('state/agents/actions')
+jest.mock('hooks/useAppDispatch')
+jest.mock('state/agents/actions', () => ({
+    setAgentFeedbackMessageStatus: jest.fn(),
+}))
+const mockedSetAgentFeedbackMessageStatus = jest.mocked(
+    setAgentFeedbackMessageStatus
+)
 
 const mockStore = configureMockStore([thunk])
 const store = {
@@ -74,6 +88,8 @@ const deletePayload: DeleteMessageFeedback = {
 }
 
 describe('useAIAgentSendFeedback', () => {
+    const mockSetAgentFeedbackMessageStatus = jest.fn()
+
     beforeEach(() => {
         mockedUseSubmitAIAgentTicketMessagesFeedback.mockReturnValue({
             mutateAsync: jest.fn().mockReturnValue({data: {}}),
@@ -84,6 +100,9 @@ describe('useAIAgentSendFeedback', () => {
             mutateAsync: jest.fn().mockReturnValue({data: {}}),
             isLoading: false,
         } as unknown as ReturnType<typeof useDeleteAIAgentTicketMessagesFeedback>)
+        mockedSetAgentFeedbackMessageStatus.mockImplementation(
+            mockSetAgentFeedbackMessageStatus
+        )
     })
 
     it('should send feedback', async () => {
@@ -250,5 +269,78 @@ describe('useAIAgentSendFeedback', () => {
                 'There was an error deleting the feedback. Please try again.',
             status: NotificationStatus.Error,
         })
+    })
+
+    it('should dispatch "SAVED" action on successful feedback submission', async () => {
+        const resourceSection = 'someSection' as ResourceSection
+
+        const {result} = renderHook(() => useAIAgentSendFeedback(), {
+            wrapper: ({children}) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(store)}>{children}</Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        await result.current.aiAgentSendFeedback(
+            message,
+            payload,
+            resourceSection
+        )
+
+        // Verify the dispatch for "SAVING" action
+        expect(mockSetAgentFeedbackMessageStatus).toHaveBeenCalledWith(
+            FeedbackStatus.SAVING,
+            resourceSection
+        )
+
+        mockedUseSubmitAIAgentTicketMessagesFeedback.mock.calls[0][0]
+            ?.onSuccess!(
+            axiosSuccessResponse(payload),
+            [1, payload, resourceSection],
+            [2, payload, resourceSection]
+        )
+
+        // Check that dispatch was called with "SAVED" action in onSuccess
+        expect(mockSetAgentFeedbackMessageStatus).toHaveBeenCalledWith(
+            FeedbackStatus.SAVED,
+            resourceSection
+        )
+    })
+
+    it('should dispatch "ERROR" action on failed feedback submission', async () => {
+        const resourceSection = 'someSection' as ResourceSection
+
+        const {result} = renderHook(() => useAIAgentSendFeedback(), {
+            wrapper: ({children}) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(store)}>{children}</Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        await result.current.aiAgentSendFeedback(
+            message,
+            payload,
+            resourceSection
+        )
+
+        // Verify the dispatch for "SAVING" action
+        expect(mockSetAgentFeedbackMessageStatus).toHaveBeenCalledWith(
+            FeedbackStatus.SAVING,
+            resourceSection
+        )
+
+        mockedUseSubmitAIAgentTicketMessagesFeedback.mock.calls[0][0]?.onError!(
+            {error: new Error('error')},
+            [1, deletePayload, resourceSection],
+            [2, deletePayload, resourceSection]
+        )
+
+        // Check that dispatch was called with "ERROR" action
+        expect(mockSetAgentFeedbackMessageStatus).toHaveBeenCalledWith(
+            FeedbackStatus.ERROR,
+            resourceSection
+        )
     })
 })

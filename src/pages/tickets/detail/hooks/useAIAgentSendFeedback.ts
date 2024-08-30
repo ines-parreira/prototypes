@@ -17,6 +17,11 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import useAppSelector from 'hooks/useAppSelector'
 import {getAIAgentMessages} from 'state/ticket/selectors'
+import {setAgentFeedbackMessageStatus} from 'state/agents/actions'
+import {
+    FeedbackStatus,
+    ResourceSection,
+} from '../components/AIAgentFeedbackBar/types'
 
 export const useAIAgentSendFeedback = () => {
     const aiMessages = useAppSelector(getAIAgentMessages)
@@ -71,7 +76,7 @@ export const useAIAgentSendFeedback = () => {
 
                 return {previousFeedback}
             },
-            onError: (error, _, context) => {
+            onError: (error, variables, context) => {
                 if (context) {
                     queryClient.setQueryData<
                         AxiosResponse<TicketFeedback, any>
@@ -88,11 +93,31 @@ export const useAIAgentSendFeedback = () => {
                         status: NotificationStatus.Error,
                     })
                 )
+
+                const [, , resourceSection] = variables
+                if (resourceSection) {
+                    dispatch(
+                        setAgentFeedbackMessageStatus(
+                            FeedbackStatus.ERROR,
+                            resourceSection
+                        )
+                    )
+                }
             },
-            onSuccess: () => {
+            onSuccess: (_, variables) => {
                 void queryClient.invalidateQueries({
                     queryKey: aiAgentFeedbackKeys.detail(messageIds),
                 })
+
+                const [, , resourceSection] = variables
+                if (resourceSection) {
+                    dispatch(
+                        setAgentFeedbackMessageStatus(
+                            FeedbackStatus.SAVED,
+                            resourceSection
+                        )
+                    )
+                }
             },
         })
 
@@ -119,9 +144,23 @@ export const useAIAgentSendFeedback = () => {
 
     const aiAgentSendFeedback = async (
         message: TicketMessage,
-        payload: SubmitMessageFeedback
+        payload: SubmitMessageFeedback,
+        resourceSection?: ResourceSection
     ) => {
-        await submitAIAgentTicketMessagesFeedback([message.id!, payload])
+        if (resourceSection) {
+            dispatch(
+                setAgentFeedbackMessageStatus(
+                    FeedbackStatus.SAVING,
+                    resourceSection
+                )
+            )
+        }
+
+        await submitAIAgentTicketMessagesFeedback([
+            message.id!,
+            payload,
+            resourceSection,
+        ])
     }
 
     const aiAgentDeleteFeedback = async (
@@ -134,6 +173,7 @@ export const useAIAgentSendFeedback = () => {
     return {
         aiAgentSendFeedback: useCallback(aiAgentSendFeedback, [
             submitAIAgentTicketMessagesFeedback,
+            dispatch,
         ]),
         aiAgentDeleteFeedback: useCallback(aiAgentDeleteFeedback, [
             deleteAIAgentTicketMessagesFeedback,

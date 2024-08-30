@@ -9,6 +9,7 @@ exports[`agents reducers create agent 1`] = `
     },
   ],
   "locations": {},
+  "messageFeedbackStatus": {},
   "pagination": [],
   "typingStatuses": {},
 }
@@ -28,6 +29,7 @@ exports[`agents reducers delete agent 1`] = `
   ],
   "all": [],
   "locations": {},
+  "messageFeedbackStatus": {},
   "pagination": [],
   "typingStatuses": {},
 }
@@ -39,6 +41,7 @@ Immutable.Map {
   "pagination": Immutable.List [],
   "locations": Immutable.Map {},
   "typingStatuses": Immutable.Map {},
+  "messageFeedbackStatus": Immutable.Map {},
 }
 `;
 
@@ -48,6 +51,7 @@ Immutable.Map {
   "pagination": Immutable.List [],
   "locations": Immutable.Map {},
   "typingStatuses": Immutable.Map {},
+  "messageFeedbackStatus": Immutable.Map {},
 }
 `;
 
@@ -64,6 +68,7 @@ Immutable.Map {
   "pagination": Immutable.List [],
   "locations": Immutable.Map {},
   "typingStatuses": Immutable.Map {},
+  "messageFeedbackStatus": Immutable.Map {},
 }
 `;
 
@@ -85,6 +90,7 @@ exports[`agents reducers set agents location 1`] = `
       "ticket": "2",
     },
   ],
+  "messageFeedbackStatus": {},
   "pagination": [],
   "typingStatuses": {},
 }
@@ -94,6 +100,7 @@ exports[`agents reducers set agents typing status 1`] = `
 {
   "all": [],
   "locations": {},
+  "messageFeedbackStatus": {},
   "pagination": [],
   "typingStatuses": [
     {
@@ -126,6 +133,7 @@ exports[`agents reducers should update the matching row in the list of agents wh
     },
   ],
   "locations": {},
+  "messageFeedbackStatus": {},
   "pagination": [],
   "typingStatuses": {},
 }
@@ -144,6 +152,7 @@ exports[`agents reducers should update the matching row in the list of agents wh
     },
   ],
   "locations": {},
+  "messageFeedbackStatus": {},
   "pagination": [],
   "typingStatuses": {},
 }
@@ -162,6 +171,7 @@ exports[`agents reducers update agent 1`] = `
     },
   ],
   "locations": {},
+  "messageFeedbackStatus": {},
   "pagination": [],
   "typingStatuses": {},
 }
@@ -180,6 +190,7 @@ exports[`agents reducers update agent 2`] = `
     },
   ],
   "locations": {},
+  "messageFeedbackStatus": {},
   "pagination": [],
   "typingStatuses": {},
 }
