@@ -46,6 +46,7 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
 
 export const tagsFilterLogicalOperators = [
     LogicalOperatorEnum.ONE_OF,
+    LogicalOperatorEnum.ALL_OF,
     LogicalOperatorEnum.NOT_ONE_OF,
 ]
 

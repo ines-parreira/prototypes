@@ -117,12 +117,22 @@ export const addOptionalFilter = (
         if (filter.values.length === 0) {
             return commonFilters
         }
-        if (filter.operator === LogicalOperatorEnum.ALL_OF) {
-            reportingFilters = filter.values.map((value) => ({
-                member: filterDefaults.member,
-                values: [toLowerCaseString(value)],
-                operator: FilterOperatorMap[filter.operator],
-            }))
+        if (
+            filter.operator === LogicalOperatorEnum.ALL_OF &&
+            filterDefaults.member === TicketMember.Tags
+        ) {
+            reportingFilters = [
+                {
+                    member: filterDefaults.member,
+                    operator: ReportingFilterOperator.Equals,
+                    values: filter.values.map(toLowerCaseString),
+                },
+                {
+                    member: TicketMember.TotalTagsToMatch,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [toLowerCaseString(filter.values.length)],
+                },
+            ]
         } else if (
             filter.operator === LogicalOperatorEnum.NOT_ONE_OF &&
             (filterDefaults.member === TicketMember.Tags ||

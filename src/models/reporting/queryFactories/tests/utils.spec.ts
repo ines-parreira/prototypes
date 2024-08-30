@@ -65,14 +65,14 @@ describe('utils', () => {
             })
         })
 
-        it('should produce multiple entries for ALL_OF operator', () => {
+        it('should add TotalTagsToMatch filter for ALL_OF operator with Tags', () => {
             const filter = {
                 values: [123, 456],
                 operator: LogicalOperatorEnum.ALL_OF,
             }
             const filters: ReportingFilter[] = []
             const filterDefaults = {
-                member: TicketMember.Channel,
+                member: TicketMember.Tags,
                 operator: ReportingFilterOperator.Equals,
             }
 
@@ -82,13 +82,18 @@ describe('utils', () => {
                 filterDefaults
             )
 
-            expect(updatedFilters).toEqual(
-                filter.values.map((value) => ({
-                    values: [toLowerCaseString(value)],
+            expect(updatedFilters).toEqual([
+                {
+                    values: filter.values.map(toLowerCaseString),
                     member: filterDefaults.member,
                     operator: FilterOperatorMap[filter.operator],
-                }))
-            )
+                },
+                {
+                    member: TicketMember.TotalTagsToMatch,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [String(filter.values.length)],
+                },
+            ])
         })
 
         it('should produce multiple entries for ALL_OF operator for a custom field', () => {

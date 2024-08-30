@@ -198,6 +198,9 @@ describe('<TagsFilter />', () => {
         const isOneOfRadioLabel = screen.getByLabelText(
             new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i')
         )
+        const isAllOfRadioLabel = screen.getByLabelText(
+            new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ALL_OF], 'i')
+        )
         const isNotOneOfRadioLabel = screen.getByLabelText(
             new RegExp(
                 LogicalOperatorLabel[LogicalOperatorEnum.NOT_ONE_OF],
@@ -222,6 +225,17 @@ describe('<TagsFilter />', () => {
             mergeStatsFiltersWithLogicalOperator({
                 tags: {
                     operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [],
+                },
+            })
+        )
+
+        userEvent.click(isAllOfRadioLabel)
+
+        expect(store.getActions()).toContainEqual(
+            mergeStatsFiltersWithLogicalOperator({
+                tags: {
+                    operator: LogicalOperatorEnum.ALL_OF,
                     values: [],
                 },
             })
