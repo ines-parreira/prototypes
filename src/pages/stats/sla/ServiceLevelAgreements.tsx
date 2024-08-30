@@ -1,22 +1,22 @@
-import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
-import {WithSlaEmptyState} from 'pages/stats/sla/components/WithSlaEmptyState'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
-import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
-
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import React from 'react'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useGridSize} from 'hooks/useGridSize'
+import {FilterKey} from 'models/stat/types'
 
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import StatsPage from 'pages/stats/StatsPage'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import {useGridSize} from 'hooks/useGridSize'
+import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
 import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
 import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-import {FilterKey} from 'models/stat/types'
+import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
+import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
+import {WithSlaEmptyState} from 'pages/stats/sla/components/WithSlaEmptyState'
+import StatsPage from 'pages/stats/StatsPage'
+
+import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 
 export const SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'SLAs'
 const OVERVIEW_SECTION_LABEL = 'Overview'
@@ -52,6 +52,7 @@ export default function ServiceLevelAgreements() {
                                         FilterKey.Channels,
                                         FilterKey.Agents,
                                         FilterKey.Tags,
+                                        FilterKey.CustomFields,
                                     ]}
                                 />
                             </DashboardGridCell>
