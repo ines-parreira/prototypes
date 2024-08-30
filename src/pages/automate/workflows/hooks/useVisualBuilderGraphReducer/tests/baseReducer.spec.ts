@@ -221,4 +221,14 @@ describe('baseReducer', () => {
 
         expect(nextG.nodes.slice(3).every((n) => n.data.isGreyedOut)).toBe(true)
     })
+
+    test('SET_APPS', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'SET_APPS',
+            apps: [{type: 'shopify'}],
+        })
+
+        expect(nextG.apps).toEqual([{type: 'shopify'}])
+    })
 })

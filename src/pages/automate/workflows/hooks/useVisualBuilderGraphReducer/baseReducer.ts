@@ -181,8 +181,8 @@ export type VisualBuilderBaseAction =
           branchId: VisualBuilderEdge['id']
       }
     | {
-          type: 'SET_APP'
-          app: NonNullable<VisualBuilderGraph['apps']>[number]
+          type: 'SET_APPS'
+          apps: NonNullable<VisualBuilderGraph['apps']>
       }
     | {
           type: 'INSERT_CANCEL_SUBSCRIPTION_NODE'
@@ -473,9 +473,9 @@ export function baseReducer(
                 draft.branchIdsEditing ??= []
                 draft.branchIdsEditing.push(action.branchId)
             })
-        case 'SET_APP':
+        case 'SET_APPS':
             return produce(graph, (draft) => {
-                draft.apps = [action.app]
+                draft.apps = action.apps
             })
         case 'SET_UPDATE_SHIPPING_ADDRESS_NODE_SETTINGS':
             return produce(graph, (draft) => {

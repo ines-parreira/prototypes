@@ -4,6 +4,7 @@ import {act} from '@testing-library/react-hooks'
 
 import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {Paths} from 'rest_api/workflows_api/client.generated'
+import {getGorgiasWfApiClient} from 'rest_api/workflows_api/client'
 
 import {
     useGetActionsApp,
@@ -14,6 +15,10 @@ import {
 const mockedServer = new MockAdapter(axios)
 
 describe('queries', () => {
+    beforeAll(async () => {
+        await getGorgiasWfApiClient()
+    })
+
     beforeEach(() => {
         mockedServer.reset()
     })

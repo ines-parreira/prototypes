@@ -28,7 +28,7 @@ import useApps from './hooks/useApps'
 import useCreateActionTemplate from './hooks/useCreateActionTemplate'
 import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
 import {ActionTemplate, ActionTemplateApp} from './types'
-import ActionsPlatformTemplateAppSelectBox from './components/ActionsPlatformTemplateAppSelectBox'
+import ActionsPlatformTemplateAppsSelectBox from './components/ActionsPlatformTemplateAppsSelectBox'
 import useValidateVisualBuilderGraph from './hooks/useValidateVisualBuilderGraph'
 
 import css from './ActionsPlatformEditTemplateView.less'
@@ -104,7 +104,7 @@ const ActionsPlatformCreateTemplateView = () => {
 
     const history = useHistory()
     const template = useMemo(() => getInitialTemplate(), [])
-    const [templateApp, setTemplateApp] = useState<ActionTemplateApp>()
+    const [templateApps, setTemplateApps] = useState<ActionTemplateApp[]>([])
 
     const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
@@ -243,12 +243,12 @@ const ActionsPlatformCreateTemplateView = () => {
                     isClosable={false}
                     onClose={_noop}
                 >
-                    <ModalHeader title="Select an App" />
+                    <ModalHeader title="Select App(s)" />
                     <ModalBody>
-                        <ActionsPlatformTemplateAppSelectBox
+                        <ActionsPlatformTemplateAppsSelectBox
                             apps={selectableApps}
-                            value={templateApp}
-                            onChange={setTemplateApp}
+                            value={templateApps}
+                            onChange={setTemplateApps}
                             isDisabled={
                                 isActionsAppsInitialLoading || isAppsLoading
                             }
@@ -258,11 +258,11 @@ const ActionsPlatformCreateTemplateView = () => {
                         <Button
                             onClick={() => {
                                 dispatch({
-                                    type: 'SET_APP',
-                                    app: templateApp!,
+                                    type: 'SET_APPS',
+                                    apps: templateApps,
                                 })
                             }}
-                            isDisabled={!templateApp}
+                            isDisabled={!templateApps.length}
                         >
                             Use
                         </Button>
