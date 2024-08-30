@@ -1,4 +1,3 @@
-import {List} from 'immutable'
 import {IntegrationType} from 'models/integration/constants'
 
 export type SelfServiceConfigurationFilter = {
@@ -120,17 +119,6 @@ export type SelfServiceReportIssueCase_DEPRECATED = Omit<
 export type SelfServiceConfigurationReportIssuePolicy = {
     enabled: boolean
     cases: SelfServiceReportIssueCase[]
-}
-
-export type QuickResponsePolicy = {
-    title: string
-    deactivatedDatetime: string | null
-    responseMessageContent: {
-        html: string
-        text: string
-        attachments: List<any>
-    }
-    id: string
 }
 
 export type SelfServiceConfiguration = {

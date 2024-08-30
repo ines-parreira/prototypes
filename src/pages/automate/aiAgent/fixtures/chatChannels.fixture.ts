@@ -26,7 +26,6 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
                 wizard: {
                     installation_method:
                         GorgiasChatCreationWizardInstallationMethod.Manual,
-                    quick_response_ids: [],
                     status: GorgiasChatCreationWizardStatus.Published,
                     step: GorgiasChatCreationWizardSteps.Installation,
                 },
@@ -98,7 +97,6 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
                 wizard: {
                     installation_method:
                         GorgiasChatCreationWizardInstallationMethod.Manual,
-                    quick_response_ids: [],
                     status: GorgiasChatCreationWizardStatus.Published,
                     step: GorgiasChatCreationWizardSteps.Installation,
                 },
@@ -169,7 +167,6 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
                 wizard: {
                     installation_method:
                         GorgiasChatCreationWizardInstallationMethod.Manual,
-                    quick_response_ids: [],
                     status: GorgiasChatCreationWizardStatus.Published,
                     step: GorgiasChatCreationWizardSteps.Installation,
                 },
@@ -240,7 +237,6 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
                 wizard: {
                     installation_method:
                         GorgiasChatCreationWizardInstallationMethod.Manual,
-                    quick_response_ids: [],
                     status: GorgiasChatCreationWizardStatus.Published,
                     step: GorgiasChatCreationWizardSteps.Installation,
                 },

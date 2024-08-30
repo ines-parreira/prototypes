@@ -32,7 +32,6 @@ const mockChannels = [
                 shop_type: 'shopify',
                 wizard: {
                     installation_method: 'manual',
-                    quick_response_ids: [],
                     status: 'published',
                     step: 'installation',
                 },

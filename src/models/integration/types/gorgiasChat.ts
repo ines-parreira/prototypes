@@ -69,7 +69,6 @@ export type GorgiasChatIntegrationMeta = {
         step: GorgiasChatCreationWizardSteps
         status: GorgiasChatCreationWizardStatus
         installation_method?: GorgiasChatCreationWizardInstallationMethod
-        quick_response_ids?: string[]
     }
     installation?: GorgiasChatMetaInstallation
     one_click_installation_method?: GorgiasChatInstallationMethod
