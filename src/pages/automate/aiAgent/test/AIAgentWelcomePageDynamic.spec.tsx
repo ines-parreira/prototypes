@@ -67,11 +67,13 @@ describe('<AIAgentWelcomePageDynamic />', () => {
 
     const baseLoadingProps = {
         state: 'loading',
+        shopType: 'shopify',
         shopName: 'my-shop',
     }
 
     const baseDynamicProps = {
         state: 'dynamic',
+        shopType: 'shopify',
         shopName: 'my-shop',
         emailConnected: {
             checked: false,
@@ -91,7 +93,13 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         props: any = baseDynamicProps,
         shopName: string = 'my-shop'
     ) => {
-        render(<AIAgentWelcomePageDynamic shopName={shopName} />)
+        render(
+            <AIAgentWelcomePageDynamic
+                state="dynamic"
+                shopType="shopify"
+                shopName={shopName}
+            />
+        )
 
         expect(
             screen.getByText('ai-agent-welcome-page-view-component-mock')

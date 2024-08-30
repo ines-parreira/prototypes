@@ -1,7 +1,8 @@
-import React, {useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 
 import classNames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
+import {useHistory} from 'react-router-dom'
 import PageHeader from 'pages/common/components/PageHeader'
 import {assetsUrl} from 'utils'
 import Button from 'pages/common/components/button/Button'
@@ -9,43 +10,62 @@ import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {SegmentEvent, logEvent} from 'common/segment'
+import {StoreConfiguration} from 'models/aiAgent/types'
 import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
 import css from './AIAgentWelcomePageView.less'
 
-export type DynamicItem =
-    | {
-          checked: false
-          link: string
-      }
-    | {
-          checked: true
-      }
+export type DynamicItem = {
+    checked: boolean
+    link?: string
+}
 
-type Props = {shopName: string} & (
-    | {
-          state: 'loading'
-      }
-    | {
-          state: 'static'
-      }
-    | {
-          state: 'dynamic'
-          emailConnected: DynamicItem
-          helpCenterCreated: DynamicItem
-          helpCenter20Articles: DynamicItem
-      }
-)
+export type AiAgentWelcomePageProps = {
+    shopType: string
+    shopName: string
+    storeConfiguration?: StoreConfiguration
+}
+
+type Props = AiAgentWelcomePageProps &
+    (
+        | {
+              state: 'loading'
+          }
+        | {
+              state: 'static'
+          }
+        | {
+              state: 'dynamic' | 'onboardingWizard'
+              emailConnected: DynamicItem
+              helpCenterCreated: DynamicItem
+              helpCenter20Articles: DynamicItem
+          }
+    )
 
 export const AIAgentWelcomePageView = (props: Props) => {
     const {isLoading, createWelcomePageAcknowledged} =
         useWelcomePageAcknowledgedMutation({shopName: props.shopName})
     const dispatch = useAppDispatch()
+    const history = useHistory()
+
+    // to be filled with actual data when we have wizard table in storeConfiguration
+    // value: storeConfiguration?.wizard?.completed_datetime === null
+    const isOnUpdateOnboardingWizard =
+        props.state === 'onboardingWizard' && !!props.storeConfiguration
 
     const description = {
         static: 'Introducing AI Agent, your team’s newest member for seamless customer interactions who can:',
         dynamic:
             'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps',
+        onboardingWizard: isOnUpdateOnboardingWizard
+            ? 'Prepare AI Agent to automate 60% of your tickets by completing these steps:'
+            : 'Prepare AI Agent to automate 60% of your email, Chat and Contact Form tickets by completing these steps:',
     }
+
+    const onOnboardingWizardClick = useCallback(() => {
+        history.push(
+            `/app/automation/${props.shopType}/${props.shopName}/ai-agent/new`
+        )
+    }, [history, props.shopName, props.shopType])
 
     const onAcknowledgedClick = async () => {
         try {
@@ -69,7 +89,8 @@ export const AIAgentWelcomePageView = (props: Props) => {
     }
 
     useEffect(() => {
-        if (props.state === 'loading') return
+        if (props.state === 'loading' || props.state === 'onboardingWizard')
+            return
 
         logEvent(SegmentEvent.AiAgentWelcomePageViewed, {
             version: props.state === 'dynamic' ? 'Dynamic' : 'Basic',
@@ -108,7 +129,8 @@ export const AIAgentWelcomePageView = (props: Props) => {
                                         <AIAgentWelcomePageViewStatic />
                                     )}
 
-                                    {props.state === 'dynamic' && (
+                                    {(props.state === 'dynamic' ||
+                                        props.state === 'onboardingWizard') && (
                                         <AIAgentWelcomePageViewDynamic
                                             emailConnected={
                                                 props.emailConnected
@@ -119,6 +141,9 @@ export const AIAgentWelcomePageView = (props: Props) => {
                                             helpCenter20Articles={
                                                 props.helpCenter20Articles
                                             }
+                                            isOnUpdateOnboardingWizard={
+                                                isOnUpdateOnboardingWizard
+                                            }
                                         />
                                     )}
                                 </div>
@@ -127,10 +152,16 @@ export const AIAgentWelcomePageView = (props: Props) => {
                                     <Button
                                         intent="primary"
                                         size="medium"
-                                        onClick={onAcknowledgedClick}
+                                        onClick={
+                                            props.state === 'onboardingWizard'
+                                                ? onOnboardingWizardClick
+                                                : onAcknowledgedClick
+                                        }
                                         disabled={isLoading}
                                     >
-                                        Set Up AI Agent
+                                        {isOnUpdateOnboardingWizard
+                                            ? 'Continue Setup'
+                                            : 'Set Up AI Agent'}
                                     </Button>
                                 </div>
 
@@ -215,61 +246,75 @@ type AIAgentWelcomePageViewDynamicProps = {
     emailConnected: DynamicItem
     helpCenterCreated: DynamicItem
     helpCenter20Articles: DynamicItem
+    isOnUpdateOnboardingWizard: boolean
 }
 
 const AIAgentWelcomePageViewDynamic = ({
     emailConnected,
     helpCenterCreated,
     helpCenter20Articles,
-}: AIAgentWelcomePageViewDynamicProps) => (
-    <div className={classNames(css.list, css.dynamicList)}>
-        {[
-            {
-                text: 'Connect an email to this store',
-                ...emailConnected,
-            },
-            {
-                text: 'Create or import a Help Center',
-                ...helpCenterCreated,
-            },
-            {
-                text: 'Add 20+ articles to your Help Center',
-                ...helpCenter20Articles,
-            },
-        ].map((item, i) => (
-            <div className={css.listItem} key={`item-${i}`}>
-                <div className={css.itemNumber}>
-                    <div
-                        className={classNames(
-                            css.inner,
-                            item.checked ? css.checked : css.number
-                        )}
-                    >
-                        {item.checked ? (
-                            <i className="material-icons">checked</i>
-                        ) : (
-                            i + 1
+    isOnUpdateOnboardingWizard,
+}: AIAgentWelcomePageViewDynamicProps) => {
+    const welcomePageDynamicList = [
+        ...(isOnUpdateOnboardingWizard
+            ? [
+                  {
+                      text: 'Update your Shopify integration',
+                      checked: false,
+                  },
+              ]
+            : []),
+        {
+            text: 'Connect an email to this store',
+            ...emailConnected,
+        },
+        {
+            text: 'Create or import a Help Center',
+            ...helpCenterCreated,
+        },
+        {
+            text: 'Add 20+ articles to your Help Center',
+            ...helpCenter20Articles,
+        },
+    ]
+
+    return (
+        <div className={classNames(css.list, css.dynamicList)}>
+            {welcomePageDynamicList.map((item, i) => (
+                <div className={css.listItem} key={`item-${i}`}>
+                    <div className={css.itemNumber}>
+                        <div
+                            className={classNames(
+                                css.inner,
+                                item.checked ? css.checked : css.number
+                            )}
+                        >
+                            {item.checked ? (
+                                <i className="material-icons">checked</i>
+                            ) : (
+                                i + 1
+                            )}
+                        </div>
+                    </div>
+
+                    <div>
+                        {item.text}
+                        {item.link && !item.checked && (
+                            <a
+                                className={classNames(
+                                    'material-icons',
+                                    css.openInNewIcon
+                                )}
+                                href={item.link}
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                open_in_new
+                            </a>
                         )}
                     </div>
                 </div>
-
-                <div>
-                    {item.text}
-                    {!item.checked && (
-                        <a
-                            className={classNames(
-                                'material-icons',
-                                css.openInNewIcon
-                            )}
-                            href={item.link}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                        >
-                            open_in_new
-                        </a>
-                    )}
-                </div>
-            </div>
-        ))}
-    </div>
-)
+            ))}
+        </div>
+    )
+}

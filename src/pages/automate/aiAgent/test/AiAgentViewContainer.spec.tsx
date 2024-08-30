@@ -159,6 +159,7 @@ const renderComponent = ({accountId = undefined}: {accountId?: number} = {}) =>
 const setupMocks = ({
     trialModeFlag = false,
     welcomePageFlag = 'off',
+    onBoardingWizardFlag = false,
     isStoreConfigurationLoading = false,
     isHelpCentersLoading = false,
     isWelcomePageAcknowledgedLoading = false,
@@ -168,6 +169,7 @@ const setupMocks = ({
     mockFlags({
         [FeatureFlagKey.AiAgentTrialMode]: trialModeFlag,
         [FeatureFlagKey.AIAgentWelcomePage]: welcomePageFlag,
+        [FeatureFlagKey.AiAgentOnboardingWizard]: onBoardingWizardFlag,
     })
 
     mockGetHasAutomate.mockReturnValue(false)
@@ -388,5 +390,19 @@ describe('AiAgentViewContainer', () => {
 
         renderComponent()
         expect(screen.getByText('Save Changes')).toBeInTheDocument
+    })
+
+    it('renders the dynamic welcome page for onboarding wizard if the the flag is enabled', () => {
+        setupMocks({
+            onBoardingWizardFlag: true,
+            hasStoreConfiguration: false,
+        })
+
+        renderComponent()
+        expect(
+            screen.queryByText(
+                'Prepare AI Agent to automate 60% of your email, Chat and Contact Form tickets by completing these steps:'
+            )
+        ).toBeInTheDocument()
     })
 })

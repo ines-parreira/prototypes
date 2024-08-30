@@ -1,10 +1,15 @@
 import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import {createMemoryHistory} from 'history'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {renderWithRouter} from 'utils/testing'
 import {AIAgentWelcomePageView} from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
 import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
+import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 
 jest.mock('react-loading-skeleton', () => ({
     __esModule: true,
@@ -31,6 +36,10 @@ jest.mock('common/segment', () => ({
         AiAgentWelcomePageCtaClicked: 'ai-agent-welcome-page-cta-clicked',
     },
 }))
+
+mockFlags({
+    [FeatureFlagKey.AiAgentOnboardingWizard]: false,
+})
 
 describe('<AIAgentWelcomePageView />', () => {
     const assertText = (text: string, occurences = 1) => {
@@ -69,13 +78,25 @@ describe('<AIAgentWelcomePageView />', () => {
     }
 
     it('should render loading state correctly', async () => {
-        render(<AIAgentWelcomePageView shopName="my-store" state="loading" />)
+        render(
+            <AIAgentWelcomePageView
+                shopType="shopify"
+                shopName="my-store"
+                state="loading"
+            />
+        )
         expect(await screen.findAllByText('loading-skeleton')).toHaveLength(5)
         expect(logEvent).not.toHaveBeenCalled()
     })
 
     it('should render static state correctly', () => {
-        render(<AIAgentWelcomePageView shopName="my-store" state="static" />)
+        render(
+            <AIAgentWelcomePageView
+                shopType="shopify"
+                shopName="my-store"
+                state="static"
+            />
+        )
 
         expect(
             screen.getByText(
@@ -121,7 +142,13 @@ describe('<AIAgentWelcomePageView />', () => {
             isLoading: false,
         })
 
-        render(<AIAgentWelcomePageView state="static" shopName="my-shop" />)
+        render(
+            <AIAgentWelcomePageView
+                state="static"
+                shopType="shopify"
+                shopName="my-shop"
+            />
+        )
 
         const button = screen.getByRole('button', {
             name: /Set Up AI Agent/i,
@@ -144,6 +171,7 @@ describe('<AIAgentWelcomePageView />', () => {
     it('should render dynamic state correctly when nothing is checked', () => {
         render(
             <AIAgentWelcomePageView
+                shopType="shopify"
                 shopName="my-store"
                 state="dynamic"
                 emailConnected={{
@@ -189,6 +217,7 @@ describe('<AIAgentWelcomePageView />', () => {
     it('should render dynamic state correctly when some are checked', () => {
         render(
             <AIAgentWelcomePageView
+                shopType="shopify"
                 shopName="my-store"
                 state="dynamic"
                 emailConnected={{
@@ -225,6 +254,7 @@ describe('<AIAgentWelcomePageView />', () => {
     it('should render dynamic state correctly when all are checked', () => {
         render(
             <AIAgentWelcomePageView
+                shopType="shopify"
                 shopName="my-store"
                 state="dynamic"
                 emailConnected={{
@@ -266,6 +296,7 @@ describe('<AIAgentWelcomePageView />', () => {
 
         render(
             <AIAgentWelcomePageView
+                shopType="shopify"
                 shopName="my-store"
                 state="dynamic"
                 emailConnected={{
@@ -305,7 +336,13 @@ describe('<AIAgentWelcomePageView />', () => {
             isLoading: true,
         })
 
-        render(<AIAgentWelcomePageView state="static" shopName="my-shop" />)
+        render(
+            <AIAgentWelcomePageView
+                state="static"
+                shopType="shopify"
+                shopName="my-shop"
+            />
+        )
 
         const button = screen.getByRole<HTMLButtonElement>('button', {
             name: /Set Up AI Agent/i,
@@ -334,7 +371,13 @@ describe('<AIAgentWelcomePageView />', () => {
         const notifyMock = jest.fn(() => 'notify-return')
         ;(notify as jest.Mock).mockImplementation(notifyMock)
 
-        render(<AIAgentWelcomePageView state="static" shopName="my-shop" />)
+        render(
+            <AIAgentWelcomePageView
+                state="static"
+                shopType="shopify"
+                shopName="my-shop"
+            />
+        )
 
         const button = screen.getByRole('button', {
             name: /Set Up AI Agent/i,
@@ -365,5 +408,97 @@ describe('<AIAgentWelcomePageView />', () => {
                 status: 'error',
             })
         )
+    })
+    it('should render onboardingWizard state with the correct copy', () => {
+        render(
+            <AIAgentWelcomePageView
+                shopType="shopify"
+                shopName="my-store"
+                state="onboardingWizard"
+                emailConnected={{
+                    checked: true,
+                }}
+                helpCenterCreated={{
+                    checked: true,
+                }}
+                helpCenter20Articles={{
+                    checked: true,
+                }}
+            />
+        )
+
+        assertText(
+            'Prepare AI Agent to automate 60% of your email, Chat and Contact Form tickets by completing these steps:'
+        )
+    })
+
+    it('should redirect to AiAgentOnboardingWizard page when Set up AI Agent button is clicked', () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        const SHOP_NAME = 'my-store'
+        const SHOP_TYPE = 'shopify'
+
+        renderWithRouter(
+            <AIAgentWelcomePageView
+                shopType={SHOP_TYPE}
+                shopName={SHOP_NAME}
+                state="onboardingWizard"
+                emailConnected={{
+                    checked: true,
+                }}
+                helpCenterCreated={{
+                    checked: true,
+                }}
+                helpCenter20Articles={{
+                    checked: true,
+                }}
+            />,
+            {history}
+        )
+
+        const button = screen.getByRole('button', {
+            name: /Set Up AI Agent/i,
+        })
+
+        fireEvent.click(button)
+
+        expect(historyPushSpy).toHaveBeenCalledWith(
+            `/app/automation/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/new`
+        )
+    })
+
+    it('should render dynamic state for Onboarding Wizard update when storeConfiguration is exist', () => {
+        render(
+            <AIAgentWelcomePageView
+                shopType="shopify"
+                shopName="my-store"
+                storeConfiguration={getStoreConfigurationFixture()}
+                state="onboardingWizard"
+                emailConnected={{
+                    checked: true,
+                }}
+                helpCenterCreated={{
+                    checked: true,
+                }}
+                helpCenter20Articles={{
+                    checked: true,
+                }}
+            />
+        )
+
+        assertText(
+            'Prepare AI Agent to automate 60% of your tickets by completing these steps:'
+        )
+        assertText('Update your Shopify integration')
+        assertText('Connect an email to this store')
+        assertText('Create or import a Help Center')
+        assertText('Add 20+ articles to your Help Center')
+
+        expect(
+            screen.getByRole('button', {
+                name: /Continue Setup/i,
+            })
+        ).toBeInTheDocument()
     })
 })

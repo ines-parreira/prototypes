@@ -7,15 +7,21 @@ import {useHelpCentersArticleCount} from '../common/hooks/useHelpCentersArticleC
 import {useHasEmailToStoreConnection} from '../common/components/TopQuestions/useHasEmailToStoreConnection'
 import useSelfServiceStoreIntegration from '../common/hooks/useSelfServiceStoreIntegration'
 import {
+    AiAgentWelcomePageProps,
     AIAgentWelcomePageView,
     DynamicItem,
 } from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
 
-type Props = {
-    shopName: string
+type Props = AiAgentWelcomePageProps & {
+    state: 'dynamic' | 'onboardingWizard'
 }
 
-export const AIAgentWelcomePageDynamic = ({shopName}: Props) => {
+export const AIAgentWelcomePageDynamic = ({
+    shopType,
+    shopName,
+    storeConfiguration,
+    state,
+}: Props) => {
     // Check - Email integrations
     const storeIntegration = useSelfServiceStoreIntegration(
         IntegrationType.Shopify,
@@ -80,13 +86,21 @@ export const AIAgentWelcomePageDynamic = ({shopName}: Props) => {
         helpCentersConnectedToStoreIds === undefined ||
         has20Articles === undefined
     ) {
-        return <AIAgentWelcomePageView state="loading" shopName={shopName} />
+        return (
+            <AIAgentWelcomePageView
+                state="loading"
+                shopType={shopType}
+                shopName={shopName}
+            />
+        )
     }
 
     return (
         <AIAgentWelcomePageView
-            state="dynamic"
+            state={state}
+            shopType={shopType}
             shopName={shopName}
+            storeConfiguration={storeConfiguration}
             emailConnected={
                 hasEmailToStoreConnection
                     ? {checked: true}

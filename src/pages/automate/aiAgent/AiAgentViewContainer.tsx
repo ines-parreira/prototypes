@@ -27,23 +27,28 @@ const AiAgentViewContainer = () => {
     const accountId = currentAccount.get('id')
     const accountDomain = currentAccount.get('domain')
 
+    const isAiAgentOnboardingWizardEnabled =
+        useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
+
     const welcomePageFeatureFlag: WelcomePageFeatureFlag =
         useFlags()[FeatureFlagKey.AIAgentWelcomePage]
 
     const welcomePageAcknowledged = useWelcomePageAcknowledged({shopName})
 
-    const storeConfiguration = useAiAgentStoreConfigurationContext()
+    const {isLoading: isLoadingStoreConfiguration, storeConfiguration} =
+        useAiAgentStoreConfigurationContext()
 
-    if (storeConfiguration.isLoading || welcomePageAcknowledged.isLoading) {
+    if (isLoadingStoreConfiguration || welcomePageAcknowledged.isLoading) {
         return <Loader data-testid="loader" />
     }
 
-    if (
+    const displayDynamicWelcomePage =
         (welcomePageFeatureFlag === 'dynamic_odd_static_even' ||
             welcomePageFeatureFlag === 'static_odd_dynamic_even') &&
-        storeConfiguration.storeConfiguration === undefined &&
+        storeConfiguration === undefined &&
         welcomePageAcknowledged.data?.acknowledged !== true
-    ) {
+
+    if (!isAiAgentOnboardingWizardEnabled && displayDynamicWelcomePage) {
         const showDynamic =
             (welcomePageFeatureFlag === 'dynamic_odd_static_even' &&
                 accountId % 2 !== 0) ||
@@ -51,13 +56,36 @@ const AiAgentViewContainer = () => {
                 accountId % 2 === 0)
 
         return showDynamic ? (
-            <AIAgentWelcomePageDynamic shopName={shopName} />
+            <AIAgentWelcomePageDynamic
+                state="dynamic"
+                shopType={shopType}
+                shopName={shopName}
+            />
         ) : (
-            <AIAgentWelcomePageView state="static" shopName={shopName} />
+            <AIAgentWelcomePageView
+                state="static"
+                shopType={shopType}
+                shopName={shopName}
+            />
         )
     }
 
-    return (
+    // to be filled with actual data when we have wizard table in storeConfiguration
+    // value: storeConfiguration?.wizard?.completed_datetime === null
+    const isOnUpdateOnboardingWizard = false
+
+    const displayOnboardingWizardWelcomePage =
+        isAiAgentOnboardingWizardEnabled &&
+        (!storeConfiguration || isOnUpdateOnboardingWizard)
+
+    return displayOnboardingWizardWelcomePage ? (
+        <AIAgentWelcomePageDynamic
+            state="onboardingWizard"
+            shopType={shopType}
+            shopName={shopName}
+            storeConfiguration={storeConfiguration}
+        />
+    ) : (
         <AiAgentConfigurationView
             accountDomain={accountDomain}
             shopName={shopName}
