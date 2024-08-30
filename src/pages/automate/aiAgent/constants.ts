@@ -22,6 +22,7 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     ticketSampleRate: null,
     silentHandover: null,
     monitoredEmailIntegrations: null,
+    monitoredChatIntegrations: null,
     tags: null,
     excludedTopics: null,
     signature: null,

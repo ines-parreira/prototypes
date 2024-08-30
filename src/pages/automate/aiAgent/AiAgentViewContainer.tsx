@@ -19,8 +19,9 @@ type WelcomePageFeatureFlag =
     | 'static_odd_dynamic_even'
 
 const AiAgentViewContainer = () => {
-    const {shopName} = useParams<{
+    const {shopName, shopType} = useParams<{
         shopName: string
+        shopType: string
     }>()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountId = currentAccount.get('id')
@@ -60,6 +61,7 @@ const AiAgentViewContainer = () => {
         <AiAgentConfigurationView
             accountDomain={accountDomain}
             shopName={shopName}
+            shopType={shopType}
         />
     )
 }

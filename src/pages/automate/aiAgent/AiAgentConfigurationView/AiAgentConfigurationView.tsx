@@ -18,10 +18,12 @@ const READ_FULFILLMENTS_PERMISSION = 'read_fulfillments'
 
 type AiAgentConfigurationViewProps = {
     shopName: string
+    shopType: string
     accountDomain: string
 }
 export const AiAgentConfigurationView = ({
     shopName,
+    shopType,
     accountDomain,
 }: AiAgentConfigurationViewProps) => {
     const dispatch = useAppDispatch()
@@ -86,6 +88,7 @@ export const AiAgentConfigurationView = ({
 
                 <StoreConfigForm
                     shopName={shopName}
+                    shopType={shopType}
                     accountDomain={accountDomain}
                     faqHelpCenters={helpCenters}
                 />

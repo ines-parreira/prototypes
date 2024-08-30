@@ -151,5 +151,6 @@ export const validateConfigurationFormValues = (
         // Need to explicitly set these fields to non-null
         signature: formValues.signature,
         monitoredEmailIntegrations: formValues.monitoredEmailIntegrations,
+        monitoredChatIntegrations: formValues.monitoredChatIntegrations || [],
     }
 }

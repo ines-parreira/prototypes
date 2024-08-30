@@ -38,6 +38,7 @@ export const getStoreConfigurationFromFormValues = (
                 : null,
         signature,
         helpCenterId,
+        monitoredChatIntegrations: formValues.monitoredChatIntegrations,
     }
 }
 
@@ -55,4 +56,5 @@ export const getFormValuesFromStoreConfiguration = (
     toneOfVoice: storeConfig.toneOfVoice,
     customToneOfVoiceGuidance: storeConfig.customToneOfVoiceGuidance,
     helpCenterId: storeConfig.helpCenterId,
+    monitoredChatIntegrations: storeConfig.monitoredChatIntegrations,
 })

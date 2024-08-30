@@ -35,6 +35,7 @@ type Props = {
     placeholder?: string
     prefix?: ReactNode
     suffix?: ReactNode
+    testId?: string
 } & Omit<HTMLAttributes<HTMLDivElement>, 'prefix'>
 
 type SelectInputBoxContextState = {
@@ -58,6 +59,7 @@ const SelectInputBox = (
         prefix,
         suffix,
         id,
+        testId,
     }: Props,
     ref: ForwardedRef<HTMLDivElement>
 ) => {
@@ -147,6 +149,7 @@ const SelectInputBox = (
                 role="listbox"
                 tabIndex={isDisabledMemoized ? -1 : 0}
                 id={id}
+                data-testid={testId}
             >
                 <div
                     className={classnames(

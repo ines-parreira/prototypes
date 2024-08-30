@@ -41,6 +41,7 @@ export type StoreConfiguration = {
     tags: Tag[]
     conversationBot: ConversationBot
     monitoredEmailIntegrations: EmailIntegration[]
+    monitoredChatIntegrations: number[]
 
     silentHandover: boolean
     ticketSampleRate: number
@@ -58,6 +59,7 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'trialModeActivatedDatetime'
     | 'customToneOfVoiceGuidance'
     | 'signature'
+    | 'monitoredChatIntegrations'
 >
 
 export type UpsertStoreConfigurationPayload = StoreConfiguration

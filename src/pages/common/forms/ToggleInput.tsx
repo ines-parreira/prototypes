@@ -24,6 +24,7 @@ type Props = {
     name?: string
     onClick?: (nextValue: boolean, event: MouseEvent<HTMLLabelElement>) => void
     dataCanduId?: string
+    testId?: string
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'checked' | 'disabled' | 'name' | 'type' | 'onClick'
@@ -40,6 +41,7 @@ const ToggleInput = ({
     name,
     onClick,
     dataCanduId,
+    testId,
     ...props
 }: Props) => {
     const randomId = useId()
@@ -73,6 +75,7 @@ const ToggleInput = ({
                     className={css.input}
                     checked={isToggled}
                     disabled
+                    data-testid={testId}
                     {...(dataCanduId ? {'data-candu-id': dataCanduId} : {})}
                     {...props}
                 />

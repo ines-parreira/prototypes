@@ -6,6 +6,7 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {keyBy} from 'lodash'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {account} from 'fixtures/account'
 import {IntegrationType} from 'models/integration/types'
@@ -17,6 +18,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+
 import AiAgentViewContainer from '../AiAgentViewContainer'
 import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
 import {useGetOrCreateSnippetHelpCenter} from '../hooks/useGetOrCreateSnippetHelpCenter'
@@ -76,6 +79,8 @@ jest.mock('common/segment', () => ({
 
 const mockStore = configureMockStore([thunk])
 
+const contactForm = ContactFormFixture
+
 const getState = (accountId?: number) => ({
     currentAccount: fromJS(
         accountId !== undefined ? {...account, id: accountId} : account
@@ -103,6 +108,21 @@ const getState = (accountId?: number) => ({
             },
         ],
     }),
+    entities: {
+        contactForm: {
+            contactFormsAutomationSettings: {
+                automationSettingsByContactFormId: {
+                    [contactForm.id]: {
+                        workflows: [],
+                        order_management: {enabled: false},
+                    },
+                },
+            },
+            contactForms: {
+                contactFormById: keyBy([contactForm], 'id'),
+            },
+        },
+    },
 })
 
 const mockedAiAgentStoreConfigurationContext = {
@@ -223,7 +243,9 @@ describe('AiAgentViewContainer', () => {
 
         rerender(
             <Provider store={mockStore(getState())}>
-                <AiAgentViewContainer />
+                <QueryClientProvider client={mockQueryClient()}>
+                    <AiAgentViewContainer />
+                </QueryClientProvider>
             </Provider>
         )
 

@@ -21,11 +21,12 @@ export type FormValues = {
     toneOfVoice: string | null
     customToneOfVoiceGuidance: string | null
     helpCenterId: number | null
+    monitoredChatIntegrations: number[] | null
 }
 
 export type ValidFormValues = NonNullFields<
     FormValues,
-    'monitoredEmailIntegrations' | 'signature'
+    'monitoredEmailIntegrations' | 'signature' | 'monitoredChatIntegrations'
 >
 
 export type AIGuidance = Omit<

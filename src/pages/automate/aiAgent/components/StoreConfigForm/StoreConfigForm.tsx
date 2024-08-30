@@ -1,3 +1,4 @@
+// External Libraries
 import React, {
     ComponentProps,
     useCallback,
@@ -12,6 +13,8 @@ import _get from 'lodash/get'
 import {List} from 'immutable'
 import {Label} from '@gorgias/ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
+// Absolute Imports
 import classnames from 'classnames'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {reportError} from 'utils/errors'
@@ -20,7 +23,12 @@ import {Value} from 'pages/common/forms/SelectField/types'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {NotificationStatus} from 'state/notifications/types'
+import {notify} from 'state/notifications/actions'
+import {getHasAutomate} from 'state/billing/selectors'
 
+// Relative Imports
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'
@@ -29,27 +37,20 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ListField from 'pages/common/forms/ListField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import TextArea from 'pages/common/forms/TextArea'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {SegmentEvent, logEvent} from 'common/segment'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import {getHasAutomate} from 'state/billing/selectors'
+
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import {HelpCenter} from 'models/helpCenter/types'
+
 import {
     useConfigurationForm,
     validateConfigurationFormValues,
 } from '../../hooks/useConfigurationForm'
-import {
-    ToneOfVoice,
-    CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
-    SIGNATURE_MAX_LENGTH,
-    EXCLUDED_TOPIC_MAX_LENGTH,
-    MAX_EXCLUDED_TOPICS,
-} from '../../constants'
 import {usePublicResources} from '../../hooks/usePublicResources'
 import {FormValues, ValidFormValues} from '../../types'
 import {isAiAgentEnabled, isHandoffEnabled} from '../../util'
@@ -60,12 +61,21 @@ import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection
 import TagList from '../TicketTag/TagList'
 
 import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
+import {
+    CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
+    EXCLUDED_TOPIC_MAX_LENGTH,
+    MAX_EXCLUDED_TOPICS,
+    SIGNATURE_MAX_LENGTH,
+    ToneOfVoice,
+} from '../../constants'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
-import css from './StoreConfigForm.less'
+import {ChatIntegrationListSelection} from '../ChatIntegrationListSelection/ChatIntegrationListSelection'
+
 import {
     getFormValuesFromStoreConfiguration,
     getStoreConfigurationFromFormValues,
 } from './StoreConfigForm.utils'
+import css from './StoreConfigForm.less'
 
 const INITIAL_FORM_VALUES = {
     trialModeActivatedDatetime: null,
@@ -79,10 +89,12 @@ const INITIAL_FORM_VALUES = {
     customToneOfVoiceGuidance:
         "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
     helpCenter: null,
+    monitoredChatIntegrations: [],
 }
 
 type Props = {
     shopName: string
+    shopType: string
     accountDomain: string
     faqHelpCenters: HelpCenter[]
 }
@@ -90,9 +102,11 @@ type Props = {
 export const StoreConfigForm = ({
     shopName,
     accountDomain,
+    shopType,
     faqHelpCenters,
 }: Props) => {
     const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
+    const isAiAgentChatEnabled = useFlags()[FeatureFlagKey.AiAgentChat]
     const isContactFormSupportEnabled =
         useFlags()[FeatureFlagKey.AiAgentSupportContactForm]
 
@@ -119,6 +133,8 @@ export const StoreConfigForm = ({
             id: integration.id,
         }))
     }, [emailIntegrations])
+
+    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
     const defaultFormValues: Partial<FormValues> = useMemo(() => {
         const initialHelpCenter = faqHelpCenters[0]
@@ -288,6 +304,12 @@ export const StoreConfigForm = ({
             }
         }
         updateValue('monitoredEmailIntegrations', monitoredEmailIntegrations)
+    }
+
+    const handleSelectChatIntegration = (values: string[]) => {
+        const ids = values.map((option) => parseInt(option, 10))
+
+        updateValue('monitoredChatIntegrations', ids)
     }
 
     const handleToneOfVoiceChange = (toneOfVoiceLabel: Value) => {
@@ -516,7 +538,10 @@ export const StoreConfigForm = ({
                                 </ul>
                             </IconTooltip>
                         </Label>
-                        <div data-candu-id="ai-agent-configuration-tone-of-voice">
+                        <div
+                            data-candu-id="ai-agent-configuration-tone-of-voice"
+                            data-testid="ai-agent-configuration-tone-of-voice"
+                        >
                             <SelectField
                                 fullWidth
                                 showSelectedOption
@@ -539,6 +564,7 @@ export const StoreConfigForm = ({
                             Select a tone of voice for AI Agent to use with
                             customers.
                         </div>
+
                         {isCustomToneOfVoiceSelected && (
                             <div className={css.customToneOfVoiceGuidance}>
                                 <TextArea
@@ -566,6 +592,29 @@ export const StoreConfigForm = ({
                         )}
                     </div>
                 </section>
+                {isAiAgentChatEnabled && (
+                    <ConfigurationSection title="Chat">
+                        <div className={css.formGroup}>
+                            <Label isRequired={true} className={css.label}>
+                                AI Agent responds to tickets sent to the
+                                following Chats
+                            </Label>
+                            <ChatIntegrationListSelection
+                                selectedIds={
+                                    formValues.monitoredChatIntegrations !==
+                                    null
+                                        ? formValues.monitoredChatIntegrations.map(
+                                              (integration) =>
+                                                  integration.toString()
+                                          )
+                                        : INITIAL_FORM_VALUES.monitoredChatIntegrations
+                                }
+                                onSelectionChange={handleSelectChatIntegration}
+                                chatItems={chatChannels}
+                            />
+                        </div>
+                    </ConfigurationSection>
+                )}
 
                 <ConfigurationSection
                     title="Knowledge"

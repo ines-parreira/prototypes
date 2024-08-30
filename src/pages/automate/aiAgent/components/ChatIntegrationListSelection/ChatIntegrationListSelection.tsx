@@ -6,43 +6,44 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
-type EmailItem = {email: string; id: number}
+export type ChatItem = {name: string; id: string}
 
-type EmailIntegrationListSelectionProps = {
+type ChatIntegrationListSelectionProps = {
     /**
-     * nextSelectedIds designates the next selected email integration ids list
+     * nextSelectedIds designates the next selected chat integration ids list
      */
-    onSelectionChange: (nextSelectedIds: number[]) => void
+    onSelectionChange: (nextSelectedIds: string[]) => void
     /**
-     * Selected email integration ids list
+     * Selected chat integration ids list
      */
-    selectedIds: number[]
+    selectedIds: string[]
     /**
-     * Email integration list to compute the dropdown items
+     * Chat integration list to compute the dropdown items
      */
-    emailItems: EmailItem[]
+    chatItems: SelfServiceChatChannel[]
     hasError?: boolean
 }
 
-export const EmailIntegrationListSelection: React.FC<EmailIntegrationListSelectionProps> =
-    ({onSelectionChange, selectedIds, emailItems, hasError = false}) => {
+export const ChatIntegrationListSelection: React.FC<ChatIntegrationListSelectionProps> =
+    ({onSelectionChange, selectedIds, chatItems, hasError = false}) => {
         // refs to work with the selector component
         const floatingRef = useRef<HTMLDivElement>(null)
         const targetRef = useRef<HTMLDivElement>(null)
 
         const [isDropdownOpened, setIsDropdownOpened] = useState(false)
 
-        // used to display the list of selected emails when the dropdown is closed
-        const selectedEmailLabels = selectedIds
+        // used to display the list of selected chats when the dropdown is closed
+        const selectedChatLabels = selectedIds
             .map((selectedId) =>
-                emailItems.find((email) => email.id === selectedId)
+                chatItems.find((chat) => chat.value.meta.app_id === selectedId)
             )
-            .filter((input): input is EmailItem => Boolean(input))
-            .map((selectedEmail) => selectedEmail.email)
+            .filter((input): input is SelfServiceChatChannel => Boolean(input))
+            .map((selectedChat) => selectedChat?.value.name)
 
         // handle the toggle action on a list item then send the resulting list
-        const handleIdToggled = (id: number) => {
+        const handleIdToggled = (id: string) => {
             if (selectedIds.includes(id)) {
                 const nextSelectedIds = selectedIds.filter(
                     (selectedId) => selectedId !== id
@@ -58,12 +59,12 @@ export const EmailIntegrationListSelection: React.FC<EmailIntegrationListSelecti
         return (
             <SelectInputBox
                 floating={floatingRef}
-                label={selectedEmailLabels}
+                label={selectedChatLabels}
                 onToggle={setIsDropdownOpened}
-                placeholder="Select one or more email addresses"
+                placeholder="Select one or more chat addresses"
                 hasError={hasError}
                 ref={targetRef}
-                testId="email-dropdown"
+                testId="chat-dropdown"
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => (
@@ -77,19 +78,22 @@ export const EmailIntegrationListSelection: React.FC<EmailIntegrationListSelecti
                         >
                             <DropdownSearch autoFocus />
                             <DropdownBody>
-                                {emailItems.map(({email, id}) => (
-                                    <DropdownItem
-                                        key={id}
-                                        testId={`email-dropdown-item-${id}`}
-                                        option={{
-                                            label: email,
-                                            value: id,
-                                        }}
-                                        onClick={handleIdToggled}
-                                    >
-                                        {email}
-                                    </DropdownItem>
-                                ))}
+                                {chatItems
+                                    .filter(({value}) => !!value.meta.app_id)
+                                    .map(({value}) => (
+                                        <DropdownItem
+                                            key={value.id}
+                                            testId={`chat-dropdown-item-${value.meta.app_id}`}
+                                            option={{
+                                                label: value.name,
+                                                value: value.meta
+                                                    .app_id as string,
+                                            }}
+                                            onClick={handleIdToggled}
+                                        >
+                                            {value.name}
+                                        </DropdownItem>
+                                    ))}
                             </DropdownBody>
                         </Dropdown>
                     )}

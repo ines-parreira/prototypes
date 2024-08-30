@@ -58,6 +58,7 @@ const mockStoreConfiguration: StoreConfiguration = {
     ticketSampleRate: 100,
     dryRun: false,
     isDraft: false,
+    monitoredChatIntegrations: [],
 }
 
 describe('AiAgentStoreConfigurationProvider', () => {
@@ -159,6 +160,7 @@ describe('AiAgentStoreConfigurationProvider', () => {
                 "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
             signature: 'This response was created by AI',
             monitoredEmailIntegrations: [],
+            monitoredChatIntegrations: [],
         }
 
         await act(

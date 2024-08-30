@@ -24,6 +24,7 @@ export const getStoreConfigurationFixture = (
             email: '',
         },
     ],
+    monitoredChatIntegrations: [1, 2, 3],
     dryRun: false,
     isDraft: false,
     silentHandover: false,

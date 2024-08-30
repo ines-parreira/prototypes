@@ -6,6 +6,8 @@ import {
 } from '../useConfigurationForm'
 import {FormValues} from '../../types'
 
+const MOCK_EMAIL_ADDRESS = 'test@mail.com'
+
 const INITIAL_FORM_VALUES: FormValues = {
     toneOfVoice: null,
     customToneOfVoiceGuidance: null,
@@ -18,6 +20,7 @@ const INITIAL_FORM_VALUES: FormValues = {
     silentHandover: null,
     tags: null,
     ticketSampleRate: null,
+    monitoredChatIntegrations: null,
 }
 
 describe('useConfigurationForm', () => {
@@ -58,6 +61,7 @@ describe('useConfigurationForm', () => {
                         ...INITIAL_FORM_VALUES,
                         signature: '',
                         monitoredEmailIntegrations: [],
+                        monitoredChatIntegrations: [],
                     },
                     []
                 )
@@ -70,12 +74,28 @@ describe('useConfigurationForm', () => {
                     {
                         ...INITIAL_FORM_VALUES,
                         monitoredEmailIntegrations: [],
+                        monitoredChatIntegrations: [],
                         signature: 'signature',
                         helpCenterId: null,
                     },
                     []
                 )
             ).toThrow('Select a Help Center or add at least one public URL')
+        })
+        it('should return empty array if monitoredChatIntegrations is null', () => {
+            const result = validateConfigurationFormValues(
+                {
+                    ...INITIAL_FORM_VALUES,
+                    signature: 'This response was created by AI',
+                    helpCenterId: 1,
+                    monitoredEmailIntegrations: [
+                        {id: 1, email: MOCK_EMAIL_ADDRESS},
+                    ],
+                },
+                []
+            )
+
+            expect(result.monitoredChatIntegrations).toEqual([])
         })
     })
 })
