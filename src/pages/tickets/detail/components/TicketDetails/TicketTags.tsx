@@ -56,28 +56,42 @@ const TicketTags = ({
     const [element, setElement] = useCallbackRef()
     const [totalWidth, height] = useElementSize(element)
 
-    const wrapInfo = useMemo(() => {
-        if (!element || !totalWidth || !tags.size) return null
-        return getElementWrapInfo(element.children)
-    }, [element, tags, totalWidth])
+    const getWrappedElementCount = () => {
+        if (!element || !totalWidth || !tags.size) return 0
+        return getElementWrapInfo(element.children, totalWidth)
+    }
+    const wrappedElementCount = getWrappedElementCount()
 
-    const hiddenTags = useMemo(
-        () =>
-            wrapInfo
-                ? tags
-                      .slice(tags.size - (wrapInfo.wrappedElementCount - 1))
-                      .map((tag) => tag?.get('name') as string)
-                : undefined,
-        [tags, wrapInfo]
-    )
+    const getHiddenTags = () =>
+        wrappedElementCount
+            ? tags
+                  .slice(tags.size - wrappedElementCount)
+                  .map((tag) => tag?.get('name') as string)
+            : []
+    const hiddenTags = getHiddenTags()
 
     const derivedShowAllTags = useMemo(
         () =>
             showAllTags
-                ? !!wrapInfo && wrapInfo?.wrappedElementCount > 1
+                ? wrappedElementCount && wrappedElementCount > 0
                 : false,
-        [showAllTags, wrapInfo]
+        [showAllTags, wrappedElementCount]
     )
+
+    let formula = right ? -1 : Number.MAX_SAFE_INTEGER
+    if (wrappedElementCount) {
+        formula = (ticketTags.size - wrappedElementCount) * 10 - 5
+
+        // keep the badge to the right if all tags are hidden
+        if (formula < 0 && !right) {
+            formula = 0
+        }
+    }
+
+    const expandBadgeDisplay =
+        !showAllTags && wrappedElementCount && wrappedElementCount > 0
+            ? 'block'
+            : 'none'
 
     return (
         <div
@@ -109,7 +123,7 @@ const TicketTags = ({
                         <div
                             key={i}
                             style={{
-                                order: (i || 0) * 10,
+                                order: (i || 0) * 10 + 1,
                             }}
                         >
                             <TicketTag
@@ -137,61 +151,52 @@ const TicketTags = ({
                             </TicketTag>
                         </div>
                     ))}
-                    {!showAllTags &&
-                        wrapInfo &&
-                        wrapInfo.wrappedElementCount > 1 && (
-                            <div
-                                style={{
-                                    order:
-                                        (tags.size -
-                                            wrapInfo.wrappedElementCount) *
-                                            10 -
-                                        5,
-                                }}
-                            >
-                                <Badge
-                                    id={`expand-tags-badge-${uniqueId}`}
+                    <div
+                        style={{
+                            order: formula,
+                            display: expandBadgeDisplay,
+                        }}
+                    >
+                        <Badge
+                            id={`expand-tags-badge-${uniqueId}`}
+                            className={classnames('badge-tag', css.displayMore)}
+                            style={{
+                                color: themeContext?.colorTokens.Neutral.Grey_6
+                                    .value,
+                                backgroundColor:
+                                    themeContext?.colorTokens.Neutral.Grey_3
+                                        .value,
+                            }}
+                            onClick={() => setShowAllTags(!showAllTags)}
+                        >
+                            <span>
+                                + {wrappedElementCount || 0}
+                                <i
                                     className={classnames(
-                                        'badge-tag',
-                                        css.displayMore
+                                        'material-icons material-icons-round',
+                                        css.icon
                                     )}
-                                    style={{
-                                        color: themeContext?.colorTokens.Neutral
-                                            .Grey_6.value,
-                                        backgroundColor:
-                                            themeContext?.colorTokens.Neutral
-                                                .Grey_3.value,
-                                    }}
-                                    onClick={() => setShowAllTags(!showAllTags)}
                                 >
-                                    <span>
-                                        + {wrapInfo.wrappedElementCount - 1}
-                                        <i
-                                            className={classnames(
-                                                'material-icons material-icons-round',
-                                                css.icon
-                                            )}
-                                        >
-                                            arrow_drop_down
-                                        </i>
-                                    </span>
-                                </Badge>
-                                <Tooltip
-                                    target={`expand-tags-badge-${uniqueId}`}
-                                    offset="0, 9"
-                                    placement="bottom-start"
-                                    innerProps={{
-                                        fade: false,
-                                    }}
-                                >
-                                    <ul className={css.tooltipContent}>
-                                        {hiddenTags?.map((tag) => (
-                                            <li key={tag}>{tag}</li>
-                                        ))}
-                                    </ul>
-                                </Tooltip>
-                            </div>
-                        )}
+                                    arrow_drop_down
+                                </i>
+                            </span>
+                        </Badge>
+                        <Tooltip
+                            target={`expand-tags-badge-${uniqueId}`}
+                            offset="0, 9"
+                            placement="bottom-start"
+                            innerProps={{
+                                fade: false,
+                            }}
+                        >
+                            <ul className={css.tooltipContent}>
+                                {hiddenTags?.map((tag) => (
+                                    <li key={tag}>{tag}</li>
+                                ))}
+                            </ul>
+                        </Tooltip>
+                    </div>
+
                     <Button
                         fillStyle="ghost"
                         size="small"

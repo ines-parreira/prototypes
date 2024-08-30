@@ -41,7 +41,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
           class="flex-grow"
         >
           <div
-            class="d-flex align-items-center flex-wrap"
+            class="row"
           >
             <div
               class="title"
@@ -55,9 +55,6 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                 Send internal note
               </span>
             </div>
-            <div
-              class="spacer"
-            />
           </div>
           <div
             class="argsWrapper"
@@ -267,7 +264,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
           class="flex-grow"
         >
           <div
-            class="d-flex align-items-center flex-wrap"
+            class="row"
           >
             <div
               class="title"
@@ -281,9 +278,6 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                 Send internal note
               </span>
             </div>
-            <div
-              class="spacer"
-            />
           </div>
           <div
             class="argsWrapper"
@@ -459,7 +453,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
           class="flex-grow"
         >
           <div
-            class="d-flex align-items-center flex-wrap"
+            class="row"
           >
             <div
               class="title"
@@ -473,9 +467,6 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                 Forward email
               </span>
             </div>
-            <div
-              class="spacer"
-            />
           </div>
           <div
             class="argsWrapper"
@@ -651,7 +642,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
           class="flex-grow"
         >
           <div
-            class="d-flex align-items-center flex-wrap"
+            class="row"
           >
             <div
               class="title"
@@ -666,9 +657,6 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                 Refund last charge
               </span>
             </div>
-            <div
-              class="spacer"
-            />
             <span
               class="input wrapper group horizontal"
             >
@@ -727,7 +715,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
           class="flex-grow"
         >
           <div
-            class="d-flex align-items-center flex-wrap"
+            class="row"
           >
             <div
               class="title"
@@ -742,9 +730,6 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                 Refund last order
               </span>
             </div>
-            <div
-              class="spacer"
-            />
             <span
               class="input wrapper group horizontal"
             >
@@ -803,7 +788,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
           class="flex-grow"
         >
           <div
-            class="d-flex align-items-center flex-wrap"
+            class="row"
           >
             <div
               class="title"
@@ -818,9 +803,6 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                 Cancel last order
               </span>
             </div>
-            <div
-              class="spacer"
-            />
             <div
               class="input"
             >
@@ -874,7 +856,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
           class="flex-grow"
         >
           <div
-            class="d-flex align-items-center flex-wrap"
+            class="row"
           >
             <div
               class="title"
@@ -889,9 +871,6 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                 Duplicate last order
               </span>
             </div>
-            <div
-              class="spacer"
-            />
           </div>
         </div>
         <i
@@ -911,7 +890,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
           class="flex-grow"
         >
           <div
-            class="d-flex align-items-center flex-wrap"
+            class="row"
           >
             <div
               class="title"
@@ -926,9 +905,6 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                 Partially refund last order
               </span>
             </div>
-            <div
-              class="spacer"
-            />
             <span
               class="input wrapper group horizontal"
             >
@@ -997,7 +973,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
           class="flex-grow"
         >
           <div
-            class="d-flex align-items-center flex-wrap"
+            class="row"
           >
             <div
               class="title"
@@ -1012,9 +988,6 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                 Refund last order's shipping cost
               </span>
             </div>
-            <div
-              class="spacer"
-            />
           </div>
           <div
             class="caption note"
@@ -1078,7 +1051,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
           class="flex-grow"
         >
           <div
-            class="d-flex align-items-center flex-wrap"
+            class="row"
           >
             <div
               class="title"
@@ -1092,9 +1065,6 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                 Send internal note
               </span>
             </div>
-            <div
-              class="spacer"
-            />
           </div>
           <div
             class="argsWrapper"

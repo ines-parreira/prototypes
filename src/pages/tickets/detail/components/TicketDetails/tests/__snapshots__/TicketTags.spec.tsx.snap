@@ -13,7 +13,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
     >
       TagDropdownMock
       <div
-        style="order: 0;"
+        style="order: 1;"
       >
         <div
           class="badge tagLabel"
@@ -30,7 +30,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         </div>
       </div>
       <div
-        style="order: 10;"
+        style="order: 11;"
       >
         <div
           class="badge tagLabel"
@@ -47,7 +47,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         </div>
       </div>
       <div
-        style="order: 20;"
+        style="order: 21;"
       >
         <div
           class="badge tagLabel"
@@ -64,7 +64,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         </div>
       </div>
       <div
-        style="order: 30;"
+        style="order: 31;"
       >
         <div
           class="badge tagLabel"
@@ -81,7 +81,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         </div>
       </div>
       <div
-        style="order: 5;"
+        style="order: 5; display: block;"
       >
         <span
           class="badge-tag displayMore badge badge-secondary"
@@ -89,7 +89,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         >
           <span>
             + 
-            2
+            3
             <i
               class="material-icons material-icons-round icon"
             >

@@ -1,5 +1,32 @@
 import getElementWrapInfo from '../getElementWrapInfo'
 
+const baseChildren = [
+    {
+        tagName: 'BUTTON',
+        textContent: 'A',
+        getBoundingClientRect: jest.fn(() => ({
+            width: 50,
+            top: 0,
+        })),
+    },
+    {
+        tagName: 'DIV',
+        textContent: 'A',
+        getBoundingClientRect: jest.fn(() => ({
+            width: 50,
+            top: 0,
+        })),
+    },
+    {
+        tagName: 'DIV',
+        textContent: 'B',
+        getBoundingClientRect: jest.fn(() => ({
+            width: 50,
+            top: 0,
+        })),
+    },
+] as unknown as HTMLCollection
+
 describe('getElementWrapInfo', () => {
     it('should return undefined when there is no wrapped elements', () => {
         const target = document.createElement('div')
@@ -16,43 +43,40 @@ describe('getElementWrapInfo', () => {
         } as DOMRect)
         target.appendChild(child2)
 
-        const code = getElementWrapInfo(target.children)
+        const code = getElementWrapInfo(target.children, 500)
 
-        expect(code).toBeUndefined()
+        expect(code).toBe(0)
     })
 
-    it('should return the number of elements and the width of visible elements', () => {
-        const target = document.createElement('div')
-        const child = document.createElement('div')
-        const mockLeft = 5
-        const mockWidth = 200
-        const mockRight = mockLeft + mockWidth
-        const mockHeight = 50
-        const mockDomRect = {
-            width: mockWidth,
-            height: mockHeight,
-            top: 10,
-            left: mockLeft,
-            right: mockRight,
-            bottom: 10 + mockHeight,
-        } as DOMRect
+    it('should return correct wrappedElementCount and width', () => {
+        // Mock HTMLCollection
+        const mockChildren = [
+            ...baseChildren,
+            {
+                tagName: 'DIV',
+                textContent: 'C',
+                getBoundingClientRect: jest.fn(() => ({
+                    width: 50,
+                    top: 10,
+                })),
+            },
+        ] as unknown as HTMLCollection
 
-        jest.spyOn(child, 'getBoundingClientRect').mockReturnValue(mockDomRect)
-        target.appendChild(child)
+        const mockTotalWidth = 170
 
-        const child2 = document.createElement('div')
-        jest.spyOn(child2, 'getBoundingClientRect').mockReturnValue({
-            ...mockDomRect,
-            top: 70,
-            bottom: 70 + mockHeight,
-        })
-        target.appendChild(child2)
+        const result = getElementWrapInfo(mockChildren, mockTotalWidth)
 
-        const code = getElementWrapInfo(target.children)
+        const expectedWrappedElementCount = 1 // Only the last element should wrap
 
-        expect(code).toMatchObject({
-            wrappedElementCount: 1,
-            width: mockRight - mockLeft,
-        })
+        expect(result).toBeDefined()
+        expect(result).toBe(expectedWrappedElementCount)
+    })
+
+    it('should return undefined if no wrapping occurs', () => {
+        const mockTotalWidth = 200
+
+        const result = getElementWrapInfo(baseChildren, mockTotalWidth)
+
+        expect(result).toBe(0)
     })
 })

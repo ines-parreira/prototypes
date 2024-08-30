@@ -14,10 +14,10 @@ const mockStore = configureMockStore([thunk])
 
 const mockNumberOfWrappedElements = 3
 
-jest.mock('common/utils/getElementWrapInfo', () => () => ({
-    wrappedElementCount: mockNumberOfWrappedElements,
-    width: 100,
-}))
+jest.mock(
+    'common/utils/getElementWrapInfo',
+    () => () => mockNumberOfWrappedElements
+)
 
 jest.mock('lodash/uniqueId', () => () => '42')
 
@@ -62,7 +62,7 @@ describe('<TicketTags />', () => {
             </Provider>
         )
         const expandButton = getByText(
-            new RegExp(`${mockNumberOfWrappedElements - 1}`)
+            new RegExp(`${mockNumberOfWrappedElements}`)
         )
         expect(container.firstChild).toHaveStyle('height: 24px')
         fireEvent.mouseOver(expandButton)

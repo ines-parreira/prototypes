@@ -488,7 +488,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                     }
                 >
                     <div className={'flex-grow'}>
-                        <div className="d-flex align-items-center flex-wrap">
+                        <div className={css.row}>
                             <div className={css.title}>
                                 {template?.icon ? (
                                     <i className="material-icons md-3 mr-1 text-secondary">
@@ -508,7 +508,6 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                 )}
                                 <span>{action.get('title')}</span>
                             </div>
-                            <div className={css.spacer}></div>
                             {isInline && argsComponent}
                         </div>
                         {!isInline && argsComponent}

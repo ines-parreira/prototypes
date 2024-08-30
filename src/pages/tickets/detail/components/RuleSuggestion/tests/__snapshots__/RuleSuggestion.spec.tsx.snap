@@ -131,7 +131,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                 class="flex-grow"
               >
                 <div
-                  class="d-flex align-items-center flex-wrap"
+                  class="row"
                 >
                   <div
                     class="title"
@@ -146,9 +146,6 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                     </span>
                   </div>
                   <div
-                    class="spacer"
-                  />
-                  <div
                     class="tagsSelect"
                   >
                     <div
@@ -162,7 +159,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                           class="tags right"
                         >
                           <div
-                            style="order: 0;"
+                            style="order: 1;"
                           >
                             <div
                               class="badge tagLabel"
@@ -172,6 +169,24 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                                 auto-close
                               </span>
                             </div>
+                          </div>
+                          <div
+                            style="order: -1; display: none;"
+                          >
+                            <span
+                              class="badge-tag displayMore badge badge-secondary"
+                              id="expand-tags-badge-1"
+                            >
+                              <span>
+                                + 
+                                0
+                                <i
+                                  class="material-icons material-icons-round icon"
+                                >
+                                  arrow_drop_down
+                                </i>
+                              </span>
+                            </span>
                           </div>
                           <button
                             aria-disabled="false"
@@ -356,7 +371,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                 class="flex-grow"
               >
                 <div
-                  class="d-flex align-items-center flex-wrap"
+                  class="row"
                 >
                   <div
                     class="title"
@@ -371,9 +386,6 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                     </span>
                   </div>
                   <div
-                    class="spacer"
-                  />
-                  <div
                     class="tagsSelect"
                   >
                     <div
@@ -387,7 +399,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                           class="tags right"
                         >
                           <div
-                            style="order: 0;"
+                            style="order: 1;"
                           >
                             <div
                               class="badge tagLabel"
@@ -397,6 +409,24 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                                 auto-close
                               </span>
                             </div>
+                          </div>
+                          <div
+                            style="order: -1; display: none;"
+                          >
+                            <span
+                              class="badge-tag displayMore badge badge-secondary"
+                              id="expand-tags-badge-4"
+                            >
+                              <span>
+                                + 
+                                0
+                                <i
+                                  class="material-icons material-icons-round icon"
+                                >
+                                  arrow_drop_down
+                                </i>
+                              </span>
+                            </span>
                           </div>
                           <button
                             aria-disabled="false"

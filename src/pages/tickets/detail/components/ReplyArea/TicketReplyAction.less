@@ -6,6 +6,12 @@
     border-top: 1px solid var(--neutral-grey-2);
     padding: 15px;
 
+    .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
     .closeIcon {
         font-size: 20px;
         color: var(--neutral-grey-4);
@@ -85,12 +91,7 @@
     }
 
     .tagsSelect {
-        max-width: 400px;
-    }
-
-    .spacer {
-        flex-grow: 1;
-        min-width: 2em;
+        width: 400px;
     }
 
     .responseAction :global(.rich-textarea-wrapper) {

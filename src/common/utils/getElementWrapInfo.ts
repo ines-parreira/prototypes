@@ -1,17 +1,34 @@
-export default function getElementWrapInfo(children: HTMLCollection) {
+export default function getElementWrapInfo(
+    children: HTMLCollection,
+    totalWidth: number
+) {
     const firstRect = children[0].getBoundingClientRect()
     const last = children[children.length - 1]
+
+    const tagsChildren = Array.from(children).filter(
+        (child) => child.tagName === 'DIV'
+    )
+    const sortedElements = tagsChildren.sort((a, b) => {
+        const first = (a.textContent as string).toLowerCase()
+        const second = (b.textContent as string).toLowerCase()
+
+        return first > second ? 1 : second > first ? -1 : 0
+    })
+
+    let filledWidth = 0
+    filledWidth += firstRect.width
     if (firstRect.top !== last.getBoundingClientRect().top) {
-        let lastInRowRect = firstRect
-        for (let i = 1; i < children.length; i++) {
-            const rect = children[i].getBoundingClientRect()
-            if (firstRect.top !== rect.top) {
-                return {
-                    wrappedElementCount: children.length - i,
-                    width: lastInRowRect.right - firstRect.left,
-                }
+        let i = 0
+        while (filledWidth < totalWidth && i < sortedElements.length) {
+            const rect = sortedElements[i].getBoundingClientRect()
+            filledWidth += rect.width + 8
+            if (filledWidth <= totalWidth) {
+                i++
             }
-            lastInRowRect = rect
         }
+
+        return sortedElements.length - i
     }
+
+    return 0
 }
