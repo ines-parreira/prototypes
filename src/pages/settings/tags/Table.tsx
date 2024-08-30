@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, Map} from 'immutable'
+import React, {useMemo} from 'react'
+import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {ListTagsOrderBy, Tag} from '@gorgias/api-queries'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {ORDER_BY, OrderBy} from 'models/tag/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {
@@ -11,7 +11,6 @@ import {
     makeGetSelectedTagMeta,
     getSelectAll,
 } from 'state/tags/selectors'
-import {RootState} from 'state/types'
 
 import Row from './Row'
 import css from './Table.less'
@@ -22,7 +21,7 @@ function isSortable(value: string): value is OrderBy {
 }
 
 type Props = {
-    columns: Array<{
+    columns?: Array<{
         title: string
         field: string
     }>
@@ -32,155 +31,128 @@ type Props = {
     onSort: (sort: OrderBy, direction: boolean) => void
     refresh: (args?: {refreshPreviousPage?: boolean}) => void
     reverse: boolean
-    sort: string
+    sort?: string
     tags: Tag[]
-} & ConnectedProps<typeof connector>
-
-export class TableContainer extends Component<Props> {
-    static defaultProps: Pick<Props, 'columns'> = {
-        columns: [
-            {
-                title: 'Tag',
-                field: ListTagsOrderBy.Name,
-            },
-            {
-                title: 'Description',
-                field: 'description',
-            },
-            {
-                title: 'Tickets',
-                field: ListTagsOrderBy.Usage,
-            },
-        ],
-    }
-
-    _getSort() {
-        if (!this.props.sort) {
-            return this.props.columns[0].field
-        }
-
-        return this.props.sort
-    }
-
-    _sortIcon = (sort: string, reverse: boolean | null, field: string) => {
-        if (sort !== field) {
-            return null
-        }
-        const iconName = reverse ? 'arrow_drop_up' : 'arrow_drop_down'
-        return (
-            <i className={classnames('material-icons md-1', css.sort)}>
-                {iconName}
-            </i>
-        )
-    }
-
-    _onSort = (sort: string) => () => {
-        if (!isSortable(sort)) {
-            return
-        }
-        let reverse = false
-        // already sorted by this prop
-        if (this.props.sort === sort) {
-            reverse = !this.props.reverse
-        }
-
-        this.props.onSort(sort, reverse)
-    }
-
-    render() {
-        const {
-            tags,
-            getSelectedTagMeta,
-            selectAll,
-            columns,
-            reverse,
-            onSelectAll,
-            meta,
-            onMerge,
-            onBulkDelete,
-        } = this.props
-        const sort = this._getSort()
-
-        const selectedNum = meta.filter(
-            (meta: Map<any, any>) => meta.get('selected') as boolean
-        ).size
-
-        return (
-            <table className={classnames('view-table', css.table)}>
-                <thead>
-                    <tr>
-                        <td
-                            className="cell-wrapper cell-short clickable"
-                            onClick={onSelectAll}
-                        >
-                            <CheckBox
-                                labelClassName={css.checkBoxLabel}
-                                className={css.checkBox}
-                                name="select-all"
-                                isChecked={selectAll}
-                            />
-                        </td>
-                        {columns.map((column, i) => (
-                            <td key={i}>
-                                <div
-                                    className={classnames(
-                                        css.headerCell,
-                                        'cell-wrapper'
-                                    )}
-                                >
-                                    {i === 0 && (
-                                        <TableActions
-                                            selectedNum={selectedNum}
-                                            tags={fromJS(tags)}
-                                            meta={meta}
-                                            onMerge={onMerge}
-                                            onBulkDelete={onBulkDelete}
-                                        />
-                                    )}
-                                    <div onClick={this._onSort(column.field)}>
-                                        <span className="field-title">
-                                            {column.title}
-                                        </span>
-                                        {this._sortIcon(
-                                            sort,
-                                            reverse,
-                                            column.field
-                                        )}
-                                    </div>
-                                </div>
-                            </td>
-                        ))}
-                        <td />
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {tags.map((tag) => (
-                        <Row
-                            key={tag.id}
-                            row={tag}
-                            refresh={() => {
-                                if (Object.keys(tags).length === 1) {
-                                    this.props.refresh({
-                                        refreshPreviousPage: true,
-                                    })
-                                } else {
-                                    this.props.refresh()
-                                }
-                            }}
-                            meta={getSelectedTagMeta(tag.id)}
-                        />
-                    ))}
-                </tbody>
-            </table>
-        )
-    }
 }
 
-const connector = connect((state: RootState) => ({
-    selectAll: getSelectAll(state),
-    getSelectedTagMeta: makeGetSelectedTagMeta(state),
-    meta: getMeta(state),
-}))
+const Table = ({
+    columns = [
+        {
+            title: 'Tag',
+            field: ListTagsOrderBy.Name,
+        },
+        {
+            title: 'Description',
+            field: 'description',
+        },
+        {
+            title: 'Tickets',
+            field: ListTagsOrderBy.Usage,
+        },
+    ],
+    onBulkDelete,
+    onMerge,
+    onSelectAll,
+    onSort,
+    refresh,
+    reverse,
+    sort,
+    tags,
+}: Props) => {
+    const isAllSelected = useAppSelector(getSelectAll)
+    const getSelectedTagMeta = useAppSelector(makeGetSelectedTagMeta)
+    const meta = useAppSelector(getMeta)
 
-export default connector(TableContainer)
+    const sortValue = useMemo(() => sort ?? columns[0].field, [columns, sort])
+
+    const handleOnSort = (value: string) => {
+        if (!isSortable(value)) {
+            return
+        }
+        onSort(value, sort === value ? !reverse : false)
+    }
+
+    const selectedNum = meta.filter(
+        (meta: Map<any, any>) => meta.get('selected') as boolean
+    ).size
+
+    return (
+        <table className={classnames('view-table', css.table)}>
+            <thead>
+                <tr>
+                    <td
+                        className="cell-wrapper cell-short clickable"
+                        onClick={onSelectAll}
+                    >
+                        <CheckBox
+                            labelClassName={css.checkBoxLabel}
+                            className={css.checkBox}
+                            name="select-all"
+                            aria-label="select-all"
+                            isChecked={isAllSelected}
+                        />
+                    </td>
+                    {columns.map((column, i) => (
+                        <td key={i}>
+                            <div
+                                className={classnames(
+                                    css.headerCell,
+                                    'cell-wrapper'
+                                )}
+                            >
+                                {i === 0 && (
+                                    <TableActions
+                                        selectedNum={selectedNum}
+                                        tags={fromJS(tags)}
+                                        meta={meta}
+                                        onMerge={onMerge}
+                                        onBulkDelete={onBulkDelete}
+                                    />
+                                )}
+                                <div onClick={() => handleOnSort(column.field)}>
+                                    <span className="field-title">
+                                        {column.title}
+                                    </span>
+                                    {sortValue !== column.field ? null : (
+                                        <i
+                                            className={classnames(
+                                                'material-icons md-1',
+                                                css.sort
+                                            )}
+                                        >
+                                            {reverse
+                                                ? 'arrow_drop_down'
+                                                : 'arrow_drop_up'}
+                                        </i>
+                                    )}
+                                </div>
+                            </div>
+                        </td>
+                    ))}
+                    <td />
+                </tr>
+            </thead>
+
+            <tbody>
+                {tags.map((tag) => (
+                    <Row
+                        key={tag.id}
+                        row={tag}
+                        refresh={() => {
+                            if (tags.length === 1) {
+                                refresh({
+                                    refreshPreviousPage: true,
+                                })
+                            } else {
+                                refresh()
+                            }
+                        }}
+                        meta={getSelectedTagMeta(tag.id)}
+                    />
+                ))}
+            </tbody>
+        </table>
+    )
+}
+
+export default Table
