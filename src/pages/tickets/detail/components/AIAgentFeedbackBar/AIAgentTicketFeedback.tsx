@@ -68,82 +68,90 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
 
     return (
         <>
-            {publicMessageCount && !isOnlyDraftMessage ? (
-                <div className={css.sectionContainer}>
-                    <div className={css.subtitle}>AI Agent sent</div>
-                    <div
-                        className={css.section}
-                        data-testid="ticket-feedback-messages"
-                    >
-                        <div className={css.sectionText}>
-                            {publicMessageCount}{' '}
-                            {pluralize('message', publicMessageCount)}
+            <div className={css.metadataContainer}>
+                <div className={css.metadataSection}>
+                    <FeedbackOrders orders={orders} />
+                    {publicMessageCount && !isOnlyDraftMessage ? (
+                        <div className={css.metadataField}>
+                            <div className={css.metadataTitle}>
+                                AI Agent sent
+                            </div>
+                            <div
+                                className="body-semibold"
+                                data-testid="ticket-feedback-messages"
+                            >
+                                <div className={css.metadataText}>
+                                    {publicMessageCount}{' '}
+                                    {pluralize('message', publicMessageCount)}
+                                </div>
+                            </div>
                         </div>
+                    ) : null}
+                </div>
+
+                {usedResourceCount && !isOnlyDraftMessage ? (
+                    <div className={css.sectionContainer}>
+                        <div className={css.subtitle}>Using</div>
+                        {guidanceCount ? (
+                            <div
+                                className={css.section}
+                                data-testid="ticket-feedback-guidances"
+                            >
+                                <div className={css.sectionText}>
+                                    <i
+                                        className={classNames(
+                                            'material-icons',
+                                            css.leadIcon
+                                        )}
+                                    >
+                                        map
+                                    </i>
+                                    {guidanceCount}{' '}
+                                    {pluralize('Guidance', guidanceCount)}
+                                </div>
+                            </div>
+                        ) : null}
+                        {actionCount ? (
+                            <div
+                                className={css.section}
+                                data-testid="ticket-feedback-actions"
+                            >
+                                <div className={css.sectionText}>
+                                    <i
+                                        className={classNames(
+                                            'material-icons',
+                                            css.leadIcon
+                                        )}
+                                    >
+                                        play_circle_filled
+                                    </i>
+                                    {actionCount}{' '}
+                                    {pluralize('Action', actionCount)}
+                                </div>
+                            </div>
+                        ) : null}
+                        {knowledgeCount ? (
+                            <div
+                                className={css.section}
+                                data-testid="ticket-feedback-knowledges"
+                            >
+                                <div className={css.sectionText}>
+                                    <i
+                                        className={classNames(
+                                            'material-icons',
+                                            css.leadIcon
+                                        )}
+                                    >
+                                        article
+                                    </i>
+                                    {knowledgeCount} Knowledge{' '}
+                                    {pluralize('source', knowledgeCount)}
+                                </div>
+                            </div>
+                        ) : null}
                     </div>
-                </div>
-            ) : null}
-            {usedResourceCount && !isOnlyDraftMessage ? (
-                <div className={css.sectionContainer}>
-                    <div className={css.subtitle}>Using</div>
-                    {guidanceCount ? (
-                        <div
-                            className={css.section}
-                            data-testid="ticket-feedback-guidances"
-                        >
-                            <div className={css.sectionText}>
-                                <i
-                                    className={classNames(
-                                        'material-icons',
-                                        css.leadIcon
-                                    )}
-                                >
-                                    map
-                                </i>
-                                {guidanceCount}{' '}
-                                {pluralize('Guidance', guidanceCount)}
-                            </div>
-                        </div>
-                    ) : null}
-                    {actionCount ? (
-                        <div
-                            className={css.section}
-                            data-testid="ticket-feedback-actions"
-                        >
-                            <div className={css.sectionText}>
-                                <i
-                                    className={classNames(
-                                        'material-icons',
-                                        css.leadIcon
-                                    )}
-                                >
-                                    play_circle_filled
-                                </i>
-                                {actionCount} {pluralize('Action', actionCount)}
-                            </div>
-                        </div>
-                    ) : null}
-                    {knowledgeCount ? (
-                        <div
-                            className={css.section}
-                            data-testid="ticket-feedback-knowledges"
-                        >
-                            <div className={css.sectionText}>
-                                <i
-                                    className={classNames(
-                                        'material-icons',
-                                        css.leadIcon
-                                    )}
-                                >
-                                    article
-                                </i>
-                                {knowledgeCount} Knowledge{' '}
-                                {pluralize('source', knowledgeCount)}
-                            </div>
-                        </div>
-                    ) : null}
-                </div>
-            ) : null}
-            <FeedbackOrders orders={orders} />
+                ) : null}
+            </div>
             {!isOnlyDraftMessage && (
                 <FeedbackEvents
                     messages={aiMessages}

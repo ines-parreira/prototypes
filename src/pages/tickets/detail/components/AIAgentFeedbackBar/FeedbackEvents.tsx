@@ -36,11 +36,20 @@ const FeedbackEvents: React.FC<Props> = ({messages, shopType, shopName}) => {
     }
 
     const aiAgentLink = `/app/automation/${shopType}/${shopName}/ai-agent`
-    const guidanceLink = `${aiAgentLink}/guidance`
 
     return (
         <div className={css.ticketEventsContainer}>
-            <div className={css.subtitle}>Ticket events</div>
+            <div className={css.title}>Ticket events</div>
+            <div
+                className={css.ticketImproveInfo}
+                data-testid="ticket-feedback-improve-info"
+            >
+                Improve ticket actions by adjusting handover topics and tagging
+                behavior in{' '}
+                <a href={aiAgentLink} target="_blank" rel="noreferrer">
+                    AI Agent Configuration
+                </a>
+            </div>
             {filteredEvents.map((event, index) => (
                 <React.Fragment key={index}>
                     {event.tags.length > 0 && (
@@ -74,19 +83,6 @@ const FeedbackEvents: React.FC<Props> = ({messages, shopType, shopName}) => {
                     )}
                 </React.Fragment>
             ))}
-            <div
-                className={css.ticketImproveInfo}
-                data-testid="ticket-feedback-improve-info"
-            >
-                Improve ticket actions with{' '}
-                <a href={guidanceLink} target="_blank" rel="noreferrer">
-                    Guidance
-                </a>{' '}
-                and tagging behavior in{' '}
-                <a href={aiAgentLink} target="_blank" rel="noreferrer">
-                    AI Agent Configuration
-                </a>
-            </div>
         </div>
     )
 }

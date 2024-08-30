@@ -19,18 +19,66 @@
     }
 
     .title {
-        .heading-section-regular();
-        font-weight: 500;
+        .heading-subsection-semibold();
         padding: 0 @layout-spacing-s;
     }
 
     .subtitle {
-        .caption-allcaps();
+        .body-semibold();
+        color: var(--neutral-grey-6);
+    }
+
+    .subsectionTitle {
+        .heading-subsection-semibold();
+        padding: 0 @layout-spacing-s;
+    }
+
+    .feedbackSection {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .metadataContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+    .metadataSection {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
+    .metadataField {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 4px;
+        align-self: stretch;
+        padding: 0 @layout-spacing-s;
+
+        &:first-of-type {
+            margin-top: calc(@layout-spacing-s - @layout-spacing-m);
+        }
+    }
+
+    .container > .metadataField {
+        margin-top: calc(@layout-spacing-xs - @layout-spacing-m);
+    }
+
+    .metadataTitle {
+        .body-regular();
         color: var(--neutral-grey-5);
     }
 
-    .orderTitle {
+    .metadataText {
+        .body-semibold();
         color: var(--neutral-grey-6);
+    }
+
+    .orderTitle {
+        color: var(--main-primary);
     }
 
     .summary {
@@ -43,11 +91,9 @@
         display: flex;
         gap: @layout-spacing-xxs;
         align-items: center;
-        padding: @layout-spacing-xxs @layout-spacing-s;
-        color: initial;
+        color: var(--main-primary);
 
         i {
-            display: none;
             font-size: 16px !important;
         }
 
@@ -55,10 +101,6 @@
             cursor: pointer;
             background-color: var(--neutral-grey-1);
             color: var(--main-primary);
-
-            i {
-                display: inline-block;
-            }
         }
 
         &.noHref {
@@ -131,10 +173,11 @@
     }
 
     .sectionText {
-        .body-semibold();
+        .body-regular();
         display: flex;
         gap: @layout-spacing-xxs;
         align-items: center;
+        color: var(--neutral-grey-6);
 
         .leadIcon {
             font-size: 20px !important;
@@ -175,10 +218,15 @@
 
     .ticketEventsContainer {
         padding: 0 @layout-spacing-s;
+
+        .title {
+            padding: 0;
+        }
     }
 
     .ticketImproveInfo {
         margin-top: @layout-spacing-xs;
+        margin-bottom: @layout-spacing-s;
         font-size: 12px;
         color: var(--neutral-grey-5);
 

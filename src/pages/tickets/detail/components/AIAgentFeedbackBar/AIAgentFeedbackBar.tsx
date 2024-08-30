@@ -52,7 +52,7 @@ const AIAgentFeedbackBar = () => {
         >
             <div className={css.summaryContainer}>
                 <div className={css.title}>
-                    {messageFeedback ? 'Feedback' : 'Overview'}
+                    {messageFeedback ? 'Response summary' : 'Ticket overview'}
                 </div>
                 <div
                     className={css.summary}

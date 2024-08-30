@@ -16,6 +16,7 @@ import {
     Guidance,
     Action,
     ResourceFeedbackOnMessage,
+    NoteFeedbackOnMessage,
 } from 'models/aiAgentFeedback/types'
 
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
@@ -41,6 +42,8 @@ import FeedbackCreateResource from './FeedbackCreateResource'
 import FeedbackOtherResourcesSelect from './FeedbackOtherResourcesSelect'
 
 import css from './AIAgentFeedbackBar.less'
+import InfoIconWithTooltip from './InfoIconWithTooltip'
+import FeedbackNote from './FeedbackNote'
 import FeedbackStatusBadge from './FeedbackStatusBadge'
 import {FeedbackStatus, ResourceSection} from './types'
 
@@ -256,6 +259,17 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
         [messageFeedback]
     )
 
+    const noteInitial = useMemo(() => {
+        const feedbackOnMessage = messageFeedback?.feedbackOnMessage
+
+        const noteFeedbackMessage = feedbackOnMessage.filter(
+            (feedback): feedback is NoteFeedbackOnMessage =>
+                feedback.type === 'note'
+        )
+
+        return noteFeedbackMessage[0]?.feedback ?? ''
+    }, [messageFeedback])
+
     const {actions, guidance, knowledge} =
         useAIAgentResourcesWithFeedback(messageFeedback)
 
@@ -325,6 +339,34 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
         }
     }
 
+    const buildSubmitMessageFeedback = (
+        feedback: string
+    ): DeleteMessageFeedback => {
+        return {
+            feedbackOnResource: [],
+            feedbackOnMessage: [
+                {
+                    type: 'note',
+                    feedback,
+                },
+            ],
+        }
+    }
+
+    const handleNoteFeedback = (e: React.ChangeEvent) => {
+        const textContent = e.currentTarget?.textContent || ''
+        const payload = buildSubmitMessageFeedback(textContent)
+
+        if (selectedAIMessage) {
+            if (textContent.length > 0) {
+                void submitFeedback(selectedAIMessage, payload)
+            } else {
+                const payloadForDelete = buildSubmitMessageFeedback('')
+                void deleteFeedback(selectedAIMessage, payloadForDelete)
+            }
+        }
+    }
+
     const handleDeleteReportIssues = (items: ReportIssueOption[]) => {
         const payload: DeleteMessageFeedback = {
             feedbackOnResource: [],
@@ -369,103 +411,131 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
         <>
             <HelpCenterApiClientProvider>
                 <FeedbackOrders orders={messageFeedback?.orders} />
-                <div className={css.lineSeparator} />
-                {actions && actions.length > 0 && (
-                    <div className={css.sectionContainer}>
-                        <FeedbackSectionTitleContainer
-                            messageFeedbackStatus={messageFeedbackStatus}
-                            resourceSection={ResourceSection.ACTIONS}
-                        />
-                        {actions?.map((action) => (
-                            <FeedbackResourceSection
-                                key={action.id}
-                                resource={action}
-                                resourceType={action.type}
+                <div className={css.subsectionTitle}>
+                    Feedback
+                    <InfoIconWithTooltip
+                        id="tooltip-message-feedback"
+                        tooltipProps={{autohide: true, placement: 'bottom'}}
+                    >
+                        <>
+                            Provide feedback on the resources AI Agent used to
+                            improve future responses:
+                            <br /> 1. Use thumbs up/down to indicate if AI Agent
+                            used the right resource
+                            <br /> 2. Edit a resource if it didn’t work as
+                            expected
+                        </>
+                    </InfoIconWithTooltip>
+                </div>
+                <div className={css.feedbackSection}>
+                    {actions && actions.length > 0 && (
+                        <div className={css.sectionContainer}>
+                            <FeedbackSectionTitleContainer
+                                messageFeedbackStatus={messageFeedbackStatus}
                                 resourceSection={ResourceSection.ACTIONS}
-                                handleSubmitFeedback={handleSubmitFeedback}
-                                href={getActionUrl(
-                                    action,
-                                    messageFeedback.shopType,
-                                    messageFeedback.shopName
-                                )}
-                                dataTestId={FEEDBACK_MESSAGE_ACTIONS_TEST_ID}
-                                resourceId={action.id}
                             />
-                        ))}
-                    </div>
-                )}
-                {guidance && guidance.length > 0 && (
-                    <div className={css.sectionContainer}>
-                        <FeedbackSectionTitleContainer
-                            messageFeedbackStatus={messageFeedbackStatus}
-                            resourceSection={ResourceSection.GUIDANCE}
-                        />
-                        {guidance?.map((guidance) => (
-                            <FeedbackResourceSection
-                                key={guidance.id}
-                                resource={guidance}
-                                resourceType="guidance"
+                            {actions.map((action) => (
+                                <FeedbackResourceSection
+                                    key={action.id}
+                                    resource={action}
+                                    resourceType={action.type}
+                                    resourceSection={ResourceSection.ACTIONS}
+                                    handleSubmitFeedback={handleSubmitFeedback}
+                                    href={getActionUrl(
+                                        action,
+                                        messageFeedback.shopType,
+                                        messageFeedback.shopName
+                                    )}
+                                    dataTestId={
+                                        FEEDBACK_MESSAGE_ACTIONS_TEST_ID
+                                    }
+                                    resourceId={action.id}
+                                />
+                            ))}
+                        </div>
+                    )}
+                    {guidance && guidance.length > 0 && (
+                        <div className={css.sectionContainer}>
+                            <FeedbackSectionTitleContainer
+                                messageFeedbackStatus={messageFeedbackStatus}
                                 resourceSection={ResourceSection.GUIDANCE}
-                                handleSubmitFeedback={handleSubmitFeedback}
-                                href={getGuidanceUrl(
-                                    guidance,
-                                    messageFeedback.shopType,
-                                    messageFeedback.shopName
-                                )}
-                                dataTestId={FEEDBACK_MESSAGE_GUIDANCE_TEST_ID}
-                                resourceId={guidance.id}
                             />
-                        ))}
-                    </div>
-                )}
-                {knowledge && knowledge.length > 0 && (
-                    <div className={css.sectionContainer}>
-                        <FeedbackSectionTitleContainer
-                            messageFeedbackStatus={messageFeedbackStatus}
-                            resourceSection={ResourceSection.KNOWLEDGE}
-                        />
-                        {knowledge?.map((knowledge) => (
-                            <FeedbackResourceSection
-                                key={knowledge.id}
-                                resource={knowledge}
-                                resourceType={knowledge.type}
+                            {guidance.map((guidance) => (
+                                <FeedbackResourceSection
+                                    key={guidance.id}
+                                    resource={guidance}
+                                    resourceType="guidance"
+                                    resourceSection={ResourceSection.GUIDANCE}
+                                    handleSubmitFeedback={handleSubmitFeedback}
+                                    href={getGuidanceUrl(
+                                        guidance,
+                                        messageFeedback.shopType,
+                                        messageFeedback.shopName
+                                    )}
+                                    dataTestId={
+                                        FEEDBACK_MESSAGE_GUIDANCE_TEST_ID
+                                    }
+                                    resourceId={guidance.id}
+                                />
+                            ))}
+                        </div>
+                    )}
+                    {knowledge && knowledge.length > 0 && (
+                        <div className={css.sectionContainer}>
+                            <FeedbackSectionTitleContainer
+                                messageFeedbackStatus={messageFeedbackStatus}
                                 resourceSection={ResourceSection.KNOWLEDGE}
-                                handleSubmitFeedback={handleSubmitFeedback}
-                                href={getKnowledgeUrl(knowledge)}
-                                dataTestId={FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID}
-                                resourceId={knowledge.id}
                             />
-                        ))}
+                            {knowledge.map((knowledge) => (
+                                <FeedbackResourceSection
+                                    key={knowledge.id}
+                                    resource={knowledge}
+                                    resourceType={knowledge.type}
+                                    resourceSection={ResourceSection.KNOWLEDGE}
+                                    handleSubmitFeedback={handleSubmitFeedback}
+                                    href={getKnowledgeUrl(knowledge)}
+                                    dataTestId={
+                                        FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID
+                                    }
+                                    resourceId={knowledge.id}
+                                />
+                            ))}
+                        </div>
+                    )}
+                    <div>
+                        {isFeedbackToAiAgentV3Enabled && (
+                            <FeedbackOtherResourcesSelect
+                                helpCenterId={messageFeedback.helpCenterId}
+                                guidanceHelpCenterId={
+                                    messageFeedback.guidanceHelpCenterId
+                                }
+                                snippetHelpCenterId={
+                                    messageFeedback.snippetHelpCenterId
+                                }
+                                shopName={messageFeedback.shopName}
+                                shopType={messageFeedback.shopType}
+                                onSubmit={handleSubmitOtherResources}
+                                onRemove={handleDeleteOtherResources}
+                                initialValues={otherResourcesInitial}
+                            />
+                        )}
+                        <FeedbackCreateResource
+                            shopType={messageFeedback.shopType}
+                            shopName={messageFeedback.shopName}
+                            helpCenterId={messageFeedback.helpCenterId}
+                        />
                     </div>
-                )}
-                {isFeedbackToAiAgentV3Enabled && (
-                    <FeedbackOtherResourcesSelect
-                        helpCenterId={messageFeedback.helpCenterId}
-                        guidanceHelpCenterId={
-                            messageFeedback.guidanceHelpCenterId
-                        }
-                        snippetHelpCenterId={
-                            messageFeedback.snippetHelpCenterId
-                        }
-                        shopName={messageFeedback.shopName}
-                        shopType={messageFeedback.shopType}
-                        onSubmit={handleSubmitOtherResources}
-                        onRemove={handleDeleteOtherResources}
-                        initialValues={otherResourcesInitial}
+                    <FeedbackReportIssue
+                        value={reportIssues}
+                        onChange={setReportIssues}
+                        onClose={handleSubmitReportIssues}
+                        onRemove={handleDeleteReportIssues}
                     />
-                )}
-                <FeedbackCreateResource
-                    shopType={messageFeedback.shopType}
-                    shopName={messageFeedback.shopName}
-                    helpCenterId={messageFeedback.helpCenterId}
-                />
-                <FeedbackReportIssue
-                    value={reportIssues}
-                    onChange={setReportIssues}
-                    onClose={handleSubmitReportIssues}
-                    onRemove={handleDeleteReportIssues}
-                />
-                <div className={css.lineSeparator} />
+                    <FeedbackNote
+                        onBlur={handleNoteFeedback}
+                        value={noteInitial}
+                    />
+                </div>
                 <FeedbackEvents
                     messages={selectedAIMessage ? [selectedAIMessage] : []}
                     shopType={messageFeedback.shopType}

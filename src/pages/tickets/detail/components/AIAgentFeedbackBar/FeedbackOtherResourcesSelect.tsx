@@ -14,6 +14,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import MultiLevelSelect from '../TicketFields/components/fields/DropdownField/MultiLevelSelect'
 import css from './FeedbackOtherResourcesSelect.less'
 import {RESOURCE_ICONS, RESOURCE_LABELS} from './constants'
+import InfoIconWithTooltip from './InfoIconWithTooltip'
 
 const closeIcon = (
     <i data-testid="other-resource-tag-close-icon" className="material-icons">
@@ -268,7 +269,19 @@ const FeedbackOtherResourcesSelect = ({
                 onApplyClick={handleApply}
             >
                 <Label className={css.label}>
-                    Should AI Agent have used something else?
+                    <span>
+                        Select resources AI Agent should have used
+                        <InfoIconWithTooltip
+                            id="tooltip-select-ai-agent-rsources"
+                            tooltipProps={{autohide: true, placement: 'bottom'}}
+                        >
+                            <>
+                                Select any existing resources that could have
+                                improved the response or create new resources to
+                                handle more use cases with AI Agent
+                            </>
+                        </InfoIconWithTooltip>
+                    </span>
                 </Label>
                 <SelectInputBox
                     placeholder="Select resource"

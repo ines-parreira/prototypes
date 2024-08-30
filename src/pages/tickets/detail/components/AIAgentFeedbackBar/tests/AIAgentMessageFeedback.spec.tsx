@@ -12,7 +12,7 @@ import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
 import {TicketMessage} from 'models/ticket/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {Feedback} from 'models/aiAgentFeedback/types'
+import {Feedback, SubmitMessageFeedback} from 'models/aiAgentFeedback/types'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {ticket} from 'fixtures/ticket'
 import {user} from 'fixtures/users'
@@ -61,6 +61,15 @@ store.dispatch = jest.fn()
 
 const mockSetCookie = jest.fn()
 const mockHandleSubmitFeedback = jest.fn()
+const mockHandleDeleteFeedback = jest.fn()
+jest.mock('../../../hooks/useAIAgentSendFeedback', () => {
+    return {
+        useAIAgentSendFeedback: () => ({
+            aiAgentSendFeedback: mockHandleSubmitFeedback,
+            aiAgentDeleteFeedback: mockHandleDeleteFeedback,
+        }),
+    }
+})
 
 const resource = {
     id: 1,
@@ -201,5 +210,83 @@ describe('AIAgentMessageFeedback', () => {
         fireEvent.blur(thumbsButton)
 
         expect(mockSetCookie).not.toHaveBeenCalled()
+    })
+    it('handle submit note feedback if note is not empty', () => {
+        const textContent = 'test note'
+        const payload: SubmitMessageFeedback = {
+            feedbackOnResource: [],
+            feedbackOnMessage: [
+                {
+                    type: 'note',
+                    feedback: textContent,
+                },
+            ],
+        }
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <AIAgentMessageFeedback messageFeedback={messageFeedback} />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        const noteFeedback = screen.getByTestId(
+            'ai-message-feedback-issues-note-test-id'
+        )
+
+        fireEvent.blur(noteFeedback, {
+            currentTarget: {
+                textContent: 'test note',
+            } as unknown as EventTarget,
+        })
+        ;async () => {
+            expect(noteFeedback.textContent).toBe('test note')
+            expect(mockHandleSubmitFeedback).toHaveBeenCalledWith(
+                messageFeedback,
+                payload
+            )
+
+            return await Promise.resolve()
+        }
+    })
+
+    it('handle delete note feedback if note is empty', () => {
+        const textContent = ''
+        const payload: SubmitMessageFeedback = {
+            feedbackOnResource: [],
+            feedbackOnMessage: [
+                {
+                    type: 'note',
+                    feedback: textContent,
+                },
+            ],
+        }
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <AIAgentMessageFeedback messageFeedback={messageFeedback} />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        const noteFeedback = screen.getByTestId(
+            'ai-message-feedback-issues-note-test-id'
+        )
+
+        fireEvent.blur(noteFeedback, {
+            currentTarget: {
+                textContent: '',
+            } as unknown as EventTarget,
+        })
+        ;async () => {
+            expect(noteFeedback).toHaveValue('')
+            expect(mockHandleDeleteFeedback).toHaveBeenCalledWith(
+                messageFeedback,
+                payload
+            )
+
+            return await Promise.resolve()
+        }
     })
 })

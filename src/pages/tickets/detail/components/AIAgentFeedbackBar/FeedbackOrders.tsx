@@ -17,8 +17,8 @@ const FeedbackOrders: React.FC<Props> = ({orders}) => {
     }
 
     return (
-        <div className={css.sectionContainer}>
-            <div className={css.subtitle}>Order Data</div>
+        <div className={css.metadataField}>
+            <div className={css.metadataTitle}>Order</div>
             {orders.map((order) => (
                 <a
                     href={order.url}

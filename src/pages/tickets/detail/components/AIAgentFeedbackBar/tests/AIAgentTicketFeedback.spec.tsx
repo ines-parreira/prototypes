@@ -284,7 +284,7 @@ describe('AIAgentTicketFeedback', () => {
 
         const orders = queryAllByTestId('ticket-feedback-order')
 
-        expect(queryByText('Order Data')).toBeInTheDocument()
+        expect(queryByText('Order')).toBeInTheDocument()
         expect(orders.length).toBe(2)
         expect(orders[0]).toHaveTextContent(/#3324/)
         expect(orders[1]).toHaveTextContent(/#3325/)
@@ -420,15 +420,10 @@ describe('AIAgentTicketFeedback', () => {
 
         const links = ticketImproveInfo?.querySelectorAll('a')
 
-        expect(links?.length).toBe(2)
-        expect(links?.[0]).toHaveTextContent('Guidance')
-        expect(links?.[0]).toHaveAttribute(
-            'href',
-            '/app/automation/shopify/fast-cars/ai-agent/guidance'
-        )
+        expect(links?.length).toBe(1)
 
-        expect(links?.[1]).toHaveTextContent('AI Agent Configuration')
-        expect(links?.[1]).toHaveAttribute(
+        expect(links?.[0]).toHaveTextContent('AI Agent Configuration')
+        expect(links?.[0]).toHaveAttribute(
             'href',
             '/app/automation/shopify/fast-cars/ai-agent'
         )

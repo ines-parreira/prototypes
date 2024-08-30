@@ -57,10 +57,16 @@ export type ResourceFeedbackOnMessage = {
     resourceId: number | string
 }
 
+export type NoteFeedbackOnMessage = {
+    type: 'note'
+    feedback: string
+}
+
 export type FeedbackOnMessage =
     | BinaryFeedbackOnMessage
     | IssueFeedbackOnMessage
     | ResourceFeedbackOnMessage
+    | NoteFeedbackOnMessage
 
 export const isIssueFeedbackOnMessage = (
     feedback: FeedbackOnMessage
@@ -104,5 +110,5 @@ export type SubmitMessageFeedback = {
 
 export type DeleteMessageFeedback = {
     feedbackOnResource: FeedbackOnResource[]
-    feedbackOnMessage: (IssueFeedbackOnMessage | ResourceFeedbackOnMessage)[]
+    feedbackOnMessage: FeedbackOnMessage[]
 }
