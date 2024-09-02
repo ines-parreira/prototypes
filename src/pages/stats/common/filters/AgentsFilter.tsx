@@ -12,17 +12,18 @@ import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {agentsFilterLogicalOperators} from 'pages/stats/common/filters/constants'
+import {
+    agentsFilterLogicalOperators,
+    FilterLabels,
+} from 'pages/stats/common/filters/constants'
 import {DropdownOption} from 'pages/stats/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {RootState} from 'state/types'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 
 type Props = {
-    value: StatsFiltersWithLogicalOperator['agents']
+    value: StatsFiltersWithLogicalOperator[FilterKey.Agents]
 } & RemovableFilter
-
-export const AGENTS_FILTER_NAME = 'Agent'
 
 export default function AgentsFilter({
     value = emptyFilter,
@@ -146,7 +147,7 @@ export default function AgentsFilter({
 
     return (
         <Filter
-            filterName={AGENTS_FILTER_NAME}
+            filterName={FilterLabels[FilterKey.Agents]}
             selectedOptions={getSelectedItems()}
             selectedLogicalOperator={value.operator}
             logicalOperators={agentsFilterLogicalOperators}

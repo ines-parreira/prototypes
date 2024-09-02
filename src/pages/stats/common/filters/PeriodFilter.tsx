@@ -20,13 +20,13 @@ import FilterValue from 'pages/stats/common/components/Filter/components/FilterV
 import FilterName from 'pages/stats/common/components/Filter/components/FilterName/FilterName'
 import css from 'pages/stats/common/filters/PeriodFilter.less'
 import {RootState} from 'state/types'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 
 const MAX_SPAN = 90
-export const PERIOD_FILTER_NAME = 'Date'
 
 type Props = {
     initialSettings?: Omit<InitialSettings, 'maxSpan'> & {maxSpan?: number}
-    value: StatsFilters['period']
+    value: StatsFilters[FilterKey.Period]
     tooltipMessageForPreviousPeriod?: string
 } & RemovableFilter
 
@@ -113,7 +113,10 @@ export function PeriodFilter({
 
     return (
         <div className={css.filterContainer}>
-            <FilterName className={css.filterName} name={PERIOD_FILTER_NAME} />
+            <FilterName
+                className={css.filterName}
+                name={FilterLabels[FilterKey.Period]}
+            />
             <PeriodPicker
                 startDatetime={moment(value.start_datetime)}
                 endDatetime={moment(value.end_datetime)}

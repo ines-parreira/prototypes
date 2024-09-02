@@ -13,8 +13,8 @@ import {
     getSelectedCustomField,
     setSelectedCustomField,
 } from 'state/ui/stats/ticketInsightsSlice'
-
-export const CUSTOM_FIELD_FILTER_NAME = 'Report on'
+import {FilterKey} from 'models/stat/types'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 
 export const CustomFieldFilter = () => {
     const selectedCustomField = useAppSelector(getSelectedCustomField)
@@ -65,7 +65,7 @@ export const CustomFieldFilter = () => {
 
     return (
         <Filter
-            filterName={CUSTOM_FIELD_FILTER_NAME}
+            filterName={FilterLabels[FilterKey.CustomFields]}
             isPersistent={true}
             isMultiple={false}
             showSearch={false}

@@ -1,7 +1,11 @@
 import React, {useCallback, useMemo} from 'react'
 import {connect} from 'react-redux'
 import _noop from 'lodash/noop'
-import {StatsFiltersWithLogicalOperator, FilterKey} from 'models/stat/types'
+import {
+    StatsFiltersWithLogicalOperator,
+    FilterKey,
+    FilterComponentKey,
+} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter/Filter'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
@@ -14,13 +18,12 @@ import {RootState} from 'state/types'
 import {DropdownOption} from 'pages/stats/types'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {StoreIntegration} from 'models/integration/types'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 
 type Props = {
-    value: StatsFiltersWithLogicalOperator['integrations']
+    value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]
     storeIntegrations: StoreIntegration[]
 } & RemovableFilter
-
-export const STORE_FILTER_NAME = 'Report on'
 
 export default function StoreFilter({
     value = emptyFilter,
@@ -83,7 +86,7 @@ export default function StoreFilter({
 
     return (
         <Filter
-            filterName={STORE_FILTER_NAME}
+            filterName={FilterLabels[FilterComponentKey.Store]}
             filterOptionGroups={options}
             logicalOperators={[]}
             onChangeOption={onOptionChange}

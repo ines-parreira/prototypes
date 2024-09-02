@@ -17,12 +17,13 @@ import {DropdownOption} from 'pages/stats/types'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {integrationsFilterLogicalOperators} from 'pages/stats/common/filters/constants'
-
-export const INTEGRATIONS_FILTER_NAME = 'Integrations'
+import {
+    integrationsFilterLogicalOperators,
+    FilterLabels,
+} from 'pages/stats/common/filters/constants'
 
 type Props = {
-    value: StatsFiltersWithLogicalOperator['integrations']
+    value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]
     integrations: Integration[]
 } & RemovableFilter
 
@@ -102,7 +103,7 @@ export default function IntegrationsFilter({
 
     return (
         <Filter
-            filterName={INTEGRATIONS_FILTER_NAME}
+            filterName={FilterLabels[FilterKey.Integrations]}
             selectedOptions={getSelectedIntegrations()}
             selectedLogicalOperator={value.operator}
             logicalOperators={integrationsFilterLogicalOperators}

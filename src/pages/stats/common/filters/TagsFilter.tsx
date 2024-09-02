@@ -8,13 +8,14 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {tagsFilterLogicalOperators} from 'pages/stats/common/filters/constants'
+import {
+    FilterLabels,
+    tagsFilterLogicalOperators,
+} from 'pages/stats/common/filters/constants'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-
-const TAGS_FILTER_NAME = 'Tags'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Tags]
@@ -84,7 +85,7 @@ export const TagsFilter = ({
 
     return (
         <Filter
-            filterName={TAGS_FILTER_NAME}
+            filterName={FilterLabels[FilterKey.Tags]}
             filterOptionGroups={[{options}]}
             selectedOptions={selectedOptions}
             logicalOperators={tagsFilterLogicalOperators}

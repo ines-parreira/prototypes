@@ -2,7 +2,6 @@ import React from 'react'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import HelpCenterFilter, {
-    HELP_CENTER_FILTER_NAME,
     HelpCenterFilterWithState,
 } from 'pages/stats/common/filters/HelpCenterFilter'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -11,8 +10,11 @@ import {HelpCenter} from 'models/helpCenter/types'
 import {RootState} from 'state/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {initialState} from 'state/stats/statsSlice'
+import {FilterKey} from 'models/stat/types'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 
 const mockedHelpCenterData = getHelpCentersResponseFixture.data
+const HELP_CENTER_FILTER_NAME = FilterLabels[FilterKey.HelpCenters]
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)

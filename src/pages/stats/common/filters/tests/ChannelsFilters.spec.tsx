@@ -11,10 +11,7 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {
-    ChannelsFilter,
-    CHANNELS_FILTER_NAME,
-} from 'pages/stats/common/filters/ChannelsFilter'
+import {ChannelsFilter} from 'pages/stats/common/filters/ChannelsFilter'
 import {getChannels, toChannel} from 'services/channels'
 import {
     initialState,
@@ -23,6 +20,8 @@ import {
 import {RootState} from 'state/types'
 import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
 import {assumeMock, renderWithStore} from 'utils/testing'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {FilterKey} from 'models/stat/types'
 
 const mockedChannels = channels
 
@@ -58,7 +57,9 @@ describe('ChannelsFilter', () => {
     })
 
     it('should render ChannelsStatsFilter component', () => {
-        expect(screen.getByText(CHANNELS_FILTER_NAME)).toBeInTheDocument()
+        expect(
+            screen.getByText(FilterLabels[FilterKey.Channels])
+        ).toBeInTheDocument()
     })
 
     it('should render ChannelsStatsFilter options', () => {

@@ -1,7 +1,10 @@
 import React, {useCallback, useMemo} from 'react'
 import {connect} from 'react-redux'
 
-import {campaignStatusesFilterLogicalOperators} from 'pages/stats/common/filters/constants'
+import {
+    campaignStatusesFilterLogicalOperators,
+    FilterLabels,
+} from 'pages/stats/common/filters/constants'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import Filter from 'pages/stats/common/components/Filter'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
@@ -14,8 +17,6 @@ import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {RootState} from 'state/types'
 
-export const CAMPAIGN_STATUSES_FILTER_NAME = 'All statuses'
-
 const filterOptions = [
     {
         options: Object.entries(InferredCampaignStatus).map(([key, value]) => ({
@@ -25,11 +26,11 @@ const filterOptions = [
     },
 ]
 
-const emptyFilter: StatsFiltersWithLogicalOperator['campaignStatuses'] =
+const emptyFilter: StatsFiltersWithLogicalOperator[FilterKey.CampaignStatuses] =
     withDefaultLogicalOperator()
 
 type Props = {
-    value: StatsFiltersWithLogicalOperator['campaignStatuses']
+    value: StatsFiltersWithLogicalOperator[FilterKey.CampaignStatuses]
 } & RemovableFilter
 
 export default function CampaignStatusesFilter({value, onRemove}: Props) {
@@ -114,7 +115,7 @@ export default function CampaignStatusesFilter({value, onRemove}: Props) {
 
     return (
         <Filter
-            filterName={CAMPAIGN_STATUSES_FILTER_NAME}
+            filterName={FilterLabels[FilterKey.CampaignStatuses]}
             filterOptionGroups={filterOptions}
             selectedOptions={selectedOptions}
             onChangeOption={onOptionChange}

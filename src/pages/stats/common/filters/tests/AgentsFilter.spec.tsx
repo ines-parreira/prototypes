@@ -23,11 +23,11 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import AgentsFilter, {
-    AGENTS_FILTER_NAME,
-} from 'pages/stats/common/filters/AgentsFilter'
+import AgentsFilter from 'pages/stats/common/filters/AgentsFilter'
 import {extendedAgents} from 'pages/stats/common/filters/tests/fixtures/agents'
 import {extendedTeams} from 'pages/stats/common/filters/tests/fixtures/teams'
+import {FilterKey} from 'models/stat/types'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -68,7 +68,9 @@ describe('AgentsFilter', () => {
     })
 
     it('should render AgentsFilter component', () => {
-        expect(screen.getByText(AGENTS_FILTER_NAME)).toBeInTheDocument()
+        expect(
+            screen.getByText(FilterLabels[FilterKey.Agents])
+        ).toBeInTheDocument()
     })
 
     it('should render AgentsFilter options', () => {
@@ -318,6 +320,8 @@ describe('AgentsFilter', () => {
 describe('AgentsFilter with no agents', () => {
     it('should render AgentsFilter component even if value is undefined', () => {
         renderWithStore(<AgentsFilter value={undefined} />, defaultState)
-        expect(screen.getByText(AGENTS_FILTER_NAME)).toBeInTheDocument()
+        expect(
+            screen.getByText(FilterLabels[FilterKey.Agents])
+        ).toBeInTheDocument()
     })
 })

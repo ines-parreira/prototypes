@@ -13,12 +13,11 @@ import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {emptyFilter} from 'pages/stats/common/filters/helpers'
 import {RootState} from 'state/types'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 
 type HelpCenterFilterProps = {
-    value: StatsFiltersWithLogicalOperator['helpCenters']
+    value: StatsFiltersWithLogicalOperator[FilterKey.HelpCenters]
 }
-
-export const HELP_CENTER_FILTER_NAME = 'Report on'
 
 const HelpCenterFilter = ({value = emptyFilter}: HelpCenterFilterProps) => {
     const dispatch = useAppDispatch()
@@ -57,7 +56,7 @@ const HelpCenterFilter = ({value = emptyFilter}: HelpCenterFilterProps) => {
 
     return (
         <Filter
-            filterName={HELP_CENTER_FILTER_NAME}
+            filterName={FilterLabels[FilterKey.HelpCenters]}
             isMultiple={false}
             showSearch={false}
             showQuickSelect={false}

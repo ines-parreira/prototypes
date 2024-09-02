@@ -6,10 +6,7 @@ import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
 import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import {RootState} from 'state/types'
-import {
-    StoreFilterWithState,
-    STORE_FILTER_NAME,
-} from 'pages/stats/common/filters/StoreFilter'
+import {StoreFilterWithState} from 'pages/stats/common/filters/StoreFilter'
 import {renderWithStore} from 'utils/testing'
 import {
     initialState,
@@ -20,6 +17,8 @@ import {
     LogicalOperatorEnum,
 } from 'pages/stats/common/components/Filter/constants'
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterComponentKey} from 'models/stat/types'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 
 const mockedDispatch = jest.fn()
 const mockedRemove = jest.fn()
@@ -63,7 +62,9 @@ describe('StoreFilter', () => {
     })
 
     it('should render the component correctly', () => {
-        expect(screen.getByText(STORE_FILTER_NAME)).toBeTruthy()
+        expect(
+            screen.getByText(FilterLabels[FilterComponentKey.Store])
+        ).toBeTruthy()
     })
 
     it('should render IntegrationsFilter shopify options only since hasAutomate is false', () => {

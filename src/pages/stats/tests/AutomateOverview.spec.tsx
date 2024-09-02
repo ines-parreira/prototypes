@@ -10,7 +10,6 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import LD from 'launchdarkly-react-client-sdk'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {PERIOD_FILTER_NAME} from 'pages/stats/common/filters/PeriodFilter'
 import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
 
 import {AUTOMATION_RATE_FIXED_STATS} from 'pages/automate/automate-metrics/constants'
@@ -324,7 +323,9 @@ describe('<AutomateOverview />', () => {
                 userEvent.click(addFilterButton)
             })
 
-            expect(screen.getByText(PERIOD_FILTER_NAME)).toBeInTheDocument()
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Period])
+            ).toBeInTheDocument()
             await waitFor(() => {
                 expect(
                     screen.getByText(FilterLabels[FilterKey.Channels])

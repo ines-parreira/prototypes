@@ -1,6 +1,7 @@
 import React, {useCallback, useMemo} from 'react'
 import _noop from 'lodash/noop'
 import {connect} from 'react-redux'
+
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import Filter from 'pages/stats/common/components/Filter/Filter'
@@ -12,11 +13,12 @@ import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {DropdownOption} from 'pages/stats/types'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {helpCenterLanguageFilterLogicalOperators} from 'pages/stats/common/filters/constants'
+import {
+    FilterLabels,
+    helpCenterLanguageFilterLogicalOperators,
+} from 'pages/stats/common/filters/constants'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {RootState} from 'state/types'
-
-export const HELP_CENTER_LANG_FILTER_NAME = 'Language'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator['localeCodes']
@@ -101,7 +103,7 @@ const HelpCenterLanguageFilter = ({value = emptyFilter}: Props) => {
 
     return (
         <Filter
-            filterName={HELP_CENTER_LANG_FILTER_NAME}
+            filterName={FilterLabels[FilterKey.LocaleCodes]}
             showQuickSelect={false}
             showSearch={false}
             isPersistent

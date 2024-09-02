@@ -21,11 +21,11 @@ import {
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import CampaignsFilter, {
-    CAMPAIGNS_FILTER_NAME,
     CampaignsFilterWithState,
 } from 'pages/stats/common/filters/CampaignsFilter'
 import {campaignsList} from 'fixtures/campaign'
 import {FilterKey} from 'models/stat/types'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 
 const mockedCampaignsList = campaignsList
 const mockedDispatch = jest.fn()
@@ -37,6 +37,8 @@ const mockedUseParamsReturnValue = jest.fn(() => ({id: 1}))
 jest.mock('react-router-dom', () => ({
     useParams: () => mockedUseParamsReturnValue(),
 }))
+
+const CAMPAIGNS_FILTER_NAME = FilterLabels[FilterKey.Campaigns]
 
 const defaultState = {
     stats: {

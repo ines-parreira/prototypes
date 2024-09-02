@@ -18,17 +18,18 @@ import {DropdownOption} from 'pages/stats/types'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {campaignsFilterLogicalOperators} from 'pages/stats/common/filters/constants'
+import {
+    campaignsFilterLogicalOperators,
+    FilterLabels,
+} from 'pages/stats/common/filters/constants'
 import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {ConvertRouteParams} from 'pages/convert/common/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationById} from 'state/integrations/selectors'
 
-export const CAMPAIGNS_FILTER_NAME = 'Campaigns'
-
 type Props = {
-    value: StatsFiltersWithLogicalOperator['campaigns']
+    value: StatsFiltersWithLogicalOperator[FilterKey.Campaigns]
 } & RemovableFilter
 
 export default function CampaignsFilter({
@@ -137,7 +138,7 @@ export default function CampaignsFilter({
 
     return (
         <Filter
-            filterName={CAMPAIGNS_FILTER_NAME}
+            filterName={FilterLabels[FilterKey.Campaigns]}
             selectedOptions={getSelectedCampaigns}
             selectedLogicalOperator={value.operator}
             logicalOperators={campaignsFilterLogicalOperators}

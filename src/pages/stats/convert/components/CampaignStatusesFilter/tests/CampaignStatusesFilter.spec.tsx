@@ -1,9 +1,7 @@
 import React from 'react'
 import {fireEvent, screen} from '@testing-library/react'
 
-import CampaignStatusesFilter, {
-    CAMPAIGN_STATUSES_FILTER_NAME,
-} from 'pages/stats/convert/components/CampaignStatusesFilter/'
+import CampaignStatusesFilter from 'pages/stats/convert/components/CampaignStatusesFilter/'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
@@ -17,6 +15,8 @@ import {
 import {renderWithStore} from 'utils/testing'
 import {InferredCampaignStatus} from 'models/convert/campaign/types'
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {FilterKey} from 'models/stat/types'
 
 const mockedDispatch = jest.fn()
 const mockedRemove = jest.fn()
@@ -65,7 +65,7 @@ describe('CampaignStatusesFilter', () => {
 
     it('should render CampaignStatusesFilter component', () => {
         expect(
-            screen.getByText(CAMPAIGN_STATUSES_FILTER_NAME)
+            screen.getByText(FilterLabels[FilterKey.CampaignStatuses])
         ).toBeInTheDocument()
         expect(screen.getByText(isOneOfRegex)).toBeInTheDocument()
     })

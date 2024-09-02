@@ -8,7 +8,10 @@ import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {channelsFilterLogicalOperators} from 'pages/stats/common/filters/constants'
+import {
+    channelsFilterLogicalOperators,
+    FilterLabels,
+} from 'pages/stats/common/filters/constants'
 import {emptyFilter, filterChannels} from 'pages/stats/common/filters/helpers'
 import {DropdownOption} from 'pages/stats/types'
 import {
@@ -22,8 +25,6 @@ import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-
-export const CHANNELS_FILTER_NAME = 'Channels'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator['channels']
@@ -114,7 +115,7 @@ export function ChannelsFilter({
 
     return (
         <Filter
-            filterName={CHANNELS_FILTER_NAME}
+            filterName={FilterLabels[FilterKey.Channels]}
             selectedOptions={getSelectedChannels()}
             selectedLogicalOperator={value.operator}
             logicalOperators={channelsFilterLogicalOperators}

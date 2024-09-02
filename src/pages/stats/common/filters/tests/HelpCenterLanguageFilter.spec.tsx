@@ -6,7 +6,6 @@ import {
     mergeStatsFiltersWithLogicalOperator,
 } from 'state/stats/statsSlice'
 import HelpCenterLanguageFilter, {
-    HELP_CENTER_LANG_FILTER_NAME,
     HelpCenterLanguageFilterWithState,
 } from 'pages/stats/common/filters/HelpCenterLanguageFilter'
 import {renderWithStore} from 'utils/testing'
@@ -21,6 +20,7 @@ import {
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -53,6 +53,8 @@ const mockedLocales = [
     {name: 'French', code: 'fr-FR'},
     {name: 'German', code: 'de-DE'},
 ]
+
+const HELP_CENTER_LANG_FILTER_NAME = FilterLabels[FilterKey.LocaleCodes]
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     useSupportedLocales: () => mockedLocales,

@@ -7,10 +7,7 @@ import {ticketFieldDefinitions} from 'fixtures/customField'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {CustomField} from 'models/customField/types'
-import {
-    CUSTOM_FIELD_FILTER_NAME,
-    CustomFieldFilter,
-} from 'pages/stats/common/filters/CustomFieldFilter'
+import {CustomFieldFilter} from 'pages/stats/common/filters/CustomFieldFilter'
 import {RootState} from 'state/types'
 import {
     initialState,
@@ -18,9 +15,12 @@ import {
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
+import {FilterKey} from 'models/stat/types'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 
 jest.mock('hooks/customField/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
+const CUSTOM_FIELD_FILTER_NAME = FilterLabels[FilterKey.CustomFields]
 
 describe('CustomFieldFilter', () => {
     const defaultState = {

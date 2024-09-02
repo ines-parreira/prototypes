@@ -20,9 +20,9 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import IntegrationsFilter, {
-    INTEGRATIONS_FILTER_NAME,
-} from 'pages/stats/common/filters/IntegrationsFilter'
+import IntegrationsFilter from 'pages/stats/common/filters/IntegrationsFilter'
+import {FilterKey} from 'models/stat/types'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -49,7 +49,9 @@ describe('IntegrationsFilter', () => {
     it('should render IntegrationsFilter component', () => {
         renderComponent()
 
-        expect(screen.getByText(INTEGRATIONS_FILTER_NAME)).toBeInTheDocument()
+        expect(
+            screen.getByText(FilterLabels[FilterKey.Integrations])
+        ).toBeInTheDocument()
     })
 
     it('should render with empty filter', () => {
@@ -61,7 +63,9 @@ describe('IntegrationsFilter', () => {
             defaultState
         )
 
-        expect(screen.getByText(INTEGRATIONS_FILTER_NAME)).toBeInTheDocument()
+        expect(
+            screen.getByText(FilterLabels[FilterKey.Integrations])
+        ).toBeInTheDocument()
     })
 
     it('should render IntegrationsFilter options', () => {
