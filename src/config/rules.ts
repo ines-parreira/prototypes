@@ -36,7 +36,7 @@ export const eventsDependencies = {
 }
 
 // variables available in rules
-export const availableVariables = ['ticket', 'message', 'event']
+export const availableVariables = ['ticket', 'message', 'event', 'steps_state']
 
 // collections operators
 //$TsFixMe fallback for js files use CollectionOperator enum instead

@@ -1,4 +1,11 @@
-import React, {ReactNode, useCallback, useEffect, useRef, useState} from 'react'
+import React, {
+    ReactNode,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+    MouseEvent,
+} from 'react'
 import {Popover} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
@@ -22,6 +29,7 @@ type Props = {
     isOpen?: boolean
     onClose: () => void
     onOpen: () => void
+    toggleGuard?: (e: MouseEvent<any, globalThis.MouseEvent>) => boolean
 }
 
 export default function ButtonPopover({
@@ -34,6 +42,7 @@ export default function ButtonPopover({
     name,
     onClose,
     onOpen,
+    toggleGuard,
 }: Props) {
     const [isTourOpen, setIsTourOpen] = useState<boolean>(
         tour ? !!tour.text : false
@@ -97,7 +106,8 @@ export default function ButtonPopover({
                 {(context) => (
                     <Popover
                         isOpen={isOpen}
-                        toggle={() => {
+                        toggle={(e) => {
+                            if (toggleGuard?.(e)) return
                             handleButtonToggle()
                         }}
                         target={buttonRef}

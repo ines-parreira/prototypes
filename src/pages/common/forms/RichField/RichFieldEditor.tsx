@@ -524,6 +524,7 @@ export class RichFieldEditor extends Component<Props, State> {
                         canDropFiles={!!this.props.canDropFiles}
                         uploadType={uploadType}
                         {...pluginMethods}
+                        getWorkflowVariables={this.props.getWorkflowVariables}
                     />
                 )}
             </div>

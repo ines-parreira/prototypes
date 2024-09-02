@@ -3412,6 +3412,7 @@ exports[`RichField should render mutable variable 1`] = `
                               name="Insert link"
                               onClose={[Function]}
                               onOpen={[Function]}
+                              toggleGuard={[Function]}
                             >
                               <ForwardRef(Button)
                                 icon="link"

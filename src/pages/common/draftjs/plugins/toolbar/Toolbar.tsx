@@ -5,7 +5,10 @@ import {EditorState} from 'draft-js'
 import {UploadType} from 'common/types'
 import Button from 'pages/common/components/button/Button'
 import {insertText} from 'utils'
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import {
+    WorkflowVariable,
+    WorkflowVariableList,
+} from 'pages/automate/workflows/models/variables.types'
 import {toLiquidSyntax} from 'pages/automate/workflows/models/variables.model'
 import {
     AddDiscountCode,
@@ -45,6 +48,7 @@ type Props = {
     onLinkTextChange: (text: string) => void
     onLinkOpen: () => void
     onLinkClose: () => void
+    getWorkflowVariables?: () => WorkflowVariableList
 } & ActionInjectedProps
 
 const renderButton = (button: ReactNode, index: number) => (
@@ -74,6 +78,7 @@ const Toolbar = ({
     onLinkTextChange,
     onLinkOpen,
     onLinkClose,
+    getWorkflowVariables,
 }: Props) => {
     const [isHovered, setIsHovered] = useState(false)
 
@@ -149,6 +154,7 @@ const Toolbar = ({
                             onTextChange={onLinkTextChange}
                             onOpen={onLinkOpen}
                             onClose={onLinkClose}
+                            getWorkflowVariables={getWorkflowVariables}
                         />
                     )}
                     {isActionDisplayed(ActionName.Image) && (

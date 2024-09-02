@@ -1,5 +1,6 @@
 import React, {ComponentProps} from 'react'
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {act} from 'react-dom/test-utils'
 import {shallow} from 'enzyme'
 import {EditorState} from 'draft-js'
 import _noop from 'lodash/noop'
@@ -327,5 +328,185 @@ describe('<AddLink />', () => {
         fireEvent.click(screen.getByText(/link/))
         fireEvent.click(screen.getByText(/Insert Link/))
         expect(addVideoSpy).not.toHaveBeenCalled()
+    })
+
+    it('should render TextInputWithVariables when workflowVariables are provided', async () => {
+        render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                canAddVideoPlayer={false}
+                text="foo"
+                getWorkflowVariables={() => [
+                    {
+                        type: 'string',
+                        name: 'ticket.url_something',
+                        nodeType: 'text_reply',
+                        value: 'value',
+                    },
+                ]}
+            />
+        )
+        fireEvent.click(screen.getByText(/link/))
+
+        await act(async () => {
+            await waitFor(() => {
+                expect(
+                    screen.getByText('https://help.domain.com')
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByText('https://help.domain.com/article')
+                ).not.toBeInTheDocument()
+                expect(screen.getByText(`{+}`)).toBeInTheDocument()
+            })
+        })
+    })
+
+    it('should set toggle guard if "workflowVariables" are provided', async () => {
+        const onOpenMock = jest.fn()
+
+        render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                canAddVideoPlayer={false}
+                text="foo"
+                onOpen={onOpenMock}
+                getWorkflowVariables={() => [
+                    {
+                        type: 'string',
+                        name: 'ticket.url_something',
+                        nodeType: 'text_reply',
+                        value: 'value',
+                    },
+                ]}
+            />
+        )
+        fireEvent.click(screen.getByText(/link/))
+
+        await act(async () => {
+            await waitFor(() => {
+                fireEvent.click(screen.getByText('{+}'))
+                expect(
+                    screen.getByText(/Insert variable from previous steps/i)
+                ).toBeInTheDocument()
+                expect(onOpenMock).not.toHaveBeenCalled()
+            })
+        })
+    })
+
+    it('should return true when workflowVariables are provided and target matches', () => {
+        const wrapper = shallow(
+            <AddLinkContainer
+                getWorkflowVariables={() => [
+                    {
+                        type: 'string',
+                        name: 'testVar',
+                        nodeType: 'text_reply',
+                        value: 'value',
+                    },
+                ]}
+                {...defaultProps}
+            />
+        )
+        const instance = wrapper.instance() as unknown as {
+            _flowVariablesDisablePopoverToggle: (
+                event: React.MouseEvent<any, globalThis.MouseEvent>
+            ) => boolean
+        }
+
+        const event = {
+            target: document.createElement('div'),
+        }
+        event.target.setAttribute('id', 'floating-ui-123')
+
+        // Act
+
+        const result = instance._flowVariablesDisablePopoverToggle(
+            event as unknown as React.MouseEvent<any, globalThis.MouseEvent>
+        )
+
+        expect(result).toBe(true)
+    })
+
+    it('should return false when workflowVariables are not provided', () => {
+        const wrapper = shallow(<AddLinkContainer {...defaultProps} />)
+        const instance = wrapper.instance()
+
+        const event = {
+            target: document.createElement('div'),
+        }
+
+        const result = (
+            instance as unknown as {
+                _flowVariablesDisablePopoverToggle: (
+                    event: React.MouseEvent<any, globalThis.MouseEvent>
+                ) => boolean
+            }
+        )._flowVariablesDisablePopoverToggle(
+            event as unknown as React.MouseEvent<any, globalThis.MouseEvent>
+        )
+
+        expect(result).toBe(false)
+    })
+
+    it('should return true when workflowVariables are provided and target matches', () => {
+        // Arrange
+        const wrapper = shallow(
+            <AddLinkContainer
+                getWorkflowVariables={() => [
+                    {
+                        type: 'string',
+                        name: 'testVar',
+                        nodeType: 'text_reply',
+                        value: 'value',
+                    },
+                ]}
+                {...defaultProps}
+            />
+        )
+        const instance = wrapper.instance() as unknown as {
+            _flowVariablesDisablePopoverToggle: (
+                event: React.MouseEvent<any, globalThis.MouseEvent>
+            ) => boolean
+        }
+
+        const event = {
+            target: document.createElement('div'),
+        }
+
+        const result = (
+            instance as unknown as {
+                _flowVariablesDisablePopoverToggle: (
+                    event: React.MouseEvent<any, globalThis.MouseEvent>
+                ) => boolean
+            }
+        )._flowVariablesDisablePopoverToggle(
+            event as unknown as React.MouseEvent<any, globalThis.MouseEvent>
+        )
+
+        expect(result).toBe(true)
+    })
+
+    it('should return false when workflowVariables is an empty array', () => {
+        const wrapper = shallow(
+            <AddLinkContainer
+                {...defaultProps}
+                getWorkflowVariables={() => []}
+            />
+        )
+        const instance = wrapper.instance() as unknown as {
+            _flowVariablesDisablePopoverToggle: (
+                event: React.MouseEvent<any, globalThis.MouseEvent>
+            ) => boolean
+        }
+
+        const event = {
+            target: document.createElement('div'),
+        }
+
+        const result = instance._flowVariablesDisablePopoverToggle(
+            event as unknown as React.MouseEvent<any, globalThis.MouseEvent>
+        )
+
+        expect(result).toBe(false)
     })
 })

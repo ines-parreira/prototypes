@@ -2,6 +2,10 @@ import {EditorState, Modifier} from 'draft-js'
 import React, {Component, KeyboardEvent, ContextType, useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import ReactPlayer from 'react-player'
+import {Label} from '@gorgias/ui-kit'
+import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
+import {closest} from 'services/shortcutManager/utils'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 
 import Button from 'pages/common/components/button/Button'
 import {
@@ -66,6 +70,7 @@ type Props = {
     isOpen: boolean
     onOpen: () => void
     onClose: () => void
+    getWorkflowVariables?: () => WorkflowVariableList
 } & ActionInjectedProps &
     Pick<
         ToolbarContextType,
@@ -76,6 +81,13 @@ type Props = {
 export class AddLinkContainer extends Component<Props> {
     static contextType = ToolbarContext
     context!: ContextType<typeof ToolbarContext>
+    workflowVariables: WorkflowVariableList | undefined
+
+    constructor(props: Props) {
+        super(props)
+
+        this.workflowVariables = this.props.getWorkflowVariables?.()
+    }
 
     state = {
         activeTab: tabs[0].value,
@@ -293,10 +305,23 @@ export class AddLinkContainer extends Component<Props> {
         onInsertVideoAddedFromInsertLink()
     }
 
+    _flowVariablesDisablePopoverToggle = (
+        e: React.MouseEvent<any, globalThis.MouseEvent>
+    ) => {
+        if (!this.workflowVariables?.length) return false
+        if (
+            'target' in e &&
+            (closest(e.target as Element, `[id^="floating-ui-"]`) ||
+                !document.contains(e.target as Element))
+        ) {
+            return true
+        }
+        return false
+    }
+
     navigateToFirstTab = () => {
         this.setState({activeTab: tabs[0].value})
     }
-
     onAddUtmApply = () => {
         this.navigateToFirstTab()
     }
@@ -314,6 +339,7 @@ export class AddLinkContainer extends Component<Props> {
                 isOpen={this.props.isOpen}
                 onOpen={this._onPopoverOpen}
                 onClose={this.props.onClose}
+                toggleGuard={this._flowVariablesDisablePopoverToggle}
             >
                 {this.context.canAddUtm && (
                     <>
@@ -339,14 +365,27 @@ export class AddLinkContainer extends Component<Props> {
                             value={this.props.text}
                             autoFocus={!this.props.text}
                         />
-                        <DEPRECATED_InputField
-                            className={css.field}
-                            label="URL"
-                            placeholder="https://help.domain.com/article"
-                            onChange={this.props.onUrlChange}
-                            value={this.props.url}
-                            autoFocus={!!this.props.text}
-                        />
+
+                        {this.workflowVariables ? (
+                            <div className={css.variableInputField}>
+                                <Label>URL</Label>
+                                <TextInputWithVariables
+                                    variables={this.workflowVariables}
+                                    placeholder="https://help.domain.com"
+                                    value={this.props.url}
+                                    onChange={this.props.onUrlChange}
+                                />
+                            </div>
+                        ) : (
+                            <DEPRECATED_InputField
+                                className={css.field}
+                                label="URL"
+                                placeholder="https://help.domain.com/article"
+                                onChange={this.props.onUrlChange}
+                                value={this.props.url}
+                                autoFocus={!!this.props.text}
+                            />
+                        )}
                         <Button
                             isDisabled={!this._isValid()}
                             onClick={this._submit}
@@ -357,11 +396,22 @@ export class AddLinkContainer extends Component<Props> {
                         </Button>
                     </div>
                 ) : (
-                    <AddUtm
-                        {...this.context}
-                        onKeyDown={this._onKeyDown}
-                        onApply={this.onAddUtmApply}
-                    />
+                    <>
+                        <AddUtm
+                            {...this.context}
+                            onKeyDown={this._onKeyDown}
+                            onApply={this.onAddUtmApply}
+                        />
+
+                        <Button
+                            isDisabled={!this._isValid()}
+                            onClick={this._submit}
+                        >
+                            {this.props.entityKey
+                                ? 'Update Link'
+                                : 'Insert Link'}
+                        </Button>
+                    </>
                 )}
             </Popover>
         )

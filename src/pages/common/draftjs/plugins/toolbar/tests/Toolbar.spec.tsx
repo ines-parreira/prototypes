@@ -4,10 +4,12 @@ import _noop from 'lodash/noop'
 import {ContentState, EditorState} from 'draft-js'
 import {fromJS} from 'immutable'
 
-import {render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
+import {Provider} from 'react-redux'
 import {convertFromHTML} from 'utils/editor'
 
 import {RichFieldEditor} from 'pages/common/forms/RichField/RichFieldEditor'
+import {mockStore} from 'utils/testing'
 import toolbarPlugin from '../index'
 import Toolbar from '../Toolbar'
 import ToolbarProvider from '../ToolbarProvider'
@@ -17,7 +19,16 @@ import {ActionName} from '../types'
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 jest.mock('services/shortcutManager/shortcutManager')
 
-// TODO: cover me with more tests
+jest.mock('../components', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return {
+        ...jest.requireActual('../components'),
+        AddLink: jest.fn((props: {getWorkflowVariables: () => void}) => (
+            <div onClick={props.getWorkflowVariables}>Click me</div>
+        )),
+    }
+})
+
 describe('Toolbar', () => {
     const defaultProps: ComponentProps<typeof RichFieldEditor> &
         Omit<ComponentProps<typeof Toolbar>, 'getEditorState'> = {
@@ -143,6 +154,34 @@ describe('Toolbar', () => {
             )
 
             expect(getByText('lorem ipsum tooltip')).toBeInTheDocument()
+        })
+
+        it('should should use "getWorkflowVariables" prop when passed and link is clicked', () => {
+            const getWorkflowVariablesMock = jest.fn()
+            render(
+                <Provider store={mockStore({})}>
+                    <ToolbarProvider
+                        canAddProductCard={true}
+                        onAddProductCardAttachment={jest.fn()}
+                        canAddDiscountCodeLink={true}
+                        canAddVideoPlayer={false}
+                        shopifyIntegrations={fromJS([{}])}
+                    >
+                        <Toolbar
+                            maxLength={100}
+                            {...editorProps}
+                            editorState={editorState}
+                            getEditorState={() => editorState}
+                            displayedActions={[ActionName.Link]}
+                            linkIsOpen={true}
+                            linkUrl={'https://help.domain.com/article'}
+                            getWorkflowVariables={getWorkflowVariablesMock}
+                        />
+                    </ToolbarProvider>
+                </Provider>
+            )
+            fireEvent.click(screen.getByText('Click me'))
+            expect(getWorkflowVariablesMock).toHaveBeenCalled()
         })
     })
 })
