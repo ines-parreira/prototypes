@@ -6,8 +6,8 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import type {Event} from 'common/notifications/types'
 
 export default function useAvailableEvents() {
-    const isTicketAssignedEnabled = useFlag(
-        FeatureFlagKey.NotificationsTicketAssigned,
+    const isTicketMessageCreatedEnabled = useFlag(
+        FeatureFlagKey.NotificationsTicketMessageCreated,
         false
     )
 
@@ -15,14 +15,14 @@ export default function useAvailableEvents() {
         () =>
             enabledEvents.reduce((acc, event) => {
                 if (
-                    !isTicketAssignedEnabled &&
-                    event.type === 'ticket.assigned'
+                    isTicketMessageCreatedEnabled &&
+                    event.type === 'ticket-message.created'
                 ) {
                     return acc
                 }
                 return [...acc, event]
             }, [] as Event[]),
-        [isTicketAssignedEnabled]
+        [isTicketMessageCreatedEnabled]
     )
 
     return useMemo(() => availableEvents, [availableEvents])

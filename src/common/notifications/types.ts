@@ -16,6 +16,8 @@ export type Event = {
     enabled: boolean
     label: ReactNode
     type: NotificationType
+    icon?: string
+    tooltip?: string
 }
 
 export type Ticket = {
@@ -44,6 +46,18 @@ export type PayloadWithSender = {
     sender: PickedActor
 }
 
+type TicketMessageCreatedType =
+    | 'ticket-message.created.email'
+    | 'ticket-message.created.chat'
+    | 'ticket-message.created.phone'
+    | 'ticket-message.created.sms'
+    | 'ticket-message.created.facebook'
+    | 'ticket-message.created.instagram'
+    | 'ticket-message.created.whatsapp'
+    | 'ticket-message.created.yotpo'
+    | 'ticket-message.created.aircall'
+    | 'ticket-message.created'
+
 export type Notification =
     | (NotificationBase & {
           type: 'ticket.snooze-expired'
@@ -59,6 +73,10 @@ export type Notification =
       })
     | (NotificationBase & {
           type: 'user.mentioned'
+          payload: PayloadWithSender
+      })
+    | (NotificationBase & {
+          type: TicketMessageCreatedType
           payload: PayloadWithSender
       })
 

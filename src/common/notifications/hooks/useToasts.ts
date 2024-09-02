@@ -6,6 +6,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {notificationSounds} from 'services'
 import {defaultSound} from 'services/NotificationSounds'
 import {getNotificationSettings} from 'state/currentUser/selectors'
+import getNotificationSound from 'common/notifications/utils/getNotificationSound'
 
 import {Notification, RawNotification} from '../types'
 import transformKnockNotification from '../utils/transformKnockNotification'
@@ -52,11 +53,7 @@ export default function useToasts() {
 
             if (!mappedItems.length) return
 
-            const notificationType = mappedItems[0].type
-            let sound = eventSettings[notificationType]?.sound
-            if (sound === undefined) {
-                sound = defaultSound.sound
-            }
+            const sound = getNotificationSound(mappedItems[0], eventSettings)
             if (sound) {
                 notificationSounds.play(sound, notificationVolume)
             }

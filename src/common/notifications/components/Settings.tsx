@@ -13,6 +13,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import {notificationSounds} from 'services'
 import {defaultSound, SoundValue} from 'services/NotificationSounds'
+import Loader from 'pages/common/components/Loader/Loader'
 
 import useSettings from '../hooks/useSettings'
 import {NotificationType} from '../types'
@@ -22,8 +23,14 @@ import VolumeControl from './VolumeControl'
 import css from './Settings.less'
 
 export default function Settings() {
-    const {save, settings, onChangeChannel, onChangeSound, onChangeVolume} =
-        useSettings()
+    const {
+        save,
+        settings,
+        onChangeChannel,
+        onChangeSound,
+        onChangeVolume,
+        isLoading,
+    } = useSettings()
 
     const volumeRef = useRef(settings.volume)
     useEffect(() => {
@@ -65,36 +72,40 @@ export default function Settings() {
     return (
         <div className="full-width">
             <PageHeader title="Notifications" />
-            <form
-                className={cn(
-                    settingsCss.contentWrapper,
-                    settingsCss.pageContainer,
-                    css.container
-                )}
-                onSubmit={handleSubmit}
-            >
-                <h2 className={css.heading}>Volume control</h2>
-                <p className={css.subtitle}>
-                    This control changes the volume for all active
-                    notifications.
-                </p>
+            {isLoading ? (
+                <Loader className={css.loader} />
+            ) : (
+                <form
+                    className={cn(
+                        settingsCss.contentWrapper,
+                        settingsCss.pageContainer,
+                        css.container
+                    )}
+                    onSubmit={handleSubmit}
+                >
+                    <h2 className={css.heading}>Volume control</h2>
+                    <p className={css.subtitle}>
+                        This control changes the volume for all active
+                        notifications.
+                    </p>
 
-                <VolumeControl
-                    value={settings.volume}
-                    onChange={handleChangeVolume}
-                    onMouseDown={onMouseDown}
-                />
+                    <VolumeControl
+                        value={settings.volume}
+                        onChange={handleChangeVolume}
+                        onMouseDown={onMouseDown}
+                    />
 
-                <EventSettings
-                    settings={settings}
-                    onChangeChannel={onChangeChannel}
-                    onChangeSound={handleChangeSound}
-                />
+                    <EventSettings
+                        settings={settings}
+                        onChangeChannel={onChangeChannel}
+                        onChangeSound={handleChangeSound}
+                    />
 
-                <Button intent="primary" type="submit">
-                    Save Changes
-                </Button>
-            </form>
+                    <Button intent="primary" type="submit">
+                        Save Changes
+                    </Button>
+                </form>
+            )}
         </div>
     )
 }

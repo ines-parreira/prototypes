@@ -2,7 +2,10 @@ import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 
 import {Event, Settings} from 'common/notifications/types'
-import {channels, enabledEvents} from 'common/notifications/data'
+import {
+    enabledEvents,
+    ticketMessageCreatedEvents,
+} from 'common/notifications/data'
 import {useFlag} from 'common/flags'
 
 import EventSettings from '../EventSettings'
@@ -69,23 +72,8 @@ const settings: Settings = {
 
 describe('<EventSettings/>', () => {
     beforeEach(() => {
-        mockUseFlag.mockReturnValue(true)
+        mockUseFlag.mockReturnValue(false)
     })
-
-    it.each(channels.map((channel) => channel.label))(
-        `should render channel name in table header - %s`,
-        (channel) => {
-            const {getByText} = render(
-                <EventSettings
-                    settings={settings}
-                    onChangeChannel={mockOnChangeChannel}
-                    onChangeSound={mockOnChangeSound}
-                />
-            )
-
-            expect(getByText(channel as string)).toBeInTheDocument()
-        }
-    )
 
     it.each(enabledEvents.map((event) => [event.type, event.label]))(
         'should render event %s',
@@ -160,4 +148,23 @@ describe('<EventSettings/>', () => {
             ).toBeInTheDocument()
         })
     })
+
+    it.each(
+        ticketMessageCreatedEvents.map((event) => [event.type, event.label])
+    )(
+        'should render ticket %s event if NotificationsTicketMessageCreated FF is enabled',
+        (_, label) => {
+            mockUseFlag.mockReturnValue(true)
+
+            const {getByText} = render(
+                <EventSettings
+                    settings={settings}
+                    onChangeChannel={mockOnChangeChannel}
+                    onChangeSound={mockOnChangeSound}
+                />
+            )
+
+            expect(getByText(label as string)).toBeInTheDocument()
+        }
+    )
 })

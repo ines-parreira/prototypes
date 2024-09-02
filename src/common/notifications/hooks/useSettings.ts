@@ -1,5 +1,5 @@
 import {useKnockClient} from '@knocklabs/react'
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import {useCallback, useMemo, useState} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {UserSettingType} from 'config/types/user'
@@ -10,19 +10,30 @@ import {submitSetting} from 'state/currentUser/actions'
 import {getNotificationSettings} from 'state/currentUser/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useFlag} from 'common/flags'
+import useAsyncFn from 'hooks/useAsyncFn'
+import {getLDClient} from 'utils/launchDarkly'
+import useEffectOnce from 'hooks/useEffectOnce'
 
-import {channels, events, workflowMap} from '../data'
+import {
+    channels,
+    events,
+    ticketMessageCreatedEvents,
+    workflowMap,
+} from '../data'
 import {NotificationType, Settings} from '../types'
+
+const client = getLDClient()
 
 export default function useSettings() {
     const dispatch = useAppDispatch()
     const knockClient = useKnockClient()
     const allSettings = useAppSelector(getNotificationSettings)
 
-    const isTicketAssignedEnabled = useFlag(
-        FeatureFlagKey.NotificationsTicketAssigned,
-        false
-    )
+    const [{loading: isInitializingLD}, initializeLD] = useAsyncFn(async () => {
+        try {
+            await client.waitForInitialization(3)
+        } catch (e) {}
+    })
 
     const isTicketMessageCreatedEnabled = useFlag(
         FeatureFlagKey.NotificationsTicketMessageCreated,
@@ -31,24 +42,61 @@ export default function useSettings() {
 
     const allEvents = useMemo(
         () =>
-            isTicketAssignedEnabled
-                ? events
-                : events.filter((event) => event.type !== 'ticket.assigned'),
-        [isTicketAssignedEnabled]
+            isTicketMessageCreatedEnabled
+                ? [
+                      ...events.filter(
+                          (event) => event.type !== 'ticket-message.created'
+                      ),
+                      ...ticketMessageCreatedEvents,
+                  ]
+                : events,
+        [isTicketMessageCreatedEnabled]
     )
 
-    const [settings, setSettings] = useState<Settings>(() => {
+    const [{loading: isFetchingKnockPreferences}, getKnockPreferences] =
+        useAsyncFn(async () => {
+            await knockClient.user.identify()
+            return await knockClient.preferences.get()
+        })
+
+    const [settings, setSettings] = useState<Settings>({
+        volume: defaultSound.volume,
+        events: {},
+    })
+
+    const initializeSettings = useCallback(async () => {
+        await initializeLD()
+        const preferences = await getKnockPreferences()
+
+        const isTicketMessageCreatedEnabled = !!client.variation(
+            FeatureFlagKey.NotificationsTicketMessageCreated,
+            false
+        )
+
+        const allEvents = isTicketMessageCreatedEnabled
+            ? [
+                  ...events.filter(
+                      (event) => event.type !== 'ticket-message.created'
+                  ),
+                  ...ticketMessageCreatedEvents,
+              ]
+            : events
+
         const notificationSound =
             allSettings?.data.notification_sound || defaultSound
 
-        return {
+        const setting = {
             volume: notificationSound.volume,
-            events: allEvents.reduce((acc, event) => {
+            events: allEvents.reduce((eventsAcc, event) => {
                 const eventSettings = allSettings?.data.events?.[
                     event.type
                 ] || {sound: defaultSound.sound}
+
+                const workflowPreferences =
+                    preferences.workflows?.[workflowMap[event.type]]
+
                 return {
-                    ...acc,
+                    ...eventsAcc,
                     [event.type]: {
                         sound:
                             event.type === 'ticket-message.created'
@@ -59,50 +107,34 @@ export default function useSettings() {
                                     ? notificationSound.sound
                                     : ''
                                 : eventSettings.sound,
+                        channels: channels.reduce(
+                            (channelsAcc, channel) => ({
+                                ...channelsAcc,
+                                [channel.type]:
+                                    event.type === 'ticket-message.created' &&
+                                    !isTicketMessageCreatedEnabled
+                                        ? true
+                                        : !workflowPreferences ||
+                                          typeof workflowPreferences ===
+                                              'boolean'
+                                        ? true
+                                        : workflowPreferences.channel_types[
+                                              channel.type
+                                          ],
+                            }),
+                            eventsAcc[event.type]?.channels || {}
+                        ),
                     },
                 }
-            }, {}),
+            }, {} as Settings['events']),
         }
+
+        setSettings(setting)
+    }, [initializeLD, getKnockPreferences, allSettings])
+
+    useEffectOnce(() => {
+        void initializeSettings()
     })
-
-    useEffect(() => {
-        void (async () => {
-            await knockClient.user.identify()
-            const preferences = await knockClient.preferences.get()
-            setSettings((s) => ({
-                ...s,
-                events: allEvents.reduce((eventsAcc, event) => {
-                    const workflowPreferences =
-                        preferences.workflows?.[workflowMap[event.type]]
-
-                    return {
-                        ...eventsAcc,
-                        [event.type]: {
-                            ...eventsAcc[event.type],
-                            channels: channels.reduce(
-                                (channelsAcc, channel) => ({
-                                    ...channelsAcc,
-                                    [channel.type]:
-                                        event.type ===
-                                            'ticket-message.created' &&
-                                        !isTicketMessageCreatedEnabled
-                                            ? true
-                                            : !workflowPreferences ||
-                                              typeof workflowPreferences ===
-                                                  'boolean'
-                                            ? true
-                                            : workflowPreferences.channel_types[
-                                                  channel.type
-                                              ],
-                                }),
-                                eventsAcc[event.type]?.channels || {}
-                            ),
-                        },
-                    }
-                }, s.events),
-            }))
-        })()
-    }, [isTicketMessageCreatedEnabled, allEvents, knockClient])
 
     const handleChangeChannel = useCallback(
         (
@@ -150,21 +182,21 @@ export default function useSettings() {
     }, [])
 
     const save = useCallback(async () => {
-        const messageReceived = settings.events['ticket-message.created']
+        const ticketMessageCreated = settings.events['ticket-message.created']
         const payload = {
             data: {
                 notification_sound: {
-                    enabled: messageReceived.sound !== '',
+                    enabled: ticketMessageCreated.sound !== '',
                     sound:
-                        messageReceived.sound !== ''
-                            ? messageReceived.sound
+                        ticketMessageCreated.sound !== ''
+                            ? ticketMessageCreated.sound
                             : defaultSound.sound,
                     volume: settings.volume,
                 },
                 events: allEvents
                     .filter((event) =>
                         !isTicketMessageCreatedEnabled
-                            ? event.type !== 'ticket-message.created'
+                            ? !event.type.includes('ticket-message.created')
                             : true
                     )
                     .reduce(
@@ -190,7 +222,7 @@ export default function useSettings() {
         } = allEvents
             .filter((event) =>
                 !isTicketMessageCreatedEnabled
-                    ? event.type !== 'ticket-message.created'
+                    ? !event.type.includes('ticket-message.created')
                     : true
             )
             .reduce(
@@ -245,6 +277,7 @@ export default function useSettings() {
             onChangeChannel: handleChangeChannel,
             onChangeSound: handleChangeSound,
             onChangeVolume: handleChangeVolume,
+            isLoading: isInitializingLD || isFetchingKnockPreferences,
         }),
         [
             save,
@@ -252,6 +285,8 @@ export default function useSettings() {
             handleChangeChannel,
             handleChangeSound,
             handleChangeVolume,
+            isInitializingLD,
+            isFetchingKnockPreferences,
         ]
     )
 }

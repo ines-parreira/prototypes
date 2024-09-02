@@ -11,17 +11,19 @@ jest.mock('common/flags', () => ({
 const mockUseFlag = useFlag as jest.Mock
 
 describe('useAvailableEvents', () => {
-    it('should return all events when ticket assigned is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('should return all events when ticket-message.created is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
         const {result} = renderHook(() => useAvailableEvents())
         expect(result.current).toEqual(enabledEvents)
     })
 
-    it('should return all events except ticket assigned when ticket assigned is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
+    it('should return all events except ticket-message.created when ticket-message.created is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
         const {result} = renderHook(() => useAvailableEvents())
         expect(result.current).toEqual(
-            enabledEvents.filter((event) => event.type !== 'ticket.assigned')
+            enabledEvents.filter(
+                (event) => event.type !== 'ticket-message.created'
+            )
         )
     })
 })

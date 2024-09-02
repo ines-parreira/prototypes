@@ -20,12 +20,21 @@ const notificationTypeMap: Record<
     {title: string; icon?: {name: string; family?: 'fill' | 'outlined'}}
 > = {
     'ticket.snooze-expired': {title: 'Snooze expired', icon: {name: 'snooze'}},
-    'ticket-message.created': {title: 'New message'},
     'user.mentioned': {title: 'New mention', icon: {name: 'alternate_email'}},
     'ticket.assigned': {
         title: 'You’ve been assigned to a ticket',
         icon: {name: 'person', family: 'fill'},
     },
+    'ticket-message.created': {title: 'New message'},
+    'ticket-message.created.email': {title: 'New message'},
+    'ticket-message.created.chat': {title: 'New message'},
+    'ticket-message.created.phone': {title: 'New message'},
+    'ticket-message.created.sms': {title: 'New message'},
+    'ticket-message.created.facebook': {title: 'New message'},
+    'ticket-message.created.instagram': {title: 'New message'},
+    'ticket-message.created.whatsapp': {title: 'New message'},
+    'ticket-message.created.yotpo': {title: 'New message'},
+    'ticket-message.created.aircall': {title: 'New message'},
 }
 
 export default function NotificationContent({

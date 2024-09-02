@@ -12,6 +12,8 @@ import {useFlag} from 'common/flags'
 import {submitSetting} from 'state/currentUser/actions'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState, StoreDispatch} from 'state/types'
+import {getLDClient} from 'utils/launchDarkly'
+import {ticketMessageCreatedEvents} from 'common/notifications/data'
 
 import useSettings from '../useSettings'
 
@@ -23,8 +25,10 @@ const mockUseKnockClient = useKnockClient as jest.Mock
 jest.mock('common/flags', () => ({
     useFlag: jest.fn(),
 }))
-
 const mockUseFlag = useFlag as jest.Mock
+
+jest.mock('utils/launchDarkly')
+const variationMock = getLDClient().variation as jest.Mock
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
@@ -74,6 +78,7 @@ describe('useSettings', () => {
                 return mockFlagSet[featureFlag]
             }
         )
+        variationMock.mockImplementation(() => true)
         mockUseKnockClient.mockReturnValue({
             user: {identify: jest.fn()},
             preferences: {
@@ -100,26 +105,16 @@ describe('useSettings', () => {
         expect(result.current).toHaveProperty('onChangeVolume')
     })
 
-    it('should filter out ticket.assigned event if the feature flag is disabled', async () => {
-        mockUseFlag.mockReturnValue(false)
-        const {result, waitForNextUpdate} = renderHook(() => useSettings())
+    it.each(ticketMessageCreatedEvents.map((event) => [event.type]))(
+        'should include %s event if the FF is enabled',
+        async (eventType) => {
+            mockUseFlag.mockReturnValue(true)
+            const {result, waitForNextUpdate} = renderHook(() => useSettings())
+            await act(async () => await waitForNextUpdate())
 
-        await act(async () => await waitForNextUpdate())
-
-        expect(
-            result.current.settings.events['ticket.assigned']
-        ).not.toBeDefined()
-    })
-
-    it('should not filter out ticket.assigned event if the feature flag is enabled', async () => {
-        mockUseFlag.mockReturnValue(true)
-
-        const {result, waitForNextUpdate} = renderHook(() => useSettings())
-
-        await act(async () => await waitForNextUpdate())
-
-        expect(result.current.settings.events['ticket.assigned']).toBeDefined()
-    })
+            expect(result.current.settings.events[eventType]).toBeDefined()
+        }
+    )
 
     it('should use the old notification format for the ticket-message.created event', async () => {
         const {result, waitForNextUpdate} = renderHook(() => useSettings())
@@ -251,7 +246,7 @@ describe('useSettings', () => {
         })
     })
 
-    it('should filter out ticket-message.created event on save if the feature flag is disabled', async () => {
+    it('should filter out ticket-message.created events on save if the feature flag is disabled', async () => {
         mockFlagSet[FeatureFlagKey.NotificationsTicketMessageCreated] = false
         const {result, waitForNextUpdate} = renderHook(() => useSettings(), {
             wrapper: ({children}) => (

@@ -16,13 +16,25 @@
         margin: 0 -@layout-spacing-m @layout-spacing-m;
     }
 
-    .headingCell {
-        .caption-allcaps();
-        color: var(--neutral-grey-4);
-    }
-
     .bodyCell {
         cursor: initial;
+    }
+
+    .ticketChannelIcon {
+        font-size: 20px !important;
+        color: var(--neutral-grey-4);
+        margin-right: 16px;
+
+        &:global(.icon-facebook-feed) {
+            &:before {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .tooltip {
+        font-size: 20px;
+        margin-left: 4px;
     }
 
     .soundSelectCell {
