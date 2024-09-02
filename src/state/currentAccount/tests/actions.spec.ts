@@ -6,6 +6,8 @@ import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/Cha
 
 import {billingState} from 'fixtures/billing'
 import {
+    AUTOMATION_PRODUCT_ID,
+    basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
@@ -124,6 +126,31 @@ describe('current account actions', () => {
 
             return store
                 .dispatch(actions.updateSubscription(subscription))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+    })
+
+    describe('update subscription product plans', () => {
+        it('updates the local state with the current subscription product plans', () => {
+            const currentSubscription = {
+                products: {
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                    [AUTOMATION_PRODUCT_ID]:
+                        basicMonthlyAutomationPlan.price_id,
+                },
+            }
+
+            mockServer
+                .onPut('/api/billing/subscription/')
+                .reply(202, currentSubscription)
+
+            return store
+                .dispatch(
+                    actions.updateSubscriptionsForPlans(
+                        {helpdesk: basicMonthlyHelpdeskPlan.price_id},
+                        []
+                    )
+                )
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })

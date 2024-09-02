@@ -83,6 +83,18 @@ exports[`current account actions update account owner update account owner 1`] =
 ]
 `;
 
+exports[`current account actions update subscription product plans updates the local state with the current subscription product plans 1`] = `
+[
+  {
+    "products": {
+      "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+      "prod_LsHD5xmSqoFBBs": "price_1LJBjXI9qXomtXqSSX34F3we",
+    },
+    "type": "UPDATE_SUBSCRIPTION_PRODUCTS",
+  },
+]
+`;
+
 exports[`current account actions update subscription update subscription 1`] = `
 [
   {

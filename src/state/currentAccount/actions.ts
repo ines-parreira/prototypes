@@ -211,13 +211,16 @@ export function updateSubscriptionsForPlans(
     notifications: Notification[]
 ) {
     return async (dispatch: StoreDispatch): Promise<void> => {
-        await client.put<Record<string, string>>('/api/billing/subscription/', {
-            prices: Object.values(products),
-        })
+        const response = await client.put<Record<string, string>>(
+            '/api/billing/subscription/',
+            {
+                prices: Object.values(products),
+            }
+        )
 
         dispatch({
             type: constants.UPDATE_SUBSCRIPTION_PRODUCTS,
-            products,
+            products: response.data.products,
         })
 
         notifications.forEach((notification) => {
