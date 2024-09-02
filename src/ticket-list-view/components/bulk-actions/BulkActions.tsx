@@ -8,7 +8,7 @@ import AssignUser from './AssignUser'
 import CloseTickets from './CloseTickets'
 import MoreActions from './MoreActions'
 import css from './style.less'
-import {Job} from './types'
+import {Action, Job} from './types'
 
 export default function BulkActions({
     hasSelectedAll,
@@ -17,7 +17,7 @@ export default function BulkActions({
     selectionCount,
 }: {
     hasSelectedAll: boolean
-    onComplete: () => void
+    onComplete: (action?: Action) => void
     selectedTickets: Record<number, boolean>
     selectionCount: number | null
 }) {
@@ -42,16 +42,17 @@ export default function BulkActions({
 
     const launchJob = useCallback(
         async (
-            action: Pick<Job, 'type' | 'event'>,
+            job: Pick<Job, 'type' | 'event'>,
             params?: {
                 updates: XOR<Update>
-            }
+            },
+            action?: Action
         ) => {
-            await createJob(action.type!, params)
+            await createJob(job.type!, params)
             const [entry] = Object.entries(params?.updates ?? {})
 
             logEvent(SegmentEvent.BulkAction, {
-                type: action.event,
+                type: job.event,
                 location: 'split-view-mode',
                 ...(['is_unread', 'status'].includes(entry?.[0])
                     ? {
@@ -61,7 +62,7 @@ export default function BulkActions({
                       }
                     : {}),
             })
-            onComplete()
+            onComplete(action)
         },
         [createJob, onComplete]
     )

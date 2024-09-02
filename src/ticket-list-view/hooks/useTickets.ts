@@ -98,7 +98,7 @@ export default function useTickets(
         [staleTickets, visiblePartials]
     )
 
-    const {data, toggleUnread} = useTicketData(
+    const {bulkToggleUnread, data, toggleUnread} = useTicketData(
         visibleStaleTicketIds,
         markUpdated,
         ticketId
@@ -144,6 +144,7 @@ export default function useTickets(
 
     return useMemo(
         () => ({
+            bulkToggleUnread,
             hasMore,
             initialLoaded,
             loadMore,
@@ -156,6 +157,7 @@ export default function useTickets(
             newTickets: visibleNewPartialsMap,
         }),
         [
+            bulkToggleUnread,
             hasMore,
             initialLoaded,
             loadMore,

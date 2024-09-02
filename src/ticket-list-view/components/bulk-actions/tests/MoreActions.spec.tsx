@@ -84,7 +84,8 @@ describe('<MoreActions />', () => {
                 type: JobType.UpdateTicket,
                 label: 'Mark as unread',
             }),
-            {updates: {is_unread: true}}
+            {updates: {is_unread: true}},
+            'mark_as_unread'
         )
     })
 
@@ -98,7 +99,8 @@ describe('<MoreActions />', () => {
                 type: JobType.UpdateTicket,
                 label: 'Mark as read',
             }),
-            {updates: {is_unread: false}}
+            {updates: {is_unread: false}},
+            'mark_as_read'
         )
     })
 
@@ -112,7 +114,8 @@ describe('<MoreActions />', () => {
                 type: JobType.ExportTicket,
                 label: 'Export tickets',
             }),
-            undefined
+            undefined,
+            'export_tickets'
         )
     })
 
@@ -148,7 +151,8 @@ describe('<MoreActions />', () => {
                 type: JobType.UpdateTicket,
                 label: 'Undelete',
             }),
-            {updates: {trashed_datetime: null}}
+            {updates: {trashed_datetime: null}},
+            'untrash'
         )
     })
 
@@ -195,7 +199,8 @@ describe('<MoreActions />', () => {
                 type: JobType.UpdateTicket,
                 label: 'Add tag',
             }),
-            {updates: {tags: ['tag']}}
+            {updates: {tags: ['tag']}},
+            'tag'
         )
         expect(screen.queryByText('TagDropdownMenuMock')).not.toBeInTheDocument
         expect(screen.queryByText('Add tag')).not.toBeInTheDocument
@@ -231,7 +236,8 @@ describe('<MoreActions />', () => {
             }),
             {
                 updates: {assignee_team_id: 8},
-            }
+            },
+            'team'
         )
         expect(screen.queryByText('TagDropdownMenuMock')).not.toBeInTheDocument
         expect(screen.queryByText('Assign to team')).not.toBeInTheDocument

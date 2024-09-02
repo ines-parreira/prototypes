@@ -21,6 +21,26 @@ export default function useTicketData(
         [visibleStaleTicketIds]
     )
 
+    const bulkToggleUnread = useCallback(
+        (ticketIds: number[], isUnread: boolean) => {
+            setData((currentData) => {
+                const newData = {...currentData}
+                let isDirty = false
+
+                ticketIds.forEach((ticketId) => {
+                    const ticket = currentData[ticketId]
+                    if (!ticket) return
+
+                    newData[ticketId] = {...ticket, is_unread: isUnread}
+                    isDirty = true
+                })
+
+                return isDirty ? newData : currentData
+            })
+        },
+        []
+    )
+
     const toggleUnread = useCallback((ticketId: number, isUnread: boolean) => {
         setData((currentData) => {
             const ticket = currentData[ticketId]
@@ -63,5 +83,8 @@ export default function useTicketData(
         })()
     }, [markUpdated, queryClient, queryKey, visibleStaleTicketIds])
 
-    return {data, toggleUnread}
+    return useMemo(
+        () => ({bulkToggleUnread, data, toggleUnread}),
+        [bulkToggleUnread, data, toggleUnread]
+    )
 }

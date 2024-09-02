@@ -144,10 +144,11 @@ export default function MoreActions({
     isDisabled: boolean
     isLoading: boolean
     launchJob: (
-        action: Job,
+        job: Job,
         params?: {
             updates: XOR<Update>
-        }
+        },
+        action?: Action
     ) => Promise<void>
     onComplete: () => void
     selectionCount: number | null
@@ -202,7 +203,7 @@ export default function MoreActions({
                 setIsConfirmationPopoverOpen(true)
             } else {
                 const params = actions[value].params?.(options)
-                void launchJob(actions[value], params)
+                void launchJob(actions[value], params, value)
             }
 
             if (level) {

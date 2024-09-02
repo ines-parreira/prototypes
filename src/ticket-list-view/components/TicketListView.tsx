@@ -33,6 +33,7 @@ import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoVie
 import {TicketSummary} from '../types'
 
 import BulkActions from './bulk-actions/BulkActions'
+import {Action} from './bulk-actions/types'
 import SortOrderDropdown from './SortOrderDropdown'
 import Ticket from './Ticket'
 import TicketListInfo from './TicketListInfo'
@@ -77,6 +78,7 @@ export default function TicketListView({
     const [sortOrder, setSortOrder] = useSortOrder(viewId, defaultSortOrder)
     const prevSortOrder = useRef<SortOrder | undefined>(sortOrder)
     const {
+        bulkToggleUnread,
         loadMore,
         setElement,
         tickets,
@@ -164,6 +166,23 @@ export default function TicketListView({
         setSplitTicketView(false)
         setShouldRedirectToSplitView(true)
     }, [dispatch, setShouldRedirectToSplitView, setSplitTicketView])
+
+    const onCompleteBulkAction = useCallback(
+        (action?: Action) => {
+            if (
+                action === Action.MarkAsRead ||
+                action === Action.MarkAsUnread
+            ) {
+                bulkToggleUnread(
+                    Object.keys(selectedTickets).map(Number),
+                    action === Action.MarkAsUnread
+                )
+            }
+
+            clear()
+        },
+        [bulkToggleUnread, clear, selectedTickets]
+    )
 
     const virtuosoComponents: Components = {
         Item: ({
@@ -258,7 +277,7 @@ export default function TicketListView({
                     <BulkActions
                         hasSelectedAll={hasSelectedAll}
                         selectedTickets={selectedTickets}
-                        onComplete={clear}
+                        onComplete={onCompleteBulkAction}
                         selectionCount={selectionCount}
                     />
                 </div>
