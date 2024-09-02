@@ -209,7 +209,7 @@ describe('<CampaignFooter />', () => {
                 userEvent.click(getByRole('button', {name: 'Create A/B Test'}))
             })
 
-            expect(onVariantCreateMock).toHaveBeenCalledTimes(0)
+            expect(onVariantCreateMock).toHaveBeenCalledTimes(1)
         })
     })
 

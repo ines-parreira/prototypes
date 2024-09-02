@@ -115,6 +115,8 @@ export const CampaignFooter = ({
             openModal()
             return
         }
+
+        createABGroup()
     }
 
     const onModalSubmit = () => {
