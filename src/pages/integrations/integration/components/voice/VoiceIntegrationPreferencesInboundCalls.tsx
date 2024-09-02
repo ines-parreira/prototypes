@@ -2,6 +2,7 @@ import React from 'react'
 import {FormGroup, Label} from 'reactstrap'
 
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     PhoneIntegrationPreferences,
     PhoneRingingBehaviour,
@@ -9,6 +10,7 @@ import {
 import CheckBox from 'pages/common/forms/CheckBox'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import settingsCss from 'pages/settings/settings.less'
 import VoiceIntegrationPreferencesTeamSelect from './VoiceIntegrationPreferencesTeamSelect'
 import css from './VoiceIntegrationPreferences.less'
@@ -30,6 +32,8 @@ export default function VoiceIntegrationPreferencesInboundCalls({
     phoneTeamId,
     onPhoneTeamIdChange,
 }: Props): JSX.Element {
+    const useCallRecordings: boolean | undefined =
+        useFlags()[FeatureFlagKey.RecordingTranscriptions]
     return (
         <>
             <h2
@@ -83,7 +87,7 @@ export default function VoiceIntegrationPreferencesInboundCalls({
             )}
             <div>
                 <Label className="control-label">Other settings</Label>
-                {!isIvr && (
+                {!isIvr && !useCallRecordings && (
                     <FormGroup>
                         <CheckBox
                             isChecked={preferences.record_inbound_calls}

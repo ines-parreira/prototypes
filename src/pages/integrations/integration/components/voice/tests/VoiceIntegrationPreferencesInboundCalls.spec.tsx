@@ -7,6 +7,7 @@ import {
     screen,
 } from '@testing-library/react'
 import {act} from '@testing-library/react-hooks'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {PhoneRingingBehaviour} from 'models/integration/types'
 import VoiceIntegrationPreferencesInboundCalls from '../VoiceIntegrationPreferencesInboundCalls'
 
@@ -50,7 +51,12 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         )
     }
 
+    beforeEach(() => {
+        mockFlags({RecordingTranscriptions: false})
+    })
+
     afterEach(() => {
+        resetLDMocks()
         cleanup()
     })
 
@@ -102,5 +108,13 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         expect(props.onPreferencesChange).toHaveBeenCalledWith({
             record_inbound_calls: true,
         })
+    })
+
+    it('should not display recording setting when transcriptions FF is on', () => {
+        mockFlags({RecordingTranscriptions: true})
+
+        renderComponent(props)
+
+        expect(screen.queryByText('Start recording automatically')).toBeNull()
     })
 })

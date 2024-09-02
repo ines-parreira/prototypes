@@ -5,6 +5,7 @@ import {Form, Label} from 'reactstrap'
 
 import classNames from 'classnames'
 import {isEqual} from 'lodash'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     PhoneIntegration,
     PhoneIntegrationMeta,
@@ -30,9 +31,12 @@ import useAsyncFn from 'hooks/useAsyncFn'
 
 import settingsCss from 'pages/settings/settings.less'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import VoiceIntegrationPreferencesInboundCalls from './VoiceIntegrationPreferencesInboundCalls'
+import VoiceIntegrationPreferencesCallRecordings from './VoiceIntegrationPreferencesCallRecordings'
+import VoiceIntegrationPreferencesTranscription from './VoiceIntegrationPreferencesTranscription'
 import css from './VoiceIntegrationPreferences.less'
 
 type Props = {
@@ -60,6 +64,8 @@ export default function VoiceIntegrationPreferences({
     const phoneNumberId = integration?.meta?.phone_number_id
     const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
     const dispatch = useAppDispatch()
+    const useCallRecordings: boolean | undefined =
+        useFlags()[FeatureFlagKey.RecordingTranscriptions]
 
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
         async (event?: React.FormEvent) => {
@@ -110,6 +116,13 @@ export default function VoiceIntegrationPreferences({
             preferences,
         },
     }
+    const handlePreferencesChange = (
+        newPreferences: Partial<PhoneIntegrationPreferences>
+    ) =>
+        setPreferences((preferences) => ({
+            ...preferences,
+            ...newPreferences,
+        }))
     const isSubmittable = !isEqual(integration, {
         ...integration,
         ...unsubmittedSettings,
@@ -166,18 +179,13 @@ export default function VoiceIntegrationPreferences({
                     <VoiceIntegrationPreferencesInboundCalls
                         isIvr={isIvr}
                         preferences={preferences}
-                        onPreferencesChange={(newPreferences) =>
-                            setPreferences((preferences) => ({
-                                ...preferences,
-                                ...newPreferences,
-                            }))
-                        }
+                        onPreferencesChange={handlePreferencesChange}
                         phoneTeamId={phoneTeamId}
                         onPhoneTeamIdChange={setPhoneTeamId}
                     />
                 </div>
 
-                {!isIvr && (
+                {!isIvr && !useCallRecordings && (
                     <div className={css.formSection}>
                         <h2
                             className={classNames(
@@ -199,6 +207,18 @@ export default function VoiceIntegrationPreferences({
                             Start recording automatically
                         </CheckBox>
                     </div>
+                )}
+                {!!useCallRecordings && !isIvr && (
+                    <>
+                        <VoiceIntegrationPreferencesCallRecordings
+                            preferences={preferences}
+                            onPreferencesChange={handlePreferencesChange}
+                        />
+                        <VoiceIntegrationPreferencesTranscription
+                            preferences={preferences}
+                            onPreferencesChange={handlePreferencesChange}
+                        />
+                    </>
                 )}
                 <div>
                     <Button
