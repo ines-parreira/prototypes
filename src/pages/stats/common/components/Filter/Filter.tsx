@@ -28,28 +28,29 @@ import FilterDropdownItemLabel from 'pages/stats/common/components/Filter/compon
 import css from 'pages/stats/common/components/Filter/Filter.less'
 
 type Props = {
+    className?: string
     filterName: string
     filterOptionGroups: FilterOptionGroup[]
-    selectedOptions: FilterOptionGroup['options']
-    selectedLogicalOperator?: LogicalOperatorEnum | null
-    logicalOperators: LogicalOperatorEnum[]
-    showQuickSelect?: boolean
-    showSearch?: boolean
-    isMultiple?: boolean
-    isPersistent?: boolean
-    className?: string
-    onRemove?: () => void
-    onChangeOption: (option: DropdownOption) => void
-    onSelectAll: () => void
-    onRemoveAll: () => void
-    onChangeLogicalOperator: (operator: LogicalOperatorEnum) => void
-    onDropdownOpen?: () => void
-    onDropdownClosed?: () => void
-    onSearch?: (search: string) => void
     infiniteScroll?: {
         onLoad: () => Promise<any>
         shouldLoadMore: boolean
     }
+    initialiseAsOpen?: boolean
+    isMultiple?: boolean
+    isPersistent?: boolean
+    logicalOperators: LogicalOperatorEnum[]
+    onChangeLogicalOperator: (operator: LogicalOperatorEnum) => void
+    onChangeOption: (option: DropdownOption) => void
+    onDropdownClosed?: () => void
+    onDropdownOpen?: () => void
+    onRemove?: () => void
+    onRemoveAll: () => void
+    onSearch?: (search: string) => void
+    onSelectAll: () => void
+    selectedLogicalOperator?: LogicalOperatorEnum | null
+    selectedOptions: FilterOptionGroup['options']
+    showQuickSelect?: boolean
+    showSearch?: boolean
 }
 
 type WithInfiniteScrollProps = PropsWithChildren<{
@@ -79,28 +80,29 @@ const WithInfiniteScroll = ({
 }
 
 const Filter = ({
+    className,
     filterName,
-    selectedOptions,
     filterOptionGroups,
+    infiniteScroll,
+    initialiseAsOpen = false,
+    isMultiple = true,
+    isPersistent = false,
     logicalOperators,
+    onChangeLogicalOperator,
+    onChangeOption,
+    onDropdownClosed = () => {},
+    onDropdownOpen = () => {},
+    onRemove,
+    onRemoveAll,
+    onSearch,
+    onSelectAll,
+    selectedLogicalOperator = null,
+    selectedOptions,
     showQuickSelect = true,
     showSearch = true,
-    isMultiple = true,
-    selectedLogicalOperator = null,
-    isPersistent = false,
-    className,
-    onRemove,
-    onChangeOption,
-    onSelectAll,
-    onRemoveAll,
-    onChangeLogicalOperator,
-    onDropdownOpen = () => {},
-    onDropdownClosed = () => {},
-    infiniteScroll,
-    onSearch,
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(initialiseAsOpen)
 
     const onToggle = useCallback(() => {
         if (!isDropdownOpen) {

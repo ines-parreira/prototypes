@@ -20,7 +20,11 @@ type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Tags]
 } & RemovableFilter
 
-export const TagsFilter = ({value = emptyFilter, onRemove}: Props) => {
+export const TagsFilter = ({
+    value = emptyFilter,
+    initialiseAsOpen = false,
+    onRemove,
+}: Props) => {
     const dispatch = useAppDispatch()
     const {handleTagsSearch, onLoad, tags, shouldLoadMore, tagsState} =
         useTagSearch()
@@ -111,6 +115,7 @@ export const TagsFilter = ({value = emptyFilter, onRemove}: Props) => {
                 onLoad,
                 shouldLoadMore,
             }}
+            initialiseAsOpen={initialiseAsOpen}
         />
     )
 }

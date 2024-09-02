@@ -33,6 +33,7 @@ type Props = {
 
 export default function CampaignsFilter({
     value = emptyFilter,
+    initialiseAsOpen = false,
     onRemove,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -161,6 +162,7 @@ export default function CampaignsFilter({
             onChangeLogicalOperator={handleFilterOperatorChange}
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
+            initialiseAsOpen={initialiseAsOpen}
         />
     )
 }

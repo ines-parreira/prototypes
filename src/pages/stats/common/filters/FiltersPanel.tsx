@@ -96,26 +96,29 @@ const getActiveFilters = (
                     key: filterKey,
                     type: filterKey,
                     active: filter !== undefined && filter.values.length > 0,
+                    initialiseAsOpen: false,
                 },
             ]
         }
         return arr
     }, [])
 
-type CustomFieldFilter = {
-    type: FilterKey.CustomFields
+type FilterComponent = {
     key: string
+    active: boolean
+    initialiseAsOpen: boolean
+}
+
+type CustomFieldFilter = FilterComponent & {
+    type: FilterKey.CustomFields
     customFieldId: number
     filterName: string
-    active: boolean
 }
 
 type ActiveFilter =
-    | {
-          key: string
+    | (FilterComponent & {
           type: StaticFilter
-          active: boolean
-      }
+      })
     | CustomFieldFilter
 
 export const FiltersPanel = ({
@@ -140,6 +143,7 @@ export const FiltersPanel = ({
             filterName: field.label,
             customFieldId: field.id,
             active: false,
+            initialiseAsOpen: false,
         })
     )
 
@@ -202,6 +206,7 @@ export const FiltersPanel = ({
                         return {
                             ...filter,
                             active: true,
+                            initialiseAsOpen: true,
                         }
                     }
                     return filter
@@ -215,6 +220,7 @@ export const FiltersPanel = ({
             key: filter,
             type: filter,
             active: true,
+            initialiseAsOpen: false,
         })),
         ...optionalFiltersToRender,
     ]
@@ -236,6 +242,7 @@ export const FiltersPanel = ({
                             })
                         ),
                     key: filter.key,
+                    initialiseAsOpen: filter.initialiseAsOpen,
                     filterName:
                         filter.type === FilterKey.CustomFields
                             ? filter.filterName

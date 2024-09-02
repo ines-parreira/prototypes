@@ -24,7 +24,11 @@ type Props = {
 
 export const AGENTS_FILTER_NAME = 'Agent'
 
-export default function AgentsFilter({value = emptyFilter, onRemove}: Props) {
+export default function AgentsFilter({
+    value = emptyFilter,
+    initialiseAsOpen = false,
+    onRemove,
+}: Props) {
     const dispatch = useAppDispatch()
     const agents = useAppSelector(getFilterAgentsJS)
     const teams = useAppSelector(getFilterTeamsJS)
@@ -168,6 +172,7 @@ export default function AgentsFilter({value = emptyFilter, onRemove}: Props) {
             onChangeLogicalOperator={handleFilterOperatorChange}
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
+            initialiseAsOpen={initialiseAsOpen}
         />
     )
 }

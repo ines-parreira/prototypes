@@ -50,6 +50,30 @@ describe('Filter', () => {
         expect(screen.getByText('Option 1, Option 2')).toBeInTheDocument()
     })
 
+    it('renders the filter component with open dropdown', () => {
+        render(
+            <Filter
+                initialiseAsOpen={true}
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />
+        )
+
+        expect(screen.getByText(filterName)).toBeInTheDocument()
+        expect(
+            screen.getByRole('option', {name: 'Option 1'})
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('option', {name: 'Option 2'})
+        ).toBeInTheDocument()
+    })
+
     it('calls onChangeOption when an option is selected', () => {
         render(
             <Filter

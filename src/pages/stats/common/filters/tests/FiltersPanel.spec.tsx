@@ -3,6 +3,7 @@ import React from 'react'
 import {act, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import {FILTER_SELECT_ALL_LABEL} from 'pages/stats/common/components/Filter/constants'
 import * as PeriodFilter from 'pages/stats/common/filters/PeriodFilter'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 import {useGetCustomFieldDefinitions} from 'models/customField/queries'
@@ -196,7 +197,7 @@ describe('FiltersPanel', () => {
         })
     })
 
-    it('should allow adding optional Filters', () => {
+    it('should allow adding optional Filters with Dropdown open by default', () => {
         renderWithStore(
             <FiltersPanel
                 persistentFilters={persistentFilters}
@@ -217,6 +218,11 @@ describe('FiltersPanel', () => {
 
         expect(
             screen.queryByText(new RegExp(FilterLabels[optionalFilter]))
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('option', {
+                name: new RegExp(FILTER_SELECT_ALL_LABEL),
+            })
         ).toBeInTheDocument()
     })
 
