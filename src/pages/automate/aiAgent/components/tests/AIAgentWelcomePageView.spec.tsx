@@ -66,14 +66,14 @@ describe('<AIAgentWelcomePageView />', () => {
         expect(item1).toContainElement(screen.getByText('ondemand_video'))
         expect(item1).toHaveAttribute(
             'href',
-            'https://app.getcontrast.io/sessions/gorgias-setting-up-ai-agent'
+            'https://link.gorgias.com/ai-agent-webinar-product'
         )
 
         const item2 = screen.getByText('How to set up AI Agent')
         expect(item2).toContainElement(screen.getByText('chrome_reader_mode'))
         expect(item2).toHaveAttribute(
             'href',
-            'https://docs.gorgias.com/en-US/articles/ai-agent-135134'
+            'https://link.gorgias.com/ai-agent-help-product'
         )
     }
 

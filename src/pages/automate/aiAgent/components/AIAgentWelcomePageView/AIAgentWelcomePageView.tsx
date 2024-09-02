@@ -170,12 +170,12 @@ export const AIAgentWelcomePageView = (props: Props) => {
                                         {
                                             text: 'Join our AI Agent Masterclass live webinar',
                                             icon: 'ondemand_video',
-                                            link: 'https://app.getcontrast.io/sessions/gorgias-setting-up-ai-agent',
+                                            link: 'https://link.gorgias.com/ai-agent-webinar-product',
                                         },
                                         {
                                             text: 'How to set up AI Agent',
                                             icon: 'chrome_reader_mode',
-                                            link: 'https://docs.gorgias.com/en-US/articles/ai-agent-135134',
+                                            link: 'https://link.gorgias.com/ai-agent-help-product',
                                         },
                                     ].map((item, index) => (
                                         <a
