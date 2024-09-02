@@ -334,8 +334,8 @@ export const StoreConfigForm = ({
         updateValue('monitoredEmailIntegrations', monitoredEmailIntegrations)
     }
 
-    const handleSelectChatIntegration = (values: string[]) => {
-        const ids = values.map((option) => parseInt(option, 10))
+    const handleSelectChatIntegration = (values: number[]) => {
+        const ids = values.map((option) => option)
 
         updateValue('monitoredChatIntegrations', ids)
     }
@@ -632,8 +632,7 @@ export const StoreConfigForm = ({
                                     formValues.monitoredChatIntegrations !==
                                     null
                                         ? formValues.monitoredChatIntegrations.map(
-                                              (integration) =>
-                                                  integration.toString()
+                                              (integration) => integration
                                           )
                                         : INITIAL_FORM_VALUES.monitoredChatIntegrations
                                 }

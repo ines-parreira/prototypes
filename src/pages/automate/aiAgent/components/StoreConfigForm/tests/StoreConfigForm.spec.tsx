@@ -524,7 +524,7 @@ describe('<StoreConfigForm />', () => {
         await waitFor(() => {
             expect(updateValueMocked).toHaveBeenCalledWith(
                 'monitoredChatIntegrations',
-                [parseInt(channelToSelect.value?.meta?.app_id as string, 10)]
+                [channelToSelect.value?.id]
             )
         })
     })

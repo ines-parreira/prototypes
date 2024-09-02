@@ -9,7 +9,7 @@ import {ChatIntegrationListSelection} from './ChatIntegrationListSelection'
 // Mock data
 
 const mockSelectedChat = mockChatChannels[0]
-const mockSelectedIds = [mockSelectedChat.value.meta.app_id as string]
+const mockSelectedIds = [mockSelectedChat.value.id]
 
 describe('ChatIntegrationListSelection', () => {
     it('should add a new ID to selectedIds when toggled on', () => {
@@ -33,7 +33,7 @@ describe('ChatIntegrationListSelection', () => {
 
         expect(mockOnSelectionChange).toHaveBeenCalledWith([
             ...mockSelectedIds,
-            chatToSelect.value.meta.app_id as string,
+            chatToSelect.value.id,
         ])
     })
 
