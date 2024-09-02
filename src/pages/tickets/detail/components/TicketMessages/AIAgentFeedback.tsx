@@ -33,7 +33,7 @@ import css from './AIAgentFeedback.less'
 
 export const CORRECT_RESPONSE = 'Is this correct?'
 export const ACCURATE_RESPONSE = 'Is the response accurate?'
-export const IMPROVE_RESPONSE = 'Improve response'
+export const REVIEW_RESPONSE = 'Review Response'
 
 type FeedbackIconButtonProps = {
     iconType: 'thumb_up' | 'thumb_down'
@@ -238,7 +238,7 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                         isDisabled={selectedAIMessage?.id === message.id}
                         className={css.feedbackButton}
                     >
-                        {IMPROVE_RESPONSE}
+                        {REVIEW_RESPONSE}
                     </Button>
                 ) : (
                     <FeedbackIconButton

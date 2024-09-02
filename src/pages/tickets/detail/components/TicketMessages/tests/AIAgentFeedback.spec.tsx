@@ -22,7 +22,7 @@ import {SegmentEvent} from 'common/segment'
 import AIAgentFeedback, {
     CORRECT_RESPONSE,
     ACCURATE_RESPONSE,
-    IMPROVE_RESPONSE,
+    REVIEW_RESPONSE,
 } from '../AIAgentFeedback'
 import {BANNER_TYPE} from '../../AIAgentFeedbackBar/constants'
 
@@ -86,7 +86,7 @@ describe('AIAgentFeedback', () => {
                 </Provider>
             </QueryClientProvider>
         )
-        userEvent.click(screen.getByText(IMPROVE_RESPONSE))
+        userEvent.click(screen.getByText(REVIEW_RESPONSE))
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
             activeTab: TicketAIAgentFeedbackTab.AIAgent,
@@ -107,7 +107,7 @@ describe('AIAgentFeedback', () => {
         )
         expect(
             screen
-                .getByRole('button', {name: IMPROVE_RESPONSE})
+                .getByRole('button', {name: REVIEW_RESPONSE})
                 .classList.contains('isDisabled')
         ).toBe(true)
     })
