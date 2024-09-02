@@ -353,7 +353,8 @@
         "@formatjs/ecma402-abstract": "1.11.4",
         "jquery": "3.5.1",
         "json-schema": "0.4.0",
-        "@emotion/styled-base": "10.0.31"
+        "@emotion/styled-base": "10.0.31",
+        "isomorphic-fetch": "^3.0.0"
     },
     "engines": {
         "node": ">=18"
