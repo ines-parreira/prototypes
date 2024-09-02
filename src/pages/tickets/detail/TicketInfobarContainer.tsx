@@ -26,6 +26,9 @@ import AIAgentFeedbackBar from 'pages/tickets/detail/components/AIAgentFeedbackB
 import secondaryNavbarCSS from 'pages/common/components/SecondaryNavbar/SecondaryNavbar.less'
 import css from 'pages/tickets/detail/TicketInforbarContainer.less'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
+import {logEventWithSampling} from 'common/segment/segment'
+import {SegmentEvent} from 'common/segment'
+import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {
     DATE_FEATURE_AVAILABLE,
     TRIAL_MESSAGE_TAG,
@@ -41,6 +44,8 @@ type Props = OwnProps & ConnectedProps<typeof connector>
 export const CUSTOMER_INFORMATION_TAB = 'Customer Information'
 export const AI_AGENT_TAB = 'AI Agent'
 
+const SIDE_PANEL_VIEWED_EVENT_TYPE = 'summary'
+
 export const TicketInfobarContainer = ({
     isEditingWidgets,
     isOnNewLayout,
@@ -50,6 +55,7 @@ export const TicketInfobarContainer = ({
 }: Props) => {
     const params = useParams<{ticketId: string}>()
     const dispatch = useAppDispatch()
+    const accountId = useAppSelector(getCurrentAccountId)
     const isFeedbackToAiAgentEnabled =
         useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViews]
 
@@ -103,6 +109,17 @@ export const TicketInfobarContainer = ({
         }
     }
 
+    const handleAIAgentTabClick = () => {
+        handleChangeTab(TicketAIAgentFeedbackTab.AIAgent)
+        logEventWithSampling(SegmentEvent.AiAgentFeedbackTabClicked, {
+            accountId,
+        })
+        logEventWithSampling(SegmentEvent.AiAgentFeedbackSidePanelViewed, {
+            type: SIDE_PANEL_VIEWED_EVENT_TYPE,
+            accountId,
+        })
+    }
+
     const showNavbar =
         aiMessages.length > 0 &&
         isFeedbackToAiAgentEnabled &&
@@ -135,9 +152,7 @@ export const TicketInfobarContainer = ({
                         className={classNames(secondaryNavbarCSS.link, {
                             [secondaryNavbarCSS.active]: isAIAgentTabActive,
                         })}
-                        onClick={() =>
-                            handleChangeTab(TicketAIAgentFeedbackTab.AIAgent)
-                        }
+                        onClick={handleAIAgentTabClick}
                     >
                         <i
                             className={classNames(

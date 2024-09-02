@@ -6,19 +6,23 @@ import {
 } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {assumeMock} from 'utils/testing'
+
+import {MultiLevelSelectProps} from '../../TicketFields/components/fields/DropdownField/MultiLevelSelect'
 import FeedbackOtherResourcesSelect, {
     NO_RELEVANT_RESOURCES_LABEL,
 } from '../FeedbackOtherResourcesSelect'
-import {MultiLevelSelectProps} from '../../TicketFields/components/fields/DropdownField/MultiLevelSelect'
 
 jest.mock('pages/tickets/detail/hooks/useAIAgentGetOtherResources')
 jest.mock('state/ticket/actions')
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useElementSize', () => () => ({width: 100, height: 100}))
+jest.mock('common/segment/segment')
 
 const mockDispatch = jest.fn()
 assumeMock(useAppDispatch).mockReturnValue(mockDispatch)
 const mockUseAIAgentGetOtherResources = assumeMock(useAIAgentGetOtherResources)
+
+jest.mock('hooks/useElementSize')
 
 const mockChildComponent = jest.fn()
 jest.mock(
@@ -32,7 +36,6 @@ jest.mock(
         )
     }
 )
-
 describe('FeedbackOtherResourcesSelect Component', () => {
     const setupMockResourcesValues = ({
         optionName,
@@ -89,6 +92,7 @@ describe('FeedbackOtherResourcesSelect Component', () => {
                 initialValues={[]}
                 onSubmit={jest.fn()}
                 onRemove={jest.fn()}
+                accountId={1}
                 {...props}
             />
         )

@@ -6,7 +6,13 @@ import {
     ReportIssueOption,
 } from 'models/aiAgentFeedback/constants'
 
+import {logEventWithSampling} from 'common/segment/segment'
+import {assumeMock} from 'utils/testing'
+import {SegmentEvent} from 'common/segment'
 import FeedbackReportIssue from '../FeedbackReportIssue'
+
+jest.mock('common/segment/segment')
+const logEventMock = assumeMock(logEventWithSampling)
 
 describe('FeedbackReportIssue', () => {
     const getFirstEnumValue = (): ReportIssueOption => {
@@ -18,7 +24,11 @@ describe('FeedbackReportIssue', () => {
         const allOptions = Object.values(ReportIssueOption)
 
         const {getAllByTestId} = render(
-            <FeedbackReportIssue value={allOptions} onChange={jest.fn()} />
+            <FeedbackReportIssue
+                value={allOptions}
+                onChange={jest.fn()}
+                accountId={1}
+            />
         )
 
         const tags = getAllByTestId('tag')
@@ -35,7 +45,11 @@ describe('FeedbackReportIssue', () => {
         const onChange = jest.fn()
 
         const {getAllByTestId} = render(
-            <FeedbackReportIssue value={allOptions} onChange={onChange} />
+            <FeedbackReportIssue
+                value={allOptions}
+                onChange={onChange}
+                accountId={1}
+            />
         )
 
         const tags = getAllByTestId('tag')
@@ -50,13 +64,20 @@ describe('FeedbackReportIssue', () => {
         fireEvent.click(firstTagTrailIcon!)
 
         expect(onChange).toHaveBeenCalledWith(allOptions.slice(1))
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentFeedbackReportIssueSelectRemoveOption,
+            {
+                accountId: 1,
+                value: allOptions[0],
+            }
+        )
     })
 
     it('should add option when clicked', () => {
         const onChange = jest.fn()
 
         const {getAllByTestId, getByRole} = render(
-            <FeedbackReportIssue value={[]} onChange={onChange} />
+            <FeedbackReportIssue value={[]} onChange={onChange} accountId={1} />
         )
 
         const listBox = getByRole('listbox')
@@ -67,6 +88,13 @@ describe('FeedbackReportIssue', () => {
 
         const firstElement = getFirstEnumValue()
         expect(onChange).toHaveBeenCalledWith([firstElement])
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentFeedbackReportIssueSelectAddOption,
+            {
+                accountId: 1,
+                value: firstElement,
+            }
+        )
     })
 
     it('should remove option when clicked', () => {
@@ -74,7 +102,11 @@ describe('FeedbackReportIssue', () => {
 
         const firstElement = getFirstEnumValue()
         const {getAllByTestId, getByRole} = render(
-            <FeedbackReportIssue value={[firstElement]} onChange={onChange} />
+            <FeedbackReportIssue
+                value={[firstElement]}
+                onChange={onChange}
+                accountId={1}
+            />
         )
 
         const listBox = getByRole('listbox')

@@ -16,16 +16,22 @@ import {TicketMessage} from 'models/ticket/types'
 import {MessageFeedback} from 'models/aiAgentFeedback/types'
 import {assumeMock} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {logEventWithSampling} from 'common/segment/segment'
+import {getCurrentAccountId} from 'state/currentAccount/selectors'
+import {SegmentEvent} from 'common/segment'
 import AIAgentFeedback, {
     CORRECT_RESPONSE,
     ACCURATE_RESPONSE,
     IMPROVE_RESPONSE,
 } from '../AIAgentFeedback'
+import {BANNER_TYPE} from '../../AIAgentFeedbackBar/constants'
 
 jest.mock('state/ui/ticketAIAgentFeedback')
-
+jest.mock('common/segment/segment')
+jest.mock('state/currentAccount/selectors')
 const queryClient = mockQueryClient()
 
+const mockAccountId = 1
 const mockMessage = {
     ticket_id: 1,
     id: '1',
@@ -34,6 +40,8 @@ const mockMessage = {
 const mockedChangeActiveTab = assumeMock(changeActiveTab)
 const mockedChangeTicketMessage = assumeMock(changeTicketMessage)
 const mockedGetSelectedAIMessage = assumeMock(getSelectedAIMessage)
+const logEventMock = assumeMock(logEventWithSampling)
+assumeMock(getCurrentAccountId).mockReturnValue(mockAccountId)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
@@ -189,6 +197,72 @@ describe('AIAgentFeedback', () => {
         )
         expect(screen.getByText('thumb_up').parentElement).not.toHaveClass(
             'withFeedback'
+        )
+    })
+
+    it('logs the correct event when thumbs up icon is clicked', () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <AIAgentFeedback
+                        message={mockMessage}
+                        messageFeedback={
+                            {
+                                messageId: mockMessage.id,
+                                actions: [{feedback: 'thumbs_up'}],
+                                guidance: [{feedback: 'thumbs_up'}],
+                                knowledge: [{feedback: 'thumbs_up'}],
+                                allowsFeedback: true,
+                                feedbackOnMessage: [],
+                                feedbackOnResource: [],
+                            } as unknown as MessageFeedback
+                        }
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        userEvent.click(screen.getByTestId('thumbs-up-button'))
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentFeedbackBannerClicked, // Replace with the specific event name if necessary
+            expect.objectContaining({
+                accountId: mockAccountId,
+                outcome: 'thumbs_up',
+                banner: BANNER_TYPE.THUMBS_UP_IMPROVE_RESPONSE,
+            })
+        )
+    })
+
+    it('logs the correct event when thumbs down icon is clicked', () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <AIAgentFeedback
+                        message={{...mockMessage, public: false}}
+                        messageFeedback={
+                            {
+                                messageId: mockMessage.id,
+                                actions: [{feedback: 'thumbs_down'}],
+                                guidance: [{feedback: 'thumbs_down'}],
+                                knowledge: [{feedback: 'thumbs_down'}],
+                                allowsFeedback: true,
+                                feedbackOnMessage: [],
+                                feedbackOnResource: [],
+                            } as unknown as MessageFeedback
+                        }
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        userEvent.click(screen.getByTestId('thumbs-down-button'))
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentFeedbackBannerClicked,
+            expect.objectContaining({
+                accountId: mockAccountId,
+                banner: BANNER_TYPE.THUMBS_UP_AND_DOWN,
+                outcome: 'thumbs_down',
+            })
         )
     })
 })

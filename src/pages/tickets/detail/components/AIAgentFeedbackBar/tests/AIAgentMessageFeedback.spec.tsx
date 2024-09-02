@@ -7,6 +7,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {useCookies} from 'react-cookie'
 import {fromJS} from 'immutable'
 import {assumeMock} from 'utils/testing'
+import {logEventWithSampling} from 'common/segment/segment'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
@@ -16,6 +17,8 @@ import {Feedback, SubmitMessageFeedback} from 'models/aiAgentFeedback/types'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {ticket} from 'fixtures/ticket'
 import {user} from 'fixtures/users'
+import {SegmentEvent} from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
 import AIAgentMessageFeedback, {
     FEEDBACK_MESSAGE_ACTIONS_TEST_ID,
     FEEDBACK_MESSAGE_GUIDANCE_TEST_ID,
@@ -26,12 +29,17 @@ import AIAgentMessageFeedback, {
 import {ResourceSection} from '../types'
 import {messageFeedback} from './fixtures'
 
+jest.mock('hooks/useAppDispatch')
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('react-cookie')
 jest.mock('hooks/useHasAgentPrivileges')
+jest.mock('common/segment/segment')
 
 const queryClient = mockQueryClient()
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
+const logEventMock = assumeMock(logEventWithSampling)
+const mockDispatch = jest.fn()
+assumeMock(useAppDispatch).mockReturnValue(mockDispatch)
 
 const mockMessage = {
     ticket_id: 1,
@@ -87,6 +95,7 @@ const renderFeedbackResourceComponent = (feedback: Feedback = 'thumbs_up') =>
             dataTestId="feedback-section"
             resourceId={1}
             resourceSection={resourceSection}
+            accountId={1}
         />
     )
 
@@ -177,6 +186,16 @@ describe('AIAgentMessageFeedback', () => {
             'guidance',
             'thumbs_up',
             resourceSection
+        )
+
+        expect(logEventMock).toHaveBeenNthCalledWith(
+            1,
+            SegmentEvent.AiAgentFeedbackSubmitFeedback,
+            {
+                accountId: 1,
+                outcome: 'thumbs_up',
+                source: 'guidance',
+            }
         )
     })
 

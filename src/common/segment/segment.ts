@@ -8,6 +8,7 @@ import {isDevelopment} from 'utils/environment'
 
 import {SegmentEvent} from './types'
 
+export const SAMPLE_RATE_FOR_HIGH_TRAFFIC = 0.1
 const shouldSendEvent = () =>
     !(
         window.USER_IMPERSONATED ||
@@ -23,6 +24,16 @@ export const logEvent = (event: SegmentEvent, props = {}) => {
     }
 
     window.analytics.track(event, props)
+}
+
+export const logEventWithSampling = (
+    event: SegmentEvent,
+    props = {},
+    sampleRate = SAMPLE_RATE_FOR_HIGH_TRAFFIC
+) => {
+    if (Math.random() <= sampleRate) {
+        logEvent(event, props)
+    }
 }
 
 export const identifyUser = (user: User) => {

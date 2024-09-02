@@ -4,6 +4,8 @@ import {fromJS} from 'immutable'
 import TicketTag from 'pages/common/components/TicketTag'
 import {TicketMessage} from 'models/ticket/types'
 
+import {logEventWithSampling} from 'common/segment/segment'
+import {SegmentEvent} from 'common/segment'
 import {useAIAgentMessageEvents} from '../../hooks/useAIAgentMessageEvents'
 
 import {TicketEventEnum} from './types'
@@ -46,7 +48,19 @@ const FeedbackEvents: React.FC<Props> = ({messages, shopType, shopName}) => {
             >
                 Improve ticket actions by adjusting handover topics and tagging
                 behavior in{' '}
-                <a href={aiAgentLink} target="_blank" rel="noreferrer">
+                <a
+                    href={aiAgentLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => {
+                        logEventWithSampling(
+                            SegmentEvent.AiAgentFeedbackResourceClicked,
+                            {
+                                type: 'ai_agent_configuration_link',
+                            }
+                        )
+                    }}
+                >
                     AI Agent Configuration
                 </a>
             </div>

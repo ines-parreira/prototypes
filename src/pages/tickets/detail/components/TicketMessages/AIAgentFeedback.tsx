@@ -24,19 +24,23 @@ import {
 } from 'state/ui/ticketAIAgentFeedback'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 
+import {logEventWithSampling} from 'common/segment/segment'
+import {SegmentEvent} from 'common/segment'
+import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
+import {BANNER_TYPE} from '../AIAgentFeedbackBar/constants'
+import css from './AIAgentFeedback.less'
 
 export const CORRECT_RESPONSE = 'Is this correct?'
 export const ACCURATE_RESPONSE = 'Is the response accurate?'
 export const IMPROVE_RESPONSE = 'Improve response'
-
-import css from './AIAgentFeedback.less'
 
 type FeedbackIconButtonProps = {
     iconType: 'thumb_up' | 'thumb_down'
     hasFeedback: boolean
     isMessagePublic?: boolean
     onClick?: () => void
+    ['data-testid']?: string
 }
 
 const FeedbackIconButton: React.FC<FeedbackIconButtonProps> = ({
@@ -44,6 +48,7 @@ const FeedbackIconButton: React.FC<FeedbackIconButtonProps> = ({
     hasFeedback,
     isMessagePublic = false,
     onClick,
+    ['data-testid']: dataTestId,
 }) => (
     <IconButton
         fillStyle="fill"
@@ -57,6 +62,7 @@ const FeedbackIconButton: React.FC<FeedbackIconButtonProps> = ({
         })}
         onClick={onClick}
         disabled={hasFeedback && isMessagePublic}
+        data-testid={dataTestId}
     >
         {iconType}
     </IconButton>
@@ -70,6 +76,7 @@ type Props = {
 const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
     const dispatch = useAppDispatch()
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
+    const accountId = useAppSelector(getCurrentAccountId)
 
     const {actions, guidance, knowledge} =
         useAIAgentResourcesWithFeedback(messageFeedback)
@@ -117,10 +124,22 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                 message,
             })
         )
+
+        logEventWithSampling(SegmentEvent.AiAgentFeedbackBannerClicked, {
+            accountId,
+            banner: BANNER_TYPE.SEND_FEEDBACK,
+            outcome: 'improve_response',
+        })
+
+        logEventWithSampling(SegmentEvent.AiAgentFeedbackSidePanelViewed, {
+            type: 'detail',
+            accountId,
+        })
     }
 
     const handleSubmitFeedback = (feedback: Feedback) => {
         let feedbackPayload: SubmitMessageFeedback
+        let bannerType = BANNER_TYPE.THUMBS_UP_IMPROVE_RESPONSE
 
         if (isMessagePublic) {
             const actionFeedbackOnResource = actions
@@ -168,6 +187,7 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                 feedbackOnMessage: [],
             }
         } else {
+            bannerType = BANNER_TYPE.THUMBS_UP_AND_DOWN
             feedbackPayload = {
                 feedbackOnResource: [],
                 feedbackOnMessage: [
@@ -178,6 +198,12 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                 ],
             }
         }
+
+        logEventWithSampling(SegmentEvent.AiAgentFeedbackBannerClicked, {
+            accountId,
+            banner: bannerType,
+            outcome: feedback,
+        })
 
         void submitFeedback(message, feedbackPayload)
     }
@@ -196,9 +222,9 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                             if (hasPositiveFeedback) {
                                 return
                             }
-
                             handleSubmitFeedback('thumbs_up')
                         }}
+                        data-testid="thumbs-up-button"
                         isMessagePublic={isMessagePublic}
                     />
                 )}
@@ -225,6 +251,7 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
 
                             handleSubmitFeedback('thumbs_down')
                         }}
+                        data-testid={'thumbs-down-button'}
                     />
                 )}
             </div>

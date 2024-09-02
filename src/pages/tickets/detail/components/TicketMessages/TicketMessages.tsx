@@ -16,11 +16,14 @@ import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
-import {logEvent, SegmentEvent} from 'common/segment'
+import {SegmentEvent} from 'common/segment'
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
+import {logEventWithSampling} from 'common/segment/segment'
 import AIAgentDraftMessage from '../AIAgentDraftMessage/AIAgentDraftMessage'
 import {
+    BANNER_TYPE,
     DRAFT_MESSAGE_TAG,
+    SAMPLE_RATE,
     TRIAL_MESSAGE_TAG,
 } from '../AIAgentFeedbackBar/constants'
 import Container from './Container'
@@ -86,21 +89,31 @@ export default function TicketMessages({
 
     useEffect(() => {
         let bannerType = ''
+        let sampleRate = SAMPLE_RATE
 
-        switch (true) {
-            case isAIAgentDraftMessage:
-                bannerType = 'qa_failed'
-                break
-            case isAIAgentTrialMessage:
-                bannerType = 'trial'
-                break
+        if (isAIAgentMessage) {
+            if (isAIAgentDraftMessage) {
+                bannerType = BANNER_TYPE.QA_FAILED
+                sampleRate = 1
+            } else if (isAIAgentTrialMessage) {
+                bannerType = BANNER_TYPE.TRIAL
+                sampleRate = 1
+            } else {
+                bannerType = isAIAgentInternalNote
+                    ? BANNER_TYPE.THUMBS_UP_AND_DOWN
+                    : BANNER_TYPE.THUMBS_UP_IMPROVE_RESPONSE
+            }
         }
 
         if (bannerType !== '') {
-            logEvent(SegmentEvent.AiAgentTicketViewed, {
-                accountId: accountId,
-                banner: bannerType,
-            })
+            logEventWithSampling(
+                SegmentEvent.AiAgentTicketViewed,
+                {
+                    accountId,
+                    banner: bannerType,
+                },
+                sampleRate
+            )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

@@ -10,6 +10,8 @@ import Button from 'pages/common/components/button/Button'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {getAIAgentMessages} from 'state/ticket/selectors'
+import {logEventWithSampling} from 'common/segment/segment'
+import {SegmentEvent} from 'common/segment'
 import AIAgentMessageFeedback from './AIAgentMessageFeedback'
 import AIAgentTicketFeedback from './AIAgentTicketFeedback'
 import css from './AIAgentFeedbackBar.less'
@@ -43,6 +45,10 @@ const AIAgentFeedbackBar = () => {
 
     const handleSelectFirstMessage = () => {
         dispatch(changeTicketMessage({message: publicAIMessages[0]}))
+        logEventWithSampling(
+            SegmentEvent.AiAgentFeedbackFirstMessageButtonClicked,
+            {}
+        )
     }
 
     return (

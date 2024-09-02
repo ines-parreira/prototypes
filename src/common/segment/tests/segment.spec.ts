@@ -1,7 +1,8 @@
 import {user} from 'fixtures/users'
 import {mockProductionEnvironment} from 'utils/testing'
 
-import {identifyUser} from '../segment'
+import {identifyUser, logEventWithSampling} from '../segment'
+import {SegmentEvent} from '../types'
 
 describe('segmentTracker', () => {
     const analytics = globalThis.analytics
@@ -47,6 +48,45 @@ describe('segmentTracker', () => {
             identifyUser(user)
 
             expect(analytics.identify).not.toHaveBeenCalled()
+        })
+
+        it('should log event with sampling', () => {
+            logEventWithSampling(
+                SegmentEvent.AiAgentCopiedToEditor,
+                {prop: 'value'},
+                1
+            )
+
+            expect(window.analytics.track).toHaveBeenCalledTimes(1)
+            expect(window.analytics.track).toHaveBeenNthCalledWith(
+                1,
+                SegmentEvent.AiAgentCopiedToEditor,
+                {
+                    prop: 'value',
+                }
+            )
+        })
+
+        it('should not log event with sampling', () => {
+            logEventWithSampling(
+                SegmentEvent.AiAgentCopiedToEditor,
+                {prop: 'value'},
+                0
+            )
+
+            expect(window.analytics.track).not.toHaveBeenCalled()
+        })
+
+        it('should use default sample rate', () => {
+            jest.spyOn(global.Math, 'random').mockReturnValue(0.001)
+            logEventWithSampling(SegmentEvent.AiAgentCopiedToEditor)
+
+            expect(window.analytics.track).toHaveBeenCalledTimes(1)
+            expect(window.analytics.track).toHaveBeenNthCalledWith(
+                1,
+                SegmentEvent.AiAgentCopiedToEditor,
+                {}
+            )
         })
     })
 })

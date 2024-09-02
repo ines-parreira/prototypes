@@ -29,6 +29,9 @@ import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 
+import {logEventWithSampling} from 'common/segment/segment'
+import {SegmentEvent} from 'common/segment'
+import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {getAgentMessageFeedbackStatus} from 'state/agents/selectors'
 import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
 import {useAIAgentSendFeedback} from '../../hooks/useAIAgentSendFeedback'
@@ -64,6 +67,7 @@ type FeedbackResourceSectionProps = {
     href?: string
     dataTestId?: string
     resourceId: number | string
+    accountId: number
 }
 
 type FeedbackSectionTitleContainerProps = {
@@ -101,6 +105,7 @@ export const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> =
         href,
         dataTestId,
         resourceId,
+        accountId,
     }) => {
         const hasAgentPrivileges = useHasAgentPrivileges()
         const [cookies, setCookie] = useCookies([TOOLTIP_COOKIE_NAME])
@@ -112,6 +117,11 @@ export const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> =
                 return
             }
 
+            logEventWithSampling(SegmentEvent.AiAgentFeedbackSubmitFeedback, {
+                accountId,
+                outcome: buttonType,
+                source: resourceType,
+            })
             handleSubmitFeedback(
                 resource.id,
                 resourceType,
@@ -138,7 +148,17 @@ export const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> =
             >
                 <div className={css.sectionText}>
                     <div className={css.text}>{resource.name}</div>
-                    <i className={classNames('material-icons', css.openIcon)}>
+                    <i
+                        className={classNames('material-icons', css.openIcon)}
+                        onClick={() => {
+                            logEventWithSampling(
+                                SegmentEvent.AiAgentFeedbackResourceClicked,
+                                {
+                                    type: resourceType,
+                                }
+                            )
+                        }}
+                    >
                         open_in_new
                     </i>
                 </div>
@@ -233,6 +253,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
     const [reportIssues, setReportIssues] = useState<ReportIssueOption[]>([])
 
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
+    const accountId = useAppSelector(getCurrentAccountId)
 
     const {
         aiAgentSendFeedback: submitFeedback,
@@ -404,6 +425,16 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
 
         if (selectedAIMessage) {
             void deleteFeedback(selectedAIMessage, payload)
+
+            resources.forEach((resource) => {
+                logEventWithSampling(
+                    SegmentEvent.AiAgentFeedbackOtherReasonSelectRemoveOption,
+                    {
+                        accountId,
+                        sourceType: resource.resourceType,
+                    }
+                )
+            })
         }
     }
 
@@ -450,6 +481,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                         FEEDBACK_MESSAGE_ACTIONS_TEST_ID
                                     }
                                     resourceId={action.id}
+                                    accountId={accountId}
                                 />
                             ))}
                         </div>
@@ -476,6 +508,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                         FEEDBACK_MESSAGE_GUIDANCE_TEST_ID
                                     }
                                     resourceId={guidance.id}
+                                    accountId={accountId}
                                 />
                             ))}
                         </div>
@@ -498,6 +531,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                         FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID
                                     }
                                     resourceId={knowledge.id}
+                                    accountId={accountId}
                                 />
                             ))}
                         </div>
@@ -517,6 +551,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                 onSubmit={handleSubmitOtherResources}
                                 onRemove={handleDeleteOtherResources}
                                 initialValues={otherResourcesInitial}
+                                accountId={accountId}
                             />
                         )}
                         <FeedbackCreateResource
@@ -530,6 +565,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                         onChange={setReportIssues}
                         onClose={handleSubmitReportIssues}
                         onRemove={handleDeleteReportIssues}
+                        accountId={accountId}
                     />
                     <FeedbackNote
                         onBlur={handleNoteFeedback}

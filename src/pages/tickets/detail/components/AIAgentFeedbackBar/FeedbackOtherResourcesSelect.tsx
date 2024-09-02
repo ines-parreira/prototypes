@@ -11,6 +11,8 @@ import {
 
 import {addTags, removeTag} from 'state/ticket/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {logEventWithSampling} from 'common/segment/segment'
+import {SegmentEvent} from 'common/segment'
 import MultiLevelSelect from '../TicketFields/components/fields/DropdownField/MultiLevelSelect'
 import css from './FeedbackOtherResourcesSelect.less'
 import {RESOURCE_ICONS, RESOURCE_LABELS} from './constants'
@@ -32,6 +34,7 @@ type Props = {
     shopName: string
     shopType: string
     initialValues: FeedbackOnMessage[]
+    accountId: number
     onSubmit: (resources: ResourceFeedbackOnMessage[]) => void
     onRemove: (resources: ResourceFeedbackOnMessage[]) => void
 }
@@ -45,6 +48,7 @@ const FeedbackOtherResourcesSelect = ({
     onSubmit,
     onRemove,
     initialValues,
+    accountId,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
 
@@ -144,7 +148,13 @@ const FeedbackOtherResourcesSelect = ({
 
     const onToggle = useCallback(() => {
         setIsOpen(true)
-    }, [])
+        logEventWithSampling(
+            SegmentEvent.AiAgentFeedbackOtherReasonSelectClicked,
+            {
+                accountId,
+            }
+        )
+    }, [accountId])
 
     const handleChange = useCallback(
         (value) => {

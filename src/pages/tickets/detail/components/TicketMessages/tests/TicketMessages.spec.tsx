@@ -12,10 +12,13 @@ import {shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents} from 'sta
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState} from 'state/types'
-import {SegmentEvent, logEvent} from 'common/segment'
+import {SegmentEvent} from 'common/segment'
+import {logEventWithSampling} from 'common/segment/segment'
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
 import {messageFeedback} from '../../AIAgentFeedbackBar/tests/fixtures'
 import TicketMessages from '../TicketMessages'
 import {
+    BANNER_TYPE,
     DRAFT_MESSAGE_TAG,
     TRIAL_MESSAGE_TAG,
 } from '../../AIAgentFeedbackBar/constants'
@@ -24,14 +27,14 @@ import AIAgentDraftMessage from '../../AIAgentDraftMessage/AIAgentDraftMessage'
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('state/currentAccount/selectors')
 jest.mock('state/ticket/selectors')
-jest.mock('common/segment')
+jest.mock('common/segment/segment')
 
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
 const getCurrentAccountIdMock = assumeMock(getCurrentAccountId)
 const getShouldDisplayAuditLogEventsMock = assumeMock(
     getShouldDisplayAuditLogEvents
 )
-const logEventMock = assumeMock(logEvent)
+const logEventMock = assumeMock(logEventWithSampling)
 
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/Message',
@@ -157,12 +160,20 @@ describe('TicketMessages', () => {
     })
 
     it('should log AiAgentTicketViewed event with bannerType qa_failed for Draft message', async () => {
+        mockFlags({
+            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
+        })
+
         const props = {
             ...defaultProps,
             messages: [
                 {
                     ...defaultProps.messages[0],
                     body_html: DRAFT_MESSAGE_TAG,
+                    sender: {
+                        ...defaultProps.messages[0].sender,
+                        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
+                    },
                 },
             ],
         }
@@ -179,18 +190,27 @@ describe('TicketMessages', () => {
                 {
                     accountId: 1,
                     banner: 'qa_failed',
-                }
+                },
+                1
             )
         })
     })
 
     it('should log AiAgentTicketViewed event with bannerType trial for Trial message', async () => {
+        mockFlags({
+            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
+            [FeatureFlagKey.AiAgentTrialMode]: true,
+        })
         const props = {
             ...defaultProps,
             messages: [
                 {
                     ...defaultProps.messages[0],
                     body_html: TRIAL_MESSAGE_TAG,
+                    sender: {
+                        ...defaultProps.messages[0].sender,
+                        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
+                    },
                 },
             ],
         }
@@ -207,7 +227,83 @@ describe('TicketMessages', () => {
                 {
                     accountId: 1,
                     banner: 'trial',
-                }
+                },
+                1
+            )
+        })
+    })
+
+    it('should log AiAgentTicketViewed event with bannerType thumbs_up_and_down for ai agent message', async () => {
+        mockFlags({
+            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
+            [FeatureFlagKey.AiAgentTrialMode]: false,
+        })
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    body_html: 'message',
+                    public: false,
+                    sender: {
+                        ...defaultProps.messages[0].sender,
+                        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
+                    },
+                },
+            ],
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentTicketViewed,
+                {
+                    accountId: 1,
+                    banner: BANNER_TYPE.THUMBS_UP_AND_DOWN,
+                },
+                0.1
+            )
+        })
+    })
+
+    it('should log AiAgentTicketViewed event with bannerType thumbs_up_improve_response for ai agent message', async () => {
+        mockFlags({
+            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
+            [FeatureFlagKey.AiAgentTrialMode]: false,
+        })
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    body_html: 'message',
+                    sender: {
+                        ...defaultProps.messages[0].sender,
+                        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
+                    },
+                },
+            ],
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentTicketViewed,
+                {
+                    accountId: 1,
+                    banner: BANNER_TYPE.THUMBS_UP_IMPROVE_RESPONSE,
+                },
+                0.1
             )
         })
     })

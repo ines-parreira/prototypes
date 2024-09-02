@@ -29,3 +29,13 @@ export const DATE_FEATURE_AVAILABLE = new Date(
 export const DRAFT_MESSAGE_TAG = 'data-ai-agent-draft-message'
 
 export const TRIAL_MESSAGE_TAG = 'data-ai-agent-trial-message'
+
+export const BANNER_TYPE = {
+    QA_FAILED: 'qa_failed',
+    TRIAL: 'trial',
+    THUMBS_UP_AND_DOWN: 'thumbs_up_and_down',
+    THUMBS_UP_IMPROVE_RESPONSE: 'thumbs_up_improve_response',
+    SEND_FEEDBACK: 'send_feedback',
+}
+
+export const SAMPLE_RATE = 0.1

@@ -13,6 +13,8 @@ import {
     ReportIssueOption,
 } from 'models/aiAgentFeedback/constants'
 
+import {logEventWithSampling} from 'common/segment/segment'
+import {SegmentEvent} from 'common/segment'
 import css from './FeedbackReportIssue.less'
 
 const closeIcon = (
@@ -33,6 +35,7 @@ type Props = {
     onChange: (value: ReportIssueOption[]) => void
     onClose?: () => void
     onRemove?: (value: ReportIssueOption[]) => void
+    accountId: number
 }
 
 const ReportIssueSelect: React.FC<Props> = ({
@@ -40,6 +43,7 @@ const ReportIssueSelect: React.FC<Props> = ({
     onChange,
     onClose,
     onRemove,
+    accountId,
 }) => {
     const floatingRef = useRef<HTMLDivElement>(null)
     const selectInputBoxRef = useRef<HTMLDivElement>(null)
@@ -51,11 +55,25 @@ const ReportIssueSelect: React.FC<Props> = ({
                 ? value.filter((v) => v !== item)
                 : [...value, item]
         )
+        logEventWithSampling(
+            SegmentEvent.AiAgentFeedbackReportIssueSelectAddOption,
+            {
+                accountId,
+                value: item,
+            }
+        )
     }
 
     const onRemoveItem = (item: ReportIssueOption) => {
         onRemove?.([item])
         onChange(value.filter((v) => v !== item))
+        logEventWithSampling(
+            SegmentEvent.AiAgentFeedbackReportIssueSelectRemoveOption,
+            {
+                accountId,
+                value: item,
+            }
+        )
     }
 
     const onToggle = useCallback(
@@ -64,8 +82,17 @@ const ReportIssueSelect: React.FC<Props> = ({
                 onClose?.()
             }
             setIsOpen(toggleValue)
+
+            if (toggleValue) {
+                logEventWithSampling(
+                    SegmentEvent.AiAgentFeedbackReportIssueSelectClicked,
+                    {
+                        accountId,
+                    }
+                )
+            }
         },
-        [onClose, isOpen]
+        [onClose, isOpen, accountId]
     )
 
     return (
