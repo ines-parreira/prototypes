@@ -1,6 +1,7 @@
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {screen} from '@testing-library/react'
+import {act, screen, waitFor} from '@testing-library/react'
+import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import * as PeriodFilter from 'pages/stats/common/filters/PeriodFilter'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
@@ -217,6 +218,51 @@ describe('FiltersPanel', () => {
         expect(
             screen.queryByText(new RegExp(FilterLabels[optionalFilter]))
         ).toBeInTheDocument()
+    })
+
+    it('should allow adding optional Filters after initial render', async () => {
+        const initialFilters = [FilterKey.Tags, FilterKey.Agents]
+        const newFilter = FilterKey.Channels
+        const {rerender, store} = renderWithStore(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={initialFilters}
+            />,
+            defaultState
+        )
+
+        userEvent.click(
+            screen.getByRole('button', {
+                name: new RegExp(ADD_FILTER_BUTTON_LABEL),
+            })
+        )
+        initialFilters.forEach((filterKey) => {
+            expect(
+                screen.getByText(FilterLabels[filterKey])
+            ).toBeInTheDocument()
+        })
+
+        act(() => {
+            rerender(
+                <Provider store={store}>
+                    <FiltersPanel
+                        persistentFilters={persistentFilters}
+                        optionalFilters={[...initialFilters, newFilter]}
+                    />
+                </Provider>
+            )
+        })
+
+        initialFilters.forEach((filterKey) => {
+            expect(
+                screen.getByText(FilterLabels[filterKey])
+            ).toBeInTheDocument()
+        })
+        await waitFor(() => {
+            expect(
+                screen.getByText(FilterLabels[newFilter])
+            ).toBeInTheDocument()
+        })
     })
 
     it('should allow removal of optional Filters', () => {

@@ -11,7 +11,8 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import ChannelsFilter, {
+import {
+    ChannelsFilter,
     CHANNELS_FILTER_NAME,
 } from 'pages/stats/common/filters/ChannelsFilter'
 import {getChannels, toChannel} from 'services/channels'

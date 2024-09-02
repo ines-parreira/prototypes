@@ -5,12 +5,18 @@ import {useSearchParam} from 'hooks/useSearchParam'
 import {last28DaysStatsFilters} from 'pages/automate/common/utils/last28DaysStatsFilters'
 import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {getStatsFilters} from 'state/stats/selectors'
+
+export const AUTOMATE_ENABLED_CHANNELS = [
+    TicketChannel.Chat,
+    TicketChannel.HelpCenter,
+    TicketChannel.ContactForm,
+    TicketChannel.Email,
+]
 
 export const AutomateOverviewFilters = ({
     isAnalyticsNewFiltersAutomate = false,
@@ -31,19 +37,12 @@ export const AutomateOverviewFilters = ({
         }
     }, [dispatch, sourceSearchParam, setSourceSearchParam])
 
-    useCleanStatsFilters(statsFilters)
-
     return isAnalyticsNewFiltersAutomate ? null : (
         <>
             {isAutomateOverviewChannelsFilter && (
                 <ChannelsStatsFilter
                     value={statsFilters.channels}
-                    channelsFilter={[
-                        TicketChannel.Chat,
-                        TicketChannel.HelpCenter,
-                        TicketChannel.ContactForm,
-                        TicketChannel.Email,
-                    ]}
+                    channelsFilter={AUTOMATE_ENABLED_CHANNELS}
                     variant="ghost"
                 />
             )}

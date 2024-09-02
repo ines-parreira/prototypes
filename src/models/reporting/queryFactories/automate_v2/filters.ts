@@ -1,7 +1,7 @@
 import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import {
-    hasFilter,
+    addOptionalFilter,
     isFilterWithLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
@@ -25,17 +25,15 @@ export const automationDatasetDefaultFilters = (
 
 export const automationDatasetAdditionalFilters = (
     filters: StatsFilters
-): ReportingFilter[] => [
-    ...(hasFilter(filters.channels)
-        ? [
-              {
-                  member: AutomationDatasetFilterMember.Channel,
-                  operator: ReportingFilterOperator.Equals,
-                  values: mapTicketChannelsToAutomateChannels(filters.channels),
-              },
-          ]
-        : []),
-]
+): ReportingFilter[] =>
+    addOptionalFilter(
+        [],
+        mapTicketChannelsToAutomateChannelsInFilter(filters.channels),
+        {
+            member: AutomationDatasetFilterMember.Channel,
+            operator: ReportingFilterOperator.Equals,
+        }
+    )
 
 export const billableTicketDatasetDefaultFilters = (
     filters: StatsFilters
@@ -54,29 +52,41 @@ export const billableTicketDatasetDefaultFilters = (
 
 export const billableTicketDatasetAdditionalFilters = (
     filters: StatsFilters
-): ReportingFilter[] => [
-    ...(hasFilter(filters.channels)
-        ? [
-              {
-                  member: BillableTicketDatasetFilterMember.Channel,
-                  operator: ReportingFilterOperator.Equals,
-                  values: mapTicketChannelsToAutomateChannels(filters.channels),
-              },
-          ]
-        : []),
-]
+): ReportingFilter[] =>
+    addOptionalFilter(
+        [],
+        mapTicketChannelsToAutomateChannelsInFilter(filters.channels),
+        {
+            member: BillableTicketDatasetFilterMember.Channel,
+            operator: ReportingFilterOperator.Equals,
+        }
+    )
 
 const ticketChannelToAutomateChannel = (channel: string) =>
     channel === 'contact_form' ? 'contact-form' : channel
 
 export const mapTicketChannelsToAutomateChannels = (
-    channels: string[] | WithLogicalOperator<string> | undefined
+    channels: string[] | undefined
 ): string[] => {
     if (channels === undefined) {
         return []
     }
-    if (isFilterWithLogicalOperator(channels)) {
-        return channels.values.map(ticketChannelToAutomateChannel)
+
+    return channels.map(ticketChannelToAutomateChannel)
+}
+
+export const mapTicketChannelsToAutomateChannelsInFilter = (
+    channels: string[] | WithLogicalOperator<string> | undefined
+): string[] | WithLogicalOperator<string> => {
+    if (channels === undefined) {
+        return []
     }
+    if (isFilterWithLogicalOperator(channels)) {
+        return {
+            ...channels,
+            values: channels.values.map(ticketChannelToAutomateChannel),
+        }
+    }
+
     return channels.map(ticketChannelToAutomateChannel)
 }

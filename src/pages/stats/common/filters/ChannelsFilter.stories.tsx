@@ -9,7 +9,7 @@ import {channelsQueryKeys} from 'models/channel/queries'
 import {appQueryClient} from 'api/queryClient'
 
 import {channels} from 'fixtures/channels'
-import ChannelsFilter from 'pages/stats/common/filters/ChannelsFilter'
+import {ChannelsFilter} from 'pages/stats/common/filters/ChannelsFilter'
 
 const defaultState = {}
 

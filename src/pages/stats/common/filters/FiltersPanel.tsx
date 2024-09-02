@@ -38,8 +38,12 @@ type Props = {
     persistentFilters?: StaticFilter[]
     optionalFilters?: FilterKey[]
     filterSettingsOverrides?: {
-        [FilterKey.Period]: Omit<
+        [FilterKey.Period]?: Omit<
             ComponentProps<typeof PeriodFilterWithState>,
+            'value'
+        >
+        [FilterKey.Channels]?: Omit<
+            ComponentProps<typeof ChannelsFilterWithState>,
             'value'
         >
     }
@@ -76,18 +80,18 @@ export const renderFilter = (filter: FilterKey | FilterComponentKey) => {
     }
 }
 
-const getInitialActiveFilters = (
+const getActiveFilters = (
     optionalFilters: FilterKey[],
     cleanStatsFilters: StatsFilters
 ) =>
-    optionalFilters.reduce<ActiveFilter[]>((filtersMap, filterKey) => {
+    optionalFilters.reduce<ActiveFilter[]>((arr, filterKey) => {
         if (
             filterKey !== FilterKey.CustomFields &&
             filterKey !== FilterKey.Period
         ) {
             const filter = cleanStatsFilters[filterKey]
             return [
-                ...filtersMap,
+                ...arr,
                 {
                     key: filterKey,
                     type: filterKey,
@@ -95,7 +99,7 @@ const getInitialActiveFilters = (
                 },
             ]
         }
-        return filtersMap
+        return arr
     }, [])
 
 type CustomFieldFilter = {
@@ -123,7 +127,7 @@ export const FiltersPanel = ({
         getCleanStatsFiltersWithLogicalOperatorsWithTimezone
     )
     const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>(
-        getInitialActiveFilters(optionalFilters, cleanStatsFilters)
+        getActiveFilters(optionalFilters, cleanStatsFilters)
     )
 
     const {data: {data: activeFields = []} = {}} =
@@ -138,6 +142,24 @@ export const FiltersPanel = ({
             active: false,
         })
     )
+
+    useEffect(() => {
+        const newFilters = optionalFilters.filter(
+            (filter) =>
+                filter !== FilterKey.CustomFields &&
+                filter !== FilterKey.Period &&
+                activeFilters.find(
+                    (activeFilter) => activeFilter.key === filter
+                ) === undefined
+        )
+        if (newFilters.length > 0) {
+            const newActiveFilters = getActiveFilters(
+                newFilters,
+                cleanStatsFilters
+            )
+            setActiveFilters([...activeFilters, ...newActiveFilters])
+        }
+    }, [activeFilters, cleanStatsFilters, optionalFilters])
 
     useEffect(() => {
         if (
@@ -235,11 +257,16 @@ export const FiltersPanel = ({
 const getFilterSettings = (
     filterKey: string,
     settings?: {
-        [FilterKey.Period]: ComponentProps<typeof PeriodFilterWithState>
+        [FilterKey.Period]?: ComponentProps<typeof PeriodFilterWithState>
+        [FilterKey.Channels]?: ComponentProps<typeof ChannelsFilterWithState>
     }
 ) => {
-    if (filterKey === String(FilterKey.Period)) {
-        return settings?.[FilterKey.Period]
+    switch (filterKey) {
+        case FilterKey.Period:
+            return settings?.[FilterKey.Period]
+        case FilterKey.Channels:
+            return settings?.[FilterKey.Channels]
+        default:
+            return undefined
     }
-    return undefined
 }

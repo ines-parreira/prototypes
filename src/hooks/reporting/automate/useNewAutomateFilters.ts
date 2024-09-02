@@ -1,10 +1,12 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
+import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
@@ -18,6 +20,12 @@ export const useNewAutomateFilters = (): {
 } => {
     const isAnalyticsNewFiltersAutomate: boolean | undefined =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersAutomate]
+    const pageStatsFiltersWithLogicalOperators = useAppSelector(
+        getPageStatsFiltersWithLogicalOperators
+    )
+    useCleanStatsFiltersWithLogicalOperators(
+        pageStatsFiltersWithLogicalOperators
+    )
     const {
         cleanStatsFilters: legacyStatsFilters,
         userTimezone,

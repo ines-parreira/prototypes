@@ -1,5 +1,7 @@
+import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import {
+    automationDatasetAdditionalFilters,
     billableTicketDatasetAdditionalFilters,
     mapTicketChannelsToAutomateChannels,
 } from 'models/reporting/queryFactories/automate_v2/filters'
@@ -27,7 +29,62 @@ describe('billableTicketDatasetAdditionalFilters', () => {
                 member: BillableTicketDatasetFilterMember.Channel,
                 operator: ReportingFilterOperator.Equals,
                 values: mapTicketChannelsToAutomateChannels(
-                    statsFilters.channels
+                    legacyStatsFilters.channels
+                ),
+            })
+        }
+    )
+
+    it('should return no filter when channels filter is undefined in filters state', () => {
+        const statsFilters = {
+            period: {
+                start_datetime: '',
+                end_datetime: '',
+                channels: undefined,
+            },
+        }
+        const reportingFilters =
+            billableTicketDatasetAdditionalFilters(statsFilters)
+
+        expect(reportingFilters).toEqual([])
+    })
+
+    it('should return no filter when there is no channels filter key in filters state', () => {
+        const statsFilters = {
+            period: {
+                start_datetime: '',
+                end_datetime: '',
+            },
+        }
+        const reportingFilters =
+            billableTicketDatasetAdditionalFilters(statsFilters)
+
+        expect(reportingFilters).toEqual([])
+    })
+})
+
+describe('automationDatasetAdditionalFilters', () => {
+    const legacyStatsFilters = {
+        period: {
+            start_datetime: '',
+            end_datetime: '',
+        },
+        channels: ['email', 'contact_form'],
+    }
+    const statsFiltersWithLogicalOperator =
+        fromLegacyStatsFilters(legacyStatsFilters)
+
+    it.each([legacyStatsFilters, statsFiltersWithLogicalOperator])(
+        'should return BillableTickets filter for channels',
+        (statsFilters) => {
+            const reportingFilters =
+                automationDatasetAdditionalFilters(statsFilters)
+
+            expect(reportingFilters).toContainEqual({
+                member: AutomationDatasetFilterMember.Channel,
+                operator: ReportingFilterOperator.Equals,
+                values: mapTicketChannelsToAutomateChannels(
+                    legacyStatsFilters.channels
                 ),
             })
         }

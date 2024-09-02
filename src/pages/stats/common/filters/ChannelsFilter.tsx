@@ -30,7 +30,7 @@ type Props = {
     channelsFilter?: ChannelIdentifier[] | ((channel: Channel) => boolean)
 } & RemovableFilter
 
-export default function ChannelsFilter({
+export function ChannelsFilter({
     value = emptyFilter,
     channelsFilter,
     onRemove,

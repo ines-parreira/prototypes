@@ -4,7 +4,10 @@ import moment from 'moment'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-import {AutomateOverviewFilters} from 'pages/stats/AutomateOverviewFilters'
+import {
+    AUTOMATE_ENABLED_CHANNELS,
+    AutomateOverviewFilters,
+} from 'pages/stats/AutomateOverviewFilters'
 import {ReportingGranularity} from 'models/reporting/types'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
 
@@ -338,6 +341,17 @@ export default function AutomateOverviewContent({
                                         ? [FilterKey.Channels]
                                         : []
                                 }
+                                filterSettingsOverrides={{
+                                    [FilterKey.Period]: {
+                                        initialSettings: {
+                                            maxSpan: 365,
+                                        },
+                                    },
+                                    [FilterKey.Channels]: {
+                                        channelsFilter:
+                                            AUTOMATE_ENABLED_CHANNELS,
+                                    },
+                                }}
                             />
                         </DashboardGridCell>
                     </DashboardSection>
