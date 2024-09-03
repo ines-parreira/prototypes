@@ -1,7 +1,7 @@
 import {
     AccountFeature,
     AccountFeatureMetadata,
-} from '../../state/currentAccount/types'
+} from 'state/currentAccount/types'
 
 export enum PlanInterval {
     Month = 'month',
@@ -27,12 +27,7 @@ export type PriceId = string
 // A Stripe product ID always starts with 'prod_'.
 export type ProductId = string
 
-export type Plan =
-    | HelpdeskPlan
-    | AutomatePlan
-    | SMSOrVoicePlan
-    | ConvertPlan
-    | BasePlan
+export type Plan = HelpdeskPlan | AutomatePlan | SMSOrVoicePlan | ConvertPlan
 
 export type Product<T = Plan> = {
     id: string
@@ -200,11 +195,11 @@ type CustomerSummary = {
 }
 
 export type CurrentPlans = {
-    helpdesk: BasePlan
-    automate: BasePlan | null
-    voice: BasePlan | null
-    sms: BasePlan | null
-    convert: BasePlan | null
+    helpdesk: HelpdeskPlan
+    automate: AutomatePlan | MeteredAutomatePlan | null
+    voice: SMSOrVoicePlan | null
+    sms: SMSOrVoicePlan | null
+    convert: ConvertPlan | null
 }
 export type BillingState = {
     upcoming_invoice: UpcomingInvoiceSummary | null
