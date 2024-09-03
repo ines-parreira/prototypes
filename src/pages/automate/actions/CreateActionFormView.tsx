@@ -1,10 +1,12 @@
-import React, {useMemo, useState} from 'react'
+import React, {useMemo, useRef} from 'react'
 import {useParams, useLocation} from 'react-router-dom'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import useEffectOnce from 'hooks/useEffectOnce'
+
 import CustomActionsForm from './components/CustomActionsForm'
 import TemplateActionsForm from './components/TemplateActionsForm'
-import {TemplateConfigurationFormInput} from './types'
+import {TemplateConfiguration, TemplateConfigurationFormInput} from './types'
 import {
     generateNewCustomActionConfigurationFormInput,
     getTriggerstByKind,
@@ -12,10 +14,21 @@ import {
 import css from './ActionsView.less'
 
 export default function CreateActionFormView() {
-    const {search} = useLocation()
+    const {search, state: initialState} = useLocation<
+        | Omit<
+              Extract<TemplateConfiguration['apps'][number], {type: 'app'}>,
+              'type'
+          >
+        | undefined
+    >()
     const params = useMemo(() => new URLSearchParams(search), [search])
-    const [apiKeyModalIsOpen, setApiKeyModalIsOpen] = useState(false)
     const templateConfigurationId = params.get('template_id')
+
+    const state = useRef(initialState)
+
+    useEffectOnce(() => {
+        window.history.replaceState(null, '')
+    })
 
     const {
         data: templateConfigurations,
@@ -41,12 +54,17 @@ export default function CreateActionFormView() {
 
         const newActionConfigurationFormInput: TemplateConfigurationFormInput =
             {
-                name: template?.name,
+                name: template.name,
                 initial_step_id: null,
                 available_languages: [],
                 is_draft: false,
-                apps: template?.apps,
-                entrypoints: template?.entrypoints,
+                apps: template.apps.map((app) =>
+                    app.type === 'app' && app.app_id === state.current?.app_id
+                        ? {...app, api_key: state.current.api_key}
+                        : app
+                ),
+                // FIXME: "requires_confirmation" should not be copied from template
+                entrypoints: template.entrypoints,
                 triggers: [
                     {
                         kind: 'llm-prompt',
@@ -81,8 +99,6 @@ export default function CreateActionFormView() {
                 <TemplateActionsForm
                     initialConfigurationData={newActionConfiguration}
                     templateConfiguration={templateConfiguration}
-                    apiKeyModalIsOpen={apiKeyModalIsOpen}
-                    setApiKeyModalIsOpen={setApiKeyModalIsOpen}
                 />
             ) : (
                 <CustomActionsForm

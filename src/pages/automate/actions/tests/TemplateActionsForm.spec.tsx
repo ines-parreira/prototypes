@@ -4,19 +4,17 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {ulid} from 'ulidx'
+import {screen} from '@testing-library/react'
+
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {IntegrationType} from 'models/integration/constants'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import {
-    generateNewCustomActionConfigurationFormInput,
-    getTriggerstByKind,
-} from '../utils'
-import {StoreIntegration} from '../../../../models/integration/types'
+import {StoreIntegration} from 'models/integration/types'
+
 import TemplateActionsForm from '../components/TemplateActionsForm'
-import {TemplateConfiguration, TemplateConfigurationFormInput} from '../types'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
@@ -77,70 +75,269 @@ const defaultState = {
 }
 
 const queryClient = mockQueryClient()
-const template = generateNewCustomActionConfigurationFormInput()
-const llmPromptTrigger = getTriggerstByKind(template.triggers, 'llm-prompt')
 
-const actionConfiguration: TemplateConfigurationFormInput = {
-    name: template?.name,
-    initial_step_id: null,
-    available_languages: [],
-    is_draft: false,
-    apps: [{type: 'shopify'}],
-    entrypoints: [
-        {
-            kind: 'llm-conversation',
-            trigger: 'llm-prompt',
-            settings: {
-                instructions: '',
-                requires_confirmation: false,
-            },
-            deactivated_datetime: null,
-        },
-    ],
-    triggers: [
-        {
-            kind: 'llm-prompt',
-            settings: {
-                custom_inputs: [],
-                object_inputs: [],
-                outputs: [],
-                conditions: llmPromptTrigger?.settings.conditions,
-            },
-        },
-    ],
-    steps: [],
-    transitions: [],
-}
-const renderComponent = () =>
-    renderWithRouter(
-        <Provider store={mockStore(defaultState)}>
-            <QueryClientProvider client={queryClient}>
-                <TemplateActionsForm
-                    initialConfigurationData={actionConfiguration}
-                    templateConfiguration={template as TemplateConfiguration}
-                    apiKeyModalIsOpen={false}
-                    setApiKeyModalIsOpen={() => {}}
-                />
-            </QueryClientProvider>
-        </Provider>,
-        {
-            path: `:shopType/:shopName/ai-agent/actions/new`,
-            route: 'shopify/test-shop/ai-agent/actions/new',
-        }
-    )
 const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 
-describe('CustomActionsForm', () => {
+describe('<TemplateActionsForm />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockUseStoreIntegrations.mockReturnValue(storeIntegrations)
         mockUseFlags.mockReturnValue({})
     })
-    it('renders the form ', async () => {
-        const {findByLabelText} = renderComponent()
 
-        const nameInput = await findByLabelText('Name', {exact: false})
+    it('renders the form', () => {
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <TemplateActionsForm
+                        initialConfigurationData={{
+                            name: '',
+                            initial_step_id: null,
+                            available_languages: [],
+                            is_draft: false,
+                            apps: [{type: 'shopify'}],
+                            entrypoints: [
+                                {
+                                    kind: 'llm-conversation',
+                                    trigger: 'llm-prompt',
+                                    settings: {
+                                        instructions: '',
+                                        requires_confirmation: false,
+                                    },
+                                    deactivated_datetime: null,
+                                },
+                            ],
+                            triggers: [
+                                {
+                                    kind: 'llm-prompt',
+                                    settings: {
+                                        custom_inputs: [],
+                                        object_inputs: [],
+                                        outputs: [],
+                                    },
+                                },
+                            ],
+                            steps: [],
+                            transitions: [],
+                        }}
+                        templateConfiguration={{
+                            name: '',
+                            internal_id: ulid(),
+                            id: ulid(),
+                            initial_step_id: '',
+                            is_draft: false,
+                            entrypoints: [
+                                {
+                                    kind: 'llm-conversation',
+                                    trigger: 'llm-prompt',
+                                    settings: {
+                                        instructions: '',
+                                        requires_confirmation: false,
+                                    },
+                                    deactivated_datetime: null,
+                                },
+                            ],
+                            triggers: [
+                                {
+                                    kind: 'llm-prompt',
+                                    settings: {
+                                        custom_inputs: [],
+                                        object_inputs: [],
+                                        outputs: [],
+                                    },
+                                },
+                            ],
+                            steps: [],
+                            transitions: [],
+                            available_languages: [],
+                            created_datetime: new Date().toISOString(),
+                            updated_datetime: new Date().toISOString(),
+                            apps: [{type: 'shopify'}],
+                        }}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: `/:shopType/:shopName/ai-agent/actions/new`,
+                route: '/shopify/test-shop/ai-agent/actions/new',
+            }
+        )
 
-        expect(nameInput).toBeInTheDocument()
+        expect(
+            screen.getByLabelText('Name', {exact: false})
+        ).toBeInTheDocument()
+    })
+
+    it('should open app authentication modal if API key is missing', () => {
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <TemplateActionsForm
+                        initialConfigurationData={{
+                            name: '',
+                            initial_step_id: null,
+                            available_languages: [],
+                            is_draft: false,
+                            apps: [
+                                {type: 'app', app_id: 'test', api_key: null},
+                            ],
+                            entrypoints: [
+                                {
+                                    kind: 'llm-conversation',
+                                    trigger: 'llm-prompt',
+                                    settings: {
+                                        instructions: '',
+                                        requires_confirmation: false,
+                                    },
+                                    deactivated_datetime: null,
+                                },
+                            ],
+                            triggers: [
+                                {
+                                    kind: 'llm-prompt',
+                                    settings: {
+                                        custom_inputs: [],
+                                        object_inputs: [],
+                                        outputs: [],
+                                    },
+                                },
+                            ],
+                            steps: [],
+                            transitions: [],
+                        }}
+                        templateConfiguration={{
+                            name: '',
+                            internal_id: ulid(),
+                            id: ulid(),
+                            initial_step_id: '',
+                            is_draft: false,
+                            entrypoints: [
+                                {
+                                    kind: 'llm-conversation',
+                                    trigger: 'llm-prompt',
+                                    settings: {
+                                        instructions: '',
+                                        requires_confirmation: false,
+                                    },
+                                    deactivated_datetime: null,
+                                },
+                            ],
+                            triggers: [
+                                {
+                                    kind: 'llm-prompt',
+                                    settings: {
+                                        custom_inputs: [],
+                                        object_inputs: [],
+                                        outputs: [],
+                                    },
+                                },
+                            ],
+                            steps: [],
+                            transitions: [],
+                            available_languages: [],
+                            created_datetime: new Date().toISOString(),
+                            updated_datetime: new Date().toISOString(),
+                            apps: [
+                                {type: 'app', app_id: 'test', api_key: null},
+                            ],
+                        }}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: `/:shopType/:shopName/ai-agent/actions/new`,
+                route: '/shopify/test-shop/ai-agent/actions/new',
+            }
+        )
+
+        expect(screen.getByText('Action details')).toBeInTheDocument()
+    })
+
+    it('should not open app authentication modal if API key is already provided', () => {
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <TemplateActionsForm
+                        initialConfigurationData={{
+                            name: '',
+                            initial_step_id: null,
+                            available_languages: [],
+                            is_draft: false,
+                            apps: [
+                                {type: 'app', app_id: 'test', api_key: 'test'},
+                            ],
+                            entrypoints: [
+                                {
+                                    kind: 'llm-conversation',
+                                    trigger: 'llm-prompt',
+                                    settings: {
+                                        instructions: '',
+                                        requires_confirmation: false,
+                                    },
+                                    deactivated_datetime: null,
+                                },
+                            ],
+                            triggers: [
+                                {
+                                    kind: 'llm-prompt',
+                                    settings: {
+                                        custom_inputs: [],
+                                        object_inputs: [],
+                                        outputs: [],
+                                    },
+                                },
+                            ],
+                            steps: [],
+                            transitions: [],
+                        }}
+                        templateConfiguration={{
+                            name: '',
+                            internal_id: ulid(),
+                            id: ulid(),
+                            initial_step_id: '',
+                            is_draft: false,
+                            entrypoints: [
+                                {
+                                    kind: 'llm-conversation',
+                                    trigger: 'llm-prompt',
+                                    settings: {
+                                        instructions: '',
+                                        requires_confirmation: false,
+                                    },
+                                    deactivated_datetime: null,
+                                },
+                            ],
+                            triggers: [
+                                {
+                                    kind: 'llm-prompt',
+                                    settings: {
+                                        custom_inputs: [],
+                                        object_inputs: [],
+                                        outputs: [],
+                                    },
+                                },
+                            ],
+                            steps: [],
+                            transitions: [],
+                            available_languages: [],
+                            created_datetime: new Date().toISOString(),
+                            updated_datetime: new Date().toISOString(),
+                            apps: [
+                                {type: 'app', app_id: 'test', api_key: null},
+                            ],
+                        }}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: `/:shopType/:shopName/ai-agent/actions/new`,
+                route: '/shopify/test-shop/ai-agent/actions/new',
+            }
+        )
+
+        expect(screen.queryByText('Action details')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('Connect 3rd party app')
+        ).not.toBeInTheDocument()
     })
 })

@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react'
+import React, {useMemo} from 'react'
 import {useParams, useHistory} from 'react-router-dom'
 import {useQueryClient} from '@tanstack/react-query'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -25,7 +25,6 @@ export default function EditActionFormView() {
     const dispatch = useAppDispatch()
     const history = useHistory()
 
-    const [apiKeyModalIsOpen, setApiKeyModalIsOpen] = useState(false)
     const {shopName, shopType, id} = useParams<{
         shopType: string
         shopName: string
@@ -93,8 +92,6 @@ export default function EditActionFormView() {
                         configurationData as TemplateConfigurationFormInput
                     }
                     templateConfiguration={templateConfiguration}
-                    apiKeyModalIsOpen={apiKeyModalIsOpen}
-                    setApiKeyModalIsOpen={setApiKeyModalIsOpen}
                 />
             ) : (
                 <CustomActionsForm

@@ -547,21 +547,18 @@ export function storeWorkflowsConfgurationToFormValue(
     }
 }
 
-export function generatObjectInputs(
-    variables: string[],
-    storeIntegrationId: number
-) {
+export function generateObjectInputs(variables: string[]) {
     const objectInputs: LlmPromptTrigger['settings']['object_inputs'] = []
     if (variables.some((variable) => variable.includes('objects.order'))) {
         objectInputs.push({
             kind: 'order' as const,
-            integration_id: storeIntegrationId,
+            integration_id: '{{store.helpdesk_integration_id}}',
         })
     }
     if (variables.some((variable) => variable.includes('objects.customer'))) {
         objectInputs.push({
             kind: 'customer' as const,
-            integration_id: storeIntegrationId,
+            integration_id: '{{store.helpdesk_integration_id}}',
         })
     }
     return objectInputs

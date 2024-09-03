@@ -1,18 +1,17 @@
-import React, {useState} from 'react'
+import React from 'react'
 import _ from 'lodash'
-import {useParams} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {
-    CustomCardLink,
-    TemplateCard,
-} from 'pages/common/components/TemplateCard'
+import classnames from 'classnames'
+
+import {TemplateCard} from 'pages/common/components/TemplateCard'
 import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
-import history from 'pages/history'
 import {FeatureFlagKey} from 'config/featureFlags'
-import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
-import {TemplateConfiguration, ActionAppConfiguration} from '../types'
-import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
-import AppIntegrationDisabledModal from './AppIntegrationDisabledModal'
+
+import {TemplateConfiguration} from '../types'
+import AppActionTemplateCard from './AppActionTemplateCard'
+import NativeActionTemplateCard from './NativeActionTemplateCard'
+
 import css from './ActionsTemplatesCards.less'
 
 type Props = {
@@ -47,94 +46,52 @@ export default function ActionsTemplatesCards({
         .orderBy([(group) => group.type !== 'shopify', 'type'], ['asc', 'asc'])
         .flatMap<TemplateConfiguration>('items')
         .value()
+    const history = useHistory()
 
     return (
         <div className={css.container}>
             {sortedTemplateConfigurations.map(({id, name, apps}) => {
-                if (!apps?.length) {
-                    return null
-                }
                 const app = apps[0]
+
+                if (app.type === 'app') {
+                    return (
+                        <AppActionTemplateCard
+                            key={id}
+                            app={app}
+                            shopName={shopName}
+                            templateName={name}
+                            templateId={id}
+                        />
+                    )
+                }
+
                 return (
-                    <TemplateCardWrapper
-                        shopName={shopName}
+                    <NativeActionTemplateCard
+                        key={id}
                         app={app}
+                        shopName={shopName}
                         templateName={name}
                         templateId={id}
-                        key={id}
                     />
                 )
             })}
             {showCustomAction && (
-                <CustomCardLink
-                    className={css.templateCardLink}
-                    to={routes.newAction()}
-                    icon={<i className="material-icons">add_circle</i>}
+                <TemplateCard
+                    onClick={() => {
+                        history.push(routes.newAction())
+                    }}
+                    icon={
+                        <i
+                            className={classnames(
+                                'material-icons',
+                                css.customActionIcon
+                            )}
+                        >
+                            add_circle
+                        </i>
+                    }
                     title="Create custom Action"
-                    description=""
-                />
-            )}
-        </div>
-    )
-}
-
-function TemplateCardWrapper({
-    app,
-    shopName,
-    templateId,
-    templateName,
-}: {
-    app: ActionAppConfiguration
-    shopName: string
-    templateId: string
-    templateName: string
-}) {
-    const [isDisabledAppModalOpen, setIsDisabledAppModalOpen] = useState(false)
-    const appImageUrl = useGetAppImageUrl(app)
-    const {routes} = useAiAgentNavigation({shopName})
-
-    const actionAppIntegration = useGetActionAppIntegration({
-        appType: app?.type,
-        shopName,
-    })
-
-    const isNativeAppIntegration = !!app && app.type !== 'app'
-
-    const handleClick = () => {
-        if (isNativeAppIntegration && !actionAppIntegration) {
-            if (isDisabledAppModalOpen) return
-            setIsDisabledAppModalOpen(true)
-            return
-        }
-        history.push(routes.newAction(templateId))
-    }
-
-    return (
-        <div onClick={handleClick}>
-            <TemplateCard
-                description=""
-                title={templateName}
-                className={css.templateCardLink}
-                icon={
-                    <>
-                        {!appImageUrl ? (
-                            <div className={css.appIcon}></div>
-                        ) : (
-                            <img
-                                className={css.appIcon}
-                                src={appImageUrl}
-                                alt={app?.type}
-                            />
-                        )}
-                    </>
-                }
-            />
-            {isNativeAppIntegration && (
-                <AppIntegrationDisabledModal
-                    templateName={templateName}
-                    actionAppConfiguration={app}
-                    isOpen={isDisabledAppModalOpen}
-                    setOpen={setIsDisabledAppModalOpen}
+                    showOnlyTitle
                 />
             )}
         </div>

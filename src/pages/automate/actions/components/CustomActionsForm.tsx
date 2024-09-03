@@ -10,7 +10,6 @@ import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import ToolbarContext, {
     ToolbarContextType,
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
-import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -30,7 +29,7 @@ import {
     getEntrypointByKind,
     getTriggerstByKind,
     storeWorkflowsConfgurationToFormValue,
-    generatObjectInputs,
+    generateObjectInputs,
     getHttpStepUsedVariables,
     getConditionsUsedVariables,
 } from '../utils'
@@ -77,7 +76,6 @@ export default function CustomActionsForm({
     )
 
     const history = useHistory()
-    const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
 
     const isNewAction = !initialFormValues.internal_id
 
@@ -176,16 +174,10 @@ export default function CustomActionsForm({
                 data.conditions
             )
 
-            if (!storeIntegration)
-                throw new Error('Store integration not found')
-
-            const getObjectInput = generatObjectInputs(
-                [...httpStepVariables, ...conditionsVariables],
-                storeIntegration.id
-            )
-
-            llmPromptTriggerCopy.settings.object_inputs = getObjectInput
-
+            llmPromptTriggerCopy.settings.object_inputs = generateObjectInputs([
+                ...httpStepVariables,
+                ...conditionsVariables,
+            ])
             llmPromptTriggerCopy.settings.custom_inputs = data.customInput.map(
                 (input) => ({
                     id: input.id,
@@ -339,7 +331,7 @@ export default function CustomActionsForm({
                                 onClick={() => onChange(!value)}
                                 isToggled={value}
                             >
-                                Available for AI Agent
+                                Enable Action
                             </ToggleInput>
                         )}
                     />

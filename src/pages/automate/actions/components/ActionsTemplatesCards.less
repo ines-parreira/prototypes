@@ -15,36 +15,15 @@
         @media @mobiles {
             grid-template-columns: 1fr;
         }
-
-        .appIcon {
-            width: 32px;
-            height: 32px;
-        }
     }
 
-    .templateCardLink {
-        gap: @layout-spacing-s;
+    .appIcon {
+        height: 32px;
+        width: 32px;
+        object-fit: contain;
+    }
 
-        & > div:nth-child(1) {
-            margin: unset;
-        }
-
-        & > div:nth-child(2) {
-            justify-content: normal;
-
-            > div:nth-child(1) {
-                -webkit-line-clamp: 2;
-                margin: unset;
-                font-size: @heading-sub-section-semibold-font-size;
-            }
-
-            > div:nth-child(2) {
-                display: none;
-            }
-        }
-
-        i {
-            margin: unset;
-        }
+    .customActionIcon {
+        margin-top: unset !important;
     }
 }

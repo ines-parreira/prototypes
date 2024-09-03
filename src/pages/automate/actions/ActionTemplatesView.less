@@ -1,4 +1,4 @@
-@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 @import (reference) '~css/typography';
 
 :local {
@@ -7,36 +7,41 @@
         flex-direction: column;
         padding: @layout-spacing-m;
         gap: @layout-spacing-s;
+    }
 
-        .templateHeader {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: @layout-spacing-xxs;
+    .backButtonContainer {
+        align-self: flex-start;
+    }
 
-            & > p {
-                .heading-section-semibold;
-                margin: 0;
-            }
-        }
+    .header {
+        .heading-section-semibold();
 
-        .requestBannerContainer {
-            display: flex;
-            padding: @layout-spacing-m;
-            flex-direction: column;
-            gap: @layout-spacing-s;
-            align-items: center;
-            background-color: var(--main-latte);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: @layout-spacing-xxs;
+    }
 
-            & > h3 {
-                .heading-section-semibold;
-                margin: 0;
-            }
+    .requestBannerContainer {
+        display: flex;
+        padding: @layout-spacing-m;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        align-items: center;
+        background-color: var(--main-latte);
+        border-radius: 8px;
+    }
 
-            & > p {
-                .body-regular;
-                margin: 0;
-            }
-        }
+    .requestBannerContent {
+        .body-regular();
+
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+        flex-direction: column;
+    }
+
+    .requestBannerTitle {
+        .heading-section-semibold();
     }
 }

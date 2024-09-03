@@ -7,7 +7,6 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import InputField from 'pages/common/forms/input/InputField'
 import {useGetApps} from 'models/integration/queries'
-import {INTEGRATION_TYPE_CONFIG} from 'config'
 import {logEvent, SegmentEvent} from 'common/segment'
 
 import {ActionAppConfiguration, ActionAppConnected} from '../types'
@@ -20,30 +19,28 @@ type Props = {
     templateId: string
     templateName: string
     templateDescription?: string | null
-    actionAppConfiguration: ActionAppConfiguration
-    apiKey: string
+    actionAppConfiguration: Extract<ActionAppConfiguration, {type: 'app'}>
+    apiKey?: string
     onConfirm: (apiKey: string) => void
     setOpen: (isOpen: boolean) => void
     isOpen: boolean
-    isNewAction: boolean
 }
 
 export default function AppConfirmationModal({
     actionAppConnected,
     onConfirm,
     actionAppConfiguration,
-    apiKey,
+    apiKey = '',
     templateId,
     templateName,
     templateDescription,
     isOpen,
     setOpen,
-    isNewAction,
 }: Props) {
-    const {data: appsList} = useGetApps()
+    const {data: appsList = []} = useGetApps()
 
     const [step, setStep] = useState<'details' | 'input'>(
-        isNewAction ? 'details' : 'input'
+        !apiKey ? 'details' : 'input'
     )
 
     const [apiKeyInput, setApiKeyInput] = useState(apiKey)
@@ -56,42 +53,26 @@ export default function AppConfirmationModal({
         }
     }, [apiKey, actionAppConfiguration.type, isOpen])
 
-    const appData = useMemo(
-        () =>
-            appsList?.find((appItem) =>
-                actionAppConfiguration.type === 'app'
-                    ? appItem.id === actionAppConfiguration.app_id
-                    : appItem.name === actionAppConfiguration.type
-            ),
-        [actionAppConfiguration, appsList]
-    )
-
-    const integrationTypeConfig = useMemo(
-        () =>
-            INTEGRATION_TYPE_CONFIG.find(
-                (item) => item.type === actionAppConfiguration.type
-            ),
-        [actionAppConfiguration.type]
-    )
-
     const authSettingsUrl = actionAppConnected?.auth_settings.url
 
     const modalTitle =
         step === 'details' ? 'Action details' : 'Connect 3rd party app'
 
-    const appId = appData?.id || integrationTypeConfig?.type
-    const appName = appData?.name || integrationTypeConfig?.title
+    const app = useMemo(
+        () => appsList.find((app) => app.id === actionAppConfiguration.app_id),
+        [actionAppConfiguration, appsList]
+    )
 
     useEffect(() => {
-        if (step === 'input' && appId && appName) {
+        if (step === 'input' && app) {
             logEvent(SegmentEvent.AutomateActionsAppAuthenticationModalOpened, {
                 template_id: templateId,
                 template_name: templateName,
-                app_id: appId,
-                app_name: appName,
+                app_id: app.id,
+                app_name: app.name,
             })
         }
-    }, [step, templateId, templateName, appId, appName])
+    }, [step, templateId, templateName, app])
 
     return (
         <Modal isOpen={isOpen} onClose={() => setOpen(false)} size="medium">
@@ -105,18 +86,18 @@ export default function AppConfirmationModal({
                             name={templateName}
                         />
 
-                        {appName && (
+                        {app && (
                             <span>
-                                This Action requires an active {appName}{' '}
+                                This Action requires an active {app.name}{' '}
                                 account.
                             </span>
                         )}
                     </>
                 ) : (
                     <>
-                        {appName && (
+                        {app && (
                             <span>
-                                Enter the API key from your {appName} account.
+                                Enter the API key from your {app.name} account.
                             </span>
                         )}
                         <div className={css.inputContainer}>
@@ -127,14 +108,14 @@ export default function AppConfirmationModal({
                                 value={apiKeyInput}
                                 onChange={setApiKeyInput}
                             />
-                            {authSettingsUrl && appName && (
+                            {authSettingsUrl && app && (
                                 <div>
                                     <a
                                         href={authSettingsUrl}
                                         target="_blank"
                                         rel="noreferrer noopener"
                                     >
-                                        Find your API key in {appName}.
+                                        Find your API key in {app.name}.
                                     </a>
                                 </div>
                             )}
@@ -144,7 +125,7 @@ export default function AppConfirmationModal({
             </ModalBody>
             <ModalActionsFooter
                 extra={
-                    !isNewAction &&
+                    apiKey &&
                     actionAppConfiguration.type === 'app' &&
                     step === 'input' && (
                         <Button
@@ -179,7 +160,7 @@ export default function AppConfirmationModal({
                             setOpen(false)
                         }}
                     >
-                        {isNewAction ? 'Continue' : 'Save Changes'}
+                        {!apiKey ? 'Continue' : 'Save Changes'}
                     </Button>
                 )}
             </ModalActionsFooter>

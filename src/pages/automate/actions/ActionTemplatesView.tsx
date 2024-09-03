@@ -1,15 +1,16 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
-import Button from 'pages/common/components/button/Button'
 import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {logEvent, SegmentEvent} from 'common/segment'
+import LinkButton from 'pages/common/components/button/LinkButton'
 
 import ActionsTemplatesCards from './components/ActionsTemplatesCards'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
 import BackToActionButton from './components/BackToActionButton'
+
 import css from './ActionTemplatesView.less'
 
 export default function ActionTemplatesView() {
@@ -35,11 +36,11 @@ export default function ActionTemplatesView() {
         >
             {templateConfigurations && templateConfigurations.length > 0 && (
                 <>
-                    <BackToActionButton />
-                    <div className={css.templateHeader}>
-                        <p>
-                            Choose an Action and customize it to fit your needs
-                        </p>
+                    <div className={css.backButtonContainer}>
+                        <BackToActionButton />
+                    </div>
+                    <div className={css.header}>
+                        Choose an Action and customize it to fit your needs
                         <CreateCustomActionButton />
                     </div>
                     <ActionsTemplatesCards
@@ -47,18 +48,19 @@ export default function ActionTemplatesView() {
                         templateConfigurations={templateConfigurations}
                     />
                     <div className={css.requestBannerContainer}>
-                        <h3>Which Actions should we build next?</h3>
-                        <p>
+                        <div className={css.requestBannerContent}>
+                            <div className={css.requestBannerTitle}>
+                                Which Actions should we build next?
+                            </div>
                             Let us know which Actions you would like AI Agent to
                             handle.
-                        </p>
-                        <a
+                        </div>
+                        <LinkButton
+                            intent="secondary"
                             href="https://link.gorgias.com/actions"
-                            rel="noreferrer"
-                            target="_blank"
                         >
-                            <Button intent="secondary">Request action</Button>
-                        </a>
+                            Request action
+                        </LinkButton>
                     </div>
                 </>
             )}

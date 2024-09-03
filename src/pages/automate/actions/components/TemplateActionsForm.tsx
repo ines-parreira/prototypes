@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {ulid} from 'ulidx'
 import _ from 'lodash'
 import {useParams, useHistory} from 'react-router-dom'
@@ -9,7 +9,6 @@ import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import ToolbarContext, {
     ToolbarContextType,
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
-import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {SegmentEvent, logEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -31,10 +30,10 @@ import {
     getInputVariables,
     getEntrypointByKind,
     getTriggerstByKind,
-    generatObjectInputs,
     getConditionsUsedVariables,
     wfConfgurationToTemplateFormValue,
     getActionsAppByType,
+    generateObjectInputs,
 } from '../utils'
 import BackToActionButton from './BackToActionButton'
 import AppConfirmationModal from './AppConfirmationModal'
@@ -48,15 +47,11 @@ import ActionFormInputName from './ActionFormInputName'
 type Props = {
     initialConfigurationData: TemplateConfigurationFormInput
     templateConfiguration: TemplateConfiguration
-    apiKeyModalIsOpen: boolean
-    setApiKeyModalIsOpen: (isOpen: boolean) => void
 }
 
 export default function TemplateActionsForm({
     initialConfigurationData: initialFormValues,
     templateConfiguration,
-    apiKeyModalIsOpen,
-    setApiKeyModalIsOpen,
 }: Props) {
     const {shopName, shopType} = useParams<{
         shopType: string
@@ -110,9 +105,6 @@ export default function TemplateActionsForm({
 
     useEffectOnce(() => {
         void trigger()
-        if (isNewAction && !isNativeAppIntegration) {
-            setApiKeyModalIsOpen(true)
-        }
     })
 
     const actionAppIntegration = useGetActionAppIntegration({
@@ -139,7 +131,6 @@ export default function TemplateActionsForm({
     )
 
     const history = useHistory()
-    const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
 
     const {
         mutateAsync: upsertAction,
@@ -170,6 +161,14 @@ export default function TemplateActionsForm({
             shopType,
             storeApps,
         ]
+    )
+
+    const [apiKeyModalIsOpen, setApiKeyModalIsOpen] = useState(
+        isNewAction &&
+            !isNativeAppIntegration &&
+            initialFormValues.apps.some(
+                (app) => app.type === 'app' && !app.api_key
+            )
     )
 
     async function handleSave() {
@@ -220,16 +219,8 @@ export default function TemplateActionsForm({
                 data.conditions
             )
 
-            if (!storeIntegration)
-                throw new Error('Store integration not found')
-
-            const getObjectInput = generatObjectInputs(
-                conditionsVariables,
-                storeIntegration.id
-            )
-
-            llmPromptTriggerCopy.settings.object_inputs = getObjectInput
-
+            llmPromptTriggerCopy.settings.object_inputs =
+                generateObjectInputs(conditionsVariables)
             llmPromptTriggerCopy.settings.custom_inputs = data.customInput
                 .filter((input) => !input.isTemplateCustomInputs)
                 .map((input) => ({
@@ -326,7 +317,6 @@ export default function TemplateActionsForm({
                                                 actionAppConnected={
                                                     actionAppConnected
                                                 }
-                                                isNewAction={isNewAction}
                                                 apiKey={value ?? ''}
                                                 isOpen={apiKeyModalIsOpen}
                                                 setOpen={setApiKeyModalIsOpen}
@@ -432,7 +422,7 @@ export default function TemplateActionsForm({
                                 onClick={() => onChange(!value)}
                                 isToggled={value}
                             >
-                                Available for AI Agent
+                                Enable Action
                             </ToggleInput>
                         )}
                     />
