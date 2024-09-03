@@ -63,13 +63,26 @@ describe('tags reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('select all tags', () => {
+    it('select all tags from current value', () => {
         expect(
             reducer(initialState.mergeDeep({items: currentFakeTags}), {
                 type: types.SELECT_TAG_ALL,
-                tags: [{id: 1}, {id: 2}] as Tag[],
+                payload: {tags: [{id: 1}, {id: 2}] as Tag[]},
             }).toJS()
         ).toMatchSnapshot()
+    })
+
+    it('select all tags with provided value', () => {
+        const result = reducer(
+            initialState.mergeDeep({items: currentFakeTags}),
+            {
+                type: types.SELECT_TAG_ALL,
+                payload: {tags: [{id: 1}, {id: 2}] as Tag[], value: false},
+            }
+        )
+
+        expect(result.getIn(['_internal', 'selectAll'])).toBeFalsy()
+        expect(result.get('meta')).toBeFalsy()
     })
 
     it('edit tag', () => {

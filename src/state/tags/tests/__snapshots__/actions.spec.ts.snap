@@ -186,11 +186,14 @@ exports[`tags actions select 1`] = `
 exports[`tags actions selectAll 1`] = `
 [
   {
-    "tags": [
-      {
-        "id": 1,
-      },
-    ],
+    "payload": {
+      "tags": [
+        {
+          "id": 1,
+        },
+      ],
+      "value": undefined,
+    },
     "type": "SELECT_TAG_ALL",
   },
 ]

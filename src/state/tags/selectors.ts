@@ -10,7 +10,7 @@ export const getTagsState = (state: RootState): TagsState =>
 
 export const getTags = createSelector(
     getTagsState,
-    (state) => (state.get('items') || fromJS([])) as List<any>
+    (state) => (state.get('items') || fromJS([])) as List<Map<any, any>>
 )
 
 export const getInternal = createSelector(

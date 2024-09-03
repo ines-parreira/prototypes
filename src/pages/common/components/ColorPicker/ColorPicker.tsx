@@ -1,5 +1,6 @@
 import React, {RefObject, useCallback, useRef, useState} from 'react'
 import {Popover, PopoverBody, Input} from 'reactstrap'
+import cn from 'classnames'
 
 import useId from 'hooks/useId'
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
@@ -25,6 +26,7 @@ const defaultColors = [
 ]
 
 export type Props = {
+    className?: string
     value?: string | null
     defaultValue?: string
     onChange: (value: string) => void
@@ -34,6 +36,7 @@ export type Props = {
 }
 
 export default function ColorPicker({
+    className,
     colors = defaultColors,
     value,
     defaultValue,
@@ -65,7 +68,7 @@ export default function ColorPicker({
     const colorValue = value || defaultValue
 
     return (
-        <div className={css.wrapper}>
+        <div className={cn(css.wrapper, className)}>
             <Button
                 id={popoverId}
                 intent="secondary"

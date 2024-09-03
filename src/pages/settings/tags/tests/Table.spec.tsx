@@ -36,6 +36,8 @@ describe('<Table />', () => {
         onSort: jest.fn(),
         refresh: jest.fn(),
         reverse: true,
+        selectedTagsIds: fromJS([1, 2]),
+        sort: 'name',
         tags,
     }
 
@@ -79,52 +81,69 @@ describe('<Table />', () => {
             </Provider>
         )
 
-        expect(screen.getByRole('checkbox', {name: 'select-all'})).toBeChecked()
+        const checkbox = screen.getByRole('checkbox', {name: 'select-all'})
+        expect(checkbox).toBeChecked()
+        fireEvent.click(checkbox)
+        expect(minProps.onSelectAll).toHaveBeenCalledWith()
     })
 
     it('should order the table when clicking on the usage header cell', () => {
-        const {getByText} = render(
+        render(
             <Provider store={mockStore()}>
                 <Table {...minProps} />
             </Provider>
         )
 
-        fireEvent.click(getByText(/Tickets/i))
-        expect(minProps.onSort).toHaveBeenNthCalledWith(1, 'usage', false)
+        fireEvent.click(screen.getByText(/Tickets/i))
+        expect(minProps.onSort).toHaveBeenCalledWith('usage', false)
     })
 
     it('should not order the table when clicking on the description header cell', () => {
-        const {getByText} = render(
+        render(
             <Provider store={mockStore()}>
                 <Table {...minProps} />
             </Provider>
         )
 
-        fireEvent.click(getByText(/Description/i))
+        fireEvent.click(screen.getByText(/Description/i))
         expect(minProps.onSort).not.toHaveBeenCalled()
     })
 
     it('should trigger refresh from Row', () => {
-        const {getByText} = render(
+        render(
             <Provider store={mockStore()}>
                 <Table {...minProps} />
             </Provider>
         )
 
-        fireEvent.click(getByText(/refund accepted/i))
+        fireEvent.click(screen.getByText(/refund accepted/i))
         expect(minProps.refresh).toHaveBeenCalled()
     })
 
     it('should trigger refresh from Row when it is the only tag from the page', () => {
-        const {getByText} = render(
+        render(
             <Provider store={mockStore()}>
                 <Table {...minProps} tags={[tags[0]]} />
             </Provider>
         )
 
-        fireEvent.click(getByText(/billing/i))
+        fireEvent.click(screen.getByText(/billing/i))
         expect(minProps.refresh).toHaveBeenCalledWith({
             refreshPreviousPage: true,
         })
+    })
+
+    it('should display warning banner when selected tags are outside of the viewed page', () => {
+        render(
+            <Provider store={mockStore()}>
+                <Table {...minProps} selectedTagsIds={fromJS([88, 99])} />
+            </Provider>
+        )
+
+        expect(screen.getByText(/You have/).textContent).toBe(
+            'warningYou have 2 tags selected across different pages. Undo selection'
+        )
+        fireEvent.click(screen.getByText(/Undo selection/))
+        expect(minProps.onSelectAll).toHaveBeenCalledWith(false)
     })
 })

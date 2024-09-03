@@ -69,10 +69,10 @@ export function select(tag: Tag) {
     }
 }
 
-export function selectAll(tags: Tag[]) {
+export function selectAll(tags: Tag[], value?: boolean) {
     return {
         type: constants.SELECT_TAG_ALL,
-        tags,
+        payload: {tags, value},
     }
 }
 

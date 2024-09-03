@@ -45,11 +45,11 @@ describe('tags actions', () => {
 
     it('addTags', () => {
         store.dispatch(actions.addTags(['refund', 'rejected']))
-        return expect(store.getActions()).toMatchSnapshot()
+        void expect(store.getActions()).toMatchSnapshot()
     })
 
     describe('fetchTags', () => {
-        it('success actions', () => {
+        it('success actions', async () => {
             mockServer.onGet('/api/tags/').reply(200, {
                 data: {data: ['refund']},
                 meta: {
@@ -57,12 +57,11 @@ describe('tags actions', () => {
                     next_cursor: null,
                 },
             })
-            return store
-                .dispatch(actions.fetchTags())
-                .then(() => expect(store.getActions()).toMatchSnapshot())
+            await store.dispatch(actions.fetchTags())
+            expect(store.getActions()).toMatchSnapshot()
         })
 
-        it('params change reverse', () => {
+        it('params change reverse', async () => {
             mockServer.onGet('/api/tags/').reply(({params}) => {
                 expect(params).toMatchSnapshot()
                 return [
@@ -76,14 +75,14 @@ describe('tags actions', () => {
                     },
                 ]
             })
-            return store.dispatch(
+            await store.dispatch(
                 actions.fetchTags({
                     order_by: `${ListTagsOrderBy.Usage}:${OrderDirection.Asc}`,
                 })
             )
         })
 
-        it('params search', () => {
+        it('params search', async () => {
             mockServer.onGet('/api/tags/').reply(({params}) => {
                 expect(params).toMatchSnapshot()
                 return [
@@ -97,7 +96,7 @@ describe('tags actions', () => {
                     },
                 ]
             })
-            return store.dispatch(
+            await store.dispatch(
                 actions.fetchTags({
                     order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Asc}`,
                     search: 'something',
@@ -105,7 +104,7 @@ describe('tags actions', () => {
             )
         })
 
-        it('fetch list also sorts', () => {
+        it('fetch list also sorts', async () => {
             mockServer.onGet('/api/tags/').reply(
                 (config: {
                     params?: {
@@ -132,15 +131,13 @@ describe('tags actions', () => {
                 },
             ]
 
-            return store
-                .dispatch(
-                    actions.fetchTags({
-                        order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Desc}`,
-                    })
-                )
-                .then(() => {
-                    expect(store.getActions()).toEqual(expectedActions)
+            await store.dispatch(
+                actions.fetchTags({
+                    order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Desc}`,
                 })
+            )
+
+            expect(store.getActions()).toEqual(expectedActions)
         })
 
         it('should reject when cancelled', async () => {
@@ -161,53 +158,57 @@ describe('tags actions', () => {
 
     it('select', () => {
         store.dispatch(actions.select({id: 1} as Tag))
-        return expect(store.getActions()).toMatchSnapshot()
+        expect(store.getActions()).toMatchSnapshot()
     })
 
     it('selectAll', () => {
         store.dispatch(actions.selectAll([{id: 1} as Tag]))
-        return expect(store.getActions()).toMatchSnapshot()
+        expect(store.getActions()).toMatchSnapshot()
+    })
+
+    it('selectAll with provided value', () => {
+        store.dispatch(actions.selectAll([{id: 1} as Tag], false))
+        expect(
+            (store.getActions()[0] as ReturnType<typeof actions.selectAll>)
+                .payload.value
+        ).toEqual(false)
     })
 
     it('edit', () => {
         store.dispatch(actions.edit({id: 1} as Tag))
-        return expect(store.getActions()).toMatchSnapshot()
+        expect(store.getActions()).toMatchSnapshot()
     })
 
     it('cancel', () => {
         store.dispatch(actions.cancel({id: 1} as Tag))
-        return expect(store.getActions()).toMatchSnapshot()
+        expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('save', () => {
+    it('save', async () => {
         mockServer.onPut('/api/tags/1/').reply(200, {id: 1})
-        return store
-            .dispatch(actions.save({id: 1} as Tag))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+        await store.dispatch(actions.save({id: 1} as Tag))
+        expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('create', () => {
+    it('create', async () => {
         mockServer.onPost('/api/tags/').reply(200, {id: 1})
-        return store
-            .dispatch(actions.create({name: 'tag'} as TagDraft))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+        await store.dispatch(actions.create({name: 'tag'} as TagDraft))
+        expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('remove', () => {
+    it('remove', async () => {
         mockServer.onDelete('/api/tags/1/').reply(200)
-        return store
-            .dispatch(actions.remove('1'))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+        await store.dispatch(actions.remove('1'))
+        expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('remove error', () => {
+    it('remove error', async () => {
         mockServer.onDelete('/api/tags/1/').reply(400)
-        return store
-            .dispatch(actions.remove('1'))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+        await store.dispatch(actions.remove('1'))
+        expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('bulkDelete', () => {
+    it('bulkDelete', async () => {
         mockServer.onDelete('/api/tags/').reply((config) => {
             if (_isEqual(config.data, {ids: [1, 2]})) {
                 return [204]
@@ -216,12 +217,11 @@ describe('tags actions', () => {
             return [404]
         })
 
-        return store
-            .dispatch(actions.bulkDelete(['1', '2']))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+        await store.dispatch(actions.bulkDelete(['1', '2']))
+        expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('bulkDelete error', () => {
+    it('bulkDelete error', async () => {
         mockServer.onDelete('/api/tags/').reply((config) => {
             if (_isEqual(config.data, {ids: [1, 2]})) {
                 return [204]
@@ -230,12 +230,11 @@ describe('tags actions', () => {
             return [404]
         })
 
-        return store
-            .dispatch(actions.bulkDelete(['5']))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+        await store.dispatch(actions.bulkDelete(['5']))
+        expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('merge', () => {
+    it('merge', async () => {
         mockServer.onPut('/api/tags/3/merge/').reply((config) => {
             if (_isEqual(config.data, {source_tags_ids: [1, 2]})) {
                 return [200]
@@ -244,17 +243,16 @@ describe('tags actions', () => {
             return [400]
         })
 
-        return store.dispatch(actions.merge(fromJS([1, 2, 3]))).then(() => {
-            const expectedActions = store.getActions()
-            expect(expectedActions[0]).toEqual({
-                type: types.MERGE_TAGS,
-                ids: fromJS([1, 2, 3]),
-            })
-            expect(expectedActions).toMatchSnapshot()
+        await store.dispatch(actions.merge(fromJS([1, 2, 3])))
+        const expectedActions = store.getActions()
+        expect(expectedActions[0]).toEqual({
+            type: types.MERGE_TAGS,
+            ids: fromJS([1, 2, 3]),
         })
+        expect(expectedActions).toMatchSnapshot()
     })
 
-    it('merge error', () => {
+    it('merge error', async () => {
         mockServer.onPut('/api/tags/3/merge/').reply((config) => {
             if (_isEqual(config.data, {source_tags_ids: [1, 2]})) {
                 return [200]
@@ -263,13 +261,12 @@ describe('tags actions', () => {
             return [400]
         })
 
-        return store
-            .dispatch(actions.merge(fromJS([2, 3])))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+        await store.dispatch(actions.merge(fromJS([2, 3])))
+        expect(store.getActions()).toMatchSnapshot()
     })
 
     it('reset meta of tags', () => {
         store.dispatch(actions.resetMeta())
-        return expect(store.getActions()).toMatchSnapshot()
+        expect(store.getActions()).toMatchSnapshot()
     })
 })

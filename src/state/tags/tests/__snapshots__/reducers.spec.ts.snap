@@ -157,7 +157,7 @@ exports[`tags reducers save tag 1`] = `
 }
 `;
 
-exports[`tags reducers select all tags 1`] = `
+exports[`tags reducers select all tags from current value 1`] = `
 {
   "_internal": {
     "selectAll": true,

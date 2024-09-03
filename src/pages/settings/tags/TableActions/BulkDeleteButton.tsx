@@ -5,11 +5,16 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 export type Props = {
-    disabled: boolean
     onBulkDelete: () => void
+    selectedTagsCount: number
+    selectedTagsText: string
 }
 
-const BulkDeleteButton = ({onBulkDelete, disabled}: Props) => {
+const BulkDeleteButton = ({
+    onBulkDelete,
+    selectedTagsCount,
+    selectedTagsText,
+}: Props) => {
     return (
         <ConfirmationPopover
             buttonProps={{
@@ -17,16 +22,19 @@ const BulkDeleteButton = ({onBulkDelete, disabled}: Props) => {
             }}
             content={
                 <>
-                    Are you sure you want to delete these tags?{' '}
-                    <b>They will be removed from all tickets</b>.
+                    You are about to delete {selectedTagsCount} tag
+                    {selectedTagsCount > 1 && 's'}: {selectedTagsText}.<br />
+                    <b>
+                        {selectedTagsCount < 2 ? 'It' : 'They'} will be removed
+                        from all tickets.
+                    </b>
                 </>
             }
-            id="bulk-remove-button"
             onConfirm={onBulkDelete}
         >
             {({uid, onDisplayConfirmation}) => (
                 <Button
-                    isDisabled={disabled}
+                    isDisabled={!selectedTagsCount}
                     id={uid}
                     intent="secondary"
                     className="mr-2 skip-default"

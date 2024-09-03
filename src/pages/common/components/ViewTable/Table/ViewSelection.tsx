@@ -8,6 +8,8 @@ import {
     isDirty as getIsDirty,
 } from 'state/views/selectors'
 
+import css from 'pages/common/components/ViewTable/Table.less'
+
 type Props = {
     colSize: number
     selectedCount: number
@@ -29,7 +31,7 @@ const ViewSelection = ({
 
     return (
         <tr>
-            <td className="view-selection" colSpan={colSize}>
+            <td className={css.banner} colSpan={colSize}>
                 {viewSelected ? (
                     <span>
                         All the{' '}

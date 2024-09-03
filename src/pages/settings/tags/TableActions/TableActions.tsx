@@ -1,40 +1,62 @@
-import React from 'react'
-import {List, Map} from 'immutable'
+import React, {useMemo} from 'react'
+import {List} from 'immutable'
+import {Tag} from '@gorgias/api-queries'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {getTags} from 'state/tags/selectors'
+
+import {humanizeArray} from 'utils/string'
 import MergeButton from './MergeButton'
 import BulkDeleteButton from './BulkDeleteButton'
 import css from './TableActions.less'
 
 type Props = {
-    selectedNum: number
-    tags: List<any>
-    meta: Map<any, any>
     onMerge: () => void
     onBulkDelete: () => void
+    selectedTagsIds: List<any>
 }
 
-const TableActions = ({
-    onBulkDelete,
-    onMerge,
-    meta,
-    selectedNum,
-    tags,
-}: Props) => (
-    <div className={css.actions}>
-        <MergeButton
-            key="merge-button"
-            disabled={selectedNum < 2}
-            onMerge={onMerge}
-            meta={meta}
-            tags={tags}
-            selectedNum={selectedNum}
-        />
-        <BulkDeleteButton
-            key="delete-button"
-            disabled={!selectedNum}
-            onBulkDelete={onBulkDelete}
-        />
-    </div>
-)
+const TableActions = ({onBulkDelete, onMerge, selectedTagsIds}: Props) => {
+    const tags = useAppSelector(getTags)
+    const keyedTags = useMemo(
+        () =>
+            Object.assign(
+                {},
+                ...(tags.toJS() as Tag[]).map(
+                    (tag) => ({[tag.id]: tag} as Record<number, Tag>)
+                )
+            ) as Record<number, Tag>,
+        [tags]
+    )
+
+    const selectedTagsNames = useMemo(
+        () =>
+            selectedTagsIds
+                .map((id: number) => keyedTags[id].name)
+                .toJS() as string[],
+        [keyedTags, selectedTagsIds]
+    )
+
+    const selectedTagText = useMemo(
+        () => humanizeArray(selectedTagsNames),
+        [selectedTagsNames]
+    )
+
+    return (
+        <div className={css.actions}>
+            <MergeButton
+                onMerge={onMerge}
+                selectedTagsIds={selectedTagsIds}
+                tags={keyedTags}
+                selectedTagsText={humanizeArray(selectedTagsNames.slice(0, -1))}
+            />
+            <BulkDeleteButton
+                onBulkDelete={onBulkDelete}
+                selectedTagsText={selectedTagText}
+                selectedTagsCount={selectedTagsNames.length}
+            />
+        </div>
+    )
+}
 
 export default TableActions

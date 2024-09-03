@@ -51,20 +51,25 @@ export default function reducer(
         }
 
         case constants.SELECT_TAG_ALL: {
-            const selected = !state.getIn(['_internal', 'selectAll'])
-            const _internal = (
-                state.get('_internal', fromJS({})) as Map<any, any>
-            ).set('selectAll', selected)
+            const {tags, value} = action.payload as {
+                tags: Tag[]
+                value?: boolean
+            }
+            const newValue = value ?? !state.getIn(['_internal', 'selectAll'])
 
-            let selectAllState = state.set('_internal', _internal)
-            action.tags?.forEach((tag) => {
-                selectAllState = selectAllState.setIn(
+            let newState = state.setIn(['_internal', 'selectAll'], newValue)
+
+            if (newValue === false) {
+                return newState.delete('meta')
+            }
+            tags.forEach((tag) => {
+                newState = newState.setIn(
                     ['meta', tag.id, 'selected'],
-                    selected
+                    newValue
                 )
             })
 
-            return selectAllState
+            return newState
         }
 
         case constants.EDIT_TAG: {

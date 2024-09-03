@@ -1,14 +1,64 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local .table {
     .sort {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        margin-left: @layout-spacing-xxs;
+        font-size: 18px;
     }
 
-    thead .headerCell {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+    thead {
+        td {
+            &:nth-child(2) {
+                width: 35%;
+            }
+
+            &:nth-child(3) {
+                width: 55%;
+            }
+
+            &:nth-child(4) {
+                width: 10%;
+            }
+
+            .headerCell {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                cursor: unset;
+            }
+
+            &.banner {
+                box-shadow: inset 0 1px 0 rgba(22, 22, 22, 0.1);
+                background: var(--main-primary-0);
+                text-align: center;
+                padding-top: @layout-spacing-s;
+                padding-bottom: @layout-spacing-s;
+                color: var(--neutral-grey-5);
+
+                b {
+                    font-weight: 500;
+                }
+
+                .icon {
+                    margin-right: @layout-spacing-xxs;
+                }
+            }
+
+            .columnHeadCell {
+                font-size: 11px;
+                letter-spacing: 0.6px;
+                text-transform: uppercase;
+
+                &.isNotSortable {
+                    cursor: unset;
+
+                    &:hover {
+                        color: var(--neutral-grey-5);
+                        background-color: unset;
+                    }
+                }
+            }
+        }
     }
 
     tbody {

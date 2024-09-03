@@ -1,35 +1,14 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .row {
         .actions {
-            :global .btn {
-                box-shadow: none;
-
-                .material-icons,
-                .material-icons-outlined {
-                    transition: 0.2s all;
-                    opacity: 0.3;
-                    color: var(--neutral-grey-6);
-                }
-
-                &:hover .material-icons {
-                    opacity: 1;
-                }
-
-                &.btn-loading .material-icons {
-                    opacity: 0;
-                }
-            }
-
-            .actionButton {
-                display: inline-block;
-            }
+            display: flex;
+            gap: @layout-spacing-xs;
         }
 
-        td {
-            &.smallest {
-                white-space: nowrap;
-                width: 1px;
-            }
+        td .cell {
+            padding: 16px 21px;
         }
     }
 
@@ -48,5 +27,14 @@
         .checkBoxLabel {
             width: fit-content;
         }
+    }
+
+    .form {
+        justify-content: between;
+        gap: @layout-spacing-xs;
+    }
+
+    .colorPicker {
+        width: 50%;
     }
 }

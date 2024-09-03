@@ -58,15 +58,15 @@ const ManageTags = () => {
     const [newTag, setNewTag] = useState('')
     const [showCreationPopup, setShowCreationPopup] = useState(false)
     const [tags, setTags] = useState<Tag[]>([])
-
     const toggledTags = useAppSelector(getMeta)
-    const selectedTags = useMemo(
+    const selectedTagsIds = useMemo(
         () =>
             toggledTags
                 .filter(
                     (meta: Map<any, any>) => meta.get('selected') as boolean
                 )
-                .keySeq(),
+                .keySeq()
+                .toList(),
         [toggledTags]
     )
     const appNode = useAppNode()
@@ -155,7 +155,7 @@ const ManageTags = () => {
     }
 
     const handleBulkDelete = async () => {
-        const res = await dispatch(bulkDelete(selectedTags.toJS()))
+        const res = await dispatch(bulkDelete(selectedTagsIds.toJS()))
 
         if (
             !!meta?.prev_cursor &&
@@ -166,16 +166,17 @@ const ManageTags = () => {
         } else {
             await fetchPage()
         }
-        areAllTagsSelected && handleSelectAll()
+        handleSelectAll(false)
     }
 
     const handleMerge = async () => {
-        await dispatch(merge(selectedTags.toList()))
+        await dispatch(merge(selectedTagsIds))
         await fetchPage()
-        areAllTagsSelected && handleSelectAll()
+        handleSelectAll(false)
     }
 
-    const handleSelectAll = () => dispatch(selectAll(tags))
+    const handleSelectAll = (value?: boolean) =>
+        dispatch(selectAll(tags, value))
 
     const toggleCreationPopup = () => setShowCreationPopup(!showCreationPopup)
 
@@ -201,7 +202,7 @@ const ManageTags = () => {
     return (
         <div
             className={classnames('full-width overflow-auto', {
-                manageTagsClassName: selectedTags.size > 0,
+                manageTagsClassName: selectedTagsIds.size > 0,
             })}
         >
             <PageHeader title="Manage tags">
@@ -283,11 +284,12 @@ const ManageTags = () => {
                         sort={sort}
                         reverse={reverse}
                         onSort={onSort}
-                        onSelectAll={handleSelectAll}
+                        onSelectAll={(value) => handleSelectAll(value)}
                         refresh={fetchPage}
                         onMerge={handleMerge}
                         onBulkDelete={handleBulkDelete}
                         tags={tags}
+                        selectedTagsIds={selectedTagsIds}
                     />
 
                     <Navigation

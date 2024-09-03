@@ -146,45 +146,32 @@ export class Row extends Component<Props, State> {
 
                     <td colSpan={100}>
                         <Form
-                            className="cell-wrapper d-flex justify-content-between align-items-center"
+                            className={classNames('cell-wrapper', css.form)}
                             onSubmit={this._onSave}
                         >
-                            <div className="d-flex mr-2 align-items-center">
-                                <div className="mr-2">
-                                    <TextInput
-                                        value={name}
-                                        onChange={this._changeName}
-                                        isRequired
-                                    />
-                                </div>
-                                <div className="mr-2">
-                                    <TextInput
-                                        size={100}
-                                        value={description ?? undefined}
-                                        onChange={this._changeDescription}
-                                    />
-                                </div>
-
-                                <ColorPicker
-                                    value={decoration.color}
-                                    defaultValue={
-                                        colorTokens?.Main.Secondary.value ??
-                                        colors['🖥 Modern'].Main.Secondary.value
-                                    }
-                                    onChange={this._changeColor}
-                                />
-                            </div>
-
-                            <div className="d-flex">
-                                <Button
-                                    intent="secondary"
-                                    onClick={this._onCancel}
-                                    className="mr-2"
-                                >
-                                    Cancel
-                                </Button>
-                                <Button type="submit">Save</Button>
-                            </div>
+                            <TextInput
+                                value={name}
+                                onChange={this._changeName}
+                                isRequired
+                            />
+                            <TextInput
+                                size={100}
+                                value={description ?? undefined}
+                                onChange={this._changeDescription}
+                            />
+                            <ColorPicker
+                                className={css.colorPicker}
+                                value={decoration.color}
+                                defaultValue={
+                                    colorTokens?.Main.Secondary.value ??
+                                    colors['🖥 Modern'].Main.Secondary.value
+                                }
+                                onChange={this._changeColor}
+                            />
+                            <Button intent="secondary" onClick={this._onCancel}>
+                                Cancel
+                            </Button>
+                            <Button type="submit">Save</Button>
                         </Form>
                     </td>
                 </tr>
@@ -213,11 +200,15 @@ export class Row extends Component<Props, State> {
                 </td>
 
                 <td>
-                    <div className="cell-wrapper">{row.description}</div>
+                    <div className={classNames('cell-wrapper', css.cell)}>
+                        {row.description}
+                    </div>
                 </td>
 
-                <td className="smallest">
-                    <div className="cell-wrapper">{row.usage}</div>
+                <td>
+                    <div className={classNames('cell-wrapper', css.cell)}>
+                        {row.usage}
+                    </div>
                 </td>
 
                 <td>
@@ -226,7 +217,6 @@ export class Row extends Component<Props, State> {
                             fillStyle="ghost"
                             intent="secondary"
                             onClick={this._onEdit}
-                            className={classNames(css.actionButton, 'mr-1')}
                         >
                             edit
                         </IconButton>

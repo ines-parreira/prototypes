@@ -1,41 +1,30 @@
-import React, {useCallback, useState} from 'react'
-import {List, Map} from 'immutable'
+import React, {useCallback, useMemo} from 'react'
+import {List} from 'immutable'
+import {Tag} from '@gorgias/api-queries'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 export type Props = {
-    selectedNum: number
-    tags: List<any>
-    meta: Map<any, any>
+    selectedTagsText: string
+    tags: Record<number, Tag>
+    selectedTagsIds: List<any>
     onMerge: () => void
-    disabled: boolean
 }
 
-const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
-    const [mergeTagDestination, setMergeTagDestination] = useState('')
-
-    const handleMergeConfirmation = useCallback(() => {
-        const destID = meta
-            .filter((meta: Map<any, any>) => meta.get('selected') as boolean)
-            .keySeq()
-            .toList()
-            .last() as number
-        const destName = (
-            tags
-                .filter(
-                    (meta: Map<any, any>) =>
-                        (meta.get('id') as number).toString() ===
-                        destID.toString()
-                )
-                .first() as Map<any, any>
-        ).get('name', '')
-        setMergeTagDestination(destName)
-    }, [tags, meta])
+const MergeButton = ({
+    selectedTagsText,
+    tags,
+    selectedTagsIds,
+    onMerge,
+}: Props) => {
+    const remainingTagName = useMemo(() => {
+        const destID = selectedTagsIds.last() as number | null
+        return destID ? tags[destID]?.name : null
+    }, [selectedTagsIds, tags])
 
     const handleMergeClick = useCallback(() => {
-        setMergeTagDestination('')
         onMerge()
     }, [onMerge])
 
@@ -43,22 +32,22 @@ const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
         <ConfirmationPopover
             content={
                 <>
-                    You are about to merge {selectedNum} tags into{' '}
-                    <b>{mergeTagDestination}</b>.<br />
-                    <b>This action cannot be undone</b>.
+                    You are about to merge {selectedTagsIds.size - 1} tag
+                    {selectedTagsIds.size > 2 && 's'} ({selectedTagsText}) into{' '}
+                    <b>{remainingTagName}.</b>
+                    <br />
+                    <b>This action cannot be undone.</b>
                 </>
             }
-            id="bulk-merge-button"
             onConfirm={handleMergeClick}
         >
             {({uid, onDisplayConfirmation}) => (
                 <Button
                     id={uid}
-                    isDisabled={disabled}
+                    isDisabled={selectedTagsIds.size < 2}
                     intent="secondary"
                     className="mr-2 skip-default"
                     onClick={(event) => {
-                        handleMergeConfirmation()
                         onDisplayConfirmation(event)
                     }}
                 >

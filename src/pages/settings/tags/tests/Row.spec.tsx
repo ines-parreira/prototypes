@@ -2,7 +2,6 @@ import React, {ComponentProps} from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
-import _noop from 'lodash/noop'
 import configureMockStore from 'redux-mock-store'
 
 import {tags} from 'fixtures/tag'
@@ -20,7 +19,7 @@ describe('Row', () => {
     const defaultProps: ComponentProps<typeof Row> = {
         row: defaultTag,
         meta: fromJS(defaultMeta),
-        refresh: _noop,
+        refresh: jest.fn(),
     }
 
     it('should not update state on props change when props row is the same', () => {

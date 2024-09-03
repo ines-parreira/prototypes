@@ -1,4 +1,10 @@
-import {countLines, countWords, removeSuffix, truncateWords} from '../string'
+import {
+    countLines,
+    countWords,
+    humanizeArray,
+    removeSuffix,
+    truncateWords,
+} from '../string'
 
 describe('string util', () => {
     describe('removeSuffix', () => {
@@ -77,6 +83,22 @@ describe('string util', () => {
         it('should return first n words in a text with special chars and numbers', () => {
             expect(truncateWords('foo@#123$% bar-_&][ baz', 2)).toBe(
                 'foo@#123$% bar-_&]['
+            )
+        })
+    })
+
+    describe('humanizeArray', () => {
+        it('should return empty string for empty array', () => {
+            expect(humanizeArray([])).toBe('')
+        })
+
+        it('should return string for array of length 1', () => {
+            expect(humanizeArray(['plop'])).toBe('plop')
+        })
+
+        it('should return string for array with length > 1', () => {
+            expect(humanizeArray(['plop', 'plip', 'plap'])).toBe(
+                'plop, plip and plap'
             )
         })
     })

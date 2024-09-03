@@ -52,3 +52,11 @@ export const truncateWords = (text: string, n: number): string => {
 
     return text
 }
+
+export const humanizeArray = (text: string[]) => {
+    if (text.length < 2) {
+        return text[0] ?? ''
+    }
+    const firsts = text.slice(0, -1)
+    return `${firsts.join(', ')} and ${text[text.length - 1]}`
+}

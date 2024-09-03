@@ -1,7 +1,7 @@
 import React from 'react'
 import {Provider} from 'react-redux'
 import {fromJS, Map} from 'immutable'
-import {act, fireEvent, render} from '@testing-library/react'
+import {act, fireEvent, render, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -60,7 +60,7 @@ describe('ManageTags component', () => {
     it('should render a loader while fetching data', async () => {
         jest.useFakeTimers()
 
-        const {container, findByText} = render(
+        const {container} = render(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
             </Provider>
@@ -70,49 +70,47 @@ describe('ManageTags component', () => {
             jest.runOnlyPendingTimers()
         })
         expect(container.firstChild).toMatchSnapshot()
-        await findByText(tagsFixtures[0].name)
+        await screen.findByText(tagsFixtures[0].name)
     })
 
     it('should render the list of tags', async () => {
-        const {findByText} = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
             </Provider>
         )
 
-        await findByText(tagsFixtures[0].name)
-        await findByText(tagsFixtures[3].name)
+        await screen.findByText(tagsFixtures[0].name)
+        await screen.findByText(tagsFixtures[3].name)
     })
 
     it('should display create field when create button is toggled', async () => {
-        const {findByText} = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
             </Provider>
         )
-        await findByText(tagsFixtures[0].name)
-        const button = await findByText(/Create tag/i)
+        await screen.findByText(tagsFixtures[0].name)
+        const button = await screen.findByText(/Create tag/i)
         fireEvent.click(button)
 
-        await findByText(/Create a new tag/i)
+        await screen.findByText(/Create a new tag/i)
     })
 
     it('delete all tags when select-all is checked', async () => {
-        const {container, findByText, getByText} = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
             </Provider>
         )
 
         await act(async () => {
-            await findByText(tagsFixtures[0].name)
+            await screen.findByText(tagsFixtures[0].name)
 
-            fireEvent.click(
-                container.querySelector(`input[name="select-all"]`)!
-            )
+            fireEvent.click(screen.getByRole('checkbox', {name: 'select-all'}))
 
-            fireEvent.click(getByText('Delete'))
-            const confirmButton = await findByText(/Confirm/i)
+            fireEvent.click(screen.getByText('Delete'))
+            const confirmButton = await screen.findByText(/Confirm/i)
             fireEvent.click(confirmButton)
 
             expect(tagActions.bulkDelete).toHaveBeenCalledTimes(1)
@@ -123,21 +121,19 @@ describe('ManageTags component', () => {
     })
 
     it('merge all tags when select-all is checked', async () => {
-        const {container, findByText, getByText} = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
             </Provider>
         )
 
         await act(async () => {
-            await findByText(tagsFixtures[0].name)
+            await screen.findByText(tagsFixtures[0].name)
 
-            fireEvent.click(
-                container.querySelector(`input[name="select-all"]`)!
-            )
+            fireEvent.click(screen.getByRole('checkbox', {name: 'select-all'}))
 
-            fireEvent.click(getByText('Merge'))
-            const confirmButton = await findByText(/Confirm/i)
+            fireEvent.click(screen.getByText('Merge'))
+            const confirmButton = await screen.findByText(/Confirm/i)
             fireEvent.click(confirmButton)
 
             expect(tagActions.merge).toHaveBeenCalledTimes(1)
@@ -146,7 +142,7 @@ describe('ManageTags component', () => {
     })
 
     it('should untoggle select-all checkbox after merge if the checkbox was toggled', async () => {
-        const {container, findByText, getByText} = render(
+        render(
             <Provider
                 store={mockStore({
                     tags: fromJS({
@@ -162,14 +158,12 @@ describe('ManageTags component', () => {
         )
 
         await act(async () => {
-            await findByText(tagsFixtures[0].name)
+            await screen.findByText(tagsFixtures[0].name)
 
-            fireEvent.click(
-                container.querySelector(`input[name="select-all"]`)!
-            )
+            fireEvent.click(screen.getByRole('checkbox', {name: 'select-all'}))
 
-            fireEvent.click(getByText('Merge'))
-            const confirmButton = await findByText(/Confirm/i)
+            fireEvent.click(screen.getByText('Merge'))
+            const confirmButton = await screen.findByText(/Confirm/i)
             fireEvent.click(confirmButton)
 
             expect(tagActions.selectAll).toHaveBeenCalledTimes(1)
@@ -177,7 +171,7 @@ describe('ManageTags component', () => {
     })
 
     it('should untoggle select-all checkbox after deletion if the checkbox was toggled', async () => {
-        const {container, findByText, getByText} = render(
+        render(
             <Provider
                 store={mockStore({
                     tags: fromJS({
@@ -193,14 +187,12 @@ describe('ManageTags component', () => {
         )
 
         await act(async () => {
-            await findByText(tagsFixtures[0].name)
+            await screen.findByText(tagsFixtures[0].name)
 
-            fireEvent.click(
-                container.querySelector(`input[name="select-all"]`)!
-            )
+            fireEvent.click(screen.getByRole('checkbox', {name: 'select-all'}))
 
-            fireEvent.click(getByText('Delete'))
-            const confirmButton = await findByText(/Confirm/i)
+            fireEvent.click(screen.getByText('Delete'))
+            const confirmButton = await screen.findByText(/Confirm/i)
             fireEvent.click(confirmButton)
 
             expect(tagActions.selectAll).toHaveBeenCalledTimes(1)

@@ -1,67 +1,54 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import {fireEvent, render, screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
-import _noop from 'lodash/noop'
-import {fromJS, List, Map} from 'immutable'
+import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
+import {tags} from 'fixtures/tag'
 import TableActions from '../TableActions/TableActions'
 
-const defaultTags: List<any> = fromJS([
-    {
-        id: 1,
-        name: 'refund',
-    },
-    {
-        id: 2,
-        name: 'billing',
-    },
-    {
-        id: 3,
-        name: 'shipping',
-    },
-])
-
-const defaultMeta: Map<any, any> = fromJS({
-    1: {
-        selected: true,
-    },
-    2: {
-        selected: true,
-    },
-})
+const mockStore = configureMockStore()
 
 const defaultProps: ComponentProps<typeof TableActions> = {
-    meta: defaultMeta,
-    tags: defaultTags,
-    selectedNum: 2,
-    onMerge: _noop,
-    onBulkDelete: _noop,
+    selectedTagsIds: fromJS([1, 2]),
+    onMerge: jest.fn(),
+    onBulkDelete: jest.fn(),
 }
 
-describe('TableActions', () => {
+const defaultState = {
+    tags: fromJS({
+        items: tags,
+    }),
+}
+
+describe('<TableActions />', () => {
     it('should show merge confirmation popup on merge button click', () => {
-        render(<TableActions {...defaultProps} />)
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TableActions {...defaultProps} />
+            </Provider>
+        )
 
-        const button = document.querySelector('button#bulk-merge-button')
-        if (button) {
-            userEvent.click(button)
-        }
-
-        expect(document.body.innerHTML).toContain(
-            'You are about to merge 2 tags into <b>billing</b>'
+        fireEvent.click(screen.getByText('Merge'))
+        expect(
+            screen.getByText(/You are about to merge 1 tag/).textContent
+        ).toBe(
+            'You are about to merge 1 tag (refund) into billing.This action cannot be undone.'
         )
     })
 
     it('should show delete confirmation popup on delete button click', () => {
-        render(<TableActions {...defaultProps} />)
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TableActions {...defaultProps} />
+            </Provider>
+        )
 
-        const button = document.querySelector('button#bulk-remove-button')
-        if (button) {
-            userEvent.click(button)
-        }
-
-        expect(document.body.innerHTML).toContain(
-            'Are you sure you want to delete these tags?'
+        fireEvent.click(screen.getByText('Delete'))
+        expect(
+            screen.getByText(/You are about to delete 2 tags/).textContent
+        ).toBe(
+            'You are about to delete 2 tags: refund and billing.They will be removed from all tickets.'
         )
     })
 })

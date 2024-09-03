@@ -394,7 +394,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -432,7 +432,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -1630,7 +1630,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -1668,7 +1668,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -3101,7 +3101,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -3139,7 +3139,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -4543,7 +4543,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -4581,7 +4581,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -5985,7 +5985,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -6023,7 +6023,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -7427,7 +7427,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -7465,7 +7465,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -8965,7 +8965,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -9003,7 +9003,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -10164,7 +10164,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -10202,7 +10202,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -11508,7 +11508,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -11546,7 +11546,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -13151,7 +13151,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -13189,7 +13189,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -14387,7 +14387,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
@@ -14425,7 +14425,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class=""
                     >
                       <div
-                        class="wrapper"
+                        class="wrapper colorPicker"
                       >
                         <button
                           aria-disabled="false"
