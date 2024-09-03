@@ -13,6 +13,8 @@ import React, {
 } from 'react'
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
+import cn from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -71,6 +73,7 @@ export default function TicketListView({
     const dispatch = useAppDispatch()
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
     const viewCount = useAppSelector(getViewCount(viewId))
+    const editViewRef = useRef(null)
 
     const areViewFiltersInvalid = !!view?.deactivated_datetime
     const isViewNull = view === null
@@ -243,21 +246,28 @@ export default function TicketListView({
                     hasBulkActions ? css.titleWrapperNew : css.titleWrapper
                 }
             >
-                <div className={css.viewName}>
+                <div className={css.headerChild}>
                     <ViewDecoration view={view} />
                     <span className={css.title}>{view?.name}</span>
+                </div>
+                <div className={cn(css.headerChild, css.buttons)}>
                     <IconButton
+                        ref={editViewRef}
                         className={css.icon}
                         intent="secondary"
                         fillStyle="ghost"
                         onClick={goToViewEdition}
-                        size="small"
-                        title="Edit view"
                     >
                         tune
                     </IconButton>
+                    <Tooltip target={editViewRef} innerProps={{fade: false}}>
+                        Edit view
+                    </Tooltip>
+                    <SortOrderDropdown
+                        onChange={setSortOrder}
+                        value={sortOrder}
+                    />
                 </div>
-                <SortOrderDropdown onChange={setSortOrder} value={sortOrder} />
             </div>
             {hasBulkActions && viewCount !== 0 && (
                 <div className={css.subHeader}>

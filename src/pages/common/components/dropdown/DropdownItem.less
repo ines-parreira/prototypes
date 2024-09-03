@@ -19,11 +19,19 @@
 
         &:hover:not(.disabled) {
             background: var(--neutral-grey-1);
+
+            .icon {
+                color: var(--neutral-grey-5);
+            }
         }
 
         &:focus:not(.disabled) {
             background: var(--neutral-grey-2);
             outline: none;
+
+            .icon {
+                color: var(--neutral-grey-5);
+            }
         }
 
         &.disabled {
@@ -34,14 +42,21 @@
                 display: none;
             }
         }
+
+        &:active {
+            .icon {
+                color: var(--neutral-grey-6);
+            }
+        }
     }
 
     .checkbox {
         pointer-events: none;
     }
 
-    .icon {
-        margin-left: auto;
+    .icon.icon {
+        font-size: 20px;
+        margin-left: 20px;
         color: var(--neutral-grey-4);
     }
 }

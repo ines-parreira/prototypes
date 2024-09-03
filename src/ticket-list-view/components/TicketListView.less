@@ -58,14 +58,19 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px @layout-spacing-xs 12px @layout-spacing-s;
+        padding: 12px 12px 12px @layout-spacing-s;
         border-bottom: 1px solid var(--neutral-grey-2);
     }
 
-    .viewName {
+    .headerChild {
         display: flex;
         align-items: center;
         overflow: hidden;
+    }
+
+    .buttons {
+        flex-shrink: 0;
+        margin-left: @layout-spacing-xxs;
     }
 
     .title {
@@ -76,8 +81,6 @@
     }
 
     .icon.icon.icon {
-        font-size: 16px;
-        margin: 0 @layout-spacing-xxs;
-        padding: 4px;
+        padding: 6px;
     }
 }

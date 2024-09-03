@@ -1,4 +1,4 @@
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
 import SortOrderDropdown from '../SortOrderDropdown'
@@ -6,29 +6,35 @@ import SortOrderDropdown from '../SortOrderDropdown'
 jest.mock('hooks/useId', () => jest.fn(() => 'mocked'))
 
 describe('<SortingDropdown />', () => {
-    it('should display a dropdown', () => {
-        const {getByText} = render(
+    it('should display a dropdown with its current value', () => {
+        render(
             <SortOrderDropdown
                 onChange={jest.fn()}
                 value="created_datetime:asc"
             />
         )
 
-        expect(getByText('↑ Created')).toBeInTheDocument()
+        fireEvent.click(screen.getByText('swap_vert'))
+        expect(
+            screen.getByRole('option', {
+                name: /↑ Created/,
+            }).textContent
+        ).toContain('done')
     })
 
     it('should update the selected value of the dropdown', () => {
         const onChange = jest.fn()
-        const {getByText} = render(
+        render(
             <SortOrderDropdown
                 onChange={onChange}
                 value="created_datetime:asc"
             />
         )
 
-        fireEvent.click(getByText(/arrow_drop_down/i))
-        fireEvent.click(getByText('↓ Created'))
+        fireEvent.click(screen.getByText('swap_vert'))
+        fireEvent.click(screen.getByText('↓ Created'))
 
         expect(onChange).toHaveBeenCalledWith('created_datetime:desc')
+        expect(screen.queryByText('↓ Created')).not.toBeInTheDocument()
     })
 })

@@ -1,15 +1,20 @@
-:local {
-    .sortingSelect {
-        flex-shrink: 0;
-        height: fit-content;
-        width: fit-content !important;
-    }
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
+:local {
     .dropdown {
         min-width: 130px;
     }
 
     .sortingLabel {
         flex-grow: 1;
+    }
+
+    .icon.icon.icon {
+        padding: 6px;
+
+        &.isOpen {
+            background-color: var(--neutral-grey-3);
+            color: var(--neutral-grey-6);
+        }
     }
 }
