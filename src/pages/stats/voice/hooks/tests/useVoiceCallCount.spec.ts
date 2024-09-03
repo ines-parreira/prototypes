@@ -31,19 +31,26 @@ describe('useVoiceCallCount', () => {
             [voiceCallCountQueryFactory(statsFilters, 'UTC', undefined)],
             {select: expect.any(Function)},
         ])
-        expect(results.result.current).toEqual({total: 10, totalPages: 1})
+        expect(results.result.current).toEqual({
+            total: 10,
+            totalPages: 1,
+        })
     })
 
     it('should usePostReporting with different page size', () => {
         usePostReportingMock.mockReturnValueOnce({
             data: [{[VoiceCallMeasure.VoiceCallCount]: '10'}],
+            isFetching: true,
         } as UseQueryResult)
 
         const results = renderHook(() =>
             useVoiceCallCount(statsFilters, 'UTC', undefined, 5)
         )
 
-        expect(results.result.current).toEqual({total: 10, totalPages: 2})
+        expect(results.result.current).toEqual({
+            total: 10,
+            totalPages: 2,
+        })
     })
 
     it('should usePostReporting with error', () => {

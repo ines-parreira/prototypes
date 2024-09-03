@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from 'react'
-import {useListLiveCallQueueVoiceCalls} from '@gorgias/api-queries'
+import {LiveCallQueueVoiceCall} from '@gorgias/api-queries'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import DashboardSection from 'pages/stats/DashboardSection'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
@@ -18,7 +18,12 @@ import {
 } from './utils'
 import {LiveVoiceStatusFilterOption} from './types'
 
-export default function LiveVoiceCallTable() {
+type Props = {
+    voiceCalls: LiveCallQueueVoiceCall[]
+    isLoading: boolean
+}
+
+export default function LiveVoiceCallTable({voiceCalls, isLoading}: Props) {
     const [statusFilter, setStatusFilter] = useState(
         LiveVoiceStatusFilterOption.ALL
     )
@@ -28,28 +33,9 @@ export default function LiveVoiceCallTable() {
             OrderDirection.Asc
         )
 
-    const {data: voiceCalls, isLoading} = useListLiveCallQueueVoiceCalls(
-        {
-            agent_ids: [],
-            integration_ids: [],
-        },
-        {
-            http: {
-                paramsSerializer: {
-                    indexes: null,
-                },
-            },
-            query: {
-                staleTime: Infinity,
-                refetchOnMount: 'always',
-                refetchOnWindowFocus: false,
-            },
-        }
-    )
-
     const displayedVoiceCalls = useMemo(() => {
         const filteredVoiceCalls = filterLiveCallsByStatus(
-            voiceCalls?.data.data ?? [],
+            voiceCalls,
             statusFilter
         )
         const orderedVoiceCalls = orderLiveVoiceCallsByOngoingTime(

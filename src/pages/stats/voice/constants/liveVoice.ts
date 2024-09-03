@@ -1,3 +1,23 @@
 export const LIVE_VOICE_PAGE_TITLE = 'Live voice'
 
 export const LIVE_VOICE_CALLS_TITLE = 'Live calls'
+
+// Call metrics constants
+export const CALLS_IN_QUEUE_METRIC_TITLE = 'Calls in queue'
+export const CALLS_IN_QUEUE_METRIC_HINT =
+    'Total number of calls waiting for an agent in the queue'
+export const OUTBOUND_CALLS_METRIC_TITLE = 'Outbound Calls'
+export const OUTBOUND_CALLS_METRIC_HINT =
+    'Total number of outbound calls placed'
+export const INBOUND_CALLS_METRIC_TITLE = 'Inbound Calls'
+export const INBOUND_CALLS_METRIC_HINT =
+    'Total number of inbound calls received'
+export const MISSED_INBOUND_CALLS_METRIC_TITLE = 'Missed inbound calls'
+export const MISSED_INBOUND_CALLS_METRIC_HINT =
+    'Total number of inbound calls that were not picked up by an agent'
+export const AVERAGE_WAIT_TIME_METRIC_TITLE = 'Average wait time'
+export const AVERAGE_WAIT_TIME_METRIC_HINT =
+    'Average time spent by caller before an agent accepted the call or was sent to voicemail'
+export const AVERAGE_TALK_TIME_METRIC_TITLE = 'Average Talk Time'
+export const AVERAGE_TALK_TIME_METRIC_HINT =
+    'Average time agents spent talking to customers (does not include hold time)'

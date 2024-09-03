@@ -136,7 +136,10 @@ describe('VoiceCallTableContent', () => {
     })
 
     it('should render table headers', () => {
-        useVoiceCallCountMock.mockReturnValue({total: 100, totalPages: 10})
+        useVoiceCallCountMock.mockReturnValue({
+            total: 100,
+            totalPages: 10,
+        })
 
         const {getByText} = renderComponent()
 

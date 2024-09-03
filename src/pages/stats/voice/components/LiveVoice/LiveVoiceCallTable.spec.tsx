@@ -1,6 +1,6 @@
 import React from 'react'
 import {act, render} from '@testing-library/react'
-import * as apiQueries from '@gorgias/api-queries'
+import {LiveCallQueueVoiceCall} from '@gorgias/api-queries'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import {assumeMock} from 'utils/testing'
 import VoiceCallTableContent from '../VoiceCallTable/VoiceCallTableContent'
@@ -15,16 +15,12 @@ import LiveVoiceCallTable from './LiveVoiceCallTable'
 import {LiveVoiceStatusFilterOption} from './types'
 
 const renderComponent = () => {
-    return render(<LiveVoiceCallTable />)
+    return render(<LiveVoiceCallTable voiceCalls={[]} isLoading={false} />)
 }
 
-jest.mock('@gorgias/api-queries')
 jest.mock('pages/stats/voice/components/VoiceCallTable/VoiceCallTableContent')
 jest.mock('pages/stats/voice/components/LiveVoice/utils')
 
-const useListLiveCallQueueVoiceCallsMock = assumeMock(
-    apiQueries.useListLiveCallQueueVoiceCalls
-)
 const VoiceCallTableContentMock = assumeMock(VoiceCallTableContent)
 const toggleButtonSpy = jest.spyOn(ToggleButton, 'Wrapper')
 const filterLiveCallsByStatusMock = assumeMock(filterLiveCallsByStatus)
@@ -45,11 +41,6 @@ describe('LiveVoiceCallTable', () => {
 
     describe('status filters (toggle buttons)', () => {
         it('the "ALL" status filter should be selected by default', () => {
-            useListLiveCallQueueVoiceCallsMock.mockReturnValue({
-                data: {data: []},
-                isLoading: false,
-            } as any)
-
             renderComponent()
 
             expect(toggleButtonSpy).toHaveBeenLastCalledWith(
@@ -63,11 +54,6 @@ describe('LiveVoiceCallTable', () => {
         it.each(['In progress', 'In queue'])(
             'should toggle selected filter to "%s"',
             (statusFilter) => {
-                useListLiveCallQueueVoiceCallsMock.mockReturnValue({
-                    data: {data: []},
-                    isLoading: false,
-                } as any)
-
                 renderComponent()
 
                 act(() => {
@@ -104,20 +90,13 @@ describe('LiveVoiceCallTable', () => {
     })
 
     it('should process voice calls in correct order before displaying them', () => {
-        useListLiveCallQueueVoiceCallsMock.mockReturnValue({
-            data: {data: []},
-            isLoading: false,
-        } as any)
-
         renderComponent()
 
         filterLiveCallsByStatusMock.mockImplementation(
-            (voiceCalls: any) =>
-                [...voiceCalls, 1] as apiQueries.LiveCallQueueVoiceCall[]
+            (voiceCalls: any) => [...voiceCalls, 1] as LiveCallQueueVoiceCall[]
         )
         orderLiveVoiceCallsByOngoingTimeMock.mockImplementation(
-            (voiceCalls: any) =>
-                [...voiceCalls, 2] as apiQueries.LiveCallQueueVoiceCall[]
+            (voiceCalls: any) => [...voiceCalls, 2] as LiveCallQueueVoiceCall[]
         )
         formatVoiceCallsDataMock.mockImplementation(
             (voiceCalls: any) => [...voiceCalls, 3] as VoiceCallSummary[]
@@ -137,11 +116,6 @@ describe('LiveVoiceCallTable', () => {
     })
 
     it('should toggle order direction', () => {
-        useListLiveCallQueueVoiceCallsMock.mockReturnValue({
-            data: {data: []},
-            isLoading: false,
-        } as any)
-
         renderComponent()
 
         act(() => {

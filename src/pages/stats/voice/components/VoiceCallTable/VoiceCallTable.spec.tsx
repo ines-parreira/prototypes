@@ -56,7 +56,10 @@ describe('VoiceCallTable', () => {
             data: [{}],
             isFetching: false,
         } as UseQueryResult<VoiceCallSummary[], unknown>)
-        useVoiceCallCountMock.mockReturnValue({total: 100, totalPages: 10})
+        useVoiceCallCountMock.mockReturnValue({
+            total: 100,
+            totalPages: 10,
+        })
 
         const {getByLabelText} = renderComponent()
 
@@ -82,7 +85,10 @@ describe('VoiceCallTable', () => {
             data: [] as VoiceCallSummary[],
             isFetching: false,
         } as UseQueryResult<VoiceCallSummary[], unknown>)
-        useVoiceCallCountMock.mockReturnValue({total: 0, totalPages: 0})
+        useVoiceCallCountMock.mockReturnValue({
+            total: 0,
+            totalPages: 0,
+        })
 
         renderComponent(filterOption)
         expect(useVoiceCallListMock.mock.calls[0]).toEqual(
@@ -95,7 +101,10 @@ describe('VoiceCallTable', () => {
             data: [{}],
             isFetching: false,
         } as UseQueryResult<VoiceCallSummary[], unknown>)
-        useVoiceCallCountMock.mockReturnValue({total: 1220, totalPages: 123})
+        useVoiceCallCountMock.mockReturnValue({
+            total: 1220,
+            totalPages: 123,
+        })
 
         const {queryByText} = renderComponent()
 
@@ -107,7 +116,10 @@ describe('VoiceCallTable', () => {
             data: [{}],
             isFetching: false,
         } as UseQueryResult<VoiceCallSummary[], unknown>)
-        useVoiceCallCountMock.mockReturnValue({total: 5990, totalPages: 600})
+        useVoiceCallCountMock.mockReturnValue({
+            total: 5990,
+            totalPages: 600,
+        })
 
         const {queryByText} = renderComponent()
 

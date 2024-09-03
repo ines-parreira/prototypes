@@ -1,0 +1,127 @@
+import React, {useMemo} from 'react'
+import {LiveCallQueueVoiceCall} from '@gorgias/api-queries'
+import DashboardSection from 'pages/stats/DashboardSection'
+import * as constants from 'pages/stats/voice/constants/liveVoice'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCleanStatsFilters} from 'state/ui/stats/selectors'
+import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
+import {getMoment} from 'utils/date'
+import {formatReportingQueryDate} from 'utils/reporting'
+import {voiceCallAverageWaitTimeQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
+import {useMetric} from 'hooks/reporting/useMetric'
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import {useVoiceCallCountMetric} from '../../hooks/useVoiceCallCountMetric'
+import {useAverageTalkTimeMetric} from '../../hooks/agentMetrics'
+import LiveVoiceMetricCard from './LiveVoiceMetricCard'
+
+const CARD_SIZE = 4
+
+type Props = {
+    liveVoiceCalls: LiveCallQueueVoiceCall[]
+    isLoadingVoiceCalls: boolean
+}
+
+export default function LiveVoiceMetrics({
+    liveVoiceCalls,
+    isLoadingVoiceCalls,
+}: Props) {
+    const cleanStatsFilters = useAppSelector(getCleanStatsFilters)
+    const {
+        data: {timezone},
+    } = useAppSelector(getBusinessHoursSettings) ?? {
+        data: {
+            timezone: 'UTC',
+        },
+    }
+
+    const filters = useMemo(() => {
+        const now = getMoment().tz(timezone)
+
+        return {
+            ...cleanStatsFilters,
+            period: {
+                start_datetime: formatReportingQueryDate(
+                    now.clone().startOf('day')
+                ),
+                end_datetime: formatReportingQueryDate(now),
+            },
+        }
+    }, [cleanStatsFilters, timezone])
+
+    const averageWaitTime = useMetric(
+        voiceCallAverageWaitTimeQueryFactory(filters, timezone)
+    )
+    const inboundCallsCount = useVoiceCallCountMetric(
+        filters,
+        timezone,
+        VoiceCallSegment.inboundCalls
+    )
+    const outboundCallsCount = useVoiceCallCountMetric(
+        filters,
+        timezone,
+        VoiceCallSegment.outboundCalls
+    )
+    const missedInboundCallsCount = useVoiceCallCountMetric(
+        filters,
+        timezone,
+        VoiceCallSegment.missedCalls
+    )
+    const averageTalkTime = useAverageTalkTimeMetric(filters, timezone)
+
+    const metricCards = [
+        {
+            title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
+            hint: constants.CALLS_IN_QUEUE_METRIC_HINT,
+            value: liveVoiceCalls.length,
+            isLoading: isLoadingVoiceCalls,
+        },
+        {
+            title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
+            hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
+            metricValueFormat: 'duration',
+            value: averageWaitTime.data?.value,
+            isLoading: averageWaitTime.isFetching,
+        },
+        {
+            title: constants.MISSED_INBOUND_CALLS_METRIC_TITLE,
+            hint: constants.MISSED_INBOUND_CALLS_METRIC_HINT,
+            value: missedInboundCallsCount.data?.value,
+            isLoading: missedInboundCallsCount.isFetching,
+        },
+        {
+            title: constants.INBOUND_CALLS_METRIC_TITLE,
+            hint: constants.INBOUND_CALLS_METRIC_HINT,
+            value: inboundCallsCount.data?.value,
+            isLoading: inboundCallsCount.isFetching,
+        },
+        {
+            title: constants.OUTBOUND_CALLS_METRIC_TITLE,
+            hint: constants.OUTBOUND_CALLS_METRIC_HINT,
+            value: outboundCallsCount.data?.value,
+            isLoading: outboundCallsCount.isFetching,
+        },
+        {
+            title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
+            hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
+            metricValueFormat: 'duration',
+            value: averageTalkTime.data?.value,
+            isLoading: averageTalkTime.isFetching,
+        },
+    ]
+
+    return (
+        <DashboardSection>
+            {metricCards.map((card) => (
+                <DashboardGridCell size={CARD_SIZE} key={card.title}>
+                    <LiveVoiceMetricCard
+                        title={card.title}
+                        hint={card.hint}
+                        value={card.value}
+                        isLoading={card.isLoading}
+                    />
+                </DashboardGridCell>
+            ))}
+        </DashboardSection>
+    )
+}
