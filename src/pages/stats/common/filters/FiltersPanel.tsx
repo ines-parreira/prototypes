@@ -6,6 +6,7 @@ import React, {
     useMemo,
     useState,
 } from 'react'
+import _isEqual from 'lodash/isEqual'
 import {BusiestTimesMetricSelectFilter} from 'pages/stats/common/filters/BusiestTimesMetricSelectFilter'
 import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
@@ -33,6 +34,7 @@ import {
 } from 'pages/stats/CustomFieldSelect'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 import {CustomFieldFilter} from 'pages/stats/common/filters/CustomFieldFilter'
+import usePrevious from 'hooks/usePrevious'
 
 type Props = {
     persistentFilters?: StaticFilter[]
@@ -78,6 +80,25 @@ export const renderFilter = (filter: FilterKey | FilterComponentKey) => {
         default:
             return () => <div>{UNSUPPORTED_FILTER_PLACEHOLDER}</div>
     }
+}
+
+export function isFilterTypeWithValues(
+    type: FilterKey | FilterComponentKey
+): type is Exclude<
+    FilterKey | FilterComponentKey,
+    | FilterKey.CustomFields
+    | FilterKey.Period
+    | FilterComponentKey.CustomField
+    | FilterComponentKey.Store
+    | FilterComponentKey.BusiestTimesMetricSelectFilter
+> {
+    return (
+        type !== FilterKey.CustomFields &&
+        type !== FilterKey.Period &&
+        type !== FilterComponentKey.CustomField &&
+        type !== FilterComponentKey.Store &&
+        type !== FilterComponentKey.BusiestTimesMetricSelectFilter
+    )
 }
 
 const getActiveFilters = (
@@ -133,6 +154,8 @@ export const FiltersPanel = ({
         getActiveFilters(optionalFilters, cleanStatsFilters)
     )
 
+    const previousCleanStatsFilters = usePrevious(cleanStatsFilters)
+
     const {data: {data: activeFields = []} = {}} =
         useCustomFieldDefinitions(activeParams)
     const activeDropdownFields = activeFields.filter(selectDropdownTextFields)
@@ -156,14 +179,34 @@ export const FiltersPanel = ({
                     (activeFilter) => activeFilter.key === filter
                 ) === undefined
         )
-        if (newFilters.length > 0) {
+        const updatedActiveFilters = activeFilters.map((filter) => {
+            if (
+                isFilterTypeWithValues(filter.type) &&
+                (cleanStatsFilters[filter.type]?.values ?? []).length > 0 &&
+                !filter.active
+            ) {
+                return {...filter, active: true}
+            }
+            return filter
+        })
+
+        if (
+            newFilters.length > 0 ||
+            (!_isEqual(updatedActiveFilters, activeFilters) &&
+                !_isEqual(cleanStatsFilters, previousCleanStatsFilters))
+        ) {
             const newActiveFilters = getActiveFilters(
                 newFilters,
                 cleanStatsFilters
             )
-            setActiveFilters([...activeFilters, ...newActiveFilters])
+            setActiveFilters([...newActiveFilters, ...updatedActiveFilters])
         }
-    }, [activeFilters, cleanStatsFilters, optionalFilters])
+    }, [
+        activeFilters,
+        cleanStatsFilters,
+        optionalFilters,
+        previousCleanStatsFilters,
+    ])
 
     useEffect(() => {
         if (

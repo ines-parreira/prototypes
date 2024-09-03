@@ -23,6 +23,7 @@ import {
 } from 'state/ui/stats/ticketInsightsSlice'
 import {
     FiltersPanel,
+    isFilterTypeWithValues,
     UNSUPPORTED_FILTER_PLACEHOLDER,
 } from 'pages/stats/common/filters/FiltersPanel'
 import {initialState, statsSlice} from 'state/stats/statsSlice'
@@ -271,6 +272,49 @@ describe('FiltersPanel', () => {
         })
     })
 
+    it('should allow adding filters that have state set, but filter is not in the panel', () => {
+        const initialFilters = [
+            FilterKey.Tags,
+            FilterKey.Integrations,
+            FilterKey.Agents,
+        ]
+        const newState = {
+            ...defaultState,
+            [statsSlice.name]: {
+                ...defaultState[statsSlice.name],
+                filters: {
+                    ...defaultState[statsSlice.name].filters,
+                    [FilterKey.Agents]: withDefaultLogicalOperator([1, 2, 3]),
+                },
+            },
+        }
+        const {rerenderComponent} = renderWithStore(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={initialFilters}
+            />,
+            defaultState
+        )
+
+        initialFilters.forEach((filterKey) => {
+            expect(
+                screen.queryByText(FilterLabels[filterKey])
+            ).not.toBeInTheDocument()
+        })
+
+        rerenderComponent(
+            newState,
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={initialFilters}
+            />
+        )
+
+        expect(
+            screen.getByText(FilterLabels[FilterKey.Agents])
+        ).toBeInTheDocument()
+    })
+
     it('should allow removal of optional Filters', () => {
         renderWithStore(
             <FiltersPanel optionalFilters={optionalFilters} />,
@@ -371,5 +415,39 @@ describe('FiltersPanel', () => {
             }),
             {}
         )
+    })
+})
+
+describe('isFilterTypeWithValues', () => {
+    it('returns true for valid filter types', () => {
+        const validFilterTypes = [
+            FilterKey.Agents,
+            FilterKey.CampaignStatuses,
+            FilterKey.Channels,
+            FilterKey.HelpCenters,
+            FilterKey.Integrations,
+            FilterKey.LocaleCodes,
+            FilterKey.Score,
+            FilterKey.SlaPolicies,
+            FilterKey.Tags,
+        ]
+
+        validFilterTypes.forEach((type) => {
+            expect(isFilterTypeWithValues(type)).toBe(true)
+        })
+    })
+
+    it('returns false for invalid filter types', () => {
+        const invalidFilterTypes = [
+            FilterKey.CustomFields,
+            FilterKey.Period,
+            FilterComponentKey.CustomField,
+            FilterComponentKey.Store,
+            FilterComponentKey.BusiestTimesMetricSelectFilter,
+        ]
+
+        invalidFilterTypes.forEach((type) => {
+            expect(isFilterTypeWithValues(type)).toBe(false)
+        })
     })
 })
