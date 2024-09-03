@@ -267,6 +267,18 @@ export const orderVariables: WorkflowVariable[] = [
         nodeType: 'order_selection',
         type: 'date',
     },
+    {
+        name: 'Order note',
+        value: 'objects.order.note',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Order tags',
+        value: 'objects.order.tags_stringified',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
 ]
 
 export const customerVariables: WorkflowVariable[] = [

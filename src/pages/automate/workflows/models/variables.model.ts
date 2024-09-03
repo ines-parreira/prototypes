@@ -433,6 +433,18 @@ export const buildWorkflowVariableFromTrigger = (
                         nodeType: 'order_selection',
                         type: 'date',
                     },
+                    {
+                        name: 'Order note',
+                        value: 'objects.order.note',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
+                    {
+                        name: 'Order tags',
+                        value: 'objects.order.tags_stringified',
+                        nodeType: 'order_selection',
+                        type: 'string',
+                    },
                 ],
             },
         ]
@@ -733,6 +745,18 @@ export const buildWorkflowVariableFromNode = (
                     filter: 'format_datetime',
                     nodeType: 'order_selection',
                     type: 'date',
+                },
+                {
+                    name: 'Order note',
+                    value: `steps_state.${node.id}.order.note`,
+                    nodeType: 'order_selection',
+                    type: 'string',
+                },
+                {
+                    name: 'Order tags',
+                    value: `steps_state.${node.id}.order.tags_stringified`,
+                    nodeType: 'order_selection',
+                    type: 'string',
                 },
             ],
         }
