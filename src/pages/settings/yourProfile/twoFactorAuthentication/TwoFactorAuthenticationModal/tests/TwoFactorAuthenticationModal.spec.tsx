@@ -319,7 +319,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 await validateInput(baseElement)
 
                 expect(
-                    screen.getByText("I've saved my recovery codes")
+                    screen.getByText("Don't get locked out")
                 ).toBeInTheDocument()
                 expect(baseElement).toMatchSnapshot('Recovery codes step')
             })
@@ -348,18 +348,18 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
                 await validateInput(baseElement)
 
-                const checkbox = screen.getByText(
-                    "I've saved my recovery codes"
-                )
-                fireEvent.click(checkbox)
+                const copyButton = screen.getByText('Download')
+                fireEvent.click(copyButton)
 
                 await waitFor(() => {
                     expect(
-                        screen.getByText('Continue').getAttribute('disabled')
+                        screen
+                            .getByText('I Have Saved My Codes')
+                            .getAttribute('disabled')
                     ).toBe(null)
                 })
 
-                const continueButton = screen.getByText('Continue')
+                const continueButton = screen.getByText('I Have Saved My Codes')
                 fireEvent.click(continueButton)
 
                 expect(onFinishMock).toHaveBeenCalled()

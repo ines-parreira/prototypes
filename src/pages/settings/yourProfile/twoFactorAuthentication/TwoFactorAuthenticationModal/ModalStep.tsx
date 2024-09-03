@@ -17,7 +17,6 @@ type OwnProps = {
     setUserPassword: Dispatch<SetStateAction<string>>
     setIsLoading: Dispatch<SetStateAction<boolean>>
     recoveryCodes: RecoveryCode[]
-    isRecoveryCodesSaved: boolean
     userHasPassword: boolean
     setIsRecoveryCodesSaved: Dispatch<SetStateAction<boolean>>
 }
@@ -31,7 +30,6 @@ export default function ModalStep({
     setUserPassword,
     setIsLoading,
     recoveryCodes,
-    isRecoveryCodesSaved,
     userHasPassword,
     setIsRecoveryCodesSaved,
 }: OwnProps) {
@@ -64,7 +62,6 @@ export default function ModalStep({
             return (
                 <RecoveryCodesStep
                     recoveryCodes={recoveryCodes}
-                    isRecoveryCodesSaved={isRecoveryCodesSaved}
                     setIsRecoveryCodesSaved={setIsRecoveryCodesSaved}
                 />
             )

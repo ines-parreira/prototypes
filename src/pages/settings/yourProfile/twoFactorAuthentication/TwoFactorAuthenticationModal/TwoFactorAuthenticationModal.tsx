@@ -49,6 +49,13 @@ export type OwnProps = {
     isUpdate?: boolean
 }
 
+const modalHeaders = [
+    'Verify your password',
+    'Setup two-factor authentication',
+    'Verify two-factor authentication',
+    'Save your recovery codes',
+]
+
 export default function TwoFactorAuthenticationModal({
     isOpen,
     onCancel,
@@ -259,9 +266,9 @@ export default function TwoFactorAuthenticationModal({
     const wizardSteps = useMemo(
         () => ({
             ...(isUpdate ? {password: 'Password'} : {}),
-            app_setup: 'App setup',
+            app_setup: 'App Setup',
             qr_code: 'Verify',
-            recovery_codes: 'Recovery codes',
+            recovery_codes: 'Recovery Codes',
         }),
         [isUpdate]
     )
@@ -269,7 +276,7 @@ export default function TwoFactorAuthenticationModal({
     return (
         <DEPRECATED_Modal
             isOpen={isOpen}
-            header="Setup 2FA"
+            header={modalHeaders[step]}
             headerClassName={is2FARequired ? css.hideCloseButton : ''}
             onClose={handleCancel}
             dismissible={!is2FARequired}
@@ -335,7 +342,6 @@ export default function TwoFactorAuthenticationModal({
                 userHasPassword={hasPassword}
                 setIsLoading={setIsLoading}
                 recoveryCodes={recoveryCodes}
-                isRecoveryCodesSaved={isRecoveryCodesSaved}
                 setIsRecoveryCodesSaved={setIsRecoveryCodesSaved}
             />
         </DEPRECATED_Modal>

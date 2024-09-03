@@ -1,19 +1,31 @@
+@import '~css/new/mixins.less';
+
 :local {
     .recoveryCodesContainer {
-        padding: 24px;
-        background: var(--neutral-grey-1);
+        padding: 20px;
+        background: var(--neutral-grey-0);
         border: 1px solid var(--neutral-grey-3);
         border-radius: 4px;
     }
 
     .recoveryCodesItem {
         display: inline-block;
-        width: 50%;
-        height: 25px;
+        width: calc(25% - 16px);
+        height: 24px;
+        font-size: 12px;
+        line-height: 16px;
+        padding: 4px 8px;
         font-style: normal;
-        font-weight: bold;
+        font-weight: 600;
         text-align: center;
-        color: var(--neutral-grey-6);
+        margin: 8px;
+        color: var(--accessory-green-3);
+        background-color: var(--accessory-green-1);
+        border-radius: 4px;
+
+        @media @mobiles {
+            width: calc(50% - 16px);
+        }
     }
 
     .checkBox {

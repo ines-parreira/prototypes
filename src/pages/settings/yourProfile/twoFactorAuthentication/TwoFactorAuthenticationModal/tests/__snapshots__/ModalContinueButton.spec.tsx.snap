@@ -85,7 +85,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
 exports[`<ModalContinueButton /> render() should render the Continue button as loading 3`] = `
 <button
   aria-disabled="true"
-  class="wrapper full-width fill primary medium isDisabled"
+  class="wrapper fill primary medium isDisabled"
   type="button"
 >
   <svg
@@ -117,10 +117,8 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       Loading...
     </span>
   </svg>
-  <span
-    class="full-width"
-  >
-    Continue
+  <span>
+    I Have Saved My Codes
   </span>
 </button>
 `;
@@ -152,13 +150,11 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
 exports[`<ModalContinueButton /> render() should render the Continue button disabled because of error 3`] = `
 <button
   aria-disabled="true"
-  class="wrapper full-width fill primary medium isDisabled"
+  class="wrapper fill primary medium isDisabled"
   type="button"
 >
-  <span
-    class="full-width"
-  >
-    Continue
+  <span>
+    I Have Saved My Codes
   </span>
 </button>
 `;
@@ -190,13 +186,11 @@ exports[`<ModalContinueButton /> render() should render the appropriate Continue
 exports[`<ModalContinueButton /> render() should render the appropriate Continue button based on current step 3`] = `
 <button
   aria-disabled="false"
-  class="wrapper full-width fill primary medium"
+  class="wrapper fill primary medium"
   type="button"
 >
-  <span
-    class="full-width"
-  >
-    Continue
+  <span>
+    I Have Saved My Codes
   </span>
 </button>
 `;

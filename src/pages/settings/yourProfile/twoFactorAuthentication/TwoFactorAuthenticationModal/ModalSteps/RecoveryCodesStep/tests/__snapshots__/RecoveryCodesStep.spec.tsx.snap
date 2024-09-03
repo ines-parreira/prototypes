@@ -16,309 +16,159 @@ exports[`<RecoveryCodesStep /> handleDownload() should trigger download of recov
 exports[`<RecoveryCodesStep /> render() should render the component with the recovery codes 1`] = `
 <div>
   <div
-    class="textSection mb16"
+    class="headingBold"
   >
-    Before you leave, keep your recovery codes in a safe place. They are the only alternative ways to access your account.
+    Don't get locked out
   </div>
-  <ul
-    class="recoveryCodesContainer mb16"
-  >
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh01
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh02
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh03
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh04
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh05
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh06
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh07
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh08
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh09
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh10
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh11
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh12
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh13
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh14
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh15
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh16
-    </li>
-  </ul>
   <div
-    class="actionButtonsContainer mb16"
+    class="textSection mb32"
   >
-    <button
-      aria-disabled="false"
-      class="wrapper actionButton mr8 fill secondary medium"
-      type="button"
-    >
-      <span
-        class="wrapper"
-      >
-        <i
-          class="material-icons icon isLeft medium"
-        >
-          download
-        </i>
-        Download
-      </span>
-    </button>
+    Recovery codes are your last resort for account access if you can't receive two-factor codes. We recommend using a password manager for security. Examples include
+     
     <a
-      class="actionAnchor mr8"
-      href="http://localhost/2fa/recovery-codes/print"
-      rel="noopener noreferrer"
+      href="https://1password.com/"
+      rel="noreferrer"
       target="_blank"
     >
-      <button
-        aria-disabled="false"
-        class="wrapper actionButton fill secondary medium"
-        type="button"
-      >
-        <span
-          class="wrapper"
-        >
-          <i
-            class="material-icons icon isLeft medium"
-          >
-            print
-          </i>
-          Print
-        </span>
-      </button>
+      1Password
     </a>
-    <button
-      aria-disabled="false"
-      class="wrapper actionButton fill secondary medium"
-      data-clipboard-text="abcdefgh01
-abcdefgh02
-abcdefgh03
-abcdefgh04
-abcdefgh05
-abcdefgh06
-abcdefgh07
-abcdefgh08
-abcdefgh09
-abcdefgh10
-abcdefgh11
-abcdefgh12
-abcdefgh13
-abcdefgh14
-abcdefgh15
-abcdefgh16"
-      id="copyRecoveryCodes"
-      type="button"
+     
+    or
+     
+    <a
+      href="https://www.keepersecurity.com/"
+      rel="noreferrer"
+      target="_blank"
     >
-      <span
-        class="wrapper"
-      >
-        <i
-          class="material-icons icon isLeft medium"
-        >
-          content_copy
-        </i>
-        Copy
-      </span>
-    </button>
+      Keeper
+    </a>
+    .
   </div>
-  <div>
-    <div>
-      <label
-        class="Label--label--QAnfT label checkBox"
-        for="isRecoveryCodesSaved"
+  <div
+    class="recoveryCodesContainer"
+  >
+    <div
+      class="float-left mr-2"
+    >
+      <i
+        class="material-icons"
       >
-        <input
-          checked=""
-          class="input"
-          id="isRecoveryCodesSaved"
-          name="isRecoveryCodesSaved"
-          type="checkbox"
-        />
-        I've saved my recovery codes
-      </label>
+        key
+      </i>
     </div>
-  </div>
-</div>
-`;
-
-exports[`<RecoveryCodesStep /> render() should render the component with the recovery codes 2`] = `
-<div>
-  <div
-    class="textSection mb16"
-  >
-    Before you leave, keep your recovery codes in a safe place. They are the only alternative ways to access your account.
-  </div>
-  <ul
-    class="recoveryCodesContainer mb16"
-  >
-    <li
-      class="recoveryCodesItem"
+    <div
+      class="overflow-hidden"
     >
-      abcdefgh01
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh02
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh03
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh04
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh05
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh06
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh07
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh08
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh09
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh10
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh11
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh12
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh13
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh14
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh15
-    </li>
-    <li
-      class="recoveryCodesItem"
-    >
-      abcdefgh16
-    </li>
-  </ul>
-  <div
-    class="actionButtonsContainer mb16"
-  >
-    <button
-      aria-disabled="false"
-      class="wrapper actionButton mr8 fill secondary medium"
-      type="button"
-    >
-      <span
-        class="wrapper"
+      <div
+        class="headingBold"
       >
-        <i
-          class="material-icons icon isLeft medium"
+        Recovery Codes
+      </div>
+      <div
+        class="textSection"
+      >
+        Each recovery code is single-use. Reset your authenticator before using all codes or you could be permanently locked out.
+         
+        <a
+          href="https://docs.gorgias.com/en-US/single-sign-on-and-2fa-214445"
+          rel="noreferrer"
+          target="_blank"
         >
-          download
-        </i>
-        Download
-      </span>
-    </button>
-    <a
-      class="actionAnchor mr8"
-      href="http://localhost/2fa/recovery-codes/print"
-      rel="noopener noreferrer"
-      target="_blank"
+          Learn More
+        </a>
+        .
+      </div>
+    </div>
+    <ul
+      class="p-0 m-4"
+    >
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh01
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh02
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh03
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh04
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh05
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh06
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh07
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh08
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh09
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh10
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh11
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh12
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh13
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh14
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh15
+      </li>
+      <li
+        class="recoveryCodesItem"
+      >
+        abcdefgh16
+      </li>
+    </ul>
+    <div
+      class="actionButtonsContainer"
     >
       <button
         aria-disabled="false"
-        class="wrapper actionButton fill secondary medium"
+        class="wrapper actionButton mr8 fill secondary medium"
         type="button"
       >
         <span
@@ -327,16 +177,15 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
           <i
             class="material-icons icon isLeft medium"
           >
-            print
+            download
           </i>
-          Print
+          Download
         </span>
       </button>
-    </a>
-    <button
-      aria-disabled="false"
-      class="wrapper actionButton fill secondary medium"
-      data-clipboard-text="abcdefgh01
+      <button
+        aria-disabled="false"
+        class="wrapper actionButton mr8 fill secondary medium"
+        data-clipboard-text="abcdefgh01
 abcdefgh02
 abcdefgh03
 abcdefgh04
@@ -352,35 +201,43 @@ abcdefgh13
 abcdefgh14
 abcdefgh15
 abcdefgh16"
-      id="copyRecoveryCodes"
-      type="button"
-    >
-      <span
-        class="wrapper"
+        id="copyRecoveryCodes"
+        type="button"
       >
-        <i
-          class="material-icons icon isLeft medium"
+        <span
+          class="wrapper"
         >
-          content_copy
-        </i>
-        Copy
-      </span>
-    </button>
-  </div>
-  <div>
-    <div>
-      <label
-        class="Label--label--QAnfT label checkBox"
-        for="isRecoveryCodesSaved"
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            content_copy
+          </i>
+          Copy
+        </span>
+      </button>
+      <a
+        class="actionAnchor"
+        href="http://localhost/2fa/recovery-codes/print"
+        rel="noopener noreferrer"
+        target="_blank"
       >
-        <input
-          class="input"
-          id="isRecoveryCodesSaved"
-          name="isRecoveryCodesSaved"
-          type="checkbox"
-        />
-        I've saved my recovery codes
-      </label>
+        <button
+          aria-disabled="false"
+          class="wrapper actionButton fill secondary medium"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              print
+            </i>
+            Print
+          </span>
+        </button>
+      </a>
     </div>
   </div>
 </div>

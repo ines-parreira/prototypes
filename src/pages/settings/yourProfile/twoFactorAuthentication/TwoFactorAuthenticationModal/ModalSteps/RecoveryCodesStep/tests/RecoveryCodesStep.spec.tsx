@@ -11,42 +11,38 @@ describe('<RecoveryCodesStep />', () => {
     }
 
     describe('render()', () => {
-        it.each([true, false])(
-            'should render the component with the recovery codes',
-            async (isRecoveryCodesSaved: boolean) => {
-                const {container} = render(
-                    <RecoveryCodesStep
-                        recoveryCodes={recoveryCodesFixture}
-                        isRecoveryCodesSaved={isRecoveryCodesSaved}
-                        setIsRecoveryCodesSaved={jest.fn()}
-                    />
-                )
-
-                await waitForLoadingSpinnersToDisappear()
-
-                expect(container).toMatchSnapshot()
-            }
-        )
-    })
-
-    describe('clipboard copy action', () => {
-        it('should trigger copy of recovery codes', async () => {
-            global.document.execCommand = jest.fn()
-
-            render(
+        it('should render the component with the recovery codes', async () => {
+            const {container} = render(
                 <RecoveryCodesStep
                     recoveryCodes={recoveryCodesFixture}
-                    isRecoveryCodesSaved={false}
                     setIsRecoveryCodesSaved={jest.fn()}
                 />
             )
 
             await waitForLoadingSpinnersToDisappear()
 
-            const copyButton = screen.getByText(/Copy/)
+            expect(container).toMatchSnapshot()
+        })
+    })
+
+    describe('clipboard copy action', () => {
+        it('should trigger copy of recovery codes', async () => {
+            global.document.execCommand = jest.fn().mockReturnValue(true)
+
+            render(
+                <RecoveryCodesStep
+                    recoveryCodes={recoveryCodesFixture}
+                    setIsRecoveryCodesSaved={jest.fn()}
+                />
+            )
+
+            await waitForLoadingSpinnersToDisappear()
+
+            const copyButton = screen.getByText('Copy')
             fireEvent.click(copyButton)
 
             expect(global.document.execCommand).toHaveBeenCalledWith('copy')
+            expect(screen.getByText('Copied!')).toBeInTheDocument()
         })
     })
 
@@ -72,7 +68,6 @@ describe('<RecoveryCodesStep />', () => {
             render(
                 <RecoveryCodesStep
                     recoveryCodes={recoveryCodesFixture}
-                    isRecoveryCodesSaved={false}
                     setIsRecoveryCodesSaved={jest.fn()}
                 />
             )

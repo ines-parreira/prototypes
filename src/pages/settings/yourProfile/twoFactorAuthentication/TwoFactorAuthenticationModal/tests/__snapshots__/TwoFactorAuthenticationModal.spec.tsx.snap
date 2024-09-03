@@ -32,7 +32,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Save your recovery codes
               </h5>
               <button
                 aria-label="Close"
@@ -85,7 +85,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                       </i>
                     </span>
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -119,126 +119,163 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   >
                     3
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
-                class="textSection mb16"
+                class="headingBold"
               >
-                Before you leave, keep your recovery codes in a safe place. They are the only alternative ways to access your account.
+                Don't get locked out
               </div>
-              <ul
-                class="recoveryCodesContainer mb16"
-              >
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh01
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh02
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh03
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh04
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh05
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh06
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh07
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh08
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh09
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh10
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh11
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh12
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh13
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh14
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh15
-                </li>
-                <li
-                  class="recoveryCodesItem"
-                >
-                  abcdefgh16
-                </li>
-              </ul>
               <div
-                class="actionButtonsContainer mb16"
+                class="textSection mb32"
               >
-                <button
-                  aria-disabled="false"
-                  class="wrapper actionButton mr8 fill secondary medium"
-                  type="button"
-                >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      download
-                    </i>
-                    Download
-                  </span>
-                </button>
+                Recovery codes are your last resort for account access if you can't receive two-factor codes. We recommend using a password manager for security. Examples include
+                 
                 <a
-                  class="actionAnchor mr8"
-                  href="http://localhost/2fa/recovery-codes/print"
-                  rel="noopener noreferrer"
+                  href="https://1password.com/"
+                  rel="noreferrer"
                   target="_blank"
+                >
+                  1Password
+                </a>
+                 
+                or
+                 
+                <a
+                  href="https://www.keepersecurity.com/"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Keeper
+                </a>
+                .
+              </div>
+              <div
+                class="recoveryCodesContainer"
+              >
+                <div
+                  class="float-left mr-2"
+                >
+                  <i
+                    class="material-icons"
+                  >
+                    key
+                  </i>
+                </div>
+                <div
+                  class="overflow-hidden"
+                >
+                  <div
+                    class="headingBold"
+                  >
+                    Recovery Codes
+                  </div>
+                  <div
+                    class="textSection"
+                  >
+                    Each recovery code is single-use. Reset your authenticator before using all codes or you could be permanently locked out.
+                     
+                    <a
+                      href="https://docs.gorgias.com/en-US/single-sign-on-and-2fa-214445"
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      Learn More
+                    </a>
+                    .
+                  </div>
+                </div>
+                <ul
+                  class="p-0 m-4"
+                >
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh01
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh02
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh03
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh04
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh05
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh06
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh07
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh08
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh09
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh10
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh11
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh12
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh13
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh14
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh15
+                  </li>
+                  <li
+                    class="recoveryCodesItem"
+                  >
+                    abcdefgh16
+                  </li>
+                </ul>
+                <div
+                  class="actionButtonsContainer"
                 >
                   <button
                     aria-disabled="false"
-                    class="wrapper actionButton fill secondary medium"
+                    class="wrapper actionButton mr8 fill secondary medium"
                     type="button"
                   >
                     <span
@@ -247,16 +284,15 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                       <i
                         class="material-icons icon isLeft medium"
                       >
-                        print
+                        download
                       </i>
-                      Print
+                      Download
                     </span>
                   </button>
-                </a>
-                <button
-                  aria-disabled="false"
-                  class="wrapper actionButton fill secondary medium"
-                  data-clipboard-text="abcdefgh01
+                  <button
+                    aria-disabled="false"
+                    class="wrapper actionButton mr8 fill secondary medium"
+                    data-clipboard-text="abcdefgh01
 abcdefgh02
 abcdefgh03
 abcdefgh04
@@ -272,35 +308,43 @@ abcdefgh13
 abcdefgh14
 abcdefgh15
 abcdefgh16"
-                  id="copyRecoveryCodes"
-                  type="button"
-                >
-                  <span
-                    class="wrapper"
+                    id="copyRecoveryCodes"
+                    type="button"
                   >
-                    <i
-                      class="material-icons icon isLeft medium"
+                    <span
+                      class="wrapper"
                     >
-                      content_copy
-                    </i>
-                    Copy
-                  </span>
-                </button>
-              </div>
-              <div>
-                <div>
-                  <label
-                    class="Label--label--QAnfT label checkBox"
-                    for="isRecoveryCodesSaved"
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        content_copy
+                      </i>
+                      Copy
+                    </span>
+                  </button>
+                  <a
+                    class="actionAnchor"
+                    href="http://localhost/2fa/recovery-codes/print"
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    <input
-                      class="input"
-                      id="isRecoveryCodesSaved"
-                      name="isRecoveryCodesSaved"
-                      type="checkbox"
-                    />
-                    I've saved my recovery codes
-                  </label>
+                    <button
+                      aria-disabled="false"
+                      class="wrapper actionButton fill secondary medium"
+                      type="button"
+                    >
+                      <span
+                        class="wrapper"
+                      >
+                        <i
+                          class="material-icons icon isLeft medium"
+                        >
+                          print
+                        </i>
+                        Print
+                      </span>
+                    </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -309,13 +353,11 @@ abcdefgh16"
             >
               <button
                 aria-disabled="true"
-                class="wrapper full-width fill primary medium isDisabled"
+                class="wrapper fill primary medium isDisabled"
                 type="button"
               >
-                <span
-                  class="full-width"
-                >
-                  Continue
+                <span>
+                  I Have Saved My Codes
                 </span>
               </button>
             </div>
@@ -362,7 +404,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Verify two-factor authentication
               </h5>
               <button
                 aria-label="Close"
@@ -414,7 +456,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                       </i>
                     </span>
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -440,7 +482,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   >
                     3
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -579,7 +621,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Verify two-factor authentication
               </h5>
               <button
                 aria-label="Close"
@@ -616,7 +658,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                       </i>
                     </span>
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -642,7 +684,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   >
                     3
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -781,7 +823,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Verify two-factor authentication
               </h5>
               <button
                 aria-label="Close"
@@ -833,7 +875,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                       </i>
                     </span>
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -859,7 +901,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   >
                     3
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -998,7 +1040,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Verify two-factor authentication
               </h5>
               <button
                 aria-label="Close"
@@ -1035,7 +1077,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                       </i>
                     </span>
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -1061,7 +1103,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   >
                     3
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -1206,7 +1248,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Verify two-factor authentication
               </h5>
               <button
                 aria-label="Close"
@@ -1243,7 +1285,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                       </i>
                     </span>
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -1269,7 +1311,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                   >
                     3
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -1389,7 +1431,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Setup two-factor authentication
               </h5>
               <button
                 aria-label="Close"
@@ -1449,7 +1491,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                   >
                     1
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -1475,7 +1517,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                   >
                     3
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -1598,7 +1640,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Verify two-factor authentication
               </h5>
               <button
                 aria-label="Close"
@@ -1635,7 +1677,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                       </i>
                     </span>
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -1661,7 +1703,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                   >
                     3
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -1781,7 +1823,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Verify two-factor authentication
               </h5>
               <button
                 aria-label="Close"
@@ -1818,7 +1860,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                       </i>
                     </span>
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -1844,7 +1886,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                   >
                     3
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -1983,7 +2025,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Setup two-factor authentication
               </h5>
               <button
                 aria-label="Close"
@@ -2028,7 +2070,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                   >
                     1
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -2054,7 +2096,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                   >
                     3
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -2177,7 +2219,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Setup two-factor authentication
               </h5>
               <button
                 aria-label="Close"
@@ -2222,7 +2264,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                   >
                     1
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -2248,7 +2290,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                   >
                     3
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -2371,7 +2413,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Verify two-factor authentication
               </h5>
               <button
                 aria-label="Close"
@@ -2429,7 +2471,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                       </i>
                     </span>
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -2455,7 +2497,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                   >
                     4
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -2501,7 +2543,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                 >
                   <input
                     class="input"
-                    id="input-text-44"
+                    id="input-text-41"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
@@ -2520,7 +2562,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                 >
                   <input
                     class="input"
-                    id="input-text-46"
+                    id="input-text-43"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -2594,7 +2636,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Verify your password
               </h5>
               <button
                 aria-label="Close"
@@ -2636,7 +2678,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                   >
                     2
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -2662,7 +2704,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                   >
                     4
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -2681,7 +2723,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-34"
+                    id="input-text-31"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
@@ -2700,7 +2742,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-36"
+                    id="input-text-33"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -2765,7 +2807,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Verify your password
               </h5>
               <button
                 aria-label="Close"
@@ -2807,7 +2849,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                   >
                     2
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -2833,7 +2875,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                   >
                     4
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -2852,7 +2894,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-38"
+                    id="input-text-35"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -2917,7 +2959,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
               <h5
                 class="modal-title"
               >
-                Setup 2FA
+                Verify your password
               </h5>
               <button
                 aria-label="Close"
@@ -2959,7 +3001,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                   >
                     2
                   </span>
-                  App setup
+                  App Setup
                 </div>
                 <div
                   class="line"
@@ -2985,7 +3027,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                   >
                     4
                   </span>
-                  Recovery codes
+                  Recovery Codes
                 </div>
               </div>
               <div
@@ -3004,7 +3046,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-38"
+                    id="input-text-35"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"

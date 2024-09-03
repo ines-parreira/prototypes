@@ -32,12 +32,11 @@ export default function ModalContinueButton({
         case 3:
             return (
                 <Button
-                    className="full-width"
                     onClick={onFinish}
                     isLoading={isLoading}
                     isDisabled={hasError}
                 >
-                    <span className="full-width">Continue</span>
+                    I Have Saved My Codes
                 </Button>
             )
         default:
