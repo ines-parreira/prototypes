@@ -227,6 +227,47 @@ describe('FiltersPanel', () => {
         ).toBeInTheDocument()
     })
 
+    it('dropdown options should be alphabetically ordered', () => {
+        const unsortedFilters = [
+            FilterKey.Channels,
+            FilterKey.Tags,
+            FilterKey.CustomFields,
+            FilterKey.Agents,
+        ]
+        renderWithStore(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={unsortedFilters}
+            />,
+            defaultState
+        )
+        userEvent.click(
+            screen.getByRole('button', {
+                name: new RegExp(ADD_FILTER_BUTTON_LABEL),
+            })
+        )
+        const filtersOnDropDown = screen.getByRole('option', {
+            name: FilterLabels[FilterKey.Channels],
+        }).parentElement
+
+        expect(filtersOnDropDown?.children).toHaveLength(5)
+        expect(filtersOnDropDown?.children?.[0]?.textContent).toBe(
+            FilterLabels[FilterKey.Agents]
+        )
+        expect(filtersOnDropDown?.children?.[1]?.textContent).toBe(
+            FilterLabels[FilterKey.Channels]
+        )
+        expect(filtersOnDropDown?.children?.[2]?.textContent).toBe(
+            FilterLabels[FilterKey.Tags]
+        )
+        expect(filtersOnDropDown?.children?.[3]?.textContent).toBe(
+            customFieldsMockReponse.data[1].label
+        )
+        expect(filtersOnDropDown?.children?.[4]?.textContent).toBe(
+            customFieldsMockReponse.data[0].label
+        )
+    })
+
     it('should allow adding optional Filters after initial render', async () => {
         const initialFilters = [FilterKey.Tags, FilterKey.Agents]
         const newFilter = FilterKey.Channels

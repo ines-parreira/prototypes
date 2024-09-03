@@ -235,6 +235,16 @@ export const FiltersPanel = ({
                 label: FilterLabels[filter.type],
             }
         })
+        .sort((a, b) => (a.label < b.label ? -1 : 1))
+        .sort((a, b) => {
+            if (
+                a.type !== FilterKey.CustomFields &&
+                b.type === FilterKey.CustomFields
+            ) {
+                return -1
+            }
+            return 0
+        })
 
     const optionalFiltersToRender = useMemo(
         () => activeFilters.filter((filter) => filter.active),

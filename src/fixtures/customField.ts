@@ -203,7 +203,7 @@ export const customFieldsMockReponse = {
             id: 5081,
             external_id: null,
             object_type: 'Ticket',
-            label: 'AI Agent Contact Reason',
+            label: 'ZAI Agent Contact Reason',
             description: 'AI Agent contact reason categories',
             priority: 8,
             required: false,
