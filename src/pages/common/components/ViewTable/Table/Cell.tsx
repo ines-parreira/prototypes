@@ -1,72 +1,48 @@
-import React, {Component, ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, {useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {EntityType} from 'models/view/types'
 
-import * as viewsConfig from 'config/views'
-
-import css from 'pages/common/components/ViewTable/Table.less'
-import {RootState} from 'state/types'
+import {defaultCell, getConfigByName} from 'config/views'
 import {RenderLabel} from 'pages/common/utils/labels'
 
-type OwnProps = {
+import css from 'pages/common/components/ViewTable/Table.less'
+
+type Props = {
     field: Map<any, any>
-    item: Map<any, any>
-    type: EntityType
+    item?: Map<any, any>
+    itemUrl?: string | null
     onClick?: (item: Map<any, any>) => void
-    itemUrl: Maybe<string>
+    type: EntityType
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
+const Cell = ({field, item = fromJS({}), itemUrl, onClick, type}: Props) => {
+    const config = getConfigByName(type)
 
-export class CellContainer extends Component<Props> {
-    static defaultProps: Pick<Props, 'item'> = {
-        item: fromJS({}),
-    }
-
-    _labelValue = () => {
-        const {config, field, item} = this.props
-
-        const cellRenderFunction = config.get(
-            'cell'
-        ) as typeof viewsConfig.defaultCell
-
+    const labelValue = useMemo(() => {
+        const cellRenderFunction = config.get('cell') as typeof defaultCell
         return cellRenderFunction(field.get('name') as string, item)
-    }
+    }, [config, field, item])
 
-    render() {
-        const {item, field, onClick, itemUrl} = this.props
-
-        let content: ReactNode
-        const children = (
-            <RenderLabel field={field} value={this._labelValue()} />
-        )
-
-        if (itemUrl) {
-            content = (
+    return (
+        <td className={css['limit-overflow']}>
+            {itemUrl ? (
                 <Link to={itemUrl} onClick={() => onClick?.(item)}>
-                    <div className="cell-wrapper">{children}</div>
+                    <div className="cell-wrapper">
+                        <RenderLabel field={field} value={labelValue} />
+                    </div>
                 </Link>
-            )
-        } else if (onClick) {
-            content = (
+            ) : onClick ? (
                 <div className="cell-wrapper" onClick={() => onClick(item)}>
-                    {children}
+                    <RenderLabel field={field} value={labelValue} />
                 </div>
-            )
-        } else {
-            content = <div className="cell-wrapper">{children}</div>
-        }
-
-        return <td className={css['limit-overflow']}>{content}</td>
-    }
+            ) : (
+                <div className="cell-wrapper">
+                    <RenderLabel field={field} value={labelValue} />
+                </div>
+            )}
+        </td>
+    )
 }
 
-const connector = connect((state: RootState, ownProps: OwnProps) => {
-    return {
-        config: viewsConfig.getConfigByName(ownProps.type),
-    }
-})
-
-export default connector(CellContainer)
+export default Cell
