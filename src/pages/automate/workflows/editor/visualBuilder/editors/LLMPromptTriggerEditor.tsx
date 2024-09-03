@@ -10,6 +10,7 @@ import TextArea from 'pages/common/forms/TextArea'
 import CheckBox from 'pages/common/forms/CheckBox'
 import ActionFormInputVariable from 'pages/automate/actions/components/ActionFormInputVariable'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import {getTriggerNode} from 'pages/automate/workflows/models/workflowConfiguration.model'
 
 import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
 import {ConditionsBranchBody} from './ConditionsNodeEditor/ConditionsBranchBody'
@@ -33,6 +34,15 @@ export default function LLMPromptTriggerEditor({
         [visualBuilderGraph, nodeInEdition.id]
     )
 
+    const isDraft = visualBuilderGraph.wfConfigurationOriginal.is_draft
+    const initialTriggerNode = useMemo(
+        () =>
+            getTriggerNode(
+                visualBuilderGraph.wfConfigurationOriginal
+            ) as LLMPromptTriggerNodeType,
+        [visualBuilderGraph.wfConfigurationOriginal]
+    )
+
     return (
         <>
             <NodeEditorDrawerHeader nodeInEdition={nodeInEdition} />
@@ -51,6 +61,7 @@ export default function LLMPromptTriggerEditor({
                                 instructions: nextValue,
                             })
                         }}
+                        isDisabled={!isDraft}
                     />
                     <CheckBox
                         isChecked={nodeInEdition.data.requires_confirmation}
@@ -75,6 +86,12 @@ export default function LLMPromptTriggerEditor({
                                 name: input.name,
                                 instructions: input.instructions,
                                 dataType: input.data_type,
+                                isNotFullyEditable:
+                                    !isDraft &&
+                                    initialTriggerNode.data.custom_inputs.some(
+                                        (initialInput) =>
+                                            initialInput.id === input.id
+                                    ),
                             })) ?? []
                         }
                         onAddInput={() => {
@@ -154,6 +171,7 @@ export default function LLMPromptTriggerEditor({
                                         condition,
                                     })
                                 }}
+                                isDisabled={!isDraft}
                             />
                         </div>
                     </ToolbarProvider>

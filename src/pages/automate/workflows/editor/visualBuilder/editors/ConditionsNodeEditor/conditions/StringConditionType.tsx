@@ -14,12 +14,14 @@ interface Props {
     onChange: (condition: ConditionSchema) => void
     shouldShowErrors?: boolean
     customError?: React.ReactNode
+    isDisabled?: boolean
 }
 export const StringConditionType = ({
     condition,
     onChange,
     customError,
     shouldShowErrors,
+    isDisabled,
 }: Props) => {
     const key = Object.keys(condition)[0] as AllKeys<typeof condition>
     const schema = condition[key]
@@ -51,6 +53,7 @@ export const StringConditionType = ({
             error={hasError && (customError ?? 'Enter a value')}
             hasError={hasError}
             value={value}
+            isDisabled={isDisabled}
         />
     )
 }

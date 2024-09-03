@@ -25,6 +25,7 @@ export type ConditionProps = {
     selectedOperatorValue: string
     onOperatorSelect: (key: string) => void
     onDelete?: () => void
+    isDisabled?: boolean
 }
 
 export const Condition = ({
@@ -36,6 +37,7 @@ export const Condition = ({
     children,
     onDelete,
     onOperatorSelect,
+    isDisabled,
 }: ConditionProps) => {
     const [isSelectOpen, setIsSelectOpen] = useState(false)
     const selectRef = useRef<HTMLDivElement>(null)
@@ -62,6 +64,7 @@ export const Condition = ({
                 floating={floatingSelectRef}
                 onToggle={setIsSelectOpen}
                 label={selectedOperatorLabel}
+                isDisabled={isDisabled}
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => (
@@ -98,6 +101,7 @@ export const Condition = ({
                         intent="destructive"
                         size="medium"
                         onClick={() => onDelete()}
+                        isDisabled={isDisabled}
                     >
                         clear
                     </IconButton>

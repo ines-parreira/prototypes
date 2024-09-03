@@ -85,6 +85,7 @@ const getInitialTemplate = () => {
                 },
             },
         ],
+        is_draft: true,
     })
     b.insertHttpRequestConditionAndEndStepAndSelect('success')
     b.selectParentStep()

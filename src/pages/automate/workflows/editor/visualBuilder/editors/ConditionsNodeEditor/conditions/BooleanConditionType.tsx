@@ -9,8 +9,13 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 interface Props {
     condition: EqualsSchema<boolean>
     onChange: (condition: ConditionSchema) => void
+    isDisabled?: boolean
 }
-export const BooleanConditionType = ({condition, onChange}: Props) => {
+export const BooleanConditionType = ({
+    condition,
+    onChange,
+    isDisabled,
+}: Props) => {
     const key = Object.keys(condition)[0] as AllKeys<typeof condition>
     const schema = condition[key]
 
@@ -47,6 +52,7 @@ export const BooleanConditionType = ({condition, onChange}: Props) => {
                     value: 0,
                 },
             ]}
+            disabled={isDisabled}
         />
     )
 }

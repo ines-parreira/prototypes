@@ -59,7 +59,10 @@ export default function ActionFormInputVariable({
                         >
                             <div id={inputElemenstIdMap['dataType']}>
                                 <SelectField
-                                    disabled={isInputDisabled}
+                                    disabled={
+                                        isInputDisabled ||
+                                        input.isNotFullyEditable
+                                    }
                                     showSelectedOption
                                     value={input.dataType}
                                     onChange={(newDataType) =>
@@ -129,7 +132,9 @@ export default function ActionFormInputVariable({
                             <IconButton
                                 id={inputElemenstIdMap['delete']}
                                 intent="destructive"
-                                isDisabled={isInputDisabled}
+                                isDisabled={
+                                    isInputDisabled || input.isNotFullyEditable
+                                }
                                 fillStyle="ghost"
                                 onClick={() => onDeleteInput(index)}
                             >

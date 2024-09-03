@@ -101,7 +101,7 @@ function injectTkeysInChoicesIfNotExist(
     })
 }
 
-function getTriggerNode(
+export function getTriggerNode(
     c: WorkflowConfiguration
 ): ChannelTriggerNodeType | LLMPromptTriggerNodeType {
     const trigger = c.triggers?.[0]
@@ -497,7 +497,8 @@ export class WorkflowConfigurationBuilder {
           } & Pick<
               WorkflowConfiguration,
               'name' | 'entrypoint' | 'id' | 'triggers' | 'entrypoints'
-          >) {
+          > &
+              Partial<Pick<WorkflowConfiguration, 'is_draft'>>) {
         this.data = {
             internal_id: ulid(),
             name,

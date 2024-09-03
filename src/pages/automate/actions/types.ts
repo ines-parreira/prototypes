@@ -53,6 +53,7 @@ export type CustomInput = {
     instructions: LlmPromptTrigger['settings']['custom_inputs'][number]['instructions']
     dataType: LlmPromptTrigger['settings']['custom_inputs'][number]['data_type']
     isTemplateCustomInputs?: boolean
+    isNotFullyEditable?: boolean
 }
 
 export type CommonActionFormValues =

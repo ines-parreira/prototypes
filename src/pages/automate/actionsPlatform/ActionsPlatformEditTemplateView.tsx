@@ -15,6 +15,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {DraftBadge} from 'pages/automate/workflows/components/DraftBadge'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 import {ActionTemplate} from './types'
 import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
@@ -50,7 +51,7 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
     const appDispatch = useAppDispatch()
     const handleValidate = useValidateVisualBuilderGraph()
     const handleSave = useCallback(
-        (isDraft: boolean) => {
+        async (isDraft: boolean) => {
             const error = handleValidate(visualBuilderGraphDirty)
 
             if (error) {
@@ -68,22 +69,40 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
                 return
             }
 
-            void editActionTemplate([
-                {internal_id: template.internal_id},
+            const configurationDirty =
                 transformVisualBuilderGraphIntoWfConfiguration(
                     visualBuilderGraphDirty,
                     isDraft
-                ) as ActionTemplate,
+                ) as ActionTemplate
+
+            await editActionTemplate([
+                {
+                    internal_id:
+                        visualBuilderGraphDirty.wfConfigurationOriginal
+                            .internal_id,
+                },
+                configurationDirty,
             ])
+
+            dispatch({
+                type: 'RESET_GRAPH',
+                graph: computeNodesPositions(
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(
+                        configurationDirty
+                    )
+                ),
+            })
         },
         [
             visualBuilderGraphDirty,
             editActionTemplate,
-            template.internal_id,
             appDispatch,
             handleValidate,
+            dispatch,
         ]
     )
+
+    const isDraft = visualBuilderGraphDirty.wfConfigurationOriginal.is_draft
 
     return (
         <div className={css.page}>
@@ -106,8 +125,9 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
                                 shouldShowErrors &&
                                 !visualBuilderGraphDirty.name.trim()
                             }
+                            isDisabled={!isDraft}
                         />
-                        {template.is_draft && <DraftBadge />}
+                        {isDraft && <DraftBadge />}
                     </div>
                 }
             >
@@ -127,28 +147,63 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
                     >
                         Discard changes
                     </Button>
-                    <Button
-                        intent={template.is_draft ? 'secondary' : 'primary'}
-                        isDisabled={
-                            !isVisualBuilderGraphDirty ||
-                            isEditActionTemplateLoading
-                        }
-                        onClick={() => {
-                            handleSave(template.is_draft)
-                        }}
-                    >
-                        Save
-                    </Button>
-                    {template.is_draft && (
-                        <Button
-                            intent="primary"
-                            isDisabled={isEditActionTemplateLoading}
-                            onClick={() => {
-                                handleSave(false)
+                    {isDraft ? (
+                        <>
+                            <Button
+                                intent="secondary"
+                                isDisabled={
+                                    !isVisualBuilderGraphDirty ||
+                                    isEditActionTemplateLoading
+                                }
+                                onClick={() => {
+                                    void handleSave(true)
+                                }}
+                            >
+                                Save
+                            </Button>
+                            <ConfirmationPopover
+                                onConfirm={() => {
+                                    void handleSave(false)
+                                }}
+                                showCancelButton
+                                cancelButtonProps={{intent: 'secondary'}}
+                                content="Are you sure you want to publish this Action template? This will prevent you from updating settings like name, AI Agent instructions, conditions and deleting already existing inputs."
+                            >
+                                {({uid, onDisplayConfirmation}) => (
+                                    <Button
+                                        id={uid}
+                                        intent="primary"
+                                        isDisabled={isEditActionTemplateLoading}
+                                        onClick={onDisplayConfirmation}
+                                    >
+                                        Publish
+                                    </Button>
+                                )}
+                            </ConfirmationPopover>
+                        </>
+                    ) : (
+                        <ConfirmationPopover
+                            onConfirm={() => {
+                                void handleSave(false)
                             }}
+                            showCancelButton
+                            cancelButtonProps={{intent: 'secondary'}}
+                            content="Are you sure you want to update this Action template? This will also update all Actions created from this template."
                         >
-                            Publish
-                        </Button>
+                            {({uid, onDisplayConfirmation}) => (
+                                <Button
+                                    id={uid}
+                                    intent="primary"
+                                    isDisabled={
+                                        !isVisualBuilderGraphDirty ||
+                                        isEditActionTemplateLoading
+                                    }
+                                    onClick={onDisplayConfirmation}
+                                >
+                                    Save
+                                </Button>
+                            )}
+                        </ConfirmationPopover>
                     )}
                 </div>
             </PageHeader>

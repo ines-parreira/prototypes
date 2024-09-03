@@ -15,6 +15,7 @@ interface Props {
     format: WorkflowVariableFormat | undefined
     onChange: (condition: ConditionSchema) => void
     shouldShowErrors?: boolean
+    isDisabled?: boolean
 }
 
 const getDisplayValue = (
@@ -46,6 +47,7 @@ export const NumberConditionType = ({
     format,
     onChange,
     shouldShowErrors,
+    isDisabled,
 }: Props) => {
     const key = Object.keys(condition)[0] as AllKeys<typeof condition>
 
@@ -79,6 +81,7 @@ export const NumberConditionType = ({
                     })
                 )
             }}
+            isDisabled={isDisabled}
         />
     )
 }

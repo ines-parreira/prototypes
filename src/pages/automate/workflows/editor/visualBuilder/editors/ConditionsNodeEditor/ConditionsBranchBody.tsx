@@ -63,6 +63,7 @@ interface Props {
     >
     emptyBranchErrorMessage?: string
     variablePickerTooltipMessage?: string | null
+    isDisabled?: boolean
 }
 
 export const ConditionsBranchBody = ({
@@ -84,6 +85,7 @@ export const ConditionsBranchBody = ({
     maxConditionsTooltipMessage,
     variableDropdownProps,
     variablePickerTooltipMessage,
+    isDisabled,
 }: Props) => {
     const renderInput = useCallback(
         (
@@ -113,6 +115,7 @@ export const ConditionsBranchBody = ({
                                     conditionIndex
                                 )
                             }
+                            isDisabled={isDisabled}
                         />
                     )
                 }
@@ -133,6 +136,7 @@ export const ConditionsBranchBody = ({
                                     conditionIndex
                                 )
                             }
+                            isDisabled={isDisabled}
                         />
                     )
                 }
@@ -152,6 +156,7 @@ export const ConditionsBranchBody = ({
                                     conditionIndex
                                 )
                             }
+                            isDisabled={isDisabled}
                         />
                     )
                 }
@@ -169,12 +174,13 @@ export const ConditionsBranchBody = ({
                                     conditionIndex
                                 )
                             }
+                            isDisabled={isDisabled}
                         />
                     )
                 }
             }
         },
-        [conditions, onConditionChange, shouldShowErrors]
+        [conditions, onConditionChange, shouldShowErrors, isDisabled]
     )
 
     const handleOperatorSelect = useCallback(
@@ -233,6 +239,7 @@ export const ConditionsBranchBody = ({
                         value="none"
                         isSelected={type === null}
                         onClick={() => onConditionTypeChange(branchId, null)}
+                        isDisabled={isDisabled}
                     />
                 )}
                 <PreviewRadioButton
@@ -241,6 +248,7 @@ export const ConditionsBranchBody = ({
                     value="and"
                     isSelected={type === 'and'}
                     onClick={() => onConditionTypeChange(branchId, 'and')}
+                    isDisabled={isDisabled}
                 />
                 <PreviewRadioButton
                     className={css.conditionType}
@@ -248,6 +256,7 @@ export const ConditionsBranchBody = ({
                     value="or"
                     isSelected={type === 'or'}
                     onClick={() => onConditionTypeChange(branchId, 'or')}
+                    isDisabled={isDisabled}
                 />
             </div>
 
@@ -311,6 +320,7 @@ export const ConditionsBranchBody = ({
                                             condition,
                                             index
                                         )}
+                                        isDisabled={isDisabled}
                                     >
                                         {renderInput(
                                             variable.type,
@@ -330,7 +340,7 @@ export const ConditionsBranchBody = ({
                         <WorkflowVariablePicker
                             label="Add Condition"
                             size="medium"
-                            disabled={conditions.length >= 10}
+                            disabled={isDisabled || conditions.length >= 10}
                             tooltipMessage={
                                 conditions.length >= 10
                                     ? maxConditionsTooltipMessage

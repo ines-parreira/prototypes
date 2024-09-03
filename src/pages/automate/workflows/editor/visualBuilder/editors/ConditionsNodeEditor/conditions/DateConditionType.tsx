@@ -27,8 +27,9 @@ import css from '../ConditionsNodeEditor.less'
 interface Props {
     condition: Exclude<DateSchema, ExistsSchema | DoesNotExistSchema>
     onChange: (condition: ConditionSchema) => void
+    isDisabled?: boolean
 }
-export const DateConditionType = ({condition, onChange}: Props) => {
+export const DateConditionType = ({condition, onChange, isDisabled}: Props) => {
     const currentUser = useAppSelector(getCurrentUser)
 
     const key = Object.keys(condition)[0] as AllKeys<typeof condition>
@@ -84,6 +85,7 @@ export const DateConditionType = ({condition, onChange}: Props) => {
                                 : ''
                         }
                         placeholder="Choose a date..."
+                        isDisabled={isDisabled}
                     />
                 </div>
             </DatePicker>
@@ -121,6 +123,7 @@ export const DateConditionType = ({condition, onChange}: Props) => {
                         })
                     )
                 }}
+                isDisabled={isDisabled}
             />
             <SelectField
                 showSelectedOption
@@ -158,6 +161,7 @@ export const DateConditionType = ({condition, onChange}: Props) => {
                         value: 'w',
                     },
                 ]}
+                disabled={isDisabled}
             />
             <SelectField
                 showSelectedOption
@@ -187,6 +191,7 @@ export const DateConditionType = ({condition, onChange}: Props) => {
                         value: '+',
                     },
                 ]}
+                disabled={isDisabled}
             />
         </>
     )
