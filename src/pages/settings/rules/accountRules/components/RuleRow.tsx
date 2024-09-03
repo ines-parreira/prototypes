@@ -302,14 +302,14 @@ export function RuleRow({
                                     <i
                                         className={classnames(
                                             'material-icons',
-                                            css.warningIcon
+                                            css.infoIcon
                                         )}
                                         id={`copy-icon-${rule.id}`}
                                         onMouseEnter={() =>
                                             setDescriptionOpen(false)
                                         }
                                     >
-                                        error
+                                        info_outline
                                     </i>
                                     <Tooltip
                                         placement="top"

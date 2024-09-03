@@ -231,7 +231,7 @@ const DefaultRuleEditor = (
             {(ruleActions.includes('replyToTicket') ||
                 ruleActions.includes('applyMacro')) && (
                 <div className="mb-4">
-                    <Alert type={AlertType.Warning} icon>
+                    <Alert type={AlertType.Info} icon>
                         <span>
                             The rule has a "reply to customer" or "apply macro"
                             action which will create billable tickets. To avoid
