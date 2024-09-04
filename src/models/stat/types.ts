@@ -17,9 +17,18 @@ export enum FilterKey {
     Tags = 'tags',
 }
 
+export type StateOnlyFilterKeys = Exclude<FilterKey, FilterKey.Period> &
+    Exclude<FilterKey, FilterKey.CustomFields>
+
+export type CleanFilterComponentKeys = Exclude<
+    FilterComponentKey,
+    FilterComponentKey.BusiestTimesMetricSelectFilter
+>
+
 export enum FilterComponentKey {
     BusiestTimesMetricSelectFilter = 'BusiestTimesMetricSelectFilter',
     Store = 'store',
+    PhoneIntegrations = 'phoneIntegrations',
     CustomField = 'customField',
 }
 
@@ -38,6 +47,7 @@ export type StaticFilter =
     | FilterComponentKey.BusiestTimesMetricSelectFilter
     | FilterComponentKey.CustomField
     | FilterComponentKey.Store
+    | FilterComponentKey.PhoneIntegrations
 
 export interface Period {
     end_datetime: string

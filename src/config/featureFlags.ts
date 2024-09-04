@@ -16,6 +16,7 @@ export enum FeatureFlagKey {
     AnalyticsAutoQA = 'analytics-auto-qa',
     AnalyticsNewFilters = 'analytics-new-filters',
     AnalyticsNewFiltersHelpCenter = 'analytics-new-filters-help-center',
+    AnalyticsNewFiltersVoice = 'analytics-new-filters-voice',
     AnalyticsNewFiltersAutomate = 'analytics-new-filters-automate',
     AnalyticsSLAs = 'analytics-slas-report',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',

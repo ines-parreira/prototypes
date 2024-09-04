@@ -1,6 +1,6 @@
 import React from 'react'
 import DashboardSection from 'pages/stats/DashboardSection'
-import IntegrationsFilter from 'pages/stats/common/filters/IntegrationsFilter'
+import {IntegrationsFilter} from 'pages/stats/common/filters/IntegrationsFilter'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'

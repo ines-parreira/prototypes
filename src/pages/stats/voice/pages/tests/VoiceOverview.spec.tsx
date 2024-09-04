@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {render, fireEvent, waitFor} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {
     ALL_CALLS_FILTER_LABEL,
     CALL_LIST_TITLE,
@@ -38,7 +39,8 @@ import {user} from 'fixtures/users'
 import {VOICE_PRODUCT_ID, voicePlan1} from 'fixtures/productPrices'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
 import {VoiceMetric} from 'state/ui/stats/types'
-import * as VoiceCallCallerExperienceMetric from '../../components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
+import * as VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -50,6 +52,10 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('services/reporting/voiceOverviewReportingService')
 jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')
 jest.mock('pages/stats/voice/hooks/useVoiceCallAverageTimeTrend')
+
+jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
+    FiltersPanel: () => <div>filter panel mock</div>,
+}))
 
 assumeMock(useVoiceCallCountTrend).mockReturnValue({
     data: {prevValue: 10, value: 15},
@@ -68,6 +74,10 @@ const VoiceCallCallerExperienceMetricSpy = jest.spyOn(
 )
 
 describe('VoiceOverview', () => {
+    beforeEach(() => {
+        mockFlags({[FeatureFlagKey.AnalyticsNewFiltersVoice]: false})
+    })
+
     const renderVoiceOverview = (featureEnabled = true) => {
         const statsFilters: LegacyStatsFilters = {
             period: {
@@ -160,6 +170,20 @@ describe('VoiceOverview', () => {
         expect(
             queryByText('Analytics are using EST timezone')
         ).toBeInTheDocument()
+    })
+
+    it('should render with no default filters and with new filters panel when feature flag is enabled', () => {
+        mockFlags({[FeatureFlagKey.AnalyticsNewFiltersVoice]: true})
+        const {queryByText} = renderVoiceOverview()
+
+        // filters
+        expect(queryByText('All integrations')).not.toBeInTheDocument()
+        expect(queryByText('1 tag')).not.toBeInTheDocument()
+        expect(queryByText('1 agent')).not.toBeInTheDocument()
+        expect(queryByText('Dec 11, 2023')).not.toBeInTheDocument()
+
+        expect(queryByText('Download data')).toBeInTheDocument()
+        expect(queryByText('filter panel mock')).toBeInTheDocument()
     })
 
     it('should trigger save report when clicking on download data', async () => {

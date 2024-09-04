@@ -12,8 +12,10 @@ import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
 import {
+    CleanFilterComponentKeys,
     FilterComponentKey,
     FilterKey,
+    StateOnlyFilterKeys,
     StaticFilter,
     StatsFilters,
 } from 'models/stat/types'
@@ -23,7 +25,10 @@ import {ChannelsFilterWithState} from 'pages/stats/common/filters/ChannelsFilter
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {CustomFieldsFilterFilterWithState} from 'pages/stats/common/filters/CustomFieldsFilter'
 import css from 'pages/stats/common/filters/FiltersPanel.less'
-import {IntegrationsFilterWithState} from 'pages/stats/common/filters/IntegrationsFilter'
+import {
+    IntegrationsFilterWithState,
+    PhoneIntegrationsFilterWithState,
+} from 'pages/stats/common/filters/IntegrationsFilter'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
 import {HelpCenterFilterWithState} from 'pages/stats/common/filters/HelpCenterFilter'
 import {HelpCenterLanguageFilterWithState} from 'pages/stats/common/filters/HelpCenterLanguageFilter'
@@ -38,7 +43,7 @@ import usePrevious from 'hooks/usePrevious'
 
 type Props = {
     persistentFilters?: StaticFilter[]
-    optionalFilters?: FilterKey[]
+    optionalFilters?: (FilterKey | FilterComponentKey)[]
     filterSettingsOverrides?: {
         [FilterKey.Period]?: Omit<
             ComponentProps<typeof PeriodFilterWithState>,
@@ -63,6 +68,8 @@ export const renderFilter = (filter: FilterKey | FilterComponentKey) => {
             return ChannelsFilterWithState
         case FilterKey.Integrations:
             return IntegrationsFilterWithState
+        case FilterComponentKey.PhoneIntegrations:
+            return PhoneIntegrationsFilterWithState
         case FilterKey.Agents:
             return AgentsFiltersWithState
         case FilterKey.Tags:
@@ -91,26 +98,30 @@ export function isFilterTypeWithValues(
     | FilterComponentKey.CustomField
     | FilterComponentKey.Store
     | FilterComponentKey.BusiestTimesMetricSelectFilter
+    | FilterComponentKey.PhoneIntegrations
 > {
     return (
         type !== FilterKey.CustomFields &&
         type !== FilterKey.Period &&
         type !== FilterComponentKey.CustomField &&
         type !== FilterComponentKey.Store &&
-        type !== FilterComponentKey.BusiestTimesMetricSelectFilter
+        type !== FilterComponentKey.BusiestTimesMetricSelectFilter &&
+        type !== FilterComponentKey.PhoneIntegrations
     )
 }
 
 const getActiveFilters = (
-    optionalFilters: FilterKey[],
+    optionalFilters: (FilterKey | FilterComponentKey)[],
     cleanStatsFilters: StatsFilters
-) =>
-    optionalFilters.reduce<ActiveFilter[]>((arr, filterKey) => {
+) => {
+    const filterComponentKeys = getFilteredFilterComponentKeys(optionalFilters)
+    return filterComponentKeys.reduce<ActiveFilter[]>((arr, filterKey) => {
         if (
             filterKey !== FilterKey.CustomFields &&
             filterKey !== FilterKey.Period
         ) {
-            const filter = cleanStatsFilters[filterKey]
+            const filter =
+                cleanStatsFilters[filterKeyToStateKeyMapper(filterKey)]
             return [
                 ...arr,
                 {
@@ -122,6 +133,31 @@ const getActiveFilters = (
             ]
         }
         return arr
+    }, [])
+}
+
+export const filterKeyToStateKeyMapper = (
+    key: StateOnlyFilterKeys | CleanFilterComponentKeys
+) => {
+    switch (key) {
+        case FilterComponentKey.Store:
+        case FilterComponentKey.PhoneIntegrations:
+            return FilterKey.Integrations
+        case FilterComponentKey.CustomField:
+            return FilterKey.CustomFields
+        default:
+            return key
+    }
+}
+
+export const getFilteredFilterComponentKeys = (
+    keys: (FilterKey | FilterComponentKey)[]
+) =>
+    keys.reduce<(FilterKey | CleanFilterComponentKeys)[]>((acc, key) => {
+        if (key === FilterComponentKey.BusiestTimesMetricSelectFilter) {
+            return acc
+        }
+        return [...acc, key]
     }, [])
 
 type FilterComponent = {

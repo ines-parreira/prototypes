@@ -16,13 +16,21 @@ import {
     initialState as busiestTimesInitialState,
 } from 'state/ui/stats/busiestTimesSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
+import {
+    CleanFilterComponentKeys,
+    FilterComponentKey,
+    FilterKey,
+    StateOnlyFilterKeys,
+    StaticFilter,
+} from 'models/stat/types'
 import {
     initialState as ticketInsightsSliceStatsInitialState,
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {
+    filterKeyToStateKeyMapper,
     FiltersPanel,
+    getFilteredFilterComponentKeys,
     isFilterTypeWithValues,
     UNSUPPORTED_FILTER_PLACEHOLDER,
 } from 'pages/stats/common/filters/FiltersPanel'
@@ -139,6 +147,7 @@ describe('FiltersPanel', () => {
         FilterKey.LocaleCodes,
         FilterComponentKey.BusiestTimesMetricSelectFilter,
         FilterComponentKey.Store,
+        FilterComponentKey.PhoneIntegrations,
     ]
 
     beforeEach(() => {
@@ -490,5 +499,79 @@ describe('isFilterTypeWithValues', () => {
         invalidFilterTypes.forEach((type) => {
             expect(isFilterTypeWithValues(type)).toBe(false)
         })
+    })
+})
+
+describe('filterKeyToStateKeyMapper', () => {
+    it.each<[CleanFilterComponentKeys, FilterKey]>([
+        [FilterComponentKey.Store, FilterKey.Integrations],
+        [FilterComponentKey.PhoneIntegrations, FilterKey.Integrations],
+        [FilterComponentKey.CustomField, FilterKey.CustomFields],
+    ])('should map %s to %s', (input, expected) => {
+        expect(filterKeyToStateKeyMapper(input)).toBe(expected)
+    })
+
+    it.each<StateOnlyFilterKeys[]>([
+        [FilterKey.Agents],
+        [FilterKey.Campaigns],
+        [FilterKey.CampaignStatuses],
+        [FilterKey.Channels],
+        [FilterKey.HelpCenters],
+        [FilterKey.LocaleCodes],
+        [FilterKey.Score],
+        [FilterKey.SlaPolicies],
+        [FilterKey.Tags],
+    ])('should return the same key for FilterKey.%s', (filterKey) => {
+        expect(filterKeyToStateKeyMapper(filterKey)).toBe(filterKey)
+    })
+})
+
+describe('getFilteredFilterComponentKeys', () => {
+    it('should filter out BusiestTimesMetricSelectFilter', () => {
+        const keys = [
+            FilterComponentKey.BusiestTimesMetricSelectFilter,
+            FilterComponentKey.Store,
+        ]
+
+        const result = getFilteredFilterComponentKeys(keys)
+
+        expect(result).toEqual([FilterComponentKey.Store])
+    })
+
+    it('should include all other keys besides BusiestTimesMetricSelectFilter', () => {
+        const keys = [
+            FilterComponentKey.BusiestTimesMetricSelectFilter,
+            FilterComponentKey.Store,
+            FilterComponentKey.PhoneIntegrations,
+            FilterComponentKey.CustomField,
+            FilterKey.Agents,
+            FilterKey.Campaigns,
+            FilterKey.CampaignStatuses,
+            FilterKey.Channels,
+            FilterKey.HelpCenters,
+            FilterKey.Integrations,
+            FilterKey.LocaleCodes,
+            FilterKey.Score,
+            FilterKey.SlaPolicies,
+            FilterKey.Tags,
+        ]
+
+        const result = getFilteredFilterComponentKeys(keys)
+
+        expect(result).toEqual([
+            FilterComponentKey.Store,
+            FilterComponentKey.PhoneIntegrations,
+            FilterComponentKey.CustomField,
+            FilterKey.Agents,
+            FilterKey.Campaigns,
+            FilterKey.CampaignStatuses,
+            FilterKey.Channels,
+            FilterKey.HelpCenters,
+            FilterKey.Integrations,
+            FilterKey.LocaleCodes,
+            FilterKey.Score,
+            FilterKey.SlaPolicies,
+            FilterKey.Tags,
+        ])
     })
 })

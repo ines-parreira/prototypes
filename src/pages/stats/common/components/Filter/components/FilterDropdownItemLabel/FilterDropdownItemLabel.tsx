@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react'
+import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
 
 import css from 'pages/stats/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel.less'
@@ -33,17 +34,16 @@ const FilterDropdownItemLabel = ({label}: Props) => {
     const [showTooltip, setShowTooltip] = useState(false)
 
     useEffect(() => {
-        const showTooltip =
-            ref.current && ref.current.offsetWidth === LABEL_MAX_WIDTH
+        const show = ref.current && ref.current.offsetWidth >= LABEL_MAX_WIDTH
 
-        setShowTooltip(!!showTooltip)
+        setShowTooltip(!!show)
     }, [label])
 
     return (
         <>
             <div
                 ref={ref}
-                className={css.option}
+                className={classnames(showTooltip && css.rtlOption)}
                 dangerouslySetInnerHTML={{
                     __html: highlightedLabel,
                 }}

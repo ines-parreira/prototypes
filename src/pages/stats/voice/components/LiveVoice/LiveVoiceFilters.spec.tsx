@@ -6,9 +6,9 @@ import * as integrationsSelectors from 'state/integrations/selectors'
 
 import LiveVoiceFilters from './LiveVoiceFilters'
 
-jest.mock('pages/stats/common/filters/IntegrationsFilter', () => () => (
-    <div>IntegrationsFilter</div>
-))
+jest.mock('pages/stats/common/filters/IntegrationsFilter', () => ({
+    IntegrationsFilter: () => <div>IntegrationsFilter</div>,
+}))
 jest.mock('pages/stats/common/filters/AgentsFilter', () => () => (
     <div>AgentsFilter</div>
 ))

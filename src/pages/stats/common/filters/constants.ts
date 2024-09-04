@@ -42,6 +42,7 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: 'Report on',
     [FilterComponentKey.CustomField]: 'Report on',
     [FilterComponentKey.Store]: 'Report on',
+    [FilterComponentKey.PhoneIntegrations]: 'Integration',
 }
 
 export const tagsFilterLogicalOperators = [

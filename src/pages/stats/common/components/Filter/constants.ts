@@ -2,7 +2,7 @@ export const FILTER_NAME_MAX_WIDTH = 120
 
 export const FILTER_VALUE_MAX_WIDTH = 240
 
-export const LABEL_MAX_WIDTH = 262
+export const LABEL_MAX_WIDTH = 252
 
 export const FILTER_VALUE_PLACEHOLDER = 'Select value...'
 export const FILTER_SELECT_ALL_LABEL = 'Select all'

@@ -25,6 +25,7 @@ type VoiceCallCallerExperienceMetricProps = {
     metricTrend: MetricTrend
     statsFilters: StatsFilters
     metricData: VoiceMetrics
+    isAnalyticsNewFilters?: boolean
 }
 
 function VoiceCallCallerExperienceMetric({
@@ -33,6 +34,7 @@ function VoiceCallCallerExperienceMetric({
     statsFilters,
     metricTrend,
     metricData,
+    isAnalyticsNewFilters = false,
 }: VoiceCallCallerExperienceMetricProps) {
     const isVoiceCallDrillDownEnabled =
         useFlags()[FeatureFlagKey.VoiceCallsDrillDown]
@@ -77,6 +79,7 @@ function VoiceCallCallerExperienceMetric({
                         isVoiceCallDrillDownEnabled && !!voiceCallsAverageTime
                     }
                     metricData={metricData}
+                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {metricValue}
                 </DrillDownModalTrigger>

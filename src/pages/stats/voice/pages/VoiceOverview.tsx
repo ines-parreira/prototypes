@@ -1,9 +1,10 @@
 import React, {useMemo, useState} from 'react'
 import moment from 'moment/moment'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
+import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import StatsPage from 'pages/stats/StatsPage'
 import {
     AVERAGE_TALK_TIME_METRIC_HINT,
@@ -28,12 +29,15 @@ import {
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import {AccountFeature} from 'state/currentAccount/types'
-import {getPageStatsFilters} from 'state/stats/selectors'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
-import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
+import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import ChartCard from 'pages/stats/ChartCard'
@@ -53,18 +57,32 @@ import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/Voic
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
 import {ProductType} from 'models/billing/types'
 import {VoiceMetric} from 'state/ui/stats/types'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import {FilterKey, FilterComponentKey} from 'models/stat/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 function VoiceOverview() {
     const [tableFilterOption, setTableFilterOption] = useState(
         VoiceCallFilterOptions.All
     )
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
+    const isAnalyticsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
+
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isAnalyticsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
 
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
-    const pageStatsFilters = useAppSelector(getPageStatsFilters)
-    useCleanStatsFilters(pageStatsFilters)
+    const pageStatsFilters = useAppSelector(
+        getPageStatsFiltersWithLogicalOperators
+    )
+    useCleanStatsFiltersWithLogicalOperators(pageStatsFilters)
 
     const averageWaitTimeTrend = useVoiceCallAverageTimeTrend(
         VoiceCallAverageTimeMetric.WaitTime,
@@ -118,26 +136,25 @@ function VoiceOverview() {
         return Object.values(exportableData).some((metric) => metric.isFetching)
     }, [exportableData])
 
-    return (
-        <StatsPage
-            title={VOICE_OVERVIEW_PAGE_TITLE}
-            titleExtra={
+    const voiceFilters = useMemo(
+        () =>
+            !isAnalyticsNewFilters ? (
                 <>
                     <DEPRECATED_IntegrationsStatsFilter
-                        value={pageStatsFilters.integrations}
+                        value={pageStatsFilters.integrations?.values}
                         integrations={phoneIntegrations}
                         isMultiple
                         variant={'ghost'}
                     />
                     <DEPRECATED_TagsStatsFilter
-                        value={pageStatsFilters.tags}
+                        value={pageStatsFilters.tags?.values}
                         variant={'ghost'}
                     />
                     <DEPRECATED_AgentsStatsFilter
-                        value={pageStatsFilters.agents}
+                        value={pageStatsFilters.agents?.values}
                         variant={'ghost'}
                     />
-                    <PeriodStatsFilter
+                    <DEPRECATED_PeriodStatsFilter
                         initialSettings={{
                             minDate: moment(
                                 MIN_DATE_FOR_VOICE_STATS,
@@ -148,6 +165,24 @@ function VoiceOverview() {
                         value={pageStatsFilters.period}
                         variant={'ghost'}
                     />
+                </>
+            ) : null,
+        [
+            isAnalyticsNewFilters,
+            pageStatsFilters.agents,
+            pageStatsFilters.integrations,
+            pageStatsFilters.period,
+            pageStatsFilters.tags,
+            phoneIntegrations,
+        ]
+    )
+
+    return (
+        <StatsPage
+            title={VOICE_OVERVIEW_PAGE_TITLE}
+            titleExtra={
+                <>
+                    {voiceFilters}
                     <VoiceOverviewDownloadDataButton
                         onClick={async () => {
                             logEvent(SegmentEvent.StatDownloadClicked, {
@@ -163,9 +198,25 @@ function VoiceOverview() {
                 </>
             }
         >
+            {isAnalyticsNewFilters && (
+                <DashboardSection>
+                    <DashboardGridCell size={12} className="pb-0">
+                        <FiltersPanel
+                            persistentFilters={[FilterKey.Period]}
+                            optionalFilters={[
+                                FilterComponentKey.PhoneIntegrations,
+                                FilterKey.Tags,
+                                FilterKey.Agents,
+                            ]}
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
+            )}
+
             <DashboardSection title={CALLER_EXPERIENCE_METRICS_TITLE}>
                 <DashboardGridCell size={6}>
                     <VoiceCallCallerExperienceMetric
+                        isAnalyticsNewFilters={isAnalyticsNewFilters}
                         title={AVERAGE_WAIT_TIME_METRIC_TITLE}
                         hint={AVERAGE_WAIT_TIME_METRIC_HINT}
                         statsFilters={cleanStatsFilters}
@@ -178,6 +229,7 @@ function VoiceOverview() {
                 </DashboardGridCell>
                 <DashboardGridCell size={6}>
                     <VoiceCallCallerExperienceMetric
+                        isAnalyticsNewFilters={isAnalyticsNewFilters}
                         title={AVERAGE_TALK_TIME_METRIC_TITLE}
                         hint={AVERAGE_TALK_TIME_METRIC_HINT}
                         statsFilters={cleanStatsFilters}

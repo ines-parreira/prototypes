@@ -20,7 +20,7 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import IntegrationsFilter from 'pages/stats/common/filters/IntegrationsFilter'
+import {IntegrationsFilter} from 'pages/stats/common/filters/IntegrationsFilter'
 import {FilterKey} from 'models/stat/types'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 

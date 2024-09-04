@@ -1,6 +1,7 @@
 import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getStatsMessagingAndAppIntegrations,
@@ -27,7 +28,7 @@ type Props = {
     integrations: Integration[]
 } & RemovableFilter
 
-export default function IntegrationsFilter({
+export function IntegrationsFilter({
     value = emptyFilter,
     integrations,
     initialiseAsOpen = false,
@@ -138,4 +139,11 @@ export const IntegrationsFilterWithState = connect((state: RootState) => ({
         FilterKey.Integrations
     ],
     integrations: getStatsMessagingAndAppIntegrations(state),
+}))(IntegrationsFilter)
+
+export const PhoneIntegrationsFilterWithState = connect((state: RootState) => ({
+    value: getPageStatsFiltersWithLogicalOperators(state)[
+        FilterKey.Integrations
+    ],
+    integrations: getPhoneIntegrations(state),
 }))(IntegrationsFilter)

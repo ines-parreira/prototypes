@@ -54,6 +54,7 @@ export const VoiceCallFiltersMembers: StatsFiltersMembers = {
     integrations: VoiceCallMember.IntegrationId,
     agents: VoiceCallMember.AgentId,
     tags: TicketMember.Tags,
+    customFields: TicketMember.CustomField,
 }
 
 export type VoiceCallCube = Cube<
