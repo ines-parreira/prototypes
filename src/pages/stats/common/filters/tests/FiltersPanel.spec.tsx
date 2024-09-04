@@ -287,6 +287,83 @@ describe('FiltersPanel', () => {
         )
     })
 
+    it('should add optional filters in order you click on them', () => {
+        const expectElementsToBeInOrderYouSelectedThemFromTheList = (
+            elements: HTMLElement[]
+        ) => {
+            for (let i = 1; i < elements.length; i++) {
+                expect(
+                    elements[i - 1].compareDocumentPosition(elements[i])
+                ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+            }
+        }
+        const filtersInAlphabeticalOrder = [
+            FilterKey.Agents,
+            FilterKey.Channels,
+            FilterKey.HelpCenters,
+            FilterKey.Integrations,
+            FilterKey.Tags,
+        ]
+        const filtersInRandomOrderToBeAddedToThePanel = [
+            FilterKey.Tags,
+            FilterKey.Agents,
+            FilterKey.Integrations,
+            FilterKey.HelpCenters,
+            FilterKey.Channels,
+        ]
+        const filtersInRandomOrderToBeAddedToThePanelAsLabels =
+            filtersInRandomOrderToBeAddedToThePanel.map(
+                (filter) => FilterLabels[filter]
+            )
+        const state = {
+            ...defaultState,
+            [statsSlice.name]: {
+                ...defaultState[statsSlice.name],
+                filters: {...initialState.filters},
+            },
+        }
+
+        renderWithStore(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={filtersInAlphabeticalOrder}
+            />,
+            state
+        )
+
+        filtersInRandomOrderToBeAddedToThePanelAsLabels.forEach((label) => {
+            userEvent.click(
+                screen.getByRole('button', {
+                    name: new RegExp(ADD_FILTER_BUTTON_LABEL),
+                })
+            )
+            userEvent.click(
+                screen.getByRole('option', {
+                    name: label,
+                })
+            )
+        })
+
+        filtersInRandomOrderToBeAddedToThePanelAsLabels.forEach((label) => {
+            expect(screen.queryByText(new RegExp(label))).toBeInTheDocument()
+        })
+
+        const filtersThatWereAddedAsTextFromHTML =
+            filtersInRandomOrderToBeAddedToThePanelAsLabels.map(
+                (label) => screen.getByText(new RegExp(label)).innerHTML
+            )
+
+        expectElementsToBeInOrderYouSelectedThemFromTheList(
+            filtersInRandomOrderToBeAddedToThePanelAsLabels.map((label) =>
+                screen.getByText(new RegExp(label))
+            )
+        )
+
+        expect(filtersInRandomOrderToBeAddedToThePanelAsLabels).toEqual(
+            filtersThatWereAddedAsTextFromHTML
+        )
+    })
+
     it('should allow adding optional Filters after initial render', async () => {
         const initialFilters = [FilterKey.Tags, FilterKey.Agents]
         const newFilter = FilterKey.Channels

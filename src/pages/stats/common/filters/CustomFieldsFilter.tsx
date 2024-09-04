@@ -53,7 +53,7 @@ const getOptions = (activeFields: CustomField[], customFieldId: number) => {
 
 export default function CustomFieldsFilter({
     value: inputValue,
-    initialiseAsOpen = false,
+    initializeAsOpen = false,
     onRemove,
     filterName,
     customFieldId,
@@ -140,7 +140,7 @@ export default function CustomFieldsFilter({
             onChangeLogicalOperator={handleFilterOperatorChange}
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
-            initialiseAsOpen={initialiseAsOpen}
+            initializeAsOpen={initializeAsOpen}
         />
     )
 }

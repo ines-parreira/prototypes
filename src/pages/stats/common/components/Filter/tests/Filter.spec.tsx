@@ -54,7 +54,7 @@ describe('Filter', () => {
         const onDropdownOpenSpy = jest.fn()
         render(
             <Filter
-                initialiseAsOpen={true}
+                initializeAsOpen={true}
                 filterName={filterName}
                 filterOptionGroups={filterOptionGroups}
                 selectedOptions={[]}

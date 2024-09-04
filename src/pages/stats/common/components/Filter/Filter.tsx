@@ -36,7 +36,7 @@ type Props = {
         onLoad: () => Promise<any>
         shouldLoadMore: boolean
     }
-    initialiseAsOpen?: boolean
+    initializeAsOpen?: boolean
     isMultiple?: boolean
     isPersistent?: boolean
     logicalOperators: LogicalOperatorEnum[]
@@ -85,7 +85,7 @@ const Filter = ({
     filterName,
     filterOptionGroups,
     infiniteScroll,
-    initialiseAsOpen = false,
+    initializeAsOpen = false,
     isMultiple = true,
     isPersistent = false,
     logicalOperators,
@@ -103,7 +103,7 @@ const Filter = ({
     showSearch = true,
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
-    const [isDropdownOpen, setIsDropdownOpen] = useState(initialiseAsOpen)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(initializeAsOpen)
 
     useEffectOnce(() => {
         if (initialiseAsOpen) {

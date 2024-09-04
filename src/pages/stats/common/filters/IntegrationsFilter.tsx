@@ -31,7 +31,7 @@ type Props = {
 export function IntegrationsFilter({
     value = emptyFilter,
     integrations,
-    initialiseAsOpen = false,
+    initializeAsOpen = false,
     onRemove,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -129,7 +129,7 @@ export function IntegrationsFilter({
             onChangeLogicalOperator={handleFilterOperatorChange}
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
-            initialiseAsOpen={initialiseAsOpen}
+            initializeAsOpen={initializeAsOpen}
         />
     )
 }

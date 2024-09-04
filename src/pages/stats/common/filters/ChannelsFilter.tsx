@@ -34,7 +34,7 @@ type Props = {
 export function ChannelsFilter({
     value = emptyFilter,
     channelsFilter,
-    initialiseAsOpen = false,
+    initializeAsOpen = false,
     onRemove,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -138,7 +138,7 @@ export function ChannelsFilter({
             onChangeLogicalOperator={handleFilterOperatorChange}
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
-            initialiseAsOpen={initialiseAsOpen}
+            initializeAsOpen={initializeAsOpen}
         />
     )
 }

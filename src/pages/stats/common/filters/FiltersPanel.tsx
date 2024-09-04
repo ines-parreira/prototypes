@@ -134,7 +134,7 @@ const getActiveFilters = (
                     key: filterKey,
                     type: filterKey,
                     active: filter !== undefined && filter.values.length > 0,
-                    initialiseAsOpen: false,
+                    initializeAsOpen: false,
                 },
             ]
         }
@@ -145,7 +145,7 @@ const getActiveFilters = (
 type FilterComponent = {
     key: string
     active: boolean
-    initialiseAsOpen: boolean
+    initializeAsOpen: boolean
 }
 
 type CustomFieldFilter = FilterComponent & {
@@ -184,7 +184,7 @@ export const FiltersPanel = ({
             filterName: field.label,
             customFieldId: field.id,
             active: false,
-            initialiseAsOpen: false,
+            initializeAsOpen: false,
         })
     )
 
@@ -271,19 +271,24 @@ export const FiltersPanel = ({
 
     const handleOnClick = useCallback(
         (value: string) =>
-            setActiveFilters(
-                activeFilters.map((filter) => {
-                    if (filter.key === value) {
-                        return {
-                            ...filter,
-                            active: true,
-                            initialiseAsOpen: true,
-                        }
-                    }
-                    return filter
-                })
-            ),
-        [activeFilters]
+            setActiveFilters((prevFilters) => {
+                const filtersWithoutTheSelectedOne = prevFilters.filter(
+                    (filter) => filter.key !== value
+                )
+                const filterToUpdate = prevFilters.find(
+                    (filter) => filter.key === value
+                )
+
+                if (filterToUpdate) {
+                    filtersWithoutTheSelectedOne.push({
+                        ...filterToUpdate,
+                        active: !filterToUpdate.active,
+                        initializeAsOpen: true,
+                    })
+                }
+                return filtersWithoutTheSelectedOne
+            }),
+        []
     )
 
     const filtersToRender: ActiveFilter[] = [
@@ -291,7 +296,7 @@ export const FiltersPanel = ({
             key: filter,
             type: filter,
             active: true,
-            initialiseAsOpen: false,
+            initializeAsOpen: false,
         })),
         ...optionalFiltersToRender,
     ]
@@ -313,7 +318,7 @@ export const FiltersPanel = ({
                             })
                         ),
                     key: filter.key,
-                    initialiseAsOpen: filter.initialiseAsOpen,
+                    initializeAsOpen: filter.initializeAsOpen,
                     filterName:
                         filter.type === FilterKey.CustomFields
                             ? filter.filterName

@@ -27,7 +27,7 @@ type Props = {
 
 export default function AgentsFilter({
     value = emptyFilter,
-    initialiseAsOpen = false,
+    initializeAsOpen = false,
     onRemove,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -173,7 +173,7 @@ export default function AgentsFilter({
             onChangeLogicalOperator={handleFilterOperatorChange}
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
-            initialiseAsOpen={initialiseAsOpen}
+            initializeAsOpen={initializeAsOpen}
         />
     )
 }

@@ -23,7 +23,7 @@ type Props = {
 
 export const TagsFilter = ({
     value = emptyFilter,
-    initialiseAsOpen = false,
+    initializeAsOpen = false,
     onRemove,
 }: Props) => {
     const dispatch = useAppDispatch()
@@ -116,7 +116,7 @@ export const TagsFilter = ({
                 onLoad,
                 shouldLoadMore,
             }}
-            initialiseAsOpen={initialiseAsOpen}
+            initializeAsOpen={initializeAsOpen}
         />
     )
 }

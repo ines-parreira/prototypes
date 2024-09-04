@@ -1,4 +1,4 @@
 export type RemovableFilter = {
-    initialiseAsOpen?: boolean
+    initializeAsOpen?: boolean
     onRemove?: () => void
 }
