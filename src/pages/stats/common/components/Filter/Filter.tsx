@@ -106,7 +106,7 @@ const Filter = ({
     const [isDropdownOpen, setIsDropdownOpen] = useState(initializeAsOpen)
 
     useEffectOnce(() => {
-        if (initialiseAsOpen) {
+        if (initializeAsOpen) {
             onDropdownOpen()
         }
     })
