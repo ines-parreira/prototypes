@@ -1,6 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {act} from 'react-dom/test-utils'
+import {fireEvent, render, screen, waitFor, act} from '@testing-library/react'
 import {shallow} from 'enzyme'
 import {EditorState} from 'draft-js'
 import _noop from 'lodash/noop'
@@ -93,11 +92,23 @@ describe('<AddLink />', () => {
             <AddLinkContainer
                 {...defaultProps}
                 text="foo"
-                url="{{ticket.url_something}}"
+                url="bar{{ticket.url_something}}"
             />
         )
         const button = component.find(Button)
         expect(button.props().isDisabled).toBe(true)
+    })
+
+    it('should allow to submit templated url', () => {
+        const component = shallow(
+            <AddLinkContainer
+                {...defaultProps}
+                text="foo"
+                url="{{ticket.url_something}}"
+            />
+        )
+        const button = component.find(Button)
+        expect(button.props().isDisabled).toBe(false)
     })
 
     it('should remove link if there is an entity key', () => {
@@ -508,5 +519,124 @@ describe('<AddLink />', () => {
         )
 
         expect(result).toBe(false)
+    })
+
+    it('should render "open in a new tab" checkbox', () => {
+        const mockOnTargetChange = jest.fn()
+
+        const {rerender} = render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                text="foo"
+                url="https://example/com"
+                target="_blank"
+                onTargetChange={mockOnTargetChange}
+                getWorkflowVariables={() => []}
+            />
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Open in a new tab'))
+        })
+
+        expect(mockOnTargetChange).toHaveBeenNthCalledWith(1, '_self')
+
+        rerender(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                text="foo"
+                url="https://example/com"
+                target="_self"
+                onTargetChange={mockOnTargetChange}
+                getWorkflowVariables={() => []}
+            />
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Open in a new tab'))
+        })
+
+        expect(mockOnTargetChange).toHaveBeenNthCalledWith(2, '_blank')
+    })
+
+    it('should set templatedUrl attribute if url starts with template', () => {
+        const editorState = EditorState.createEmpty()
+
+        const contentState = editorState.getCurrentContent()
+        const createEntitySpy = jest.spyOn(contentState, 'createEntity')
+
+        render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                text="foo"
+                url="{{ticket.url}}"
+                target="_blank"
+                onTargetChange={jest.fn()}
+                getWorkflowVariables={() => []}
+                getEditorState={() => editorState}
+            />
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Insert Link'))
+        })
+
+        expect(createEntitySpy).toHaveBeenCalledWith('link', 'MUTABLE', {
+            target: '_blank',
+            templatedUrl: '{{ticket.url}}',
+            url: '{{ticket.url}}',
+        })
+    })
+
+    it('should set templatedUrl attribute if url starts with template during update', () => {
+        const editorState = EditorState.createEmpty()
+
+        const contentState = editorState.getCurrentContent()
+        const contentStateWithEntity = contentState.createEntity(
+            'link',
+            'MUTABLE',
+            {url: '{{ticket.url}}'}
+        )
+        const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
+
+        const replaceEntityDataSpy = jest.spyOn(
+            contentState,
+            'replaceEntityData'
+        )
+
+        render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                text="foo"
+                url="{{ticket.url}}"
+                target="_blank"
+                onTargetChange={jest.fn()}
+                getWorkflowVariables={() => []}
+                getEditorState={() => editorState}
+                entityKey={entityKey}
+            />
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Update Link'))
+        })
+
+        expect(replaceEntityDataSpy).toHaveBeenCalledWith(entityKey, {
+            target: '_blank',
+            templatedUrl: '{{ticket.url}}',
+            url: '{{ticket.url}}',
+        })
     })
 })

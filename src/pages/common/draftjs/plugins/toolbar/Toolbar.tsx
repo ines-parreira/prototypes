@@ -43,9 +43,11 @@ type Props = {
     linkIsOpen: boolean
     linkUrl: string
     linkText: string
+    linkTarget: string
     uploadType?: UploadType
     onLinkUrlChange: (url: string) => void
     onLinkTextChange: (text: string) => void
+    onLinkTargetChange: (target: string) => void
     onLinkOpen: () => void
     onLinkClose: () => void
     getWorkflowVariables?: () => WorkflowVariableList
@@ -73,9 +75,11 @@ const Toolbar = ({
     maxLength,
     editorState,
     linkText,
+    linkTarget,
     uploadType,
     onLinkUrlChange,
     onLinkTextChange,
+    onLinkTargetChange,
     onLinkOpen,
     onLinkClose,
     getWorkflowVariables,
@@ -152,6 +156,8 @@ const Toolbar = ({
                             text={linkText}
                             onUrlChange={onLinkUrlChange}
                             onTextChange={onLinkTextChange}
+                            target={linkTarget}
+                            onTargetChange={onLinkTargetChange}
                             onOpen={onLinkOpen}
                             onClose={onLinkClose}
                             getWorkflowVariables={getWorkflowVariables}

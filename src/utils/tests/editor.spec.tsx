@@ -291,6 +291,14 @@ describe('editor utils', () => {
                 getContentStateBlocksSnapshot(contentState)
             ).toMatchSnapshot()
         })
+
+        it('should use data-templated-url & target', () => {
+            const baseHTML =
+                '<div><a href="{{ticket.url}}" target="_self" data-templated-url="{{ticket.url}}">link</a></div>'
+            const contentState = convertFromHTML(baseHTML)
+            const newHTML = convertToHTML(contentState)
+            expect(newHTML).toEqual(baseHTML)
+        })
     })
 
     describe('unescape template variables', () => {

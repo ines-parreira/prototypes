@@ -217,20 +217,11 @@ export function convertToHTML(contentState: ContentState): string {
                     return {
                         start: `<a href="${
                             entity.data.url as string
-                        }" target="_blank">`,
-                        end: '</a>',
-                    }
-                }
-
-                if (
-                    entity.type === 'flow_variable' &&
-                    entity.data?.format === 'url'
-                ) {
-                    // keep the start/end way of doing until https://github.com/HubSpot/draft-convert/issues/47 is fixed
-                    return {
-                        start: `<a href="${
-                            entity.data.value as string
-                        }" target="_blank">`,
+                        }" target="${entity.data.target || '_blank'}"${
+                            'templatedUrl' in entity.data
+                                ? ` data-templated-url="${entity.data.templatedUrl}"`
+                                : ''
+                        }>`,
                         end: '</a>',
                     }
                 }
@@ -381,8 +372,14 @@ export function convertFromHTML(html: string): ContentState {
             }
 
             if (nodeName === 'a') {
+                const url = (node as HTMLLinkElement).href
+                const templatedUrl = node.getAttribute('data-templated-url')
+                const target = node.getAttribute('target')
+
                 return createEntity('link', 'MUTABLE', {
-                    url: unescapeTemplateVars((node as HTMLLinkElement).href),
+                    url: unescapeTemplateVars(templatedUrl || url),
+                    ...(templatedUrl ? {templatedUrl} : {}),
+                    target,
                 })
             }
 

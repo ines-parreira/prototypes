@@ -11,7 +11,12 @@ import {
 
 type Config = {
     isActive: () => boolean
-    onLinkEdit: (entityKey: string, text: string, url: string) => void
+    onLinkEdit: (
+        entityKey: string,
+        text: string,
+        url: string,
+        target: string
+    ) => void
 }
 
 const link = (config: Config): Decorator => ({
@@ -38,14 +43,19 @@ const link = (config: Config): Decorator => ({
             getEditorState,
             setEditorState,
         } = props
-        const {url} = contentState.getEntity(entityKey).getData()
+        const {url, target} = contentState.getEntity(entityKey).getData()
         return (
             <LinkPopover
                 url={url}
                 onEdit={
                     config.isActive()
                         ? () => {
-                              config.onLinkEdit(entityKey, decoratedText, url)
+                              config.onLinkEdit(
+                                  entityKey,
+                                  decoratedText,
+                                  url,
+                                  target || '_blank'
+                              )
                           }
                         : undefined
                 }

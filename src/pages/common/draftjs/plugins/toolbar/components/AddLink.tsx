@@ -27,6 +27,7 @@ import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import {attachUtmToUrl} from 'pages/convert/campaigns/utils/attachUtmParams'
 import {UtmConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import CheckBox from 'pages/common/forms/CheckBox'
 import {getTooltipTourConfiguration} from '../utils'
 import {ActionInjectedProps, ActionName} from '../types'
 import {
@@ -61,12 +62,16 @@ const CampaignFormContextInterceptor = (props: {
     return <></>
 }
 
+const doesUrlStartWithTemplate = (url: string) => /^{{(.*?)}}/g.test(url)
+
 type Props = {
     entityKey?: string
     url: string
     onUrlChange: (url: string) => void
     text: string
     onTextChange: (text: string) => void
+    target: string
+    onTargetChange: (target: string) => void
     isOpen: boolean
     onOpen: () => void
     onClose: () => void
@@ -137,7 +142,8 @@ export class AddLinkContainer extends Component<Props> {
         !!(
             this.props.text.trim() &&
             this.props.url.trim() &&
-            linkify.test(this.props.url)
+            (doesUrlStartWithTemplate(this.props.url) ||
+                linkify.test(this.props.url))
         )
 
     _getSelectedLinkEntityKey = (): Maybe<string> => {
@@ -216,6 +222,10 @@ export class AddLinkContainer extends Component<Props> {
         // Update url
         contentState = contentState.replaceEntityData(entityKey, {
             url: parsedUrl,
+            target: this.props.target,
+            ...(doesUrlStartWithTemplate(parsedUrl)
+                ? {templatedUrl: parsedUrl}
+                : {}),
         })
         editorState = EditorState.push(
             editorState,
@@ -260,7 +270,13 @@ export class AddLinkContainer extends Component<Props> {
 
         let contentState = editorState
             .getCurrentContent()
-            .createEntity('link', 'MUTABLE', {url: parsedUrl})
+            .createEntity('link', 'MUTABLE', {
+                url: parsedUrl,
+                target: this.props.target,
+                ...(doesUrlStartWithTemplate(parsedUrl)
+                    ? {templatedUrl: parsedUrl}
+                    : {}),
+            })
         const entityKey = contentState.getLastCreatedEntityKey()
 
         contentState = Modifier.replaceText(
@@ -367,15 +383,31 @@ export class AddLinkContainer extends Component<Props> {
                         />
 
                         {this.workflowVariables ? (
-                            <div className={css.variableInputField}>
-                                <Label>URL</Label>
-                                <TextInputWithVariables
-                                    variables={this.workflowVariables}
-                                    placeholder="https://help.domain.com"
-                                    value={this.props.url}
-                                    onChange={this.props.onUrlChange}
-                                />
-                            </div>
+                            <>
+                                <div className={css.variableInputField}>
+                                    <Label>URL</Label>
+                                    <TextInputWithVariables
+                                        variables={this.workflowVariables}
+                                        placeholder="https://help.domain.com"
+                                        value={this.props.url}
+                                        onChange={this.props.onUrlChange}
+                                    />
+                                </div>
+                                <div className={css.variableInputField}>
+                                    <CheckBox
+                                        isChecked={
+                                            this.props.target === '_blank'
+                                        }
+                                        onChange={(nextValue) => {
+                                            this.props.onTargetChange(
+                                                nextValue ? '_blank' : '_self'
+                                            )
+                                        }}
+                                    >
+                                        Open in a new tab
+                                    </CheckBox>
+                                </div>
+                            </>
                         ) : (
                             <DEPRECATED_InputField
                                 className={css.field}

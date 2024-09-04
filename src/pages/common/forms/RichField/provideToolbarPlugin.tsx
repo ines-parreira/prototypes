@@ -13,6 +13,7 @@ type State = {
     linkIsOpen: boolean
     linkText: string
     linkUrl: string
+    linkTarget: string
 }
 
 export type InjectedProps = {
@@ -21,6 +22,7 @@ export type InjectedProps = {
     ) => Plugin
     onLinkUrlChange: (url: string) => void
     onLinkTextChange: (text: string) => void
+    onLinkTargetChange: (target: string) => void
     onLinkOpen: () => void
     onLinkClose: () => void
 } & State
@@ -33,6 +35,7 @@ export default function provideToolbarPlugin<Props extends RequiredProps>(
             linkIsOpen: false,
             linkText: '',
             linkUrl: '',
+            linkTarget: '_blank',
         }
 
         _createToolbarPlugin = (
@@ -49,6 +52,9 @@ export default function provideToolbarPlugin<Props extends RequiredProps>(
 
         _onLinkUrlChange = (linkUrl: string) => this.setState({linkUrl})
 
+        _onLinkTargetChange = (linkTarget: string) =>
+            this.setState({linkTarget})
+
         _onLinkOpen = () => {
             this.setState({linkIsOpen: true})
         }
@@ -59,19 +65,22 @@ export default function provideToolbarPlugin<Props extends RequiredProps>(
                 linkText: '',
                 linkUrl: '',
                 linkEntityKey: undefined,
+                linkTarget: '_blank',
             })
         }
 
         _onToolbarPluginLinkEdit = (
             entityKey: string,
             text: string,
-            url: string
+            url: string,
+            target: string
         ) => {
             this.setState({
                 linkEntityKey: entityKey,
                 linkIsOpen: true,
                 linkText: text,
                 linkUrl: url,
+                linkTarget: target,
             })
         }
 
@@ -81,6 +90,7 @@ export default function provideToolbarPlugin<Props extends RequiredProps>(
                 linkIsOpen: true,
                 linkText: text,
                 linkUrl: '',
+                linkTarget: '_blank',
             })
         }
 
@@ -94,6 +104,7 @@ export default function provideToolbarPlugin<Props extends RequiredProps>(
                     onLinkTextChange={this._onLinkTextChange}
                     onLinkOpen={this._onLinkOpen}
                     onLinkClose={this._onLinkClose}
+                    onLinkTargetChange={this._onLinkTargetChange}
                 />
             )
         }

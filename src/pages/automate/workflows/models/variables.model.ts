@@ -698,7 +698,6 @@ export const buildWorkflowVariableFromNode = (
                     value: `steps_state.${node.id}.order.tracking_url`,
                     nodeType: 'order_selection',
                     type: 'string',
-                    format: 'url',
                 },
                 {
                     name: 'Tracking number',
