@@ -17,9 +17,9 @@ export const TrendCardConfig: Record<
     }
 > = {
     [AutoQAMetric.ReviewedClosedTickets]: {
-        title: 'Number of closed tickets reviewed',
+        title: 'Reviewed tickets',
         hint: {
-            title: 'Number of closed tickets that were automatically or manually reviewed during the period. \nOnly closed tickets with at least 1 customer message and 1 agent/rule message are auto-scored.',
+            title: 'Number of closed tickets that were reviewed (automatically or manually) during the period.\n\nNote: Only closed tickets with at least 1 customer message and 1 agent/rule message are auto-evaluated.',
             link: 'https://link.gorgias.com/xxn',
         },
         interpretAs: 'more-is-better',

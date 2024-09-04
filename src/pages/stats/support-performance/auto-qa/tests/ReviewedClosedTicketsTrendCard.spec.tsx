@@ -3,7 +3,7 @@ import React from 'react'
 import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
 import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
-import {NumberOfClosedTicketsReviewedTrendCard} from 'pages/stats/support-performance/auto-qa/NumberOfClosedTicketsReviewedTrendCard'
+import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
 import {TREND_BADGE_FORMAT} from 'pages/stats/TrendBadge'
 import {RootState} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
@@ -46,10 +46,7 @@ describe('NumberOfClosedTicketsReviewedTrendCard', () => {
     })
 
     it('should render NumberOfClosedTicketsReviewed Trend', () => {
-        renderWithStore(
-            <NumberOfClosedTicketsReviewedTrendCard />,
-            defaultState
-        )
+        renderWithStore(<ReviewedClosedTicketsTrendCard />, defaultState)
 
         expect(
             screen.getByText(

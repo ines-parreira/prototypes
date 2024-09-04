@@ -1,7 +1,7 @@
 import {screen} from '@testing-library/react'
 import React from 'react'
 import {ResolvedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ResolvedTicketsTrendCard'
-import {NumberOfClosedTicketsReviewedTrendCard} from 'pages/stats/support-performance/auto-qa/NumberOfClosedTicketsReviewedTrendCard'
+import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
 import AutoQA, {
     AUTO_QA_PAGE_TITLE,
 } from 'pages/stats/support-performance/auto-qa/AutoQA'
@@ -14,10 +14,10 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 jest.mock(
-    'pages/stats/support-performance/auto-qa/NumberOfClosedTicketsReviewedTrendCard'
+    'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
 )
 const NumberOfClosedTicketsReviewedTrendCardMock = assumeMock(
-    NumberOfClosedTicketsReviewedTrendCard
+    ReviewedClosedTicketsTrendCard
 )
 jest.mock('pages/stats/support-performance/auto-qa/ResolvedTicketsTrendCard')
 const ResolvedTicketsTrendCardMock = assumeMock(ResolvedTicketsTrendCard)
