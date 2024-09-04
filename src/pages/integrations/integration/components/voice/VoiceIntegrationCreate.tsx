@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     DEFAULT_IVR_SETTINGS,
     DEFAULT_VOICE_MESSAGE,
@@ -23,6 +24,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import rawPhoneFunctionOptions from 'pages/integrations/integration/components/phone/options/functions.json'
 
 import css from 'pages/settings/settings.less'
+import {FeatureFlagKey} from '../../../../../config/featureFlags'
 
 const phoneFunctionOptions: SelectableOption[] = rawPhoneFunctionOptions
 
@@ -42,6 +44,9 @@ function VoiceIntegrationCreate({
     const [phoneFunction, setPhoneFunction] = useState(PhoneFunction.Standard)
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useAppDispatch()
+
+    const useCallRecordings: boolean | undefined =
+        useFlags()[FeatureFlagKey.RecordingTranscriptions]
 
     useEffect(() => {
         if (!selectedPhoneNumberId) {
@@ -75,6 +80,14 @@ function VoiceIntegrationCreate({
                         record_inbound_calls: false,
                         voicemail_outside_business_hours: true,
                         record_outbound_calls: false,
+                        ...(!!useCallRecordings
+                            ? {
+                                  transcribe: {
+                                      recordings: false,
+                                      voicemails: false,
+                                  },
+                              }
+                            : {}),
                     },
                     voicemail: {
                         ...DEFAULT_VOICE_MESSAGE,
@@ -97,7 +110,7 @@ function VoiceIntegrationCreate({
                 setIsLoading(false)
             }
         },
-        [title, emoji, phoneFunction, phoneNumber, dispatch]
+        [useCallRecordings, title, emoji, phoneFunction, phoneNumber, dispatch]
     )
 
     return (

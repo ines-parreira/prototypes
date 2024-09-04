@@ -107,15 +107,42 @@ export default function VoiceIntegrationPreferences({
         setIsInitialized(true)
     }, [integration, isInitialized])
 
-    const unsubmittedSettings = {
-        name: title,
-        meta: {
-            ...integration.meta,
-            ...(phoneTeamId !== undefined ? {phone_team_id: phoneTeamId} : {}),
-            emoji,
-            preferences,
-        },
+    const canSubmit = () => {
+        const unsubmittedSettings = {
+            name: title,
+            meta: {
+                ...integration.meta,
+                ...(phoneTeamId !== undefined
+                    ? {phone_team_id: phoneTeamId}
+                    : {}),
+                emoji,
+                preferences,
+            },
+        }
+
+        // handle the case where the transcribe flags are not present at all
+        const integrationWithTranscribe = {
+            ...integration,
+            meta: {
+                ...integration.meta,
+                preferences: {
+                    ...integration.meta.preferences,
+                    transcribe: {
+                        recordings: false,
+                        voicemails: false,
+                        ...(integration.meta.preferences.transcribe ?? {}),
+                    },
+                },
+            },
+        }
+        const updatedIntegration = {...integration, ...unsubmittedSettings}
+        return !(
+            isEqual(integration, updatedIntegration) ||
+            isEqual(integrationWithTranscribe, updatedIntegration)
+        )
     }
+
+    const isSubmittable = canSubmit()
     const handlePreferencesChange = (
         newPreferences: Partial<PhoneIntegrationPreferences>
     ) =>
@@ -123,10 +150,6 @@ export default function VoiceIntegrationPreferences({
             ...preferences,
             ...newPreferences,
         }))
-    const isSubmittable = !isEqual(integration, {
-        ...integration,
-        ...unsubmittedSettings,
-    })
 
     if (!isPhoneIntegration(integration)) {
         return <div />

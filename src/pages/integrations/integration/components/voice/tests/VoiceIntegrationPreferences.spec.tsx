@@ -55,6 +55,19 @@ describe('<VoiceIntegrationPreferences />', () => {
             },
         },
     }
+    const propsWithTranscribe = {
+        integration: {
+            ...phoneIntegration,
+            meta: {
+                ...(phoneIntegration?.meta ?? {}),
+                phone_team_id: 1,
+                transcribe: {
+                    recordings: false,
+                    voicemails: false,
+                },
+            },
+        },
+    }
 
     const renderComponent = (props: any = {}): RenderResult => {
         return renderWithQueryClientProvider(
@@ -164,20 +177,74 @@ describe('<VoiceIntegrationPreferences />', () => {
         }
     )
 
-    it.each(['Call recording transcription', 'Voicemail transcription'])(
+    it.each([
+        {
+            label: 'Call recording transcription',
+            props,
+        },
+        {
+            label: 'Voicemail transcription',
+            props,
+        },
+        {
+            label: 'Call recording transcription',
+            props: propsWithTranscribe,
+        },
+        {
+            label: 'Voicemail transcription',
+            props: propsWithTranscribe,
+        },
+    ])(
         'should enable submit when transcription fields are changed',
-        async (toggleLabel) => {
+        async ({label, props}) => {
             mockFlags({RecordingTranscriptions: true})
 
             renderComponent(props)
 
-            const callRecordingToggle = screen.getByLabelText(toggleLabel)
+            const callRecordingToggle = screen.getByLabelText(label)
             fireEvent.click(callRecordingToggle)
 
             await waitFor(() => {
                 expect(
                     screen.getByRole('button', {name: 'Save changes'})
                 ).toHaveAttribute('aria-disabled', 'false')
+            })
+        }
+    )
+
+    it.each([
+        {
+            label: 'Call recording transcription',
+            props,
+        },
+        {
+            label: 'Voicemail transcription',
+            props,
+        },
+        {
+            label: 'Call recording transcription',
+            props: propsWithTranscribe,
+        },
+        {
+            label: 'Voicemail transcription',
+            props: propsWithTranscribe,
+        },
+    ])(
+        'should disable submit when transcription fields are reset',
+        async ({label, props}) => {
+            mockFlags({RecordingTranscriptions: true})
+
+            renderComponent(props)
+
+            // click toggle twice to reset it
+            const callRecordingToggle = screen.getByLabelText(label)
+            fireEvent.click(callRecordingToggle)
+            fireEvent.click(callRecordingToggle)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {name: 'Save changes'})
+                ).toHaveAttribute('aria-disabled', 'true')
             })
         }
     )
