@@ -17,7 +17,7 @@ import {
     getSortedAgents,
     pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import {AgentAvatar} from 'pages/stats/AgentAvatar'
 import {
@@ -36,6 +36,7 @@ import {
 } from 'pages/stats/voice/hooks/agentMetrics'
 import {VoiceAgentsMetric} from 'state/ui/stats/types'
 
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import AverageTalkTimeCell from './AverageTalkTimeCell'
 import CallsCountCell from './CallsCountCell'
 import TeamAverageCallsCountCell from './TeamAverageCallsCountCell'
@@ -66,7 +67,11 @@ export const VoiceAgentsTable = () => {
     }
 
     const handleAgentClick = (agentId: number) => {
-        dispatch(mergeStatsFilters({agents: [agentId]}))
+        dispatch(
+            mergeStatsFiltersWithLogicalOperator({
+                agents: withDefaultLogicalOperator([agentId]),
+            })
+        )
     }
 
     return (

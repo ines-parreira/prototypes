@@ -36,46 +36,43 @@ const metricData = {
     title: 'Total calls',
 }
 
-describe('AverageTalkTimeCell', () => {
-    const renderComponent = () => {
-        const statsFilters: LegacyStatsFilters = {
-            period: {
-                start_datetime: '2023-12-11T00:00:00.000Z',
-                end_datetime: '2023-12-11T23:59:59.999Z',
-            },
-            agents: [agents[0].id],
-        }
-        const state = {
-            stats: {
-                filters: statsFilters,
-            },
-            ui: {
-                stats: {
-                    cleanStatsFilters: statsFilters,
-                    isFilterDirty: false,
-                    fetchingMap: {},
-                },
-                agentPerformance: agentPerformanceInitialState,
-            },
-        } as RootState
-        const agent = {
-            id: 1,
-            name: 'John Doe',
-            email: '',
-        } as User
-
-        return render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(state)}>
-                    <AverageTalkTimeCell
-                        agent={agent}
-                        metricData={metricData}
-                    />
-                </Provider>
-            </QueryClientProvider>
-        )
+const renderComponent = () => {
+    const statsFilters: LegacyStatsFilters = {
+        period: {
+            start_datetime: '2023-12-11T00:00:00.000Z',
+            end_datetime: '2023-12-11T23:59:59.999Z',
+        },
+        agents: [agents[0].id],
     }
+    const state = {
+        stats: {
+            filters: statsFilters,
+        },
+        ui: {
+            stats: {
+                cleanStatsFilters: statsFilters,
+                isFilterDirty: false,
+                fetchingMap: {},
+            },
+            agentPerformance: agentPerformanceInitialState,
+        },
+    } as RootState
+    const agent = {
+        id: 1,
+        name: 'John Doe',
+        email: '',
+    } as User
 
+    return render(
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockStore(state)}>
+                <AverageTalkTimeCell agent={agent} metricData={metricData} />
+            </Provider>
+        </QueryClientProvider>
+    )
+}
+
+describe('AverageTalkTimeCell', () => {
     beforeEach(() => {
         mockFlags({[FeatureFlagKey.VoiceCallsDrillDown]: true})
     })
@@ -147,5 +144,25 @@ describe('AverageTalkTimeCell', () => {
             }),
             {}
         )
+    })
+})
+
+describe('AverageTalkTimeCell with the new filters', () => {
+    beforeEach(() => {
+        mockFlags({
+            [FeatureFlagKey.VoiceCallsDrillDown]: true,
+            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
+        })
+    })
+
+    it('should render the component', () => {
+        useMetricMock.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {value: 12, decile: null, allData: []},
+        })
+
+        const {getByText} = renderComponent()
+        expect(getByText('12s')).toBeInTheDocument()
     })
 })

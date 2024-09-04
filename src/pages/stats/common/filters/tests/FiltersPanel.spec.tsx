@@ -29,9 +29,7 @@ import {
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {
-    filterKeyToStateKeyMapper,
     FiltersPanel,
-    getFilteredFilterComponentKeys,
     isFilterTypeWithValues,
     UNSUPPORTED_FILTER_PLACEHOLDER,
 } from 'pages/stats/common/filters/FiltersPanel'
@@ -44,6 +42,10 @@ import {customFieldsMockReponse} from 'fixtures/customField'
 import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import {IntegrationType} from 'models/integration/constants'
 import {billingState} from 'fixtures/billing'
+import {
+    filterKeyToStateKeyMapper,
+    getFilteredFilterComponentKeys,
+} from 'pages/stats/common/filters/helpers'
 
 const mockedLocales = [
     {name: 'English', code: 'en-US'},

@@ -1,6 +1,12 @@
 import isArray from 'lodash/isArray'
 import isFunction from 'lodash/isFunction'
-import {CustomFieldFilter} from 'models/stat/types'
+import {
+    CleanFilterComponentKeys,
+    CustomFieldFilter,
+    FilterComponentKey,
+    FilterKey,
+    StateOnlyFilterKeys,
+} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {Channel, ChannelIdentifier, toChannels} from 'services/channels'
 
@@ -31,3 +37,27 @@ export const emptyCustomFieldFilter = (
     operator: LogicalOperatorEnum.ONE_OF,
     values: [],
 })
+
+export const filterKeyToStateKeyMapper = (
+    key: StateOnlyFilterKeys | CleanFilterComponentKeys
+) => {
+    switch (key) {
+        case FilterComponentKey.Store:
+        case FilterComponentKey.PhoneIntegrations:
+            return FilterKey.Integrations
+        case FilterComponentKey.CustomField:
+            return FilterKey.CustomFields
+        default:
+            return key
+    }
+}
+
+export const getFilteredFilterComponentKeys = (
+    keys: (FilterKey | FilterComponentKey)[]
+) =>
+    keys.reduce<(FilterKey | CleanFilterComponentKeys)[]>((acc, key) => {
+        if (key === FilterComponentKey.BusiestTimesMetricSelectFilter) {
+            return acc
+        }
+        return [...acc, key]
+    }, [])

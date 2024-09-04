@@ -32,52 +32,52 @@ const defaultMetricData = {
     title: 'Total calls',
 }
 
-describe('CallsCountCell', () => {
-    const renderComponent = (
-        mockUseMetric: typeof useTotalCallsMetricPerAgent,
-        metricData: typeof defaultMetricData | null = defaultMetricData,
-        isDrillDownEnabled?: boolean
-    ) => {
-        const statsFilters: LegacyStatsFilters = {
-            period: {
-                start_datetime: '2023-12-11T00:00:00.000Z',
-                end_datetime: '2023-12-11T23:59:59.999Z',
-            },
-            agents: [agents[0].id],
-        }
-        const state = {
-            stats: {
-                filters: statsFilters,
-            },
-            ui: {
-                stats: {
-                    cleanStatsFilters: statsFilters,
-                    isFilterDirty: false,
-                    fetchingMap: {},
-                },
-                agentPerformance: agentPerformanceInitialState,
-            },
-        } as RootState
-        const agent = {
-            id: 1,
-            name: 'John Doe',
-            email: '',
-        } as User
-
-        return render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(state)}>
-                    <CallsCountCell
-                        agent={agent}
-                        useMetricPerAgent={mockUseMetric}
-                        metricData={metricData || undefined}
-                        isDrillDownEnabled={isDrillDownEnabled}
-                    />
-                </Provider>
-            </QueryClientProvider>
-        )
+const renderComponent = (
+    mockUseMetric: typeof useTotalCallsMetricPerAgent,
+    metricData: typeof defaultMetricData | null = defaultMetricData,
+    isDrillDownEnabled?: boolean
+) => {
+    const statsFilters: LegacyStatsFilters = {
+        period: {
+            start_datetime: '2023-12-11T00:00:00.000Z',
+            end_datetime: '2023-12-11T23:59:59.999Z',
+        },
+        agents: [agents[0].id],
     }
+    const state = {
+        stats: {
+            filters: statsFilters,
+        },
+        ui: {
+            stats: {
+                cleanStatsFilters: statsFilters,
+                isFilterDirty: false,
+                fetchingMap: {},
+            },
+            agentPerformance: agentPerformanceInitialState,
+        },
+    } as RootState
+    const agent = {
+        id: 1,
+        name: 'John Doe',
+        email: '',
+    } as User
 
+    return render(
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockStore(state)}>
+                <CallsCountCell
+                    agent={agent}
+                    useMetricPerAgent={mockUseMetric}
+                    metricData={metricData || undefined}
+                    isDrillDownEnabled={isDrillDownEnabled}
+                />
+            </Provider>
+        </QueryClientProvider>
+    )
+}
+
+describe('CallsCountCell', () => {
     beforeEach(() => {
         mockFlags({[FeatureFlagKey.VoiceCallsDrillDown]: true})
     })
@@ -185,5 +185,25 @@ describe('CallsCountCell', () => {
 
         expect(queryByText('12')).toBeInTheDocument()
         expect(DrillDownModalTriggerSpy).not.toHaveBeenCalled()
+    })
+})
+
+describe('CallsCountCell with the new filters', () => {
+    beforeEach(() => {
+        mockFlags({
+            [FeatureFlagKey.VoiceCallsDrillDown]: true,
+            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
+        })
+    })
+
+    it('should render average talk time', () => {
+        const useMetricMock = jest.fn().mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {value: 12, decile: null, allData: []},
+        })
+
+        const {getByText} = renderComponent(useMetricMock)
+        expect(getByText('12')).toBeInTheDocument()
     })
 })

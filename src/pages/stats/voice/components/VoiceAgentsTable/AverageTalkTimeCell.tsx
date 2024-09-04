@@ -9,7 +9,10 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
 import {VOICE_METRIC_COLUMN_WIDTH} from 'pages/stats/voice/constants/voiceAgents'
 import {useAverageTalkTimeMetricPerAgent} from 'pages/stats/voice/hooks/metricsPerDimension'
@@ -27,10 +30,19 @@ type Props = {
 const AverageTalkTimeCell = ({agent, metricData}: Props) => {
     const isVoiceCallsDrillDownEnabled =
         useFlags()[FeatureFlagKey.VoiceCallsDrillDown]
+    const isVoiceAgentsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
 
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isVoiceAgentsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
+
     const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const {data, isFetching} = useAverageTalkTimeMetricPerAgent(
         cleanStatsFilters,

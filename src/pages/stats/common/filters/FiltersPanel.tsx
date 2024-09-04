@@ -13,10 +13,8 @@ import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    CleanFilterComponentKeys,
     FilterComponentKey,
     FilterKey,
-    StateOnlyFilterKeys,
     StaticFilter,
     StatsFilters,
 } from 'models/stat/types'
@@ -41,6 +39,10 @@ import {
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 import {CustomFieldFilter} from 'pages/stats/common/filters/CustomFieldFilter'
 import usePrevious from 'hooks/usePrevious'
+import {
+    filterKeyToStateKeyMapper,
+    getFilteredFilterComponentKeys,
+} from 'pages/stats/common/filters/helpers'
 
 type Props = {
     persistentFilters?: StaticFilter[]
@@ -139,30 +141,6 @@ const getActiveFilters = (
         return arr
     }, [])
 }
-
-export const filterKeyToStateKeyMapper = (
-    key: StateOnlyFilterKeys | CleanFilterComponentKeys
-) => {
-    switch (key) {
-        case FilterComponentKey.Store:
-        case FilterComponentKey.PhoneIntegrations:
-            return FilterKey.Integrations
-        case FilterComponentKey.CustomField:
-            return FilterKey.CustomFields
-        default:
-            return key
-    }
-}
-
-export const getFilteredFilterComponentKeys = (
-    keys: (FilterKey | FilterComponentKey)[]
-) =>
-    keys.reduce<(FilterKey | CleanFilterComponentKeys)[]>((acc, key) => {
-        if (key === FilterComponentKey.BusiestTimesMetricSelectFilter) {
-            return acc
-        }
-        return [...acc, key]
-    }, [])
 
 type FilterComponent = {
     key: string

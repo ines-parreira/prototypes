@@ -1,9 +1,13 @@
 import {useMemo} from 'react'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {User} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {
     useAnsweredCallsMetricPerAgent,
     useAverageTalkTimeMetricPerAgent,
@@ -12,11 +16,21 @@ import {
     useOutboundCallsMetricPerAgent,
     useTotalCallsMetricPerAgent,
 } from 'pages/stats/voice/hooks/metricsPerDimension'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 export function useVoiceAgentsMetrics() {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
+    const isVoiceAgentsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
+
+    const {cleanStatsFilters: legacyStatsFilters, userTimezone} =
+        useAppSelector(getCleanStatsFiltersWithTimezone)
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isVoiceAgentsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
+
     const agents = useAppSelector<User[]>(getSortedAgents)
 
     const totalCallsMetric = useTotalCallsMetricPerAgent(

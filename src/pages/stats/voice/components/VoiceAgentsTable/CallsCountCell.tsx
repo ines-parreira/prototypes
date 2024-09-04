@@ -11,7 +11,10 @@ import {
 } from 'pages/stats/common/utils'
 import {VOICE_METRIC_COLUMN_WIDTH} from 'pages/stats/voice/constants/voiceAgents'
 import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {useTotalCallsMetricPerAgent} from 'pages/stats/voice/hooks/metricsPerDimension'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {VoiceAgentsMetrics} from 'state/ui/stats/drillDownSlice'
@@ -35,9 +38,19 @@ const CallsCountCell = ({
     const isVoiceCallsDrillDownEnabled =
         useFlags()[FeatureFlagKey.VoiceCallsDrillDown]
 
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
+    const isVoiceAgentsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
+
+    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
+    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
+        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+
+    const cleanStatsFilters = isVoiceAgentsNewFilters
+        ? statsFiltersWithLogicalOperators
+        : legacyStatsFilters
+
     const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const {data, isFetching} = useMetricPerAgent(
         cleanStatsFilters,
@@ -70,6 +83,7 @@ const CallsCountCell = ({
                         isDrillDownEnabled &&
                         !!metricValue
                     }
+                    useNewFilterData={isVoiceAgentsNewFilters}
                 >
                     {formattedValue}
                 </DrillDownModalTrigger>
