@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import {act, fireEvent, render, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
@@ -14,6 +14,7 @@ import {assumeMock} from 'utils/testing'
 import {
     useCollectionsFromShopifyIntegration,
     useListShopifyCustomerSegments,
+    useProductsFromShopifyIntegration,
 } from 'models/integration/queries'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import client from 'models/api/resources'
@@ -28,6 +29,9 @@ const useListShopifyCustomerSegmentsMock = assumeMock(
 const useCollectionsFromShopifyIntegrationMock = assumeMock(
     useCollectionsFromShopifyIntegration
 )
+const useProductsFromShopifyIntegrationMock = assumeMock(
+    useProductsFromShopifyIntegration
+)
 
 const VALID_SEGMENT_1 = {
     id: 1069404225875,
@@ -39,14 +43,18 @@ const VALID_SEGMENT_2 = {
     name: 'Email subscribers',
     admin_graphql_api_id: 'gid://shopify/Segment/1069404193107',
 }
-const VALID_PRODUCT_1 = {
+const VALID_PRODUCT_COLLECTION_1 = {
     id: 1,
     title: 'Lorem Ipsum',
 }
-const VALID_PRODUCT_2 = {
+const VALID_PRODUCT_COLLECTION_2 = {
     id: 2,
     title: 'Nike',
 }
+const VALID_PRODUCT_1 = {
+    data: {title: 'Product 1', id: '1'},
+}
+const VALID_PRODUCT_2 = {data: {title: 'Product 2', id: '2'}}
 
 const minProps = {
     integration: fromJS(integrationsState.integration),
@@ -80,6 +88,9 @@ describe('<DiscountCodeCreateModal />', () => {
             },
         } as any)
         useCollectionsFromShopifyIntegrationMock.mockReturnValue({
+            data: [VALID_PRODUCT_COLLECTION_1, VALID_PRODUCT_COLLECTION_2],
+        } as any)
+        useProductsFromShopifyIntegrationMock.mockReturnValue({
             data: [VALID_PRODUCT_1, VALID_PRODUCT_2],
         } as any)
     })
@@ -136,7 +147,7 @@ describe('<DiscountCodeCreateModal />', () => {
         })
 
         expect(mockedServer.history.post[0].data).toEqual(
-            '{"starts_at":"2024-01-01T00:00:00.000Z","discount_type":"percentage","title":null,"code":"MYCODE","discount_value":0.2,"once_per_customer":false,"usage_limit":null,"minimum_purchase_amount":199,"segment_ids":null,"collection_ids":null}'
+            '{"starts_at":"2024-01-01T00:00:00.000Z","discount_type":"percentage","title":null,"code":"MYCODE","discount_value":0.2,"once_per_customer":false,"usage_limit":null,"minimum_purchase_amount":199,"segment_ids":null,"product_ids":null,"collection_ids":null}'
         )
     })
 
@@ -225,12 +236,16 @@ describe('<DiscountCodeCreateModal />', () => {
         const inputElement = getByText('Select a product collection')
         fireEvent.focus(inputElement)
 
-        const validCollectionSample = getByText(VALID_PRODUCT_1.title)
-        const validCollectionSample2 = getByText(VALID_PRODUCT_2.title)
+        const validCollectionSample = getByText(
+            VALID_PRODUCT_COLLECTION_1.title
+        )
+        const validCollectionSample2 = getByText(
+            VALID_PRODUCT_COLLECTION_2.title
+        )
 
         // Selects the first segment
         userEvent.click(validCollectionSample)
-        expect(inputElement.textContent).toBe(VALID_PRODUCT_1.title)
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_COLLECTION_1.title)
 
         // Selects the second segment
         userEvent.click(validCollectionSample2)
@@ -238,7 +253,7 @@ describe('<DiscountCodeCreateModal />', () => {
 
         // Delete, check and readd the first segment
         userEvent.click(validCollectionSample)
-        expect(inputElement.textContent).toBe(VALID_PRODUCT_2.title)
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_COLLECTION_2.title)
         userEvent.click(validCollectionSample)
 
         getByTestId(testIds.saveBtn).click()
@@ -248,7 +263,7 @@ describe('<DiscountCodeCreateModal />', () => {
         })
 
         expect(mockedServer.history.post[0].data).toContain(
-            `"collection_ids":["${VALID_PRODUCT_2.id}","${VALID_PRODUCT_1.id}"]`
+            `"collection_ids":["${VALID_PRODUCT_COLLECTION_2.id}","${VALID_PRODUCT_COLLECTION_1.id}"]`
         )
     })
 
@@ -267,12 +282,16 @@ describe('<DiscountCodeCreateModal />', () => {
         const inputElement = getByText('Select a product collection')
         fireEvent.focus(inputElement)
 
-        const validCollectionSample = getByText(VALID_PRODUCT_1.title)
-        const validCollectionSample2 = getByText(VALID_PRODUCT_2.title)
+        const validCollectionSample = getByText(
+            VALID_PRODUCT_COLLECTION_1.title
+        )
+        const validCollectionSample2 = getByText(
+            VALID_PRODUCT_COLLECTION_2.title
+        )
 
         // Selects the first segment
         userEvent.click(validCollectionSample)
-        expect(inputElement.textContent).toBe(VALID_PRODUCT_1.title)
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_COLLECTION_1.title)
 
         // Selects the second segment
         userEvent.click(validCollectionSample2)
@@ -308,8 +327,12 @@ describe('<DiscountCodeCreateModal />', () => {
         fireEvent.focus(inputElement)
 
         // Select 2 collections
-        const validCollectionSample = getByText(VALID_PRODUCT_1.title)
-        const validCollectionSample2 = getByText(VALID_PRODUCT_2.title)
+        const validCollectionSample = getByText(
+            VALID_PRODUCT_COLLECTION_1.title
+        )
+        const validCollectionSample2 = getByText(
+            VALID_PRODUCT_COLLECTION_2.title
+        )
         userEvent.click(validCollectionSample)
         userEvent.click(validCollectionSample2)
         expect(inputElement.textContent).toBe('2 collections selected')
@@ -326,6 +349,124 @@ describe('<DiscountCodeCreateModal />', () => {
 
         expect(mockedServer.history.post[0].data).toContain(
             `"collection_ids":null`
+        )
+    })
+
+    it('creates a new discount with multiple products', async () => {
+        const {getByTestId, getByRole, getByText} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <DiscountCodeCreateModal {...minProps} />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await setupValidModalParameters(getByTestId, getByRole)
+
+        act(() => getByText('To specific products').click())
+        const inputElement = getByText('Select specific products')
+        fireEvent.focus(inputElement)
+
+        const validProductSample = getByText(VALID_PRODUCT_1.data.title)
+        const validProductSample2 = getByText(VALID_PRODUCT_2.data.title)
+
+        // Selects the first product
+        act(() => userEvent.click(validProductSample))
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_1.data.title)
+
+        // Selects the second product
+        act(() => userEvent.click(validProductSample2))
+        expect(inputElement.textContent).toBe('2 products selected')
+
+        // Delete, check and re-add the first product
+        act(() => userEvent.click(validProductSample))
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_2.data.title)
+        act(() => userEvent.click(validProductSample))
+
+        act(() => getByTestId(testIds.saveBtn).click())
+
+        await waitFor(() => {
+            expect(mockedServer.history.post.length).toBe(1)
+        })
+
+        expect(mockedServer.history.post[0].data).toContain(
+            `"product_ids":["${VALID_PRODUCT_2.data.id}","${VALID_PRODUCT_1.data.id}"]`
+        )
+    })
+
+    it('creates a new discount selecting products and moving back to total order amount', async () => {
+        const {getByTestId, getByRole, getByText} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <DiscountCodeCreateModal {...minProps} />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await setupValidModalParameters(getByTestId, getByRole)
+
+        act(() => getByText('To specific products').click())
+        const inputElement = getByText('Select specific products')
+        fireEvent.focus(inputElement)
+
+        const validProductSample = getByText(VALID_PRODUCT_1.data.title)
+        const validProductSample2 = getByText(VALID_PRODUCT_2.data.title)
+
+        // Selects the first product
+        userEvent.click(validProductSample)
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_1.data.title)
+
+        // Selects the second product
+        userEvent.click(validProductSample2)
+        expect(inputElement.textContent).toBe('2 products selected')
+
+        // Move back to total order amount
+        getByText('Total order amount').click()
+
+        getByTestId(testIds.saveBtn).click()
+
+        await waitFor(() => {
+            expect(mockedServer.history.post.length).toBe(1)
+        })
+
+        expect(mockedServer.history.post[0].data).toContain(
+            `"product_ids":null`
+        )
+    })
+
+    it('selects some products then switches to free shipping and products are not sent', async () => {
+        const {getByTestId, getByRole, getByText} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <DiscountCodeCreateModal {...minProps} />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await setupValidModalParameters(getByTestId, getByRole)
+
+        act(() => getByText('To specific products').click())
+        const inputElement = getByText('Select specific products')
+        fireEvent.focus(inputElement)
+
+        const validProductSample = getByText(VALID_PRODUCT_1.data.title)
+        const validProductSample2 = getByText(VALID_PRODUCT_2.data.title)
+        act(() => userEvent.click(validProductSample))
+        act(() => userEvent.click(validProductSample2))
+        expect(inputElement.textContent).toBe('2 products selected')
+
+        // Move back to free shipping
+        getByText('Free shipping').click()
+
+        // Saves
+        getByTestId(testIds.saveBtn).click()
+
+        await waitFor(() => {
+            expect(mockedServer.history.post.length).toBe(1)
+        })
+
+        expect(mockedServer.history.post[0].data).toContain(
+            `"product_ids":null`
         )
     })
 })

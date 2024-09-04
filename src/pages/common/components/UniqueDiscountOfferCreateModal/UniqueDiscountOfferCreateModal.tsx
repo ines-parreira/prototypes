@@ -67,6 +67,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                 minimum_purchase_amount: null,
                 external_customer_segment_ids: null,
                 external_collection_ids: null,
+                external_product_ids: null,
                 store_integration_id: integration.get('id'),
             }),
             [integration]
@@ -114,6 +115,10 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
             return new Set([...(discount.external_collection_ids || [])])
         }, [discount])
 
+        const selectedProducts = useMemo(() => {
+            return new Set([...(discount.external_product_ids || [])])
+        }, [discount])
+
         const {
             mutateAsync: createDiscountOffer,
             error: createDiscountOfferError,
@@ -140,12 +145,13 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
         useEffect(() => {
             if (editDiscountOfferParams?.id) {
                 const {id: __id, ...restOfDiscount} = editDiscountOfferParams
+                let appliesToType = AppliesTypeEnum.ORDER_AMOUNT
+                if (restOfDiscount.external_collection_ids)
+                    appliesToType = AppliesTypeEnum.PRODUCT_COLLECTION
+                else if (restOfDiscount.external_product_ids)
+                    appliesToType = AppliesTypeEnum.SPECIFIC_PRODUCT
                 setDiscount(restOfDiscount)
-                setAppliesTo(
-                    restOfDiscount.external_collection_ids
-                        ? AppliesTypeEnum.PRODUCT_COLLECTION
-                        : AppliesTypeEnum.ORDER_AMOUNT
-                )
+                setAppliesTo(appliesToType)
                 setMinRequirementsPurchase(
                     !!restOfDiscount.minimum_purchase_amount
                 )
@@ -154,10 +160,17 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
         }, [editDiscountOfferParams?.id])
 
         useEffect(() => {
-            if (appliesTo === AppliesTypeEnum.ORDER_AMOUNT) {
+            if (appliesTo !== AppliesTypeEnum.PRODUCT_COLLECTION) {
                 setDiscount((discount) => ({
                     ...discount,
                     external_collection_ids: null,
+                }))
+            }
+
+            if (appliesTo !== AppliesTypeEnum.SPECIFIC_PRODUCT) {
+                setDiscount((discount) => ({
+                    ...discount,
+                    external_product_ids: null,
                 }))
             }
         }, [appliesTo])
@@ -175,6 +188,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                     external_customer_segment_ids:
                         discount.external_customer_segment_ids,
                     external_collection_ids: discount.external_collection_ids,
+                    external_product_ids: discount.external_product_ids,
                     store_integration_id:
                         discount.store_integration_id!.toString(),
                 }
@@ -216,6 +230,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                 currentAccount,
                 discount.external_customer_segment_ids,
                 discount.external_collection_ids,
+                discount.external_product_ids,
                 discount.minimum_purchase_amount,
                 discount.prefix,
                 discount.store_integration_id,
@@ -269,6 +284,22 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
             setDiscount((prevState) => ({
                 ...prevState,
                 external_collection_ids: updatedCollections,
+            }))
+        }
+
+        const onSelectedProductsChange = (productId: string | null) => {
+            let updatedProducts: Array<string> | null = null
+            if (productId !== null) {
+                if (selectedProducts.has(productId)) {
+                    selectedProducts.delete(productId)
+                } else {
+                    selectedProducts.add(productId)
+                }
+                updatedProducts = Array.from(selectedProducts)
+            }
+            setDiscount((prevState) => ({
+                ...prevState,
+                external_product_ids: updatedProducts,
             }))
         }
 
@@ -409,8 +440,16 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                             integrationId={
                                 integration.get('id') as unknown as number
                             }
-                            selected={discount.external_collection_ids || null}
-                            onSelectionChange={onCollectionSelectionChange}
+                            selectedCollections={
+                                discount.external_collection_ids || null
+                            }
+                            onSelectedCollectionsChange={
+                                onCollectionSelectionChange
+                            }
+                            selectedProducts={
+                                discount.external_product_ids || null
+                            }
+                            onSelectedProductsChange={onSelectedProductsChange}
                             appliesTo={appliesTo}
                             setAppliesTo={setAppliesTo}
                         />

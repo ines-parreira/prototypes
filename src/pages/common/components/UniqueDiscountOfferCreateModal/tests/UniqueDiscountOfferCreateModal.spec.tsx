@@ -1,7 +1,7 @@
 import React from 'react'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {render, waitFor, fireEvent} from '@testing-library/react'
+import {render, waitFor, fireEvent, act} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {within} from '@testing-library/dom'
@@ -16,6 +16,7 @@ import {
 import {
     useCollectionsFromShopifyIntegration,
     useListShopifyCustomerSegments,
+    useProductsFromShopifyIntegration,
 } from 'models/integration/queries'
 import {integrationsState} from 'fixtures/integrations'
 import {useModalManager, useModalManagerApi} from 'hooks/useModalManager'
@@ -46,6 +47,10 @@ const useCollectionsFromShopifyIntegrationMock = assumeMock(
 const useListShopifyCustomerSegmentsMock = assumeMock(
     useListShopifyCustomerSegments
 )
+const useProductsFromShopifyIntegrationMock = assumeMock(
+    useProductsFromShopifyIntegration
+)
+
 const VALID_SEGMENT_1 = {
     id: 1069404225875,
     name: 'Customers who have purchased at least once',
@@ -56,14 +61,18 @@ const VALID_SEGMENT_2 = {
     name: 'Email subscribers',
     admin_graphql_api_id: 'gid://shopify/Segment/1069404193107',
 }
-const VALID_PRODUCT_1 = {
+const VALID_PRODUCT_COLLECTION_1 = {
     id: 1,
     title: 'Lorem Ipsum',
 }
-const VALID_PRODUCT_2 = {
+const VALID_PRODUCT_COLLECTION_2 = {
     id: 2,
     title: 'Nike',
 }
+const VALID_PRODUCT_1 = {
+    data: {title: 'Product 1', id: '1'},
+}
+const VALID_PRODUCT_2 = {data: {title: 'Product 2', id: '2'}}
 
 describe('<UniqueDiscountOfferCreateModal />', () => {
     const props: UniqueDiscountOfferCreateModalProps = {
@@ -87,7 +96,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         } as any)
 
         useCollectionsFromShopifyIntegrationMock.mockReturnValue({
-            data: [VALID_PRODUCT_1, VALID_PRODUCT_2],
+            data: [VALID_PRODUCT_COLLECTION_1, VALID_PRODUCT_COLLECTION_2],
         } as any)
         useListShopifyCustomerSegmentsMock.mockReturnValue({
             data: [VALID_SEGMENT_1, VALID_SEGMENT_2],
@@ -97,6 +106,9 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 prev_cursor: null,
                 next_cursor: null,
             },
+        } as any)
+        useProductsFromShopifyIntegrationMock.mockReturnValue({
+            data: [VALID_PRODUCT_1, VALID_PRODUCT_2],
         } as any)
     })
 
@@ -485,12 +497,16 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         const inputElement = getByText('Select a product collection')
         fireEvent.focus(inputElement)
 
-        const validCollectionSample = getByText(VALID_PRODUCT_1.title)
-        const validCollectionSample2 = getByText(VALID_PRODUCT_2.title)
+        const validCollectionSample = getByText(
+            VALID_PRODUCT_COLLECTION_1.title
+        )
+        const validCollectionSample2 = getByText(
+            VALID_PRODUCT_COLLECTION_2.title
+        )
 
         // Selects the first collection
         userEvent.click(validCollectionSample)
-        expect(inputElement.textContent).toBe(VALID_PRODUCT_1.title)
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_COLLECTION_1.title)
 
         // Selects the second collection
         userEvent.click(validCollectionSample2)
@@ -498,7 +514,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
 
         // Delete one of the collections, check, delete again, check add both
         userEvent.click(validCollectionSample)
-        expect(inputElement.textContent).toBe(VALID_PRODUCT_2.title)
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_COLLECTION_2.title)
         // Deleting both tests the label for a list of 0 collections
         userEvent.click(validCollectionSample2)
         expect(inputElement.textContent).toBe('Select a product collection')
@@ -516,8 +532,8 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 undefined,
                 expect.objectContaining({
                     external_collection_ids: [
-                        VALID_PRODUCT_1.id.toString(),
-                        VALID_PRODUCT_2.id.toString(),
+                        VALID_PRODUCT_COLLECTION_1.id.toString(),
+                        VALID_PRODUCT_COLLECTION_2.id.toString(),
                     ],
                 }),
             ])
@@ -630,19 +646,20 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         const inputElement = getByText('Select a product collection')
         fireEvent.focus(inputElement)
 
-        const validCollectionSample = getByText(VALID_PRODUCT_1.title)
-        const validCollectionSample2 = getByText(VALID_PRODUCT_2.title)
+        const validCollectionSample = getByText(
+            VALID_PRODUCT_COLLECTION_1.title
+        )
+        const validCollectionSample2 = getByText(
+            VALID_PRODUCT_COLLECTION_2.title
+        )
 
         // Selects the first collection
         userEvent.click(validCollectionSample)
-        expect(inputElement.textContent).toBe(VALID_PRODUCT_1.title)
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_COLLECTION_1.title)
 
         // Selects the second collection
         userEvent.click(validCollectionSample2)
         expect(inputElement.textContent).toBe('2 collections selected')
-
-        // Move back to total order amount
-        getByText('Total order amount').click()
 
         // Save
         getByTestId(testIds.saveBtn).click()
@@ -653,7 +670,64 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             ).toHaveBeenCalledWith([
                 undefined,
                 expect.objectContaining({
-                    external_collection_ids: null,
+                    external_collection_ids: [
+                        VALID_PRODUCT_COLLECTION_1.id.toString(),
+                        VALID_PRODUCT_COLLECTION_2.id.toString(),
+                    ],
+                }),
+            ])
+        })
+    })
+
+    it('allows saving with multiple values for multiple products', async () => {
+        // Setup
+        useModalManagerMock.mockReturnValue({
+            getParams: () => ({}),
+        } as unknown as useModalManagerApi)
+
+        const {getByTestId, getByText, getByRole} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <UniqueDiscountOfferCreateModal {...props} />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await setupValidModalParameters(getByTestId, getByRole)
+
+        act(() => getByText('To specific products').click())
+        const inputElement = getByText('Select specific products')
+        fireEvent.focus(inputElement)
+
+        const validProductSample = getByText(VALID_PRODUCT_1.data.title)
+        const validProductSample2 = getByText(VALID_PRODUCT_2.data.title)
+
+        // Selects the first product
+        userEvent.click(validProductSample)
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_1.data.title)
+
+        // Selects the second product
+        userEvent.click(validProductSample2)
+        expect(inputElement.textContent).toBe('2 products selected')
+
+        // Remove one of the products and re-add it
+        act(() => userEvent.click(validProductSample))
+        expect(inputElement.textContent).toBe(VALID_PRODUCT_2.data.title)
+        act(() => userEvent.click(validProductSample))
+
+        // Save
+        getByTestId(testIds.saveBtn).click()
+
+        await waitFor(() => {
+            expect(
+                useCreateDiscountOfferMock().mutateAsync
+            ).toHaveBeenCalledWith([
+                undefined,
+                expect.objectContaining({
+                    external_product_ids: [
+                        VALID_PRODUCT_2.data.id,
+                        VALID_PRODUCT_1.data.id,
+                    ],
                 }),
             ])
         })

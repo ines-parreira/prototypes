@@ -56,6 +56,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
         null
     )
     const [selectedCollections, setSelectedCollections] = useState<string[]>([])
+    const [selectedProducts, setSelectedProducts] = useState<string[]>([])
     const [appliesTo, setAppliesTo] = useState<AppliesTypeEnum>(
         AppliesTypeEnum.ORDER_AMOUNT
     )
@@ -72,7 +73,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
     const [formErrors, setFormErrors] = useState({
         code: null,
     })
-    const shouldRenderCollectionFormGroup =
+    const shouldRenderProductAndCollectionFormGroup =
         discountType !== DISCOUNT_TYPE.FREE_SHIPPING
 
     const dispatch = useAppDispatch()
@@ -102,10 +103,26 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
         [selectedCollections]
     )
 
-    // Listen to applies to and clear the selection if it's back to order amount
+    const handleSelectedProductsChange = useCallback(
+        (value: string | null): void => {
+            const selectedProductsSet = new Set(selectedProducts)
+            if (value !== null)
+                selectedProductsSet.has(value)
+                    ? selectedProductsSet.delete(value)
+                    : selectedProductsSet.add(value)
+            setSelectedProducts(Array.from(selectedProductsSet))
+        },
+        [selectedProducts]
+    )
+
+    // Listen to applies to and clear the selection if it's not going to be used
     useEffect(() => {
         if (appliesTo !== AppliesTypeEnum.PRODUCT_COLLECTION) {
             setSelectedCollections([])
+        }
+
+        if (appliesTo !== AppliesTypeEnum.SPECIFIC_PRODUCT) {
+            setSelectedProducts([])
         }
     }, [appliesTo])
 
@@ -127,8 +144,13 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                     ? minRequirementsPurchaseAmount
                     : null,
                 segment_ids: selectedSegments,
+                product_ids:
+                    shouldRenderProductAndCollectionFormGroup &&
+                    selectedProducts.length
+                        ? selectedProducts
+                        : null,
                 collection_ids:
-                    shouldRenderCollectionFormGroup &&
+                    shouldRenderProductAndCollectionFormGroup &&
                     selectedCollections.length
                         ? selectedCollections
                         : null,
@@ -160,8 +182,9 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
             minRequirementsPurchase,
             minRequirementsPurchaseAmount,
             selectedSegments,
+            selectedProducts,
             selectedCollections,
-            shouldRenderCollectionFormGroup,
+            shouldRenderProductAndCollectionFormGroup,
             integration,
             onSubmit,
             dispatch,
@@ -329,13 +352,17 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                             </div>
                         </InputGroup>
                     </FormGroup>
-                    {shouldRenderCollectionFormGroup && (
+                    {shouldRenderProductAndCollectionFormGroup && (
                         <CollectionFormGroup
                             integrationId={
                                 integration.get('id') as unknown as number
                             }
-                            selected={selectedCollections}
-                            onSelectionChange={handleCollectionChange}
+                            selectedCollections={selectedCollections}
+                            onSelectedCollectionsChange={handleCollectionChange}
+                            selectedProducts={selectedProducts}
+                            onSelectedProductsChange={
+                                handleSelectedProductsChange
+                            }
                             appliesTo={appliesTo}
                             setAppliesTo={setAppliesTo}
                         />
