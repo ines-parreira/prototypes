@@ -86,7 +86,15 @@ export const useGetWorkflowConfigurationTemplates = (
         queryFn: async () => {
             const client = await getGorgiasWfApiClient()
             const response =
-                await client.WfConfigurationTemplateController_list(params)
+                await client.WfConfigurationTemplateController_list(
+                    params,
+                    {},
+                    {
+                        paramsSerializer: {
+                            indexes: true,
+                        },
+                    }
+                )
             return response.data
         },
         staleTime: STALE_TIME_MS,
@@ -106,7 +114,15 @@ export const useGetWorkflowConfigurationTemplate = (
         queryFn: async () => {
             const client = await getGorgiasWfApiClient()
             const response = await client.WfConfigurationTemplateController_get(
-                {id}
+                {
+                    id,
+                },
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: true,
+                    },
+                }
             )
             return response.data
         },
@@ -298,11 +314,19 @@ export const useGetStoreWorkflowsConfigurations = ({
                 throw new Error('Unsupported store type')
             }
             const client = await getGorgiasWfApiClient()
-            const response = await client.StoreWfConfigurationController_list({
-                store_name: storeName,
-                store_type: storeType,
-                triggers,
-            })
+            const response = await client.StoreWfConfigurationController_list(
+                {
+                    store_name: storeName,
+                    store_type: storeType,
+                    triggers,
+                },
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: true,
+                    },
+                }
+            )
             return response.data
         },
         refetchOnMount: 'always',
@@ -390,9 +414,17 @@ export const useGetActionsApp = (id?: string) => {
         enabled: !!id,
         queryFn: async () => {
             const client = await getGorgiasWfApiClient()
-            const response = await client.AppController_get({
-                id: id!,
-            })
+            const response = await client.AppController_get(
+                {
+                    id: id!,
+                },
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: true,
+                    },
+                }
+            )
             return response.data
         },
         staleTime: STALE_TIME_MS,
@@ -405,7 +437,15 @@ export const useListActionsApps = () => {
         queryKey: actionsAppDefinitionKeys.list(),
         queryFn: async () => {
             const client = await getGorgiasWfApiClient()
-            const response = await client.AppController_list()
+            const response = await client.AppController_list(
+                {},
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: true,
+                    },
+                }
+            )
             return response.data
         },
         staleTime: STALE_TIME_MS,
@@ -439,10 +479,18 @@ export const useListWorkflowEntryPoints = ({
         }),
         queryFn: async () => {
             const client = await getGorgiasWfApiClient()
-            const response = await client.WfEntrypointController_list({
-                ids,
-                language,
-            })
+            const response = await client.WfEntrypointController_list(
+                {
+                    ids,
+                    language,
+                },
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: true,
+                    },
+                }
+            )
             return response.data
         },
         select: (data) => _mapValues(data, 'label'),

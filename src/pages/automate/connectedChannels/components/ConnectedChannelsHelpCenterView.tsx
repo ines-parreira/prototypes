@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useMemo} from 'react'
 import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
 import {noop} from 'lodash'
@@ -12,19 +12,12 @@ import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHel
 import {HelpCenter} from 'models/helpCenter/types'
 import {AutomateFeatures} from 'pages/automate/common/types'
 import {IntegrationType} from 'models/integration/types'
-import {useUpdateHelpCenter} from 'models/helpCenter/queries'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters'
-
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import {FlowsSettings} from './FlowsSettings'
+import css from './ConnectedChannelsChatView.less'
 import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
 import {FeatureSettings} from './FeatureSettings'
 import {ConnectedChannelsEmptyView} from './ConnectedChannelsEmptyView'
-
-import css from './ConnectedChannelsChatView.less'
 
 interface Props {
     helpCenter?: HelpCenter
@@ -66,52 +59,30 @@ export const ConnectedChannelsHelpCenterView = ({
 
     const currentChannelId = currentChannel?.value.id ?? ''
 
-    const dispatch = useAppDispatch()
-
     const {
         automationSettings,
         handleHelpCenterAutomationSettingsUpdate,
         isFetchPending,
     } = useHelpCentersAutomationSettings(currentChannelId)
-    const {mutateAsync: updateHelpCenterMutateAsync} = useUpdateHelpCenter()
 
-    const updateOrderManagement = useCallback(
-        async (value: boolean) => {
-            try {
-                const res = await updateHelpCenterMutateAsync([
-                    undefined,
-                    {help_center_id: currentChannelId},
-                    {
-                        self_service_deactivated: !value,
+    const updateSettings = useCallback(
+        () => (value: boolean) => {
+            void handleHelpCenterAutomationSettingsUpdate(
+                {
+                    ...automationSettings,
+                    order_management: {
+                        enabled: value,
                     },
-                ])
-
-                dispatch(helpCenterUpdated(res!.data))
-
-                void dispatch(
-                    notify({
-                        message: `Order Management ${
-                            value ? 'enabled' : 'disabled'
-                        }`,
-                        status: NotificationStatus.Success,
-                    })
-                )
-            } catch (err) {
-                void dispatch(
-                    notify({
-                        message: `Failed to ${
-                            value ? 'enable' : 'disable'
-                        } Order Management`,
-                        status: NotificationStatus.Error,
-                    })
-                )
-            }
+                },
+                `Order Management ${value ? 'enabled' : 'disabled'}`
+            )
         },
-        [updateHelpCenterMutateAsync, dispatch, currentChannelId]
+        [automationSettings, handleHelpCenterAutomationSettingsUpdate]
     )
 
-    const isOrderManagementEnabled =
-        !currentChannel?.value?.self_service_deactivated_datetime
+    const isOrderManagementEnabled = useMemo(() => {
+        return automationSettings.order_management?.enabled ?? false
+    }, [automationSettings])
 
     if (helpCenterChannels.length === 0) {
         return (
@@ -214,7 +185,7 @@ export const ConnectedChannelsHelpCenterView = ({
                         labelSubtitle="Allow customers to track and manage their orders directly within your Help Center."
                         enabled={isOrderManagementEnabled}
                         externalLinkUrl={`/app/automation/${shopType}/${shopName}/order-management`}
-                        onToggle={updateOrderManagement}
+                        onToggle={updateSettings()}
                     />
                 )}
             </div>
