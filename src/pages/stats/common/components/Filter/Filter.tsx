@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 import classNames from 'classnames'
 import flatMap from 'lodash/flatMap'
+import useEffectOnce from 'hooks/useEffectOnce'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -103,6 +104,12 @@ const Filter = ({
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(initialiseAsOpen)
+
+    useEffectOnce(() => {
+        if (initialiseAsOpen) {
+            onDropdownOpen()
+        }
+    })
 
     const onToggle = useCallback(() => {
         if (!isDropdownOpen) {

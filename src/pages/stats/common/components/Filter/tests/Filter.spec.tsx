@@ -51,6 +51,7 @@ describe('Filter', () => {
     })
 
     it('renders the filter component with open dropdown', () => {
+        const onDropdownOpenSpy = jest.fn()
         render(
             <Filter
                 initialiseAsOpen={true}
@@ -62,6 +63,7 @@ describe('Filter', () => {
                 onSelectAll={onSelectAll}
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
+                onDropdownOpen={onDropdownOpenSpy}
             />
         )
 
@@ -72,6 +74,7 @@ describe('Filter', () => {
         expect(
             screen.getByRole('option', {name: 'Option 2'})
         ).toBeInTheDocument()
+        expect(onDropdownOpenSpy).toHaveBeenCalled()
     })
 
     it('calls onChangeOption when an option is selected', () => {
