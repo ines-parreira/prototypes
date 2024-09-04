@@ -11,7 +11,8 @@ import {
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {getCustomFieldValueSerializer} from 'models/reporting/queryFactories/utils'
 import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {FilterKey} from 'models/stat/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -24,7 +25,7 @@ import {
 describe('customFieldsTicketCountQueryFactory', () => {
     const periodStart = '2021-05-29T00:00:00.000'
     const periodEnd = '2021-06-04T23:59:59.000'
-    const statsFilters: StatsFilters = {
+    const statsFilters = {
         period: {
             start_datetime: periodStart,
             end_datetime: periodEnd,
@@ -129,7 +130,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
         })
     })
 
-    describe('customFieldsTicketCountPerTicketQueryFactory', () => {
+    describe('customFieldsTicketCountPerTicketDrillDownQueryFactory', () => {
         it('should build expected query', () => {
             const query = customFieldsTicketCountPerTicketDrillDownQueryFactory(
                 statsFilters,
@@ -198,6 +199,80 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
             })
+        })
+
+        it('should merge custom field filters per member on one-of operator', () => {
+            const someId = 5
+            const includedCustomFields = [
+                `${someId}::Some::Value`,
+                `${someId}::Some::OtherValue`,
+            ]
+            const oneMoreId = 10
+            const moreIncludedCustomFields = [
+                `${oneMoreId}::More::Value`,
+                `${oneMoreId}::More::OtherValue`,
+            ]
+            const anotherId = 17
+            const excludedCustomFields = [
+                `${anotherId}::Different::Value`,
+                `${anotherId}::Different::SampleValue`,
+            ]
+            const customFieldsValueStrings = [
+                'some::label',
+                'some::other::label',
+            ]
+            const filtersWithCustomFields = {
+                ...statsFilters,
+                [FilterKey.CustomFields]: [
+                    {
+                        customFieldId: someId,
+                        member: TicketMember.CustomField,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: includedCustomFields,
+                    },
+                    {
+                        customFieldId: oneMoreId,
+                        member: TicketMember.CustomField,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: moreIncludedCustomFields,
+                    },
+                    {
+                        customFieldId: anotherId,
+                        member: TicketMember.CustomField,
+                        operator: LogicalOperatorEnum.NOT_ONE_OF,
+                        values: excludedCustomFields,
+                    },
+                ],
+            }
+            const query = customFieldsTicketCountPerTicketDrillDownQueryFactory(
+                filtersWithCustomFields,
+                timezone,
+                customFieldId,
+                customFieldsValueStrings,
+                statsFilters.period
+            )
+
+            expect(query.filters).toContainEqual(
+                expect.objectContaining({
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.Equals,
+                    values: expect.arrayContaining([
+                        ...customFieldsValueStrings.map(
+                            (v) => `${customFieldId}::${v}`
+                        ),
+                        ...includedCustomFields,
+                        ...moreIncludedCustomFields,
+                    ]),
+                })
+            )
+
+            expect(query.filters).toContainEqual(
+                expect.objectContaining({
+                    member: TicketMember.CustomFieldToExclude,
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: expect.arrayContaining(excludedCustomFields),
+                })
+            )
         })
     })
 })

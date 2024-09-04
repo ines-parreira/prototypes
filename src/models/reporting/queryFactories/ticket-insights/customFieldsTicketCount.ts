@@ -7,7 +7,10 @@ import {
     TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {getCustomFieldValueSerializer} from 'models/reporting/queryFactories/utils'
+import {
+    deduplicateCustomFields,
+    getCustomFieldValueSerializer,
+} from 'models/reporting/queryFactories/utils'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
@@ -110,7 +113,7 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
                   ]
                 : []),
             TicketDrillDownFilter,
-        ],
+        ].reduce(deduplicateCustomFields, []),
         dimensions: [TicketDimension.TicketId],
         limit: DRILLDOWN_QUERY_LIMIT,
     }

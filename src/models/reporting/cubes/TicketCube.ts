@@ -48,6 +48,7 @@ export enum TicketMember {
     TotalTagsToMatch = 'TicketEnriched.totalTagsToMatch',
     Channel = 'TicketEnriched.channel',
     CustomField = 'TicketEnriched.customField',
+    TotalCustomFieldIdsToMatch = 'TicketEnriched.totalCustomFieldIdsToMatch',
     CustomFieldToExclude = 'TicketEnriched.customFieldToExclude',
 }
 

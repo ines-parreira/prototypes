@@ -68,6 +68,32 @@ const NotEqualsMap = {
     [TicketMember.MessageSenderId]: TicketMember.MessageSenderIdToExclude,
 }
 
+export const deduplicateCustomFields = (
+    acc: ReportingFilter[],
+    filter: ReportingFilter
+): ReportingFilter[] => {
+    if (
+        filter.member === TicketMember.CustomField ||
+        filter.member === TicketMember.CustomFieldToExclude
+    ) {
+        const existingFilter = acc.find((f) => f.member === filter.member)
+        let filterToAddOrReplace: ReportingFilter
+        if (existingFilter) {
+            filterToAddOrReplace = {
+                ...existingFilter,
+                values: [...existingFilter.values, ...filter.values],
+            }
+        } else {
+            filterToAddOrReplace = filter
+        }
+        return [
+            ...acc.filter((f) => f.member !== filter.member),
+            filterToAddOrReplace,
+        ]
+    }
+    return [...acc, filter]
+}
+
 export const addOptionalFilter = (
     commonFilters: ReportingFilter[],
     filter: OptionalFilter,
@@ -99,11 +125,19 @@ export const addOptionalFilter = (
                 } else if (
                     customFieldFilter.operator === LogicalOperatorEnum.ALL_OF
                 ) {
-                    return customFieldFilter.values.map((value) => ({
-                        member: filterDefaults.member,
-                        values: [String(value)],
-                        operator: FilterOperatorMap[customFieldFilter.operator],
-                    }))
+                    return [
+                        {
+                            member: filterDefaults.member,
+                            values: customFieldFilter.values.map(String),
+                            operator:
+                                FilterOperatorMap[customFieldFilter.operator],
+                        },
+                        {
+                            member: TicketMember.TotalCustomFieldIdsToMatch,
+                            values: [String(customFieldFilter.values.length)],
+                            operator: ReportingFilterOperator.Equals,
+                        },
+                    ]
                 }
                 return {
                     member: filterDefaults.member,
@@ -112,7 +146,7 @@ export const addOptionalFilter = (
                 }
             })
 
-        reportingFilters = _flatMap(values)
+        reportingFilters = _flatMap(values).reduce(deduplicateCustomFields, [])
     } else if (isFilterWithLogicalOperator(filter)) {
         if (filter.values.length === 0) {
             return commonFilters

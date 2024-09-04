@@ -1,4 +1,3 @@
-import _flatMap from 'lodash/flatMap'
 import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
@@ -96,7 +95,7 @@ describe('utils', () => {
             ])
         })
 
-        it('should produce multiple entries for ALL_OF operator for a custom field', () => {
+        it('should produce single entry for ALL_OF operator for a custom field with a values count', () => {
             const filter: CustomFieldFilter[] = [
                 {
                     values: ['123:One', '456:Two'],
@@ -116,17 +115,18 @@ describe('utils', () => {
                 filterDefaults
             )
 
-            expect(updatedFilters).toEqual(
-                _flatMap(
-                    filter.map((value) =>
-                        filter[0].values.map((val) => ({
-                            values: [String(val)],
-                            member: filterDefaults.member,
-                            operator: FilterOperatorMap[value.operator],
-                        }))
-                    )
-                )
-            )
+            expect(updatedFilters).toEqual([
+                {
+                    values: filter[0].values,
+                    member: filterDefaults.member,
+                    operator: FilterOperatorMap[filter[0].operator],
+                },
+                {
+                    member: TicketMember.TotalCustomFieldIdsToMatch,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [String(filter[0].values.length)],
+                },
+            ])
         })
 
         it('should produce multiple entries for NOT_ONE_OF operator for a custom field', () => {
