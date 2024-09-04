@@ -157,14 +157,9 @@ export const addOptionalFilter = (
         ) {
             reportingFilters = [
                 {
-                    member: filterDefaults.member,
+                    member: TicketMember.AllTags,
                     operator: ReportingFilterOperator.Equals,
                     values: filter.values.map(toLowerCaseString),
-                },
-                {
-                    member: TicketMember.TotalTagsToMatch,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [toLowerCaseString(filter.values.length)],
                 },
             ]
         } else if (

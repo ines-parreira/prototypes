@@ -44,6 +44,7 @@ export enum TicketMember {
     IsSpam = 'TicketEnriched.isSpam',
     Status = 'TicketEnriched.status',
     Tags = 'TicketEnriched.tags',
+    AllTags = 'TicketEnriched.allTags',
     TagsToExclude = 'TicketEnriched.tagsToExclude',
     TotalTagsToMatch = 'TicketEnriched.totalTagsToMatch',
     Channel = 'TicketEnriched.channel',

@@ -64,7 +64,7 @@ describe('utils', () => {
             })
         })
 
-        it('should add TotalTagsToMatch filter for ALL_OF operator with Tags', () => {
+        it('should use TicketMember.AllTags for ALL_OF operator with Tags', () => {
             const filter = {
                 values: [123, 456],
                 operator: LogicalOperatorEnum.ALL_OF,
@@ -84,13 +84,8 @@ describe('utils', () => {
             expect(updatedFilters).toEqual([
                 {
                     values: filter.values.map(toLowerCaseString),
-                    member: filterDefaults.member,
+                    member: TicketMember.AllTags,
                     operator: FilterOperatorMap[filter.operator],
-                },
-                {
-                    member: TicketMember.TotalTagsToMatch,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [String(filter.values.length)],
                 },
             ])
         })
