@@ -5,30 +5,37 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {keyBy} from 'lodash'
 import thunk from 'redux-thunk'
-import {render, screen, waitFor} from '@testing-library/react'
-import {Router} from 'react-router-dom'
+import {act, fireEvent, screen, waitFor} from '@testing-library/react'
+import {produce} from 'immer'
+
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {billingState} from 'fixtures/billing'
 import {RootState} from 'state/types'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {selfServiceConfiguration1 as mockSelfServiceConfiguration} from 'fixtures/self_service_configurations'
-import history from 'pages/history'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
+import useSelfServiceHelpCenterChannels, {
+    SelfServiceHelpCenterChannel,
+} from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCentersAutomationSettings'
-import {HelpCenter} from 'models/helpCenter/types'
-import {initialState as articlesState} from '../../../../state/entities/helpCenter/articles'
-import {initialState as categoriesState} from '../../../../state/entities/helpCenter/categories'
+import {TicketChannel} from 'business/types/ticket'
+import {useUpdateHelpCenter} from 'models/helpCenter/queries'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories'
+import {renderWithRouter} from 'utils/testing'
+import {NotificationStatus} from 'state/notifications/types'
+
 import {ConnectedChannelsHelpCenterView} from '../components/ConnectedChannelsHelpCenterView'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('pages/automate/common/hooks/useHelpCentersAutomationSettings')
 jest.mock('pages/automate/common/hooks/useSelfServiceHelpCenterChannels')
+jest.mock('models/helpCenter/queries')
 
-const mockHelpCenterChannels = [
+const mockHelpCenterChannels: SelfServiceHelpCenterChannel[] = [
     {
-        type: 'help-center',
+        type: TicketChannel.HelpCenter,
         value: {
             created_datetime: '2023-12-21T13:01:16.097Z',
             updated_datetime: '2024-04-26T09:16:46.329Z',
@@ -67,54 +74,6 @@ const mockHelpCenterChannels = [
             integration_id: 18,
             type: 'faq',
             layout: 'default',
-            account_id: 1,
-            translations: [
-                {
-                    created_datetime: '2023-12-21T13:01:16.097Z',
-                    updated_datetime: '2023-12-21T13:01:16.097Z',
-                    deleted_datetime: null,
-                    help_center_id: 42,
-                    banner_text: null,
-                    banner_image_url: null,
-                    banner_image_vertical_offset: 0,
-                    locale: 'en-US',
-                    seo_meta: {
-                        title: null,
-                        description: null,
-                    },
-                    contact_info: {
-                        email: {
-                            deactivated_datetime: '2024-08-05T10:52:43.387Z',
-                            description: '',
-                            email: '',
-                        },
-                        phone: {
-                            deactivated_datetime: '2024-08-05T10:52:43.387Z',
-                            description: '',
-                            phone_numbers: [],
-                        },
-                        chat: {
-                            deactivated_datetime: '2024-08-05T10:52:43.387Z',
-                            description: '',
-                        },
-                    },
-                    chat_app_key: null,
-                    extra_html: {
-                        extra_head_deactivated_datetime:
-                            '2024-08-05T10:52:43.387Z',
-                        custom_header_deactivated_datetime:
-                            '2024-08-05T10:52:43.387Z',
-                        custom_footer_deactivated_datetime:
-                            '2024-08-05T10:52:43.387Z',
-                        extra_head: '',
-                        custom_header: '',
-                        custom_footer: '',
-                    },
-                    contact_form_id: 54,
-                    logo_hyperlink: null,
-                },
-            ],
-            redirects: [],
         },
     },
 ]
@@ -266,29 +225,29 @@ describe('ConnectedChannelsContactFormView', () => {
             isFetchPending: false,
             handleHelpCenterAutomationSettingsUpdate: jest.fn(),
         })
+        ;(useUpdateHelpCenter as jest.Mock).mockReturnValue({
+            mutateAsync: jest.fn(),
+        })
+        mockedStore.clearActions()
     })
 
     it('should render', () => {
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsHelpCenterView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsHelpCenterView />
+                </QueryClientProvider>
+            </Provider>
         )
     })
 
     it('should render the dropdown', async () => {
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsHelpCenterView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsHelpCenterView />
+                </QueryClientProvider>
+            </Provider>
         )
 
         await waitFor(() => {
@@ -297,14 +256,12 @@ describe('ConnectedChannelsContactFormView', () => {
     })
 
     it('should render contact form icon in the dropdown', async () => {
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsHelpCenterView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsHelpCenterView />
+                </QueryClientProvider>
+            </Provider>
         )
 
         await waitFor(() => {
@@ -313,18 +270,14 @@ describe('ConnectedChannelsContactFormView', () => {
     })
 
     it('should not render app dropdown when help center prop is passed', async () => {
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsHelpCenterView
-                            helpCenter={
-                                mockHelpCenterChannels[0].value as HelpCenter
-                            }
-                        />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsHelpCenterView
+                        helpCenter={mockHelpCenterChannels[0].value}
+                    />
+                </QueryClientProvider>
+            </Provider>
         )
         await waitFor(() => {
             expect(screen.queryByText('Currently viewing')).toBeNull()
@@ -334,16 +287,139 @@ describe('ConnectedChannelsContactFormView', () => {
     it('should render an empty state when there are no channels', () => {
         ;(useSelfServiceHelpCenterChannels as jest.Mock).mockReturnValue([])
 
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsHelpCenterView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsHelpCenterView />
+                </QueryClientProvider>
+            </Provider>
         )
 
         expect(screen.getByText(/Go to Help Center/i)).toBeInTheDocument()
+    })
+
+    it('should toggle order management off', async () => {
+        const mockUpdateHelpCenterMutateAsync = jest.fn().mockResolvedValue({
+            data: {
+                ...mockHelpCenterChannels[0].value,
+                self_service_deactivated_datetime: '2024-09-04T10:02:02.163Z',
+            },
+        })
+
+        ;(useUpdateHelpCenter as jest.Mock).mockReturnValue({
+            mutateAsync: mockUpdateHelpCenterMutateAsync,
+        })
+
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsHelpCenterView />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/connected-channels/help-center',
+                route: '/shopify/itay-store-two/connected-channels/help-center',
+            }
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Currently viewing')).toBeInTheDocument()
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Enable Order Management'))
+        })
+
+        await waitFor(() => {
+            expect(mockUpdateHelpCenterMutateAsync).toHaveBeenCalledWith([
+                undefined,
+                {help_center_id: 42},
+                {
+                    self_service_deactivated: true,
+                },
+            ])
+        })
+
+        expect(mockedStore.getActions()).toEqual([
+            expect.objectContaining({
+                type: 'HELPCENTER/HELPCENTER_UPDATED',
+                payload: {
+                    ...mockHelpCenterChannels[0].value,
+                    self_service_deactivated_datetime:
+                        '2024-09-04T10:02:02.163Z',
+                },
+            }),
+            expect.objectContaining({
+                payload: expect.objectContaining({
+                    message: 'Order Management disabled',
+                    status: NotificationStatus.Success,
+                }),
+            }),
+        ])
+    })
+
+    it('should toggle order management on', async () => {
+        const mockUpdateHelpCenterMutateAsync = jest.fn().mockResolvedValue({
+            data: {
+                ...mockHelpCenterChannels[0].value,
+                self_service_deactivated_datetime: null,
+            },
+        })
+
+        ;(useSelfServiceHelpCenterChannels as jest.Mock).mockReturnValue(
+            produce(mockHelpCenterChannels, (draft) => {
+                draft[0].value.self_service_deactivated_datetime =
+                    '2024-09-04T10:02:02.163Z'
+            })
+        )
+        ;(useUpdateHelpCenter as jest.Mock).mockReturnValue({
+            mutateAsync: mockUpdateHelpCenterMutateAsync,
+        })
+
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsHelpCenterView />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/connected-channels/help-center',
+                route: '/shopify/itay-store-two/connected-channels/help-center',
+            }
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Currently viewing')).toBeInTheDocument()
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Enable Order Management'))
+        })
+
+        await waitFor(() => {
+            expect(mockUpdateHelpCenterMutateAsync).toHaveBeenCalledWith([
+                undefined,
+                {help_center_id: 42},
+                {
+                    self_service_deactivated: false,
+                },
+            ])
+        })
+
+        expect(mockedStore.getActions()).toEqual([
+            expect.objectContaining({
+                type: 'HELPCENTER/HELPCENTER_UPDATED',
+                payload: {
+                    ...mockHelpCenterChannels[0].value,
+                    self_service_deactivated_datetime: null,
+                },
+            }),
+            expect.objectContaining({
+                payload: expect.objectContaining({
+                    message: 'Order Management enabled',
+                    status: NotificationStatus.Success,
+                }),
+            }),
+        ])
     })
 })
