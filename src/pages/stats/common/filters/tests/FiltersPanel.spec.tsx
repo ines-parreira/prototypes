@@ -1,3 +1,4 @@
+import {useListSlaPolicies} from '@gorgias/api-queries'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {act, screen, waitFor} from '@testing-library/react'
@@ -54,7 +55,8 @@ const mockedLocales = [
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     useSupportedLocales: () => mockedLocales,
 }))
-
+jest.mock('@gorgias/api-queries')
+const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
 jest.mock('models/customField/queries')
 const useGetCustomFieldDefinitionsMock = assumeMock(
     useGetCustomFieldDefinitions
@@ -119,6 +121,11 @@ describe('FiltersPanel without data', () => {
         useGetCustomFieldDefinitionsMock.mockReturnValue(
             apiListCursorPaginationResponse([]) as any
         )
+        useListSlaPoliciesMock.mockReturnValue({
+            data: {data: {data: []}},
+            isError: false,
+            isLoading: false,
+        } as any)
     })
     it('should render the panel without filters', () => {
         const {container} = renderWithStore(<FiltersPanel />, defaultState)
@@ -145,6 +152,7 @@ describe('FiltersPanel', () => {
         FilterKey.Agents,
         FilterKey.HelpCenters,
         FilterKey.LocaleCodes,
+        FilterKey.SlaPolicies,
         FilterComponentKey.BusiestTimesMetricSelectFilter,
         FilterComponentKey.Store,
         FilterComponentKey.PhoneIntegrations,

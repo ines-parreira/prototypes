@@ -2,7 +2,10 @@ import {UseQueryResult} from '@tanstack/react-query'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {FILTER_VALUE_PLACEHOLDER} from 'pages/stats/common/components/Filter/constants'
+import {
+    FILTER_DROPDOWN_ICON,
+    FILTER_VALUE_PLACEHOLDER,
+} from 'pages/stats/common/components/Filter/constants'
 import {ticketFieldDefinitions} from 'fixtures/customField'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {ApiListResponseCursorPagination} from 'models/api/types'
@@ -101,7 +104,7 @@ describe('CustomFieldFilter', () => {
 
         renderWithStore(<CustomFieldFilter />, state)
 
-        userEvent.click(screen.getByText('arrow_drop_down'))
+        userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
         const option = screen.getByRole('option', {
             name: new RegExp(ticketFieldDefinitions[1].label),
         })

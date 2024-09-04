@@ -123,6 +123,10 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
     })
 
     it('should render SLAPolicySelect', () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.AnalyticsNewFilters]: false,
+        })
+
         render(
             <Provider store={mockStore({})}>
                 <ServiceLevelAgreements />

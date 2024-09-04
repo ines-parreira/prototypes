@@ -7,6 +7,7 @@ import React, {
     useState,
 } from 'react'
 import _isEqual from 'lodash/isEqual'
+import {SLAPolicyFilterWithState} from 'pages/stats/common/filters/SLAPolicyFilter'
 import {BusiestTimesMetricSelectFilter} from 'pages/stats/common/filters/BusiestTimesMetricSelectFilter'
 import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
@@ -78,10 +79,13 @@ export const renderFilter = (filter: FilterKey | FilterComponentKey) => {
             return HelpCenterFilterWithState
         case FilterKey.LocaleCodes:
             return HelpCenterLanguageFilterWithState
+        case FilterKey.SlaPolicies:
+            return SLAPolicyFilterWithState
         case FilterComponentKey.BusiestTimesMetricSelectFilter:
             return BusiestTimesMetricSelectFilter
         case FilterComponentKey.CustomField:
             return CustomFieldFilter
+
         case FilterComponentKey.Store:
             return StoreFilterWithState
         default:

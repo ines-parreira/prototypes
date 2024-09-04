@@ -10,6 +10,7 @@ import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
 
 import {
+    FILTER_DROPDOWN_ICON,
     FILTER_VALUE_MAX_WIDTH,
     FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
@@ -102,7 +103,7 @@ const FilterValue = (
                             css.dropdownIcon
                         )}
                     >
-                        arrow_drop_down
+                        {FILTER_DROPDOWN_ICON}
                     </i>
                 )}
             </div>

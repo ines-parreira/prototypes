@@ -7,6 +7,7 @@ export const LABEL_MAX_WIDTH = 252
 export const FILTER_VALUE_PLACEHOLDER = 'Select value...'
 export const FILTER_SELECT_ALL_LABEL = 'Select all'
 export const FILTER_DESELECT_ALL_LABEL = 'Deselect all'
+export const FILTER_DROPDOWN_ICON = 'arrow_drop_down'
 
 export const REMOVE_FILTER_LABEL = 'Remove filter'
 

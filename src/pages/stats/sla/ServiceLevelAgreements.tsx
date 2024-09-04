@@ -46,7 +46,10 @@ export default function ServiceLevelAgreements() {
                                 className="pb-0"
                             >
                                 <FiltersPanel
-                                    persistentFilters={[FilterKey.Period]}
+                                    persistentFilters={[
+                                        FilterKey.Period,
+                                        FilterKey.SlaPolicies,
+                                    ]}
                                     optionalFilters={[
                                         FilterKey.Integrations,
                                         FilterKey.Channels,
@@ -62,7 +65,7 @@ export default function ServiceLevelAgreements() {
                         title={OVERVIEW_SECTION_LABEL}
                         className="pb-0"
                     >
-                        <SLAPolicySelect />
+                        {!isAnalyticsNewFilters && <SLAPolicySelect />}
                     </DashboardSection>
                     <DashboardSection>
                         <DashboardGridCell size={getGridCellSize(6)}>

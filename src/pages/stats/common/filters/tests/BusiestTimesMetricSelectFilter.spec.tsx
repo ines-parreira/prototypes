@@ -1,6 +1,7 @@
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+import {FILTER_DROPDOWN_ICON} from 'pages/stats/common/components/Filter/constants'
 import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {BusiestTimesMetricSelectFilter} from 'pages/stats/common/filters/BusiestTimesMetricSelectFilter'
 import {RootState} from 'state/types'
@@ -34,7 +35,7 @@ describe('BusiestTimesMetricSelectFilter', () => {
             defaultState
         )
 
-        userEvent.click(screen.getByText('arrow_drop_down'))
+        userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
         userEvent.click(screen.getByText(metricLabels[metric]))
 
         expect(store.getActions()).toContainEqual(setSelectedMetric(metric))
