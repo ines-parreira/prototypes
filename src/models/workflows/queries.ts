@@ -91,7 +91,7 @@ export const useGetWorkflowConfigurationTemplates = (
                     {},
                     {
                         paramsSerializer: {
-                            indexes: true,
+                            indexes: false,
                         },
                     }
                 )
@@ -120,7 +120,7 @@ export const useGetWorkflowConfigurationTemplate = (
                 {},
                 {
                     paramsSerializer: {
-                        indexes: true,
+                        indexes: false,
                     },
                 }
             )
@@ -323,7 +323,7 @@ export const useGetStoreWorkflowsConfigurations = ({
                 {},
                 {
                     paramsSerializer: {
-                        indexes: true,
+                        indexes: false,
                     },
                 }
             )
@@ -421,7 +421,7 @@ export const useGetActionsApp = (id?: string) => {
                 {},
                 {
                     paramsSerializer: {
-                        indexes: true,
+                        indexes: false,
                     },
                 }
             )
@@ -442,7 +442,7 @@ export const useListActionsApps = () => {
                 {},
                 {
                     paramsSerializer: {
-                        indexes: true,
+                        indexes: false,
                     },
                 }
             )
@@ -487,7 +487,7 @@ export const useListWorkflowEntryPoints = ({
                 {},
                 {
                     paramsSerializer: {
-                        indexes: true,
+                        indexes: false,
                     },
                 }
             )
