@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, screen} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import user from '@testing-library/user-event'
 import {QueryClient, useQueryClient} from '@tanstack/react-query'
 import {
@@ -11,6 +11,7 @@ import {
 import {assumeMock} from 'utils/testing'
 import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {useReactivateTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 import AddSalesCouponModal from '../../AddSalesCouponModal'
 import UpcomingInvoiceCard from '../UpcomingInvoiceCard'
 
@@ -99,6 +100,27 @@ useExtendTrialMock.mockImplementation(() => {
     } as unknown as ReturnType<typeof useExtendTrialWithSideEffects>
 })
 
+// Mock useReactivateTrialWithSideEffectsMock
+const useReactivateTrialWithSideEffectsMutateMock = jest.fn()
+jest.mock('pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects')
+const useReactivateTrialWithSideEffectsMock = assumeMock(
+    useReactivateTrialWithSideEffects
+)
+useReactivateTrialWithSideEffectsMock.mockImplementation(() => {
+    const result = {
+        mutate: useReactivateTrialWithSideEffectsMutateMock,
+        isLoading: false,
+    }
+
+    useReactivateTrialWithSideEffectsMutateMock.mockImplementation(() => {
+        result.isLoading = true
+    })
+
+    result.mutate = useReactivateTrialWithSideEffectsMutateMock
+
+    return result as unknown as ReturnType<typeof useExtendTrialWithSideEffects>
+})
+
 describe('UpcomingInvoiceCard', () => {
     it('should show a specific message when there is no upcoming invoice', () => {
         render(
@@ -111,6 +133,7 @@ describe('UpcomingInvoiceCard', () => {
             screen.getByText('No upcoming invoice for now')
         ).toBeInTheDocument()
     })
+
     it('should show the total amount of the upcoming invoice', () => {
         render(<UpcomingInvoiceCard {...upcomingInvoiceCardParams} />)
         expect(screen.getByText('$99')).toBeInTheDocument()
@@ -224,5 +247,36 @@ describe('UpcomingInvoiceCard', () => {
             },
             {}
         )
+    })
+
+    it(`should allow to reactivate trial when the last subscription is cancelled and trial wasn't extended before`, async () => {
+        render(
+            <UpcomingInvoiceCard
+                {...upcomingInvoiceCardParams}
+                subscriptionStatus={SubscriptionStatus.CANCELED}
+                hasExtendedTrial={false}
+            />
+        )
+
+        user.click(screen.getByRole('button', {name: 'Reactivate trial'}))
+
+        await waitFor(() => {
+            expect(screen.getByRole('button', {name: 'Confirm'})).toBeVisible()
+        })
+
+        // Verify that the confirm ation is called only once even if it is clicked multiple times
+        user.click(screen.getByRole('button', {name: 'Confirm'}))
+        user.click(screen.getByRole('button', {name: 'Confirm'}))
+        user.click(screen.getByRole('button', {name: 'Confirm'}))
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', {name: 'Confirm'})
+            ).not.toBeInTheDocument()
+        })
+
+        expect(
+            useReactivateTrialWithSideEffectsMutateMock
+        ).toHaveBeenCalledTimes(1)
     })
 })

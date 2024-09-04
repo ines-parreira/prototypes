@@ -3,9 +3,7 @@ import React, {
     ReactNode,
     SyntheticEvent,
     useCallback,
-    useEffect,
     useMemo,
-    useRef,
     useState,
 } from 'react'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
@@ -65,7 +63,6 @@ export default function ConfirmationPopover({
     const onElementChange = useCallback((element: HTMLElement | null) => {
         setElement(element)
     }, [])
-    const hideTimeoutRef = useRef<number | null>(null)
     const appNode = useAppNode()
     const rootElement = appNode ?? undefined
 
@@ -78,38 +75,31 @@ export default function ConfirmationPopover({
         [buttonProps?.type, containerElement, element, rootElement]
     )
 
-    useEffect(
-        () => () => {
-            if (hideTimeoutRef.current) {
-                window.clearTimeout(hideTimeoutRef.current)
+    const handleDisplayConfirmation = useCallback(
+        (event?: SyntheticEvent) => {
+            if (buttonProps?.type === 'submit') {
+                const form: HTMLFormElement = _get(event, ['target', 'form'])
+
+                if (form && !form.checkValidity()) {
+                    return
+                }
             }
+            event?.preventDefault()
+            event?.stopPropagation()
+            setIsOpened(true)
         },
-        []
+        [buttonProps?.type]
     )
 
-    const handleDisplayConfirmation = useCallback((event?: SyntheticEvent) => {
-        if (buttonProps?.type === 'submit') {
-            const form: HTMLFormElement = _get(event, ['target', 'form'])
+    const handleConfirmation = () => {
+        onConfirm?.()
+        setIsOpened(false)
+    }
 
-            if (form && !form.checkValidity()) {
-                return
-            }
-        }
-        event?.preventDefault()
-        event?.stopPropagation()
-        setIsOpened(true)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    const handleConfirmation = useCallback(() => {
-        if (onConfirm) {
-            onConfirm()
-        }
-
-        hideTimeoutRef.current = window.setTimeout(() => {
-            setIsOpened(false)
-        }, 20)
-    }, [onConfirm])
+    const handleCancellation = () => {
+        onCancel?.()
+        setIsOpened(false)
+    }
 
     return (
         <>
@@ -127,10 +117,7 @@ export default function ConfirmationPopover({
                     placement={placement}
                     target={uid}
                     onClick={(event) => event.stopPropagation()}
-                    toggle={() => {
-                        setIsOpened(false)
-                        onCancel?.()
-                    }}
+                    toggle={handleCancellation}
                     trigger="legacy"
                     {...other}
                 >
@@ -152,10 +139,7 @@ export default function ConfirmationPopover({
                                         css.cancelButton,
                                         cancelButtonProps?.className
                                     )}
-                                    onClick={() => {
-                                        setIsOpened(false)
-                                        onCancel?.()
-                                    }}
+                                    onClick={handleCancellation}
                                 >
                                     {cancelLabel}
                                 </Button>

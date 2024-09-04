@@ -136,27 +136,6 @@ describe('<ConfirmationPopover />', () => {
         expect(queryByText(/I'm a title/i)).toBeFalsy()
     })
 
-    it('should clear the hide popover timeout on unmount', () => {
-        const {getByText, unmount} = render(
-            <ConfirmationPopover {...defaultProps}>
-                {({uid, onDisplayConfirmation, elementRef}) => (
-                    <Button
-                        id={uid}
-                        onClick={onDisplayConfirmation}
-                        ref={elementRef}
-                    >
-                        Click Me!
-                    </Button>
-                )}
-            </ConfirmationPopover>
-        )
-
-        fireEvent.click(getByText(/Click me!/i))
-        fireEvent.click(getByText(/Confirm/i))
-        unmount()
-        expect(window.clearTimeout).toHaveBeenCalled()
-    })
-
     it('should prevent the event bubbling from the confirmation popover', () => {
         const mockHandleClick = jest.fn()
 

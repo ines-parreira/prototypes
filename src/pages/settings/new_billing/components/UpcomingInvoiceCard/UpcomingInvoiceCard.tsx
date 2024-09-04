@@ -54,7 +54,12 @@ export default function UpcomingInvoiceCard({
                     </p>
                 }
                 onConfirm={() => {
-                    reactivateTrial.mutate([])
+                    if (
+                        !reactivateTrial.isLoading &&
+                        !reactivateTrial.isSuccess
+                    ) {
+                        reactivateTrial.mutate([])
+                    }
                 }}
                 confirmLabel="Confirm"
                 cancelButtonProps={{intent: 'secondary'}}
