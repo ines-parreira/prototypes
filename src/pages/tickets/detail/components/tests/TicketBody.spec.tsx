@@ -14,6 +14,17 @@ import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 
+interface VirtuosoMockProps {
+    components: {
+        Item: React.FC<any>
+        TopItemList: React.FC<any>
+    }
+}
+const mockVirtuoso = jest.fn<
+    VirtuosoMockProps,
+    [VirtuosoProps<unknown, unknown>]
+>()
+
 jest.mock('pages/tickets/detail/components/TicketBodyElement', () =>
     jest.fn(({index}: {index: number}) => <p>TicketBodyElement {index}</p>)
 )
@@ -37,6 +48,7 @@ jest.mock('react-virtuoso', () => {
     const {forwardRef, Fragment} = jest.requireActual('react')
     //eslint-disable-next-line @typescript-eslint/no-unused-vars
     function Virtuoso(props: VirtuosoProps<unknown, unknown>, _ref: any) {
+        mockVirtuoso(props)
         return (
             <>
                 {props.data?.map((value, index) => (
@@ -114,5 +126,104 @@ describe('TicketBody', () => {
             expect.objectContaining({isLast: true}),
             {}
         )
+    })
+
+    it('should pass correct props to the Item component', () => {
+        // Render the component
+        render(
+            <Provider store={mockStore({})}>
+                <TicketBody
+                    elements={fromJS([defaultMessage, defaultMessage])}
+                    hideTicket={() => Promise.resolve()}
+                    isShopperTyping={false}
+                    setStatus={() => {}}
+                    shopperName=""
+                    submit={() => {}}
+                />
+            </Provider>
+        )
+
+        // Check if Virtuoso is called with the correct component props
+        expect(mockVirtuoso).toHaveBeenCalledWith(
+            expect.objectContaining({
+                components: expect.objectContaining({
+                    Item: expect.any(Function),
+                }),
+            })
+        )
+
+        // Extract the Item function from Virtuoso call
+        const virtuosoCall = mockVirtuoso.mock.calls[0][0]
+
+        expect(virtuosoCall).toBeDefined()
+        expect(virtuosoCall?.components).toBeDefined()
+
+        if (virtuosoCall && virtuosoCall.components) {
+            // Render the Item component manually and check if it receives the correct props
+            const ItemComponent = virtuosoCall.components.Item as React.FC<any>
+            const mockProps = {
+                style: {margin: '5px'},
+                children: <p>Test Item Content</p>,
+            }
+
+            const {getByText} = render(<ItemComponent {...mockProps} />)
+
+            const itemElement = getByText('Test Item Content')
+
+            expect(itemElement).toBeInTheDocument()
+            expect(itemElement.parentElement).toHaveStyle(
+                'position: relative; margin: 5px'
+            )
+        }
+    })
+
+    it('should pass correct props to the TopItemList component', () => {
+        // Render the component
+        render(
+            <Provider store={mockStore({})}>
+                <TicketBody
+                    elements={fromJS([defaultMessage, defaultMessage])}
+                    hideTicket={() => Promise.resolve()}
+                    isShopperTyping={false}
+                    setStatus={() => {}}
+                    shopperName=""
+                    submit={() => {}}
+                />
+            </Provider>
+        )
+
+        // Check if Virtuoso is called with the correct component props
+        expect(mockVirtuoso).toHaveBeenCalledWith(
+            expect.objectContaining({
+                components: expect.objectContaining({
+                    TopItemList: expect.any(Function),
+                }),
+            })
+        )
+        const virtuosoCall = mockVirtuoso.mock.calls[0][0]
+
+        expect(virtuosoCall).toBeDefined()
+        expect(virtuosoCall?.components).toBeDefined()
+
+        if (virtuosoCall && virtuosoCall.components) {
+            // Extract the TopItemList function from Virtuoso call
+            const TopItemListComponent = virtuosoCall.components
+                .TopItemList as React.FC<any>
+
+            // Render the TopItemList component manually and check if it receives the correct props
+            const mockProps = {
+                style: {margin: '5px'},
+                children: <p>Top Item Content</p>,
+            }
+
+            const {getByText} = render(<TopItemListComponent {...mockProps} />)
+
+            const topItemElement = getByText('Top Item Content')
+
+            expect(topItemElement).toBeInTheDocument()
+            expect(topItemElement.parentElement).toHaveStyle(
+                'z-index: 2; margin: 5px'
+            )
+        }
     })
 })

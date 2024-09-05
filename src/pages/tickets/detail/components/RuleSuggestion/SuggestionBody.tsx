@@ -18,7 +18,7 @@ type Props = {
     messageId?: number
 }
 
-const PREVIEW_HEIGHT = 175
+const PREVIEW_HEIGHT = 110
 
 export default function SuggestionBody({
     text,

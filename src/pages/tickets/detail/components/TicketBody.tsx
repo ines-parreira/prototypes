@@ -79,6 +79,14 @@ export default function TicketBody({
             TopItemList: ({children, style}) => (
                 <div style={{...style, zIndex: 2}}>{children}</div>
             ),
+            Item: (props) => {
+                const {context: __context, style, children, ...rest} = props
+                return (
+                    <div {...rest} style={{...style, position: 'relative'}}>
+                        {children}
+                    </div>
+                )
+            },
         }),
         []
     )
