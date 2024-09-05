@@ -21,6 +21,25 @@ import {
 import css from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue.less'
 import cssLogicalOperator from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator.less'
 
+const TOOLTIP_LABELS_TO_SHOW = 20
+
+export const getTooltipLabels = (optionsLabels: string[]) => {
+    if (
+        optionsLabels.length > 0 &&
+        optionsLabels.length <= TOOLTIP_LABELS_TO_SHOW
+    ) {
+        return optionsLabels.join(',\n')
+    } else if (optionsLabels.length > TOOLTIP_LABELS_TO_SHOW) {
+        return optionsLabels
+            .slice(0, TOOLTIP_LABELS_TO_SHOW)
+            .join(',\n')
+            .concat(
+                `,\n${optionsLabels.length - TOOLTIP_LABELS_TO_SHOW} more...`
+            )
+    }
+    return FILTER_VALUE_PLACEHOLDER
+}
+
 type Props = {
     optionsLabels: string[]
     trailIcon?: boolean
@@ -51,6 +70,8 @@ const FilterValue = (
     const filterText = optionsLabels.length
         ? optionsLabels.join(', ')
         : FILTER_VALUE_PLACEHOLDER
+
+    const tooltipLabels = getTooltipLabels(optionsLabels)
 
     useEffect(() => {
         const show =
@@ -110,7 +131,7 @@ const FilterValue = (
             <Tooltip target={refTrailIcon}>{REMOVE_FILTER_LABEL}</Tooltip>
             {showTooltip && (
                 <Tooltip target={containerRef}>
-                    <div className={css.tooltip}>{filterText}</div>
+                    <div className={css.tooltip}>{tooltipLabels}</div>
                 </Tooltip>
             )}
         </div>

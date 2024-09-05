@@ -1,9 +1,13 @@
 import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import FilterValue from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue'
+import _times from 'lodash/times'
+import FilterValue, {
+    getTooltipLabels,
+} from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue'
 import {
     FILTER_VALUE_MAX_WIDTH,
+    FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     REMOVE_FILTER_LABEL,
 } from 'pages/stats/common/components/Filter/constants'
@@ -151,5 +155,30 @@ describe('FilterValue', () => {
             const tooltip = screen.queryByRole('tooltip')
             expect(tooltip).not.toBeInTheDocument()
         })
+    })
+})
+
+describe('getTooltipLabels', () => {
+    const generateLabels = (length: number) => {
+        return _times(length, (i) => `label ${i + 1}`)
+    }
+    it('should return a string with all labels separated by commas when the number of labels is less than or equal to 20', () => {
+        const optionsLabels = generateLabels(3)
+        const expectedString = optionsLabels.join(',\n')
+        const result = getTooltipLabels(optionsLabels)
+        expect(result).toEqual(expectedString)
+    })
+
+    it('should return a string with the first 20 labels separated by commas and a message indicating the number of remaining labels when the number of labels is greater than 20', () => {
+        const optionsLabels = generateLabels(25)
+        const result = getTooltipLabels(optionsLabels)
+        const expectedString = `${generateLabels(20).join(',\n')},\n5 more...`
+        expect(result).toEqual(expectedString)
+    })
+
+    it('should return an empty string when the optionsLabels array is empty', () => {
+        const optionsLabels: string[] = []
+        const result = getTooltipLabels(optionsLabels)
+        expect(result).toEqual(FILTER_VALUE_PLACEHOLDER)
     })
 })
