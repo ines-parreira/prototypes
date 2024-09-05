@@ -183,7 +183,12 @@ export const FiltersPanel = ({
             key: `${FilterKey.CustomFields}::${field.id}`,
             filterName: field.label,
             customFieldId: field.id,
-            active: false,
+            active:
+                (
+                    cleanStatsFilters[FilterKey.CustomFields]?.find(
+                        (filter) => filter.customFieldId === field.id
+                    )?.values ?? []
+                ).length > 0,
             initializeAsOpen: false,
         })
     )
