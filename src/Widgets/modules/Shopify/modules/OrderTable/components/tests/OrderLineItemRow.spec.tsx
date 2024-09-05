@@ -76,8 +76,28 @@ describe('<OrderLineItemRow/>', () => {
                 any
             >
             const lineItem = payload.getIn(['line_items', 0])
+            const product = shopifyProductFixture()
+            product.images[0].variant_ids = []
 
             const {container} = render(
+                <OrderLineItemRow
+                    {...props}
+                    lineItem={lineItem}
+                    product={fromJS(product)}
+                />
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render with variant image', () => {
+            const product = shopifyProductFixture()
+            const payloadFixture = shopifyDraftOrderPayloadFixture()
+            payloadFixture.line_items[0].variant_id = product.variants[0].id
+            const payload = fromJS(payloadFixture) as Map<any, any>
+            const lineItem = payload.getIn(['line_items', 0])
+
+            render(
                 <OrderLineItemRow
                     {...props}
                     lineItem={lineItem}
@@ -85,7 +105,8 @@ describe('<OrderLineItemRow/>', () => {
                 />
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            const img = screen.getByAltText('Alt')
+            expect(img).toHaveAttribute('src', 'src')
         })
 
         it('should render with applied discount', () => {

@@ -86,10 +86,11 @@ import {
     IntegrationDataItemType,
 } from '../models/integration/types'
 
-export const shopifyImageFixture = (): Image => ({
+export const shopifyImageFixture = (variant_ids: Array<number>): Image => ({
     id: 1,
     alt: 'Alt',
     src: 'src',
+    variant_ids: variant_ids,
 })
 
 export const shopifyVariantFixture = ({
@@ -134,8 +135,8 @@ export const shopifyProductFixture = ({
     title,
     options: [],
     created_at: '2020-01-01 00:00:00.000000',
-    image: shopifyImageFixture(),
-    images: [shopifyImageFixture()],
+    image: shopifyImageFixture([]),
+    images: [shopifyImageFixture([shopifyVariantFixture().id])],
     variants,
 })
 

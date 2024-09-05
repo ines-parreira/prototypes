@@ -355,6 +355,7 @@ export type Image = {
     id?: number
     alt: Maybe<string>
     src: string
+    variant_ids: Array<number>
 }
 
 export type Variant = {

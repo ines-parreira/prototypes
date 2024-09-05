@@ -267,12 +267,16 @@ exports[`infobarActions.shopify.createOrder actions addRow() should add row to t
           "id": 1,
           "alt": "Alt",
           "src": "src",
+          "variant_ids": Immutable.List [],
         },
         "images": Immutable.List [
           Immutable.Map {
             "id": 1,
             "alt": "Alt",
             "src": "src",
+            "variant_ids": Immutable.List [
+              1,
+            ],
           },
         ],
         "variants": Immutable.List [
@@ -471,12 +475,16 @@ exports[`infobarActions.shopify.createOrder actions onInit() on error should cal
           "id": 1,
           "alt": "Alt",
           "src": "src",
+          "variant_ids": Immutable.List [],
         },
         "images": Immutable.List [
           Immutable.Map {
             "id": 1,
             "alt": "Alt",
             "src": "src",
+            "variant_ids": Immutable.List [
+              1,
+            ],
           },
         ],
         "variants": Immutable.List [
@@ -682,12 +690,16 @@ exports[`infobarActions.shopify.createOrder actions onInit() on success should i
           "id": 1,
           "alt": "Alt",
           "src": "src",
+          "variant_ids": Immutable.List [],
         },
         "images": Immutable.List [
           Immutable.Map {
             "id": 1,
             "alt": "Alt",
             "src": "src",
+            "variant_ids": Immutable.List [
+              1,
+            ],
           },
         ],
         "variants": Immutable.List [

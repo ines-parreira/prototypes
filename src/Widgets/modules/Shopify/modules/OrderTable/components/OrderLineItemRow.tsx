@@ -1,5 +1,5 @@
 import React, {RefObject, memo, useCallback, useEffect, useState} from 'react'
-import {Map, List} from 'immutable'
+import {Map, List, fromJS} from 'immutable'
 import {getSizedImageUrl} from '@shopify/theme-images'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
@@ -157,14 +157,29 @@ function OrderLineItemRow({
     )
 
     const renderImage = useCallback(() => {
-        const src =
-            !!product && product.get('image')
-                ? getSizedImageUrl(product.getIn(['image', 'src']), 'small')
-                : defaultImage
+        let imageSrc = ''
+        const variant_id = lineItem.get('variant_id')
+        const variantImage: Map<any, any> =
+            product &&
+            (product.get('images', fromJS([])) as List<any>).find(
+                (image: Map<any, any>) =>
+                    (
+                        image.get('variant_ids', fromJS([])) as List<any>
+                    ).includes(variant_id)
+            )
+        const variantImageSrc = variantImage ? variantImage.get('src') : ''
+        if (variantImageSrc) {
+            imageSrc = variantImageSrc
+        } else {
+            imageSrc =
+                !!product && product.get('image')
+                    ? getSizedImageUrl(product.getIn(['image', 'src']), 'small')
+                    : defaultImage
+        }
         const alt = !!product ? product.getIn(['image', 'alt']) : ''
 
-        return <img className={css.img} src={src} alt={alt} />
-    }, [product])
+        return <img className={css.img} src={imageSrc} alt={alt} />
+    }, [lineItem, product])
 
     const renderTitle = useCallback(() => {
         const productId = lineItem.get('product_id') as string | null
