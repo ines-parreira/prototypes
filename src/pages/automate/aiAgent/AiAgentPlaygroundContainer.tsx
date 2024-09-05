@@ -12,7 +12,7 @@ export const AiAgentPlaygroundContainer = () => {
 
     return (
         <AiAgentLayout shopName={shopName} className={css.container}>
-            <AiAgentPlaygroundView />
+            <AiAgentPlaygroundView shopName={shopName} />
         </AiAgentLayout>
     )
 }

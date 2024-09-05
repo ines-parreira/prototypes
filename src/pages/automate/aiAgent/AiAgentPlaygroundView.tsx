@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Redirect, useParams} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import {isAxiosError} from 'axios'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -22,13 +22,11 @@ import {CheckPlaygroundPrerequisites} from './components/PlaygroundPrerequisites
 import {useGetOrCreateSnippetHelpCenter} from './hooks/useGetOrCreateSnippetHelpCenter'
 import {MissingEmailAndKnowledgeSourceAlert} from './components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts'
 
-type UrlParams = {
+type Props = {
     shopName: string
 }
 
-export const AiAgentPlaygroundView = () => {
-    const {shopName} = useParams<UrlParams>()
-
+export const AiAgentPlaygroundView = ({shopName}: Props) => {
     const dispatch = useAppDispatch()
     const {routes} = useAiAgentNavigation({shopName})
 
