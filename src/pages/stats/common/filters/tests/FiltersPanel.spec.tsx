@@ -1,9 +1,12 @@
 import {useListSlaPolicies} from '@gorgias/api-queries'
+import {within} from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {act, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {FILTER_SELECT_ALL_LABEL} from 'pages/stats/common/components/Filter/constants'
 import * as PeriodFilter from 'pages/stats/common/filters/PeriodFilter'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
@@ -164,6 +167,9 @@ describe('FiltersPanel', () => {
         useGetCustomFieldDefinitionsMock.mockReturnValue(
             apiListCursorPaginationResponse(customFieldsMockReponse) as any
         )
+        mockFlags({
+            [FeatureFlagKey.AnalyticsCustomFieldsFilter]: true,
+        })
     })
 
     it.each(supportedFilters)(
@@ -502,7 +508,8 @@ describe('FiltersPanel', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render customFields filter', () => {
+    it('should render customFields filter', async () => {
+        const customFieldLabel = customFieldsMockReponse.data[0].label
         const customFieldsFilters = [FilterKey.CustomFields]
         const state = {
             ...defaultState,
@@ -522,6 +529,63 @@ describe('FiltersPanel', () => {
             />,
             state
         )
+        userEvent.click(
+            screen.getByRole('button', {
+                name: new RegExp(ADD_FILTER_BUTTON_LABEL),
+            })
+        )
+
+        expect(screen.getByText(customFieldLabel)).toBeInTheDocument()
+
+        act(() => {
+            userEvent.click(
+                screen.getByRole('option', {
+                    name: new RegExp(customFieldLabel),
+                })
+            )
+        })
+
+        await waitFor(() => {
+            expect(
+                screen
+                    .getAllByTestId('filter-name')
+                    .find(
+                        (filterContainer) =>
+                            !!within(filterContainer).queryByText(
+                                customFieldLabel
+                            )
+                    )
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should not render customFields filter when the flag is disabled', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsCustomFieldsFilter]: false,
+        })
+        const customFieldsFilters = [FilterKey.CustomFields]
+        const state = {
+            ...defaultState,
+            [statsSlice.name]: {
+                filters: fromLegacyStatsFilters({
+                    period: initialState.filters.period,
+                    [optionalFilter]: ['1', '2'],
+                    [FilterKey.CustomFields]: ['1:field'],
+                }),
+            },
+        } as RootState
+
+        renderWithStore(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={customFieldsFilters}
+            />,
+            state
+        )
+
+        expect(
+            screen.queryByText(customFieldsMockReponse.data[0].label)
+        ).not.toBeInTheDocument()
     })
 
     it('should allow passing some initialSettings to the PeriodFilter', () => {

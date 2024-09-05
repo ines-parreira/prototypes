@@ -1,3 +1,4 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {
     ComponentProps,
     createElement,
@@ -7,6 +8,7 @@ import React, {
     useState,
 } from 'react'
 import _isEqual from 'lodash/isEqual'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {SLAPolicyFilterWithState} from 'pages/stats/common/filters/SLAPolicyFilter'
 import {BusiestTimesMetricSelectFilter} from 'pages/stats/common/filters/BusiestTimesMetricSelectFilter'
 import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
@@ -87,7 +89,6 @@ export const renderFilter = (filter: FilterKey | FilterComponentKey) => {
             return BusiestTimesMetricSelectFilter
         case FilterComponentKey.CustomField:
             return CustomFieldFilter
-
         case FilterComponentKey.Store:
             return StoreFilterWithState
         default:
@@ -165,6 +166,8 @@ export const FiltersPanel = ({
     optionalFilters = [],
     filterSettingsOverrides,
 }: Props) => {
+    const isAnalyticsCustomFieldsFilter =
+        !!useFlags()[FeatureFlagKey.AnalyticsCustomFieldsFilter]
     const {cleanStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithLogicalOperatorsWithTimezone
     )
@@ -233,6 +236,7 @@ export const FiltersPanel = ({
 
     useEffect(() => {
         if (
+            isAnalyticsCustomFieldsFilter &&
             optionalFilters.includes(FilterKey.CustomFields) &&
             customFieldFilters.length > 0 &&
             !activeFilters.find(
@@ -241,7 +245,12 @@ export const FiltersPanel = ({
         ) {
             setActiveFilters([...activeFilters, ...customFieldFilters])
         }
-    }, [activeFilters, customFieldFilters, optionalFilters])
+    }, [
+        activeFilters,
+        customFieldFilters,
+        isAnalyticsCustomFieldsFilter,
+        optionalFilters,
+    ])
 
     const options = activeFilters
         .filter((filter) => !filter.active)

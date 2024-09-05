@@ -13,6 +13,7 @@ export enum FeatureFlagKey {
     AIAgentWelcomePage = 'ai-agent-welcome-page',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
     AnalyticsAutoQA = 'analytics-auto-qa',
+    AnalyticsCustomFieldsFilter = 'analytics-custom-fields-filter',
     AnalyticsNewFilters = 'analytics-new-filters',
     AnalyticsNewFiltersHelpCenter = 'analytics-new-filters-help-center',
     AnalyticsNewFiltersVoice = 'analytics-new-filters-voice',
