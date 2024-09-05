@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {ComponentProps, useMemo} from 'react'
 import {LiveCallQueueVoiceCall} from '@gorgias/api-queries'
 import DashboardSection from 'pages/stats/DashboardSection'
 import * as constants from 'pages/stats/voice/constants/liveVoice'
@@ -72,7 +72,7 @@ export default function LiveVoiceMetrics({
     )
     const averageTalkTime = useAverageTalkTimeMetric(filters, timezone)
 
-    const metricCards = [
+    const metricCards: ComponentProps<typeof LiveVoiceMetricCard>[] = [
         {
             title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
             hint: constants.CALLS_IN_QUEUE_METRIC_HINT,
@@ -117,12 +117,7 @@ export default function LiveVoiceMetrics({
         <DashboardSection>
             {metricCards.map((card) => (
                 <DashboardGridCell size={CARD_SIZE} key={card.title}>
-                    <LiveVoiceMetricCard
-                        title={card.title}
-                        hint={card.hint}
-                        value={card.value}
-                        isLoading={card.isLoading}
-                    />
+                    <LiveVoiceMetricCard {...card} />
                 </DashboardGridCell>
             ))}
         </DashboardSection>
