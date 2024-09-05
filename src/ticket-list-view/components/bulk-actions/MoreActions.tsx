@@ -263,6 +263,7 @@ export default function MoreActions({
                         </DropdownHeader>
                         {level === Action.Tag ? (
                             <TagDropdownMenu
+                                className={css.dropdownMenu}
                                 onClick={(item) => onClick(level, item)}
                             />
                         ) : (

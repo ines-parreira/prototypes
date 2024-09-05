@@ -26,6 +26,7 @@ import {hasRole} from 'utils'
 import css from './TagDropdownMenu.less'
 
 type Props = {
+    className?: string
     filterBy?: (s: Tag) => boolean
     onClick: (item: Item) => void
 }
@@ -48,7 +49,7 @@ const removeMatchingQueries = (newTag: string, queryKey: QueryKey) => {
     )
 }
 
-const TagDropdownMenu = ({filterBy, onClick}: Props) => {
+const TagDropdownMenu = ({className, filterBy, onClick}: Props) => {
     const currentUser = useAppSelector(getCurrentUserState)
     const wrapperRef = useRef<HTMLDivElement>(null)
     const hasUserRole = useMemo(
@@ -164,7 +165,7 @@ const TagDropdownMenu = ({filterBy, onClick}: Props) => {
 
     return (
         <Context.Provider value={contextValue}>
-            <div className={css.dropdown} ref={wrapperRef}>
+            <div className={className} ref={wrapperRef}>
                 <Body />
                 {isLoading || !canCreateTag ? null : (
                     <div

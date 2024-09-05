@@ -160,7 +160,6 @@ export const PublicSourcesItem = ({
                 disabled={!isValid || isSyncDisabled}
                 onClick={handleSync}
                 isLoading={source.status === 'loading'}
-                data-testid="sync-button"
             >
                 {source.status === 'loading' ? (
                     'Sync URL'

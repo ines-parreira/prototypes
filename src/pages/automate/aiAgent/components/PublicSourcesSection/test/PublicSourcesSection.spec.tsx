@@ -1,18 +1,20 @@
 import React, {ComponentProps} from 'react'
-import {screen, within} from '@testing-library/react'
+import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import {usePublicResourceMutation} from 'pages/automate/aiAgent/hooks/usePublicResourcesMutation'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
-import {SourceItem} from '../types'
+import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+
 import {PublicSourcesSection} from '../PublicSourcesSection'
+import {SourceItem} from '../types'
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
-jest.mock('../../../hooks/usePublicResourcesPooling', () => ({
+jest.mock('pages/automate/aiAgent/hooks/usePublicResourcesPooling', () => ({
     usePublicResourcesPooling: jest.fn(),
 }))
 
-jest.mock('../../../hooks/usePublicResourcesMutation', () => ({
+jest.mock('pages/automate/aiAgent/hooks/usePublicResourcesMutation', () => ({
     usePublicResourceMutation: jest.fn(),
 }))
 
@@ -71,10 +73,10 @@ describe('<PublicSourcesSection />', () => {
     it('should add new item when add URL clicked', () => {
         renderComponent()
 
-        const addButton = screen.getByTestId('add-button')
+        const addButton = screen.getByText('Add URL')
         addButton.click()
 
-        expect(screen.getAllByTestId('source-item')).toHaveLength(1)
+        expect(screen.getAllByText('Sync URL')).toHaveLength(1)
     })
 
     it('should preprender public sources', () => {
@@ -82,13 +84,13 @@ describe('<PublicSourcesSection />', () => {
 
         renderComponent({sourceItems: sources})
 
-        expect(screen.getAllByTestId('source-item')).toHaveLength(3)
+        expect(screen.getAllByText('Sync URL')).toHaveLength(3)
     })
 
     it('should delete item when delete clicked', () => {
         renderComponent()
 
-        const addButton = screen.getByTestId('add-button')
+        const addButton = screen.getByText('Add URL')
         addButton.click()
         const deleteButton = screen.getByLabelText('Delete public URL')
         deleteButton.click()
@@ -99,7 +101,7 @@ describe('<PublicSourcesSection />', () => {
     it('should open URL in new tab when URL clicked', async () => {
         const url = 'https://example.com/faqs'
         renderComponent()
-        const addButton = screen.getByTestId('add-button')
+        const addButton = screen.getByText('Add URL')
         addButton.click()
 
         const openButton = screen.getByLabelText('Open public URL')
@@ -119,9 +121,9 @@ describe('<PublicSourcesSection />', () => {
         const sources = Array.from({length: 10}, (_, i) => createSource(i + 1))
 
         renderComponent({sourceItems: sources})
-        const addButton = screen.getByTestId('add-button')
+        const addButton = screen.getByText('Add URL')
 
-        expect(addButton).toBeDisabled()
+        expect(addButton.closest('button')).toBeDisabled()
     })
 
     it('should not add duplicates urls', async () => {
@@ -130,7 +132,7 @@ describe('<PublicSourcesSection />', () => {
 
         renderComponent({sourceItems: sources})
 
-        const addButton = screen.getByTestId('add-button')
+        const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
 
         const input = screen
@@ -139,14 +141,11 @@ describe('<PublicSourcesSection />', () => {
 
         await userEvent.type(input, url)
 
-        const lastElement = screen
-            .getAllByTestId('source-item')
-            .pop() as HTMLElement
-        const syncButton = within(lastElement).getByTestId('sync-button')
+        const syncButton = screen.getAllByText('Sync URL').pop() as HTMLElement
 
-        expect(syncButton).toBeDisabled()
+        expect(syncButton.closest('button')).toBeDisabled()
         expect(
-            within(lastElement).getByText('This URL has already been added')
+            screen.getByText('This URL has already been added')
         ).toBeInTheDocument()
     })
 
@@ -154,55 +153,50 @@ describe('<PublicSourcesSection />', () => {
         const url = 'invalid-url'
         renderComponent()
 
-        const addButton = screen.getByTestId('add-button')
+        const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
 
         const input = screen
             .getAllByLabelText('Public URL')
             .pop() as HTMLInputElement
         await userEvent.type(input, url)
-        const lastElement = screen
-            .getAllByTestId('source-item')
-            .pop() as HTMLElement
-        const syncButton = within(lastElement).getByTestId('sync-button')
+        const syncButton = screen
+            .getByText('Sync URL')
+            .closest('button') as HTMLElement
 
         expect(syncButton).toBeDisabled()
-        expect(within(lastElement).getByText('Invalid URL')).toBeInTheDocument()
+        expect(screen.getByText('Invalid URL')).toBeInTheDocument()
     })
 
     it('should show error message when URL cannot be processed', () => {
         const sources = [createSource(1, {status: 'error'})]
         renderComponent({sourceItems: sources})
 
-        const lastElement = screen
-            .getAllByTestId('source-item')
-            .pop() as HTMLElement
-        const syncButton = within(lastElement).getByTestId('sync-button')
+        const syncButton = screen
+            .getByText('Sync URL')
+            .closest('button') as HTMLElement
 
         expect(syncButton).toBeEnabled()
-        expect(
-            within(lastElement).getByText('URL cannot be processed')
-        ).toBeInTheDocument()
+        expect(screen.getByText('URL cannot be processed')).toBeInTheDocument()
     })
 
     it('should show error message when URL is root', async () => {
         const url = 'https://example.com'
         renderComponent()
 
-        const addButton = screen.getByTestId('add-button')
+        const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
         const input = screen
             .getAllByLabelText('Public URL')
             .pop() as HTMLInputElement
         await userEvent.type(input, url)
-        const lastElement = screen
-            .getAllByTestId('source-item')
-            .pop() as HTMLElement
-        const syncButton = within(lastElement).getByTestId('sync-button')
+        const syncButton = screen
+            .getByText('Sync URL')
+            .closest('button') as HTMLElement
 
         expect(syncButton).toBeDisabled()
         expect(
-            within(lastElement).getByText(
+            screen.getByText(
                 'URL must include a subpage (ie. yourstore.com/faqs)'
             )
         ).toBeInTheDocument()
@@ -212,20 +206,19 @@ describe('<PublicSourcesSection />', () => {
         const url = 'https://example.gorgias.help/faqs'
         renderComponent()
 
-        const addButton = screen.getByTestId('add-button')
+        const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
         const input = screen
             .getAllByLabelText('Public URL')
             .pop() as HTMLInputElement
         await userEvent.type(input, url)
-        const lastElement = screen
-            .getAllByTestId('source-item')
-            .pop() as HTMLElement
-        const syncButton = within(lastElement).getByTestId('sync-button')
+        const syncButton = screen
+            .getByText('Sync URL')
+            .closest('button') as HTMLElement
 
         expect(syncButton).toBeDisabled()
         expect(
-            within(lastElement).getByText('URL cannot be a Gorgias Help Center')
+            screen.getByText('URL cannot be a Gorgias Help Center')
         ).toBeInTheDocument()
     })
 
@@ -233,34 +226,32 @@ describe('<PublicSourcesSection />', () => {
         const url = 'https://help-center-example.com/faqs'
         renderComponent()
 
-        const addButton = screen.getByTestId('add-button')
+        const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
         const input = screen
             .getAllByLabelText('Public URL')
             .pop() as HTMLInputElement
         await userEvent.type(input, url)
-        const lastElement = screen
-            .getAllByTestId('source-item')
-            .pop() as HTMLElement
-        const syncButton = within(lastElement).getByTestId('sync-button')
+        const syncButton = screen
+            .getByText('Sync URL')
+            .closest('button') as HTMLElement
 
         expect(syncButton).toBeDisabled()
         expect(
-            within(lastElement).getByText('URL cannot be a Gorgias Help Center')
+            screen.getByText('URL cannot be a Gorgias Help Center')
         ).toBeInTheDocument()
     })
 
     it('should start loading when URL is syncing', async () => {
         renderComponent()
 
-        const addButton = screen.getByTestId('add-button')
+        const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
 
-        const lastElement = screen
-            .getAllByTestId('source-item')
-            .pop() as HTMLElement
-        const input = within(lastElement).getByLabelText('Public URL')
-        const syncButton = within(lastElement).getByTestId('sync-button')
+        const syncButton = screen
+            .getByText('Sync URL')
+            .closest('button') as HTMLElement
+        const input = screen.getByLabelText('Public URL')
 
         await userEvent.type(input, 'https://example.com/faqs')
         userEvent.click(syncButton)

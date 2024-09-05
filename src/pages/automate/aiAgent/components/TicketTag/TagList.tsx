@@ -74,7 +74,6 @@ const TagList = ({tags, onTagsUpdate}: Props) => {
             ))}
             <Button
                 className={css.addButton}
-                data-testid="add-button"
                 intent="secondary"
                 onClick={() =>
                     onTagsUpdate([...tags, {name: '', description: ''}])

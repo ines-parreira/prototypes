@@ -156,7 +156,7 @@ export const PublicSourcesSection = ({
             {sources.length > 0 && (
                 <ul className={css.list}>
                     {sources.map((source) => (
-                        <li key={source.id} data-testid="source-item">
+                        <li key={source.id}>
                             <PublicSourcesItem
                                 existingUrls={existingUrls}
                                 source={source}
@@ -178,7 +178,6 @@ export const PublicSourcesSection = ({
 
                 <Button
                     id="add-button"
-                    data-testid="add-button"
                     intent="secondary"
                     onClick={onAddClick}
                     isDisabled={isLimitReached}

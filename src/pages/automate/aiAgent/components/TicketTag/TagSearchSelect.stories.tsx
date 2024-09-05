@@ -1,6 +1,18 @@
 import React from 'react'
 import {Meta, StoryObj} from '@storybook/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import {Map} from 'immutable'
+import {QueryClientProvider} from '@tanstack/react-query'
+
+import {appQueryClient} from 'api/queryClient'
+import {user} from 'fixtures/users'
+
 import TagSearchSelect from './TagSearchSelect'
+
+const defaultState = {
+    currentUser: Map(user),
+}
 
 const meta: Meta<typeof TagSearchSelect> = {
     title: 'AI Agent/Configuration/Tags/TagSearchSelect',
@@ -14,6 +26,15 @@ const meta: Meta<typeof TagSearchSelect> = {
             default: undefined,
         },
     },
+    decorators: [
+        (story) => (
+            <Provider store={configureMockStore()(defaultState)}>
+                <QueryClientProvider client={appQueryClient}>
+                    {story()}
+                </QueryClientProvider>
+            </Provider>
+        ),
+    ],
 }
 
 export default meta
