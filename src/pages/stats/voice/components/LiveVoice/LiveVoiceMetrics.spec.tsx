@@ -2,7 +2,6 @@ import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import moment, {Moment} from 'moment'
 import {assumeMock} from 'utils/testing'
-import {getCleanStatsFilters} from 'state/ui/stats/selectors'
 import {voiceCallAverageWaitTimeQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
 import {useMetric} from 'hooks/reporting/useMetric'
 import * as constants from 'pages/stats/voice/constants/liveVoice'
@@ -26,6 +25,11 @@ const renderComponent = (
         <LiveVoiceMetrics
             liveVoiceCalls={props.liveVoiceCalls ?? []}
             isLoadingVoiceCalls={props.isLoadingVoiceCalls ?? false}
+            cleanStatsFilters={
+                props.cleanStatsFilters ?? {
+                    period: {start_datetime: 'start', end_datetime: 'end'},
+                }
+            }
         />
     )
 }
@@ -40,7 +44,6 @@ jest.mock('pages/stats/voice/hooks/agentMetrics')
 jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceMetricCard')
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
-const getCleanStatsFiltersMock = assumeMock(getCleanStatsFilters)
 const voiceCallAverageWaitTimeQueryFactoryMock = assumeMock(
     voiceCallAverageWaitTimeQueryFactory
 )
@@ -54,9 +57,6 @@ const getMomentMock = assumeMock(getMoment)
 
 describe('LiveVoiceMetrics', () => {
     beforeEach(() => {
-        getCleanStatsFiltersMock.mockReturnValue({
-            period: {start_datetime: 'start', end_datetime: 'end'},
-        } as any)
         getBusinessHoursSettingsMock.mockReturnValue({
             data: {timezone: 'Europe/Paris'},
         } as any)
@@ -127,7 +127,7 @@ describe('LiveVoiceMetrics', () => {
             },
             expectedPeriodFilters: {
                 start_datetime: '2024-01-01T00:00:00+01:00',
-                end_datetime: '2024-01-01T15:11:00+01:00',
+                end_datetime: '2024-01-01T23:59:59+01:00',
             },
             expectedTimezone: 'Europe/Paris',
         },
@@ -135,7 +135,7 @@ describe('LiveVoiceMetrics', () => {
             businessHours: undefined,
             expectedPeriodFilters: {
                 start_datetime: '2024-01-01T00:00:00Z',
-                end_datetime: '2024-01-01T14:11:00Z',
+                end_datetime: '2024-01-01T23:59:59Z',
             },
             expectedTimezone: 'UTC',
         },

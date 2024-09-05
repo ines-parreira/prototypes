@@ -4,13 +4,13 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import * as constants from 'pages/stats/voice/constants/liveVoice'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCleanStatsFilters} from 'state/ui/stats/selectors'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {getMoment} from 'utils/date'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {voiceCallAverageWaitTimeQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
 import {useMetric} from 'hooks/reporting/useMetric'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {useVoiceCallCountMetric} from '../../hooks/useVoiceCallCountMetric'
 import {useAverageTalkTimeMetric} from '../../hooks/agentMetrics'
 import LiveVoiceMetricCard from './LiveVoiceMetricCard'
@@ -20,13 +20,14 @@ const CARD_SIZE = 4
 type Props = {
     liveVoiceCalls: LiveCallQueueVoiceCall[]
     isLoadingVoiceCalls: boolean
+    cleanStatsFilters: StatsFiltersWithLogicalOperator
 }
 
 export default function LiveVoiceMetrics({
     liveVoiceCalls,
     isLoadingVoiceCalls,
+    cleanStatsFilters,
 }: Props) {
-    const cleanStatsFilters = useAppSelector(getCleanStatsFilters)
     const {
         data: {timezone},
     } = useAppSelector(getBusinessHoursSettings) ?? {
@@ -44,7 +45,9 @@ export default function LiveVoiceMetrics({
                 start_datetime: formatReportingQueryDate(
                     now.clone().startOf('day')
                 ),
-                end_datetime: formatReportingQueryDate(now),
+                end_datetime: formatReportingQueryDate(
+                    now.clone().endOf('day')
+                ),
             },
         }
     }, [cleanStatsFilters, timezone])

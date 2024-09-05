@@ -7,22 +7,37 @@ import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import Button from 'pages/common/components/button/Button'
+import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
-import css from './LiveVoiceAgentsList.less'
 import LiveVoiceAgentsList from './LiveVoiceAgentsList'
+import css from './LiveVoiceAgentsList.less'
 
-export default function LiveVoiceAgentsSection() {
+type Props = {
+    cleanStatsFilters: StatsFiltersWithLogicalOperator
+}
+
+export default function LiveVoiceAgentsSection({cleanStatsFilters}: Props) {
     const {
         data: agents,
         isLoading,
         refetch,
-    } = useListLiveCallQueueAgents(undefined, {
-        query: {
-            staleTime: Infinity,
-            refetchOnMount: 'always',
-            refetchOnWindowFocus: false,
+    } = useListLiveCallQueueAgents(
+        {
+            agent_ids: cleanStatsFilters?.[FilterKey.Agents]?.values,
+            integration_ids:
+                cleanStatsFilters?.[FilterKey.Integrations]?.values,
         },
-    })
+        {
+            http: {
+                paramsSerializer: {
+                    indexes: null,
+                },
+            },
+            query: {
+                refetchOnWindowFocus: false,
+            },
+        }
+    )
 
     if (isLoading && !agents) {
         return (

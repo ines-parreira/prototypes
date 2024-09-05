@@ -2,44 +2,63 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import * as apiQueries from '@gorgias/api-queries'
 import {assumeMock} from 'utils/testing'
+import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import LiveVoice from '../LiveVoice'
+import LiveVoiceMetrics from '../../components/LiveVoice/LiveVoiceMetrics'
+import LiveVoiceCallTable from '../../components/LiveVoice/LiveVoiceCallTable'
+import LiveVoiceAgentsSection from '../../components/LiveVoice/LiveVoiceAgentsSection'
 
+jest.mock('state/ui/stats/selectors')
 jest.mock('@gorgias/api-queries')
 jest.mock(
     'pages/stats/voice/components/LiveVoice/LiveVoiceFilters',
     () => () => <div>LiveVoiceFilters</div>
 )
-jest.mock(
-    'pages/stats/voice/components/LiveVoice/LiveVoiceMetrics',
-    () => () => <div>LiveVoiceMetrics</div>
-)
-jest.mock(
-    'pages/stats/voice/components/LiveVoice/LiveVoiceAgentsSection',
-    () => () => <div>LiveVoiceAgentsSection</div>
-)
-jest.mock(
-    'pages/stats/voice/components/LiveVoice/LiveVoiceCallTable',
-    () => () => <div>LiveVoiceCallTable</div>
-)
+jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceMetrics')
+jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceAgentsSection')
+jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceCallTable')
 jest.mock(
     'pages/stats/StatsPage',
     () =>
         ({children}: {children: React.ReactNode}) =>
             <div>{children}</div>
 )
+jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
 const useListLiveCallQueueVoiceCallsMock = assumeMock(
     apiQueries.useListLiveCallQueueVoiceCalls
 )
+const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
+)
+const LiveVoiceMetricsMock = assumeMock(LiveVoiceMetrics)
+const LiveVoiceCallTableMock = assumeMock(LiveVoiceCallTable)
+const LiveVoiceAgentsSectionMock = assumeMock(LiveVoiceAgentsSection)
+
+const cleanStatsFiltersDefaultValue = {
+    [FilterKey.Agents]: {values: [1, 2]},
+    [FilterKey.Integrations]: {values: [3, 4]},
+} as StatsFiltersWithLogicalOperator
 
 describe('LiveVoice', () => {
     const renderComponent = () => render(<LiveVoice />)
 
     beforeEach(() => {
         useListLiveCallQueueVoiceCallsMock.mockReturnValue({
-            data: {data: []},
+            data: [],
             isLoading: false,
         } as any)
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
+            {
+                cleanStatsFilters: cleanStatsFiltersDefaultValue,
+            } as any
+        )
+        LiveVoiceMetricsMock.mockReturnValue(<div>LiveVoiceMetrics</div>)
+        LiveVoiceCallTableMock.mockReturnValue(<div>LiveVoiceCallTable</div>)
+        LiveVoiceAgentsSectionMock.mockReturnValue(
+            <div>LiveVoiceAgentsSection</div>
+        )
     })
 
     it('should render all sections', () => {
@@ -48,5 +67,61 @@ describe('LiveVoice', () => {
         expect(getByText('LiveVoiceMetrics')).toBeInTheDocument()
         expect(getByText('LiveVoiceAgentsSection')).toBeInTheDocument()
         expect(getByText('LiveVoiceCallTable')).toBeInTheDocument()
+    })
+
+    it('should pass correct props to children components', () => {
+        useListLiveCallQueueVoiceCallsMock.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+        } as any)
+        renderComponent()
+        expect(LiveVoiceMetricsMock).toHaveBeenCalledWith(
+            {
+                isLoadingVoiceCalls: true,
+                liveVoiceCalls: [],
+                cleanStatsFilters: cleanStatsFiltersDefaultValue,
+            },
+            {}
+        )
+        expect(LiveVoiceCallTableMock).toHaveBeenCalledWith(
+            {
+                isLoading: true,
+                voiceCalls: [],
+            },
+            {}
+        )
+        expect(LiveVoiceAgentsSectionMock).toHaveBeenCalledWith(
+            {
+                cleanStatsFilters: cleanStatsFiltersDefaultValue,
+            },
+            {}
+        )
+    })
+
+    it('should pass correct filters to useListLiveCallQueueVoiceCalls', () => {
+        renderComponent()
+        expect(useListLiveCallQueueVoiceCallsMock).toHaveBeenCalledWith(
+            {
+                agent_ids: [1, 2],
+                integration_ids: [3, 4],
+            },
+            expect.any(Object)
+        )
+    })
+
+    it('should select correct data from useListLiveCallQueueVoiceCalls', () => {
+        useListLiveCallQueueVoiceCallsMock.mockReturnValue({
+            data: {data: ['voiceCalls']},
+            isLoading: false,
+        } as any)
+        renderComponent()
+        const result =
+            useListLiveCallQueueVoiceCallsMock.mock.calls?.[0]?.[1]?.query?.select?.(
+                {
+                    data: {data: ['voiceCalls']},
+                } as any
+            )
+
+        expect(result).toEqual(['voiceCalls'])
     })
 })

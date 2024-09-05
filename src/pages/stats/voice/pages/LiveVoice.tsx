@@ -2,19 +2,25 @@ import React from 'react'
 import {useListLiveCallQueueVoiceCalls} from '@gorgias/api-queries'
 import StatsPage from 'pages/stats/StatsPage'
 import LiveVoiceFilters from 'pages/stats/voice/components/LiveVoice/LiveVoiceFilters'
-import StatCurrentDate from 'pages/stats/common/components/StatCurrentDate'
 import LiveVoiceAgentsSection from 'pages/stats/voice/components/LiveVoice/LiveVoiceAgentsSection'
 import LiveVoiceCallTable from 'pages/stats/voice/components/LiveVoice/LiveVoiceCallTable'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+import {FilterKey} from 'models/stat/types'
 
 import {LIVE_VOICE_PAGE_TITLE} from '../constants/liveVoice'
 import LiveVoiceMetrics from '../components/LiveVoice/LiveVoiceMetrics'
 import css from './LiveVoice.less'
 
 export default function LiveVoice() {
+    const {cleanStatsFilters} = useAppSelector(
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezone
+    )
     const {data: voiceCalls, isLoading} = useListLiveCallQueueVoiceCalls(
         {
-            agent_ids: [],
-            integration_ids: [],
+            agent_ids: cleanStatsFilters?.[FilterKey.Agents]?.values,
+            integration_ids:
+                cleanStatsFilters?.[FilterKey.Integrations]?.values,
         },
         {
             http: {
@@ -23,32 +29,31 @@ export default function LiveVoice() {
                 },
             },
             query: {
-                staleTime: Infinity,
-                refetchOnMount: 'always',
                 refetchOnWindowFocus: false,
+                select: (data) => data.data.data,
             },
         }
     )
 
     return (
-        <StatsPage
-            title={LIVE_VOICE_PAGE_TITLE}
-            titleExtra={<StatCurrentDate />}
-        >
+        <StatsPage title={LIVE_VOICE_PAGE_TITLE}>
             <div className={css.wrapper}>
-                <div>
+                <div className={css.content}>
                     <LiveVoiceFilters />
                     <LiveVoiceMetrics
                         isLoadingVoiceCalls={isLoading}
-                        liveVoiceCalls={voiceCalls?.data?.data ?? []}
+                        liveVoiceCalls={voiceCalls ?? []}
+                        cleanStatsFilters={cleanStatsFilters}
                     />
                     <LiveVoiceCallTable
                         isLoading={isLoading}
-                        voiceCalls={voiceCalls?.data?.data ?? []}
+                        voiceCalls={voiceCalls ?? []}
                     />
                 </div>
                 <div className={css.agentsSection}>
-                    <LiveVoiceAgentsSection />
+                    <LiveVoiceAgentsSection
+                        cleanStatsFilters={cleanStatsFilters}
+                    />
                 </div>
             </div>
         </StatsPage>

@@ -1,31 +1,28 @@
 import React from 'react'
 import DashboardSection from 'pages/stats/DashboardSection'
-import {IntegrationsFilter} from 'pages/stats/common/filters/IntegrationsFilter'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
-import {getPhoneIntegrations} from 'state/integrations/selectors'
-import AgentsFilter from 'pages/stats/common/filters/AgentsFilter'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
-import {getPageStatsFilters} from 'state/stats/selectors'
+import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {FilterComponentKey, FilterKey} from 'models/stat/types'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
 
 export default function LiveVoiceFilters() {
-    const phoneIntegrations = useAppSelector(getPhoneIntegrations)
-    const {cleanStatsFilters} = useAppSelector(getCleanStatsFiltersWithTimezone)
-    const pageStatsFilters = useAppSelector(getPageStatsFilters)
-    useCleanStatsFilters(pageStatsFilters)
+    const pageStatsFilters = useAppSelector(
+        getPageStatsFiltersWithLogicalOperators
+    )
+    useCleanStatsFiltersWithLogicalOperators(pageStatsFilters)
 
     return (
         <DashboardSection>
-            <IntegrationsFilter
-                value={withDefaultLogicalOperator(
-                    cleanStatsFilters.integrations
-                )}
-                integrations={phoneIntegrations}
-            />
-            <AgentsFilter
-                value={withDefaultLogicalOperator(pageStatsFilters.agents)}
-            />
+            <DashboardGridCell size={12}>
+                <FiltersPanel
+                    persistentFilters={[
+                        FilterComponentKey.PhoneIntegrations,
+                        FilterKey.Agents,
+                    ]}
+                />
+            </DashboardGridCell>
         </DashboardSection>
     )
 }

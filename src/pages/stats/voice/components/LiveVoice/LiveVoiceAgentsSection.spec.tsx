@@ -2,6 +2,7 @@ import React from 'react'
 import {cleanup, fireEvent, render, screen} from '@testing-library/react'
 import {useListLiveCallQueueAgents} from '@gorgias/api-queries'
 import {assumeMock} from 'utils/testing'
+import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import LiveVoiceAgentsSection from './LiveVoiceAgentsSection'
 
@@ -9,6 +10,7 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div>Skeleton</div>
 ))
 jest.mock('@gorgias/api-queries')
+jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
 const useListLiveCallQueueAgentsMock = assumeMock(useListLiveCallQueueAgents)
 
@@ -18,7 +20,14 @@ jest.mock(
 )
 
 describe('LiveVoiceAgentsSection', () => {
-    const renderComponent = () => render(<LiveVoiceAgentsSection />)
+    const renderComponent = (
+        props = {
+            cleanStatsFilters: {
+                [FilterKey.Agents]: {values: [1, 2]},
+                [FilterKey.Integrations]: {values: [3, 4]},
+            } as StatsFiltersWithLogicalOperator,
+        }
+    ) => render(<LiveVoiceAgentsSection {...props} />)
 
     afterEach(cleanup)
 
@@ -60,5 +69,16 @@ describe('LiveVoiceAgentsSection', () => {
         expect(screen.getByText('No data available')).toBeInTheDocument()
         fireEvent.click(screen.getByRole('button', {name: 'Try again'}))
         expect(refetch).toHaveBeenCalled()
+    })
+
+    it('should pass correct filters to useListLiveCallQueueAgents', () => {
+        renderComponent()
+        expect(useListLiveCallQueueAgentsMock).toHaveBeenCalledWith(
+            {
+                agent_ids: [1, 2],
+                integration_ids: [3, 4],
+            },
+            expect.any(Object)
+        )
     })
 })
