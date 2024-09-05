@@ -65,7 +65,7 @@ type Property = {
 }
 export type SystemMessage = [NotificationStatus, string]
 
-type Datetime = Date | Moment | number | string
+export type Datetime = Date | Moment | number | string
 
 // monitor if tab is active or not
 let activeTab = true

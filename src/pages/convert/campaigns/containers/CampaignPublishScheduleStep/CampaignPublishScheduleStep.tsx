@@ -153,7 +153,9 @@ export const CampaignPublishScheduleStep = ({
                     )}
 
                     <div className={css.marginTop}>
-                        <CampaignScheduleSummary />
+                        <CampaignScheduleSummary
+                            scheduleConfiguration={scheduleConfiguration}
+                        />
                     </div>
                 </>
             )}

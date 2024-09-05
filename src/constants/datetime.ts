@@ -59,6 +59,8 @@ export enum DateTimeFormatType {
     LONG_DATE_EN_US,
     LONG_DATE_WITH_DAY_OF_WEEK_EN_GB,
     LONG_DATE_WITH_DAY_OF_WEEK_EN_US,
+    LONG_DATE_WITH_DAY_OF_WEEK_WITH_YEAR_EN_GB,
+    LONG_DATE_WITH_DAY_OF_WEEK_WITH_YEAR_EN_US,
     LONG_DATE_WITH_YEAR_EN_GB,
     LONG_DATE_WITH_YEAR_EN_US,
     LONG_DATE_WITH_YEAR_AND_TIME_EN_GB_24_HOUR,
@@ -134,6 +136,10 @@ export const DateTimeFormatMapper: EnumDictionary<
     [DateTimeFormatType.LONG_DATE_EN_US]: 'MMMM D',
     [DateTimeFormatType.LONG_DATE_WITH_DAY_OF_WEEK_EN_GB]: 'dddd, D MMMM',
     [DateTimeFormatType.LONG_DATE_WITH_DAY_OF_WEEK_EN_US]: 'dddd, MMMM D',
+    [DateTimeFormatType.LONG_DATE_WITH_DAY_OF_WEEK_WITH_YEAR_EN_GB]:
+        'dddd, D MMMM YYYY',
+    [DateTimeFormatType.LONG_DATE_WITH_DAY_OF_WEEK_WITH_YEAR_EN_US]:
+        'dddd, MMMM D YYYY',
     [DateTimeFormatType.LONG_DATE_WITH_YEAR_EN_GB]: 'D MMMM, YYYY',
     [DateTimeFormatType.LONG_DATE_WITH_YEAR_EN_US]: 'MMMM D, YYYY',
     [DateTimeFormatType.LONG_DATE_WITH_YEAR_AND_TIME_EN_GB_24_HOUR]:
