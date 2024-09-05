@@ -52,6 +52,7 @@ export default function AutoQA() {
                                     FilterKey.Channels,
                                     FilterKey.Agents,
                                     FilterKey.Tags,
+                                    FilterKey.CustomFields,
                                 ]}
                             />
                         </DashboardGridCell>

@@ -1,20 +1,20 @@
-import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {ChannelsDownloadDataButton} from 'pages/stats/support-performance/channels/ChannelsDownloadDataButton'
-import {ChannelsCardExtra} from 'pages/stats/support-performance/channels/ChannelsCardExtra'
-import DashboardSection from 'pages/stats/DashboardSection'
+import React from 'react'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useGridSize} from 'hooks/useGridSize'
-import {ChannelsTable} from 'pages/stats/support-performance/channels/ChannelsTable'
-import ChartCard from 'pages/stats/ChartCard'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {FilterKey} from 'models/stat/types'
 
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import StatsPage from 'pages/stats/StatsPage'
-import {FeatureFlagKey} from 'config/featureFlags'
+import ChartCard from 'pages/stats/ChartCard'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-import {FilterKey} from 'models/stat/types'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardSection from 'pages/stats/DashboardSection'
+import StatsPage from 'pages/stats/StatsPage'
+import {ChannelsCardExtra} from 'pages/stats/support-performance/channels/ChannelsCardExtra'
+import {ChannelsDownloadDataButton} from 'pages/stats/support-performance/channels/ChannelsDownloadDataButton'
+import {ChannelsTable} from 'pages/stats/support-performance/channels/ChannelsTable'
+
+import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 
 export const CHANNELS_REPORT_PAGE_TITLE = 'Channels'
 export const CHANNEL_PERFORMANCE_TABLE_TITLE = 'Channel performance'
@@ -51,6 +51,7 @@ export function ChannelsReport() {
                                     FilterKey.Integrations,
                                     FilterKey.Tags,
                                     FilterKey.Agents,
+                                    FilterKey.CustomFields,
                                 ]}
                             />
                         </DashboardGridCell>
