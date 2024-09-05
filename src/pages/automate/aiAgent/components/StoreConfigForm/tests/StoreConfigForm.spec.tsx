@@ -75,6 +75,7 @@ const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
 const mockedUseGetOrCreateSnippetHelpCenter = jest.mocked(
     useGetOrCreateSnippetHelpCenter
 )
+const mockedUseSelfServiceChatChannels = jest.mocked(useSelfServiceChatChannels)
 const mockedUseConfigurationForm = jest.mocked(useConfigurationForm)
 const mockedUsePublicResources = jest.mocked(usePublicResources)
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
@@ -85,6 +86,12 @@ const mockedValidateConfigurationFormValues = jest.mocked(
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 const updateValueMocked = jest.fn()
+const defaultUseConfigurationFormValues = {
+    resetForm: jest.fn(),
+    isFormDirty: false,
+    updateValue: jest.fn(),
+    isFieldDirty: jest.fn(),
+}
 
 const mockStore = configureMockStore([thunk])
 
@@ -211,7 +218,7 @@ describe('<StoreConfigForm />', () => {
         customToneOfVoiceGuidance:
             "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
         helpCenterId: 1,
-        monitoredChatIntegrations: [],
+        monitoredChatIntegrations: null,
         monitoredEmailIntegrations: [{id: 1, email: MOCK_EMAIL_ADDRESS}],
     }
 
@@ -229,9 +236,7 @@ describe('<StoreConfigForm />', () => {
     beforeEach(() => {
         updateValueMocked.mockReset()
         mockedUseAiAgentStoreConfigurationContext.mockReset()
-        ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue(
-            mockChatChannels
-        )
+        mockedUseSelfServiceChatChannels.mockReturnValue(mockChatChannels)
         mockGetHasAutomate.mockReturnValue(true)
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration,
@@ -254,7 +259,6 @@ describe('<StoreConfigForm />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: false,
             [FeatureFlagKey.AiAgentChat]: false,
-            [FeatureFlagKey.AiAgentSupportContactForm]: false,
         })
         mockUseSearchParam.mockReturnValue([null, mockSetSearchParam])
     })
@@ -265,10 +269,6 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should render new email integration caption', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentSupportContactForm]: true,
-        })
-
         renderComponent({})
         expect(
             screen.getByText(
@@ -407,26 +407,62 @@ describe('<StoreConfigForm />', () => {
         })
     })
 
-    it('should display chat dropdown', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentChat]: true,
+    describe('AI Agent chat configuration', () => {
+        beforeEach(() => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
         })
 
-        renderComponent({})
+        it('should display chat dropdown', () => {
+            renderComponent({})
 
-        expect(screen.getByTestId('chat-dropdown')).toBeInTheDocument()
-    })
-
-    it('should not display dropdown if feature flag is false', async () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentChat]: false,
+            expect(screen.getByTestId('chat-dropdown')).toBeInTheDocument()
         })
-        renderComponent({})
 
-        await waitFor(() => {
-            expect(
-                screen.queryByTestId('chat-dropdown')
-            ).not.toBeInTheDocument()
+        it('should not display dropdown if feature flag is false', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: false,
+            })
+            renderComponent({})
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByTestId('chat-dropdown')
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should filter chat channels correctly and populate currentChatChannels', async () => {
+            renderComponent({})
+
+            const dropdown = screen.getByTestId('chat-dropdown')
+            fireEvent.focus(dropdown)
+
+            await waitFor(() => {
+                for (const channel of mockChatChannels) {
+                    expect(
+                        screen.getByText(channel.value.name)
+                    ).toBeInTheDocument()
+                }
+            })
+        })
+
+        it('should display chat channels from store configuration in dropdown', async () => {
+            const chatIntegration = mockChatChannels[0]
+            mockedUseConfigurationForm.mockReturnValue({
+                formValues: {
+                    ...initialFormValues,
+                    monitoredChatIntegrations: [chatIntegration.value.id],
+                },
+                ...defaultUseConfigurationFormValues,
+            })
+
+            renderComponent({})
+
+            await waitFor(() =>
+                expect(screen.getByText(chatIntegration.value.name))
+            )
         })
     })
 
@@ -436,10 +472,7 @@ describe('<StoreConfigForm />', () => {
                 ...initialFormValues,
                 monitoredEmailIntegrations: null,
             },
-            resetForm: jest.fn(),
-            isFormDirty: false,
-            updateValue: jest.fn(),
-            isFieldDirty: jest.fn(),
+            ...defaultUseConfigurationFormValues,
         })
 
         renderComponent({})
@@ -487,23 +520,6 @@ describe('<StoreConfigForm />', () => {
         expect(
             screen.getByText('Email signature is required.')
         ).toBeInTheDocument()
-    })
-
-    it('should filter chat channels correctly and populate currentChatChannels', async () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
-
-        renderComponent({})
-
-        const dropdown = screen.getByTestId('chat-dropdown')
-        fireEvent.focus(dropdown)
-
-        await waitFor(() => {
-            for (const channel of mockChatChannels) {
-                expect(screen.getByText(channel.value.name)).toBeInTheDocument()
-            }
-        })
     })
 
     it('should trigger monitoredChatIntegrations with correct values on dropdown item click', async () => {

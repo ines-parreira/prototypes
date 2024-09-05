@@ -10,7 +10,7 @@ export const AIAgentIntroduction = () => {
                 has high confidence in an answer, otherwise it automatically
                 hands tickets over to your team. AI Agent uses Help Center
                 articles, Macros, Guidance, and Shopify data to deliver accurate
-                responses. Currently only available for email.
+                responses.
             </p>
             {/* get inspiration from "ActionsInfoLinks" for the future documentation links to add here */}
             <div

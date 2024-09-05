@@ -108,9 +108,8 @@ export const StoreConfigForm = ({
     faqHelpCenters,
 }: Props) => {
     const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
-    const isAiAgentChatEnabled = useFlags()[FeatureFlagKey.AiAgentChat]
-    const isContactFormSupportEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSupportContactForm]
+    const isAiAgentChatEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentChat]
 
     const [sectionQueryParam, setSectionQueryParam] = useSearchParam('section')
 
@@ -231,7 +230,8 @@ export const StoreConfigForm = ({
         try {
             validFormValues = validateConfigurationFormValues(
                 formValues,
-                publicUrls
+                publicUrls,
+                isAiAgentChatEnabled
             )
         } catch (error) {
             if (error instanceof Error) {
@@ -422,8 +422,9 @@ export const StoreConfigForm = ({
     }, [formValues.signature, isBlurred])
 
     const isEmailIntegrationsValid = useMemo(() => {
-        return !!formValues.monitoredEmailIntegrations?.length
-    }, [formValues.monitoredEmailIntegrations])
+        const isEmailSelected = !!formValues.monitoredEmailIntegrations?.length
+        return isEmailSelected || isAiAgentChatEnabled
+    }, [formValues.monitoredEmailIntegrations?.length, isAiAgentChatEnabled])
 
     return (
         <>
@@ -528,7 +529,7 @@ export const StoreConfigForm = ({
                                 name={toggleAiAgentId}
                                 dataCanduId="ai-agent-configuration-toggle"
                             >
-                                Enable AI Agent for email
+                                Enable AI Agent
                             </ToggleInput>
                         )}
                     </div>
@@ -620,28 +621,6 @@ export const StoreConfigForm = ({
                         )}
                     </div>
                 </section>
-                {isAiAgentChatEnabled && (
-                    <ConfigurationSection title="Chat">
-                        <div className={css.formGroup}>
-                            <Label isRequired={true} className={css.label}>
-                                AI Agent responds to tickets sent to the
-                                following Chats
-                            </Label>
-                            <ChatIntegrationListSelection
-                                selectedIds={
-                                    formValues.monitoredChatIntegrations !==
-                                    null
-                                        ? formValues.monitoredChatIntegrations.map(
-                                              (integration) => integration
-                                          )
-                                        : INITIAL_FORM_VALUES.monitoredChatIntegrations
-                                }
-                                onSelectionChange={handleSelectChatIntegration}
-                                chatItems={chatChannels}
-                            />
-                        </div>
-                    </ConfigurationSection>
-                )}
 
                 <ConfigurationSection
                     title="Knowledge"
@@ -673,6 +652,29 @@ export const StoreConfigForm = ({
                     ) : null}
                 </ConfigurationSection>
 
+                {isAiAgentChatEnabled && (
+                    <ConfigurationSection title="Chat settings">
+                        <div className={css.formGroup}>
+                            <Label className={css.label}>
+                                AI Agent responds to tickets sent to the
+                                following Chats
+                            </Label>
+                            <ChatIntegrationListSelection
+                                selectedIds={
+                                    formValues.monitoredChatIntegrations !==
+                                    null
+                                        ? formValues.monitoredChatIntegrations.map(
+                                              (integration) => integration
+                                          )
+                                        : INITIAL_FORM_VALUES.monitoredChatIntegrations
+                                }
+                                onSelectionChange={handleSelectChatIntegration}
+                                chatItems={chatChannels}
+                            />
+                        </div>
+                    </ConfigurationSection>
+                )}
+
                 <section ref={emailSectionRef}>
                     <h2
                         className={css.sectionHeader}
@@ -681,7 +683,10 @@ export const StoreConfigForm = ({
                         Email settings
                     </h2>
                     <div className={css.formGroup}>
-                        <Label isRequired={true} className={css.label}>
+                        <Label
+                            isRequired={!isAiAgentChatEnabled}
+                            className={css.label}
+                        >
                             AI Agent responds to tickets sent to the following
                             email addresses
                         </Label>
@@ -695,7 +700,6 @@ export const StoreConfigForm = ({
                             }
                             onSelectionChange={handleSelectEmailIntegration}
                             emailItems={emailItems}
-                            hasError={!isEmailIntegrationsValid}
                         />
                         <div
                             className={classnames(css.formInputFooterInfo, {
@@ -704,9 +708,7 @@ export const StoreConfigForm = ({
                         >
                             {!isEmailIntegrationsValid
                                 ? 'At least one email is required.'
-                                : isContactFormSupportEnabled
-                                ? 'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.'
-                                : 'Select one or more email addresses for AI Agent to use.'}
+                                : 'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.'}
                         </div>
                     </div>
 

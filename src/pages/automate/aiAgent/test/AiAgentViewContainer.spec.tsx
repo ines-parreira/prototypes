@@ -209,20 +209,20 @@ describe('AiAgentViewContainer', () => {
     it('renders loader if loading store configuration', () => {
         setupMocks({isStoreConfigurationLoading: true})
         renderComponent()
-        expect(screen.getByTestId('loader')).toBeInTheDocument
+        expect(screen.getByTestId('loader')).toBeInTheDocument()
     })
 
     it('renders loader if loading help centers', () => {
         setupMocks({isHelpCentersLoading: true})
         renderComponent()
-        expect(screen.getByTestId('loader')).toBeInTheDocument
+        expect(screen.getByTestId('loader')).toBeInTheDocument()
     })
 
     it('renders configuration', () => {
         setupMocks()
         renderComponent()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument
-        expect(screen.getByText('Enable AI Agent')).toBeInTheDocument
+        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        expect(screen.getAllByText('Enable AI Agent')[0]).toBeInTheDocument()
     })
 
     it('enables and disables configuration from the main toggle', () => {
@@ -231,7 +231,7 @@ describe('AiAgentViewContainer', () => {
         const {rerender} = renderComponent()
 
         act(() => {
-            fireEvent.click(screen.getByText('Enable AI Agent'))
+            fireEvent.click(screen.getAllByText('Enable AI Agent')[0])
         })
 
         expect(
@@ -258,7 +258,7 @@ describe('AiAgentViewContainer', () => {
         )
 
         act(() => {
-            fireEvent.click(screen.getByText('Enable AI Agent'))
+            fireEvent.click(screen.getAllByText('Enable AI Agent')[0])
         })
 
         expect(
@@ -271,18 +271,6 @@ describe('AiAgentViewContainer', () => {
 
     it('hides the toggle if in trial mode', () => {
         setupMocks({trialModeFlag: true})
-        renderComponent()
-        expect(screen.queryByText('Enable AI Agent')).not.toBeInTheDocument()
-
-        mockFlags({
-            [FeatureFlagKey.AiAgentTrialMode]: false,
-        })
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            ...mockedAiAgentStoreConfigurationContext,
-            storeConfiguration: getStoreConfigurationFixture({
-                trialModeActivatedDatetime: new Date().toISOString(),
-            }),
-        })
         renderComponent()
         expect(screen.queryByText('Enable AI Agent')).not.toBeInTheDocument()
     })
@@ -377,8 +365,8 @@ describe('AiAgentViewContainer', () => {
         })
 
         renderComponent()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument
-        expect(screen.getByText('Enable AI Agent')).toBeInTheDocument
+        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        expect(screen.getAllByText('Enable AI Agent')[0]).toBeInTheDocument()
     })
 
     it('renders the configuration page if the welcome page is acknowledged', () => {

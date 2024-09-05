@@ -57,7 +57,8 @@ export const useConfigurationForm = (initValues?: Partial<FormValues>) => {
 
 export const validateConfigurationFormValues = (
     formValues: FormValues,
-    publicUrls: string[] | null
+    publicUrls: string[] | null,
+    isChatSupportEnabled?: boolean
 ): ValidFormValues => {
     if (formValues.signature !== null) {
         if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
@@ -115,17 +116,25 @@ export const validateConfigurationFormValues = (
         throw new Error('Custom tone of voice cannot be empty')
     }
 
-    if (formValues.monitoredEmailIntegrations === null) {
-        throw new Error('Select at least one monitored email integration')
-    }
-
-    if (
-        formValues.monitoredEmailIntegrations.length === 0 &&
-        formValues.deactivatedDatetime === null
-    ) {
-        throw new Error(
-            'Please select at least 1 email address to for AI Agent to use or disable AI Agent to proceed.'
-        )
+    if (isChatSupportEnabled) {
+        if (
+            formValues.monitoredEmailIntegrations?.length === 0 &&
+            formValues.monitoredChatIntegrations?.length === 0 &&
+            formValues.deactivatedDatetime === null
+        ) {
+            throw new Error(
+                'Please select at least 1 email address or chat integrations for AI Agent to use or disable AI Agent to proceed.'
+            )
+        }
+    } else {
+        if (
+            formValues.monitoredEmailIntegrations?.length === 0 &&
+            formValues.deactivatedDatetime === null
+        ) {
+            throw new Error(
+                'Please select at least 1 email address for AI Agent to use or disable AI Agent to proceed.'
+            )
+        }
     }
 
     if (
@@ -150,7 +159,7 @@ export const validateConfigurationFormValues = (
         ...formValues,
         // Need to explicitly set these fields to non-null
         signature: formValues.signature,
-        monitoredEmailIntegrations: formValues.monitoredEmailIntegrations,
+        monitoredEmailIntegrations: formValues.monitoredEmailIntegrations || [],
         monitoredChatIntegrations: formValues.monitoredChatIntegrations || [],
     }
 }

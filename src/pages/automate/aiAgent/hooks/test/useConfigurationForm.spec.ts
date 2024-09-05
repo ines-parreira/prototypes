@@ -97,5 +97,41 @@ describe('useConfigurationForm', () => {
 
             expect(result.monitoredChatIntegrations).toEqual([])
         })
+
+        it('should throw error when monitoredEmailIntegrations is empty', () => {
+            expect(() =>
+                validateConfigurationFormValues(
+                    {
+                        ...INITIAL_FORM_VALUES,
+                        signature: 'This response was created by AI',
+                        helpCenterId: 1,
+                        deactivatedDatetime: null,
+                        monitoredEmailIntegrations: [],
+                    },
+                    []
+                )
+            ).toThrow(
+                'Please select at least 1 email address for AI Agent to use or disable AI Agent to proceed.'
+            )
+        })
+
+        it('should throw error when monitoredEmailIntegrations is empty and chat support is enabled', () => {
+            expect(() =>
+                validateConfigurationFormValues(
+                    {
+                        ...INITIAL_FORM_VALUES,
+                        signature: 'This response was created by AI',
+                        helpCenterId: 1,
+                        monitoredEmailIntegrations: [],
+                        monitoredChatIntegrations: [],
+                        deactivatedDatetime: null,
+                    },
+                    [],
+                    true
+                )
+            ).toThrow(
+                'Please select at least 1 email address or chat integrations for AI Agent to use or disable AI Agent to proceed.'
+            )
+        })
     })
 })

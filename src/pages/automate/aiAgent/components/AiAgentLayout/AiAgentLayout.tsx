@@ -44,10 +44,7 @@ export const AiAgentLayout = ({
             return undefined
         }
 
-        if (
-            trialModeAvailable ||
-            storeConfiguration.trialModeActivatedDatetime !== null
-        ) {
+        if (trialModeAvailable) {
             return undefined
         }
 
