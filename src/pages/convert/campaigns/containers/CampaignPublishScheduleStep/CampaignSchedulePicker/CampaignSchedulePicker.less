@@ -1,0 +1,24 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .calendarWrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: @layout-spacing-xxs;
+    }
+
+    .inputWrapper {
+        display: flex;
+        flex-direction: column;
+
+        span {
+            .caption-regular;
+            color: var(--neutral-grey-5);
+        }
+    }
+
+    .removeDateBtn {
+        cursor: pointer;
+    }
+}

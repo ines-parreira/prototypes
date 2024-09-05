@@ -19,6 +19,7 @@ import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignF
 import {ABVariantModalType} from 'pages/convert/abVariants/types/enums'
 import CreateABTestInfoModal from 'pages/convert/abVariants/components/CreateABTestInfoModal'
 import {useIsConvertABVariantsEnabled} from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
+import {useIsConvertScheduleCampaignEnabled} from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
 import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
@@ -70,6 +71,7 @@ export const CampaignFooter = ({
 
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
     const isABVariantEnabled = useIsConvertABVariantsEnabled()
+    const isScheduleCampaignEnabled = useIsConvertScheduleCampaignEnabled()
 
     const storageAbVariantModalKey = useMemo(() => {
         return `convert:abVariant:${ABVariantModalType.CreateABGroup}`
@@ -272,13 +274,64 @@ export const CampaignFooter = ({
 
     return (
         <div className={css.footerContainer}>
-            <div className={css.createBtnWrapper}>
-                {allowActivate && (
-                    <>
-                        <DropdownButton
-                            color="primary"
-                            fillStyle="fill"
-                            ref={dropdownTargetRef}
+            {!isScheduleCampaignEnabled && (
+                <div className={css.createBtnWrapper}>
+                    {allowActivate && (
+                        <>
+                            <DropdownButton
+                                color="primary"
+                                fillStyle="fill"
+                                ref={dropdownTargetRef}
+                                isLoading={actionInProgress === 'create'}
+                                isDisabled={
+                                    disableActions ||
+                                    !isCampaignValid ||
+                                    isCreateDisabled
+                                }
+                                className={classnames({
+                                    'btn-loading':
+                                        actionInProgress === 'create',
+                                })}
+                                onToggleClick={_noop}
+                            >
+                                {configuration?.labels?.Create ?? 'Create'}
+                            </DropdownButton>
+                            <UncontrolledDropdown
+                                target={dropdownTargetRef}
+                                placement="bottom-end"
+                            >
+                                <DropdownBody>
+                                    <DropdownItem
+                                        option={{
+                                            label:
+                                                configuration?.labels?.Create ??
+                                                'Create',
+                                            value: 'create',
+                                        }}
+                                        onClick={() => onCreate(false)}
+                                        shouldCloseOnSelect
+                                    />
+
+                                    <DropdownItem
+                                        option={{
+                                            label:
+                                                configuration?.labels
+                                                    ?.CreateAndActivate ??
+                                                'Create & Activate',
+                                            value: 'create_activate',
+                                        }}
+                                        onClick={() => onCreate(true)}
+                                        shouldCloseOnSelect
+                                    />
+                                </DropdownBody>
+                            </UncontrolledDropdown>
+                        </>
+                    )}
+                    {!allowActivate && (
+                        <Button
+                            onClick={() => onCreate(false)}
+                            title="Create"
+                            data-testid="create-button"
                             isLoading={actionInProgress === 'create'}
                             isDisabled={
                                 disableActions ||
@@ -288,42 +341,14 @@ export const CampaignFooter = ({
                             className={classnames({
                                 'btn-loading': actionInProgress === 'create',
                             })}
-                            onToggleClick={_noop}
                         >
                             {configuration?.labels?.Create ?? 'Create'}
-                        </DropdownButton>
-                        <UncontrolledDropdown
-                            target={dropdownTargetRef}
-                            placement="bottom-end"
-                        >
-                            <DropdownBody>
-                                <DropdownItem
-                                    option={{
-                                        label:
-                                            configuration?.labels?.Create ??
-                                            'Create',
-                                        value: 'create',
-                                    }}
-                                    onClick={() => onCreate(false)}
-                                    shouldCloseOnSelect
-                                />
-
-                                <DropdownItem
-                                    option={{
-                                        label:
-                                            configuration?.labels
-                                                ?.CreateAndActivate ??
-                                            'Create & Activate',
-                                        value: 'create_activate',
-                                    }}
-                                    onClick={() => onCreate(true)}
-                                    shouldCloseOnSelect
-                                />
-                            </DropdownBody>
-                        </UncontrolledDropdown>
-                    </>
-                )}
-                {!allowActivate && (
+                        </Button>
+                    )}
+                </div>
+            )}
+            {isScheduleCampaignEnabled && (
+                <div className={css.createBtnWrapper}>
                     <Button
                         onClick={() => onCreate(false)}
                         title="Create"
@@ -340,8 +365,8 @@ export const CampaignFooter = ({
                     >
                         {configuration?.labels?.Create ?? 'Create'}
                     </Button>
-                )}
-            </div>
+                </div>
+            )}
             {onDiscard && (
                 <div>
                     <Button intent="secondary" onClick={onDiscard}>

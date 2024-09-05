@@ -2,6 +2,7 @@ export enum CampaignStepsKeys {
     Basics = 'basics',
     Audience = 'audience',
     Message = 'message',
+    PublishSchedule = 'publish_schedule',
 }
 
 export function isCampaignStepsKeys(

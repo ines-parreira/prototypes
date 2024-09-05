@@ -203,6 +203,7 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
         openedStep: CampaignStepsKeys.Message,
         disableActions: !canModifyObjects,
         wizardConfiguration: wizardConfiguration,
+        displayScheduleSection: false,
         banners: !canModifyObjects && !isTestCompleted && (
             <Alert type={AlertType.Warning}>
                 Variants cannot be edited when a test is running. To edit your

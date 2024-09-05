@@ -7,10 +7,13 @@ import * as useDismissFlag from 'hooks/useDismissFlag'
 import * as useLocalStorage from 'hooks/useLocalStorage'
 
 import * as useIsConvertABVariantsEnabled from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
+import * as useIsConvertScheduleCampaignEnabled from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 
 import {CampaignFooter} from '../CampaignFooter'
 
 jest.mock('pages/convert/common/hooks/useIsConvertABVariantsEnabled')
+jest.mock('pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled')
+
 jest.mock('hooks/useDismissFlag')
 
 const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
@@ -264,6 +267,28 @@ describe('<CampaignFooter />', () => {
             activateButton.click()
 
             expect(onSave).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('Schedule Campaign is enabled', () => {
+        const onSave = jest.fn()
+
+        beforeEach(() => {
+            jest.spyOn(
+                useIsConvertScheduleCampaignEnabled,
+                'useIsConvertScheduleCampaignEnabled'
+            ).mockImplementation(() => true)
+        })
+
+        it('create & activate button is not available', () => {
+            const {queryByText, getByRole} = renderComponent({
+                ...defaultProps,
+                onSave,
+                isUpdate: false,
+            })
+
+            expect(getByRole('button', {name: 'Create'})).toBeInTheDocument()
+            expect(queryByText('Create & Activate')).not.toBeInTheDocument()
         })
     })
 })

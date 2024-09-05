@@ -16,6 +16,7 @@ import {integrationsState} from 'fixtures/integrations'
 import {RootState, StoreDispatch} from 'state/types'
 
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import * as isConvertScheduleCampaignEnabled from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 
 import {
     campaign as campaignFixture,
@@ -105,6 +106,11 @@ const isConvertSubscriberSpy = jest.spyOn(
     'useIsConvertSubscriber'
 )
 
+const isConvertScheduleCampaignEnabledSpy = jest.spyOn(
+    isConvertScheduleCampaignEnabled,
+    'useIsConvertScheduleCampaignEnabled'
+)
+
 describe('<CampaignDetailsForm />', () => {
     beforeAll(() => {
         useGetOrCreateChannelConnectionMock.mockReturnValue({
@@ -120,6 +126,7 @@ describe('<CampaignDetailsForm />', () => {
         allFlagsMock.mockReturnValue({})
 
         isConvertSubscriberSpy.mockImplementation(() => false)
+        isConvertScheduleCampaignEnabledSpy.mockImplementation(() => false)
 
         useGetPreviewProductsMock.mockReturnValue([])
         getNewMessageAttachmentsMock.mockReturnValue(fromJS([]))
@@ -209,6 +216,25 @@ describe('<CampaignDetailsForm />', () => {
                     'Cannot create campaign!'
                 )
             })
+        })
+
+        it('schedule section is visible for the user', () => {
+            expect(
+                screen.queryByText(/Publish your campaign/)
+            ).not.toBeInTheDocument()
+
+            // Change the feature flag
+            isConvertScheduleCampaignEnabledSpy.mockImplementation(() => true)
+
+            result.rerender(
+                <Provider store={mockStore(defaultState)}>
+                    <CampaignDetailsForm {...defaultProps} />
+                </Provider>
+            )
+
+            expect(
+                screen.getByText(/Publish your campaign/)
+            ).toBeInTheDocument()
         })
     })
 

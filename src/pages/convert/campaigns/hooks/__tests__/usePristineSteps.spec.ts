@@ -12,6 +12,7 @@ describe('usePristineSteps()', () => {
             basics: true,
             audience: true,
             message: true,
+            publish_schedule: true,
         })
     })
 
@@ -26,6 +27,7 @@ describe('usePristineSteps()', () => {
             basics: false,
             audience: true,
             message: true,
+            publish_schedule: true,
         })
     })
 
@@ -38,6 +40,7 @@ describe('usePristineSteps()', () => {
             basics: false,
             audience: true,
             message: true,
+            publish_schedule: true,
         })
     })
 })

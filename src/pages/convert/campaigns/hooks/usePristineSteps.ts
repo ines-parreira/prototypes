@@ -10,6 +10,8 @@ export function usePristineSteps(defaultOpenedStep?: CampaignStepsKeys) {
         basics: defaultOpenedStep !== CampaignStepsKeys.Basics,
         audience: defaultOpenedStep !== CampaignStepsKeys.Audience,
         message: defaultOpenedStep !== CampaignStepsKeys.Message,
+        publish_schedule:
+            defaultOpenedStep !== CampaignStepsKeys.PublishSchedule,
     })
 
     const onChangePristine = useCallback(

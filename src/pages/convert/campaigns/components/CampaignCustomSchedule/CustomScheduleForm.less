@@ -1,0 +1,16 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .customScheduleLine {
+        display: grid;
+        gap: @layout-spacing-xs;
+        grid-template-columns: 1fr 1fr 20px 1fr;
+        width: 100%;
+    }
+
+    .toWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

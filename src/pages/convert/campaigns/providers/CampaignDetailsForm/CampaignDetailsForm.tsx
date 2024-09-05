@@ -42,9 +42,10 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
-
+import {CampaignScheduleModeEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import {createCampaignPayload} from 'pages/convert/campaigns/utils/createCampaignPayload'
 
+import {useIsConvertScheduleCampaignEnabled} from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
 import {CampaignProductRecommendation} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
@@ -61,6 +62,7 @@ import {IntegrationProvider} from '../../containers/IntegrationProvider'
 import {CampaignBasicStep} from '../../containers/CampaignBasicStep'
 import {CampaignAudienceStep} from '../../containers/CampaignAudienceStep'
 import {CampaignMessageStep} from '../../containers/CampaignMessageStep'
+import CampaignPublishScheduleStep from '../../containers/CampaignPublishScheduleStep'
 
 import {HeaderReturnButton} from '../../../common/components/HeaderReturnButton'
 import CampaignPreview from '../../components/CampaignPreview'
@@ -112,6 +114,7 @@ export type Props = {
     allowActivate?: boolean
     backUrl: string
     className?: string
+    displayScheduleSection?: boolean
 }
 
 export const CampaignDetailsForm = ({
@@ -139,6 +142,7 @@ export const CampaignDetailsForm = ({
     openedStep,
     allowActivate = true,
     allowChangeSection = true,
+    displayScheduleSection = true,
     className,
 }: Props) => {
     const dispatch = useAppDispatch()
@@ -152,6 +156,10 @@ export const CampaignDetailsForm = ({
     >({
         [CampaignStepsKeys.Audience]: false,
     })
+
+    const [publishMode, setPublishMode] = useState(
+        CampaignScheduleModeEnum.PublishNow
+    )
 
     const defaultOpenedStep = useMemo(() => {
         // if initial step is predefinied, use it
@@ -167,6 +175,9 @@ export const CampaignDetailsForm = ({
     }, [isEditMode, wizardConfiguration, openedStep])
 
     const isConvertSubscriber = useIsConvertSubscriber()
+    const isConvertScheduleCampaignEnabled =
+        useIsConvertScheduleCampaignEnabled()
+
     const {pristine, onChangePristine} = usePristineSteps(defaultOpenedStep)
     const chatPreviewProps = useChatPreviewProps(integration)
 
@@ -382,6 +393,12 @@ export const CampaignDetailsForm = ({
             return
         }
 
+        let shouldActivateCampaign = activate
+        if (isConvertScheduleCampaignEnabled) {
+            shouldActivateCampaign =
+                publishMode === CampaignScheduleModeEnum.PublishNow
+        }
+
         setActionInProgress(isEditMode ? 'edit' : 'create')
 
         try {
@@ -395,7 +412,7 @@ export const CampaignDetailsForm = ({
                 discountOffers: discountOffers,
                 productRecommendations: productRecommendations,
                 isEditMode: isEditMode,
-                isActive: activate,
+                isActive: shouldActivateCampaign,
                 canAddUtm: canAddUtm,
                 utmEnabled: appliedUtmEnabled,
                 utmQueryString: appliedUtmQueryString,
@@ -470,6 +487,10 @@ export const CampaignDetailsForm = ({
         if (step === CampaignStepsKeys.Message) {
             return campaignData.message_text !== ''
         }
+
+        if (step === CampaignStepsKeys.PublishSchedule) {
+            return publishMode !== null
+        }
     }
 
     const isStepDisabled = (step: CampaignStepsKeys): boolean => {
@@ -490,6 +511,13 @@ export const CampaignDetailsForm = ({
             }))
         },
         [setFormValidationState]
+    )
+
+    const updatePublishMode = useCallback(
+        (value: CampaignScheduleModeEnum) => {
+            setPublishMode(value)
+        },
+        [setPublishMode]
     )
 
     const isCampaignValid =
@@ -654,6 +682,34 @@ export const CampaignDetailsForm = ({
                                                 handleDeleteAttachment
                                             }
                                         />
+                                        {displayScheduleSection &&
+                                            isConvertScheduleCampaignEnabled && (
+                                                <CampaignPublishScheduleStep
+                                                    count={4}
+                                                    key={
+                                                        CampaignStepsKeys.PublishSchedule
+                                                    }
+                                                    isPristine={
+                                                        pristine.publish_schedule
+                                                    }
+                                                    isValid={isStepValid(
+                                                        CampaignStepsKeys.PublishSchedule
+                                                    )}
+                                                    isDisabled={isStepDisabled(
+                                                        CampaignStepsKeys.PublishSchedule
+                                                    )}
+                                                    isConvertSubscriber={
+                                                        isConvertSubscriber
+                                                    }
+                                                    isLightCampaign={
+                                                        isLightCampaign
+                                                    }
+                                                    publishMode={publishMode}
+                                                    onPublishModeChange={
+                                                        updatePublishMode
+                                                    }
+                                                />
+                                            )}
                                     </Accordion>
                                     <div className="mt-4">
                                         <CampaignFooter

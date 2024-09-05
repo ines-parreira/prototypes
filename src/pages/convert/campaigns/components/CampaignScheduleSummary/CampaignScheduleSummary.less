@@ -1,0 +1,13 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/mixins';
+
+:local {
+    .messageWrapper {
+        .body-regular();
+
+        border: 1px solid var(--main-primary);
+        border-radius: 4px;
+        padding: @layout-spacing-s 20px;
+    }
+}
