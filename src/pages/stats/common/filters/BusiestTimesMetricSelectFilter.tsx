@@ -13,7 +13,7 @@ import {
     setSelectedMetric,
 } from 'state/ui/stats/busiestTimesSlice'
 
-export const CUSTOM_FIELD_FILTER_NAME = 'Report on'
+export const BUSIEST_TIMES_METRIC_SELECT_FILTER_NAME = 'Report on'
 
 export const BusiestTimesMetricSelectFilter = () => {
     const dispatch = useDispatch()
@@ -38,7 +38,7 @@ export const BusiestTimesMetricSelectFilter = () => {
 
     return (
         <Filter
-            filterName={CUSTOM_FIELD_FILTER_NAME}
+            filterName={BUSIEST_TIMES_METRIC_SELECT_FILTER_NAME}
             isPersistent={true}
             isMultiple={false}
             showSearch={false}
