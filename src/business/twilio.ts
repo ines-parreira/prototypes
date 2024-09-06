@@ -90,6 +90,7 @@ export enum CallForwardingCountries {
     IL = 'IL',
     JP = 'JP',
     AU = 'AU',
+    SE = 'SE',
 }
 
 export enum TwilioSocketEventType {
