@@ -3,6 +3,7 @@ import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
     addOptionalFilter,
     FilterOperatorMap,
+    getCustomFieldValueSerializer,
     hasFilter,
     toLowerCaseString,
     withDefaultLogicalOperator,
@@ -120,6 +121,59 @@ describe('utils', () => {
                     member: TicketMember.TotalCustomFieldIdsToMatch,
                     operator: ReportingFilterOperator.Equals,
                     values: [String(filter[0].values.length)],
+                },
+            ])
+        })
+
+        it('should add the TicketMember.TotalCustomFieldIdsToMatch for multiple Custom Fields', () => {
+            const customFieldId = 123
+            const anotherCustomFieldId = 456
+            const filter: CustomFieldFilter[] = [
+                {
+                    values: [
+                        getCustomFieldValueSerializer(customFieldId)('One'),
+                        getCustomFieldValueSerializer(customFieldId)('Two'),
+                    ],
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    customFieldId: customFieldId,
+                },
+                {
+                    values: [
+                        getCustomFieldValueSerializer(anotherCustomFieldId)(
+                            'Value'
+                        ),
+                    ],
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    customFieldId: anotherCustomFieldId,
+                },
+            ]
+            const filterDefaults = {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.Equals,
+            }
+            const filters: ReportingFilter[] = []
+
+            const updatedFilters = addOptionalFilter(
+                filters,
+                filter,
+                filterDefaults
+            )
+
+            expect(updatedFilters).toEqual([
+                {
+                    member: filterDefaults.member,
+                    values: filter.reduce<string[]>(
+                        (arr, f) => [...arr, ...f.values],
+                        []
+                    ),
+                    operator: FilterOperatorMap[filter[0].operator],
+                },
+                {
+                    member: TicketMember.TotalCustomFieldIdsToMatch,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [
+                        String([customFieldId, anotherCustomFieldId].length),
+                    ],
                 },
             ])
         })

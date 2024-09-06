@@ -145,8 +145,25 @@ export const addOptionalFilter = (
                     operator: FilterOperatorMap[customFieldFilter.operator],
                 }
             })
-
         reportingFilters = _flatMap(values).reduce(deduplicateCustomFields, [])
+        const uniqueCustomFieldIds = Array.from(
+            new Set(
+                filter
+                    .filter(
+                        (filter) =>
+                            filter.operator === LogicalOperatorEnum.ONE_OF &&
+                            filter.values.length > 0
+                    )
+                    .map((filter) => filter.customFieldId)
+            )
+        )
+        if (uniqueCustomFieldIds.length > 1) {
+            reportingFilters.push({
+                member: TicketMember.TotalCustomFieldIdsToMatch,
+                operator: ReportingFilterOperator.Equals,
+                values: [String(uniqueCustomFieldIds.length)],
+            })
+        }
     } else if (isFilterWithLogicalOperator(filter)) {
         if (filter.values.length === 0) {
             return commonFilters
