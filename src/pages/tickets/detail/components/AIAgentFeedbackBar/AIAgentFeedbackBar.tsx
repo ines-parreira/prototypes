@@ -1,5 +1,8 @@
 import React from 'react'
 
+import {AutoQA} from 'auto_qa'
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     changeTicketMessage,
@@ -23,6 +26,7 @@ export const ticketFeedbackSummary =
     'Select a message from AI Agent and provide feedback to improve future responses.'
 
 const AIAgentFeedbackBar = () => {
+    const hasAutoQA = useFlag<boolean>(FeatureFlagKey.AutoQA, false)
     const dispatch = useAppDispatch()
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
 
@@ -56,6 +60,7 @@ const AIAgentFeedbackBar = () => {
             className={css.container}
             data-testid={FEEDBACK_MESSAGE_CONTAINER_TEST_ID}
         >
+            {hasAutoQA && <AutoQA />}
             <div className={css.summaryContainer}>
                 <div className={css.title}>
                     {messageFeedback ? 'Response summary' : 'Ticket overview'}
