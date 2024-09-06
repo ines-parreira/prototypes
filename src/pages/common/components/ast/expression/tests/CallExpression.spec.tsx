@@ -13,7 +13,7 @@ import WrappedCallExpression from 'pages/common/components/ast/expression/CallEx
 const commonProps = {
     rule: fromJS({foo: 'rule'}),
     actions: {} as RuleItemActions,
-    arguments: ['a', 1],
+    arguments: ['a', {properties: []}],
     schemas: fromJS({foo: 'schemas'}),
     depth: 0,
 }

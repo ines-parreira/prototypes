@@ -141,8 +141,8 @@ export default function WrappedCallExpression({
                 rule={rule}
                 actions={actions}
                 schemas={schemas}
-                leftsiblings={actionRootLeftSiblings}
                 depth={depth}
+                properties={actionArguments.properties}
             >
                 <ObjectExpression
                     properties={actionArguments.properties}

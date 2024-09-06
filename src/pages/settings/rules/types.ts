@@ -1,7 +1,7 @@
 import {List, Map} from 'immutable'
 import esprima from 'esprima'
 
-import {RuleOperation} from '../../../state/rules/types'
+import {RuleOperation} from 'state/rules/types'
 
 export type CodeASTType = esprima.Program
 

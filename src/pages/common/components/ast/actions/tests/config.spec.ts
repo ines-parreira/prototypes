@@ -4,7 +4,12 @@ import schemasJSON from 'fixtures/openapi.json'
 
 import {
     validateEmailList,
+    validateSubject,
     validateBody,
+    validateApplyMacro,
+    validateSetCustomFieldValue,
+    validateAssignAgent,
+    validateAssignTeam,
     validateSendEmail,
     validateTags,
 } from '../config'
@@ -40,6 +45,17 @@ describe('validateEmailList', () => {
     })
 })
 
+describe('validateSubject', () => {
+    it('should validate subject', () => {
+        expect(validateSubject({subject: 'a'})).toBeFalsy()
+    })
+
+    it('should return error and not validate subject', () => {
+        expect(validateSubject({})).toBeTruthy()
+        expect(validateSubject({subject: ''})).toBeTruthy()
+    })
+})
+
 describe('validateBody', () => {
     it('should validate body', () => {
         expect(validateBody({body_text: 'hey'})).toBeFalsy()
@@ -47,6 +63,69 @@ describe('validateBody', () => {
 
     it('should return errors and not validate body', () => {
         expect(validateBody({})).toBeTruthy()
+    })
+})
+
+describe('validateApplyMacro', () => {
+    it('should validate macro', () => {
+        expect(validateApplyMacro({macro: 'a'})).toBeFalsy()
+    })
+
+    it('should return error and not validate macro', () => {
+        expect(validateApplyMacro({})).toBeTruthy()
+        expect(validateApplyMacro({macro: ''})).toBeTruthy()
+    })
+})
+
+describe('validateSetCustomFieldValue', () => {
+    it('should validate custom field value', () => {
+        const valid = [
+            {value: 'hoy', custom_field_id: 1},
+            {value: 10, custom_field_id: 1},
+            {value: true, custom_field_id: 1},
+        ]
+        valid.forEach((input) => {
+            expect(validateSetCustomFieldValue(input)).toBeFalsy()
+        })
+    })
+
+    it('should return errors and not validate custom field value', () => {
+        const invalid = [
+            {},
+            {value: 'hoy'},
+            {value: 'hoy', custom_field_id: 0},
+            {custom_field_id: 1},
+            {custom_field_id: 1, value: ''},
+        ]
+        invalid.forEach((input) => {
+            expect(validateSetCustomFieldValue(input)).toBeTruthy()
+        })
+    })
+})
+
+describe('validateAssignAgent', () => {
+    it('should validate assigned agent', () => {
+        expect(validateAssignAgent({assignee_user: 'Leela'})).toBeFalsy()
+        expect(validateAssignAgent({assignee_user: null})).toBeFalsy()
+    })
+
+    it('should return error and not assigned agent', () => {
+        expect(validateAssignAgent({})).toBeTruthy()
+        expect(validateAssignAgent({assignee_user: ''})).toBeTruthy()
+    })
+})
+
+describe('validateAssignTeam', () => {
+    it('should validate assigned team', () => {
+        expect(
+            validateAssignTeam({assignee_team: 'Planet Express'})
+        ).toBeFalsy()
+        expect(validateAssignTeam({assignee_team: null})).toBeFalsy()
+    })
+
+    it('should return error and not assigned team', () => {
+        expect(validateAssignTeam({})).toBeTruthy()
+        expect(validateAssignTeam({assignee_team: ''})).toBeTruthy()
     })
 })
 
@@ -129,5 +208,7 @@ describe('validateTags', () => {
 
     it('should return errors and not validate tags', () => {
         expect(validateTags({tags: ''})).toBeTruthy()
+        expect(validateTags({})).toBeTruthy()
+        expect(validateTags({tags: null})).toBeTruthy()
     })
 })

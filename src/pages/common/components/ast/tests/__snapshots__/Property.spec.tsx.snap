@@ -8,7 +8,7 @@ exports[`Property component should display errors if the validate method of the 
     class="text-danger"
     style="margin-top: -8px; margin-bottom: .5rem;"
   >
-    error!error!
+    One or multiple email addresses are invalid
   </div>
 </div>
 `;

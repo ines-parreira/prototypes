@@ -23,7 +23,10 @@ describe('Property component', () => {
             <Provider store={mockStore({})}>
                 <Property
                     {...commonProps}
-                    config={{validate: () => 'error!error!'}}
+                    config={{
+                        validate: (__, ___) =>
+                            'One or multiple email addresses are invalid',
+                    }}
                 />
             </Provider>
         )

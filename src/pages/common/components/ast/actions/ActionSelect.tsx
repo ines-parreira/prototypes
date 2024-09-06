@@ -7,8 +7,8 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
-import {RuleOperation} from '../../../../../state/rules/types'
-import {RuleItemActions} from '../../../../settings/rules/types'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import {RuleOperation} from 'state/rules/types'
 
 import {actionsConfig} from './config'
 

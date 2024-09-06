@@ -4,7 +4,7 @@ import _isArray from 'lodash/isArray'
 import _isFunction from 'lodash/isFunction'
 import {List, Map} from 'immutable'
 
-import {RuleItemActions} from '../../../settings/rules/types'
+import {RuleItemActions} from 'pages/settings/rules/types'
 
 import Widget from './Widget'
 import Errors from './Errors'

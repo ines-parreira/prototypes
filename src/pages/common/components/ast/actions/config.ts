@@ -1,7 +1,6 @@
 import {Map} from 'immutable'
 
 import {UploadType} from 'common/types'
-import {MacroActionName} from 'models/macroAction/types'
 import {templateRegex} from 'pages/common/utils/template'
 import {ManagedRulesSlugs} from 'state/rules/types'
 import {isEmailList, findProperty} from 'utils'
@@ -14,10 +13,7 @@ type Email = {
     bcc?: Maybe<string>
 }
 
-export function validateEmailList(
-    value: string,
-    schemas: Map<any, any>
-): string | void {
+export function validateEmailList(value: string, schemas: Map<any, any>) {
     let emailList = value
 
     // verify that all template variables are email addresses
@@ -42,28 +38,28 @@ export function validateEmailList(
     }
 }
 
-export function validateSubject(values: {subject: string}): string | void {
+export function validateSubject(values: {subject?: string}) {
     if (!values.subject) {
         return 'Subject must be filled'
     }
 }
 
-export function validateBody(values: Email): string | void {
+export function validateBody(values: Email) {
     if (!values.body_text) {
         return 'Body must be filled'
     }
 }
 
-export function validateApplyMacro(values: {macro: string}): string | void {
+export function validateApplyMacro(values: {macro?: string}) {
     if (!values.macro) {
         return 'Macro must be selected'
     }
 }
 
 export function validateSetCustomFieldValue(values: {
-    custom_field_id: number
-    value: number | string | boolean
-}): string | void {
+    custom_field_id?: number
+    value?: number | string | boolean
+}) {
     if (!values.custom_field_id) {
         return 'Field must be selected'
     }
@@ -72,23 +68,19 @@ export function validateSetCustomFieldValue(values: {
     }
 }
 
-export function validateAssignAgent(values: {
-    assignee_user: string | null
-}): string | void {
-    if (values.assignee_user === '') {
+export function validateAssignAgent(values: {assignee_user?: string | null}) {
+    if (values.assignee_user === '' || values.assignee_user === undefined) {
         return 'Agent must be selected'
     }
 }
 
-export function validateAssignTeam(values: {
-    assignee_team: string | null
-}): string | void {
-    if (values.assignee_team === '') {
+export function validateAssignTeam(values: {assignee_team?: string | null}) {
+    if (values.assignee_team === '' || values.assignee_team === undefined) {
         return 'Team must be selected'
     }
 }
 
-export function validateSendEmail(values: Email): Array<string> {
+export function validateSendEmail(values: Email) {
     const MAX_NUMBER_RECIPIENTS = 15
 
     const errors = []
@@ -117,14 +109,13 @@ export function validateSendEmail(values: Email): Array<string> {
     return errors
 }
 
-export function validateTags(values: {tags: Maybe<string>}): string | void {
+export function validateTags(values: {tags?: string | null}): string | void {
     if (!values.tags) {
         return 'Tags cannot be empty'
     }
 }
 
 type ValidateFn =
-    | typeof validateEmailList
     | typeof validateBody
     | typeof validateSendEmail
     | typeof validateTags
@@ -158,17 +149,17 @@ export type ActionConfig = {
             placeholder: string
             required: boolean
             widget: string
-            validate: ValidateFn
+            validate: typeof validateEmailList
         }
         cc?: {
             name: string
             widget: string
-            validate: ValidateFn
+            validate: typeof validateEmailList
         }
         bcc?: {
             name: string
             widget: string
-            validate: ValidateFn
+            validate: typeof validateEmailList
         }
         snooze_timedelta?: {
             widget?: string
@@ -184,7 +175,7 @@ export type ActionConfig = {
     validate?: ValidateFn
 }
 
-export const actionsConfig: {[key: string]: ActionConfig} = {
+export const actionsConfig: {[key in string]: ActionConfig} = {
     notify: {
         type: 'system',
         compact: false,
@@ -260,7 +251,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         },
         validate: validateBody,
     },
-    [MacroActionName.AddInternalNote]: {
+    addInternalNote: {
         compact: false,
         name: 'Add internal note',
         args: {
@@ -281,7 +272,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         name: 'Apply macro',
         validate: validateApplyMacro,
     },
-    [MacroActionName.AddTags]: {
+    addTags: {
         compact: true,
         name: 'Add tags',
         validate: validateTags,
@@ -296,7 +287,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         name: 'Reset tags',
         validate: validateTags,
     },
-    [MacroActionName.SetSubject]: {
+    setSubject: {
         compact: true,
         name: 'Set subject',
         args: {
@@ -307,11 +298,11 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         },
         validate: validateSubject,
     },
-    [MacroActionName.SetStatus]: {
+    setStatus: {
         compact: true,
         name: 'Set status',
     },
-    [MacroActionName.SetCustomFieldValue]: {
+    setCustomFieldValue: {
         compact: true,
         name: 'Set ticket field',
         args: {
@@ -324,7 +315,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         },
         validate: validateSetCustomFieldValue,
     },
-    [MacroActionName.SnoozeTicket]: {
+    snoozeTicket: {
         compact: true,
         name: 'Snooze for',
         args: {
@@ -333,12 +324,12 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
             },
         },
     },
-    [MacroActionName.SetAssignee]: {
+    setAssignee: {
         compact: true,
         name: 'Assign agent',
         validate: validateAssignAgent,
     },
-    [MacroActionName.SetTeamAssignee]: {
+    setTeamAssignee: {
         compact: true,
         name: 'Assign team',
         validate: validateAssignTeam,
@@ -355,11 +346,11 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         compact: true,
         name: 'Like Facebook comment',
     },
-    [MacroActionName.ExcludeFromAutoMerge]: {
+    excludeFromAutoMerge: {
         compact: true,
         name: 'Exclude ticket from Auto-Merge',
     },
-    [MacroActionName.ExcludeFromCSAT]: {
+    excludeFromCSAT: {
         compact: true,
         name: 'Exclude ticket from CSAT',
     },
