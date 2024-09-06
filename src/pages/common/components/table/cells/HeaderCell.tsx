@@ -22,13 +22,13 @@ export default function HeaderCell({
     ...otherProps
 }: Props) {
     return (
-        <td
+        <th
             {...otherProps}
             className={classnames(
                 css.wrapper,
                 className,
                 {
-                    'is-clickable': !!onClick,
+                    [css.isClickable]: !!onClick,
                 },
                 css[size],
                 height && css[height]
@@ -36,6 +36,6 @@ export default function HeaderCell({
             onClick={onClick}
         >
             {children}
-        </td>
+        </th>
     )
 }

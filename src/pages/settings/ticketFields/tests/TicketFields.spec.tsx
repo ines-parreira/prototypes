@@ -1,296 +1,135 @@
 import React from 'react'
-import {screen, waitFor} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
-import MockAdapter from 'axios-mock-adapter'
-import {AxiosRequestConfig} from 'axios'
-import {QueryClientProvider} from '@tanstack/react-query'
+import {useParams} from 'react-router-dom'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {user} from 'fixtures/users'
-import client from 'models/api/resources'
-import {renderWithRouter} from 'utils/testing'
-import {CustomField} from 'models/customField/types'
+import {assumeMock} from 'utils/testing'
 import {ticketInputFieldDefinition} from 'fixtures/customField'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import useDebouncedValue from 'hooks/useDebouncedValue'
+import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useUpdateCustomFieldDefinitions} from 'hooks/customField/useUpdateCustomFieldDefinitions'
+
+import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 import TicketFields from '../TicketFields'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const store = mockStore({
-    entities: {},
-    currentUser: fromJS(user),
-} as RootState)
+jest.mock(
+    'react-router-dom',
+    () =>
+        ({
+            ...jest.requireActual('react-router-dom'),
+            useParams: jest.fn(),
+            Link: ({children}: {children: React.ReactNode}) => children,
+            NavLink: ({children}: {children: React.ReactNode}) => children,
+        } as Record<string, unknown>)
+)
+jest.mock('hooks/customField/useCustomFieldDefinitions')
+jest.mock('hooks/customField/useUpdateCustomFieldDefinitions')
+jest.mock('hooks/useDebouncedValue')
+jest.mock('../components/List', () =>
+    jest.fn(() => {
+        return <div data-testid="ticket-fields-list"></div>
+    })
+)
 
-jest.mock('../components/List', () => () => {
-    return <div data-testid="ticket-fields-list"></div>
-})
+const useParamsMock = assumeMock(useParams)
+const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
+const useUpdateCustomFieldDefinitionsMock = assumeMock(
+    useUpdateCustomFieldDefinitions
+)
+const useDebouncedValueMock = assumeMock(useDebouncedValue)
 
-const mockedServer = new MockAdapter(client)
-const queryClient = mockQueryClient()
+const emptyFieldDefinitions = {
+    isLoading: false,
+    data: apiListCursorPaginationResponse([]),
+} as unknown as ReturnType<typeof useCustomFieldDefinitions>
+
+const notEmptyFieldDefinitions = {
+    data: apiListCursorPaginationResponse([ticketInputFieldDefinition]),
+    isLoading: false,
+} as unknown as ReturnType<typeof useCustomFieldDefinitions>
 
 describe('<TicketFields/>', () => {
     beforeEach(() => {
-        mockedServer.reset()
-        queryClient.clear()
+        useParamsMock.mockReturnValue({activeTab: 'active'})
+        useDebouncedValueMock.mockReturnValue('')
+        useCustomFieldDefinitionsMock.mockReturnValue(emptyFieldDefinitions)
+        useUpdateCustomFieldDefinitionsMock.mockReturnValue({
+            mutate: jest.fn(),
+        } as unknown as ReturnType<typeof useUpdateCustomFieldDefinitions>)
     })
 
-    it('should render get started', async () => {
-        mockedServer.onGet('/api/custom-fields/').reply(200, {
-            data: [],
-            meta: {
-                prev_cursor: null,
-                next_cursor: null,
-            },
-        })
+    it('should render get started', () => {
+        render(<TicketFields />)
 
-        const {container} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: '/ticket-fields/:activeTab',
-                route: `/ticket-fields/active`,
-            }
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByText(/Get started with Ticket Fields/)
-            ).toBeDefined()
-            expect(screen.queryByTestId('ticket-fields-list')).toBeNull()
-        })
-
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText(/Get started with Ticket Fields/)).toBeDefined()
+        expect(screen.queryByTestId('ticket-fields-list')).toBeNull()
     })
 
-    it('should render no active ticket fields', async () => {
-        mockedServer
-            .onGet('/api/custom-fields/')
-            .reply((config: AxiosRequestConfig) => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                const data: CustomField[] = !config.params.archived
-                    ? []
-                    : [ticketInputFieldDefinition]
-
-                return [
-                    200,
-                    {
-                        data: data,
-                        meta: {
-                            prev_cursor: null,
-                            next_cursor: null,
-                        },
-                    },
-                ]
-            })
-
-        const {container} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: '/ticket-fields/:activeTab',
-                route: `/ticket-fields/active`,
+    it('should render no active ticket fields when there is at least one archived ticket field', () => {
+        useCustomFieldDefinitionsMock.mockImplementation(({archived}) => {
+            if (archived) {
+                return notEmptyFieldDefinitions
             }
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByText(
-                    /You don't have any active ticket fields at the moment/
-                )
-            ).toBeDefined()
-            expect(screen.queryByTestId('ticket-fields-list')).toBeNull()
+            return emptyFieldDefinitions
         })
 
-        expect(container.firstChild).toMatchSnapshot()
+        render(<TicketFields />)
+
+        expect(
+            screen.getByText(
+                /You don't have any active ticket fields at the moment/
+            )
+        ).toBeDefined()
+        expect(screen.queryByTestId('ticket-fields-list')).toBeNull()
     })
 
-    it('should render active ticket fields', async () => {
-        mockedServer
-            .onGet('/api/custom-fields/')
-            .reply((config: AxiosRequestConfig) => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                const data: CustomField[] = !config.params.archived
-                    ? [ticketInputFieldDefinition]
-                    : []
-                return [
-                    200,
-                    {
-                        data: data,
-                        meta: {
-                            prev_cursor: null,
-                            next_cursor: null,
-                        },
-                    },
-                ]
-            })
+    it('should render active ticket fields', () => {
+        useCustomFieldDefinitionsMock.mockReturnValue(notEmptyFieldDefinitions)
 
-        const {container} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: '/ticket-fields/:activeTab',
-                route: `/ticket-fields/active`,
-            }
-        )
+        render(<TicketFields />)
 
-        await waitFor(() => {
-            expect(screen.getByTestId('ticket-fields-list')).toBeDefined()
-        })
-
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByTestId('ticket-fields-list')).toBeInTheDocument()
     })
 
     it('should render no results found', async () => {
-        jest.useFakeTimers()
+        useDebouncedValueMock.mockReturnValue('foo')
 
-        mockedServer
-            .onGet('/api/custom-fields/')
-            .reply((config: AxiosRequestConfig) => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                let data: CustomField[] = [ticketInputFieldDefinition]
-
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                if (config.params.search) {
-                    data = []
-                }
-                return [
-                    200,
-                    {
-                        data: data,
-                        meta: {
-                            prev_cursor: null,
-                            next_cursor: null,
-                        },
-                    },
-                ]
-            })
-
-        const {container} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: '/ticket-fields/:activeTab',
-                route: `/ticket-fields/active`,
-            }
-        )
-
-        jest.runAllTimers()
-
-        await waitFor(() => {
-            expect(screen.getByTestId('ticket-fields-list')).toBeDefined()
-        })
-
+        render(<TicketFields />)
         await userEvent.type(
             screen.getByPlaceholderText('Search ticket fields...'),
             'foo'
         )
-
-        jest.runAllTimers()
-
         await waitFor(() => {
-            expect(screen.getByText(/No results found./)).toBeDefined()
-            expect(screen.queryByTestId('ticket-fields-list')).toBeNull()
+            expect(useDebouncedValue).toHaveBeenLastCalledWith('foo', 300)
         })
-
-        expect(container.firstChild).toMatchSnapshot()
-        jest.useRealTimers()
+        expect(screen.getByText(/No results found./)).toBeInTheDocument()
     })
 
-    it('should render no archived ticket fields', async () => {
-        mockedServer
-            .onGet('/api/custom-fields/')
-            .reply((config: AxiosRequestConfig) => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                const data: CustomField[] = !config.params.archived
-                    ? [ticketInputFieldDefinition]
-                    : []
-                return [
-                    200,
-                    {
-                        data: data,
-                        meta: {
-                            prev_cursor: null,
-                            next_cursor: null,
-                        },
-                    },
-                ]
-            })
-
-        const {container} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: '/ticket-fields/:activeTab',
-                route: `/ticket-fields/archived`,
+    it('should render no archived ticket fields', () => {
+        useCustomFieldDefinitionsMock.mockImplementation(({archived}) => {
+            if (!archived) {
+                return notEmptyFieldDefinitions
             }
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByText(
-                    /You don't have any archived ticket fields at the moment/
-                )
-            ).toBeDefined()
-            expect(screen.queryByTestId('ticket-fields-list')).toBeNull()
+            return emptyFieldDefinitions
         })
+        useParamsMock.mockReturnValue({activeTab: 'archived'})
 
-        expect(container.firstChild).toMatchSnapshot()
+        render(<TicketFields />)
+
+        expect(
+            screen.getByText(
+                /You don't have any archived ticket fields at the moment/
+            )
+        ).toBeDefined()
+        expect(screen.queryByTestId('ticket-fields-list')).toBeNull()
     })
 
-    it('should render archived ticket fields', async () => {
-        mockedServer
-            .onGet('/api/custom-fields/')
-            .reply((config: AxiosRequestConfig) => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                const data: CustomField[] = !config.params.archived
-                    ? []
-                    : [ticketInputFieldDefinition]
-                return [
-                    200,
-                    {
-                        data: data,
-                        meta: {
-                            prev_cursor: null,
-                            next_cursor: null,
-                        },
-                    },
-                ]
-            })
+    it('should render archived ticket fields', () => {
+        useCustomFieldDefinitionsMock.mockReturnValue(notEmptyFieldDefinitions)
+        useParamsMock.mockReturnValue({activeTab: 'archived'})
 
-        const {container} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: '/ticket-fields/:activeTab',
-                route: `/ticket-fields/archived`,
-            }
-        )
+        render(<TicketFields />)
 
-        await waitFor(() => {
-            expect(screen.getByTestId('ticket-fields-list')).toBeDefined()
-        })
-
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByTestId('ticket-fields-list')).toBeInTheDocument()
     })
 })

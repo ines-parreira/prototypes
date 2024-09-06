@@ -11,21 +11,21 @@ exports[`SearchResults displays article and category search results 1`] = `
       <tr
         class="headerRow"
       >
-        <td
+        <th
           class="wrapper normal"
           style="width: 25px;"
         />
-        <td
+        <th
           class="wrapper normal"
         />
-        <td
+        <th
           class="wrapper normal"
         />
-        <td
+        <th
           class="wrapper normal"
           style="width: 124px;"
         />
-        <td
+        <th
           class="wrapper normal"
           style="width: 160px;"
         />

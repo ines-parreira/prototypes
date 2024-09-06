@@ -29,7 +29,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
       <tr
         class="headerRow"
       >
-        <td
+        <th
           class="wrapper headerHelpCenterName normal"
         >
           <div
@@ -50,8 +50,8 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
               </i>
             </div>
           </div>
-        </td>
-        <td
+        </th>
+        <th
           class="wrapper normal"
         >
           <div
@@ -72,8 +72,8 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
               </i>
             </div>
           </div>
-        </td>
-        <td
+        </th>
+        <th
           class="wrapper normal"
         >
           <div
@@ -94,8 +94,8 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
               </i>
             </div>
           </div>
-        </td>
-        <td
+        </th>
+        <th
           class="wrapper normal"
         >
           <div
@@ -116,11 +116,11 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
               </i>
             </div>
           </div>
-        </td>
-        <td
+        </th>
+        <th
           class="wrapper normal"
         />
-        <td
+        <th
           class="wrapper normal"
         />
       </tr>

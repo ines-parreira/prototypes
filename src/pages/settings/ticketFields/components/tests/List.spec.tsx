@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {screen, render} from '@testing-library/react'
 
 import {ticketInputFieldDefinition} from 'fixtures/customField'
 import List from '../List'
@@ -15,7 +15,7 @@ jest.mock('../Row', () => (props: Props) => {
 
 describe('<List />', () => {
     it.each([true, false])(
-        'should render correctly based on active tab',
+        'should render correct number of table headers',
         (canReorder) => {
             const props = {
                 ticketFields: [ticketInputFieldDefinition],
@@ -24,8 +24,11 @@ describe('<List />', () => {
                 onReorder: jest.fn(),
             }
 
-            const {container} = render(<List {...props} />)
-            expect(container.firstChild).toMatchSnapshot()
+            render(<List {...props} />)
+
+            expect(screen.getAllByRole('columnheader')).toHaveLength(
+                canReorder ? 5 : 4
+            )
         }
     )
 })

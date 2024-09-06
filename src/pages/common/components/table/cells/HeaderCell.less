@@ -3,7 +3,6 @@
 :local {
     .wrapper {
         box-sizing: border-box;
-        cursor: pointer;
         font-weight: 600;
         min-height: 46px;
         position: relative;
@@ -18,9 +17,8 @@
             padding-right: @layout-spacing-m;
         }
 
-        &.is-clickable {
-            color: var(--main-primary);
-            font-weight: 500;
+        &.isClickable {
+            cursor: pointer;
         }
 
         &.small,

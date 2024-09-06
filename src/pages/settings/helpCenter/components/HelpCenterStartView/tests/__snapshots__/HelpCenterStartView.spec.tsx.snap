@@ -279,7 +279,7 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                 <tr
                   class="headerRow"
                 >
-                  <td
+                  <th
                     class="wrapper headerHelpCenterName normal"
                   >
                     <div
@@ -300,8 +300,8 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         </i>
                       </div>
                     </div>
-                  </td>
-                  <td
+                  </th>
+                  <th
                     class="wrapper normal"
                   >
                     <div
@@ -322,8 +322,8 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         </i>
                       </div>
                     </div>
-                  </td>
-                  <td
+                  </th>
+                  <th
                     class="wrapper normal"
                   >
                     <div
@@ -344,8 +344,8 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         </i>
                       </div>
                     </div>
-                  </td>
-                  <td
+                  </th>
+                  <th
                     class="wrapper normal"
                   >
                     <div
@@ -366,11 +366,11 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         </i>
                       </div>
                     </div>
-                  </td>
-                  <td
+                  </th>
+                  <th
                     class="wrapper normal"
                   />
-                  <td
+                  <th
                     class="wrapper normal"
                   />
                 </tr>

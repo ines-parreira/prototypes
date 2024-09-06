@@ -35,7 +35,7 @@ describe('<HeaderCell/>', () => {
     it('should call onClick when clicked', () => {
         render(<HeaderCell onClick={mockOnClick}>Foo</HeaderCell>)
 
-        fireEvent.click(screen.getByRole('cell'))
+        fireEvent.click(screen.getByRole('columnheader'))
 
         expect(mockOnClick).toHaveBeenCalled()
     })

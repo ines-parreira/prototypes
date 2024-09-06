@@ -3,7 +3,6 @@ import {Container} from 'reactstrap'
 import {Link, NavLink, useParams} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useTitle from 'hooks/useTitle'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
@@ -17,8 +16,9 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Search from 'pages/common/components/Search'
 import {ListParams} from 'models/customField/types'
-
 import useCallbackRef from 'hooks/useCallbackRef'
+import useDebouncedValue from 'hooks/useDebouncedValue'
+
 import css from './TicketFields.less'
 
 const MAX_TICKET_FIELDS = 25
@@ -35,8 +35,7 @@ export default function TicketFields() {
     useInjectStyleToCandu(landingNode)
 
     const [search, setSearch] = useState('')
-    const [debouncedSearch, setDebouncedSearch] = useState('')
-    useDebouncedEffect(() => setDebouncedSearch(search), [search], 1000)
+    const debouncedSearch = useDebouncedValue(search, 300)
 
     const activeParams: ListParams = {
         archived: false,
@@ -193,7 +192,8 @@ export default function TicketFields() {
                                         ticketFields={ticketFields}
                                         canReorder={
                                             !debouncedSearch &&
-                                            activeTab !== 'archived'
+                                            activeTab !== 'archived' &&
+                                            ticketFields.length > 1
                                         }
                                         onReorder={mutateCustomFieldPriorities}
                                     />

@@ -38,7 +38,7 @@ describe('<HeaderCellProperty/>', () => {
         const onClick = jest.fn()
 
         render(<HeaderCellProperty {...minProps} onClick={onClick} />)
-        userEvent.click(screen.getByRole('cell'))
+        userEvent.click(screen.getByRole('columnheader'))
 
         expect(onClick).toHaveBeenCalled()
     })

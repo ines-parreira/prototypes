@@ -41,7 +41,7 @@ describe('<PhoneNumbersList/>', () => {
             const getRows = () =>
                 getAllByRole('row').map((row) =>
                     within(row)
-                        .getAllByRole('cell')
+                        .queryAllByRole('cell')
                         .map((cell) => cell.textContent)
                 )
 

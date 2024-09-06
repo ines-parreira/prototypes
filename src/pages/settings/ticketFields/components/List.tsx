@@ -1,8 +1,12 @@
-import {Table} from 'reactstrap'
 import React, {useState, useEffect} from 'react'
-import classnames from 'classnames'
 import {CustomField} from 'models/customField/types'
 import Row from 'pages/settings/ticketFields/components/Row'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableBody from 'pages/common/components/table/TableBody'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+
+import css from './List.less'
 
 export type Props = {
     ticketFields: CustomField[]
@@ -64,36 +68,28 @@ export default function List({ticketFields, canReorder, onReorder}: Props) {
     }
 
     return (
-        <>
-            <Table hover>
-                <thead className="border-0">
-                    <tr>
-                        {canReorder && <th></th>}
-                        <th>Field</th>
-                        <th></th>
-                        <th
-                            className={classnames(
-                                'p-0 align-middle smallest pr-4'
-                            )}
-                        >
-                            last updated
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {draggedFields.map((ticketField, index) => (
-                        <Row
-                            key={ticketField.id}
-                            position={index}
-                            ticketField={ticketField}
-                            canReorder={canReorder}
-                            onMoveEntity={handleMoveEntity}
-                            onDropEntity={handleDropEntity}
-                        />
-                    ))}
-                </tbody>
-            </Table>
-        </>
+        <TableWrapper>
+            <TableHead>
+                {canReorder && <HeaderCell size="smallest" />}
+                <HeaderCell className={css.headerCell}>FIELD</HeaderCell>
+                <HeaderCell size="smallest"></HeaderCell>
+                <HeaderCell size="smallest" className={css.headerCell}>
+                    LAST UPDATED
+                </HeaderCell>
+                <HeaderCell size="smallest"></HeaderCell>
+            </TableHead>
+            <TableBody>
+                {draggedFields.map((ticketField, index) => (
+                    <Row
+                        key={ticketField.id}
+                        position={index}
+                        ticketField={ticketField}
+                        canReorder={canReorder}
+                        onMoveEntity={handleMoveEntity}
+                        onDropEntity={handleDropEntity}
+                    />
+                ))}
+            </TableBody>
+        </TableWrapper>
     )
 }

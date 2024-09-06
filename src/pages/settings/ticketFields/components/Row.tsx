@@ -1,12 +1,17 @@
 import React, {useState} from 'react'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
+import {Tooltip} from '@gorgias/ui-kit'
+import {ulid} from 'ulidx'
+
 import {CustomField, isCustomFieldAIManagedType} from 'models/customField/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import ArchiveConfirmationModal from 'pages/settings/ticketFields/components/ArchiveConfirmationModal'
 import {TableBodyRowDraggable} from 'pages/common/components/table/TableBodyRowDraggable'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import {Callbacks} from 'pages/common/hooks/useReorderDnD'
 import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
 import {DateAndTimeFormatting} from 'constants/datetime'
@@ -32,6 +37,8 @@ export default function Row({
 
     const link = `/app/settings/ticket-fields/${ticketField.id}/edit`
     const [archiveModalVisible, setArchiveModalVisible] = useState(false)
+    const isAIManaged = isCustomFieldAIManagedType(ticketField.managed_type)
+    const tooltipId = 'a' + ulid()
 
     return (
         <TableBodyRowDraggable
@@ -45,99 +52,108 @@ export default function Row({
                 position,
                 type: 'ticket-fields-row',
             }}
-            shouldRenderDragHandle={
-                canReorder &&
-                !ticketField.deactivated_datetime &&
-                !isCustomFieldAIManagedType(ticketField.managed_type)
-            }
+            shouldRenderDragHandle={canReorder}
             onMoveEntity={onMoveEntity}
             onDropEntity={onDropEntity}
         >
-            {isCustomFieldAIManagedType(ticketField.managed_type) && <td></td>}
-            <td
-                className={classnames('link-full-td align-middle')}
-                id={`ticket-field-label-${ticketField.id}`}
-            >
+            <td id={`ticket-field-label-${ticketField.id}`}>
                 <Link to={link}>
-                    <div>
+                    <BodyCellContent>
                         <strong className={classnames('mr-4', css.label)}>
                             {ticketField.label}
+                            {isAIManaged && (
+                                <>
+                                    {' '}
+                                    <i
+                                        id={tooltipId}
+                                        className={classnames(
+                                            'material-icons-outlined',
+                                            'ml-1',
+                                            'md-2'
+                                        )}
+                                    >
+                                        info
+                                    </i>
+                                    <>
+                                        <Tooltip target={tooltipId}>
+                                            {ticketField.label} is a Gorgias AI
+                                            managed field and cannot be edited
+                                        </Tooltip>
+                                    </>
+                                </>
+                            )}
                         </strong>
                         <span className="d-inline-flex text-faded">
                             <span className={css.description}>
                                 {ticketField.description}
                             </span>
                         </span>
-                    </div>
+                    </BodyCellContent>
                 </Link>
             </td>
-            <td
-                className={classnames(
-                    'link-full-td align-middle smallest pr-4'
-                )}
-            >
+            <BodyCell>
                 {ticketField.required && !ticketField.deactivated_datetime && (
                     <Badge type={ColorType.Warning}>REQUIRED</Badge>
                 )}
-            </td>
-            <td
-                className={classnames(
-                    'link-full-td align-middle smallest pr-4'
-                )}
-            >
+            </BodyCell>
+            <BodyCell>
                 <div className={'text-faded'}>
                     <DatetimeLabel
                         dateTime={ticketField.updated_datetime}
                         labelFormat={DateAndTimeFormatting.CompactDate}
                     />
                 </div>
-            </td>
+            </BodyCell>
 
-            <td className={classnames('align-middle smallest', css.actions)}>
-                {!ticketField.deactivated_datetime &&
-                    !isCustomFieldAIManagedType(ticketField.managed_type) && (
-                        <>
-                            <IconButton
-                                className={classnames(css.actionButton, 'mr-1')}
-                                onClick={() => setArchiveModalVisible(true)}
-                                fillStyle="ghost"
-                                intent="secondary"
-                                isLoading={isLoading}
-                                title="Archive"
-                                id={`archive-ticket-field-${ticketField.id}`}
-                            >
-                                archive
-                            </IconButton>
-
-                            <ArchiveConfirmationModal
-                                ticketFieldLabel={ticketField.label}
-                                isOpen={archiveModalVisible}
-                                onConfirm={() => {
-                                    setArchiveModalVisible(false)
-                                    mutate(true)
-                                }}
-                                onClose={() => setArchiveModalVisible(false)}
-                            />
-                        </>
-                    )}
-
-                {ticketField.deactivated_datetime &&
-                    !isCustomFieldAIManagedType(ticketField.managed_type) && (
+            <BodyCell>
+                {!ticketField.deactivated_datetime && (
+                    <>
                         <IconButton
                             className={classnames(css.actionButton, 'mr-1')}
-                            onClick={() => {
-                                mutate(false)
-                            }}
+                            onClick={() => setArchiveModalVisible(true)}
                             fillStyle="ghost"
                             intent="secondary"
                             isLoading={isLoading}
-                            title="Unarchive"
-                            id={`restore-ticket-field-${ticketField.id}`}
+                            isDisabled={isCustomFieldAIManagedType(
+                                ticketField.managed_type
+                            )}
+                            title="Archive"
+                            id={`archive-ticket-field-${ticketField.id}`}
                         >
-                            unarchive
+                            archive
                         </IconButton>
-                    )}
-            </td>
+
+                        <ArchiveConfirmationModal
+                            ticketFieldLabel={ticketField.label}
+                            isOpen={archiveModalVisible}
+                            onConfirm={() => {
+                                setArchiveModalVisible(false)
+                                mutate(true)
+                            }}
+                            onClose={() => setArchiveModalVisible(false)}
+                        />
+                    </>
+                )}
+
+                {ticketField.deactivated_datetime && (
+                    <IconButton
+                        className={classnames(css.actionButton, 'mr-1')}
+                        onClick={() => {
+                            mutate(false)
+                        }}
+                        fillStyle="ghost"
+                        intent="secondary"
+                        isDisabled={isCustomFieldAIManagedType(
+                            ticketField.managed_type
+                        )}
+                        isLoading={isLoading}
+                        title="Unarchive"
+                        id={`restore-ticket-field-${ticketField.id}`}
+                    >
+                        unarchive
+                    </IconButton>
+                )}
+            </BodyCell>
         </TableBodyRowDraggable>
     )
 }

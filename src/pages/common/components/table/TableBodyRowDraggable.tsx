@@ -21,6 +21,7 @@ type TableBodyRowDraggableProps = RowEventListeners & {
     children: ReactNode
     dragItem: DragItem
     shouldRenderDragHandle?: boolean
+    isDisabled?: boolean
     className?: string
 }
 
@@ -32,34 +33,46 @@ export const TableBodyRowDraggable = ({
     children,
     dragItem,
     shouldRenderDragHandle = true,
+    isDisabled = false,
     onMoveEntity,
     onDropEntity,
     onCancelDnD,
     className,
-}: TableBodyRowDraggableProps): JSX.Element => {
+}: TableBodyRowDraggableProps) => {
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         dragItem,
         [dragItem.type],
         {onHover: onMoveEntity, onDrop: onDropEntity, onCancel: onCancelDnD}
     )
 
-    const opacity = isDragging ? 0.5 : 1
+    let rowProps: Record<string, unknown> = {
+        className,
+    }
+    if (!isDisabled) {
+        rowProps = {
+            ...rowProps,
+            'data-handler-id': handlerId,
+            style: {opacity: isDragging ? 0.5 : 1},
+            ref: dropRef as Ref<HTMLTableRowElement>,
+        }
+    }
 
     return (
-        <TableBodyRow
-            ref={dropRef as Ref<HTMLTableRowElement>}
-            data-handler-id={handlerId}
-            style={{opacity}}
-            className={className}
-        >
+        <TableBodyRow {...rowProps}>
             {shouldRenderDragHandle && (
                 <BodyCell className={classNames('align-middle', css.bodyCell)}>
                     <div
-                        ref={dragRef as RefObject<HTMLDivElement>}
+                        ref={
+                            isDisabled
+                                ? undefined
+                                : (dragRef as RefObject<HTMLDivElement>)
+                        }
                         className={classNames(
-                            'material-icons text-faded',
+                            'material-icons',
                             css.dragIndicator,
-                            css.dragIndicatorActive
+                            {
+                                [css.dragIndicatorDisabled]: isDisabled,
+                            }
                         )}
                     >
                         drag_indicator

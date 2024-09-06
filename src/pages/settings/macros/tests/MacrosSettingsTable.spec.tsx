@@ -215,7 +215,7 @@ describe('<MacrosSettingsTable/>', () => {
     it('should change sort column when clicking header cell', () => {
         render(<MacrosSettingsTableContainer {...minProps} />)
 
-        userEvent.click(document.getElementsByTagName('td')[0])
+        userEvent.click(document.getElementsByTagName('th')[0])
 
         expect(mockOnSortOptionsChange).toHaveBeenNthCalledWith(
             1,

@@ -312,7 +312,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByRole('cell', {
+                screen.getByRole('columnheader', {
                     name: new RegExp(CUSTOM_FIELD_COLUMN_LABEL),
                 })
             ).toHaveClass('withShadow')
@@ -325,7 +325,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByRole('cell', {
+                screen.getByRole('columnheader', {
                     name: new RegExp(CUSTOM_FIELD_COLUMN_LABEL),
                 })
             ).not.toHaveClass('withShadow')

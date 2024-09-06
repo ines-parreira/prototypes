@@ -35,9 +35,9 @@ describe('<AgentsHeaderCellContent>', () => {
         const sortableColumn = AgentsTableColumn.MedianFirstResponseTime
 
         render(<AgentsHeaderCellContent column={sortableColumn} />)
-        const cell = screen.getByRole('cell')
+        const tr = screen.getByRole('columnheader')
         act(() => {
-            userEvent.click(cell)
+            userEvent.click(tr)
         })
 
         expect(sortCallback).toHaveBeenCalled()

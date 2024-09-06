@@ -4,19 +4,17 @@
     .dragIndicator {
         width: 22px;
         text-align: center;
-    }
-
-    .dragIndicatorActive {
+        color: var(--neutral-grey-4);
         &:hover {
             cursor: grab;
         }
-
         &:active {
             cursor: grabbing;
         }
     }
 
     .dragIndicatorDisabled {
+        color: var(--neutral-grey-3);
         &:hover {
             cursor: not-allowed;
         }

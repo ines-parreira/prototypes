@@ -1,25 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<HeaderCell/> should render 1`] = `
-<td
+<th
   class="wrapper foo normal"
 >
   Foo
-</td>
+</th>
 `;
 
 exports[`<HeaderCell/> should render in small size 1`] = `
-<td
+<th
   class="wrapper foo small"
 >
   Foo
-</td>
+</th>
 `;
 
 exports[`<HeaderCell/> should render in smallest size 1`] = `
-<td
+<th
   class="wrapper foo smallest"
 >
   Foo
-</td>
+</th>
 `;

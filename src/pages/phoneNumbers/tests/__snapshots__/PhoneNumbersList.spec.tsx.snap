@@ -10,8 +10,8 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
     <tr
       class="headerRow"
     >
-      <td
-        class="wrapper is-clickable normal"
+      <th
+        class="wrapper isClickable normal"
       >
         <div
           class="content"
@@ -31,9 +31,9 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             </i>
           </div>
         </div>
-      </td>
-      <td
-        class="wrapper is-clickable normal"
+      </th>
+      <th
+        class="wrapper isClickable normal"
       >
         <div
           class="content"
@@ -53,8 +53,8 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             </i>
           </div>
         </div>
-      </td>
-      <td
+      </th>
+      <th
         class="wrapper normal"
       />
     </tr>

@@ -261,7 +261,7 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
       <tr
         class="headerRow"
       >
-        <td
+        <th
           class="wrapper th-auto normal"
         >
           <div
@@ -282,8 +282,8 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
               </i>
             </div>
           </div>
-        </td>
-        <td
+        </th>
+        <th
           class="wrapper th-max-20 normal"
         >
           <div
@@ -304,8 +304,8 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
               </i>
             </div>
           </div>
-        </td>
-        <td
+        </th>
+        <th
           class="wrapper th-max-20 normal"
         >
           <div
@@ -326,8 +326,8 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
               </i>
             </div>
           </div>
-        </td>
-        <td
+        </th>
+        <th
           class="wrapper normal"
         >
           <div
@@ -348,7 +348,7 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
               </i>
             </div>
           </div>
-        </td>
+        </th>
       </tr>
     </thead>
     <tbody

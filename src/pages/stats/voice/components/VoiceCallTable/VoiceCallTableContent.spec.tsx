@@ -223,7 +223,7 @@ describe('VoiceCallTableContent', () => {
 
         await waitFor(() => {
             expect(
-                getByRole('cell', {
+                getByRole('columnheader', {
                     name: new RegExp('Activity'),
                 })
             ).toHaveClass('withShadow')
@@ -236,7 +236,7 @@ describe('VoiceCallTableContent', () => {
 
         await waitFor(() => {
             expect(
-                getByRole('cell', {
+                getByRole('columnheader', {
                     name: new RegExp('Activity'),
                 })
             ).not.toHaveClass('withShadow')
