@@ -34,6 +34,7 @@ import * as viewSelectors from 'state/views/selectors'
 import * as utils from 'utils'
 import {FilterTopbar} from 'pages/common/components/ViewTable/FilterTopbar'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
+import {useFlag} from 'common/flags'
 
 const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
 
@@ -44,6 +45,11 @@ jest.mock('common/segment')
 
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const mockUseSplitTicketViewMock = useSplitTicketView as jest.Mock
+
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
 
 const createViewWithFilters = (filters: string) => ({
     ...viewFixture,
@@ -671,5 +677,16 @@ describe('<FilterTopbar />', () => {
 
         expect(queryByText('Update view')).not.toBeInTheDocument()
         expect(queryByText('This view cannot be saved')).toBeInTheDocument()
+    })
+
+    it('should render Ticket Fields filter when FF is enabled and when in search mode', () => {
+        mockUseFlag.mockReturnValue(true)
+        const {queryByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} isSearch={true} />
+            </Provider>
+        )
+
+        expect(queryByText('Ticket Field')).toBeInTheDocument()
     })
 })

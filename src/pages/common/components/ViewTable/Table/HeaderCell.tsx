@@ -125,6 +125,14 @@ const HeaderCell = ({
 
     const isMainField = config.get('mainField') === field.get('name')
 
+    const selectableFields = useMemo(
+        () =>
+            (config.get('fields', fromJS([])) as List<any>).filter(
+                (field: Map<any, any>) => field.get('show', true) as boolean
+            ) as List<any>,
+        [config]
+    )
+
     return (
         <td>
             <div>
@@ -155,7 +163,7 @@ const HeaderCell = ({
                 (isSearchSortingEnabled || !isSearch) ? (
                     <ShowMoreFieldsDropdown
                         config={config}
-                        fields={config.get('fields', fromJS([]))}
+                        fields={selectableFields}
                         visibleFields={fields}
                         shouldStoreFieldConfig={isSearchSortingEnabled}
                     />

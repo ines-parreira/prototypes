@@ -329,6 +329,15 @@ export const defaultTicketView = {
                 },
             },
         },
+        {
+            name: ViewField.TicketField,
+            title: 'Ticket Field',
+            path: 'custom_fields',
+            filter: {
+                showInModes: ['search'],
+            },
+            show: false,
+        },
     ],
     cell: (fieldName: ViewField, item: Map<any, any>) => {
         switch (fieldName) {

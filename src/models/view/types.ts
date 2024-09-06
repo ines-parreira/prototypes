@@ -42,6 +42,7 @@ export enum ViewField {
     LastReceivedMessage = 'last_received_message',
     Closed = 'closed',
     Snooze = 'snooze',
+    TicketField = 'ticket_field',
 }
 
 export enum ViewVisibility {

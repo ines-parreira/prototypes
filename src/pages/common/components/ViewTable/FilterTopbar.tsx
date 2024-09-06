@@ -83,6 +83,8 @@ import {
 import {FetchViewItemsOptions} from 'state/views/types'
 import {fieldPath, getDefaultOperator, slugify} from 'utils'
 import {reportError} from 'utils/errors'
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import Filters from './Filters/ViewFilters'
 import css from './FilterTopbar.less'
@@ -334,11 +336,20 @@ export const FilterTopbar = ({
             await dispatch(createJob(activeView, JobType.ExportTicket, {}))
         }, [dispatch, activeView])
 
+    const isTicketFieldsViewFilterEnabled = useFlag(
+        FeatureFlagKey.FilterSearchViewsByTicketFields,
+        false
+    )
+
     const filterableFields = (config.get('fields') as List<any>)
         .filter(
             (field: Map<any, any>) =>
                 !!field.get('filter') &&
-                (field.getIn(['filter', 'show'], true) as boolean)
+                ((
+                    field.getIn(['filter', 'showInModes'], []) as string[]
+                ).includes('search')
+                    ? isSearch && isTicketFieldsViewFilterEnabled
+                    : true)
         )
         .sortBy((field: Map<any, any>) => field.get('title') as string)
 
