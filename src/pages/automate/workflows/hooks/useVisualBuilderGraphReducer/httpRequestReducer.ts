@@ -469,7 +469,7 @@ function rebuildCondition(
         if (schema[0].var && schema[0].var.includes(variable.id)) {
             const varSchema = schema[0]
             const conditionSchema = buildConditionSchemaByVariableType(
-                variable.data_type!,
+                variable.data_type,
                 varSchema.var
             )
 

@@ -317,7 +317,10 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                               ).map(([key, value]) => ({key, value}))
                             : undefined,
                     bodyContentType: bodyContentType,
-                    variables: step.settings.variables,
+                    variables: step.settings.variables.map((variable) => ({
+                        ...variable,
+                        data_type: variable.data_type ?? 'json',
+                    })),
                     ...(trigger?.kind === 'llm-prompt'
                         ? {
                               outputs: trigger.settings.outputs.filter(

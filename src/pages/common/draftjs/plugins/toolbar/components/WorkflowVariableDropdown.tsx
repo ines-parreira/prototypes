@@ -37,29 +37,54 @@ const WorkflowVariableDropdown = ({
 }: Props) => {
     const {
         workflowVariables: workflowVariablesProp = [],
-        workflowVariablesNodeTypes = [
-            'text_reply',
-            'multiple_choices',
-            'order_selection',
-            'http_request',
-            'shopper_authentication',
-            'custom_input',
-            'app',
-        ],
+        workflowVariablesDataTypes = ['string', 'number', 'date', 'boolean'],
     } = useToolbarContext()
 
+    const workflowVariables = useMemo(
+        () =>
+            workflowVariablesProp
+                .map((variable) => {
+                    if ('variables' in variable) {
+                        return {
+                            ...variable,
+                            variables: variable.variables.filter((variable) =>
+                                workflowVariablesDataTypes.includes(
+                                    variable.type
+                                )
+                            ),
+                        }
+                    }
+
+                    return variable
+                })
+                .filter((variable) => {
+                    if ('variables' in variable) {
+                        return !!variable.variables.length
+                    }
+
+                    return workflowVariablesDataTypes.includes(variable.type)
+                }),
+        [workflowVariablesProp, workflowVariablesDataTypes]
+    )
     const allVariables = useMemo(
         () =>
-            workflowVariablesProp.reduce<WorkflowVariable[]>(
-                (acc, category) => {
-                    if ('variables' in category) {
-                        return [...acc, ...category.variables]
-                    }
-                    return acc
-                },
-                []
-            ),
-        [workflowVariablesProp]
+            workflowVariables.reduce<WorkflowVariable[]>((acc, value) => {
+                if ('variables' in value) {
+                    return [
+                        ...acc,
+                        ...value.variables.filter((variable) =>
+                            workflowVariablesDataTypes.includes(variable.type)
+                        ),
+                    ]
+                }
+
+                if (workflowVariablesDataTypes.includes(value.type)) {
+                    return [...acc, value]
+                }
+
+                return acc
+            }, []),
+        [workflowVariables, workflowVariablesDataTypes]
     )
 
     const [searchQuery, setSearchQuery] = useState<string>('')
@@ -88,7 +113,7 @@ const WorkflowVariableDropdown = ({
 
             setSearchResults(searchResults)
         } else {
-            const category = workflowVariablesProp.find(
+            const category = workflowVariables.find(
                 (category) => category.name === selectedCategory?.name
             )
 
@@ -110,16 +135,6 @@ const WorkflowVariableDropdown = ({
             setSelectedCategory(null)
         }
     }, [isOpen])
-
-    const workflowVariables = useMemo(
-        () =>
-            workflowVariablesProp.filter(
-                (variable) =>
-                    variable.nodeType &&
-                    workflowVariablesNodeTypes.includes(variable.nodeType)
-            ),
-        [workflowVariablesProp, workflowVariablesNodeTypes]
-    )
 
     const filteredOptions = selectedCategory
         ? selectedCategory.variables
@@ -188,7 +203,7 @@ const WorkflowVariableDropdown = ({
                     </div>
                 )}
 
-                {options.length === 0 && searchQuery != null && (
+                {options.length === 0 && searchQuery && (
                     <div>
                         <span className={css.noVariablesMessage}>
                             No results

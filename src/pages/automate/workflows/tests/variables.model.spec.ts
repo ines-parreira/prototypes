@@ -1,6 +1,7 @@
 import {
     getWorkflowVariableListForNode,
     parseWorkflowVariable,
+    prerenderVariables,
 } from '../models/variables.model'
 import {WorkflowVariableList} from '../models/variables.types'
 import {visualBuilderGraphSimpleChoicesFixture} from './visualBuilderGraph.fixtures'
@@ -117,5 +118,29 @@ describe('getAvailableFlowVariables', () => {
                 'conditions_end1'
             )
         ).toEqual([])
+    })
+})
+
+describe('prerenderVariables()', () => {
+    it('should prerender JSON variable', () => {
+        expect(
+            prerenderVariables(
+                '{{steps_state.http_request1.content.variable1 | json}}',
+                [
+                    {
+                        name: '',
+                        nodeType: 'http_request',
+                        variables: [
+                            {
+                                name: '',
+                                value: 'steps_state.http_request1.content.variable1',
+                                nodeType: 'http_request',
+                                type: 'json',
+                            },
+                        ],
+                    },
+                ]
+            )
+        ).toEqual('{}')
     })
 })

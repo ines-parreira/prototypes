@@ -1,4 +1,8 @@
-import {transformVisualBuilderGraphIntoWfConfiguration} from '../models/visualBuilderGraph.model'
+import {
+    buildEdgeCommonProperties,
+    buildNodeCommonProperties,
+    transformVisualBuilderGraphIntoWfConfiguration,
+} from '../models/visualBuilderGraph.model'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import {visualBuilderGraphSimpleChoicesFixture} from './visualBuilderGraph.fixtures'
 
@@ -88,6 +92,121 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 expect.objectContaining({
                     from_step_id: 'file_upload1',
                     to_step_id: 'end3',
+                }),
+            ])
+        )
+    })
+
+    it('should transform http request step JSON variable', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
+            name: 'name',
+            nodes: [
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'trigger_button1',
+                    type: 'channel_trigger',
+                    data: {
+                        label: 'entrypoint',
+                        label_tkey: 'entrypoint_tkey',
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'http_request1',
+                    type: 'http_request',
+                    data: {
+                        name: '',
+                        url: 'https://example.com',
+                        method: 'GET',
+                        headers: [],
+                        variables: [
+                            {
+                                id: 'variable1',
+                                name: '',
+                                jsonpath: '$',
+                                data_type: 'json',
+                            },
+                            {
+                                id: 'variable2',
+                                name: '',
+                                jsonpath: '$.string',
+                                data_type: 'string',
+                            },
+                        ],
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'end1',
+                    type: 'end',
+                    data: {
+                        action: 'end',
+                    },
+                },
+            ],
+            edges: [
+                {
+                    ...buildEdgeCommonProperties(),
+                    id: 'trigger_button1_multiple_choices1',
+                    source: 'trigger_button1',
+                    target: 'http_request1',
+                },
+                {
+                    ...buildEdgeCommonProperties(),
+                    id: 'http_request1_end1',
+                    source: 'http_request1',
+                    target: 'end1',
+                },
+            ],
+            available_languages: [],
+            wfConfigurationOriginal: {
+                id: '1',
+                is_draft: false,
+                name: 'my workflow',
+                internal_id: '1',
+                initial_step_id: 'messages1',
+                steps: [
+                    {
+                        id: 'messages1',
+                        kind: 'message',
+                        settings: {
+                            message: {content: {html: '', text: ''}},
+                        },
+                    },
+                ],
+                transitions: [],
+                available_languages: [],
+            },
+            nodeEditingId: null,
+            choiceEventIdEditing: null,
+            branchIdsEditing: [],
+        })
+
+        expect(configuration.steps).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    id: 'http_request1',
+                    kind: 'http-request',
+                    settings: expect.objectContaining({
+                        variables: [
+                            {
+                                id: 'variable1',
+                                name: '',
+                                jsonpath: '$',
+                                data_type: null,
+                            },
+                            {
+                                id: 'variable2',
+                                name: '',
+                                jsonpath: '$.string',
+                                data_type: 'string',
+                            },
+                        ],
+                    }),
+                }),
+                expect.objectContaining({
+                    id: 'end1',
+                    kind: 'end',
                 }),
             ])
         )

@@ -4,6 +4,7 @@ export type WorkflowVariableType =
     | 'date'
     | 'boolean'
     | 'array'
+    | 'json'
 
 export type WorkflowVariableFormat = 'currency'
 

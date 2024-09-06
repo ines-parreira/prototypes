@@ -192,7 +192,6 @@ const TestRequestResult = ({
                                 path: variable.jsonpath,
                                 json,
                             }) ?? ''
-                        const dataType = variable.data_type || 'json'
 
                         return (
                             <div key={variable.id} className={css.variable}>
@@ -227,20 +226,16 @@ const TestRequestResult = ({
                                 />
                                 <SelectField
                                     showSelectedOption
-                                    value={dataType}
+                                    value={variable.data_type}
                                     onChange={(type) => {
-                                        const dataType =
-                                            type === 'json'
-                                                ? null
-                                                : (type as
-                                                      | 'string'
-                                                      | 'number'
-                                                      | 'boolean'
-                                                      | 'date')
-
                                         onChangeVariable(index, {
                                             ...variable,
-                                            data_type: dataType,
+                                            data_type: type as
+                                                | 'string'
+                                                | 'number'
+                                                | 'boolean'
+                                                | 'date'
+                                                | 'json',
                                         })
                                     }}
                                     options={[

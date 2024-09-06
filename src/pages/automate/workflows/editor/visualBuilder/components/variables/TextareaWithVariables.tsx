@@ -13,6 +13,7 @@ import {insertText} from 'utils'
 import {
     WorkflowVariable,
     WorkflowVariableList,
+    WorkflowVariableType,
 } from 'pages/automate/workflows/models/variables.types'
 
 import {toLiquidSyntax} from 'pages/automate/workflows/models/variables.model'
@@ -29,16 +30,13 @@ type Props = {
     variablePickerTooltipMessage?: string | null
 }
 
-const workflowVariablesNodeTypes: NonNullable<
-    WorkflowVariableList[number]['nodeType']
->[] = [
-    'text_reply',
-    'custom_input',
-    'multiple_choices',
-    'file_upload',
-    'order_selection',
-    'http_request',
-    'shopper_authentication',
+const workflowVariablesDataTypes: WorkflowVariableType[] = [
+    'string',
+    'number',
+    'date',
+    'boolean',
+    'array',
+    'json',
 ]
 
 const TextareaWithVariables = ({
@@ -90,6 +88,8 @@ const TextareaWithVariables = ({
                         ? 'json'
                         : variable.type === 'string'
                         ? 'json_escape'
+                        : !variable.type
+                        ? 'json'
                         : undefined,
             })
         )
@@ -150,7 +150,7 @@ const TextareaWithVariables = ({
             <div className={css.container}>
                 <ToolbarProvider
                     workflowVariables={variables}
-                    workflowVariablesNodeTypes={workflowVariablesNodeTypes}
+                    workflowVariablesDataTypes={workflowVariablesDataTypes}
                 >
                     <div
                         className={classnames(css.editor, {

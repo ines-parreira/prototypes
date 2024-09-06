@@ -477,7 +477,13 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         method: node.data.method,
                         headers,
                         body,
-                        variables: node.data.variables,
+                        variables: node.data.variables.map((variable) => ({
+                            ...variable,
+                            data_type:
+                                variable.data_type === 'json'
+                                    ? null
+                                    : variable.data_type,
+                        })),
                     },
                 }
                 c.steps.push(step)

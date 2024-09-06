@@ -138,7 +138,7 @@ export type HttpRequestNodeType = Node<
             id: string
             name: string
             jsonpath: string
-            data_type?: 'number' | 'string' | 'boolean' | 'date' | null
+            data_type: 'number' | 'string' | 'boolean' | 'date' | 'json'
         }[]
         testRequestResult?: {
             status: number

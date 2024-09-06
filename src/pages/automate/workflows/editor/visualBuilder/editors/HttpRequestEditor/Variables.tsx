@@ -38,8 +38,6 @@ const Variables = ({
     return (
         <div className={css.keyValueContainer}>
             {variables.map((variable, index) => {
-                const dataType = variable.data_type || 'json'
-
                 return (
                     <div
                         key={variable.id}
@@ -66,20 +64,16 @@ const Variables = ({
                         />
                         <SelectField
                             showSelectedOption
-                            value={dataType}
+                            value={variable.data_type}
                             onChange={(type) => {
-                                const dataType =
-                                    type === 'json'
-                                        ? null
-                                        : (type as
-                                              | 'string'
-                                              | 'number'
-                                              | 'boolean'
-                                              | 'date')
-
                                 onChange(index, {
                                     ...variable,
-                                    data_type: dataType,
+                                    data_type: type as
+                                        | 'string'
+                                        | 'number'
+                                        | 'boolean'
+                                        | 'date'
+                                        | 'json',
                                 })
                             }}
                             options={[

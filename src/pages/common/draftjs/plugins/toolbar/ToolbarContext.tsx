@@ -2,7 +2,10 @@ import React, {ComponentType, createContext, useContext} from 'react'
 import _noop from 'lodash/noop'
 import {List} from 'immutable'
 
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import {
+    WorkflowVariableList,
+    WorkflowVariableType,
+} from 'pages/automate/workflows/models/variables.types'
 import {DiscountCode} from 'models/discountCodes/types'
 import {ProductCardDetails, ShopifyIntegration} from 'models/integration/types'
 import {
@@ -47,9 +50,7 @@ export type ToolbarContextType = {
     currentShopifyIntegration?: ShopifyIntegration
     // WorkflowVariablePicker
     workflowVariables?: WorkflowVariableList
-    workflowVariablesNodeTypes?: NonNullable<
-        WorkflowVariableList[number]['nodeType']
-    >[]
+    workflowVariablesDataTypes?: WorkflowVariableType[]
 }
 
 export const ToolbarContext = createContext<ToolbarContextType>({

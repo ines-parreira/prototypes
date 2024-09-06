@@ -811,13 +811,6 @@ export const buildWorkflowVariableFromNode = (
             nodeType: 'http_request',
             name: name || 'Request name',
             variables: variables
-                .filter(
-                    (
-                        variable
-                    ): variable is Omit<typeof variable, 'data_type'> & {
-                        data_type: NonNullable<typeof variable.data_type>
-                    } => !!variable.data_type
-                )
                 .map((variable) => ({
                     name: variable.name || 'Name',
                     value: `steps_state.${node.id}.content.${variable.id}`,
@@ -1208,7 +1201,7 @@ export function validateJSONWithVariables(
     return validateJSON(prerenderVariables(string, availableVariables))
 }
 
-function prerenderVariables(
+export function prerenderVariables(
     string: string,
     availableVariables: WorkflowVariableList
 ) {
@@ -1254,6 +1247,9 @@ function prerenderVariables(
                         break
                     case 'array':
                         _set(context, props, [{test: 'test'}])
+                        break
+                    case 'json':
+                        _set(context, props, {})
                         break
                 }
             }
