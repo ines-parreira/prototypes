@@ -171,7 +171,7 @@ export function TicketSubmitButtons({setTicketStatus}: Props) {
                         }}
                         isLoading={isLoading}
                     >
-                        {text} &amp; Close
+                        {`${text} & Close`}
                     </Button>
                 ) : (
                     <ConfirmButton
@@ -186,7 +186,7 @@ export function TicketSubmitButtons({setTicketStatus}: Props) {
                         }}
                         isLoading={isLoading}
                     >
-                        {text} &amp; Close
+                        {`${text} & Close`}
                     </ConfirmButton>
                 )}
                 {canSend && (

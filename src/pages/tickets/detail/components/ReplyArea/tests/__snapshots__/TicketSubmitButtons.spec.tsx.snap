@@ -19,8 +19,7 @@ exports[`<TicketSubmitButtons /> should render buttons with a filled ticket 1`] 
       id="submit-and-close-button"
     >
       ConfirmButtonMock: 
-      Send
-       & Close
+      Send & Close
     </button>
   </div>
   <small
