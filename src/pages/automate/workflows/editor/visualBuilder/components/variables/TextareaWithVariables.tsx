@@ -88,7 +88,7 @@ const TextareaWithVariables = ({
                         ? 'json'
                         : variable.type === 'string'
                         ? 'json_escape'
-                        : !variable.type
+                        : variable.type === 'json'
                         ? 'json'
                         : undefined,
             })

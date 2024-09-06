@@ -7,7 +7,6 @@ import MutationObserver from '@sheerun/mutationobserver-shim'
 import mockMoment from 'moment'
 import Enzyme from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
-import _noop from 'lodash/noop'
 import {MomentTimezone} from 'moment-timezone'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {NavLinkProps} from 'react-router-dom'
@@ -59,17 +58,6 @@ Object.defineProperty(window.HTMLMediaElement.prototype, 'play', {
 
 // https://github.com/testing-library/react-testing-library/issues/731
 global.MutationObserver = MutationObserver
-
-// https://github.com/mui-org/material-ui/issues/15726#issuecomment-493124813
-global.document.createRange = () =>
-    ({
-        setStart: _noop,
-        setEnd: _noop,
-        commonAncestorContainer: {
-            nodeName: 'BODY',
-            ownerDocument: document,
-        },
-    } as Range)
 
 // Mock for localStorage and sessionStorage APIs
 // to be able to test portion of code which access these APIs
