@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import {within} from '@testing-library/dom'
@@ -133,21 +133,6 @@ describe('<Navbar />', () => {
         )
     })
 
-    it('should render additional item to book office hours', () => {
-        const {getByText} = render(
-            <Navbar
-                {...minProps}
-                currentHelpdeskProduct={proMonthlyHelpdeskPlan}
-                flags={{
-                    [FeatureFlagKey.OfficeHours]: true,
-                }}
-            />
-        )
-
-        userEvent.click(getByText(user.name))
-        expect(getByText(/book office hours/i)).toBeTruthy()
-    })
-
     it('should not render additional item to book office hours if FF is disabled', () => {
         const {getByText, queryByText} = render(
             <Navbar
@@ -160,7 +145,7 @@ describe('<Navbar />', () => {
         )
 
         userEvent.click(getByText(user.name))
-        expect(queryByText(/book office hours/i)).toBeFalsy()
+        expect(queryByText(/book office hours/i)).not.toBeInTheDocument()
     })
 
     it('should not render item to book office hours for trialing customers', () => {
@@ -173,37 +158,105 @@ describe('<Navbar />', () => {
         )
 
         userEvent.click(getByText(user.name))
-        expect(queryByText(/book office hours/i)).toBeFalsy()
+        expect(queryByText(/book office hours/i)).not.toBeInTheDocument()
     })
 
-    it(`should log ${SegmentEvent.MenuUserLinkClicked} event on book office hours click`, () => {
-        const {getByText} = render(
-            <Navbar
-                {...minProps}
-                currentHelpdeskProduct={proMonthlyHelpdeskPlan}
-                flags={{
-                    [FeatureFlagKey.OfficeHours]: true,
-                }}
-            />
-        )
-
-        userEvent.click(getByText(user.name))
-        userEvent.click(getByText(/book office hours/i))
-
-        expect(logEventMock).toHaveBeenLastCalledWith(
-            SegmentEvent.MenuUserLinkClicked,
+    it.each([
+        ['your profile', 'your-profile', {}, () => {}],
+        [
+            'book office hours',
+            'office-hours',
             {
-                link: 'office-hours',
-            }
-        )
-    })
+                flags: {
+                    [FeatureFlagKey.OfficeHours]: true,
+                },
+                currentHelpdeskProduct: proMonthlyHelpdeskPlan,
+            },
+            () => {},
+        ],
+        ['refer a friend & earn', 'referral-program', {}, () => {}],
+        ['log out', 'log-out', {}, () => {}],
+        [
+            'help center',
+            'helpdocs',
+            {},
+            () => {
+                userEvent.click(screen.getByText(/learn/i))
+            },
+        ],
+        [
+            'gorgias webinars',
+            'gorgiaswebinars',
+            {},
+            () => {
+                userEvent.click(screen.getByText(/learn/i))
+            },
+        ],
+        [
+            'gorgias academy',
+            'gorgiasacademy',
+            {},
+            () => {
+                userEvent.click(screen.getByText(/learn/i))
+            },
+        ],
+        [
+            'gorgias community',
+            'gorgiascommunity',
+            {},
+            () => {
+                userEvent.click(screen.getByText(/learn/i))
+            },
+        ],
+        [
+            'keyboard shortcuts',
+            'keyboard-shortcuts',
+            {},
+            () => {
+                userEvent.click(screen.getByText(/learn/i))
+            },
+        ],
+        [
+            'latest updates',
+            'latest-updates',
+            {},
+            () => {
+                userEvent.click(screen.getByText(/gorgias updates/i))
+            },
+        ],
+        [
+            'roadmap',
+            'roadmap',
+            {},
+            () => {
+                userEvent.click(screen.getByText(/gorgias updates/i))
+            },
+        ],
+        [
+            'service status',
+            'service-status',
+            {},
+            () => {
+                userEvent.click(screen.getByText(/gorgias updates/i))
+            },
+        ],
+    ])(
+        `should log ${SegmentEvent.MenuUserLinkClicked} event clicking on %s dropdown item`,
+        (text, segmentValue, props, extraActions) => {
+            render(<Navbar {...minProps} {...props} />)
 
-    it('should toggle the dropdown when clicking on the current logged user', () => {
-        const {getByText} = render(<Navbar {...minProps} />)
+            userEvent.click(screen.getByText(user.name))
+            extraActions()
+            userEvent.click(screen.getByText(new RegExp(text, 'i')))
 
-        userEvent.click(getByText(user.name))
-        expect(getByText(/your profile/i)).toBeTruthy()
-    })
+            expect(logEventMock).toHaveBeenLastCalledWith(
+                SegmentEvent.MenuUserLinkClicked,
+                {
+                    link: segmentValue,
+                }
+            )
+        }
+    )
 
     it('should fallback user name to email', () => {
         const {getAllByRole} = render(
@@ -220,7 +273,7 @@ describe('<Navbar />', () => {
 
         const {getByText} = within(getAllByRole('button')[2])
 
-        expect(getByText(user.email)).toBeTruthy()
+        expect(getByText(user.email)).toBeInTheDocument()
     })
 
     it('should render the noticeable widget when the user menu displays the updates', () => {
@@ -251,11 +304,11 @@ describe('<Navbar />', () => {
         userEvent.click(getByText(/gorgias updates/i))
         userEvent.click(getByText(user.name))
 
-        expect(queryByText(/your profile/i)).toBeFalsy()
+        expect(queryByText(/your profile/i)).not.toBeInTheDocument()
 
         userEvent.click(getByText(user.name))
 
-        expect(getByText(/your profile/i)).toBeTruthy()
+        expect(getByText(/your profile/i)).toBeInTheDocument()
     })
 
     it('should render Automate', () => {

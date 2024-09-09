@@ -816,6 +816,36 @@ export class Navbar extends Component<Props, State> {
                                         Help Center
                                     </div>
                                     <div
+                                        className={classnames(
+                                            css['dropdown-item-user-menu']
+                                        )}
+                                        onClick={() => {
+                                            logEvent(
+                                                SegmentEvent.MenuUserLinkClicked,
+                                                {
+                                                    link: 'gorgiaswebinars',
+                                                }
+                                            )
+                                            window.open(
+                                                'https://app.getcontrast.io/gorgias?utm_source=in_app&utm_medium=menu&utm_campaign=user_menu',
+                                                '_blank',
+                                                'noopener'
+                                            )
+                                            this._toggleBottomDropdown()
+                                        }}
+                                    >
+                                        <i
+                                            className={classnames(
+                                                'material-icons-outlined mr-2',
+                                                css.icon
+                                            )}
+                                            title="Gorgias Webinars"
+                                        >
+                                            subscriptions
+                                        </i>
+                                        Gorgias Webinars
+                                    </div>
+                                    <div
                                         className={
                                             css['dropdown-item-user-menu']
                                         }
