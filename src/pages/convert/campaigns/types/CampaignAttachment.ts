@@ -47,10 +47,17 @@ export type CampaignDiscountOfferAttachment = {
     }
 }
 
+export type CampaignContactFormAttachment = {
+    contentType: AttachmentEnum.ContactForm
+    name: string
+    extra: CampaignFormExtra | null | undefined
+}
+
 export type CampaignAttachment =
     | CampaignProductAttachment
     | CampaignDiscountOfferAttachment
     | CampaignProductRecommendation
+    | CampaignContactFormAttachment
 
 export const campaignAttachmentIsProduct = (
     attachment: CampaignAttachment
@@ -70,6 +77,47 @@ export const campaignAttachmentIsProductRecommendation = (
     return attachment.contentType === AttachmentEnum.ProductRecommendation
 }
 
+export type ContactFormTargetType = 'shopify' | 'gorgias'
+
+export type ContactFormSubscriberType = 'email' | 'sms'
+
+export type ContactFormTarget = {
+    type: ContactFormTargetType
+    subscriber_types: ContactFormSubscriberType[]
+    tags: string[]
+}
+
+export type ContactFormFieldType = 'email' | 'phone' | 'text'
+
+export type ContactFormFieldName =
+    | 'email'
+    | 'phone'
+    | 'first_name'
+    | 'last_name'
+
+export type ContactFormField = {
+    name: ContactFormFieldName
+    label: string
+    type: ContactFormFieldType
+    required: boolean
+}
+
+export type ContactFormOnSuccessContent = {
+    message: string
+    attachments: CampaignDiscountOfferAttachment[]
+}
+
+export type ContactFormAfterFormContent = {
+    cta: string
+    disclaimer: string
+}
+
+export type CampaignFormExtra = {
+    fields: ContactFormField[]
+    after_form_content: ContactFormAfterFormContent
+    on_success_content: ContactFormOnSuccessContent
+    targets: ContactFormTarget[]
+}
 /*
  * Types and enums below are used in the context of the editor and Chat preview components
  */

@@ -1,0 +1,52 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    @grey: var(--neutral-gray-2);
+    @darkerGrey: var(--neutral-gray-5);
+
+    .contactWizardDrawer {
+        height: 100%;
+        display: flex !important;
+        flex-direction: column;
+    }
+
+    .drawerContent {
+        background-color: white;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .wizardHeaderContainer {
+        padding: @layout-spacing-xs;
+    }
+
+    .contactFormWizardStep {
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+
+    .wizardFooterButtons {
+        display: flex;
+        gap: @layout-spacing-xs;
+        width: 100%;
+        padding: 2 * @layout-spacing-xs;
+    }
+
+    .buttonsSeparator {
+        display: flex;
+        flex-grow: 1;
+    }
+
+    .resetBtn {
+        border: 0;
+        background-color: @grey;
+        color: @darkerGrey;
+
+        :hover {
+            background-color: @grey !important;
+            box-shadow: none !important;
+            border-color: @grey !important;
+        }
+    }
+}
