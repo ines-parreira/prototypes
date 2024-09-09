@@ -1,11 +1,13 @@
 import React, {ReactNode, useCallback, useMemo} from 'react'
 import {useParams} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     CreateStoreConfigurationPayload,
     StoreConfiguration,
 } from 'models/aiAgent/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useStoreConfiguration} from '../hooks/useStoreConfiguration'
 import {useStoreConfigurationMutation} from '../hooks/useStoreConfigurationMutation'
 import AiAgentStoreConfigurationContext from './AiAgentStoreConfigurationContext'
@@ -21,10 +23,14 @@ const AiAgentStoreConfigurationProvider = ({children}: Props) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
+    const isAiAgentOnboardingWizardEnabled =
+        useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
+
     const {storeConfiguration: fetchedStoreConfiguration, isLoading} =
         useStoreConfiguration({
             shopName,
             accountDomain,
+            withWizard: !!isAiAgentOnboardingWizardEnabled,
         })
 
     const {

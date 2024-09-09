@@ -18,6 +18,7 @@ export type AccountConfigurationWithHttpIntegration = AccountConfiguration & {
 export type GetStoreConfigurationParams = {
     accountDomain: string
     storeName: string
+    withWizard?: boolean
 }
 
 export type StoreConfigurationResponse = {
@@ -48,6 +49,9 @@ export type StoreConfiguration = {
 
     dryRun: boolean
     isDraft: boolean
+
+    wizardId: number | null
+    wizard?: Wizard
 }
 
 export type CreateStoreConfigurationPayload = Pick<
@@ -60,7 +64,8 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'customToneOfVoiceGuidance'
     | 'signature'
     | 'monitoredChatIntegrations'
->
+> &
+    WizardProps
 
 export type UpsertStoreConfigurationPayload = StoreConfiguration
 
@@ -87,4 +92,24 @@ export enum AiAgentOnboardingWizardStep {
     Education = 'education',
     Personalize = 'personalize',
     Knowledge = 'knowledge',
+}
+
+export type WizardStepData = {
+    hasEducationStepEnabled: boolean | null
+    enabledChannels: ('chat' | 'email')[] | null
+    isAutoresponderTurnedOff: boolean | null
+    onCompletePathway: string | null
+}
+
+export type Wizard = {
+    id: number
+    stepName: string
+    stepData: WizardStepData
+    completedDatetime: string | null
+}
+
+export type CreateWizardPayload = Pick<Wizard, 'stepName' | 'stepData'>
+
+type WizardProps = {
+    wizard?: CreateWizardPayload
 }

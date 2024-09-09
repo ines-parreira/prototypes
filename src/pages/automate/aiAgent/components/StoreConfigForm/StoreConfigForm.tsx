@@ -260,6 +260,7 @@ export const StoreConfigForm = ({
                 await updateStoreConfiguration({
                     ...storeConfiguration,
                     ...configurationToSubmit,
+                    wizard: storeConfiguration?.wizard,
                 })
             }
 

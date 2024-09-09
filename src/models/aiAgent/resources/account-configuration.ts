@@ -73,10 +73,11 @@ export async function upsertAccountConfiguration(
 export const getStoreConfiguration = async (
     params: GetStoreConfigurationParams
 ) => {
-    const {accountDomain, storeName} = params
+    const {accountDomain, storeName, withWizard} = params
+    const queryParams = new URLSearchParams({with_wizard: String(!!withWizard)})
 
     return await apiClient.get<StoreConfigurationResponse>(
-        `/accounts/${accountDomain}/stores/${storeName}`
+        `/accounts/${accountDomain}/stores/${storeName}?${queryParams.toString()}`
     )
 }
 

@@ -29,5 +29,6 @@ export const getStoreConfigurationFixture = (
     isDraft: false,
     silentHandover: false,
     ticketSampleRate: 0.5,
+    wizardId: null,
     ...props,
 })

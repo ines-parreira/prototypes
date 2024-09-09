@@ -3,9 +3,11 @@ import {useGetStoreConfigurationPure} from 'models/aiAgent/queries'
 export const useStoreConfiguration = ({
     shopName,
     accountDomain,
+    withWizard,
 }: {
     shopName: string
     accountDomain: string
+    withWizard?: boolean
 }) => {
     const {
         isLoading: isStoreConfigurationLoading,
@@ -14,6 +16,7 @@ export const useStoreConfiguration = ({
         {
             accountDomain,
             storeName: shopName,
+            withWizard,
         },
         {retry: 1, refetchOnWindowFocus: false}
     )

@@ -59,6 +59,7 @@ const mockStoreConfiguration: StoreConfiguration = {
     dryRun: false,
     isDraft: false,
     monitoredChatIntegrations: [],
+    wizardId: null,
 }
 
 describe('AiAgentStoreConfigurationProvider', () => {

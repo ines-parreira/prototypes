@@ -70,6 +70,7 @@ const storeConfiguration: StoreConfiguration = {
     dryRun: false,
     isDraft: false,
     monitoredChatIntegrations: [],
+    wizardId: null,
 }
 
 const accountConfiguration: AccountConfiguration = {

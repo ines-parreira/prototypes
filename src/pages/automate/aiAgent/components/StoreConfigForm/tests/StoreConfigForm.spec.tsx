@@ -204,6 +204,7 @@ describe('<StoreConfigForm />', () => {
         dryRun: false,
         isDraft: false,
         monitoredChatIntegrations: [],
+        wizardId: null,
     }
 
     const initialFormValues: FormValues = {
