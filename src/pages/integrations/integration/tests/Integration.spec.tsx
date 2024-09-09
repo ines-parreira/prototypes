@@ -7,6 +7,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {IntegrationType} from 'models/integration/types'
+import {useFlag} from 'common/flags'
 
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {IntegrationDetail} from '../Integration'
@@ -34,6 +35,9 @@ jest.mock(
     '../components/email/EmailIntegrationCreate/EmailIntegrationCreate',
     () => () => <div>EmailIntegrationCreate</div>
 )
+jest.mock('../components/email/EmailIntegrationOnboarding', () => () => (
+    <div>EmailIntegrationOnboarding</div>
+))
 jest.mock(
     '../components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding',
     () => () => <div>EmailIntegrationCreateForwarding</div>
@@ -143,10 +147,15 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     ]),
 }))
 jest.mock('hooks/useAppSelector', () => jest.fn(() => 'mocked'))
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)
+mockUseFlag.mockReturnValue(false)
 
 describe('<IntegrationDetail />', () => {
     const minProps = {
@@ -439,6 +448,53 @@ describe('<IntegrationDetail />', () => {
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
+        })
+
+        describe('new onboarding', () => {
+            it('should render the new onboarding for the onboarding route', () => {
+                mockUseFlag.mockReturnValue(true)
+                const {getByText} = renderWithRouter(
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>
+                            <IntegrationDetail {...minProps} />
+                        </Provider>
+                    </QueryClientProvider>,
+                    {
+                        path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                        route: `/channels/${IntegrationType.Email}/new/${Tab.EmailOnboarding}`,
+                    }
+                )
+                expect(
+                    getByText('EmailIntegrationOnboarding')
+                ).toBeInTheDocument()
+            })
+
+            it('should render the new onboarding for the update route when integration is unverified', () => {
+                mockUseFlag.mockReturnValue(true)
+                const props = {
+                    ...minProps,
+                    integrations: fromJS({
+                        integration: {
+                            id: 1,
+                            meta: {verified: false},
+                        },
+                    }),
+                }
+                const {getByText} = renderWithRouter(
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>
+                            <IntegrationDetail {...props} />
+                        </Provider>
+                    </QueryClientProvider>,
+                    {
+                        path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                        route: `/channels/${IntegrationType.Email}/1`,
+                    }
+                )
+                expect(
+                    getByText('EmailIntegrationOnboarding')
+                ).toBeInTheDocument()
+            })
         })
     })
 

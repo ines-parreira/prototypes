@@ -1,4 +1,5 @@
 export enum Tab {
+    EmailOnboarding = 'onboarding',
     EmailForwarding = 'forwarding',
     EmailVerification = 'verification',
     EmailDomainVerification = 'dns',

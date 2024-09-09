@@ -93,6 +93,7 @@ export enum FeatureFlagKey {
     MLFeaturesKillswitch = 'ml-features-killswitch',
     MLFlowsRecommendation = 'ml-flows-recommendation',
     NewBillingInterface = 'new-billing-interface',
+    NewEmailOnboarding = 'new-email-onboarding',
     NewForwardCallsSection = 'new-forward-calls-section',
     NewPhoneNumberCustomerSidebar = 'new-phone-number-customer-sidebar',
     NewSenderSelect = 'new-sender-select',

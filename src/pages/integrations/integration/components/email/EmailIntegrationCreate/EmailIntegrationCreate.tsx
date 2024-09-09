@@ -11,12 +11,19 @@ import PageHeader from 'pages/common/components/PageHeader'
 import {GMAIL_IMPORTED_EMAILS_FOR_YEARS} from 'config'
 import {getRedirectUri} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 
-import settingsCss from '../../../../../settings/settings.less'
+import settingsCss from 'pages/settings/settings.less'
 
 import css from './EmailIntegrationCreate.less'
 
 export default function EmailIntegrationCreate() {
+    const isNewEmailOnboardingEnabled = useFlag(
+        FeatureFlagKey.NewEmailOnboarding,
+        false
+    )
+
     const gmailRedirectUri = useAppSelector(
         getRedirectUri(IntegrationType.Gmail)
     )
@@ -99,7 +106,13 @@ export default function EmailIntegrationCreate() {
 
                     <div className="divider">OR</div>
 
-                    <Link to="/app/settings/channels/email/new/custom">
+                    <Link
+                        to={
+                            isNewEmailOnboardingEnabled
+                                ? '/app/settings/channels/email/new/onboarding'
+                                : '/app/settings/channels/email/new/custom'
+                        }
+                    >
                         <Button
                             type="submit"
                             intent="secondary"

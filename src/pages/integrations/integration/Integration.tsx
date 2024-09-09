@@ -35,6 +35,8 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import {EmailProvider} from 'models/integration/constants'
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     chatInstallationStatusFetched,
@@ -103,6 +105,7 @@ import useIsQuickRepliesEnabled from './components/gorgias_chat/GorgiasChatInteg
 import {Tab} from './types'
 import useSelfServiceConfiguration from './components/gorgias_chat/hooks/useSelfServiceConfiguration'
 import {GorgiasAutomateChatIntegration} from './components/gorgias_chat/GorgiasAutomateChatIntegration'
+import EmailIntegrationOnboarding from './components/email/EmailIntegrationOnboarding'
 
 export const IntegrationDetail = ({
     actions,
@@ -137,6 +140,11 @@ export const IntegrationDetail = ({
     const isUpdate = useMemo(
         () => !!integrationId && isIntegrationId,
         [integrationId, isIntegrationId]
+    )
+
+    const isNewEmailOnboardingEnabled = useFlag(
+        FeatureFlagKey.NewEmailOnboarding,
+        false
     )
 
     const redirectUri = useMemo(
@@ -621,6 +629,17 @@ export const IntegrationDetail = ({
                 }
 
                 if (isUpdate) {
+                    if (
+                        isNewEmailOnboardingEnabled &&
+                        integration.getIn(['meta', 'verified']) === false
+                    ) {
+                        return (
+                            <EmailIntegrationOnboarding
+                                integration={integration.toJS()}
+                            />
+                        )
+                    }
+
                     if (extra === Tab.EmailForwarding) {
                         return (
                             <EmailIntegrationCreateForwarding
@@ -670,6 +689,13 @@ export const IntegrationDetail = ({
                             />
                         </EmailIntegrationLayout>
                     )
+                }
+
+                if (
+                    extra === Tab.EmailOnboarding &&
+                    isNewEmailOnboardingEnabled
+                ) {
+                    return <EmailIntegrationOnboarding />
                 }
 
                 if (extra === Tab.EmailCustom) {
