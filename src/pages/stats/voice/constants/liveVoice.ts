@@ -1,4 +1,6 @@
 export const LIVE_VOICE_PAGE_TITLE = 'Live voice'
+export const LIVE_VOICE_PAGE_TITLE_DESCRIPTION =
+    'The voice live dashboard allows to monitor the number of calls in queue, track calls currently in progress, and view the status of each agent, ensuring that customer interactions are managed efficiently and effectively.'
 
 export const LIVE_VOICE_CALLS_TITLE = 'Live calls'
 

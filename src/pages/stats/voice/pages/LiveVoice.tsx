@@ -1,5 +1,6 @@
 import React from 'react'
 import {useListLiveCallQueueVoiceCalls} from '@gorgias/api-queries'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import StatsPage from 'pages/stats/StatsPage'
 import LiveVoiceFilters from 'pages/stats/voice/components/LiveVoice/LiveVoiceFilters'
 import LiveVoiceAgentsSection from 'pages/stats/voice/components/LiveVoice/LiveVoiceAgentsSection'
@@ -8,7 +9,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 import {FilterKey} from 'models/stat/types'
 
-import {LIVE_VOICE_PAGE_TITLE} from '../constants/liveVoice'
+import {
+    LIVE_VOICE_PAGE_TITLE,
+    LIVE_VOICE_PAGE_TITLE_DESCRIPTION,
+} from '../constants/liveVoice'
 import LiveVoiceMetrics from '../components/LiveVoice/LiveVoiceMetrics'
 import css from './LiveVoice.less'
 
@@ -36,7 +40,10 @@ export default function LiveVoice() {
     )
 
     return (
-        <StatsPage title={LIVE_VOICE_PAGE_TITLE}>
+        <StatsPage
+            title={LIVE_VOICE_PAGE_TITLE}
+            description={LIVE_VOICE_PAGE_TITLE_DESCRIPTION}
+        >
             <div className={css.wrapper}>
                 <div className={css.content}>
                     <LiveVoiceFilters />
@@ -49,6 +56,7 @@ export default function LiveVoice() {
                         isLoading={isLoading}
                         voiceCalls={voiceCalls ?? []}
                     />
+                    <AnalyticsFooter useBusinessHoursTimezone />
                 </div>
                 <div className={css.agentsSection}>
                     <LiveVoiceAgentsSection

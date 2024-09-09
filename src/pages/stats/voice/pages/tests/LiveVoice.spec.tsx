@@ -2,6 +2,9 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import * as apiQueries from '@gorgias/api-queries'
 import {assumeMock} from 'utils/testing'
+import {getTimezone} from 'state/currentUser/selectors'
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import {AccountSettingBusinessHours} from 'state/currentAccount/types'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import LiveVoice from '../LiveVoice'
@@ -25,6 +28,11 @@ jest.mock(
             <div>{children}</div>
 )
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+
+jest.mock('state/currentUser/selectors')
+jest.mock('state/currentAccount/selectors')
+const getTimezoneMock = assumeMock(getTimezone)
+const getBusinessHoursSettingsMock = assumeMock(getBusinessHoursSettings)
 
 const useListLiveCallQueueVoiceCallsMock = assumeMock(
     apiQueries.useListLiveCallQueueVoiceCalls
@@ -67,6 +75,22 @@ describe('LiveVoice', () => {
         expect(getByText('LiveVoiceMetrics')).toBeInTheDocument()
         expect(getByText('LiveVoiceAgentsSection')).toBeInTheDocument()
         expect(getByText('LiveVoiceCallTable')).toBeInTheDocument()
+    })
+
+    it('should render footer with timezone related to business hours', () => {
+        const businessHoursTimezone = 'SomeBusinessHoursTimezone'
+        getTimezoneMock.mockReturnValue('SomeTimezone')
+        getBusinessHoursSettingsMock.mockReturnValue({
+            data: {timezone: businessHoursTimezone},
+        } as AccountSettingBusinessHours)
+
+        const {getByText} = renderComponent()
+
+        expect(
+            getByText(
+                'Analytics are using business hours timezone SomeBusinessHoursTimezone'
+            )
+        ).toBeInTheDocument()
     })
 
     it('should pass correct props to children components', () => {
