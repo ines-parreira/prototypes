@@ -9,7 +9,7 @@ import {
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     deduplicateCustomFields,
-    getCustomFieldValueSerializer,
+    injectDrillDownCustomFieldId,
 } from 'models/reporting/queryFactories/utils'
 import {
     ReportingFilterOperator,
@@ -76,7 +76,11 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = customFieldsTicketCountQueryFactory(
-        filters,
+        injectDrillDownCustomFieldId(
+            filters,
+            Number(customFieldId),
+            customFieldsValueStrings
+        ),
         timezone,
         customFieldId,
         sorting
@@ -99,19 +103,6 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
                     formatReportingQueryDate(customFieldPeriod.end_datetime),
                 ],
             },
-            ...(customFieldsValueStrings !== null
-                ? [
-                      {
-                          member: TicketDimension.CustomField,
-                          operator: ReportingFilterOperator.Equals,
-                          values: customFieldsValueStrings.map(
-                              getCustomFieldValueSerializer(
-                                  Number(customFieldId)
-                              )
-                          ),
-                      },
-                  ]
-                : []),
             TicketDrillDownFilter,
         ].reduce(deduplicateCustomFields, []),
         dimensions: [TicketDimension.TicketId],

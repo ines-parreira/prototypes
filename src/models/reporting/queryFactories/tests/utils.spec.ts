@@ -5,11 +5,12 @@ import {
     FilterOperatorMap,
     getCustomFieldValueSerializer,
     hasFilter,
+    injectDrillDownCustomFieldId,
     toLowerCaseString,
     withDefaultLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
-import {CustomFieldFilter} from 'models/stat/types'
+import {CustomFieldFilter, FilterKey} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 describe('utils', () => {
@@ -356,6 +357,34 @@ describe('utils', () => {
                 values: filterValue,
                 operator,
             })
+        })
+    })
+
+    describe('injectCustomFieldId', () => {
+        it('should support custom fields without logical operator', () => {
+            const filters = {
+                period: {
+                    start_datetime: '1970-01-01T00:00:00+00:00',
+                    end_datetime: '1970-01-01T00:00:00+00:00',
+                },
+                [FilterKey.CustomFields]: ['345::asd', '789::qwe'],
+            }
+            const customFieldId = 123
+            const drillDownValues = ['xyz']
+
+            const updatedFilters = injectDrillDownCustomFieldId(
+                filters,
+                customFieldId,
+                ['xyz']
+            )
+
+            expect(updatedFilters.period).toEqual(filters.period)
+            expect(updatedFilters[FilterKey.CustomFields]).toEqual([
+                ...filters[FilterKey.CustomFields],
+                ...drillDownValues.map(
+                    getCustomFieldValueSerializer(customFieldId)
+                ),
+            ])
         })
     })
 })

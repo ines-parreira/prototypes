@@ -3,7 +3,12 @@ import {CustomFieldValue} from 'models/customField/types'
 import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
-import {CustomFieldFilter, WithLogicalOperator} from 'models/stat/types'
+import {
+    CustomFieldFilter,
+    FilterKey,
+    StatsFilters,
+    WithLogicalOperator,
+} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 type OptionalFilter =
@@ -264,6 +269,72 @@ export function withDefaultCustomFieldAndLogicalOperator({
 
 export const TICKET_CUSTOM_FIELDS_API_SEPARATOR = '::'
 
+const isStringArray = (
+    customFieldsArray: string[] | CustomFieldFilter[] | undefined
+): customFieldsArray is string[] =>
+    Array.isArray(customFieldsArray) &&
+    customFieldsArray.length > 0 &&
+    typeof customFieldsArray[0] === 'string'
+
 export const getCustomFieldValueSerializer =
     (customFieldId: number) => (field: CustomFieldValue) =>
         `${customFieldId}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}${field}`
+
+const removeDuplicateInstances = (customFieldId: number) => (value: string) =>
+    !value.startsWith(`${customFieldId}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}`)
+
+const removeDuplicateFilterInstances =
+    (customFieldId: number) => (filter: CustomFieldFilter) => {
+        if (filter.operator === LogicalOperatorEnum.ONE_OF) {
+            return {
+                ...filter,
+                values: filter.values.filter(
+                    removeDuplicateInstances(customFieldId)
+                ),
+            }
+        }
+        return filter
+    }
+
+export const injectDrillDownCustomFieldId = (
+    statsFilters: StatsFilters,
+    customFieldId: number,
+    customFieldsValueStrings: string[] | null
+): StatsFilters => {
+    if (customFieldsValueStrings === null) {
+        return statsFilters
+    }
+    const {customFields} = statsFilters
+    const filters: StatsFilters = {
+        ...statsFilters,
+    }
+
+    const customFieldFilterWithPrefixedId = {
+        customFieldId,
+        operator: LogicalOperatorEnum.ONE_OF,
+        values: customFieldsValueStrings.map(
+            getCustomFieldValueSerializer(Number(customFieldId))
+        ),
+    }
+
+    if (hasFilter(customFields)) {
+        const currentValue = statsFilters[FilterKey.CustomFields]
+        if (isStringArray(currentValue)) {
+            filters[FilterKey.CustomFields] = [
+                ...currentValue.filter(removeDuplicateInstances(customFieldId)),
+                ...customFieldFilterWithPrefixedId.values,
+            ]
+        } else if (currentValue !== undefined) {
+            filters[FilterKey.CustomFields] = [
+                ...currentValue.map(
+                    removeDuplicateFilterInstances(customFieldId)
+                ),
+                customFieldFilterWithPrefixedId,
+            ]
+        }
+    } else {
+        filters[FilterKey.CustomFields] = [customFieldFilterWithPrefixedId]
+    }
+
+    return filters
+}

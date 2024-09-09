@@ -9,7 +9,7 @@ import {
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
     customFieldsTicketCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {getCustomFieldValueSerializer} from 'models/reporting/queryFactories/utils'
+import {injectDrillDownCustomFieldId} from 'models/reporting/queryFactories/utils'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {FilterKey} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
@@ -79,7 +79,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
             })
         })
 
-        it('should build the query qith sorting', () => {
+        it('should build the query with sorting', () => {
             const query = customFieldsTicketCountQueryFactory(
                 statsFilters,
                 timezone,
@@ -173,10 +173,16 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 customFieldsValueStrings,
                 statsFilters.period
             )
+            const filtersWithDrillDownCustomField =
+                injectDrillDownCustomFieldId(
+                    statsFilters,
+                    Number(customFieldId),
+                    customFieldsValueStrings
+                )
 
             expect(query).toEqual({
                 ...customFieldsTicketCountQueryFactory(
-                    statsFilters,
+                    filtersWithDrillDownCustomField,
                     timezone,
                     customFieldId
                 ),
@@ -184,17 +190,10 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 dimensions: [TicketDimension.TicketId],
                 filters: [
                     ...customFieldsTicketCountQueryFactory(
-                        statsFilters,
+                        filtersWithDrillDownCustomField,
                         timezone,
                         customFieldId
                     ).filters,
-                    {
-                        member: TicketMember.CustomField,
-                        operator: ReportingFilterOperator.Equals,
-                        values: customFieldsValueStrings.map(
-                            getCustomFieldValueSerializer(Number(customFieldId))
-                        ),
-                    },
                     TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
@@ -262,6 +261,89 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         ),
                         ...includedCustomFields,
                         ...moreIncludedCustomFields,
+                    ]),
+                })
+            )
+
+            expect(query.filters).toContainEqual(
+                expect.objectContaining({
+                    member: TicketMember.CustomFieldToExclude,
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: expect.arrayContaining(excludedCustomFields),
+                })
+            )
+        })
+
+        it('should replace a custom field filter values with a drill down value', () => {
+            const sameId = Number(customFieldId)
+            const uiFilterCustomFields = [
+                `${sameId}::Some::Value`,
+                `${sameId}::Some::OtherValue`,
+            ]
+            const oneMoreId = 10
+            const moreIncludedCustomFields = [
+                `${oneMoreId}::More::Value`,
+                `${oneMoreId}::More::OtherValue`,
+            ]
+            const anotherId = 17
+            const excludedCustomFields = [
+                `${anotherId}::Different::Value`,
+                `${anotherId}::Different::SampleValue`,
+            ]
+            const customFieldsValueStrings = [
+                'some::label',
+                'some::other::label',
+            ]
+            const filtersWithCustomFields = {
+                ...statsFilters,
+                [FilterKey.CustomFields]: [
+                    {
+                        customFieldId: sameId,
+                        member: TicketMember.CustomField,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: uiFilterCustomFields,
+                    },
+                    {
+                        customFieldId: oneMoreId,
+                        member: TicketMember.CustomField,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: moreIncludedCustomFields,
+                    },
+                    {
+                        customFieldId: anotherId,
+                        member: TicketMember.CustomField,
+                        operator: LogicalOperatorEnum.NOT_ONE_OF,
+                        values: excludedCustomFields,
+                    },
+                ],
+            }
+            expect(String(sameId)).toEqual(customFieldId)
+            const query = customFieldsTicketCountPerTicketDrillDownQueryFactory(
+                filtersWithCustomFields,
+                timezone,
+                customFieldId,
+                customFieldsValueStrings,
+                statsFilters.period
+            )
+
+            expect(query.filters).toContainEqual(
+                expect.objectContaining({
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.Equals,
+                    values: expect.arrayContaining([
+                        ...customFieldsValueStrings.map(
+                            (v) => `${customFieldId}::${v}`
+                        ),
+                        ...moreIncludedCustomFields,
+                    ]),
+                })
+            )
+            expect(query.filters).toContainEqual(
+                expect.objectContaining({
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.Equals,
+                    values: expect.not.arrayContaining([
+                        ...uiFilterCustomFields,
                     ]),
                 })
             )
