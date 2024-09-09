@@ -6,12 +6,10 @@ import userEvent from '@testing-library/user-event'
 import * as useDismissFlag from 'hooks/useDismissFlag'
 import * as useLocalStorage from 'hooks/useLocalStorage'
 
-import * as useIsConvertABVariantsEnabled from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 import * as useIsConvertScheduleCampaignEnabled from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 
 import {CampaignFooter} from '../CampaignFooter'
 
-jest.mock('pages/convert/common/hooks/useIsConvertABVariantsEnabled')
 jest.mock('pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled')
 
 jest.mock('hooks/useDismissFlag')
@@ -125,11 +123,6 @@ describe('<CampaignFooter />', () => {
 
     describe('Campaign update, user can create A/B Test', () => {
         beforeEach(() => {
-            jest.spyOn(
-                useIsConvertABVariantsEnabled,
-                'useIsConvertABVariantsEnabled'
-            ).mockImplementation(() => true)
-
             jest.spyOn(useDismissFlag, 'useDismissFlag').mockImplementation(
                 () =>
                     ({

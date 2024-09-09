@@ -3,7 +3,6 @@ import React from 'react'
 import {fromJS} from 'immutable'
 
 import {fireEvent} from '@testing-library/react'
-import * as useIsConvertABVariantsEnabled from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {CampaignPreview} from 'models/convert/campaign/types'
 import {campaign, campaignVariant} from 'fixtures/campaign'
@@ -21,8 +20,6 @@ const chatIntegration = {
 
 jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
-
-jest.mock('pages/convert/common/hooks/useIsConvertABVariantsEnabled')
 
 describe('CampaignTableStats', () => {
     const rows = [
@@ -60,11 +57,6 @@ describe('CampaignTableStats', () => {
                 end_datetime: '2020-01-31T23:59:59.999Z',
             },
         } as any)
-
-        jest.spyOn(
-            useIsConvertABVariantsEnabled,
-            'useIsConvertABVariantsEnabled'
-        ).mockImplementation(() => true)
     })
 
     it('should render CampaignTableStats with campaigns and variants', () => {

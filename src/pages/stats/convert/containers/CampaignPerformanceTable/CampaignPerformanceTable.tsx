@@ -16,7 +16,6 @@ import {ConvertMetric} from 'state/ui/stats/types'
 import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 import {SharedDimension} from 'pages/stats/convert/clients/constants'
-import {useIsConvertABVariantsEnabled} from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 import {useCampaignStatsFilters} from '../../hooks/useCampaignStatsFilters'
 import {useGetChatForStore} from '../../hooks/useGetChatForStore'
 import {useGetCurrencyForStore} from '../../hooks/useGetCurrencyForStore'
@@ -39,8 +38,6 @@ export const CampaignPerformanceTable = () => {
 
     const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
         useParams<ConvertRouteParams>()
-
-    const isABVariantEnabled = useIsConvertABVariantsEnabled()
 
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
@@ -74,14 +71,12 @@ export const CampaignPerformanceTable = () => {
     }, [campaigns, selectedCampaignIds])
 
     const hasVariants = useMemo(() => {
-        if (!isABVariantEnabled) return false
-
         if (!campaignIds) return false
 
         return campaigns.some((campaign) =>
             Boolean(campaignIds.includes(campaign.id) && campaign.variants)
         )
-    }, [campaignIds, campaigns, isABVariantEnabled])
+    }, [campaignIds, campaigns])
 
     const {isFetching, isError, data} = useGetTableStat(
         SharedDimension.campaignId,

@@ -18,7 +18,6 @@ import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignF
 
 import {ABVariantModalType} from 'pages/convert/abVariants/types/enums'
 import CreateABTestInfoModal from 'pages/convert/abVariants/components/CreateABTestInfoModal'
-import {useIsConvertABVariantsEnabled} from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 import {useIsConvertScheduleCampaignEnabled} from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
@@ -70,7 +69,6 @@ export const CampaignFooter = ({
     const {configuration} = useCampaignFormContext()
 
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
-    const isABVariantEnabled = useIsConvertABVariantsEnabled()
     const isScheduleCampaignEnabled = useIsConvertScheduleCampaignEnabled()
 
     const storageAbVariantModalKey = useMemo(() => {
@@ -187,7 +185,6 @@ export const CampaignFooter = ({
 
                     {(!isShopifyStore || !isLightCampaign) &&
                         !isCreateDisabled &&
-                        isABVariantEnabled &&
                         canCreateABVariants && (
                             <Button
                                 intent="secondary"
@@ -258,7 +255,7 @@ export const CampaignFooter = ({
                     </>
                 )}
 
-                {isABVariantEnabled && !isDismissed && (
+                {!isDismissed && (
                     <CreateABTestInfoModal
                         isOpen={isModalOpen}
                         onClose={closeModal}

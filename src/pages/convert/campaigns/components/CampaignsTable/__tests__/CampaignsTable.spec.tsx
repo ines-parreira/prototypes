@@ -10,7 +10,6 @@ import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.e
 import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
 import * as useLocalStorage from 'hooks/useLocalStorage'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import * as useIsConvertABVariantsEnabled from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
 import {createTrigger} from '../../../utils/createTrigger'
@@ -22,8 +21,6 @@ import {CampaignsTable} from '../CampaignsTable'
 
 jest.mock('hooks/useSearch')
 const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
-
-jest.mock('pages/convert/common/hooks/useIsConvertABVariantsEnabled')
 
 const CAMPAIGNS_COUNT = 19
 const ACTIVE_CAMPAIGNS_COUNT = ACTIVE_CAMPAIGNS_LIMIT + 1
@@ -87,11 +84,6 @@ describe('<CampaignsTable />', () => {
             ;(useSearch as jest.Mock).mockImplementation(() => ({}))
             useIsConvertSubscriberSpy.mockImplementation(() => true)
             useLocalStorageSpy.mockReturnValue([])
-
-            jest.spyOn(
-                useIsConvertABVariantsEnabled,
-                'useIsConvertABVariantsEnabled'
-            ).mockImplementation(() => false)
         })
 
         it('renders the `perPage` items', () => {
@@ -217,11 +209,6 @@ describe('<CampaignsTable />', () => {
             ;(useSearch as jest.Mock).mockImplementation(() => ({}))
             useIsConvertSubscriberSpy.mockImplementation(() => true)
             useLocalStorageSpy.mockReturnValue([])
-
-            jest.spyOn(
-                useIsConvertABVariantsEnabled,
-                'useIsConvertABVariantsEnabled'
-            ).mockImplementation(() => true)
         })
 
         it('renders a/b test with other', () => {

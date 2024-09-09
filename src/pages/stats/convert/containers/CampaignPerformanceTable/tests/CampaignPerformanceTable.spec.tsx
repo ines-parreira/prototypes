@@ -2,7 +2,6 @@ import React from 'react'
 
 import {fromJS} from 'immutable'
 import routerDom, {useParams} from 'react-router-dom'
-import * as useIsConvertABVariantsEnabled from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {campaign} from 'fixtures/campaign'
 import {assumeMock, renderWithStore} from 'utils/testing'
@@ -16,8 +15,6 @@ const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 
 jest.mock('pages/stats/convert/hooks/stats/useGetTableStat')
 const useGetTableStatMock = assumeMock(useGetTableStat)
-
-jest.mock('pages/convert/common/hooks/useIsConvertABVariantsEnabled')
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -47,11 +44,6 @@ describe('CampaignPerformanceTable', () => {
             isError: false,
             data: {},
         })
-
-        jest.spyOn(
-            useIsConvertABVariantsEnabled,
-            'useIsConvertABVariantsEnabled'
-        ).mockImplementation(() => true)
     })
 
     it('should render and call stats', () => {

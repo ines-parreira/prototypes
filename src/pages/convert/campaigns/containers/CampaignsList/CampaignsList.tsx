@@ -11,7 +11,6 @@ import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ConvertSetupBanner from 'pages/convert/campaigns/components/ConvertSetupBanner'
-import {useIsConvertABVariantsEnabled} from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 
 import {QuickFilters} from '../QuickFilters'
 
@@ -54,17 +53,9 @@ const CampaignsList = ({
     onUpdateCampaign,
 }: Props) => {
     const isConvertSubscriber = useIsConvertSubscriber()
-    const isConvertABVariantsEnabled = useIsConvertABVariantsEnabled()
     const {getParams, onChangeParams} = useCampaignListOptions()
 
     const {page, search, state, filters} = getParams()
-
-    const filterConfiguration = useMemo(() => {
-        if (isConvertABVariantsEnabled) {
-            return QUICK_FILTERS
-        }
-        return QUICK_FILTERS.filter((filter) => filter.id !== 'ab-tests')
-    }, [isConvertABVariantsEnabled])
 
     const statusFilterOptions = useMemo(() => {
         return [
@@ -209,7 +200,7 @@ const CampaignsList = ({
                 {isConvertSubscriber && (
                     <div className={css.quickFiltersContainer}>
                         <QuickFilters
-                            filters={filterConfiguration}
+                            filters={QUICK_FILTERS}
                             defaultActiveFilters={filters}
                             onChangeFilters={handleChangeFilters}
                         />

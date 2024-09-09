@@ -15,6 +15,7 @@ import {ConvertMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {setMetricData} from 'state/ui/stats/drillDownSlice'
+import {campaign} from 'fixtures/campaign'
 import {CampaignTableCell} from '../CampaignTableCell'
 
 jest.mock('hooks/useAppDispatch')
@@ -23,18 +24,8 @@ const useAppDispatchMock = assumeMock(useAppDispatch)
 useAppDispatchMock.mockReturnValue(dispatchMock)
 
 describe('<CampaignTableCell />', () => {
-    const campaignId = '1234'
-    const campaign = {
-        id: campaignId,
-        message_html: 'test',
-        message_text: 'test',
-        name: 'Test campaign',
-        is_light: false,
-        status: InferredCampaignStatus.Active,
-        triggers: [],
-    } as unknown as CampaignPreview
     const cell = {
-        campaign: campaign,
+        campaign: campaign as CampaignPreview,
         currency: 'USD',
         metrics: {
             conversionRate: 0.5,
@@ -124,7 +115,7 @@ describe('<CampaignTableCell />', () => {
                 cell={{
                     ...cell,
                     campaign: {
-                        ...campaign,
+                        ...(campaign as CampaignPreview),
                         is_light: true,
                     },
                 }}
@@ -168,10 +159,7 @@ describe('<CampaignTableCell />', () => {
                         key: CampaignTableKeys.Conversions,
                     } as CampaignTableColumn
                 }
-                cell={{
-                    ...cell,
-                    campaign,
-                }}
+                cell={cell}
                 data="10"
                 variantToggleState={{}}
                 setVariantToggleState={jest.fn()}
@@ -185,7 +173,7 @@ describe('<CampaignTableCell />', () => {
             setMetricData(
                 expect.objectContaining({
                     metricName: ConvertMetric.CampaignSalesCount,
-                    selectedCampaignIds: [campaignId],
+                    selectedCampaignIds: [campaign.id],
                 })
             )
         )

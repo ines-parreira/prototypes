@@ -26,7 +26,6 @@ import {
 import {campaign} from 'fixtures/campaign'
 import {channelConnection} from 'fixtures/channelConnection'
 
-import * as useIsConvertABVariantsEnabled from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {Campaign} from '../types/Campaign'
 import {CampaignsView} from '../CampaignsView'
@@ -54,7 +53,6 @@ const useParamsMock = routerDom.useParams as jest.MockedFunction<
     typeof routerDom.useParams
 >
 
-jest.mock('pages/convert/common/hooks/useIsConvertABVariantsEnabled')
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
     return jest.fn(() => <div>Mocked Banner</div>)
@@ -161,11 +159,6 @@ describe('<CampaignsView/>', () => {
                 mutate: mutateDeleteMock,
             } as unknown as ReturnType<typeof useDeleteCampaign>
         })
-
-        jest.spyOn(
-            useIsConvertABVariantsEnabled,
-            'useIsConvertABVariantsEnabled'
-        ).mockImplementation(() => false)
     })
 
     afterEach(() => {

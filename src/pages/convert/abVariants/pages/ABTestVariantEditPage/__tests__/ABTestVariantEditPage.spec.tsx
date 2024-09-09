@@ -18,7 +18,6 @@ import {campaign} from 'fixtures/campaign'
 import {useGetCampaign} from 'models/convert/campaign/queries'
 import {getLDClient} from 'utils/launchDarkly'
 
-import * as useIsConvertABVariantsEnabled from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
@@ -29,7 +28,6 @@ import {assumeMock} from 'utils/testing'
 import ABTestVariantEditPage from '../ABTestVariantEditPage'
 
 jest.mock('utils/launchDarkly')
-jest.mock('pages/convert/common/hooks/useIsConvertABVariantsEnabled')
 
 jest.mock('pages/common/hooks/useIsConvertSubscriber')
 const useIsConvertSubscriberMock = assumeMock(useIsConvertSubscriber)
@@ -83,11 +81,6 @@ describe('<ABTestVariantEditPage />', () => {
         })
 
         useIsConvertSubscriberMock.mockImplementation(() => true)
-
-        jest.spyOn(
-            useIsConvertABVariantsEnabled,
-            'useIsConvertABVariantsEnabled'
-        ).mockImplementation(() => true)
 
         mockFlags({})
 

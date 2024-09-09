@@ -19,7 +19,6 @@ import Badge, {BadgeColor} from 'gorgias-design-system/Badge/Badge'
 import {InferredCampaignStatus} from 'models/convert/campaign/types'
 
 import {OrdersCell} from 'pages/stats/convert/components/CampaignTableStats/components/OrdersCell'
-import {useIsConvertABVariantsEnabled} from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
     abVariantControlVariantUrl,
@@ -65,8 +64,6 @@ export const CampaignTableCell = ({
     variantId,
     variantName,
 }: Props) => {
-    const isConvertABVariantsEnabled = useIsConvertABVariantsEnabled()
-
     const bodyCellProps = useMemo(() => {
         return {
             isHighlighted: highlighted.includes(column.key),
@@ -145,25 +142,24 @@ export const CampaignTableCell = ({
                         [css.withShadow]: isTableScrolled,
                     })}
                 >
-                    {isConvertABVariantsEnabled &&
-                        cell.campaign.variants.length > 0 && (
-                            <IconButton
-                                fillStyle="ghost"
-                                intent="secondary"
-                                className={css.toggleBtn}
-                                onClick={() => {
-                                    setVariantToggleState((state) => ({
-                                        ...state,
-                                        [cell.campaign.id]:
-                                            !state[cell.campaign.id],
-                                    }))
-                                }}
-                            >
-                                {!variantToggleState[cell.campaign.id]
-                                    ? 'arrow_right'
-                                    : 'arrow_drop_down'}
-                            </IconButton>
-                        )}
+                    {cell.campaign.variants.length > 0 && (
+                        <IconButton
+                            fillStyle="ghost"
+                            intent="secondary"
+                            className={css.toggleBtn}
+                            onClick={() => {
+                                setVariantToggleState((state) => ({
+                                    ...state,
+                                    [cell.campaign.id]:
+                                        !state[cell.campaign.id],
+                                }))
+                            }}
+                        >
+                            {!variantToggleState[cell.campaign.id]
+                                ? 'arrow_right'
+                                : 'arrow_drop_down'}
+                        </IconButton>
+                    )}
 
                     <Link to={url}>
                         <div>{data}</div>

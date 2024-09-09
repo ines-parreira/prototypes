@@ -8,7 +8,6 @@ import {Tooltip} from '@gorgias/ui-kit'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import IconButton from 'pages/common/components/button/IconButton'
-import {useIsConvertABVariantsEnabled} from 'pages/convert/common/hooks/useIsConvertABVariantsEnabled'
 
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -86,7 +85,6 @@ export const CampaignsTable = ({
     const {sortBy, sortDirection, sortedCampaigns, changeSorting} =
         useSortedCampaigns(data)
 
-    const isConvertABVariantsEnabled = useIsConvertABVariantsEnabled()
     const [isLightModalOpen, setIsLightModalOpen] = useState(false)
     const [toggleState, setToggleState] = useState<Record<string, boolean>>({})
 
@@ -149,13 +147,11 @@ export const CampaignsTable = ({
 
     const renderRows = useCallback(
         (campaign: Campaign, index: number) => {
-            const isABGroup = isConvertABVariantsEnabled && campaign.ab_group
-
             let editLink = `/app/convert/${
                 integration.get('id') as number
             }/campaigns/${campaign.id}`
 
-            if (isABGroup) {
+            if (campaign.ab_group) {
                 editLink = abVariantsUrl(integration.get('id'), campaign.id)
             }
 
@@ -177,7 +173,7 @@ export const CampaignsTable = ({
             ) as LanguageUI
 
             const isCampaignActive = isActiveStatus(campaign.status)
-            const toggleDisabled = isABGroup
+            const toggleDisabled = campaign.ab_group
                 ? campaign.ab_group?.status === ABGroupStatus.Completed ||
                   isAtCampaignsLimit ||
                   isOverCampaignsLimit
@@ -202,7 +198,7 @@ export const CampaignsTable = ({
                                     target={toggleId}
                                     placement="bottom-start"
                                 >
-                                    {isABGroup
+                                    {campaign.ab_group
                                         ? TOOGLE_TOOPTIP_AB_TEST_COMPLETED
                                         : TOOGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS}
                                 </Tooltip>
@@ -213,27 +209,26 @@ export const CampaignsTable = ({
                             triggers={campaign.triggers}
                         >
                             <BodyCell innerClassName={css.anchorCell}>
-                                {isConvertABVariantsEnabled &&
-                                    campaign.ab_group && (
-                                        <IconButton
-                                            fillStyle="ghost"
-                                            intent="secondary"
-                                            className={css.toggleBtn}
-                                            onClick={() => {
-                                                setToggleState((state) => {
-                                                    return {
-                                                        ...state,
-                                                        [campaign.id]:
-                                                            !state[campaign.id],
-                                                    }
-                                                })
-                                            }}
-                                        >
-                                            {!toggleState[campaign.id]
-                                                ? 'arrow_right'
-                                                : 'arrow_drop_down'}
-                                        </IconButton>
-                                    )}
+                                {campaign.ab_group && (
+                                    <IconButton
+                                        fillStyle="ghost"
+                                        intent="secondary"
+                                        className={css.toggleBtn}
+                                        onClick={() => {
+                                            setToggleState((state) => {
+                                                return {
+                                                    ...state,
+                                                    [campaign.id]:
+                                                        !state[campaign.id],
+                                                }
+                                            })
+                                        }}
+                                    >
+                                        {!toggleState[campaign.id]
+                                            ? 'arrow_right'
+                                            : 'arrow_drop_down'}
+                                    </IconButton>
+                                )}
                                 <Link
                                     className={css.anchor}
                                     to={editLink}
@@ -241,15 +236,14 @@ export const CampaignsTable = ({
                                 >
                                     <div>
                                         <b>{campaign.name}</b>
-                                        {isConvertABVariantsEnabled &&
-                                            campaign.ab_group && (
-                                                <Badge
-                                                    className={css.abBadge}
-                                                    type={ColorType.LightDark}
-                                                >
-                                                    A/B Test
-                                                </Badge>
-                                            )}
+                                        {campaign.ab_group && (
+                                            <Badge
+                                                className={css.abBadge}
+                                                type={ColorType.LightDark}
+                                            >
+                                                A/B Test
+                                            </Badge>
+                                        )}
                                     </div>
                                     <LightCampaignBadge
                                         campaign={campaign}
@@ -289,7 +283,7 @@ export const CampaignsTable = ({
                             />
                         </BodyCell>
                     </TableBodyRow>
-                    {isABGroup && toggleState[campaign.id] && (
+                    {toggleState[campaign.id] && (
                         <ABGroupVariants
                             variants={campaign.variants}
                             integrationId={integration.get('id') as string}
@@ -313,7 +307,6 @@ export const CampaignsTable = ({
             onClickToggle,
             setToggleState,
             toggleState,
-            isConvertABVariantsEnabled,
         ]
     )
 
