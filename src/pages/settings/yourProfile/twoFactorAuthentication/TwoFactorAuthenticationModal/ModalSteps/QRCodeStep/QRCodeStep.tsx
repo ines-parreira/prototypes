@@ -8,6 +8,8 @@ import React, {
 import QRCode from 'qrcode'
 
 import classnames from 'classnames'
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {AuthenticatorData} from 'models/twoFactorAuthentication/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import InputField from 'pages/common/forms/input/InputField'
@@ -35,6 +37,11 @@ export default function QRCodeStep({
     setUserPassword,
     hasPassword = false,
 }: OwnProps) {
+    const requireRecentLogin = useFlag(
+        FeatureFlagKey.Setup2FAWithRecentLoginInsteadOfPassword,
+        false
+    )
+
     const [qrCodeImageUrl, setQrCodeImageUrl] = useState('')
 
     const generateQRCode = useCallback(async (text: string) => {
@@ -112,7 +119,7 @@ export default function QRCodeStep({
             >
                 Enter one-time code below
             </div>
-            {hasPassword && (
+            {hasPassword && !requireRecentLogin && (
                 <>
                     <div
                         className={classnames(

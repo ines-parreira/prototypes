@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 
+import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {authenticatorData} from 'fixtures/authenticatorData'
 import {
@@ -48,6 +49,9 @@ const createRecoveryCodesMock = createRecoveryCodes as jest.MockedFunction<
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.Mock
+
+jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+const useFlagMock = useFlag as jest.Mock
 
 const waitForModal = async (baseElement: HTMLElement) => {
     await waitFor(() =>
@@ -131,6 +135,10 @@ describe('<TwoFactorAuthenticationModal />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
+
+    beforeAll(() => {
+        useFlagMock.mockReturnValue(false)
+    })
 
     describe('render()', () => {
         it('should not render the modal', () => {

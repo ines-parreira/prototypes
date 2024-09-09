@@ -1,11 +1,20 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
+
+import {useFlag} from 'common/flags'
 import ValidateVerificationCodeStep from '../ValidateVerificationCodeStep'
+
+jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+const useFlagMock = useFlag as jest.Mock
 
 describe('<ValidateVerificationCodeStep />', () => {
     const setVerificationCodeMock = jest.fn()
     const setErrorTextMock = jest.fn()
     const setPasswordMock = jest.fn()
+
+    beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
+    })
 
     describe('render()', () => {
         it('should render the component with the verification code validation and password if user has one set', () => {
@@ -19,6 +28,26 @@ describe('<ValidateVerificationCodeStep />', () => {
             )
 
             expect(container).toMatchSnapshot()
+            expect(
+                screen.queryByText('Enter your password.')
+            ).toBeInTheDocument()
+        })
+
+        it('should not prompt for password when requiring a recent login instead', () => {
+            useFlagMock.mockReturnValue(true)
+
+            render(
+                <ValidateVerificationCodeStep
+                    setVerificationCode={setVerificationCodeMock}
+                    setErrorText={setErrorTextMock}
+                    setUserPassword={setPasswordMock}
+                    hasPassword={true}
+                />
+            )
+
+            expect(
+                screen.queryByText('Enter your password.')
+            ).not.toBeInTheDocument()
         })
 
         it('should render the component with the verification code validation and without password none set', () => {
@@ -32,6 +61,9 @@ describe('<ValidateVerificationCodeStep />', () => {
             )
 
             expect(container).toMatchSnapshot()
+            expect(
+                screen.queryByText('Enter your password.')
+            ).not.toBeInTheDocument()
         })
 
         it('should trigger actions on input change', () => {

@@ -3,6 +3,8 @@ import classnames from 'classnames'
 
 import settingsCss from 'pages/settings/settings.less'
 import InputField from 'pages/common/forms/input/InputField'
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import css from '../ModalSteps.less'
 
 type OwnProps = {
@@ -20,6 +22,11 @@ export default function ValidateVerificationCodeStep({
     setErrorText,
     isUpdate,
 }: OwnProps) {
+    const requireRecentLogin = useFlag(
+        FeatureFlagKey.Setup2FAWithRecentLoginInsteadOfPassword,
+        false
+    )
+
     return (
         <>
             <div className={css.headingBold}>
@@ -27,7 +34,7 @@ export default function ValidateVerificationCodeStep({
                 Verify your code
             </div>
 
-            {hasPassword && (
+            {hasPassword && !requireRecentLogin && (
                 <>
                     <div
                         className={classnames(

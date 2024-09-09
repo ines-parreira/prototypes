@@ -114,6 +114,7 @@ export enum FeatureFlagKey {
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
+    Setup2FAWithRecentLoginInsteadOfPassword = 'setup-2fa-with-recent-login-instead-of-password',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     ShopifyDefaultAddressPhoneMatching = 'shopify-default-address-phone-matching',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',

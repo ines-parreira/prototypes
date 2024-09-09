@@ -128,7 +128,7 @@ export default function TwoFactorAuthenticationModal({
 
                 await validateVerificationCodeResource(
                     verificationCode,
-                    userPassword,
+                    userPassword || undefined,
                     useExistingSecret
                 )
 

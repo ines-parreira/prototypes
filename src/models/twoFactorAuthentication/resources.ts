@@ -17,7 +17,7 @@ export const fetchAuthenticatorDataRenewed =
 
 export const validateVerificationCode = async (
     verificationCode: string,
-    userPassword: string,
+    userPassword?: string,
     existing = false
 ): Promise<void> => {
     const params: Record<string, any> = {}
