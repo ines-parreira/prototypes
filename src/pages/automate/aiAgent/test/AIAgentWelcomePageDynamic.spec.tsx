@@ -1,11 +1,14 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import {ShopifyIntegration} from 'models/integration/types'
 import {useHelpCentersArticleCount} from '../../common/hooks/useHelpCentersArticleCount'
 import {AIAgentWelcomePageDynamic} from '../AIAgentWelcomePageDynamic'
 import {AIAgentWelcomePageView} from '../components/AIAgentWelcomePageView/AIAgentWelcomePageView'
 import {useHasEmailToStoreConnection} from '../../common/components/TopQuestions/useHasEmailToStoreConnection'
 import useSelfServiceStoreIntegration from '../../common/hooks/useSelfServiceStoreIntegration'
+import {READ_FULFILLMENTS_PERMISSION} from '../AiAgentConfigurationView/AiAgentConfigurationView'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList', () => ({
     useHelpCenterList: jest.fn(),
@@ -29,6 +32,8 @@ jest.mock('../../common/hooks/useSelfServiceStoreIntegration', () => ({
     default: jest.fn(),
 }))
 
+jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
+
 describe('<AIAgentWelcomePageDynamic />', () => {
     const setupMocks = ({
         storeIntegrationId = 1,
@@ -38,6 +43,7 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         isHas20ArticlesLoading = false,
         hasEmailToStoreConnection = false,
         isHasEmailToStoreConnectionLoading = false,
+        isShopifyPermissionUpdated = false,
     }: {
         storeIntegrationId?: number
         helpCenters?: Array<{id: number; shop_name: string}>
@@ -48,6 +54,7 @@ describe('<AIAgentWelcomePageDynamic />', () => {
 
         hasEmailToStoreConnection?: boolean
         isHasEmailToStoreConnectionLoading?: boolean
+        isShopifyPermissionUpdated?: boolean
     } = {}) => {
         ;(useSelfServiceStoreIntegration as jest.Mock).mockReturnValue({
             id: storeIntegrationId,
@@ -62,6 +69,24 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         ;(useHasEmailToStoreConnection as jest.Mock).mockReturnValue({
             isLoading: isHasEmailToStoreConnectionLoading,
             hasEmailToStoreConnection,
+        })
+        ;(useShopifyIntegrationAndScope as jest.Mock).mockReturnValue({
+            integrationId: null,
+            needScopeUpdate: false,
+            integration: {
+                id: 1,
+                name: 'test',
+                type: 'shopify',
+                meta: {
+                    shop_name: 'test',
+                    need_scope_update: false,
+                    oauth: {
+                        scope: isShopifyPermissionUpdated
+                            ? READ_FULFILLMENTS_PERMISSION
+                            : '',
+                    },
+                },
+            } as ShopifyIntegration,
         })
     }
 
@@ -89,6 +114,15 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         },
     }
 
+    const baseOnboardingWizardProps = {
+        ...baseDynamicProps,
+        state: 'onboardingWizard',
+        shopifyPermissionUpdated: {
+            checked: false,
+            link: '/api/integrations/1/sync_permissions',
+        },
+    }
+
     const renderAndAssert = (
         props: any = baseDynamicProps,
         shopName: string = 'my-shop'
@@ -96,6 +130,26 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         render(
             <AIAgentWelcomePageDynamic
                 state="dynamic"
+                shopType="shopify"
+                shopName={shopName}
+            />
+        )
+
+        expect(
+            screen.getByText('ai-agent-welcome-page-view-component-mock')
+        ).toBeInTheDocument()
+
+        expect(AIAgentWelcomePageView).toHaveBeenCalledWith(props, {})
+        expect(AIAgentWelcomePageView).toHaveBeenCalledTimes(1)
+    }
+
+    const renderAndAssertOnboardingWizard = (
+        props: any = baseOnboardingWizardProps,
+        shopName: string = 'my-shop'
+    ) => {
+        render(
+            <AIAgentWelcomePageDynamic
+                state="onboardingWizard"
                 shopType="shopify"
                 shopName={shopName}
             />
@@ -238,5 +292,20 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         })
 
         renderAndAssert(baseLoadingProps)
+    })
+
+    it('should render the welcome page view for onboarding wizard with update shopify', () => {
+        setupMocks()
+        renderAndAssertOnboardingWizard()
+        expect(useShopifyIntegrationAndScope).toBeCalled()
+    })
+
+    it('should render the welcome page view for onboarding wizard with correct props when shopify permission updated', () => {
+        setupMocks({isShopifyPermissionUpdated: true})
+        renderAndAssertOnboardingWizard({
+            ...baseOnboardingWizardProps,
+            shopifyPermissionUpdated: {checked: true},
+        })
+        expect(useShopifyIntegrationAndScope).toBeCalled()
     })
 })

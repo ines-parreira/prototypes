@@ -14,7 +14,7 @@ import {StoreConfigForm} from '../components/StoreConfigForm/StoreConfigForm'
 import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
 import css from './AiAgentConfigurationView.less'
 
-const READ_FULFILLMENTS_PERMISSION = 'read_fulfillments'
+export const READ_FULFILLMENTS_PERMISSION = 'read_fulfillments'
 
 type AiAgentConfigurationViewProps = {
     shopName: string

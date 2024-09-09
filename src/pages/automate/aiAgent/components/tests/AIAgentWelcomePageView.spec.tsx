@@ -424,12 +424,19 @@ describe('<AIAgentWelcomePageView />', () => {
                 helpCenter20Articles={{
                     checked: true,
                 }}
+                shopifyPermissionUpdated={{
+                    checked: true,
+                }}
             />
         )
 
         assertText(
             'Prepare AI Agent to automate 60% of your email, Chat and Contact Form tickets by completing these steps:'
         )
+        assertText('Update your Shopify integration')
+        assertText('Connect an email to this store')
+        assertText('Create or import a Help Center')
+        assertText('Add 20+ articles to your Help Center')
     })
 
     it('should redirect to AiAgentOnboardingWizard page when Set up AI Agent button is clicked', () => {
@@ -451,6 +458,9 @@ describe('<AIAgentWelcomePageView />', () => {
                     checked: true,
                 }}
                 helpCenter20Articles={{
+                    checked: true,
+                }}
+                shopifyPermissionUpdated={{
                     checked: true,
                 }}
             />,
@@ -482,6 +492,9 @@ describe('<AIAgentWelcomePageView />', () => {
                     checked: true,
                 }}
                 helpCenter20Articles={{
+                    checked: true,
+                }}
+                shopifyPermissionUpdated={{
                     checked: true,
                 }}
             />

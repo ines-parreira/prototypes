@@ -38,6 +38,7 @@ type Props = AiAgentWelcomePageProps &
               emailConnected: DynamicItem
               helpCenterCreated: DynamicItem
               helpCenter20Articles: DynamicItem
+              shopifyPermissionUpdated?: DynamicItem
           }
     )
 
@@ -141,8 +142,8 @@ export const AIAgentWelcomePageView = (props: Props) => {
                                             helpCenter20Articles={
                                                 props.helpCenter20Articles
                                             }
-                                            isOnUpdateOnboardingWizard={
-                                                isOnUpdateOnboardingWizard
+                                            shopifyPermissionUpdated={
+                                                props.shopifyPermissionUpdated
                                             }
                                         />
                                     )}
@@ -246,21 +247,21 @@ type AIAgentWelcomePageViewDynamicProps = {
     emailConnected: DynamicItem
     helpCenterCreated: DynamicItem
     helpCenter20Articles: DynamicItem
-    isOnUpdateOnboardingWizard: boolean
+    shopifyPermissionUpdated?: DynamicItem
 }
 
 const AIAgentWelcomePageViewDynamic = ({
     emailConnected,
     helpCenterCreated,
     helpCenter20Articles,
-    isOnUpdateOnboardingWizard,
+    shopifyPermissionUpdated,
 }: AIAgentWelcomePageViewDynamicProps) => {
     const welcomePageDynamicList = [
-        ...(isOnUpdateOnboardingWizard
+        ...(shopifyPermissionUpdated
             ? [
                   {
                       text: 'Update your Shopify integration',
-                      checked: false,
+                      ...shopifyPermissionUpdated,
                   },
               ]
             : []),

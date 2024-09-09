@@ -2,6 +2,7 @@ import React, {useMemo} from 'react'
 
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {IntegrationType} from 'models/integration/constants'
+import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {useHelpCentersArticleCount} from '../common/hooks/useHelpCentersArticleCount'
 
 import {useHasEmailToStoreConnection} from '../common/components/TopQuestions/useHasEmailToStoreConnection'
@@ -11,6 +12,7 @@ import {
     AIAgentWelcomePageView,
     DynamicItem,
 } from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
+import {READ_FULFILLMENTS_PERMISSION} from './AiAgentConfigurationView/AiAgentConfigurationView'
 
 type Props = AiAgentWelcomePageProps & {
     state: 'dynamic' | 'onboardingWizard'
@@ -22,6 +24,30 @@ export const AIAgentWelcomePageDynamic = ({
     storeConfiguration,
     state,
 }: Props) => {
+    const isOnboardingWizard = state === 'onboardingWizard'
+
+    // Check - Shopify integration permission
+    const {integration: shopifyIntegration} =
+        useShopifyIntegrationAndScope(shopName)
+
+    const shopifyPermissionUpdated = useMemo(() => {
+        if (!isOnboardingWizard || !shopifyIntegration) return undefined
+
+        const shopifyNeedPermissions =
+            !shopifyIntegration.meta.oauth.scope.includes(
+                READ_FULFILLMENTS_PERMISSION
+            )
+
+        if (shopifyNeedPermissions) {
+            return {
+                checked: false,
+                link: `/api/integrations/${shopifyIntegration.id}/sync_permissions`,
+            }
+        }
+
+        return {checked: true}
+    }, [isOnboardingWizard, shopifyIntegration])
+
     // Check - Email integrations
     const storeIntegration = useSelfServiceStoreIntegration(
         IntegrationType.Shopify,
@@ -118,6 +144,7 @@ export const AIAgentWelcomePageDynamic = ({
                       }
             }
             helpCenter20Articles={has20Articles}
+            shopifyPermissionUpdated={shopifyPermissionUpdated}
         />
     )
 }
