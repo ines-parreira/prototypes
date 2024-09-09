@@ -428,22 +428,11 @@ export class AddLinkContainer extends Component<Props> {
                         </Button>
                     </div>
                 ) : (
-                    <>
-                        <AddUtm
-                            {...this.context}
-                            onKeyDown={this._onKeyDown}
-                            onApply={this.onAddUtmApply}
-                        />
-
-                        <Button
-                            isDisabled={!this._isValid()}
-                            onClick={this._submit}
-                        >
-                            {this.props.entityKey
-                                ? 'Update Link'
-                                : 'Insert Link'}
-                        </Button>
-                    </>
+                    <AddUtm
+                        {...this.context}
+                        onKeyDown={this._onKeyDown}
+                        onApply={this.onAddUtmApply}
+                    />
                 )}
             </Popover>
         )
