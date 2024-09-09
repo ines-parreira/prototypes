@@ -1,7 +1,7 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {fromJS} from 'immutable'
 
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
@@ -11,15 +11,23 @@ import Property from 'pages/common/components/ast/Property'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const commonProps = {
+    actions: {
+        modifyCodeAST: jest.fn(),
+        getCondition: jest.fn(),
+    },
+    config: {
+        validate: () => {},
+    },
     parent: fromJS(['body', 0, 'expression']),
+    properties: [],
     schemas: fromJS({foo: 'schemas'}),
-    theKey: {foo: 'theKey'},
     value: {value: 'foo'},
-} as unknown as ComponentProps<typeof Property>
+    rule: fromJS({}),
+}
 
-describe('Property component', () => {
+describe('<Property />', () => {
     it("should display errors if the validate method of the field's config raises any", () => {
-        const {container} = render(
+        render(
             <Provider store={mockStore({})}>
                 <Property
                     {...commonProps}
@@ -31,7 +39,9 @@ describe('Property component', () => {
             </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(
+            screen.getByText('One or multiple email addresses are invalid')
+        ).toBeInTheDocument()
     })
 
     it("should not display errors if the validate method of the field's config does not raise any", () => {
@@ -44,7 +54,7 @@ describe('Property component', () => {
             </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(container.firstChild?.textContent).toBe('')
     })
 
     it('should not display errors if there is no validate method', () => {
@@ -54,16 +64,18 @@ describe('Property component', () => {
             </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(container.firstChild?.textContent).toBe('')
     })
 
     it('should render a compact (inline) Property', () => {
-        const component = render(
+        const {container} = render(
             <Provider store={mockStore({})}>
                 <Property {...commonProps} config={{}} compact={true} />
             </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect((container.firstChild as HTMLElement).classList).toContain(
+            'd-flex'
+        )
     })
 })

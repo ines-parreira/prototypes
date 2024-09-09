@@ -25,7 +25,7 @@ type Props = {
     depth: number
 }
 
-export default function WrappedCallExpression({
+export default function CallExpression({
     actions,
     callee,
     rule,

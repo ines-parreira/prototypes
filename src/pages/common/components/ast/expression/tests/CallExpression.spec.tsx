@@ -1,14 +1,14 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-
 import {render} from '@testing-library/react'
+
 import {RuleContext} from 'pages/common/hooks/rule/RuleProvider'
 import {ObjectExpressionPropertyKey} from 'state/rules/types'
 import {RuleItemActions} from 'pages/settings/rules/types'
 import Expression from 'pages/common/components/ast/expression/Expression'
 import Statement from 'pages/common/components/ast/statements/Statement'
 import {renderWithStore} from 'utils/testing'
-import WrappedCallExpression from 'pages/common/components/ast/expression/CallExpression'
+import CallExpression from 'pages/common/components/ast/expression/CallExpression'
 
 const commonProps = {
     rule: fromJS({foo: 'rule'}),
@@ -28,7 +28,7 @@ describe('CallExpression component', () => {
         it('should not render delete widget because the expression is the only line of the test condition', () => {
             const {container: nonHoveredContainer} = renderWithStore(
                 <RuleContext.Provider value={{Expression, Statement}}>
-                    <WrappedCallExpression
+                    <CallExpression
                         {...commonProps}
                         parent={fromJS(['body', 0, 'test'])}
                         callee={callee}
@@ -41,7 +41,7 @@ describe('CallExpression component', () => {
 
             const {container: hoveredContainer} = renderWithStore(
                 <RuleContext.Provider value={{Expression, Statement}}>
-                    <WrappedCallExpression
+                    <CallExpression
                         {...commonProps}
                         parent={fromJS(['body', 0, 'test'])}
                         callee={callee}
@@ -59,7 +59,7 @@ describe('CallExpression component', () => {
             () => {
                 const {container} = renderWithStore(
                     <RuleContext.Provider value={{Expression, Statement}}>
-                        <WrappedCallExpression
+                        <CallExpression
                             {...commonProps}
                             parent={fromJS(['body', 0, 'test', 'left'])}
                             callee={callee}
@@ -78,7 +78,7 @@ describe('CallExpression component', () => {
             () => {
                 const {container} = renderWithStore(
                     <RuleContext.Provider value={{Expression, Statement}}>
-                        <WrappedCallExpression
+                        <CallExpression
                             {...commonProps}
                             parent={fromJS(['body', 0, 'test', 'left'])}
                             callee={callee}
@@ -101,7 +101,7 @@ describe('CallExpression component', () => {
         it('should render', () => {
             const {container} = render(
                 <RuleContext.Provider value={{Expression, Statement}}>
-                    <WrappedCallExpression
+                    <CallExpression
                         {...commonProps}
                         parent={fromJS(['body', 0, 'expression'])}
                         callee={callee}

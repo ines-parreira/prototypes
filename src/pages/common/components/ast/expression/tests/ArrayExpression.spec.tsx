@@ -1,12 +1,12 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {RuleItemActions} from 'pages/settings/rules/types'
+
 import ArrayExpression from 'pages/common/components/ast/expression/ArrayExpression'
+import {RuleItemActions} from 'pages/settings/rules/types'
 
 const mockStore = configureMockStore([thunk])
 

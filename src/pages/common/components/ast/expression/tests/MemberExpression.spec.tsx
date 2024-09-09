@@ -2,7 +2,7 @@ import {render, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 
-import {rule} from '../../../../../../fixtures/rule'
+import {rule} from 'fixtures/rule'
 import {MemberExpressionContainer} from '../MemberExpression'
 
 describe('<MemberExpression/>', () => {

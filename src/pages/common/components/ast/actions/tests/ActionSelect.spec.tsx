@@ -1,9 +1,10 @@
+import {fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {fromJS} from 'immutable'
 
-import {render, screen} from '@testing-library/react'
 import ActionSelect from '../ActionSelect'
+import {actionsConfig} from '../config'
 
 const commonProps = {
     actions: {
@@ -11,38 +12,81 @@ const commonProps = {
         getCondition: jest.fn(),
     },
     parent: fromJS(['body', 0, 'expression']),
-    value: 'addTags',
+    value: '',
+    rule: fromJS({type: 'user'}),
 }
 
-const nonSystemRule = fromJS({type: 'user'})
 const systemRule = fromJS({type: 'system'})
 
-describe('ActionSelect component', () => {
-    it('should render all non-system actions for non-system rules', () => {
-        const {container} = render(
-            <ActionSelect {...commonProps} rule={nonSystemRule} />
-        )
+describe('<ActionSelect />', () => {
+    it('should render value when there is no matching config', () => {
+        const value = 'value'
+        render(<ActionSelect {...commonProps} value={value} />)
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(
+            screen.getByRole('button', {
+                name: value,
+            })
+        ).toBeInTheDocument()
+    })
+
+    it('should render `Select action` when value is empty', () => {
+        render(<ActionSelect {...commonProps} />)
+
+        expect(
+            screen.getByRole('button', {
+                name: 'Select action',
+            })
+        ).toBeInTheDocument()
+    })
+
+    it('should render action in dropdown toggle', () => {
+        render(<ActionSelect {...commonProps} value="addTags" />)
+
+        expect(
+            screen.getByRole('button', {
+                name: 'Add tags',
+            })
+        ).toBeInTheDocument()
+    })
+
+    it('should render all non-system actions for non-system rules', () => {
+        render(<ActionSelect {...commonProps} />)
+
+        fireEvent.click(screen.getByText('Select action'))
+        Object.values(actionsConfig).filter((config) => {
+            if (config.type !== 'system') {
+                expect(
+                    screen.getByRole('menuitem', {
+                        name: config.name,
+                    })
+                ).toBeInTheDocument()
+            }
+        })
     })
 
     it('should render all actions for system rules', () => {
-        const {container} = render(
-            <ActionSelect {...commonProps} rule={systemRule} />
-        )
+        render(<ActionSelect {...commonProps} rule={systemRule} />)
 
-        expect(container.firstChild).toMatchSnapshot()
+        fireEvent.click(screen.getByText('Select action'))
+        Object.values(actionsConfig).filter((config) => {
+            expect(
+                screen.getByRole('menuitem', {
+                    name: config.name,
+                })
+            ).toBeInTheDocument()
+        })
     })
 
     it('should call actions.modifyCodeAST on click', () => {
-        render(<ActionSelect {...commonProps} rule={nonSystemRule} />)
+        render(<ActionSelect {...commonProps} value="addTags" />)
 
         userEvent.click(screen.getByRole('button'))
         userEvent.click(screen.getByRole('menuitem', {name: 'Add tags'}))
 
         expect(commonProps.actions.modifyCodeAST).toHaveBeenCalledWith(
             commonProps.parent,
-            commonProps.value,
+            'addTags',
             'UPDATE'
         )
     })

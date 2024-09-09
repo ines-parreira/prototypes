@@ -57,7 +57,6 @@ export default class ObjectExpression extends React.Component<Props> {
                         {...propsToPass}
                         key={idx}
                         value={property.value}
-                        theKey={property.key}
                         leftsiblings={leftsiblings2 as List<any>}
                         parent={parentProperty}
                         config={argConfig}
