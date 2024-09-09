@@ -35,6 +35,8 @@ type Props = {
     additionalPickerClassName?: string
 }
 
+export type DatePickerProps = Props & Partial<DateRangeProps>
+
 export const DatePicker = ({
     children,
     onSubmit,
@@ -60,7 +62,7 @@ export const DatePicker = ({
     rangeDatesInFooter = false,
     shouldShowMonthAndYearDropdowns = true,
     additionalPickerClassName,
-}: Props & Partial<DateRangeProps>) => {
+}: DatePickerProps) => {
     const datePickerRef = useRef<DateRangePicker>(null)
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
     const [tooltipTarget, setTooltipTarget] = useState<HTMLElement | null>(null)

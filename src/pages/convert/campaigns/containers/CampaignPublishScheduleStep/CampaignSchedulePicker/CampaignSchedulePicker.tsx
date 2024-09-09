@@ -6,7 +6,7 @@ import {formatDatetime} from 'utils'
 
 import InputField from 'pages/common/forms/input/InputField'
 import IconInput from 'pages/common/forms/input/IconInput'
-import DatePicker from 'pages/common/forms/DatePicker'
+import DatePicker, {DatePickerProps} from 'pages/common/forms/DatePicker'
 
 import css from './CampaignSchedulePicker.less'
 
@@ -34,22 +34,64 @@ const CampaignSchedulePicker: React.FC<Props> = ({
         } as Record<string, any>)
     }
 
+    const defaultDatePickerProps: Partial<DatePickerProps> = {
+        initialSettings: {
+            timePicker: false,
+            singleDatePicker: true,
+            showDropdowns: false,
+            opens: 'right',
+            minDate: moment(),
+            startDate: moment(scheduleConfiguration.startDate),
+        },
+        showRangesLabel: false,
+        shouldShowMonthAndYearDropdowns: false,
+        rangeDatesInFooter: false,
+        unavailableDateMessage: 'You can select future dates',
+    }
+
+    const endDatePickerProps: Partial<DatePickerProps> = {
+        ...defaultDatePickerProps,
+        initialSettings: {
+            ...defaultDatePickerProps.initialSettings,
+            minDate: scheduleConfiguration.startDate ?? null,
+            startDate: moment(
+                scheduleConfiguration.endDate || scheduleConfiguration.startDate
+            ),
+        },
+    }
+
     return (
         <>
             <div className={css.calendarWrapper}>
                 <div className={css.inputWrapper}>
-                    <InputField
-                        label="From"
-                        name="from"
-                        value={formatDatetime(
-                            scheduleConfiguration.startDate,
-                            dateLabel
-                        ).toString()}
-                        onFocus={() => setIsCalendarOpen(true)}
-                        prefix={<IconInput icon="calendar_today" />}
-                    />
+                    <DatePicker
+                        {...defaultDatePickerProps}
+                        onSubmit={(start) => {
+                            onChange({
+                                ...scheduleConfiguration,
+                                startDate: start,
+                            })
+                        }}
+                    >
+                        <div>
+                            <InputField
+                                label="From"
+                                name="from"
+                                value={formatDatetime(
+                                    scheduleConfiguration.startDate,
+                                    dateLabel
+                                ).toString()}
+                                prefix={<IconInput icon="calendar_today" />}
+                            />
+                        </div>
+                    </DatePicker>
                 </div>
                 <div className={css.inputWrapper}>
+                    {/* It has a different structure, because we have a cancel
+                    button for the endDate input, and if we would added this
+                    input as a children element to the date selector, 
+                    it would not work properly - it would trigger the date selector
+                    when you click cancel */}
                     <InputField
                         label="To"
                         name="to"
@@ -78,30 +120,20 @@ const CampaignSchedulePicker: React.FC<Props> = ({
                             set.
                         </span>
                     )}
+                    <DatePicker
+                        key={scheduleConfiguration.startDate}
+                        {...endDatePickerProps}
+                        isOpen={isCalendarOpen}
+                        onSubmit={(start, end) => {
+                            onChange({
+                                ...scheduleConfiguration,
+                                endDate: end,
+                            })
+                        }}
+                        toggle={() => setIsCalendarOpen((s) => !s)}
+                    ></DatePicker>
                 </div>
             </div>
-            <DatePicker
-                isOpen={isCalendarOpen}
-                initialSettings={{
-                    timePicker: false,
-                    singleDatePicker: false,
-                    showDropdowns: false,
-                    opens: 'right',
-                    minDate: moment(),
-                }}
-                showRangesLabel={false}
-                shouldShowMonthAndYearDropdowns={false}
-                rangeDatesInFooter={true}
-                onSubmit={(start, end) => {
-                    onChange({
-                        ...scheduleConfiguration,
-                        startDate: start,
-                        endDate: end,
-                    })
-                }}
-                toggle={() => setIsCalendarOpen((s) => !s)}
-                unavailableDateMessage="You can select future dates"
-            ></DatePicker>
         </>
     )
 }
