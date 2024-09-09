@@ -185,13 +185,11 @@ const TestRequestResult = ({
                         </div>
                     </div>
                     {variables.map((variable, index) => {
-                        const value =
-                            JSONPath({
-                                wrap: false,
-                                preventEval: true,
-                                path: variable.jsonpath,
-                                json,
-                            }) ?? ''
+                        const rawValue: unknown[] = JSONPath({
+                            path: variable.jsonpath,
+                            json,
+                        })
+                        const value = rawValue[0]
 
                         return (
                             <div key={variable.id} className={css.variable}>
