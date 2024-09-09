@@ -3,6 +3,7 @@ import {useSubmitPlaygroundTicket} from 'models/aiAgent/queries'
 import {usePlaygroundMessages} from '../usePlaygroundMessages'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'
+import {PlaygroundChannels} from '../../components/PlaygroundChat/PlaygroundChat.types'
 
 jest.mock('models/aiAgent/queries', () => ({
     useSubmitPlaygroundTicket: jest.fn(),
@@ -14,6 +15,7 @@ const defaultParams = {
     accountId: 1,
     httpIntegrationId: 1,
     currentUserFirstName: 'Acme',
+    channel: 'chat' as const,
 }
 
 const mockedUseSubmitPlaygroundTicket = jest.mocked(useSubmitPlaygroundTicket)
@@ -37,7 +39,7 @@ describe('usePlaygroundMessages hook', () => {
         expect(result.current.messages[0]).toMatchInlineSnapshot(`
             {
               "createdDatetime": "2020-01-01T00:00:00.000Z",
-              "message": "Hi Acme!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question.",
+              "message": "Hi Acme<br/><br/>Welcome to your AI Agent test area.<br/><br/>You can use this to send messages to AI Agent in the same way your customers do and test how it responds. If you want to improve the response, you can edit your resources and re-test your question.",
               "sender": "AI Agent",
               "type": "MESSAGE",
             }
@@ -102,5 +104,20 @@ describe('usePlaygroundMessages hook', () => {
                 expect(e.message).toBe('No email integration')
             }
         }
+    })
+
+    it('should change initial message when channel changed', () => {
+        const {result, rerender} = renderHook(
+            ({channel}: {channel: PlaygroundChannels}) =>
+                usePlaygroundMessages({...defaultParams, channel}),
+            {initialProps: {channel: 'chat'}}
+        )
+        expect(result.current.messages[0].message).toMatchInlineSnapshot(
+            `"Hi Acme<br/><br/>Welcome to your AI Agent test area.<br/><br/>You can use this to send messages to AI Agent in the same way your customers do and test how it responds. If you want to improve the response, you can edit your resources and re-test your question."`
+        )
+        rerender({channel: 'email'})
+        expect(result.current.messages[0].message).toMatchInlineSnapshot(
+            `"Hi Acme!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question."`
+        )
     })
 })

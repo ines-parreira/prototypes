@@ -4,3 +4,5 @@ export type PlaygroundFormValues = {
     customerEmail?: string
     customerName?: string
 }
+
+export type PlaygroundChannels = 'chat' | 'email'

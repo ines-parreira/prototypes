@@ -59,7 +59,7 @@ export const PlaygroundCustomerSelection = ({
     }, [customerEmail])
 
     return (
-        <>
+        <div className={css.container}>
             <SelectField
                 fullWidth
                 showSelectedOption
@@ -77,6 +77,6 @@ export const PlaygroundCustomerSelection = ({
                     isDisabled={isDisabled}
                 />
             )}
-        </>
+        </div>
     )
 }

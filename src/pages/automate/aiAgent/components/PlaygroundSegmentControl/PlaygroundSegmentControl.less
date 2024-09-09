@@ -1,0 +1,12 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: inline-flex;
+        gap: 4px;
+        padding: @layout-spacing-xxs;
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: @layout-spacing-xxs;
+        margin-left: -11px; // left padding 16px - 11px = 5px
+    }
+}

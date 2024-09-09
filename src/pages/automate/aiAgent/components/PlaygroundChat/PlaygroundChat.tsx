@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 
 import {
     AccountConfigurationWithHttpIntegration,
@@ -14,6 +14,7 @@ import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
 import TicketEvent from '../TicketEvent/TicketEvent'
 
 import css from './PlaygroundChat.less'
+import {PlaygroundChannels} from './PlaygroundChat.types'
 
 type Props = {
     storeData: StoreConfiguration
@@ -27,6 +28,7 @@ export const PlaygroundChat = ({
     currentUserFirstName,
 }: Props) => {
     const messageContainerRef = useRef<HTMLDivElement>(null)
+    const [channel, setChannel] = useState<PlaygroundChannels>('email')
 
     const {messages, onMessageSend, onNewConversation, isMessageSending} =
         usePlaygroundMessages({
@@ -35,6 +37,7 @@ export const PlaygroundChat = ({
             gorgiasDomain: accountData.gorgiasDomain,
             accountId: accountData.accountId,
             currentUserFirstName,
+            channel,
         })
 
     const {
@@ -63,6 +66,10 @@ export const PlaygroundChat = ({
         void onMessageSend(formValues)
 
         onFormValuesChange('message', '')
+    }
+
+    const onChannelChange = (channel: PlaygroundChannels) => {
+        setChannel(channel)
     }
 
     useEffect(() => {
@@ -108,6 +115,8 @@ export const PlaygroundChat = ({
                     isMessageSending={isMessageSending}
                     onSendMessage={onSendMessage}
                     onNewConversation={handleNewConversation}
+                    onChannelChange={onChannelChange}
+                    channel={channel}
                 />
             </div>
         </div>

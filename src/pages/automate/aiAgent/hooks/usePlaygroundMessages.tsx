@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import axios from 'axios'
 import {useSubmitPlaygroundTicket} from 'models/aiAgent/queries'
 import {reportError} from 'utils/errors'
@@ -15,7 +15,10 @@ import {
     PlaygroundGenericErrorMessage,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
 import {CustomerHttpIntegrationDataMock} from '../constants'
-import {PlaygroundFormValues} from '../components/PlaygroundChat/PlaygroundChat.types'
+import {
+    PlaygroundChannels,
+    PlaygroundFormValues,
+} from '../components/PlaygroundChat/PlaygroundChat.types'
 
 const mapFormValuesToMessage = (
     formValues: PlaygroundFormValues
@@ -46,35 +49,55 @@ const shouldAiAgentResponseDisplay = (
     )
 }
 
+const getInitialMessage = (
+    channel: PlaygroundChannels,
+    currentUserFirstName?: string
+) => {
+    switch (channel) {
+        case 'chat':
+            return `Hi${
+                currentUserFirstName ? ` ${currentUserFirstName}` : ''
+            }<br/><br/>Welcome to your AI Agent test area.<br/><br/>You can use this to send messages to AI Agent in the same way your customers do and test how it responds. If you want to improve the response, you can edit your resources and re-test your question.`
+        default:
+            return `Hi${
+                currentUserFirstName ? ` ${currentUserFirstName}` : ''
+            }!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question.`
+    }
+}
+
 export const usePlaygroundMessages = ({
     storeData,
     gorgiasDomain,
     accountId,
     httpIntegrationId,
     currentUserFirstName,
+    channel,
 }: {
     storeData: StoreConfiguration
     gorgiasDomain: string
     accountId: number
     httpIntegrationId: number
     currentUserFirstName?: string
+    channel: PlaygroundChannels
 }) => {
     const initialMessages: PlaygroundMessage[] = useMemo(
         () => [
             {
                 sender: AI_AGENT_SENDER,
                 type: MessageType.MESSAGE,
-                message: `Hi${
-                    currentUserFirstName ? ` ${currentUserFirstName}` : ''
-                }!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question.`,
+                message: getInitialMessage(channel, currentUserFirstName),
                 createdDatetime: new Date().toISOString(),
             },
         ],
-        [currentUserFirstName]
+        [channel, currentUserFirstName]
     )
 
     const [messages, setMessages] =
         useState<PlaygroundMessage[]>(initialMessages)
+
+    useEffect(() => {
+        setMessages(initialMessages)
+    }, [initialMessages])
 
     // We don't care what is in this object we just want to resend it to the AI Agent
     const actionSerializedStateRef = useRef<unknown>()

@@ -1,13 +1,24 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
+    .container {
+        flex: 1;
+    }
+
     .customerSearch {
         margin-top: @layout-spacing-xs;
     }
 
     .senderSelect {
+        height: 34px;
+
         > div {
             border: 0;
+            height: 100%;
+
+            & span {
+                height: auto;
+            }
         }
     }
 }

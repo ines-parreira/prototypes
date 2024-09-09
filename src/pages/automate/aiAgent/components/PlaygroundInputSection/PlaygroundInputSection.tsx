@@ -2,11 +2,17 @@ import React, {ReactNode, useCallback} from 'react'
 
 import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {PlaygroundEditor} from '../PlaygroundEditor/PlaygroundEditor'
-import {PlaygroundFormValues} from '../PlaygroundChat/PlaygroundChat.types'
+import {
+    PlaygroundChannels,
+    PlaygroundFormValues,
+} from '../PlaygroundChat/PlaygroundChat.types'
 import {PlaygroundCustomerSelection} from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
+import {PlaygroundSegmentControl} from '../PlaygroundSegmentControl/PlaygroundSegmentControl'
 import css from './PlaygroundInputSection.less'
 
 type Props = {
@@ -21,6 +27,8 @@ type Props = {
     onSendMessage: () => void
     onNewConversation: () => void
     isMessageSending: boolean
+    onChannelChange: (channel: PlaygroundChannels) => void
+    channel: PlaygroundChannels
 }
 export const PlaygroundInputSection = ({
     formValues,
@@ -31,7 +39,11 @@ export const PlaygroundInputSection = ({
     onSendMessage,
     onNewConversation,
     isMessageSending,
+    onChannelChange,
+    channel,
 }: Props) => {
+    const isTestModeInChatEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentChatTestMode]
     const handleMessageChange = (message: string) => {
         onFormValuesChange('message', message)
     }
@@ -59,26 +71,49 @@ export const PlaygroundInputSection = ({
                     [css.disabled]: !isInitialMessage,
                 })}
             >
-                <PlaygroundCustomerSelection
-                    customerEmail={customerEmail}
-                    onCustomerEmailChange={handleCustomerEmailChange}
-                    isDisabled={!isInitialMessage}
-                />
+                {isTestModeInChatEnabled ? (
+                    <div className={css.topSection}>
+                        <PlaygroundSegmentControl
+                            selectedChannel={channel}
+                            onChannelChange={onChannelChange}
+                            isDisabled={!isInitialMessage}
+                        />
+                        {channel === 'email' && (
+                            <PlaygroundCustomerSelection
+                                customerEmail={customerEmail}
+                                onCustomerEmailChange={
+                                    handleCustomerEmailChange
+                                }
+                                isDisabled={!isInitialMessage}
+                            />
+                        )}
+                    </div>
+                ) : (
+                    <PlaygroundCustomerSelection
+                        customerEmail={customerEmail}
+                        onCustomerEmailChange={handleCustomerEmailChange}
+                        isDisabled={!isInitialMessage}
+                    />
+                )}
             </div>
-            <div
-                className={classnames(css.section, {
-                    [css.disabled]: !isInitialMessage,
-                })}
-            >
-                <TextInput
-                    className={css.subjectInput}
-                    value={formValues.subject}
-                    onChange={handleSubjectChange}
-                    maxLength={135}
-                    prefix={<span className="body-semibold">Subject: </span>}
-                    isDisabled={!isInitialMessage}
-                />
-            </div>
+            {channel === 'email' && (
+                <div
+                    className={classnames(css.section, {
+                        [css.disabled]: !isInitialMessage,
+                    })}
+                >
+                    <TextInput
+                        className={css.subjectInput}
+                        value={formValues.subject}
+                        onChange={handleSubjectChange}
+                        maxLength={135}
+                        prefix={
+                            <span className="body-semibold">Subject: </span>
+                        }
+                        isDisabled={!isInitialMessage}
+                    />
+                </div>
+            )}
             <div className={classnames(css.section, css.editor)}>
                 <PlaygroundEditor
                     value={formValues.message}
