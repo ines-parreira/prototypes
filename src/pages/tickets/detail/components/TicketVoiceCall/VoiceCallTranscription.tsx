@@ -1,0 +1,63 @@
+import React from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {
+    VoiceCallRecording,
+    VoiceCallRecordingType,
+    VoiceCallRecordingTranscriptionStatus,
+} from 'models/voiceCall/types'
+import {FeatureFlagKey} from 'config/featureFlags'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+
+type Props = {
+    audio: VoiceCallRecording
+    type: VoiceCallRecordingType
+}
+
+export default function VoiceCallTranscription({audio, type}: Props) {
+    const useCallRecordings =
+        !!useFlags()[FeatureFlagKey.RecordingTranscriptions]
+
+    if (!useCallRecordings || !!audio.deleted_datetime || !!audio.error_code) {
+        return <></>
+    }
+
+    const entity =
+        type === VoiceCallRecordingType.Recording ? 'call' : 'voicemail'
+
+    switch (audio.transcription_status) {
+        case VoiceCallRecordingTranscriptionStatus.Completed:
+            return <span>completed transcription</span>
+        case VoiceCallRecordingTranscriptionStatus.Requested:
+            return (
+                <Alert icon type={AlertType.Loading}>
+                    {`We're currently processing the audio to create an accurate
+                    transcription of the ${entity}. This may take a few
+                    moments.`}
+                </Alert>
+            )
+        case VoiceCallRecordingTranscriptionStatus.Failed:
+            return (
+                <Alert icon type={AlertType.Error}>
+                    {`Unable to process ${entity} transcription.`}
+                </Alert>
+            )
+        case VoiceCallRecordingTranscriptionStatus.RecordingTooLong:
+            return (
+                <Alert icon type={AlertType.Warning}>
+                    {`We only support ${entity}s up to 45 minutes in length. This
+                    ${entity} exceeds that duration, so we are unable to
+                    transcribe.`}
+                </Alert>
+            )
+        case VoiceCallRecordingTranscriptionStatus.RecordingTooShort:
+            return (
+                <Alert icon type={AlertType.Warning}>
+                    {`We do not support ${entity}s shorter than 20 seconds. This
+                    ${entity} falls below our minimum supported duration, so we
+                    are unable to transcribe.`}
+                </Alert>
+            )
+        default:
+            return <></>
+    }
+}

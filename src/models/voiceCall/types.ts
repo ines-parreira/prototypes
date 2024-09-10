@@ -57,6 +57,14 @@ export enum VoiceCallRecordingType {
     Voicemail = 'voicemail',
 }
 
+export enum VoiceCallRecordingTranscriptionStatus {
+    Requested = 'requested',
+    Completed = 'completed',
+    Failed = 'failed',
+    RecordingTooShort = 'recording_too_short',
+    RecordingTooLong = 'recording_too_long',
+}
+
 export enum VoiceCallRecordingErrorCode {
     RECORDING_IS_PRIVATE = 'RECORDING_IS_PRIVATE',
 }
@@ -72,6 +80,7 @@ export type VoiceCallRecording = {
     deleted_datetime: string | null
     deleted_by_user_id: number | null
     error_code: VoiceCallRecordingErrorCode | null
+    transcription_status?: string | null
 }
 
 export type VoiceCallEvent = {

@@ -5,6 +5,7 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import VoiceCallAudio from './VoiceCallAudio'
 
 import css from './TicketVoiceCallContainer.less'
+import VoiceCallTranscription from './VoiceCallTranscription'
 
 type Props = {
     voiceCall: VoiceCall
@@ -43,12 +44,14 @@ export default function TicketVoiceCallAudios({type, voiceCall}: Props) {
     return (
         <div className={css.recordings}>
             {audios.map((audio) => (
-                <VoiceCallAudio
-                    audio={audio}
-                    type={type}
-                    voiceCall={voiceCall}
-                    key={audio.id}
-                />
+                <div className={css.recording} key={audio.id}>
+                    <VoiceCallAudio
+                        audio={audio}
+                        type={type}
+                        voiceCall={voiceCall}
+                    />
+                    <VoiceCallTranscription audio={audio} type={type} />
+                </div>
             ))}
         </div>
     )
