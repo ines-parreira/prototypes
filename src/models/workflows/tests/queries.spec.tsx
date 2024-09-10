@@ -10,6 +10,9 @@ import {
     useGetActionsApp,
     useListActionsApps,
     useUpsertActionsApp,
+    useGetConfigurationExecutions,
+    useGetConfigurationExecution,
+    useGetConfigurationExecutionLogs,
 } from '../queries'
 
 const mockedServer = new MockAdapter(axios)
@@ -111,6 +114,109 @@ describe('queries', () => {
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
             expect(result.current.data?.data).toEqual(actionsApp)
+        })
+    })
+
+    describe('useGetConfigurationExecutions()', () => {
+        it('should get configuration executions paginated data', async () => {
+            const executionsResponse: Awaited<Paths.WfConfigurationControllerGetExecutions.Responses.$200> =
+                {
+                    data: [],
+                    meta: {
+                        pagination: {
+                            current_page: 1,
+                            page_limit: 15,
+                            page_size: 0,
+                            total_pages: 0,
+                            total_size: 0,
+                            next_page: null,
+                        },
+                    },
+                }
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/\/configurations\/\d+\/executions\//)
+                .reply(200, executionsResponse)
+            mockedServer.onAny().reply(200, executionsResponse)
+
+            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
+                useGetConfigurationExecutions({
+                    configurationInternalId: 'someid',
+                    from: new Date(),
+                    orderBy: 'ASC',
+                    page: 1,
+                    to: new Date(),
+                    success: true,
+                })
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+            expect(result.current.data).toEqual(executionsResponse)
+        })
+    })
+
+    describe('useGetConfigurationExecution()', () => {
+        it('should get configuration execution data', async () => {
+            const executionsResponse: Awaited<Paths.WfConfigurationControllerGetExecution.Responses.$200> =
+                {
+                    channel_actions: [],
+                    id: 'someid',
+                    awaited_callbacks: [],
+                    configuration_id: 'someid',
+                    configuration_internal_id: 'someid',
+                    current_step_id: 'someid',
+                    state: {
+                        trigger: 'llm-prompt',
+                    },
+                }
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/\/configurations\/\d+\/executions\/\d+/)
+                .reply(200, executionsResponse)
+            mockedServer.onAny().reply(200, executionsResponse)
+
+            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
+                useGetConfigurationExecution('configurationId', 'executionId')
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+            expect(result.current.data).toEqual(executionsResponse)
+        })
+    })
+
+    describe('useGetConfigurationExecutionLogs()', () => {
+        it('should get configuration execution HTTP logs data', async () => {
+            const executionLogsResponse: Awaited<Paths.WfConfigurationControllerExportExecutionLogs.Responses.$200> =
+                [
+                    {
+                        id: 'someid',
+                        request_datetime: '2021-09-01T00:00:00Z',
+                        request_method: 'GET',
+                        request_url: 'https://www.example.com',
+                        response_status_code: 200,
+                    },
+                ]
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/\/configurations\/\d+\/executions\/\d+/)
+                .reply(200, executionLogsResponse)
+            mockedServer.onAny().reply(200, executionLogsResponse)
+
+            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
+                useGetConfigurationExecutionLogs(
+                    'configurationId',
+                    'executionId'
+                )
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+            expect(result.current.data).toEqual(executionLogsResponse)
         })
     })
 })

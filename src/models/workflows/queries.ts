@@ -17,6 +17,12 @@ const STORE_WORKFLOWS_APP_QUERY_KEY = 'store-workflow-app'
 
 const ACTIONS_APP_QUERY_KEY = 'actions-app'
 
+const EXECUTIONS_QUERY_KEY = 'executions-query-key'
+
+const EXECUTION_QUERY_KEY = 'execution-query-key'
+
+const EXECUTION_LOGS_QUERY_KEY = 'execution-logs-query-key'
+
 export const storeWorkflowsConfigurationDefinitionKeys = {
     all: () => [STORE_WORKFLOWS_CONFIGURATION_QUERY_KEY] as const,
     list: (params: {storeName: string; storeType: string}) => [
@@ -73,6 +79,30 @@ export const actionsAppDefinitionKeys = {
     lists: () => [...actionsAppDefinitionKeys.all(), 'list'] as const,
     list: () => [...actionsAppDefinitionKeys.lists()] as const,
     get: (id?: string) => [...actionsAppDefinitionKeys.all(), id],
+}
+
+export const executionsDefinitionKeys = {
+    all: () => [EXECUTIONS_QUERY_KEY] as const,
+    get: (params: {
+        page: number
+        configurationInternalId: string
+        from: string
+        to: string
+        orderBy: string
+        success: boolean | undefined
+    }) => [...executionsDefinitionKeys.all(), params] as const,
+}
+
+export const executionDefinitionKeys = {
+    all: () => [EXECUTION_QUERY_KEY] as const,
+    get: (params: {configurationInternalId: string; executionId: string}) =>
+        [...executionDefinitionKeys.all(), params] as const,
+}
+
+export const executionLogsDefinitionKeys = {
+    all: () => [EXECUTION_LOGS_QUERY_KEY] as const,
+    get: (params: {configurationInternalId: string; executionId: string}) =>
+        [...executionLogsDefinitionKeys.all(), params] as const,
 }
 
 export const useGetWorkflowConfigurationTemplates = (
@@ -512,6 +542,114 @@ export const useDownloadWorkflowConfigurationStepLogs = (
                 ...params
             )
         },
+        ...overrides,
+    })
+}
+
+export const useGetConfigurationExecutions = (
+    {
+        configurationInternalId,
+        from,
+        orderBy,
+        page,
+        to,
+        success,
+    }: {
+        configurationInternalId: string
+        from: Date
+        to: Date
+        orderBy: 'ASC' | 'DESC'
+        page: number
+        success?: boolean
+    },
+    overrides?: UseQueryOptions<
+        Awaited<Paths.WfConfigurationControllerGetExecutions.Responses.$200>
+    >
+) => {
+    return useQuery({
+        queryKey: executionsDefinitionKeys.get({
+            page,
+            configurationInternalId,
+            from: from.toString(),
+            to: to.toString(),
+            orderBy,
+            success,
+        }),
+        queryFn: async () => {
+            const client = await getGorgiasWfApiClient()
+            const successQueryParam =
+                success === true
+                    ? 'true'
+                    : success === false
+                    ? 'false'
+                    : undefined
+            const response =
+                await client.WfConfigurationController_getExecutions({
+                    internal_id: configurationInternalId,
+                    end_date: to.toISOString(),
+                    start_date: from.toISOString(),
+                    order_by: orderBy,
+                    page,
+                    success: successQueryParam,
+                })
+            return response.data
+        },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
+
+export const useGetConfigurationExecution = (
+    configurationInternalId: string,
+    executionId: string,
+    overrides?: UseQueryOptions<
+        Awaited<Paths.WfConfigurationControllerGetExecution.Responses.$200>
+    >
+) => {
+    return useQuery({
+        queryKey: executionDefinitionKeys.get({
+            configurationInternalId: configurationInternalId,
+            executionId,
+        }),
+        queryFn: async () => {
+            const client = await getGorgiasWfApiClient()
+            const response =
+                await client.WfConfigurationController_getExecution({
+                    execution_id: executionId,
+                    internal_id: configurationInternalId,
+                })
+            return response.data
+        },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
+
+export const useGetConfigurationExecutionLogs = (
+    configurationInternalId: string,
+    executionId: string,
+    overrides?: UseQueryOptions<
+        Awaited<Paths.WfConfigurationControllerExportExecutionLogs.Responses.$200>
+    >
+) => {
+    return useQuery({
+        queryKey: executionLogsDefinitionKeys.get({
+            configurationInternalId: configurationInternalId,
+            executionId,
+        }),
+        queryFn: async () => {
+            const client = await getGorgiasWfApiClient()
+            const response =
+                await client.WfConfigurationController_exportExecutionLogs({
+                    execution_id: executionId,
+                    internal_id: configurationInternalId,
+                })
+            return response.data
+        },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
         ...overrides,
     })
 }
