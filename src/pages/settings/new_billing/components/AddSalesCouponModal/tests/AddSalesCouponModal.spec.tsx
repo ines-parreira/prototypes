@@ -88,15 +88,15 @@ describe('AddSalesCouponModal', () => {
             </Provider>
         )
 
-        expect(screen.getByRole('button', {name: 'Apply Coupon'})).toHaveClass(
-            'isDisabled'
-        )
+        expect(
+            screen.getByRole('button', {name: 'Apply Coupon'})
+        ).toBeAriaDisabled()
         const items = document.getElementsByClassName('dropdown-item')
         fireEvent.click(items[0])
 
-        expect(screen.getByRole('button', {name: 'Apply Coupon'})).toHaveClass(
-            'isDisabled'
-        )
+        expect(
+            screen.getByRole('button', {name: 'Apply Coupon'})
+        ).toBeAriaDisabled()
 
         const reasonTextBox = screen.getByPlaceholderText('your reason')
 
@@ -106,7 +106,7 @@ describe('AddSalesCouponModal', () => {
 
         expect(
             screen.getByRole('button', {name: 'Apply Coupon'})
-        ).not.toHaveClass('isDisabled')
+        ).toBeAriaEnabled()
 
         fireEvent.click(screen.getByRole('button', {name: 'Apply Coupon'}))
     })

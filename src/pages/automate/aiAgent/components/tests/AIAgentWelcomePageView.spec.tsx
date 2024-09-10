@@ -351,7 +351,7 @@ describe('<AIAgentWelcomePageView />', () => {
         fireEvent.click(button)
 
         expect(createWelcomePageAcknowledgedMock).not.toHaveBeenCalled()
-        expect(button.disabled).toBe(true)
+        expect(button).toBeAriaDisabled()
     })
 
     it('should call dispatch with correct parameters on mutation failure', async () => {

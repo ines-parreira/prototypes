@@ -268,10 +268,7 @@ describe('PhoneDeviceDialer', () => {
     it('displays Call button as enabled by default', () => {
         renderComponent()
 
-        expect(screen.getByRole('button', {name: 'Call'})).not.toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(screen.getByRole('button', {name: 'Call'})).toBeAriaEnabled()
     })
 
     it('displays Call button as disabled when customer search is active and no customer is selected', () => {
@@ -282,10 +279,7 @@ describe('PhoneDeviceDialer', () => {
 
         fireEvent.change(inputElement, {target: {value: '1234567890a'}})
 
-        expect(screen.getByRole('button', {name: 'Call'})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(screen.getByRole('button', {name: 'Call'})).toBeAriaDisabled()
     })
 
     it('displays Call button as enabled when customer search is active and customer is selected', () => {
@@ -304,10 +298,7 @@ describe('PhoneDeviceDialer', () => {
             address: 'testAddress',
         } as any)
 
-        expect(screen.getByRole('button', {name: 'Call'})).not.toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(screen.getByRole('button', {name: 'Call'})).toBeAriaEnabled()
     })
 
     it('displays error when phone number is not valid and button was pressed', () => {

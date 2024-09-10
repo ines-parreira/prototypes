@@ -87,11 +87,7 @@ describe('SidebarSettings', () => {
 
     it('should disable the save button if no views have been modified', () => {
         const {getByRole} = render(<WrappedGeneralSettings />)
-        expect(
-            getByRole('button', {name: 'Save Changes'}).getAttribute(
-                'aria-disabled'
-            )
-        ).toBe('true')
+        expect(getByRole('button', {name: 'Save Changes'})).toBeAriaDisabled()
     })
 
     it('should enable the save button if a view has been modified', () => {
@@ -101,11 +97,7 @@ describe('SidebarSettings', () => {
         userEvent.click(getByText('Spam'))
         rerender(<WrappedGeneralSettings />)
 
-        expect(
-            getByRole('button', {name: 'Save Changes'}).getAttribute(
-                'aria-disabled'
-            )
-        ).toBe('false')
+        expect(getByRole('button', {name: 'Save Changes'})).toBeAriaEnabled()
     })
 
     it('should disable the save button if a view has been modified and then unmodified', () => {
@@ -117,11 +109,7 @@ describe('SidebarSettings', () => {
         userEvent.click(getByText('Spam'))
         rerender(<WrappedGeneralSettings />)
 
-        expect(
-            getByRole('button', {name: 'Save Changes'}).getAttribute(
-                'aria-disabled'
-            )
-        ).toBe('true')
+        expect(getByRole('button', {name: 'Save Changes'})).toBeAriaDisabled()
     })
 
     it('should enable saving the performed changes and logging them via segment', async () => {
@@ -171,10 +159,8 @@ describe('SidebarSettings', () => {
 
         await waitFor(() => {
             expect(
-                getByRole('button', {name: /Save Changes/}).getAttribute(
-                    'aria-disabled'
-                )
-            ).toBe('true')
+                getByRole('button', {name: /Save Changes/})
+            ).toBeAriaDisabled()
         })
     })
 })

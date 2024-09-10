@@ -129,7 +129,6 @@ export const PlaygroundInputSection = ({
                 <Button
                     id="send-button"
                     isDisabled={isDisabled}
-                    disabled={isDisabled}
                     onClick={onSendMessage}
                 >
                     Send

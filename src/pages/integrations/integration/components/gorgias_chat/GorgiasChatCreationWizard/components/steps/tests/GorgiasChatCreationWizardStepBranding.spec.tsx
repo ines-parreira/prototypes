@@ -100,8 +100,8 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
 
         expect(
             getByRole('button', {name: 'Save & Customize Later'})
-        ).toHaveClass('isDisabled')
-        expect(getByRole('button', {name: 'Back'})).toHaveClass('isDisabled')
-        expect(getByRole('button', {name: /Next/})).toHaveClass('isDisabled')
+        ).toBeAriaDisabled()
+        expect(getByRole('button', {name: 'Back'})).toBeAriaDisabled()
+        expect(getByRole('button', {name: /Next/})).toBeAriaDisabled()
     })
 })

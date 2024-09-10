@@ -61,7 +61,7 @@ const FeedbackIconButton: React.FC<FeedbackIconButtonProps> = ({
             [css.withFeedback]: hasFeedback,
         })}
         onClick={onClick}
-        disabled={hasFeedback && isMessagePublic}
+        isDisabled={hasFeedback && isMessagePublic}
         data-testid={dataTestId}
     >
         {iconType}

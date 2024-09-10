@@ -134,10 +134,7 @@ describe('<VoiceIntegrationVoicemail /> render', () => {
                 'When unchecked, the voicemail recording will play but the caller will not be able to leave a message.'
             )
         ).toBeInTheDocument()
-        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
     })
 
     it('should render standard integration', () => {
@@ -164,10 +161,7 @@ describe('<VoiceIntegrationVoicemail /> render', () => {
                 'When unchecked, the voicemail recording will play but the caller will not be able to leave a message.'
             )
         ).toBeInTheDocument()
-        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
     })
 })
 
@@ -336,10 +330,7 @@ describe('<VoiceIntegrationVoicemail /> outside business hours', () => {
 
         const duringBusinessHoursNoneButton = noneRadioButtons[0]
         const outsideBusinessHoursNoneButton = noneRadioButtons[1]
-        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
 
         // change outside business hours settings
         fireEvent.click(outsideBusinessHoursNoneButton)
@@ -348,10 +339,7 @@ describe('<VoiceIntegrationVoicemail /> outside business hours', () => {
         expect(outsideBusinessHoursNoneButton).toBeChecked()
         expect(duringBusinessHoursNoneButton).not.toBeChecked()
         expect(getByText('We are during business hours')).toBeInTheDocument()
-        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
-            'aria-disabled',
-            'false'
-        )
+        expect(getByRole('button', {name: 'Save changes'})).toBeAriaEnabled()
 
         // save changes
         fireEvent.click(getByRole('button', {name: 'Save changes'}))
@@ -397,17 +385,11 @@ describe('<VoiceIntegrationVoicemail /> outside business hours', () => {
             getByPlaceholderText('Write a message to convert to speech'),
             'changed'
         )
-        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
-            'aria-disabled',
-            'false'
-        )
+        expect(getByRole('button', {name: 'Save changes'})).toBeAriaEnabled()
 
         // switch back to the initial None option
         fireEvent.click(outsideBusinessHoursNoneButton)
-        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
     })
 
     it('should allow replacing a voice recording', () => {

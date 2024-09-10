@@ -18,7 +18,7 @@ describe('VoiceOverviewDownloadDataButton', () => {
         renderComponent(jest.fn(), true)
         const button = screen.getByRole('button')
 
-        expect(button).toHaveAttribute('aria-disabled', 'true')
+        expect(button).toBeAriaDisabled()
     })
 
     it('should call onClick', () => {

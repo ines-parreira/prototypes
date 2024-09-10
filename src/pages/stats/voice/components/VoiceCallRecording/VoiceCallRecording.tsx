@@ -68,7 +68,7 @@ const VoiceCallRecording = ({voiceCall, isDownloadable = true}: Props) => {
                         intent="secondary"
                         fillStyle="ghost"
                         onClick={downloadRecording}
-                        disabled={isRequestPending}
+                        isDisabled={isRequestPending}
                     >
                         download
                     </IconButton>

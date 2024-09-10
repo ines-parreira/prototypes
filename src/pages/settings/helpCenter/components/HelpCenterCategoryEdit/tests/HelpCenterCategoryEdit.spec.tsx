@@ -216,7 +216,7 @@ describe('<HelpCenterCategoryEdit />', () => {
         const {getByTestId} = render(<Example isOpen />)
         const button = getByTestId('button-save') as HTMLButtonElement
 
-        expect(button).toHaveAttribute('aria-disabled', 'true')
+        expect(button).toBeAriaDisabled()
 
         fireEvent.change(getByTestId('title-input'), {
             target: {
@@ -224,7 +224,7 @@ describe('<HelpCenterCategoryEdit />', () => {
             },
         })
 
-        expect(button).toHaveAttribute('aria-disabled', 'false')
+        expect(button).toBeAriaEnabled()
 
         fireEvent.change(getByTestId('slug-input'), {
             target: {
@@ -232,14 +232,14 @@ describe('<HelpCenterCategoryEdit />', () => {
             },
         })
 
-        expect(button).toHaveAttribute('aria-disabled', 'true')
+        expect(button).toBeAriaDisabled()
     })
 
     it('disables the Save button if canSave is false', () => {
         const {getByTestId} = render(<Example isOpen canSave={false} />)
         const button = getByTestId('button-save') as HTMLButtonElement
 
-        expect(button).toHaveAttribute('aria-disabled', 'true')
+        expect(button).toBeAriaDisabled()
 
         fireEvent.change(getByTestId('title-input'), {
             target: {
@@ -247,7 +247,7 @@ describe('<HelpCenterCategoryEdit />', () => {
             },
         })
 
-        expect(button).toHaveAttribute('aria-disabled', 'true')
+        expect(button).toBeAriaDisabled()
     })
 
     it('resets the fields when isOpen changes to false', () => {

@@ -153,7 +153,7 @@ describe('RuleSuggestion', () => {
         const button = screen.getByRole('button', {name: /Apply/})
         fireEvent.click(button)
         expect((sendTicketMessage as jest.Mock).mock.calls).toMatchSnapshot()
-        expect(button.className.includes('isDisabled')).toBeTruthy()
+        expect(button).toBeAriaDisabled()
     })
 
     it('should display in preview for large suggestion body', async () => {
@@ -189,10 +189,7 @@ describe('RuleSuggestion', () => {
             </Provider>
         )
 
-        const install = screen.getByRole('button', {name: /Install/})
-        expect(
-            Object.values(install.classList).includes('isDisabled')
-        ).toBeTruthy()
+        expect(screen.getByRole('button', {name: /Install/})).toBeAriaDisabled()
     })
 
     it('should display activate if rule already installed', () => {

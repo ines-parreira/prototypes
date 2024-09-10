@@ -98,7 +98,7 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
             name: MODAL_LABELS.EMBED,
         })
 
-        expect(embedButton).toHaveClass('isDisabled')
+        expect(embedButton).toBeAriaDisabled()
 
         const pageNameInput = screen.getByPlaceholderText(
             CONTACT_FORM_EMBED_FORM_TEXTS.PageNamePlaceholder
@@ -112,7 +112,7 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
         await userEvent.type(pageSlugInput, 'help-center')
 
         await waitFor(() => {
-            expect(embedButton).not.toHaveClass('isDisabled')
+            expect(embedButton).not.toBeAriaDisabled()
         })
 
         fireEvent.click(embedButton)

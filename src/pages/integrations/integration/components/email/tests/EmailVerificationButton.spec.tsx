@@ -56,6 +56,6 @@ describe('EmailVerificationButton', () => {
             status: EmailVerificationStatus.Pending,
         })
         const button = screen.getByRole('button', {name: /verifying/i})
-        expect(button).toHaveAttribute('aria-disabled', 'true')
+        expect(button).toBeAriaDisabled()
     })
 })

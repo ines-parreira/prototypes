@@ -96,7 +96,7 @@ describe('CancelAAOModal', () => {
         )
         await userEvent.type(textarea, 'test')
 
-        expect(submitButton).not.toHaveClass('isDisabled')
+        expect(submitButton).toBeAriaEnabled()
         userEvent.click(submitButton)
 
         expect(mockHandleCancelAAO).toHaveBeenCalled()

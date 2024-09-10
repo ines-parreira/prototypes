@@ -1,21 +1,17 @@
 import {fromJS, Map, List} from 'immutable'
-import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {
     shopifyRefundOrderPayloadFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../fixtures/shopify'
-import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
+} from 'fixtures/shopify'
+import {initRefundOrderLineItems} from 'business/shopify/order'
+
 import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
 
 describe('infobarActions.shopify.refundOrder reducer', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     describe('SET_LOADING', () => {
         it('should set loading state', () => {
             const action = {

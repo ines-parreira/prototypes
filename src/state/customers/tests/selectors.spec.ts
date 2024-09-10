@@ -1,17 +1,16 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {Map, fromJS} from 'immutable'
 
 import {TicketChannel} from 'business/types/ticket'
 import {customer} from 'fixtures/customer'
+import {RootState} from 'state/types'
+
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
-import {RootState} from '../../types'
 
 describe('customers selectors', () => {
     let state: RootState
 
     beforeEach(() => {
-        expect.extend(immutableMatchers)
         state = {
             customers: initialState.mergeDeep({
                 active: customer,

@@ -86,7 +86,7 @@ describe('<ActionsPlatformAppForm />', () => {
 
         expect(
             screen.getByText('Save Changes').closest('button')
-        ).toHaveAttribute('aria-disabled', 'true')
+        ).toBeAriaDisabled()
     })
 
     it('should make cancel button disabled if form is not dirty', () => {
@@ -104,10 +104,11 @@ describe('<ActionsPlatformAppForm />', () => {
             />
         )
 
-        expect(screen.getByText('Cancel').closest('button')).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(
+            screen.getByRole('button', {
+                name: 'Cancel',
+            })
+        ).toBeAriaDisabled()
     })
 
     it('should make app select box disabled if app is already selected', () => {

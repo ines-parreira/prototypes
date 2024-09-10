@@ -286,7 +286,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 name: 'Save changes',
             })
 
-            expect(savedButton).toHaveClass('isDisabled')
+            expect(savedButton).toBeAriaDisabled()
         })
     })
 })

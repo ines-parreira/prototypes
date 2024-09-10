@@ -86,12 +86,13 @@ describe('TicketListActions component', () => {
     ) => {
         const buttons = getAllByRole('button')
         for (const button of buttons) {
-            await waitFor(() =>
-                expect(button).toHaveAttribute(
-                    'aria-disabled',
-                    (!isEnabled).toString()
-                )
-            )
+            await waitFor(() => {
+                if (isEnabled) {
+                    expect(button).toBeAriaEnabled()
+                } else {
+                    expect(button).toBeAriaDisabled()
+                }
+            })
         }
     }
 

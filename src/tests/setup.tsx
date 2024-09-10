@@ -19,6 +19,8 @@ import {user} from 'fixtures/users'
 import history from '../pages/history'
 import {mockQueryClient} from './reactQueryTestingUtils'
 
+import './customMatchers'
+
 Enzyme.configure({adapter: new Adapter()})
 
 // Set default moment timezone

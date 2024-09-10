@@ -1,7 +1,7 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import {RootState} from '../../types'
+import {RootState} from 'state/types'
+
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
@@ -10,7 +10,6 @@ describe('tags selectors', () => {
     const selectedTagId = 123
 
     beforeEach(() => {
-        expect.extend(immutableMatchers)
         state = {
             tags: initialState
                 .mergeDeep({

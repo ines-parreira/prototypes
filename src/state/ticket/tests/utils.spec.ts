@@ -1,4 +1,3 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, List, Map} from 'immutable'
 import {omit} from 'lodash'
 
@@ -248,10 +247,6 @@ const channels = getEmailChannels({
 const integrations = fromJS([])
 
 describe('ticket utils', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     describe('getSourceTypeOfResponse()', () => {
         it('should return message source type "internal-note" for Twilio ticket that has no message', () => {
             const messages: unknown[] = []

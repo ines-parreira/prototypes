@@ -17,9 +17,7 @@ describe('<MergeButton />', () => {
     it('should be disabled when selected count is < 2', () => {
         render(<MergeButton {...props} selectedTagsIds={fromJS([1])} />)
 
-        expect(screen.getByText('Merge').closest('button')).toHaveClass(
-            'isDisabled'
-        )
+        expect(screen.getByRole('button', {name: /Merge/})).toBeAriaDisabled()
     })
 
     it('should merge tags after confirmation prompt', () => {

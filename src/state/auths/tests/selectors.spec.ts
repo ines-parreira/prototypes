@@ -1,14 +1,13 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import {RootState} from '../../types'
+import {RootState} from 'state/types'
+
 import * as selectors from '../selectors'
 
 describe('auths selectors', () => {
     let state: RootState
 
     beforeEach(() => {
-        expect.extend(immutableMatchers)
         state = {
             auths: fromJS([
                 {data: {token: '1'}, type: 'api_key'},

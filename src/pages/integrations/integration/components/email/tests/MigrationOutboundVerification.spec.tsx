@@ -78,17 +78,13 @@ describe('MigrationOutboundVerification', () => {
         const refreshButton = screen.getByRole('button', {
             name: /refresh/i,
         })
-        await waitFor(() =>
-            expect(refreshButton).not.toHaveAttribute('aria-disabled', 'true')
-        )
+        await waitFor(() => expect(refreshButton).toBeAriaEnabled())
 
         act(() => {
             fireEvent.click(refreshButton)
         })
 
-        await waitFor(() =>
-            expect(refreshButton).not.toHaveAttribute('aria-disabled', 'true')
-        )
+        await waitFor(() => expect(refreshButton).toBeAriaEnabled())
         expect(screen.getByText('Last checked: Today at 00:01')).toBeVisible()
     })
 })

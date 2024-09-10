@@ -106,7 +106,7 @@ const GorgiasChatIntegrationVisibilityCondition: React.FC<Props> = ({
                 fillStyle="ghost"
                 onClick={onDelete}
                 ref={deleteButtonRef}
-                disabled={!isDeletable}
+                isDisabled={!isDeletable}
             >
                 close
             </IconButton>

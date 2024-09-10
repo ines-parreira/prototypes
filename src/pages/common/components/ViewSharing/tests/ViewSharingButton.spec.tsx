@@ -1,6 +1,6 @@
 import React from 'react'
 import {fromJS, Map} from 'immutable'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 
 import {BASIC_AGENT_ROLE} from 'config/user'
 import {user} from 'fixtures/users'
@@ -63,8 +63,8 @@ describe('<ViewSharingButton/>', () => {
             expect(getByText('Private')).toBeInTheDocument()
         })
 
-        it('should render as disabled because this is a system view', () => {
-            const {container} = render(
+        it('should be disabled because this is a system view', () => {
+            render(
                 <ViewSharingButtonContainer
                     {...minProps}
                     view={fromJS({
@@ -75,15 +75,13 @@ describe('<ViewSharingButton/>', () => {
             )
 
             expect(
-                (container.firstChild as HTMLElement).classList.contains(
-                    'isDisabled'
-                )
-            ).toBeTruthy()
+                screen.getByRole('button', {name: /Sharing:/})
+            ).toBeAriaDisabled()
         })
 
-        it('should render as disabled because user is not allowed', () => {
+        it('should be disabled because user is not allowed', () => {
             const role = fromJS({name: BASIC_AGENT_ROLE})
-            const {container} = render(
+            render(
                 <ViewSharingButtonContainer
                     {...minProps}
                     currentUser={(fromJS(user) as Map<any, any>).set(
@@ -95,10 +93,8 @@ describe('<ViewSharingButton/>', () => {
             )
 
             expect(
-                (container.firstChild as HTMLElement).classList.contains(
-                    'isDisabled'
-                )
-            ).toBeTruthy()
+                screen.getByRole('button', {name: /Sharing:/})
+            ).toBeAriaDisabled()
         })
     })
 })

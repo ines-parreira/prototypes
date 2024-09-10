@@ -117,7 +117,7 @@ export const AutoresponderViewButton = ({recipeSlug}: Props) => {
         <Button
             onClick={handleClick}
             intent="secondary"
-            disabled={isFetchingTags || hasErrors}
+            isDisabled={isFetchingTags || hasErrors}
         >
             View Tickets Closed By Rule
         </Button>

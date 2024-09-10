@@ -130,7 +130,7 @@ describe('DownloadTicketFieldsDataButton', () => {
             </Provider>
         )
 
-        expect(screen.getByRole('button')).toBeDisabled()
+        expect(screen.getByRole('button')).toBeAriaDisabled()
     })
 
     it('should send event to segment and call saveReport on download data button click', () => {

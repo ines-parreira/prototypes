@@ -25,7 +25,7 @@ const MigrationPartiallySucceededActions: React.FC<Props> = ({state}) => {
                         className={css.optionButton}
                         onClick={state.onRetry}
                         isLoading={state.isRetryLoading}
-                        disabled={areButtonsDisabled}
+                        isDisabled={areButtonsDisabled}
                     >
                         <i className="material-icons mr-2">refresh</i>
                         Retry
@@ -40,7 +40,7 @@ const MigrationPartiallySucceededActions: React.FC<Props> = ({state}) => {
                         className={css.optionButton}
                         onClick={state.onRevert}
                         isLoading={state.isRevertLoading}
-                        disabled={areButtonsDisabled}
+                        isDisabled={areButtonsDisabled}
                     >
                         <i className="material-icons mr-2">delete</i>
                         Revert
@@ -54,7 +54,7 @@ const MigrationPartiallySucceededActions: React.FC<Props> = ({state}) => {
 
             <Button
                 className="w-100"
-                disabled={areButtonsDisabled}
+                isDisabled={areButtonsDisabled}
                 onClick={state.onFinish}
                 intent="secondary"
             >

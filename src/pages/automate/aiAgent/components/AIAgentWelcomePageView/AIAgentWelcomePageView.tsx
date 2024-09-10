@@ -158,7 +158,7 @@ export const AIAgentWelcomePageView = (props: Props) => {
                                                 ? onOnboardingWizardClick
                                                 : onAcknowledgedClick
                                         }
-                                        disabled={isLoading}
+                                        isDisabled={isLoading}
                                     >
                                         {isOnUpdateOnboardingWizard
                                             ? 'Continue Setup'

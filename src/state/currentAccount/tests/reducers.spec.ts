@@ -1,4 +1,3 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
 import {
@@ -8,15 +7,13 @@ import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+
+import {GorgiasAction} from 'state/types'
+
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
-import {GorgiasAction} from '../../types'
 
 describe('current account reducers', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     it('initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
             initialState

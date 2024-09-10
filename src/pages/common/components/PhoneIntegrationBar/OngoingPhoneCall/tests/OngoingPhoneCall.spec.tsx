@@ -362,14 +362,8 @@ describe('<OngoingPhoneCall/>', () => {
         fireEvent.click(getByTestId('confirm-transfer-button'))
 
         expect(getByText('Transferring...')).toBeVisible()
-        expect(getByTestId('hold-call-button')).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
-        expect(getByTestId('transfer-call-button')).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(getByTestId('hold-call-button')).toBeAriaDisabled()
+        expect(getByTestId('transfer-call-button')).toBeAriaDisabled()
         expect(getByText(/Transferring call to/)).toBeInTheDocument()
         expect(
             getByTestId('end-call-button-with-confirmation')
@@ -453,14 +447,8 @@ describe('<OngoingPhoneCall/>', () => {
         fireEvent.click(getByTestId('confirm-transfer-button'))
 
         expect(getByText('Transferring...')).toBeVisible()
-        expect(getByTestId('hold-call-button')).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
-        expect(getByTestId('transfer-call-button')).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(getByTestId('hold-call-button')).toBeAriaDisabled()
+        expect(getByTestId('transfer-call-button')).toBeAriaDisabled()
 
         // send failure message from the backend
         socketManager.onServerMessage({
@@ -484,13 +472,7 @@ describe('<OngoingPhoneCall/>', () => {
 
         // the buttons should be enabled again
         expect(getByText('Connected')).toBeVisible()
-        expect(getByTestId('hold-call-button')).toHaveAttribute(
-            'aria-disabled',
-            'false'
-        )
-        expect(getByTestId('transfer-call-button')).toHaveAttribute(
-            'aria-disabled',
-            'false'
-        )
+        expect(getByTestId('hold-call-button')).toBeAriaEnabled()
+        expect(getByTestId('transfer-call-button')).toBeAriaEnabled()
     })
 })

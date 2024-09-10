@@ -121,10 +121,7 @@ describe('DownloadAgentsPerformanceDataButton', () => {
         })
         render(<DownloadAgentsPerformanceDataButton />)
 
-        expect(screen.getByRole('button')).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(screen.getByRole('button')).toBeAriaDisabled()
     })
 
     it('should send event to segment and call saveReport on download data button click', () => {

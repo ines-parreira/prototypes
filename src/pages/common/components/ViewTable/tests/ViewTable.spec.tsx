@@ -1,6 +1,5 @@
 import {render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map} from 'immutable'
 import {Location} from 'history'
 import _identity from 'lodash/identity'
@@ -85,7 +84,6 @@ const minProps = {
 } as unknown as ComponentProps<typeof ViewTableContainer>
 
 beforeEach(() => {
-    expect.extend(immutableMatchers)
     history.push = jest.fn()
     ;(
         minProps.getViewIdToDisplay as jest.MockedFunction<

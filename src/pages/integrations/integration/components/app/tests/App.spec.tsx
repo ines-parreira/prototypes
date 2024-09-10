@@ -360,6 +360,6 @@ describe(`App`, () => {
         )
         await screen.findAllByText(new RegExp(dummyAppData.name))
         const disconnectButton = getByRole('button', {name: 'Disconnect App'})
-        expect(disconnectButton).toHaveClass('isDisabled')
+        expect(disconnectButton).toBeAriaDisabled()
     })
 })

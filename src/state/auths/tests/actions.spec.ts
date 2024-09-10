@@ -1,11 +1,11 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
-import client from '../../../models/api/resources'
+import client from 'models/api/resources'
+import {RootState, StoreDispatch} from 'state/types'
+
 import {initialState} from '../reducers'
-import {RootState, StoreDispatch} from '../../types'
 import * as actions from '../actions'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -15,7 +15,6 @@ describe('auths actions', () => {
     const mockServer = new MockAdapter(client)
 
     beforeEach(() => {
-        expect.extend(immutableMatchers)
         store = mockStore({auths: initialState})
         mockServer.reset()
     })

@@ -1,5 +1,4 @@
 import {fromJS} from 'immutable'
-import * as immutableMatchers from 'jest-immutable-matchers'
 import moment from 'moment'
 import {UserSettingType} from 'config/types/user'
 import {defaultTicketView, getExpirationTimeForCount} from 'config/views'
@@ -28,10 +27,6 @@ import * as selectors from 'state/views/selectors'
 import {makeGetView} from 'state/views/selectors'
 
 describe('selectors', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     afterEach(() => {
         localStorage.clear()
     })
@@ -484,7 +479,6 @@ describe('selectors', () => {
     })
 
     describe('getViewIdsOrderedByCollapsedSections', () => {
-        expect.extend(immutableMatchers)
         window.localStorage.setItem(
             'collapsed-view-sections',
             JSON.stringify([1])

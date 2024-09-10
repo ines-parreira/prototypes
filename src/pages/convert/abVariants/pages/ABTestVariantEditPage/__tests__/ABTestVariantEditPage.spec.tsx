@@ -141,7 +141,7 @@ describe('<ABTestVariantEditPage />', () => {
 
             const createBtn = getByRole('button', {name: 'Create'})
             expect(createBtn).toBeInTheDocument()
-            expect(createBtn).toHaveAttribute('aria-disabled', 'true')
+            expect(createBtn).toBeAriaDisabled()
         })
 
         it('user discards changes', () => {

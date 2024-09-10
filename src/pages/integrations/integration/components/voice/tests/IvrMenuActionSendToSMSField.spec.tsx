@@ -150,10 +150,9 @@ describe('<IvrMenuActionSendToSMSField />', () => {
 
             userEvent.clear(getByText(inputText))
 
-            expect(getByRole('button', {name: 'Save Changes'})).toHaveAttribute(
-                'aria-disabled',
-                'true'
-            )
+            expect(
+                getByRole('button', {name: 'Save Changes'})
+            ).toBeAriaDisabled()
         }
     )
 

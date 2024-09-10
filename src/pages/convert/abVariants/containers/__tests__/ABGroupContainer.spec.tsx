@@ -81,11 +81,11 @@ describe('ABGroupContainer', () => {
 
         const addVariantBtn = getByRole('button', {name: 'Add Variant'})
         expect(addVariantBtn).toBeInTheDocument()
-        expect(addVariantBtn).toHaveAttribute('aria-disabled', 'false')
+        expect(addVariantBtn).toBeAriaEnabled()
 
         const startBtn = getByRole('button', {name: /Start/})
         expect(startBtn).toBeInTheDocument()
-        expect(startBtn).toHaveAttribute('aria-disabled', 'true')
+        expect(startBtn).toBeAriaDisabled()
     })
 
     it('A/B Group has variants and can start A/B test', () => {
@@ -97,11 +97,11 @@ describe('ABGroupContainer', () => {
 
         const addVariantBtn = getByRole('button', {name: 'Add Variant'})
         expect(addVariantBtn).toBeInTheDocument()
-        expect(addVariantBtn).toHaveAttribute('aria-disabled', 'true')
+        expect(addVariantBtn).toBeAriaDisabled()
 
         const startBtn = getByRole('button', {name: /Start/})
         expect(startBtn).toBeInTheDocument()
-        expect(startBtn).toHaveAttribute('aria-disabled', 'false')
+        expect(startBtn).toBeAriaEnabled()
     })
 
     it('users click `Start Test` button and it shows modal', async () => {
@@ -172,18 +172,18 @@ describe('ABGroupContainer', () => {
 
         const addVariantBtn = getByRole('button', {name: 'Add Variant'})
         expect(addVariantBtn).toBeInTheDocument()
-        expect(addVariantBtn).toHaveAttribute('aria-disabled', 'true')
+        expect(addVariantBtn).toBeAriaDisabled()
 
         const startBtn = queryByRole('button', {name: /Start/})
         expect(startBtn).not.toBeInTheDocument()
 
         const pauseBtn = getByRole('button', {name: /Pause Test/})
         expect(pauseBtn).toBeInTheDocument()
-        expect(pauseBtn).toHaveAttribute('aria-disabled', 'false')
+        expect(pauseBtn).toBeAriaEnabled()
 
         const stopBtn = getByRole('button', {name: /Stop Test/})
         expect(stopBtn).toBeInTheDocument()
-        expect(stopBtn).toHaveAttribute('aria-disabled', 'false')
+        expect(stopBtn).toBeAriaEnabled()
     })
 
     it('A/B test is paused', () => {
@@ -201,11 +201,11 @@ describe('ABGroupContainer', () => {
 
         const addVariantBtn = getByRole('button', {name: 'Add Variant'})
         expect(addVariantBtn).toBeInTheDocument()
-        expect(addVariantBtn).toHaveAttribute('aria-disabled', 'true')
+        expect(addVariantBtn).toBeAriaDisabled()
 
         const resumeBtn = queryByRole('button', {name: /Resume Test/})
         expect(resumeBtn).toBeInTheDocument()
-        expect(resumeBtn).toHaveAttribute('aria-disabled', 'false')
+        expect(resumeBtn).toBeAriaEnabled()
     })
 
     it('A/B test is completed', () => {
@@ -223,10 +223,10 @@ describe('ABGroupContainer', () => {
 
         const addVariantBtn = getByRole('button', {name: 'Add Variant'})
         expect(addVariantBtn).toBeInTheDocument()
-        expect(addVariantBtn).toHaveAttribute('aria-disabled', 'true')
+        expect(addVariantBtn).toBeAriaDisabled()
 
         const startBtn = queryByRole('button', {name: /Start/})
         expect(startBtn).toBeInTheDocument()
-        expect(startBtn).toHaveAttribute('aria-disabled', 'true')
+        expect(startBtn).toBeAriaDisabled()
     })
 })

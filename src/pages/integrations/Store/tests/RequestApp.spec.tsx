@@ -101,7 +101,7 @@ describe('<RequestApp />', () => {
 
         expect(
             screen.getByRole('button', {name: 'Submit Request'})
-        ).toHaveAttribute('aria-disabled', 'true')
+        ).toBeAriaDisabled()
     })
 
     it('should have the Submit Request button enabled with description', () => {
@@ -117,7 +117,7 @@ describe('<RequestApp />', () => {
 
         expect(
             screen.getByRole('button', {name: 'Submit Request'})
-        ).toHaveAttribute('aria-disabled', 'false')
+        ).toBeAriaEnabled()
     })
 
     it('should send the request on Submit Request Click', async () => {

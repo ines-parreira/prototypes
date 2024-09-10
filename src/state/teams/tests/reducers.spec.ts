@@ -1,4 +1,3 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
 import {GorgiasAction} from 'state/types'
@@ -8,10 +7,6 @@ import * as constants from '../constants'
 
 describe('teams reducers', () => {
     const team = {id: 1, name: 'Team 1'}
-
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
 
     it('initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(

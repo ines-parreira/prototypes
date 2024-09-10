@@ -347,7 +347,7 @@ describe('<AiAgentGuidanceContainer />', () => {
 
             expect(
                 screen.getByRole('button', {name: 'Create From Template'})
-            ).toBeDisabled()
+            ).toBeAriaDisabled()
         })
 
         it('should sort guidance articles by last updated', () => {

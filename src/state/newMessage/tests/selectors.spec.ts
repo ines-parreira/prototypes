@@ -1,4 +1,3 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, List} from 'immutable'
 
 import {RootState} from 'state/types'
@@ -10,7 +9,6 @@ describe('new message selectors', () => {
     let state: RootState
 
     beforeEach(() => {
-        expect.extend(immutableMatchers)
         state = {
             newMessage: initialState,
         } as RootState

@@ -107,7 +107,7 @@ describe('<OrderTotals/>', () => {
                 expect(textbox).toBeDisabled()
             })
             screen.getAllByRole('button').forEach((button) => {
-                expect(button).toHaveAttribute('aria-disabled', 'true')
+                expect(button).toBeAriaDisabled()
             })
         })
 

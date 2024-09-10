@@ -117,7 +117,7 @@ describe('<DrillDownDownloadButton />', () => {
             </Provider>
         )
 
-        expect(screen.getByRole('button')).toHaveClass('isDisabled')
+        expect(screen.getByRole('button')).toBeAriaDisabled()
     })
 
     it('should render disabled button when background Jobs are running', () => {
@@ -145,7 +145,7 @@ describe('<DrillDownDownloadButton />', () => {
             </Provider>
         )
 
-        expect(screen.getByRole('button')).toHaveClass('isDisabled')
+        expect(screen.getByRole('button')).toBeAriaDisabled()
     })
 
     it('should dispatch export action', () => {

@@ -3,7 +3,6 @@ import moment from 'moment'
 import MockAdapter from 'axios-mock-adapter'
 import thunk from 'redux-thunk'
 import {fromJS, Map} from 'immutable'
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {dismissNotification} from 'reapop'
 
 import {agents} from 'fixtures/agents'
@@ -101,7 +100,6 @@ describe('ticket actions', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
-        expect.extend(immutableMatchers)
         store = mockStore({
             ticket: initialState,
             newMessage: newMessageState,

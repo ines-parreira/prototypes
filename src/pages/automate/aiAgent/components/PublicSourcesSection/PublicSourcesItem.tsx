@@ -157,7 +157,6 @@ export const PublicSourcesItem = ({
             <Button
                 intent="secondary"
                 isDisabled={!isValid || isSyncDisabled}
-                disabled={!isValid || isSyncDisabled}
                 onClick={handleSync}
                 isLoading={source.status === 'loading'}
             >
@@ -174,7 +173,6 @@ export const PublicSourcesItem = ({
                     fillStyle="ghost"
                     intent="secondary"
                     isDisabled={!isValid}
-                    disabled={!isValid}
                     aria-label="Open public URL"
                     onClick={handleOpen}
                 >

@@ -68,6 +68,6 @@ describe('CancellationReasonsFooter', () => {
         const continueButton = getByRole('button', {
             name: 'Continue cancelling',
         })
-        expect(continueButton).toHaveClass('isDisabled')
+        expect(continueButton).toBeAriaDisabled()
     })
 })

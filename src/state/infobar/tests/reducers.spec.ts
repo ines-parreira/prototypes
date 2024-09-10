@@ -1,4 +1,3 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
@@ -6,10 +5,6 @@ import * as types from '../constants'
 import * as utils from '../utils'
 
 describe('infobar reducers', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     it('initial state', () => {
         expect(reducer(undefined, {type: 'FOO_TYPE'})).toEqualImmutable(
             initialState

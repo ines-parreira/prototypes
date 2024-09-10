@@ -89,10 +89,9 @@ describe('<Button/>', () => {
                 url: 'www.someurl.com',
             },
         })
-        expect(screen.getByRole('button', {name: props.label})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(
+            screen.getByRole('button', {name: props.label})
+        ).toBeAriaDisabled()
     })
 
     it('should display param editor on button click if some fields are editable', () => {
@@ -154,7 +153,7 @@ describe('<Button/>', () => {
         await waitFor(() =>
             expect(
                 screen.getByRole('button', {name: props.label})
-            ).toHaveAttribute('aria-disabled', 'false')
+            ).toBeAriaEnabled()
         )
     })
 })

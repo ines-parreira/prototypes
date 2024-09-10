@@ -105,7 +105,7 @@ describe('<OrderFooter/>', () => {
                 expect(checkbox).toBeDisabled()
             })
             screen.getAllByRole('button').forEach((button) => {
-                expect(button).toHaveAttribute('aria-disabled', 'true')
+                expect(button).toBeAriaDisabled()
             })
         })
     })

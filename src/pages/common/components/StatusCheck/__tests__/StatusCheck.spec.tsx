@@ -5,15 +5,17 @@ import {StatusCheck} from '../StatusCheck'
 
 describe('<StatusCheck />', () => {
     it('matches snapshot', () => {
-        const {container} = render(
-            <StatusCheck onCheckStatus={() => null} status="pending" />
+        render(<StatusCheck onCheckStatus={() => null} status="pending" />)
+
+        screen.getByText('Check Status')
+        screen.getByText(
+            'NOTE: It may take up to a few hours for DNS changes to take effect.'
         )
-        expect(container).toMatchSnapshot()
     })
 
     it("doesn't render if there's no status", () => {
-        render(<StatusCheck onCheckStatus={() => null} />)
+        const {container} = render(<StatusCheck onCheckStatus={() => null} />)
 
-        expect(screen.queryByTestId('domain-status-check')).toBeNull()
+        expect(container.firstChild).toBeNull()
     })
 })

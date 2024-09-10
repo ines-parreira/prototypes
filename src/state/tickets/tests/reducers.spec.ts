@@ -1,4 +1,3 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 import {ViewType} from 'models/view/types'
 
@@ -9,10 +8,6 @@ import * as types from 'state/tickets/constants'
 import reducer, {initialState} from 'state/tickets/reducers'
 
 describe('tickets reducers', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     it('initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
             initialState

@@ -33,7 +33,7 @@ const MigrationFailedActions: React.FC<Props> = ({state}) => {
                 <Button
                     intent="secondary"
                     className={css.actionsButton}
-                    disabled={state.isRetryLoading}
+                    isDisabled={state.isRetryLoading}
                     onClick={state.onFinish}
                 >
                     Close

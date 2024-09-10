@@ -185,7 +185,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             expect(prefixInput).toHaveValue('testPrefix')
             const saveBtn = getByTestId(testIds.saveBtn)
             expect(saveBtn.textContent).toContain('Save Changes')
-            expect(saveBtn.getAttribute('aria-disabled')).toBeTruthy()
+            expect(saveBtn).toBeAriaEnabled()
         })
     })
 
@@ -569,7 +569,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
 
         await waitFor(() => {
             expect(saveBtn.textContent).toContain('Save Changes')
-            expect(saveBtn.getAttribute('aria-disabled')).toBe('false')
+            expect(saveBtn).toBeAriaEnabled()
             expect(
                 useUpdateDiscountOffersMock().mutateAsync
             ).toHaveBeenCalledWith([
@@ -613,7 +613,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
 
         await waitFor(() => {
             expect(saveBtn.textContent).toContain('Save Changes')
-            expect(saveBtn.getAttribute('aria-disabled')).toBe('false')
+            expect(saveBtn).toBeAriaEnabled()
             expect(
                 useUpdateDiscountOffersMock().mutateAsync
             ).toHaveBeenCalledWith([

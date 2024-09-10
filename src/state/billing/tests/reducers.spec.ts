@@ -1,7 +1,7 @@
 import {fromJS, Map} from 'immutable'
-import * as immutableMatchers from 'jest-immutable-matchers'
 
-import {StoreAction} from '../../types'
+import {StoreAction} from 'state/types'
+
 import * as types from '../constants'
 import reducer, {initialState} from '../reducers'
 
@@ -29,10 +29,6 @@ const billingContact = {
 }
 
 describe('billing reducers', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     it('initial state', () => {
         expect(reducer(undefined, {} as StoreAction)).toEqualImmutable(
             initialState

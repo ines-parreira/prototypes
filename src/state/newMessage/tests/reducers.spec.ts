@@ -1,8 +1,7 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map, List} from 'immutable'
 import {EditorState, ContentState, SelectionState} from 'draft-js'
-
 import {TicketVia} from '@gorgias/api-types'
+
 import {TicketMessageSourceType, TicketChannel} from 'business/types/ticket'
 import {ticket} from 'fixtures/ticket'
 import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
@@ -29,10 +28,6 @@ const {addEmailExtraContent} = emailExtraUtils
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
 describe('new message reducer', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     it('should return the initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
             initialState

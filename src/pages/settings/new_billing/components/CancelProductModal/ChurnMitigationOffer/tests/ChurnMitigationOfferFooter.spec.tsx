@@ -71,7 +71,7 @@ describe('ChurnMitigationOfferFooter', () => {
             name: 'Continue cancelling',
         })
 
-        expect(acceptButton).toHaveClass('isDisabled')
-        expect(continueButton).toHaveClass('isDisabled')
+        expect(acceptButton).toBeAriaDisabled()
+        expect(continueButton).toBeAriaDisabled()
     })
 })

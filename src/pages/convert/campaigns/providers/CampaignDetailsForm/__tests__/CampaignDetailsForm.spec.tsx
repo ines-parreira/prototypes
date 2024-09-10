@@ -172,7 +172,7 @@ describe('<CampaignDetailsForm />', () => {
         it('disables the button until the form is valid', () => {
             expect(
                 screen.getByRole('button', {name: 'Create'})
-            ).toHaveAttribute('aria-disabled', 'true')
+            ).toBeAriaDisabled()
 
             result.rerender(
                 <Provider store={mockStore(defaultState)}>
@@ -185,7 +185,7 @@ describe('<CampaignDetailsForm />', () => {
 
             expect(
                 screen.getByRole('button', {name: 'Create'})
-            ).toHaveAttribute('aria-disabled', 'false')
+            ).toBeAriaEnabled()
         })
 
         it('console.error when createCampaign is not defined', async () => {
@@ -204,7 +204,7 @@ describe('<CampaignDetailsForm />', () => {
 
             expect(
                 screen.getByRole('button', {name: 'Create'})
-            ).toHaveAttribute('aria-disabled', 'false')
+            ).toBeAriaEnabled()
 
             userEvent.click(screen.getByRole('button', {name: 'Create'}))
 

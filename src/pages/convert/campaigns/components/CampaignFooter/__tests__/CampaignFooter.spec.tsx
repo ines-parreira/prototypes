@@ -220,9 +220,7 @@ describe('<CampaignFooter />', () => {
                 isUpdate: false,
             })
 
-            expect(getByRole('button', {name: 'Create'})).toHaveAttribute(
-                'aria-disabled'
-            )
+            expect(getByRole('button', {name: 'Create'})).toBeAriaDisabled()
             expect(getByText('arrow_drop_down')).toBeInTheDocument()
             expect(onSave).not.toHaveBeenCalled()
         })
@@ -236,9 +234,7 @@ describe('<CampaignFooter />', () => {
                 allowActivate: false,
             })
 
-            expect(getByRole('button', {name: 'Create'})).toHaveAttribute(
-                'aria-disabled'
-            )
+            expect(getByRole('button', {name: 'Create'})).toBeAriaEnabled()
             expect(queryByText('arrow_drop_down')).not.toBeInTheDocument()
         })
 

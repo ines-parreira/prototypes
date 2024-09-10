@@ -39,7 +39,6 @@ describe('DownloadSLAsDataButton', () => {
         )
         const button = getByRole('button')
 
-        expect(button.classList).toContain('isDisabled')
-        expect(button).toHaveAttribute('aria-disabled', 'true')
+        expect(button).toBeAriaDisabled()
     })
 })

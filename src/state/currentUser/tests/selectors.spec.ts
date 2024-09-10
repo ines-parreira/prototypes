@@ -1,18 +1,17 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, List} from 'immutable'
 
-import {UserSettingType} from '../../../config/types/user'
+import {DEFAULT_PREFERENCES} from 'config'
+import {UserSettingType} from 'config/types/user'
+import {user} from 'fixtures/users'
+import {RootState} from 'state/types'
+
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
-import {user} from '../../../fixtures/users'
-import {DEFAULT_PREFERENCES} from '../../../config'
-import {RootState} from '../../types'
 
 describe('current user selectors', () => {
     let state: RootState
 
     beforeEach(() => {
-        expect.extend(immutableMatchers)
         state = {
             currentUser: initialState.mergeDeep(
                 fromJS({

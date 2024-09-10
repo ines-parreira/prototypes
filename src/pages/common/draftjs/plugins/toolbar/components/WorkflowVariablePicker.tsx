@@ -39,7 +39,6 @@ const WorkflowVariablePicker = ({
                 size={size}
                 intent="secondary"
                 ref={anchorEl}
-                disabled={disabled}
                 isDisabled={disabled}
                 onClick={handleToggle}
             >

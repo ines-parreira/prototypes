@@ -168,8 +168,7 @@ describe('<ManageEmbedments', () => {
         renderView({state: defaultState, embedments: [embedments[0]]})
 
         const button = screen.getByRole('button', {name: /save changes/i})
-        //expect Save button to be disabled
-        expect(button).toHaveClass('isDisabled')
+        expect(button).toBeAriaDisabled()
 
         // Change the position of the first embedment
         const select = screen.getByText(/top/i)
@@ -177,9 +176,8 @@ describe('<ManageEmbedments', () => {
         const option = screen.getByText(/bottom/i)
         userEvent.click(option)
 
-        //expect Save button to be enabled
         await waitFor(() => {
-            expect(button).not.toHaveClass('isDisabled')
+            expect(button).toBeAriaEnabled()
         })
 
         userEvent.click(button)

@@ -273,15 +273,13 @@ describe('<OrderLineItemRow/>', () => {
             fireEvent.change(screen.getByRole('spinbutton'), {
                 target: {value: 5},
             })
-            expect(screen.getByText('close').parentNode).toHaveAttribute(
-                'aria-disabled',
-                'true'
-            )
+            expect(
+                screen.getByRole('button', {name: 'close'})
+            ).toBeAriaDisabled()
             jest.advanceTimersByTime(1001)
-            expect(screen.getByText('close').parentNode).toHaveAttribute(
-                'aria-disabled',
-                'false'
-            )
+            expect(
+                screen.getByRole('button', {name: 'close'})
+            ).toBeAriaEnabled()
         })
     })
     describe('on delete line', () => {

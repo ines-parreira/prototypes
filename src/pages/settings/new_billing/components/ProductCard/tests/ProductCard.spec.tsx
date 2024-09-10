@@ -79,6 +79,6 @@ describe('ProductCard', () => {
             screen.getByRole('button', {
                 name: 'lock Subscribe',
             })
-        ).toHaveAttribute('aria-disabled', 'true')
+        ).toBeAriaDisabled()
     })
 })

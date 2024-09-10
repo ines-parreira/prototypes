@@ -56,7 +56,7 @@ describe('<PhoneNumberCreateModalForm/>', () => {
         expect(screen.getByText('test message')).toBeVisible()
         expect(
             screen.getByRole('button', {name: /Create phone number/})
-        ).toHaveAttribute('aria-disabled', 'true')
+        ).toBeAriaDisabled()
     })
 
     it('should not render Alert message when there is none', () => {
@@ -66,7 +66,7 @@ describe('<PhoneNumberCreateModalForm/>', () => {
         expect(screen.queryByText('test message')).toBeNull()
         expect(
             screen.getByRole('button', {name: /Create phone number/})
-        ).not.toHaveAttribute('aria-disabled', 'true')
+        ).not.toBeAriaDisabled()
     })
 
     describe('render()', () => {

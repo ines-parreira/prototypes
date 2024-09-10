@@ -303,9 +303,7 @@ describe('<CampaignsView/>', () => {
 
             const button = getByRole('button', {name: 'Create Campaign'})
             expect(button).toBeInTheDocument()
-            expect(button).toHaveAttribute('aria-disabled')
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            expect(button.getAttribute('aria-disabled')).toBe('true')
+            expect(button).toBeAriaDisabled()
 
             fireEvent.mouseOver(button)
 

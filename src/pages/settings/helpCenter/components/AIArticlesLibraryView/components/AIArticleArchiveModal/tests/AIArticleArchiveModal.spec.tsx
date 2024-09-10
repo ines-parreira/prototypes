@@ -82,10 +82,7 @@ describe('<AIArticleArchiveModal />', () => {
         )
         act(() => ref.current?.open(article))
 
-        expect(getByRole('button', {name: 'Archive'})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(getByRole('button', {name: 'Archive'})).toBeAriaDisabled()
 
         fireEvent.click(getByText(ArchiveReason.AlreadyExists))
 
@@ -121,10 +118,7 @@ describe('<AIArticleArchiveModal />', () => {
         )
         act(() => ref.current?.open(article))
 
-        expect(getByRole('button', {name: 'Archive'})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(getByRole('button', {name: 'Archive'})).toBeAriaDisabled()
 
         fireEvent.click(getByText(ArchiveReason.Other))
 

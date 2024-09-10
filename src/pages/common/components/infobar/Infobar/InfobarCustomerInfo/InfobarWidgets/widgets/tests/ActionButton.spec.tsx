@@ -256,7 +256,7 @@ describe('ActionButton component', () => {
             />
         )
 
-        expect(getByRole('button')).toHaveAttribute('aria-disabled', 'true')
+        expect(getByRole('button')).toBeAriaDisabled()
     })
 
     it('should display enabled button based on context', () => {
@@ -273,7 +273,7 @@ describe('ActionButton component', () => {
             />
         )
 
-        expect(getByRole('button')).toHaveAttribute('aria-disabled', 'false')
+        expect(getByRole('button')).toBeAriaEnabled()
     })
 
     it('should call executeAction when confirming action', () => {

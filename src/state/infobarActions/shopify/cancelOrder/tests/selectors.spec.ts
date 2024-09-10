@@ -1,7 +1,6 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
+import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import {RootState} from 'state/types'
 
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration'
-import {RootState} from '../../../../types'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
@@ -9,7 +8,6 @@ describe('infobarActions.shopify.cancelOrder selectors', () => {
     let state: RootState
 
     beforeEach(() => {
-        expect.extend(immutableMatchers)
         state = {
             infobarActions: {
                 [SHOPIFY_INTEGRATION_TYPE]: {

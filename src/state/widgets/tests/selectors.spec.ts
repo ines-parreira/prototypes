@@ -1,8 +1,7 @@
 import {fromJS} from 'immutable'
-import * as immutableMatchers from 'jest-immutable-matchers'
 
-import {RootState} from '../../types'
-import {WidgetEnvironment} from '../types'
+import {RootState} from 'state/types'
+
 import {
     getContext,
     getSources,
@@ -14,12 +13,9 @@ import {
     hasWidgetsWithContext,
     isEditing,
 } from '../selectors'
+import {WidgetEnvironment} from '../types'
 
 describe('widgets selectors', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     describe('getWidgetsState', () => {
         it('should return widgets state because it exists', () => {
             const state = {

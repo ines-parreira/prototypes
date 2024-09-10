@@ -22,7 +22,7 @@ describe('CancellationSummaryFooter', () => {
             name: 'Confirm Auto-Renewal Cancellation',
         })
         expect(confirmButton).toBeInTheDocument()
-        expect(confirmButton).toHaveClass('isDisabled')
+        expect(confirmButton).toBeAriaDisabled()
     })
 
     it('calls onConfirm when "Confirm" button is clicked and agreement is checked', async () => {
@@ -40,7 +40,7 @@ describe('CancellationSummaryFooter', () => {
 
         fireEvent.click(agreementCheckbox)
         await waitFor(() => {
-            expect(confirmButton).not.toHaveClass('isDisabled')
+            expect(confirmButton).toBeAriaEnabled()
         })
         fireEvent.click(confirmButton)
 
@@ -78,6 +78,6 @@ describe('CancellationSummaryFooter', () => {
         const confirmButton = getByRole('button', {
             name: /Confirm Auto-Renewal Cancellation/,
         })
-        expect(confirmButton).toHaveClass('isDisabled')
+        expect(confirmButton).toBeAriaDisabled()
     })
 })

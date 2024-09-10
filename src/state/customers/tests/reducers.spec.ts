@@ -1,5 +1,4 @@
 import {fromJS} from 'immutable'
-import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {TicketStatus} from 'business/types/ticket'
 import {ViewType} from 'models/view/types'
@@ -11,10 +10,6 @@ import * as types from 'state/customers/constants'
 import {GorgiasAction} from 'state/types'
 
 describe('customers reducers', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     it('initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
             initialState

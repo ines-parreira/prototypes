@@ -105,7 +105,7 @@ describe('<PublicSourcesSection />', () => {
         addButton.click()
 
         const openButton = screen.getByLabelText('Open public URL')
-        expect(openButton).toBeDisabled()
+        expect(openButton).toBeAriaDisabled()
 
         await userEvent.type(screen.getByLabelText('Public URL'), url)
         openButton.click()
@@ -121,9 +121,10 @@ describe('<PublicSourcesSection />', () => {
         const sources = Array.from({length: 10}, (_, i) => createSource(i + 1))
 
         renderComponent({sourceItems: sources})
-        const addButton = screen.getByText('Add URL')
-
-        expect(addButton.closest('button')).toBeDisabled()
+        const addButton = screen.getByRole('button', {
+            name: /Add URL/,
+        })
+        expect(addButton).toBeAriaDisabled()
     })
 
     it('should not add duplicates urls', async () => {
@@ -132,7 +133,9 @@ describe('<PublicSourcesSection />', () => {
 
         renderComponent({sourceItems: sources})
 
-        const addButton = screen.getByText('Add URL')
+        const addButton = screen.getByRole('button', {
+            name: /Add URL/,
+        })
         userEvent.click(addButton)
 
         const input = screen
@@ -141,9 +144,11 @@ describe('<PublicSourcesSection />', () => {
 
         await userEvent.type(input, url)
 
-        const syncButton = screen.getAllByText('Sync URL').pop() as HTMLElement
+        const syncButton = screen
+            .getAllByRole('button', {name: /Sync URL/})
+            .pop()
 
-        expect(syncButton.closest('button')).toBeDisabled()
+        expect(syncButton).toBeAriaDisabled()
         expect(
             screen.getByText('This URL has already been added')
         ).toBeInTheDocument()
@@ -164,7 +169,7 @@ describe('<PublicSourcesSection />', () => {
             .getByText('Sync URL')
             .closest('button') as HTMLElement
 
-        expect(syncButton).toBeDisabled()
+        expect(syncButton).toBeAriaDisabled()
         expect(screen.getByText('Invalid URL')).toBeInTheDocument()
     })
 
@@ -194,7 +199,7 @@ describe('<PublicSourcesSection />', () => {
             .getByText('Sync URL')
             .closest('button') as HTMLElement
 
-        expect(syncButton).toBeDisabled()
+        expect(syncButton).toBeAriaDisabled()
         expect(
             screen.getByText(
                 'URL must include a subpage (ie. yourstore.com/faqs)'
@@ -216,7 +221,7 @@ describe('<PublicSourcesSection />', () => {
             .getByText('Sync URL')
             .closest('button') as HTMLElement
 
-        expect(syncButton).toBeDisabled()
+        expect(syncButton).toBeAriaDisabled()
         expect(
             screen.getByText('URL cannot be a Gorgias Help Center')
         ).toBeInTheDocument()
@@ -236,7 +241,7 @@ describe('<PublicSourcesSection />', () => {
             .getByText('Sync URL')
             .closest('button') as HTMLElement
 
-        expect(syncButton).toBeDisabled()
+        expect(syncButton).toBeAriaDisabled()
         expect(
             screen.getByText('URL cannot be a Gorgias Help Center')
         ).toBeInTheDocument()
@@ -256,7 +261,7 @@ describe('<PublicSourcesSection />', () => {
         await userEvent.type(input, 'https://example.com/faqs')
         userEvent.click(syncButton)
 
-        expect(syncButton).toBeDisabled()
+        expect(syncButton).toBeAriaDisabled()
         expect(input).toBeDisabled()
     })
 })

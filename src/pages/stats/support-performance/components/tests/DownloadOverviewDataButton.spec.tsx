@@ -10,7 +10,7 @@ describe('DownloadOverviewData', () => {
         )
         const button = screen.getByRole('button')
 
-        expect(button).toHaveAttribute('aria-disabled', 'true')
+        expect(button).toBeAriaDisabled()
     })
 
     it('should call onClick', () => {

@@ -106,10 +106,8 @@ describe('AIAgentFeedback', () => {
             </QueryClientProvider>
         )
         expect(
-            screen
-                .getByRole('button', {name: REVIEW_RESPONSE})
-                .classList.contains('isDisabled')
-        ).toBe(true)
+            screen.getByRole('button', {name: REVIEW_RESPONSE})
+        ).toBeAriaDisabled()
     })
 
     it('shows the thumbs up icon as green when the feedback is positive', () => {

@@ -1,15 +1,12 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
-
 import {fromJS} from 'immutable'
-import {GorgiasAction} from '../../types'
+
+import {GorgiasAction} from 'state/types'
+
 import * as types from '../constants'
 import reducer, {initialState} from '../reducers'
 import {Widget} from '../types'
 
 describe('reducers', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
     describe('widgets', () => {
         it('initial state', () => {
             expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(

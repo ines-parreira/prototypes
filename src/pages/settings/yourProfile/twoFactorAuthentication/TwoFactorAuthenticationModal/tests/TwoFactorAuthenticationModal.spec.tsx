@@ -69,10 +69,7 @@ const renderInitialModal = async (baseElement: HTMLElement) => {
 
     // Wait for the loading elements to disappear
     await waitForElementToBeRemoved(() => screen.getAllByText('Loading...'))
-    expect(screen.getByText('Back').parentElement).not.toHaveAttribute(
-        'aria-disabled',
-        'true'
-    )
+    expect(screen.getByText('Back')).toBeAriaEnabled()
 }
 
 const validateInput = async (baseElement: HTMLElement) => {
@@ -116,10 +113,7 @@ const handleInputValidationFailed = async (baseElement: HTMLElement) => {
     fireEvent.change(inputField, {target: {value: '123457'}})
 
     await waitFor(() => {
-        expect(screen.getByText('Continue').parentElement).not.toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(screen.getByText('Continue').parentElement).toBeAriaEnabled()
     })
 
     expect(baseElement).toMatchSnapshot(

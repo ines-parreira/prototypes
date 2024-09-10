@@ -1,18 +1,13 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
-
 import {fromJS} from 'immutable'
 
-import reducer, {initialState} from '../reducers'
+import {UserRole} from 'config/types/user'
+import * as currentUserConstants from 'state/currentUser/constants'
+import {StoreAction} from 'state/types'
+
 import * as constants from '../constants'
-import * as currentUserConstants from '../../currentUser/constants'
-import {StoreAction} from '../../types'
-import {UserRole} from '../../../config/types/user'
+import reducer, {initialState} from '../reducers'
 
 describe('agents reducers', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     it('initial state', () => {
         expect(reducer(undefined, {} as StoreAction)).toEqualImmutable(
             initialState

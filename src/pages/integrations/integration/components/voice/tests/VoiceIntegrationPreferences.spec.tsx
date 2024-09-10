@@ -119,7 +119,7 @@ describe('<VoiceIntegrationPreferences />', () => {
 
             expect(
                 screen.getByRole('button', {name: 'Save changes'})
-            ).toHaveAttribute('aria-disabled', 'true')
+            ).toBeAriaDisabled()
         }
     )
 
@@ -143,7 +143,7 @@ describe('<VoiceIntegrationPreferences />', () => {
                 await waitFor(() => {
                     expect(
                         screen.getByRole('button', {name: 'Save changes'})
-                    ).toHaveAttribute('aria-disabled', 'false')
+                    ).toBeAriaEnabled()
                 })
             })
 
@@ -156,7 +156,7 @@ describe('<VoiceIntegrationPreferences />', () => {
                 await waitFor(() => {
                     expect(
                         screen.getByRole('button', {name: 'Save changes'})
-                    ).toHaveAttribute('aria-disabled', 'false')
+                    ).toBeAriaEnabled()
                 })
             })
 
@@ -171,7 +171,7 @@ describe('<VoiceIntegrationPreferences />', () => {
                 await waitFor(() => {
                     expect(
                         screen.getByRole('button', {name: 'Save changes'})
-                    ).toHaveAttribute('aria-disabled', 'false')
+                    ).toBeAriaEnabled()
                 })
             })
         }
@@ -207,7 +207,7 @@ describe('<VoiceIntegrationPreferences />', () => {
             await waitFor(() => {
                 expect(
                     screen.getByRole('button', {name: 'Save changes'})
-                ).toHaveAttribute('aria-disabled', 'false')
+                ).toBeAriaEnabled()
             })
         }
     )
@@ -244,7 +244,7 @@ describe('<VoiceIntegrationPreferences />', () => {
             await waitFor(() => {
                 expect(
                     screen.getByRole('button', {name: 'Save changes'})
-                ).toHaveAttribute('aria-disabled', 'true')
+                ).toBeAriaDisabled()
             })
         }
     )
@@ -264,7 +264,7 @@ describe('<VoiceIntegrationPreferences />', () => {
         await waitFor(() => {
             expect(
                 screen.getByRole('button', {name: 'Save changes'})
-            ).toHaveAttribute('aria-disabled', 'false')
+            ).toBeAriaEnabled()
         })
     })
 })

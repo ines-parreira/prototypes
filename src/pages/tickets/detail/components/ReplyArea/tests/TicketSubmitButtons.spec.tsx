@@ -151,9 +151,9 @@ describe('<TicketSubmitButtons />', () => {
         )
         const buttons = getAllByRole('button', {name: /Apply Macro/})
         expect(buttons[0]).toBeInTheDocument()
-        expect(buttons[0]).toHaveAttribute('aria-disabled', 'false')
+        expect(buttons[0]).toBeAriaEnabled()
         expect(buttons[1]).toBeInTheDocument()
-        expect(buttons[1]).toHaveAttribute('aria-disabled', 'false')
+        expect(buttons[1]).toBeAriaEnabled()
     })
 
     it('should render buttons with contentless action and message content', () => {
@@ -174,9 +174,9 @@ describe('<TicketSubmitButtons />', () => {
         )
         const buttons = getAllByRole('button', {name: /Send/})
         expect(buttons[0]).toBeInTheDocument()
-        expect(buttons[0]).toHaveAttribute('aria-disabled', 'false')
+        expect(buttons[0]).toBeAriaEnabled()
         expect(buttons[1]).toBeInTheDocument()
-        expect(buttons[1]).toHaveAttribute('aria-disabled', 'false')
+        expect(buttons[1]).toBeAriaEnabled()
     })
 
     it('should not render confirm popover', () => {

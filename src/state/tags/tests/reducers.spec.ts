@@ -1,4 +1,3 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 import {Tag} from '@gorgias/api-queries'
 
@@ -19,10 +18,6 @@ describe('tags reducers', () => {
         {id: 3, name: 'new_fake_name'},
         {id: 4, name: 'other_new_fake_name'},
     ])
-
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
 
     it('initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(

@@ -1,9 +1,8 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map} from 'immutable'
 
-import * as selectors from 'state/currentAccount/selectors'
-import {initialState} from 'state/currentAccount/reducers'
 import * as accountFixtures from 'fixtures/account'
+import {initialState} from 'state/currentAccount/reducers'
+import * as selectors from 'state/currentAccount/selectors'
 import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
 import {RootState} from 'state/types'
 
@@ -27,10 +26,6 @@ describe('current account selectors', () => {
     const defaultState = {
         currentAccount: initialState.mergeDeep(fromJS(accountFixtures.account)),
     } as RootState
-
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
 
     it('getCurrentAccountState', () => {
         expect(selectors.getCurrentAccountState(defaultState)).toEqualImmutable(

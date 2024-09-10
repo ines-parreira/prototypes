@@ -36,9 +36,7 @@ describe('ConvertOnboardingStep', () => {
             <ConvertOnboardingStep {...defaultProps} isDisabled={true} />
         )
 
-        expect(getByRole('button', {name: 'Action'})).toHaveAttribute(
-            'aria-disabled'
-        )
+        expect(getByRole('button', {name: 'Action'})).toBeAriaDisabled()
     })
 
     test('renders completed icon when isCompleted is true', () => {

@@ -93,10 +93,7 @@ describe('<VoiceIntegrationIvr />', () => {
 
         expect(getByText('test actions')).toBeInTheDocument()
         expect(getByText('Save changes')).toBeInTheDocument()
-        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
         expect(getByText('Cancel')).toBeInTheDocument()
     })
 
@@ -104,16 +101,10 @@ describe('<VoiceIntegrationIvr />', () => {
         const {getByText, getByLabelText, getByRole} = renderComponent()
 
         userEvent.click(getByLabelText('None'))
-        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
-            'aria-disabled',
-            'false'
-        )
+        expect(getByRole('button', {name: 'Save changes'})).toBeAriaEnabled()
 
         userEvent.click(getByText('Cancel'))
         expect(getByText('None')).not.toBeChecked()
-        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
     })
 })

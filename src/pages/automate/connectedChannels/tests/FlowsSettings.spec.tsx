@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import React from 'react'
 import {fireEvent, screen, waitFor} from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
 import {createDragDropManager} from 'dnd-core'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
@@ -364,7 +363,7 @@ describe('FlowsSettings', () => {
         )
 
         const addFlowButton = screen.getByRole('button', {name: /add flow/i})
-        expect(addFlowButton).toHaveAttribute('aria-disabled', 'true')
+        expect(addFlowButton).toBeAriaDisabled()
 
         await act(async () => {
             fireEvent.mouseEnter(addFlowButton)
@@ -421,7 +420,7 @@ describe('FlowsSettings', () => {
         )
 
         const addFlowButton = screen.getByRole('button', {name: /add flow/i})
-        expect(addFlowButton).toHaveAttribute('aria-disabled', 'false')
+        expect(addFlowButton).toBeAriaEnabled()
     })
 
     it('should call onChange when a flow is selected', () => {
@@ -620,7 +619,7 @@ describe('FlowsSettings', () => {
         )
 
         const addFlowButton = screen.getByRole('button', {name: /add flow/i})
-        expect(addFlowButton).toHaveAttribute('aria-disabled', 'true')
+        expect(addFlowButton).toBeAriaDisabled()
 
         await act(async () => {
             fireEvent.mouseEnter(addFlowButton)

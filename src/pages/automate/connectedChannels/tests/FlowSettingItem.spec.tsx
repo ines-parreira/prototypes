@@ -1,6 +1,5 @@
 import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
 import {createDragDropManager} from 'dnd-core'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'

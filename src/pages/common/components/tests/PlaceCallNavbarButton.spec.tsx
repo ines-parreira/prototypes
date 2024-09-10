@@ -96,7 +96,7 @@ describe('<PlaceCallNavbarButton />', () => {
         expect(screen.getByTestId('deactivated-view-icon')).toBeInTheDocument()
         expect(
             screen.getByRole('button', {name: /Place call/})
-        ).toHaveAttribute('aria-disabled', 'true')
+        ).toBeAriaDisabled()
     })
 
     it('should close PhoneDevice when device is removed', () => {

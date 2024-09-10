@@ -1,6 +1,6 @@
 import React from 'react'
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+
 import {PreviewChannelButton} from '../PreviewChannelButton'
 import {SelfServiceChannel} from '../../../../automate/common/hooks/useSelfServiceChannels'
 import {TicketChannel} from '../../../../../business/types/ticket'
@@ -27,9 +27,10 @@ describe('<PreviewChannelButton />', () => {
             },
         })
 
-        expect(screen.getByTestId('preview-button')).toHaveClass('isDisabled')
+        const button = screen.getByRole('button', {name: /Test/})
+        expect(button).toBeAriaDisabled()
 
-        userEvent.hover(screen.getByTestId('preview-button'))
+        fireEvent.mouseOver(button)
 
         await waitFor(() =>
             expect(document.querySelector('.tooltip')).toHaveTextContent(

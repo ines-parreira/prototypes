@@ -268,7 +268,7 @@ describe('CancelProductModal: step 2', () => {
             name: 'Continue cancelling',
         })
         expect(continueCancellingButtonElement).toBeInTheDocument()
-        expect(continueCancellingButtonElement).toHaveClass('isDisabled')
+        expect(continueCancellingButtonElement).toBeAriaDisabled()
     })
 
     it('should render the cancellation reasons step with next step unavailable', () => {
@@ -301,7 +301,7 @@ describe('CancelProductModal: step 2', () => {
             name: 'Continue cancelling',
         })
         expect(continueCancellingButtonElement).toBeInTheDocument()
-        expect(continueCancellingButtonElement).toHaveClass('isDisabled')
+        expect(continueCancellingButtonElement).toBeAriaDisabled()
     })
 
     it('should close the modal when the "Keep using helpdesk" button is clicked', () => {
@@ -348,7 +348,7 @@ describe('CancelProductModal: step 2', () => {
         const continueCancellingButtonElement = getByRole('button', {
             name: 'Continue cancelling',
         })
-        expect(continueCancellingButtonElement).not.toHaveClass('isDisabled')
+        expect(continueCancellingButtonElement).toBeAriaEnabled()
 
         continueCancellingButtonElement.click()
         expect(mockSwitchToNextStep).toHaveBeenCalled()
@@ -566,7 +566,7 @@ describe('CancelProductModal: step 4', () => {
             name: 'Confirm Auto-Renewal Cancellation',
         })
         expect(confirmButtonElement).toBeInTheDocument()
-        expect(confirmButtonElement).toHaveClass('isDisabled')
+        expect(confirmButtonElement).toBeAriaDisabled()
 
         const disclaimerElement = getByTestId('disclaimer')
         expect(disclaimerElement).toBeInTheDocument()
@@ -602,7 +602,7 @@ describe('CancelProductModal: step 4', () => {
         act(() => {
             getLastMockCall(DisclaimerMock)[0].onChange(true)
         })
-        expect(confirmButtonElement).not.toHaveClass('isDisabled')
+        expect(confirmButtonElement).toBeAriaEnabled()
 
         fireEvent.click(confirmButtonElement)
         await waitFor(() => {
@@ -634,7 +634,7 @@ describe('CancelProductModal: step 4', () => {
         act(() => {
             getLastMockCall(DisclaimerMock)[0].onChange(true)
         })
-        expect(confirmButtonElement).not.toHaveClass('isDisabled')
+        expect(confirmButtonElement).toBeAriaEnabled()
 
         fireEvent.click(confirmButtonElement)
         await waitFor(() => {

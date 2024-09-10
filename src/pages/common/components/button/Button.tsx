@@ -13,7 +13,9 @@ import ButtonSpinner from './ButtonSpinner'
 
 export type {ButtonIntent, ButtonSize} from './BaseButton'
 
-export type Props = ButtonHTMLAttributes<HTMLButtonElement> &
+// Button is disabled through `aria-disabled` attribute, to test it
+// use patch matcher .toBeAriaEnabled() and .toBeAriaDisabled()
+export type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'> &
     Omit<ComponentProps<typeof BaseButton>, 'children'>
 
 const Button = (

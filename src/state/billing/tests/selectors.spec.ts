@@ -1,4 +1,3 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment'
@@ -40,7 +39,6 @@ describe('billing selectors', () => {
     let state: RootState
 
     beforeEach(() => {
-        expect.extend(immutableMatchers)
         state = {
             currentAccount: fromJS({
                 current_subscription: {

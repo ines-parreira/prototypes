@@ -96,10 +96,10 @@ describe('<AiAgentGuidanceDetail />', () => {
 
         expect(
             screen.getByRole('button', {name: 'Save Changes'})
-        ).toBeDisabled()
+        ).toBeAriaDisabled()
         expect(
             screen.getByRole('button', {name: 'Save And Test'})
-        ).toBeDisabled()
+        ).toBeAriaDisabled()
     })
 
     it('should disable save when name input is empty', () => {
@@ -109,10 +109,10 @@ describe('<AiAgentGuidanceDetail />', () => {
 
         expect(
             screen.getByRole('button', {name: 'Save Changes'})
-        ).toBeDisabled()
+        ).toBeAriaDisabled()
         expect(
             screen.getByRole('button', {name: 'Save And Test'})
-        ).toBeDisabled()
+        ).toBeAriaDisabled()
     })
 
     it('should update guidance article', async () => {

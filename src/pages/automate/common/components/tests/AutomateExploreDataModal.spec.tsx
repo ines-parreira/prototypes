@@ -161,7 +161,7 @@ describe('<AutomateExploreDataModal />', () => {
         expect(agentCost).toHaveValue('****')
         expect(yearly).toHaveAttribute('data-selected', 'true')
         expect(ticketHandleTime).toHaveValue('2m')
-        expect(updateButton).toHaveAttribute('aria-disabled', 'true')
+        expect(updateButton).toBeAriaDisabled()
 
         // Act
         fireEvent.change(agentCost, {
@@ -187,7 +187,7 @@ describe('<AutomateExploreDataModal />', () => {
         } as any)
 
         // Assert
-        expect(updateButton).toHaveAttribute('aria-disabled', 'false')
+        expect(updateButton).toBeAriaEnabled()
 
         // Act
         fireEvent.click(updateButton)
@@ -393,7 +393,7 @@ describe('<AutomateExploreDataModal />', () => {
         const updateButton = screen.getByRole('button', {name: 'Update'})
 
         // Assert
-        expect(updateButton).toHaveAttribute('aria-disabled', 'true')
+        expect(updateButton).toBeAriaDisabled()
 
         // Act
 
@@ -402,7 +402,7 @@ describe('<AutomateExploreDataModal />', () => {
         })
 
         // Assert
-        expect(updateButton).toHaveAttribute('aria-disabled', 'false')
+        expect(updateButton).toBeAriaEnabled()
 
         // Act
         fireEvent.change(screen.getByTestId('agent-cost'), {
@@ -410,6 +410,6 @@ describe('<AutomateExploreDataModal />', () => {
         })
 
         // Assert
-        expect(updateButton).toHaveAttribute('aria-disabled', 'true')
+        expect(updateButton).toBeAriaDisabled()
     })
 })

@@ -1,5 +1,4 @@
 import React from 'react'
-
 import {Col, Row} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
@@ -19,12 +18,8 @@ export const StatusCheck = ({
     onCheckStatus,
     status,
 }: Props): JSX.Element | null => {
-    if (!status) {
-        return null
-    }
-
-    return (
-        <div data-testid="domain-status-check">
+    return status ? (
+        <>
             <Button
                 className="mr-4"
                 isDisabled={isLoading}
@@ -49,6 +44,6 @@ export const StatusCheck = ({
                 NOTE: It may take up to a few hours for DNS changes to take
                 effect.
             </span>
-        </div>
-    )
+        </>
+    ) : null
 }

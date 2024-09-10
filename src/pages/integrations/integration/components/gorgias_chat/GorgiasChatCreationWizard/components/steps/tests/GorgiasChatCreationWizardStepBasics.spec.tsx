@@ -177,10 +177,10 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
             </MemoryRouter>
         )
 
-        expect(getByRole('button', {name: 'Cancel'})).toHaveClass('isDisabled')
-        expect(getByRole('button', {name: /Create & Customize/})).toHaveClass(
-            'isDisabled'
-        )
+        expect(getByRole('button', {name: 'Cancel'})).toBeAriaDisabled()
+        expect(
+            getByRole('button', {name: /Create & Customize/})
+        ).toBeAriaDisabled()
     })
 
     it('disables buttons when submitting update form', () => {
@@ -201,8 +201,8 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         expect(
             getByRole('button', {name: 'Save & Customize Later'})
-        ).toHaveClass('isDisabled')
-        expect(getByRole('button', {name: /Next/})).toHaveClass('isDisabled')
+        ).toBeAriaDisabled()
+        expect(getByRole('button', {name: /Next/})).toBeAriaDisabled()
     })
 
     it('should include languages when creating chat', () => {

@@ -106,7 +106,6 @@ export const PreviewChannelButton = ({
                 onClick={onPreview}
                 id={TOOLTIP_TARGET_ID}
                 isDisabled={!!disableMessage}
-                data-testid="preview-button"
             >
                 <ButtonIconLabel icon="open_in_new" position="right">
                     Test

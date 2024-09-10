@@ -181,7 +181,6 @@ export const PublicSourcesSection = ({
                     intent="secondary"
                     onClick={onAddClick}
                     isDisabled={isLimitReached}
-                    disabled={isLimitReached}
                 >
                     <ButtonIconLabel icon="add">Add URL</ButtonIconLabel>
                 </Button>

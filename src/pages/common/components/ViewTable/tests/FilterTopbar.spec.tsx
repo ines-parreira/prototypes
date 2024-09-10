@@ -497,10 +497,9 @@ describe('<FilterTopbar />', () => {
 
         fireEvent.click(getByText(/Create view/i))
         await waitFor(() => {
-            expect(getByRole('button', {name: /Create view/i})).toHaveAttribute(
-                'aria-disabled',
-                'false'
-            )
+            expect(
+                getByRole('button', {name: /Create view/i})
+            ).toBeAriaEnabled()
         })
 
         expect(viewCreatedMock).not.toHaveBeenCalled()
@@ -620,12 +619,12 @@ describe('<FilterTopbar />', () => {
 
         expect(
             getByTitle('Export all view tickets') as HTMLButtonElement
-        ).toHaveAttribute('aria-disabled', 'false')
+        ).toBeAriaEnabled()
 
         fireEvent.click(getByTitle('Export all view tickets'))
         expect(
             getByTitle('Export all view tickets') as HTMLButtonElement
-        ).toHaveAttribute('aria-disabled', 'true')
+        ).toBeAriaDisabled()
 
         expect(createJobMock).toHaveBeenCalledWith(
             fromJS(createViewWithFilters(ticketChannelEqualsEmailFilter)),
@@ -635,7 +634,7 @@ describe('<FilterTopbar />', () => {
         await waitFor(() => {
             expect(
                 getByTitle('Export all view tickets') as HTMLButtonElement
-            ).toHaveAttribute('aria-disabled', 'false')
+            ).toBeAriaEnabled()
         })
     })
 

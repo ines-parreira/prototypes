@@ -1006,7 +1006,6 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
           <button
             aria-disabled="true"
             class="wrapper w-100 fill primary medium isDisabled"
-            disabled=""
             type="button"
           >
             <svg
@@ -1233,7 +1232,6 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
           <button
             aria-disabled="true"
             class="wrapper w-100 fill primary medium isDisabled"
-            disabled=""
             type="button"
           >
             <svg

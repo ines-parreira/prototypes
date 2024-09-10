@@ -113,7 +113,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             const {getByRole} = helpers
             const saveButton = getByRole('button', {name: 'Save changes'})
 
-            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+            expect(saveButton).toBeAriaDisabled()
 
             if (isBoolean(selector.newValue)) {
                 fireEvent.click(selector.selector(helpers))
@@ -123,7 +123,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 })
             }
 
-            expect(saveButton).toHaveAttribute('aria-disabled', 'false')
+            expect(saveButton).toBeAriaEnabled()
 
             if (isBoolean(selector.newValue)) {
                 fireEvent.click(selector.selector(helpers))
@@ -133,7 +133,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 })
             }
 
-            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+            expect(saveButton).toBeAriaDisabled()
         }
     )
     it.each([IntegrationType.Gmail, IntegrationType.Outlook])(
@@ -169,11 +169,11 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 deliverabilitySettingsRadioButtons[0]
             const useInternalProviderRadioButton =
                 deliverabilitySettingsRadioButtons[1]
-            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+            expect(saveButton).toBeAriaDisabled()
             fireEvent.click(useInternalProviderRadioButton)
-            expect(saveButton).toHaveAttribute('aria-disabled', 'false')
+            expect(saveButton).toBeAriaEnabled()
             fireEvent.click(useDefaultProviderRadioButton)
-            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+            expect(saveButton).toBeAriaDisabled()
         }
     )
 
@@ -208,7 +208,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             const {getByRole} = helpers
             const saveButton = getByRole('button', {name: 'Save changes'})
 
-            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+            expect(saveButton).toBeAriaDisabled()
 
             if (isBoolean(selector.newValue)) {
                 fireEvent.click(selector.selector(helpers))
@@ -218,7 +218,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 })
             }
 
-            expect(saveButton).toHaveAttribute('aria-disabled', 'false')
+            expect(saveButton).toBeAriaEnabled()
 
             if (isBoolean(selector.newValue)) {
                 fireEvent.click(selector.selector(helpers))
@@ -228,7 +228,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 })
             }
 
-            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+            expect(saveButton).toBeAriaDisabled()
         }
     )
 
@@ -251,7 +251,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         })
         const saveButton = getByRole('button', {name: 'Save changes'})
 
-        expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+        expect(saveButton).toBeAriaDisabled()
 
         if (isBoolean('Some New Name')) {
             fireEvent.click(displayNameInput)
@@ -261,7 +261,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             })
         }
 
-        expect(saveButton).toHaveAttribute('aria-disabled', 'false')
+        expect(saveButton).toBeAriaEnabled()
 
         if (isBoolean('Some New Name')) {
             fireEvent.click(displayNameInput)
@@ -271,7 +271,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             })
         }
 
-        expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+        expect(saveButton).toBeAriaDisabled()
     })
 
     it('should not allow editing the display name and provide a tooltip [outlook]', async () => {

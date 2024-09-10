@@ -173,7 +173,7 @@ describe('CustomerTimelineButton', () => {
 
         expect(
             screen.getByRole('button', {name: /Customer timeline/})
-        ).toHaveAttribute('aria-disabled', 'true')
+        ).toBeAriaDisabled()
         // Secondary button -> there aren't open tickets
         expect(screen.getByRole('button')).toHaveClass('secondary')
 
@@ -211,7 +211,7 @@ describe('CustomerTimelineButton', () => {
 
         expect(
             screen.getByRole('button', {name: /Customer timeline/})
-        ).toHaveAttribute('aria-disabled', 'true')
+        ).toBeAriaDisabled()
         // Secondary button -> there aren't open tickets
         expect(screen.getByRole('button')).toHaveClass('secondary')
 

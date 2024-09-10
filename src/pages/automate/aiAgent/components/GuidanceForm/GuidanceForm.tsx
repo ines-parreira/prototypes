@@ -196,7 +196,6 @@ export const GuidanceForm = ({
                 <div className={css.btnGroup}>
                     <Button
                         isDisabled={isSubmitDisabled}
-                        disabled={isSubmitDisabled}
                         isLoading={isLoading}
                         onClick={onSave}
                     >
@@ -207,7 +206,6 @@ export const GuidanceForm = ({
                     <Button
                         intent="secondary"
                         isDisabled={isSubmitDisabled}
-                        disabled={isSubmitDisabled}
                         isLoading={isLoading}
                         onClick={onSaveAndTest}
                     >

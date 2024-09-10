@@ -1,4 +1,3 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map, List} from 'immutable'
 import {UserRole} from 'config/types/user'
 
@@ -21,8 +20,6 @@ describe('agents selectors', () => {
     let state: RootState
 
     beforeEach(() => {
-        expect.extend(immutableMatchers)
-
         state = {
             currentUser: (currentUserInitialState as Map<any, any>).mergeDeep(
                 (fromJS(userFixtures.user) as Map<any, any>).set('id', 2)

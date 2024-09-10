@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, screen, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import {User, UserRole} from 'config/types/user'
@@ -32,7 +32,7 @@ describe('Footer', () => {
 
         expect(
             screen.getByRole('button', {name: 'Create user'})
-        ).toHaveAttribute('aria-disabled', 'true')
+        ).toBeAriaDisabled()
     })
 
     it('should not disable submit button in edit mode if something is different', () => {
@@ -52,7 +52,7 @@ describe('Footer', () => {
 
         expect(
             screen.getByRole('button', {name: 'Save Changes'})
-        ).not.toHaveAttribute('aria-disabled', 'true')
+        ).not.toBeAriaDisabled()
         expect(screen.getByText('Cancel'))
     })
 
@@ -73,7 +73,7 @@ describe('Footer', () => {
 
         expect(
             screen.getByRole('button', {name: 'Save Changes'})
-        ).toHaveAttribute('aria-disabled', 'true')
+        ).toBeAriaDisabled()
     })
 
     it('should disable submit button if viewing account owner and show a tooltip', async () => {
@@ -94,8 +94,8 @@ describe('Footer', () => {
         )
 
         const submitButton = screen.getByRole('button', {name: 'Save Changes'})
-        expect(submitButton).toHaveAttribute('aria-disabled', 'true')
-        userEvent.hover(submitButton)
+        expect(submitButton).toBeAriaDisabled()
+        fireEvent.mouseOver(submitButton)
         await waitFor(() => {
             expect(screen.getByText(/cannot edit/)).toBeVisible()
         })
@@ -117,10 +117,10 @@ describe('Footer', () => {
             />
         )
 
-        const deleteButton = screen.getByText('Delete user').parentElement
-        expect(deleteButton).toHaveAttribute('aria-disabled', 'true')
+        const deleteButton = screen.getByRole('button', {name: /Delete user/})
+        expect(deleteButton).toBeAriaDisabled()
 
-        userEvent.hover(deleteButton!)
+        userEvent.hover(deleteButton)
         await waitFor(() => {
             expect(screen.getByText(/to delete/i)).toBeVisible()
         })

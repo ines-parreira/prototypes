@@ -306,7 +306,7 @@ describe('ABGroupView', () => {
             fireEvent(editor, event)
         })
 
-        expect(createBtn).toHaveAttribute('aria-disabled', 'false')
+        expect(createBtn).toBeAriaEnabled()
 
         act(() => {
             userEvent.click(createBtn)
@@ -376,10 +376,11 @@ describe('ABGroupView', () => {
 
         deleteButtons.forEach((element, idx) => {
             // First element is 'control version'
-            expect(element).toHaveAttribute(
-                'aria-disabled',
-                idx === 0 ? 'true' : 'false'
-            )
+            if (idx === 0) {
+                expect(element).toBeAriaDisabled()
+            } else {
+                expect(element).toBeAriaEnabled()
+            }
         })
 
         userEvent.click(deleteButtons[2])

@@ -86,7 +86,6 @@ export const ArticleLanguageSelect = ({
             <div className={css.actions}>
                 <ActionButton
                     isDisabled={isOptionDisabled}
-                    disabled={isOptionDisabled}
                     help="Add language version"
                     onClick={() => handleOnSelect(option)}
                 >

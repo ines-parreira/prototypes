@@ -53,7 +53,7 @@ describe('<VariantsList />', () => {
         expect(getByText('Control Variant')).toBeInTheDocument()
 
         const deleteBtn = getByTestId('delete-icon-button')
-        expect(deleteBtn).toHaveAttribute('aria-disabled', 'true')
+        expect(deleteBtn).toBeAriaDisabled()
 
         const duplicateBtn = getByTestId('duplicate-icon-button')
         userEvent.click(duplicateBtn)
@@ -85,17 +85,18 @@ describe('<VariantsList />', () => {
 
         deleteButtons.forEach((element, idx) => {
             // First element is 'control version'
-            expect(element).toHaveAttribute(
-                'aria-disabled',
-                idx === 0 ? 'true' : 'false'
-            )
+            if (idx === 0) {
+                expect(element).toBeAriaDisabled()
+            } else {
+                expect(element).toBeAriaEnabled()
+            }
         })
 
         const duplicateButtons = getAllByTestId('duplicate-icon-button')
         expect(duplicateButtons).toHaveLength(3)
 
         duplicateButtons.forEach((element) => {
-            expect(element).toHaveAttribute('aria-disabled', 'true')
+            expect(element).toBeAriaDisabled()
         })
     })
 

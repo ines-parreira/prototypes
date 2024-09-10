@@ -1,4 +1,3 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map, List} from 'immutable'
 
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
@@ -37,7 +36,6 @@ describe('ticket selectors', () => {
     let state: RootState
 
     beforeEach(() => {
-        expect.extend(immutableMatchers)
         state = {
             ticket: initialState.mergeDeep({
                 customer: {

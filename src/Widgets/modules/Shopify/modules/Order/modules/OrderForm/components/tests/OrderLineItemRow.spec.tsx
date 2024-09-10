@@ -342,13 +342,7 @@ describe('<OrderLineItemRow/>', () => {
         )
 
         expect(screen.getByRole('textbox')).toBeDisabled()
-        expect(screen.getByRole('button', {name: '▼'})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
-        expect(screen.getByRole('button', {name: '▲'})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(screen.getByRole('button', {name: '▼'})).toBeAriaDisabled()
+        expect(screen.getByRole('button', {name: '▲'})).toBeAriaDisabled()
     })
 })

@@ -89,10 +89,7 @@ describe('<PhoneTicketSubmitButtons/>', () => {
                 </Provider>
             )
 
-            expect(getByRole('button', {name: 'Call'})).toHaveAttribute(
-                'aria-disabled',
-                'true'
-            )
+            expect(getByRole('button', {name: 'Call'})).toBeAriaDisabled()
         }
     )
 
@@ -107,9 +104,6 @@ describe('<PhoneTicketSubmitButtons/>', () => {
             </Provider>
         )
 
-        expect(getByRole('button', {name: 'Call'})).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(getByRole('button', {name: 'Call'})).toBeAriaDisabled()
     })
 })

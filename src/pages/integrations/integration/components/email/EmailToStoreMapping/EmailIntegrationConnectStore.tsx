@@ -134,7 +134,7 @@ const EmailIntegrationConnectStore = ({integration}: Props) => {
                             fillStyle="ghost"
                             intent="secondary"
                             onClick={handleModalOpen}
-                            disabled={isDeleting}
+                            isDisabled={isDeleting}
                         >
                             Change
                         </Button>
@@ -168,7 +168,7 @@ const EmailIntegrationConnectStore = ({integration}: Props) => {
                 <Button
                     intent="secondary"
                     onClick={handleModalOpen}
-                    disabled={isLoading}
+                    isDisabled={isLoading}
                     isLoading={isLoading}
                 >
                     Connect

@@ -224,7 +224,7 @@ describe('<ChangePassword />', () => {
                 expect(getAllByText('Please fill out this field.').length).toBe(
                     3
                 )
-                expect(button.className).toContain('isDisabled')
+                expect(button).toBeAriaDisabled()
             })
         })
 

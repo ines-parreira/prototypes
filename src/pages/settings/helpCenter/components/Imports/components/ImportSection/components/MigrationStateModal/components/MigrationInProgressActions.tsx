@@ -28,7 +28,7 @@ const MigrationInProgressActions: React.FC<Props> = ({
                 animated
             />
             <div className="mb-4"></div>
-            <Button className="w-100" disabled isLoading>
+            <Button className="w-100" isDisabled isLoading>
                 Loading
             </Button>
         </>

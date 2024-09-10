@@ -1,4 +1,3 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, List, Map} from 'immutable'
 
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
@@ -60,10 +59,6 @@ jest.mock('../helpers', () => {
 })
 
 describe('ticket reducers', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     it('initial state', () => {
         expect(
             reducer(undefined, {} as unknown as GorgiasAction)

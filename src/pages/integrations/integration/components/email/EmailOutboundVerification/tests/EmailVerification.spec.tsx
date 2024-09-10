@@ -184,7 +184,7 @@ describe('EmailVerification', () => {
                 expect(status).toBeFalsy()
                 expect(
                     screen.getByRole('button', {name: /verify single sender/i})
-                ).toHaveAttribute('aria-disabled', 'true')
+                ).toBeAriaDisabled()
             }
         )
     })

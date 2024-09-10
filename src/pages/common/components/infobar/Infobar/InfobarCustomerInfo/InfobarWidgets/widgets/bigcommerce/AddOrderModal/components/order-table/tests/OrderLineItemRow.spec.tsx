@@ -170,7 +170,7 @@ describe('<OrderLineItemRow/>', () => {
         await waitFor(() => {
             expect(
                 screen.getByRole('button', {name: /Apply/i})
-            ).not.toHaveAttribute('aria-disabled', 'true')
+            ).toBeAriaEnabled()
         })
 
         userEvent.click(screen.getByRole('button', {name: /Apply/i}))

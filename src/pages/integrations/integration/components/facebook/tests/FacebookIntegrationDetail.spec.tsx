@@ -598,10 +598,8 @@ describe('<FacebookIntegrationDetail/>', () => {
             )
 
             expect(
-                screen
-                    .getByRole('button', {name: 'Save changes'})
-                    .getAttribute('aria-disabled')
-            ).toBe('true')
+                screen.getByRole('button', {name: 'Save changes'})
+            ).toBeAriaDisabled()
         }
     )
 

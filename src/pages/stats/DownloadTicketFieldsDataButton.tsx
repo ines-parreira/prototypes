@@ -52,7 +52,7 @@ export const DownloadTicketFieldsDataButton = ({
                 )
             }}
             title={DOWNLOAD_BUTTON_TITLE}
-            disabled={isLoading}
+            isDisabled={isLoading}
         >
             <ButtonIconLabel icon="file_download">
                 {DOWNLOAD_DATA_BUTTON_LABEL}

@@ -167,7 +167,7 @@ describe('CallTransferDropdown', () => {
 
         expect(
             screen.getByRole('button', {name: /transfer call/i})
-        ).toHaveAttribute('aria-disabled', 'true')
+        ).toBeAriaDisabled()
 
         const agent1 = screen.getByRole('option', {
             name: /agent 1/i,
@@ -175,7 +175,7 @@ describe('CallTransferDropdown', () => {
         fireEvent.click(agent1)
         expect(
             screen.getByRole('button', {name: /transfer call/i})
-        ).not.toHaveAttribute('aria-disabled', 'true')
+        ).toBeAriaEnabled()
     })
 
     it('calls the onTransferInitiated function when the transfer button is clicked', () => {

@@ -53,7 +53,6 @@ export const GuidanceHeader = ({
                     {displayCreateGuidanceButton ? (
                         <Button
                             isDisabled={isGuidanceArticleLimitReached}
-                            disabled={isGuidanceArticleLimitReached}
                             onClick={onCreateGuidanceClick}
                             intent="secondary"
                             id={CREATE_GUIDANCE_BUTTON_ID}
@@ -64,7 +63,6 @@ export const GuidanceHeader = ({
                         <>
                             <Button
                                 isDisabled={isGuidanceArticleLimitReached}
-                                disabled={isGuidanceArticleLimitReached}
                                 onClick={onCreateGuidanceClick}
                                 intent="secondary"
                                 id={CREATE_GUIDANCE_BUTTON_ID}
@@ -79,7 +77,6 @@ export const GuidanceHeader = ({
                             ) : (
                                 <Button
                                     isDisabled={isGuidanceArticleLimitReached}
-                                    disabled={isGuidanceArticleLimitReached}
                                     onClick={onCreateFromTemplate}
                                 >
                                     Create From Template

@@ -1,15 +1,11 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import {RootState} from '../../types'
+import {RootState} from 'state/types'
+
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
 describe('selectors', () => {
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
     describe('tickets', () => {
         let state: RootState
 
