@@ -14,6 +14,7 @@ import {
     WHATSAPP_VARIABLE_REGEX,
 } from 'pages/integrations/integration/components/whatsapp/utils'
 import {canLeaveInternalNote} from 'tickets/common/utils'
+import {AttachmentEnum} from 'common/types'
 import {MacroActions, NewMessage} from './types'
 
 export function transformToInternalNote(
@@ -210,4 +211,16 @@ export const applyExternalTemplateAction = (
         body_html,
         body_text,
     }
+}
+
+export const getProductCardAttachmentsDeletionOrder = (
+    attachments: Map<any, any>[]
+): number[] => {
+    const indices = []
+    for (let index = attachments.length - 1; index >= 0; index--) {
+        if (attachments[index].get('content_type') === AttachmentEnum.Product) {
+            indices.push(index)
+        }
+    }
+    return indices
 }

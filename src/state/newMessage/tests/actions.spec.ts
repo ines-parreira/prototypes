@@ -50,7 +50,11 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
-import {NEW_MESSAGE_SUBMIT_TICKET_ERROR} from 'state/newMessage/constants'
+import {
+    NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
+    NEW_MESSAGE_DELETE_ATTACHMENT,
+    NEW_MESSAGE_SUBMIT_TICKET_ERROR,
+} from 'state/newMessage/constants'
 import client from 'models/api/resources'
 import {SearchType} from 'models/search/types'
 import {SEARCH_ENDPOINT} from 'models/search/resources'
@@ -66,6 +70,7 @@ import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import {AccountSettingType} from 'state/currentAccount/types'
 
 import {AttachmentEnum} from 'common/types'
+import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {getReplyAreaStateSnapshot} from './testUtils'
 
 type MockedRootState = {
@@ -2002,6 +2007,76 @@ describe('actions', () => {
 
             setImmediate(() => {
                 expect(store.getActions()).toMatchSnapshot()
+                done()
+            })
+        })
+    })
+
+    describe('add product recommendation attachment', () => {
+        const discountAttachment = {
+            content_type: AttachmentEnum.DiscountOffer,
+        }
+        const productAttachment = {
+            content_type: AttachmentEnum.Product,
+            name: 'bar',
+            size: 0,
+            url: 'https://cdn.shopify.com/s/files/1/1781/7573/products/candy.jpg?v=1575311784',
+            extra: {
+                product_id: 1,
+                variant_id: 2,
+                price: '1.00',
+                variant_name: 'baz',
+                product_link:
+                    'https://storegorgias3.myshopify.com/products/bonbon-acidule?variant=31128766349335',
+                currency: 'USD',
+                featured_image:
+                    'https://cdn.shopify.com/s/files/1/1781/7573/products/candy.jpg?v=1575311784',
+            },
+        } as const
+
+        const productRecommendationAttachment = {
+            content_type: AttachmentEnum.ProductRecommendation,
+            name: 'Similar Products You Have Seen',
+            extra: {
+                id: '01J4VH71YJ704QXCP4WDST3ZT3',
+                scenario: ProductRecommendationScenario.SimilarSeen,
+            },
+        } as const
+
+        it('should dispatch NEW_MESSAGE_DELETE_ATTACHMENT of product attachments on adding product recommendation attachment', (done) => {
+            store = mockStore({
+                newMessage: initialState.setIn(
+                    ['newMessage', 'attachments'],
+                    fromJS([
+                        productAttachment,
+                        discountAttachment,
+                        productAttachment,
+                    ])
+                ),
+                ticket: ticketInitialState.set('id', 1),
+            })
+            store.dispatch(
+                actions.addAttachment(
+                    ticketInitialState.set('id', 1),
+                    productRecommendationAttachment
+                )
+            )
+
+            setImmediate(() => {
+                expect(store.getActions()).toEqual([
+                    {
+                        type: NEW_MESSAGE_DELETE_ATTACHMENT,
+                        index: 2,
+                    },
+                    {
+                        type: NEW_MESSAGE_DELETE_ATTACHMENT,
+                        index: 0,
+                    },
+                    {
+                        type: NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
+                        resp: [productRecommendationAttachment],
+                    },
+                ])
                 done()
             })
         })

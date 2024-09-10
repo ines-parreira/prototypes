@@ -16,7 +16,7 @@ import {
     fetchTicketReplyMacro,
     triggerTicketFieldsRefreshAndInvalidation,
 } from 'common/state'
-import {GenericAttachment} from 'common/types'
+import {AttachmentEnum, GenericAttachment} from 'common/types'
 import {isImmutable, uploadFiles} from 'common/utils'
 import * as ticketConstants from 'state/ticket/constants'
 import {notify} from 'state/notifications/actions'
@@ -112,6 +112,7 @@ import {
 } from './errors'
 import {
     applyExternalTemplateAction,
+    getProductCardAttachmentsDeletionOrder,
     transformToInternalNote,
     upsertNewMessageAction,
 } from './utils'
@@ -232,6 +233,18 @@ export const addAttachment =
 
         if (ticket.get('id') !== _ticket.get('id')) {
             return Promise.resolve()
+        }
+
+        if (attachment.content_type === AttachmentEnum.ProductRecommendation) {
+            const indicesToDelete = getProductCardAttachmentsDeletionOrder(
+                selectors.getNewMessageAttachments(state).toArray() as Map<
+                    any,
+                    any
+                >[]
+            )
+            indicesToDelete.forEach((index) =>
+                dispatch(deleteAttachment(index))
+            )
         }
 
         dispatch({
@@ -495,20 +508,15 @@ export const prepare =
             sourceType !== TicketMessageSourceType.Chat &&
             sourceType !== TicketMessageSourceType.InternalNote
         ) {
-            const currentAttachments = selectors.getNewMessageAttachments(state)
-            const currentAttachmentsArray =
-                currentAttachments.toArray() as Array<Map<any, any>>
-            for (
-                let index = currentAttachmentsArray.length - 1;
-                index >= 0;
-                index--
-            ) {
-                if (
-                    currentAttachmentsArray[index].get('content_type') ===
-                    ShopifyProductCardContentType
-                )
-                    dispatch(deleteAttachment(index))
-            }
+            const indicesToDelete = getProductCardAttachmentsDeletionOrder(
+                selectors.getNewMessageAttachments(state).toArray() as Map<
+                    any,
+                    any
+                >[]
+            )
+            indicesToDelete.forEach((index) =>
+                dispatch(deleteAttachment(index))
+            )
         }
 
         //Clean up videos for unsupported sources.

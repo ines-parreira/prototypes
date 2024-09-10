@@ -218,14 +218,17 @@ export const CampaignMessage = memo(
             const productAttachments = attachments.filter((att) =>
                 attachmentIsProduct(toJS(att))
             )
-            if (productAttachments.size < 5) {
+            if (
+                productAttachments.size < 5 &&
+                !anyProductRecommendationAttached
+            ) {
                 actions.push(ActionName.ProductPicker)
             }
 
             actions.push(ActionName.Video)
 
             return actions
-        }, [attachments, isConvertSubscriber])
+        }, [attachments, anyProductRecommendationAttached, isConvertSubscriber])
 
         const canAddUtm = useCanAddUtm(isConvertSubscriber)
         return (
