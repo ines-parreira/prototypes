@@ -23,8 +23,6 @@ export const NEW_NAV_LABEL = 'NEW'
 export default function StatsNavbarView() {
     const isHelpCenterAnalyticsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
-    const isSLAsEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsSLAs]
     const isAutoQAEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
     const liveCallQueueEnabled: boolean | undefined =
@@ -182,21 +180,19 @@ export default function StatsNavbarView() {
                             </NavbarLink>
                         </div>
                     )}
-                    {!!isSLAsEnabled && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
-                            )}
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                    >
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/slas"
                         >
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/slas"
-                            >
-                                SLAs
-                            </NavbarLink>
-                        </div>
-                    )}
+                            SLAs
+                        </NavbarLink>
+                    </div>
                     {!!isAutoQAEnabled && (
                         <div
                             className={classNames(

@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 
 import {appQueryClient} from 'api/queryClient'
 
-import ServiceLevelAgreements from 'pages/stats/sla/ServiceLevelAgreements'
+import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 
 import {reportingKeys} from 'models/reporting/queries'
 import {

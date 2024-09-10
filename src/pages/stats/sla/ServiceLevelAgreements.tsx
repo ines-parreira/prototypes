@@ -21,7 +21,7 @@ import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 export const SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'SLAs'
 const OVERVIEW_SECTION_LABEL = 'Overview'
 
-export default function ServiceLevelAgreements() {
+export function ServiceLevelAgreements() {
     const getGridCellSize = useGridSize()
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]

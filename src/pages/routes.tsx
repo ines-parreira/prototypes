@@ -177,7 +177,7 @@ import {
     CampaignTemplateCustomizeLibraryView,
 } from 'pages/convert/campaigns/containers/CampaignTemplateCustomizeView'
 import PanelLayout from 'pages/PanelLayout'
-import ServiceLevelAgreements from 'pages/stats/sla/ServiceLevelAgreements'
+import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
 import {AiAgentGuidanceContainer} from 'pages/automate/aiAgent/AiAgentGuidanceContainer'
 import {AiAgentGuidanceNewContainer} from 'pages/automate/aiAgent/AiAgentGuidanceNewContainer'
@@ -492,8 +492,6 @@ export function StatsRoutes() {
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
 
-    const isSLAsEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsSLAs]
     const isAutoQAEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
     const isLiveVoiceEnabled: boolean | undefined =
@@ -603,18 +601,16 @@ export function StatsRoutes() {
                         />
                     )}
                 />
-                {!!isSLAsEnabled && (
-                    <Route
-                        exact
-                        path={`${path}/slas`}
-                        render={() => (
-                            <App
-                                content={ServiceLevelAgreements}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                )}
+                <Route
+                    exact
+                    path={`${path}/slas`}
+                    render={() => (
+                        <App
+                            content={ServiceLevelAgreements}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
                 {!!isAutoQAEnabled && (
                     <Route
                         exact

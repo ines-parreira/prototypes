@@ -12,7 +12,8 @@ import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/Achiev
 import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
 import {RootState, StoreDispatch} from 'state/types'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import ServiceLevelAgreements, {
+import {
+    ServiceLevelAgreements,
     SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
 } from 'pages/stats/sla/ServiceLevelAgreements'
 import {assumeMock} from 'utils/testing'

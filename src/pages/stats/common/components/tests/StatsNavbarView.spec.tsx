@@ -56,7 +56,6 @@ describe('StatsNavbarView', () => {
     beforeEach(() => {
         mockFlags({
             [FeatureFlagKey.AnalyticsAutoQA]: false,
-            [FeatureFlagKey.AnalyticsSLAs]: false,
             [FeatureFlagKey.LiveCallQueue]: false,
         })
     })
@@ -149,9 +148,6 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Service Level Agreements', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsSLAs]: true,
-        })
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>

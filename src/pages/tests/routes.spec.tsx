@@ -5,6 +5,7 @@ import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 import LiveOverview from 'pages/stats/LiveOverview'
 import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
 
@@ -86,6 +87,8 @@ jest.mock(
 )
 jest.mock('pages/stats/support-performance/channels/ChannelsReport')
 const ChannelsReportMock = assumeMock(ChannelsReport)
+jest.mock('pages/stats/sla/ServiceLevelAgreements')
+const ServiceLevelAgreementsMock = assumeMock(ServiceLevelAgreements)
 jest.mock('pages/stats/LiveOverview')
 const LiveOverviewMock = assumeMock(LiveOverview)
 
@@ -99,6 +102,7 @@ describe('<Routes/>', () => {
         mockHistory.replace('/app')
 
         ChannelsReportMock.mockImplementation(() => <div />)
+        ServiceLevelAgreementsMock.mockImplementation(() => <div />)
         LiveOverviewMock.mockImplementation(() => <div />)
     })
 
@@ -349,6 +353,18 @@ describe('<Routes/>', () => {
             )
 
             expect(ChannelsReportMock).toHaveBeenCalled()
+        })
+
+        it('should render SLAs page', () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <MemoryRouter initialEntries={['/app/stats/slas']}>
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>
+            )
+
+            expect(ServiceLevelAgreementsMock).toHaveBeenCalled()
         })
     })
 })
