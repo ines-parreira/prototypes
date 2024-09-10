@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import React, {useState, useCallback} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {useQueryClient} from '@tanstack/react-query'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
@@ -141,7 +141,7 @@ const ContactFormCreateView = ({
                     </Breadcrumb>
                 }
             />
-            <Container fluid className={settingsCss.pageContainer}>
+            <div className={settingsCss.pageContainer}>
                 <div
                     className={classnames(
                         contactFormCss.sectionContainer,
@@ -196,7 +196,7 @@ const ContactFormCreateView = ({
                         </Button>
                     </div>
                 </div>
-            </Container>
+            </div>
         </div>
     )
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
-import {Container} from 'reactstrap'
+
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -42,7 +42,7 @@ const ManageContactForms = ({
 
     if (!isLoading && contactForms.length === 0) {
         return (
-            <Container fluid className={settingsCss.pageContainer}>
+            <div className={settingsCss.pageContainer}>
                 <p>You have no contact forms at the moment.</p>
                 <Button
                     onClick={navigateToCreateContactForm}
@@ -52,7 +52,7 @@ const ManageContactForms = ({
                         Create Contact Form
                     </div>
                 </Button>
-            </Container>
+            </div>
         )
     }
 
@@ -63,7 +63,7 @@ const ManageContactForms = ({
                 shouldLoadMore={!isLoading && hasMore}
                 className={css.infiniteScroll}
             >
-                <Container fluid className={contactFormCss.px0}>
+                <div className={contactFormCss.px0}>
                     <TableWrapper>
                         <TableHead className={css.contactFormsTableHead}>
                             <HeaderCellProperty
@@ -91,7 +91,7 @@ const ManageContactForms = ({
                             ))}
                         </TableBody>
                     </TableWrapper>
-                </Container>
+                </div>
             </InfiniteScroll>
         </div>
     )

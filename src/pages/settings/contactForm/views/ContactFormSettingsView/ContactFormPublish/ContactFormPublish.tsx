@@ -1,13 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
-import {
-    Button,
-    Container,
-    FormGroup,
-    Input,
-    InputGroup,
-    InputGroupAddon,
-} from 'reactstrap'
+import {Button, FormGroup, Input, InputGroup, InputGroupAddon} from 'reactstrap'
 import {Route, Switch} from 'react-router-dom'
 import {Label} from '@gorgias/ui-kit'
 
@@ -87,7 +80,7 @@ const ContactFormPublish = (): JSX.Element => {
     })
 
     return (
-        <Container fluid className={settingsCss.pageContainer}>
+        <div className={settingsCss.pageContainer}>
             <Switch>
                 <Route exact path={CONTACT_FORM_MANAGE_EMBEDMENTS_PATH}>
                     <BackLink
@@ -194,7 +187,7 @@ const ContactFormPublish = (): JSX.Element => {
                     </div>
                 </Route>
             </Switch>
-        </Container>
+        </div>
     )
 }
 

@@ -7,8 +7,9 @@ import {
     Switch,
     useHistory,
 } from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -110,9 +111,9 @@ const ContactFormSettingsView = (): JSX.Element => {
 
     if (!contactForm) {
         return (
-            <Container fluid className={settingsCss.pageContainer}>
+            <div className={settingsCss.pageContainer}>
                 <Loader />
-            </Container>
+            </div>
         )
     }
 

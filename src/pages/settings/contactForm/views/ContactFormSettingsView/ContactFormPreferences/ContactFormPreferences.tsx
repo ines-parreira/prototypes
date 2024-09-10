@@ -2,9 +2,9 @@ import axios from 'axios'
 import {get} from 'lodash'
 import classNames from 'classnames'
 import React, {useState} from 'react'
-import {Container} from 'reactstrap'
 import {useDispatch} from 'react-redux'
 import {useHistory} from 'react-router-dom'
+
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import EmailIntegrationInputSection from 'pages/settings/contactForm/components/EmailIntegrationInputSection'
@@ -177,7 +177,7 @@ const ContactFormPreferences = (): JSX.Element => {
         useDefaultEmailSelectedBanner({isDefaultIntegrationSelected})
 
     return (
-        <Container fluid className={settingsCss.pageContainer}>
+        <div className={settingsCss.pageContainer}>
             <PendingChangesModal
                 when={isDirty}
                 show={isChangesModalShown}
@@ -307,7 +307,7 @@ const ContactFormPreferences = (): JSX.Element => {
                     </Button>
                 </div>
             </div>
-        </Container>
+        </div>
     )
 }
 
