@@ -38,6 +38,7 @@ describe('CampaignSchedulePicker', () => {
         const {getByText, getByDisplayValue} = render(
             <CampaignSchedulePicker
                 scheduleConfiguration={{
+                    startDate: '2024-09-09',
                     endDate: '2024-09-10',
                 }}
                 onChange={onChangeSpy}
@@ -49,7 +50,11 @@ describe('CampaignSchedulePicker', () => {
 
         userEvent.click(getByText('cancel'))
 
-        expect(onChangeSpy).toBeCalledWith({endDate: null})
+        expect(onChangeSpy).toBeCalledWith(
+            expect.objectContaining({
+                endDate: null,
+            })
+        )
     })
 
     it('user is able to select start date', () => {
