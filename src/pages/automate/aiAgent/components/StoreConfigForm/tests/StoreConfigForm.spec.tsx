@@ -221,6 +221,7 @@ describe('<StoreConfigForm />', () => {
         helpCenterId: 1,
         monitoredChatIntegrations: null,
         monitoredEmailIntegrations: [{id: 1, email: MOCK_EMAIL_ADDRESS}],
+        wizard: undefined,
     }
 
     const validFormValues = {

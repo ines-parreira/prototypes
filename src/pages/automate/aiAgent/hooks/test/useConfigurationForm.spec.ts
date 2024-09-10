@@ -21,6 +21,7 @@ const INITIAL_FORM_VALUES: FormValues = {
     tags: null,
     ticketSampleRate: null,
     monitoredChatIntegrations: null,
+    wizard: undefined,
 }
 
 describe('useConfigurationForm', () => {

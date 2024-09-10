@@ -13,6 +13,11 @@ export enum ToneOfVoice {
     Custom = 'Custom',
 }
 
+export enum AiAgentChannel {
+    Chat = 'chat',
+    Email = 'email',
+}
+
 export const DEFAULT_AI_AGENT_ENABLED_RATE = 50
 
 export const DEFAULT_FORM_VALUES: FormValues = {
@@ -29,6 +34,19 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     toneOfVoice: null,
     customToneOfVoiceGuidance: null,
     helpCenterId: null,
+    wizard: undefined,
+}
+
+export const DEFAULT_FORM_VALUES_WITH_WIZARD: FormValues = {
+    ...DEFAULT_FORM_VALUES,
+    wizard: {
+        completedDatetime: null,
+        stepName: null,
+        hasEducationStepEnabled: null,
+        enabledChannels: null,
+        isAutoresponderTurnedOff: null,
+        onCompletePathway: null,
+    },
 }
 
 export const GUIDANCE_ARTICLE_LIMIT = 40
@@ -74,4 +92,13 @@ export const AI_AGENT_STEPS_DESCRIPTIONS: Partial<
         'Set up AI Agent on at least one channel you want it to respond to.',
     [AiAgentOnboardingWizardStep.Knowledge]:
         'At least one knowledge source is required for AI Agent to reference when replying to customers. You can always add more later.',
+}
+
+export enum WIZARD_BUTTON_ACTIONS {
+    NEXT_STEP = 'next_step',
+    PREVIOUS_STEP = 'previous_step',
+    BACK_TO_WELCOME_PAGE = 'back_to_empty_state',
+    FINISH_TO_KNOWLEDGE = 'finish_to_knowledge',
+    FINISH_TO_TEST = 'finish_to_test',
+    FINISH_TO_GUIDANCE = 'finish_to_guidance',
 }

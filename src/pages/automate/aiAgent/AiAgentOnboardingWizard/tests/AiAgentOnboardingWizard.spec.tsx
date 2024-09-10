@@ -16,7 +16,7 @@ jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
 
-const mockedUseAiAgentStoreConfigurationContext = assumeMock(
+const mockUseAiAgentStoreConfigurationContext = assumeMock(
     useAiAgentStoreConfigurationContext
 )
 
@@ -38,7 +38,7 @@ const renderComponent = () => {
 
 describe('<AiAgentOnboardingWizard />', () => {
     beforeEach(() => {
-        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: getStoreConfigurationFixture(),
             isLoading: false,
             updateStoreConfiguration: jest.fn(),

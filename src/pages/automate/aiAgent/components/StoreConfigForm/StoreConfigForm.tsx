@@ -79,7 +79,7 @@ import {
 } from './StoreConfigForm.utils'
 import css from './StoreConfigForm.less'
 
-const INITIAL_FORM_VALUES = {
+export const INITIAL_FORM_VALUES = {
     trialModeActivatedDatetime: null,
     deactivatedDatetime: new Date().toISOString(),
     silentHandover: false,

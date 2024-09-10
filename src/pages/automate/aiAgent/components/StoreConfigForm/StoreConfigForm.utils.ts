@@ -1,4 +1,5 @@
 import {
+    AiAgentOnboardingWizardStep,
     CreateStoreConfigurationPayload,
     StoreConfiguration,
 } from 'models/aiAgent/types'
@@ -26,6 +27,21 @@ export const getStoreConfigurationFromFormValues = (
 
     const signature = formValues.signature
 
+    const wizardStepData = {
+        hasEducationStepEnabled:
+            formValues.wizard?.hasEducationStepEnabled ?? null,
+        enabledChannels: formValues.wizard?.enabledChannels ?? null,
+        isAutoresponderTurnedOff:
+            formValues.wizard?.isAutoresponderTurnedOff ?? null,
+        onCompletePathway: formValues.wizard?.onCompletePathway ?? null,
+    }
+
+    const wizard = {
+        stepName: formValues.wizard?.stepName as string,
+        stepData: wizardStepData,
+        completedDatetime: formValues.wizard?.completedDatetime,
+    }
+
     return {
         storeName,
         ...monitoredEmailIntegrationDetails,
@@ -39,7 +55,14 @@ export const getStoreConfigurationFromFormValues = (
         signature,
         helpCenterId,
         monitoredChatIntegrations: formValues.monitoredChatIntegrations,
+        wizard: formValues.wizard ? wizard : undefined,
     }
+}
+
+export function isAiAgentOnboardingWizardStep(
+    value: any
+): value is AiAgentOnboardingWizardStep {
+    return Object.values(AiAgentOnboardingWizardStep).includes(value)
 }
 
 export const getFormValuesFromStoreConfiguration = (
@@ -57,4 +80,16 @@ export const getFormValuesFromStoreConfiguration = (
     customToneOfVoiceGuidance: storeConfig.customToneOfVoiceGuidance,
     helpCenterId: storeConfig.helpCenterId,
     monitoredChatIntegrations: storeConfig.monitoredChatIntegrations,
+    wizard: storeConfig.wizard && {
+        completedDatetime: storeConfig.wizard.completedDatetime,
+        stepName: isAiAgentOnboardingWizardStep(storeConfig.wizard.stepName)
+            ? storeConfig.wizard.stepName
+            : null,
+        hasEducationStepEnabled:
+            storeConfig.wizard.stepData.hasEducationStepEnabled,
+        enabledChannels: storeConfig.wizard.stepData.enabledChannels,
+        isAutoresponderTurnedOff:
+            storeConfig.wizard.stepData.isAutoresponderTurnedOff,
+        onCompletePathway: storeConfig.wizard.stepData.onCompletePathway,
+    },
 })

@@ -70,9 +70,8 @@ const AiAgentViewContainer = () => {
         )
     }
 
-    // to be filled with actual data when we have wizard table in storeConfiguration
-    // value: storeConfiguration?.wizard?.completed_datetime === null
-    const isOnUpdateOnboardingWizard = false
+    const isOnUpdateOnboardingWizard =
+        storeConfiguration?.wizard?.completedDatetime === null
 
     const displayOnboardingWizardWelcomePage =
         isAiAgentOnboardingWizardEnabled &&

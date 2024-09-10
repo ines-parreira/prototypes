@@ -1,3 +1,5 @@
+import {AiAgentChannel} from 'pages/automate/aiAgent/constants'
+
 export type AccountConfigurationResponse = {
     accountConfiguration: Omit<AccountConfiguration, 'helpdeskOAuth'>
 }
@@ -96,7 +98,7 @@ export enum AiAgentOnboardingWizardStep {
 
 export type WizardStepData = {
     hasEducationStepEnabled: boolean | null
-    enabledChannels: ('chat' | 'email')[] | null
+    enabledChannels: AiAgentChannel[] | null
     isAutoresponderTurnedOff: boolean | null
     onCompletePathway: string | null
 }

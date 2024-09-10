@@ -11,6 +11,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
+import {isAiAgentOnboardingWizardStep} from '../components/StoreConfigForm/StoreConfigForm.utils'
 import AiAgentOnboardingWizardEducation from './AiAgentOnboardingWizardEducation'
 import AiAgentOnboardingWizardPersonalize from './AiAgentOnboardingWizardPersonalize'
 import AiAgentOnboardingWizardKnowledge from './AiAgentOnboardingWizardKnowledge'
@@ -39,10 +40,14 @@ const AiAgentOnboardingWizardComponent = (
         [isAiAgentOnboardingWizardEducationalStepEnabled]
     )
 
-    // to be filled with actual data when backend changes for wizard is applied
-    const wizardStep = isAiAgentOnboardingWizardEducationalStepEnabled
-        ? AiAgentOnboardingWizardStep.Education
-        : AiAgentOnboardingWizardStep.Personalize
+    const stepName = props.storeConfiguration?.wizard?.stepName
+
+    const wizardStep =
+        stepName && isAiAgentOnboardingWizardStep(stepName)
+            ? stepName
+            : isAiAgentOnboardingWizardEducationalStepEnabled
+            ? AiAgentOnboardingWizardStep.Education
+            : AiAgentOnboardingWizardStep.Personalize
 
     return (
         <>

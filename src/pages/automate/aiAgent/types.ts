@@ -1,6 +1,7 @@
 import {CreateArticleDto, LocaleCode} from 'models/helpCenter/types'
 import {Components} from 'rest_api/help_center_api/client.generated'
-import {Tag} from '../../../models/aiAgent/types'
+import {AiAgentOnboardingWizardStep, Tag} from '../../../models/aiAgent/types'
+import {AiAgentChannel} from './constants'
 
 export type NonNullProperties<T> = {
     [P in keyof T]: NonNullable<T[P]>
@@ -8,6 +9,15 @@ export type NonNullProperties<T> = {
 
 export type NonNullFields<T, K extends keyof T> = T &
     NonNullProperties<Pick<T, K>>
+
+export type WizardFormValues = {
+    completedDatetime: string | null
+    stepName: AiAgentOnboardingWizardStep | null
+    hasEducationStepEnabled: boolean | null
+    enabledChannels: AiAgentChannel[] | null
+    isAutoresponderTurnedOff: boolean | null
+    onCompletePathway: string | null
+}
 
 export type FormValues = {
     deactivatedDatetime: string | null | undefined
@@ -22,6 +32,7 @@ export type FormValues = {
     customToneOfVoiceGuidance: string | null
     helpCenterId: number | null
     monitoredChatIntegrations: number[] | null
+    wizard: WizardFormValues | null | undefined
 }
 
 export type ValidFormValues = NonNullFields<

@@ -48,10 +48,9 @@ export const AIAgentWelcomePageView = (props: Props) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
 
-    // to be filled with actual data when we have wizard table in storeConfiguration
-    // value: storeConfiguration?.wizard?.completed_datetime === null
     const isOnUpdateOnboardingWizard =
-        props.state === 'onboardingWizard' && !!props.storeConfiguration
+        props.state === 'onboardingWizard' &&
+        props.storeConfiguration?.wizard?.completedDatetime === null
 
     const description = {
         static: 'Introducing AI Agent, your team’s newest member for seamless customer interactions who can:',

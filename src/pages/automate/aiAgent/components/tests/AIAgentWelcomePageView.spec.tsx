@@ -7,9 +7,24 @@ import {notify} from 'state/notifications/actions'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {renderWithRouter} from 'utils/testing'
+import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import {AIAgentWelcomePageView} from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
 import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+
+const MOCK_WIZARD_VALUES = {
+    wizard: {
+        id: 1,
+        stepName: AiAgentOnboardingWizardStep.Education,
+        completedDatetime: null,
+        stepData: {
+            hasEducationStepEnabled: true,
+            enabledChannels: [],
+            isAutoresponderTurnedOff: null,
+            onCompletePathway: null,
+        },
+    },
+}
 
 jest.mock('react-loading-skeleton', () => ({
     __esModule: true,
@@ -483,7 +498,9 @@ describe('<AIAgentWelcomePageView />', () => {
             <AIAgentWelcomePageView
                 shopType="shopify"
                 shopName="my-store"
-                storeConfiguration={getStoreConfigurationFixture()}
+                storeConfiguration={getStoreConfigurationFixture(
+                    MOCK_WIZARD_VALUES
+                )}
                 state="onboardingWizard"
                 emailConnected={{
                     checked: true,
