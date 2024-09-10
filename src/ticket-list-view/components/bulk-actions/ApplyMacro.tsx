@@ -25,7 +25,7 @@ export default function ApplyMacro({
     return (
         <MacroContainer
             activeView={activeView}
-            disableExternalActions
+            areExternalActionsDisabled
             selectedItemsIds={selectedTicketIdsImmutable}
             closeModal={() => setIsOpen(false)}
             allViewItemsSelected={selectedTicketIdsImmutable.isEmpty()}

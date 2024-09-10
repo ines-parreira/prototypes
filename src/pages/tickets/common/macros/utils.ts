@@ -6,9 +6,9 @@ import {getDefaultMacro} from 'state/macro/utils'
 
 export const isMacroDisabled = (
     macro: Map<any, any>,
-    disableExternalActions?: boolean
+    areExternalActionsDisabled?: boolean
 ) => {
-    if (!disableExternalActions) return false
+    if (!areExternalActionsDisabled) return false
 
     return (macro.get('actions', fromJS([])) as List<any>).some(
         (action: Map<any, any>) =>

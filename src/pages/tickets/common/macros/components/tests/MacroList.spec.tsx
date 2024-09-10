@@ -53,7 +53,7 @@ describe('MacroList component', () => {
                 <MacroListContainer
                     {...minProps}
                     currentMacro={macros.get(1)}
-                    disableExternalActions={true}
+                    areExternalActionsDisabled
                 />
             </Provider>
         )
@@ -66,7 +66,7 @@ describe('MacroList component', () => {
                 <MacroListContainer
                     {...minProps}
                     currentMacro={macros.get(1)}
-                    disableExternalActions={true}
+                    areExternalActionsDisabled
                 />
             </Provider>
         )

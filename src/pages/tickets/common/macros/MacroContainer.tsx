@@ -32,7 +32,7 @@ type Props = {
     // macro to select when modal opens, selects first macro of list otherwise
     selectedMacro?: Map<any, any>
     selectedItemsIds?: List<any>
-    disableExternalActions?: boolean
+    areExternalActionsDisabled?: boolean
     selectionMode?: boolean
 }
 
@@ -40,7 +40,7 @@ const MacroContainer = ({
     activeView = fromJS({}),
     allViewItemsSelected,
     closeModal,
-    disableExternalActions = false,
+    areExternalActionsDisabled = false,
     isCreatingMacro,
     onComplete,
     selectedMacro = fromJS({}),
@@ -177,7 +177,7 @@ const MacroContainer = ({
             firstLoad={isFetchPending}
             currentMacro={currentMacro}
             agents={agents}
-            disableExternalActions={disableExternalActions || false}
+            areExternalActionsDisabled={areExternalActionsDisabled}
             selectionMode={selectionMode || false}
             selectedItemsIds={selectedItemsIds}
             handleClickItem={handleClickItem}

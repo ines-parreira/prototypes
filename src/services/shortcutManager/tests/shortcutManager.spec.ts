@@ -136,6 +136,29 @@ describe('shortcutManager', () => {
         expect(counter).toBe(0)
     })
 
+    it('does not pause whitelisted components', () => {
+        const action = {
+            key: 'p',
+            action: bump,
+        }
+        sm.bind('pizza', {
+            ACTION_NAME: action,
+        })
+        sm.pause(['pizza'])
+        sm.trigger('p')
+        expect(counter).toBe(1)
+
+        sm.unbind('pizza')
+        sm.trigger('p')
+        expect(counter).toBe(1)
+
+        sm.bind('pizza', {
+            ACTION_NAME: action,
+        })
+        sm.trigger('p')
+        expect(counter).toBe(2)
+    })
+
     it('denylist bound component', () => {
         const action = {
             key: 'p',

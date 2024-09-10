@@ -91,10 +91,15 @@ export class ShortcutManager {
             _merge(this._getComponentKeymap(component), {actions})
         )
         const index = _findIndex(this._bound, (b) => b.name === component)
+
+        const paused = this._whitelist.includes(component)
+            ? false
+            : this._isPaused
+
         if (!~index) {
             this._bound.push({
                 name: component,
-                paused: this._isPaused,
+                paused,
             })
         }
 
@@ -109,9 +114,10 @@ export class ShortcutManager {
     }
 
     _isPaused = false
-
+    _whitelist: string[] = []
     pause(whitelist: Array<string> = []) {
         this._isPaused = true
+        this._whitelist = whitelist
 
         this._bound.forEach((b) => {
             if (!whitelist.includes(b.name)) {
@@ -138,6 +144,7 @@ export class ShortcutManager {
 
     unpause() {
         this._isPaused = false
+        this._whitelist = []
 
         this._bound.forEach((b) => (b.paused = false))
     }

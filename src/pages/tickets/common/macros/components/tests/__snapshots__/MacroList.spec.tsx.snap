@@ -9,7 +9,7 @@ exports[`MacroList component should render active and disabled macros 1`] = `
   >
     Pizza Pepperoni
     <span
-      class="material-icons md-2 float-right text-secondary"
+      class="material-icons automated"
     >
       auto_awesome
     </span>
@@ -36,7 +36,7 @@ exports[`MacroList component should render the macro list 1`] = `
   >
     Pizza Pepperoni
     <span
-      class="material-icons md-2 float-right text-secondary"
+      class="material-icons automated"
     >
       auto_awesome
     </span>

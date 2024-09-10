@@ -1,146 +1,144 @@
-import React, {Component} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import classnames from 'classnames'
-import _debounce from 'lodash/debounce'
 import {List, Map} from 'immutable'
 
+import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import {FetchMacrosOptions, Macro} from 'models/macro/types'
 import TextInput from 'pages/common/forms/input/TextInput'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
 import {isMacroDisabled} from 'pages/tickets/common/macros/utils'
-import shortcutManager from 'services/shortcutManager'
 
 import css from './MacroModalList.less'
 
 import MacroList from './MacroList'
 
 type Props = {
-    searchParams: FetchMacrosOptions
-    searchResults: List<any>
     currentMacro: Map<any, any>
-    disableExternalActions?: boolean
-    handleClickItem: (id: number) => void
     fetchMacros: (params?: FetchMacrosOptions) => Promise<Macro[] | void>
+    handleClickItem: (id: number) => void
     onSearch: (searchParams: FetchMacrosOptions) => void
     hasDataToLoad?: boolean
+    searchParams: FetchMacrosOptions
+    searchResults: List<any>
+    areExternalActionsDisabled?: boolean
 }
 
-export default class MacroModalList extends Component<Props> {
-    _macroCursor = 0
+export default function MacroModalList({
+    currentMacro,
+    fetchMacros,
+    hasDataToLoad,
+    handleClickItem,
+    onSearch,
+    searchParams,
+    searchResults,
+    areExternalActionsDisabled = false,
+}: Props) {
+    const [macroCursor, setMacroCursor] = useState(0)
+    const areKeyboardNavigationEnabled = useMemo(
+        () =>
+            areExternalActionsDisabled
+                ? !searchResults.every((macro) => isMacroDisabled(macro, true))
+                : !searchResults.isEmpty(),
+        [areExternalActionsDisabled, searchResults]
+    )
 
-    componentDidMount() {
-        shortcutManager.bind('MacroModal', {
+    useEffect(() => {
+        setMacroCursor(
+            searchResults.findIndex(
+                (macro: Map<any, any>) =>
+                    macro.get('id') === currentMacro.get('id')
+            )
+        )
+    }, [currentMacro, searchResults])
+
+    const moveCursor = useCallback(
+        (direction: MoveIndexDirection, currentMacroCursor?: number) => {
+            const cursor = currentMacroCursor ?? macroCursor
+
+            const index = moveIndex(cursor, searchResults.size, {
+                direction,
+                rotate: true,
+            })
+            setMacroCursor(index)
+            const macro = searchResults.get(index) as Map<any, any>
+            // skip disabled macros
+            if (isMacroDisabled(macro, areExternalActionsDisabled)) {
+                moveCursor(
+                    direction,
+                    cursor + (direction === MoveIndexDirection.Next ? 1 : -1)
+                )
+                return
+            }
+
+            handleClickItem(macro.get('id'))
+        },
+        [
+            areExternalActionsDisabled,
+            handleClickItem,
+            macroCursor,
+            searchResults,
+        ]
+    )
+
+    const actions = useMemo(
+        () => ({
             GO_NEXT_MACRO: {
-                action: (e) => {
+                action: (e: Event) => {
                     e.preventDefault()
-                    this._moveCursor()
+                    moveCursor(MoveIndexDirection.Next)
                 },
             },
             GO_PREV_MACRO: {
-                action: (e) => {
+                action: (e: Event) => {
                     e.preventDefault()
-                    this._moveCursor(MoveIndexDirection.Prev)
+                    moveCursor(MoveIndexDirection.Prev)
                 },
             },
-        })
-    }
+        }),
+        [moveCursor]
+    )
 
-    componentWillUnmount() {
-        shortcutManager.unbind('MacroModal')
-    }
+    useConditionalShortcuts(areKeyboardNavigationEnabled, 'MacroModal', actions)
 
-    componentWillReceiveProps(nextProps: Props) {
-        this._macroCursor = this._getMacroCursor(
-            nextProps.currentMacro,
-            nextProps.searchResults
-        )
-    }
-
-    _getMacroCursor(currentMacro: Map<any, any>, macros: List<any>) {
-        return macros.findIndex(
-            (macro: Map<any, any>) => macro.get('id') === currentMacro.get('id')
-        )
-    }
-
-    _moveCursor = (direction = MoveIndexDirection.Next) => {
-        if (this.props.searchResults.isEmpty()) {
-            return
-        }
-
-        const macros = this.props.searchResults
-        this._macroCursor = moveIndex(this._macroCursor, macros.size, {
-            direction:
-                direction === MoveIndexDirection.Next
-                    ? MoveIndexDirection.Next
-                    : MoveIndexDirection.Prev,
-        })
-        const macro = macros.get(this._macroCursor) as Map<any, any>
-        // skip disabled macros
-        if (isMacroDisabled(macro, this.props.disableExternalActions)) {
-            this._moveCursor(direction)
-            return
-        }
-
-        this._selectCursorMacro(macro.get('id'))
-    }
-
-    _selectCursorMacro = _debounce((macroId: number) => {
-        this.props.handleClickItem(macroId)
-    })
-
-    render() {
-        const {
-            currentMacro,
-            searchParams,
-            searchResults,
-            disableExternalActions,
-            handleClickItem,
-            onSearch,
-            fetchMacros,
-            hasDataToLoad,
-        } = this.props
-
-        return (
-            <div className={css.component}>
-                <TextInput
-                    value={searchParams.search}
-                    onChange={(value) =>
-                        onSearch({...searchParams, search: value})
-                    }
-                    placeholder="Search macros by name, tags or body..."
-                    autoFocus={!searchResults.isEmpty()}
-                    className={classnames(
-                        css.search,
-                        'shortcuts-enable',
-                        'mt-3',
-                        'mb-3'
-                    )}
-                />
-                <MacroFilters
-                    selectedProperties={{
-                        languages: searchParams.languages,
-                        tags: searchParams.tags,
-                    }}
-                    onChange={(values) =>
-                        onSearch({
-                            ...searchParams,
-                            ...values,
-                        })
-                    }
-                    tagDropdownMenuProps={{
-                        className: css.tags,
-                    }}
-                />
-                <MacroList
-                    className={css.scroller}
-                    searchResults={searchResults}
-                    loadMore={() => fetchMacros()}
-                    currentMacro={currentMacro}
-                    disableExternalActions={disableExternalActions}
-                    onClickItem={(macro) => handleClickItem(macro.get('id'))}
-                    hasDataToLoad={hasDataToLoad}
-                />
-            </div>
-        )
-    }
+    return (
+        <div className={css.component}>
+            <TextInput
+                value={searchParams.search}
+                onChange={(value) => onSearch({...searchParams, search: value})}
+                placeholder="Search macros by name, tags or body..."
+                autoFocus={!searchResults.isEmpty()}
+                className={classnames(
+                    css.search,
+                    'shortcuts-enable',
+                    'mt-3',
+                    'mb-3'
+                )}
+            />
+            <MacroFilters
+                selectedProperties={{
+                    languages: searchParams.languages,
+                    tags: searchParams.tags,
+                }}
+                onChange={(values) =>
+                    onSearch({
+                        ...searchParams,
+                        ...values,
+                    })
+                }
+                tagDropdownMenuProps={{
+                    className: css.tags,
+                }}
+            />
+            <MacroList
+                className={css.scroller}
+                searchResults={searchResults}
+                loadMore={() => fetchMacros()}
+                currentMacro={currentMacro}
+                areExternalActionsDisabled={areExternalActionsDisabled}
+                onClickItem={(macro) => handleClickItem(macro.get('id'))}
+                hasDataToLoad={hasDataToLoad}
+            />
+        </div>
+    )
 }

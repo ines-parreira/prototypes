@@ -16,7 +16,7 @@ type Props = {
     className?: string
     searchResults: List<any>
     currentMacro: Map<any, any>
-    disableExternalActions?: boolean
+    areExternalActionsDisabled?: boolean
     onClickItem: (item: Map<any, any>) => void
     onHoverItem?: (item: Map<any, any>) => void
     loadMore: () => Promise<Macro[] | void>
@@ -27,7 +27,7 @@ const MacroListContainer = ({
     searchResults,
     className,
     currentMacro,
-    disableExternalActions,
+    areExternalActionsDisabled,
     loadMore,
     onClickItem = _noop,
     onHoverItem = _noop,
@@ -45,7 +45,7 @@ const MacroListContainer = ({
             {searchResults.map((macro: Map<any, any>) => {
                 const isDisabled = isMacroDisabled(
                     macro,
-                    disableExternalActions
+                    areExternalActionsDisabled
                 )
                 const isActive = macro.get('id') === currentMacro.get('id')
                 return (
@@ -72,7 +72,12 @@ const MacroListContainer = ({
                     >
                         {macro.get('name')}
                         {isSuggestion(macro.get('relevance_rank', 0)) && (
-                            <span className="material-icons md-2 float-right text-secondary">
+                            <span
+                                className={classnames(
+                                    'material-icons',
+                                    css.automated
+                                )}
+                            >
                                 auto_awesome
                             </span>
                         )}

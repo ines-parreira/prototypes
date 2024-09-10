@@ -136,7 +136,7 @@ const TicketList = () => {
             {isMacroModalOpen && (
                 <MacroContainer
                     activeView={activeView}
-                    disableExternalActions
+                    areExternalActionsDisabled
                     selectedItemsIds={selectedItemsIds}
                     closeModal={() => setIsMacroModalOpen(false)}
                     allViewItemsSelected={allViewItemsSelected}

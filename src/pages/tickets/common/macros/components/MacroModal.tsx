@@ -38,7 +38,7 @@ type Props = {
     allViewItemsSelected?: boolean
     closeModal: () => void
     currentMacro: Map<any, any>
-    disableExternalActions: boolean
+    areExternalActionsDisabled: boolean
     fetchMacros: (
         opts?: FetchMacrosOptions,
         retainPreviousResults?: boolean
@@ -87,6 +87,7 @@ export class MacroModalContainer extends Component<Props, State> {
     }
 
     componentDidMount() {
+        shortcutManager.bind('MacroModal')
         shortcutManager.pause(['MacroModal'])
 
         logEvent(SegmentEvent.ModalToggled, {
@@ -129,6 +130,7 @@ export class MacroModalContainer extends Component<Props, State> {
     }
 
     componentWillUnmount() {
+        shortcutManager.unbind('MacroModal')
         shortcutManager.unpause()
     }
 
@@ -316,7 +318,7 @@ export class MacroModalContainer extends Component<Props, State> {
         const {
             searchParams,
             searchResults,
-            disableExternalActions,
+            areExternalActionsDisabled,
             closeModal,
             onSearch,
             currentMacro,
@@ -360,8 +362,8 @@ export class MacroModalContainer extends Component<Props, State> {
                                     searchResults={searchResults}
                                     searchParams={searchParams}
                                     fetchMacros={this.props.fetchMacros}
-                                    disableExternalActions={
-                                        disableExternalActions
+                                    areExternalActionsDisabled={
+                                        areExternalActionsDisabled
                                     }
                                     handleClickItem={handleClickItem}
                                     onSearch={onSearch}

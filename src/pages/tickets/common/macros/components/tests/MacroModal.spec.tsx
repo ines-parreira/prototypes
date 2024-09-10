@@ -89,7 +89,7 @@ describe('<MacroModal />', () => {
         agents: fromJS([]),
         closeModal: jest.fn(),
         currentMacro: macros.first(),
-        disableExternalActions: false,
+        areExternalActionsDisabled: false,
         fetchMacros: jest.fn(),
         firstLoad: false,
         handleClickItem: jest.fn(),
