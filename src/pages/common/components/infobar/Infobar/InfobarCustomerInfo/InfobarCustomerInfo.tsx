@@ -23,7 +23,7 @@ import {
 
 import useAppSelector from 'hooks/useAppSelector'
 import CustomerChannels from './CustomerChannels'
-import CustomerNote from './CustomerNote/CustomerNote'
+import CustomerNote from './CustomerNote'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
 import AddAppSuggestion from './AddAppSuggestion'
 

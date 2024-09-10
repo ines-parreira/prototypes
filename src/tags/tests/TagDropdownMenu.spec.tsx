@@ -11,17 +11,10 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import {UserRole} from 'config/types/user'
 import {user} from 'fixtures/users'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
 import useListTags from 'tags/useListTags'
-import {assumeMock} from 'utils/testing'
 
 import TagDropdownMenu from '../TagDropdownMenu'
-
-jest.mock('hooks/useAppDispatch')
-const useAppDispatchMock = assumeMock(useAppDispatch)
-const dispatchMock = jest.fn()
-useAppDispatchMock.mockReturnValue(dispatchMock)
 
 jest.mock('tags/useListTags')
 const mockUseListTags = useListTags as jest.Mock
