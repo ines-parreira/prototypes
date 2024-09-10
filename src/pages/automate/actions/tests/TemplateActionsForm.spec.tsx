@@ -6,7 +6,8 @@ import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {ulid} from 'ulidx'
-import {screen} from '@testing-library/react'
+import {screen, fireEvent, act} from '@testing-library/react'
+import {useFlag} from 'common/flags'
 
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {IntegrationType} from 'models/integration/constants'
@@ -18,6 +19,12 @@ import TemplateActionsForm from '../components/TemplateActionsForm'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
+
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
+
 const mockUseStoreIntegrations = assumeMock(useStoreIntegrations)
 const storeIntegrations = [
     {
@@ -83,6 +90,7 @@ describe('<TemplateActionsForm />', () => {
         jest.resetAllMocks()
         mockUseStoreIntegrations.mockReturnValue(storeIntegrations)
         mockUseFlags.mockReturnValue({})
+        mockUseFlag.mockReturnValue(true)
     })
 
     it('renders the form', () => {
@@ -166,6 +174,8 @@ describe('<TemplateActionsForm />', () => {
         expect(
             screen.getByLabelText('Name', {exact: false})
         ).toBeInTheDocument()
+
+        expect(screen.queryByText('View Action Events')).not.toBeInTheDocument()
     })
 
     it('should open app authentication modal if API key is missing', () => {
@@ -339,5 +349,111 @@ describe('<TemplateActionsForm />', () => {
         expect(
             screen.queryByText('Connect 3rd party app')
         ).not.toBeInTheDocument()
+    })
+
+    it('should display view app authentication button', () => {
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <TemplateActionsForm
+                        initialConfigurationData={{
+                            name: '',
+                            initial_step_id: null,
+                            internal_id: ulid(),
+                            available_languages: [],
+                            is_draft: false,
+                            apps: [
+                                {type: 'app', app_id: 'test', api_key: 'test'},
+                            ],
+                            entrypoints: [
+                                {
+                                    kind: 'llm-conversation',
+                                    trigger: 'llm-prompt',
+                                    settings: {
+                                        instructions: '',
+                                        requires_confirmation: false,
+                                    },
+                                    deactivated_datetime: null,
+                                },
+                            ],
+                            triggers: [
+                                {
+                                    kind: 'llm-prompt',
+                                    settings: {
+                                        custom_inputs: [],
+                                        object_inputs: [],
+                                        outputs: [],
+                                    },
+                                },
+                            ],
+                            steps: [],
+                            transitions: [],
+                        }}
+                        templateConfiguration={{
+                            name: '',
+                            internal_id: ulid(),
+                            id: ulid(),
+                            initial_step_id: '',
+                            is_draft: false,
+                            entrypoints: [
+                                {
+                                    kind: 'llm-conversation',
+                                    trigger: 'llm-prompt',
+                                    settings: {
+                                        instructions: '',
+                                        requires_confirmation: false,
+                                    },
+                                    deactivated_datetime: null,
+                                },
+                            ],
+                            triggers: [
+                                {
+                                    kind: 'llm-prompt',
+                                    settings: {
+                                        custom_inputs: [],
+                                        object_inputs: [],
+                                        outputs: [],
+                                    },
+                                },
+                            ],
+                            steps: [],
+                            transitions: [],
+                            available_languages: [],
+                            created_datetime: new Date().toISOString(),
+                            updated_datetime: new Date().toISOString(),
+                            apps: [
+                                {type: 'app', app_id: 'test', api_key: null},
+                            ],
+                        }}
+                    />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('View App Authentication'))
+        })
+        expect(screen.queryByText('Connect 3rd party app')).toBeVisible()
+
+        expect(
+            screen.getByText('Discard changes').closest('button')
+        ).toHaveAttribute('aria-disabled', 'true')
+
+        act(() => {
+            fireEvent.change(screen.getByLabelText('API key', {exact: false}), {
+                target: {value: 'update test'},
+            })
+        })
+
+        expect(screen.getByLabelText('API key', {exact: false})).toHaveValue(
+            'update test'
+        )
+
+        fireEvent.click(screen.getByText('Discard changes'))
+
+        expect(screen.getByLabelText('API key', {exact: false})).toHaveValue(
+            'test'
+        )
+        expect(screen.queryByText('View Action Events')).toBeInTheDocument()
     })
 })

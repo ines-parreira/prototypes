@@ -7,6 +7,8 @@ import {useFieldArray, useForm, Controller, FormProvider} from 'react-hook-form'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import ToolbarContext, {
     ToolbarContextType,
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
@@ -33,6 +35,7 @@ import {
     getHttpStepUsedVariables,
     getConditionsUsedVariables,
 } from '../utils'
+import ViewActionEventsButton from './ViewActionEventsButton'
 import BackToActionButton from './BackToActionButton'
 import ActionFormInputName from './ActionFormInputName'
 import ActionFormInputAiInstruction from './ActionFormInputAiInstruction'
@@ -222,6 +225,11 @@ export default function CustomActionsForm({
         shopType,
     ])
 
+    const isActionEventsLogsEnabled = useFlag(
+        FeatureFlagKey.ActionEventsLogs,
+        false
+    )
+
     return (
         <ToolbarContext.Provider
             value={
@@ -241,7 +249,12 @@ export default function CustomActionsForm({
                 />
                 <section>
                     <header data-candu-id="custom-action-form-header">
-                        <BackToActionButton />
+                        <div className={css.headerButtonGroup}>
+                            <BackToActionButton />
+                            {isActionEventsLogsEnabled && !isNewAction && (
+                                <ViewActionEventsButton />
+                            )}
+                        </div>
                     </header>
                     <div className={css.formSessionContainer}>
                         <ActionFormInputName

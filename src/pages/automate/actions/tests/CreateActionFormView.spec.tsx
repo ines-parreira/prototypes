@@ -25,6 +25,9 @@ jest.mock('../hooks/useAddStoreApp')
 jest.mock('../hooks/useUpsertAction')
 jest.mock('../hooks/useDeleteAction')
 jest.mock('../hooks/useGetAppImageUrl')
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn(),
+}))
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates

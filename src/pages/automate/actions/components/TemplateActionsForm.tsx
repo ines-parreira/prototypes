@@ -9,6 +9,8 @@ import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import ToolbarContext, {
     ToolbarContextType,
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {SegmentEvent, logEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -35,6 +37,7 @@ import {
     getActionsAppByType,
     generateObjectInputs,
 } from '../utils'
+import ViewActionEventsButton from './ViewActionEventsButton'
 import BackToActionButton from './BackToActionButton'
 import AppConfirmationModal from './AppConfirmationModal'
 import ActionFormInputAiInstruction from './ActionFormInputAiInstruction'
@@ -272,6 +275,11 @@ export default function TemplateActionsForm({
         shopType,
     ])
 
+    const isActionEventsLogsEnabled = useFlag(
+        FeatureFlagKey.ActionEventsLogs,
+        false
+    )
+
     return (
         <ToolbarContext.Provider
             value={
@@ -293,50 +301,8 @@ export default function TemplateActionsForm({
                     <header>
                         <div className={css.authButtonGroup}>
                             <BackToActionButton />
-                            {!isNativeAppIntegration && actionApp && (
-                                <>
-                                    <Button
-                                        fillStyle="ghost"
-                                        className={css.viewAppAuthButton}
-                                        onClick={() => {
-                                            setApiKeyModalIsOpen(true)
-                                        }}
-                                    >
-                                        View App Authentication
-                                    </Button>
-                                    <Controller
-                                        control={control}
-                                        name="appApiKey"
-                                        rules={{
-                                            required: !isNativeAppIntegration,
-                                        }}
-                                        render={({
-                                            field: {onChange, value},
-                                        }) => (
-                                            <AppConfirmationModal
-                                                actionAppConnected={
-                                                    actionAppConnected
-                                                }
-                                                apiKey={value ?? ''}
-                                                isOpen={apiKeyModalIsOpen}
-                                                setOpen={setApiKeyModalIsOpen}
-                                                actionAppConfiguration={
-                                                    actionApp
-                                                }
-                                                onConfirm={onChange}
-                                                templateId={
-                                                    templateConfiguration.id
-                                                }
-                                                templateName={
-                                                    templateConfiguration.name
-                                                }
-                                                templateDescription={
-                                                    templateConfiguration.description
-                                                }
-                                            />
-                                        )}
-                                    />
-                                </>
+                            {isActionEventsLogsEnabled && !isNewAction && (
+                                <ViewActionEventsButton />
                             )}
                         </div>
                         {templateConfiguration.apps?.[0] && (
@@ -347,7 +313,57 @@ export default function TemplateActionsForm({
                                 description={templateConfiguration.description}
                                 name={templateConfiguration.name}
                                 canduId={`template-action-banner-${templateConfiguration.id}`}
-                            />
+                            >
+                                {!isNativeAppIntegration && actionApp && (
+                                    <div>
+                                        <Button
+                                            size="small"
+                                            fillStyle="ghost"
+                                            className={css.viewAppAuthButton}
+                                            onClick={() => {
+                                                setApiKeyModalIsOpen(true)
+                                            }}
+                                        >
+                                            View App Authentication
+                                        </Button>
+                                        <Controller
+                                            control={control}
+                                            name="appApiKey"
+                                            rules={{
+                                                required:
+                                                    !isNativeAppIntegration,
+                                            }}
+                                            render={({
+                                                field: {onChange, value},
+                                            }) => (
+                                                <AppConfirmationModal
+                                                    actionAppConnected={
+                                                        actionAppConnected
+                                                    }
+                                                    apiKey={value ?? ''}
+                                                    isOpen={apiKeyModalIsOpen}
+                                                    setOpen={
+                                                        setApiKeyModalIsOpen
+                                                    }
+                                                    actionAppConfiguration={
+                                                        actionApp
+                                                    }
+                                                    onConfirm={onChange}
+                                                    templateId={
+                                                        templateConfiguration.id
+                                                    }
+                                                    templateName={
+                                                        templateConfiguration.name
+                                                    }
+                                                    templateDescription={
+                                                        templateConfiguration.description
+                                                    }
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                )}
+                            </TemplateActionBanner>
                         )}
                     </header>
                     <div className={css.formSessionContainer}>

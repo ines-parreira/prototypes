@@ -8,6 +8,7 @@ type Props = {
     description?: string | null
     canduId?: string
     actionAppConfiguration: ActionAppConfiguration
+    children?: React.ReactNode
 }
 
 export default function TemplateActionBanner({
@@ -15,6 +16,7 @@ export default function TemplateActionBanner({
     name,
     canduId,
     actionAppConfiguration,
+    children,
 }: Props) {
     const appImageUrl = useGetAppImageUrl(actionAppConfiguration)
 
@@ -37,6 +39,7 @@ export default function TemplateActionBanner({
                     {description ||
                         'Customize this Action and its conditions to fit your needs.'}
                 </p>
+                {children}
             </div>
         </div>
     )

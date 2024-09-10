@@ -161,6 +161,7 @@ import AutomateStatsPaywall from 'pages/stats/AutomateStatsPaywall'
 import TrainMyAiViewContainer from 'pages/automate/trainMyAi/TrainMyAiViewContainer'
 import ActionsViewContainer from 'pages/automate/actions/ActionsViewContainer'
 import ActionsTemplatesViewContainer from 'pages/automate/actions/ActionsTemplatesViewContainer'
+import ActionEventsViewContainer from 'pages/automate/actions/ActionEventsViewContainer'
 import CreateActionFormView from 'pages/automate/actions/CreateActionFormView'
 import EditActionFormView from 'pages/automate/actions/EditActionFormView'
 import AutomateLandingPageContainer from 'pages/automate/common/components/AutomateLandingPageContainer'
@@ -1445,6 +1446,11 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                                 path={`${path}/actions/templates`}
                                 exact
                                 component={ActionsTemplatesViewContainer}
+                            />
+                            <Route
+                                path={`${path}/actions/events/:id`}
+                                exact
+                                component={ActionEventsViewContainer}
                             />
                         </Switch>
                     )}

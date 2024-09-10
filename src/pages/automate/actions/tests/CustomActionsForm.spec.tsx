@@ -16,6 +16,9 @@ import {StoreIntegration} from '../../../../models/integration/types'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn(),
+}))
 const mockUseStoreIntegrations = assumeMock(useStoreIntegrations)
 const storeIntegrations = [
     {

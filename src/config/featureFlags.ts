@@ -124,4 +124,5 @@ export enum FeatureFlagKey {
     VoiceCallsDrillDown = 'voice-calls-drilldown',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
+    ActionEventsLogs = 'action-events-logs',
 }
