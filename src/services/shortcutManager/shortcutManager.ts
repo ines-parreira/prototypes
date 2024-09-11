@@ -6,8 +6,8 @@ import _findIndex from 'lodash/findIndex'
 import _isFunction from 'lodash/isFunction'
 import _isObject from 'lodash/isObject'
 
-import keymap from '../../config/shortcuts'
-import {isEditable} from '../common/utils'
+import keymap from 'config/shortcuts'
+import {isEditable} from 'services/common/utils'
 
 import {getModifier, isButton, closest} from './utils'
 
@@ -16,7 +16,7 @@ const mousetrap = new Mousetrap()
 export type KeyboardAction = {
     key: string | string[]
     action?: (e: Event) => void
-    description?: string
+    description: string
     component?: string
 }
 

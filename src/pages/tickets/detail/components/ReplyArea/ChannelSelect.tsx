@@ -7,14 +7,12 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import {isTicketMessageSourceType} from 'models/ticket/predicates'
-import {humanizeChannel} from 'state/ticket/utils'
-import useOutboundChannels from 'hooks/useOutboundChannels'
-import {KeymapActions} from 'services/shortcutManager/shortcutManager'
 import {TicketMessageSourceType} from 'business/types/ticket'
-import KeyboardShortcuts from 'pages/common/components/KeyboardShortcuts'
-
+import useOutboundChannels from 'hooks/useOutboundChannels'
+import useShortcuts from 'hooks/useShortcuts'
+import {isTicketMessageSourceType} from 'models/ticket/predicates'
 import SourceIcon from 'pages/common/components/SourceIcon'
+import {humanizeChannel} from 'state/ticket/utils'
 
 import ConvertToForwardPopover from './ConvertToForwardPopover'
 import css from './ChannelSelect.less'
@@ -23,25 +21,25 @@ export default function ChannelSelect() {
     const {channels, selectedChannel, selectChannel} = useOutboundChannels()
     const dropdownToggleRef = useRef<HTMLElement | null>(null)
 
-    const keymapActions: KeymapActions = useMemo(
+    const keymapActions = useMemo(
         () => ({
             FORWARD_REPLY: {
                 action: (e: Event) => {
                     e.preventDefault()
                     selectChannel(TicketMessageSourceType.EmailForward)
                 },
-                key: 'f',
             },
             INTERNAL_NOTE_REPLY: {
-                action: (e) => {
+                action: (e: Event) => {
                     e.preventDefault()
                     selectChannel(TicketMessageSourceType.InternalNote)
                 },
-                key: 'i',
             },
         }),
         [selectChannel]
     )
+
+    useShortcuts('TicketDetailContainer', keymapActions)
 
     return (
         <div className={css.container}>
@@ -91,10 +89,6 @@ export default function ChannelSelect() {
                     })}
                 </DropdownMenu>
             </UncontrolledDropdown>
-            <KeyboardShortcuts
-                name="TicketDetailContainer"
-                keymap={keymapActions}
-            />
         </div>
     )
 }
