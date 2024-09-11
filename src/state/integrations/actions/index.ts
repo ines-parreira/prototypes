@@ -24,6 +24,8 @@ import GorgiasApi from 'services/gorgiasApi'
 import {fetchIntegrations as fetchIntegrationsResources} from 'models/integration/resources'
 import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
 import type {AplicationAgentsResponse} from 'rest_api/gorgias_chat_protected_api/types'
+import {fetchAccountSettings} from 'state/currentAccount/actions'
+import {AccountSettingType} from 'state/currentAccount/types'
 import * as helpers from '../helpers'
 import {
     getTranslations as getTranslationsAction,
@@ -334,6 +336,12 @@ export function deleteIntegration(integration: Map<any, any>) {
                         type: constants.DELETE_INTEGRATION_SUCCESS,
                         id: integration.get('id'),
                     })
+
+                    void dispatch(
+                        fetchAccountSettings(
+                            AccountSettingType.DefaultIntegration
+                        )
+                    )
 
                     const currentUrl = window.location.pathname
                     const indexOfId = currentUrl.lastIndexOf(

@@ -6,7 +6,11 @@ import {
     AccountSetting,
     AccountSettingType,
 } from '../../../state/currentAccount/types'
-import {createAccountSetting, updateAccountSetting} from '../resources'
+import {
+    createAccountSetting,
+    getAccountSettings,
+    updateAccountSetting,
+} from '../resources'
 
 const mockedServer = new MockAdapter(client)
 
@@ -62,6 +66,44 @@ describe('account resources', () => {
                 .onPut('/api/account/settings/2/')
                 .reply(503, {message: 'error'})
             return expect(updateAccountSetting(mockedData)).rejects.toEqual(
+                new Error('Request failed with status code 503')
+            )
+        })
+    })
+
+    describe('getAccountSettings', () => {
+        const http_resp = {
+            data: [mockedData],
+        }
+
+        it('should resolve on success', async () => {
+            mockedServer.onGet(`/api/account/settings/`).reply(200, http_resp)
+
+            const res = await getAccountSettings(mockedData['type'])
+            expect(res).toMatchSnapshot()
+        })
+
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onGet(`/api/account/settings/`)
+                .reply(503, {message: 'error'})
+            return expect(
+                getAccountSettings(mockedData['type'])
+            ).rejects.toEqual(new Error('Request failed with status code 503'))
+        })
+
+        it('should resolve on success for all types', async () => {
+            mockedServer.onGet(`/api/account/settings/`).reply(200, mockedData)
+
+            const res = await getAccountSettings()
+            expect(res).toMatchSnapshot()
+        })
+
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onGet(`/api/account/settings/`)
+                .reply(503, {message: 'error'})
+            return expect(getAccountSettings()).rejects.toEqual(
                 new Error('Request failed with status code 503')
             )
         })

@@ -98,6 +98,23 @@ export default function reducer(
                 })
             )
         }
+
+        case constants.FETCH_ACCOUNT_SETTINGS_SUCCESS: {
+            const account_settings = action.accountSettings
+            if (!account_settings) {
+                return state
+            }
+            return state.update('settings', (settings: List<any>) => {
+                return settings.map((setting: Map<any, any>) => {
+                    for (const new_setting of account_settings) {
+                        if (setting.get('type') === new_setting.type) {
+                            return setting.set('data', fromJS(new_setting.data))
+                        }
+                    }
+                    return setting
+                })
+            })
+        }
         default:
             return state
     }

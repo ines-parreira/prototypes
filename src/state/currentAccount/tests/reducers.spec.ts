@@ -7,6 +7,7 @@ import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import {AccountSetting, AccountSettingType} from 'state/currentAccount/types'
 
 import {GorgiasAction} from 'state/types'
 
@@ -226,6 +227,76 @@ describe('current account reducers', () => {
                             advancedMonthlyHelpdeskPlan.price_id,
                     },
                 })
+            )
+        })
+    })
+
+    describe('FETCH_ACCOUNT_SETTINGS_SUCCESS', () => {
+        const initial_settings = [
+            {
+                id: 1,
+                type: AccountSettingType.DefaultIntegration,
+                data: {email: 1},
+            },
+            {
+                id: 2,
+                type: 'business-hours',
+                data: {dummy: 'test'},
+            },
+        ]
+        it('should update the settings', () => {
+            const state = initialState.set('settings', fromJS(initial_settings))
+            const action = {
+                type: types.FETCH_ACCOUNT_SETTINGS_SUCCESS,
+                accountSettings: [
+                    {
+                        id: 1,
+                        type: AccountSettingType.DefaultIntegration,
+                        data: {email: 2},
+                    } as AccountSetting,
+                ],
+            }
+            const expected_settings = [
+                {
+                    id: 1,
+                    type: AccountSettingType.DefaultIntegration,
+                    data: {email: 2},
+                },
+                {
+                    id: 2,
+                    type: 'business-hours',
+                    data: {dummy: 'test'},
+                },
+            ]
+            expect(reducer(state, action).get('settings')).toEqual(
+                fromJS(expected_settings)
+            )
+        })
+
+        it('should ignore missing setting type', () => {
+            const state = initialState.set('settings', fromJS(initial_settings))
+            const action = {
+                type: types.FETCH_ACCOUNT_SETTINGS_SUCCESS,
+                accountSettings: [
+                    {
+                        id: 1,
+                        type: AccountSettingType.ViewsVisibility,
+                        data: {hidden_views: []},
+                    } as AccountSetting,
+                ],
+            }
+            expect(reducer(state, action).get('settings')).toEqual(
+                fromJS(initial_settings)
+            )
+        })
+
+        it('shouldnt modify initial state on empty response', () => {
+            const state = initialState.set('settings', fromJS(initial_settings))
+            const action = {
+                type: types.FETCH_ACCOUNT_SETTINGS_SUCCESS,
+            }
+            expect(reducer(state, action).get('settings')).toEqual(
+                fromJS(initial_settings)
             )
         })
     })

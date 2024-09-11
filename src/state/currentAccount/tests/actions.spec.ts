@@ -169,6 +169,43 @@ describe('current account actions', () => {
         })
     })
 
+    describe('fetchAccountSettings()', () => {
+        it('should return a Redux action to get the account settings.', () => {
+            const settings = {
+                data: {
+                    email: 1,
+                },
+                type: AccountSettingType.DefaultIntegration,
+            }
+
+            mockServer.onGet('/api/account/settings/').reply(200, settings)
+            return store
+                .dispatch(
+                    actions.fetchAccountSettings(
+                        AccountSettingType.DefaultIntegration
+                    )
+                )
+                .then(() => {
+                    expect(store.getActions()).toMatchSnapshot()
+                })
+        })
+
+        it('should return the error.', () => {
+            mockServer
+                .onGet('/api/account/settings/')
+                .reply(503, {message: 'error'})
+            return store
+                .dispatch(
+                    actions.fetchAccountSettings(
+                        AccountSettingType.DefaultIntegration
+                    )
+                )
+                .then(() => {
+                    expect(store.getActions()).toMatchSnapshot()
+                })
+        })
+    })
+
     describe('submitSettingSuccess', () => {
         it('should dispatch the next setting', () => {
             store = mockStore({

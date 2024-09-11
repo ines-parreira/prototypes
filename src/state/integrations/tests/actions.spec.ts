@@ -145,9 +145,12 @@ describe('integrations actions', () => {
             id: 1,
             type: IntegrationType.Email,
         })
-
+        mockServer
+            .onGet('/api/account/settings/?type=default-integration')
+            .reply(200, {
+                data: [{type: 'default-integration', data: {email: 1}}],
+            })
         mockServer.onDelete('/api/integrations/1/').reply(200)
-
         return store
             .dispatch(actions.deleteIntegration(integration))
             .then(() => expect(store.getActions()).toMatchSnapshot())

@@ -207,6 +207,7 @@ export type GorgiasAction = {
     shopperOrder?: ShopperOrder
     withHighlight?: boolean
     shouldStoreFieldConfig?: boolean
+    accountSettings?: AccountSetting[]
 }
 
 export type CurrentUser = Map<any, any>

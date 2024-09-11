@@ -1,5 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`current account actions fetchAccountSettings() should return a Redux action to get the account settings. 1`] = `
+[
+  {
+    "type": "FETCH_ACCOUNT_SETTINGS_START",
+  },
+  {
+    "accountSettings": {
+      "email": 1,
+    },
+    "type": "FETCH_ACCOUNT_SETTINGS_SUCCESS",
+  },
+]
+`;
+
+exports[`current account actions fetchAccountSettings() should return the error. 1`] = `
+[
+  {
+    "type": "FETCH_ACCOUNT_SETTINGS_START",
+  },
+  {
+    "error": [Error: Request failed with status code 503],
+    "reason": "Failed to fetch account settings",
+    "type": "FETCH_ACCOUNT_SETTINGS_ERROR",
+  },
+]
+`;
+
 exports[`current account actions setCurrentSubscription() should return a Redux action to set the current subscription. 1`] = `
 {
   "subscription": Immutable.Map {

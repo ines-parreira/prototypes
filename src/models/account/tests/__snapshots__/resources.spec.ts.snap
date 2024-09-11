@@ -60,6 +60,46 @@ exports[`account resources createAccountSetting should resolve on success 1`] = 
 }
 `;
 
+exports[`account resources getAccountSettings should resolve on success 1`] = `
+[
+  {
+    "data": {
+      "view_sections": {
+        "1": {
+          "display_order": 1,
+        },
+      },
+      "views": {
+        "1": {
+          "display_order": 0,
+        },
+      },
+      "views_bottom": {},
+      "views_top": {},
+    },
+    "id": 2,
+    "type": "views-ordering",
+  },
+]
+`;
+
+exports[`account resources getAccountSettings should resolve on success for all types 1`] = `
+{
+  "view_sections": {
+    "1": {
+      "display_order": 1,
+    },
+  },
+  "views": {
+    "1": {
+      "display_order": 0,
+    },
+  },
+  "views_bottom": {},
+  "views_top": {},
+}
+`;
+
 exports[`account resources updateAccountSetting should resolve on success 1`] = `
 {
   "config": {

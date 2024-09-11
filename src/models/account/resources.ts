@@ -14,3 +14,11 @@ export const updateAccountSetting = async (data: AccountSetting) => {
     )
     return res
 }
+
+export const getAccountSettings = async (type?: string | null) => {
+    const res = await client.get<{data: AccountSetting[]}>(
+        '/api/account/settings/',
+        {params: {type}}
+    )
+    return res.data.data
+}

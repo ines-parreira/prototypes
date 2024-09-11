@@ -10,6 +10,9 @@ exports[`integrations actions delete integration 1`] = `
     "id": 1,
     "type": "DELETE_INTEGRATION_SUCCESS",
   },
+  {
+    "type": "FETCH_ACCOUNT_SETTINGS_START",
+  },
 ]
 `;
 

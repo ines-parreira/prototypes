@@ -26,6 +26,7 @@ import {ProductData, Subscription} from 'state/billing/types'
 import GorgiasApi from 'services/gorgiasApi'
 import {notify} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
+import {getAccountSettings} from 'models/account/resources'
 
 export const updateAccount =
     (values: Account) =>
@@ -266,6 +267,25 @@ export const updateAccountOwner =
                 })
             }
         )
+    }
+
+export const fetchAccountSettings =
+    (type?: string | null) =>
+    async (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+        dispatch({type: constants.FETCH_ACCOUNT_SETTINGS_START})
+        try {
+            const accountSettings = await getAccountSettings(type)
+            return dispatch({
+                type: constants.FETCH_ACCOUNT_SETTINGS_SUCCESS,
+                accountSettings,
+            })
+        } catch (error) {
+            return dispatch({
+                type: constants.FETCH_ACCOUNT_SETTINGS_ERROR,
+                error,
+                reason: 'Failed to fetch account settings',
+            })
+        }
     }
 
 export const resendVerificationEmail =
