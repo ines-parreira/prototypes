@@ -6,7 +6,7 @@ export const tags = [
         created_datetime: '2021-01-21T13:10:46.444928+00:00',
         decoration: null,
         deleted_datetime: null,
-        description: null,
+        description: 'finance',
         name: 'billing',
         usage: 10,
         uri: '/api/tags/2/',

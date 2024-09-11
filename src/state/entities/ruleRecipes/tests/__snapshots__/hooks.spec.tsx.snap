@@ -26,7 +26,7 @@ exports[`useRuleRecipes should return the recipes 1`] = `
         "created_datetime": "2021-01-21T13:10:46.444928+00:00",
         "decoration": null,
         "deleted_datetime": null,
-        "description": null,
+        "description": "finance",
         "id": 2,
         "name": "billing",
         "uri": "/api/tags/2/",

@@ -1,14 +1,14 @@
-import {createMemoryHistory} from 'history'
 import React, {ComponentProps, ReactNode} from 'react'
+import {fireEvent} from '@testing-library/react'
+import {createMemoryHistory} from 'history'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import decorateComponentWithProps from 'decorate-component-with-props'
 
-import {fireEvent} from '@testing-library/react'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {view as fixtureView} from 'fixtures/views'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {EntityType} from 'models/view/types'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import * as ViewTable from 'pages/common/components/ViewTable/ViewTable'
@@ -39,10 +39,12 @@ const dispatch = jest.fn()
 useAppDispatchMock.mockReturnValue(dispatch)
 
 jest.mock('state/tags/actions')
-
 const fetchTagsMock = (
     fetchTags as jest.MockedFunction<typeof fetchTags>
 ).mockReturnValue(() => Promise.resolve(undefined))
+
+jest.mock('state/views/actions')
+const updateSelectedItemsIdsMock = assumeMock(updateSelectedItemsIds)
 
 jest.mock(
     'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider',
@@ -289,8 +291,6 @@ describe('<TicketList />', () => {
 
         fireEvent.click(getByText('openMacroModal'))
         fireEvent.click(getByText('MacroContainer'))
-        expect(dispatch).toHaveBeenCalledWith(
-            updateSelectedItemsIds(mockItemsIds)
-        )
+        expect(updateSelectedItemsIdsMock).toHaveBeenCalledWith(mockItemsIds)
     })
 })
