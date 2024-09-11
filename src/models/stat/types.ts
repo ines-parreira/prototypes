@@ -76,10 +76,6 @@ export type LegacyStatsFilters = {
     [FilterKey.Score]?: string[]
     [FilterKey.SlaPolicies]?: string[]
     [FilterKey.Tags]?: number[]
-    [FilterComponentKey.Store]?: number[]
-    [FilterComponentKey.CustomField]?: number[]
-    [FilterComponentKey.PhoneIntegrations]?: number[]
-    [FilterComponentKey.BusiestTimesMetricSelectFilter]?: string[]
 }
 
 export type AgentOnlyFilters<T> = T extends any
@@ -107,10 +103,6 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.Score]?: WithLogicalOperator<string>
     [FilterKey.SlaPolicies]?: WithLogicalOperator<string>
     [FilterKey.Tags]?: WithLogicalOperator<number>
-    [FilterComponentKey.Store]?: WithLogicalOperator<number>
-    [FilterComponentKey.CustomField]?: WithLogicalOperator<number>
-    [FilterComponentKey.PhoneIntegrations]?: WithLogicalOperator<number>
-    [FilterComponentKey.BusiestTimesMetricSelectFilter]?: WithLogicalOperator<string>
 }
 
 export type StatsFilters = LegacyStatsFilters | StatsFiltersWithLogicalOperator
