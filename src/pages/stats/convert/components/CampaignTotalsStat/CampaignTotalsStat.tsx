@@ -55,6 +55,7 @@ export const CampaignTotalsStat = () => {
     const {
         selectedIntegrations,
         selectedCampaignIds,
+        selectedCampaignsOperator,
         selectedPeriod,
         channelConnectionExternalIds,
     } = useCampaignStatsFilters()
@@ -68,6 +69,7 @@ export const CampaignTotalsStat = () => {
     const {isFetching, isError, data} = useGetTotalsStat(
         namespacedShopName,
         selectedCampaignIds,
+        selectedCampaignsOperator,
         currency,
         selectedPeriod.start_datetime,
         selectedPeriod.end_datetime,
@@ -145,6 +147,7 @@ export const CampaignTotalsStat = () => {
                                 metricName: ConvertMetric.CampaignSalesCount,
                                 shopName: namespacedShopName,
                                 selectedCampaignIds: selectedCampaignIds || [],
+                                campaignsOperator: selectedCampaignsOperator,
                                 context: {
                                     channel_connection_external_ids:
                                         channelConnectionExternalIds,

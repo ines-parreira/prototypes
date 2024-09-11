@@ -32,6 +32,7 @@ import {
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 jest.mock(
     'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -143,6 +144,7 @@ describe('getDrillDownQuery', () => {
         {
             metricName: ConvertMetric.CampaignSalesCount,
             shopName: 'shopify:someShop',
+            campaignsOperator: LogicalOperatorEnum.ONE_OF,
             selectedCampaignIds: ['someCampaignId'],
             abVariant: 'someAbVariant',
             context: {
@@ -376,6 +378,7 @@ describe('getDrillDownQuery', () => {
         expect(campaignSalesDrillDownQueryFactoryMock).toHaveBeenCalledWith(
             drillDownMetric.shopName,
             drillDownMetric.selectedCampaignIds,
+            LogicalOperatorEnum.ONE_OF,
             statsFilters,
             timezone,
             undefined,

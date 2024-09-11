@@ -32,6 +32,7 @@ export const CampaignPerformanceTable = () => {
         campaigns,
         selectedIntegrations,
         selectedCampaignIds,
+        selectedCampaignsOperator,
         selectedPeriod,
         channelConnectionExternalIds,
     } = useCampaignStatsFilters()
@@ -78,28 +79,30 @@ export const CampaignPerformanceTable = () => {
         )
     }, [campaignIds, campaigns])
 
-    const {isFetching, isError, data} = useGetTableStat(
-        SharedDimension.campaignId,
+    const {isFetching, isError, data} = useGetTableStat({
+        groupDimension: SharedDimension.campaignId,
         namespacedShopName,
         campaignIds,
-        selectedPeriod.start_datetime,
-        selectedPeriod.end_datetime,
-        userTimezone
-    )
+        campaignsOperator: selectedCampaignsOperator,
+        startDate: selectedPeriod.start_datetime,
+        endDate: selectedPeriod.end_datetime,
+        timezone: userTimezone,
+    })
 
     const {
         isFetching: isVariantFetching,
         isError: isVariantError,
         data: variantData,
-    } = useGetTableStat(
-        SharedDimension.abVariant,
+    } = useGetTableStat({
+        groupDimension: SharedDimension.abVariant,
         namespacedShopName,
         campaignIds,
-        selectedPeriod.start_datetime,
-        selectedPeriod.end_datetime,
-        userTimezone,
-        hasVariants
-    )
+        campaignsOperator: selectedCampaignsOperator,
+        startDate: selectedPeriod.start_datetime,
+        endDate: selectedPeriod.end_datetime,
+        timezone: userTimezone,
+        enabled: hasVariants,
+    })
 
     const rows = useMemo<CampaignTableContentCell[]>(() => {
         const selectedCampaigns = campaigns.filter((campaign) =>
@@ -129,6 +132,7 @@ export const CampaignPerformanceTable = () => {
                             CampaignTableKeys.Conversions
                         ],
                         metricName: ConvertMetric.CampaignSalesCount,
+                        campaignsOperator: selectedCampaignsOperator,
                         shopName: namespacedShopName,
                         selectedCampaignIds: [campaign.id],
                         context: {
@@ -148,6 +152,7 @@ export const CampaignPerformanceTable = () => {
         namespacedShopName,
         channelConnectionExternalIds,
         variantData,
+        selectedCampaignsOperator,
     ])
 
     const handleClickNextPage = () => {

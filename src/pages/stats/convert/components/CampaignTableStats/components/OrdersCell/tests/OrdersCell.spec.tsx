@@ -10,6 +10,7 @@ import {ConvertMetric} from 'state/ui/stats/types'
 import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 import {setMetricData} from 'state/ui/stats/drillDownSlice'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {OrdersCell} from '../OrdersCell'
 
 jest.mock('hooks/useAppDispatch')
@@ -39,6 +40,7 @@ describe('<OrdersCell />', () => {
                     CampaignTableKeys.Conversions
                 ],
                 metricName: ConvertMetric.CampaignSalesCount,
+                campaignsOperator: LogicalOperatorEnum.ONE_OF,
                 shopName: 'shopify:best-shop',
                 selectedCampaignIds: [campaign.id],
                 context: {

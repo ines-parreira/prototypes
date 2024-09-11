@@ -369,3 +369,373 @@ exports[`Getting Cube queries [Function getStoreRevenueTotalData] should call lo
   },
 ]
 `;
+
+exports[`Getting Cube queries for with notEquals [Function getCampaignEventsOrdersPerformanceData] should call load 1`] = `
+[
+  {
+    "dimensions": [
+      "CampaignOrderEvents.campaignId",
+    ],
+    "filters": [
+      {
+        "member": "CampaignOrderEvents.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.campaignId",
+        "operator": "notEquals",
+        "values": [
+          "1",
+          "2",
+        ],
+      },
+    ],
+    "measures": [
+      "CampaignOrderEvents.engagement",
+      "CampaignOrderEvents.totalConversionRate",
+      "CampaignOrderEvents.campaignCTR",
+    ],
+    "timezone": "America/San_Francisco",
+  },
+]
+`;
+
+exports[`Getting Cube queries for with notEquals [Function getCampaignEventsPerformanceData] should call load 1`] = `
+[
+  {
+    "dimensions": [
+      "CampaignEvents.campaignId",
+    ],
+    "filters": [
+      {
+        "member": "CampaignEvents.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
+        ],
+      },
+      {
+        "member": "CampaignEvents.campaignId",
+        "operator": "notEquals",
+        "values": [
+          "1",
+          "2",
+        ],
+      },
+    ],
+    "measures": [
+      "CampaignEvents.impressions",
+      "CampaignEvents.firstCampaignDisplay",
+      "CampaignEvents.lastCampaignDisplay",
+      "CampaignEvents.clicks",
+      "CampaignEvents.clicksRate",
+      "CampaignEvents.ticketsCreated",
+    ],
+    "segments": [
+      "CampaignEvents.campaignEventsOnly",
+    ],
+    "timezone": "America/San_Francisco",
+  },
+]
+`;
+
+exports[`Getting Cube queries for with notEquals [Function getCampaignEventsTotalsData] should call load 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "CampaignOrderEvents.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.campaignId",
+        "operator": "notEquals",
+        "values": [
+          "1",
+          "2",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.shopName",
+        "operator": "equals",
+        "values": [
+          "punched-tires-shop",
+        ],
+      },
+    ],
+    "measures": [
+      "CampaignOrderEvents.impressions",
+      "CampaignOrderEvents.engagement",
+    ],
+    "timezone": "America/San_Francisco",
+  },
+]
+`;
+
+exports[`Getting Cube queries for with notEquals [Function getCampaignOrderPerformanceData] should call load 1`] = `
+[
+  {
+    "dimensions": [
+      "OrderConversion.campaignId",
+    ],
+    "filters": [
+      {
+        "member": "OrderConversion.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.campaignId",
+        "operator": "notEquals",
+        "values": [
+          "1",
+          "2",
+        ],
+      },
+    ],
+    "measures": [
+      "OrderConversion.campaignSales",
+      "OrderConversion.ticketSales",
+      "OrderConversion.ticketSalesCount",
+      "OrderConversion.discountSales",
+      "OrderConversion.discountSalesCount",
+      "OrderConversion.clickSales",
+      "OrderConversion.clickSalesCount",
+      "OrderConversion.campaignSalesCount",
+    ],
+    "timezone": "America/San_Francisco",
+  },
+]
+`;
+
+exports[`Getting Cube queries for with notEquals [Function getCampaignOrderTotalsData] should call load 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "OrderConversion.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.campaignId",
+        "operator": "notEquals",
+        "values": [
+          "1",
+          "2",
+        ],
+      },
+      {
+        "member": "OrderConversion.shopName",
+        "operator": "equals",
+        "values": [
+          "punched-tires-shop",
+        ],
+      },
+    ],
+    "measures": [
+      "OrderConversion.campaignSales",
+      "OrderConversion.campaignSalesCount",
+    ],
+    "timezone": "America/San_Francisco",
+  },
+]
+`;
+
+exports[`Getting Cube queries for with notEquals [Function getCampaignsPerformanceGraphData] should call load 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "CampaignOrderEvents.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.campaignId",
+        "operator": "notEquals",
+        "values": [
+          "1",
+          "2",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.shopName",
+        "operator": "equals",
+        "values": [
+          "punched-tires-shop",
+        ],
+      },
+    ],
+    "measures": [
+      "CampaignOrderEvents.campaignCTR",
+      "CampaignOrderEvents.totalConversionRate",
+    ],
+    "order": [
+      [
+        "CampaignOrderEvents.createdDatetime",
+        "asc",
+      ],
+    ],
+    "timeDimensions": [
+      {
+        "dateRange": [
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
+        ],
+        "dimension": "CampaignOrderEvents.createdDatetime",
+        "granularity": "day",
+      },
+    ],
+    "timezone": "America/San_Francisco",
+  },
+]
+`;
+
+exports[`Getting Cube queries for with notEquals [Function getRevenueGraphData] should call load 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "OrderConversion.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.shopName",
+        "operator": "equals",
+        "values": [
+          "punched-tires-shop",
+        ],
+      },
+    ],
+    "measures": [
+      "OrderConversion.gmv",
+    ],
+    "order": [
+      [
+        "OrderConversion.createdDatetime",
+        "asc",
+      ],
+    ],
+    "timeDimensions": [
+      {
+        "dateRange": [
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
+        ],
+        "dimension": "OrderConversion.createdDatetime",
+        "granularity": "day",
+      },
+    ],
+    "timezone": "America/San_Francisco",
+  },
+]
+`;
+
+exports[`Getting Cube queries for with notEquals [Function getRevenueShareGraphData] should call load 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "OrderConversion.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.campaignId",
+        "operator": "notEquals",
+        "values": [
+          "1",
+          "2",
+        ],
+      },
+      {
+        "member": "OrderConversion.shopName",
+        "operator": "equals",
+        "values": [
+          "punched-tires-shop",
+        ],
+      },
+    ],
+    "measures": [
+      "OrderConversion.campaignSales",
+    ],
+    "order": [
+      [
+        "OrderConversion.createdDatetime",
+        "asc",
+      ],
+    ],
+    "timeDimensions": [
+      {
+        "dateRange": [
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
+        ],
+        "dimension": "OrderConversion.createdDatetime",
+        "granularity": "day",
+      },
+    ],
+    "timezone": "America/San_Francisco",
+  },
+]
+`;
+
+exports[`Getting Cube queries for with notEquals [Function getStoreRevenueTotalData] should call load 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "OrderConversion.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.shopName",
+        "operator": "equals",
+        "values": [
+          "punched-tires-shop",
+        ],
+      },
+    ],
+    "measures": [
+      "OrderConversion.gmv",
+    ],
+    "timezone": "America/San_Francisco",
+  },
+]
+`;

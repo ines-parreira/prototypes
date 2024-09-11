@@ -8,6 +8,7 @@ import {assumeMock} from 'utils/testing'
 import {usePostReporting} from 'models/reporting/queries'
 import {getDataFromResult} from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {useGetRevenueShareChart} from 'pages/stats/convert/hooks/stats/useGetRevenueShareChart'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -18,9 +19,17 @@ describe('useGetTotalsStat', () => {
         isError: false,
     } as UseQueryResult
 
-    const hookArgs: [string, string[] | null, string, string, string] = [
+    const hookArgs: [
+        string,
+        string[] | null,
+        LogicalOperatorEnum,
+        string,
+        string,
+        string
+    ] = [
         'shopify:square-wheels-company',
         ['campaign1', 'campaign2'],
+        LogicalOperatorEnum.ONE_OF,
         '2023-01-01T00:00:00-08:00',
         '2023-03-01T00:00:00-08:00',
         'America/Los_Angeles',

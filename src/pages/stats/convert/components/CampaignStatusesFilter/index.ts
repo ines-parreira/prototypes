@@ -1,6 +1,6 @@
 import CampaignStatusesFilter, {
-    CampaignStatusesFilterWithState,
+    CampaignStatusesFilterFromContext,
 } from 'pages/stats/convert/components/CampaignStatusesFilter/CampaignStatusesFilter'
 
 export default CampaignStatusesFilter
-export {CampaignStatusesFilterWithState}
+export {CampaignStatusesFilterFromContext}

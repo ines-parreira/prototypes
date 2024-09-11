@@ -11,7 +11,8 @@ import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKe
 import {ConvertMetric} from 'state/ui/stats/types'
 import {integrationsState} from 'fixtures/integrations'
 import {GorgiasChatIntegration} from 'models/integration/types'
-import {CampaignTableStats} from '../CampaignTableStats'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {CampaignTableStats} from 'pages/stats/convert/components/CampaignTableStats/CampaignTableStats'
 
 const chatIntegration = {
     type: 'gorgias_chat',
@@ -36,10 +37,12 @@ describe('CampaignTableStats', () => {
                     [CampaignTableKeys.TotalRevenue]: 456,
                 },
             },
+            selectedCampaignsOperator: LogicalOperatorEnum.ONE_OF,
             drillDownMetricData: {
                 [ConvertMetric.CampaignSalesCount]: {
                     title: 'test',
                     metricName: ConvertMetric.CampaignSalesCount,
+                    campaignsOperator: LogicalOperatorEnum.ONE_OF,
                     shopName: 'test-store',
                     selectedCampaignIds: [campaign.id],
                     context: {

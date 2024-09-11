@@ -5,6 +5,8 @@ import {CampaignTableColumn} from 'pages/stats/convert/types/CampaignTableColumn
 import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
 import {CampaignTableValueFormat} from 'pages/stats/convert/types/enums/CampaignTableValueFormat.enum'
+import {CampaignTableCell} from 'pages/stats/convert/components/CampaignTableStats/components/CampaignTableCell/CampaignTableCell'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 import {GorgiasChatIntegration} from 'models/integration/types'
 import {
@@ -16,7 +18,6 @@ import {assumeMock} from 'utils/testing'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {setMetricData} from 'state/ui/stats/drillDownSlice'
 import {campaign} from 'fixtures/campaign'
-import {CampaignTableCell} from '../CampaignTableCell'
 
 jest.mock('hooks/useAppDispatch')
 const dispatchMock = jest.fn()
@@ -39,6 +40,7 @@ describe('<CampaignTableCell />', () => {
             [ConvertMetric.CampaignSalesCount]: {
                 title: 'Orders',
                 metricName: ConvertMetric.CampaignSalesCount,
+                campaignsOperator: LogicalOperatorEnum.ONE_OF,
                 shopName: 'shopify:best-shop',
                 selectedCampaignIds: [campaign.id],
                 context: {

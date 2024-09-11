@@ -5,6 +5,7 @@ import {getDataFromStatResult} from 'pages/stats/convert/services/CampaignMetric
 import {CampaignGraphData} from 'pages/stats/convert/services/types'
 import {TicketChannel} from 'business/types/ticket'
 import useAsyncFn from 'hooks/useAsyncFn'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 export type GetTicketsPerformanceQuery = {
     isFetching: boolean
@@ -17,6 +18,7 @@ export const useTicketsPerformanceChart = (
     startDate: string,
     endDate: string,
     integrationIds: number[],
+    campaignsOperator: LogicalOperatorEnum,
     channels: TicketChannel[]
 ): GetTicketsPerformanceQuery => {
     const [data, setData] = useState<CampaignGraphData | undefined>(undefined)
@@ -28,9 +30,17 @@ export const useTicketsPerformanceChart = (
             startDate,
             endDate,
             integrationIds,
+            campaignsOperator,
             channels,
         }),
-        [campaignIds, startDate, endDate, integrationIds, channels]
+        [
+            campaignIds,
+            startDate,
+            endDate,
+            integrationIds,
+            channels,
+            campaignsOperator,
+        ]
     )
 
     const [{loading}, fetchTotals] = useAsyncFn(async () => {

@@ -8,6 +8,7 @@ import {assumeMock} from 'utils/testing'
 import {usePostReporting} from 'models/reporting/queries'
 import {useGetTotalsStat} from 'pages/stats/convert/hooks/stats/useGetTotalsStat'
 import {getMetricFromCubeData} from 'pages/stats/convert/services/CampaignMetricsHelper'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -18,15 +19,23 @@ describe('useGetTotalsStat', () => {
         isError: false,
     } as UseQueryResult
 
-    const hookArgs: [string, string[] | null, string, string, string, string] =
-        [
-            'shopify:slow-formulas-for-sale',
-            ['campaign231', 'campaign232'],
-            'EUR',
-            '2023-01-01T00:00:00-08:00',
-            '2023-02-01T00:00:00-08:00',
-            'America/Los_Angeles',
-        ]
+    const hookArgs: [
+        string,
+        string[] | null,
+        LogicalOperatorEnum,
+        string,
+        string,
+        string,
+        string
+    ] = [
+        'shopify:slow-formulas-for-sale',
+        ['campaign231', 'campaign232'],
+        LogicalOperatorEnum.ONE_OF,
+        'EUR',
+        '2023-01-01T00:00:00-08:00',
+        '2023-02-01T00:00:00-08:00',
+        'America/Los_Angeles',
+    ]
 
     const campaignEventsTotalsData = {
         [CampaignOrderEventsMeasure.impressions]: '1000',

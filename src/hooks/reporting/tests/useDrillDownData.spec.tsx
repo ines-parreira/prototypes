@@ -52,6 +52,7 @@ import {
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 const initialState = {
     ui: {
@@ -611,6 +612,7 @@ describe('DrillDownData hooks', () => {
         const rowData = [exampleRow]
         const metricData: DrillDownMetric = {
             metricName: ConvertMetric.CampaignSalesCount,
+            campaignsOperator: LogicalOperatorEnum.ONE_OF,
             shopName: 'shopify:shopName',
             selectedCampaignIds: [],
             context: {

@@ -162,6 +162,8 @@ describe('FiltersPanel', () => {
         FilterComponentKey.CustomField,
         FilterComponentKey.Store,
         FilterComponentKey.PhoneIntegrations,
+        FilterKey.Campaigns,
+        FilterKey.CampaignStatuses,
     ]
 
     beforeEach(() => {
@@ -183,6 +185,7 @@ describe('FiltersPanel', () => {
                 />,
                 defaultState
             )
+
             expect(
                 screen.getByText(new RegExp(FilterLabels[filter]))
             ).toBeInTheDocument()

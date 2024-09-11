@@ -107,15 +107,19 @@ const VariantsList: React.FC<Props> = ({
     const namespacedShopName = useGetNamespacedShopNameForStore([
         integrationId as unknown as number,
     ])
-    const {isFetching: isVariantFetching, data: variantData} = useGetTableStat(
-        SharedDimension.abVariant,
+
+    const {isFetching: isVariantFetching, data: variantData} = useGetTableStat({
+        groupDimension: SharedDimension.abVariant,
         namespacedShopName,
-        [campaign.id],
-        campaign.ab_group?.started_datetime ?? campaign.created_datetime,
-        campaign.ab_group?.stopped_datetime ?? moment().endOf('day').format(),
-        DEFAULT_TIMEZONE,
-        true
-    )
+        campaignIds: [campaign.id],
+        startDate:
+            campaign.ab_group?.started_datetime ?? campaign.created_datetime,
+        endDate:
+            campaign.ab_group?.stopped_datetime ??
+            moment().endOf('day').format(),
+        timezone: DEFAULT_TIMEZONE,
+        enabled: true,
+    })
 
     const variants = useMemo<VariantTableEntry[]>(() => {
         const splitBetweenLength = (campaign.variants?.length || 0) + 1 // include control version

@@ -26,7 +26,8 @@ import {
     formatConvertCampaignSalesDrillDownRowData,
     formatTicketDrillDownRowData,
     formatVoiceDrillDownRowData,
-} from '../DrillDownFormatters'
+} from 'pages/stats/DrillDownFormatters'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 jest.mock('hooks/reporting/useDrillDownData')
 
@@ -105,6 +106,7 @@ describe('getDrillDownHook', () => {
         {
             metricName: ConvertMetric.CampaignSalesCount,
             shopName: 'shopify:shopName',
+            campaignsOperator: LogicalOperatorEnum.ONE_OF,
             selectedCampaignIds: [],
             context: {
                 channel_connection_external_ids: [],

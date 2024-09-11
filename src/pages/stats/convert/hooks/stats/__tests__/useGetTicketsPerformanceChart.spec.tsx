@@ -5,15 +5,24 @@ import * as revenueAttributionClient from 'pages/stats/convert/clients/RevenueAt
 import {Stat} from 'models/stat/types'
 import {useTicketsPerformanceChart} from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
 import {TicketChannel} from 'business/types/ticket'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 describe('useTicketsPerformanceChart', () => {
     const startDate = '2023-02-28T00:00:00.000'
     const endDate = '2023-03-02T00:00:00.000'
-    const hookArgs: [string[], string, string, number[], TicketChannel[]] = [
+    const hookArgs: [
+        string[],
+        string,
+        string,
+        number[],
+        LogicalOperatorEnum,
+        TicketChannel[]
+    ] = [
         ['campaign1', 'campaign2'],
         startDate,
         endDate,
         [1],
+        LogicalOperatorEnum.ONE_OF,
         [TicketChannel.Chat],
     ]
 

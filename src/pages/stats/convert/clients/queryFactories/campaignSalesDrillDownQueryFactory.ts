@@ -4,10 +4,12 @@ import {FilterKey, StatsFilters} from 'models/stat/types'
 import {getCampaignOrderPerformanceDrillDownData} from 'pages/stats/convert/clients/CampaignCubeQueries'
 import {CubeFilterParams} from 'pages/stats/convert/clients/types'
 import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 export const campaignSalesDrillDownQueryFactory = (
     shopName: string,
     selectedCampaignIds: string[],
+    campaignsOperator: LogicalOperatorEnum,
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
@@ -24,6 +26,7 @@ export const campaignSalesDrillDownQueryFactory = (
                 : campaignIds || [],
         startDate: filters.period.start_datetime,
         endDate: filters.period.end_datetime,
+        campaignsOperator,
         abVariant,
         shopName,
         timezone,

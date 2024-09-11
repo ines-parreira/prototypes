@@ -18,6 +18,7 @@ import {
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {CampaignsPerformanceDataset} from 'pages/stats/convert/services/types'
 import {usePostReporting} from 'models/reporting/queries'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 const OVERRIDES = {
     select: getDataFromResult,
@@ -29,19 +30,32 @@ export type GetTableQuery = {
     data?: CampaignsPerformanceDataset
 }
 
-export const useGetTableStat = (
-    groupDimension: GroupDimension,
-    namespacedShopName: string,
-    campaignIds: string[] | null,
-    startDate: string,
-    endDate: string,
-    timezone: string,
+type Props = {
+    groupDimension: GroupDimension
+    namespacedShopName: string
+    campaignIds: string[] | null
+    campaignsOperator?: LogicalOperatorEnum
+    startDate: string
+    endDate: string
+    timezone: string
     enabled?: boolean
-): GetTableQuery => {
+}
+
+export const useGetTableStat = ({
+    groupDimension,
+    namespacedShopName,
+    campaignIds,
+    campaignsOperator,
+    startDate,
+    endDate,
+    timezone,
+    enabled,
+}: Props): GetTableQuery => {
     const attrs: CampaignCubeFilterParams = useMemo(
         () => ({
             shopName: namespacedShopName,
             campaignIds: campaignIds || [],
+            campaignsOperator,
             startDate,
             endDate,
             timezone,
@@ -54,6 +68,7 @@ export const useGetTableStat = (
             endDate,
             timezone,
             groupDimension,
+            campaignsOperator,
         ]
     )
 

@@ -1,21 +1,23 @@
 import React, {useCallback, useMemo} from 'react'
-import {connect} from 'react-redux'
+import _noop from 'lodash/noop'
 
-import {
-    campaignStatusesFilterLogicalOperators,
-    FilterLabels,
-} from 'pages/stats/common/filters/constants'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import Filter from 'pages/stats/common/components/Filter'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {DropdownOption} from 'pages/stats/types'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {
+    withDefaultLogicalOperator,
+    withLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 import {InferredCampaignStatus} from 'models/convert/campaign/types'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {RootState} from 'state/types'
+import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+import useAppSelector from 'hooks/useAppSelector'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 
 const filterOptions = [
     {
@@ -33,7 +35,11 @@ type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.CampaignStatuses]
 } & RemovableFilter
 
-export default function CampaignStatusesFilter({value, onRemove}: Props) {
+export default function CampaignStatusesFilter({
+    value,
+    initializeAsOpen,
+    onRemove,
+}: Props) {
     const dispatch = useAppDispatch()
 
     const selectedCampaignStatuses = useMemo(
@@ -82,20 +88,6 @@ export default function CampaignStatusesFilter({value, onRemove}: Props) {
         [handleFilterValuesChange, selectedCampaignStatuses]
     )
 
-    const handleFilterOperatorChange = useCallback(
-        (operator: LogicalOperatorEnum) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    campaignStatuses: {
-                        values: selectedCampaignStatuses,
-                        operator: operator,
-                    },
-                })
-            )
-        },
-        [dispatch, selectedCampaignStatuses]
-    )
-
     const onSelectAllFilters = useCallback(() => {
         handleFilterValuesChange(Object.values(InferredCampaignStatus))
     }, [handleFilterValuesChange])
@@ -113,24 +105,47 @@ export default function CampaignStatusesFilter({value, onRemove}: Props) {
         onRemove?.()
     }, [onRemove, dispatch])
 
+    const handleDropdownOpen = () => {
+        dispatch(statFiltersDirty())
+    }
+    const handleDropdownClosed = () => {
+        dispatch(statFiltersClean())
+    }
+
     return (
         <Filter
             filterName={FilterLabels[FilterKey.CampaignStatuses]}
             filterOptionGroups={filterOptions}
             selectedOptions={selectedOptions}
             onChangeOption={onOptionChange}
-            logicalOperators={campaignStatusesFilterLogicalOperators}
-            selectedLogicalOperator={value?.operator}
-            onChangeLogicalOperator={handleFilterOperatorChange}
+            logicalOperators={[]}
+            onChangeLogicalOperator={_noop}
             onSelectAll={onSelectAllFilters}
             onRemoveAll={onRemoveAllFilters}
             onRemove={onRemoveCompaignStatuses}
+            initializeAsOpen={initializeAsOpen}
+            onDropdownOpen={handleDropdownOpen}
+            onDropdownClosed={handleDropdownClosed}
         />
     )
 }
 
-export const CampaignStatusesFilterWithState = connect((state: RootState) => ({
-    value: getPageStatsFiltersWithLogicalOperators(state)[
-        FilterKey.CampaignStatuses
-    ],
-}))(CampaignStatusesFilter)
+export const CampaignStatusesFilterFromContext = ({
+    initializeAsOpen,
+    onRemove,
+}: RemovableFilter) => {
+    const {selectedCampaignStatuses} = useCampaignStatsFilters()
+    const {cleanStatsFilters: statsFilters} = useAppSelector(
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezone
+    )
+    return (
+        <CampaignStatusesFilter
+            value={withLogicalOperator(
+                selectedCampaignStatuses,
+                statsFilters[FilterKey.CampaignStatuses]?.operator
+            )}
+            initializeAsOpen={initializeAsOpen}
+            onRemove={onRemove}
+        />
+    )
+}

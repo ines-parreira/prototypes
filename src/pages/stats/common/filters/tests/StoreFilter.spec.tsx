@@ -25,11 +25,12 @@ const mockedRemove = jest.fn()
 
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
+const firstId = 1
 const defaultState = {
     stats: initialState,
     integrations: fromJS({
         integrations: [
-            getIntegration(1, IntegrationType.Shopify),
+            getIntegration(firstId, IntegrationType.Shopify),
             getIntegration(2, IntegrationType.Magento2),
             getIntegration(3, IntegrationType.Shopify),
         ],
@@ -48,7 +49,7 @@ const dispatchChangeValuePayload = (
         },
     })
 
-const firstStoreName = getIntegration(1, IntegrationType.Shopify).name
+const firstStoreName = getIntegration(firstId, IntegrationType.Shopify).name
 const thirdStoreName = getIntegration(3, IntegrationType.Shopify).name
 
 describe('StoreFilter', () => {
@@ -84,7 +85,7 @@ describe('StoreFilter', () => {
         )
     })
 
-    it('should have a default selected option and should deselect it', () => {
+    it('should have a default selected option and should not be able to deselect it', () => {
         component.rerenderComponent(
             {
                 ...defaultState,
@@ -92,7 +93,7 @@ describe('StoreFilter', () => {
                     ...initialState,
                     filters: {
                         ...initialState.filters,
-                        integrations: withLogicalOperator([1]),
+                        integrations: withLogicalOperator([firstId]),
                     },
                 },
             },
@@ -102,7 +103,7 @@ describe('StoreFilter', () => {
         fireEvent.click(screen.getByText(firstStoreName))
         fireEvent.click(screen.getAllByText(firstStoreName)['1'])
         expect(mockedDispatch).toHaveBeenCalledWith(
-            dispatchChangeValuePayload([])
+            dispatchChangeValuePayload([firstId])
         )
     })
 })

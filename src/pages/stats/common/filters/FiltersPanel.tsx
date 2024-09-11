@@ -33,7 +33,7 @@ import {
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
 import {HelpCenterFilterWithState} from 'pages/stats/common/filters/HelpCenterFilter'
 import {HelpCenterLanguageFilterWithState} from 'pages/stats/common/filters/HelpCenterLanguageFilter'
-import {StoreFilterWithState} from 'pages/stats/common/filters/StoreFilter'
+import {StoreFilterFromContext} from 'pages/stats/common/filters/StoreFilter'
 import {
     activeParams,
     selectDropdownTextFields,
@@ -45,6 +45,8 @@ import {
     filterKeyToStateKeyMapper,
     getFilteredFilterComponentKeys,
 } from 'pages/stats/common/filters/helpers'
+import {CampaignsFilterFromContext} from 'pages/stats/common/filters/CampaignsFilter'
+import {CampaignStatusesFilterFromContext} from 'pages/stats/convert/components/CampaignStatusesFilter'
 
 type Props = {
     persistentFilters?: StaticFilter[]
@@ -89,8 +91,12 @@ export const renderFilter = (filter: FilterKey | FilterComponentKey) => {
             return BusiestTimesMetricSelectFilter
         case FilterComponentKey.CustomField:
             return CustomFieldFilter
+        case FilterKey.Campaigns:
+            return CampaignsFilterFromContext
+        case FilterKey.CampaignStatuses:
+            return CampaignStatusesFilterFromContext
         case FilterComponentKey.Store:
-            return StoreFilterWithState
+            return StoreFilterFromContext
         default:
             return () => <div>{UNSUPPORTED_FILTER_PLACEHOLDER}</div>
     }

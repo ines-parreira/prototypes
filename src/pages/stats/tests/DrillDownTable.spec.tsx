@@ -32,6 +32,7 @@ import {
 } from 'pages/stats/DrillDownFormatters'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {campaign, campaignId} from 'fixtures/campaign'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -282,6 +283,7 @@ describe('<DrillDownTable />', () => {
         const metricData: DrillDownMetric = {
             metricName: ConvertMetric.CampaignSalesCount,
             shopName: 'shopify:shopName',
+            campaignsOperator: LogicalOperatorEnum.ONE_OF,
             selectedCampaignIds: [],
             context: {
                 channel_connection_external_ids: [],

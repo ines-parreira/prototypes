@@ -16,6 +16,7 @@ import {CampaignsTotals} from 'pages/stats/convert/services/types'
 import {usePostReporting} from 'models/reporting/queries'
 import {CampaignsTotalsMetricNames} from 'pages/stats/convert/services/constants'
 import {getDefaultsForMetricKeys} from 'pages/stats/convert/services/utils'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 const OVERRIDES = {
     select: getMetricFromCubeData,
@@ -30,6 +31,7 @@ export type GetTotalsQuery = {
 export const useGetTotalsStat = (
     namespacedShopName: string,
     campaignIds: string[] | null,
+    campaignsOperator: LogicalOperatorEnum,
     currency: string,
     startDate: string,
     endDate: string,
@@ -39,11 +41,19 @@ export const useGetTotalsStat = (
         () => ({
             shopName: namespacedShopName,
             campaignIds: campaignIds || [],
+            campaignsOperator,
             startDate,
             endDate,
             timezone,
         }),
-        [namespacedShopName, campaignIds, startDate, endDate, timezone]
+        [
+            namespacedShopName,
+            campaignIds,
+            startDate,
+            endDate,
+            timezone,
+            campaignsOperator,
+        ]
     )
 
     const campaignEventsTotalsQuery = useMemo(

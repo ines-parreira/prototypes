@@ -11,6 +11,7 @@ import {
     JobType,
 } from 'models/job/types'
 import {AgentsColumnConfig, TableLabels} from 'pages/stats/AgentsTableConfig'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {MetricValueFormat} from 'pages/stats/common/utils'
 import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
 import {
@@ -113,6 +114,7 @@ export type ConvertMetrics = {
     selectedCampaignIds: string[]
     abVariant?: string
     context: ConvertJobContext
+    campaignsOperator: LogicalOperatorEnum
 } & CommonMetrics
 
 export type VoiceMetrics = {

@@ -12,6 +12,7 @@ import {useGetCampaignsAndChatChart} from 'pages/stats/convert/hooks/stats/useGe
 import {useTicketsPerformanceChart} from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
 import {ReportingGranularity} from 'models/reporting/types'
 import {CampaignGraphData} from 'pages/stats/convert/services/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -31,6 +32,7 @@ describe('useGetTotalsStat', () => {
     const hookArgs: [
         string,
         string[],
+        LogicalOperatorEnum,
         string,
         string,
         number,
@@ -39,6 +41,7 @@ describe('useGetTotalsStat', () => {
     ] = [
         'shopify:square-wheels-company',
         ['campaign1', 'campaign2'],
+        LogicalOperatorEnum.ONE_OF,
         startDate,
         endDate,
         42,

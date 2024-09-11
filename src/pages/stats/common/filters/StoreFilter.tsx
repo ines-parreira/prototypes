@@ -17,12 +17,14 @@ import {
 import {RootState} from 'state/types'
 import {DropdownOption} from 'pages/stats/types'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
-import {StoreIntegration} from 'models/integration/types'
+import {Integration} from 'models/integration/types'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]
-    storeIntegrations: StoreIntegration[]
+    storeIntegrations: Integration[]
 } & RemovableFilter
 
 export default function StoreFilter({
@@ -70,19 +72,9 @@ export default function StoreFilter({
         [dispatch, value.operator]
     )
 
-    const onOptionChange = useCallback(
-        (option: DropdownOption) => {
-            const id = Number(option.value)
-            if (value.values.includes(id)) {
-                handleFilterValuesChange(
-                    value.values.filter((storeId) => storeId !== id)
-                )
-            } else {
-                handleFilterValuesChange([...value.values, id])
-            }
-        },
-        [handleFilterValuesChange, value.values]
-    )
+    const onOptionChange = (opt: DropdownOption) => {
+        handleFilterValuesChange([Number(opt.value)])
+    }
 
     return (
         <Filter
@@ -98,6 +90,16 @@ export default function StoreFilter({
             showSearch={false}
             showQuickSelect={false}
             isPersistent
+        />
+    )
+}
+
+export const StoreFilterFromContext = () => {
+    const {selectedIntegrations, integrations} = useCampaignStatsFilters()
+    return (
+        <StoreFilter
+            storeIntegrations={integrations}
+            value={withLogicalOperator(selectedIntegrations)}
         />
     )
 }

@@ -32,8 +32,12 @@ const renderTooltipLabel = (context: TooltipItem<'line'>) => {
 }
 
 export const CampaignChatPerformanceStat = () => {
-    const {selectedIntegrations, selectedCampaigns, selectedPeriod} =
-        useCampaignStatsFilters()
+    const {
+        selectedIntegrations,
+        selectedCampaigns,
+        selectedCampaignsOperator,
+        selectedPeriod,
+    } = useCampaignStatsFilters()
     const selectedIntegration =
         useGetFirstValidIntegration(selectedIntegrations)
     const namespacedShopName =
@@ -45,6 +49,7 @@ export const CampaignChatPerformanceStat = () => {
     const {isFetching, isError, data} = useGetCampaignsAndChatChart(
         namespacedShopName,
         selectedCampaigns,
+        selectedCampaignsOperator,
         selectedPeriod.start_datetime,
         selectedPeriod.end_datetime,
         selectedIntegration?.id || null,

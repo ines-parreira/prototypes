@@ -16,16 +16,6 @@ export const agentsFilterLogicalOperators = [
     LogicalOperatorEnum.NOT_ONE_OF,
 ]
 
-export const campaignStatusesFilterLogicalOperators = [
-    LogicalOperatorEnum.ONE_OF,
-    LogicalOperatorEnum.NOT_ONE_OF,
-]
-
-export const campaignsFilterLogicalOperators = [
-    LogicalOperatorEnum.ONE_OF,
-    LogicalOperatorEnum.NOT_ONE_OF,
-]
-
 export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.Period]: 'Date',
     [FilterKey.Integrations]: 'Integration',

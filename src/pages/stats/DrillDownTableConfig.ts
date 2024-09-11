@@ -236,6 +236,7 @@ export const getDrillDownQuery = (
                 campaignSalesDrillDownQueryFactory(
                     metricName.shopName,
                     metricName.selectedCampaignIds,
+                    metricName.campaignsOperator,
                     statsFilters,
                     timezone,
                     sorting,

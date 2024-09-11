@@ -17,6 +17,8 @@ import {CampaignPreview} from 'models/convert/campaign/types'
 import {IntegrationType} from 'models/integration/constants'
 import ConvertCampaignsStats from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
+import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+import {ReportingGranularity} from 'models/reporting/types'
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -45,6 +47,8 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 
 jest.mock('hooks/reporting/useCleanStatsFilters')
 
+jest.mock('state/ui/stats/selectors')
+
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
@@ -60,7 +64,21 @@ jest.mock('react-router-dom', () => ({
     ...(jest.requireActual('react-router-dom') as typeof routerDom),
     useParams: jest.fn(),
 }))
+
 const useParamsMock = assumeMock(useParams)
+
+const getCleanStatsFiltersWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
+)
+
+const startDate = '2021-05-01T00:00:00+02:00'
+const endDate = '2021-05-04T23:59:59+02:00'
+const filters = {
+    period: {
+        start_datetime: startDate,
+        end_datetime: endDate,
+    },
+}
 
 describe('CampaignsStats', () => {
     const history = createMemoryHistory()
@@ -98,6 +116,12 @@ describe('CampaignsStats', () => {
         })
 
         useParamsMock.mockReturnValue({})
+
+        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+            cleanStatsFilters: filters,
+            userTimezone: 'userTimezone',
+            granularity: ReportingGranularity.Day,
+        })
     })
 
     it('should render the paywall with modal for Convert non-subscriber', () => {

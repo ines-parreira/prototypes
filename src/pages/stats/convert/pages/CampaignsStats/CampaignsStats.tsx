@@ -16,10 +16,15 @@ import RequestABTest from 'pages/stats/convert/components/RequestABTest'
 
 import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {CampaignStatsFilters} from '../../providers/CampaignStatsFilters'
-
-import {RevenueFilters} from '../../containers/RevenueFilters'
-import {RevenueStatsContent} from '../../containers/RevenueStatsContent'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import {FilterComponentKey, FilterKey} from 'models/stat/types'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import {useGridSize} from 'hooks/useGridSize'
+import DashboardSection from 'pages/stats/DashboardSection'
+import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
+import {RevenueFilters} from 'pages/stats/convert/containers/RevenueFilters'
+import {RevenueStatsContent} from 'pages/stats/convert/containers/RevenueStatsContent'
 
 import css from './CampaignsStats.less'
 
@@ -28,9 +33,13 @@ type CampaignsStatsProps = {
 }
 
 const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
+    const AnalyticsNewFiltersConvert =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersConvert]
     const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
         useParams<ConvertRouteParams>()
+
     const showButton = isConvertSubscriber && chatIntegrationId
+    const getGridCellSize = useGridSize()
 
     return (
         <CampaignStatsFilters>
@@ -39,10 +48,36 @@ const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
                 titleExtra={
                     <>
                         {showButton ? <RequestABTest /> : null}
-                        <RevenueFilters />
+                        {!AnalyticsNewFiltersConvert && <RevenueFilters />}
                     </>
                 }
             >
+                {AnalyticsNewFiltersConvert && (
+                    <DashboardSection>
+                        <DashboardGridCell
+                            size={getGridCellSize(12)}
+                            className="pb-0"
+                        >
+                            <FiltersPanel
+                                filterSettingsOverrides={{
+                                    [FilterKey.Period]: {
+                                        initialSettings: {
+                                            maxSpan: 90,
+                                        },
+                                    },
+                                }}
+                                persistentFilters={[
+                                    FilterKey.Period,
+                                    FilterComponentKey.Store,
+                                ]}
+                                optionalFilters={[
+                                    FilterKey.Campaigns,
+                                    FilterKey.CampaignStatuses,
+                                ]}
+                            />
+                        </DashboardGridCell>
+                    </DashboardSection>
+                )}
                 <ConvertLimitBanner classes={'mt-4 ml-4 mr-4'} />
                 <RevenueStatsContent />
             </StatsPage>

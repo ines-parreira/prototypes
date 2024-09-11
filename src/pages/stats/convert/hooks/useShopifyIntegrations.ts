@@ -4,10 +4,10 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import {getStatsStoreIntegrations} from 'state/stats/selectors'
 
-import {IntegrationType} from 'models/integration/types'
+import {IntegrationType, Integration} from 'models/integration/types'
 import {getSortByName} from 'utils/getSortByName'
 
-export function useShopifyIntegrations() {
+export function useShopifyIntegrations(): Integration[] {
     const allStoreIntegrations = useAppSelector(getStatsStoreIntegrations)
     const shopifyIntegrations = useMemo(() => {
         return allStoreIntegrations

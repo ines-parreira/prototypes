@@ -17,6 +17,7 @@ import {usePostReporting} from 'models/reporting/queries'
 import {ReportingGranularity} from 'models/reporting/types'
 import {TicketChannel} from 'business/types/ticket'
 import {useTicketsPerformanceChart} from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 export type GetCampaignsAndChatChartQuery = {
     isFetching: boolean
@@ -27,6 +28,7 @@ export type GetCampaignsAndChatChartQuery = {
 export const useGetCampaignsAndChatChart = (
     namespacedShopName: string,
     campaignIds: string[],
+    campaignsOperator: LogicalOperatorEnum,
     startDate: string,
     endDate: string,
     integrationId: number | null,
@@ -37,6 +39,7 @@ export const useGetCampaignsAndChatChart = (
         () => ({
             shopName: namespacedShopName,
             campaignIds,
+            campaignsOperator,
             startDate,
             endDate,
             granularity: timeGranularity,
@@ -49,6 +52,7 @@ export const useGetCampaignsAndChatChart = (
             endDate,
             timeGranularity,
             timezone,
+            campaignsOperator,
         ]
     )
 
@@ -77,6 +81,7 @@ export const useGetCampaignsAndChatChart = (
         startDate,
         endDate,
         integrationIds,
+        campaignsOperator,
         channels
     )
 

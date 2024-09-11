@@ -23,19 +23,24 @@ import {
 } from 'models/reporting/types'
 import {getDateRange} from 'pages/stats/convert/clients/utils'
 import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {FilterOperatorMap} from 'models/reporting/queryFactories/utils'
 
 const _getDefaultFilters = ({
     startDate,
     endDate,
     cubeName,
     campaignIds,
+    campaignsOperator,
     shopName,
     abVariant,
 }: DefaultFilterParams): CubeFilter[] => {
     const filters = [_inDateRangeFilter(startDate, endDate, cubeName)]
 
-    if (campaignIds?.length) {
-        filters.push(_campaignEqualsFilter(campaignIds, cubeName))
+    if (campaignIds && campaignsOperator && campaignIds?.length) {
+        filters.push(
+            _campaignEqualsFilter(campaignIds, campaignsOperator, cubeName)
+        )
     }
 
     if (shopName) {
@@ -85,11 +90,12 @@ const _abVariantEqualsFilter = (
 
 const _campaignEqualsFilter = (
     campaignIds: string[],
+    campaignIdsOperator: LogicalOperatorEnum,
     cubeName: string
 ): CubeFilter => {
     return {
         member: `${cubeName}.${SharedDimension.campaignId}`,
-        operator: FilterOperator.equals,
+        operator: FilterOperatorMap[campaignIdsOperator],
         values: campaignIds,
     }
 }
@@ -107,6 +113,7 @@ export const getCampaignEventsPerformanceData = ({
     startDate,
     endDate,
     campaignIds,
+    campaignsOperator,
     timezone,
 }: CampaignCubeFilterParams): ReportingParams => {
     return [
@@ -126,6 +133,7 @@ export const getCampaignEventsPerformanceData = ({
                 endDate,
                 cubeName: Cube.events,
                 campaignIds,
+                campaignsOperator,
             }),
             segments: [EventsSegment.campaignEventsOnly],
         },
@@ -137,6 +145,7 @@ export const getCampaignOrderPerformanceData = ({
     startDate,
     endDate,
     campaignIds,
+    campaignsOperator,
     timezone,
 }: CampaignCubeFilterParams): ReportingParams => {
     return [
@@ -158,6 +167,7 @@ export const getCampaignOrderPerformanceData = ({
                 endDate,
                 cubeName: Cube.orderConversion,
                 campaignIds,
+                campaignsOperator,
             }),
         },
     ]
@@ -168,6 +178,7 @@ export const getCampaignOrderPerformanceDrillDownData = ({
     endDate,
     shopName,
     campaignIds,
+    campaignsOperator,
     abVariant,
     timezone,
     sorting,
@@ -190,6 +201,7 @@ export const getCampaignOrderPerformanceDrillDownData = ({
                 endDate,
                 cubeName: Cube.orderConversion,
                 campaignIds,
+                campaignsOperator,
                 shopName,
                 abVariant,
             }),
@@ -209,6 +221,7 @@ export const getCampaignEventsOrdersPerformanceData = ({
     startDate,
     endDate,
     campaignIds,
+    campaignsOperator,
     timezone,
 }: CampaignCubeFilterParams): ReportingParams => {
     return [
@@ -225,6 +238,7 @@ export const getCampaignEventsOrdersPerformanceData = ({
                 endDate,
                 cubeName: Cube.campaignOrderEvents,
                 campaignIds,
+                campaignsOperator,
             }),
         },
     ]
@@ -233,6 +247,7 @@ export const getCampaignEventsOrdersPerformanceData = ({
 export const getCampaignEventsTotalsData = ({
     shopName,
     campaignIds,
+    campaignsOperator,
     startDate,
     endDate,
     timezone,
@@ -251,6 +266,7 @@ export const getCampaignEventsTotalsData = ({
                 cubeName: Cube.campaignOrderEvents,
                 shopName,
                 campaignIds,
+                campaignsOperator,
             }),
         },
     ]
@@ -259,6 +275,7 @@ export const getCampaignEventsTotalsData = ({
 export const getCampaignOrderTotalsData = ({
     shopName,
     campaignIds,
+    campaignsOperator,
     startDate,
     endDate,
     timezone,
@@ -277,6 +294,7 @@ export const getCampaignOrderTotalsData = ({
                 cubeName: Cube.orderConversion,
                 shopName,
                 campaignIds,
+                campaignsOperator,
             }),
         },
     ]
@@ -338,6 +356,7 @@ export const getRevenueGraphData = ({
 export const getRevenueShareGraphData = ({
     shopName,
     campaignIds,
+    campaignsOperator,
     startDate,
     endDate,
     granularity = ReportingGranularity.Day,
@@ -362,6 +381,7 @@ export const getRevenueShareGraphData = ({
                 startDate,
                 endDate,
                 cubeName: Cube.orderConversion,
+                campaignsOperator,
                 campaignIds,
                 shopName,
             }),
@@ -372,6 +392,7 @@ export const getRevenueShareGraphData = ({
 export const getCampaignsPerformanceGraphData = ({
     shopName,
     campaignIds,
+    campaignsOperator,
     startDate,
     endDate,
     granularity = ReportingGranularity.Day,
@@ -402,6 +423,7 @@ export const getCampaignsPerformanceGraphData = ({
                 startDate,
                 endDate,
                 cubeName: Cube.campaignOrderEvents,
+                campaignsOperator,
                 campaignIds,
                 shopName,
             }),

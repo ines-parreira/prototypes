@@ -8,7 +8,8 @@ import {assumeMock, renderWithStore} from 'utils/testing'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
 import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {CampaignPerformanceTable} from '../CampaignPerformanceTable'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {CampaignPerformanceTable} from 'pages/stats/convert/containers/CampaignPerformanceTable/CampaignPerformanceTable'
 
 jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
@@ -31,6 +32,7 @@ describe('CampaignPerformanceTable', () => {
                 end_datetime: '2020-01-31T23:59:59.999Z',
             },
             selectedIntegrations: [shopifyIntegration.id],
+            selectedCampaignsOperator: LogicalOperatorEnum.ONE_OF,
             selectedCampaignIds: [],
             campaigns: [campaign],
         } as any)

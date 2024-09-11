@@ -14,6 +14,7 @@ import {usePostReporting} from 'models/reporting/queries'
 import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
 import {getDataFromResult} from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {GroupDimension} from 'pages/stats/convert/clients/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -24,21 +25,25 @@ describe('useGetTableStat', () => {
         isError: false,
     } as UseQueryResult
 
-    const hookArgs: [
-        GroupDimension,
-        string,
-        string[] | null,
-        string,
-        string,
-        string
-    ] = [
-        SharedDimension.campaignId,
-        'shopify:slow-formulas-for-sale',
-        ['campaign1', 'campaign2'],
-        '2023-02-01T00:00:00-08:00',
-        '2023-04-01T00:00:00-08:00',
-        'America/Los_Angeles',
-    ]
+    const hookArgs: {
+        groupDimension: GroupDimension
+        namespacedShopName: string
+        campaignIds: string[] | null
+        campaignsOperator?: LogicalOperatorEnum
+        startDate: string
+        endDate: string
+        timezone: string
+        enabled?: boolean
+    } = {
+        groupDimension: SharedDimension.campaignId,
+        namespacedShopName: 'shopify:slow-formulas-for-sale',
+        campaignIds: ['campaign1', 'campaign2'],
+        campaignsOperator: LogicalOperatorEnum.ONE_OF,
+        startDate: '2023-02-01T00:00:00-08:00',
+        endDate: '2023-04-01T00:00:00-08:00',
+        timezone: 'America/Los_Angeles',
+        enabled: true,
+    }
 
     const campaignEventsPerformanceData = [
         {
@@ -120,7 +125,7 @@ describe('useGetTableStat', () => {
         })
 
         // act
-        const {result} = renderHook(() => useGetTableStat(...hookArgs))
+        const {result} = renderHook(() => useGetTableStat(hookArgs))
 
         expect(result.current.isFetching).toBe(true)
     })
@@ -133,7 +138,7 @@ describe('useGetTableStat', () => {
         } as UseQueryResult)
 
         // act
-        const {result} = renderHook(() => useGetTableStat(...hookArgs))
+        const {result} = renderHook(() => useGetTableStat(hookArgs))
 
         expect(result.current.isError).toBe(true)
     })
@@ -161,7 +166,7 @@ describe('useGetTableStat', () => {
         } as UseQueryResult)
 
         // act
-        const {result} = renderHook(() => useGetTableStat(...hookArgs))
+        const {result} = renderHook(() => useGetTableStat(hookArgs))
 
         // assert
         expect(usePostReportingMock.mock.calls).toMatchSnapshot()
@@ -184,7 +189,7 @@ describe('useGetTableStat', () => {
         } as UseQueryResult)
 
         // act
-        const {result} = renderHook(() => useGetTableStat(...hookArgs))
+        const {result} = renderHook(() => useGetTableStat(hookArgs))
 
         // assert
         expect(usePostReportingMock.mock.calls).toMatchSnapshot()
@@ -193,11 +198,10 @@ describe('useGetTableStat', () => {
 
     it('should not call query if campaignIds is null', () => {
         // arrange
-        const args: typeof hookArgs = [...hookArgs]
-        args[2] = null
+        hookArgs.campaignIds = null
 
         // act
-        const {result} = renderHook(() => useGetTableStat(...args))
+        const {result} = renderHook(() => useGetTableStat(hookArgs))
 
         // assert
         usePostReportingMock.mock.calls.map((call) => {

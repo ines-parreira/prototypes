@@ -1,6 +1,7 @@
 import {TicketChannel} from 'business/types/ticket'
 import {ReportingGranularity} from 'models/reporting/types'
 import {OrderDirection} from 'models/api/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {SharedDimension} from './constants'
 
 export type CubeFilter = {
@@ -21,6 +22,7 @@ export type RequiredFilterParams = {
 export type DefaultFilterParams = {
     cubeName: string
     campaignIds?: string[]
+    campaignsOperator?: LogicalOperatorEnum
     shopName?: string
     abVariant?: string
 } & RequiredFilterParams
@@ -28,6 +30,7 @@ export type DefaultFilterParams = {
 export type FilterParams = {
     shopName?: string
     campaignIds?: string[]
+    campaignsOperator?: LogicalOperatorEnum
     abVariant?: string
     granularity?: ReportingGranularity
     limit?: number

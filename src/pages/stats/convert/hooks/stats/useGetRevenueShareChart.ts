@@ -16,6 +16,7 @@ import {
 import {RevenueGraphDataPoint} from 'pages/stats/convert/services/types'
 import {usePostReporting} from 'models/reporting/queries'
 import {ReportingGranularity} from 'models/reporting/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 const OVERRIDES = {
     select: getDataFromResult,
@@ -30,6 +31,7 @@ export type GetRevenueShareChartQuery = {
 export const useGetRevenueShareChart = (
     namespacedShopName: string,
     campaignIds: string[] | null,
+    campaignsOperator: LogicalOperatorEnum,
     startDate: string,
     endDate: string,
     timezone: string,
@@ -39,6 +41,7 @@ export const useGetRevenueShareChart = (
         () => ({
             shopName: namespacedShopName,
             campaignIds: campaignIds || [],
+            campaignsOperator,
             startDate,
             endDate,
             granularity: timeGranularity,
@@ -51,6 +54,7 @@ export const useGetRevenueShareChart = (
             endDate,
             timeGranularity,
             timezone,
+            campaignsOperator,
         ]
     )
 

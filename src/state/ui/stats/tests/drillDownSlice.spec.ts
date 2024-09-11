@@ -40,6 +40,7 @@ import {User} from 'config/types/user'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {MEDIAN_RESOLUTION_TIME_LABEL} from 'services/reporting/constants'
 import {assumeMock} from 'utils/testing'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 jest.mock('models/job/resources')
 const createJobMock = assumeMock(createJob)
@@ -319,6 +320,7 @@ describe('drillDownSlice', () => {
                 ...store.getState().ui[drillDownSlice.name],
                 metricData: {
                     metricName: ConvertMetric.CampaignSalesCount,
+                    campaignsOperator: LogicalOperatorEnum.ONE_OF,
                     shopName: 'candy-shop',
                     selectedCampaignIds: [],
                     context: context,

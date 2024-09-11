@@ -1,12 +1,5 @@
 import React, {useCallback, useMemo} from 'react'
-import {connect} from 'react-redux'
-import {useParams} from 'react-router-dom'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
-import {
-    getPageStatsFiltersWithLogicalOperators,
-    getStatsMessagingAndAppIntegrations,
-    getStoreIntegrationsStatsFilter,
-} from 'state/stats/selectors'
 import {emptyFilter} from 'pages/stats/common/filters/helpers'
 
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
@@ -15,60 +8,27 @@ import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
 import {DropdownOption} from 'pages/stats/types'
-import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {
-    campaignsFilterLogicalOperators,
-    FilterLabels,
-} from 'pages/stats/common/filters/constants'
-import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {ConvertRouteParams} from 'pages/convert/common/types'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {CampaignPreview} from 'models/convert/campaign/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationById} from 'state/integrations/selectors'
+import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Campaigns]
+    campaigns: CampaignPreview[]
 } & RemovableFilter
 
 export default function CampaignsFilter({
     value = emptyFilter,
     initializeAsOpen = false,
+    campaigns,
     onRemove,
 }: Props) {
     const dispatch = useAppDispatch()
-
-    const selectedStoreIntegrations = useAppSelector(
-        getStoreIntegrationsStatsFilter
-    )
-
-    const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
-        useParams<ConvertRouteParams>()
-
-    const chatIntegration = useAppSelector(
-        getIntegrationById(parseInt(chatIntegrationId))
-    )
-
-    const storeIntegrationId = useMemo(
-        () =>
-            parseInt(
-                chatIntegration.getIn(['meta', 'shop_integration_id']) ?? 0
-            ),
-        [chatIntegration]
-    )
-
-    const selectedIntegrations = useMemo(() => {
-        if (storeIntegrationId) return [storeIntegrationId]
-
-        return selectedStoreIntegrations
-    }, [storeIntegrationId, selectedStoreIntegrations])
-
-    const {campaigns} = useGetCampaignsForStore(
-        selectedIntegrations,
-        chatIntegration.getIn(['meta', 'app_id']),
-        true
-    )
 
     const getSelectedCampaigns = useMemo(() => {
         return campaigns
@@ -140,8 +100,7 @@ export default function CampaignsFilter({
         <Filter
             filterName={FilterLabels[FilterKey.Campaigns]}
             selectedOptions={getSelectedCampaigns}
-            selectedLogicalOperator={value.operator}
-            logicalOperators={campaignsFilterLogicalOperators}
+            logicalOperators={[]}
             filterOptionGroups={campaignsOptionGroups}
             onChangeOption={onOptionChange}
             onSelectAll={() => {
@@ -168,7 +127,21 @@ export default function CampaignsFilter({
     )
 }
 
-export const CampaignsFilterWithState = connect((state: RootState) => ({
-    value: getPageStatsFiltersWithLogicalOperators(state)[FilterKey.Campaigns],
-    integrations: getStatsMessagingAndAppIntegrations(state),
-}))(CampaignsFilter)
+export const CampaignsFilterFromContext = ({
+    initializeAsOpen,
+    onRemove,
+}: RemovableFilter) => {
+    const {campaigns, selectedCampaigns} = useCampaignStatsFilters()
+    const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
+    return (
+        <CampaignsFilter
+            campaigns={campaigns}
+            value={withLogicalOperator(
+                selectedCampaigns,
+                statsFilters?.[FilterKey.Campaigns]?.operator
+            )}
+            initializeAsOpen={initializeAsOpen}
+            onRemove={onRemove}
+        />
+    )
+}

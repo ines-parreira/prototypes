@@ -10,6 +10,7 @@ import {
     SharedDimension,
 } from 'pages/stats/convert/clients/constants'
 import {getDateRange} from 'pages/stats/convert/clients/utils'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 describe('campaignSalesDrillDownQueryFactory', () => {
     const periodStart = moment()
@@ -37,6 +38,7 @@ describe('campaignSalesDrillDownQueryFactory', () => {
             campaignSalesDrillDownQueryFactory(
                 shopName,
                 [],
+                LogicalOperatorEnum.ONE_OF,
                 statsFilters,
                 timezone,
                 sorting,
@@ -93,6 +95,7 @@ describe('campaignSalesDrillDownQueryFactory', () => {
             campaignSalesDrillDownQueryFactory(
                 shopName,
                 selectedCampaignIds,
+                LogicalOperatorEnum.ONE_OF,
                 statsFilters,
                 timezone,
                 sorting
