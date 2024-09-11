@@ -1,8 +1,7 @@
 import React from 'react'
-import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
 
-import css from '../../TableActions.less'
+import IconButton from 'pages/common/components/button/IconButton'
 
 export type ActionSchema<TName extends string = string> = {
     icon: string
@@ -27,15 +26,16 @@ export function Action<TName extends string>({
 }: ActionProps<TName>): JSX.Element {
     return (
         <>
-            <button
+            <IconButton
                 id={tooltip?.target}
-                data-testid={name}
-                className={classNames(css.action, 'material-icons')}
-                disabled={disabled}
+                isDisabled={disabled}
                 onClick={(ev) => onClick(ev, name)}
+                intent="secondary"
+                fillStyle="ghost"
+                aria-label={name}
             >
                 {icon}
-            </button>
+            </IconButton>
             {tooltip && (
                 <Tooltip placement="top-end" target={tooltip.target}>
                     {tooltip.content}

@@ -37,7 +37,7 @@ describe('SubscriptionModalFooter', () => {
 
         const confirmButton = getByRole('button', {name: confirmLabel})
 
-        expect(confirmButton).not.toHaveClass('isDisabled')
+        expect(confirmButton).toBeAriaEnabled()
     })
 
     it('should render disabled button for non-admin', () => {
@@ -45,6 +45,6 @@ describe('SubscriptionModalFooter', () => {
 
         const confirmButton = getByRole('button', {name: confirmLabel})
 
-        expect(confirmButton).toHaveClass('isDisabled')
+        expect(confirmButton).toBeAriaDisabled()
     })
 })

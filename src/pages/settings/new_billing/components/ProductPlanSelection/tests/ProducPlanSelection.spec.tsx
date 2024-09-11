@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
@@ -108,12 +108,14 @@ describe('ProductPlanSelection', () => {
     }
 
     it('does not display the cancel auto-renewal button and a modal if cancellation is not available', () => {
-        const {queryByText} = render(
+        render(
             <Provider store={store}>
                 <ProductPlanSelection {...props} />
             </Provider>
         )
-        expect(queryByText('Cancel auto-renewal')).toBeNull()
+        expect(
+            screen.queryByText('Cancel auto-renewal')
+        ).not.toBeInTheDocument()
         expect(CancelProductModalMock).not.toHaveBeenCalled()
     })
 
@@ -121,12 +123,14 @@ describe('ProductPlanSelection', () => {
         useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
             () => true
         )
-        const {queryByText} = render(
+        render(
             <Provider store={store}>
                 <ProductPlanSelection {...props} editingAvailable={false} />
             </Provider>
         )
-        expect(queryByText('Cancel auto-renewal')).toBeNull()
+        expect(
+            screen.queryByText('Cancel auto-renewal')
+        ).not.toBeInTheDocument()
         expect(CancelProductModalMock).not.toHaveBeenCalled()
     })
 
@@ -134,12 +138,14 @@ describe('ProductPlanSelection', () => {
         useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
             () => true
         )
-        const {queryByText} = render(
+        render(
             <Provider store={store}>
                 <ProductPlanSelection {...props} isTrialing={true} />
             </Provider>
         )
-        expect(queryByText('Cancel auto-renewal')).toBeNull()
+        expect(
+            screen.queryByText('Cancel auto-renewal')
+        ).not.toBeInTheDocument()
         expect(CancelProductModalMock).not.toHaveBeenCalled()
     })
 
@@ -177,13 +183,13 @@ describe('ProductPlanSelection', () => {
             periodEnd: props.periodEnd,
         }
 
-        const {getByRole, getByTestId} = render(
+        const {getByTestId} = render(
             <Provider store={store}>
                 <ProductPlanSelection {...props} />
             </Provider>
         )
 
-        const cancelAutoRenewalButton = getByRole('button', {
+        const cancelAutoRenewalButton = screen.getByRole('button', {
             name: 'Cancel auto-renewal',
         })
         expect(CancelProductModalMock).toHaveBeenCalledWith(expectedProps, {})
@@ -205,25 +211,25 @@ describe('ProductPlanSelection', () => {
     })
 
     it('displays the product type title', () => {
-        const {getByText} = render(
+        render(
             <Provider store={store}>
                 <ProductPlanSelection {...props} />
             </Provider>
         )
-        expect(getByText('Helpdesk')).toBeInTheDocument()
+        expect(screen.getByText('Helpdesk')).toBeInTheDocument()
     })
 
     it('displays the active badge when product is active', () => {
-        const {getByText} = render(
+        render(
             <Provider store={store}>
                 <ProductPlanSelection {...props} />
             </Provider>
         )
-        expect(getByText('Active')).toBeInTheDocument()
+        expect(screen.getByText('Active')).toBeInTheDocument()
     })
 
     it('displays the add product button when product is not active', () => {
-        const {getByText} = render(
+        render(
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
@@ -235,22 +241,22 @@ describe('ProductPlanSelection', () => {
                 />
             </Provider>
         )
-        expect(getByText('Add Product')).toBeInTheDocument()
+        expect(screen.getByText('Add Product')).toBeInTheDocument()
     })
 
     it('calls handleClose when the close button is clicked', () => {
-        const {getByText} = render(
+        render(
             <Provider store={store}>
                 <ProductPlanSelection {...props} currentPlan={undefined} />
             </Provider>
         )
-        const closeButton = getByText('close')
+        const closeButton = screen.getByText('close')
         fireEvent.click(closeButton)
         expect(mockSetSelectedPlans).toHaveBeenCalled()
     })
 
     it('calls handleOpen when the add product button is clicked', () => {
-        const {getByText} = render(
+        render(
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
@@ -262,13 +268,13 @@ describe('ProductPlanSelection', () => {
                 />
             </Provider>
         )
-        const addProductButton = getByText('Add Product')
+        const addProductButton = screen.getByText('Add Product')
         fireEvent.click(addProductButton)
         expect(mockSetSelectedPlans).toHaveBeenCalled()
     })
 
     it('displays the auto-upgrade toggle', () => {
-        const {getByText} = render(
+        render(
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
@@ -285,11 +291,13 @@ describe('ProductPlanSelection', () => {
                 />
             </Provider>
         )
-        expect(getByText('Click allowance auto-upgrade')).toBeInTheDocument()
+        expect(
+            screen.getByText('Click allowance auto-upgrade')
+        ).toBeInTheDocument()
     })
 
     it('should keep add product button disabled if editing is not available', () => {
-        const {queryByText} = render(
+        render(
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
@@ -308,14 +316,14 @@ describe('ProductPlanSelection', () => {
             </Provider>
         )
 
-        expect(queryByText('Add Product')).toHaveClass('isDisabled')
+        expect(screen.getByText('Add Product')).toBeAriaDisabled()
         expect(
-            queryByText('Click allowance auto-upgrade')
+            screen.queryByText('Click allowance auto-upgrade')
         ).not.toBeInTheDocument()
     })
 
     it('should keep add product button disabled if editing is not available', () => {
-        const {queryByText} = render(
+        render(
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
@@ -334,9 +342,9 @@ describe('ProductPlanSelection', () => {
             </Provider>
         )
 
-        expect(queryByText('Add Product')).toHaveClass('isDisabled')
+        expect(screen.getByText('Add Product')).toBeAriaDisabled()
         expect(
-            queryByText('Click allowance auto-upgrade')
+            screen.queryByText('Click allowance auto-upgrade')
         ).not.toBeInTheDocument()
     })
 
@@ -346,7 +354,7 @@ describe('ProductPlanSelection', () => {
             mockFlags({
                 [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
             })
-            const {getByText} = render(
+            render(
                 <Provider store={store}>
                     <ProductPlanSelection
                         {...props}
@@ -361,8 +369,7 @@ describe('ProductPlanSelection', () => {
                 </Provider>
             )
 
-            const button = getByText('Add Product')
-            expect(button).toHaveClass('isDisabled')
+            expect(screen.getByText('Add Product')).toBeAriaDisabled()
         }
     )
 

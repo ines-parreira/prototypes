@@ -85,7 +85,7 @@ describe('<ActionsPlatformAppForm />', () => {
         )
 
         expect(
-            screen.getByText('Save Changes').closest('button')
+            screen.getByRole('button', {name: 'Save Changes'})
         ).toBeAriaDisabled()
     })
 

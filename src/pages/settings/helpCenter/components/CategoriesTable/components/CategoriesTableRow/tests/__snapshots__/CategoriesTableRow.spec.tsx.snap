@@ -189,25 +189,43 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
           class="action-list"
         >
           <button
-            class="action material-icons"
-            data-testid="categorySettings"
+            aria-disabled="false"
+            aria-label="categorySettings"
+            class="wrapper wrapper ghost ghost secondary medium"
             id="categorySettings-5"
+            type="button"
           >
-            settings
+            <i
+              class="material-icons icon"
+            >
+              settings
+            </i>
           </button>
           <button
-            class="action material-icons"
-            data-testid="createNestedCategory"
+            aria-disabled="false"
+            aria-label="createNestedCategory"
+            class="wrapper wrapper ghost ghost secondary medium"
             id="createNestedCategory-5"
+            type="button"
           >
-            playlist_add
+            <i
+              class="material-icons icon"
+            >
+              playlist_add
+            </i>
           </button>
           <button
-            class="action material-icons"
-            data-testid="createNestedArticle"
+            aria-disabled="false"
+            aria-label="createNestedArticle"
+            class="wrapper wrapper ghost ghost secondary medium"
             id="createNestedArticle-5"
+            type="button"
           >
-            note_add
+            <i
+              class="material-icons icon"
+            >
+              note_add
+            </i>
           </button>
         </div>
       </div>
@@ -330,25 +348,43 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
           class="action-list"
         >
           <button
-            class="action material-icons"
-            data-testid="categorySettings"
+            aria-disabled="false"
+            aria-label="categorySettings"
+            class="wrapper wrapper ghost ghost secondary medium"
             id="categorySettings-5"
+            type="button"
           >
-            settings
+            <i
+              class="material-icons icon"
+            >
+              settings
+            </i>
           </button>
           <button
-            class="action material-icons"
-            data-testid="createNestedCategory"
+            aria-disabled="false"
+            aria-label="createNestedCategory"
+            class="wrapper wrapper ghost ghost secondary medium"
             id="createNestedCategory-5"
+            type="button"
           >
-            playlist_add
+            <i
+              class="material-icons icon"
+            >
+              playlist_add
+            </i>
           </button>
           <button
-            class="action material-icons"
-            data-testid="createNestedArticle"
+            aria-disabled="false"
+            aria-label="createNestedArticle"
+            class="wrapper wrapper ghost ghost secondary medium"
             id="createNestedArticle-5"
+            type="button"
           >
-            note_add
+            <i
+              class="material-icons icon"
+            >
+              note_add
+            </i>
           </button>
         </div>
       </div>
@@ -471,25 +507,43 @@ exports[`<CategoriesTableRow /> should render category that has children 1`] = `
           class="action-list"
         >
           <button
-            class="action material-icons"
-            data-testid="categorySettings"
+            aria-disabled="false"
+            aria-label="categorySettings"
+            class="wrapper wrapper ghost ghost secondary medium"
             id="categorySettings-5"
+            type="button"
           >
-            settings
+            <i
+              class="material-icons icon"
+            >
+              settings
+            </i>
           </button>
           <button
-            class="action material-icons"
-            data-testid="createNestedCategory"
+            aria-disabled="false"
+            aria-label="createNestedCategory"
+            class="wrapper wrapper ghost ghost secondary medium"
             id="createNestedCategory-5"
+            type="button"
           >
-            playlist_add
+            <i
+              class="material-icons icon"
+            >
+              playlist_add
+            </i>
           </button>
           <button
-            class="action material-icons"
-            data-testid="createNestedArticle"
+            aria-disabled="false"
+            aria-label="createNestedArticle"
+            class="wrapper wrapper ghost ghost secondary medium"
             id="createNestedArticle-5"
+            type="button"
           >
-            note_add
+            <i
+              class="material-icons icon"
+            >
+              note_add
+            </i>
           </button>
         </div>
       </div>

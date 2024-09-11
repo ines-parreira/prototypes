@@ -76,7 +76,7 @@ describe('<PublicSourcesSection />', () => {
         const addButton = screen.getByText('Add URL')
         addButton.click()
 
-        expect(screen.getAllByText('Sync URL')).toHaveLength(1)
+        expect(screen.getAllByText(/Sync URL/)).toHaveLength(1)
     })
 
     it('should preprender public sources', () => {
@@ -84,7 +84,7 @@ describe('<PublicSourcesSection />', () => {
 
         renderComponent({sourceItems: sources})
 
-        expect(screen.getAllByText('Sync URL')).toHaveLength(3)
+        expect(screen.getAllByText(/Sync URL/)).toHaveLength(3)
     })
 
     it('should delete item when delete clicked', () => {
@@ -165,11 +165,10 @@ describe('<PublicSourcesSection />', () => {
             .getAllByLabelText('Public URL')
             .pop() as HTMLInputElement
         await userEvent.type(input, url)
-        const syncButton = screen
-            .getByText('Sync URL')
-            .closest('button') as HTMLElement
 
-        expect(syncButton).toBeAriaDisabled()
+        expect(
+            screen.getByRole('button', {name: /Sync URL/})
+        ).toBeAriaDisabled()
         expect(screen.getByText('Invalid URL')).toBeInTheDocument()
     })
 
@@ -177,11 +176,7 @@ describe('<PublicSourcesSection />', () => {
         const sources = [createSource(1, {status: 'error'})]
         renderComponent({sourceItems: sources})
 
-        const syncButton = screen
-            .getByText('Sync URL')
-            .closest('button') as HTMLElement
-
-        expect(syncButton).toBeEnabled()
+        expect(screen.getByRole('button', {name: /Sync URL/})).toBeEnabled()
         expect(screen.getByText('URL cannot be processed')).toBeInTheDocument()
     })
 
@@ -195,11 +190,10 @@ describe('<PublicSourcesSection />', () => {
             .getAllByLabelText('Public URL')
             .pop() as HTMLInputElement
         await userEvent.type(input, url)
-        const syncButton = screen
-            .getByText('Sync URL')
-            .closest('button') as HTMLElement
 
-        expect(syncButton).toBeAriaDisabled()
+        expect(
+            screen.getByRole('button', {name: /Sync URL/})
+        ).toBeAriaDisabled()
         expect(
             screen.getByText(
                 'URL must include a subpage (ie. yourstore.com/faqs)'
@@ -217,11 +211,10 @@ describe('<PublicSourcesSection />', () => {
             .getAllByLabelText('Public URL')
             .pop() as HTMLInputElement
         await userEvent.type(input, url)
-        const syncButton = screen
-            .getByText('Sync URL')
-            .closest('button') as HTMLElement
 
-        expect(syncButton).toBeAriaDisabled()
+        expect(
+            screen.getByRole('button', {name: /Sync URL/})
+        ).toBeAriaDisabled()
         expect(
             screen.getByText('URL cannot be a Gorgias Help Center')
         ).toBeInTheDocument()
@@ -237,11 +230,10 @@ describe('<PublicSourcesSection />', () => {
             .getAllByLabelText('Public URL')
             .pop() as HTMLInputElement
         await userEvent.type(input, url)
-        const syncButton = screen
-            .getByText('Sync URL')
-            .closest('button') as HTMLElement
 
-        expect(syncButton).toBeAriaDisabled()
+        expect(
+            screen.getByRole('button', {name: /Sync URL/})
+        ).toBeAriaDisabled()
         expect(
             screen.getByText('URL cannot be a Gorgias Help Center')
         ).toBeInTheDocument()
@@ -253,9 +245,7 @@ describe('<PublicSourcesSection />', () => {
         const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
 
-        const syncButton = screen
-            .getByText('Sync URL')
-            .closest('button') as HTMLElement
+        const syncButton = screen.getByRole('button', {name: /Sync URL/})
         const input = screen.getByLabelText('Public URL')
 
         await userEvent.type(input, 'https://example.com/faqs')

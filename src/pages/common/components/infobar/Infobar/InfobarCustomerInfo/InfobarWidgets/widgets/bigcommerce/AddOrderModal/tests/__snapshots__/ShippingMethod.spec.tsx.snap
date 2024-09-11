@@ -7,6 +7,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
       class="descriptionTitle"
     >
       <button
+        aria-disabled="false"
         class="actionButton"
         id="shipping-method-button"
       >
@@ -163,6 +164,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: in
       class="descriptionTitle"
     >
       <button
+        aria-disabled="true"
         class="actionButton isDisabled"
         id="shipping-method-button"
       >
@@ -199,6 +201,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: sh
       class="descriptionTitle"
     >
       <button
+        aria-disabled="false"
         class="actionButton"
         id="shipping-method-button"
       >

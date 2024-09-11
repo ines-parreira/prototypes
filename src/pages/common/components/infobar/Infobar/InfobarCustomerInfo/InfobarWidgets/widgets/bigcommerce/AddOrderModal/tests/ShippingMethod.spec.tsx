@@ -133,10 +133,12 @@ describe('ShippingMethod', () => {
             />
         )
 
+        const shippingButton = screen.getByRole('button', {
+            name: /Add shipping/i,
+        })
+
         // Has no products
-        expect(screen.getByRole('button', {name: /Add shipping/i})).toHaveClass(
-            'isDisabled'
-        )
+        expect(shippingButton).toBeAriaDisabled()
         expect(
             screen.getByText(
                 /Your cart contains no products, please select some first/i
@@ -162,9 +164,7 @@ describe('ShippingMethod', () => {
             />
         )
 
-        expect(screen.getByRole('button', {name: /Add shipping/i})).toHaveClass(
-            'isDisabled'
-        )
+        expect(shippingButton).toBeAriaDisabled()
         expect(
             screen.getByText(
                 /Your cart contains only digital products, no shipping is required/i
@@ -183,9 +183,7 @@ describe('ShippingMethod', () => {
             />
         )
 
-        expect(screen.getByRole('button', {name: /Add shipping/i})).toHaveClass(
-            'isDisabled'
-        )
+        expect(shippingButton).toBeAriaDisabled()
         expect(screen.getByText(/to see shipping rates/i)).toBeInTheDocument()
 
         // Has it all
@@ -200,9 +198,7 @@ describe('ShippingMethod', () => {
             />
         )
 
-        expect(
-            screen.getByRole('button', {name: /Add shipping/i})
-        ).not.toHaveClass('isDisabled')
+        expect(shippingButton).toBeAriaEnabled()
     })
 })
 

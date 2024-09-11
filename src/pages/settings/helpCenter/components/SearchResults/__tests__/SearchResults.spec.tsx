@@ -1,19 +1,17 @@
 import React from 'react'
-import {render, waitFor} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {getSingleHelpCenterResponseFixture as helpCenter} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {getSingleHelpCenterResponseFixture as helpCenter} from '../../../fixtures/getHelpCentersResponse.fixture'
-import {useHelpCenterIdParam} from '../../../hooks/useHelpCenterIdParam'
-
+import {searchResultsResponseFixture as results} from '../SearchResults.response.fixture'
 import {SearchResults} from '../SearchResults'
-
-import {searchResultsResponseFixture} from '../SearchResults.response.fixture'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -29,7 +27,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 
 const mockFetchArticlesByIds = jest.fn().mockResolvedValue(null)
 
-jest.mock('../../../hooks/useArticlesActions', () => {
+jest.mock('pages/settings/helpCenter/hooks/useArticlesActions', () => {
     return {
         useArticlesActions: () => ({
             fetchArticlesByIds: mockFetchArticlesByIds,
@@ -39,7 +37,7 @@ jest.mock('../../../hooks/useArticlesActions', () => {
 
 const mockFetchCategories = jest.fn().mockResolvedValue(null)
 
-jest.mock('../../../hooks/useCategoriesActions', () => {
+jest.mock('pages/settings/helpCenter/hooks/useCategoriesActions', () => {
     return {
         useCategoriesActions: () => ({
             fetchCategories: mockFetchCategories,
@@ -109,14 +107,34 @@ describe('SearchResults', () => {
             <Provider store={store}>
                 <SearchResults
                     helpCenter={helpCenter}
-                    results={searchResultsResponseFixture}
+                    results={results}
                     onArticleClick={jest.fn()}
                     onArticleClickSettings={jest.fn()}
                 />
             </Provider>
         )
 
-        expect(container).toMatchSnapshot()
+        expect(
+            screen.getByText(results[0].parent_category_1!.title)
+        ).toBeInTheDocument()
+        expect(screen.getAllByLabelText('open article')).toHaveLength(
+            results.filter((result) => result.type === 'article').length
+        )
+        const levels: Record<string, number> = {}
+
+        // for each mocked item, get their level of nesting
+        for (let i = 0; i < results.length; i++) {
+            const depth = Object.entries(results[i]).filter(
+                ([key, value]) => key.startsWith('parent_category_') && !!value
+            ).length
+            levels[depth] = (levels[depth] ?? 0) + 1
+        }
+
+        for (let i = 1; i <= Object.keys(levels).length; i++) {
+            expect(
+                container.querySelectorAll(`.nesting-level-${i}`)
+            ).toHaveLength(levels[i])
+        }
 
         await waitFor(() => {
             expect(mockFetchArticlesByIds).toHaveBeenCalledTimes(1)

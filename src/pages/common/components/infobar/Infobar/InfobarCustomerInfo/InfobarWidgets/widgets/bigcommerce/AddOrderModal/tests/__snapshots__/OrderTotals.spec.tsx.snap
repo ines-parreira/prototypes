@@ -58,6 +58,7 @@ exports[`<OrderTotals/> rendering should render 1`] = `
       class="descriptionTitle"
     >
       <button
+        aria-disabled="false"
         class="actionButton"
         id="shipping-method-button"
       >

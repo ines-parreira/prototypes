@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {Provider as ReduxProvider} from 'react-redux'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
@@ -14,11 +14,16 @@ import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getL
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 
-import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 import {Category} from 'models/helpCenter/types'
+import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+import {CategoriesTableBasicRow} from 'pages/settings/helpCenter/components/CategoriesTable/components/CategoriesTableBasicRow/CategoriesTableBasicRow'
+
+import {
+    CATEGORY_ROW_ACTIONS,
+    CATEGORY_TREE_MAX_LEVEL,
+} from 'pages/settings/helpCenter/constants'
+
 import {CategoriesTableRow} from '../CategoriesTableRow'
-import {CategoriesTableBasicRow} from '../../CategoriesTableBasicRow/CategoriesTableBasicRow'
-import {CATEGORY_TREE_MAX_LEVEL} from '../../../../../constants'
 
 const mockStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
     thunk,
@@ -323,7 +328,7 @@ describe('<CategoriesTableRow />', () => {
             },
         }
 
-        const {getByTestId} = render(
+        render(
             <ReduxProvider store={mockStore(initialState)}>
                 <DndProvider backend={HTML5Backend}>
                     <CategoriesTableRow
@@ -347,7 +352,7 @@ describe('<CategoriesTableRow />', () => {
             </ReduxProvider>
         )
 
-        expect(getByTestId('createNestedCategory')).toBeTruthy()
+        expect(screen.getByText('playlist_add')).toBeInTheDocument()
     })
 
     it('should not display Create Category because the parent is a category at the deepest possible level', () => {
@@ -384,7 +389,7 @@ describe('<CategoriesTableRow />', () => {
             },
         }
 
-        const {getByTestId} = render(
+        render(
             <ReduxProvider store={mockStore(initialState)}>
                 <DndProvider backend={HTML5Backend}>
                     <CategoriesTableRow
@@ -408,19 +413,13 @@ describe('<CategoriesTableRow />', () => {
             </ReduxProvider>
         )
         expect(
-            getByTestId('categorySettings')
-                .closest('button')
-                ?.getAttribute('disabled')
-        ).toBe(null)
+            screen.getByLabelText(CATEGORY_ROW_ACTIONS[0].name)
+        ).toBeAriaEnabled()
         expect(
-            getByTestId('createNestedCategory')
-                .closest('button')
-                ?.getAttribute('disabled')
-        ).not.toBe(null)
+            screen.getByLabelText(CATEGORY_ROW_ACTIONS[1].name)
+        ).toBeAriaDisabled()
         expect(
-            getByTestId('createNestedArticle')
-                .closest('button')
-                ?.getAttribute('disabled')
-        ).toBe(null)
+            screen.getByLabelText(CATEGORY_ROW_ACTIONS[2].name)
+        ).toBeAriaEnabled()
     })
 })

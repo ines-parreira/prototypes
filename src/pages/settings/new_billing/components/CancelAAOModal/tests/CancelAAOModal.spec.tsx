@@ -88,7 +88,7 @@ describe('CancelAAOModal', () => {
         const continueButton = getByText('Continue')
         userEvent.click(continueButton)
         const submitButton = getByRole('button', {name: 'Submit'})
-        expect(submitButton).toHaveClass('isDisabled')
+        expect(submitButton).toBeAriaDisabled()
         const firstCheckbox = getByText(`It's not automating enough`)
         userEvent.click(firstCheckbox)
         const textarea = getByPlaceholderText(

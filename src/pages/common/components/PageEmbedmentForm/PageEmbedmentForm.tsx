@@ -111,14 +111,14 @@ const PageEmbedmentForm = ({
                 />
                 {shopifyPages.length === 0 && (
                     <Tooltip
-                        target="existing-page-emedment-radio-button"
+                        target="existing-page-embedment-radio-button"
                         placement="top"
                     >
                         {tooltipText}
                     </Tooltip>
                 )}
                 <PreviewRadioButton
-                    id="existing-page-emedment-radio-button"
+                    id="existing-page-embedment-radio-button"
                     isDisabled={shopifyPages.length === 0}
                     value={EmbedMode.EXISTING_PAGE}
                     isSelected={embedMode === EmbedMode.EXISTING_PAGE}

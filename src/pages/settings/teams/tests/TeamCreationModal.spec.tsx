@@ -67,8 +67,8 @@ describe('<TeamCreationModal />', () => {
         expect(
             getByRole('button', {
                 name: /create team/i,
-            }).classList.contains('isDisabled')
-        ).toBe(true)
+            })
+        ).toBeAriaDisabled()
     })
 
     it('should submit, send a segment event and call onTeamCreated form when filling conditions are met', async () => {

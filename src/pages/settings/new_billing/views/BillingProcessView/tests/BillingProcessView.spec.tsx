@@ -270,7 +270,7 @@ describe('UsageAndPlansView', () => {
 
         expect(
             screen.getByRole('button', {name: 'Continue cancelling'})
-        ).toHaveClass('isDisabled')
+        ).toBeAriaDisabled()
 
         await userEvent.type(
             screen.getByPlaceholderText("It didn't work out for me because..."),
@@ -280,7 +280,7 @@ describe('UsageAndPlansView', () => {
         await waitFor(() => {
             expect(
                 screen.getByRole('button', {name: 'Continue cancelling'})
-            ).not.toHaveClass('isDisabled')
+            ).toBeAriaEnabled()
         })
     })
 })

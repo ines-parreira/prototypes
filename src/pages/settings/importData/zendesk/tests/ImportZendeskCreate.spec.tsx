@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render, RenderResult} from '@testing-library/react'
+import {fireEvent, render, RenderResult, screen} from '@testing-library/react'
 
 import {fromJS, Map} from 'immutable'
 
@@ -33,9 +33,9 @@ describe('<ImportZendeskCreate/>', () => {
 
     describe('rendering', () => {
         it('without any errors and disabled creation button', () => {
-            const {getByText} = renderComponent(defaultProps)
+            renderComponent(defaultProps)
             expect(
-                getByText('Start import').closest('button') as HTMLButtonElement
+                screen.getByRole('button', {name: /Start import/})
             ).toBeAriaDisabled()
         })
 
@@ -47,7 +47,7 @@ describe('<ImportZendeskCreate/>', () => {
 
             expect(getByText('This domain was already imported.')).toBeDefined()
             expect(
-                getByText('Start import').closest('button') as HTMLButtonElement
+                screen.getByRole('button', {name: /Start import/})
             ).toBeAriaDisabled()
         })
 
@@ -77,7 +77,7 @@ describe('<ImportZendeskCreate/>', () => {
             })
 
             expect(
-                getByText('Start import').closest('button') as HTMLButtonElement
+                screen.getByRole('button', {name: /Start import/})
             ).toBeAriaEnabled()
 
             fireEvent.click(getByText('Start import'))

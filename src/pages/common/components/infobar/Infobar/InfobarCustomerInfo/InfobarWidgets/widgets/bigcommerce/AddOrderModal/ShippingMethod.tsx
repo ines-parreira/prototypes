@@ -322,6 +322,7 @@ export function ShippingMethod({
                             [css.hasError]: hasError && !isUpdatingConsignment,
                             [css.isDisabled]: isDisabled,
                         })}
+                        aria-disabled={isDisabled}
                         ref={buttonRef}
                         id="shipping-method-button"
                     >

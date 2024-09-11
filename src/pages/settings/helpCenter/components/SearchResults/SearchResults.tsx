@@ -15,10 +15,10 @@ import {Article, HelpCenter} from 'models/helpCenter/types'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
-import {FlatAlgoliaSearchResults} from '../../providers/SearchContext'
-import {useCategoriesActions} from '../../hooks/useCategoriesActions'
-import {useArticlesActions} from '../../hooks/useArticlesActions'
-import {ArticleRowActionTypes} from '../../constants'
+import {FlatAlgoliaSearchResults} from 'pages/settings/helpCenter/providers/SearchContext'
+import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
+import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
+import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
 
 import {getMissingEntities, searchResultsTreeFromAlgolia} from './utils'
 

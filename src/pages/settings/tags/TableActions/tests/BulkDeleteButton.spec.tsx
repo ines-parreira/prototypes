@@ -13,9 +13,7 @@ describe('<BulkDeleteButton />', () => {
     it('should be disabled when selected count is 0', () => {
         render(<BulkDeleteButton {...props} selectedTagsCount={0} />)
 
-        expect(screen.getByText('Delete').closest('button')).toHaveClass(
-            'isDisabled'
-        )
+        expect(screen.getByRole('button', {name: /Delete/})).toBeAriaDisabled()
     })
 
     it('should delete tags after confirmation prompt', () => {
