@@ -160,7 +160,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             >
               <div
                 class="badge"
-                style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+                style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
               >
                 refund
               </div>
@@ -169,7 +169,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
               </div>
               <div
                 class="badge text-info"
-                style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+                style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
               >
                 +
                 1
@@ -286,7 +286,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             >
               <div
                 class="badge"
-                style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+                style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
               >
                 rejectedTag
               </div>

@@ -553,7 +553,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                   >
                     <div
                       class="badge"
-                      style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+                      style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
                     >
                       rejected
                     </div>

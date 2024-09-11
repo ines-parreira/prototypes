@@ -17,7 +17,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
       >
         <div
           class="badge tagLabel"
-          style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+          style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
         >
           <span>
             angry
@@ -34,7 +34,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
       >
         <div
           class="badge tagLabel"
-          style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+          style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
         >
           <span>
             customer
@@ -51,7 +51,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
       >
         <div
           class="badge tagLabel"
-          style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+          style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
         >
           <span>
             refund
@@ -68,7 +68,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
       >
         <div
           class="badge tagLabel"
-          style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+          style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
         >
           <span>
             return

@@ -163,7 +163,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                           >
                             <div
                               class="badge tagLabel"
-                              style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+                              style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
                             >
                               <span>
                                 auto-close
@@ -403,7 +403,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                           >
                             <div
                               class="badge tagLabel"
-                              style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+                              style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
                             >
                               <span>
                                 auto-close

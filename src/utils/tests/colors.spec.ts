@@ -33,7 +33,7 @@ describe('getEnoughContrastedColor', () => {
     it('should return adjusted input color', () => {
         expect(
             getEnoughContrastedColor('hsla(318, 76%, 51%, 1)', '#620e49')
-        ).toBe('hsla(318, 76%, 71%, 1)')
+        ).toBe('hsla(318, 76%, 61%, 1)')
     })
 })
 

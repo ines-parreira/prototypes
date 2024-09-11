@@ -14,19 +14,19 @@ exports[`<TagPreviewContainer/> should render tags 1`] = `
   >
     <div
       class="badge"
-      style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+      style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
     >
       refund
     </div>
     <div
       class="badge"
-      style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+      style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
     >
       billing
     </div>
     <div
       class="badge"
-      style="color: rgb(222, 222, 222); background-color: rgb(247, 247, 247);"
+      style="color: rgb(0, 0, 0); background-color: rgb(222, 222, 222);"
     >
       refund accepted
     </div>

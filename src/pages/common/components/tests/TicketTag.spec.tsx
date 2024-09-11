@@ -33,7 +33,7 @@ jest.mock(
 describe('<TicketTag />', () => {
     it('should render the tag', () => {
         const label = 'shipping'
-        const color = '#123456' // hsl(210, 65%, 20%)
+        const color = '#123456'
 
         const {getByText} = render(
             <TicketTag title="Foo" decoration={fromJS({color})}>
@@ -43,10 +43,10 @@ describe('<TicketTag />', () => {
         const tag = getByText(label)
         expect(tag).toBeInTheDocument()
         expect(tag).toHaveStyle({
-            color,
+            color: '#fff',
         })
         expect(tag).toHaveStyle({
-            backgroundColor: 'hsl(210, 65%, 97%)',
+            backgroundColor: color,
         })
     })
 
@@ -89,10 +89,10 @@ describe('<TicketTag />', () => {
         )
         const tag = getByText(label)
         expect(tag).toHaveStyle({
-            color: mockedDefaultColor,
+            color: '#fff',
         })
         expect(tag).toHaveStyle({
-            backgroundColor: 'hsl(10, 50%, 97%)',
+            backgroundColor: mockedDefaultColor,
         })
     })
 })

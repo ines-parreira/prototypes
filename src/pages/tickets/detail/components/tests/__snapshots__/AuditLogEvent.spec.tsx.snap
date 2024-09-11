@@ -873,7 +873,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       </span>
       <div
         class="badge equalFiller"
-        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
       >
         tag-1
       </div>
@@ -931,13 +931,13 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       </span>
       <div
         class="badge equalFiller"
-        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
       >
         tag-1
       </div>
       <div
         class="badge equalFiller"
-        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
       >
         tag-2
       </div>
@@ -995,7 +995,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       </span>
       <div
         class="badge equalFiller"
-        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
       >
         tag-1
       </div>
@@ -1053,13 +1053,13 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       </span>
       <div
         class="badge equalFiller"
-        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
       >
         tag-1
       </div>
       <div
         class="badge equalFiller"
-        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
       >
         tag-2
       </div>

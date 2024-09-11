@@ -1,8 +1,13 @@
 import {lighten, getContrast, toRgba} from 'color2k'
 
-const DEFAULT_CONTRAST_LEVEL = 4
+const DEFAULT_CONTRAST_LEVEL = 3.5
 
-// It is meant to work with a dark backgroundColor
+/**
+ * Updates a given color to get enough contrast compared to the other one
+ * If it is lighter than the second one, we assume we want it to be lighter.
+ * Inversely, if it is darker, we darken it.
+ *
+ */
 export function getEnoughContrastedColor(
     color: string,
     backgroundColor: string,

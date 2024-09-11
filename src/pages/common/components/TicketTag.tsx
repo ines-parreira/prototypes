@@ -1,7 +1,7 @@
 import React, {HTMLAttributes, useContext, useMemo} from 'react'
 import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
-import {parseToHsla} from 'color2k'
+import {parseToHsla, readableColor} from 'color2k'
 import colors from '@gorgias/design-tokens/dist/tokens/color/merchantLight.json'
 import _trim from 'lodash/trim'
 
@@ -46,8 +46,8 @@ const TicketTag = ({children, className, decoration, title}: Props) => {
                           backgroundColor: `${backgroundColor} 10%)`,
                       }
                     : {
-                          color,
-                          backgroundColor: `${backgroundColor} 97%)`,
+                          color: readableColor(color),
+                          backgroundColor: color,
                       }
             }
             title={title}
