@@ -53,16 +53,17 @@ describe('<UserAssigneeDropdownMenu />', () => {
             </DropdownContext.Provider>
         )
 
+    const agents = [
+        {id: 8, name: 'Agent numero uno'},
+        {id: 23, name: 'Backup agent'},
+    ]
     beforeEach(() => {
         mockUseListUsers.mockReturnValue({
             data: {
                 pages: [
                     {
                         data: {
-                            data: [
-                                {id: 8, name: 'Agent numero uno'},
-                                {id: 23, name: 'Backup agent'},
-                            ],
+                            data: agents,
                         },
                     },
                 ],
@@ -93,8 +94,8 @@ describe('<UserAssigneeDropdownMenu />', () => {
     it('should display users', () => {
         renderWithWrapper()
 
-        expect(screen.getByText('Agent numero uno')).toBeInTheDocument()
-        expect(screen.getByText('Backup agent')).toBeInTheDocument()
+        expect(screen.getByText(agents[0].name)).toBeInTheDocument()
+        expect(screen.getByText(agents[1].name)).toBeInTheDocument()
     })
 
     it('should trigger user request for searched term', async () => {
@@ -146,11 +147,11 @@ describe('<UserAssigneeDropdownMenu />', () => {
     it('should assign user on click', () => {
         renderWithWrapper()
 
-        screen.getByText('Agent numero uno').click()
+        screen.getByText(agents[0].name).click()
 
         expect(props.onClick).toHaveBeenCalledWith({
             id: 8,
-            name: 'Agent numero uno',
+            name: agents[0].name,
         })
         expect(screen.getByPlaceholderText(/Search/)).toHaveValue('')
     })
@@ -158,13 +159,13 @@ describe('<UserAssigneeDropdownMenu />', () => {
     it('should assign user on keyboard event', () => {
         renderWithWrapper()
 
-        fireEvent.keyDown(screen.getByText('Agent numero uno'), {
+        fireEvent.keyDown(screen.getByText(agents[0].name), {
             key: 'Enter',
         })
 
         expect(props.onClick).toHaveBeenCalledWith({
             id: 8,
-            name: 'Agent numero uno',
+            name: agents[0].name,
         })
         expect(screen.getByPlaceholderText(/Search/)).toHaveValue('')
     })

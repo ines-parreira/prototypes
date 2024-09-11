@@ -46,4 +46,12 @@ describe('<UserDropdownItem />', () => {
             props.item.meta.profile_picture_url
         )
     })
+
+    it('should render email when name is missing', () => {
+        const item = {email: 'homer@simpson.com'}
+
+        render(<UserDropdownItem item={item} />)
+
+        expect(screen.getByText(item.email)).toBeInTheDocument()
+    })
 })
