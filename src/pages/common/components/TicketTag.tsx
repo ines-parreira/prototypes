@@ -46,7 +46,7 @@ const TicketTag = ({children, className, decoration, title}: Props) => {
                           backgroundColor: `${backgroundColor} 10%)`,
                       }
                     : {
-                          color: readableColor(color),
+                          color: readableColor(color.trim()),
                           backgroundColor: color,
                       }
             }
