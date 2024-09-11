@@ -14,6 +14,8 @@ import {useVoiceCallCountMetric} from '../../hooks/useVoiceCallCountMetric'
 import {useAverageTalkTimeMetric} from '../../hooks/agentMetrics'
 import LiveVoiceMetrics from './LiveVoiceMetrics'
 import LiveVoiceMetricCard from './LiveVoiceMetricCard'
+import {filterLiveCallsByStatus} from './utils'
+import {LiveVoiceStatusFilterOption} from './types'
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof LiveVoiceMetrics>> = {
@@ -43,6 +45,7 @@ jest.mock('pages/stats/voice/hooks/useVoiceCallCountMetric')
 jest.mock('pages/stats/voice/hooks/agentMetrics')
 jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceMetricCard')
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('pages/stats/voice/components/LiveVoice/utils')
 
 const voiceCallAverageWaitTimeQueryFactoryMock = assumeMock(
     voiceCallAverageWaitTimeQueryFactory
@@ -54,6 +57,7 @@ const LiveVoiceMetricCardMock = assumeMock(LiveVoiceMetricCard)
 const formatReportingQueryDateMock = assumeMock(formatReportingQueryDate)
 const getBusinessHoursSettingsMock = assumeMock(getBusinessHoursSettings)
 const getMomentMock = assumeMock(getMoment)
+const filterLiveCallsByStatusMock = assumeMock(filterLiveCallsByStatus)
 
 describe('LiveVoiceMetrics', () => {
     beforeEach(() => {
@@ -77,6 +81,7 @@ describe('LiveVoiceMetrics', () => {
             (date as Moment).format()
         )
         getMomentMock.mockReturnValue(moment('2024-01-01T14:11:00.000Z'))
+        filterLiveCallsByStatusMock.mockReturnValue([] as any)
 
         LiveVoiceMetricCardMock.mockReturnValue(<div />)
     })
@@ -177,4 +182,23 @@ describe('LiveVoiceMetrics', () => {
             )
         }
     )
+
+    it('should render correct calls in queue count', () => {
+        filterLiveCallsByStatusMock.mockReturnValue([{}, {}] as any)
+        renderComponent({
+            liveVoiceCalls: [{} as any],
+        })
+
+        expect(LiveVoiceMetricCardMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
+                value: 2,
+            }),
+            {}
+        )
+        expect(filterLiveCallsByStatusMock).toHaveBeenCalledWith(
+            [{}],
+            LiveVoiceStatusFilterOption.IN_QUEUE
+        )
+    })
 })

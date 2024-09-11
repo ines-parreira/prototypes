@@ -14,6 +14,8 @@ import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {useVoiceCallCountMetric} from '../../hooks/useVoiceCallCountMetric'
 import {useAverageTalkTimeMetric} from '../../hooks/agentMetrics'
 import LiveVoiceMetricCard from './LiveVoiceMetricCard'
+import {filterLiveCallsByStatus} from './utils'
+import {LiveVoiceStatusFilterOption} from './types'
 
 const CARD_SIZE = 4
 
@@ -76,7 +78,10 @@ export default function LiveVoiceMetrics({
         {
             title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
             hint: constants.CALLS_IN_QUEUE_METRIC_HINT,
-            value: liveVoiceCalls.length,
+            value: filterLiveCallsByStatus(
+                liveVoiceCalls,
+                LiveVoiceStatusFilterOption.IN_QUEUE
+            ).length,
             isLoading: isLoadingVoiceCalls,
         },
         {
