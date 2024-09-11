@@ -729,7 +729,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         ) {
             previewChildren = (
                 <ChatHomePreview
-                    mainColor={mainColor}
                     avatar={avatar}
                     title={chatTitle}
                     renderConversation={!controlTicketVolume}

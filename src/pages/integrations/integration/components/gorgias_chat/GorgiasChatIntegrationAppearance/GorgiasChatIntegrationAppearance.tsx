@@ -803,7 +803,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 >
                     {preview === PREVIEW_HOME_PAGE ? (
                         <ChatHomePreview
-                            mainColor={mainColor}
                             avatar={avatar}
                             title={name}
                             renderConversation
