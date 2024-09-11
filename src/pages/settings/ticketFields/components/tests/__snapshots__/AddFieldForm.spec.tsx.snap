@@ -238,7 +238,7 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
       </div>
     </div>
     <div
-      class="caption lastInput"
+      class="caption"
     >
       Type 
       ::
@@ -262,7 +262,6 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
       <button
         aria-disabled="true"
         class="wrapper fill primary medium isDisabled"
-        data-testid="save-button"
         id="custom-fields-form-save-button"
         type="button"
       >

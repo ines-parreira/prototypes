@@ -40,25 +40,28 @@ export default function EditTicketField() {
             />
             <Container fluid className={css.pageContainer}>
                 <div className={css.contentWrapper}>
-                    {!!field.managed_type && (
+                    {Boolean(field.managed_type) && (
                         <Alert icon type={AlertType.Info} className="mb-4">
-                            Use this field to gain actionable insights into
-                            customer inquiry trends.{' '}
-                            {isCustomFieldAIManagedType(field.managed_type)
-                                ? 'This field is managed by Gorgias AI Agent and cannot be edited'
-                                : field.managed_type === 'contact_reason'
-                                ? 'This field is powered by AI and can automatically be filled by Gorgias, '
-                                : 'For more details, '}
-                            {!isCustomFieldAIManagedType(
-                                field.managed_type
-                            ) && (
-                                <a
-                                    href="https://docs.gorgias.com/en-US/273001-a7d86899ce5f4aef81ebbaa301d78b58"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    see this article
-                                </a>
+                            {isCustomFieldAIManagedType(field.managed_type) ? (
+                                <>
+                                    This field is managed by Gorgias AI Agent
+                                    and cannot be edited
+                                </>
+                            ) : (
+                                <>
+                                    Use this field to gain actionable insights
+                                    into customer inquiry trends.
+                                    {field.managed_type === 'contact_reason'
+                                        ? 'This field is powered by AI and can automatically be filled by Gorgias, '
+                                        : 'For more details, '}
+                                    <a
+                                        href="https://docs.gorgias.com/en-US/273001-a7d86899ce5f4aef81ebbaa301d78b58"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        see this article
+                                    </a>
+                                </>
                             )}
                             .
                         </Alert>

@@ -1,0 +1,49 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .formLabelWithTooltip {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .input {
+        padding-bottom: @layout-spacing-xs;
+    }
+
+    .inputContainer {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .lastInput {
+        margin-right: 38px;
+    }
+
+    .dragIndicator {
+        margin-right: 4px;
+        font-size: 16px;
+        padding: 8px 0;
+        color: var(--neutral-grey-3);
+    }
+
+    .dragIndicatorActive {
+        &:hover {
+            cursor: grab;
+        }
+
+        &:active {
+            cursor: grabbing;
+        }
+    }
+
+    .dragIndicatorDisabled {
+        &:hover {
+            cursor: not-allowed;
+        }
+    }
+
+    .deleteButton {
+        margin-left: 4px;
+    }
+}

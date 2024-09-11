@@ -163,7 +163,7 @@ export const managedTicketInputFieldDefinition: CustomField = {
     },
 }
 
-export const managedProductTicketInputFieldDefinition: CustomField = {
+export const productManagedTicketInputFieldDefinition: CustomField = {
     ...ticketFieldBaseDefinition,
     managed_type: 'product',
     id: 123,

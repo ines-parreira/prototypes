@@ -9,10 +9,9 @@ import {
     CustomField,
     CustomFieldInput,
     CustomFieldManagedType,
-    isCustomFieldAIManagedType,
 } from 'models/customField/types'
 
-import css from './DropdownInput.less'
+import css from './DropdownInputRow.less'
 
 const defaultPlaceholder = 'e.g. Shipping issue::Delay'
 const placeholders: Record<CustomFieldManagedType, string> = {
@@ -33,6 +32,7 @@ interface DropdownInputRowProps {
     onHover: any
     onDrop: any
     isLast?: boolean
+    isDisabled?: boolean
 }
 
 export function DropdownInputRow({
@@ -43,6 +43,7 @@ export function DropdownInputRow({
     nextId,
     error,
     isLast,
+    isDisabled = false,
     onChange,
     onDrop,
     onHover,
@@ -60,7 +61,6 @@ export function DropdownInputRow({
     )
 
     // Set HTML5 validation status
-
     useEffect(() => {
         const elt = document.getElementById(id) as HTMLInputElement | null
         elt?.setCustomValidity(error || '')
@@ -93,32 +93,36 @@ export function DropdownInputRow({
                 isLast ? undefined : (dropRef as React.Ref<HTMLTableRowElement>)
             }
             data-handler-id={handlerId}
-            className={isLast ? css.lastInput : css.input}
+            className={isLast && !isDisabled ? css.lastInput : css.input}
             style={{opacity: isDragging ? 0.3 : 1}}
         >
             <div className={css.inputContainer}>
-                {!isLast && !isCustomFieldAIManagedType(field.managed_type) ? (
-                    <div
-                        ref={dragRef as React.RefObject<HTMLDivElement>}
-                        className={classnames(
-                            'material-icons',
-                            css.dragIndicator,
-                            css.dragIndicatorActive
+                {!isDisabled && (
+                    <>
+                        {!isLast ? (
+                            <div
+                                ref={dragRef as React.RefObject<HTMLDivElement>}
+                                className={classnames(
+                                    'material-icons',
+                                    css.dragIndicator,
+                                    css.dragIndicatorActive
+                                )}
+                                data-testid={`${id}-handle`}
+                            >
+                                drag_indicator
+                            </div>
+                        ) : (
+                            <div
+                                className={classnames(
+                                    'material-icons',
+                                    css.dragIndicator,
+                                    css.dragIndicatorDisabled
+                                )}
+                            >
+                                drag_indicator
+                            </div>
                         )}
-                        data-testid={`${id}-handle`}
-                    >
-                        drag_indicator
-                    </div>
-                ) : (
-                    <div
-                        className={classnames(
-                            'material-icons',
-                            css.dragIndicator,
-                            css.dragIndicatorDisabled
-                        )}
-                    >
-                        drag_indicator
-                    </div>
+                    </>
                 )}
                 <TextInput
                     id={id}
@@ -132,9 +136,9 @@ export function DropdownInputRow({
                     hasError={!!error}
                     data-testid={id}
                     onKeyDown={handleEnterKeyDown}
-                    isDisabled={isCustomFieldAIManagedType(field.managed_type)}
+                    isDisabled={isDisabled}
                 />
-                {!isLast && !isCustomFieldAIManagedType(field.managed_type) && (
+                {!isLast && !isDisabled && (
                     <IconButton
                         onClick={() => onRemove(position)}
                         fillStyle="ghost"

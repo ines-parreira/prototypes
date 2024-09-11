@@ -1,149 +1,87 @@
 import React from 'react'
-import {Provider} from 'react-redux'
-import MockAdapter from 'axios-mock-adapter'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
+import {screen, render} from '@testing-library/react'
 
-import {screen} from '@testing-library/react'
+import EditTicketField from 'pages/settings/ticketFields/EditTicketField'
+import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
 import {
     aiManagedTicketInputFieldDefinition,
-    managedProductTicketInputFieldDefinition,
+    productManagedTicketInputFieldDefinition,
     managedTicketInputFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import client from 'models/api/resources'
-import {renderWithRouter} from 'utils/testing'
+import {assumeMock} from 'utils/testing'
+import {CustomField} from 'models/customField/types'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import EditTicketField from 'pages/settings/ticketFields/EditTicketField'
+import EditFieldForm from '../components/EditFieldForm'
 
-const mockStore = configureMockStore([thunk])()
-const mockedServer = new MockAdapter(client)
-const queryClient = mockQueryClient()
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
+    useParams: () => ({id: 10}),
+    Link: () => 'link',
+}))
+jest.mock('../components/EditFieldForm', () =>
+    jest.fn(() => <div>They see me rollin', they hatiiin'</div>)
+)
+jest.mock('hooks/customField/useCustomFieldDefinition')
+const useCustomFieldDefinitionMock = assumeMock(useCustomFieldDefinition)
+
+function setTicketFieldDefinition(definition: CustomField) {
+    useCustomFieldDefinitionMock.mockReturnValue({
+        data: definition,
+    } as ReturnType<typeof useCustomFieldDefinition>)
+}
 
 describe('<EditTicketField/>', () => {
     beforeEach(() => {
-        mockedServer.reset()
-        queryClient.clear()
+        setTicketFieldDefinition(ticketInputFieldDefinition)
     })
 
-    it('should render', async () => {
-        mockedServer
-            .onGet('/api/custom-fields/123')
-            .reply(200, ticketInputFieldDefinition)
+    it('should provide EditFieldForm with fields returned from query hook', () => {
+        render(<EditTicketField />)
 
-        const {container, findByText} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <EditTicketField />
-                </Provider>
-            </QueryClientProvider>,
-
-            {
-                path: '/ticket-fields/:id/edit',
-                route: '/ticket-fields/123/edit',
-            }
+        expect(useCustomFieldDefinition).toHaveBeenCalledWith(10)
+        expect(EditFieldForm).toHaveBeenCalledWith(
+            {field: ticketInputFieldDefinition},
+            {}
         )
-        expect(container.firstChild).toMatchSnapshot()
-
-        await findByText(ticketInputFieldDefinition.label)
-        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render AI Agent managed field', async () => {
-        mockedServer
-            .onGet('/api/custom-fields/123')
-            .reply(200, aiManagedTicketInputFieldDefinition)
-
-        const {findByText} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <EditTicketField />
-                </Provider>
-            </QueryClientProvider>,
-
-            {
-                path: '/ticket-fields/:id/edit',
-                route: '/ticket-fields/123/edit',
-            }
-        )
+    it('should render no text when field is not a managed field', () => {
+        render(<EditTicketField />)
         expect(
-            await findByText(
-                /This field is managed by Gorgias AI Agent and cannot be edited./im
-            )
-        )
+            screen.queryByText(/This field is managed/)
+        ).not.toBeInTheDocument()
+        expect(screen.queryByText(/Use this field/)).not.toBeInTheDocument()
     })
 
-    it('should render contact_reason managed field', async () => {
-        mockedServer
-            .onGet('/api/custom-fields/123')
-            .reply(200, managedTicketInputFieldDefinition)
+    it('should render text for AI managed field', () => {
+        setTicketFieldDefinition(aiManagedTicketInputFieldDefinition)
+        render(<EditTicketField />)
+        expect(screen.queryByText(/Use this field/)).not.toBeInTheDocument()
+        expect(screen.getByText(/This field is managed/)).toBeInTheDocument()
+    })
 
-        const {getByText, findByText} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <EditTicketField />
-                </Provider>
-            </QueryClientProvider>,
-
-            {
-                path: '/ticket-fields/:id/edit',
-                route: '/ticket-fields/123/edit',
-            }
-        )
+    it('should render text for contact_reason managed field', () => {
+        setTicketFieldDefinition(managedTicketInputFieldDefinition)
+        render(<EditTicketField />)
+        expect(screen.getByText(/Use this field /))
+        expect(screen.findByText(/This field is powered /))
         expect(
-            await findByText(
-                /This field is powered by AI and can automatically be filled by Gorgias, /im
-            )
-        )
-        expect(getByText('see this article').getAttribute('href')).toEqual(
+            screen.getByText('see this article').getAttribute('href')
+        ).toEqual(
             'https://docs.gorgias.com/en-US/273001-a7d86899ce5f4aef81ebbaa301d78b58'
         )
     })
 
-    it('should render product managed field', () => {
-        mockedServer
-            .onGet('/api/custom-fields/123')
-            .reply(200, managedProductTicketInputFieldDefinition)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <EditTicketField />
-                </Provider>
-            </QueryClientProvider>,
-
-            {
-                path: '/ticket-fields/:id/edit',
-                route: '/ticket-fields/123/edit',
-            }
-        )
+    it('should render text for non contact_reason managed field', () => {
+        setTicketFieldDefinition(productManagedTicketInputFieldDefinition)
+        render(<EditTicketField />)
 
         expect(
-            screen.queryByText(
-                /This field is powered by AI and can automatically be filled by Gorgias, /im
-            )
+            screen.queryByText(/This field is powered /)
         ).not.toBeInTheDocument()
-    })
 
-    it('should render not managed field', () => {
-        mockedServer
-            .onGet('/api/custom-fields/123')
-            .reply(200, ticketInputFieldDefinition)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <EditTicketField />
-                </Provider>
-            </QueryClientProvider>,
-
-            {
-                path: '/ticket-fields/:id/edit',
-                route: '/ticket-fields/123/edit',
-            }
-        )
-        expect(screen.queryByText('For more details,')).not.toBeInTheDocument()
+        expect(screen.getByText(/For more details/)).toBeInTheDocument()
+        expect(screen.getByText('see this article')).toBeInTheDocument()
     })
 })

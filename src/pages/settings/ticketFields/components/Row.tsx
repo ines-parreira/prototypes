@@ -69,7 +69,8 @@ export default function Row({
                                         className={classnames(
                                             'material-icons-outlined',
                                             'ml-1',
-                                            'md-2'
+                                            'md-2',
+                                            css.infoIcon
                                         )}
                                     >
                                         info

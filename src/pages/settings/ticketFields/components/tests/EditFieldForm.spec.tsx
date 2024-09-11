@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import {fireEvent, render, waitFor, screen} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
@@ -49,7 +49,7 @@ describe('<EditFieldForm/>', () => {
             .onPut(`/api/custom-fields/${ticketInputFieldDefinition.id}`)
             .reply(200, ticketInputFieldDefinition)
 
-        const {findByTestId, findByLabelText} = renderWithRouter(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
@@ -59,10 +59,10 @@ describe('<EditFieldForm/>', () => {
             </QueryClientProvider>
         )
 
-        const nameInput = await findByLabelText(/Name/)
+        const nameInput = screen.getByLabelText(/Name/)
         fireEvent.change(nameInput, {target: {value: 'Updated name'}})
 
-        const saveButton = await findByTestId('save-button')
+        const saveButton = screen.getByText(/Save/)
         saveButton.click()
 
         await waitFor(() => mockedServer.history.put.length > 0)
@@ -76,8 +76,8 @@ describe('<EditFieldForm/>', () => {
         )
     })
 
-    it('should go back to listing if the cancel button is clicked', async () => {
-        const {findByText} = render(
+    it('should go back to listing if the cancel button is clicked', () => {
+        render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
@@ -87,7 +87,7 @@ describe('<EditFieldForm/>', () => {
             </QueryClientProvider>
         )
 
-        const cancelButton = await findByText(/Cancel/)
+        const cancelButton = screen.getByText(/Cancel/)
         cancelButton.click()
 
         expect(history.push).toHaveBeenNthCalledWith(

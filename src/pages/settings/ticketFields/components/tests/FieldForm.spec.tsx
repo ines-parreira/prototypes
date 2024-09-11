@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React from 'react'
 import {omit} from 'lodash'
 import {
     createEvent,
@@ -8,132 +8,64 @@ import {
     waitFor,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
+
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {
     ticketInputFieldDefinition,
     customFieldInputDefinition,
-    ticketFieldDefinitions,
-    managedTicketInputFieldDefinition,
+    ticketDropdownFieldDefinition,
     aiManagedTicketInputFieldDefinition,
     archivedTicketInputFieldDefinition,
 } from 'fixtures/customField'
-import {CustomField, CustomFieldInput} from 'models/customField/types'
-import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {useUpdatePartialCustomField} from 'models/customField/queries'
+import {assumeMock, getLastMockCall, renderWithRouter} from 'utils/testing'
+import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
 import FieldForm from 'pages/settings/ticketFields/components/FieldForm'
+import ArchiveConfirmationModal from 'pages/settings/ticketFields/components/ArchiveConfirmationModal'
 
-const mockStore = configureMockStore([thunk])()
-const queryClient = mockQueryClient()
+import DropdownInput from '../DropdownInput'
 
-jest.mock('models/customField/queries')
-const useUpdatePartialCustomFieldMock = assumeMock(useUpdatePartialCustomField)
-const updateMutateMock = jest.fn()
-
+jest.mock('../DropdownInput', () => jest.fn(() => <div>Dropdown</div>))
+jest.mock('hooks/customField/useUpdateCustomFieldArchiveStatus')
 jest.mock(
-    'pages/common/components/modal/Modal',
-    () =>
-        ({children}: {children: ReactNode}) => {
-            return <div>{children}</div>
-        }
+    'pages/settings/ticketFields/components/ArchiveConfirmationModal',
+    () => jest.fn(() => null)
 )
-
-jest.mock(
-    'pages/common/components/modal/ModalBody',
-    () =>
-        ({children}: {children: ReactNode}) => {
-            return <div>{children}</div>
-        }
-)
-
-jest.mock(
-    'pages/common/components/modal/ModalHeader',
-    () =>
-        ({children}: {children: ReactNode}) => {
-            return <div>{children}</div>
-        }
-)
-
 jest.mock('pages/common/components/UnsavedChangesPrompt', () =>
     jest.fn(() => null)
 )
+
+const DropdownInputMock = assumeMock(DropdownInput)
+const useUpdateCustomFieldArchiveStatusMock = assumeMock(
+    useUpdateCustomFieldArchiveStatus
+)
+const ArchiveConfirmationModalMock = assumeMock(ArchiveConfirmationModal)
 const mockedUnsavedChangesPrompt = assumeMock(UnsavedChangesPrompt)
+
+const updateMutateMock = jest.fn()
+
+const defaultProps = {
+    field: ticketInputFieldDefinition,
+    onSubmit: jest.fn(),
+    onClose: jest.fn(),
+}
 
 describe('<FieldForm/>', () => {
     beforeEach(() => {
-        useUpdatePartialCustomFieldMock.mockImplementation(() => {
+        useUpdateCustomFieldArchiveStatusMock.mockImplementation(() => {
             return {
-                mutate: updateMutateMock,
                 mutateAsync: updateMutateMock,
-            } as unknown as ReturnType<typeof useUpdatePartialCustomField>
+            } as unknown as ReturnType<typeof useUpdateCustomFieldArchiveStatus>
         })
-        jest.useFakeTimers().setSystemTime(42)
-        queryClient.clear()
-    })
-
-    it.each([
-        ...ticketFieldDefinitions,
-        managedTicketInputFieldDefinition,
-        aiManagedTicketInputFieldDefinition,
-    ])('should render correctly', (customField: CustomField) => {
-        const props = {
-            field: customField,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
-        }
-
-        const {container} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <DndProvider backend={HTML5Backend}>
-                        <FieldForm {...props} />
-                    </DndProvider>
-                </Provider>
-            </QueryClientProvider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should show archiving status and disable type change on edit', () => {
-        const props = {
-            field: ticketInputFieldDefinition,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
-        }
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>{' '}
-            </QueryClientProvider>
-        )
+        render(<FieldForm {...defaultProps} />)
         expect(screen.getByText('ACTIVE'))
         expect(screen.getByText(/Field type can’t be changed/))
     })
 
-    it('should show a tooltip on hover save after doing a change', async () => {
-        const props = {
-            field: ticketInputFieldDefinition,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
-        }
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>
-            </QueryClientProvider>
-        )
+    it('should show a tooltip on hover save after doing a change on placeholder', async () => {
+        render(<FieldForm {...defaultProps} />)
 
         await userEvent.type(screen.getByLabelText(/Placeholder/), 'a')
         userEvent.hover(screen.getByText(/Save changes/))
@@ -143,19 +75,7 @@ describe('<FieldForm/>', () => {
     })
 
     it('should show a tooltip on hover save after doing a change on description', async () => {
-        const props = {
-            field: ticketInputFieldDefinition,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
-        }
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>
-            </QueryClientProvider>
-        )
+        render(<FieldForm {...defaultProps} />)
 
         await userEvent.type(screen.getByLabelText(/Description/), 'a')
         userEvent.hover(screen.getByText(/Save changes/))
@@ -164,133 +84,73 @@ describe('<FieldForm/>', () => {
         })
     })
 
-    it('should disable the save button if the form is not valid', async () => {
+    it('should disable the save button if the form is not valid', () => {
         const props = {
+            ...defaultProps,
             field: {...customFieldInputDefinition, label: ''},
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
         }
 
-        const {findByText} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>{' '}
-            </QueryClientProvider>
-        )
+        render(<FieldForm {...props} />)
 
-        const saveButton = await findByText(/Save changes/)
-        saveButton.click()
+        fireEvent.click(screen.getByText(/Save changes/))
 
         expect(props.onSubmit).not.toHaveBeenCalled()
     })
 
-    it('should disable the save button if the form has duplicates', async () => {
+    it('should disable the save button if some field has called the `setCustomValidity` method', async () => {
+        const text = '20-1 rpz'
+        DropdownInputMock.mockImplementation(() => (
+            <input
+                name="meh"
+                id="meh"
+                value={text}
+                type="text"
+                onChange={() => null}
+            />
+        ))
+
         const props = {
-            field: {
-                ...customFieldInputDefinition,
-                definition: {
-                    data_type: 'text',
-                    input_settings: {
-                        input_type: 'dropdown',
-                        choices: ['Option 1', 'Option 2', 'Option 1'],
-                    },
-                },
-            } as CustomFieldInput,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
+            ...defaultProps,
+            field: ticketDropdownFieldDefinition,
         }
 
-        const {findByText} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <DndProvider backend={HTML5Backend}>
-                        <FieldForm {...props} />
-                    </DndProvider>
-                </Provider>{' '}
-            </QueryClientProvider>
-        )
+        render(<FieldForm {...props} />)
 
-        const saveButton = await findByText(/Save changes/)
-        saveButton.click()
+        const inputEl: HTMLInputElement = screen.getByDisplayValue(text)
+        inputEl.setCustomValidity('error')
+
+        // necessary to trigger the effect on form data change
+        await userEvent.type(screen.getByLabelText(/Description/), 'a')
+
+        fireEvent.click(screen.getByText(/Save changes/))
 
         expect(props.onSubmit).not.toHaveBeenCalled()
     })
 
-    it('should disable the save button if a dropdown choice has more than 5 levels of nesting', async () => {
-        const props = {
-            field: {
-                ...customFieldInputDefinition,
-                definition: {
-                    data_type: 'text',
-                    input_settings: {
-                        input_type: 'dropdown',
-                        choices: [
-                            `A${delimiter}B${delimiter}C${delimiter}D${delimiter}E${delimiter}F`,
-                        ],
-                    },
-                },
-            } as CustomFieldInput,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
-        }
-
-        const {findByText} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <DndProvider backend={HTML5Backend}>
-                        <FieldForm {...props} />
-                    </DndProvider>
-                </Provider>{' '}
-            </QueryClientProvider>
+    it('should call onSubmit if the form is valid and the save button is clicked', () => {
+        render(
+            <FieldForm
+                {...{...defaultProps, field: customFieldInputDefinition}}
+            />
         )
 
-        const saveButton = await findByText(/Save changes/)
-        saveButton.click()
+        fireEvent.click(screen.getByText(/Save changes/))
 
-        expect(props.onSubmit).not.toHaveBeenCalled()
-    })
-
-    it('should call onSubmit if the form is valid and the save button is clicked', async () => {
-        const props = {
-            field: customFieldInputDefinition,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
-        }
-
-        const {findByText} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>{' '}
-            </QueryClientProvider>
-        )
-
-        const saveButton = await findByText(/Save changes/)
-        saveButton.click()
-
-        expect(props.onSubmit).toHaveBeenCalledTimes(1)
-        expect(props.onSubmit).toHaveBeenCalledWith(
+        expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1)
+        expect(defaultProps.onSubmit).toHaveBeenCalledWith(
             omit(customFieldInputDefinition, ['priority'])
         )
     })
 
-    it('should call onClose if the cancel button is clicked', async () => {
+    it('should call onClose if the cancel button is clicked', () => {
         const props = {
+            ...defaultProps,
             field: customFieldInputDefinition,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
         }
 
-        const {findByText} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>{' '}
-            </QueryClientProvider>
-        )
+        render(<FieldForm {...props} />)
 
-        const cancelButton = await findByText(/Cancel/)
+        const cancelButton = screen.getByText(/Cancel/)
         cancelButton.click()
 
         expect(props.onClose).toHaveBeenCalledTimes(1)
@@ -298,18 +158,11 @@ describe('<FieldForm/>', () => {
 
     it('should change checkbox required value of is clicked', async () => {
         const props = {
+            ...defaultProps,
             field: customFieldInputDefinition,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
         }
 
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>{' '}
-            </QueryClientProvider>
-        )
+        render(<FieldForm {...props} />)
 
         await userEvent.type(
             screen.getByLabelText(/Required to close ticket/),
@@ -322,64 +175,43 @@ describe('<FieldForm/>', () => {
         })
     })
 
-    it('should prompt for confirmation when closing the page with unsaved changes', async () => {
+    it('should prompt for confirmation when closing the page with unsaved changes', () => {
         const props = {
+            ...defaultProps,
             field: customFieldInputDefinition,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
         }
 
-        const {findByLabelText} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>{' '}
-            </QueryClientProvider>
-        )
+        renderWithRouter(<FieldForm {...props} />)
 
-        const nameInput = await findByLabelText(/Name/)
+        const nameInput = screen.getByLabelText(/Name/)
         fireEvent.change(nameInput, {target: {value: 'New name'}})
         expect(mockedUnsavedChangesPrompt).toHaveBeenCalledTimes(1)
     })
 
-    it('should not trigger a submit when pressing enter in a field', async () => {
+    it('should not trigger a submit when pressing enter in a field', () => {
         const props = {
+            ...defaultProps,
             field: customFieldInputDefinition,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
         }
 
-        const {findByLabelText} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>{' '}
-            </QueryClientProvider>
-        )
+        renderWithRouter(<FieldForm {...props} />)
 
-        const nameInput = await findByLabelText(/Name/)
+        const nameInput = screen.getByLabelText(/Name/)
         nameInput.focus()
         fireEvent.keyDown(nameInput, {key: 'Enter'})
 
         expect(props.onSubmit).not.toHaveBeenCalled()
     })
 
-    it('should prevent default on form submit', async () => {
+    it('should prevent default on form submit', () => {
         const props = {
+            ...defaultProps,
             field: customFieldInputDefinition,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
         }
 
-        const {findByLabelText} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>{' '}
-            </QueryClientProvider>
-        )
+        renderWithRouter(<FieldForm {...props} />)
 
-        const nameInput = await findByLabelText(/Name/)
+        const nameInput = screen.getByLabelText(/Name/)
         const form = nameInput.closest('form')!
         const submitEvent = createEvent.submit(form)
         fireEvent(form, submitEvent)
@@ -387,82 +219,99 @@ describe('<FieldForm/>', () => {
         expect(submitEvent.defaultPrevented).toBe(true)
     })
 
-    it('should archive correctly', async () => {
-        const props = {
-            field: ticketInputFieldDefinition,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
-        }
+    it('should have an archive button calling ArchiveConfirmationModal with the right props', () => {
+        render(<FieldForm {...defaultProps} />)
 
-        const {findByText, findAllByText} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>{' '}
-            </QueryClientProvider>
+        fireEvent.click(screen.getByText(/Archive/))
+        expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                ticketFieldLabel: defaultProps.field.label,
+                isOpen: true,
+            }),
+            {}
         )
 
-        expect(screen.getByText('Archive field'))
-        expect(screen.queryByText('Unarchive field')).not.toBeInTheDocument()
-
-        const archiveModalButton = await findByText('Archive field')
-        archiveModalButton.click()
-        expect(screen.getByText('Are you sure you want to archive this field?')) // ensure modal shows up
-
-        const cancelButton = await findAllByText('Cancel')
-        cancelButton[1].click()
-        await waitFor(() => {
-            expect(
-                screen.queryByText(
-                    'Are you sure you want to archive this field?'
-                )
-            ).not.toBeInTheDocument()
-        })
-
-        archiveModalButton.click()
-        const archiveButton = await findByText('Archive')
-        archiveButton.click()
-        await waitFor(() => {
-            expect(
-                screen.queryByText(
-                    'Are you sure you want to archive this field?'
-                )
-            ).not.toBeInTheDocument()
-        })
-
-        const expectedData = [
-            ticketInputFieldDefinition.id,
-            {deactivated_datetime: '1970-01-01T00:00:00.142Z'},
-        ]
-
-        expect(updateMutateMock).toHaveBeenNthCalledWith(1, expectedData)
+        getLastMockCall(ArchiveConfirmationModalMock)[0].onConfirm()
+        expect(updateMutateMock).toHaveBeenCalledWith(true)
     })
 
-    it('should unarchived correctly', async () => {
-        const props = {
-            field: archivedTicketInputFieldDefinition,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
-        }
-        const {findByText} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>{' '}
-            </QueryClientProvider>
+    it('should not show the archive button opening a modal that closes itself when calling onClose', () => {
+        render(<FieldForm {...defaultProps} />)
+
+        fireEvent.click(screen.getByText(/Archive/))
+        expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                ticketFieldLabel: defaultProps.field.label,
+                isOpen: true,
+            }),
+            {}
         )
-        expect(screen.getByText('ARCHIVED'))
-        expect(screen.queryByLabelText('Archive field')).not.toBeInTheDocument()
-        expect(screen.getByText('Unarchive field'))
 
-        const unarchiveModalButton = await findByText('Unarchive field')
-        unarchiveModalButton.click()
+        getLastMockCall(ArchiveConfirmationModalMock)[0].onClose()
+        expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                ticketFieldLabel: defaultProps.field.label,
+                isOpen: false,
+            }),
+            {}
+        )
+    })
 
-        const expectedData = [
-            archivedTicketInputFieldDefinition.id,
-            {deactivated_datetime: null},
-        ]
+    describe('Archived field', () => {
+        it('should have an unarchive button calling update mutation', () => {
+            const props = {
+                ...defaultProps,
+                field: archivedTicketInputFieldDefinition,
+            }
 
-        expect(updateMutateMock).toHaveBeenNthCalledWith(1, expectedData)
+            render(<FieldForm {...props} />)
+
+            fireEvent.click(screen.getByText(/Unarchive/))
+            expect(updateMutateMock).toHaveBeenCalledWith(false)
+        })
+    })
+
+    describe('AI managed field', () => {
+        it('should show a back button when the field is ai managed', () => {
+            const props = {
+                ...defaultProps,
+                field: aiManagedTicketInputFieldDefinition,
+            }
+
+            render(<FieldForm {...props} />)
+
+            fireEvent.click(screen.getByText(/Return to/))
+            expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('should disabled fields', () => {
+            const props = {
+                ...defaultProps,
+                field: aiManagedTicketInputFieldDefinition,
+            }
+
+            render(<FieldForm {...props} />)
+
+            expect(screen.getByLabelText(/Name/)).toBeDisabled()
+            expect(screen.getByLabelText(/Description/)).toBeDisabled()
+        })
+
+        it('should pass isDisabled to DropdownInput', () => {
+            const props = {
+                ...defaultProps,
+                field: {
+                    ...ticketDropdownFieldDefinition,
+                    managed_type: 'ai_intent',
+                },
+            }
+
+            render(<FieldForm {...props} />)
+            expect(DropdownInputMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isDisabled: true,
+                }),
+                {}
+            )
+        })
     })
 })

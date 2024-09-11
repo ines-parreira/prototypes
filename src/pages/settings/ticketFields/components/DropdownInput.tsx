@@ -9,7 +9,6 @@ import {
     CustomField,
     CustomFieldInput,
     CustomFieldValue,
-    isCustomFieldAIManagedType,
 } from 'models/customField/types'
 import DropdownCSVImport from './DropdownCSVImport'
 import DropdownInputRow from './DropdownInputRow'
@@ -20,6 +19,7 @@ interface DropdownInputProps {
     field: CustomField | CustomFieldInput
     value: CustomFieldValue[]
     onChange: (value: string[]) => void
+    isDisabled?: boolean
 }
 
 interface InternalValue {
@@ -55,16 +55,24 @@ function validate(
     return undefined
 }
 
-export function DropdownInput({field, value, onChange}: DropdownInputProps) {
+export function DropdownInput({
+    field,
+    value,
+    onChange,
+    isDisabled = false,
+}: DropdownInputProps) {
     const [isImportOpen, setImportOpen] = useState(false)
 
     // Generate an internal ID for all values to handle drag and drop
     const [values, setValues] = useState<InternalValue[]>(
-        value.concat(['']).map((val: CustomFieldValue, index: number) => ({
-            value: val.toString(),
-            id: uniqueId('dropdown-choice-'),
-            error: validate(val, index, value),
-        }))
+        value
+            // add empty value at the end is field is not disabled
+            .concat(!isDisabled ? [''] : [])
+            .map((val: CustomFieldValue, index: number) => ({
+                value: val.toString(),
+                id: uniqueId('dropdown-choice-'),
+                error: validate(val, index, value),
+            }))
     )
 
     // Update the state and add an empty option at the end if necessary
@@ -142,21 +150,30 @@ export function DropdownInput({field, value, onChange}: DropdownInputProps) {
     return (
         <>
             <span className={css.formLabelWithTooltip}>
-                <Label htmlFor="settings.choices" isRequired>
+                <Label
+                    htmlFor="settings.choices"
+                    isRequired
+                    isDisabled={isDisabled}
+                >
                     Dropdown values
                 </Label>
 
-                <span
-                    id="custom-field-dropdown-tooltip-id"
-                    className="material-icons-outlined ml-2"
-                >
-                    info
-                </span>
-                <Tooltip target="custom-field-dropdown-tooltip-id">
-                    Max 2,000 values and 5 nested children levels allowed.
-                </Tooltip>
+                {!isDisabled && (
+                    <>
+                        <span
+                            id="custom-field-dropdown-tooltip-id"
+                            className="material-icons-outlined ml-2"
+                        >
+                            info
+                        </span>
+                        <Tooltip target="custom-field-dropdown-tooltip-id">
+                            Max 2,000 values and 5 nested children levels
+                            allowed.
+                        </Tooltip>
+                    </>
+                )}
 
-                {!isCustomFieldAIManagedType(field.managed_type) && (
+                {!isDisabled && (
                     <Button
                         onClick={() => setImportOpen(true)}
                         fillStyle="ghost"
@@ -182,19 +199,23 @@ export function DropdownInput({field, value, onChange}: DropdownInputProps) {
                     onHover={handleHover}
                     onDrop={handleDrop}
                     isLast={index === values.length - 1}
+                    isDisabled={isDisabled}
                 />
             ))}
-            <Caption className={css.lastInput}>
-                Type {DROPDOWN_NESTING_DELIMITER} symbol to add a new child
-                level.{' '}
-                <a
-                    href="https://docs.gorgias.com/en-US/215327-755feceee342410d80f5cde55e8e4f46#how-to-define-your-fields-to-generate-insights-efficiently"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                >
-                    See examples
-                </a>
-            </Caption>
+
+            {!isDisabled && (
+                <Caption>
+                    Type {DROPDOWN_NESTING_DELIMITER} symbol to add a new child
+                    level.{' '}
+                    <a
+                        href="https://docs.gorgias.com/en-US/215327-755feceee342410d80f5cde55e8e4f46#how-to-define-your-fields-to-generate-insights-efficiently"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                    >
+                        See examples
+                    </a>
+                </Caption>
+            )}
 
             <DropdownCSVImport
                 isOpen={isImportOpen}

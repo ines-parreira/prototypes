@@ -1,22 +1,28 @@
 import React from 'react'
-import {fireEvent} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {fireEvent, screen} from '@testing-library/react'
 import uniqueId from 'lodash/uniqueId'
 import {renderWithDnD} from 'utils/testing'
 
 import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
-import {
-    aiAgentManagedTicketDropdownFieldDefinition,
-    ticketDropdownFieldDefinition,
-} from 'fixtures/customField'
+import {ticketDropdownFieldDefinition} from 'fixtures/customField'
+import DropdownInputRow from '../DropdownInputRow'
 import DropdownInput from '../DropdownInput'
 
 let idCount = 1
 jest.mock('lodash/uniqueId')
 const uniqueIdMock = uniqueId as jest.Mock
 uniqueIdMock.mockImplementation((id: string) => `${id || ''}${idCount++}`)
+
+jest.mock('../DropdownInputRow', () => ({
+    __esModule: true,
+    default: jest.fn(
+        // eslint-disable-next-line
+        jest.requireActual('../DropdownInputRow').DropdownInputRow
+    ),
+}))
 
 const mockStore = configureMockStore([thunk])()
 
@@ -47,30 +53,7 @@ describe('<DropdownInput/>', () => {
             </Provider>
         )
         expect(container).toMatchSnapshot()
-    })
-
-    it('should render without csv import when manager', () => {
-        const props = {
-            field: aiAgentManagedTicketDropdownFieldDefinition,
-            value: [
-                'Option 1',
-                'Option 2',
-                `Option 3${delimiter}Sub 2${delimiter}Sub 3${delimiter}Sub 4${delimiter}Sub 5`,
-                0,
-                1,
-                123,
-                true,
-                false,
-            ],
-            onChange: jest.fn(),
-        }
-
-        const {queryByText} = renderWithDnD(
-            <Provider store={mockStore}>
-                <DropdownInput {...props} />
-            </Provider>
-        )
-        expect(queryByText('Import from CSV')).not.toBeInTheDocument()
+        expect(screen.queryAllByText('drag_indicator')).toHaveLength(9)
     })
 
     it('should show an error for too much nesting', () => {
@@ -84,12 +67,14 @@ describe('<DropdownInput/>', () => {
             onChange: jest.fn(),
         }
 
-        const {container} = renderWithDnD(
+        renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
             </Provider>
         )
-        expect(container).toMatchSnapshot()
+        expect(
+            screen.getAllByText(/more than 5 levels of nesting/).length
+        ).toBeGreaterThan(0)
     })
 
     it('should show an error for duplicate values', () => {
@@ -99,28 +84,30 @@ describe('<DropdownInput/>', () => {
             onChange: jest.fn(),
         }
 
-        const {container} = renderWithDnD(
+        renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
             </Provider>
         )
-        expect(container).toMatchSnapshot()
+        expect(
+            screen.getAllByText(/This value already exists/).length
+        ).toBeGreaterThan(0)
     })
 
-    it('should trigger an onChange event when changing a value', async () => {
+    it('should trigger an onChange event when changing a value', () => {
         const props = {
             field: ticketDropdownFieldDefinition,
             value: ['Option 1', 'Option 2', 'Option 3'],
             onChange: jest.fn(),
         }
 
-        const {findByTestId} = renderWithDnD(
+        renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
             </Provider>
         )
 
-        const input = await findByTestId('dropdown-choice-2')
+        const input = screen.getByTestId('dropdown-choice-2')
         fireEvent.change(input, {target: {value: 'My new value'}})
 
         expect(props.onChange).toHaveBeenCalledWith([
@@ -130,39 +117,39 @@ describe('<DropdownInput/>', () => {
         ])
     })
 
-    it('should trigger an onChange event when removing a value', async () => {
+    it('should trigger an onChange event when removing a value', () => {
         const props = {
             field: ticketDropdownFieldDefinition,
             value: ['Option 1', 'Option 2', 'Option 3'],
             onChange: jest.fn(),
         }
 
-        const {findByTestId} = renderWithDnD(
+        renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
             </Provider>
         )
 
-        const button = await findByTestId('dropdown-choice-2-remove')
+        const button = screen.getByTestId('dropdown-choice-2-remove')
         button.click()
 
         expect(props.onChange).toHaveBeenCalledWith(['Option 1', 'Option 3'])
     })
 
-    it('should trigger an onChange event when adding a value', async () => {
+    it('should trigger an onChange event when adding a value', () => {
         const props = {
             field: ticketDropdownFieldDefinition,
             value: ['Option 1', 'Option 2', 'Option 3'],
             onChange: jest.fn(),
         }
 
-        const {findByTestId} = renderWithDnD(
+        renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
             </Provider>
         )
 
-        const input = await findByTestId('dropdown-choice-4')
+        const input = screen.getByTestId('dropdown-choice-4')
         fireEvent.change(input, {target: {value: 'My new value'}})
 
         expect(props.onChange).toHaveBeenCalledWith([
@@ -173,21 +160,21 @@ describe('<DropdownInput/>', () => {
         ])
     })
 
-    it('should trigger an onChange event when re-ordering values with drag and drop', async () => {
+    it('should trigger an onChange event when re-ordering values with drag and drop', () => {
         const props = {
             field: ticketDropdownFieldDefinition,
             value: ['Option 1', 'Option 2', 'Option 3'],
             onChange: jest.fn(),
         }
 
-        const {findByTestId} = renderWithDnD(
+        renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
             </Provider>
         )
 
-        const from = await findByTestId('dropdown-choice-3-handle')
-        const dest = await findByTestId('dropdown-choice-1')
+        const from = screen.getByTestId('dropdown-choice-3-handle')
+        const dest = screen.getByTestId('dropdown-choice-1')
 
         fireEvent.dragStart(from)
         fireEvent.dragEnter(dest)
@@ -199,5 +186,68 @@ describe('<DropdownInput/>', () => {
             'Option 3',
             'Option 2',
         ])
+    })
+
+    describe('isDisabled', () => {
+        it('should pass isDisabled to DropdownInputRow', () => {
+            const props = {
+                field: ticketDropdownFieldDefinition,
+                value: ['Option 1', 'Option 2'],
+                onChange: jest.fn(),
+                isDisabled: true,
+            }
+
+            renderWithDnD(
+                <Provider store={mockStore}>
+                    <DropdownInput {...props} />
+                </Provider>
+            )
+
+            expect(DropdownInputRow).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isDisabled: true,
+                }),
+                {}
+            )
+        })
+
+        it('should render without csv import when disabled', () => {
+            const props = {
+                field: ticketDropdownFieldDefinition,
+                value: ['Option 1', 'Option 2'],
+                onChange: jest.fn(),
+                isDisabled: true,
+            }
+
+            renderWithDnD(
+                <Provider store={mockStore}>
+                    <DropdownInput {...props} />
+                </Provider>
+            )
+            expect(
+                screen.queryByText('Import from CSV')
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render without instructions when disabled', () => {
+            const props = {
+                field: ticketDropdownFieldDefinition,
+                value: ['Option 1', 'Option 2'],
+                onChange: jest.fn(),
+                isDisabled: true,
+            }
+
+            renderWithDnD(
+                <Provider store={mockStore}>
+                    <DropdownInput {...props} />
+                </Provider>
+            )
+
+            expect(
+                screen.queryByText(/Max 2,000 values/)
+            ).not.toBeInTheDocument()
+
+            expect(screen.queryByText('See examples')).not.toBeInTheDocument()
+        })
     })
 })
