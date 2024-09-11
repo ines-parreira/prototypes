@@ -150,7 +150,8 @@ export const validateConfigurationFormValues = (
 
     if (
         formValues.helpCenterId === null &&
-        (publicUrls === null || publicUrls.length === 0)
+        (publicUrls === null || publicUrls.length === 0) &&
+        (!formValues.wizard || formValues.wizard.completedDatetime !== null)
     ) {
         throw new Error('Select a Help Center or add at least one public URL')
     }

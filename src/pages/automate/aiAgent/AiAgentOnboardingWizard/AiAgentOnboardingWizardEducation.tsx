@@ -1,17 +1,50 @@
 import React from 'react'
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
-import WizardFooter from 'pages/common/components/wizard/WizardFooter'
+import WizardFooter, {
+    FOOTER_BUTTONS,
+} from 'pages/common/components/wizard/WizardFooter'
+import useCallbackRef from 'hooks/useCallbackRef'
+import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import {
     AI_AGENT_STEPS_DESCRIPTIONS,
     AI_AGENT_STEPS_LABELS,
     AI_AGENT_STEPS_TITLES,
+    WIZARD_BUTTON_ACTIONS,
 } from '../constants'
 import {AiAgentOnboardingWizardProps} from './AiAgentOnboardingWizard'
+import {useAiAgentOnboardingWizard} from './hooks/useAiAgentOnboardingWizard'
+import css from './AiAgentOnboardingWizardEducation.less'
 
 type Props = AiAgentOnboardingWizardProps
 
-const AiAgentOnboardingWizardStepEducation: React.FC<Props> = () => {
+const AiAgentOnboardingWizardStepEducation: React.FC<Props> = (props) => {
+    const [ref, setRef] = useCallbackRef()
+    useInjectStyleToCandu(ref)
+
+    const {handleSave, isLoading} = useAiAgentOnboardingWizard({
+        storeConfiguration: props.storeConfiguration,
+        step: AiAgentOnboardingWizardStep.Education,
+    })
+
+    const onFooterAction = (buttonClicked: FOOTER_BUTTONS) => {
+        switch (buttonClicked) {
+            case FOOTER_BUTTONS.CANCEL:
+                handleSave({
+                    redirectTo: WIZARD_BUTTON_ACTIONS.BACK_TO_WELCOME_PAGE,
+                })
+                break
+            case FOOTER_BUTTONS.NEXT:
+                handleSave({
+                    redirectTo: WIZARD_BUTTON_ACTIONS.NEXT_STEP,
+                    stepName: AiAgentOnboardingWizardStep.Personalize,
+                })
+                break
+            default:
+                break
+        }
+    }
+
     return (
         <>
             <WizardStepSkeleton
@@ -23,12 +56,19 @@ const AiAgentOnboardingWizardStepEducation: React.FC<Props> = () => {
                     <WizardFooter
                         displayNextButton
                         displayCancelButton
-                        onClick={() => {}}
+                        onClick={onFooterAction}
+                        isDisabled={isLoading}
                     />
                 }
-                preview={<div>AI Agent Educational Video</div>}
+                preview={
+                    <div data-candu-id="ai-agent-onboarding-wizard-education-video" />
+                }
+                previewClassName={css.previewContainer}
             >
-                <div>AI Agent Onboarding Wizard Step Education Content</div>
+                <div
+                    data-candu-id="ai-agent-onboarding-wizard-education"
+                    ref={setRef}
+                />
             </WizardStepSkeleton>
         </>
     )

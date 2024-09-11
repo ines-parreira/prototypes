@@ -10,6 +10,7 @@ import {
 import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
+import Loader from 'pages/common/components/Loader/Loader'
 import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
 import {isAiAgentOnboardingWizardStep} from '../components/StoreConfigForm/StoreConfigForm.utils'
 import AiAgentOnboardingWizardEducation from './AiAgentOnboardingWizardEducation'
@@ -85,7 +86,12 @@ const AiAgentOnboardingWizard = () => {
         shopName: string
     }>()
 
-    const {storeConfiguration} = useAiAgentStoreConfigurationContext()
+    const {storeConfiguration, isLoading} =
+        useAiAgentStoreConfigurationContext()
+
+    if (isLoading) {
+        return <Loader data-testid="loader" />
+    }
 
     return (
         <AiAgentOnboardingWizardComponent

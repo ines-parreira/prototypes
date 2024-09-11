@@ -11,14 +11,15 @@ import history from 'pages/history'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useEffectOnce from 'hooks/useEffectOnce'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {HelpCenter} from 'models/helpCenter/types'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {INITIAL_FORM_VALUES} from '../../components/StoreConfigForm/StoreConfigForm'
 import {FormValues, ValidFormValues, WizardFormValues} from '../../types'
-import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 import {
     getFormValuesFromStoreConfiguration,
     getStoreConfigurationFromFormValues,
@@ -29,16 +30,21 @@ import {
     WIZARD_BUTTON_ACTIONS,
 } from '../../constants'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
+import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
+import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
 
 type handleSaveParams = {
     publicUrls?: string[]
     redirectTo?: WIZARD_BUTTON_ACTIONS
+    stepName?: AiAgentOnboardingWizardStep
+    payload?: Partial<FormValues>
     successModalParams?: string
 }
 
 type AiAgentOnboardingWizardOutput = {
     storeFormValues: FormValues
-    allHelpCenters: HelpCenter[]
+    faqHelpCenters: HelpCenter[]
+    snippetHelpCenter: HelpCenter | null
     handleFormUpdate: (payload: Partial<FormValues>) => void
     handleAction: (redirectTo: WIZARD_BUTTON_ACTIONS) => void
     handleSave: (params: handleSaveParams) => void
@@ -79,7 +85,7 @@ export const useAiAgentOnboardingWizard = ({
             }
         )
 
-    const helpCenters = useMemo(
+    const faqHelpCenters = useMemo(
         () =>
             (helpCenterListData?.data.data ?? []).filter(
                 (hc) => hc.shop_name === shopName || hc.shop_name === null
@@ -87,11 +93,25 @@ export const useAiAgentOnboardingWizard = ({
         [helpCenterListData, shopName]
     )
 
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+
     const {
-        isPendingCreateOrUpdate,
+        helpCenter: snippetHelpCenter,
+        isLoading: isLoadingSnippetHelpCenter,
+    } = useGetOrCreateSnippetHelpCenter({
+        accountDomain,
+        shopName,
+    })
+
+    const {
+        isLoading: isPendingCreateOrUpdate,
         createStoreConfiguration,
-        updateStoreConfiguration,
-    } = useAiAgentStoreConfigurationContext()
+        upsertStoreConfiguration,
+    } = useStoreConfigurationMutation({
+        shopName,
+        accountDomain,
+    })
 
     const isAiAgentOnboardingWizardEducationalStepEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]
@@ -103,15 +123,12 @@ export const useAiAgentOnboardingWizard = ({
     const isUpdate = !!storeConfiguration?.wizard
 
     useEffectOnce(() => {
-        const initialHelpCenter = helpCenters[0]
-
         const initialStoreFormValues: FormValues = {
             ...INITIAL_FORM_VALUES,
-            helpCenterId: initialHelpCenter?.id ?? null,
+            helpCenterId: null,
             ticketSampleRate: null,
             wizard: {
                 ...INITIAL_WIZARD_FORM_VALUES,
-                stepName: step,
                 hasEducationStepEnabled:
                     isAiAgentOnboardingWizardEducationalStepEnabled,
             },
@@ -178,9 +195,9 @@ export const useAiAgentOnboardingWizard = ({
 
     const handleCreateStoreConfiguration = async (
         payload: CreateStoreConfigurationPayload
-    ) => {
+    ): Promise<StoreConfiguration | null> => {
         try {
-            await createStoreConfiguration(payload)
+            return await createStoreConfiguration(payload)
         } catch (error) {
             void dispatch(
                 notify({
@@ -188,14 +205,15 @@ export const useAiAgentOnboardingWizard = ({
                     status: NotificationStatus.Error,
                 })
             )
+            return null
         }
     }
 
     const handleUpdateStoreConfiguration = async (
         payload: StoreConfiguration
-    ) => {
+    ): Promise<StoreConfiguration | null> => {
         try {
-            await updateStoreConfiguration(payload)
+            return await upsertStoreConfiguration(payload)
         } catch (error) {
             void dispatch(
                 notify({
@@ -203,18 +221,30 @@ export const useAiAgentOnboardingWizard = ({
                     status: NotificationStatus.Error,
                 })
             )
+            return null
         }
     }
 
     const handleSave = async ({
         publicUrls,
         redirectTo,
+        stepName,
+        payload,
         successModalParams,
     }: handleSaveParams) => {
+        const storeFormValues = {
+            ...newStoreFormValues,
+            ...payload,
+            wizard: newStoreFormValues.wizard && {
+                ...newStoreFormValues.wizard,
+                stepName: stepName ?? step,
+            },
+        }
+
         let validFormValues: ValidFormValues
         try {
             validFormValues = validateConfigurationFormValues(
-                newStoreFormValues,
+                storeFormValues,
                 publicUrls ?? []
             )
         } catch (error) {
@@ -244,19 +274,23 @@ export const useAiAgentOnboardingWizard = ({
                   })
                 : handleCreateStoreConfiguration(configurationToSubmit)
 
-        await storeConfigurationAction()
+        const res = await storeConfigurationAction()
 
-        if (redirectTo) {
+        if (res && redirectTo) {
             handleAction(redirectTo, successModalParams)
         }
     }
 
     return {
         storeFormValues: newStoreFormValues,
-        allHelpCenters: helpCenters,
+        faqHelpCenters,
+        snippetHelpCenter,
         handleFormUpdate,
         handleAction,
         handleSave,
-        isLoading: isPendingCreateOrUpdate || isLoadingHelpCenters,
+        isLoading:
+            isPendingCreateOrUpdate ||
+            isLoadingHelpCenters ||
+            isLoadingSnippetHelpCenter,
     }
 }

@@ -2,24 +2,28 @@ import {renderHook, act} from '@testing-library/react-hooks'
 import {useParams} from 'react-router-dom'
 import {IntegrationType} from '@gorgias/api-queries'
 import {waitFor} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import {fromJS} from 'immutable'
 import {notify} from 'state/notifications/actions'
 import history from 'pages/history'
-import {
-    AiAgentOnboardingWizardStep,
-    StoreConfiguration,
-} from 'models/aiAgent/types'
+import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {assumeMock} from 'utils/testing'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {NotificationStatus} from 'state/notifications/types'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import {account} from 'fixtures/account'
+import {StoreState} from 'state/types'
 import {validateConfigurationFormValues} from '../../hooks/useConfigurationForm'
 import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
 import {INITIAL_FORM_VALUES} from '../../components/StoreConfigForm/StoreConfigForm'
 import {ValidFormValues} from '../../types'
-import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {WIZARD_BUTTON_ACTIONS} from '../../constants'
+import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
+import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
 
 jest.mock('pages/history')
 jest.mock('state/notifications/actions')
@@ -35,22 +39,28 @@ const mockUseNavigateWizardSteps = assumeMock(useNavigateWizardSteps)
 jest.mock('models/helpCenter/queries')
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
 
+jest.mock('hooks/useAppSelector')
+const mockUseAppSelector = assumeMock(useAppSelector)
+
+jest.mock('../../hooks/useGetOrCreateSnippetHelpCenter')
+const mockUseGetOrCreateSnippetHelpCenter = assumeMock(
+    useGetOrCreateSnippetHelpCenter
+)
+
 jest.mock('../../hooks/useConfigurationForm')
 const mockValidateConfigurationFormValues = assumeMock(
     validateConfigurationFormValues
 )
 
-jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
-    useAiAgentStoreConfigurationContext: jest.fn(),
-}))
-const mockUseAiAgentStoreConfigurationContext = assumeMock(
-    useAiAgentStoreConfigurationContext
+jest.mock('../../hooks/useStoreConfigurationMutation')
+const mockUseStoreConfigurationMutation = assumeMock(
+    useStoreConfigurationMutation
 )
 
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 
-const mockHelpCenterListData = {
+const mockedHelpCenterListData = {
     data: axiosSuccessResponse({
         data: [
             {id: 1, name: 'help center 1', type: 'faq', shop_name: 'test-shop'},
@@ -85,6 +95,9 @@ const MOCK_WIZARD_VALUES = {
     },
 }
 
+const mockedStoreConfiguration =
+    getStoreConfigurationFixture(MOCK_WIZARD_VALUES)
+
 const validFormValues: ValidFormValues = {
     ...INITIAL_FORM_VALUES,
     monitoredEmailIntegrations: [
@@ -108,10 +121,10 @@ const validFormValues: ValidFormValues = {
 
 const mockUpdateStoreConfiguration = jest
     .fn()
-    .mockImplementation((c: StoreConfiguration) => c)
+    .mockResolvedValue(mockedStoreConfiguration)
 const mockCreateStoreConfiguration = jest
     .fn()
-    .mockImplementation((c: StoreConfiguration) => c)
+    .mockResolvedValue(mockedStoreConfiguration)
 const mockNavigateWizardSteps = {
     goToNextStep: jest.fn(),
     goToPreviousStep: jest.fn(),
@@ -123,16 +136,27 @@ describe('useAiAgentOnboardingWizard', () => {
             shopType: 'shopify',
             shopName: 'test-shop',
         })
-        mockUseGetHelpCenterList.mockReturnValue(mockHelpCenterListData)
+        mockUseGetHelpCenterList.mockReturnValue(mockedHelpCenterListData)
         mockValidateConfigurationFormValues.mockReturnValue(validFormValues)
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: getStoreConfigurationFixture(),
+        mockUseStoreConfigurationMutation.mockReturnValue({
             isLoading: false,
-            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            upsertStoreConfiguration: mockUpdateStoreConfiguration,
             createStoreConfiguration: mockCreateStoreConfiguration,
-            isPendingCreateOrUpdate: false,
+            error: null,
         })
         mockUseNavigateWizardSteps.mockReturnValue(mockNavigateWizardSteps)
+        mockUseAppSelector.mockImplementation((selector) =>
+            selector({
+                currentAccount: fromJS(account),
+            } as unknown as StoreState)
+        )
+        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
+            helpCenter: null,
+            isLoading: false,
+        })
+        mockFlags({
+            [FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]: true,
+        })
     })
 
     it('should initialize store configuration with default value', () => {
@@ -144,9 +168,10 @@ describe('useAiAgentOnboardingWizard', () => {
         )
 
         expect(result.current.storeFormValues).toBeDefined()
-        expect(result.current.allHelpCenters).toEqual([
+        expect(result.current.faqHelpCenters).toEqual([
             {id: 1, name: 'help center 1', type: 'faq', shop_name: 'test-shop'},
         ])
+        expect(result.current.snippetHelpCenter).toBe(null)
         expect(result.current.isLoading).toBe(false)
     })
 
@@ -321,21 +346,23 @@ describe('useAiAgentOnboardingWizard', () => {
 
         await waitFor(() => {
             expect(mockCreateStoreConfiguration).toHaveBeenCalled()
+            expect(mockCreateStoreConfiguration).toHaveReturnedWith(
+                Promise.resolve(mockedStoreConfiguration)
+            )
         })
     })
 
-    it('should handle error if  create store configuration fails', async () => {
+    it('should handle error if create store configuration fails', async () => {
         const mockErrorCreateStoreConfiguration = jest
             .fn()
             .mockRejectedValue(
                 new Error('Failed to create AI Agent Configuration')
             )
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: getStoreConfigurationFixture(),
+        mockUseStoreConfigurationMutation.mockReturnValue({
             isLoading: false,
-            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            upsertStoreConfiguration: mockUpdateStoreConfiguration,
             createStoreConfiguration: mockErrorCreateStoreConfiguration,
-            isPendingCreateOrUpdate: false,
+            error: null,
         })
 
         const {result} = renderHook(() =>
@@ -365,8 +392,7 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should call update store configuration on save when updating', async () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration:
-                    getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
+                storeConfiguration: mockedStoreConfiguration,
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )
@@ -380,6 +406,9 @@ describe('useAiAgentOnboardingWizard', () => {
 
         await waitFor(() => {
             expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
+            expect(mockUpdateStoreConfiguration).toHaveReturnedWith(
+                Promise.resolve(mockedStoreConfiguration)
+            )
         })
     })
 
@@ -409,18 +438,15 @@ describe('useAiAgentOnboardingWizard', () => {
             .mockRejectedValue(
                 new Error('Failed to update AI Agent Configuration')
             )
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration:
-                getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
+        mockUseStoreConfigurationMutation.mockReturnValue({
             isLoading: false,
-            updateStoreConfiguration: mockErrorUpdateStoreConfiguration,
+            upsertStoreConfiguration: mockErrorUpdateStoreConfiguration,
             createStoreConfiguration: mockCreateStoreConfiguration,
-            isPendingCreateOrUpdate: false,
+            error: null,
         })
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration:
-                    getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
+                storeConfiguration: mockedStoreConfiguration,
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )

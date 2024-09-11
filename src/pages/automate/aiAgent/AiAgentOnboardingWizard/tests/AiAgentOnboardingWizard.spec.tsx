@@ -8,17 +8,32 @@ import {Provider} from 'react-redux'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import AiAgentOnboardingWizard from '../AiAgentOnboardingWizard'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
+import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
 
 jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
-
 const mockUseAiAgentStoreConfigurationContext = assumeMock(
     useAiAgentStoreConfigurationContext
 )
+
+jest.mock('../hooks/useAiAgentOnboardingWizard')
+const mockUseAiAgentOnboardingWizard = assumeMock(useAiAgentOnboardingWizard)
+
+const mockedUseAiAgentOnboardingWizard = {
+    storeFormValues: getStoreConfigurationFormValuesFixture(),
+    faqHelpCenters: getHelpCentersResponseFixture.data,
+    snippetHelpCenter: null,
+    isLoading: false,
+    handleFormUpdate: jest.fn(),
+    handleSave: jest.fn(),
+    handleAction: jest.fn(),
+}
 
 const mockStore = configureMockStore([thunk])
 
@@ -45,6 +60,9 @@ describe('<AiAgentOnboardingWizard />', () => {
             createStoreConfiguration: jest.fn(),
             isPendingCreateOrUpdate: false,
         })
+        mockUseAiAgentOnboardingWizard.mockReturnValue(
+            mockedUseAiAgentOnboardingWizard
+        )
         mockFlags({
             [FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]: true,
         })

@@ -14,6 +14,7 @@ type Props = {
     metaStep?: string
     footer: React.ReactNode
     preview?: React.ReactNode
+    previewClassName?: string
     labels: Record<string, string>
     titles: Record<string, string | Record<string, string>>
     descriptions: Record<string, string | Record<string, string>>
@@ -30,6 +31,7 @@ const WizardStepSkeleton: React.FC<Props> = ({
     step,
     children,
     preview,
+    previewClassName,
     footer,
     labels,
     titles,
@@ -94,7 +96,7 @@ const WizardStepSkeleton: React.FC<Props> = ({
                 </div>
             </div>
             {preview && (
-                <div className={css.preview}>
+                <div className={previewClassName ?? css.preview}>
                     <div className={css.previewCenter}>{preview}</div>
                 </div>
             )}
