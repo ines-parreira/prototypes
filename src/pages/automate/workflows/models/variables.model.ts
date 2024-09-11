@@ -424,7 +424,7 @@ export const buildWorkflowVariableFromTrigger = (
                         name: 'Order number',
                         value: 'objects.order.number',
                         nodeType: 'order_selection',
-                        type: 'number',
+                        type: 'string',
                     },
                     {
                         name: 'Order total amount',
@@ -731,8 +731,14 @@ export const buildWorkflowVariableFromNode = (
                     type: 'string',
                 },
                 {
-                    name: 'Order number',
+                    name: 'Order name',
                     value: `steps_state.${node.id}.order.name`,
+                    nodeType: 'order_selection',
+                    type: 'string',
+                },
+                {
+                    name: 'Order number',
+                    value: `steps_state.${node.id}.order.number`,
                     nodeType: 'order_selection',
                     type: 'string',
                 },
