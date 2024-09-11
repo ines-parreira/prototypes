@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import {useFlag} from 'common/flags'
+import {Customer} from 'models/customer/types'
+import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
+import {TicketSummary} from 'ticket-list-view/types'
 
-import useIsTicketViewed from '../../hooks/useIsTicketViewed'
-import {TicketSummary} from '../../types'
 import Ticket from '../Ticket'
 
 jest.mock('common/flags', () => ({useFlag: jest.fn()}))
@@ -18,6 +19,7 @@ describe('Ticket', () => {
     const defaultTicket = {
         channel: 'email',
         customer: {
+            id: 888,
             email: 'john.doe@gorgias.com',
             name: 'John Doe',
         },
@@ -55,20 +57,76 @@ describe('Ticket', () => {
 
     it('should render the new ticket design', () => {
         useFlagMock.mockReturnValue(true)
-        const {getByText} = render(<Ticket {...defaultProps} />)
-        expect(getByText('John Doe')).toBeInTheDocument()
-        expect(getByText('email')).toBeInTheDocument()
-        expect(getByText('Subject')).toBeInTheDocument()
-        expect(getByText('Excerpt')).toBeInTheDocument()
+        render(<Ticket {...defaultProps} />)
+        expect(
+            screen.getByText(defaultProps.ticket.customer!.name)
+        ).toBeInTheDocument()
+        expect(screen.getByText('email')).toBeInTheDocument()
+        expect(
+            screen.getByText(defaultProps.ticket.subject)
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(defaultProps.ticket.excerpt!)
+        ).toBeInTheDocument()
+    })
+
+    it('should render customer email', () => {
+        useFlagMock.mockReturnValue(true)
+        render(
+            <Ticket
+                {...defaultProps}
+                ticket={{
+                    ...defaultTicket,
+                    customer: {...defaultTicket.customer, name: ''} as Customer,
+                }}
+            />
+        )
+        expect(
+            screen.getByText(defaultProps.ticket.customer!.email!)
+        ).toBeInTheDocument()
+    })
+
+    it('should render customer id', () => {
+        useFlagMock.mockReturnValue(true)
+        render(
+            <Ticket
+                {...defaultProps}
+                ticket={{
+                    ...defaultTicket,
+                    customer: {
+                        ...defaultTicket.customer,
+                        name: '',
+                        email: '',
+                    } as Customer,
+                }}
+            />
+        )
+        expect(
+            screen.getByText(`Customer #${defaultProps.ticket.customer!.id}`)
+        ).toBeInTheDocument()
+    })
+
+    it('should handle unavailable informations on customer', () => {
+        useFlagMock.mockReturnValue(true)
+        render(
+            <Ticket
+                {...defaultProps}
+                ticket={{
+                    ...defaultTicket,
+                    customer: null,
+                }}
+            />
+        )
+        expect(
+            document.getElementsByClassName('customer')[0]
+        ).toHaveTextContent('')
     })
 
     it('should select a ticket when the checkbox is clicked', () => {
         useFlagMock.mockReturnValue(true)
         const onSelect = jest.fn()
-        const {getByRole} = render(
-            <Ticket {...defaultProps} onSelect={onSelect} />
-        )
-        userEvent.click(getByRole('checkbox'))
+        render(<Ticket {...defaultProps} onSelect={onSelect} />)
+        userEvent.click(screen.getByRole('checkbox'))
 
         expect(onSelect).toHaveBeenCalledWith(1, true, false)
     })

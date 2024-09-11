@@ -90,8 +90,11 @@ export default function Ticket({
 
     if (hasBulkActions) {
         const customer =
-            'channel' in ticket &&
-            (ticket.customer?.name || ticket.customer?.email)
+            'channel' in ticket && ticket.customer
+                ? ticket.customer?.name ||
+                  ticket.customer?.email ||
+                  `Customer #${ticket.customer?.id}`
+                : ''
 
         return (
             <CSSTransition
@@ -138,11 +141,9 @@ export default function Ticket({
                                 >
                                     <header className={css.header}>
                                         <span className={css.customerChannel}>
-                                            {!!customer && (
-                                                <span className={css.customer}>
-                                                    {customer}
-                                                </span>
-                                            )}
+                                            <span className={css.customer}>
+                                                {customer}
+                                            </span>
 
                                             <SourceIcon
                                                 ref={sourceRef}
@@ -181,7 +182,7 @@ export default function Ticket({
                                     </div>
                                     {ticket.excerpt !== '' && (
                                         <Tooltip
-                                            delay={300}
+                                            delay={450}
                                             placement="top"
                                             target={excerptRef}
                                         >
