@@ -16,19 +16,11 @@ import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
  * Api Client for AI Agent
  */
 
-export function createBaseUrl(isProd = isProduction(), isStg = isStaging()) {
-    if (isProd) {
-        return 'https://aiagent.gorgias.help'
-    }
-
-    if (isStg) {
-        return 'https://aiagent.gorgias.rehab'
-    }
-
-    return 'http://localhost:9400'
-}
-
-const baseURL = createBaseUrl()
+const baseURL = isProduction()
+    ? `https://ai-agent.gorgias.help`
+    : isStaging()
+    ? 'https://ai-agent.gorgias.rehab'
+    : `http://localhost:8097`
 
 // eslint-disable-next-line no-restricted-properties
 const apiClient = axios.create({
@@ -44,16 +36,12 @@ export const submitAiAgentTicket = async (
     body: AiAgentInput,
     abortController?: AbortController
 ) => {
-    return await apiClient.post<AiAgentResponse>(
-        '/api/interaction/start',
-        body,
-        {
-            params: {
-                playground: true,
-            },
-            signal: abortController?.signal,
-        }
-    )
+    return await apiClient.post<AiAgentResponse>('/', body, {
+        params: {
+            playground: true,
+        },
+        signal: abortController?.signal,
+    })
 }
 
 export const createContextAndSubmitPlaygroundTicket = async (
