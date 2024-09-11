@@ -1,6 +1,6 @@
 import React, {Component, FormEvent} from 'react'
 import classnames from 'classnames'
-import {Form, FormGroup, Container, Label} from 'reactstrap'
+import {Form, FormGroup, Label} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {Map} from 'immutable'
 import {EditorState} from 'draft-js'
@@ -70,7 +70,7 @@ class SatisfactionSurveyView extends Component<Props, State> {
         return (
             <div className="full-width">
                 <PageHeader title="Satisfaction survey" />
-                <Container fluid className={css.pageContainer}>
+                <div className={css.pageContainer}>
                     <div
                         className={classnames(
                             css.contentWrapper,
@@ -197,7 +197,7 @@ class SatisfactionSurveyView extends Component<Props, State> {
                             </Form>
                         </div>
                     </div>
-                </Container>
+                </div>
             </div>
         )
     }

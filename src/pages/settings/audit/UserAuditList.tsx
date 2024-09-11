@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import {Container, Table} from 'reactstrap'
+import {Table} from 'reactstrap'
 import _isEmpty from 'lodash/isEmpty'
 import moment from 'moment-timezone'
 import axios, {AxiosError, CancelToken} from 'axios'
@@ -32,9 +32,11 @@ import {humanizeString} from 'utils'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
-import css from '../settings.less'
+import settings from '../settings.less'
 import {DATETIME_LABEL_FORMAT} from './constants'
 import UserAuditRow from './UserAuditRow'
+
+import css from './style.less'
 
 const _startOfToday = () => getMoment().startOf('day')
 const _endOfToday = () => getMoment().endOf('day')
@@ -209,7 +211,7 @@ const UserAuditList = () => {
                     />
                 </div>
             </PageHeader>
-            <Container fluid className={css.pageContainer}>
+            <div className={settings.pageContainer}>
                 <div className="manage-requests-description">
                     <p>
                         User audit logs display recent actions performed by
@@ -223,7 +225,7 @@ const UserAuditList = () => {
                         There is no event recorded matching these filters.
                     </div>
                 ) : (
-                    <div>
+                    <>
                         <Table>
                             <thead>
                                 <tr>
@@ -245,6 +247,7 @@ const UserAuditList = () => {
                             </tbody>
                         </Table>
                         <Navigation
+                            className={css.navigation}
                             hasNextItems={!!meta?.next_cursor}
                             hasPrevItems={!!meta?.prev_cursor}
                             fetchNextItems={() =>
@@ -254,9 +257,9 @@ const UserAuditList = () => {
                                 fetchUsersAudit(CursorDirection.PrevCursor)
                             }
                         />
-                    </div>
+                    </>
                 )}
-            </Container>
+            </div>
         </div>
     )
 }

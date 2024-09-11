@@ -135,7 +135,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
     </h1>
   </div>
   <div
-    class="pageContainer container-fluid"
+    class="pageContainer"
   >
     <form
       class=""
@@ -458,7 +458,7 @@ exports[`<TicketAssignment/> should render the create team cta when no team exis
     </h1>
   </div>
   <div
-    class="pageContainer container-fluid"
+    class="pageContainer"
   >
     <form
       class=""
@@ -623,7 +623,7 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
     </h1>
   </div>
   <div
-    class="pageContainer container-fluid"
+    class="pageContainer"
   >
     <form
       class=""

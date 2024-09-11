@@ -6,7 +6,6 @@ import {fromJS} from 'immutable'
 import {
     Breadcrumb,
     BreadcrumbItem,
-    Container,
     Popover,
     PopoverBody,
     Table,
@@ -113,7 +112,7 @@ export const ImportZendeskDetail = ({
                     </Breadcrumb>
                 }
             />
-            <Container fluid className={settingsCss.pageContainer}>
+            <div className={settingsCss.pageContainer}>
                 <div className="row mb-5">
                     <div className="col-sm-12 col-md-7 col-lg-4">
                         <ImportStatusAlert integrationMeta={integrationMeta} />
@@ -281,7 +280,7 @@ export const ImportZendeskDetail = ({
                             </ButtonIconLabel>
                         </Button>
                     ))}
-            </Container>
+            </div>
         </div>
     )
 }

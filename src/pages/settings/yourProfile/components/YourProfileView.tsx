@@ -5,7 +5,7 @@ import _pick from 'lodash/pick'
 import _omit from 'lodash/omit'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment-timezone'
-import {Container, Form, FormGroup, FormText, Label} from 'reactstrap'
+import {Form, FormGroup, FormText, Label} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
@@ -206,7 +206,7 @@ export class YourProfileView extends Component<Props, State> {
                     when={this.isDirty}
                 />
                 <PageHeader title="Your profile" />
-                <Container fluid className={settingsCss.pageContainer}>
+                <div className={settingsCss.pageContainer}>
                     <div className={settingsCss.headingSection}>
                         Personal information
                     </div>
@@ -637,7 +637,7 @@ export class YourProfileView extends Component<Props, State> {
                             Save Changes
                         </Button>
                     </Form>
-                </Container>
+                </div>
             </div>
         )
     }

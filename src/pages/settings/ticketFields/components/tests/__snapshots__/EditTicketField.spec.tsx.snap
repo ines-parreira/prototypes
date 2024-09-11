@@ -49,7 +49,7 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
     </nav>
   </div>
   <div
-    class="pageContainer container-fluid"
+    class="pageContainer"
   >
     <div
       class="contentWrapper"
@@ -326,7 +326,7 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
     </nav>
   </div>
   <div
-    class="pageContainer container-fluid"
+    class="pageContainer"
   >
     <div
       class="contentWrapper"

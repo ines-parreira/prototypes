@@ -2,6 +2,7 @@ import React, {useCallback, useMemo} from 'react'
 import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import _startCase from 'lodash/startCase'
+import cn from 'classnames'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
@@ -11,7 +12,7 @@ import {humanizeString} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {DATETIME_LABEL_FORMAT} from './constants'
-import css from './UserAuditRow.less'
+import css from './style.less'
 
 type Props = {
     eventItem: Event
@@ -73,7 +74,7 @@ const UserAuditRow = ({eventItem}: Props) => {
                 <div className="cell-content">{renderObject()}</div>
             </td>
             <td className="smallest link-full-td">
-                <div className="cell-content">
+                <div className={cn('cell-content', css.lastCell)}>
                     <DatetimeLabel
                         dateTime={eventItem.created_datetime}
                         labelFormat={DATETIME_LABEL_FORMAT}

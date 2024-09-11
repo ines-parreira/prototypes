@@ -6,7 +6,6 @@ import {
     BreadcrumbItem,
     ButtonGroup,
     Col,
-    Container,
     Form as BootstrapForm,
     FormGroup,
     Popover,
@@ -168,7 +167,7 @@ export class FormContainer extends Component<Props, State> {
                         Settings
                     </NavLink>
                 </SecondaryNavbar>
-                <Container fluid className={settingsCss.pageContainer}>
+                <div className={settingsCss.pageContainer}>
                     <BootstrapForm onSubmit={this._onSubmit}>
                         <Row>
                             <Col lg={6}>
@@ -340,7 +339,7 @@ export class FormContainer extends Component<Props, State> {
                             </Col>
                         </Row>
                     </BootstrapForm>
-                </Container>
+                </div>
             </div>
         )
     }

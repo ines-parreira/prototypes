@@ -17,7 +17,7 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
     class="svg enterprise"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -191,7 +191,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
     class="svg basic"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -369,7 +369,7 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
     class="svg pro"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"

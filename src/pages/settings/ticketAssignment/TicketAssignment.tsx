@@ -1,7 +1,7 @@
 import React, {Component, SyntheticEvent} from 'react'
 import {List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
-import {Col, Container, Form, FormGroup, Row} from 'reactstrap'
+import {Col, Form, FormGroup, Row} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 import classNames from 'classnames'
 import {Label, Tooltip} from '@gorgias/ui-kit'
@@ -178,7 +178,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                     }
                 />
 
-                <Container fluid className={settingsCss.pageContainer}>
+                <div className={settingsCss.pageContainer}>
                     <Form onSubmit={this._onSubmit}>
                         <Row className={settingsCss.contentWrapper}>
                             <Col>
@@ -455,7 +455,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                             this.setState({isTeamCreationModalOpen: false})
                         }
                     />
-                </Container>
+                </div>
             </div>
         )
     }

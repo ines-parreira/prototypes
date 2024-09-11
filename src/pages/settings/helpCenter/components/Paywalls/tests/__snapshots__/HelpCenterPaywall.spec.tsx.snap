@@ -18,7 +18,7 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
       class="svg pro"
     />
     <div
-      class="page container-fluid"
+      class="page"
     >
       <div
         class="paywallContainer"
@@ -136,7 +136,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
       class="svg advanced"
     />
     <div
-      class="page container-fluid"
+      class="page"
     >
       <div
         class="paywallContainer"
@@ -255,7 +255,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
       class="svg basic"
     />
     <div
-      class="page container-fluid"
+      class="page"
     >
       <div
         class="paywallContainer"
@@ -373,7 +373,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
       class="svg enterprise"
     />
     <div
-      class="page container-fluid"
+      class="page"
     >
       <div
         class="paywallContainer"
@@ -492,7 +492,7 @@ exports[`HelpCenterPaywall should render the component correctly for when the pl
       class="svg default"
     />
     <div
-      class="page container-fluid"
+      class="page"
     >
       <div
         class="paywallContainer"

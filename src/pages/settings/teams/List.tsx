@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import {Emoji} from 'emoji-mart'
-import {Container} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {AxiosError} from 'axios'
@@ -155,7 +154,7 @@ const TeamList = () => {
             {isFetching ? (
                 <Loader />
             ) : (
-                <Container fluid className={settingsCss.pageContainer}>
+                <div className={settingsCss.pageContainer}>
                     <p>
                         Create teams of users to define what views they see by
                         default on your account.
@@ -180,7 +179,7 @@ const TeamList = () => {
                             fetchPage(CursorDirection.PrevCursor)
                         }
                     />
-                </Container>
+                </div>
             )}
 
             <TeamCreationModal

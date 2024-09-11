@@ -66,7 +66,7 @@ import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import NewBilling from 'pages/settings/new_billing/views/BillingStartView'
 import ManageTagsContainer from 'pages/settings/tags/ManageTags'
 import ImportZendeskDetail from 'pages/settings/importData/zendesk/ImportZendeskDetail'
-import ImportDataContainer from 'pages/settings/importData/ImportDataContainer'
+import ImportData from 'pages/settings/importData/ImportData'
 import ImportZendeskCreate from 'pages/settings/importData/zendesk/ImportZendeskCreate'
 import SatisfactionSurveyView from 'pages/settings/satisfactionSurveys/SatisfactionSurveyView'
 import MacrosSettingsContent from 'pages/settings/macros/MacrosSettingsContent'
@@ -2181,7 +2181,7 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={() => (
                     <App
                         content={memoizedWithUserRoleRequired(
-                            ImportDataContainer,
+                            ImportData,
                             ADMIN_ROLE,
                             PageSection.ImportData
                         )}

@@ -1,7 +1,7 @@
 import React, {FormEvent, useCallback, useState} from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, Container, Form} from 'reactstrap'
+import {Button, Form} from 'reactstrap'
 import {Label} from '@gorgias/ui-kit'
 import {List} from 'immutable'
 
@@ -200,7 +200,7 @@ export const AccessContainer = (props: Props) => {
         <div className="full-width">
             <PageHeader title="Access management" />
 
-            <Container fluid className={css.pageContainer}>
+            <div className={css.pageContainer}>
                 <div className={css.contentWrapper}>
                     <Form onSubmit={handleSubmit}>
                         <h4 className="mb-2">Single Sign-On (SSO)</h4>
@@ -313,7 +313,7 @@ export const AccessContainer = (props: Props) => {
                         </Button>
                     </Form>
                 </div>
-            </Container>
+            </div>
         </div>
     )
 }

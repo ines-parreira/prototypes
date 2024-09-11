@@ -1,0 +1,78 @@
+import React from 'react'
+import {render, screen} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import {fromJS} from 'immutable'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import {fetchIntegrations} from 'state/integrations/actions'
+import {RootState} from 'state/types'
+import {assumeMock, mockStore} from 'utils/testing'
+
+import ImportData from '../ImportData'
+
+jest.mock('hooks/useAppDispatch')
+const useAppDispatchMock = assumeMock(useAppDispatch)
+const dispatchMock = jest.fn()
+useAppDispatchMock.mockReturnValue(dispatchMock)
+
+jest.mock('state/integrations/actions')
+const fetchIntegrationsMock = assumeMock(fetchIntegrations)
+
+jest.mock('pages/common/components/Loader/Loader', () => () => (
+    <div>Loader</div>
+))
+
+describe('<ImportData />', () => {
+    const renderComponent = (state: RootState) =>
+        render(
+            <Provider store={mockStore(state)}>
+                <ImportData />
+            </Provider>
+        )
+
+    it('should load', () => {
+        renderComponent({
+            integrations: fromJS({
+                integrations: [],
+                state: {
+                    loading: {
+                        integrations: true,
+                    },
+                },
+            }),
+        } as RootState)
+
+        expect(screen.getByText('Loader')).toBeInTheDocument()
+        expect(fetchIntegrationsMock).toHaveBeenCalled()
+    })
+
+    it('should display empty list of integrations', () => {
+        renderComponent({
+            integrations: fromJS({
+                integrations: [],
+            }),
+        } as RootState)
+        expect(
+            screen.getByText("You don't have any imports at the moment")
+        ).toBeInTheDocument()
+    })
+
+    it('should display list of integrations', () => {
+        renderComponent({
+            integrations: fromJS({
+                integrations: [
+                    {
+                        type: 'zendesk',
+                        meta: {
+                            status: 'success',
+                        },
+                        updated_datetime: '2024-09-02T00:00:00+00:00',
+                    },
+                ],
+            }),
+        } as RootState)
+        expect(
+            screen.getByText('Completed on 09/02/2024 12:00 AM')
+        ).toBeInTheDocument()
+    })
+})

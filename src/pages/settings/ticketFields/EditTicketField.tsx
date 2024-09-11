@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import useTitle from 'hooks/useTitle'
 import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
@@ -38,7 +38,7 @@ export default function EditTicketField() {
                     </Breadcrumb>
                 }
             />
-            <Container fluid className={css.pageContainer}>
+            <div className={css.pageContainer}>
                 <div className={css.contentWrapper}>
                     {Boolean(field.managed_type) && (
                         <Alert icon type={AlertType.Info} className="mb-4">
@@ -68,7 +68,7 @@ export default function EditTicketField() {
                     )}
                     <EditFieldForm field={field} />
                 </div>
-            </Container>
+            </div>
         </div>
     )
 }

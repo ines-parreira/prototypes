@@ -5,6 +5,7 @@ import {
     fireEvent,
     waitFor,
     waitForElementToBeRemoved,
+    screen,
 } from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -48,13 +49,13 @@ const fetchEventsMock = fetchEvents as jest.MockedFunction<typeof fetchEvents>
 const mockServer = new MockAdapter(client)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
+const agent1 = {id: 1, name: 'agent 1', email: 'agent1@gorgias.com'}
+const agent2 = {id: 2, name: 'agent 2', email: 'agent2@gorgias.com'}
+const agent3 = {id: 3, name: ' ', email: 'agent3@gorgias.com'}
+
 const defaultState: Partial<RootState> = {
     agents: fromJS({
-        all: [
-            {id: 1, name: 'agent 1', email: 'agent1@gorgias.com'},
-            {id: 2, name: 'agent 2', email: 'agent2@gorgias.com'},
-            {id: 3, name: '', email: 'agent3@gorgias.com'},
-        ],
+        all: [agent1, agent2, agent3],
     }),
     entities: {
         auditLogEvents: {},
@@ -71,21 +72,20 @@ describe('<UserAuditList/>', () => {
     })
 
     it('should fetch events on mount and render a loading spinner', async () => {
-        const {container, getByText} = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditList />
             </Provider>
         )
 
         await waitFor(() => {
-            getByText('Loader')
+            expect(screen.getByText('Loader')).toBeInTheDocument()
             expect(fetchEventsMock).toHaveBeenCalled()
-            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
     it('should render a message to inform the user no events are available', async () => {
-        const {container} = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditList />
             </Provider>
@@ -94,29 +94,33 @@ describe('<UserAuditList/>', () => {
         await act(async () => {
             await flushPromises()
         })
-        expect(container.firstChild).toMatchSnapshot()
+        expect(
+            screen.getByText(
+                'There is no event recorded matching these filters.'
+            )
+        ).toBeInTheDocument()
     })
 
     it('should debounce and re-fetch events on filter update', async () => {
         jest.useFakeTimers()
-        const {getByText} = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditList />
             </Provider>
         )
 
         act(() => {
-            fireEvent.click(getByText('agent 1'))
+            fireEvent.click(screen.getByText('agent 1'))
             jest.advanceTimersByTime(1000)
-            fireEvent.click(getByText('Account created'))
+            fireEvent.click(screen.getByText('Account created'))
             jest.advanceTimersByTime(1000)
-            fireEvent.click(getByText('calendar_today'))
+            fireEvent.click(screen.getByText('calendar_today'))
             jest.advanceTimersByTime(1000)
-            fireEvent.click(getByText('Last 3 days'))
+            fireEvent.click(screen.getByText('Last 3 days'))
             jest.advanceTimersByTime(1000)
         })
 
-        await waitForElementToBeRemoved(() => getByText('Loader'))
+        await waitForElementToBeRemoved(() => screen.getByText('Loader'))
         expect(fetchEventsMock).toHaveBeenCalledTimes(4)
     })
 
@@ -126,13 +130,13 @@ describe('<UserAuditList/>', () => {
                 meta: eventsMetaFixtures,
             },
         } as AxiosResponse<ApiListResponseCursorPagination<Event[]>>)
-        const {container, getByText, rerender} = render(
+        const {container, rerender} = render(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditList />
             </Provider>
         )
 
-        await waitForElementToBeRemoved(() => getByText('Loader'))
+        await waitForElementToBeRemoved(() => screen.getByText('Loader'))
 
         const fetchedEvents: AuditLogEventsState = {}
         eventsFixtures.map((event: Event) => {
@@ -149,6 +153,62 @@ describe('<UserAuditList/>', () => {
                 <UserAuditList />
             </Provider>
         )
+
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should fetch events when navigating to previous and next pages', async () => {
+        jest.useFakeTimers()
+
+        const meta = {
+            prev_cursor: '111',
+            next_cursor: '222',
+        }
+        fetchEventsMock.mockResolvedValueOnce({
+            data: {
+                meta,
+            },
+        } as AxiosResponse<ApiListResponseCursorPagination<Event[]>>)
+        const fetchedEvents: AuditLogEventsState = {}
+        eventsFixtures.map((event: Event) => {
+            fetchedEvents[event.id.toString()] = event
+        })
+
+        render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    entities: {auditLogEvents: fetchedEvents},
+                } as RootState)}
+            >
+                <UserAuditList />
+            </Provider>
+        )
+
+        await waitForElementToBeRemoved(() => screen.getByText('Loader'))
+        fireEvent.click(screen.getByText('keyboard_arrow_right'))
+
+        await act(async () => {
+            await flushPromises()
+        })
+
+        expect(fetchEventsMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                cursor: meta.next_cursor,
+            }),
+            expect.anything()
+        )
+
+        fireEvent.click(screen.getByText('keyboard_arrow_left'))
+        await act(async () => {
+            await flushPromises()
+        })
+
+        expect(fetchEventsMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                cursor: meta.prev_cursor,
+            }),
+            expect.anything()
+        )
     })
 })

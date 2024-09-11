@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import {Container} from 'reactstrap'
 import {Link, NavLink, useParams} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -156,7 +155,7 @@ export default function TicketFields() {
                             {createFieldButton}
                         </div>
                     ) : (
-                        <Container fluid className="p-0">
+                        <div className="p-0">
                             {debouncedSearch && !hasActiveFields ? (
                                 <div className={css.emptyListTextWrapper}>
                                     No results found.
@@ -226,7 +225,7 @@ export default function TicketFields() {
                                     />
                                 </>
                             )}
-                        </Container>
+                        </div>
                     )}
                 </>
             )}

@@ -33,7 +33,7 @@ exports[`<AddTicketField/> should render 1`] = `
     </nav>
   </div>
   <div
-    class="pageContainer container-fluid"
+    class="pageContainer"
   >
     <div
       class="contentWrapper"

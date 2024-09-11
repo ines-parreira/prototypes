@@ -35,7 +35,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
       </nav>
     </div>
     <div
-      class="pageContainer container-fluid"
+      class="pageContainer"
     >
       <div
         class="row mb-5"
@@ -261,7 +261,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
       </nav>
     </div>
     <div
-      class="pageContainer container-fluid"
+      class="pageContainer"
     >
       <div
         class="row mb-5"
@@ -528,7 +528,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
       </nav>
     </div>
     <div
-      class="pageContainer container-fluid"
+      class="pageContainer"
     >
       <div
         class="row mb-5"

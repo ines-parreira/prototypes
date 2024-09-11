@@ -14,7 +14,7 @@ exports[`BusinessHours component should render default values 1`] = `
     </h1>
   </div>
   <div
-    class="pageContainer container-fluid"
+    class="pageContainer"
   >
     <div
       class="body-regular contentWrapper"
@@ -312,7 +312,7 @@ exports[`BusinessHours component should render values from state 1`] = `
     </h1>
   </div>
   <div
-    class="pageContainer container-fluid"
+    class="pageContainer"
   >
     <div
       class="body-regular contentWrapper"

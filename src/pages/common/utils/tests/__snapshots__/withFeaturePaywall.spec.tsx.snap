@@ -18,7 +18,7 @@ exports[`withFeaturePaywall should not render the passed component when the feat
       class="svg pro"
     />
     <div
-      class="page container-fluid"
+      class="page"
     >
       <div
         class="paywallContainer"
@@ -173,7 +173,7 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
       class="svg pro"
     />
     <div
-      class="page container-fluid"
+      class="page"
     >
       <div
         class="paywallContainer"

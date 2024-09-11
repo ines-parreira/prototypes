@@ -4,13 +4,7 @@ import _uniqWith from 'lodash/uniqWith'
 import React, {SyntheticEvent, useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useParams} from 'react-router-dom'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Container,
-    Form,
-    FormGroup,
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Form, FormGroup} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
 import Button from 'pages/common/components/button/Button'
@@ -243,8 +237,7 @@ export function MacrosSettingsFormContainer({
                     </Breadcrumb>
                 }
             />
-            <Container
-                fluid
+            <div
                 className={classnames(css.container, settingsCss.pageContainer)}
             >
                 {isFetchPending ? (
@@ -320,7 +313,7 @@ export function MacrosSettingsFormContainer({
                         </FormGroup>
                     </Form>
                 )}
-            </Container>
+            </div>
         </div>
     )
 }

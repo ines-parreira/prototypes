@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
 import cs from 'classnames'
 import {Link} from 'react-router-dom'
-import {Container} from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -63,7 +62,7 @@ const UserList = () => {
                 </Link>
             </PageHeader>
 
-            <Container fluid className={settingsCss.pageContainer}>
+            <div className={settingsCss.pageContainer}>
                 <p>
                     Create and manage Gorgias users. You can{' '}
                     <strong>
@@ -109,7 +108,7 @@ const UserList = () => {
                     hasNextItems={paginatedAgents.hasNextPage}
                     fetchNextItems={paginatedAgents.fetchNextPage}
                 />
-            </Container>
+            </div>
         </div>
     )
 }

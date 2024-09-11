@@ -15,7 +15,7 @@ exports[`<Access/> should render properly 1`] = `
       </h1>
     </div>
     <div
-      class="pageContainer container-fluid"
+      class="pageContainer"
     >
       <div
         class="contentWrapper"
@@ -241,7 +241,7 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
       </h1>
     </div>
     <div
-      class="pageContainer container-fluid"
+      class="pageContainer"
     >
       <div
         class="contentWrapper"
@@ -470,7 +470,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
       </h1>
     </div>
     <div
-      class="pageContainer container-fluid"
+      class="pageContainer"
     >
       <div
         class="contentWrapper"

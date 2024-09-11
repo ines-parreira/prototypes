@@ -40,7 +40,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
       </a>
     </nav>
     <div
-      class="mainContainer container-fluid"
+      class="mainContainer"
     >
       <div
         class="container"

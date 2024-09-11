@@ -8,7 +8,7 @@ exports[`<Paywall /> should not render the default upgrade CTA if a custom upgra
     class="svg default"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -95,7 +95,7 @@ exports[`<Paywall /> should render a custom upgrade CTA 1`] = `
     class="svg default"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -185,7 +185,7 @@ exports[`<Paywall /> should render a page header with custom header element 1`] 
     class="svg default"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -274,7 +274,7 @@ exports[`<Paywall /> should render a page header with string header 1`] = `
     class="svg default"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -354,7 +354,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Advanced paywa
     class="svg advanced"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -434,7 +434,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Basic paywall 
     class="svg basic"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -514,7 +514,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Default paywal
     class="svg default"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -594,7 +594,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Enterprise pay
     class="svg enterprise"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -674,7 +674,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Pro paywall ty
     class="svg pro"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -754,7 +754,7 @@ exports[`<Paywall /> should render the default upgrade CTA 1`] = `
     class="svg default"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -862,7 +862,7 @@ exports[`<Paywall /> should render with a legacy badge 1`] = `
     class="svg default"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -957,7 +957,7 @@ exports[`<Paywall /> should render with a testimonial 1`] = `
     class="svg default"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -1079,7 +1079,7 @@ exports[`<Paywall /> should render with an add-on update type 1`] = `
     class="svg default"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -1171,7 +1171,7 @@ exports[`<Paywall /> should render with minimal props 1`] = `
     class="svg default"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"
@@ -1251,7 +1251,7 @@ exports[`<Paywall /> should render with modal 1`] = `
     class="svg default"
   />
   <div
-    class="page container-fluid"
+    class="page"
   >
     <div
       class="paywallContainer"

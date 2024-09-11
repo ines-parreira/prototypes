@@ -1,7 +1,6 @@
 import {CancelToken} from 'axios'
 import React, {useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Container} from 'reactstrap'
 import classnames from 'classnames'
 
 import useCancellableRequest from 'hooks/useCancellableRequest'
@@ -133,8 +132,7 @@ export function MacrosSettingsContentContainer({
                     <MacrosCreateDropdown />
                 </div>
             </PageHeader>
-            <Container
-                fluid
+            <div
                 className={classnames(
                     settingsCss.pageContainer,
                     settingsCss.pb0,
@@ -155,7 +153,7 @@ export function MacrosSettingsContentContainer({
                     </div>
                 </div>
                 <Video youtubeId="RevBOdLYeYo" legend="Working with macros" />
-            </Container>
+            </div>
 
             <MacrosSettingsTable
                 isLoading={isFetchPending}

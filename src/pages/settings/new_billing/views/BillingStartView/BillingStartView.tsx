@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {Container} from 'reactstrap'
 import {NavLink, Redirect, Route, Switch} from 'react-router-dom'
 import moment from 'moment'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -408,7 +407,7 @@ const BillingStartView = () => {
                     )}
                 </SecondaryNavbar>
             }
-            <Container fluid className={css.mainContainer}>
+            <div className={css.mainContainer}>
                 {isUsageFetched ? (
                     <Switch>
                         <Route exact path={BILLING_INTERNAL_PATH}>
@@ -490,7 +489,7 @@ const BillingStartView = () => {
                 ) : (
                     <Loader />
                 )}
-            </Container>
+            </div>
             <ContactSupportModal
                 isOpen={isModalOpen}
                 handleOnClose={() => {

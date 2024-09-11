@@ -25,7 +25,7 @@ exports[`<TeamList /> should render with data 1`] = `
     </div>
   </div>
   <div
-    class="pageContainer container-fluid"
+    class="pageContainer"
   >
     <p>
       Create teams of users to define what views they see by default on your account.
@@ -289,45 +289,6 @@ exports[`<TeamList /> should render with data 1`] = `
         </div>
       </div>
     </a>
-  </div>
-</div>
-`;
-
-exports[`<TeamList /> should render without data 1`] = `
-<div
-  class="component full-width"
->
-  <div
-    class="page-header pageHeader"
-  >
-    <h1
-      class="d-flex align-items-center"
-    >
-      Teams
-    </h1>
-    <div>
-      <button
-        aria-disabled="false"
-        class="wrapper fill primary medium"
-        type="button"
-      >
-        <span>
-          Create Team
-        </span>
-      </button>
-    </div>
-  </div>
-  <div
-    class="pageContainer container-fluid"
-  >
-    <p>
-      Create teams of users to define what views they see by default on your account.
-      <span
-        class="d-block"
-      >
-        Your account doesn't have any teams yet.
-      </span>
-    </p>
   </div>
 </div>
 `;

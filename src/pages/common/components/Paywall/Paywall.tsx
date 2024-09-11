@@ -1,4 +1,4 @@
-import {Col, Container, Row} from 'reactstrap'
+import {Col, Row} from 'reactstrap'
 import classnames from 'classnames'
 import Lightbox from 'react-images'
 import React, {isValidElement, ReactNode, useState} from 'react'
@@ -78,7 +78,7 @@ const Paywall = ({
                     )}
                 />
             )}
-            <Container fluid className={classnames(css.page)}>
+            <div className={classnames(css.page)}>
                 <div className={css.paywallContainer}>
                     <Row className="align-items-center mx-0">
                         <Col
@@ -243,7 +243,7 @@ const Paywall = ({
                     />
                 )}
                 {modal}
-            </Container>
+            </div>
         </div>
     )
 }

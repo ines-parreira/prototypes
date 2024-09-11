@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react'
-import {Container} from 'reactstrap'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
@@ -24,12 +23,12 @@ export default function PasswordAnd2FA() {
     return (
         <div className="full-width">
             <PageHeader title={pageHeaderTitle} />
-            <Container fluid className={css.pageContainer}>
+            <div className={css.pageContainer}>
                 <div className={css.contentWrapper}>
                     {hasPassword && <ChangePassword />}
                     <TwoFactorAuthenticationSection />
                 </div>
-            </Container>
+            </div>
         </div>
     )
 }

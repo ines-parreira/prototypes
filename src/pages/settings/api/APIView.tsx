@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Container, FormGroup, Label} from 'reactstrap'
+import {FormGroup, Label} from 'reactstrap'
 import classnames from 'classnames'
 import _camelCase from 'lodash/camelCase'
 import {InputType} from 'reactstrap/es/Input'
@@ -232,7 +232,7 @@ export class APIViewContainer extends Component<Props, State> {
         return (
             <div className="full-width">
                 <PageHeader title="REST API" />
-                <Container fluid className={css.pageContainer}>
+                <div className={css.pageContainer}>
                     <div className={css.contentWrapper}>
                         <div className={classnames('body-regular', css.mb32)}>
                             <p>
@@ -377,7 +377,7 @@ export class APIViewContainer extends Component<Props, State> {
                             Subscribe
                         </Button>
                     </div>
-                </Container>
+                </div>
             </div>
         )
     }

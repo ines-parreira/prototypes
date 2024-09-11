@@ -25,7 +25,7 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
     </div>
   </div>
   <div
-    class="pageContainer pb0 d-flex justify-content-between container-fluid"
+    class="pageContainer pb0 d-flex justify-content-between"
     data-candu-id="setting-macros-description"
   >
     <div

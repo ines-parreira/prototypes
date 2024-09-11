@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import useTitle from 'hooks/useTitle'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -24,11 +24,11 @@ export default function AddTicketField() {
                     </Breadcrumb>
                 }
             />
-            <Container fluid className={css.pageContainer}>
+            <div className={css.pageContainer}>
                 <div className={css.contentWrapper}>
                     <AddFieldForm objectType="Ticket" />
                 </div>
-            </Container>
+            </div>
         </div>
     )
 }

@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
-import {Container, Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import axios, {AxiosError, CancelToken} from 'axios'
 import {Map} from 'immutable'
 import {
@@ -260,7 +260,7 @@ const ManageTags = () => {
                 </div>
             </PageHeader>
 
-            <Container fluid className={settingsCss.pageContainer}>
+            <div className={settingsCss.pageContainer}>
                 <div className={css.description}>
                     <div>
                         <p>
@@ -274,7 +274,7 @@ const ManageTags = () => {
                     </div>
                     <Video youtubeId="MHwrVTk6SNQ" legend="Working with tags" />
                 </div>
-            </Container>
+            </div>
 
             {isLoading ? (
                 <Loader className={css.loader} />

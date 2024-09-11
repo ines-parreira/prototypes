@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import {Form} from 'reactstrap'
 import {fromJS} from 'immutable'
 import {Tooltip} from '@gorgias/ui-kit'
+
 import InputField from 'pages/common/forms/input/InputField'
 import Button from 'pages/common/components/button/Button'
 import useAppDispatch from 'hooks/useAppDispatch'

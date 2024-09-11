@@ -14,7 +14,7 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
     </h1>
   </div>
   <div
-    class="pageContainer container-fluid"
+    class="pageContainer"
   >
     <div
       class="contentWrapper"
@@ -224,7 +224,7 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
     </h1>
   </div>
   <div
-    class="pageContainer container-fluid"
+    class="pageContainer"
   >
     <div
       class="contentWrapper"

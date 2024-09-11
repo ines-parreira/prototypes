@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List} from 'immutable'
 import {Link} from 'react-router-dom'
-import {Col, Container, Form, Label, Row} from 'reactstrap'
+import {Col, Form, Label, Row} from 'reactstrap'
 import classnames from 'classnames'
 
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
@@ -91,7 +91,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
             <div className="full-width">
                 <PageHeader title="Business hours" />
 
-                <Container fluid className={settingsCss.pageContainer}>
+                <div className={settingsCss.pageContainer}>
                     <div
                         className={classnames(
                             'body-regular',
@@ -209,7 +209,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                             </Button>
                         </Form>
                     </div>
-                </Container>
+                </div>
             </div>
         )
     }

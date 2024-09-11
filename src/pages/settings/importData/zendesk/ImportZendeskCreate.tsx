@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 import React, {FormEvent, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Breadcrumb, BreadcrumbItem, Container, Form} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Form} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 import {Tooltip} from '@gorgias/ui-kit'
@@ -73,7 +73,7 @@ export const ImportZendeskCreate = (
                 }
             />
 
-            <Container fluid className={css.pageContainer}>
+            <div className={css.pageContainer}>
                 <div className="col-sm-13 col-md-9 col-lg-6 pl-0 mb-5">
                     <b>Let's connect your account to Gorgias.</b>
                     <br />
@@ -141,7 +141,7 @@ export const ImportZendeskCreate = (
                         Start import
                     </Button>
                 </Form>
-            </Container>
+            </div>
         </div>
     )
 }
