@@ -42,7 +42,7 @@ export enum AgentsTableColumn {
 
 export enum AutoQAMetric {
     ReviewedClosedTickets = 'auto_qa_reviewed_closed_tickets',
-    ResolvedTickets = 'auto_qa_resolved_tickets',
+    ResolutionCompleteness = 'auto_qa_resolution_completeness',
 }
 
 export enum TicketFieldsMetric {

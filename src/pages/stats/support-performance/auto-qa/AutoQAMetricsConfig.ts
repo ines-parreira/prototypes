@@ -1,4 +1,4 @@
-import {useResolvedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useResolvedTicketsTrend'
+import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
 import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import {MetricTrendFormat} from 'pages/stats/common/utils'
@@ -27,15 +27,15 @@ export const TrendCardConfig: Record<
         useTrend: useReviewedClosedTicketsTrend,
         drillDownMetric: AutoQAMetric.ReviewedClosedTickets,
     },
-    [AutoQAMetric.ResolvedTickets]: {
-        title: 'Resolved Tickets',
+    [AutoQAMetric.ResolutionCompleteness]: {
+        title: 'Resolution completeness rate',
         hint: {
-            title: 'Ratio of tickets where the agent addressed ALL the enquiries of the customer. \nThe score (0-1) is computed by AI on closed tickets with at least 1 customer message and 1 agent/rule message.',
+            title: 'Percentage of tickets where the agent addressed ALL customer inquiries. \n\nNote: Only closed tickets with at least 1 customer message and 1 agent/rule message are auto-evaluated for response completeness.',
             link: 'https://link.gorgias.com/e4a',
         },
-        interpretAs: 'less-is-better',
-        metricFormat: 'decimal',
-        useTrend: useResolvedTicketsTrend,
-        drillDownMetric: AutoQAMetric.ResolvedTickets,
+        interpretAs: 'more-is-better',
+        metricFormat: 'percent',
+        useTrend: useResolutionCompletenessTrend,
+        drillDownMetric: AutoQAMetric.ResolutionCompleteness,
     },
 }

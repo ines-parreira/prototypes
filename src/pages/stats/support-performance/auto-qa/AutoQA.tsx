@@ -1,6 +1,5 @@
 import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {ResolvedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ResolvedTicketsTrendCard'
 import {useGridSize} from 'hooks/useGridSize'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
@@ -11,6 +10,7 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {FilterKey} from 'models/stat/types'
+import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 
 export const AUTO_QA_PAGE_TITLE = 'Auto QA'
 
@@ -65,7 +65,7 @@ export default function AutoQA() {
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(6)}>
-                        <ResolvedTicketsTrendCard
+                        <ResolutionCompletenessTrendCard
                             isAnalyticsNewFilters={isAnalyticsNewFilters}
                         />
                     </DashboardGridCell>

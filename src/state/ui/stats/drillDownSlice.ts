@@ -331,8 +331,8 @@ export const getDrillDownMetricColumn = (
         metricTitle = SLA_STATUS_COLUMN_LABEL
         metricValueFormat = SLA_FORMAT
     } else if (
-        metricData.metricName === AutoQAMetric.ResolvedTickets ||
         metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
+        metricData.metricName === AutoQAMetric.ResolutionCompleteness ||
         metricData.metricName === ConvertMetric.CampaignSalesCount ||
         metricData.metricName === VoiceMetric.AverageWaitTime ||
         metricData.metricName === VoiceMetric.AverageTalkTime

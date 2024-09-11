@@ -1,7 +1,5 @@
 import {screen} from '@testing-library/react'
 import React from 'react'
-import {useResolvedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useResolvedTicketsTrend'
-import {ResolvedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ResolvedTicketsTrendCard'
 import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
 import {TREND_BADGE_FORMAT} from 'pages/stats/TrendBadge'
@@ -9,11 +7,17 @@ import {RootState} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {AutoQAMetric} from 'state/ui/stats/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
+import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
+import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 
-jest.mock('hooks/reporting/support-performance/auto-qa/useResolvedTicketsTrend')
-const useResolvedTicketsTrendMock = assumeMock(useResolvedTicketsTrend)
+jest.mock(
+    'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
+)
+const useResolutionCompletenessTrendMock = assumeMock(
+    useResolutionCompletenessTrend
+)
 
-describe('ResolvedTicketsTrendCard', () => {
+describe('ResolutionCompletenessTrendCard', () => {
     const defaultState = {
         stats: {
             filters: {
@@ -31,7 +35,7 @@ describe('ResolvedTicketsTrendCard', () => {
     const prevValue = 10
 
     beforeEach(() => {
-        useResolvedTicketsTrendMock.mockReturnValue({
+        useResolutionCompletenessTrendMock.mockReturnValue({
             isError: false,
             isFetching: false,
             data: {
@@ -41,14 +45,15 @@ describe('ResolvedTicketsTrendCard', () => {
         })
     })
 
-    it('should render ResolvedTicketsTrendCard Trend', () => {
-        renderWithStore(<ResolvedTicketsTrendCard />, defaultState)
+    it('should render ResolutionCompletenessTrendCard Trend', () => {
+        renderWithStore(<ResolutionCompletenessTrendCard />, defaultState)
 
         expect(
             screen.getByText(
                 formatMetricValue(
                     value,
-                    TrendCardConfig[AutoQAMetric.ResolvedTickets].metricFormat
+                    TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
+                        .metricFormat
                 )
             )
         ).toBeInTheDocument()

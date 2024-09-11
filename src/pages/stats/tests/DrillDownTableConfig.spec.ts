@@ -84,7 +84,7 @@ describe('getDrillDownQuery', () => {
     ]
     const autoQAMetrics: DrillDownMetric[] = [
         {
-            metricName: AutoQAMetric.ResolvedTickets,
+            metricName: AutoQAMetric.ResolutionCompleteness,
         },
         {
             metricName: AutoQAMetric.ReviewedClosedTickets,

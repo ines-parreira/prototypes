@@ -1,8 +1,4 @@
 import moment from 'moment'
-import {
-    resolvedTicketsDrillDownQueryFactory,
-    resolvedTicketsQueryFactory,
-} from 'models/reporting/queryFactories/auto-qa/resolvedTicketsQueryFactory'
 import {OrderDirection} from 'models/api/types'
 import {
     TicketQAScoreDimension,
@@ -15,8 +11,12 @@ import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
+import {
+    resolutionCompletenessDrillDownQueryFactory,
+    resolutionCompletenessQueryFactory,
+} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 
-describe('resolvedTicketsQueryFactory', () => {
+describe('resolutionCompletenessQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -29,14 +29,14 @@ describe('resolvedTicketsQueryFactory', () => {
     const sorting = OrderDirection.Desc
 
     it('should produce the query', () => {
-        const query = resolvedTicketsQueryFactory(statsFilters, timezone)
+        const query = resolutionCompletenessQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
             measures: [
-                TicketQAScoreMeasure.TicketCount,
                 TicketQAScoreMeasure.AverageScore,
+                TicketQAScoreMeasure.TicketCount,
             ],
-            dimensions: [],
+            dimensions: [TicketQAScoreDimension.DimensionName],
             segments: [],
             filters: [
                 ...statsFiltersToReportingFilters(
@@ -52,11 +52,6 @@ describe('resolvedTicketsQueryFactory', () => {
                     member: TicketQAScoreDimension.DimensionName,
                     operator: ReportingFilterOperator.Equals,
                     values: ['resolution_completeness'],
-                },
-                {
-                    member: TicketQAScoreDimension.Prediction,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['1'],
                 },
             ],
             timezone,
@@ -64,7 +59,7 @@ describe('resolvedTicketsQueryFactory', () => {
     })
 
     it('should produce the query with sorting', () => {
-        const query = resolvedTicketsQueryFactory(
+        const query = resolutionCompletenessQueryFactory(
             statsFilters,
             timezone,
             sorting
@@ -72,10 +67,10 @@ describe('resolvedTicketsQueryFactory', () => {
 
         expect(query).toEqual({
             measures: [
-                TicketQAScoreMeasure.TicketCount,
                 TicketQAScoreMeasure.AverageScore,
+                TicketQAScoreMeasure.TicketCount,
             ],
-            dimensions: [],
+            dimensions: [TicketQAScoreDimension.DimensionName],
             segments: [],
             filters: [
                 ...statsFiltersToReportingFilters(
@@ -91,11 +86,6 @@ describe('resolvedTicketsQueryFactory', () => {
                     member: TicketQAScoreDimension.DimensionName,
                     operator: ReportingFilterOperator.Equals,
                     values: ['resolution_completeness'],
-                },
-                {
-                    member: TicketQAScoreDimension.Prediction,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['1'],
                 },
             ],
             timezone,
@@ -104,7 +94,7 @@ describe('resolvedTicketsQueryFactory', () => {
     })
 })
 
-describe('resolvedTicketsDrillDownQueryFactory', () => {
+describe('resolutionCompletenessDrillDownQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -117,7 +107,7 @@ describe('resolvedTicketsDrillDownQueryFactory', () => {
     const sorting = OrderDirection.Desc
 
     it('should produce the query', () => {
-        const query = resolvedTicketsDrillDownQueryFactory(
+        const query = resolutionCompletenessDrillDownQueryFactory(
             statsFilters,
             timezone
         )
@@ -141,18 +131,13 @@ describe('resolvedTicketsDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: ['resolution_completeness'],
                 },
-                {
-                    member: TicketQAScoreDimension.Prediction,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['1'],
-                },
             ],
             timezone,
         })
     })
 
     it('should produce the query with sorting', () => {
-        const query = resolvedTicketsDrillDownQueryFactory(
+        const query = resolutionCompletenessDrillDownQueryFactory(
             statsFilters,
             timezone,
             sorting
@@ -176,11 +161,6 @@ describe('resolvedTicketsDrillDownQueryFactory', () => {
                     member: TicketQAScoreDimension.DimensionName,
                     operator: ReportingFilterOperator.Equals,
                     values: ['resolution_completeness'],
-                },
-                {
-                    member: TicketQAScoreDimension.Prediction,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['1'],
                 },
             ],
             timezone,

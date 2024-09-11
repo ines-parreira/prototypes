@@ -1,7 +1,6 @@
 import {screen} from '@testing-library/react'
 import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {ResolvedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ResolvedTicketsTrendCard'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
 import AutoQA, {
     AUTO_QA_PAGE_TITLE,
@@ -9,6 +8,7 @@ import AutoQA, {
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 
 jest.mock('pages/stats/SupportPerformanceFilters', () => ({
     SupportPerformanceFilters: () => <div />,
@@ -22,8 +22,12 @@ jest.mock(
 const NumberOfClosedTicketsReviewedTrendCardMock = assumeMock(
     ReviewedClosedTicketsTrendCard
 )
-jest.mock('pages/stats/support-performance/auto-qa/ResolvedTicketsTrendCard')
-const ResolvedTicketsTrendCardMock = assumeMock(ResolvedTicketsTrendCard)
+jest.mock(
+    'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
+)
+const ResolutionCompletenessTrendCardMock = assumeMock(
+    ResolutionCompletenessTrendCard
+)
 const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 jest.mock('pages/stats/common/filters/FiltersPanel')
 const filtersPanelMock = assumeMock(FiltersPanel)
@@ -33,7 +37,7 @@ describe('AutoQA', () => {
         NumberOfClosedTicketsReviewedTrendCardMock.mockImplementation(() => (
             <div />
         ))
-        ResolvedTicketsTrendCardMock.mockImplementation(() => <div />)
+        ResolutionCompletenessTrendCardMock.mockImplementation(() => <div />)
     })
 
     it('should render page title', () => {
@@ -41,7 +45,7 @@ describe('AutoQA', () => {
 
         expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
         expect(NumberOfClosedTicketsReviewedTrendCardMock).toHaveBeenCalled()
-        expect(ResolvedTicketsTrendCardMock).toHaveBeenCalled()
+        expect(ResolutionCompletenessTrendCardMock).toHaveBeenCalled()
     })
 })
 
@@ -50,7 +54,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         NumberOfClosedTicketsReviewedTrendCardMock.mockImplementation(() => (
             <div />
         ))
-        ResolvedTicketsTrendCardMock.mockImplementation(() => <div />)
+        ResolutionCompletenessTrendCardMock.mockImplementation(() => <div />)
         filtersPanelMock.mockImplementation(() => <div>FiltersHeaderMock</div>)
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
@@ -62,7 +66,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
 
         expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
         expect(NumberOfClosedTicketsReviewedTrendCardMock).toHaveBeenCalled()
-        expect(ResolvedTicketsTrendCardMock).toHaveBeenCalled()
+        expect(ResolutionCompletenessTrendCardMock).toHaveBeenCalled()
         expect(screen.getByText('FiltersHeaderMock')).toBeTruthy()
     })
 })
