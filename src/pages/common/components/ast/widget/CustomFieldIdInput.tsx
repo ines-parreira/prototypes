@@ -2,6 +2,7 @@ import React, {ComponentProps} from 'react'
 
 import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
 import Loader from 'pages/common/components/Loader/Loader'
+
 import CustomFieldInput from './CustomFieldInput'
 
 type Props = Omit<ComponentProps<typeof CustomFieldInput>, 'customField'> & {

@@ -3,6 +3,7 @@ import React, {ComponentProps, useEffect, useMemo} from 'react'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {isCustomFieldAIManagedType} from 'models/customField/types'
 
 type Props = Pick<
     ComponentProps<typeof SelectField>,
@@ -36,6 +37,10 @@ const CustomFieldSelect = ({onChange, viewMode, ...props}: Props) => {
     const customFieldOptions = useMemo(() => {
         return (
             activeCustomFields
+                .filter(
+                    ({managed_type}) =>
+                        !isCustomFieldAIManagedType(managed_type)
+                )
                 .map(({id, label}) => ({
                     value: id,
                     label,

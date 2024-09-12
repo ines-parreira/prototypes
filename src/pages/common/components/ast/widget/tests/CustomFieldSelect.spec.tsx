@@ -1,6 +1,10 @@
 import React from 'react'
 import {screen, render} from '@testing-library/react'
-import {ticketFieldDefinitions} from 'fixtures/customField'
+import {
+    aiManagedTicketInputFieldDefinition,
+    ticketFieldDefinitions,
+    ticketInputFieldDefinition,
+} from 'fixtures/customField'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {assumeMock} from 'utils/testing'
 import CustomFieldSelect from '../CustomFieldSelect'
@@ -58,5 +62,25 @@ describe('<CustomFieldSelect/>', () => {
             />
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should filter out AI managed fields from the list of custom fields', () => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {
+                data: [
+                    ticketInputFieldDefinition,
+                    aiManagedTicketInputFieldDefinition,
+                ],
+            },
+            isLoading: false,
+        } as any)
+
+        render(<CustomFieldSelect onChange={jest.fn()} value={null} />)
+        expect(
+            screen.queryByText(ticketInputFieldDefinition.label)
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText(aiManagedTicketInputFieldDefinition.label)
+        ).not.toBeInTheDocument()
     })
 })
