@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 import React, {useState, useMemo} from 'react'
-import moment from 'moment-timezone'
+import moment, {Moment} from 'moment-timezone'
+import {produce} from 'immer'
 
 import {Label} from '@gorgias/ui-kit'
+
+import useUpdateEffect from 'hooks/useUpdateEffect'
+import useAppSelector from 'hooks/useAppSelector'
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -11,8 +16,12 @@ import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampai
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {DURATION_VALUES} from 'pages/convert/campaigns/constants/scheduleValueLabels'
 import {
+    ScheduleSchema,
+    CustomScheduleSchema,
+} from 'pages/convert/campaigns/types/CampaignSchedule'
+import {
     CampaignScheduleModeEnum,
-    CampaignScheduleTypeValueEnum,
+    CampaignScheduleRuleValueEnum,
 } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import CampaignScheduleSummary from 'pages/convert/campaigns/components/CampaignScheduleSummary'
 import CampaignCustomSchedule from 'pages/convert/campaigns//components/CampaignCustomSchedule'
@@ -25,6 +34,10 @@ import CampaignSchedulePicker from './CampaignSchedulePicker'
 
 import css from './CampaignPublishScheduleStep.less'
 
+const DEFAULT_TIMEZONE = 'UTC'
+// Note: In convert we store all dates in UTC format (without timezone info)
+const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss'
+
 type Props = {
     count: number
     isPristine?: boolean
@@ -32,8 +45,6 @@ type Props = {
     isDisabled?: boolean
     isConvertSubscriber?: boolean
     isLightCampaign?: boolean
-    publishMode: CampaignScheduleModeEnum
-    onPublishModeChange: (value: CampaignScheduleModeEnum) => void
 }
 
 export const CampaignPublishScheduleStep = ({
@@ -43,19 +54,24 @@ export const CampaignPublishScheduleStep = ({
     isDisabled = false,
     isConvertSubscriber = false,
     isLightCampaign = false,
-    publishMode,
-    onPublishModeChange,
 }: Props) => {
-    const {triggers} = useCampaignDetailsContext()
     const {isEditMode} = useCampaignFormContext()
+    const {campaign, updateCampaign, triggers} = useCampaignDetailsContext()
 
-    const [scheduleConfiguration, setScheduleConfiguration] = useState<
-        Record<string, any>
-    >({
-        startDate: moment(),
-        endDate: null,
-        schedule_type: CampaignScheduleTypeValueEnum.AllDay,
-    })
+    const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
+    const timezone = businessHoursSettings?.data?.timezone ?? DEFAULT_TIMEZONE
+
+    const [scheduleInnerConfiguration, setScheduleInnerConfiguration] =
+        useState<ScheduleSchema>({
+            start_datetime:
+                campaign.schedule?.start_datetime ??
+                moment().format(DATETIME_FORMAT),
+            end_datetime: campaign.schedule?.end_datetime ?? null,
+            schedule_rule:
+                campaign.schedule?.schedule_rule ??
+                CampaignScheduleRuleValueEnum.AllDay,
+            custom_schedule: campaign.schedule?.custom_schedule || [],
+        })
 
     const stateProps = useStepState({
         count,
@@ -72,12 +88,80 @@ export const CampaignPublishScheduleStep = ({
         return businessHourTrigger
     }, [triggers])
 
-    const updateScheduleType = (value: any) => {
-        setScheduleConfiguration({
-            ...scheduleConfiguration,
-            schedule_type: value,
+    const updateState = (newValue: ScheduleSchema) => {
+        setScheduleInnerConfiguration(newValue)
+        updateCampaign('schedule', newValue)
+    }
+
+    const updateCustomSchedule = (value: any) => {
+        updateState({
+            ...scheduleInnerConfiguration,
+            custom_schedule: value,
         })
     }
+
+    const updateScheduleRule = (value: any) => {
+        updateState({
+            ...scheduleInnerConfiguration,
+            schedule_rule: value,
+        })
+    }
+
+    const updateDates = ({
+        startDate,
+        endDate,
+    }: {
+        startDate?: Moment
+        endDate?: Moment | null
+    }) => {
+        if (startDate) {
+            updateState(
+                produce(scheduleInnerConfiguration, (draft) => {
+                    draft.start_datetime = startDate
+                        .utc()
+                        .format(DATETIME_FORMAT)
+                    if (
+                        scheduleInnerConfiguration.end_datetime &&
+                        moment(
+                            scheduleInnerConfiguration.end_datetime
+                        ).isBefore(draft.start_datetime)
+                    ) {
+                        draft.end_datetime = null
+                    }
+                })
+            )
+        }
+
+        if (endDate || endDate === null) {
+            updateState({
+                ...scheduleInnerConfiguration,
+                end_datetime:
+                    endDate !== null
+                        ? endDate.utc().format(DATETIME_FORMAT)
+                        : null,
+            })
+        }
+    }
+
+    useUpdateEffect(() => {
+        if (campaign.publish_mode === CampaignScheduleModeEnum.PublishNow) {
+            updateCampaign('schedule', null)
+        } else {
+            updateCampaign('schedule', scheduleInnerConfiguration)
+        }
+    }, [campaign.publish_mode])
+
+    useUpdateEffect(() => {
+        if (
+            scheduleInnerConfiguration.schedule_rule !==
+            CampaignScheduleRuleValueEnum.Custom
+        ) {
+            updateState({
+                ...scheduleInnerConfiguration,
+                custom_schedule: [],
+            })
+        }
+    }, [scheduleInnerConfiguration.schedule_rule])
 
     return (
         <StatefulAccordion
@@ -86,7 +170,7 @@ export const CampaignPublishScheduleStep = ({
             title="Publish your campaign"
         >
             <RadioFieldSet
-                selectedValue={publishMode}
+                selectedValue={campaign.publish_mode as string}
                 options={[
                     {
                         value: CampaignScheduleModeEnum.PublishNow,
@@ -117,44 +201,55 @@ export const CampaignPublishScheduleStep = ({
                         disabled: isLightCampaign || !isConvertSubscriber,
                     },
                 ]}
-                onChange={(value: any) => onPublishModeChange(value)}
+                onChange={(value: any) => updateCampaign('publish_mode', value)}
             />
 
-            {publishMode === CampaignScheduleModeEnum.Schedule && (
+            {campaign.publish_mode === CampaignScheduleModeEnum.Schedule && (
                 <>
                     <div className={css.marginTop}>
                         <CampaignSchedulePicker
-                            scheduleConfiguration={scheduleConfiguration}
-                            onChange={setScheduleConfiguration}
+                            timezone={timezone}
+                            startDate={
+                                scheduleInnerConfiguration.start_datetime
+                            }
+                            endDate={scheduleInnerConfiguration.end_datetime}
+                            onChange={updateDates}
                         />
                     </div>
 
                     <div className={css.marginTop}>
-                        <Label htmlFor="scheduleType" className={css.label}>
+                        <Label htmlFor="schedule-rule" className={css.label}>
                             During
                         </Label>
                         <SelectField
+                            id="schedule-rule"
                             fullWidth
                             showSelectedOption
                             value={
-                                !!businessHourTrigger
+                                (!!businessHourTrigger
                                     ? businessHourTrigger.value
-                                    : scheduleConfiguration.schedule_type
+                                    : campaign.schedule
+                                          ?.schedule_rule) as string
                             }
-                            onChange={updateScheduleType}
+                            onChange={updateScheduleRule}
                             options={DURATION_VALUES}
                             disabled={!!businessHourTrigger}
                         />
                     </div>
 
-                    {scheduleConfiguration.schedule_type ===
-                        CampaignScheduleTypeValueEnum.Custom && (
-                        <CampaignCustomSchedule />
+                    {scheduleInnerConfiguration.schedule_rule ===
+                        CampaignScheduleRuleValueEnum.Custom && (
+                        <CampaignCustomSchedule
+                            customSchedule={
+                                scheduleInnerConfiguration.custom_schedule as CustomScheduleSchema[]
+                            }
+                            onChange={updateCustomSchedule}
+                        />
                     )}
 
                     <div className={css.marginTop}>
                         <CampaignScheduleSummary
-                            scheduleConfiguration={scheduleConfiguration}
+                            scheduleConfiguration={scheduleInnerConfiguration}
                         />
                     </div>
                 </>

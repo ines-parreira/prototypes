@@ -1,41 +1,41 @@
-import React, {useState} from 'react'
+import React from 'react'
+import {produce} from 'immer'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-
+import {CustomScheduleSchema} from 'pages/convert/campaigns/types/CampaignSchedule'
 import CustomScheduleForm from 'pages/convert/campaigns/components/CampaignCustomSchedule/CustomScheduleForm'
 import {
     DEFAULT_SCHEDULE_VALUE,
     MAX_ENTRIES,
 } from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
-import {CustomSchedule} from './types'
 
 import css from './CampaignCustomSchedule.less'
 
 type Props = {
-    onChange?: (data: CustomSchedule[]) => void
+    customSchedule: CustomScheduleSchema[]
+    onChange: (newState: CustomScheduleSchema[]) => void
 }
 
-const CampaignCustomSchedule: React.FC<Props> = ({onChange}) => {
-    const [customSchedule, setCustomSchedule] = useState<CustomSchedule[]>([])
-
-    const handleOnChange =
-        (index: number) => (updatedValue: CustomSchedule) => {
-            const newCustomSchedule = [...customSchedule]
-            newCustomSchedule[index] = updatedValue
-            setCustomSchedule(newCustomSchedule)
-
-            // TODO: Fix when integrating with API
-            onChange?.(newCustomSchedule)
-        }
+const CampaignCustomSchedule: React.FC<Props> = ({
+    customSchedule,
+    onChange,
+}) => {
+    const handleOnChange = (index: number) => (updatedValue: any) => {
+        onChange(
+            produce(customSchedule, (draft) => {
+                draft[index] = updatedValue
+            })
+        )
+    }
 
     const handleOnDelete = (index: number) => {
-        customSchedule.splice(index, 1)
-        setCustomSchedule([...customSchedule])
-
-        // TODO: Fix when integrating with API
-        onChange?.([...customSchedule])
+        onChange(
+            produce(customSchedule, (draft) => {
+                draft.splice(index, 1)
+            })
+        )
     }
 
     const addCustomSchedule = () => {
@@ -43,11 +43,11 @@ const CampaignCustomSchedule: React.FC<Props> = ({onChange}) => {
             return
         }
 
-        const newCustomSchedule = [...customSchedule, DEFAULT_SCHEDULE_VALUE]
-
-        setCustomSchedule(newCustomSchedule)
-        // TODO: Fix when integrating with API
-        onChange?.([...customSchedule])
+        onChange(
+            produce(customSchedule, (draft) => {
+                draft.push(DEFAULT_SCHEDULE_VALUE)
+            })
+        )
     }
 
     return (

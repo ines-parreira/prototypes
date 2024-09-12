@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 
 import {render} from '@testing-library/react'
 
-import {CampaignScheduleTypeValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 
 import {SETTING_TYPE_BUSINESS_HOURS} from 'state/currentAccount/constants'
 import {RootState, StoreDispatch} from 'state/types'
@@ -53,49 +53,49 @@ const renderComponent = (props?: any) => {
 }
 
 describe('<CampaignScheduleSummary />', () => {
-    const mockedStartDate = '2024-09-04'
-    const mockedEndDate = '2024-10-05'
+    const mockedStartDate = '2024-09-04T07:00:00'
+    const mockedEndDate = '2024-10-05T23:59:59'
 
     it.each([
         {
-            schedule_type: CampaignScheduleTypeValueEnum.AllDay,
-            startDate: mockedStartDate,
-            endDate: undefined,
+            schedule_rule: CampaignScheduleRuleValueEnum.AllDay,
+            start_datetime: mockedStartDate,
+            end_datetime: undefined,
         },
         {
-            schedule_type: CampaignScheduleTypeValueEnum.AllDay,
-            startDate: mockedStartDate,
-            endDate: mockedEndDate,
+            schedule_rule: CampaignScheduleRuleValueEnum.AllDay,
+            start_datetime: mockedStartDate,
+            end_datetime: mockedEndDate,
         },
         {
-            schedule_type: CampaignScheduleTypeValueEnum.During,
-            startDate: mockedStartDate,
-            endDate: undefined,
+            schedule_rule: CampaignScheduleRuleValueEnum.During,
+            start_datetime: mockedStartDate,
+            end_datetime: undefined,
         },
         {
-            schedule_type: CampaignScheduleTypeValueEnum.During,
-            startDate: mockedStartDate,
-            endDate: mockedEndDate,
+            schedule_rule: CampaignScheduleRuleValueEnum.During,
+            start_datetime: mockedStartDate,
+            end_datetime: mockedEndDate,
         },
         {
-            schedule_type: CampaignScheduleTypeValueEnum.Outside,
-            startDate: mockedStartDate,
-            endDate: undefined,
+            schedule_rule: CampaignScheduleRuleValueEnum.Outside,
+            start_datetime: mockedStartDate,
+            end_datetime: undefined,
         },
         {
-            schedule_type: CampaignScheduleTypeValueEnum.Outside,
-            startDate: mockedStartDate,
-            endDate: mockedEndDate,
+            schedule_rule: CampaignScheduleRuleValueEnum.Outside,
+            start_datetime: mockedStartDate,
+            end_datetime: mockedEndDate,
         },
         {
-            schedule_type: CampaignScheduleTypeValueEnum.Custom,
-            startDate: mockedStartDate,
-            endDate: undefined,
+            schedule_rule: CampaignScheduleRuleValueEnum.Custom,
+            start_datetime: mockedStartDate,
+            end_datetime: undefined,
         },
         {
-            schedule_type: CampaignScheduleTypeValueEnum.Custom,
-            startDate: mockedStartDate,
-            endDate: mockedEndDate,
+            schedule_rule: CampaignScheduleRuleValueEnum.Custom,
+            start_datetime: mockedStartDate,
+            end_datetime: mockedEndDate,
         },
     ])('renders $schedule_type, $startDate - $endDate', (configuration) => {
         const {getByText, queryByText} = renderComponent({
@@ -105,15 +105,15 @@ describe('<CampaignScheduleSummary />', () => {
         expect(getByText('Wednesday, 4 September 2024')).toBeInTheDocument()
         expect(getByText(/US\/Pacific/)).toBeInTheDocument()
 
-        if (configuration.schedule_type in SCHEDULE_RULE_LABELS) {
+        if (configuration.schedule_rule in SCHEDULE_RULE_LABELS) {
             expect(
-                getByText(SCHEDULE_RULE_LABELS[configuration.schedule_type])
+                getByText(SCHEDULE_RULE_LABELS[configuration.schedule_rule])
             ).toBeInTheDocument()
         }
 
         if (
-            configuration.endDate &&
-            configuration.schedule_type !== CampaignScheduleTypeValueEnum.Custom
+            configuration.end_datetime &&
+            configuration.schedule_rule !== CampaignScheduleRuleValueEnum.Custom
         ) {
             expect(getByText('Saturday, 5 October 2024')).toBeInTheDocument()
         } else {

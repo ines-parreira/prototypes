@@ -1,6 +1,12 @@
 import React from 'react'
-import {RenderResult, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import {
+    RenderResult,
+    render,
+    screen,
+    waitFor,
+    act,
+} from '@testing-library/react'
+import userEvent, {TargetElement} from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 
@@ -20,8 +26,10 @@ import * as isConvertScheduleCampaignEnabled from 'pages/convert/common/hooks/us
 
 import {
     campaign as campaignFixture,
+    campaignSchedule as campaignScheduleFixture,
     campaignProductRecommendationAttachment,
 } from 'fixtures/campaign'
+import {CampaignScheduleModeEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import {toJS} from 'utils'
 import {assumeMock} from 'utils/testing'
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
@@ -112,6 +120,8 @@ const isConvertScheduleCampaignEnabledSpy = jest.spyOn(
 )
 
 describe('<CampaignDetailsForm />', () => {
+    const onUpdateCampaign = jest.fn()
+
     beforeAll(() => {
         useGetOrCreateChannelConnectionMock.mockReturnValue({
             channelConnection: channelConnection,
@@ -130,6 +140,8 @@ describe('<CampaignDetailsForm />', () => {
 
         useGetPreviewProductsMock.mockReturnValue([])
         getNewMessageAttachmentsMock.mockReturnValue(fromJS([]))
+
+        onUpdateCampaign.mockReset()
     })
 
     const defaultProps = {
@@ -140,7 +152,7 @@ describe('<CampaignDetailsForm />', () => {
         isLoading: false,
         createCampaign: jest.fn(),
         duplicateCampaign: jest.fn(),
-        updateCampaign: jest.fn(),
+        updateCampaign: onUpdateCampaign,
         deleteCampaign: jest.fn(),
         backUrl: '/back',
     }
@@ -239,8 +251,10 @@ describe('<CampaignDetailsForm />', () => {
     })
 
     describe('Edit campaign', () => {
+        let result: RenderResult
+
         beforeEach(() => {
-            renderComponent(defaultProps)
+            result = renderComponent(defaultProps)
         })
 
         it('renders all 3 steps', () => {
@@ -251,6 +265,87 @@ describe('<CampaignDetailsForm />', () => {
 
         it('opens the Basics step by default', () => {
             expect(screen.getByText('Add condition')).toBeInTheDocument()
+        })
+
+        it('populate schedule data correctly', () => {
+            isConvertScheduleCampaignEnabledSpy.mockImplementation(() => true)
+
+            const campaignWithSchedule = {
+                ...campaignFixture,
+                schedule: campaignScheduleFixture,
+            } as Campaign
+
+            const props = {
+                ...defaultProps,
+                campaign: campaignWithSchedule,
+                displayScheduleSection: true,
+            }
+
+            result.rerender(
+                <Provider store={mockStore(defaultState)}>
+                    <CampaignDetailsForm {...props} />
+                </Provider>
+            )
+
+            act(() => {
+                userEvent.click(screen.getByText(/Publish your campaign/))
+            })
+
+            const scheduleOption = result.container.querySelector(
+                `#${CampaignScheduleModeEnum.Schedule}`
+            )
+            expect(scheduleOption).toBeChecked()
+        })
+
+        it('updates state on schedule rule change', () => {
+            isConvertScheduleCampaignEnabledSpy.mockImplementation(() => true)
+
+            const campaignWithSchedule = {
+                ...campaignFixture,
+                schedule: campaignScheduleFixture,
+            } as Campaign
+
+            const props = {
+                ...defaultProps,
+                isEditMode: true,
+                campaign: campaignWithSchedule,
+                displayScheduleSection: true,
+            }
+
+            result.rerender(
+                <Provider store={mockStore(defaultState)}>
+                    <CampaignDetailsForm {...props} />
+                </Provider>
+            )
+
+            act(() => {
+                userEvent.click(screen.getByText(/Publish your campaign/))
+            })
+
+            const scheduleOption = result.container.querySelector(
+                `#${CampaignScheduleModeEnum.Schedule}`
+            ) as TargetElement
+
+            act(() => {
+                userEvent.click(scheduleOption)
+            })
+
+            userEvent.click(
+                screen.getByRole('button', {name: 'Update Campaign'})
+            )
+
+            expect(onUpdateCampaign).toHaveBeenCalledTimes(1)
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            expect(toJS(onUpdateCampaign.mock.calls[0][0])).toEqual(
+                expect.objectContaining({
+                    schedule: {
+                        custom_schedule: [],
+                        end_datetime: null,
+                        schedule_rule: 'anytime',
+                        start_datetime: expect.any(String),
+                    },
+                })
+            )
         })
     })
 

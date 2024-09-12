@@ -11,7 +11,7 @@ export const DAYS_OPTIONS = [
 export const DEFAULT_SCHEDULE_VALUE = {
     days: '1',
     from_time: '09:00',
-    to_time: '05:00',
+    to_time: '17:00',
 }
 
 export const MAX_ENTRIES = 7

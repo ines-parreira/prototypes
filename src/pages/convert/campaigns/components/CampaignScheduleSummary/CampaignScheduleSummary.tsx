@@ -2,8 +2,8 @@ import React, {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-
-import {CampaignScheduleTypeValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import {ScheduleSchema} from 'pages/convert/campaigns/types/CampaignSchedule'
+import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import {DateTimeFormatType, DateTimeFormatMapper} from 'constants/datetime'
 import {formatDatetime, Datetime} from 'utils'
 
@@ -12,7 +12,7 @@ import {SCHEDULE_RULE_LABELS} from './constants'
 import css from './CampaignScheduleSummary.less'
 
 type Props = {
-    scheduleConfiguration: Record<string, any>
+    scheduleConfiguration: ScheduleSchema
 }
 
 type TemplateMessageProps = {
@@ -71,23 +71,31 @@ const CampaignScheduleSummary: React.FC<Props> = ({scheduleConfiguration}) => {
         ]
 
     const formattedStartDate = useMemo(() => {
-        return formatDatetime(scheduleConfiguration.startDate, dateLabel)
-    }, [scheduleConfiguration.startDate, dateLabel])
+        return formatDatetime(
+            scheduleConfiguration.start_datetime,
+            dateLabel,
+            timezone
+        )
+    }, [scheduleConfiguration.start_datetime, dateLabel, timezone])
 
     const formattedEndDate = useMemo(() => {
-        if (!scheduleConfiguration.endDate) {
+        if (!scheduleConfiguration.end_datetime) {
             return null
         }
-        return formatDatetime(scheduleConfiguration.endDate, dateLabel)
-    }, [scheduleConfiguration.endDate, dateLabel])
+        return formatDatetime(
+            scheduleConfiguration.end_datetime,
+            dateLabel,
+            timezone
+        )
+    }, [scheduleConfiguration.end_datetime, dateLabel, timezone])
     let message
 
-    if (scheduleConfiguration.schedule_type in SCHEDULE_RULE_LABELS) {
+    if (scheduleConfiguration.schedule_rule in SCHEDULE_RULE_LABELS) {
         message = defaultMessageTemplate({
             startDate: formattedStartDate,
             endDate: formattedEndDate,
             label: SCHEDULE_RULE_LABELS[
-                scheduleConfiguration.schedule_type as string
+                scheduleConfiguration.schedule_rule as string
             ],
             timezone,
         })
@@ -95,8 +103,8 @@ const CampaignScheduleSummary: React.FC<Props> = ({scheduleConfiguration}) => {
 
     // Custom
     if (
-        scheduleConfiguration.schedule_type ===
-        CampaignScheduleTypeValueEnum.Custom
+        scheduleConfiguration.schedule_rule ===
+        CampaignScheduleRuleValueEnum.Custom
     ) {
         message = customMessageTemplate({
             startDate: formattedStartDate,

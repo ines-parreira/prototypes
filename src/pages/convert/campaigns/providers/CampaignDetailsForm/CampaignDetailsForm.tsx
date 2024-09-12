@@ -42,7 +42,10 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
-import {CampaignScheduleModeEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import {
+    CampaignScheduleModeEnum,
+    CampaignScheduleRuleValueEnum,
+} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import {createCampaignPayload} from 'pages/convert/campaigns/utils/createCampaignPayload'
 
 import {useIsConvertScheduleCampaignEnabled} from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
@@ -117,6 +120,13 @@ export type Props = {
     displayScheduleSection?: boolean
 }
 
+const shouldActivateCampaign = (value: string) => {
+    return [
+        CampaignScheduleModeEnum.PublishNow,
+        CampaignScheduleModeEnum.Schedule,
+    ].includes(value as CampaignScheduleModeEnum)
+}
+
 export const CampaignDetailsForm = ({
     agents = [],
     campaign,
@@ -156,10 +166,6 @@ export const CampaignDetailsForm = ({
     >({
         [CampaignStepsKeys.Audience]: false,
     })
-
-    const [publishMode, setPublishMode] = useState(
-        CampaignScheduleModeEnum.PublishNow
-    )
 
     const defaultOpenedStep = useMemo(() => {
         // if initial step is predefinied, use it
@@ -205,6 +211,11 @@ export const CampaignDetailsForm = ({
         variants: campaign?.variants ?? [],
         created_datetime: campaign?.created_datetime ?? null,
         updated_datetime: campaign?.updated_datetime ?? null,
+        // similar behaviour to previous implementation
+        publish_mode: displayScheduleSection
+            ? CampaignScheduleModeEnum.SaveAndPublishLater
+            : undefined,
+        schedule: campaign?.schedule ?? null,
     })
 
     const [isFormLoading, setIsFormLoading] = useState<boolean>(true)
@@ -231,6 +242,23 @@ export const CampaignDetailsForm = ({
                 produce(campaign, (draft) => {
                     if (chatMultiLanguagesEnabled) {
                         draft.language = campaign.language ?? defaultLanguage
+                    }
+
+                    if (displayScheduleSection) {
+                        if (campaign.schedule && campaign.status === 'active') {
+                            draft.publish_mode =
+                                CampaignScheduleModeEnum.Schedule
+                        } else if (
+                            !campaign.schedule &&
+                            campaign.status === 'active'
+                        ) {
+                            draft.publish_mode =
+                                CampaignScheduleModeEnum.PublishNow
+                        } else {
+                            // Default value - similar to previous
+                            draft.publish_mode =
+                                CampaignScheduleModeEnum.SaveAndPublishLater
+                        }
                     }
                 })
             )
@@ -377,6 +405,22 @@ export const CampaignDetailsForm = ({
                     })
                 )
             }
+
+            if (key === 'publish_mode') {
+                setCampaignData(
+                    produce((draft) => {
+                        draft.publish_mode = payload
+                    })
+                )
+            }
+
+            if (key === 'schedule') {
+                setCampaignData(
+                    produce((draft) => {
+                        draft.schedule = payload
+                    })
+                )
+            }
         },
         [agents]
     )
@@ -393,10 +437,11 @@ export const CampaignDetailsForm = ({
             return
         }
 
-        let shouldActivateCampaign = activate
-        if (isConvertScheduleCampaignEnabled) {
-            shouldActivateCampaign =
-                publishMode === CampaignScheduleModeEnum.PublishNow
+        let activateCampaign = activate
+        if (isConvertScheduleCampaignEnabled && displayScheduleSection) {
+            activateCampaign = shouldActivateCampaign(
+                campaignData.publish_mode as string
+            )
         }
 
         setActionInProgress(isEditMode ? 'edit' : 'create')
@@ -411,8 +456,10 @@ export const CampaignDetailsForm = ({
                 shopifyProducts: shopifyProducts,
                 discountOffers: discountOffers,
                 productRecommendations: productRecommendations,
-                isEditMode: isEditMode,
-                isActive: shouldActivateCampaign,
+                // When we display ability to schedule campaign,
+                // we should have ability to decide whether we can activate campaign or not
+                canChangeStatus: displayScheduleSection ? true : !isEditMode,
+                isActive: activateCampaign,
                 canAddUtm: canAddUtm,
                 utmEnabled: appliedUtmEnabled,
                 utmQueryString: appliedUtmQueryString,
@@ -489,7 +536,15 @@ export const CampaignDetailsForm = ({
         }
 
         if (step === CampaignStepsKeys.PublishSchedule) {
-            return publishMode !== null
+            if (
+                campaignData.publish_mode ===
+                    CampaignScheduleModeEnum.Schedule &&
+                campaignData.schedule?.schedule_rule ===
+                    CampaignScheduleRuleValueEnum.Custom
+            ) {
+                return campaignData.schedule.custom_schedule?.length !== 0
+            }
+            return campaignData.publish_mode !== null
         }
     }
 
@@ -497,7 +552,7 @@ export const CampaignDetailsForm = ({
         if (!wizardConfiguration) {
             return false
         }
-        3
+
         return wizardConfiguration?.stepConfiguration
             ? wizardConfiguration?.stepConfiguration[step]?.isDisabled ?? false
             : false
@@ -513,17 +568,13 @@ export const CampaignDetailsForm = ({
         [setFormValidationState]
     )
 
-    const updatePublishMode = useCallback(
-        (value: CampaignScheduleModeEnum) => {
-            setPublishMode(value)
-        },
-        [setPublishMode]
-    )
-
     const isCampaignValid =
         isStepValid(CampaignStepsKeys.Basics) &&
         isStepValid(CampaignStepsKeys.Audience) &&
-        isStepValid(CampaignStepsKeys.Message)
+        isStepValid(CampaignStepsKeys.Message) &&
+        (displayScheduleSection
+            ? isStepValid(CampaignStepsKeys.PublishSchedule)
+            : true)
 
     const avatar: GorgiasChatAvatarSettings = useMemo(
         () => ({
@@ -703,10 +754,6 @@ export const CampaignDetailsForm = ({
                                                     }
                                                     isLightCampaign={
                                                         isLightCampaign
-                                                    }
-                                                    publishMode={publishMode}
-                                                    onPublishModeChange={
-                                                        updatePublishMode
                                                     }
                                                 />
                                             )}

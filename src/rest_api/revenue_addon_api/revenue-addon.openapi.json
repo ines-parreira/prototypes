@@ -420,8 +420,48 @@
         "/assistant/pr": {
             "post": {
                 "tags": ["product-recommendations"],
-                "summary": "Product Recommendations",
+                "summary": "Deprecated Product Recommendations",
                 "operationId": "product_recommendations",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DeprecatedProductRecommendationRequestSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeprecatedProductRecommendationResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": true
+            }
+        },
+        "/assistant/recommend/p": {
+            "post": {
+                "tags": ["product-recommendations"],
+                "summary": "Recommend Products",
+                "operationId": "recommendations_product",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -2659,6 +2699,14 @@
                         "type": "string",
                         "title": "Channel Connection Id"
                     },
+                    "publish_mode": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/CampaignPublishType"
+                            },
+                            {"type": "null"}
+                        ]
+                    },
                     "external_tag_id": {
                         "anyOf": [{"type": "integer"}, {"type": "null"}],
                         "title": "External Tag Id"
@@ -2669,6 +2717,14 @@
                             {"type": "null"}
                         ],
                         "title": "Template Id"
+                    },
+                    "schedule": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/ScheduleRequestSchema"
+                            },
+                            {"type": "null"}
+                        ]
                     },
                     "variants": {
                         "items": {
@@ -2779,6 +2835,14 @@
                         "anyOf": [{"type": "object"}, {"type": "null"}],
                         "title": "Meta"
                     },
+                    "publish_mode": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/CampaignPublishType"
+                            },
+                            {"type": "null"}
+                        ]
+                    },
                     "triggers": {
                         "anyOf": [
                             {
@@ -2790,6 +2854,14 @@
                             {"type": "null"}
                         ],
                         "title": "Triggers"
+                    },
+                    "schedule": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/ScheduleRequestSchema"
+                            },
+                            {"type": "null"}
+                        ]
                     },
                     "variants": {
                         "anyOf": [
@@ -2819,6 +2891,11 @@
                 "type": "object",
                 "title": "CampaignPatchRequestSchema",
                 "description": "Defines the fields that can be patched and accepts any subset of the fields.\nValidates `triggers` and `trigger_rule` fields as required together - it has to be done this way\nas long as the IDs are generated on the frontend.\nSkips advanced validation, it will be handled in PATCH endpoint:\n    see https://fastapi.tiangolo.com/tutorial/body-updates/#partial-updates-with-patch"
+            },
+            "CampaignPublishType": {
+                "type": "string",
+                "enum": ["publish_now", "schedule"],
+                "title": "CampaignPublishType"
             },
             "CampaignResponseSchema": {
                 "properties": {
@@ -2917,6 +2994,14 @@
                         },
                         "type": "array",
                         "title": "Variants"
+                    },
+                    "schedule": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/ScheduleResponseSchema"
+                            },
+                            {"type": "null"}
+                        ]
                     },
                     "is_light": {"type": "boolean", "title": "Is Light"},
                     "created_datetime": {
@@ -3347,6 +3432,67 @@
                 "enum": ["gorgias-convert.com", "gorgias.win"],
                 "title": "CustomDomainZone"
             },
+            "CustomScheduleSchema": {
+                "properties": {
+                    "days": {"type": "string", "title": "Days"},
+                    "from_time": {"type": "string", "title": "From Time"},
+                    "to_time": {"type": "string", "title": "To Time"}
+                },
+                "type": "object",
+                "required": ["days", "from_time", "to_time"],
+                "title": "CustomScheduleSchema"
+            },
+            "DeprecatedProductRecommendationRequestSchema": {
+                "properties": {
+                    "scenario": {"$ref": "#/components/schemas/Scenario"},
+                    "shop_name": {"type": "string", "title": "Shop Name"},
+                    "guest_id": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Guest Id"
+                    },
+                    "session_id": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Session Id"
+                    },
+                    "customer_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Customer Id"
+                    },
+                    "context_items": {
+                        "anyOf": [
+                            {"items": {"type": "string"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "Context Items"
+                    }
+                },
+                "type": "object",
+                "required": ["scenario", "shop_name"],
+                "title": "DeprecatedProductRecommendationRequestSchema"
+            },
+            "DeprecatedProductRecommendationResponseSchema": {
+                "properties": {
+                    "items": {
+                        "items": {
+                            "$ref": "#/components/schemas/DeprecatedRecommendationItemSchema"
+                        },
+                        "type": "array",
+                        "title": "Items"
+                    }
+                },
+                "type": "object",
+                "required": ["items"],
+                "title": "DeprecatedProductRecommendationResponseSchema"
+            },
+            "DeprecatedRecommendationItemSchema": {
+                "properties": {
+                    "item_id": {"type": "string", "title": "Item Id"},
+                    "handle": {"type": "string", "title": "Handle"}
+                },
+                "type": "object",
+                "required": ["item_id", "handle"],
+                "title": "DeprecatedRecommendationItemSchema"
+            },
             "DiscountOfferCreateRequestSchema": {
                 "properties": {
                     "type": {
@@ -3628,7 +3774,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-joaotavares.eu.ngrok.io/loader.js"
+                        "default": "https://bundle-mariuszjanczyn.eu.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",
@@ -3660,46 +3806,88 @@
                 "enum": ["theme_app", "one_click", "manual"],
                 "title": "MethodEnum"
             },
+            "ProductInfoSchema": {
+                "properties": {
+                    "id": {"type": "integer", "title": "Id"},
+                    "title": {"type": "string", "title": "Title"}
+                },
+                "type": "object",
+                "required": ["id", "title"],
+                "title": "ProductInfoSchema"
+            },
+            "ProductOption": {
+                "properties": {
+                    "id": {"type": "integer", "title": "Id"},
+                    "name": {"type": "string", "title": "Name"},
+                    "values": {
+                        "items": {"type": "string"},
+                        "type": "array",
+                        "title": "Values"
+                    }
+                },
+                "type": "object",
+                "required": ["id", "name", "values"],
+                "title": "ProductOption"
+            },
             "ProductRecommendationRequestSchema": {
                 "properties": {
-                    "scenario": {"$ref": "#/components/schemas/Scenario"},
                     "shop_name": {"type": "string", "title": "Shop Name"},
-                    "guest_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "Guest Id"
+                    "widget_app_id": {
+                        "type": "string",
+                        "title": "Widget App Id"
                     },
-                    "session_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "Session Id"
+                    "campaign_id": {"type": "string", "title": "Campaign Id"},
+                    "scenario": {
+                        "$ref": "#/components/schemas/ProductRecommendationScenarioType"
                     },
+                    "guest_id": {"type": "string", "title": "Guest Id"},
                     "customer_id": {
                         "anyOf": [{"type": "integer"}, {"type": "null"}],
                         "title": "Customer Id"
                     },
-                    "context_items": {
+                    "current_product": {
                         "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
+                            {"$ref": "#/components/schemas/ProductInfoSchema"},
                             {"type": "null"}
-                        ],
-                        "title": "Context Items"
+                        ]
+                    },
+                    "visited_products": {
+                        "items": {
+                            "$ref": "#/components/schemas/ProductInfoSchema"
+                        },
+                        "type": "array",
+                        "title": "Visited Products"
+                    },
+                    "cart_products": {
+                        "items": {
+                            "$ref": "#/components/schemas/ProductInfoSchema"
+                        },
+                        "type": "array",
+                        "title": "Cart Products"
                     }
                 },
                 "type": "object",
-                "required": ["scenario", "shop_name"],
+                "required": [
+                    "shop_name",
+                    "widget_app_id",
+                    "campaign_id",
+                    "scenario",
+                    "guest_id",
+                    "visited_products",
+                    "cart_products"
+                ],
                 "title": "ProductRecommendationRequestSchema"
             },
             "ProductRecommendationResponseSchema": {
                 "properties": {
-                    "items": {
-                        "items": {
-                            "$ref": "#/components/schemas/RecommendationItemSchema"
-                        },
+                    "products": {
+                        "items": {"$ref": "#/components/schemas/ProductSchema"},
                         "type": "array",
-                        "title": "Items"
+                        "title": "Products"
                     }
                 },
                 "type": "object",
-                "required": ["items"],
+                "required": ["products"],
                 "title": "ProductRecommendationResponseSchema"
             },
             "ProductRecommendationScenarioType": {
@@ -3712,6 +3900,54 @@
                     "newest"
                 ],
                 "title": "ProductRecommendationScenarioType"
+            },
+            "ProductSchema": {
+                "properties": {
+                    "id": {"type": "integer", "title": "Id"},
+                    "title": {"type": "string", "title": "Title"},
+                    "handle": {"type": "string", "title": "Handle"},
+                    "variants": {
+                        "items": {
+                            "$ref": "#/components/schemas/ProductVariant"
+                        },
+                        "type": "array",
+                        "title": "Variants"
+                    },
+                    "options": {
+                        "items": {"$ref": "#/components/schemas/ProductOption"},
+                        "type": "array",
+                        "title": "Options"
+                    },
+                    "image_url": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Image Url"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "handle",
+                    "variants",
+                    "options",
+                    "image_url"
+                ],
+                "title": "ProductSchema"
+            },
+            "ProductVariant": {
+                "properties": {
+                    "id": {"type": "integer", "title": "Id"},
+                    "title": {"type": "string", "title": "Title"},
+                    "price": {"type": "string", "title": "Price"},
+                    "options": {
+                        "items": {"type": "string"},
+                        "type": "array",
+                        "title": "Options"
+                    }
+                },
+                "type": "object",
+                "required": ["id", "title", "price", "options"],
+                "title": "ProductVariant"
             },
             "PublicABGroupResponseSchema": {
                 "properties": {
@@ -3836,6 +4072,14 @@
                             },
                             {"type": "null"}
                         ]
+                    },
+                    "schedule": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/ScheduleResponseSchema"
+                            },
+                            {"type": "null"}
+                        ]
                     }
                 },
                 "type": "object",
@@ -3907,15 +4151,6 @@
                 "type": "object",
                 "required": ["message_text", "id"],
                 "title": "PublicCampaignVariantResponseSchema"
-            },
-            "RecommendationItemSchema": {
-                "properties": {
-                    "item_id": {"type": "string", "title": "Item Id"},
-                    "handle": {"type": "string", "title": "Handle"}
-                },
-                "type": "object",
-                "required": ["item_id", "handle"],
-                "title": "RecommendationItemSchema"
             },
             "RevealDiscountCodeRequestSchema": {
                 "properties": {
@@ -3990,6 +4225,87 @@
                     "complementary_products_session"
                 ],
                 "title": "Scenario"
+            },
+            "ScheduleRequestSchema": {
+                "properties": {
+                    "start_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Start Datetime"
+                    },
+                    "end_datetime": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "End Datetime"
+                    },
+                    "schedule_rule": {
+                        "$ref": "#/components/schemas/ScheduleRule"
+                    },
+                    "custom_schedule": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/CustomScheduleSchema"
+                                },
+                                "type": "array"
+                            },
+                            {"type": "null"}
+                        ],
+                        "title": "Custom Schedule"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "start_datetime",
+                    "schedule_rule",
+                    "custom_schedule"
+                ],
+                "title": "ScheduleRequestSchema"
+            },
+            "ScheduleResponseSchema": {
+                "properties": {
+                    "start_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Start Datetime"
+                    },
+                    "end_datetime": {
+                        "anyOf": [
+                            {"type": "string", "format": "date-time"},
+                            {"type": "null"}
+                        ],
+                        "title": "End Datetime"
+                    },
+                    "schedule_rule": {
+                        "$ref": "#/components/schemas/ScheduleRule"
+                    },
+                    "custom_schedule": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/CustomScheduleSchema"
+                                },
+                                "type": "array"
+                            },
+                            {"type": "null"}
+                        ],
+                        "title": "Custom Schedule"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "start_datetime",
+                    "schedule_rule",
+                    "custom_schedule"
+                ],
+                "title": "ScheduleResponseSchema"
+            },
+            "ScheduleRule": {
+                "type": "string",
+                "enum": ["anytime", "during", "outside", "custom"],
+                "title": "ScheduleRule"
             },
             "StatusEnum": {
                 "type": "string",

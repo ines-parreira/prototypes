@@ -38,5 +38,6 @@ export const duplicateCampaign = (
         triggers: triggers,
         trigger_rule: createTriggerRule(triggers),
         variants: variants,
+        schedule: null,
     }
 }

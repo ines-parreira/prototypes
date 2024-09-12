@@ -412,6 +412,7 @@ declare namespace Components {
              * Channel Connection Id
              */
             channel_connection_id: string
+            publish_mode?: CampaignPublishType | null
             /**
              * External Tag Id
              */
@@ -420,6 +421,7 @@ declare namespace Components {
              * Template Id
              */
             template_id?: string | null
+            schedule?: ScheduleRequestSchema | null
             /**
              * Variants
              */
@@ -474,10 +476,12 @@ declare namespace Components {
              * Meta
              */
             meta?: {} | null
+            publish_mode?: CampaignPublishType | null
             /**
              * Triggers
              */
             triggers?: CampaignTriggerSchema[] | null
+            schedule?: ScheduleRequestSchema | null
             /**
              * Variants
              */
@@ -491,6 +495,13 @@ declare namespace Components {
              */
             template_id?: string | null
         }
+        /**
+         * CampaignPublishType
+         */
+        export type CampaignPublishType =
+            | 'publish_now'
+            | 'publish_later'
+            | 'schedule'
         /**
          * CampaignResponseSchema
          */
@@ -548,6 +559,7 @@ declare namespace Components {
              * Variants
              */
             variants: CampaignVariantResponseSchema[]
+            schedule?: ScheduleResponseSchema | null
             /**
              * Is Light
              */
@@ -860,6 +872,71 @@ declare namespace Components {
          */
         export type CustomDomainZone = 'gorgias-convert.com' | 'gorgias.win'
         /**
+         * CustomScheduleSchema
+         */
+        export interface CustomScheduleSchema {
+            /**
+             * Days
+             */
+            days: string
+            /**
+             * From Time
+             */
+            from_time: string
+            /**
+             * To Time
+             */
+            to_time: string
+        }
+        /**
+         * DeprecatedProductRecommendationRequestSchema
+         */
+        export interface DeprecatedProductRecommendationRequestSchema {
+            scenario: Scenario
+            /**
+             * Shop Name
+             */
+            shop_name: string
+            /**
+             * Guest Id
+             */
+            guest_id?: string | null
+            /**
+             * Session Id
+             */
+            session_id?: string | null
+            /**
+             * Customer Id
+             */
+            customer_id?: number | null
+            /**
+             * Context Items
+             */
+            context_items?: string[] | null
+        }
+        /**
+         * DeprecatedProductRecommendationResponseSchema
+         */
+        export interface DeprecatedProductRecommendationResponseSchema {
+            /**
+             * Items
+             */
+            items: DeprecatedRecommendationItemSchema[]
+        }
+        /**
+         * DeprecatedRecommendationItemSchema
+         */
+        export interface DeprecatedRecommendationItemSchema {
+            /**
+             * Item Id
+             */
+            item_id: string
+            /**
+             * Handle
+             */
+            handle: string
+        }
+        /**
          * DiscountOfferCreateRequestSchema
          */
         export interface DiscountOfferCreateRequestSchema {
@@ -1105,39 +1182,78 @@ declare namespace Components {
          */
         export type MethodEnum = 'theme_app' | 'one_click' | 'manual'
         /**
+         * ProductInfoSchema
+         */
+        export interface ProductInfoSchema {
+            /**
+             * Id
+             */
+            id: number
+            /**
+             * Title
+             */
+            title: string
+        }
+        /**
+         * ProductOption
+         */
+        export interface ProductOption {
+            /**
+             * Id
+             */
+            id: number
+            /**
+             * Name
+             */
+            name: string
+            /**
+             * Values
+             */
+            values: string[]
+        }
+        /**
          * ProductRecommendationRequestSchema
          */
         export interface ProductRecommendationRequestSchema {
-            scenario: Scenario
             /**
              * Shop Name
              */
             shop_name: string
             /**
+             * Widget App Id
+             */
+            widget_app_id: string
+            /**
+             * Campaign Id
+             */
+            campaign_id: string
+            scenario: ProductRecommendationScenarioType
+            /**
              * Guest Id
              */
-            guest_id?: string | null
-            /**
-             * Session Id
-             */
-            session_id?: string | null
+            guest_id: string
             /**
              * Customer Id
              */
             customer_id?: number | null
+            current_product?: ProductInfoSchema | null
             /**
-             * Context Items
+             * Visited Products
              */
-            context_items?: string[] | null
+            visited_products: ProductInfoSchema[]
+            /**
+             * Cart Products
+             */
+            cart_products: ProductInfoSchema[]
         }
         /**
          * ProductRecommendationResponseSchema
          */
         export interface ProductRecommendationResponseSchema {
             /**
-             * Items
+             * Products
              */
-            items: RecommendationItemSchema[]
+            products: ProductSchema[]
         }
         /**
          * ProductRecommendationScenarioType
@@ -1148,6 +1264,56 @@ declare namespace Components {
             | 'out_of_stock_alternatives'
             | 'best_seller'
             | 'newest'
+        /**
+         * ProductSchema
+         */
+        export interface ProductSchema {
+            /**
+             * Id
+             */
+            id: number
+            /**
+             * Title
+             */
+            title: string
+            /**
+             * Handle
+             */
+            handle: string
+            /**
+             * Variants
+             */
+            variants: ProductVariant[]
+            /**
+             * Options
+             */
+            options: ProductOption[]
+            /**
+             * Image Url
+             */
+            image_url: string | null
+        }
+        /**
+         * ProductVariant
+         */
+        export interface ProductVariant {
+            /**
+             * Id
+             */
+            id: number
+            /**
+             * Title
+             */
+            title: string
+            /**
+             * Price
+             */
+            price: string
+            /**
+             * Options
+             */
+            options: string[]
+        }
         /**
          * PublicABGroupResponseSchema
          */
@@ -1228,6 +1394,7 @@ declare namespace Components {
              */
             variants: PublicCampaignVariantResponseSchema[]
             ab_group?: PublicABGroupResponseSchema | null
+            schedule?: ScheduleResponseSchema | null
         }
         /**
          * PublicCampaignVariantResponseSchema
@@ -1256,19 +1423,6 @@ declare namespace Components {
              * Id
              */
             id: string
-        }
-        /**
-         * RecommendationItemSchema
-         */
-        export interface RecommendationItemSchema {
-            /**
-             * Item Id
-             */
-            item_id: string
-            /**
-             * Handle
-             */
-            handle: string
         }
         /**
          * RevealDiscountCodeRequestSchema
@@ -1345,6 +1499,46 @@ declare namespace Components {
             | 'recommended_for_you_session_cart'
             | 'complementary_products_user'
             | 'complementary_products_session'
+        /**
+         * ScheduleRequestSchema
+         */
+        export interface ScheduleRequestSchema {
+            /**
+             * Start Datetime
+             */
+            start_datetime: string // date-time
+            /**
+             * End Datetime
+             */
+            end_datetime?: string /* date-time */ | null
+            schedule_rule: ScheduleRule
+            /**
+             * Custom Schedule
+             */
+            custom_schedule: CustomScheduleSchema[] | null
+        }
+        /**
+         * ScheduleResponseSchema
+         */
+        export interface ScheduleResponseSchema {
+            /**
+             * Start Datetime
+             */
+            start_datetime: string // date-time
+            /**
+             * End Datetime
+             */
+            end_datetime?: string /* date-time */ | null
+            schedule_rule: ScheduleRule
+            /**
+             * Custom Schedule
+             */
+            custom_schedule: CustomScheduleSchema[] | null
+        }
+        /**
+         * ScheduleRule
+         */
+        export type ScheduleRule = 'anytime' | 'during' | 'outside' | 'custom'
         /**
          * StatusEnum
          */
@@ -2238,6 +2432,15 @@ declare namespace Paths {
     }
     namespace ProductRecommendations {
         export type RequestBody =
+            Components.Schemas.DeprecatedProductRecommendationRequestSchema
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.DeprecatedProductRecommendationResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace RecommendationsProduct {
+        export type RequestBody =
             Components.Schemas.ProductRecommendationRequestSchema
         namespace Responses {
             export type $200 =
@@ -2487,7 +2690,7 @@ export interface OperationMethods {
         | Paths.RevealDiscountCode.Responses.$422
     >
     /**
-     * product_recommendations - Product Recommendations
+     * product_recommendations - Deprecated Product Recommendations
      */
     'product_recommendations'(
         parameters?: Parameters<UnknownParamsObject> | null,
@@ -2496,6 +2699,17 @@ export interface OperationMethods {
     ): OperationResponse<
         | Paths.ProductRecommendations.Responses.$200
         | Paths.ProductRecommendations.Responses.$422
+    >
+    /**
+     * recommendations_product - Recommend Products
+     */
+    'recommendations_product'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.RecommendationsProduct.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.RecommendationsProduct.Responses.$200
+        | Paths.RecommendationsProduct.Responses.$422
     >
     /**
      * get_discount_offers - Get Discount Offers
@@ -3062,7 +3276,7 @@ export interface PathsDictionary {
     }
     ['/assistant/pr']: {
         /**
-         * product_recommendations - Product Recommendations
+         * product_recommendations - Deprecated Product Recommendations
          */
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
@@ -3071,6 +3285,19 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.ProductRecommendations.Responses.$200
             | Paths.ProductRecommendations.Responses.$422
+        >
+    }
+    ['/assistant/recommend/p']: {
+        /**
+         * recommendations_product - Recommend Products
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.RecommendationsProduct.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.RecommendationsProduct.Responses.$200
+            | Paths.RecommendationsProduct.Responses.$422
         >
     }
     ['/discount-offers']: {

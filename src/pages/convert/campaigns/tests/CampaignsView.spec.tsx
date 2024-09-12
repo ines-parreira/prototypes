@@ -356,6 +356,7 @@ describe('<CampaignsView/>', () => {
                     name: `(Copy) ${activeCampaign.name}`,
                     channel_connection_id: channelConnection.id,
                     trigger_rule: `{${mockUlid}}`,
+                    schedule: null,
                     triggers: [
                         {
                             ...activeCampaign.triggers[0],

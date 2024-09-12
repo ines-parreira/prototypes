@@ -1,4 +1,4 @@
-export enum CampaignScheduleTypeValueEnum {
+export enum CampaignScheduleRuleValueEnum {
     During = 'during',
     Outside = 'outside',
     AllDay = 'anytime',
@@ -7,6 +7,6 @@ export enum CampaignScheduleTypeValueEnum {
 
 export enum CampaignScheduleModeEnum {
     PublishNow = 'publish_now',
-    SaveAndPublishLater = 'save_and_publish_later',
+    SaveAndPublishLater = 'publish_later',
     Schedule = 'schedule',
 }

@@ -9,7 +9,9 @@ describe('CampaignSchedulePicker', () => {
     it('renders', () => {
         const {getByText} = render(
             <CampaignSchedulePicker
-                scheduleConfiguration={{}}
+                timezone="UTC"
+                startDate={'2024-09-10'}
+                endDate={null}
                 onChange={jest.fn()}
             />
         )
@@ -18,10 +20,12 @@ describe('CampaignSchedulePicker', () => {
         expect(getByText('To')).toBeInTheDocument()
     })
 
-    it('render notice if not end date is not definied', () => {
+    it('renders notice if not end date is not definied', () => {
         const {getByText} = render(
             <CampaignSchedulePicker
-                scheduleConfiguration={{}}
+                timezone="UTC"
+                startDate={'2024-09-10'}
+                endDate={null}
                 onChange={jest.fn()}
             />
         )
@@ -35,17 +39,19 @@ describe('CampaignSchedulePicker', () => {
 
     it('end date is definied and user can clear it', () => {
         const onChangeSpy = jest.fn()
-        const {getByText, getByDisplayValue} = render(
+        const {getByText, container} = render(
             <CampaignSchedulePicker
-                scheduleConfiguration={{
-                    startDate: '2024-09-09',
-                    endDate: '2024-09-10',
-                }}
+                timezone="UTC"
+                startDate={'2024-09-10'}
+                endDate={'2024-09-10'}
                 onChange={onChangeSpy}
             />
         )
 
-        expect(getByDisplayValue('Sep 10, 2024')).toBeInTheDocument()
+        const input = container.querySelector(
+            'input[name="to"]'
+        ) as HTMLInputElement
+        expect(input.value).toBe('Sep 10, 2024')
         expect(getByText('cancel')).toBeInTheDocument()
 
         userEvent.click(getByText('cancel'))
@@ -62,9 +68,9 @@ describe('CampaignSchedulePicker', () => {
 
         const {getByLabelText, getAllByText, getAllByRole} = render(
             <CampaignSchedulePicker
-                scheduleConfiguration={{
-                    endDate: '2024-09-10',
-                }}
+                timezone="UTC"
+                startDate={'2024-09-10'}
+                endDate={'2024-09-10'}
                 onChange={onChangeSpy}
             />
         )
@@ -85,7 +91,6 @@ describe('CampaignSchedulePicker', () => {
         fireEvent.click(apply)
 
         expect(onChangeSpy).toHaveBeenCalledWith({
-            endDate: '2024-09-10',
             startDate: expect.any(moment),
         })
     })
@@ -95,9 +100,9 @@ describe('CampaignSchedulePicker', () => {
 
         const {getByLabelText, getAllByText, getAllByRole} = render(
             <CampaignSchedulePicker
-                scheduleConfiguration={{
-                    startDate: '2024-09-10',
-                }}
+                timezone="UTC"
+                startDate={'2024-09-10'}
+                endDate={null}
                 onChange={onChangeSpy}
             />
         )
@@ -123,7 +128,6 @@ describe('CampaignSchedulePicker', () => {
         })
 
         expect(onChangeSpy).toHaveBeenCalledWith({
-            startDate: '2024-09-10',
             endDate: expect.any(moment),
         })
     })

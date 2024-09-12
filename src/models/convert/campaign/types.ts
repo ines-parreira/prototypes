@@ -18,6 +18,11 @@ export type CampaignCreatePayload =
 export type CampaignUpdatePayload =
     Components.Schemas.CampaignPatchRequestSchema
 
+export type Schedule = Components.Schemas.ScheduleResponseSchema
+
+export type CampaignScheduleRequestPayload =
+    Components.Schemas.ScheduleRequestSchema
+
 export type CampaignListOptions = {
     channelConnectionId?: string
     channelConnectionExternalIds?: string[]
@@ -38,3 +43,7 @@ export type CampaignPreview = {
 } & Pick<Campaign, 'ab_group'>
 
 export type ABGroup = Components.Schemas.ABGroupResponseSchema
+
+export type CampaignPublishType = 'publish_now' | 'publish_later' | 'schedule'
+
+export type Test = Components.Schemas.CampaignTriggerSchema

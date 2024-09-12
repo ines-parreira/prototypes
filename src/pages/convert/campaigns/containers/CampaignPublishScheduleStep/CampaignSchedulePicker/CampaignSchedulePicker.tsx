@@ -1,5 +1,5 @@
-import React, {useState, MouseEvent} from 'react'
-import moment from 'moment-timezone'
+import React, {useState, MouseEvent, useMemo} from 'react'
+import moment, {Moment} from 'moment-timezone'
 
 import {DateTimeFormatType, DateTimeFormatMapper} from 'constants/datetime'
 import {formatDatetime} from 'utils'
@@ -11,12 +11,22 @@ import DatePicker, {DatePickerProps} from 'pages/common/forms/DatePicker'
 import css from './CampaignSchedulePicker.less'
 
 type Props = {
-    scheduleConfiguration: Record<string, string>
-    onChange: (data: Record<string, any>) => void
+    timezone: string
+    startDate: string
+    endDate?: string | null
+    onChange: ({
+        startDate,
+        endDate,
+    }: {
+        startDate?: Moment
+        endDate?: Moment | null
+    }) => void
 }
 
 const CampaignSchedulePicker: React.FC<Props> = ({
-    scheduleConfiguration,
+    timezone,
+    startDate,
+    endDate,
     onChange,
 }) => {
     const dateLabel =
@@ -29,10 +39,15 @@ const CampaignSchedulePicker: React.FC<Props> = ({
         event.stopPropagation()
 
         onChange({
-            ...scheduleConfiguration,
             endDate: null,
-        } as Record<string, any>)
+        })
     }
+
+    const minDate = useMemo(() => {
+        return moment(
+            moment.utc(startDate).tz(timezone, false).format('YYYY-MM-DD')
+        )
+    }, [startDate, timezone])
 
     const defaultDatePickerProps: Partial<DatePickerProps> = {
         initialSettings: {
@@ -41,22 +56,21 @@ const CampaignSchedulePicker: React.FC<Props> = ({
             showDropdowns: false,
             opens: 'right',
             minDate: moment(),
-            startDate: moment(scheduleConfiguration.startDate),
+            startDate: moment.utc(startDate).tz(timezone),
         },
         showRangesLabel: false,
         shouldShowMonthAndYearDropdowns: false,
         rangeDatesInFooter: false,
         unavailableDateMessage: 'You can select future dates',
+        userTimezone: timezone,
     }
 
     const endDatePickerProps: Partial<DatePickerProps> = {
         ...defaultDatePickerProps,
         initialSettings: {
             ...defaultDatePickerProps.initialSettings,
-            minDate: scheduleConfiguration.startDate ?? null,
-            startDate: moment(
-                scheduleConfiguration.endDate || scheduleConfiguration.startDate
-            ),
+            minDate: minDate,
+            startDate: moment.utc(endDate || startDate).tz(timezone),
         },
     }
 
@@ -68,7 +82,6 @@ const CampaignSchedulePicker: React.FC<Props> = ({
                         {...defaultDatePickerProps}
                         onSubmit={(start) => {
                             onChange({
-                                ...scheduleConfiguration,
                                 startDate: start,
                             })
                         }}
@@ -78,8 +91,9 @@ const CampaignSchedulePicker: React.FC<Props> = ({
                                 label="From"
                                 name="from"
                                 value={formatDatetime(
-                                    scheduleConfiguration.startDate,
-                                    dateLabel
+                                    startDate,
+                                    dateLabel,
+                                    timezone
                                 ).toString()}
                                 prefix={<IconInput icon="calendar_today" />}
                             />
@@ -95,17 +109,18 @@ const CampaignSchedulePicker: React.FC<Props> = ({
                     <InputField
                         label="To"
                         name="to"
-                        value={(scheduleConfiguration.endDate
+                        value={(endDate
                             ? formatDatetime(
-                                  scheduleConfiguration.endDate,
-                                  dateLabel
+                                  endDate,
+                                  dateLabel,
+                                  timezone
                               ).toString()
                             : 'No end date'
                         ).toString()}
                         onFocus={() => setIsCalendarOpen(true)}
                         prefix={<IconInput icon="calendar_today" />}
                         suffix={
-                            scheduleConfiguration.endDate && (
+                            endDate && (
                                 <IconInput
                                     icon="cancel"
                                     className={css.removeDateBtn}
@@ -114,19 +129,18 @@ const CampaignSchedulePicker: React.FC<Props> = ({
                             )
                         }
                     />
-                    {!scheduleConfiguration.endDate && (
+                    {!endDate && (
                         <span>
                             The campaign will run indefinitely if no end date is
                             set.
                         </span>
                     )}
                     <DatePicker
-                        key={scheduleConfiguration.startDate}
+                        key={startDate}
                         {...endDatePickerProps}
                         isOpen={isCalendarOpen}
                         onSubmit={(start, end) => {
                             onChange({
-                                ...scheduleConfiguration,
                                 endDate: end,
                             })
                         }}

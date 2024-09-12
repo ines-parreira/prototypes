@@ -33,6 +33,7 @@ type Props = {
     rangeDatesInFooter?: boolean
     shouldShowMonthAndYearDropdowns?: boolean
     additionalPickerClassName?: string
+    userTimezone?: string | null
 }
 
 export type DatePickerProps = Props & Partial<DateRangeProps>
@@ -62,6 +63,7 @@ export const DatePicker = ({
     rangeDatesInFooter = false,
     shouldShowMonthAndYearDropdowns = true,
     additionalPickerClassName,
+    userTimezone,
 }: DatePickerProps) => {
     const datePickerRef = useRef<DateRangePicker>(null)
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
@@ -69,13 +71,16 @@ export const DatePicker = ({
     const dateRangerPickerElement = useRef<HTMLElement>()
     const [shouldToggle, setShouldToggle] = useState(true)
     const isOpenRef = useRef(isOpen)
-    const timezone = useMemo(
-        () =>
-            moment.isMoment(startDate)
-                ? startDate.tz() || moment().tz()
-                : moment().tz(),
-        [startDate]
-    )
+    const timezone = useMemo(() => {
+        if (userTimezone) {
+            return userTimezone
+        }
+
+        return moment.isMoment(startDate)
+            ? startDate.tz() || moment().tz()
+            : moment().tz()
+    }, [startDate, userTimezone])
+
     const theme = useTheme()
     const themes = theme.split(' ')
 

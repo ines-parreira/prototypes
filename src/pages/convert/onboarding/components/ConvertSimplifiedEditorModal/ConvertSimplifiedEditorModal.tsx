@@ -207,7 +207,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
             discountOffers: discountOffers,
             productRecommendations: productRecommendations,
             isActive: activate,
-            isEditMode: !!campaign?.id,
+            canChangeStatus: !campaign?.id,
             canAddUtm: canAddUtm,
             utmEnabled: appliedUtmEnabled,
             utmQueryString: appliedUtmQueryString,

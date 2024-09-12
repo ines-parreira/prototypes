@@ -25,7 +25,7 @@ type CreateCampaignPayloadType = {
     discountOffers: CampaignDiscountOffer[]
     productRecommendations: CampaignProductRecommendation[]
     shopifyIntegration: Map<any, any>
-    isEditMode: boolean
+    canChangeStatus: boolean
     isActive: boolean
     canAddUtm: boolean
     utmEnabled: boolean
@@ -41,7 +41,7 @@ export const createCampaignPayload = ({
     productRecommendations = [],
     chatMultiLanguagesEnabled = true,
     isConvertSubscriber = false,
-    isEditMode = false,
+    canChangeStatus = false,
     isActive = false,
     canAddUtm = false,
     utmEnabled = true,
@@ -102,7 +102,7 @@ export const createCampaignPayload = ({
             ]
         }
 
-        if (!isEditMode) {
+        if (canChangeStatus) {
             if (!isActive) {
                 draft.status = CampaignStatus.Inactive
             } else {

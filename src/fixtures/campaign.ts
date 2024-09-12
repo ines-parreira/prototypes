@@ -10,9 +10,12 @@ import {
     ProductRecommendationScenario,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import {ScheduleSchema} from 'pages/convert/campaigns/types/CampaignSchedule'
 import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+
 import {Components} from 'rest_api/revenue_addon_api/client.generated'
 
 export const campaignId = 'ee869594-65e2-45a5-a759-a4660c9ce677'
@@ -231,6 +234,13 @@ export const campaignProductRecommendationAttachment = {
         scenario: ProductRecommendationScenario.SimilarSeen,
     },
 } as CampaignProductRecommendation
+
+export const campaignSchedule = {
+    custom_schedule: null,
+    start_datetime: '2024-02-16T09:57:44.284000',
+    end_datetime: null,
+    schedule_rule: CampaignScheduleRuleValueEnum.AllDay,
+} as ScheduleSchema
 
 export const campaignsResponseData: Components.Schemas.CampaignResponseSchema[] =
     [

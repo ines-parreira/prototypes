@@ -283,4 +283,22 @@ describe('DatePicker', () => {
         expect(rangesListElement?.hasAttribute('label')).toBeFalsy()
         expect(rangesListElement?.getAttribute('label')).toBe(null)
     })
+
+    it('shoud respect user timezone', () => {
+        const mockDate = new Date('2024-09-09T23:59:59.000Z')
+        global.Date.now = jest.fn(() => mockDate.getTime())
+        const {getByText} = render(
+            <DatePicker
+                {...minProps}
+                isOpen={true}
+                initialSettings={{showDropdowns: false}}
+                userTimezone={'utc'}
+            >
+                <button>Select a date</button>
+            </DatePicker>
+        )
+
+        expect(getByText('Sep 2024')).toBeTruthy()
+        expect(getByText('Oct 2024')).toBeTruthy()
+    })
 })
