@@ -130,12 +130,19 @@ export function handleDeviceEvents(
     })
 
     device.on(Device.EventName.Error, (error: TwilioError.TwilioError) => {
-        utils.sendTwilioSocketEvent({
-            type: TwilioSocketEventType.DeviceError,
-            data: {
-                error,
-            },
-        })
+        const ignoredWSEventCodes = [
+            TwilioErrorCode.GeneralUnknown,
+            TwilioErrorCode.GeneralConnection,
+        ]
+
+        if (!ignoredWSEventCodes.includes(error.code)) {
+            utils.sendTwilioSocketEvent({
+                type: TwilioSocketEventType.DeviceError,
+                data: {
+                    error,
+                },
+            })
+        }
 
         actions.setError(error)
 

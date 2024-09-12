@@ -325,6 +325,43 @@ describe('handleDeviceEvents', () => {
             })
         })
 
+        it('should not send ws event for Unknown and Connection errors', async () => {
+            const connectionError = {
+                code: TwilioErrorCode.GeneralConnection,
+            }
+            const unknownError = {
+                code: TwilioErrorCode.GeneralUnknown,
+            }
+            const otherError = {
+                code: TwilioErrorCode.ClientBadRequest,
+            }
+            device.emit(Device.EventName.Error, connectionError)
+            device.emit(Device.EventName.Error, unknownError)
+            device.emit(Device.EventName.Error, otherError)
+
+            await waitFor(() => {
+                expect(sendSocketEvent).toHaveBeenCalledWith({
+                    type: TwilioSocketEventType.DeviceError,
+                    data: {
+                        error: otherError,
+                    },
+                })
+            })
+
+            expect(sendSocketEvent).not.toHaveBeenCalledWith({
+                type: TwilioSocketEventType.DeviceError,
+                data: {
+                    error: connectionError,
+                },
+            })
+            expect(sendSocketEvent).not.toHaveBeenCalledWith({
+                type: TwilioSocketEventType.DeviceError,
+                data: {
+                    error: unknownError,
+                },
+            })
+        })
+
         it('should handle Device.EventName.Unregistered event', () => {
             device.emit(Device.EventName.Unregistered)
 
