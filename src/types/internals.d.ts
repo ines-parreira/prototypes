@@ -53,6 +53,7 @@ declare global {
             open: () => void
         }
         DISABLE_ACTIVITY_POLLING: string
+        AUTH_TIME: number | null
         USER_IMPERSONATED: true | null
         SEGMENT_ANALYTICS_USER_ID: string
         GORGIAS_LAUNCHDARKLY_CLIENT_ID: string

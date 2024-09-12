@@ -4,6 +4,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+
+import {useFlag} from 'common/flags'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {AccountSettingType} from 'state/currentAccount/types'
@@ -31,10 +33,17 @@ jest.mock(
     }
 )
 
+jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+const useFlagMock = useFlag as jest.Mock
+
 describe('<TwoFactorAuthenticationSection />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
+
+    beforeAll(() => {
+        useFlagMock.mockReturnValue(false)
+    })
 
     describe('render()', () => {
         it.each([true, false])(
@@ -112,7 +121,6 @@ describe('<TwoFactorAuthenticationSection />', () => {
         )
 
         it('should show the enforcement message', () => {
-            jest.resetAllMocks()
             const store = mockStore({
                 currentAccount: fromJS({
                     settings: [

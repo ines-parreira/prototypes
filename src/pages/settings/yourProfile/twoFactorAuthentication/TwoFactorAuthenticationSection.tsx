@@ -15,6 +15,9 @@ import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthenticati
 import useSearch from 'hooks/useSearch'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {DateAndTimeFormatting} from 'constants/datetime'
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {isRecentLogin} from '../utils'
 import TwoFactorAuthenticationDisableModal from './TwoFactorAuthenticationDisableModal'
 
 export default function TwoFactorAuthenticationSection() {
@@ -26,6 +29,12 @@ export default function TwoFactorAuthenticationSection() {
             enforce_2fa_setup_modal?: string
         }>().enforce_2fa_setup_modal?.toLowerCase() === 'true'
 
+    const requireRecentLogin = useFlag(
+        FeatureFlagKey.Setup2FAWithRecentLoginInsteadOfPassword,
+        false
+    )
+    const requireLogin = requireRecentLogin && !isRecentLogin()
+
     const twoFAEnforcedDatetime = useAppSelector(getTwoFAEnforcedDatetime)
     const is2FAEnforced = useAppSelector(is2FAEnforcedSelector)
     const has2FAEnabled = useAppSelector(has2FaEnabledSelector)
@@ -34,10 +43,12 @@ export default function TwoFactorAuthenticationSection() {
     }, [twoFAEnforcedDatetime, has2FAEnabled])
 
     useEffect(() => {
-        if (shouldEnforce2FASetupModal && !has2FAEnabled) {
+        if (shouldEnforce2FASetupModal && !has2FAEnabled && !requireLogin) {
             setIs2FASetupModalOpen(true)
+        } else if (requireLogin) {
+            setIs2FASetupModalOpen(false)
         }
-    }, [shouldEnforce2FASetupModal, has2FAEnabled])
+    }, [shouldEnforce2FASetupModal, has2FAEnabled, requireLogin])
 
     return (
         <>
