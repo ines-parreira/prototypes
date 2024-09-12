@@ -19,7 +19,7 @@ jest.mock(
 describe('<TicketTag />', () => {
     it('should render the tag', () => {
         const text = 'shipping'
-        const color = '#123456'
+        const color = '#123456' // hsl(210, 65%, 20%)
 
         const {container} = render(
             <TicketTag text={text} decoration={fromJS({color})} />
@@ -28,10 +28,10 @@ describe('<TicketTag />', () => {
 
         expect(tag).toBeInTheDocument()
         expect(container.firstChild).toHaveStyle({
-            color: '#fff',
+            color,
         })
         expect(container.firstChild).toHaveStyle({
-            backgroundColor: color,
+            backgroundColor: 'hsl(210, 65%, 97%)',
         })
     })
 

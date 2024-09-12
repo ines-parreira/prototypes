@@ -129,19 +129,13 @@ const TicketTags = ({
                             <TicketTag
                                 decoration={tag!.get('decoration')}
                                 text={tag!.get('name')}
-                                {...(isDisabled
-                                    ? {}
-                                    : {
-                                          trailIcon: (
-                                              <i className="material-icons">
-                                                  close
-                                              </i>
-                                          ),
-                                          onTrailIconClick: () =>
-                                              removeTag(
-                                                  tag!.get('name') as string
-                                              ),
-                                      })}
+                                {...(!isDisabled && {
+                                    trailIcon: (
+                                        <i className="material-icons">close</i>
+                                    ),
+                                    onTrailIconClick: () =>
+                                        removeTag(tag!.get('name') as string),
+                                })}
                             />
                         </div>
                     ))}

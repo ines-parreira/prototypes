@@ -1,7 +1,6 @@
 import React, {ComponentProps, useContext, useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
-import {parseToHsla, readableColor} from 'color2k'
-import _trim from 'lodash/trim'
+import {parseToHsla} from 'color2k'
 
 import Tag from 'components/Tag'
 import {Theme, ThemeContext} from 'theme'
@@ -21,13 +20,13 @@ const TicketTag = ({text, className, decoration, title, ...props}: Props) => {
         'color'
     ) as string | null
 
-    const color = tagColor && isValidColor(tagColor) ? tagColor : null
+    const color = tagColor && isValidColor(tagColor) ? tagColor.trim() : null
 
     const style = useMemo(() => {
         if (color) {
+            const [hue, saturation] = parseToHsla(color)
+            const backgroundColor = `hsla(${hue}, ${saturation * 100}%,`
             if (context?.theme === Theme.Dark) {
-                const [hue, saturation] = parseToHsla(_trim(color))
-                const backgroundColor = `hsla(${hue}, ${saturation * 100}%,`
                 const textColorDark = getEnoughContrastedColor(
                     color,
                     `${backgroundColor} 10%)`
@@ -39,8 +38,8 @@ const TicketTag = ({text, className, decoration, title, ...props}: Props) => {
                 }
             }
             return {
-                color: readableColor(color.trim()),
-                backgroundColor: color,
+                color,
+                backgroundColor: `${backgroundColor} 97%)`,
             }
         }
         return {}
