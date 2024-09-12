@@ -70,10 +70,7 @@ export const createContextAndSubmitPlaygroundTicket = async (
                 domain: body.domain,
                 messages: body.messages,
                 created_datetime: body.created_datetime,
-                integration: {
-                    id: body.email_integration_id,
-                    address: body.email_integration_address,
-                },
+                channel: body.channel,
             }),
         }
     } else {
@@ -85,6 +82,7 @@ export const createContextAndSubmitPlaygroundTicket = async (
         {
             ...context.data,
             _action_serialized_state: body._action_serialized_state,
+            _playground_options: body._playground_options,
         },
         abortController
     )

@@ -1,8 +1,14 @@
+import {PlaygroundChannels} from 'pages/automate/aiAgent/components/PlaygroundChat/PlaygroundChat.types'
+
 export type CreatePlaygroundMessage = {
     bodyText: string
     fromAgent: boolean
     createdDatetime: string
-    meta: string
+    meta?: Record<string, string>
+}
+
+export type CreatePlaygroundOptions = {
+    shopName: string
 }
 
 export type CreatePlaygroundBody = {
@@ -13,24 +19,26 @@ export type CreatePlaygroundBody = {
     subject: string
     http_integration_id: number
     account_id: number
-    email_integration_id: number
-    email_integration_address: string
-    meta: string
     messages: CreatePlaygroundMessage[]
     created_datetime: string
+    channel: PlaygroundChannels
+    _playground_options: CreatePlaygroundOptions
     // Property for AI Agent to identify actions
     _action_serialized_state?: unknown
+
+    // TODO: Remove in https://linear.app/gorgias/issue/AUTAI-1418/update-mechanism-to-get-customer-data
+    email_integration_id: number
 }
 
 export type MockTicketMessage = {
     attachments: []
     body_html: string
     body_text: string
-    channel: 'email'
     created_datetime: string
     from_agent: boolean
     id: number
     integration_id: number
+    channel: PlaygroundChannels
     sender: {
         firstname: string
         email: string
@@ -55,11 +63,12 @@ export type MockTicketMessage = {
         type: 'email'
     }
     subject: string
-    meta: string
+    meta: Record<string, string>
 }
 
 export type CreatePlaygroundRequest = Omit<CreatePlaygroundBody, 'messages'> & {
     messages: MockTicketMessage[]
+    email_integration_id: number
 }
 
 export type SearchCustomerRequest = {
@@ -70,6 +79,7 @@ export type SearchCustomerRequest = {
 export type AiAgentInput = {
     // Property for AI Agent to identify actions
     _action_serialized_state?: unknown
+    _playground_options?: CreatePlaygroundOptions
     ticket: {
         id: string
         tags: string

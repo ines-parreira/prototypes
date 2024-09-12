@@ -137,17 +137,19 @@ export const usePlaygroundMessages = ({
                 formValues.customerEmail ??
                 CustomerHttpIntegrationDataMock.address
 
+            const emailIntegration = storeData.monitoredEmailIntegrations[0]
+
+            // TODO: Remove in https://linear.app/gorgias/issue/AUTAI-1418/update-mechanism-to-get-customer-data
+            // This should not happen because we check email integration in the parent component
+            if (!emailIntegration && !mockContext) {
+                throw new Error(
+                    'Monitored Email Integration not found in storeConfiguration'
+                )
+            }
+
             try {
                 const abortController = new AbortController()
                 abortControllerRef.current = abortController
-                const emailIntegration = storeData.monitoredEmailIntegrations[0]
-
-                // This should not happen because we check email integration in the parent component
-                if (!emailIntegration) {
-                    throw new Error(
-                        'Monitored Email Integration not found in storeConfiguration'
-                    )
-                }
 
                 const {data: aiAgentResponse} = await submitPlaygroundTicket([
                     {
@@ -156,6 +158,9 @@ export const usePlaygroundMessages = ({
                         customer_email: customerEmail,
                         body_text: formValues.message,
                         created_datetime: newMessage.createdDatetime,
+                        channel,
+                        // TODO: Remove in https://linear.app/gorgias/issue/AUTAI-1418/update-mechanism-to-get-customer-data
+                        email_integration_id: emailIntegration?.id,
                         // TODO: move this logic to the helper
                         messages: newMessages
                             .slice(1) // remove initial message
@@ -167,16 +172,15 @@ export const usePlaygroundMessages = ({
                                         : '',
                                 fromAgent: m.sender === AI_AGENT_SENDER,
                                 createdDatetime: m.createdDatetime,
-                                meta: '',
                             })),
                         subject: formValues.subject ?? '',
                         http_integration_id: httpIntegrationId,
                         account_id: accountId,
-                        meta: '',
-                        email_integration_id: emailIntegration.id,
-                        email_integration_address: emailIntegration.email,
                         _action_serialized_state:
                             actionSerializedStateRef.current,
+                        _playground_options: {
+                            shopName: storeData.storeName,
+                        },
                     },
                     abortController,
                 ])
@@ -198,12 +202,14 @@ export const usePlaygroundMessages = ({
                     })
                 }
 
-                updatedMessages.push({
-                    sender: AI_AGENT_SENDER,
-                    type: MessageType.INTERNAL_NOTE,
-                    message: aiAgentResponse.postProcessing.internalNote,
-                    createdDatetime: new Date().toISOString(),
-                })
+                if (aiAgentResponse.postProcessing.internalNote.length > 0) {
+                    updatedMessages.push({
+                        sender: AI_AGENT_SENDER,
+                        type: MessageType.INTERNAL_NOTE,
+                        message: aiAgentResponse.postProcessing.internalNote,
+                        createdDatetime: new Date().toISOString(),
+                    })
+                }
 
                 // Add a ticket event message if outcome is also validated
                 if (
@@ -251,6 +257,7 @@ export const usePlaygroundMessages = ({
         },
         [
             accountId,
+            channel,
             gorgiasDomain,
             httpIntegrationId,
             messages,

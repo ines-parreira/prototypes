@@ -5,8 +5,11 @@ import {
     MockTicketMessage,
 } from 'models/aiAgentPlayground/types'
 import {CustomerHttpIntegrationDataMock} from '../constants'
+import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.types'
 
 const PLAYGROUND_TICKET_ID = '123'
+const PLAYGROUND_INTEGRATION_ID = -1
+const GREETING_MESSAGE_META = {ai_agent_message_type: 'ai_agent_greeting'}
 
 export type NewCustomerData = {
     body_text: string
@@ -14,35 +17,32 @@ export type NewCustomerData = {
     domain: string
     messages: CreatePlaygroundBody['messages']
     created_datetime: string
-    integration: {
-        id: number
-        address: string
-    }
+    channel: PlaygroundChannels
 }
 
 const createMockTicketMessage = ({
     body_text,
     subject,
     created_datetime,
-    integration_id,
-    integration_address,
     from_agent,
+    channel,
+    meta = {},
 }: {
     body_text: string
     subject: string
     created_datetime: string
-    integration_id: number
-    integration_address: string
     from_agent: boolean
+    channel: PlaygroundChannels
+    meta?: Record<string, string>
 }): MockTicketMessage => ({
     attachments: [],
     body_html: '',
     body_text,
-    channel: 'email',
+    channel,
     created_datetime,
     from_agent,
     id: 233881,
-    integration_id,
+    integration_id: PLAYGROUND_INTEGRATION_ID,
     sender: from_agent
         ? {
               email: 'bot',
@@ -76,14 +76,14 @@ const createMockTicketMessage = ({
               },
         to: [
             {
-                address: integration_address,
+                address: 'playground@gorgias.com',
                 name: '',
             },
         ],
         type: 'email',
     },
     subject,
-    meta: '',
+    meta,
 })
 
 export const createMockHttpIntegrationPayload = ({
@@ -92,15 +92,15 @@ export const createMockHttpIntegrationPayload = ({
     subject,
     domain,
     created_datetime,
-    integration,
+    channel,
 }: NewCustomerData): AiAgentInput => ({
     message: {
         body_text,
-        channel: 'email',
+        channel,
         created_datetime,
         from_agent: false,
         id: '233881',
-        integration_id: integration.id.toString(),
+        integration_id: String(PLAYGROUND_INTEGRATION_ID),
         intents: '[]',
         source: JSON.stringify({
             from: {
@@ -109,7 +109,7 @@ export const createMockHttpIntegrationPayload = ({
             },
             to: [
                 {
-                    address: integration.address,
+                    address: 'playground@gorgias.com',
                     name: '',
                 },
             ],
@@ -122,7 +122,7 @@ export const createMockHttpIntegrationPayload = ({
         account: {
             domain,
         },
-        channel: 'email',
+        channel,
         created_datetime,
         customer: {
             email: CustomerHttpIntegrationDataMock.address,
@@ -140,14 +140,17 @@ export const createMockHttpIntegrationPayload = ({
         },
         id: PLAYGROUND_TICKET_ID,
         messages: JSON.stringify(
-            messages.map((message) =>
+            messages.map((message, index) =>
                 createMockTicketMessage({
                     body_text: message.bodyText,
-                    integration_id: integration.id,
-                    integration_address: integration.address,
                     subject,
                     created_datetime,
                     from_agent: message.fromAgent,
+                    channel,
+                    meta:
+                        channel === 'chat' && index === 0
+                            ? GREETING_MESSAGE_META
+                            : {},
                 })
             )
         ),
@@ -161,14 +164,17 @@ export const createMockClientPayload = ({
     ...body
 }: CreatePlaygroundBody): CreatePlaygroundRequest => ({
     ...body,
-    messages: messages.map((message) =>
-        createMockTicketMessage({
+    messages: messages.map((message, index) => {
+        return createMockTicketMessage({
             body_text: message.bodyText,
             created_datetime: message.createdDatetime.replace('Z', ''),
             subject: body.subject,
             from_agent: message.fromAgent,
-            integration_id: body.email_integration_id,
-            integration_address: body.email_integration_address,
+            channel: body.channel,
+            meta:
+                body.channel === 'chat' && index === 0
+                    ? GREETING_MESSAGE_META
+                    : {},
         })
-    ),
+    }),
 })
