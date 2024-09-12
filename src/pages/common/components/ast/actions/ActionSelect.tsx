@@ -10,7 +10,7 @@ import {
 import {RuleItemActions} from 'pages/settings/rules/types'
 import {RuleOperation} from 'state/rules/types'
 
-import {actionsConfig} from './config'
+import {actionsConfig, isValidActionKey} from './config'
 
 type Props = {
     actions: RuleItemActions
@@ -24,7 +24,9 @@ export default function ActionSelect({actions, parent, rule, value}: Props) {
         actions.modifyCodeAST(parent, value, RuleOperation.Update)
     }
 
-    const label = actionsConfig[value]?.name || value || 'Select action'
+    const label = isValidActionKey(value)
+        ? actionsConfig[value]?.name
+        : 'Select action'
 
     return (
         <UncontrolledButtonDropdown className="ActionSelect">

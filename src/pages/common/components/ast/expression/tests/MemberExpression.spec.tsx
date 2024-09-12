@@ -1,8 +1,9 @@
 import {render, fireEvent} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import React, {ComponentProps} from 'react'
 
 import {rule} from 'fixtures/rule'
+import {IDENTIFIER_VARIABLES_BY_CATEGORY} from 'models/rule/constants'
 import {MemberExpressionContainer} from '../MemberExpression'
 
 describe('<MemberExpression/>', () => {
@@ -111,9 +112,12 @@ describe('<MemberExpression/>', () => {
         const {container, getByText} = render(
             <MemberExpressionContainer {...minProps} />
         )
+        const newValue = 'Shopify Last Order'
 
-        fireEvent.click(getByText('Shopify Last Order'))
-        expect(container.firstChild).toMatchSnapshot()
+        fireEvent.click(getByText(newValue))
+        expect(container.querySelector('.backOption')?.textContent).toContain(
+            newValue
+        )
     })
 
     it('should update the rule on clicking a variable option', () => {
@@ -121,13 +125,30 @@ describe('<MemberExpression/>', () => {
 
         fireEvent.click(getByText('Shopify Last Order'))
         fireEvent.click(getByText('Fulfillment status'))
-        expect(
-            (
-                minProps.actions.modifyCodeAST as jest.MockedFunction<
-                    typeof minProps.actions.modifyCodeAST
-                >
-            ).mock.calls
-        ).toMatchSnapshot()
+        const actionCall = (
+            minProps.actions.modifyCodeAST as jest.MockedFunction<
+                typeof minProps.actions.modifyCodeAST
+            >
+        ).mock.calls[0]
+        expect(actionCall).toHaveLength(3)
+        expect(actionCall[0]).toEqualImmutable(minProps.parent)
+
+        const value = IDENTIFIER_VARIABLES_BY_CATEGORY['shopifyLastOrder']
+            .find(({label}) => label === 'Fulfillment status')
+            ?.value!.split('.')
+            .reverse()
+        const outputContent = (item: Map<any, any>, count: number) => {
+            if (item.get('object')) {
+                expect(item.getIn(['property', 'name'])).toBe(value![count])
+                outputContent(item.get('object'), count + 1)
+            } else {
+                expect(item.get('name')).toBe(value![count])
+            }
+        }
+
+        outputContent(actionCall[1] as Map<any, any>, 0)
+
+        expect(actionCall[2]).toBe('UPDATE')
     })
     it('should exclude quick resppnses from the drop down', () => {
         const {getByText, queryByText} = render(

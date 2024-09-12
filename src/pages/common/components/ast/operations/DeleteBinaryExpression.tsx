@@ -1,8 +1,8 @@
 import React from 'react'
 import {List, Map} from 'immutable'
 
-import {RuleItemActions} from '../../../../settings/rules/types'
-import {RuleOperation} from '../../../../../state/rules/types'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import {RuleOperation} from 'state/rules/types'
 
 type Props = {
     rule: Map<any, any>

@@ -6,7 +6,10 @@ import {ObjectExpressionPropertyKey} from 'state/rules/types'
 import {OBJECT_DEFINITIONS} from 'state/rules/constants'
 import {RuleItemActions} from 'pages/settings/rules/types'
 import Action from 'pages/common/components/ast/actions/Action'
-import {actionsConfig} from 'pages/common/components/ast/actions/config'
+import {
+    actionsConfig,
+    isValidActionKey,
+} from 'pages/common/components/ast/actions/config'
 import DeleteBinaryExpression from 'pages/common/components/ast/operations/DeleteBinaryExpression'
 
 import {getSyntaxTreeLeaves} from 'pages/common/components/ast/utils'
@@ -38,7 +41,6 @@ export default function CallExpression({
     const {Expression} = useRuleContext()
 
     const parentCallee = parent.push('callee')
-
     const isConditionExpression = parent.contains('test')
 
     const isActionExpression =
@@ -50,19 +52,6 @@ export default function CallExpression({
     }
 
     if (isConditionExpression) {
-        let deleteBinaryExpression = ''
-
-        // ensures that the top level "if" statement cannot be deleted
-        if (parent.last() !== 'test') {
-            deleteBinaryExpression = (
-                <DeleteBinaryExpression
-                    parent={parent}
-                    rule={rule}
-                    actions={actions}
-                />
-            ) as any
-        }
-
         const root = List(['definitions'])
         const firstArg = funcArgs[0]
         const secondArg = funcArgs[1]
@@ -122,7 +111,16 @@ export default function CallExpression({
                         leftsiblings={left}
                     />
                 ) : null}
-                {hovered && deleteBinaryExpression}
+                {
+                    // ensures that the top level "if" statement cannot be deleted
+                    hovered && parent.last() !== 'test' && (
+                        <DeleteBinaryExpression
+                            parent={parent}
+                            rule={rule}
+                            actions={actions}
+                        />
+                    )
+                }
             </span>
         )
     }
@@ -144,16 +142,20 @@ export default function CallExpression({
                 depth={depth}
                 properties={actionArguments.properties}
             >
-                <ObjectExpression
-                    properties={actionArguments.properties}
-                    actions={actions}
-                    leftsiblings={actionRootLeftSiblings.push(actionName.value)}
-                    rule={rule}
-                    schemas={schemas}
-                    parent={parent.push('arguments', 1)}
-                    className="ActionWidget"
-                    config={actionsConfig[actionName.value]}
-                />
+                {isValidActionKey(actionName.value) ? (
+                    <ObjectExpression
+                        properties={actionArguments.properties}
+                        actions={actions}
+                        leftsiblings={actionRootLeftSiblings.push(
+                            actionName.value
+                        )}
+                        rule={rule}
+                        schemas={schemas}
+                        parent={parent.push('arguments', 1)}
+                        className="ActionWidget"
+                        config={actionsConfig[actionName.value]}
+                    />
+                ) : null}
             </Action>
         </span>
     )

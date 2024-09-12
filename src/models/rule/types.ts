@@ -182,22 +182,25 @@ export type RuleAction = {
     }
 }
 
-export type ActionType =
-    | 'replyToTicket'
-    | 'sendEmail'
-    | 'addInternalNote'
-    | 'applyMacro'
-    | 'addTags'
-    | 'removeTags'
-    | 'setTags'
-    | 'setSubject'
-    | 'setStatus'
-    | 'snoozeTicket'
-    | 'setAssignee'
-    | 'setTeamAssignee'
-    | 'trashTicket'
-    | 'facebookHideComment'
-    | 'facebookLikeComment'
-    | 'excludeFromAutoMerge'
-    | 'excludeFromCSAT'
-    | 'setCustomFieldValue'
+export const ACTION_TYPES = [
+    'addInternalNote',
+    'addTags',
+    'applyMacro',
+    'excludeFromAutoMerge',
+    'excludeFromCSAT',
+    'facebookHideComment',
+    'facebookLikeComment',
+    'removeTags',
+    'replyToTicket',
+    'sendEmail',
+    'snoozeTicket',
+    'setAssignee',
+    'setCustomFieldValue',
+    'setStatus',
+    'setSubject',
+    'setTags',
+    'setTeamAssignee',
+    'trashTicket',
+] as const
+
+export type ActionType = typeof ACTION_TYPES[number]

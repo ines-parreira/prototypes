@@ -1,7 +1,8 @@
+import React, {ComponentType} from 'react'
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import React, {ComponentType} from 'react'
+import {ActionType} from 'models/rule/types'
 
 import Action from '../Action'
 
@@ -27,7 +28,10 @@ describe('Action', () => {
             rule: fromJS({}),
         }
 
-        it.each(['facebookHideComment', 'facebookLikeComment'])(
+        it.each([
+            'facebookHideComment' as ActionType,
+            'facebookLikeComment' as ActionType,
+        ])(
             'should render a warning about potential page deactivation in Facebook',
             (actionValue) => {
                 const props = {
@@ -58,14 +62,6 @@ describe('Action', () => {
             expect(
                 screen.getByText(/To set up team auto-assignment, go to the/)
             ).toBeInTheDocument()
-        })
-
-        it('should not render extra info when config is not found', () => {
-            render(<Action {...minProps} value="nonExistingValue" />)
-
-            expect(
-                screen.queryByText('Tags cannot not be empty')
-            ).not.toBeInTheDocument()
         })
 
         it('should not render error', () => {

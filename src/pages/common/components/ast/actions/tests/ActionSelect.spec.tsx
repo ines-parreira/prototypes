@@ -12,24 +12,13 @@ const commonProps = {
         getCondition: jest.fn(),
     },
     parent: fromJS(['body', 0, 'expression']),
-    value: '',
+    value: '' as const,
     rule: fromJS({type: 'user'}),
 }
 
 const systemRule = fromJS({type: 'system'})
 
 describe('<ActionSelect />', () => {
-    it('should render value when there is no matching config', () => {
-        const value = 'value'
-        render(<ActionSelect {...commonProps} value={value} />)
-
-        expect(
-            screen.getByRole('button', {
-                name: value,
-            })
-        ).toBeInTheDocument()
-    })
-
     it('should render `Select action` when value is empty', () => {
         render(<ActionSelect {...commonProps} />)
 

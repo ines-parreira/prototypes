@@ -5,6 +5,7 @@ import {templateRegex} from 'pages/common/utils/template'
 import {ManagedRulesSlugs} from 'state/rules/types'
 import {isEmailList, findProperty} from 'utils'
 import {isCustomFieldValueEmpty} from 'utils/customFields'
+import {ACTION_TYPES, ActionType} from 'models/rule/types'
 
 type Email = {
     body_text?: Maybe<string>
@@ -125,57 +126,48 @@ type ValidateFn =
     | typeof validateAssignAgent
     | typeof validateAssignTeam
 
+export type Properties = {
+    hide: boolean
+    name: string
+    placeholder: string
+    required: boolean
+    textField: string
+    uploadType: UploadType
+    validate: typeof validateEmailList
+    widget: string
+}
+
+export type Argument = {
+    subject: Partial<Pick<Properties, 'name' | 'placeholder' | 'widget'>>
+    body_text: Pick<Properties, 'hide'>
+    body_html: Pick<Properties, 'name' | 'textField' | 'widget'> &
+        Partial<Pick<Properties, 'uploadType'>>
+    to: Pick<
+        Properties,
+        'name' | 'placeholder' | 'required' | 'validate' | 'widget'
+    >
+    cc: Pick<Properties, 'name' | 'validate' | 'widget'>
+    bcc: Pick<Properties, 'name' | 'validate' | 'widget'>
+    snooze_timedelta: Pick<Properties, 'widget'>
+    custom_field_id: Pick<Properties, 'widget'>
+    value: Pick<Properties, 'widget'>
+}
+
 export type ActionConfig = {
     type?: string
     compact: boolean
     name: string
-    args?: {
-        subject?: {
-            name?: string
-            widget?: string
-            placeholder?: string
-        }
-        body_text?: {
-            hide: boolean
-        }
-        body_html?: {
-            name: string
-            widget: string
-            textField: string
-            uploadType?: UploadType
-        }
-        to?: {
-            name: string
-            placeholder: string
-            required: boolean
-            widget: string
-            validate: typeof validateEmailList
-        }
-        cc?: {
-            name: string
-            widget: string
-            validate: typeof validateEmailList
-        }
-        bcc?: {
-            name: string
-            widget: string
-            validate: typeof validateEmailList
-        }
-        snooze_timedelta?: {
-            widget?: string
-            validate?: ValidateFn
-        }
-        custom_field_id?: {
-            widget: string
-        }
-        value?: {
-            widget: string
-        }
-    }
+    args?: Partial<Argument>
     validate?: ValidateFn
 }
 
-export const actionsConfig: {[key in string]: ActionConfig} = {
+export function isValidActionKey(
+    value: string
+): value is 'notify' | ActionType {
+    return value === 'notify' || ACTION_TYPES.includes(value as ActionType)
+}
+
+export const actionsConfig: {[key in ActionType | 'notify']: ActionConfig} = {
     notify: {
         type: 'system',
         compact: false,

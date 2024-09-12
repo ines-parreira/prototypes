@@ -32,6 +32,7 @@ describe('<Property />', () => {
                 <Property
                     {...commonProps}
                     config={{
+                        name: '',
                         validate: (__, ___) =>
                             'One or multiple email addresses are invalid',
                     }}
@@ -49,7 +50,7 @@ describe('<Property />', () => {
             <Provider store={mockStore({})}>
                 <Property
                     {...commonProps}
-                    config={{validate: () => undefined}}
+                    config={{name: '', validate: () => undefined}}
                 />
             </Provider>
         )

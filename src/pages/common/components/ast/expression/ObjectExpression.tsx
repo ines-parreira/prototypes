@@ -1,70 +1,71 @@
 import React from 'react'
-import _pick from 'lodash/pick'
 import {Map, List} from 'immutable'
 
-import {RuleItemActions} from '../../../../settings/rules/types'
+import {
+    ActionConfig,
+    Argument,
+} from 'pages/common/components/ast/actions/config'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import {ObjectExpressionProperty} from 'state/rules/types'
+
 import Property from '../Property'
-import {ActionConfig} from '../actions/config'
 
 type Props = {
-    leftsiblings: List<any>
-    parent: List<any>
-    properties: any[]
-    config: ActionConfig
-    rule: Map<any, any>
-    schemas: Map<any, any>
     actions: RuleItemActions
     className?: string
     compact?: boolean
+    config: ActionConfig
+    leftsiblings?: List<any>
+    parent: List<any>
+    properties: ObjectExpressionProperty[]
+    rule: Map<any, any>
+    schemas: Map<any, any>
 }
 
-export default class ObjectExpression extends React.Component<Props> {
-    render() {
-        const {properties, leftsiblings, parent, config} = this.props
+function hasHidden(value?: Record<string, unknown>): value is {hide: boolean} {
+    return !!value && 'hide' in value
+}
 
-        const propertiesComp = properties.map(
-            (
-                property: {
-                    key: {name: keyof typeof config.args}
-                    value: any
-                },
-                idx
-            ) => {
-                let leftsiblings2
-                if (leftsiblings !== undefined) {
-                    leftsiblings2 = leftsiblings.push(property.key.name)
-                }
+export default function ObjectExpression({
+    actions,
+    className,
+    compact,
+    config,
+    leftsiblings,
+    parent,
+    properties,
+    rule,
+    schemas,
+}: Props) {
+    return (
+        <>
+            {properties.map((property, index) => {
+                const args = config.args?.[property.key.name as keyof Argument]
 
-                const parentProperty = parent.push('properties', idx)
-                const argConfig =
-                    config && config.args ? config.args[property.key.name] : {}
-
-                if (argConfig && (argConfig as {hide?: boolean}).hide) {
+                if (hasHidden(args) && args.hide) {
                     return null
                 }
 
-                const propsToPass = _pick(this.props, [
-                    'compact',
-                    'className',
-                    'actions',
-                    'schemas',
-                    'rule',
-                    'properties',
-                ])
-
                 return (
                     <Property
-                        {...propsToPass}
-                        key={idx}
+                        key={index}
+                        className={className}
+                        actions={actions}
+                        compact={compact}
+                        config={args}
+                        leftsiblings={
+                            leftsiblings !== undefined
+                                ? leftsiblings.push(property.key.name)
+                                : undefined
+                        }
+                        parent={parent.push('properties', index)}
+                        properties={properties}
+                        rule={rule}
+                        schemas={schemas}
                         value={property.value}
-                        leftsiblings={leftsiblings2 as List<any>}
-                        parent={parentProperty}
-                        config={argConfig}
                     />
                 )
-            }
-        )
-
-        return propertiesComp
-    }
+            })}
+        </>
+    )
 }

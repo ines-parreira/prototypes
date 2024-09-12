@@ -4,20 +4,24 @@ import {List, Map} from 'immutable'
 
 import Widget from './Widget'
 import Errors from './Errors'
-import {validateEmailList} from './actions/config'
+import {Argument, Properties} from './actions/config'
 
 type Props = {
-    config?: {
-        validate?: typeof validateEmailList
-    }
+    config?: ValueOf<Argument>
     compact?: boolean
     parent: List<any>
     schemas: Map<any, any>
     value: {value?: any}
 }
 
+function hasValidate(
+    value?: Record<string, unknown>
+): value is {validate: Properties['validate']} {
+    return !!value && 'validate' in value
+}
+
 export default function Property({
-    config = {},
+    config,
     compact = false,
     parent,
     schemas,
@@ -29,7 +33,7 @@ export default function Property({
         'actions' | 'className' | 'leftsiblings' | 'properties' | 'rule'
     >) {
     const error = useMemo(
-        () => config.validate?.(value.value, schemas),
+        () => hasValidate(config) && config.validate(value.value, schemas),
         [config, schemas, value.value]
     )
 

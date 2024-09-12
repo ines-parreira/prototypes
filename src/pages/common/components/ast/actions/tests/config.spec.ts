@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable'
 
 import schemasJSON from 'fixtures/openapi.json'
+import {ACTION_TYPES} from 'models/rule/types'
 
 import {
     validateEmailList,
@@ -12,6 +13,7 @@ import {
     validateAssignTeam,
     validateSendEmail,
     validateTags,
+    isValidActionKey,
 } from '../config'
 
 const schemas = fromJS(schemasJSON)
@@ -210,5 +212,19 @@ describe('validateTags', () => {
         expect(validateTags({tags: ''})).toBeTruthy()
         expect(validateTags({})).toBeTruthy()
         expect(validateTags({tags: null})).toBeTruthy()
+    })
+})
+
+describe('isValidActionKey', () => {
+    it('should false', () => {
+        expect(isValidActionKey('')).toBeFalsy()
+        expect(isValidActionKey('hey')).toBeFalsy()
+    })
+
+    it('should return true', () => {
+        ACTION_TYPES.forEach((action) => {
+            expect(isValidActionKey(action)).toBeTruthy()
+        })
+        expect(isValidActionKey('notify')).toBeTruthy()
     })
 })

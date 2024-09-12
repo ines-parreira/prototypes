@@ -17,7 +17,7 @@ import {RuleItemActions} from 'pages/settings/rules/types'
 import ActionSelect from './ActionSelect'
 import ActionWarning from './ActionWarning'
 import css from './Action.less'
-import {actionsConfig} from './config'
+import {actionsConfig, isValidActionKey} from './config'
 
 type Props = {
     actions: RuleItemActions
@@ -29,7 +29,7 @@ type Props = {
     }[]
     rule: Map<any, any>
     schemas?: Map<any, any>
-    value: keyof typeof actionsConfig
+    value: string
 }
 
 export default function Action({
@@ -41,7 +41,7 @@ export default function Action({
     rule,
     value,
 }: PropsWithChildren<Props>) {
-    const config = actionsConfig[value]
+    const config = isValidActionKey(value) ? actionsConfig[value] : null
 
     const values = useMemo(
         () =>
