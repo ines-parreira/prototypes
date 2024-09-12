@@ -16,27 +16,36 @@ exports[`<Preview /> should multiple actions preview 1`] = `
     class="macroData addTagWrapper"
   >
     <strong
-      class="text-muted mr-2"
+      class="text-muted"
     >
       Add tags:
     </strong>
     <div
-      class="badge tag"
-      style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+      class="tag black"
     >
-      refund
+      <span
+        class="text"
+      >
+        refund
+      </span>
     </div>
     <div
-      class="badge tag"
-      style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+      class="tag black"
     >
-      billing
+      <span
+        class="text"
+      >
+        billing
+      </span>
     </div>
     <div
-      class="badge tag"
-      style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+      class="tag black"
     >
-      refund accepted
+      <span
+        class="text"
+      >
+        refund accepted
+      </span>
     </div>
   </div>
   <div
@@ -140,27 +149,36 @@ exports[`<Preview /> should render simple action preview 1`] = `
     class="macroData addTagWrapper"
   >
     <strong
-      class="text-muted mr-2"
+      class="text-muted"
     >
       Add tags:
     </strong>
     <div
-      class="badge tag"
-      style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+      class="tag black"
     >
-      refund
+      <span
+        class="text"
+      >
+        refund
+      </span>
     </div>
     <div
-      class="badge tag"
-      style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+      class="tag black"
     >
-      billing
+      <span
+        class="text"
+      >
+        billing
+      </span>
     </div>
     <div
-      class="badge tag"
-      style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+      class="tag black"
     >
-      refund accepted
+      <span
+        class="text"
+      >
+        refund accepted
+      </span>
     </div>
   </div>
 </div>

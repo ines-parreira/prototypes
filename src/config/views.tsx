@@ -23,6 +23,8 @@ import ticketLanguages from 'config/ticketLanguages'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 
+import css from './views.less'
+
 // Number of maximum recent views we store in the reducer and local storage.
 // View counts will only be calculated periodically for these views.
 export const MAX_RECENT_VIEWS = 8
@@ -429,7 +431,7 @@ export const defaultTicketView = {
             }
             case ViewField.Tags: {
                 return (
-                    <div className="d-flex">
+                    <div className={css.tags}>
                         {(item.get('tags', fromJS([])) as List<any>)
                             .sort(
                                 ((a: Map<any, any>, b: Map<any, any>) =>
@@ -443,9 +445,8 @@ export const defaultTicketView = {
                                     key={tag.get('id')}
                                     decoration={tag.get('decoration')}
                                     title={tag.get('name')}
-                                >
-                                    {tag.get('name')}
-                                </TicketTag>
+                                    text={tag.get('name')}
+                                />
                             ))}
                     </div>
                 )

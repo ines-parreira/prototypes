@@ -13,22 +13,32 @@ exports[`<TagPreviewContainer/> should render tags 1`] = `
     class="propsRowWrapper"
   >
     <div
-      class="badge"
-      style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+      class="tag black"
     >
-      refund
+      <span
+        class="text"
+      >
+        refund
+      </span>
     </div>
     <div
-      class="badge"
-      style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+      class="tag black"
     >
-      billing
+      <span
+        class="text"
+      >
+        billing
+      </span>
     </div>
     <div
-      class="badge"
+      class="tag black"
       style="color: rgb(0, 0, 0); background-color: rgb(222, 222, 222);"
     >
-      refund accepted
+      <span
+        class="text"
+      >
+        refund accepted
+      </span>
     </div>
   </div>
 </div>

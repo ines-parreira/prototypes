@@ -44,11 +44,10 @@ const AIAgentMessageEvents = ({message}: Props) => {
                             {tags.map((tag) => (
                                 <TicketTag
                                     key={tag.id}
+                                    text={tag.name}
                                     decoration={fromJS(tag.decoration)}
                                     className={cssEvent.equalFiller}
-                                >
-                                    {tag.name}
-                                </TicketTag>
+                                />
                             ))}
                             <ByAIAgent />
                         </div>

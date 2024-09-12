@@ -162,10 +162,11 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                             style="order: 1;"
                           >
                             <div
-                              class="badge tagLabel"
-                              style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+                              class="tag black"
                             >
-                              <span>
+                              <span
+                                class="text"
+                              >
                                 auto-close
                               </span>
                             </div>
@@ -402,10 +403,11 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                             style="order: 1;"
                           >
                             <div
-                              class="badge tagLabel"
-                              style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+                              class="tag black"
                             >
-                              <span>
+                              <span
+                                class="text"
+                              >
                                 auto-close
                               </span>
                             </div>

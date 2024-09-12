@@ -214,15 +214,16 @@ export function MacrosSettingsTableContainer({
                         const tagId = `tags-${macroId}`
                         const tag = tags?.length ? (
                             <div className="flex" id={tagId}>
-                                <TicketTag>{tags[0]}</TicketTag>
+                                <TicketTag text={tags[0]} />
                                 {tags.length > 1 && (
                                     <>
                                         <Tooltip target={tagId}>
                                             {tags.join(', ')}
                                         </Tooltip>
-                                        <TicketTag className="text-info">
-                                            +{tags.length - 1}
-                                        </TicketTag>
+                                        <TicketTag
+                                            className="text-info"
+                                            text={`+${tags.length - 1}`}
+                                        />
                                     </>
                                 )}
                             </div>

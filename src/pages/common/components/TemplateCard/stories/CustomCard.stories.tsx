@@ -47,7 +47,7 @@ const storyConfig: Meta = {
             options: ['null', 'TicketTag'],
             mapping: {
                 null: null,
-                TicketTag: <TicketTag>Category</TicketTag>,
+                TicketTag: <TicketTag text="Category" />,
             },
         },
         title: {

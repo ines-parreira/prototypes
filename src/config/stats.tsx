@@ -681,10 +681,9 @@ export const stats = toImmutable<
                 return (
                     <div className="fit-cell">
                         <TicketTag
+                            text={tagName.get('value')}
                             decoration={tagColors.get(tagName.get('value'))}
-                        >
-                            {tagName.get('value')}
-                        </TicketTag>
+                        />
                     </div>
                 )
             },

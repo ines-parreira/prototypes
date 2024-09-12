@@ -375,7 +375,7 @@ export const RenderLabel = ({
 
     switch (field.get('name')) {
         case 'tags':
-            return <TicketTag>{value}</TicketTag>
+            return <TicketTag text={value} />
         case 'created':
         case 'updated':
         case 'last_message':

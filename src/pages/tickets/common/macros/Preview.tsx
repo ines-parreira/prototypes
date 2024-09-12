@@ -185,13 +185,11 @@ class Preview extends Component<Props> {
 
         return (
             <div className={classnames(css.macroData, css.addTagWrapper)}>
-                <strong className="text-muted mr-2">Add tags:</strong>
+                <strong className="text-muted">Add tags:</strong>
                 {(addTagsAction.getIn(['arguments', 'tags'], '') as string)
                     .split(',')
                     .map((tag) => (
-                        <TicketTag key={tag} className={css.tag}>
-                            {tag}
-                        </TicketTag>
+                        <TicketTag text={tag} key={tag} />
                     ))}
             </div>
         )

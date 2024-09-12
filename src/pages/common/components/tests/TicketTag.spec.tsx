@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import {Theme, ThemeContext, useThemeContext} from 'theme'
@@ -16,36 +16,21 @@ jest.mock(
         } as Record<string, any>)
 )
 
-const mockedDefaultColor = '#733326' // hsl(10, 50%, 30%)
-jest.mock(
-    '@gorgias/design-tokens/dist/tokens/color/merchantLight.json',
-    () => ({
-        Light: {
-            Main: {
-                Secondary: {
-                    value: '#733326',
-                },
-            },
-        },
-    })
-)
-
 describe('<TicketTag />', () => {
     it('should render the tag', () => {
-        const label = 'shipping'
+        const text = 'shipping'
         const color = '#123456'
 
-        const {getByText} = render(
-            <TicketTag title="Foo" decoration={fromJS({color})}>
-                {label}
-            </TicketTag>
+        const {container} = render(
+            <TicketTag text={text} decoration={fromJS({color})} />
         )
-        const tag = getByText(label)
+        const tag = screen.getByText(text)
+
         expect(tag).toBeInTheDocument()
-        expect(tag).toHaveStyle({
+        expect(container.firstChild).toHaveStyle({
             color: '#fff',
         })
-        expect(tag).toHaveStyle({
+        expect(container.firstChild).toHaveStyle({
             backgroundColor: color,
         })
     })
@@ -58,41 +43,36 @@ describe('<TicketTag />', () => {
         ).mockReturnValue('#123456')
 
         const label = 'shipping'
-        const color = '#123456' // hsl(210, 65%, 20%)
+        const color = '#123456'
 
-        const {getByText} = render(
+        const {container} = render(
             <ThemeContext.Provider
                 value={
                     {theme: Theme.Dark} as ReturnType<typeof useThemeContext>
                 }
             >
-                <TicketTag title="Foo" decoration={fromJS({color})}>
-                    {label}
-                </TicketTag>
+                <TicketTag text={label} decoration={fromJS({color})} />
             </ThemeContext.Provider>
         )
-        const tag = getByText(label)
-        expect(tag).toHaveStyle({
+
+        expect(screen.getByText(label)).toBeInTheDocument()
+        expect(container.firstChild).toHaveStyle({
             color: '#123456',
         })
-        expect(tag).toHaveStyle({
+        expect(container.firstChild).toHaveStyle({
             backgroundColor: 'hsl(210, 65%, 10%)',
         })
     })
 
-    it('should fallback to default color when tag color is invalid', () => {
+    it('should let color choice be handled by Tag when tag color is invalid', () => {
         const label = 'shipping'
         const color = '#'
 
-        const {getByText} = render(
-            <TicketTag decoration={fromJS({color})}>{label}</TicketTag>
+        const {container} = render(
+            <TicketTag text={label} decoration={fromJS({color})} />
         )
-        const tag = getByText(label)
-        expect(tag).toHaveStyle({
-            color: '#fff',
-        })
-        expect(tag).toHaveStyle({
-            backgroundColor: mockedDefaultColor,
-        })
+
+        expect(container.firstChild).not.toHaveAttribute('style')
+        expect(container.firstChild).toHaveClass('black')
     })
 })

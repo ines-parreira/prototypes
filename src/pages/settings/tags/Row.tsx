@@ -1,4 +1,4 @@
-import React, {FormEvent, useContext, useEffect, useState} from 'react'
+import React, {FormEvent, useEffect, useState} from 'react'
 import {fromJS, Map} from 'immutable'
 import {Form} from 'reactstrap'
 import classNames from 'classnames'
@@ -16,7 +16,6 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import {cancel, edit, remove, save, select} from 'state/tags/actions'
 import {REMOVE_TAG_ERROR} from 'state/tags/constants'
 import {ServerErrorAction} from 'store/middlewares/serverErrorHandler'
-import {ThemeContext} from 'theme'
 
 import css from './Row.less'
 
@@ -27,7 +26,6 @@ type Props = {
 }
 
 export default function Row({meta, refresh, row}: Props) {
-    const themeContext = useContext(ThemeContext)
     const dispatch = useAppDispatch()
 
     const [decoration, setDecoration] = useState<TagDecoration>({color: ''})
@@ -52,10 +50,7 @@ export default function Row({meta, refresh, row}: Props) {
         event.preventDefault()
 
         const decorationValue = {
-            color:
-                (decoration.color ||
-                    themeContext?.colorTokens?.Main.Secondary.value) ??
-                colors['🖥 Modern'].Main.Secondary.value,
+            color: decoration.color || colors['🤍 Light'].Neutral.Grey_3.value,
         }
 
         if (!decoration.color) {
@@ -122,10 +117,7 @@ export default function Row({meta, refresh, row}: Props) {
                     <ColorPicker
                         className={css.colorPicker}
                         value={decoration.color}
-                        defaultValue={
-                            themeContext?.colorTokens?.Main.Secondary.value ??
-                            colors['🖥 Modern'].Main.Secondary.value
-                        }
+                        defaultValue={colors['🤍 Light'].Neutral.Grey_3.value}
                         onChange={changeColor}
                     />
                     <Button intent="secondary" onClick={onCancel}>
@@ -150,9 +142,10 @@ export default function Row({meta, refresh, row}: Props) {
 
             <td>
                 <div className="cell-wrapper">
-                    <TicketTag decoration={fromJS(row.decoration)}>
-                        {row.name}
-                    </TicketTag>
+                    <TicketTag
+                        text={row.name}
+                        decoration={fromJS(row.decoration)}
+                    />
                 </div>
             </td>
 

@@ -9,7 +9,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationById} from 'state/integrations/selectors'
 import {toJS} from 'utils'
 
-import Tag from 'pages/common/components/Tag/Tag'
+import Tag from 'components/Tag'
 import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
 
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'

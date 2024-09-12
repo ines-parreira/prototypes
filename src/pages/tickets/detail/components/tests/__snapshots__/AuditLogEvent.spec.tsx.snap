@@ -872,10 +872,13 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
         Tagged
       </span>
       <div
-        class="badge equalFiller"
-        style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+        class="tag black equalFiller"
       >
-        tag-1
+        <span
+          class="text"
+        >
+          tag-1
+        </span>
       </div>
       <span
         class="filler"
@@ -930,16 +933,22 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
         Tagged
       </span>
       <div
-        class="badge equalFiller"
-        style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+        class="tag black equalFiller"
       >
-        tag-1
+        <span
+          class="text"
+        >
+          tag-1
+        </span>
       </div>
       <div
-        class="badge equalFiller"
-        style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+        class="tag black equalFiller"
       >
-        tag-2
+        <span
+          class="text"
+        >
+          tag-2
+        </span>
       </div>
       <span
         class="filler"
@@ -994,10 +1003,13 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
         Untagged
       </span>
       <div
-        class="badge equalFiller"
-        style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+        class="tag black equalFiller"
       >
-        tag-1
+        <span
+          class="text"
+        >
+          tag-1
+        </span>
       </div>
       <span
         class="filler"
@@ -1052,16 +1064,22 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
         Untagged
       </span>
       <div
-        class="badge equalFiller"
-        style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+        class="tag black equalFiller"
       >
-        tag-1
+        <span
+          class="text"
+        >
+          tag-1
+        </span>
       </div>
       <div
-        class="badge equalFiller"
-        style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+        class="tag black equalFiller"
       >
-        tag-2
+        <span
+          class="text"
+        >
+          tag-2
+        </span>
       </div>
       <span
         class="filler"

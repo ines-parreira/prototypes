@@ -159,20 +159,25 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
               id="tags-1"
             >
               <div
-                class="badge"
-                style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+                class="tag black"
               >
-                refund
+                <span
+                  class="text"
+                >
+                  refund
+                </span>
               </div>
               <div>
                 Tooltip
               </div>
               <div
-                class="badge text-info"
-                style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+                class="tag black text-info"
               >
-                +
-                1
+                <span
+                  class="text"
+                >
+                  +1
+                </span>
               </div>
             </div>
           </div>
@@ -285,10 +290,13 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
               id="tags-2"
             >
               <div
-                class="badge"
-                style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+                class="tag black"
               >
-                rejectedTag
+                <span
+                  class="text"
+                >
+                  rejectedTag
+                </span>
               </div>
             </div>
           </div>

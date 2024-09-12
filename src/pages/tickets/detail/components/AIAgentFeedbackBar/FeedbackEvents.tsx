@@ -79,11 +79,9 @@ const FeedbackEvents: React.FC<Props> = ({messages, shopType, shopName}) => {
                                 {event.tags.map((tag) => (
                                     <TicketTag
                                         key={tag.id}
+                                        text={tag.name}
                                         decoration={fromJS(tag.decoration)}
-                                        className={css.tag}
-                                    >
-                                        {tag.name}
-                                    </TicketTag>
+                                    />
                                 ))}
                             </TicketEvent>
                         </div>

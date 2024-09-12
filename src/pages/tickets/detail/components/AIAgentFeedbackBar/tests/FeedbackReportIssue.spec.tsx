@@ -1,14 +1,13 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 
+import {logEventWithSampling} from 'common/segment/segment'
+import {SegmentEvent} from 'common/segment'
 import {
     ReportIssueLabels,
     ReportIssueOption,
 } from 'models/aiAgentFeedback/constants'
-
-import {logEventWithSampling} from 'common/segment/segment'
 import {assumeMock} from 'utils/testing'
-import {SegmentEvent} from 'common/segment'
 import FeedbackReportIssue from '../FeedbackReportIssue'
 
 jest.mock('common/segment/segment')
@@ -23,7 +22,7 @@ describe('FeedbackReportIssue', () => {
     it('displays tags for each value', () => {
         const allOptions = Object.values(ReportIssueOption)
 
-        const {getAllByTestId} = render(
+        render(
             <FeedbackReportIssue
                 value={allOptions}
                 onChange={jest.fn()}
@@ -31,12 +30,12 @@ describe('FeedbackReportIssue', () => {
             />
         )
 
-        const tags = getAllByTestId('tag')
-        expect(tags).toHaveLength(allOptions.length)
-
-        tags.forEach((tag, index) => {
-            expect(tag).toHaveTextContent(ReportIssueLabels[allOptions[index]])
+        let count = 0
+        Object.values(ReportIssueLabels).forEach((label) => {
+            expect(screen.getByText(label)).toBeInTheDocument()
+            count += 1
         })
+        expect(count).toEqual(allOptions.length)
     })
 
     it('should remove tag when clicked', () => {
@@ -44,7 +43,7 @@ describe('FeedbackReportIssue', () => {
 
         const onChange = jest.fn()
 
-        const {getAllByTestId} = render(
+        render(
             <FeedbackReportIssue
                 value={allOptions}
                 onChange={onChange}
@@ -52,16 +51,7 @@ describe('FeedbackReportIssue', () => {
             />
         )
 
-        const tags = getAllByTestId('tag')
-        expect(tags).toHaveLength(allOptions.length)
-
-        const firstTag = tags[0]
-
-        const firstTagTrailIcon = firstTag.querySelector(
-            '[data-testid="tag-trail-icon"]'
-        )
-
-        fireEvent.click(firstTagTrailIcon!)
+        fireEvent.click(screen.getAllByText('close')[0])
 
         expect(onChange).toHaveBeenCalledWith(allOptions.slice(1))
         expect(logEventMock).toHaveBeenCalledWith(
@@ -76,14 +66,14 @@ describe('FeedbackReportIssue', () => {
     it('should add option when clicked', () => {
         const onChange = jest.fn()
 
-        const {getAllByTestId, getByRole} = render(
+        render(
             <FeedbackReportIssue value={[]} onChange={onChange} accountId={1} />
         )
 
-        const listBox = getByRole('listbox')
+        const listBox = screen.getByRole('listbox')
         fireEvent.focus(listBox)
 
-        const dropdownItem = getAllByTestId('dropdown-item')
+        const dropdownItem = screen.getAllByRole('option')
         fireEvent.click(dropdownItem[0])
 
         const firstElement = getFirstEnumValue()
@@ -101,7 +91,7 @@ describe('FeedbackReportIssue', () => {
         const onChange = jest.fn()
 
         const firstElement = getFirstEnumValue()
-        const {getAllByTestId, getByRole} = render(
+        render(
             <FeedbackReportIssue
                 value={[firstElement]}
                 onChange={onChange}
@@ -109,10 +99,10 @@ describe('FeedbackReportIssue', () => {
             />
         )
 
-        const listBox = getByRole('listbox')
+        const listBox = screen.getByRole('listbox')
         fireEvent.focus(listBox)
 
-        const dropdownItem = getAllByTestId('dropdown-item')
+        const dropdownItem = screen.getAllByRole('option')
         fireEvent.click(dropdownItem[0])
 
         expect(onChange).toHaveBeenCalledWith([])

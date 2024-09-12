@@ -16,13 +16,18 @@ exports[`<TicketTags /> should display current tags 1`] = `
         style="order: 1;"
       >
         <div
-          class="badge tagLabel"
-          style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+          class="tag black withTrailIcon"
         >
-          <span>
+          <span
+            class="text"
+          >
             angry
+          </span>
+          <span
+            class="icon withClick"
+          >
             <i
-              class="remove material-icons cursor-pointer ml-1"
+              class="material-icons"
             >
               close
             </i>
@@ -33,13 +38,18 @@ exports[`<TicketTags /> should display current tags 1`] = `
         style="order: 11;"
       >
         <div
-          class="badge tagLabel"
-          style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+          class="tag black withTrailIcon"
         >
-          <span>
+          <span
+            class="text"
+          >
             customer
+          </span>
+          <span
+            class="icon withClick"
+          >
             <i
-              class="remove material-icons cursor-pointer ml-1"
+              class="material-icons"
             >
               close
             </i>
@@ -50,13 +60,18 @@ exports[`<TicketTags /> should display current tags 1`] = `
         style="order: 21;"
       >
         <div
-          class="badge tagLabel"
-          style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+          class="tag black withTrailIcon"
         >
-          <span>
+          <span
+            class="text"
+          >
             refund
+          </span>
+          <span
+            class="icon withClick"
+          >
             <i
-              class="remove material-icons cursor-pointer ml-1"
+              class="material-icons"
             >
               close
             </i>
@@ -67,13 +82,18 @@ exports[`<TicketTags /> should display current tags 1`] = `
         style="order: 31;"
       >
         <div
-          class="badge tagLabel"
-          style="color: rgb(0, 0, 0); background-color: rgb(245, 141, 134);"
+          class="tag black withTrailIcon"
         >
-          <span>
+          <span
+            class="text"
+          >
             return
+          </span>
+          <span
+            class="icon withClick"
+          >
             <i
-              class="remove material-icons cursor-pointer ml-1"
+              class="material-icons"
             >
               close
             </i>

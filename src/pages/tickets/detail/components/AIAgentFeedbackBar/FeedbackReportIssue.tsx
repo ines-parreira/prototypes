@@ -1,7 +1,7 @@
 import React, {useCallback, useRef, useState} from 'react'
 import {Label} from '@gorgias/ui-kit'
 
-import Tag from 'pages/common/components/Tag/Tag'
+import Tag from 'components/Tag'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
@@ -17,11 +17,7 @@ import {logEventWithSampling} from 'common/segment/segment'
 import {SegmentEvent} from 'common/segment'
 import css from './FeedbackReportIssue.less'
 
-const closeIcon = (
-    <i data-testid="report-issue-tag-close-icon" className="material-icons">
-        close
-    </i>
-)
+const closeIcon = <i className="material-icons">close</i>
 
 const reportIssueOptions = Object.entries(ReportIssueLabels).map(
     ([value, label]) => ({
@@ -117,7 +113,6 @@ const ReportIssueSelect: React.FC<Props> = ({
                         >
                             {reportIssueOptions.map((option) => (
                                 <DropdownItem
-                                    data-testid="dropdown-item"
                                     key={option.value}
                                     option={option}
                                     onClick={onItemClick}
@@ -141,7 +136,6 @@ const ReportIssueSelect: React.FC<Props> = ({
                             text={option.label}
                             trailIcon={closeIcon}
                             onTrailIconClick={() => onRemoveItem(option.value)}
-                            data-testid="tag"
                         />
                     )
                 })}

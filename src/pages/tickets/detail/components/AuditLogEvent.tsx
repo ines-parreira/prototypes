@@ -357,11 +357,10 @@ export class AuditLogEventContainer extends Component<Props> {
                 elements.push(
                     <TicketTag
                         key={tag.get('id')}
+                        text={tag.get('name')}
                         decoration={tag.get('decoration')}
                         className={css.equalFiller}
-                    >
-                        {tag.get('name')}
-                    </TicketTag>
+                    />
                 )
             })
         }

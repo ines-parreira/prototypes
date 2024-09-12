@@ -26,9 +26,9 @@ const removeMock = assumeMock(remove)
 const saveMock = assumeMock(save)
 const selectMock = assumeMock(select)
 
-const mockDefaultColor = '#654321'
+const mockDefaultColor = '#ddd'
 jest.mock('@gorgias/design-tokens/dist/tokens/colors.json', () => ({
-    ['🖥 Modern']: {Main: {Secondary: {value: '#654321'}}},
+    ['🤍 Light']: {Neutral: {Grey_3: {value: '#ddd'}}},
 }))
 
 describe('<Row />', () => {

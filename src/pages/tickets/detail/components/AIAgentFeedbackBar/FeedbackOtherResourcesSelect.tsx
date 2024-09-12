@@ -1,28 +1,25 @@
 import React, {Fragment, useCallback, useEffect, useMemo, useState} from 'react'
 import {Label, Tooltip} from '@gorgias/ui-kit'
 
-import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
-import {useAIAgentGetOtherResources} from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
-import Tag from 'pages/common/components/Tag/Tag'
+import {SegmentEvent} from 'common/segment'
+import {logEventWithSampling} from 'common/segment/segment'
+import Tag from 'components/Tag'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     FeedbackOnMessage,
     ResourceFeedbackOnMessage,
 } from 'models/aiAgentFeedback/types'
-
+import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
+import {useAIAgentGetOtherResources} from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import {addTags, removeTag} from 'state/ticket/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {logEventWithSampling} from 'common/segment/segment'
-import {SegmentEvent} from 'common/segment'
+
 import MultiLevelSelect from '../TicketFields/components/fields/DropdownField/MultiLevelSelect'
-import css from './FeedbackOtherResourcesSelect.less'
+
 import {RESOURCE_ICONS, RESOURCE_LABELS} from './constants'
+import css from './FeedbackOtherResourcesSelect.less'
 import InfoIconWithTooltip from './InfoIconWithTooltip'
 
-const closeIcon = (
-    <i data-testid="other-resource-tag-close-icon" className="material-icons">
-        close
-    </i>
-)
+const closeIcon = <i className="material-icons">close</i>
 
 export const NO_RELEVANT_RESOURCES_LABEL = 'No relevant resources'
 export const AI_NO_RESOURCES_TAG = 'ai_no_resources'
@@ -51,7 +48,8 @@ const FeedbackOtherResourcesSelect = ({
     accountId,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
-
+    const [tagsElements, setTagsElements] = useState<Array<HTMLDivElement>>([])
+    const [isTagOverflowing, setIsTagOverflowing] = useState<Array<boolean>>([])
     const {
         articlesOptions,
         guidanceOptions,
@@ -70,7 +68,19 @@ const FeedbackOtherResourcesSelect = ({
 
     const dispatch = useAppDispatch()
     const [values, setValues] = useState<string[]>([])
-    const [tooltipIds, setTooltipIds] = useState<string[]>([])
+
+    useEffect(() => {
+        setTagsElements(Array(values.length).fill(undefined))
+    }, [values])
+
+    useEffect(() => {
+        setIsTagOverflowing(
+            tagsElements.map(
+                (_item, i) =>
+                    tagsElements[i]?.offsetWidth < tagsElements[i]?.scrollWidth
+            )
+        )
+    }, [tagsElements])
 
     const initialFormattedValues = useMemo(() => {
         return initialValues.map((v) => {
@@ -234,15 +244,6 @@ const FeedbackOtherResourcesSelect = ({
         ]
     )
 
-    const handleEllipsisChange = (isVisible: boolean, id: string) => {
-        const i = tooltipIds.findIndex((x) => x === id)
-
-        if (isVisible && i === -1) setTooltipIds((old) => [...old, id])
-
-        if (!isVisible && i !== -1)
-            setTooltipIds((old) => [...old.slice(0, i), ...old.slice(i + 1)])
-    }
-
     return (
         <div className={css.container}>
             <MultiLevelSelect
@@ -306,22 +307,20 @@ const FeedbackOtherResourcesSelect = ({
                     return (
                         <Fragment key={option}>
                             <Tag
-                                id={`option-${index}`}
+                                ref={(el: HTMLDivElement) => {
+                                    tagsElements[index] = el
+                                }}
                                 text={text}
                                 trailIcon={closeIcon}
                                 leadIcon={RESOURCE_ICONS[type]}
                                 onTrailIconClick={() => handleRemove(option)}
-                                data-testid="tag"
                                 className={css.tag}
                                 textClassName={css.tagText}
-                                onEllipsisChange={(val) =>
-                                    handleEllipsisChange(val, `option-${index}`)
-                                }
                             />
-                            {tooltipIds.includes(`option-${index}`) && (
+                            {tagsElements[index] && isTagOverflowing[index] && (
                                 <Tooltip
                                     placement="bottom"
-                                    target={`option-${index}`}
+                                    target={tagsElements[index]}
                                 >
                                     {text}
                                 </Tooltip>

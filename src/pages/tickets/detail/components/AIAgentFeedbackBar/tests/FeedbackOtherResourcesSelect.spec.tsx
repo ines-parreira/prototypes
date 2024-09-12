@@ -1,16 +1,36 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+
+import userEvent from '@testing-library/user-event'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useAIAgentGetOtherResources,
     UseAIAgentGetOtherResourcesProps,
 } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {assumeMock} from 'utils/testing'
 
 import {MultiLevelSelectProps} from '../../TicketFields/components/fields/DropdownField/MultiLevelSelect'
 import FeedbackOtherResourcesSelect, {
     NO_RELEVANT_RESOURCES_LABEL,
 } from '../FeedbackOtherResourcesSelect'
+
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual<typeof React>('react'),
+        useRef: jest.fn().mockImplementation((value) => {
+            return {current: value}
+        }),
+    }
+})
+
+const setSpyOnUseRef = (offsetWidth: number, scrollWidth: number) => {
+    jest.spyOn(React, 'useRef').mockReturnValue({
+        get current() {
+            return {offsetWidth, scrollWidth}
+        },
+        set current(_value) {},
+    })
+}
 
 jest.mock('pages/tickets/detail/hooks/useAIAgentGetOtherResources')
 jest.mock('state/ticket/actions')
@@ -36,6 +56,16 @@ jest.mock(
         )
     }
 )
+
+jest.mock('@gorgias/ui-kit', () => {
+    return {
+        ...jest.requireActual('@gorgias/ui-kit'),
+        Tooltip: ({children}: {children: ReactNode}) => (
+            <div>TooltipMock{children}</div>
+        ),
+    } as Record<string, unknown>
+})
+
 describe('FeedbackOtherResourcesSelect Component', () => {
     const setupMockResourcesValues = ({
         optionName,
@@ -52,9 +82,9 @@ describe('FeedbackOtherResourcesSelect Component', () => {
     }) => {
         const mockOptions = {
             [`${optionName}Options`]: [{value: resourceId, label}],
-        }
+        } as unknown as ReturnType<typeof useAIAgentGetOtherResources>
 
-        mockUseAIAgentGetOtherResources.mockReturnValueOnce({
+        mockUseAIAgentGetOtherResources.mockReturnValue({
             ...mockUseAIAgentGetOtherResources(
                 {} as UseAIAgentGetOtherResourcesProps
             ),
@@ -98,20 +128,21 @@ describe('FeedbackOtherResourcesSelect Component', () => {
         )
     }
 
-    it('renders the component correctly with preselected guidance option', async () => {
-        renderComponent({
-            initialValues: [
-                {
-                    type: 'resource',
-                    resourceId: '20',
-                    resourceType: 'guidance',
-                },
-            ],
+    it('renders the component correctly with preselected guidance option', () => {
+        const label = 'Guidance Label'
+        const {initialValues} = setupMockResourcesValues({
+            optionName: 'guidance',
+            resourceType: 'guidance',
+            resourceId: '20',
+            label,
+            optionsOverride: 'Guidance',
         })
 
-        await waitFor(() => {
-            expect(screen.getByTestId('tag')).toBeInTheDocument()
+        renderComponent({
+            initialValues,
         })
+
+        expect(screen.getByText(label)).toBeInTheDocument()
     })
 
     it('renders empty multi select component correctly', () => {
@@ -295,8 +326,7 @@ describe('FeedbackOtherResourcesSelect Component', () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByTestId('tag-trail-icon')).toBeInTheDocument()
-            fireEvent.click(screen.getByTestId('tag-trail-icon'))
+            fireEvent.click(screen.getByText('close'))
             expect(mockDispatch).toHaveBeenCalled()
         })
     })
@@ -313,9 +343,50 @@ describe('FeedbackOtherResourcesSelect Component', () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByTestId('tag-trail-icon')).toBeInTheDocument()
-            fireEvent.click(screen.getByTestId('tag-trail-icon'))
+            fireEvent.click(screen.getByText('close'))
             expect(mockDispatch).not.toHaveBeenCalled()
         })
+    })
+
+    it('renders tag tooltip', () => {
+        setSpyOnUseRef(5, 10)
+
+        const label = 'overflowing label'
+        const {initialValues} = setupMockResourcesValues({
+            optionName: 'guidance',
+            resourceType: 'guidance',
+            resourceId: '20',
+            label,
+            optionsOverride: 'Guidance',
+        })
+
+        renderComponent({
+            initialValues,
+        })
+
+        userEvent.hover(screen.getByText(label))
+        expect(screen.getByText(`TooltipMock${label}`)).toBeInTheDocument()
+    })
+
+    it("doesn't render tag tooltip", () => {
+        setSpyOnUseRef(10, 10)
+
+        const label = 'label without tooltip'
+        const {initialValues} = setupMockResourcesValues({
+            optionName: 'guidance',
+            resourceType: 'guidance',
+            resourceId: '20',
+            label,
+            optionsOverride: 'Guidance',
+        })
+
+        renderComponent({
+            initialValues,
+        })
+
+        userEvent.hover(screen.getByText(label))
+        expect(
+            screen.queryByText(`TooltipMock${label}`)
+        ).not.toBeInTheDocument()
     })
 })

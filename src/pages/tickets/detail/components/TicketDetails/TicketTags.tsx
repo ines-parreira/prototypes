@@ -128,27 +128,21 @@ const TicketTags = ({
                         >
                             <TicketTag
                                 decoration={tag!.get('decoration')}
-                                className={css.tagLabel}
-                            >
-                                <span>
-                                    {tag!.get('name')}
-                                    {!isDisabled && (
-                                        <i
-                                            className={classnames(
-                                                css.remove,
-                                                'material-icons cursor-pointer ml-1'
-                                            )}
-                                            onClick={() =>
-                                                removeTag(
-                                                    tag!.get('name') as string
-                                                )
-                                            }
-                                        >
-                                            close
-                                        </i>
-                                    )}
-                                </span>
-                            </TicketTag>
+                                text={tag!.get('name')}
+                                {...(isDisabled
+                                    ? {}
+                                    : {
+                                          trailIcon: (
+                                              <i className="material-icons">
+                                                  close
+                                              </i>
+                                          ),
+                                          onTrailIconClick: () =>
+                                              removeTag(
+                                                  tag!.get('name') as string
+                                              ),
+                                      })}
+                            />
                         </div>
                     ))}
                     <div
