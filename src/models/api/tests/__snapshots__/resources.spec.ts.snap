@@ -5,6 +5,7 @@ exports[`client resources createClient should return a proper new instance of ax
   "adapter": [
     "xhr",
     "http",
+    "fetch",
   ],
   "env": {
     "Blob": [Function],

@@ -2978,45 +2978,40 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/analytics-ui-kit/0.1.0/9a906d573ac77701f1dced97a32f6e43aaf70c8a#9a906d573ac77701f1dced97a32f6e43aaf70c8a"
   integrity sha512-KuYrCkyo/3dZVM4GGopjGs6fQkU8WgFtb70+OgUZmadIVlszl2BQxSaGBweuTQ+nTXaKulP3cPYmhiP9gGFj/A==
 
-"@gorgias/api-client@^0.2.0":
-  version "0.2.0"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.2.0/0afc73dcd0c753f97e4a74c4d023f29dfe8cfdc3#0afc73dcd0c753f97e4a74c4d023f29dfe8cfdc3"
-  integrity sha512-QzXNCY+322J0Sm5kqmwxDjSKg+Cp/stCjicdDYzjMnnq99qTZ2chhhXt/gPw6FVcBVvlCekpE6s3Za4PHEQD2Q==
+"@gorgias/api-client@^0.2.2":
+  version "0.2.2"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.2.2/e3a51d7d58a2f25024fd04bc2839ff34de29c7e6#e3a51d7d58a2f25024fd04bc2839ff34de29c7e6"
+  integrity sha512-KS8/ZZ1/fYOieha9fXzbVieEJN5zTyM4AuJ9dg0aBJDnKthN5vk1DCIIcgYcpzca4/niAcJ+xE77bRJSnWPLiw==
   dependencies:
-    "@gorgias/api-types" "^0.2.0"
-    axios "^1.6.6"
+    "@gorgias/api-types" "^0.2.2"
+    axios "^1.7.7"
 
-"@gorgias/api-queries@0.2.0":
-  version "0.2.0"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.2.0/8f27c0849032e959e5de3018353f612243673917#8f27c0849032e959e5de3018353f612243673917"
-  integrity sha512-+s17GSFlcF7jE9WJ4706ky5UQLwk0BqejNAVfXMpjoT8ajyuAZ/FZkTSdLhK5yzb0wmZzW1C/ndiqMqS3HF0qg==
+"@gorgias/api-queries@0.2.2":
+  version "0.2.2"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.2.2/b65d156197befb3a2acff9e1f0483df68cf41777#b65d156197befb3a2acff9e1f0483df68cf41777"
+  integrity sha512-6JCUF1hJOeEwGOjOJpnlUn3KxRzOczEbKdiIjSK6ENHSH3ZO6/p8Un5sDms8NgU8D0onpQOMXM2IxNKs8l2T2A==
   dependencies:
-    "@gorgias/api-client" "^0.2.0"
-    "@gorgias/api-types" "^0.2.0"
+    "@gorgias/api-client" "^0.2.2"
+    "@gorgias/api-types" "^0.2.2"
 
-"@gorgias/api-spec@^0.1.52":
-  version "0.1.52"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.1.52/33e5c261618be3182f65c1733e91dcd2b9ac0c9d#33e5c261618be3182f65c1733e91dcd2b9ac0c9d"
-  integrity sha512-D3Bwxnm8TSR+CFUHL6QLpnPFTpNkq9dJCnUpbHfTwS5n88U1M7UPfZLKTa5fncwSLz0ghjyzJA25gbsGx4EfdA==
+"@gorgias/api-spec@^0.2.2":
+  version "0.2.2"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.2.2/d98f2165a1adb6515f27d2190d1ff7a131b91744#d98f2165a1adb6515f27d2190d1ff7a131b91744"
+  integrity sha512-cHjc7QqA4MyrOpdIjhI2cwWMhCWNkHYRB5oJX06WRiWuZQazV9hWVVXWrjkhHP2pAiTV0+WGg48KJ8Neh6Zw7A==
 
-"@gorgias/api-types@^0.1.52":
-  version "0.1.52"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.1.52/8f372dd8e49df0e949bea8b5f49a35367c274651#8f372dd8e49df0e949bea8b5f49a35367c274651"
-  integrity sha512-pmoGRltH5izsWngAOgi1kZwMWim1ZOzd+WxcC9vfjj9C/WSEn2UduvMhY4g4RtUVW8nnIvnwHVtNaMR67LVxvg==
+"@gorgias/api-types@^0.2.2":
+  version "0.2.2"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.2.2/2617707e22ae9677ebbb3f6fb42474ca08b65dee#2617707e22ae9677ebbb3f6fb42474ca08b65dee"
+  integrity sha512-RjvTMFgGdiQoLIjz4o21jt0YGC54y5SgCNtZEeeNlNbtsVKPN4nj7MEjL1VLPcYRE+N2nWH3UTygeMrl/f8mvg==
 
-"@gorgias/api-types@^0.2.0":
-  version "0.2.0"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.2.0/50492dc09c8649126eb2e2e2f8ae6ec39e985f64#50492dc09c8649126eb2e2e2f8ae6ec39e985f64"
-  integrity sha512-4kIaXUw7fJdBbCDavHAD60nLfIF2p81M72vJwhnnwA7MiEkneNexaXxhEW2NQySrobDJuQ2aiskiXmvYSwW9tQ==
-
-"@gorgias/api-validators@0.1.52":
-  version "0.1.52"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.1.52/62a046a4c9c89e49eef8f6089af5d657784dc5b9#62a046a4c9c89e49eef8f6089af5d657784dc5b9"
-  integrity sha512-nh/tUInNKcrITxmxhk8EHmfMMzroDSKWRClqUwnhnh3fwOWcC8rGH+bKov8FQ+jojgJ5GM0SKoTkP7ttQAZjZg==
+"@gorgias/api-validators@0.2.2":
+  version "0.2.2"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.2.2/6726b9126145925bf7357310d8fba5e3b428f33f#6726b9126145925bf7357310d8fba5e3b428f33f"
+  integrity sha512-UUw0hotCikO5+goid/4yn7t9AlqKAGpKiiuAj816rEjm4AfbPE2gP8gdD+U5LA/e6OaTF4wdh51/jJnyYk3N9w==
   dependencies:
     "@apideck/better-ajv-errors" "^0.3.6"
-    "@gorgias/api-spec" "^0.1.52"
-    "@gorgias/api-types" "^0.1.52"
+    "@gorgias/api-spec" "^0.2.2"
+    "@gorgias/api-types" "^0.2.2"
     ajv "^8.12.0"
     ajv-formats "^3.0.1"
     immer "^10.1"
@@ -5183,10 +5178,10 @@
   dependencies:
     remove-accents "0.4.2"
 
-"@tanstack/query-core@4.22.4":
-  version "4.22.4"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.22.4.tgz#aca622d2f8800a147ece5520d956a076ab92f0ea"
-  integrity sha512-t79CMwlbBnj+yL82tEcmRN93bL4U3pae2ota4t5NN2z3cIeWw74pzdWrKRwOfTvLcd+b30tC+ciDlfYOKFPGUw==
+"@tanstack/query-core@4.36.1":
+  version "4.36.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.36.1.tgz#79f8c1a539d47c83104210be2388813a7af2e524"
+  integrity sha512-DJSilV5+ytBP1FbFcEJovv4rnnm/CokuVvrBEtW/Va9DvuJ3HksbXUJEpI0aV1KtuL4ZoO9AVE6PyNLzF7tLeA==
 
 "@tanstack/react-query-devtools@4.22.4":
   version "4.22.4"
@@ -5197,12 +5192,12 @@
     superjson "^1.10.0"
     use-sync-external-store "^1.2.0"
 
-"@tanstack/react-query@4.22.4":
-  version "4.22.4"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.22.4.tgz#851581c645f1c9cfcd394448fedd980a39bbc3fe"
-  integrity sha512-e5j5Z88XUQGeEPMyz5XF1V0mMf6Da+6URXiTpZfUb9nuHs2nlNoA+EoIvnhccE5b9YT6Yg7kARhn2L7u94M/4A==
+"@tanstack/react-query@4.36.1":
+  version "4.36.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.36.1.tgz#acb589fab4085060e2e78013164868c9c785e5d2"
+  integrity sha512-y7ySVHFyyQblPl3J3eQBWpXZkliroki3ARnBKsdJchlgt7yJLRDUcf4B8soufgiYt3pEQIkBWBx1N9/ZPIeUWw==
   dependencies:
-    "@tanstack/query-core" "4.22.4"
+    "@tanstack/query-core" "4.36.1"
     use-sync-external-store "^1.2.0"
 
 "@testing-library/dom@^8.0.0":
@@ -7397,15 +7392,6 @@ axios-retry@^3.1.9:
     "@babel/runtime" "^7.15.4"
     is-retry-allowed "^2.2.0"
 
-axios@1.6.6:
-  version "1.6.6"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.6.tgz#878db45401d91fe9e53aed8ac962ed93bde8dd1c"
-  integrity sha512-XZLZDFfXKM9U/Y/B4nNynfCRUqNyVZ4sBC/n9GDRCkq9vd2mIvKjKKsbIh1WPmHmNbg6ND7cTBY3Y2+u1G3/2Q==
-  dependencies:
-    follow-redirects "^1.15.4"
-    form-data "^4.0.0"
-    proxy-from-env "^1.1.0"
-
 "axios@>=0.21.1 <=1.6.0":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.0.tgz#f1e5292f26b2fd5c2e66876adc5b06cdbd7d2102"
@@ -7422,10 +7408,10 @@ axios@^0.21.1:
   dependencies:
     follow-redirects "^1.14.0"
 
-axios@^1.6.0, axios@^1.6.6:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.2.tgz#b625db8a7051fbea61c35a3cbb3a1daa7b9c7621"
-  integrity sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==
+axios@^1.6.0, axios@^1.7.7:
+  version "1.7.7"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.7.tgz#2f554296f9892a72ac8d8e4c5b79c14a91d0a47f"
+  integrity sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.0"
@@ -11021,10 +11007,15 @@ focus-trap@^7.5.3:
   dependencies:
     tabbable "^6.2.0"
 
-follow-redirects@^1.0.0, follow-redirects@^1.14.0, follow-redirects@^1.15.0, follow-redirects@^1.15.4, follow-redirects@^1.15.6:
+follow-redirects@^1.0.0, follow-redirects@^1.14.0, follow-redirects@^1.15.0:
   version "1.15.6"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
   integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
+
+follow-redirects@^1.15.6:
+  version "1.15.9"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.9.tgz#a604fa10e443bf98ca94228d9eebcc2e8a2c8ee1"
+  integrity sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==
 
 for-each@^0.3.3:
   version "0.3.3"
