@@ -22,11 +22,14 @@ import {
     useGetConfigurationExecution,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
+import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 import ActionEventsViewContainer from '../ActionEventsViewContainer'
 
 jest.mock('models/workflows/queries')
+jest.mock('../hooks/useGetAppImageUrl')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
 const queryClient = mockQueryClient()
 const useGetConfigurationExecutionsMocked = assumeMock(
     useGetConfigurationExecutions
@@ -43,6 +46,7 @@ const useGetConfigurationExecutionMocked = assumeMock(
 const useGetWorkflowConfigurationTemplatesMocked = assumeMock(
     useGetWorkflowConfigurationTemplates
 )
+mockUseGetAppImageUrl.mockReturnValue('https://example.com/app.png')
 
 const defaultStore = mockStore({
     currentAccount: fromJS({
