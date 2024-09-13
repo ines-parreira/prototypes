@@ -29,8 +29,8 @@ export const selectMeasure = <Measure extends Cubes['measures']>(
     measure: Measure,
     data: UsePostReportingQueryData<QueryReturnType<Measure>>
 ) => {
-    const dataMeasure = data.data.data[0][measure]
-    return dataMeasure != null ? parseFloat(dataMeasure) : null
+    const dataMeasure = data.data.data?.[0]?.[measure] || null
+    return dataMeasure !== null ? parseFloat(dataMeasure) : null
 }
 
 export default function useMetricTrend<TCube extends Cubes>(

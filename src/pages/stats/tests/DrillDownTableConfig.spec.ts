@@ -89,6 +89,9 @@ describe('getDrillDownQuery', () => {
         {
             metricName: AutoQAMetric.ReviewedClosedTickets,
         },
+        {
+            metricName: AutoQAMetric.CommunicationSkills,
+        },
     ]
     const channelMetrics: ChannelsMetrics[] = [
         {

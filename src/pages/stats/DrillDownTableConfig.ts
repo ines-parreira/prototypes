@@ -17,6 +17,7 @@ import {openTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryF
 import {ticketsCreatedPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {customFieldsTicketCountPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {communicationSkillsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
 import {
     FilterKey,
     LegacyStatsFilters,
@@ -196,6 +197,8 @@ export const getDrillDownQuery = (
             return reviewedClosedTicketsDrillDownQueryFactory
         case AutoQAMetric.ResolutionCompleteness:
             return resolutionCompletenessDrillDownQueryFactory
+        case AutoQAMetric.CommunicationSkills:
+            return communicationSkillsDrillDownQueryFactory
         case SlaMetric.AchievementRate:
             return satisfiedOrBreachedTicketsDrillDownQueryFactory
         case SlaMetric.BreachedTicketsRate:

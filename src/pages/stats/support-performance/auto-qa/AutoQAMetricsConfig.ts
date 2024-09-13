@@ -1,4 +1,5 @@
 import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
+import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
 import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import {MetricTrendFormat} from 'pages/stats/common/utils'
@@ -37,5 +38,16 @@ export const TrendCardConfig: Record<
         metricFormat: 'percent',
         useTrend: useResolutionCompletenessTrend,
         drillDownMetric: AutoQAMetric.ResolutionCompleteness,
+    },
+    [AutoQAMetric.CommunicationSkills]: {
+        title: 'Communication',
+        hint: {
+            title: 'Average score assessing agent’s empathy, clarity, patience, positivity, and adaptability.\n\nNote: Only closed tickets with at least 1 customer message and 1 agent/rule message are auto-evaluated for communication.',
+            link: 'https://link.gorgias.com/8iz',
+        },
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        useTrend: useCommunicationSkillsTrend,
+        drillDownMetric: AutoQAMetric.CommunicationSkills,
     },
 }

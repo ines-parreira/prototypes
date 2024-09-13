@@ -3,6 +3,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useGridSize} from 'hooks/useGridSize'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
+import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import StatsPage from 'pages/stats/StatsPage'
@@ -59,13 +60,18 @@ export default function AutoQA() {
                     </DashboardSection>
                 )}
                 <DashboardSection>
-                    <DashboardGridCell size={getGridCellSize(6)}>
+                    <DashboardGridCell size={getGridCellSize(4)}>
                         <ReviewedClosedTicketsTrendCard
                             isAnalyticsNewFilters={isAnalyticsNewFilters}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(6)}>
+                    <DashboardGridCell size={getGridCellSize(4)}>
                         <ResolutionCompletenessTrendCard
+                            isAnalyticsNewFilters={isAnalyticsNewFilters}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(4)}>
+                        <CommunicationSkillsTrendCard
                             isAnalyticsNewFilters={isAnalyticsNewFilters}
                         />
                     </DashboardGridCell>

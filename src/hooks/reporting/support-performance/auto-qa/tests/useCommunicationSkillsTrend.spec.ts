@@ -1,22 +1,31 @@
 import moment from 'moment'
+import {renderHook} from '@testing-library/react-hooks'
 import {OrderDirection} from 'models/api/types'
 import {
     TicketQAScoreDimension,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {ReportingFilterOperator} from 'models/reporting/types'
+import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    formatReportingQueryDate,
+    getPreviousPeriod,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 import {
-    resolutionCompletenessDrillDownQueryFactory,
-    resolutionCompletenessQueryFactory,
-} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
+    communicationSkillsDrillDownQueryFactory,
+    communicationSkillsQueryFactory,
+} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
+import {assumeMock} from 'utils/testing'
+import useMetricTrend from 'hooks/reporting/useMetricTrend'
+import {useCommunicationSkillsTrend} from '../useCommunicationSkillsTrend'
 
-describe('resolutionCompletenessQueryFactory', () => {
+jest.mock('hooks/reporting/useMetricTrend')
+const useMetricTrendMock = assumeMock(useMetricTrend)
+
+describe('communicationSkillsQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -29,7 +38,7 @@ describe('resolutionCompletenessQueryFactory', () => {
     const sorting = OrderDirection.Desc
 
     it('should produce the query', () => {
-        const query = resolutionCompletenessQueryFactory(statsFilters, timezone)
+        const query = communicationSkillsQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
             measures: [TicketQAScoreMeasure.AverageScore],
@@ -48,7 +57,7 @@ describe('resolutionCompletenessQueryFactory', () => {
                 {
                     member: TicketQAScoreDimension.DimensionName,
                     operator: ReportingFilterOperator.Equals,
-                    values: ['resolution_completeness'],
+                    values: ['communication_skills'],
                 },
             ],
             timezone,
@@ -56,7 +65,7 @@ describe('resolutionCompletenessQueryFactory', () => {
     })
 
     it('should produce the query with sorting', () => {
-        const query = resolutionCompletenessQueryFactory(
+        const query = communicationSkillsQueryFactory(
             statsFilters,
             timezone,
             sorting
@@ -79,7 +88,7 @@ describe('resolutionCompletenessQueryFactory', () => {
                 {
                     member: TicketQAScoreDimension.DimensionName,
                     operator: ReportingFilterOperator.Equals,
-                    values: ['resolution_completeness'],
+                    values: ['communication_skills'],
                 },
             ],
             timezone,
@@ -88,7 +97,7 @@ describe('resolutionCompletenessQueryFactory', () => {
     })
 })
 
-describe('resolutionCompletenessDrillDownQueryFactory', () => {
+describe('communicationSkillsDrillDownQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -101,7 +110,7 @@ describe('resolutionCompletenessDrillDownQueryFactory', () => {
     const sorting = OrderDirection.Desc
 
     it('should produce the query', () => {
-        const query = resolutionCompletenessDrillDownQueryFactory(
+        const query = communicationSkillsDrillDownQueryFactory(
             statsFilters,
             timezone
         )
@@ -123,7 +132,7 @@ describe('resolutionCompletenessDrillDownQueryFactory', () => {
                 {
                     member: TicketQAScoreDimension.DimensionName,
                     operator: ReportingFilterOperator.Equals,
-                    values: ['resolution_completeness'],
+                    values: ['communication_skills'],
                 },
             ],
             timezone,
@@ -131,7 +140,7 @@ describe('resolutionCompletenessDrillDownQueryFactory', () => {
     })
 
     it('should produce the query with sorting', () => {
-        const query = resolutionCompletenessDrillDownQueryFactory(
+        const query = communicationSkillsDrillDownQueryFactory(
             statsFilters,
             timezone,
             sorting
@@ -154,11 +163,42 @@ describe('resolutionCompletenessDrillDownQueryFactory', () => {
                 {
                     member: TicketQAScoreDimension.DimensionName,
                     operator: ReportingFilterOperator.Equals,
-                    values: ['resolution_completeness'],
+                    values: ['communication_skills'],
                 },
             ],
             timezone,
             order: [[TicketQAScoreMeasure.AverageScore, sorting]],
         })
+    })
+})
+
+describe('useCommunicationSkillsTrend', () => {
+    const periodStart = formatReportingQueryDate(moment())
+    const periodEnd = formatReportingQueryDate(moment())
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: periodEnd,
+            start_datetime: periodStart,
+        },
+    }
+    const timezone = 'someTimeZone'
+
+    useMetricTrendMock.mockImplementation(
+        ((queryCreator: ReportingQuery) => queryCreator) as any
+    )
+
+    it('should pass query factories with two periods', () => {
+        renderHook(() => useCommunicationSkillsTrend(statsFilters, timezone))
+
+        expect(useMetricTrendMock).toHaveBeenCalledWith(
+            communicationSkillsQueryFactory(statsFilters, timezone),
+            communicationSkillsQueryFactory(
+                {
+                    ...statsFilters,
+                    period: getPreviousPeriod(statsFilters.period),
+                },
+                timezone
+            )
+        )
     })
 })

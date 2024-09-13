@@ -333,6 +333,7 @@ export const getDrillDownMetricColumn = (
     } else if (
         metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
         metricData.metricName === AutoQAMetric.ResolutionCompleteness ||
+        metricData.metricName === AutoQAMetric.CommunicationSkills ||
         metricData.metricName === ConvertMetric.CampaignSalesCount ||
         metricData.metricName === VoiceMetric.AverageWaitTime ||
         metricData.metricName === VoiceMetric.AverageTalkTime

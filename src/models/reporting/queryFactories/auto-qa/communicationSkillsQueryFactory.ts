@@ -12,7 +12,7 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-export const resolutionCompletenessQueryFactory = (
+export const communicationSkillsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
@@ -30,7 +30,7 @@ export const resolutionCompletenessQueryFactory = (
         {
             member: TicketQAScoreDimension.DimensionName,
             operator: ReportingFilterOperator.Equals,
-            values: ['resolution_completeness'],
+            values: ['communication_skills'],
         },
     ],
     timezone,
@@ -41,12 +41,12 @@ export const resolutionCompletenessQueryFactory = (
         : {}),
 })
 
-export const resolutionCompletenessDrillDownQueryFactory = (
+export const communicationSkillsDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
-    ...resolutionCompletenessQueryFactory(filters, timezone, sorting),
+    ...communicationSkillsQueryFactory(filters, timezone, sorting),
     measures: [TicketQAScoreMeasure.AverageScore],
     dimensions: [TicketDimension.TicketId],
 })
