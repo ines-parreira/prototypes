@@ -5,6 +5,7 @@ import {
     EXCLUDED_TOPIC_MAX_LENGTH,
     MAX_EXCLUDED_TOPICS,
     SIGNATURE_MAX_LENGTH,
+    CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
     ToneOfVoice,
 } from '../constants'
 import {FormValues, ValidFormValues} from '../types'
@@ -141,10 +142,11 @@ export const validateConfigurationFormValues = (
         (!formValues.toneOfVoice ||
             formValues.toneOfVoice === ToneOfVoice.Custom) &&
         formValues.customToneOfVoiceGuidance &&
-        formValues.customToneOfVoiceGuidance.length > 500
+        formValues.customToneOfVoiceGuidance.length >
+            CUSTOM_TONE_OF_VOICE_MAX_LENGTH
     ) {
         throw new Error(
-            'Custom tone of voice should be less than 500 characters'
+            `Custom tone of voice should be less than ${CUSTOM_TONE_OF_VOICE_MAX_LENGTH} characters`
         )
     }
 

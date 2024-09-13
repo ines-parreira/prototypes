@@ -2,7 +2,7 @@ import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import {FormValues} from './types'
 
 export const SIGNATURE_MAX_LENGTH = 250
-export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 500
+export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 1500
 export const EXCLUDED_TOPIC_MAX_LENGTH = 100
 export const MAX_EXCLUDED_TOPICS = 10
 
