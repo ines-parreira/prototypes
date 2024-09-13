@@ -62,9 +62,10 @@ export const TestFlowEditor = ({
         translateKey,
         visualBuilderGraph: {available_languages, wfConfigurationOriginal},
     } = useWorkflowEditorContext()
+
     const [selectedTestLanguage, setSelectedTestLanguage] =
         // one of the languages from available_languages
-        useState<typeof available_languages[number]>(currentLanguage)
+        useState<typeof available_languages[number]>()
     const [isFlowInterpreterStarted, setIsFlowInterpreterStarted] =
         useState<boolean>(false)
     const [
@@ -98,7 +99,7 @@ export const TestFlowEditor = ({
 
     const selectedLanguage = selectedTestLanguage
         ? selectedTestLanguage
-        : available_languages[0]
+        : currentLanguage ?? available_languages[0]
 
     const label =
         translateKey(
@@ -222,11 +223,7 @@ export const TestFlowEditor = ({
                     />
                     <LanguageSelector
                         languages={available_languages}
-                        selected={
-                            selectedTestLanguage
-                                ? selectedTestLanguage
-                                : available_languages[0]
-                        }
+                        selected={selectedLanguage}
                         onSelect={(lang) => {
                             setSelectedTestLanguage(lang)
                         }}
@@ -328,7 +325,7 @@ export const TestFlowEditor = ({
                                             ${script.outerHTML}
                                             <script type="application/javascript">
                                             const mockLocalStorage = new Map()
-                                            
+
                                             window.localStorage.setItem = function(keyName, keyValue) {
                                                 mockLocalStorage.set(keyName, keyValue)
                                             }
