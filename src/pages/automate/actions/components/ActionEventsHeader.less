@@ -1,0 +1,21 @@
+@import (reference) '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: @layout-spacing-m;
+        padding-bottom: @layout-spacing-m;
+
+        & > p {
+            .body-regular();
+        }
+
+        .filterSelector {
+            display: flex;
+            gap: 12px;
+        }
+    }
+}

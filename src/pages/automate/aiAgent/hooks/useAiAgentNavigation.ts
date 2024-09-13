@@ -28,6 +28,8 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                 `/app/automation/shopify/${shopName}/ai-agent/actions/new${
                     templateId ? `?template_id=${templateId}` : ''
                 }`,
+            editAction: (configurationId: string) =>
+                `/app/automation/shopify/${shopName}/ai-agent/actions/edit/${configurationId}`,
             actionsTemplates: `/app/automation/shopify/${shopName}/ai-agent/actions/templates`,
             actionEvents: (configurationId: string) =>
                 `/app/automation/shopify/${shopName}/ai-agent/actions/events/${configurationId}`,

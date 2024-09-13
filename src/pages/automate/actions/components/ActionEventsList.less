@@ -1,0 +1,47 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        height: 100%;
+
+        table {
+            table-layout: fixed;
+            thead {
+                th {
+                    width: auto;
+                    cursor: auto;
+                }
+            }
+        }
+        .spinner {
+            display: flex;
+            justify-content: center;
+            & > svg {
+                width: 47.5px;
+                height: 47.5px;
+            }
+        }
+        .noData {
+            display: flex;
+            flex-direction: column;
+            height: 80%;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--neutral-grey-5, #6a6a6a);
+            & > p:first-child {
+                .body-semibold();
+                width: 100%;
+                margin: 0;
+            }
+
+            & > p:last-child {
+                .body-regular();
+                margin: 0;
+                width: 100%;
+                max-width: 375px;
+            }
+        }
+    }
+}

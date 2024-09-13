@@ -104,3 +104,7 @@ export type ActionAppsConfiguration = NonNullable<
 >
 
 export type ActionAppConfiguration = ActionAppsConfiguration[number]
+
+export type LlmTriggeredExecution =
+    Components.Schemas.GetWfExecutionResponseDto &
+        Components.Schemas.GetExecutionsPaginationResponseDto['data'][number]
