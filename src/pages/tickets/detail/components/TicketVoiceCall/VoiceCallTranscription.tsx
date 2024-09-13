@@ -7,6 +7,9 @@ import {
 } from 'models/voiceCall/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import TranscriptionData from './TranscriptionData'
+import CollapsibleDetails from './CollapsibleDetails'
+import css from './TranscriptionData.less'
 
 type Props = {
     audio: VoiceCallRecording
@@ -26,7 +29,29 @@ export default function VoiceCallTranscription({audio, type}: Props) {
 
     switch (audio.transcription_status) {
         case VoiceCallRecordingTranscriptionStatus.Completed:
-            return <span>completed transcription</span>
+            return (
+                <div className={css.collapsibleTranscription}>
+                    <CollapsibleDetails
+                        isInitiallyOpen={true}
+                        title={
+                            <div className={css.title}>
+                                <i className={'material-icons'}>call</i>
+                                <span>
+                                    {type === VoiceCallRecordingType.Recording
+                                        ? 'Call'
+                                        : 'Voicemail'}{' '}
+                                    transcription
+                                </span>
+                            </div>
+                        }
+                    >
+                        <TranscriptionData
+                            recordingType={type}
+                            recordingId={audio.id}
+                        />
+                    </CollapsibleDetails>
+                </div>
+            )
         case VoiceCallRecordingTranscriptionStatus.Requested:
             return (
                 <Alert icon type={AlertType.Loading}>

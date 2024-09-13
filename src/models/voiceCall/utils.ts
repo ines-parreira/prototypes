@@ -53,6 +53,14 @@ export const getFormattedDurationOngoingCall = (
     return utcMoment.format('mm:ss')
 }
 
+export const getFormattedDurationTranscriptionStart = (
+    startedSecond: number
+) => {
+    const duration = moment.duration(Number(startedSecond), 'seconds')
+    const utcMoment = moment.utc(duration.asMilliseconds())
+    return utcMoment.format('mm:ss')
+}
+
 const isMissedEvent = (event: VoiceCallEvent, nextEvents: VoiceCallEvent[]) => {
     // we should check if the call was missed/answered/declined before a transfer was initiated
     const checkEventsLimit = nextEvents.findIndex(

@@ -9,6 +9,11 @@ import {
 } from 'models/voiceCall/types'
 import VoiceCallTranscription from '../VoiceCallTranscription'
 
+jest.mock('../TranscriptionData', () => ({
+    __esModule: true,
+    default: () => 'completed transcription',
+}))
+
 describe('VoiceCallTranscription', () => {
     beforeEach(() => {
         resetLDMocks()

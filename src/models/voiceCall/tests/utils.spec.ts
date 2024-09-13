@@ -3,6 +3,7 @@ import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
+    getFormattedDurationTranscriptionStart,
     isFinalVoiceCallStatus,
     isMissedInboundVoiceCall,
     processEvents,
@@ -404,6 +405,13 @@ describe('voice call utils', () => {
                     ).toBe(false)
                 }
             )
+        })
+    })
+
+    describe('getFormattedDurationTranscriptionStart', () => {
+        it('should return formatted duration for transcription start', () => {
+            expect(getFormattedDurationTranscriptionStart(10)).toBe('00:10')
+            expect(getFormattedDurationTranscriptionStart(65)).toBe('01:05')
         })
     })
 })

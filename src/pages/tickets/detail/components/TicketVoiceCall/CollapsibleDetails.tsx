@@ -6,10 +6,15 @@ import css from './CollapsibleDetails.less'
 type Props = {
     title: JSX.Element
     children: React.ReactNode
+    isInitiallyOpen?: boolean
 }
 
-export default function CollapsibleDetails({title, children}: Props) {
-    const [isOpen, setIsOpen] = useState(false)
+export default function CollapsibleDetails({
+    title,
+    children,
+    isInitiallyOpen,
+}: Props) {
+    const [isOpen, setIsOpen] = useState(!!isInitiallyOpen)
 
     return (
         <>
