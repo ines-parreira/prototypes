@@ -3,6 +3,7 @@ import {useMemo} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {getIntegrationsByType} from 'state/integrations/selectors'
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import {
@@ -11,6 +12,7 @@ import {
 } from 'models/convert/campaign/types'
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {getCampaignStatus} from 'pages/stats/convert/utils/getCampaignStatus'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 
 export function useGetCampaignsForStore(
     selectedIntegrations: number[],
@@ -25,6 +27,8 @@ export function useGetCampaignsForStore(
         []
     )
     const chatIntegrations = useAppSelector(getChatIntegrations)
+    const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
+    const timezone = businessHoursSettings?.data?.timezone ?? DEFAULT_TIMEZONE
 
     const campaignListOptions = useMemo(() => {
         let chatAppIds: string[]
@@ -57,9 +61,10 @@ export function useGetCampaignsForStore(
         return (convertCampaigns || []).map((campaign) => {
             return {
                 ...campaign,
-                status: getCampaignStatus(campaign),
+                status: getCampaignStatus(campaign, timezone),
             } as CampaignPreview
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [convertCampaigns])
 
     return {

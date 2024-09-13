@@ -65,7 +65,7 @@ describe('CampaignStatusesFilter', () => {
         CampaignStatusesCapitalized.forEach((campaignStatus) => {
             expect(screen.getByText(campaignStatus)).toBeInTheDocument()
         })
-        expect(screen.getAllByRole('checkbox')).toHaveLength(4)
+        expect(screen.getAllByRole('checkbox')).toHaveLength(5)
     })
 
     it('should dispatch the right actions on options selection', () => {

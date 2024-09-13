@@ -32,6 +32,7 @@ export enum InferredCampaignStatus {
     Active = 'active',
     Inactive = 'inactive',
     Deleted = 'deleted',
+    Scheduled = 'scheduled',
 }
 
 export type CampaignPreview = {
@@ -40,7 +41,7 @@ export type CampaignPreview = {
     variants: CampaignVariant[]
     status: InferredCampaignStatus
     is_light: boolean
-} & Pick<Campaign, 'ab_group'>
+} & Pick<Campaign, 'ab_group' | 'schedule'>
 
 export type ABGroup = Components.Schemas.ABGroupResponseSchema
 

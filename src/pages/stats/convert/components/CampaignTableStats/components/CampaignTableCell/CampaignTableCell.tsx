@@ -185,6 +185,8 @@ export const CampaignTableCell = ({
                     return 'accessoryGreen'
                 case InferredCampaignStatus.Deleted:
                     return 'accessoryRed'
+                case InferredCampaignStatus.Scheduled:
+                    return 'accessoryYellow'
                 default:
                     return 'neutralGrey1' as BadgeColor
             }
