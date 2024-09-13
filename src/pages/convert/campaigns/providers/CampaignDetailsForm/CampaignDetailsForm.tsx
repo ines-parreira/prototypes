@@ -458,7 +458,10 @@ export const CampaignDetailsForm = ({
                 productRecommendations: productRecommendations,
                 // When we display ability to schedule campaign,
                 // we should have ability to decide whether we can activate campaign or not
-                canChangeStatus: displayScheduleSection ? true : !isEditMode,
+                canChangeStatus:
+                    isConvertScheduleCampaignEnabled && displayScheduleSection
+                        ? true
+                        : !isEditMode,
                 isActive: activateCampaign,
                 canAddUtm: canAddUtm,
                 utmEnabled: appliedUtmEnabled,
