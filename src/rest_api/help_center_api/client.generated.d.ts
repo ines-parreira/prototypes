@@ -145,9 +145,9 @@ declare namespace Components {
       domain: string | null;
       source: "url";
       status: "DISABLED" | "FAILED" | "PENDING" | "SUCCESSFUL";
-      meta: ArticleIngestionLogMeta;
+      meta: MLSnippetsIngestionMeta;
     }
-    export interface ArticleIngestionLogMeta {
+    export interface MLSnippetsIngestionMeta {
       /**
        * Gorgias account domain name
        */

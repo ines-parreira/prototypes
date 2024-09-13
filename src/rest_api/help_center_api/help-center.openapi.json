@@ -4156,7 +4156,7 @@
             "AgentBearerAuth": {"scheme": "bearer", "type": "http"}
         },
         "schemas": {
-            "ArticleIngestionLogMeta": {
+            "MLSnippetsIngestionMeta": {
                 "type": "object",
                 "properties": {
                     "x-gorgias-domain": {
@@ -4193,7 +4193,7 @@
                         "enum": ["DISABLED", "FAILED", "PENDING", "SUCCESSFUL"]
                     },
                     "meta": {
-                        "$ref": "#/components/schemas/ArticleIngestionLogMeta"
+                        "$ref": "#/components/schemas/MLSnippetsIngestionMeta"
                     }
                 },
                 "required": [
