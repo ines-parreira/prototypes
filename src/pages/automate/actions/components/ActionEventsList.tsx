@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 
+import classNames from 'classnames'
 import Spinner from 'pages/common/components/Spinner'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -16,22 +17,32 @@ type Props = {
     isLoading: boolean
     executions?: LlmTriggeredExecution[]
     onChangeOrder: (orderBy: 'ASC' | 'DESC') => void
+    selectedExecutionId: string | null
+    onSelectedExecutionIdChange: (executionId: string) => void
 }
 
 export default function ActionEventsList({
     executions,
     onChangeOrder,
     isLoading,
+    onSelectedExecutionIdChange,
+    selectedExecutionId,
 }: Props) {
     const {orderDirection, orderBy, toggleOrderBy} =
         useOrderBy<'updated'>('updated')
+
+    const hasNoData = !isLoading && !executions?.length
 
     useEffect(() => {
         onChangeOrder(orderDirection === OrderDirection.Asc ? 'ASC' : 'DESC')
     }, [orderDirection, onChangeOrder])
 
     return (
-        <div className={css.container}>
+        <div
+            className={classNames(css.container, {
+                [css.noData]: hasNoData,
+            })}
+        >
             <TableWrapper>
                 <TableHead>
                     <HeaderCellProperty
@@ -50,6 +61,10 @@ export default function ActionEventsList({
                     {!isLoading &&
                         executions?.map((execution) => (
                             <ActionEventRow
+                                isSelected={
+                                    selectedExecutionId === execution.id
+                                }
+                                onClick={onSelectedExecutionIdChange}
                                 execution={execution}
                                 key={execution.id}
                             />
@@ -61,7 +76,7 @@ export default function ActionEventsList({
                     <Spinner color="dark" />
                 </div>
             )}
-            {!isLoading && !executions?.length && (
+            {hasNoData && (
                 <div className={css.noData}>
                     <p>No events found for the selected time period</p>
                     <p>

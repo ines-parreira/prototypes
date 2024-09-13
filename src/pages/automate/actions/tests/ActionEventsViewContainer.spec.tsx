@@ -1,7 +1,7 @@
 import React from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {screen} from '@testing-library/react'
+import {fireEvent, screen} from '@testing-library/react'
 import {UseQueryResult, QueryClientProvider} from '@tanstack/react-query'
 import {fromJS} from 'immutable'
 import _range from 'lodash/range'
@@ -18,6 +18,9 @@ import {renderWithRouter, assumeMock} from 'utils/testing'
 import {
     useGetConfigurationExecutions,
     useGetWorkflowConfiguration,
+    useGetConfigurationExecutionLogs,
+    useGetConfigurationExecution,
+    useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import ActionEventsViewContainer from '../ActionEventsViewContainer'
 
@@ -30,6 +33,15 @@ const useGetConfigurationExecutionsMocked = assumeMock(
 )
 const useGetWorkflowConfigurationMocked = assumeMock(
     useGetWorkflowConfiguration
+)
+const useGetConfigurationExecutionLogsMocked = assumeMock(
+    useGetConfigurationExecutionLogs
+)
+const useGetConfigurationExecutionMocked = assumeMock(
+    useGetConfigurationExecution
+)
+const useGetWorkflowConfigurationTemplatesMocked = assumeMock(
+    useGetWorkflowConfigurationTemplates
 )
 
 const defaultStore = mockStore({
@@ -51,9 +63,60 @@ describe('ActionEventsViewContainer', () => {
         useGetWorkflowConfigurationMocked.mockReturnValue({
             isFetching: false,
             data: {
-                internal_id: '1',
+                internal_id: 'internal_configuration_id',
+                id: 'configuration_id',
+                name: 'Action configuration',
+                template_internal_id: 'template_internal_id',
             },
         } as UseQueryResult<Paths.WfConfigurationControllerGet.Responses.$200>)
+
+        useGetConfigurationExecutionsMocked.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: undefined,
+        } as UseQueryResult<Paths.WfConfigurationControllerGetExecutions.Responses.$200>)
+
+        useGetConfigurationExecutionLogsMocked.mockReturnValue({
+            isFetching: false,
+            data: [
+                {
+                    id: '1',
+                    request_datetime: new Date().toISOString(),
+                    request_method: 'GET',
+                    request_url: 'http://example.com',
+                    response_status_code: 200,
+                    request_body: 'request body',
+                    request_headers: JSON.stringify({key: 'value'}),
+                    response_body: 'response body',
+                    response_headers: JSON.stringify({key: 'value'}),
+                },
+            ],
+        } as UseQueryResult<Paths.WfConfigurationControllerExportExecutionLogs.Responses.$200>)
+
+        useGetConfigurationExecutionMocked.mockReturnValue({
+            isFetching: false,
+            data: {
+                id: '1',
+                configuration_id: '1',
+                configuration_internal_id: '1',
+                success: true,
+                state: {
+                    trigger: 'llm-prompt',
+                },
+            },
+        } as UseQueryResult<Paths.WfConfigurationControllerGetExecution.Responses.$200>)
+
+        useGetWorkflowConfigurationTemplatesMocked.mockReturnValue({
+            isFetching: false,
+            data: [
+                {
+                    id: 'template_id',
+                    internal_id: 'template_internal_id',
+                    name: 'Template configuration',
+                    apps: [{app_id: 'app_id', api_key: 'api_key', type: 'app'}],
+                },
+            ],
+        } as UseQueryResult<Paths.WfConfigurationTemplateControllerList.Responses.$200>)
     })
 
     it('redirect if has no automate subscription', () => {
@@ -76,7 +139,7 @@ describe('ActionEventsViewContainer', () => {
             </Provider>,
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
+                route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
             }
         )
 
@@ -89,12 +152,6 @@ describe('ActionEventsViewContainer', () => {
             data: undefined,
         } as UseQueryResult<any>)
 
-        useGetConfigurationExecutionsMocked.mockReturnValueOnce({
-            isFetching: false,
-            isError: false,
-            data: undefined,
-        } as UseQueryResult<Paths.WfConfigurationControllerGetExecutions.Responses.$200>)
-
         const component = renderWithRouter(
             <Provider store={defaultStore}>
                 <QueryClientProvider client={queryClient}>
@@ -103,7 +160,7 @@ describe('ActionEventsViewContainer', () => {
             </Provider>,
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
+                route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
             }
         )
 
@@ -143,7 +200,7 @@ describe('ActionEventsViewContainer', () => {
             </Provider>,
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
+                route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
             }
         )
 
@@ -200,7 +257,7 @@ describe('ActionEventsViewContainer', () => {
             </Provider>,
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
+                route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
             }
         )
         expect(component.container.querySelectorAll('td').length).toBe(40)
@@ -256,5 +313,152 @@ describe('ActionEventsViewContainer', () => {
         expect(
             component.container.querySelector('[aria-label="previous"]')
         ).not.toBeNull()
+        expect(screen.getByTestId('actions-event-details')).not.toHaveClass(
+            'opened'
+        )
+    })
+    it('opens events side panel from query param', () => {
+        const executionId = 'execution_id'
+
+        useGetConfigurationExecutionMocked.mockReturnValue({
+            isFetching: false,
+            data: {
+                id: executionId,
+                configuration_id: '1',
+                configuration_internal_id: '1',
+                success: true,
+                state: {
+                    trigger: 'llm-prompt',
+                },
+            },
+        } as UseQueryResult<Paths.WfConfigurationControllerGetExecution.Responses.$200>)
+
+        renderWithRouter(
+            <Provider store={defaultStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ActionEventsViewContainer />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/ai-agent/actions/events/:id',
+                route: `/shopify/my-shop/ai-agent/actions/events/configuration_id?executionId=${executionId}`,
+            }
+        )
+        expect(screen.queryAllByRole('table')).toHaveLength(1)
+        expect(screen.queryAllByRole('cell')).toHaveLength(0)
+
+        expect(screen.getByTestId('actions-event-details')).toHaveClass(
+            'opened'
+        )
+        fireEvent.click(screen.getByText('keyboard_tab'))
+        expect(screen.getByTestId('actions-event-details')).not.toHaveClass(
+            'opened'
+        )
+    })
+
+    it('open side panel for success execution', () => {
+        useGetConfigurationExecutionMocked.mockReturnValue({
+            isFetching: false,
+            data: {
+                id: 'configuration id',
+                configuration_id: '1',
+                configuration_internal_id: '1',
+                success: true,
+                state: {
+                    trigger: 'llm-prompt',
+                    objects: {
+                        order: {
+                            name: 'order name',
+                            number: 'order number',
+                            status: 'order status',
+                        },
+                        customer: {
+                            id: 1,
+                            name: 'customer name',
+                            email: 'customer@email.com',
+                        },
+                    },
+                    custom_inputs: {
+                        variable: 'value 1',
+                    },
+                },
+            },
+        } as unknown as UseQueryResult<Paths.WfConfigurationControllerGetExecution.Responses.$200>)
+
+        useGetConfigurationExecutionsMocked.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                data: [
+                    {
+                        id: '1',
+                        state: {
+                            trigger: 'llm-prompt',
+                        },
+                        awaited_callbacks: [],
+                        channel_actions: [],
+                        configuration_id: '1',
+                        configuration_internal_id: '1',
+                        current_step_id: '1',
+                        created_datetime: new Date().toISOString(),
+                    },
+                ],
+                meta: {
+                    pagination: {
+                        current_page: 1,
+                        page_limit: 15,
+                        page_size: 10,
+                        total_pages: 1,
+                        total_size: 1,
+                        next_page: null,
+                    },
+                },
+            },
+        } as unknown as UseQueryResult<Paths.WfConfigurationControllerGetExecutions.Responses.$200>)
+
+        useGetWorkflowConfigurationTemplatesMocked.mockReturnValue({
+            isFetching: false,
+            data: [
+                {
+                    id: 'template id',
+                    internal_id: 'template internal id',
+                    name: 'template configuration',
+                    apps: [{app_id: 'app_id', api_key: 'api_key', type: 'app'}],
+                },
+            ],
+        } as UseQueryResult<Paths.WfConfigurationTemplateControllerList.Responses.$200>)
+
+        renderWithRouter(
+            <Provider store={defaultStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ActionEventsViewContainer />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/ai-agent/actions/events/:id',
+                route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
+            }
+        )
+
+        expect(screen.getByTestId('actions-event-details')).not.toHaveClass(
+            'opened'
+        )
+        fireEvent.click(screen.getAllByRole('cell')[0])
+        expect(screen.getByTestId('actions-event-details')).toHaveClass(
+            'opened'
+        )
+        expect(screen.getByText('Action configuration')).toBeInTheDocument()
+
+        expect(screen.getByText('success')).toBeInTheDocument()
+        expect(screen.getByText(/customer name/)).toBeInTheDocument()
+        expect(screen.queryByText(/order name/)).toBeInTheDocument()
+        expect(screen.queryByText(/value 1/)).toBeInTheDocument()
+        expect(screen.queryByText(/http:\/\/example.com/)).toBeInTheDocument()
+        expect(screen.queryByText(/response body/)).toBeInTheDocument()
+
+        fireEvent.click(screen.getByText('keyboard_tab'))
+        expect(screen.getByTestId('actions-event-details')).not.toHaveClass(
+            'opened'
+        )
     })
 })

@@ -108,3 +108,5 @@ export type ActionAppConfiguration = ActionAppsConfiguration[number]
 export type LlmTriggeredExecution =
     Components.Schemas.GetWfExecutionResponseDto &
         Components.Schemas.GetExecutionsPaginationResponseDto['data'][number]
+
+export type HTTPExecutionLogs = Components.Schemas.HttpRequestEventsResponseDto

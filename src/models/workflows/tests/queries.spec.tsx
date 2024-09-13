@@ -137,9 +137,8 @@ describe('queries', () => {
             mockedServer
                 .onPost(/auth/)
                 .reply(200, {})
-                .onGet(/\/configurations\/\d+\/executions\//)
+                .onGet(/\/configurations\/\w+\/executions/)
                 .reply(200, executionsResponse)
-            mockedServer.onAny().reply(200, executionsResponse)
 
             const {result, waitFor} = renderHookWithQueryClientProvider(() =>
                 useGetConfigurationExecutions({
@@ -175,9 +174,8 @@ describe('queries', () => {
             mockedServer
                 .onPost(/auth/)
                 .reply(200, {})
-                .onGet(/\/configurations\/\d+\/executions\/\d+/)
+                .onGet(/\/configurations\/\w+\/executions\/\w+/)
                 .reply(200, executionsResponse)
-            mockedServer.onAny().reply(200, executionsResponse)
 
             const {result, waitFor} = renderHookWithQueryClientProvider(() =>
                 useGetConfigurationExecution('configurationId', 'executionId')
@@ -204,9 +202,8 @@ describe('queries', () => {
             mockedServer
                 .onPost(/auth/)
                 .reply(200, {})
-                .onGet(/\/configurations\/\d+\/executions\/\d+/)
+                .onGet(/\/configurations\/\w+\/executions\/\w+/)
                 .reply(200, executionLogsResponse)
-            mockedServer.onAny().reply(200, executionLogsResponse)
 
             const {result, waitFor} = renderHookWithQueryClientProvider(() =>
                 useGetConfigurationExecutionLogs(
@@ -217,6 +214,24 @@ describe('queries', () => {
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
             expect(result.current.data).toEqual(executionLogsResponse)
+        })
+
+        it('should return empty if data not found', async () => {
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/\/configurations\/\w+\/executions\/\w+/)
+                .reply(404)
+
+            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
+                useGetConfigurationExecutionLogs(
+                    'configurationId',
+                    'executionId'
+                )
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+            expect(result.current.data).toEqual([])
         })
     })
 })

@@ -3,10 +3,9 @@
 
 :local {
     .container {
-        height: 100%;
-
         table {
             table-layout: fixed;
+            margin: 0;
             thead {
                 th {
                     width: auto;
@@ -17,6 +16,7 @@
         .spinner {
             display: flex;
             justify-content: center;
+            padding: @layout-spacing-m;
             & > svg {
                 width: 47.5px;
                 height: 47.5px;
@@ -43,5 +43,8 @@
                 max-width: 375px;
             }
         }
+    }
+    .noData {
+        height: 100%;
     }
 }

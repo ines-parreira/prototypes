@@ -1,5 +1,6 @@
 import {useQuery, useMutation, UseQueryOptions} from '@tanstack/react-query'
 import _mapValues from 'lodash/mapValues'
+import {isAxiosError} from 'axios'
 import {getGorgiasWfApiClient} from 'rest_api/workflows_api/client'
 import {OperationMethods, Paths} from 'rest_api/workflows_api/client.generated'
 import {MutationOverrides} from 'types/query'
@@ -641,12 +642,19 @@ export const useGetConfigurationExecutionLogs = (
         }),
         queryFn: async () => {
             const client = await getGorgiasWfApiClient()
-            const response =
-                await client.WfConfigurationController_exportExecutionLogs({
-                    execution_id: executionId,
-                    internal_id: configurationInternalId,
-                })
-            return response.data
+            try {
+                const response =
+                    await client.WfConfigurationController_exportExecutionLogs({
+                        execution_id: executionId,
+                        internal_id: configurationInternalId,
+                    })
+                return response.data
+            } catch (e) {
+                if (isAxiosError(e) && e.response?.status === 404) {
+                    return []
+                }
+                throw e
+            }
         },
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,

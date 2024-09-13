@@ -1,14 +1,24 @@
-import React, {useReducer, useCallback} from 'react'
-import {useParams} from 'react-router-dom'
+import React, {
+    useReducer,
+    useCallback,
+    useMemo,
+    useEffect,
+    useState,
+} from 'react'
+import {useParams, useLocation, useHistory} from 'react-router-dom'
 import moment from 'moment'
 import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {
     useGetConfigurationExecutions,
     useGetWorkflowConfiguration,
+    useGetConfigurationExecutionLogs,
+    useGetConfigurationExecution,
+    useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import ActionEventsHeader from './components/ActionEventsHeader'
 import ActionEventsList from './components/ActionEventsList'
 import ActionEventsNumberedPagination from './components/ActionEventsNumberedPagination'
+import ActionEventSidePanel from './components/ActionEventSidePanel'
 
 import {LlmTriggeredExecution} from './types'
 import css from './ActionEventsView.less'
@@ -19,6 +29,14 @@ export type Filter = Omit<
 >
 
 export default function ActionExecutionsView() {
+    const location = useLocation()
+    const history = useHistory()
+
+    const queryParams = useMemo(
+        () => new URLSearchParams(location.search),
+        [location.search]
+    )
+
     const [filterState, dispatchFilter] = useReducer(
         (state: Filter, action: Partial<Filter>): Filter => {
             return {
@@ -35,19 +53,39 @@ export default function ActionExecutionsView() {
         }
     )
 
-    const {shopName, id: id} = useParams<{
+    const [selectedExecutionId, setSelectedExecutionId] = useState<
+        string | null
+    >(queryParams.get('executionId'))
+
+    useEffect(() => {
+        if (selectedExecutionId) {
+            history.replace({
+                search: new URLSearchParams({
+                    executionId: selectedExecutionId,
+                }).toString(),
+            })
+        } else {
+            history.replace({
+                search: '',
+            })
+        }
+    }, [history, location.pathname, queryParams, selectedExecutionId])
+
+    const {shopName, id: configurationId} = useParams<{
         id: string
         shopName: string
     }>()
 
-    const {data: configurationData, isFetching} = useGetWorkflowConfiguration({
-        id,
-    })
+    const {data: actionConfiguration, isFetching} = useGetWorkflowConfiguration(
+        {
+            id: configurationId,
+        }
+    )
 
     const {data: executionsData, isFetching: isFechingExecutions} =
         useGetConfigurationExecutions(
             {
-                configurationInternalId: configurationData?.internal_id || '',
+                configurationInternalId: actionConfiguration?.internal_id || '',
                 from: filterState.from,
                 orderBy: filterState.orderBy,
                 page: filterState.page,
@@ -55,7 +93,30 @@ export default function ActionExecutionsView() {
                 success: filterState.success,
             },
             {
-                enabled: !!configurationData?.internal_id,
+                enabled: !!actionConfiguration?.internal_id,
+            }
+        )
+
+    const {data: httpExecutionLogs, isFetching: isFetchinghttpExecutionLogs} =
+        useGetConfigurationExecutionLogs(
+            actionConfiguration?.internal_id || '',
+            selectedExecutionId || '',
+            {
+                enabled:
+                    !!selectedExecutionId && !!actionConfiguration?.internal_id,
+            }
+        )
+
+    const {data: execution, isFetching: isFetchingExecution} =
+        useGetConfigurationExecution(
+            actionConfiguration?.internal_id || '',
+            selectedExecutionId || '',
+            {
+                enabled:
+                    !!selectedExecutionId && !!actionConfiguration?.internal_id,
+                initialData: executionsData?.data?.find(
+                    (execution) => execution.id === selectedExecutionId
+                ),
             }
         )
 
@@ -73,6 +134,33 @@ export default function ActionExecutionsView() {
         [dispatchFilter]
     )
 
+    const handleSelectedExecutionIdChange = useCallback(
+        (executionId: string) => {
+            setSelectedExecutionId(executionId)
+        },
+        [setSelectedExecutionId]
+    )
+
+    const {
+        data: templateConfigurations,
+        isInitialLoading: isTemplateConfigurationsLoading,
+    } = useGetWorkflowConfigurationTemplates(
+        {triggers: ['llm-prompt']},
+        {
+            enabled: !!actionConfiguration?.template_internal_id,
+        }
+    )
+
+    const templateConfiguration = useMemo(
+        () =>
+            templateConfigurations?.find(
+                (template) =>
+                    template.internal_id ===
+                    actionConfiguration?.template_internal_id
+            ),
+        [templateConfigurations, actionConfiguration]
+    )
+
     return (
         <AiAgentLayout
             isLoading={isFetching}
@@ -85,6 +173,8 @@ export default function ActionExecutionsView() {
                 onChange={handleFilterChange}
             />
             <ActionEventsList
+                selectedExecutionId={selectedExecutionId}
+                onSelectedExecutionIdChange={handleSelectedExecutionIdChange}
                 isLoading={isFechingExecutions}
                 executions={executionsData?.data as LlmTriggeredExecution[]}
                 onChangeOrder={handleChangeOrder}
@@ -93,6 +183,19 @@ export default function ActionExecutionsView() {
                 page={executionsData?.meta.pagination.current_page}
                 count={executionsData?.meta.pagination.total_pages}
                 onChange={(page) => dispatchFilter({page})}
+            />
+            <ActionEventSidePanel
+                templateConfiguration={templateConfiguration}
+                actionConfiguration={actionConfiguration}
+                onClose={() => setSelectedExecutionId(null)}
+                isLoading={
+                    isFetchinghttpExecutionLogs ||
+                    isFetchingExecution ||
+                    isTemplateConfigurationsLoading
+                }
+                isOpen={!!selectedExecutionId}
+                httpExecutionLogs={httpExecutionLogs}
+                execution={execution as LlmTriggeredExecution}
             />
         </AiAgentLayout>
     )

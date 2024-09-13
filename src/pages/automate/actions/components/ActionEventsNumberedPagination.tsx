@@ -17,6 +17,7 @@ export default function ActionEventsNumberedPagination({
         <div className={css.container}>
             {typeof count === 'number' && count > 1 && (
                 <NumberedPagination
+                    className={css.pagination}
                     page={page}
                     count={count}
                     onChange={onChange}

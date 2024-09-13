@@ -1,0 +1,140 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .codeBlock {
+        border-radius: 4px;
+        min-height: @layout-spacing-m;
+        border: 1px solid var(--Neutral-Grey_3, #ddd);
+        background: var(--Neutral-Grey_1, #f9f9f9);
+        padding: calc(@layout-spacing-xs - 2px) @layout-spacing-xs;
+    }
+    .drawer {
+        background-color: var(--neutral-grey-0) !important;
+        .drawerHeader {
+            padding: @layout-spacing-s;
+            .title {
+                .heading-section-semibold();
+                margin: 0;
+            }
+        }
+        .drawerContent {
+            background-color: var(--neutral-grey-0);
+            display: flex;
+            flex-direction: column;
+            gap: @layout-spacing-m;
+            word-wrap: break-word;
+
+            .actionInfo {
+                display: flex;
+                justify-content: space-between;
+                .title {
+                    display: flex;
+                    gap: @layout-spacing-xxs;
+                    & > p {
+                        .body-semibold();
+                        margin: 0;
+                    }
+                    & > img {
+                        height: 20px;
+                        width: 20px;
+                        object-fit: contain;
+                    }
+                }
+                .status {
+                    display: flex;
+                    gap: @layout-spacing-xs;
+                    & > p {
+                        .body-semibold();
+                        margin: 0;
+                    }
+                    & > div {
+                        .caption-allcaps();
+                    }
+                }
+            }
+            .variablesContainer {
+                display: flex;
+                flex-direction: column;
+                gap: @layout-spacing-xs;
+
+                & > p {
+                    margin: 0;
+                    .body-semibold();
+                }
+                .variablesItems {
+                    display: flex;
+                    flex-direction: column;
+                    gap: @layout-spacing-xs;
+                }
+            }
+
+            .failedStepContainer {
+                display: flex;
+                flex-direction: column;
+                gap: @layout-spacing-s;
+                .title {
+                    display: flex;
+                    gap: @layout-spacing-xxs;
+                    & > p {
+                        .body-semibold();
+                        margin: 0;
+                    }
+                    & > img {
+                        height: 20px;
+                        width: 20px;
+                        object-fit: contain;
+                    }
+                }
+            }
+
+            .httpRequestContainer {
+                .executionLogs {
+                    display: flex;
+                    flex-direction: column;
+                    padding-top: @layout-spacing-xs;
+                    gap: @layout-spacing-s;
+                    p {
+                        display: inline;
+                        margin: 0;
+                        .body-semibold();
+                    }
+
+                    ol {
+                        list-style-type: disc;
+                        margin: 0;
+                    }
+                    .body {
+                        display: flex;
+                        flex-direction: column;
+                        gap: @layout-spacing-xs;
+                    }
+                }
+            }
+
+            .appImageFiller {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                object-fit: contain;
+            }
+        }
+    }
+
+    .variableCollapsable {
+        & > p {
+            .body-semibold();
+            margin: 0;
+            cursor: pointer;
+        }
+
+        & > i {
+            width: 20px;
+            height: 20px;
+        }
+
+        .collapsed {
+            transform: rotate(90deg);
+        }
+    }
+}

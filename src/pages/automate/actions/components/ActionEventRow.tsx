@@ -12,23 +12,31 @@ import css from './ActionEventRow.less'
 
 type Props = {
     execution: LlmTriggeredExecution
+    onClick: (executionId: string) => void
+    isSelected: boolean
 }
 
-export default function ActionsRow({execution}: Props) {
+export default function ActionsRow({execution, onClick, isSelected}: Props) {
     const history = useHistory()
 
     const handleTicketClick = () => {
         history.push(`/app/tickets/${execution.state.user_journey_id}`)
     }
     return (
-        <TableBodyRow className={css.container} onClick={() => {}}>
+        <TableBodyRow
+            className={classnames(css.container, {
+                [css.isSelected]: isSelected,
+            })}
+            onClick={() => onClick(execution.id)}
+        >
             <BodyCell className={css.updateCell}>
                 {moment(execution.updated_datetime).calendar()}
             </BodyCell>
             <BodyCell className={css.statusCell}>
-                {execution.success ? (
+                {execution.success === true && (
                     <Badge type={ColorType.LightSuccess}>SUCCESS</Badge>
-                ) : (
+                )}
+                {execution.success === false && (
                     <Badge type={ColorType.LightError}>ERROR</Badge>
                 )}
             </BodyCell>
