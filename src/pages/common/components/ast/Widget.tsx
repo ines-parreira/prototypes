@@ -696,6 +696,19 @@ export class Widget extends Component<Props, State> {
                     />
                 )
             }
+            case 'csat-select':
+                return (
+                    <Select
+                        {...widget}
+                        value={'★'.repeat(widget.value)}
+                        options={['★', '★★', '★★★', '★★★★', '★★★★★']}
+                        className={className}
+                        onChange={(value: string) =>
+                            this._handleChange(value.length)
+                        }
+                    />
+                )
+
             case 'snooze-picker':
                 return this._snoozePicker(value)
             case 'textarea':

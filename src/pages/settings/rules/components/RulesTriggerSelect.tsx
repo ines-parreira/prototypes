@@ -1,4 +1,5 @@
-import React, {useMemo} from 'react'
+import React, {ComponentProps, useMemo} from 'react'
+import {DropdownMenu} from 'reactstrap'
 
 import {
     eventTypes as getEventTypes,
@@ -14,6 +15,10 @@ import Errors from '../../../common/components/ast/Errors'
 import {RuleDraft} from '../../../../state/rules/types'
 
 import css from './RulesTriggerSelect.less'
+
+const RuleTriggerDropdownMenu = (
+    props: ComponentProps<typeof DropdownMenu>
+) => <DropdownMenu {...props} style={{width: '220px'}} />
 
 export type Props = {
     rule: RuleDraft
@@ -52,6 +57,7 @@ export function RulesTriggerSelect({rule, setEventTypes}: Props) {
                 plural="events"
                 onChange={handleEventTypes}
                 className={css.whenEvents}
+                dropdownMenu={RuleTriggerDropdownMenu}
             />
             {eventTypes.length === 0 && (
                 <Errors inline>You need to select at least one trigger</Errors>

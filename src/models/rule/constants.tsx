@@ -219,14 +219,14 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             value: 'ticket.last_received_message_datetime',
         },
         {
-            label: 'Unsnooze date',
-            text: 'ticket unsnooze date',
-            value: 'ticket.snooze_datetime',
-        },
-        {
             label: 'Reopened date',
             text: 'ticket reopened date',
             value: 'ticket.opened_datetime',
+        },
+        {
+            label: 'Satisfaction survey score',
+            text: 'satisfaction survey score',
+            value: 'ticket.satisfaction_survey.score',
         },
         {
             label: 'Spam',
@@ -247,6 +247,11 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             label: 'Tags',
             text: 'ticket tags',
             value: 'ticket.tags.name',
+        },
+        {
+            label: 'Unsnooze date',
+            text: 'ticket unsnooze date',
+            value: 'ticket.snooze_datetime',
         },
         {
             label: 'Via',

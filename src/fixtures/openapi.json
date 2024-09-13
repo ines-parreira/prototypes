@@ -1697,7 +1697,18 @@
                     "description": "The level of satisfaction. Possible scores are from 1 to 5.",
                     "example": 2,
                     "type": "integer",
-                    "format": "int32"
+                    "format": "int32",
+                    "meta": {
+                        "operators": {
+                            "eq": {"label": "is"},
+                            "gt": {"label": "is greater than"},
+                            "gte": {"label": "is greater or equal to"},
+                            "lt": {"label": "is less than"},
+                            "lte": {"label": "is less or equal to"},
+                            "neq": {"label": "is not"}
+                        },
+                        "rules": {"widget": "csat-select"}
+                    }
                 }
             },
             "type": "object"

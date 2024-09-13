@@ -56,6 +56,7 @@ exports[`<RuleEditor/> render should render the  editor 1`] = `
               aria-hidden="true"
               class="options dropdown-menu"
               role="menu"
+              style="width: 220px;"
               tabindex="-1"
             >
               <button
@@ -96,6 +97,16 @@ exports[`<RuleEditor/> render should render the  editor 1`] = `
               >
                 <span>
                   new message in ticket
+                </span>
+              </button>
+              <button
+                class="dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  satisfaction survey responded
                 </span>
               </button>
             </div>

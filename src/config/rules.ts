@@ -6,6 +6,7 @@ export const eventNameToLabel: {[name: string]: string} = {
     'ticket-assigned': 'ticket assigned to user',
     'ticket-self-unsnoozed': 'ticket snooze delay ends',
     'ticket-message-created': 'new message in ticket',
+    'satisfaction-survey-responded': 'satisfaction survey responded',
 }
 
 export const events = fromJS([
@@ -29,10 +30,18 @@ export const events = fromJS([
         label: eventNameToLabel['ticket-message-created'],
         value: 'ticket-message-created',
     },
+    {
+        label: eventNameToLabel['satisfaction-survey-responded'],
+        value: 'satisfaction-survey-responded',
+    },
 ]) as List<any>
 
 export const eventsDependencies = {
-    'ticket-updated': ['ticket-assigned', 'ticket-self-unsnoozed'],
+    'ticket-updated': [
+        'ticket-assigned',
+        'ticket-self-unsnoozed',
+        'satistaction-survey-responded',
+    ],
 }
 
 // variables available in rules

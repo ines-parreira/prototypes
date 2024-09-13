@@ -287,6 +287,42 @@ describe('<Widget />', () => {
         })
     })
 
+    describe('CSAT select', () => {
+        it('should render CSAT select field', () => {
+            const leftsiblings = fromJS([
+                'definitions',
+                'SatisfactionSurvey',
+                'properties',
+                'score',
+            ])
+            const rule = fromJS({code_ast: astCodeEq})
+            const value = 3
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Widget
+                        {...commonProps}
+                        value={value}
+                        leftsiblings={leftsiblings}
+                        rule={rule}
+                    />
+                </Provider>
+            )
+
+            expect(
+                screen.getByText('★★★', {selector: '.label'})
+            ).toBeInTheDocument()
+
+            fireEvent.click(screen.getByText('★★★★★'))
+
+            expect(commonProps.actions.modifyCodeAST).toBeCalledWith(
+                commonProps.parent,
+                5,
+                'UPDATE'
+            )
+        })
+    })
+
     describe('should handle change', () => {
         it('AST ExpressionArray value', () => {
             const value = ['hello', 'world!']

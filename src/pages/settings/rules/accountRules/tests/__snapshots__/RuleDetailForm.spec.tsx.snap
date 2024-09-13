@@ -161,6 +161,7 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
                       aria-hidden="true"
                       class="options dropdown-menu"
                       role="menu"
+                      style="width: 220px;"
                       tabindex="-1"
                     >
                       <button
@@ -201,6 +202,16 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
                       >
                         <span>
                           new message in ticket
+                        </span>
+                      </button>
+                      <button
+                        class="dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          satisfaction survey responded
                         </span>
                       </button>
                     </div>
@@ -508,6 +519,7 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
                       aria-hidden="true"
                       class="options dropdown-menu"
                       role="menu"
+                      style="width: 220px;"
                       tabindex="-1"
                     >
                       <button
@@ -548,6 +560,16 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
                       >
                         <span>
                           new message in ticket
+                        </span>
+                      </button>
+                      <button
+                        class="dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          satisfaction survey responded
                         </span>
                       </button>
                     </div>
@@ -841,6 +863,7 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
                       aria-hidden="true"
                       class="options dropdown-menu"
                       role="menu"
+                      style="width: 220px;"
                       tabindex="-1"
                     >
                       <button
@@ -881,6 +904,16 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
                       >
                         <span>
                           new message in ticket
+                        </span>
+                      </button>
+                      <button
+                        class="dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          satisfaction survey responded
                         </span>
                       </button>
                     </div>
