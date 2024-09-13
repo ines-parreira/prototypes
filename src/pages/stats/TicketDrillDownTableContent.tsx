@@ -12,7 +12,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {AgentAvatar} from 'pages/stats/AgentAvatar'
+import {AgentAvatar} from 'pages/stats/common/AgentAvatar'
 import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
 import {
     formatMetricValue,

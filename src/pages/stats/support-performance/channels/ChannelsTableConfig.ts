@@ -22,7 +22,7 @@ import {isMediumOrSmallScreen} from 'pages/common/utils/mobile'
 import {
     METRIC_COLUMN_WIDTH,
     MOBILE_METRIC_COLUMN_WIDTH,
-} from 'pages/stats/AgentsTableConfig'
+} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {MetricValueFormat} from 'pages/stats/common/utils'
 import {DrillDownQueryFactory} from 'pages/stats/DrillDownTableConfig'
 import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'

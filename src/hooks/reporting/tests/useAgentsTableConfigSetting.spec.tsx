@@ -8,7 +8,7 @@ import {
     AgentsTableViews,
     agentPerformanceTableActiveView,
     TableColumnsOrderWithOnlineTime,
-} from 'pages/stats/AgentsTableConfig'
+} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {account} from 'fixtures/account'
 import {submitSetting} from 'state/currentAccount/actions'

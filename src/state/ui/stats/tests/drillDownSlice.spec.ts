@@ -27,7 +27,6 @@ import {
     getDrillDownMetric,
     getDrillDownMetricColumn,
     getDrillDownModalState,
-    buildAgentMetric,
     createExportDrillDownJob,
     closeDrillDownModal,
     SLA_FORMAT,
@@ -37,7 +36,10 @@ import {
     getIsNewFilter,
 } from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'
-import {TableLabels} from 'pages/stats/AgentsTableConfig'
+import {
+    buildAgentMetric,
+    TableLabels,
+} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {MEDIAN_RESOLUTION_TIME_LABEL} from 'services/reporting/constants'
 import {assumeMock} from 'utils/testing'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'

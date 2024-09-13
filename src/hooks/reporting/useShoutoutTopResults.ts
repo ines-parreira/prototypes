@@ -1,6 +1,6 @@
 import _takeWhile from 'lodash/takeWhile'
 import {useMemo} from 'react'
-import {agentIdFields} from 'pages/stats/AgentsTableConfig'
+import {agentIdFields} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {User} from 'config/types/user'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'

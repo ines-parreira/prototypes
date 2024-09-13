@@ -480,6 +480,7 @@ describe('agentPerformanceSlice', () => {
                     (currentPage - 1) * perPage,
                     currentPage * perPage
                 ),
+                allAgents: agents,
                 currentPage: currentPage,
                 perPage: perPage,
             })

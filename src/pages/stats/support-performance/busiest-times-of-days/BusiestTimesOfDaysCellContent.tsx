@@ -4,7 +4,7 @@ import heatmapCss from 'pages/stats/heatmap.less'
 import {hourFromHourIndex} from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import {METRIC_COLUMN_WIDTH} from 'pages/stats/AgentsTableConfig'
+import {METRIC_COLUMN_WIDTH} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,

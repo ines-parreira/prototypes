@@ -19,7 +19,7 @@ import {
     AgentsColumnConfig,
     AgentsTableViews,
     TableLabels,
-} from 'pages/stats/AgentsTableConfig'
+} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import * as currentAccount from 'state/currentAccount/actions'
 import {getAgentsTableConfigSettingsJS} from 'state/currentAccount/selectors'
 import {AccountSettingType} from 'state/currentAccount/types'

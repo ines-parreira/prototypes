@@ -5,7 +5,7 @@ import {
     agentPerformanceTableActiveView,
     AgentsTableViews,
     TableColumnsOrderWithOnlineTime,
-} from 'pages/stats/AgentsTableConfig'
+} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     submitAgentTableConfigView,
     submitSetting,

@@ -64,6 +64,7 @@ describe('VoiceCallTable', () => {
     const paginatedAgents = agents.slice(1)
     getPaginatedAgentsMock.mockReturnValue({
         agents: paginatedAgents,
+        allAgents: agents,
         currentPage,
         perPage: 1,
     })
@@ -118,6 +119,7 @@ describe('VoiceCallTable', () => {
     it('should not render Pagination if fewer agents then perPage', () => {
         getPaginatedAgentsMock.mockReturnValue({
             agents,
+            allAgents: agents,
             currentPage: 1,
             perPage: agents.length + 1,
         })
@@ -132,6 +134,7 @@ describe('VoiceCallTable', () => {
         const pageToClick = currentPage - 1
         getPaginatedAgentsMock.mockReturnValue({
             agents,
+            allAgents: agents,
             currentPage,
             perPage: 1,
         })

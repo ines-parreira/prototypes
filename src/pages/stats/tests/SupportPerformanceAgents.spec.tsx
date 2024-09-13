@@ -5,33 +5,35 @@ import {MemoryRouter} from 'react-router-dom'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-import {TableColumnsOrder} from 'pages/stats/AgentsTableConfig'
+import {TableColumnsOrder} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
-import {AgentsPerformanceCardExtra} from 'pages/stats/AgentsPerformanceCardExtra'
-import AgentsShoutouts from 'pages/stats/AgentsShoutouts'
-import {AgentsTable} from 'pages/stats/AgentsTable'
+import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
+import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShoutouts'
+import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {assumeMock} from 'utils/testing'
 
 import SupportPerformanceAgents, {
     AGENT_PERFORMANCE_SECTION_TITLE,
     AGENTS_PAGE_TITLE,
-} from 'pages/stats/SupportPerformanceAgents'
+} from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
 
 jest.unmock('react-router-dom')
 
 jest.mock('state/ui/stats/agentPerformanceSlice')
-jest.mock('pages/stats/AgentsTable.tsx')
+jest.mock('pages/stats/support-performance/agents/AgentsTable.tsx')
 const AgentsTableMock = assumeMock(AgentsTable)
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
 jest.mock('pages/stats/common/filters/FiltersPanel.tsx')
 const FiltersPanelMock = assumeMock(FiltersPanel)
-jest.mock('pages/stats/AgentsPerformanceCardExtra.tsx')
+jest.mock(
+    'pages/stats/support-performance/agents/AgentsPerformanceCardExtra.tsx'
+)
 const AgentsPerformanceCardExtraMock = assumeMock(AgentsPerformanceCardExtra)
-jest.mock('pages/stats/AgentsShoutouts.tsx')
+jest.mock('pages/stats/support-performance/agents/AgentsShoutouts.tsx')
 const AgentsShoutoutsMock = assumeMock(AgentsShoutouts)
 jest.mock('pages/stats/AnalyticsFooter.tsx')
 const AnalyticsFooterMock = assumeMock(AnalyticsFooter)

@@ -1,7 +1,6 @@
 import {queryKeys} from '@gorgias/api-queries'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {appQueryClient} from 'api/queryClient'
-import {User} from 'config/types/user'
 import {createJob} from 'models/job/resources'
 import {
     ConvertJobContext,
@@ -10,10 +9,13 @@ import {
     JobContext,
     JobType,
 } from 'models/job/types'
-import {AgentsColumnConfig, TableLabels} from 'pages/stats/AgentsTableConfig'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {MetricValueFormat} from 'pages/stats/common/utils'
 import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
+import {
+    AgentsColumnConfig,
+    TableLabels,
+} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     ChannelColumnConfig,
     ChannelsTableColumns,
@@ -31,8 +33,8 @@ import {
     OverviewMetric,
     SlaMetric,
     TicketFieldsMetric,
-    VoiceMetric,
     VoiceAgentsMetric,
+    VoiceMetric,
 } from 'state/ui/stats/types'
 
 export const SLA_FORMAT = 'sla'
@@ -351,12 +353,6 @@ export const getDrillDownMetricColumn = (
         showMetric: !hiddenMetrics.includes(metricData.metricName),
     }
 }
-
-export const buildAgentMetric = (column: AgentMetricColumn, agent: User) => ({
-    title: `${TableLabels[column]} | ${agent.name}`,
-    metricName: column,
-    perAgentId: agent.id,
-})
 
 const getConfirmationText = (jobType: JobType) => {
     switch (jobType) {

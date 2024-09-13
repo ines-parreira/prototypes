@@ -24,7 +24,10 @@ import {
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {AgentsColumnConfig, TableLabels} from 'pages/stats/AgentsTableConfig'
+import {
+    AgentsColumnConfig,
+    TableLabels,
+} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,

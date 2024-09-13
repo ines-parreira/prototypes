@@ -69,6 +69,7 @@ export const useAgentsSortingQuery = (
         sortCallback,
         direction: sorting.direction,
         field: sorting.field,
+        isOrderedBy: column === sorting.field,
     }
 }
 

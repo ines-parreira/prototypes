@@ -1,7 +1,7 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {AgentAvatar} from 'pages/stats/AgentAvatar'
+import {AgentAvatar} from 'pages/stats/common/AgentAvatar'
 import {agents} from 'fixtures/agents'
 
 describe('<AgentAvatar>', () => {

@@ -19,8 +19,8 @@ import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {initialState} from 'state/stats/statsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {SHOUTOUT_NO_VALUE_PLACEHOLDER} from 'pages/common/components/Shoutout/Shoutout'
-import AgentsShoutouts from 'pages/stats/AgentsShoutouts'
-import {TableLabels} from 'pages/stats/AgentsTableConfig'
+import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShoutouts'
+import {TableLabels} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(

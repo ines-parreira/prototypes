@@ -3,7 +3,7 @@ import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {METRIC_COLUMN_WIDTH} from 'pages/stats/AgentsTableConfig'
+import {METRIC_COLUMN_WIDTH} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {MetricPerChannelQueryHook} from 'hooks/reporting/metricsPerChannel'
 import {Channel} from 'models/channel/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -12,7 +12,7 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import css from 'pages/stats/AgentsTable.less'
+import css from 'pages/stats/AnalyticsTable.less'
 import heatmapCss from 'pages/stats/heatmap.less'
 import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 import {

@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import {useDispatch} from 'react-redux'
 import {Link} from 'react-router-dom'
 
-import {User} from 'config/types/user'
 import useMeasure from 'hooks/useMeasure'
 import useAppSelector from 'hooks/useAppSelector'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -12,14 +11,10 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {
-    getPaginatedAgents,
-    getSortedAgents,
-    pageSet,
-} from 'state/ui/stats/agentPerformanceSlice'
+import {getPaginatedAgents, pageSet} from 'state/ui/stats/agentPerformanceSlice'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {NumberedPagination} from 'pages/common/components/Paginations'
-import {AgentAvatar} from 'pages/stats/AgentAvatar'
+import {AgentAvatar} from 'pages/stats/common/AgentAvatar'
 import {
     useAnsweredCallsMetricPerAgent,
     useMissedCallsMetricPerAgent,
@@ -44,11 +39,11 @@ import TeamAverageTalkTimeCell from './TeamAverageTalkTimeCell'
 import css from './VoiceAgentsTable.less'
 
 export const VoiceAgentsTable = () => {
-    const agents = useAppSelector<Pick<User, 'id'>[]>(getSortedAgents)
     const {
         currentPage,
         perPage,
         agents: paginatedAgents,
+        allAgents: agents,
     } = useAppSelector(getPaginatedAgents)
     const [ref, {width}] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)

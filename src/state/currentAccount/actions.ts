@@ -1,7 +1,7 @@
 import {AxiosError} from 'axios'
 import _capitalize from 'lodash/capitalize'
 import {Map} from 'immutable'
-import {AgentsTableViews} from 'pages/stats/AgentsTableConfig'
+import {AgentsTableViews} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     ChannelsTableColumns,
     ChannelsTableViews,

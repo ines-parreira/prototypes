@@ -8,7 +8,7 @@ import {agents} from 'fixtures/agents'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {agentsShoutoutsConfig} from 'pages/stats/AgentsShoutoutsConfig'
+import {agentsShoutoutsConfig} from 'pages/stats/support-performance/agents/AgentsShoutoutsConfig'
 import {RootState} from 'state/types'
 
 const mockStore = configureMockStore([thunk])
