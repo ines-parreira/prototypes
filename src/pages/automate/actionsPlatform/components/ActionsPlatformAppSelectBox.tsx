@@ -8,14 +8,16 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import {AppListData} from 'models/integration/types'
+import {IntegrationType} from 'models/integration/types'
+
+import {App} from '../types'
 
 import css from './ActionsPlatformAppSelectBox.less'
 
 type Props = {
-    apps: Pick<AppListData, 'id' | 'name' | 'app_icon'>[]
-    value?: AppListData['id']
-    onChange: (value: AppListData['id']) => void
+    apps: Extract<App, {type: IntegrationType.App}>[]
+    value?: App['id']
+    onChange: (value: App['id']) => void
     isDisabled?: boolean
 }
 
@@ -65,7 +67,7 @@ const ActionsPlatformAppSelectBox = ({
                                         shouldCloseOnSelect
                                     >
                                         <img
-                                            src={app.app_icon}
+                                            src={app.icon}
                                             alt={app.name}
                                             className={css.icon}
                                             title={app.name}

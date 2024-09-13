@@ -181,7 +181,7 @@ export default function ActionsRow({action}: Props) {
                 history.push(`${location.pathname}/edit/${action.id}`)
             }}
         >
-            {actionApp && (
+            {actionApp && actionApp.type !== 'app' && (
                 <AppIntegrationDisabledModal
                     templateDescription={action.description}
                     templateName={action.name}

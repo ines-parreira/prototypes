@@ -3,26 +3,33 @@ import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 
 import {createMemoryHistory} from 'history'
 import {useGetActionsApp} from 'models/workflows/queries'
-import {useGetApps} from 'models/integration/queries'
-import {dummyAppListData} from 'fixtures/apps'
 import {flushPromises, renderWithRouter} from 'utils/testing'
 
 import useEditActionsApp from '../hooks/useEditActionsApp'
+import useApps from '../hooks/useApps'
 import ActionsPlatformEditAppFormView from '../ActionsPlatformEditAppFormView'
 
 jest.mock('models/workflows/queries')
-jest.mock('models/integration/queries')
 jest.mock('../hooks/useEditActionsApp')
+jest.mock('../hooks/useApps')
 
 const mockUseGetActionsApp = jest.mocked(useGetActionsApp)
-const mockUseGetApps = jest.mocked(useGetApps)
+const mockUseApps = jest.mocked(useApps)
 const mockUseEditActionsApp = jest.mocked(useEditActionsApp)
 const mockEditActionsApp = jest.fn()
 
-mockUseGetApps.mockReturnValue({
-    data: [dummyAppListData],
-    isInitialLoading: false,
-} as unknown as ReturnType<typeof useGetApps>)
+mockUseApps.mockReturnValue({
+    apps: [
+        {
+            icon: 'https://ok.com/1.png',
+            id: 'someid',
+            name: 'My test app',
+            type: 'app',
+        },
+    ],
+    actionsApps: [],
+    isLoading: false,
+} as unknown as ReturnType<typeof useApps>)
 
 describe('<ActionsPlatformEditAppFormView />', () => {
     beforeEach(() => {
@@ -69,7 +76,7 @@ describe('<ActionsPlatformEditAppFormView />', () => {
         })
 
         expect(mockEditActionsApp).toHaveBeenCalledWith([
-            {id: dummyAppListData.id},
+            {id: 'someid'},
             {
                 id: 'someid',
                 auth_type: 'api-key',

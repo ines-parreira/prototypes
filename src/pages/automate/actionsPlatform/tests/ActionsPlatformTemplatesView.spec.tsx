@@ -49,8 +49,15 @@ mockUseApps.mockReturnValue({
             name: 'Recharge',
             type: IntegrationType.Recharge,
         },
+        {
+            icon: '/assets/img/integrations/app.png',
+            id: 'someid',
+            name: 'Test App',
+            type: IntegrationType.App,
+        },
     ],
     isLoading: false,
+    actionsApps: [],
 })
 mockUseGetDateAndTimeFormat.mockReturnValue('MM/DD/YYYY')
 
@@ -97,5 +104,15 @@ describe('<ActionsPlatformTemplatesView />', () => {
             expect(screen.getByText('test1')).toBeInTheDocument()
             expect(screen.queryByText('test2')).not.toBeInTheDocument()
         })
+    })
+
+    it('should show only relevant apps in app filter', () => {
+        render(<ActionsPlatformTemplatesView />)
+
+        act(() => {
+            fireEvent.click(screen.getByText('Select value...'))
+        })
+
+        expect(screen.queryByText('Test App')).not.toBeInTheDocument()
     })
 })

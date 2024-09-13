@@ -8,7 +8,7 @@ import {
     useGetStoreApps,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
-import {useGetApps} from 'models/integration/queries'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 
 import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
 import useAddStoreApp from '../hooks/useAddStoreApp'
@@ -19,7 +19,7 @@ import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 import CreateActionFormView from '../CreateActionFormView'
 
 jest.mock('models/workflows/queries')
-jest.mock('models/integration/queries')
+jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('../hooks/useGetActionAppIntegration')
 jest.mock('../hooks/useAddStoreApp')
 jest.mock('../hooks/useUpsertAction')
@@ -39,7 +39,7 @@ const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
-const mockUseGetApps = jest.mocked(useGetApps)
+const mockUseApps = jest.mocked(useApps)
 
 mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
     data: [
@@ -108,9 +108,9 @@ mockUseDeleteAction.mockReturnValue({
     isSuccess: false,
 } as unknown as ReturnType<typeof useDeleteAction>)
 mockUseGetAppImageUrl.mockReturnValue('https://example.com/app.png')
-mockUseGetApps.mockReturnValue({
-    data: [],
-} as unknown as ReturnType<typeof useGetApps>)
+mockUseApps.mockReturnValue({
+    apps: [],
+} as unknown as ReturnType<typeof useApps>)
 
 describe('<CreateActionFormView />', () => {
     it('should render template action form with prefilled API key', () => {

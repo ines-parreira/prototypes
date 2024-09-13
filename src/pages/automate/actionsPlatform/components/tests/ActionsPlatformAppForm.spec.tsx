@@ -3,15 +3,17 @@ import {act, fireEvent, screen} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
 
 import {flushPromises, renderWithRouter} from 'utils/testing'
-import {AppListData} from 'models/integration/types'
+import {IntegrationType} from 'models/integration/constants'
 
+import {App} from '../../types'
 import ActionsPlatformAppForm from '../ActionsPlatformAppForm'
 
 describe('<ActionsPlatformAppForm />', () => {
-    const app: Pick<AppListData, 'id' | 'name' | 'app_icon'> = {
-        app_icon: '/assets/img/integrations/app.png',
+    const app: App = {
+        icon: '/assets/img/integrations/app.png',
         id: 'someid',
         name: 'Test App',
+        type: IntegrationType.App,
     }
 
     it('should render a form with name, auth method & instructions URL', () => {

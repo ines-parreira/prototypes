@@ -6,12 +6,22 @@ export type ActionTemplate =
 export type ActionTemplateApp = ActionTemplate['apps'][number]
 export type ActionsApp = Awaited<Paths.AppControllerList.Responses.$200>[number]
 
-export type App = {
-    id: string
-    type:
-        | IntegrationType.Shopify
-        | IntegrationType.Recharge
-        | IntegrationType.App
-    name: string
-    icon: string
-}
+export type App =
+    | {
+          id: string
+          type: IntegrationType.Shopify
+          name: string
+          icon: string
+      }
+    | {
+          id: string
+          type: IntegrationType.Recharge
+          name: string
+          icon: string
+      }
+    | {
+          id: string
+          type: IntegrationType.App
+          name: string
+          icon: string
+      }

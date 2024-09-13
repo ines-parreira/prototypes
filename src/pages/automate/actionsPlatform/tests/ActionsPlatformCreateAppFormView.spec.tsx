@@ -2,25 +2,36 @@ import React from 'react'
 import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 
 import {createMemoryHistory} from 'history'
-import {useListActionsApps} from 'models/workflows/queries'
-import {useGetApps} from 'models/integration/queries'
-import {dummyAppListData} from 'fixtures/apps'
 import {flushPromises, renderWithRouter} from 'utils/testing'
 
 import useCreateActionsApp from '../hooks/useCreateActionsApp'
+import useApps from '../hooks/useApps'
 import ActionsPlatformCreateAppFormView from '../ActionsPlatformCreateAppFormView'
 
-jest.mock('models/workflows/queries')
 jest.mock('models/integration/queries')
 jest.mock('../hooks/useCreateActionsApp')
+jest.mock('../hooks/useApps')
 
-const mockUseListActionsApps = jest.mocked(useListActionsApps)
-const mockUseGetApps = jest.mocked(useGetApps)
+const mockUseApps = jest.mocked(useApps)
 const mockUseCreateActionsApp = jest.mocked(useCreateActionsApp)
 const mockCreateActionsApp = jest.fn()
 
-mockUseListActionsApps.mockReturnValue({
-    data: [
+mockUseApps.mockReturnValue({
+    apps: [
+        {
+            icon: 'https://ok.com/1.png',
+            id: 'someid',
+            name: 'My test app',
+            type: 'app',
+        },
+        {
+            icon: 'https://ok.com/2.png',
+            id: 'someid2',
+            name: 'My test app 2',
+            type: 'app',
+        },
+    ],
+    actionsApps: [
         {
             id: 'someid2',
             auth_type: 'api-key',
@@ -29,23 +40,8 @@ mockUseListActionsApps.mockReturnValue({
             },
         },
     ],
-    isInitialLoading: false,
-} as unknown as ReturnType<typeof useListActionsApps>)
-mockUseGetApps.mockReturnValue({
-    data: [
-        dummyAppListData,
-        {
-            app_icon: 'https://ok.com/2.png',
-            headline: 'Some tagline here',
-            categories: [],
-            id: 'someid2',
-            name: 'My test app 2',
-            is_installed: false,
-            is_featured: false,
-        },
-    ],
-    isInitialLoading: false,
-} as unknown as ReturnType<typeof useGetApps>)
+    isLoading: false,
+} as unknown as ReturnType<typeof useApps>)
 
 describe('<ActionsPlatformCreateAppFormView />', () => {
     beforeEach(() => {
@@ -93,7 +89,7 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
         })
 
         expect(mockCreateActionsApp).toHaveBeenCalledWith([
-            {id: dummyAppListData.id},
+            {id: 'someid'},
             {
                 id: 'someid',
                 auth_type: 'api-key',

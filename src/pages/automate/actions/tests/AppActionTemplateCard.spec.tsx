@@ -4,19 +4,18 @@ import {createMemoryHistory} from 'history'
 
 import {renderWithRouter} from 'utils/testing'
 import {useGetActionsApp} from 'models/workflows/queries'
-import {useGetApps} from 'models/integration/queries'
-import {dummyAppListData} from 'fixtures/apps'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 import AppActionTemplateCard from '../components/AppActionTemplateCard'
 
 jest.mock('models/workflows/queries')
-jest.mock('models/integration/queries')
+jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('../hooks/useGetAppImageUrl')
 
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
 const mockUseGetActionsApp = jest.mocked(useGetActionsApp)
-const mockUseGetApps = jest.mocked(useGetApps)
+const mockUseApps = jest.mocked(useApps)
 
 mockUseGetAppImageUrl.mockReturnValue('https://example.com/app.png')
 mockUseGetActionsApp.mockReturnValue({
@@ -28,10 +27,17 @@ mockUseGetActionsApp.mockReturnValue({
         },
     },
 } as unknown as ReturnType<typeof useGetActionsApp>)
-mockUseGetApps.mockReturnValue({
-    data: [dummyAppListData],
+mockUseApps.mockReturnValue({
+    apps: [
+        {
+            icon: 'https://ok.com/1.png',
+            id: 'someid',
+            name: 'My test app',
+            type: 'app',
+        },
+    ],
     isInitialLoading: false,
-} as unknown as ReturnType<typeof useGetApps>)
+} as unknown as ReturnType<typeof useApps>)
 
 describe('<AppActionTemplateCard />', () => {
     it('should render app action template card', () => {

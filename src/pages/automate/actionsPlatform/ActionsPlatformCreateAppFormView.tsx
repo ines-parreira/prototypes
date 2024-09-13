@@ -3,25 +3,24 @@ import _keyBy from 'lodash/keyBy'
 import {useHistory} from 'react-router-dom'
 
 import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
-import {useGetApps} from 'models/integration/queries'
-import {useListActionsApps} from 'models/workflows/queries'
+import {IntegrationType} from 'models/integration/constants'
 
 import ActionsPlatformAppForm from './components/ActionsPlatformAppForm'
 import useCreateActionsApp from './hooks/useCreateActionsApp'
+import useApps from './hooks/useApps'
 
 const ActionsPlatformCreateAppFormView = () => {
     const history = useHistory()
 
-    const {data: apps = [], isInitialLoading: isGetAppsInitialLoading} =
-        useGetApps()
     const {
-        data: actionsApps = [],
-        isInitialLoading: isActionsAppsInitialLoading,
-    } = useListActionsApps()
+        apps,
+        isLoading: isAppsLoading,
+        actionsApps,
+    } = useApps([IntegrationType.App])
     const {createActionsApp, isLoading: isCreateActionsAppLoading} =
         useCreateActionsApp()
 
-    const isLoading = isGetAppsInitialLoading || isActionsAppsInitialLoading
+    const isLoading = isAppsLoading
 
     const filteredApps = useMemo(() => {
         const actionsAppsByAppId = _keyBy(actionsApps, 'id')

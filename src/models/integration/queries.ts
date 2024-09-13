@@ -1,4 +1,4 @@
-import {useQuery, UseQueryOptions} from '@tanstack/react-query'
+import {useQuery, UseQueryOptions, useQueries} from '@tanstack/react-query'
 
 import {reportError} from 'utils/errors'
 
@@ -15,7 +15,7 @@ import {
 import GorgiasApi from 'services/gorgiasApi'
 
 import {Product} from 'constants/integrations/types/shopify'
-import {AppListData} from './types/app'
+import {AppData, AppListData} from './types/app'
 
 import {
     GetInstallationSnippetParams,
@@ -166,7 +166,7 @@ export const useGetApps = (
     overrides?: UseQueryOptions<Awaited<AppListData[]>>
 ) => {
     return useQuery({
-        queryKey: ['apps'],
+        queryKey: ['apps', 'list'],
         queryFn: async () => {
             const response = await client.get<
                 ApiListResponse<AppListData[], never>
@@ -176,5 +176,20 @@ export const useGetApps = (
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
         ...overrides,
+    })
+}
+
+export const useGetAppsByIds = (appIds: string[]) => {
+    return useQueries({
+        queries: appIds.map((appId) => ({
+            queryKey: ['apps', appId],
+            queryFn: async () => {
+                const response = await client.get<AppData>(`/api/apps/${appId}`)
+
+                return response.data
+            },
+            staleTime: STALE_TIME_MS,
+            cacheTime: CACHE_TIME_MS,
+        })),
     })
 }

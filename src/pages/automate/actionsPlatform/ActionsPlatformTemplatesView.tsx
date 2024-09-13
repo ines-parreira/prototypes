@@ -1,6 +1,7 @@
 import React, {useMemo, useState} from 'react'
-
 import {useHistory} from 'react-router-dom'
+import _keyBy from 'lodash/keyBy'
+
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'
 import Button from 'pages/common/components/button/Button'
@@ -22,7 +23,7 @@ const ActionsPlatformTemplatesView = () => {
     } = useGetWorkflowConfigurationTemplates({
         triggers: ['llm-prompt'],
     })
-    const {apps, isLoading: areAppsLoading} = useApps()
+    const {apps, isLoading: areAppsLoading, actionsApps} = useApps()
     const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
     const history = useHistory()
 
@@ -67,6 +68,13 @@ const ActionsPlatformTemplatesView = () => {
             }
         })
     }, [filteredTemplates, orderParam])
+    const filteredApps = useMemo(() => {
+        const actionsAppsById = _keyBy(actionsApps, 'id')
+
+        return apps.filter(
+            (app) => app.type !== 'app' || app.id in actionsAppsById
+        )
+    }, [apps, actionsApps])
 
     const isLoading = isGetTemplatesInitialLoading || areAppsLoading
 
@@ -102,7 +110,7 @@ const ActionsPlatformTemplatesView = () => {
                     </Button>
                 </div>
                 <ActionsPlatformTemplatesFilters
-                    apps={apps}
+                    apps={filteredApps}
                     app={app}
                     onAppChange={setApp}
                     name={name}

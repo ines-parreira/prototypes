@@ -2,11 +2,12 @@ import React from 'react'
 
 import {Redirect, useHistory, useParams} from 'react-router-dom'
 import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
-import {useGetApps} from 'models/integration/queries'
 import {useGetActionsApp} from 'models/workflows/queries'
+import {IntegrationType} from 'models/integration/constants'
 
 import ActionsPlatformAppForm from './components/ActionsPlatformAppForm'
 import useEditActionsApp from './hooks/useEditActionsApp'
+import useApps from './hooks/useApps'
 
 const ActionsPlatformEditAppFormView = () => {
     const history = useHistory()
@@ -14,14 +15,14 @@ const ActionsPlatformEditAppFormView = () => {
     const {id} = useParams<{
         id: string
     }>()
-    const {data: apps = [], isInitialLoading: isGetAppsInitialLoading} =
-        useGetApps()
+
     const {data: actionsApp, isInitialLoading: isGetActionsAppInitialLoading} =
         useGetActionsApp(id)
+    const {apps, isLoading: isAppsLoading} = useApps([IntegrationType.App])
     const {editActionsApp, isLoading: isEditActionsAppLoading} =
         useEditActionsApp(id)
 
-    const isLoading = isGetAppsInitialLoading || isGetActionsAppInitialLoading
+    const isLoading = isAppsLoading || isGetActionsAppInitialLoading
 
     if (!isLoading && !actionsApp) {
         return <Redirect to="/app/automation/actions-platform/apps" />

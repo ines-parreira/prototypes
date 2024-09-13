@@ -1,15 +1,17 @@
 import React from 'react'
-import {act, render, screen, fireEvent} from '@testing-library/react'
+import {act, fireEvent, render, screen} from '@testing-library/react'
 
-import {AppListData} from 'models/integration/types'
+import {IntegrationType} from 'models/integration/types'
 
+import {App} from '../../types'
 import ActionsPlatformAppSelectBox from '../ActionsPlatformAppSelectBox'
 
 describe('<ActionsPlatformAppSelectBox />', () => {
-    const app: Pick<AppListData, 'id' | 'name' | 'app_icon'> = {
-        app_icon: '/assets/img/integrations/app.png',
+    const app: App = {
+        icon: '/assets/img/integrations/app.png',
         id: 'someid',
         name: 'Test App',
+        type: IntegrationType.App,
     }
 
     it('should render app select box', () => {

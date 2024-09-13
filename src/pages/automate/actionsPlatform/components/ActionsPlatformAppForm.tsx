@@ -2,13 +2,13 @@ import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import {useHistory} from 'react-router-dom'
 
-import {AppListData} from 'models/integration/types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import {IntegrationType} from 'models/integration/constants'
 
-import {ActionsApp} from '../types'
+import {ActionsApp, App} from '../types'
 import ActionsPlatformAppSelectBox from './ActionsPlatformAppSelectBox'
 import ActionsPlatformAuthTypeSelectBox from './ActionsPlatformAuthTypeSelectBox'
 
@@ -16,7 +16,7 @@ import css from './ActionsPlatformAppForm.less'
 
 type Props = {
     value?: ActionsApp
-    apps: Pick<AppListData, 'id' | 'name' | 'app_icon'>[]
+    apps: Extract<App, {type: IntegrationType.App}>[]
     onSubmit: (value: ActionsApp) => void
     isSubmitting?: boolean
 }

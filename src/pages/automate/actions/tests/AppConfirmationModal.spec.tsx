@@ -1,19 +1,26 @@
 import React from 'react'
 import {render, screen, act, fireEvent} from '@testing-library/react'
 
-import {useGetApps} from 'models/integration/queries'
-import {dummyAppListData} from 'fixtures/apps'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 
 import AppConfirmationModal from '../components/AppConfirmationModal'
 
 jest.mock('models/integration/queries')
+jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 
-const mockUseGetApps = jest.mocked(useGetApps)
+const mockUseApps = jest.mocked(useApps)
 
-mockUseGetApps.mockReturnValue({
-    data: [dummyAppListData],
+mockUseApps.mockReturnValue({
+    apps: [
+        {
+            icon: 'https://ok.com/1.png',
+            id: 'someid',
+            name: 'My test app',
+            type: 'app',
+        },
+    ],
     isInitialLoading: false,
-} as unknown as ReturnType<typeof useGetApps>)
+} as unknown as ReturnType<typeof useApps>)
 
 describe('<AppConfirmationModal />', () => {
     it('should render modal details step', () => {

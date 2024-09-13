@@ -1,7 +1,6 @@
 import React, {useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {useListActionsApps} from 'models/workflows/queries'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'
 import Search from 'pages/common/components/Search'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
@@ -9,6 +8,7 @@ import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import Button from 'pages/common/components/button/Button'
+import {IntegrationType} from 'models/integration/constants'
 
 import ActionsPlatformAppsTableRow from './components/ActionsPlatformAppsTableRow'
 import useApps from './hooks/useApps'
@@ -18,10 +18,10 @@ import css from './ActionsPlatformAppsView.less'
 
 const ActionsPlatformAppsView = () => {
     const {
-        data: actionsApps = [],
-        isInitialLoading: isActionsAppsInitialLoading,
-    } = useListActionsApps()
-    const {apps = [], isLoading: isAppsLoading} = useApps()
+        apps = [],
+        isLoading: isAppsLoading,
+        actionsApps,
+    } = useApps([IntegrationType.App])
     const getAppFromActionsApp = useGetAppFromActionsApp({apps})
     const history = useHistory()
 
@@ -44,7 +44,7 @@ const ActionsPlatformAppsView = () => {
         })
     }, [actionsApps, name, getAppFromActionsApp])
 
-    const isLoading = isActionsAppsInitialLoading || isAppsLoading
+    const isLoading = isAppsLoading
 
     return (
         <AutomateListView

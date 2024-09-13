@@ -6,7 +6,7 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import InputField from 'pages/common/forms/input/InputField'
-import {useGetApps} from 'models/integration/queries'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import {logEvent, SegmentEvent} from 'common/segment'
 
 import {ActionAppConfiguration, ActionAppConnected} from '../types'
@@ -37,7 +37,7 @@ export default function AppConfirmationModal({
     isOpen,
     setOpen,
 }: Props) {
-    const {data: appsList = []} = useGetApps()
+    const {apps} = useApps()
 
     const [step, setStep] = useState<'details' | 'input'>(
         !apiKey ? 'details' : 'input'
@@ -48,7 +48,7 @@ export default function AppConfirmationModal({
     const isDirty = apiKeyInput !== apiKey
 
     useEffect(() => {
-        if (!isOpen && actionAppConfiguration.type === 'app') {
+        if (!isOpen) {
             setApiKeyInput(apiKey)
         }
     }, [apiKey, actionAppConfiguration.type, isOpen])
@@ -59,8 +59,8 @@ export default function AppConfirmationModal({
         step === 'details' ? 'Action details' : 'Connect 3rd party app'
 
     const app = useMemo(
-        () => appsList.find((app) => app.id === actionAppConfiguration.app_id),
-        [actionAppConfiguration, appsList]
+        () => apps.find((app) => app.id === actionAppConfiguration.app_id),
+        [actionAppConfiguration, apps]
     )
 
     useEffect(() => {
@@ -126,7 +126,6 @@ export default function AppConfirmationModal({
             <ModalActionsFooter
                 extra={
                     apiKey &&
-                    actionAppConfiguration.type === 'app' &&
                     step === 'input' && (
                         <Button
                             isDisabled={!isDirty}

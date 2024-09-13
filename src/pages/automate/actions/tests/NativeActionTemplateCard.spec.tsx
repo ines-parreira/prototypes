@@ -3,26 +3,19 @@ import {act, fireEvent, screen} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
 
 import {renderWithRouter} from 'utils/testing'
-import {useGetApps} from 'models/integration/queries'
 import {shopifyIntegration} from 'fixtures/integrations'
 
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 import NativeActionTemplateCard from '../components/NativeActionTemplateCard'
 import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
 
-jest.mock('models/integration/queries')
 jest.mock('../hooks/useGetAppImageUrl')
 jest.mock('../hooks/useGetActionAppIntegration')
 
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
 const mockUseGetActionAppIntegration = jest.mocked(useGetActionAppIntegration)
-const mockUseGetApps = jest.mocked(useGetApps)
 
 mockUseGetAppImageUrl.mockReturnValue('/assets/img/integrations/shopify.png')
-mockUseGetApps.mockReturnValue({
-    data: [],
-    isInitialLoading: false,
-} as unknown as ReturnType<typeof useGetApps>)
 
 describe('<NativeActionTemplateCard />', () => {
     it('should render native action template card', () => {

@@ -15,7 +15,6 @@ import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBui
 import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import PageHeader from 'pages/common/components/PageHeader'
 import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {useListActionsApps} from 'models/workflows/queries'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -97,11 +96,7 @@ const getInitialTemplate = () => {
 const ActionsPlatformCreateTemplateView = () => {
     const {isLoading: isEditActionTemplateLoading, createActionTemplate} =
         useCreateActionTemplate()
-    const {
-        data: actionsApps = [],
-        isInitialLoading: isActionsAppsInitialLoading,
-    } = useListActionsApps()
-    const {apps = [], isLoading: isAppsLoading} = useApps()
+    const {apps = [], isLoading: isAppsLoading, actionsApps} = useApps()
 
     const history = useHistory()
     const template = useMemo(() => getInitialTemplate(), [])
@@ -198,9 +193,7 @@ const ActionsPlatformCreateTemplateView = () => {
                             history.push('/app/automation/actions-platform')
                         }}
                         isDisabled={
-                            isEditActionTemplateLoading ||
-                            isActionsAppsInitialLoading ||
-                            isAppsLoading
+                            isEditActionTemplateLoading || isAppsLoading
                         }
                     >
                         Cancel
@@ -208,9 +201,7 @@ const ActionsPlatformCreateTemplateView = () => {
                     <Button
                         intent="secondary"
                         isDisabled={
-                            isEditActionTemplateLoading ||
-                            isActionsAppsInitialLoading ||
-                            isAppsLoading
+                            isEditActionTemplateLoading || isAppsLoading
                         }
                         onClick={() => {
                             void handleSave(true)
@@ -221,9 +212,7 @@ const ActionsPlatformCreateTemplateView = () => {
                     <Button
                         intent="primary"
                         isDisabled={
-                            isEditActionTemplateLoading ||
-                            isActionsAppsInitialLoading ||
-                            isAppsLoading
+                            isEditActionTemplateLoading || isAppsLoading
                         }
                         onClick={() => {
                             void handleSave(false)
@@ -250,9 +239,7 @@ const ActionsPlatformCreateTemplateView = () => {
                             apps={selectableApps}
                             value={templateApps}
                             onChange={setTemplateApps}
-                            isDisabled={
-                                isActionsAppsInitialLoading || isAppsLoading
-                            }
+                            isDisabled={isAppsLoading}
                         />
                     </ModalBody>
                     <ModalActionsFooter>
