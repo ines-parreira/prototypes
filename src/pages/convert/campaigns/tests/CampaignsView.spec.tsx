@@ -26,6 +26,9 @@ import {
 import {campaign} from 'fixtures/campaign'
 import {channelConnection} from 'fixtures/channelConnection'
 
+import * as useIsConvertScheduleCampaignEnabled from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
+import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+
 import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {Campaign} from '../types/Campaign'
 import {CampaignsView} from '../CampaignsView'
@@ -53,6 +56,11 @@ const useParamsMock = routerDom.useParams as jest.MockedFunction<
     typeof routerDom.useParams
 >
 
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('state/notifications/actions')
+
+jest.mock('pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled')
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
     return jest.fn(() => <div>Mocked Banner</div>)
@@ -80,6 +88,7 @@ describe('<CampaignsView/>', () => {
     )
     const mutateCreateMock = jest.fn()
     const mutateDeleteMock = jest.fn()
+    const mutateUpdateMock = jest.fn()
 
     const integration = {
         id: 118,
@@ -125,7 +134,42 @@ describe('<CampaignsView/>', () => {
         status: CampaignStatus.Inactive,
     }
 
-    const campaigns = [activeCampaign, inactiveCampaign] as Campaign[]
+    const campaignWithSchedule = {
+        ...campaign,
+        id: 'campaign-with-schedule',
+        name: 'campaign with schedule',
+        message_text: 'Campaign message 1',
+        message_html: 'Campaign message 1',
+        status: CampaignStatus.Active,
+        schedule: {
+            start_datetime: '2023-08-04T07:25:02.983Z',
+            end_datetime: null,
+            schedule_rule: CampaignScheduleRuleValueEnum.AllDay,
+            custom_schedule: null,
+        },
+    }
+
+    const campaignWithScheduleEndDate = {
+        ...campaign,
+        id: 'campaign-with-schedule',
+        name: 'campaign with schedule and end date',
+        message_text: 'Campaign message 1',
+        message_html: 'Campaign message 1',
+        status: CampaignStatus.Active,
+        schedule: {
+            start_datetime: '2023-08-04T07:25:02.983Z',
+            end_datetime: '2023-08-10T07:25:02.983Z',
+            schedule_rule: CampaignScheduleRuleValueEnum.AllDay,
+            custom_schedule: null,
+        },
+    }
+
+    const campaigns = [
+        activeCampaign,
+        inactiveCampaign,
+        campaignWithSchedule,
+        campaignWithScheduleEndDate,
+    ] as Campaign[]
 
     beforeEach(() => {
         localStorage.clear()
@@ -151,7 +195,7 @@ describe('<CampaignsView/>', () => {
         })
         useUpdateCampaignMock.mockImplementation(() => {
             return {
-                mutate: jest.fn(),
+                mutate: mutateUpdateMock,
             } as unknown as ReturnType<typeof useUpdateCampaign>
         })
         useDeleteCampaignMock.mockImplementation(() => {
@@ -159,6 +203,10 @@ describe('<CampaignsView/>', () => {
                 mutate: mutateDeleteMock,
             } as unknown as ReturnType<typeof useDeleteCampaign>
         })
+        jest.spyOn(
+            useIsConvertScheduleCampaignEnabled,
+            'useIsConvertScheduleCampaignEnabled'
+        ).mockImplementation(() => false)
     })
 
     afterEach(() => {
@@ -200,10 +248,23 @@ describe('<CampaignsView/>', () => {
             [CONVERT_ROUTE_PARAM_NAME]: '118',
         })
 
+        jest.spyOn(
+            useIsConvertScheduleCampaignEnabled,
+            'useIsConvertScheduleCampaignEnabled'
+        ).mockImplementation(() => true)
+
         const {getByText} = renderComponent(defaultState)
 
         expect(getByText('Super campaign')).toBeInTheDocument()
         expect(getByText('Not so good campaign')).toBeInTheDocument()
+        expect(
+            getByText('campaign with schedule and end date')
+        ).toBeInTheDocument()
+        expect(getByText('campaign with schedule')).toBeInTheDocument()
+
+        // Check the schedule column
+        expect(getByText('8/4/2023 - 8/10/2023')).toBeInTheDocument()
+        expect(getByText('8/4/2023 - No set')).toBeInTheDocument()
     })
 
     it('should display the success setup modal', () => {
@@ -329,14 +390,14 @@ describe('<CampaignsView/>', () => {
             const {getAllByTestId} = renderComponent(defaultState)
 
             const duplicateButtons = getAllByTestId('duplicate-icon-button')
-            expect(duplicateButtons.length).toBe(2)
+            expect(duplicateButtons.length).toBe(4)
         })
 
         it('should display the delete buttons correctly', () => {
             const {getAllByTestId} = renderComponent(defaultState)
 
             const deleteButtons = getAllByTestId('delete-icon-button')
-            expect(deleteButtons.length).toBe(2)
+            expect(deleteButtons.length).toBe(4)
         })
 
         it('should call the duplicate callback', async () => {
@@ -399,6 +460,40 @@ describe('<CampaignsView/>', () => {
                     },
                 ])
             })
+        })
+
+        it('should show additional notification when disabling campaign with schedule', () => {
+            jest.spyOn(
+                useIsConvertScheduleCampaignEnabled,
+                'useIsConvertScheduleCampaignEnabled'
+            ).mockImplementation(() => true)
+
+            useListCampaignMock.mockReturnValue({
+                data: [campaignWithSchedule],
+                isLoading: false,
+                isError: false,
+            } as any)
+
+            const {getByRole} = renderComponent(defaultState)
+
+            const toggleBtn = getByRole('switch')
+
+            act(() => {
+                fireEvent.click(toggleBtn)
+            })
+
+            expect(mutateUpdateMock).toHaveBeenCalledTimes(1)
+            expect(mutateUpdateMock).toHaveBeenCalledWith(
+                [
+                    undefined,
+                    {
+                        campaign_id: 'campaign-with-schedule',
+                        channelConnectionId: channelConnection.id,
+                    },
+                    {status: 'inactive'},
+                ],
+                {onSuccess: expect.any(Function)}
+            )
         })
     })
 

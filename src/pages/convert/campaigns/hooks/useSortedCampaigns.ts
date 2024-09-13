@@ -85,6 +85,30 @@ function sortByName(campaigns: Campaign[]): Campaign[] {
     })
 }
 
+function sortBySchedule(campaigns: Campaign[]): Campaign[] {
+    return campaigns.sort((a: Campaign, b: Campaign) => {
+        if (!a.schedule) {
+            return 1
+        }
+
+        if (!b.schedule) {
+            return -1
+        }
+
+        const a_start_datetime = a.schedule.start_datetime
+        const b_start_datetime = b.schedule.start_datetime
+        if (a_start_datetime > b_start_datetime) {
+            return 1
+        }
+
+        if (a_start_datetime < b_start_datetime) {
+            return -1
+        }
+
+        return 0
+    })
+}
+
 function updateSearchParams(params: Record<string, any>) {
     const currentParams = new URLSearchParams(location.search)
 
@@ -101,7 +125,7 @@ function updateSearchParams(params: Record<string, any>) {
     })
 }
 
-export type SortingKeys = 'created_datetime' | 'name'
+export type SortingKeys = 'created_datetime' | 'name' | 'schedule'
 
 export function useSortedCampaigns(campaigns: Campaign[]) {
     const params = useSearch<{
@@ -153,6 +177,13 @@ export function useSortedCampaigns(campaigns: Campaign[]) {
                 return sortByName(campaigns).reverse()
             }
             return sortByName(campaigns)
+        }
+
+        if (sortBy === 'schedule') {
+            if (sortDirection === OrderDirection.Asc) {
+                return sortBySchedule(campaigns).reverse()
+            }
+            return sortBySchedule(campaigns)
         }
 
         return sortActiveFirst(campaigns)

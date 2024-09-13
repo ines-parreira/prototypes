@@ -5,11 +5,16 @@ import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {useIsConvertScheduleCampaignEnabled} from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {useListCampaigns} from 'models/convert/campaign/queries'
@@ -46,9 +51,12 @@ export const CampaignsView = () => {
     const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
         useParams<ConvertRouteParams>()
 
+    const dispatch = useAppDispatch()
+
     const chatIntegrationId = parseInt(integrationId)
     const integration = useAppSelector(getIntegrationById(chatIntegrationId))
     const isConvertSubscriber: boolean = useIsConvertSubscriber()
+    const isCampaignScheduleEnabled = useIsConvertScheduleCampaignEnabled()
 
     const immutableIntegration = useMemo(
         () => fromJS(integration) as Map<any, any>,
@@ -79,21 +87,43 @@ export const CampaignsView = () => {
             const status = isActiveStatus(campaign.status)
                 ? CampaignStatus.Inactive
                 : CampaignStatus.Active
-
             if (!!channelConnection) {
-                void updateCampaign([
-                    undefined,
+                void updateCampaign(
+                    [
+                        undefined,
+                        {
+                            campaign_id: campaign.id,
+                            channelConnectionId: channelConnection.id,
+                        },
+                        {
+                            status: status,
+                        },
+                    ],
                     {
-                        campaign_id: campaign.id,
-                        channelConnectionId: channelConnection.id,
-                    },
-                    {
-                        status: status,
-                    },
-                ])
+                        onSuccess: () => {
+                            if (
+                                isCampaignScheduleEnabled &&
+                                campaign.schedule &&
+                                status === CampaignStatus.Inactive
+                            ) {
+                                void dispatch(
+                                    notify({
+                                        status: NotificationStatus.Warning,
+                                        message:
+                                            'Your campaign won’t be displayed on your <br> store anymore, regardless of the set schedule.',
+                                        allowHTML: true,
+                                        dismissAfter: 30000,
+                                        dismissible: true,
+                                        showDismissButton: true,
+                                    })
+                                )
+                            }
+                        },
+                    }
+                )
             }
         },
-        [updateCampaign, channelConnection]
+        [updateCampaign, channelConnection, isCampaignScheduleEnabled, dispatch]
     )
 
     const handleDuplicateCampaign = useCallback(

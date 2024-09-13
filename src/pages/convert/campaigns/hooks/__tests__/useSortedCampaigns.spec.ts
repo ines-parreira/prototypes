@@ -2,6 +2,8 @@ import {act, renderHook} from '@testing-library/react-hooks'
 
 import useSearch from 'hooks/useSearch'
 
+import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+
 import {useSortedCampaigns} from '../useSortedCampaigns'
 
 import {Campaign} from '../../types/Campaign'
@@ -27,6 +29,12 @@ const campaignA = {
     is_light: false,
     created_datetime: '2023-08-07T07:25:02.983Z',
     updated_datetime: '2023-08-07T07:25:02.983Z',
+    schedule: {
+        start_datetime: '2023-08-07T07:25:02.983Z',
+        end_datetime: null,
+        schedule_rule: CampaignScheduleRuleValueEnum.AllDay,
+        custom_schedule: null,
+    },
 } as Campaign
 
 const campaignB = {
@@ -47,6 +55,12 @@ const campaignB = {
     is_light: false,
     created_datetime: '2023-08-01T07:25:02.983Z',
     updated_datetime: '2023-08-01T07:25:02.983Z',
+    schedule: {
+        start_datetime: '2023-08-01T07:25:02.983Z',
+        end_datetime: null,
+        schedule_rule: CampaignScheduleRuleValueEnum.AllDay,
+        custom_schedule: null,
+    },
 } as Campaign
 
 const campaignC = {
@@ -67,6 +81,12 @@ const campaignC = {
     is_light: false,
     created_datetime: '2023-08-02T07:25:02.983Z',
     updated_datetime: '2023-08-02T07:25:02.983Z',
+    schedule: {
+        start_datetime: '2023-08-02T07:25:02.983Z',
+        end_datetime: null,
+        schedule_rule: CampaignScheduleRuleValueEnum.AllDay,
+        custom_schedule: null,
+    },
 } as Campaign
 
 const campaignD = {
@@ -87,6 +107,12 @@ const campaignD = {
     is_light: false,
     created_datetime: '2023-08-03T07:25:02.983Z',
     updated_datetime: '2023-08-03T07:25:02.983Z',
+    schedule: {
+        start_datetime: '2023-08-03T07:25:02.983Z',
+        end_datetime: null,
+        schedule_rule: CampaignScheduleRuleValueEnum.AllDay,
+        custom_schedule: null,
+    },
 } as Campaign
 
 const campaignE = {
@@ -107,6 +133,7 @@ const campaignE = {
     is_light: false,
     created_datetime: '2023-08-04T07:25:02.983Z',
     updated_datetime: '2023-08-04T07:25:02.983Z',
+    schedule: null,
 } as Campaign
 
 const campaigns: Campaign[] = [
@@ -244,6 +271,44 @@ describe('useSortedCampaigns()', () => {
             const {result} = renderHook(() => useSortedCampaigns(campaigns))
 
             expect(result.current.sortBy).toEqual('created_datetime')
+            expect(result.current.sortDirection).toEqual('asc')
+
+            expect(result.current.sortedCampaigns).toStrictEqual(ascOrder)
+        })
+    })
+
+    describe('sorting by schedule', () => {
+        const descOrder = [
+            campaignB,
+            campaignC,
+            campaignD,
+            campaignA,
+            campaignE,
+        ]
+
+        const ascOrder = [...descOrder].reverse()
+
+        it('should sort campaigns by schedule in descending order', () => {
+            ;(useSearch as jest.Mock).mockImplementation(() => ({
+                sortBy: 'schedule',
+                sortDirection: 'desc',
+            }))
+            const {result} = renderHook(() => useSortedCampaigns(campaigns))
+
+            expect(result.current.sortBy).toEqual('schedule')
+            expect(result.current.sortDirection).toEqual('desc')
+
+            expect(result.current.sortedCampaigns).toStrictEqual(descOrder)
+        })
+
+        it('should sort campaigns by schedule in ascending order', () => {
+            ;(useSearch as jest.Mock).mockImplementation(() => ({
+                sortBy: 'schedule',
+                sortDirection: 'asc',
+            }))
+            const {result} = renderHook(() => useSortedCampaigns(campaigns))
+
+            expect(result.current.sortBy).toEqual('schedule')
             expect(result.current.sortDirection).toEqual('asc')
 
             expect(result.current.sortedCampaigns).toStrictEqual(ascOrder)
