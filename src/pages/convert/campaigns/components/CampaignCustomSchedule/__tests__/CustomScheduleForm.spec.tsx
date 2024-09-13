@@ -3,6 +3,8 @@ import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import {DAYS_OPTIONS} from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
+
 import CustomScheduleForm from '../CustomScheduleForm'
 
 describe('<CustomScheduleForm />', () => {
@@ -10,6 +12,7 @@ describe('<CustomScheduleForm />', () => {
         const {getByText} = render(
             <CustomScheduleForm
                 onChange={jest.fn()}
+                options={DAYS_OPTIONS}
                 schedule={{
                     days: '1',
                     from_time: '09:00',
@@ -27,6 +30,7 @@ describe('<CustomScheduleForm />', () => {
         const {getByText, container} = render(
             <CustomScheduleForm
                 onChange={onChangeSpy}
+                options={DAYS_OPTIONS}
                 schedule={{
                     days: '1',
                     from_time: '09:00',

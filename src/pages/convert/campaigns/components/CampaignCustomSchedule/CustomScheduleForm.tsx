@@ -4,16 +4,16 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import InputField from 'pages/common/forms/input/InputField'
 
 import {CustomScheduleSchema} from 'pages/convert/campaigns/types/CampaignSchedule'
-import {DAYS_OPTIONS} from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
 
 import css from './CustomScheduleForm.less'
 
 type Props = {
+    options: {label: string; value: string}[]
     schedule: CustomScheduleSchema
     onChange: (data: CustomScheduleSchema) => void
 }
 
-const CustomScheduleForm: React.FC<Props> = ({schedule, onChange}) => {
+const CustomScheduleForm: React.FC<Props> = ({schedule, options, onChange}) => {
     const handleOnChange = (updatedValue: Partial<CustomScheduleSchema>) => {
         onChange({...schedule, ...updatedValue})
     }
@@ -23,7 +23,7 @@ const CustomScheduleForm: React.FC<Props> = ({schedule, onChange}) => {
             <SelectField
                 value={schedule.days}
                 onChange={(value) => handleOnChange({days: value as string})}
-                options={DAYS_OPTIONS}
+                options={options}
                 fixedWidth
             />
             <InputField

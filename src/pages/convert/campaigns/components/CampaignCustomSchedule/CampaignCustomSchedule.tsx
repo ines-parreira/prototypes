@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo, useCallback} from 'react'
 import {produce} from 'immer'
 
 import Button from 'pages/common/components/button/Button'
@@ -8,6 +8,7 @@ import {CustomScheduleSchema} from 'pages/convert/campaigns/types/CampaignSchedu
 import CustomScheduleForm from 'pages/convert/campaigns/components/CampaignCustomSchedule/CustomScheduleForm'
 import {
     DEFAULT_SCHEDULE_VALUE,
+    DAYS_OPTIONS,
     MAX_ENTRIES,
 } from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
 
@@ -38,23 +39,46 @@ const CampaignCustomSchedule: React.FC<Props> = ({
         )
     }
 
+    const alreadyTaken = useMemo(() => {
+        return customSchedule.map((schedule) => schedule.days)
+    }, [customSchedule])
+
     const addCustomSchedule = () => {
         if (customSchedule.length >= MAX_ENTRIES) {
             return
         }
 
+        const nextAllowedOption = DAYS_OPTIONS.filter(
+            (option) => !alreadyTaken.includes(option.value)
+        )[0]
+
         onChange(
             produce(customSchedule, (draft) => {
-                draft.push(DEFAULT_SCHEDULE_VALUE)
+                draft.push({
+                    ...DEFAULT_SCHEDULE_VALUE,
+                    days: nextAllowedOption.value,
+                })
             })
         )
     }
+
+    const allowedOptions = useCallback(
+        (currentSchedule: CustomScheduleSchema) => {
+            return DAYS_OPTIONS.filter(
+                (option) =>
+                    !alreadyTaken.includes(option.value) ||
+                    currentSchedule.days === option.value
+            )
+        },
+        [alreadyTaken]
+    )
 
     return (
         <>
             {customSchedule.map((schedule, idx) => (
                 <div className={css.formLine} key={idx}>
                     <CustomScheduleForm
+                        options={allowedOptions(schedule)}
                         schedule={schedule}
                         onChange={handleOnChange(idx)}
                     />
@@ -77,6 +101,7 @@ const CampaignCustomSchedule: React.FC<Props> = ({
                     intent="secondary"
                     size="medium"
                     onClick={addCustomSchedule}
+                    isDisabled={customSchedule.length >= MAX_ENTRIES}
                 >
                     <ButtonIconLabel icon="add">
                         Add Date-Specific Hours
