@@ -1,9 +1,7 @@
 import React from 'react'
 import {cleanup, fireEvent, render, screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import {isDesktopDevice, isDeviceReady} from 'utils/device'
 import {assumeMock} from 'utils/testing'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useHasPhone from 'core/app/hooks/useHasPhone'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
@@ -29,9 +27,6 @@ describe('<PlaceCallNavbarButton />', () => {
     beforeEach(() => {
         isDesktopDeviceMock.mockReturnValue(true)
         useHasPhoneMock.mockReturnValue(true)
-        mockFlags({
-            [FeatureFlagKey.OutboundDialer]: true,
-        })
         useVoiceDeviceMock.mockReturnValue({device: {}} as any)
         isDeviceReadyMock.mockReturnValue(true)
 
@@ -63,15 +58,6 @@ describe('<PlaceCallNavbarButton />', () => {
 
     it('should not render when there are no phone integrations', () => {
         useHasPhoneMock.mockReturnValue(false)
-
-        renderComponent()
-        expect(screen.queryByText('Place call')).toBeNull()
-    })
-
-    it('should not render when OutboundDialer flag is disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.OutboundDialer]: false,
-        })
 
         renderComponent()
         expect(screen.queryByText('Place call')).toBeNull()

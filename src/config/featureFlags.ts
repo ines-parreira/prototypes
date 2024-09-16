@@ -107,7 +107,6 @@ export enum FeatureFlagKey {
     ObservabilityShowAILibraryForMultiBrands = 'show-ai-library-for-multi-brands',
     ObservabilityTicketTimeToHandle = 'observability-ticket-time-to-handle',
     OfficeHours = 'office-hours',
-    OutboundDialer = 'outbound-dialer',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     PublishFlowFromFlowBuilder = 'publish-flow-from-flow-builder',
     RecordingTranscriptions = 'recording-transcriptions',
