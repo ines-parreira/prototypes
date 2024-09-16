@@ -1,20 +1,36 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import _noop from 'lodash/noop'
 import {
     VoiceCallRecording,
     VoiceCallRecordingErrorCode,
     VoiceCallRecordingTranscriptionStatus,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'
+import {assumeMock} from 'utils/testing'
+import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
+import {VoiceRecordingsContextState} from 'pages/integrations/integration/components/voice/VoiceRecordingsContext'
 import VoiceCallTranscription from '../VoiceCallTranscription'
 
 jest.mock('../TranscriptionData', () => ({
     __esModule: true,
     default: () => 'completed transcription',
 }))
+jest.mock('pages/common/hooks/useVoiceRecordingsContext')
+const mockedUseVoiceRecordingsContext = assumeMock(useVoiceRecordingsContext)
 
 describe('VoiceCallTranscription', () => {
+    const mockToggleTranscription = jest.fn()
+    mockedUseVoiceRecordingsContext.mockReturnValue({
+        isTranscriptionOpened: () => true,
+        isRecordingOpened: () => true,
+        toggleTranscriptionOpened: mockToggleTranscription,
+        openedRecordings: [],
+        closedTranscriptions: [],
+        toggleRecordingOpened: _noop,
+    } as VoiceRecordingsContextState)
+
     beforeEach(() => {
         resetLDMocks()
         mockFlags({RecordingTranscriptions: true})
@@ -147,6 +163,19 @@ describe('VoiceCallTranscription', () => {
             VoiceCallRecordingTranscriptionStatus.Completed,
             recordingType
         )
+
         expect(getByText('completed transcription')).toBeInTheDocument()
+
+        // toggle the content
+        fireEvent.click(
+            getByText(
+                `${
+                    recordingType === VoiceCallRecordingType.Recording
+                        ? 'Call'
+                        : 'Voicemail'
+                } transcription`
+            )
+        )
+        expect(mockToggleTranscription).toHaveBeenCalledWith(1)
     })
 })

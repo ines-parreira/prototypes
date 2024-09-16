@@ -9,6 +9,7 @@ import {TicketElement, TicketMessage} from 'models/ticket/types'
 import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 import {getDisplayHistory} from 'state/ticket/selectors'
+import VoiceRecordingsProvider from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
 
 import {
     useExpandedMessages,
@@ -133,27 +134,31 @@ export default function TicketBody({
     )
 
     return (
-        <MessageQuoteContext.Provider
-            value={{
-                expandedQuotes: expandedMessages,
-                toggleQuote: toggleMessage,
-            }}
-        >
-            <Virtuoso<
-                TicketElement | TicketMessage[] | 'header',
-                TicketFooterContext
+        <VoiceRecordingsProvider>
+            <MessageQuoteContext.Provider
+                value={{
+                    expandedQuotes: expandedMessages,
+                    toggleQuote: toggleMessage,
+                }}
             >
-                ref={virtuosoRef}
-                className={classnames(css.wrapper)}
-                components={virtuosoComponents}
-                context={footerContext}
-                customScrollParent={customScrollParentRef?.current || undefined}
-                data={groupedElements}
-                followOutput={getFollowOutput}
-                initialTopMostItemIndex={{index: 'LAST'}}
-                itemContent={getItemContent}
-                topItemCount={1}
-            />
-        </MessageQuoteContext.Provider>
+                <Virtuoso<
+                    TicketElement | TicketMessage[] | 'header',
+                    TicketFooterContext
+                >
+                    ref={virtuosoRef}
+                    className={classnames(css.wrapper)}
+                    components={virtuosoComponents}
+                    context={footerContext}
+                    customScrollParent={
+                        customScrollParentRef?.current || undefined
+                    }
+                    data={groupedElements}
+                    followOutput={getFollowOutput}
+                    initialTopMostItemIndex={{index: 'LAST'}}
+                    itemContent={getItemContent}
+                    topItemCount={1}
+                />
+            </MessageQuoteContext.Provider>
+        </VoiceRecordingsProvider>
     )
 }

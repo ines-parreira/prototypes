@@ -4,13 +4,13 @@ import Avatar from 'pages/common/components/Avatar/Avatar'
 import {User} from 'config/types/user'
 import {Customer} from 'models/customer/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-
 import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
-import css from './TicketVoiceCallContainer.less'
+import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
 import TicketVoiceCallDuration from './TicketVoiceCallDuration'
 import TicketVoiceCallAudios from './TicketVoiceCallAudios'
-import CollapsibleDetails from './CollapsibleDetails'
 import TicketVoiceCallSource from './TicketVoiceCallSource'
+import ControlledCollapsibleDetails from './ControlledCollapsibleDetails'
+import css from './TicketVoiceCallContainer.less'
 
 type Props = {
     header: JSX.Element
@@ -31,6 +31,9 @@ export default function TicketVoiceCallContainer({
     icon,
     source,
 }: Props) {
+    const {isRecordingOpened, toggleRecordingOpened} =
+        useVoiceRecordingsContext()
+
     return (
         <div className={css.container}>
             <Avatar name={user?.name} size={36} />
@@ -57,7 +60,11 @@ export default function TicketVoiceCallContainer({
                     <TicketVoiceCallDuration voiceCall={voiceCall} />
                 </div>
                 {voiceCall.has_call_recording && (
-                    <CollapsibleDetails
+                    <ControlledCollapsibleDetails
+                        isOpen={isRecordingOpened(voiceCall.id)}
+                        setIsOpen={() => {
+                            toggleRecordingOpened(voiceCall.id)
+                        }}
                         title={
                             <div className={css.audioTitle}>
                                 <i className="material-icons">graphic_eq</i>
@@ -69,10 +76,14 @@ export default function TicketVoiceCallContainer({
                             voiceCall={voiceCall}
                             type={VoiceCallRecordingType.Recording}
                         />
-                    </CollapsibleDetails>
+                    </ControlledCollapsibleDetails>
                 )}
                 {voiceCall.has_voicemail && (
-                    <CollapsibleDetails
+                    <ControlledCollapsibleDetails
+                        isOpen={isRecordingOpened(voiceCall.id)}
+                        setIsOpen={() => {
+                            toggleRecordingOpened(voiceCall.id)
+                        }}
                         title={
                             <div className={css.audioTitle}>
                                 <i className="material-icons">voicemail</i>
@@ -84,7 +95,7 @@ export default function TicketVoiceCallContainer({
                             voiceCall={voiceCall}
                             type={VoiceCallRecordingType.Voicemail}
                         />
-                    </CollapsibleDetails>
+                    </ControlledCollapsibleDetails>
                 )}
             </div>
         </div>

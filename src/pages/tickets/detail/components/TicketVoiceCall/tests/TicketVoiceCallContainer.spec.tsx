@@ -1,7 +1,9 @@
 import React, {ComponentProps} from 'react'
-import {render, RenderResult} from '@testing-library/react'
+import {render, fireEvent, RenderResult} from '@testing-library/react'
 import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
 import {User} from 'config/types/user'
+import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
+import {assumeMock} from 'utils/testing'
 
 import TicketVoiceCallContainer from '../TicketVoiceCallContainer'
 
@@ -16,23 +18,16 @@ const voiceCall = {
 const icon = 'phone'
 
 jest.mock(
-    '../CollapsibleDetails',
-    () =>
-        ({children, title}: {children: any; title: any}) =>
-            (
-                <div>
-                    <div>title: {title}</div>
-                    <div>{children}</div>
-                </div>
-            )
-)
-
-jest.mock(
     '../TicketVoiceCallAudios',
     () =>
         ({type}: {type: VoiceCallRecordingType}) =>
             <div>Audio {type}</div>
 )
+jest.mock('../VoiceCallTranscription', () => {
+    return ({type}: {audio: any; type: VoiceCallRecordingType}) => (
+        <div>Audio {type}</div>
+    )
+})
 
 jest.mock('../TicketVoiceCallDuration', () => () => <div>Duration</div>)
 
@@ -46,6 +41,9 @@ jest.mock(
 jest.mock('pages/common/components/Avatar/Avatar', () => () => (
     <div>Avatar</div>
 ))
+
+jest.mock('pages/common/hooks/useVoiceRecordingsContext')
+const mockedUseVoiceRecordingsContext = assumeMock(useVoiceRecordingsContext)
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof TicketVoiceCallContainer>>
@@ -68,6 +66,16 @@ const renderComponent = (
 }
 
 describe('TicketVoiceCallContainer', () => {
+    const mockToggleRecording = jest.fn()
+    mockedUseVoiceRecordingsContext.mockReturnValue({
+        isTranscriptionOpened: () => false,
+        isRecordingOpened: () => false,
+        toggleTranscriptionOpened: () => {},
+        openedRecordings: [],
+        closedTranscriptions: [],
+        toggleRecordingOpened: mockToggleRecording,
+    })
+
     it('renders the component with all props', () => {
         const {getByText} = renderComponent({
             voiceCall: {
@@ -85,9 +93,7 @@ describe('TicketVoiceCallContainer', () => {
         ).toBeInTheDocument()
         expect(getByText('Duration')).toBeInTheDocument()
         expect(getByText('Call Recording')).toBeInTheDocument()
-        expect(getByText('Audio call-recording')).toBeInTheDocument()
         expect(getByText('Voicemail left')).toBeInTheDocument()
-        expect(getByText('Audio voicemail')).toBeInTheDocument()
     })
 
     it('renders the component without call recording or voicemail', () => {
@@ -97,5 +103,29 @@ describe('TicketVoiceCallContainer', () => {
 
         expect(queryByText('Call Recording')).not.toBeInTheDocument()
         expect(queryByText('Voicemail left')).not.toBeInTheDocument()
+    })
+
+    it('properly collapses audio voicemail', () => {
+        const {getByText} = renderComponent({
+            voiceCall: {
+                ...voiceCall,
+                has_voicemail: true,
+            },
+        })
+
+        fireEvent.click(getByText('Voicemail left'))
+        expect(mockToggleRecording).toHaveBeenCalledWith(voiceCall.id)
+    })
+
+    it('properly collapses audio call recording', () => {
+        const {getByText} = renderComponent({
+            voiceCall: {
+                ...voiceCall,
+                has_call_recording: true,
+            },
+        })
+
+        fireEvent.click(getByText('Call Recording'))
+        expect(mockToggleRecording).toHaveBeenCalledWith(voiceCall.id)
     })
 })

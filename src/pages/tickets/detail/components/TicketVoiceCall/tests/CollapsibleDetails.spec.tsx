@@ -13,11 +13,7 @@ describe('CollapsibleDetails', () => {
     it('should only render title in initial state', () => {
         const title = <h1>Test Title</h1>
         const children = <p>Test Children</p>
-        const {getByText, getByTestId, queryByText} = renderComponent(
-            title,
-            children
-        )
-        expect(getByTestId('collapsible-details-header')).toBeInTheDocument()
+        const {getByText, queryByText} = renderComponent(title, children)
         expect(getByText('Test Title')).toBeInTheDocument()
         expect(queryByText('Test Children')).not.toBeInTheDocument()
     })
@@ -25,19 +21,16 @@ describe('CollapsibleDetails', () => {
     it('should toggle the content when the header is clicked', () => {
         const title = <h1>Test Title</h1>
         const children = <p>Test Children</p>
-        const {getByText, queryByText, getByTestId} = renderComponent(
-            title,
-            children
-        )
+        const {getByText, queryByText} = renderComponent(title, children)
 
         expect(getByText('keyboard_arrow_down')).toBeInTheDocument()
         expect(queryByText('Test Children')).not.toBeInTheDocument()
 
-        fireEvent.click(getByTestId('collapsible-details-header'))
+        fireEvent.click(getByText('Test Title'))
         expect(getByText('keyboard_arrow_up')).toBeInTheDocument()
         expect(getByText('Test Children')).toBeInTheDocument()
 
-        fireEvent.click(getByTestId('collapsible-details-header'))
+        fireEvent.click(getByText('Test Title'))
         expect(getByText('keyboard_arrow_down')).toBeInTheDocument()
         expect(queryByText('Test Children')).not.toBeInTheDocument()
     })

@@ -7,8 +7,9 @@ import {
 } from 'models/voiceCall/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
 import TranscriptionData from './TranscriptionData'
-import CollapsibleDetails from './CollapsibleDetails'
+import ControlledCollapsibleDetails from './ControlledCollapsibleDetails'
 import css from './TranscriptionData.less'
 
 type Props = {
@@ -17,6 +18,8 @@ type Props = {
 }
 
 export default function VoiceCallTranscription({audio, type}: Props) {
+    const {isTranscriptionOpened, toggleTranscriptionOpened} =
+        useVoiceRecordingsContext()
     const useCallRecordings =
         !!useFlags()[FeatureFlagKey.RecordingTranscriptions]
 
@@ -31,8 +34,9 @@ export default function VoiceCallTranscription({audio, type}: Props) {
         case VoiceCallRecordingTranscriptionStatus.Completed:
             return (
                 <div className={css.collapsibleTranscription}>
-                    <CollapsibleDetails
-                        isInitiallyOpen={true}
+                    <ControlledCollapsibleDetails
+                        isOpen={isTranscriptionOpened(audio.id)}
+                        setIsOpen={() => toggleTranscriptionOpened(audio.id)}
                         title={
                             <div className={css.title}>
                                 <i className={'material-icons'}>call</i>
@@ -49,7 +53,7 @@ export default function VoiceCallTranscription({audio, type}: Props) {
                             recordingType={type}
                             recordingId={audio.id}
                         />
-                    </CollapsibleDetails>
+                    </ControlledCollapsibleDetails>
                 </div>
             )
         case VoiceCallRecordingTranscriptionStatus.Requested:
