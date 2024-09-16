@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentType} from 'react'
 import {render} from '@testing-library/react'
 import * as apiQueries from '@gorgias/api-queries'
 import {assumeMock} from 'utils/testing'
@@ -31,6 +31,10 @@ jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
 jest.mock('state/currentUser/selectors')
 jest.mock('state/currentAccount/selectors')
+jest.mock(
+    'pages/common/utils/withProductEnabledPaywall',
+    () => () => (Component: ComponentType<Record<string, unknown>>) => Component
+)
 const getTimezoneMock = assumeMock(getTimezone)
 const getBusinessHoursSettingsMock = assumeMock(getBusinessHoursSettings)
 

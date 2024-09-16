@@ -24,4 +24,22 @@ describe('<VoiceStatsNavbarItem />', () => {
         expect(getByText(defaultProps.title)).toBeInTheDocument()
         expect(getByText('arrow_circle_up')).toBeInTheDocument()
     })
+
+    it('should render with NEW badge', () => {
+        mockUseAppSelector.mockReturnValue(true)
+        const {getByText} = renderWithRouter(
+            <VoiceStatsNavbarItem {...defaultProps} isNew />
+        )
+        expect(getByText(defaultProps.title)).toBeInTheDocument()
+        expect(getByText('NEW')).toBeInTheDocument()
+    })
+
+    it('should render without badge', () => {
+        mockUseAppSelector.mockReturnValue(true)
+        const {queryByText} = renderWithRouter(
+            <VoiceStatsNavbarItem {...defaultProps} />
+        )
+        expect(queryByText('NEW')).not.toBeInTheDocument()
+        expect(queryByText('arrow_circle_up')).not.toBeInTheDocument()
+    })
 })

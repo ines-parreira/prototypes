@@ -8,14 +8,16 @@ import cssNavbar from 'assets/css/navbar.less'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import {currentAccountHasProduct} from 'state/billing/selectors'
 import {ProductType} from 'models/billing/types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 type Props = {
     to: string
     title: string
     commonNavLinkProps: Partial<NavbarLinkProps>
+    isNew?: boolean
 }
 
-function VoiceStatsNavbarItem({to, title, commonNavLinkProps}: Props) {
+function VoiceStatsNavbarItem({to, title, commonNavLinkProps, isNew}: Props) {
     const hasVoiceFeature = useAppSelector(
         currentAccountHasProduct(ProductType.Voice)
     )
@@ -29,7 +31,18 @@ function VoiceStatsNavbarItem({to, title, commonNavLinkProps}: Props) {
         >
             <NavbarLink {...commonNavLinkProps} to={to}>
                 {title}
-                {!hasVoiceFeature && <UpgradeIcon />}
+                {hasVoiceFeature ? (
+                    isNew ? (
+                        <Badge
+                            type={ColorType.Blue}
+                            className={cssNavbar.badge}
+                        >
+                            NEW
+                        </Badge>
+                    ) : null
+                ) : (
+                    <UpgradeIcon />
+                )}
             </NavbarLink>
         </div>
     )

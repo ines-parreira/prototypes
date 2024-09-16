@@ -9,6 +9,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 import {FilterKey} from 'models/stat/types'
 
+import {ProductType} from 'models/billing/types'
+import {AccountFeature} from 'state/currentAccount/types'
+import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
+import {PaywallConfig, paywallConfigs} from 'config/paywalls'
 import {
     LIVE_VOICE_PAGE_TITLE,
     LIVE_VOICE_PAGE_TITLE_DESCRIPTION,
@@ -16,7 +20,7 @@ import {
 import LiveVoiceMetrics from '../components/LiveVoice/LiveVoiceMetrics'
 import css from './LiveVoice.less'
 
-export default function LiveVoice() {
+function LiveVoice() {
     const {cleanStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithLogicalOperatorsWithTimezone
     )
@@ -67,3 +71,15 @@ export default function LiveVoice() {
         </StatsPage>
     )
 }
+
+export default withProductEnabledPaywall(
+    ProductType.Voice,
+    AccountFeature.PhoneNumber,
+    undefined,
+    {
+        [AccountFeature.PhoneNumber]: {
+            ...paywallConfigs[AccountFeature.PhoneNumber],
+            pageHeader: LIVE_VOICE_PAGE_TITLE,
+        } as PaywallConfig,
+    }
+)(LiveVoice)

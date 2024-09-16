@@ -59,25 +59,12 @@ export default function StatsNavbarView() {
                         </NavbarLink>
                     </div>
                     {liveCallQueueEnabled && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
-                            )}
-                        >
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/live-voice"
-                            >
-                                Voice
-                                <Badge
-                                    type={ColorType.Blue}
-                                    className={cssNavbar.badge}
-                                >
-                                    {NEW_NAV_LABEL}
-                                </Badge>
-                            </NavbarLink>
-                        </div>
+                        <VoiceStatsNavbarItem
+                            to="/app/stats/live-voice"
+                            title="Voice"
+                            commonNavLinkProps={COMMON_NAV_LINK_PROPS}
+                            isNew
+                        />
                     )}
                 </div>
             </NavbarBlock>
