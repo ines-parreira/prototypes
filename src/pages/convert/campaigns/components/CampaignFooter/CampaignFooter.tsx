@@ -37,6 +37,7 @@ type Props = {
     isUpdate?: boolean
     disableActions?: boolean
     canCreateABVariants?: boolean
+    aBVariantsDisabled?: boolean
     allowActivate?: boolean
 
     onSave: (activate?: boolean) => void
@@ -58,6 +59,7 @@ export const CampaignFooter = ({
     disableActions = false,
     canCreateABVariants = false,
     allowActivate = true,
+    aBVariantsDisabled = false,
     onSave,
     onDiscard,
     onDelete,
@@ -186,18 +188,30 @@ export const CampaignFooter = ({
                     {(!isShopifyStore || !isLightCampaign) &&
                         !isCreateDisabled &&
                         canCreateABVariants && (
-                            <Button
-                                intent="secondary"
-                                aria-label="Create A/B Test"
-                                isDisabled={disableActions}
-                                onClick={onCreateButtonClick}
-                                className={classnames({
-                                    'btn-loading':
-                                        actionInProgress === 'createVariant',
-                                })}
-                            >
-                                Create A/B Test
-                            </Button>
+                            <>
+                                <Button
+                                    id="create-ab-variant-button"
+                                    intent="secondary"
+                                    aria-label="Create A/B Test"
+                                    isDisabled={
+                                        disableActions || aBVariantsDisabled
+                                    }
+                                    onClick={onCreateButtonClick}
+                                    className={classnames({
+                                        'btn-loading':
+                                            actionInProgress ===
+                                            'createVariant',
+                                    })}
+                                >
+                                    Create A/B Test
+                                </Button>
+                                {aBVariantsDisabled && (
+                                    <Tooltip target="create-ab-variant-button">
+                                        Converting a scheduled campaign into an
+                                        A/B test isn’t possible.
+                                    </Tooltip>
+                                )}
+                            </>
                         )}
                 </div>
 

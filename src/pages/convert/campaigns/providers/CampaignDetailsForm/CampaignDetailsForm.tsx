@@ -773,6 +773,10 @@ export const CampaignDetailsForm = ({
                                             canCreateABVariants={
                                                 canCreateABVariants
                                             }
+                                            aBVariantsDisabled={
+                                                canCreateABVariants &&
+                                                !!campaignData.schedule
+                                            }
                                             isCreateDisabled={isCreateDisabled}
                                             isUpdate={isEditMode}
                                             onSave={handleSaveCampaign}

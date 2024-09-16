@@ -109,7 +109,7 @@ describe('CampaignPublishScheduleStep', () => {
             },
         })
 
-        expect(getByText('Publish Now')).toBeInTheDocument()
+        expect(getByText('Publish now')).toBeInTheDocument()
         expect(getByText('Save and publish later')).toBeInTheDocument()
         expect(getByText(/Schedule/)).toBeInTheDocument()
 
@@ -200,7 +200,7 @@ describe('CampaignPublishScheduleStep', () => {
 
         updateCampaignSpy.mockReset()
 
-        const publishNowOption = getByText(/Publish Now/)
+        const publishNowOption = getByText(/Publish now/)
         act(() => {
             userEvent.click(publishNowOption)
         })

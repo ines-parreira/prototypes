@@ -1,19 +1,33 @@
 import React from 'react'
 import moment from 'moment-timezone'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import {act, fireEvent, render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import {RootState} from 'state/types'
+import {initialState} from 'state/stats/statsSlice'
+
 import CampaignSchedulePicker from '../CampaignSchedulePicker'
 
+const mockStore = configureMockStore([thunk])
+
 describe('CampaignSchedulePicker', () => {
+    const defaultState = {
+        stats: initialState,
+    } as RootState
+
     it('renders', () => {
         const {getByText} = render(
-            <CampaignSchedulePicker
-                timezone="UTC"
-                startDate={'2024-09-10'}
-                endDate={null}
-                onChange={jest.fn()}
-            />
+            <Provider store={mockStore(defaultState)}>
+                <CampaignSchedulePicker
+                    timezone="UTC"
+                    startDate={'2024-09-10'}
+                    endDate={null}
+                    onChange={jest.fn()}
+                />
+            </Provider>
         )
 
         expect(getByText('From')).toBeInTheDocument()
@@ -22,12 +36,14 @@ describe('CampaignSchedulePicker', () => {
 
     it('renders notice if not end date is not definied', () => {
         const {getByText} = render(
-            <CampaignSchedulePicker
-                timezone="UTC"
-                startDate={'2024-09-10'}
-                endDate={null}
-                onChange={jest.fn()}
-            />
+            <Provider store={mockStore(defaultState)}>
+                <CampaignSchedulePicker
+                    timezone="UTC"
+                    startDate={'2024-09-10'}
+                    endDate={null}
+                    onChange={jest.fn()}
+                />
+            </Provider>
         )
 
         expect(
@@ -40,12 +56,14 @@ describe('CampaignSchedulePicker', () => {
     it('end date is definied and user can clear it', () => {
         const onChangeSpy = jest.fn()
         const {getByText, container} = render(
-            <CampaignSchedulePicker
-                timezone="UTC"
-                startDate={'2024-09-10'}
-                endDate={'2024-09-10'}
-                onChange={onChangeSpy}
-            />
+            <Provider store={mockStore(defaultState)}>
+                <CampaignSchedulePicker
+                    timezone="UTC"
+                    startDate={'2024-09-10'}
+                    endDate={'2024-09-10'}
+                    onChange={onChangeSpy}
+                />
+            </Provider>
         )
 
         const input = container.querySelector(
@@ -67,12 +85,14 @@ describe('CampaignSchedulePicker', () => {
         const onChangeSpy = jest.fn()
 
         const {getByLabelText, getAllByText, getAllByRole} = render(
-            <CampaignSchedulePicker
-                timezone="UTC"
-                startDate={'2024-09-10'}
-                endDate={'2024-09-10'}
-                onChange={onChangeSpy}
-            />
+            <Provider store={mockStore(defaultState)}>
+                <CampaignSchedulePicker
+                    timezone="UTC"
+                    startDate={'2024-09-10'}
+                    endDate={'2024-09-10'}
+                    onChange={onChangeSpy}
+                />
+            </Provider>
         )
 
         // Open calendar
@@ -99,12 +119,14 @@ describe('CampaignSchedulePicker', () => {
         const onChangeSpy = jest.fn()
 
         const {getByLabelText, getAllByText, getAllByRole} = render(
-            <CampaignSchedulePicker
-                timezone="UTC"
-                startDate={'2024-09-10'}
-                endDate={null}
-                onChange={onChangeSpy}
-            />
+            <Provider store={mockStore(defaultState)}>
+                <CampaignSchedulePicker
+                    timezone="UTC"
+                    startDate={'2024-09-10'}
+                    endDate={null}
+                    onChange={onChangeSpy}
+                />
+            </Provider>
         )
 
         // Open calendar

@@ -65,7 +65,11 @@ export const CampaignPublishScheduleStep = ({
         useState<ScheduleSchema>({
             start_datetime:
                 campaign.schedule?.start_datetime ??
-                moment().format(DATETIME_FORMAT),
+                // First get current date in TZ then get start of day and convert to definied TZ
+                moment(moment.utc().tz(timezone))
+                    .startOf('day')
+                    .utc()
+                    .format(DATETIME_FORMAT),
             end_datetime: campaign.schedule?.end_datetime ?? null,
             schedule_rule:
                 campaign.schedule?.schedule_rule ??
@@ -146,7 +150,10 @@ export const CampaignPublishScheduleStep = ({
     useUpdateEffect(() => {
         if (campaign.publish_mode === CampaignScheduleModeEnum.PublishNow) {
             updateCampaign('schedule', null)
-        } else {
+        } else if (
+            campaign.publish_mode === CampaignScheduleModeEnum.Schedule ||
+            !!campaign.schedule
+        ) {
             updateCampaign('schedule', scheduleInnerConfiguration)
         }
     }, [campaign.publish_mode])
@@ -174,7 +181,7 @@ export const CampaignPublishScheduleStep = ({
                 options={[
                     {
                         value: CampaignScheduleModeEnum.PublishNow,
-                        label: 'Publish Now',
+                        label: 'Publish now',
                         caption:
                             'Launch your campaign immediately to start running on your store right away',
                     },

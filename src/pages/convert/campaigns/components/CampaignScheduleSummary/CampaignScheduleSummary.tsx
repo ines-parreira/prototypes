@@ -30,11 +30,14 @@ const defaultMessageTemplate = ({
 }: TemplateMessageProps) => {
     return (
         <>
-            Your campaign will run from <strong>{startDate}</strong>,{' '}
-            {endDate && (
+            Your campaign will run from <strong>{startDate}</strong>
+            {endDate ? (
                 <>
+                    {' '}
                     to <strong>{endDate}</strong>,
                 </>
+            ) : (
+                ','
             )}{' '}
             <strong>{label}</strong>, {timezone} time.
         </>
@@ -49,15 +52,16 @@ const customMessageTemplate = ({
     return (
         <>
             Your campaign will run continuously from{' '}
-            <strong>{startDate}</strong>{' '}
+            <strong>{startDate}</strong>
             {endDate ? (
                 <>
-                    <strong>to {endDate}</strong>
+                    {' '}
+                    to <strong>{endDate}</strong>,
                 </>
             ) : (
-                ''
-            )}
-            , during the set days and hours above, {timezone} time.
+                ','
+            )}{' '}
+            during the set days and hours above, {timezone} time.
         </>
     )
 }

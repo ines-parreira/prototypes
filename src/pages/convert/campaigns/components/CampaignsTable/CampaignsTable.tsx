@@ -40,7 +40,10 @@ import {useGetActiveCampaignsCount} from 'pages/convert/campaigns/hooks/useGetAc
 import {GorgiasChatIntegration} from 'models/integration/types'
 import {abVariantsUrl} from 'pages/convert/abVariants/urls'
 
-import {isActiveStatus} from '../../types/enums/CampaignStatus.enum'
+import {
+    CampaignStatus,
+    isActiveStatus,
+} from '../../types/enums/CampaignStatus.enum'
 import {SortingKeys, useSortedCampaigns} from '../../hooks/useSortedCampaigns'
 
 import {Campaign} from '../../types/Campaign'
@@ -84,6 +87,8 @@ export const CampaignsTable = ({
     onToggleCampaign,
 }: Props) => {
     const history = useHistory()
+    const currentDate = new Date()
+
     const {sortBy, sortDirection, sortedCampaigns, changeSorting} =
         useSortedCampaigns(data)
 
@@ -188,7 +193,7 @@ export const CampaignsTable = ({
                     : null
 
                 if (startDate && !endDate) {
-                    return `${startDate} - No set`
+                    return `${startDate} - Not set`
                 }
 
                 return `${startDate} - ${endDate}`
@@ -205,6 +210,14 @@ export const CampaignsTable = ({
                   isOverCampaignsLimit
                 : !isCampaignActive &&
                   (isAtCampaignsLimit || isOverCampaignsLimit)
+
+            const hasCampaignEnded =
+                isScheduleCampaignEnabled &&
+                campaign.status === CampaignStatus.Inactive &&
+                campaign.schedule?.end_datetime
+                    ? new Date(campaign.schedule.end_datetime) < currentDate
+                    : false
+
             const toggleId = `toggle-${campaign.id}`
 
             return (
@@ -214,7 +227,9 @@ export const CampaignsTable = ({
                             <span id={toggleId}>
                                 <ToggleInput
                                     isToggled={isCampaignActive}
-                                    isDisabled={toggleDisabled}
+                                    isDisabled={
+                                        toggleDisabled || hasCampaignEnded
+                                    }
                                     onClick={() => onClickToggle(campaign)}
                                     aria-label={`Enable campaign ${campaign.name}`}
                                 />
@@ -325,6 +340,8 @@ export const CampaignsTable = ({
                 </>
             )
         },
+        // There is no need to add here currentDate
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             integration,
             defaultLanguage,

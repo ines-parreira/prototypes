@@ -98,7 +98,7 @@ describe('<CampaignScheduleSummary />', () => {
             end_datetime: mockedEndDate,
         },
     ])('renders $schedule_type, $startDate - $endDate', (configuration) => {
-        const {getByText, queryByText} = renderComponent({
+        const {getByText} = renderComponent({
             scheduleConfiguration: configuration,
         })
 
@@ -111,15 +111,8 @@ describe('<CampaignScheduleSummary />', () => {
             ).toBeInTheDocument()
         }
 
-        if (
-            configuration.end_datetime &&
-            configuration.schedule_rule !== CampaignScheduleRuleValueEnum.Custom
-        ) {
-            expect(getByText('Saturday, 5 October 2024')).toBeInTheDocument()
-        } else {
-            expect(
-                queryByText('Saturday, 5 October 2024')
-            ).not.toBeInTheDocument()
+        if (configuration.end_datetime) {
+            expect(getByText(/Saturday, 5 October 2024/)).toBeInTheDocument()
         }
     })
 })

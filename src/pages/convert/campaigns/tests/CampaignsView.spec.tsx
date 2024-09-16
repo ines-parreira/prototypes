@@ -264,7 +264,7 @@ describe('<CampaignsView/>', () => {
 
         // Check the schedule column
         expect(getByText('8/4/2023 - 8/10/2023')).toBeInTheDocument()
-        expect(getByText('8/4/2023 - No set')).toBeInTheDocument()
+        expect(getByText('8/4/2023 - Not set')).toBeInTheDocument()
     })
 
     it('should display the success setup modal', () => {

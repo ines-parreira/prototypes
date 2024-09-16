@@ -1,12 +1,13 @@
 import React, {useState, MouseEvent, useMemo} from 'react'
 import moment, {Moment} from 'moment-timezone'
 
-import {DateTimeFormatType, DateTimeFormatMapper} from 'constants/datetime'
 import {formatDatetime} from 'utils'
 
 import InputField from 'pages/common/forms/input/InputField'
 import IconInput from 'pages/common/forms/input/IconInput'
 import DatePicker, {DatePickerProps} from 'pages/common/forms/DatePicker'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {DateAndTimeFormatting} from 'constants/datetime'
 
 import css from './CampaignSchedulePicker.less'
 
@@ -29,8 +30,9 @@ const CampaignSchedulePicker: React.FC<Props> = ({
     endDate,
     onChange,
 }) => {
-    const dateLabel =
-        DateTimeFormatMapper[DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US]
+    const shortDateBasedOnUserPreferences = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.ShortDateWithYear
+    )
 
     const [isCalendarOpen, setIsCalendarOpen] = useState(false)
 
@@ -92,10 +94,15 @@ const CampaignSchedulePicker: React.FC<Props> = ({
                                 name="from"
                                 value={formatDatetime(
                                     startDate,
-                                    dateLabel,
+                                    shortDateBasedOnUserPreferences,
                                     timezone
                                 ).toString()}
-                                prefix={<IconInput icon="calendar_today" />}
+                                prefix={
+                                    <IconInput
+                                        className={css.calendarIcon}
+                                        icon="calendar_today"
+                                    />
+                                }
                             />
                         </div>
                     </DatePicker>
@@ -112,13 +119,18 @@ const CampaignSchedulePicker: React.FC<Props> = ({
                         value={(endDate
                             ? formatDatetime(
                                   endDate,
-                                  dateLabel,
+                                  shortDateBasedOnUserPreferences,
                                   timezone
                               ).toString()
                             : 'No end date'
                         ).toString()}
                         onFocus={() => setIsCalendarOpen(true)}
-                        prefix={<IconInput icon="calendar_today" />}
+                        prefix={
+                            <IconInput
+                                icon="calendar_today"
+                                className={css.calendarIcon}
+                            />
+                        }
                         suffix={
                             endDate && (
                                 <IconInput
@@ -130,7 +142,7 @@ const CampaignSchedulePicker: React.FC<Props> = ({
                         }
                     />
                     {!endDate && (
-                        <span>
+                        <span className={css.endDateWarning}>
                             The campaign will run indefinitely if no end date is
                             set.
                         </span>

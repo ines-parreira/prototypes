@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import React from 'react'
-import {render, waitFor, act} from '@testing-library/react'
+import {render, waitFor, act, fireEvent} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import * as useDismissFlag from 'hooks/useDismissFlag'
@@ -141,6 +141,50 @@ describe('<CampaignFooter />', () => {
             expect(getByText('Update Campaign')).toBeInTheDocument()
             expect(getByText('Duplicate Campaign')).toBeInTheDocument()
             expect(getByText('Create A/B Test')).toBeInTheDocument()
+        })
+
+        it('renders tooltip that A/B Test is disabled', async () => {
+            const {getByRole} = renderComponent({
+                ...defaultProps,
+                canCreateABVariants: true,
+                aBVariantsDisabled: true,
+                onABVariantCreate: onVariantCreateMock,
+            })
+
+            expect(
+                getByRole('button', {name: 'Create A/B Test'})
+            ).toBeAriaDisabled()
+
+            fireEvent.mouseOver(getByRole('button', {name: 'Create A/B Test'}))
+            jest.runAllTimers()
+
+            await waitFor(() =>
+                expect(document.querySelector('.tooltip')).toHaveTextContent(
+                    'Converting a scheduled campaign into an A/B test isn’t possible.'
+                )
+            )
+        })
+
+        it('do not render tooltip that A/B test is disabled', async () => {
+            const {getByRole} = renderComponent({
+                ...defaultProps,
+                canCreateABVariants: true,
+                aBVariantsDisabled: false,
+                onABVariantCreate: onVariantCreateMock,
+            })
+
+            expect(
+                getByRole('button', {name: 'Create A/B Test'})
+            ).not.toBeAriaDisabled()
+
+            fireEvent.mouseOver(getByRole('button', {name: 'Create A/B Test'}))
+            jest.runAllTimers()
+
+            await waitFor(() =>
+                expect(
+                    document.querySelector('.tooltip')
+                ).not.toBeInTheDocument()
+            )
         })
 
         it('can open create a/b test info modal and create a/b test', async () => {
