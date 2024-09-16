@@ -56,7 +56,6 @@ describe('StatsNavbarView', () => {
     beforeEach(() => {
         mockFlags({
             [FeatureFlagKey.AnalyticsAutoQA]: false,
-            [FeatureFlagKey.LiveCallQueue]: false,
         })
     })
 
@@ -143,7 +142,7 @@ describe('StatsNavbarView', () => {
             </Provider>
         )
 
-        expect(screen.getByText('Voice')).toBeInTheDocument()
+        expect(screen.getAllByText('Voice')).toHaveLength(2)
         expect(screen.getAllByText('Agents')).toHaveLength(3)
     })
 
@@ -190,25 +189,7 @@ describe('StatsNavbarView', () => {
         expect(newChannelsReportLink).toBeInTheDocument()
     })
 
-    it('should render the link to the Live Call queue when FF is off', () => {
-        const {container} = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
-            </Provider>
-        )
-
-        const liveVoiceLink = container.querySelector(
-            'a[href="/app/stats/live-voice"]'
-        )
-        expect(liveVoiceLink).not.toBeInTheDocument()
-    })
-
     it('should render the link to the Live Voice', () => {
-        mockFlags({
-            [FeatureFlagKey.LiveCallQueue]: true,
-        })
         const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>

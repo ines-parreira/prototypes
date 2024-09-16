@@ -25,8 +25,6 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
     const isAutoQAEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
-    const liveCallQueueEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.LiveCallQueue]
 
     return (
         <>
@@ -58,14 +56,12 @@ export default function StatsNavbarView() {
                             Agents
                         </NavbarLink>
                     </div>
-                    {liveCallQueueEnabled && (
-                        <VoiceStatsNavbarItem
-                            to="/app/stats/live-voice"
-                            title="Voice"
-                            commonNavLinkProps={COMMON_NAV_LINK_PROPS}
-                            isNew
-                        />
-                    )}
+                    <VoiceStatsNavbarItem
+                        to="/app/stats/live-voice"
+                        title="Voice"
+                        commonNavLinkProps={COMMON_NAV_LINK_PROPS}
+                        isNew
+                    />
                 </div>
             </NavbarBlock>
             <NavbarBlock icon="emoji_events" title="Support Performance">

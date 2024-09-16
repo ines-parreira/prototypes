@@ -366,5 +366,17 @@ describe('<Routes/>', () => {
 
             expect(ServiceLevelAgreementsMock).toHaveBeenCalled()
         })
+
+        it('should render Live Voice page', () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <MemoryRouter initialEntries={['/app/stats/live-voice']}>
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>
+            )
+
+            expect(screen.getByText('LiveVoice')).toBeInTheDocument()
+        })
     })
 })

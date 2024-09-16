@@ -495,9 +495,6 @@ export function StatsRoutes() {
 
     const isAutoQAEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
-    const isLiveVoiceEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.LiveCallQueue]
-
     useEffect(logPageChange, [location.pathname])
 
     return (
@@ -540,18 +537,16 @@ export function StatsRoutes() {
                         />
                     )}
                 />
-                {isLiveVoiceEnabled && (
-                    <Route
-                        exact
-                        path={`${path}/live-voice`}
-                        render={() => (
-                            <App
-                                content={LiveVoice}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                )}
+                <Route
+                    exact
+                    path={`${path}/live-voice`}
+                    render={() => (
+                        <App
+                            content={LiveVoice}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
                 <Route
                     exact
                     path={`${path}/support-performance-overview`}
