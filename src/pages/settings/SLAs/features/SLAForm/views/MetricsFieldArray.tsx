@@ -92,7 +92,7 @@ export default function MetricsFieldArray() {
                         </ToggleInput>
                         <div className={css.inputGroup}>
                             <FormField
-                                fieldName={`metrics.${index}.threshold`}
+                                name={`metrics.${index}.threshold`}
                                 field={NumberInputField}
                                 isRequired
                                 hasControls={false}
@@ -106,7 +106,7 @@ export default function MetricsFieldArray() {
                                 isDisabled={!toggleState[index]}
                             />
                             <FormField
-                                fieldName={`metrics.${index}.unit`}
+                                name={`metrics.${index}.unit`}
                                 field={TimeUnitSelectBox}
                                 className={css.input}
                                 isDisabled={!toggleState[index]}

@@ -12,10 +12,10 @@ export default function FormSubmitButton({
         <Button
             intent="primary"
             type="submit"
-            isDisabled={!isDirty}
             {...buttonProps}
+            isDisabled={buttonProps.isDisabled ?? !isDirty}
         >
-            Save Changes
+            {buttonProps?.children || 'Save Changes'}
         </Button>
     )
 }

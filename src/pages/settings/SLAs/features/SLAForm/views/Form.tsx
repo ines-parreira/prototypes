@@ -5,46 +5,58 @@ import {
     FormProvider,
     useForm,
 } from 'react-hook-form'
-import {Validator} from '@gorgias/api-validators'
+import {
+    FormErrors,
+    FormValidator,
+    createResolver,
+    toFieldErrors,
+} from './validation'
 
-import formValidationResolver from './formValidationResolver'
-
-type FormProps<T> = {
-    children: Child[]
-    values?: T
-    defaultValues?: DefaultValues<T>
-    onSubmit: (data: T) => void
-    validator: Validator<T>
+type FormProps<V extends FieldValues> = {
+    children: Child | Child[]
+    values?: V
+    defaultValues?: DefaultValues<V>
+    validator?: FormValidator<V>
+    errors?: FormErrors<V>
+    onSubmit: (data: V) => void
 }
-type Child = ReactElement<{fieldName?: string; children: Child[]}>
+type Child = ReactElement<{name?: string; children: Child[]}>
 
-export default function Form<T extends FieldValues>({
+export default function Form<V extends FieldValues>({
     children,
     defaultValues,
     values,
     onSubmit,
     validator,
-}: FormProps<T>) {
+    errors,
+}: FormProps<V>) {
     const resolver = useMemo(
-        () => formValidationResolver<T>(validator),
+        () => (validator ? createResolver<V>(validator) : undefined),
         [validator]
     )
 
-    const form = useForm<T>({
+    const form = useForm<V>({
         defaultValues,
         values,
         resolver,
+        errors: errors ? toFieldErrors(errors) : undefined,
     })
 
     const {handleSubmit} = form
 
-    const handleFormSubmit = (data: T) => {
+    const handleFormSubmit = (data: V) => {
         onSubmit(data)
     }
 
     return (
         <FormProvider {...form}>
-            <form onSubmit={handleSubmit(handleFormSubmit)}>{children}</form>
+            <form
+                onSubmit={handleSubmit(handleFormSubmit)}
+                noValidate
+                aria-label="form"
+            >
+                {children}
+            </form>
         </FormProvider>
     )
 }

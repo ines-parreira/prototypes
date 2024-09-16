@@ -1,5 +1,4 @@
 import React from 'react'
-import {Validator} from '@gorgias/api-validators'
 
 import PageHeader from 'pages/settings/SLAs/features/PageHeader/PageHeader'
 import Button from 'pages/common/components/button/Button'
@@ -19,6 +18,7 @@ import ChannelSelectBox from './ChannelSelectBox'
 import ToggleInputFormField from './ToggleInputFormField'
 import MetricsFieldArray from './MetricsFieldArray'
 import css from './SLAFormView.less'
+import {FormValidator} from './validation'
 
 type SLAFormViewProps = {
     policy: MappedFormSLAPolicy | undefined
@@ -26,7 +26,7 @@ type SLAFormViewProps = {
     defaultValues: SLAFormValues
     onSubmit: (data: SLAFormValues) => void
     isLoading?: boolean
-    validator: Validator<SLAFormValues>
+    validator: FormValidator<SLAFormValues>
 }
 
 export default function SLAFormView({
@@ -55,7 +55,7 @@ export default function SLAFormView({
                     >
                         <FormSection>
                             <FormField
-                                fieldName="name"
+                                name="name"
                                 label="SLA name"
                                 isRequired
                                 className={settingsCss.mb48}
@@ -67,7 +67,7 @@ export default function SLAFormView({
                                 SLA to trigger."
                         >
                             <FormField
-                                fieldName="target_channels"
+                                name="target_channels"
                                 field={ChannelSelectBox}
                                 className={settingsCss.mb8}
                             />
@@ -80,7 +80,7 @@ export default function SLAFormView({
                         >
                             <MetricsFieldArray />
                             <FormField
-                                fieldName="active"
+                                name="active"
                                 field={ToggleInputFormField}
                                 isToggled={true}
                                 caption={
