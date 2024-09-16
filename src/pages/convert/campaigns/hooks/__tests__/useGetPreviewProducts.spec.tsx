@@ -10,9 +10,15 @@ import {shopifyIntegration} from 'fixtures/integrations'
 import {AttachmentEnum} from 'common/types'
 import {useProductsFromShopifyIntegration} from 'models/integration/queries'
 import {assumeMock} from 'utils/testing'
-import {shopifyProductResult} from 'fixtures/shopify'
-import {IntegrationDataItem} from 'models/integration/types'
-import {Product} from 'constants/integrations/types/shopify'
+import {
+    shopifyProductFixture,
+    shopifyProductResult,
+    shopifyVariantFixture,
+} from 'fixtures/shopify'
+import {
+    InventoryManagement as ShipifyInventoryManagement,
+    InventoryPolicy as ShipifyInventoryPolicy,
+} from 'constants/integrations/types/shopify'
 import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
 import {campaignProductAttachment} from 'fixtures/campaign'
 import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
@@ -40,9 +46,7 @@ describe('useGetPreviewProducts', () => {
 
     beforeEach(() => {
         useProductsFromShopifyIntegrationMock.mockReturnValue({
-            data: [
-                shopifyProductResult(),
-            ] as unknown as IntegrationDataItem<Product>[],
+            data: shopifyProductResult(),
         } as any)
 
         pickNRandomShopifyProductsMock.mockReturnValue([
@@ -132,5 +136,56 @@ describe('useGetPreviewProducts', () => {
                     'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/trunks.jpg?v=1626170834',
             },
         ])
+    })
+
+    it('should not return out of stock products or products without images', () => {
+        const productNotAvailable = shopifyProductFixture({
+            variants: [
+                shopifyVariantFixture({
+                    inventoryQuantity: -1,
+                    inventoryManagement: ShipifyInventoryManagement.Shopify,
+                    inventoryPolicy: ShipifyInventoryPolicy.Deny,
+                }),
+            ],
+        })
+        const [product_1, product_2] = shopifyProductResult()
+        const shopifyProducts = [
+            {
+                ...product_1,
+                data: productNotAvailable,
+            },
+            {
+                ...product_2,
+                data: {
+                    ...product_2.data,
+                    image: null,
+                },
+            },
+        ]
+        useProductsFromShopifyIntegrationMock.mockReturnValue({
+            data: shopifyProducts,
+        } as any)
+        const productRecommendations: CampaignProductRecommendation[] = [
+            {
+                contentType: AttachmentEnum.ProductRecommendation,
+                name: 'Yellow shirt',
+                extra: {
+                    id: '01J55AAS89MXWKTTDWK16J3MBA',
+                    scenario: ProductRecommendationScenario.SimilarSeen,
+                },
+            },
+        ]
+
+        const {result} = renderHook(() =>
+            useGetPreviewProducts(
+                storeIntegration,
+                productRecommendations,
+                [],
+                productCount
+            )
+        )
+
+        expect(result.current).toEqual([])
+        expect(pickNRandomShopifyProductsMock).not.toHaveBeenCalled()
     })
 })

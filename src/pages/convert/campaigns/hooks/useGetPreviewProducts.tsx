@@ -6,6 +6,7 @@ import {pickNRandomShopifyProducts} from 'pages/convert/campaigns/utils/pickNRan
 import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
 import {CampaignProductRecommendation} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {mapIntegrationToPickedShopifyIntegration} from 'pages/common/draftjs/plugins/toolbar/utils'
+import {isProductAvailable} from 'pages/convert/campaigns/utils/checkProductAvailability'
 
 export const useGetPreviewProducts = (
     shopifyIntegration: Map<string, any>,
@@ -15,18 +16,34 @@ export const useGetPreviewProducts = (
 ): CampaignProduct[] => {
     const [randomProducts, setRandomProducts] = useState<CampaignProduct[]>([])
 
-    const shopifyProducts = useProductsFromShopifyIntegration(
+    const {data: integrationDataItems} = useProductsFromShopifyIntegration(
         shopifyIntegration.get('id'),
         '',
         !!productRecommendations.length && !randomProducts.length
     )
 
+    const filteredShopifyProducts = useMemo(
+        () =>
+            (integrationDataItems || []).filter((item) => {
+                return (
+                    !item.deleted_datetime &&
+                    !!item.data.image &&
+                    isProductAvailable(item.data)
+                )
+            }),
+        [integrationDataItems]
+    )
+
     useEffect(() => {
-        if (productRecommendations.length && !randomProducts.length) {
+        if (
+            productRecommendations.length &&
+            !randomProducts.length &&
+            filteredShopifyProducts.length
+        ) {
             const integration =
                 mapIntegrationToPickedShopifyIntegration(shopifyIntegration)
             const newRandomProducts = pickNRandomShopifyProducts(
-                shopifyProducts.data || [],
+                filteredShopifyProducts,
                 integration,
                 productCount
             )
@@ -40,7 +57,7 @@ export const useGetPreviewProducts = (
         }
     }, [
         productRecommendations.length,
-        shopifyProducts.data,
+        filteredShopifyProducts,
         shopifyIntegration,
         productCount,
         randomProducts.length,
