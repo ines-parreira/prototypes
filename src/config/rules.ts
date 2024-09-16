@@ -40,7 +40,7 @@ export const eventsDependencies = {
     'ticket-updated': [
         'ticket-assigned',
         'ticket-self-unsnoozed',
-        'satistaction-survey-responded',
+        'satisfaction-survey-responded',
     ],
 }
 
