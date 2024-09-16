@@ -2,12 +2,12 @@ import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/Campa
 
 export const SCENARIO_CONFIG = {
     [ProductRecommendationScenario.SimilarSeen]: {
-        title: 'Similar Products You Have Seen',
+        title: 'Similar Browsed Products',
         description: 'Recommends based on visitors’ product pages browsed',
         requiresModal: false,
     },
     [ProductRecommendationScenario.SimilarBought]: {
-        title: 'Similar Products You Have Bought',
+        title: 'Similar Purchased Products',
         description: 'Recommends based on customers’ last purchases',
         requiresModal: true,
     },
@@ -17,7 +17,7 @@ export const SCENARIO_CONFIG = {
         requiresModal: true,
     },
     [ProductRecommendationScenario.Newest]: {
-        title: 'Newest Products',
+        title: 'New Arrivals',
         description: 'Recommends last products activated on Shopify store',
         requiresModal: false,
     },

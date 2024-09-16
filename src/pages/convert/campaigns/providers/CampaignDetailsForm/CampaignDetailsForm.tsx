@@ -313,6 +313,12 @@ export const CampaignDetailsForm = ({
         return transformAttachmentsToProductRecommendations(attachments)
     }, [attachments])
 
+    const productRecommendationScenario = useMemo(() => {
+        return productRecommendations.length > 0
+            ? productRecommendations[0].extra.scenario
+            : null
+    }, [productRecommendations])
+
     const productsToPreview = useGetPreviewProducts(
         shopifyIntegration,
         productRecommendations,
@@ -819,7 +825,11 @@ export const CampaignDetailsForm = ({
                             {!isFormLoading && (
                                 <>
                                     {!!productRecommendations.length && (
-                                        <ProductRecommendationBanner />
+                                        <ProductRecommendationBanner
+                                            scenario={
+                                                productRecommendationScenario
+                                            }
+                                        />
                                     )}
                                     <CampaignPreview
                                         {...chatPreviewProps}

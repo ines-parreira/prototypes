@@ -145,7 +145,7 @@ describe('<ShopifyProductLine/>', () => {
         })
 
         getByText('Dynamic Product Recommendation').click()
-        expect(getByText('Similar Products You Have Seen')).toBeInTheDocument()
+        expect(getByText('Similar Browsed Products')).toBeInTheDocument()
 
         getByText('Back').click()
         expect(getByText('Automations', {exact: false})).toBeInTheDocument()

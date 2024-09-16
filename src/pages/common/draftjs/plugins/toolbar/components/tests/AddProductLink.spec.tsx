@@ -144,13 +144,13 @@ describe('<AddProductLink/>', () => {
         expect(productRecommendation).toBeInTheDocument()
 
         fireEvent.click(productRecommendation)
-        const seenScenario = getByText('Similar Products You Have Seen')
+        const seenScenario = getByText('Similar Browsed Products')
         expect(seenScenario).toBeInTheDocument()
 
         fireEvent.click(seenScenario)
         expect(onAddProductAutomationAttachmentMock).toHaveBeenCalledWith(
             expect.objectContaining({
-                name: 'Similar Products You Have Seen',
+                name: 'Similar Browsed Products',
             })
         )
 

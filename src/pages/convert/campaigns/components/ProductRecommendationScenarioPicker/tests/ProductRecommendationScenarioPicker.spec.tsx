@@ -24,7 +24,7 @@ describe('ProductRecommendationScenarioPicker', () => {
             <ProductRecommendationScenarioPicker onClick={jest.fn()} />
         )
 
-        expect(getByText('Similar Products You Have Seen')).toBeInTheDocument()
+        expect(getByText('Similar Browsed Products')).toBeInTheDocument()
     })
 
     it('should call onClick with the correct attachment', () => {
@@ -33,12 +33,12 @@ describe('ProductRecommendationScenarioPicker', () => {
             <ProductRecommendationScenarioPicker onClick={onClick} />
         )
 
-        const seenScenario = getByText('Similar Products You Have Seen')
+        const seenScenario = getByText('Similar Browsed Products')
         fireEvent.click(seenScenario)
 
         expect(onClick).toHaveBeenCalledWith({
             content_type: AttachmentEnum.ProductRecommendation,
-            name: 'Similar Products You Have Seen',
+            name: 'Similar Browsed Products',
             extra: {
                 id: expect.any(String),
                 scenario: ProductRecommendationScenario.SimilarSeen,

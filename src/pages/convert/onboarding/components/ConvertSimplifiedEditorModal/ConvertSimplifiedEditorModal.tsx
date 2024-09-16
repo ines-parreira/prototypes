@@ -173,6 +173,12 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
         return transformAttachmentsToProductRecommendations(attachments)
     }, [attachments])
 
+    const productRecommendationScenario = useMemo(() => {
+        return productRecommendations.length > 0
+            ? productRecommendations[0].extra.scenario
+            : null
+    }, [productRecommendations])
+
     const productsToPreview = useGetPreviewProducts(
         storeIntegration,
         productRecommendations,
@@ -291,6 +297,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
                             <>
                                 {!!productRecommendations.length && (
                                     <ProductRecommendationBanner
+                                        scenario={productRecommendationScenario}
                                         className={css.recommendationBanner}
                                     />
                                 )}

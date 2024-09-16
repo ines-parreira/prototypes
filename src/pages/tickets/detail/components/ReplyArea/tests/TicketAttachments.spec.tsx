@@ -39,7 +39,7 @@ describe('TicketAttachments component', () => {
                 },
             },
             {
-                name: 'Similar Products You Have Seen',
+                name: 'Similar Browsed Products',
                 content_type: 'application/productRecommendation',
                 extra: {
                     id: '01J4VFPQ477Z2CNXAB5ES70GN3',

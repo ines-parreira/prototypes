@@ -174,7 +174,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
         await waitFor(() => {
             expect(
                 queryByText(
-                    'Product recommendations will be personalized for each visitor',
+                    'Product recommendations will be personalized for each product page',
                     {
                         exact: false,
                     }

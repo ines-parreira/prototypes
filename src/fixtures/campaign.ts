@@ -228,7 +228,7 @@ export const campaignDiscountOfferAttachment = {
 
 export const campaignProductRecommendationAttachment = {
     contentType: AttachmentEnum.ProductRecommendation,
-    name: 'Similar Products You Have Seen',
+    name: 'Similar Browsed Products',
     extra: {
         id: '01J4VH71YJ704QXCP4WDST3ZT3',
         scenario: ProductRecommendationScenario.SimilarSeen,

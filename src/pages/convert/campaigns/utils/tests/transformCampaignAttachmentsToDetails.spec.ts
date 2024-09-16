@@ -51,7 +51,7 @@ describe('transformCampaignAttachmentsToDetails', () => {
         expect(result).toEqual([
             {
                 content_type: AttachmentEnum.ProductRecommendation,
-                name: 'Similar Products You Have Seen',
+                name: 'Similar Browsed Products',
                 extra: {
                     id: '01J4VH71YJ704QXCP4WDST3ZT3',
                     scenario: 'similar_seen',
