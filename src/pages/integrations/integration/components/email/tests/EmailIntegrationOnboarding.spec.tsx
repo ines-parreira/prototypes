@@ -31,5 +31,8 @@ describe('<EmailIntegrationOnboarding />', () => {
         const {container, getByText} = renderComponent()
         expect(container).toBeInTheDocument()
         expect(getByText('Connect your support email')).toBeInTheDocument()
+        expect(getByText('Connect email')).toBeInTheDocument()
+        expect(getByText('Forward emails to Gorgias')).toBeInTheDocument()
+        expect(getByText('Verify email integration')).toBeInTheDocument
     })
 })
