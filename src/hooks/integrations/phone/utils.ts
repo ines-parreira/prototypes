@@ -36,7 +36,7 @@ import * as utils from './utils'
 export async function refreshToken(device: Device) {
     try {
         const token = await getToken()
-        if (token) {
+        if (token && device.state !== Device.State.Destroyed) {
             device.updateToken(token)
         }
     } catch (error) {

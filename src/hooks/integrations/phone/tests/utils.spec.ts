@@ -75,6 +75,17 @@ describe('refreshToken', () => {
         expect(device.updateToken).not.toHaveBeenCalled()
         expect(reportError).toHaveBeenCalledTimes(1)
     })
+
+    it('should not refresh token when the device is destroyed', async () => {
+        const destroyedDevice = {
+            ...device,
+            state: Device.State.Destroyed,
+        } as unknown as Device
+
+        await refreshToken(destroyedDevice)
+
+        expect(destroyedDevice.updateToken).not.toHaveBeenCalled()
+    })
 })
 
 describe('connectDevice', () => {
