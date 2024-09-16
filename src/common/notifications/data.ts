@@ -18,17 +18,17 @@ export const events: Event[] = [
     {
         enabled: true,
         type: 'user.mentioned',
-        label: 'I am mentioned in an internal note',
+        label: 'Mentioned in an internal note',
     },
     {
         enabled: true,
         type: 'ticket.snooze-expired',
-        label: "A conversation snooze expires in a ticket I'm assigned to",
+        label: 'Snooze expires',
     },
     {
         enabled: true,
         type: 'ticket.assigned',
-        label: 'I’m assigned to a ticket',
+        label: 'Assigned to a ticket',
     },
 ]
 
