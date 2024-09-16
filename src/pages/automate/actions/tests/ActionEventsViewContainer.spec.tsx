@@ -464,5 +464,17 @@ describe('ActionEventsViewContainer', () => {
         expect(screen.getByTestId('actions-event-details')).not.toHaveClass(
             'opened'
         )
+
+        // open side panel again
+        fireEvent.click(screen.getAllByRole('cell')[0])
+        expect(screen.getByTestId('actions-event-details')).toHaveClass(
+            'opened'
+        )
+        fireEvent.keyDown(screen.getByTestId('actions-event-details'), {
+            key: 'Escape',
+        })
+        expect(screen.getByTestId('actions-event-details')).not.toHaveClass(
+            'opened'
+        )
     })
 })

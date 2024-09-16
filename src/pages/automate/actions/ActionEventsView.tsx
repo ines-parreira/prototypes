@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 import {useParams, useLocation, useHistory} from 'react-router-dom'
 import moment from 'moment'
+import useKey from 'hooks/useKey'
 import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {
     useGetConfigurationExecutions,
@@ -159,6 +160,15 @@ export default function ActionExecutionsView() {
                     actionConfiguration?.template_internal_id
             ),
         [templateConfigurations, actionConfiguration]
+    )
+
+    useKey(
+        'Escape',
+        () => {
+            setSelectedExecutionId(null)
+        },
+        undefined,
+        [setSelectedExecutionId]
     )
 
     return (
