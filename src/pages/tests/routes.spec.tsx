@@ -378,5 +378,26 @@ describe('<Routes/>', () => {
 
             expect(screen.getByText('LiveVoice')).toBeInTheDocument()
         })
+
+        it("should the NoMatch component when the path doesn' match any route", () => {
+            renderWithRouter(
+                <Provider store={mockStore({})}>
+                    <Routes />
+                </Provider>,
+                {
+                    history: mockHistory,
+                }
+            )
+
+            act(() => {
+                mockHistory.push('/app/unknown')
+            })
+
+            expect(
+                screen.getByText(
+                    'The page you’re looking for couldn’t be found.'
+                )
+            ).toBeVisible()
+        })
     })
 })
