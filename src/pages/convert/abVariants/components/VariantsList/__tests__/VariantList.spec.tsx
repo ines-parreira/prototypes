@@ -1,6 +1,7 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
+import {screen} from '@testing-library/react'
 
 import {campaignWithABGroup} from 'fixtures/abGroup'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
@@ -32,7 +33,7 @@ describe('<VariantsList />', () => {
             variants: [],
         } as Campaign
 
-        const {getByText, getByTestId} = renderWithStore(
+        renderWithStore(
             <VariantsList
                 integrationId={shopifyIntegration.id}
                 canPerformActions={true}
@@ -50,19 +51,19 @@ describe('<VariantsList />', () => {
             }
         )
 
-        expect(getByText('Control Variant')).toBeInTheDocument()
+        expect(screen.getByText('Control Variant')).toBeInTheDocument()
 
-        const deleteBtn = getByTestId('delete-icon-button')
+        const deleteBtn = screen.getByLabelText('Delete campaign')
         expect(deleteBtn).toBeAriaDisabled()
 
-        const duplicateBtn = getByTestId('duplicate-icon-button')
+        const duplicateBtn = screen.getByLabelText('Duplicate variant')
         userEvent.click(duplicateBtn)
 
         expect(onDuplicate).toBeCalledWith(null)
     })
 
     it('render and list actions should be disabled', () => {
-        const {getAllByTestId} = renderWithStore(
+        renderWithStore(
             <VariantsList
                 integrationId={shopifyIntegration.id}
                 canPerformActions={true}
@@ -80,7 +81,7 @@ describe('<VariantsList />', () => {
             }
         )
 
-        const deleteButtons = getAllByTestId('delete-icon-button')
+        const deleteButtons = screen.getAllByLabelText('Delete campaign')
         expect(deleteButtons).toHaveLength(3)
 
         deleteButtons.forEach((element, idx) => {
@@ -92,7 +93,7 @@ describe('<VariantsList />', () => {
             }
         })
 
-        const duplicateButtons = getAllByTestId('duplicate-icon-button')
+        const duplicateButtons = screen.getAllByLabelText('Duplicate variant')
         expect(duplicateButtons).toHaveLength(3)
 
         duplicateButtons.forEach((element) => {
@@ -110,7 +111,7 @@ describe('<VariantsList />', () => {
             },
         } as Campaign
 
-        const {getByText, queryAllByText} = renderWithStore(
+        renderWithStore(
             <VariantsList
                 integrationId={shopifyIntegration.id}
                 canPerformActions={true}
@@ -128,8 +129,8 @@ describe('<VariantsList />', () => {
             }
         )
 
-        expect(getByText('Winner')).toBeInTheDocument()
-        expect(queryAllByText('33%')).toHaveLength(0)
+        expect(screen.getByText('Winner')).toBeInTheDocument()
+        expect(screen.queryAllByText('33%')).toHaveLength(0)
     })
 
     it('render list with correct traffic allocation if test is started', () => {
@@ -141,7 +142,7 @@ describe('<VariantsList />', () => {
             },
         } as Campaign
 
-        const {queryAllByText} = renderWithStore(
+        renderWithStore(
             <VariantsList
                 integrationId={shopifyIntegration.id}
                 canPerformActions={true}
@@ -159,6 +160,6 @@ describe('<VariantsList />', () => {
             }
         )
 
-        expect(queryAllByText('33%')).toHaveLength(3)
+        expect(screen.queryAllByText('33%')).toHaveLength(3)
     })
 })

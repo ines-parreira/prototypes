@@ -30,7 +30,7 @@ const ConvertCampaignsNewHomeInfobar = ({integrationId}: Props) => {
         }
     }, [isHiddenPermanently])
 
-    if (!visible) return <></>
+    if (!visible) return null
 
     return (
         <Alert
@@ -41,7 +41,6 @@ const ConvertCampaignsNewHomeInfobar = ({integrationId}: Props) => {
                     src={closeIcon}
                     alt="dismiss-icon"
                     className={css.close}
-                    data-testid="dismiss-campaigns-new-home-infobar"
                     onClick={() => setIsHiddenPermanently(true)}
                 />
             }

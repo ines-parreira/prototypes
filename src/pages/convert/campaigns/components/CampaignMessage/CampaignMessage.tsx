@@ -234,10 +234,7 @@ export const CampaignMessage = memo(
         return (
             <div>
                 {showAgentSelector && (
-                    <div
-                        data-testid="campaign-agent-section"
-                        className={classnames('mb-2', css.authorWrapper)}
-                    >
+                    <div className={classnames('mb-2', css.authorWrapper)}>
                         <span>From: </span>
                         <SelectField
                             className={css.authorInput}
@@ -269,13 +266,11 @@ export const CampaignMessage = memo(
                 )}
 
                 {stepConfiguration && stepConfiguration.banner && (
-                    <div
-                        className="mb-2 mt-4"
-                        data-testid="campaign-message-step-info-banner"
-                    >
+                    <div className="mb-2 mt-4">
                         <ConvertInfoBanner
                             type={stepConfiguration.banner.type}
                             text={stepConfiguration.banner.content}
+                            aria-label="Banner information for campaign message step"
                         />
                     </div>
                 )}

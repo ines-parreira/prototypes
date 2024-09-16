@@ -118,7 +118,7 @@ export const AdvancedTriggerFactory = ({
             {content}
             {!isAllowedToEdit && (
                 <div
-                    data-testid={`paywall-${trigger.type}`}
+                    aria-label={`Paywall ${trigger.type}`}
                     className={css.triggerPaywall}
                 />
             )}

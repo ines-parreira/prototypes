@@ -27,7 +27,7 @@ const ClickTrackingSettingsView = () => {
     }
 
     return (
-        <div data-testid="click-tracking-settings" className="full-width">
+        <div className="full-width">
             <PageHeader title="Click tracking" />
 
             <Container fluid className={css.pageContainer}>

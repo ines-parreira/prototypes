@@ -1,10 +1,9 @@
 import React from 'react'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {render, waitFor, fireEvent, act} from '@testing-library/react'
+import {render, waitFor, fireEvent, act, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {within} from '@testing-library/dom'
 import {fromJS} from 'immutable'
 import userEvent from '@testing-library/user-event'
 import {assumeMock} from 'utils/testing'
@@ -20,10 +19,7 @@ import {
 } from 'models/integration/queries'
 import {integrationsState} from 'fixtures/integrations'
 import {useModalManager, useModalManagerApi} from 'hooks/useModalManager'
-import {
-    setupValidModalParameters,
-    testIds,
-} from 'pages/common/components/UniqueDiscountOfferCreateModal/utils'
+import {setupValidModalParameters} from 'pages/common/components/UniqueDiscountOfferCreateModal/utils'
 import {
     UniqueDiscountOfferCreateModal,
     UniqueDiscountOfferCreateModalProps,
@@ -120,7 +116,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         useCollectionsFromShopifyIntegrationMock.mockReturnValue({} as any)
         useListShopifyCustomerSegmentsMock.mockReturnValue([] as any)
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -129,12 +125,12 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         )
 
         await waitFor(() => {
-            const header = getByTestId(testIds.header)
-            expect(header.textContent).toContain('Create')
-            const prefixInput = getByTestId(testIds.prefixInput)
+            expect(
+                screen.getByText(/Create a new discount offer/)
+            ).toBeInTheDocument()
+            const prefixInput = screen.getByLabelText(/Unique code prefix/)
             expect(prefixInput).toHaveValue('')
-            const saveBtn = getByTestId(testIds.saveBtn)
-            expect(saveBtn.textContent).toContain('Save')
+            expect(screen.getByText(/Save/)).toBeInTheDocument()
         })
     })
 
@@ -143,7 +139,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             getParams: () => undefined,
         } as unknown as useModalManagerApi)
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -152,12 +148,12 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         )
 
         await waitFor(() => {
-            const header = getByTestId(testIds.header)
-            expect(header.textContent).toContain('Create')
-            const prefixInput = getByTestId(testIds.prefixInput)
+            expect(
+                screen.getByText(/Create a new discount offer/)
+            ).toBeInTheDocument()
+            const prefixInput = screen.getByLabelText(/Unique code prefix/)
             expect(prefixInput).toHaveValue('')
-            const saveBtn = getByTestId(testIds.saveBtn)
-            expect(saveBtn.textContent).toContain('Save')
+            expect(screen.getByText(/Save/)).toBeInTheDocument()
         })
     })
 
@@ -170,7 +166,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             }),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -179,11 +175,10 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         )
 
         await waitFor(() => {
-            const header = getByTestId(testIds.header)
-            expect(header.textContent).toContain('Edit')
-            const prefixInput = getByTestId(testIds.prefixInput)
+            expect(screen.getByText(/Edit discount offer/)).toBeInTheDocument()
+            const prefixInput = screen.getByLabelText(/Unique code prefix/)
             expect(prefixInput).toHaveValue('testPrefix')
-            const saveBtn = getByTestId(testIds.saveBtn)
+            const saveBtn = screen.getByText(/Save/)
             expect(saveBtn.textContent).toContain('Save Changes')
             expect(saveBtn).toBeAriaEnabled()
         })
@@ -199,7 +194,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             }),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId, getByText} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -207,12 +202,12 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             </Provider>
         )
 
-        const selectApplyToElemnt = getByTestId(`${testIds.appliesTo}`)
-        expect(selectApplyToElemnt).toBeTruthy()
+        expect(screen.getByLabelText('Applies to')).toBeInTheDocument()
 
-        const inputElement = getByText('Select a product collection')
+        const inputElement = screen.getByText('Select a product collection')
         fireEvent.focus(inputElement)
-        expect(getByText('Lorem Ipsum')).toBeVisible()
+
+        expect(screen.getByText('Lorem Ipsum')).toBeVisible()
     })
 
     it('opens in edit mode and select applies to', async () => {
@@ -220,7 +215,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             getParams: () => ({}),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId, getByText} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -228,23 +223,19 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             </Provider>
         )
 
-        const prefixInput = getByTestId(testIds.prefixInput)
+        const prefixInput = screen.getByLabelText(/Unique code prefix/)
         await userEvent.type(prefixInput, 'TEST')
 
-        const discountValueInput = getByTestId(testIds.discountValueInput)
+        const discountValueInput = screen.getByLabelText('Discount value')
         await userEvent.type(discountValueInput, '1')
 
-        const selectApplyToElemnt = getByTestId(`${testIds.appliesTo}`)
-        const buttonEl = within(selectApplyToElemnt).getByText(
-            'To specific collection'
-        )
-        userEvent.click(buttonEl)
-
-        const inputElement = getByText('Select a product collection')
+        userEvent.click(screen.getByLabelText('Applies to'))
+        userEvent.click(screen.getByText('To specific collection'))
+        const inputElement = screen.getByText('Select a product collection')
         fireEvent.focus(inputElement)
-        fireEvent.click(getByText(/Lorem Ipsum/))
+        fireEvent.click(screen.getByText(/Lorem Ipsum/))
 
-        const saveBtn = getByTestId(testIds.saveBtn)
+        const saveBtn = screen.getByText(/Save/)
         saveBtn.click()
 
         await waitFor(() => {
@@ -267,7 +258,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             getParams: () => undefined,
         } as unknown as useModalManagerApi)
 
-        const {getByTestId, getByRole} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -282,22 +273,22 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         }
 
         // setup
-        const prefixInput = getByTestId(testIds.prefixInput)
+        const prefixInput = screen.getByLabelText(/Unique code prefix/)
 
-        const discountTypeSelect = getByTestId(
-            `selected-${testIds.discountTypeSelect}`
+        const discountTypeSelect = screen.getByLabelText('Discount')
+        const discountValueInput = screen.getByLabelText('Discount value')
+        const minRequirementsRadio = screen.getByLabelText(
+            'Minimum purchase amount'
         )
-        const discountValueInput = getByTestId(testIds.discountValueInput)
-        const minRequirementsRadio = getByTestId(testIds.minRequirementsRadio)
-        const noMinRequirementsRadio = getByTestId(
-            testIds.noMinRequirementsRadio
+        const noMinRequirementsRadio = screen.getByLabelText(
+            'No minimum requirements'
         )
 
-        const saveBtn = getByTestId(testIds.saveBtn)
+        const saveBtn = screen.getByText(/Save/)
 
         userEvent.click(discountTypeSelect)
 
-        userEvent.click(getByRole('menuitem', {name: 'Percentage'}))
+        userEvent.click(screen.getByRole('menuitem', {name: 'Percentage'}))
 
         // set discount value to invalid
         await userEvent.type(discountValueInput, '200')
@@ -305,8 +296,8 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         // set discount min amount
         userEvent.click(noMinRequirementsRadio)
         userEvent.click(minRequirementsRadio)
-        const minPurchaseAmountInput = getByTestId(
-            testIds.minPurchaseAmountInput
+        const minPurchaseAmountInput = screen.getByLabelText(
+            'Minimum purchase amount value'
         )
         userEvent.clear(minPurchaseAmountInput)
         await userEvent.type(
@@ -358,7 +349,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             getParams: () => ({}),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId, getByText, getByRole} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -366,12 +357,12 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             </Provider>
         )
 
-        await setupValidModalParameters(getByTestId, getByRole)
+        await setupValidModalParameters()
 
         // Default value, nothing selected
-        getByText('All customers')
+        screen.getByText('All customers')
 
-        const saveBtn = getByTestId(testIds.saveBtn)
+        const saveBtn = screen.getByText(/Save/)
 
         // Saves without segments
         saveBtn.click()
@@ -393,7 +384,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             getParams: () => ({}),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId, getByText, getByRole} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -401,13 +392,13 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             </Provider>
         )
 
-        await setupValidModalParameters(getByTestId, getByRole)
+        await setupValidModalParameters()
 
         // Select specific collections
-        const inputElement = getByText('All customers')
+        const inputElement = screen.getByText('All customers')
         fireEvent.focus(inputElement)
-        const validSegmentSample = getByText(VALID_SEGMENT_1.name)
-        const validSegmentSample2 = getByText(VALID_SEGMENT_2.name)
+        const validSegmentSample = screen.getByText(VALID_SEGMENT_1.name)
+        const validSegmentSample2 = screen.getByText(VALID_SEGMENT_2.name)
 
         // Selects the first segment
         userEvent.click(validSegmentSample)
@@ -422,7 +413,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         expect(inputElement.textContent).toBe(VALID_SEGMENT_2.name)
         userEvent.click(validSegmentSample)
 
-        const saveBtn = getByTestId(testIds.saveBtn)
+        const saveBtn = screen.getByText(/Save/)
 
         // Saves with two segments
         saveBtn.click()
@@ -447,7 +438,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             getParams: () => ({}),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId, getByText, getByRole} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -455,13 +446,13 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             </Provider>
         )
 
-        await setupValidModalParameters(getByTestId, getByRole)
-        getByText('To specific collection').click()
+        await setupValidModalParameters()
+        screen.getByText('To specific collection').click()
 
         // This grants the initial status
-        getByText('Select a product collection')
+        screen.getByText('Select a product collection')
 
-        const saveBtn = getByTestId(testIds.saveBtn)
+        const saveBtn = screen.getByText(/Save/)
 
         // Saves without collections
         saveBtn.click()
@@ -483,7 +474,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             getParams: () => ({}),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId, getByText, getByRole} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -491,16 +482,16 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             </Provider>
         )
 
-        await setupValidModalParameters(getByTestId, getByRole)
-        getByText('To specific collection').click()
+        await setupValidModalParameters()
+        screen.getByText('To specific collection').click()
 
-        const inputElement = getByText('Select a product collection')
+        const inputElement = screen.getByText('Select a product collection')
         fireEvent.focus(inputElement)
 
-        const validCollectionSample = getByText(
+        const validCollectionSample = screen.getByText(
             VALID_PRODUCT_COLLECTION_1.title
         )
-        const validCollectionSample2 = getByText(
+        const validCollectionSample2 = screen.getByText(
             VALID_PRODUCT_COLLECTION_2.title
         )
 
@@ -521,7 +512,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         userEvent.click(validCollectionSample)
         userEvent.click(validCollectionSample2)
 
-        const saveBtn = getByTestId(testIds.saveBtn)
+        const saveBtn = screen.getByText(/Save/)
 
         // Saves with two collections
         saveBtn.click()
@@ -551,7 +542,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             }),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -559,8 +550,8 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             </Provider>
         )
 
-        const prefixInput = getByTestId(testIds.prefixInput)
-        const saveBtn = getByTestId(testIds.saveBtn)
+        const prefixInput = screen.getByLabelText(/Unique code prefix/)
+        const saveBtn = screen.getByText(/Save/)
 
         userEvent.clear(prefixInput)
         await userEvent.type(prefixInput, 'discount')
@@ -594,7 +585,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             }),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -602,12 +593,10 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             </Provider>
         )
 
-        const selectApplyToElemnt = getByTestId(`${testIds.appliesTo}`)
-        const buttonEl =
-            within(selectApplyToElemnt).getByText('Total order amount')
-        userEvent.click(buttonEl)
+        userEvent.click(screen.getByLabelText('Applies to'))
+        userEvent.click(screen.getByText('Total order amount'))
 
-        const saveBtn = getByTestId(testIds.saveBtn)
+        const saveBtn = screen.getByText(/Save/)
 
         saveBtn.click()
 
@@ -632,7 +621,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             getParams: () => ({}),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId, getByText, getByRole} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -640,16 +629,16 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             </Provider>
         )
 
-        await setupValidModalParameters(getByTestId, getByRole)
-        getByText('To specific collection').click()
+        await setupValidModalParameters()
+        screen.getByText('To specific collection').click()
 
-        const inputElement = getByText('Select a product collection')
+        const inputElement = screen.getByText('Select a product collection')
         fireEvent.focus(inputElement)
 
-        const validCollectionSample = getByText(
+        const validCollectionSample = screen.getByText(
             VALID_PRODUCT_COLLECTION_1.title
         )
-        const validCollectionSample2 = getByText(
+        const validCollectionSample2 = screen.getByText(
             VALID_PRODUCT_COLLECTION_2.title
         )
 
@@ -662,7 +651,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         expect(inputElement.textContent).toBe('2 collections selected')
 
         // Save
-        getByTestId(testIds.saveBtn).click()
+        screen.getByText(/Save/).click()
 
         await waitFor(() => {
             expect(
@@ -685,7 +674,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             getParams: () => ({}),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId, getByText, getByRole} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
@@ -693,14 +682,14 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             </Provider>
         )
 
-        await setupValidModalParameters(getByTestId, getByRole)
+        await setupValidModalParameters()
 
-        act(() => getByText('To specific products').click())
-        const inputElement = getByText('Select specific products')
+        act(() => screen.getByText('To specific products').click())
+        const inputElement = screen.getByText('Select specific products')
         fireEvent.focus(inputElement)
 
-        const validProductSample = getByText(VALID_PRODUCT_1.data.title)
-        const validProductSample2 = getByText(VALID_PRODUCT_2.data.title)
+        const validProductSample = screen.getByText(VALID_PRODUCT_1.data.title)
+        const validProductSample2 = screen.getByText(VALID_PRODUCT_2.data.title)
 
         // Selects the first product
         userEvent.click(validProductSample)
@@ -716,7 +705,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         act(() => userEvent.click(validProductSample))
 
         // Save
-        getByTestId(testIds.saveBtn).click()
+        screen.getByText(/Save/).click()
 
         await waitFor(() => {
             expect(

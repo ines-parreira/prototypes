@@ -20,8 +20,8 @@ describe('<CampaignIncognitoVisitorsSwitch />', () => {
             screen.getByText('Incognito visitors will also see the campaign')
         ).toBeInTheDocument()
 
-        const checkbox: HTMLInputElement = screen.getByTestId(
-            'incognito-visitior-switch'
+        const checkbox: HTMLInputElement = screen.getByLabelText(
+            /Incognito visitors will also see the campaign/
         )
         expect(checkbox).toBeDisabled()
         expect(checkbox.checked).toBeFalsy()
@@ -51,8 +51,8 @@ describe('<CampaignIncognitoVisitorsSwitch />', () => {
             screen.getByText('Incognito visitors will also see the campaign')
         ).toBeInTheDocument()
 
-        const checkbox: HTMLInputElement = screen.getByTestId(
-            'incognito-visitior-switch'
+        const checkbox: HTMLInputElement = screen.getByLabelText(
+            /Incognito visitors will also see the campaign/
         )
         expect(checkbox.getAttribute('disabled')).toBe('')
         expect(checkbox.checked).toBeFalsy()
@@ -77,8 +77,8 @@ describe('<CampaignIncognitoVisitorsSwitch />', () => {
                 />
             )
         })
-        const checkbox: HTMLInputElement = screen.getByTestId(
-            'incognito-visitior-switch'
+        const checkbox: HTMLInputElement = screen.getByLabelText(
+            /Incognito visitors will also see the campaign/
         )
         expect(checkbox.getAttribute('disabled')).toBe('')
         expect(checkbox.checked).toBeTruthy()
@@ -107,8 +107,8 @@ describe('<CampaignIncognitoVisitorsSwitch />', () => {
                 />
             )
         })
-        const checkbox: HTMLInputElement = screen.getByTestId(
-            'incognito-visitior-switch'
+        const checkbox: HTMLInputElement = screen.getByLabelText(
+            /Incognito visitors will also see the campaign/
         )
         expect(checkbox.getAttribute('disabled')).toBe('')
         expect(checkbox.checked).toBeTruthy()

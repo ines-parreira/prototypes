@@ -1,6 +1,8 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
+
 import * as useLocalStorageNewHome from 'hooks/useLocalStorage'
+
 import ConvertCampaignsNewHomeInfobar from '../ConvertCampaignsNewHomeInfobar'
 
 const useLocalStorageSpy = jest.spyOn(
@@ -16,22 +18,20 @@ describe('<ConvertCampaignsNewHomeInfobar/>', () => {
     })
 
     it('should render the component', () => {
-        const {getByText} = render(
-            <ConvertCampaignsNewHomeInfobar integrationId={integrationId} />
-        )
+        render(<ConvertCampaignsNewHomeInfobar integrationId={integrationId} />)
 
-        expect(getByText('Campaigns have a new home!')).toBeInTheDocument()
+        expect(
+            screen.getByText('Campaigns have a new home!')
+        ).toBeInTheDocument()
     })
 
     it('should render the component with the infobar closed', () => {
         useLocalStorageSpy.mockReturnValue([true, jest.fn()])
 
-        const {queryByText} = render(
-            <ConvertCampaignsNewHomeInfobar integrationId={integrationId} />
-        )
+        render(<ConvertCampaignsNewHomeInfobar integrationId={integrationId} />)
 
         expect(
-            queryByText('Campaigns have a new home!')
+            screen.queryByText('Campaigns have a new home!')
         ).not.toBeInTheDocument()
     })
 
@@ -39,13 +39,13 @@ describe('<ConvertCampaignsNewHomeInfobar/>', () => {
         const setClosedFn = jest.fn()
         useLocalStorageSpy.mockReturnValue([false, setClosedFn])
 
-        const {getByText, getByTestId} = render(
-            <ConvertCampaignsNewHomeInfobar integrationId={integrationId} />
-        )
+        render(<ConvertCampaignsNewHomeInfobar integrationId={integrationId} />)
 
-        expect(getByText('Campaigns have a new home!')).toBeInTheDocument()
+        expect(
+            screen.getByText('Campaigns have a new home!')
+        ).toBeInTheDocument()
 
-        fireEvent.click(getByTestId('dismiss-campaigns-new-home-infobar'))
+        fireEvent.click(screen.getByAltText('dismiss-icon'))
 
         expect(setClosedFn).toHaveBeenCalled()
     })

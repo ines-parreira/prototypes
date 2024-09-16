@@ -5,7 +5,7 @@ import routerDom, {useParams} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
-import {waitFor} from '@testing-library/react'
+import {screen, waitFor} from '@testing-library/react'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import history from 'pages/history'
 import {convertBundle} from 'fixtures/convertBundle'
@@ -103,7 +103,7 @@ describe('<ConvertOnboardingView />', () => {
 
             const spy = jest.spyOn(history, 'push')
 
-            const {getAllByTestId, queryByText} = renderWithRouter(
+            const {queryByText} = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore(defaultState)}>
                         <ConvertOnboardingView />
@@ -111,7 +111,9 @@ describe('<ConvertOnboardingView />', () => {
                 </QueryClientProvider>
             )
 
-            expect(getAllByTestId('completed-icon').length).toBe(completedSteps)
+            expect(screen.getAllByLabelText('Step completed')).toHaveLength(
+                completedSteps
+            )
 
             // Ensure redirection happens
             await waitFor(() => {

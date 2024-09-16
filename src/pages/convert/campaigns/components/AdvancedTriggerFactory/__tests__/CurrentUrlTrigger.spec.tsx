@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, act, fireEvent} from '@testing-library/react'
+import {render, act, fireEvent, screen} from '@testing-library/react'
 
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
@@ -7,11 +7,11 @@ import {createTrigger} from 'pages/convert/campaigns/utils/createTrigger'
 
 import {CurrentUrlTrigger} from '../CurrentUrlTrigger'
 
-describe('<CurrentUrlTrigger>', () => {
+describe('<CurrentUrlTrigger />', () => {
     it('should render correctly', () => {
         const trigger = createTrigger(CampaignTriggerType.CurrentUrl)
 
-        const {getByTestId, getByText} = render(
+        render(
             <CurrentUrlTrigger
                 id={trigger.id}
                 trigger={trigger}
@@ -22,8 +22,8 @@ describe('<CurrentUrlTrigger>', () => {
         )
 
         act(() => {
-            expect(getByText('Current URL')).toBeInTheDocument()
-            expect(getByTestId('button-add-value')).toBeInTheDocument()
+            expect(screen.getByText('Current URL')).toBeInTheDocument()
+            expect(screen.getByText('+ Add URL')).toBeInTheDocument()
         })
     })
 
@@ -31,7 +31,7 @@ describe('<CurrentUrlTrigger>', () => {
         const trigger = createTrigger(CampaignTriggerType.CurrentUrl)
         trigger.value = ['http://bing.com', 'http://google.com']
 
-        const {getAllByTestId} = render(
+        render(
             <CurrentUrlTrigger
                 id={trigger.id}
                 trigger={trigger}
@@ -40,21 +40,18 @@ describe('<CurrentUrlTrigger>', () => {
                 onTriggerValidationUpdate={jest.fn()}
             />
         )
+        const URLs = screen.getAllByLabelText('Current URL')
 
-        expect(getAllByTestId('current-url-input')).toHaveLength(2)
-        expect(
-            getAllByTestId('current-url-input')[0].getAttribute('value')
-        ).toBe('http://bing.com')
-        expect(
-            getAllByTestId('current-url-input')[1].getAttribute('value')
-        ).toBe('http://google.com')
+        expect(URLs).toHaveLength(2)
+        expect(URLs[0].getAttribute('value')).toBe('http://bing.com')
+        expect(URLs[1].getAttribute('value')).toBe('http://google.com')
     })
 
     it('should be able to click Add URL button', () => {
         const trigger = createTrigger(CampaignTriggerType.CurrentUrl)
         trigger.value = ['http://bing.com']
 
-        const {getAllByTestId, getByText, getByTestId} = render(
+        render(
             <CurrentUrlTrigger
                 id={trigger.id}
                 trigger={trigger}
@@ -63,30 +60,29 @@ describe('<CurrentUrlTrigger>', () => {
                 onTriggerValidationUpdate={jest.fn()}
             />
         )
+        const URLsBefore = screen.getAllByLabelText('Current URL')
 
-        expect(getAllByTestId('current-url-input')).toHaveLength(1)
+        expect(URLsBefore).toHaveLength(1)
 
-        const btn = getByTestId('button-add-value')
+        const btn = screen.getByText('+ Add URL')
+
         act(() => {
             fireEvent.click(btn)
         })
 
-        expect(getAllByTestId('current-url-input')).toHaveLength(2)
+        const URLsAfter = screen.getAllByLabelText('Current URL')
 
-        expect(
-            getAllByTestId('current-url-input')[0].getAttribute('value')
-        ).toBe('http://bing.com')
-        expect(
-            getAllByTestId('current-url-input')[1].getAttribute('value')
-        ).toBe('')
-        expect(getByText('Value is required')).toBeInTheDocument()
+        expect(URLsAfter).toHaveLength(2)
+        expect(URLsAfter[0].getAttribute('value')).toBe('http://bing.com')
+        expect(URLsAfter[1].getAttribute('value')).toBe('')
+        expect(screen.getByText('Value is required')).toBeInTheDocument()
     })
 
     it('should render validation errors', () => {
         const trigger = createTrigger(CampaignTriggerType.CurrentUrl)
         trigger.operator = CampaignTriggerOperator.Eq
 
-        const {getAllByTestId, getByText} = render(
+        render(
             <CurrentUrlTrigger
                 id={trigger.id}
                 trigger={trigger}
@@ -96,12 +92,12 @@ describe('<CurrentUrlTrigger>', () => {
             />
         )
 
-        const input = getAllByTestId('current-url-input')[0]
+        const input = screen.getAllByRole('textbox', {name: 'Current URL'})[0]
         fireEvent.change(input, {target: {value: '/%'}})
         fireEvent.blur(input)
 
         expect(
-            getByText(
+            screen.getByText(
                 'The URL appears to be malformed. Please review and re-enter.'
             )
         ).toBeInTheDocument()
@@ -114,7 +110,7 @@ describe('<CurrentUrlTrigger>', () => {
         const updateTriggerMock = jest.fn()
         const deleteTriggerMock = jest.fn()
 
-        const {getAllByTestId, queryAllByTestId} = render(
+        render(
             <CurrentUrlTrigger
                 id={trigger.id}
                 trigger={trigger}
@@ -124,20 +120,20 @@ describe('<CurrentUrlTrigger>', () => {
             />
         )
 
-        let deleteButtons = getAllByTestId('button-delete-value')
+        let deleteButtons = screen.getAllByLabelText('Delete URL')
 
         act(() => {
             fireEvent.click(deleteButtons[0])
         })
-        expect(getAllByTestId('current-url-input')).toHaveLength(1)
+        expect(screen.getAllByText('Current URL')).toHaveLength(1)
         expect(updateTriggerMock).toHaveBeenCalledTimes(1)
 
-        deleteButtons = getAllByTestId('button-delete-value')
+        deleteButtons = screen.getAllByLabelText('Delete URL')
         act(() => {
             fireEvent.click(deleteButtons[0])
         })
 
-        expect(queryAllByTestId('current-url-input')).toHaveLength(0)
+        expect(screen.queryByLabelText('Current URL')).not.toBeInTheDocument()
         expect(deleteTriggerMock).toHaveBeenCalledTimes(1)
     })
 })

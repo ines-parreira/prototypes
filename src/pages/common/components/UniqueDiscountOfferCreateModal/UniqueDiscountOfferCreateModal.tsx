@@ -44,7 +44,7 @@ import {
     AppliesTypeEnum,
     CollectionFormGroup,
 } from 'pages/convert/discountOffer/components/CollectionFormGroup/CollectionFormGroup'
-import {testIds, transformAxiosError} from './utils'
+import {transformAxiosError} from './utils'
 
 import css from './UniqueDiscountOfferCreateModal.less'
 
@@ -314,7 +314,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                 zIndex={1561}
                 container={appNode ?? undefined}
             >
-                <ModalHeader toggle={onClose} data-testid={testIds.header}>
+                <ModalHeader toggle={onClose}>
                     <div>
                         <h2>
                             {inEditMode ? 'Edit' : 'Create a new'} discount
@@ -338,7 +338,6 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                     <ModalBody>
                         {inEditMode && (
                             <Alert
-                                data-testid={testIds.editAlert}
                                 className={css.editAlert}
                                 type={AlertType.Info}
                                 icon
@@ -353,7 +352,6 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                             <InputField
                                 isRequired
                                 maxLength={10}
-                                data-testid={testIds.prefixInput}
                                 label="Unique code prefix"
                                 value={discount.prefix}
                                 error={errors?.prefix}
@@ -376,7 +374,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                         showSelectedOption
                                         fullWidth
                                         value={discount.type}
-                                        id={testIds.discountTypeSelect}
+                                        id="discountType"
                                         options={[
                                             {
                                                 label: 'Percentage',
@@ -402,10 +400,9 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                 {discount.type !== 'free_shipping' && (
                                     <div className={css.inputChild}>
                                         <NumberInput
-                                            data-testid={
-                                                testIds.discountValueInput
-                                            }
-                                            name="discountType"
+                                            id="discountValue"
+                                            name="discountValue"
+                                            aria-label="Discount value"
                                             value={Number(discount.value)}
                                             onChange={(value) =>
                                                 setDiscount((discount) => ({
@@ -456,19 +453,21 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                         <FormGroup>
                             <Label
                                 className={css.label}
-                                htmlFor="minimumPurchase"
+                                htmlFor="minimum-purchase-requirements"
                             >
                                 Minimum purchase requirements
                             </Label>
                             <InputGroup
                                 className={css.minPurchaseRequirementsWrapper}
+                                id="minimum-purchase-requirements"
                             >
-                                <label className={css.purchaseRadio}>
+                                <label
+                                    htmlFor="no-minimum-requirements"
+                                    className={css.purchaseRadio}
+                                >
                                     <input
                                         type="radio"
-                                        data-testid={
-                                            testIds.noMinRequirementsRadio
-                                        }
+                                        id="no-minimum-requirements"
                                         checked={!minRequirementsPurchase}
                                         onChange={() => {
                                             setMinRequirementsPurchase(false)
@@ -481,12 +480,13 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                     No minimum requirements
                                 </label>
                                 <div>
-                                    <label className={css.purchaseRadio}>
+                                    <label
+                                        htmlFor="minimum-requirement"
+                                        className={css.purchaseRadio}
+                                    >
                                         <input
                                             type="radio"
-                                            data-testid={
-                                                testIds.minRequirementsRadio
-                                            }
+                                            id="minimum-requirement"
                                             className={css.radioButton}
                                             checked={minRequirementsPurchase}
                                             onChange={() =>
@@ -498,9 +498,8 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                     {minRequirementsPurchase && (
                                         <NumberInput
                                             name="minAmount"
-                                            data-testid={
-                                                testIds.minPurchaseAmountInput
-                                            }
+                                            id="minAmount"
+                                            aria-label="Minimum purchase amount value"
                                             value={Number(
                                                 discount.minimum_purchase_amount
                                             )}
@@ -555,7 +554,6 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                             impression.
                         </span>
                         <Button
-                            data-testid={testIds.backBtn}
                             intent="secondary"
                             className="mr-2"
                             onClick={onClose}
@@ -563,7 +561,6 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                             Cancel
                         </Button>
                         <Button
-                            data-testid={testIds.saveBtn}
                             color="primary"
                             type="submit"
                             isDisabled={!isSaveButtonEnabled()}

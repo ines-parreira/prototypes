@@ -193,7 +193,7 @@ export const CurrentUrlTrigger = ({
                         })}
                     >
                         <InputField
-                            data-testid="current-url-input"
+                            aria-label="Current URL"
                             className={css.urlInput}
                             value={innerValue[idx]}
                             onChange={handleChangeValue(idx)}
@@ -204,7 +204,6 @@ export const CurrentUrlTrigger = ({
                         />
                         {innerValue.length === 1 && (
                             <Button
-                                data-testid="button-add-value"
                                 intent="secondary"
                                 fillStyle="ghost"
                                 onClick={addValue}
@@ -213,7 +212,7 @@ export const CurrentUrlTrigger = ({
                             </Button>
                         )}
                         <div
-                            data-testid="button-delete-value"
+                            aria-label="Delete URL"
                             className={css.closeWrapper}
                             onClick={() => deleteValue(idx)}
                         >
@@ -226,7 +225,6 @@ export const CurrentUrlTrigger = ({
                 {innerValue.length > 1 && (
                     <div className={css.buttonContainer}>
                         <Button
-                            data-testid="button-add-value"
                             intent="secondary"
                             fillStyle="ghost"
                             onClick={addValue}

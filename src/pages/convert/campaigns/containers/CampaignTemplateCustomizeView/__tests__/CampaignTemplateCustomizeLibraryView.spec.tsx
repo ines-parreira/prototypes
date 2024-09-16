@@ -148,7 +148,7 @@ describe('CampaignTemplateCustomizeView', () => {
             templateSlug: SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD.slug,
         })
 
-        const {getByText, getByTestId, container} = render(
+        const {container} = render(
             <BrowserRouter>
                 <Provider store={mockStore(defaultState)}>
                     <CampaignTemplateCustomizeLibraryView />
@@ -157,7 +157,9 @@ describe('CampaignTemplateCustomizeView', () => {
         )
         await waitFor(() => {
             expect(
-                getByText(SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD.name)
+                screen.getByText(
+                    SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD.name
+                )
             ).toBeInTheDocument()
 
             expect(
@@ -165,16 +167,16 @@ describe('CampaignTemplateCustomizeView', () => {
             ).toHaveLength(1)
 
             // Check if audience banner is in the document
-            const audienceBanner = getByTestId(
-                'campaign-audience-step-info-banner'
+            const audienceBanner = screen.getByLabelText(
+                'Banner information for campaign audience step'
             )
             expect(audienceBanner).toBeInTheDocument()
             expect(audienceBanner).toHaveTextContent(
                 'To target shoppers with a certain item in cart, please insert one of the Shopify product tag of the item to identify it.'
             )
 
-            const messageBanner = getByTestId(
-                'campaign-message-step-info-banner'
+            const messageBanner = screen.getByLabelText(
+                'Banner information for campaign message step'
             )
             expect(messageBanner).toBeInTheDocument()
             expect(messageBanner).toHaveTextContent(
@@ -189,7 +191,7 @@ describe('CampaignTemplateCustomizeView', () => {
             templateSlug: SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD.slug,
         })
 
-        const {getByText} = render(
+        render(
             <BrowserRouter>
                 <Provider store={mockStore(defaultState)}>
                     <CampaignTemplateCustomizeLibraryView />
@@ -198,7 +200,9 @@ describe('CampaignTemplateCustomizeView', () => {
         )
 
         await waitFor(() => {
-            expect(getByText('Back to campaigns library')).toBeInTheDocument()
+            expect(
+                screen.getByText('Back to campaigns library')
+            ).toBeInTheDocument()
         })
     })
 })

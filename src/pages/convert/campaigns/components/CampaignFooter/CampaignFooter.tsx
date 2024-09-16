@@ -243,7 +243,7 @@ export const CampaignFooter = ({
                                     intent="destructive"
                                     title="Delete campaign"
                                     isDisabled={disableActions}
-                                    data-testid="delete-icon-button"
+                                    data-testid="delete-icon-button" // used in e2e tests
                                     className={classnames('float-right', {
                                         'btn-loading':
                                             actionInProgress === 'delete',
@@ -342,7 +342,6 @@ export const CampaignFooter = ({
                         <Button
                             onClick={() => onCreate(false)}
                             title="Create"
-                            data-testid="create-button"
                             isLoading={actionInProgress === 'create'}
                             isDisabled={
                                 disableActions ||
@@ -363,7 +362,6 @@ export const CampaignFooter = ({
                     <Button
                         onClick={() => onCreate(false)}
                         title="Create"
-                        data-testid="create-button"
                         isLoading={actionInProgress === 'create'}
                         isDisabled={
                             disableActions ||

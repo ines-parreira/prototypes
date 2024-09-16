@@ -59,8 +59,7 @@ const UpdateReportLinkModal: React.FC<Props> = ({
                 <ModalBody>
                     <div>
                         <InputField
-                            label={'Report link'}
-                            aria-label="report link"
+                            label="Report link"
                             name="report_link"
                             onChange={(value) => setReportLink(value)}
                             hasError={error}
@@ -73,11 +72,7 @@ const UpdateReportLinkModal: React.FC<Props> = ({
                     <Button onClick={onClose} intent="secondary">
                         Cancel
                     </Button>
-                    <Button
-                        isLoading={isLoading}
-                        type="submit"
-                        data-testid="ab-test-update-btn"
-                    >
+                    <Button isLoading={isLoading} type="submit">
                         Save changes
                     </Button>
                 </ModalActionsFooter>

@@ -6,8 +6,9 @@ import configureMockStore from 'redux-mock-store'
 
 import routerDom from 'react-router-dom'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {RootState, StoreDispatch} from 'state/types'
+import {screen} from '@testing-library/react'
 
+import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
 import {integrationsState} from 'fixtures/integrations'
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
@@ -108,9 +109,9 @@ describe('<CampaignDetailsFactory />', () => {
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
 
-        const {getByTestId} = renderComponent()
+        renderComponent()
 
-        getByTestId('improved-campaign-details-page')
+        screen.getByText(campaign.name)
     })
 
     it('renders the "AdvancedCampaignDetails" component if merchant is a revenue subscriber', () => {
@@ -119,8 +120,8 @@ describe('<CampaignDetailsFactory />', () => {
             'useIsConvertSubscriber'
         ).mockImplementation(() => false)
 
-        const {getByTestId} = renderComponent()
+        renderComponent()
 
-        getByTestId('improved-campaign-details-page')
+        screen.getByText(campaign.name)
     })
 })

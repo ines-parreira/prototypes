@@ -94,10 +94,7 @@ const UpdateABTestView = () => {
             <h3>Update A/B Test!</h3>
             <div>
                 {hasOngoingTest ? (
-                    <Button
-                        onClick={() => setIsUpdateModalOpen(true)}
-                        data-testid="update-report-link-btn"
-                    >
+                    <Button onClick={() => setIsUpdateModalOpen(true)}>
                         Update Report Link
                     </Button>
                 ) : (

@@ -157,11 +157,9 @@ export const CampaignAudienceStep = ({
             </div>
 
             {stepConfiguration && stepConfiguration.banner && (
-                <div
-                    className="mb-4 mt-4"
-                    data-testid="campaign-audience-step-info-banner"
-                >
+                <div className="mb-4 mt-4">
                     <ConvertInfoBanner
+                        aria-label="Banner information for campaign audience step"
                         type={stepConfiguration.banner.type}
                         text={stepConfiguration.banner.content}
                     />

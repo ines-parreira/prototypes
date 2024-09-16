@@ -4,12 +4,14 @@ import {
     render,
     waitForElementToBeRemoved,
     waitFor,
+    screen,
 } from '@testing-library/react'
-
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {RootState, StoreDispatch} from 'state/types'
+
 import {ClickTrackingCustomDomain} from '../ClickTrackingCustomDomain'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -64,20 +66,17 @@ describe('<ClickTrackingCustomDomain />', () => {
     const inputText = 'link.brand-name.com'
 
     it('has Add Domain button enabled if custom domain feature is enabled and input has value', async () => {
-        const {getByPlaceholderText, getByTestId} = render(
-            <ClickTrackingCustomDomain />,
-            {wrapper: ReduxProvider}
-        )
-
-        await waitFor(() => {
-            expect(getByPlaceholderText(inputText)).toBeInTheDocument()
+        render(<ClickTrackingCustomDomain />, {
+            wrapper: ReduxProvider,
         })
 
-        const input = getByPlaceholderText(inputText) as HTMLInputElement
+        await waitFor(() => {
+            expect(screen.getByPlaceholderText(inputText)).toBeInTheDocument()
+        })
 
-        const addDomainBtn = getByTestId(
-            'create-domain-btn'
-        ) as HTMLButtonElement
+        const input: HTMLInputElement = screen.getByPlaceholderText(inputText)
+
+        const addDomainBtn: HTMLInputElement = screen.getByText('Add Domain')
 
         fireEvent.change(input, {target: {value: 'gorgias.win'}})
 
@@ -86,93 +85,80 @@ describe('<ClickTrackingCustomDomain />', () => {
     })
 
     it('adds a new domain', async () => {
-        const {
-            queryByPlaceholderText,
-            queryByTestId,
-            findByText,
-            getByPlaceholderText,
-        } = render(<ClickTrackingCustomDomain />, {wrapper: ReduxProvider})
+        render(<ClickTrackingCustomDomain />, {wrapper: ReduxProvider})
 
         await waitFor(() => {
-            expect(getByPlaceholderText(inputText)).toBeInTheDocument()
+            expect(screen.getByPlaceholderText(inputText)).toBeInTheDocument()
         })
 
-        const input = queryByPlaceholderText(inputText) as HTMLInputElement
+        const input = screen.queryByPlaceholderText(
+            inputText
+        ) as HTMLInputElement
 
-        const addDomainBtn = queryByTestId(
-            'create-domain-btn'
-        ) as HTMLButtonElement
+        const addDomainBtn = screen.getByText('Add Domain')
 
         fireEvent.change(input, {target: {value: 'gorgias.win'}})
         fireEvent.click(addDomainBtn)
 
-        await findByText('Verification in progress')
+        await screen.findByText('Verification in progress')
     })
 
     it('"Check Status" button updates the status of the connection', async () => {
-        const {
-            queryByPlaceholderText,
-            queryByTestId,
-            findByText,
-            queryByText,
-            getByPlaceholderText,
-        } = render(<ClickTrackingCustomDomain />, {wrapper: ReduxProvider})
+        render(<ClickTrackingCustomDomain />, {wrapper: ReduxProvider})
 
         await waitFor(() => {
-            expect(getByPlaceholderText(inputText)).toBeInTheDocument()
+            expect(screen.getByPlaceholderText(inputText)).toBeInTheDocument()
         })
 
-        const input = queryByPlaceholderText(inputText) as HTMLInputElement
+        const input = screen.queryByPlaceholderText(
+            inputText
+        ) as HTMLInputElement
 
-        const addDomainBtn = queryByTestId(
-            'create-domain-btn'
-        ) as HTMLButtonElement
+        const addDomainBtn = screen.getByText('Add Domain')
 
         fireEvent.change(input, {target: {value: 'gorgias.win'}})
         fireEvent.click(addDomainBtn)
 
-        await findByText('Verification in progress')
+        await screen.findByText('Verification in progress')
 
-        const checkStatusBtn = queryByText('Check Status') as HTMLButtonElement
+        const checkStatusBtn = screen.queryByText(
+            'Check Status'
+        ) as HTMLButtonElement
 
         fireEvent.click(checkStatusBtn)
 
-        await findByText('Validation error')
+        await screen.findByText('Validation error')
     })
 
     it('removes the connection status when deleting the domain', async () => {
-        const {getByPlaceholderText, getByTestId, getByRole} = render(
-            <ClickTrackingCustomDomain />,
-            {wrapper: ReduxProvider}
-        )
+        render(<ClickTrackingCustomDomain />, {wrapper: ReduxProvider})
 
         await waitFor(() => {
-            expect(getByPlaceholderText(inputText)).toBeInTheDocument()
+            expect(screen.getByPlaceholderText(inputText)).toBeInTheDocument()
         })
 
-        const input = getByPlaceholderText(inputText) as HTMLInputElement
-
-        const addDomainBtn = getByTestId(
-            'create-domain-btn'
-        ) as HTMLButtonElement
+        const input = screen.getByPlaceholderText(inputText)
+        const addDomainBtn = screen.getByText('Add Domain')
 
         fireEvent.change(input, {target: {value: 'gorgias.win'}})
         fireEvent.click(addDomainBtn)
 
-        await waitForElementToBeRemoved(() => getByTestId('create-domain-btn'))
+        await waitForElementToBeRemoved(() =>
+            screen.getByText('Creating domain')
+        )
 
-        const deleteDomain = getByTestId(
-            'delete-domain-btn'
-        ) as HTMLButtonElement
+        const deleteDomain = screen.getByLabelText('Delete custom domain')
 
         fireEvent.click(deleteDomain)
 
-        const confirm_button = getByRole('button', {
+        const confirm_button = screen.getByRole('button', {
             name: /confirm/i,
-        }) as HTMLInputElement
+        })
 
         fireEvent.click(confirm_button)
 
-        await waitForElementToBeRemoved(() => getByTestId('connection-status'))
+        await waitForElementToBeRemoved(() =>
+            screen.getByTestId('connection-status')
+        )
     })
 })

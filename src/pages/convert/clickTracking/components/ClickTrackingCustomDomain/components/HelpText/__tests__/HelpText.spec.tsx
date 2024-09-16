@@ -5,14 +5,20 @@ import {HelpText} from '../HelpText'
 
 describe('<HelpText />', () => {
     it('matches snapshot', () => {
-        const {queryByTestId} = render(<HelpText isHidden={false} />)
+        render(<HelpText isHidden={false} />)
 
-        expect(queryByTestId('domain-help')).not.toBeNull()
+        expect(
+            screen.getByText(/Visit the admin console of your domain registrar/)
+        ).toBeInTheDocument()
     })
 
     it('not renders if isHidden is true', () => {
         render(<HelpText isHidden />)
 
-        expect(screen.queryByTestId('domain-help')).toBeNull()
+        expect(
+            screen.queryByText(
+                /Visit the admin console of your domain registrar/
+            )
+        ).not.toBeInTheDocument()
     })
 })

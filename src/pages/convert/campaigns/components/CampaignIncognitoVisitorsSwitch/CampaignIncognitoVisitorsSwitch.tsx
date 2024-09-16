@@ -133,10 +133,8 @@ const CampaignIncognitoVisitorsSwitch: React.FC<Props> = ({
             >
                 <ToggleInput
                     id="incognito-visitors-toggle"
-                    data-testid="incognito-visitior-switch"
                     isToggled={isEnabled}
                     isDisabled={!hasShopifyTrigger}
-                    aria-label="Display campaign for incognito visitors"
                     onClick={handleClickToggle}
                 />
                 <label

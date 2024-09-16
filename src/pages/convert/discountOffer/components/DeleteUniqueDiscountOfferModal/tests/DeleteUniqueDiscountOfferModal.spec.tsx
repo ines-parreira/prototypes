@@ -1,15 +1,15 @@
 import React from 'react'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {act, render, waitFor} from '@testing-library/react'
+import {act, render, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore, {MockStore} from 'redux-mock-store'
 import {fromJS} from 'immutable'
+
 import {useDeleteDiscountOffer} from 'models/convert/discountOffer/queries'
 import {assumeMock} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useModalManager, useModalManagerApi} from 'hooks/useModalManager'
-import {testIds} from 'pages/convert/discountOffer/components/utils'
 import {deleteAttachment} from 'state/newMessage/actions'
 import {DeleteUniqueDiscountOfferModal} from '../DeleteUniqueDiscountOfferModal'
 
@@ -59,7 +59,7 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
             getParams: () => undefined,
         } as unknown as useModalManagerApi)
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DeleteUniqueDiscountOfferModal {...props} />
@@ -68,7 +68,7 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
         )
 
         act(() => {
-            const deleteBtn = getByTestId(testIds.deleteBtn)
+            const deleteBtn = screen.getByText('Delete Code')
             deleteBtn.click()
         })
 
@@ -80,14 +80,15 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
     })
 
     it('calls mutation with the right params and deletes current attachment', async () => {
+        const mockPrefix = 'testPrefix'
         useModalManagerMock.mockReturnValue({
             getParams: () => ({
-                prefix: 'testPrefix',
+                prefix: mockPrefix,
                 id: '1',
             }),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DeleteUniqueDiscountOfferModal {...props} />
@@ -96,13 +97,12 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
         )
 
         act(() => {
-            const deleteBtn = getByTestId(testIds.deleteBtn)
+            const deleteBtn = screen.getByText('Delete Code')
             deleteBtn.click()
         })
 
         await waitFor(() => {
-            const title = getByTestId(testIds.title)
-            expect(title.textContent).toContain('testPrefix')
+            expect(screen.getByText(new RegExp(mockPrefix))).toBeInTheDocument()
             expect(
                 useDeleteDiscountOfferMock().mutateAsync
             ).toHaveBeenCalledWith([undefined, {discount_offer_id: '1'}])
@@ -110,14 +110,15 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
         })
     })
     it('calls mutation with the right params and does not delete current attachment', async () => {
+        const mockPrefix = 'testPrefix'
         useModalManagerMock.mockReturnValue({
             getParams: () => ({
-                prefix: 'testPrefix',
+                prefix: mockPrefix,
                 id: '5',
             }),
         } as unknown as useModalManagerApi)
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DeleteUniqueDiscountOfferModal {...props} />
@@ -126,13 +127,12 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
         )
 
         act(() => {
-            const deleteBtn = getByTestId(testIds.deleteBtn)
+            const deleteBtn = screen.getByText('Delete Code')
             deleteBtn.click()
         })
 
         await waitFor(() => {
-            const title = getByTestId(testIds.title)
-            expect(title.textContent).toContain('testPrefix')
+            expect(screen.getByText(new RegExp(mockPrefix))).toBeInTheDocument()
             expect(
                 useDeleteDiscountOfferMock().mutateAsync
             ).toHaveBeenCalledWith([undefined, {discount_offer_id: '5'}])
@@ -141,7 +141,7 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
     })
 
     it('closes modal on Back button', async () => {
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DeleteUniqueDiscountOfferModal {...props} />
@@ -150,7 +150,7 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
         )
 
         act(() => {
-            const backBtn = getByTestId(testIds.backBtn)
+            const backBtn = screen.getByText('Back')
             backBtn.click()
         })
 

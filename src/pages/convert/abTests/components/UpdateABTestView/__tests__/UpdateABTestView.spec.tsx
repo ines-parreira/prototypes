@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {fromJS} from 'immutable'
-import {fireEvent, act} from '@testing-library/react'
+import {fireEvent, act, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -94,8 +94,8 @@ describe('<UpdateABTestView/>', () => {
             refetch: jest.fn,
         } as any)
 
-        const {getByText} = renderComponent()
-        expect(getByText('First run A/B Test')).toBeInTheDocument()
+        renderComponent()
+        expect(screen.getByText('First run A/B Test')).toBeInTheDocument()
     })
 
     it('renders A/B test update button', () => {
@@ -106,24 +106,27 @@ describe('<UpdateABTestView/>', () => {
             refetch: jest.fn,
         } as any)
 
-        const {getByText, getByLabelText, getByTestId} = renderComponent()
+        renderComponent()
+        const updateButton = screen.getByText('Update Report Link')
 
-        expect(getByText('Update Report Link')).toBeInTheDocument()
+        expect(updateButton).toBeInTheDocument()
 
         act(() => {
-            fireEvent.click(getByTestId('update-report-link-btn'))
+            fireEvent.click(updateButton)
         })
 
-        expect(getByText('Save changes')).toBeInTheDocument()
+        const saveButton = screen.getByText('Save changes')
+
+        expect(saveButton).toBeInTheDocument()
 
         act(() => {
-            fireEvent.change(getByLabelText('report link'), {
+            fireEvent.change(screen.getByLabelText('Report link'), {
                 target: {value: 'https://example.com'},
             })
         })
 
         act(() => {
-            fireEvent.click(getByTestId('ab-test-update-btn'))
+            fireEvent.click(saveButton)
         })
 
         expect(updateFnMock).toHaveBeenCalledTimes(1)

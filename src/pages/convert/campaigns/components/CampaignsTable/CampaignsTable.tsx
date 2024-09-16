@@ -1,4 +1,11 @@
-import React, {MouseEvent, useCallback, useMemo, useRef, useState} from 'react'
+import React, {
+    Fragment,
+    MouseEvent,
+    useCallback,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import classnames from 'classnames'
 import {Map} from 'immutable'
@@ -221,8 +228,8 @@ export const CampaignsTable = ({
             const toggleId = `toggle-${campaign.id}`
 
             return (
-                <>
-                    <TableBodyRow key={index} className={css.tableRow}>
+                <Fragment key={index}>
+                    <TableBodyRow className={css.tableRow}>
                         <BodyCell style={{width: 88}}>
                             <span id={toggleId}>
                                 <ToggleInput
@@ -337,7 +344,7 @@ export const CampaignsTable = ({
                             campaignId={campaign.id}
                         />
                     )}
-                </>
+                </Fragment>
             )
         },
         // There is no need to add here currentDate

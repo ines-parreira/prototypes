@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -52,7 +52,7 @@ describe('<ClickTrackingSettingsView />', () => {
         ).mockImplementation(() => false)
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
 
-        const {getByText, queryByTestId} = render(
+        render(
             <MemoryRouter>
                 <ReduxProvider>
                     <Route path="/app/settings/convert/click-tracking">
@@ -63,8 +63,14 @@ describe('<ClickTrackingSettingsView />', () => {
             </MemoryRouter>
         )
 
-        expect(queryByTestId('click-tracking-settings')).toBe(null)
-        expect(getByText('Select plan to get started')).toBeInTheDocument()
+        expect(
+            screen.queryByText(
+                /With the Gorgias click tracking service you can now track clicks/
+            )
+        ).not.toBeInTheDocument()
+        expect(
+            screen.getByText('Select plan to get started')
+        ).toBeInTheDocument()
     })
 
     it('should render if the account has the feature flag', () => {
@@ -73,10 +79,14 @@ describe('<ClickTrackingSettingsView />', () => {
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
 
-        const {queryByTestId} = render(<ClickTrackingSettingsView />, {
+        render(<ClickTrackingSettingsView />, {
             wrapper: ReduxProvider,
         })
 
-        expect(queryByTestId('click-tracking-settings')).not.toBe(null)
+        expect(
+            screen.getByText(
+                /With the Gorgias click tracking service you can now track clicks/
+            )
+        ).toBeInTheDocument()
     })
 })

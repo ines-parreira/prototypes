@@ -1,4 +1,9 @@
-import React, {ReactNode, MouseEvent, isValidElement} from 'react'
+import React, {
+    ReactNode,
+    MouseEvent,
+    isValidElement,
+    HTMLAttributes,
+} from 'react'
 import classnames from 'classnames'
 
 import autoAwesomeIcon from 'assets/img/icons/auto_awesome.svg'
@@ -34,14 +39,14 @@ const alertIcon = {
     [AlertType.Ai]: autoAwesomeIcon,
 }
 
-export type Props = {
+type Props = {
     children: ReactNode
     className?: string
     customActions?: ReactNode
     icon?: ReactNode
     onClose?: (e: MouseEvent) => void
     type?: AlertType
-}
+} & HTMLAttributes<HTMLDivElement>
 
 const Alert = ({
     children,
@@ -50,6 +55,7 @@ const Alert = ({
     icon = false,
     onClose,
     type = AlertType.Info,
+    ...props
 }: Props) => {
     return (
         <div
@@ -61,6 +67,7 @@ const Alert = ({
                 },
                 className
             )}
+            {...props}
         >
             {icon && (
                 <div className={css.iconContainer}>
@@ -83,7 +90,7 @@ const Alert = ({
                 <div
                     className={css.close}
                     onClick={onClose}
-                    aria-label={'Close Icon'}
+                    aria-label="Close Icon"
                 >
                     <img
                         src={closeIcon}

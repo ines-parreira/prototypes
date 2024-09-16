@@ -31,7 +31,7 @@ const ConvertOnboardingStep = ({
                     <i
                         className="material-icons text-success"
                         style={{fontSize: 24}}
-                        data-testid="completed-icon"
+                        aria-label="Step completed"
                     >
                         check_circle
                     </i>

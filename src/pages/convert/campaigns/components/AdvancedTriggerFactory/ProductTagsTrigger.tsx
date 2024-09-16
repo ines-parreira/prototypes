@@ -68,10 +68,7 @@ export const ProductTagsTrigger = ({
                 onChange={handleChangeOperator}
                 options={convertTriggerOperatorsToSelectOptions(trigger.type)}
             />
-            <div
-                data-testid="product-tags-value"
-                style={{display: 'flex', flexGrow: 1}}
-            >
+            <div style={{display: 'flex', flexGrow: 1}}>
                 <InputField
                     className={css.fullWidth}
                     suffix="tags"

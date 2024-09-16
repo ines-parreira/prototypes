@@ -225,7 +225,7 @@ export const ClickTrackingCustomDomain = () => {
                                         record in your DNS manager
                                     </>
                                 }
-                                id={`delete-button`}
+                                id="delete-button"
                                 onConfirm={handleOnDeleteDomain}
                                 placement="left"
                             >
@@ -236,8 +236,8 @@ export const ClickTrackingCustomDomain = () => {
                                             css.deleteDomain,
                                             'material-icons'
                                         )}
-                                        data-testid="delete-domain-btn"
                                         onClick={onDisplayConfirmation}
+                                        aria-label="Delete custom domain"
                                     >
                                         delete
                                     </span>
@@ -257,7 +257,6 @@ export const ClickTrackingCustomDomain = () => {
             </div>
             {!currentDomain?.status && (
                 <Button
-                    data-testid="create-domain-btn"
                     isDisabled={!domainValue || createDomainDto.loading}
                     onClick={handleOnClickAddDomain}
                 >

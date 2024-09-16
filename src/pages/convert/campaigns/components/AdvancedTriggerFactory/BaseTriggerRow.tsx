@@ -30,7 +30,7 @@ export const BaseTriggerRow = ({
     }
     return (
         <div
-            data-testid={`trigger-row-${trigger.type}`}
+            data-testid={`trigger-row-${trigger.type}`} // used in e2e tests
             className={css.triggerWrapper}
         >
             {!isFirst && (
@@ -45,7 +45,6 @@ export const BaseTriggerRow = ({
                         [css.closeWrapper]: true,
                         [css.hidden]: !isAllowedToEdit,
                     })}
-                    data-testid={`btn-delete-${trigger.type}`}
                     onClick={handleClickDelete}
                 >
                     <i className="material-icons md-2 text-danger">clear</i>

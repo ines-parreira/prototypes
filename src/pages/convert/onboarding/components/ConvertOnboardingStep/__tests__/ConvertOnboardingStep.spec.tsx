@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, screen} from '@testing-library/react'
 import ConvertOnboardingStep from '../ConvertOnboardingStep'
 
 describe('ConvertOnboardingStep', () => {
@@ -40,10 +40,8 @@ describe('ConvertOnboardingStep', () => {
     })
 
     test('renders completed icon when isCompleted is true', () => {
-        const {queryByTestId} = render(
-            <ConvertOnboardingStep {...defaultProps} isCompleted={true} />
-        )
+        render(<ConvertOnboardingStep {...defaultProps} isCompleted={true} />)
 
-        expect(queryByTestId('completed-icon')).toBeInTheDocument()
+        expect(screen.getByLabelText('Step completed')).toBeInTheDocument()
     })
 })

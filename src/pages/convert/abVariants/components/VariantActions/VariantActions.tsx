@@ -34,8 +34,8 @@ const VariantActions: React.FC<Props> = (props) => {
                     fillStyle="ghost"
                     intent="destructive"
                     title="Delete campaign"
+                    aria-label="Delete campaign"
                     id={uid}
-                    data-testid="delete-icon-button"
                 >
                     delete
                 </IconButton>
@@ -67,10 +67,10 @@ const VariantActions: React.FC<Props> = (props) => {
         <>
             <IconButton
                 className="mr-1"
-                data-testid="duplicate-icon-button"
                 fillStyle="ghost"
                 intent="secondary"
                 title="Duplicate variant"
+                aria-label="Duplicate variant"
                 isDisabled={isDuplicatingDisabled}
                 onClick={() =>
                     onDuplicate(data.variant ? data.variant.id : null)

@@ -80,10 +80,7 @@ export const CartValueTrigger = ({
                 onChange={handleChangeOperator}
                 options={convertTriggerOperatorsToSelectOptions(trigger.type)}
             />
-            <div
-                data-testid="cart-amount-value"
-                style={{display: 'flex', flexGrow: 1}}
-            >
+            <div style={{display: 'flex', flexGrow: 1}}>
                 <InputField
                     className={css.fullWidth}
                     prefix={currencySymbol}

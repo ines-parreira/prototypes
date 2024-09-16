@@ -1,12 +1,12 @@
 import React from 'react'
-import {fireEvent, render, act} from '@testing-library/react'
+import {fireEvent, render, act, screen} from '@testing-library/react'
 
 import UpdateReportLinkModal from '../UpdateReportLinkModal'
 
 describe('UpdateReportLinkModal', () => {
     it('validation error', () => {
         const onSubmit = jest.fn()
-        const {getByTestId, getByLabelText} = render(
+        const {getByLabelText} = render(
             <UpdateReportLinkModal
                 isOpen={true}
                 onClose={jest.fn()}
@@ -14,22 +14,22 @@ describe('UpdateReportLinkModal', () => {
             />
         )
 
-        expect(getByTestId('ab-test-update-btn')).toBeInTheDocument()
+        expect(screen.getByText('Save changes')).toBeInTheDocument()
 
         // Update Event
-        fireEvent.change(getByLabelText('report link'), {
+        fireEvent.change(getByLabelText('Report link'), {
             target: {value: 'lorem ipsum'},
         })
 
         act(() => {
-            fireEvent.click(getByTestId('ab-test-update-btn'))
+            fireEvent.click(screen.getByText('Save changes'))
             expect(onSubmit).toHaveBeenCalledTimes(0)
         })
     })
 
     it('updates data', () => {
         const onSubmit = jest.fn()
-        const {getByTestId, getByLabelText} = render(
+        const {getByLabelText} = render(
             <UpdateReportLinkModal
                 isOpen={true}
                 onClose={jest.fn()}
@@ -37,15 +37,15 @@ describe('UpdateReportLinkModal', () => {
             />
         )
 
-        expect(getByTestId('ab-test-update-btn')).toBeInTheDocument()
+        expect(screen.getByText('Save changes')).toBeInTheDocument()
 
         // Update Event
-        fireEvent.change(getByLabelText('report link'), {
+        fireEvent.change(getByLabelText('Report link'), {
             target: {value: 'https://example.com'},
         })
 
         act(() => {
-            fireEvent.click(getByTestId('ab-test-update-btn'))
+            fireEvent.click(screen.getByText('Save changes'))
             expect(onSubmit).toHaveBeenCalledTimes(1)
         })
     })

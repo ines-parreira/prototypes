@@ -4,7 +4,13 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {act, createEvent, fireEvent, waitFor} from '@testing-library/react'
+import {
+    act,
+    createEvent,
+    fireEvent,
+    screen,
+    waitFor,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import {QueryClientProvider} from '@tanstack/react-query'
@@ -363,7 +369,7 @@ describe('ABGroupView', () => {
             campaignId: campaignWithABGroup.id,
         })
 
-        const {getAllByTestId, getByText} = renderComponent(
+        const {getByText} = renderComponent(
             {
                 campaign: campaignWithABGroup,
                 integrationId: integrationId,
@@ -371,7 +377,7 @@ describe('ABGroupView', () => {
             abVariantsUrl(integrationId, campaignWithABGroup.id)
         )
 
-        const deleteButtons = getAllByTestId('delete-icon-button')
+        const deleteButtons = screen.getAllByLabelText('Delete campaign')
         expect(deleteButtons).toHaveLength(3)
 
         deleteButtons.forEach((element, idx) => {

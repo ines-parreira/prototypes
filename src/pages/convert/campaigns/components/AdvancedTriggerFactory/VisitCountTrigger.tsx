@@ -76,10 +76,7 @@ export const VisitCountTrigger = ({
                 onChange={handleChangeOperator}
                 options={convertTriggerOperatorsToSelectOptions(trigger.type)}
             />
-            <div
-                data-testid="visit-count-value"
-                style={{display: 'flex', flexGrow: 1}}
-            >
+            <div style={{display: 'flex', flexGrow: 1}}>
                 <InputField
                     className={css.fullWidth}
                     value={innerValue}

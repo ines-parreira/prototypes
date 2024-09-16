@@ -2,7 +2,6 @@ import React, {useMemo, useState} from 'react'
 import Button from 'pages/common/components/button/Button'
 
 import CopyButton from 'Widgets/modules/Template/modules/Field/components/CopyButton'
-import {testIds} from 'pages/convert/campaigns/components/CampaignPreview/components/DiscountOfferPreview/utils'
 import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 import {getContrastColor} from 'gorgias-design-system/utils'
 import css from './DiscountOfferPreview.less'
@@ -18,7 +17,7 @@ export const DiscountOfferPreview: React.FC<DiscountOfferPreviewProps> = ({
     offer,
     mainColor,
 }) => {
-    const [revealed, setRevealed] = useState(false)
+    const [isRevealed, setIsRevealed] = useState(false)
 
     const buttonStyle = useMemo(() => {
         const color = mainColor || DEFAULT_COLOR
@@ -30,17 +29,21 @@ export const DiscountOfferPreview: React.FC<DiscountOfferPreviewProps> = ({
     }, [mainColor])
 
     // Generate a random fake suffix to show how a potential revealed code can look like
-    const fakeDiscountCode =
-        offer.prefix +
-        '-' +
-        Math.random().toString(36).slice(2, 8).toUpperCase()
+    const fakeDiscountCode = useMemo(
+        () =>
+            offer.prefix +
+            '-' +
+            Math.random().toString(36).slice(2, 8).toUpperCase(),
+        [offer.prefix]
+    )
 
-    return revealed ? (
-        <div
-            className={css.revealedWrapper}
-            data-testid={testIds.revealedWrapper}
-        >
-            <Button intent="secondary" className={css.revealedButton}>
+    return isRevealed ? (
+        <div className={css.revealedWrapper}>
+            <Button
+                intent="secondary"
+                aria-label="Copy discount code"
+                className={css.revealedButton}
+            >
                 {fakeDiscountCode}
                 <CopyButton value={fakeDiscountCode} />
             </Button>
@@ -49,9 +52,8 @@ export const DiscountOfferPreview: React.FC<DiscountOfferPreviewProps> = ({
     ) : (
         <Button
             intent="primary"
-            data-testid={testIds.revealBtn}
             className={css.revealButton}
-            onClick={() => setRevealed(true)}
+            onClick={() => setIsRevealed(true)}
             style={buttonStyle}
         >
             Reveal Your Unique Code

@@ -663,7 +663,7 @@ export const CampaignDetailsForm = ({
 
                     <div
                         className={css.pageContainer}
-                        data-testid="improved-campaign-details-page"
+                        data-testid="improved-campaign-details-page" // used in e2e tests
                     >
                         <div className={cn(css.formWrapper, className)}>
                             {header ? (

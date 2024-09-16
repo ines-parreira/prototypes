@@ -13,7 +13,7 @@ export const HelpText = ({isHidden}: Props): JSX.Element | null => {
 
     return (
         <>
-            <div className={css.helpContainer} data-testid="domain-help">
+            <div className={css.helpContainer}>
                 <p>
                     Visit the admin console of your domain registrar (the
                     website you bought your domain from) and create or update a

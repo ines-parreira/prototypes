@@ -7,6 +7,7 @@ import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 import routerDom from 'react-router-dom'
 import _omit from 'lodash/omit'
+
 import {createBrowserHistory} from 'history'
 import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
@@ -387,16 +388,18 @@ describe('<CampaignsView/>', () => {
 
     describe('Campaign actions', () => {
         it('should display the duplicate buttons correctly', () => {
-            const {getAllByTestId} = renderComponent(defaultState)
+            renderComponent(defaultState)
 
-            const duplicateButtons = getAllByTestId('duplicate-icon-button')
+            const duplicateButtons =
+                screen.getAllByLabelText('Duplicate campaign')
+
             expect(duplicateButtons.length).toBe(4)
         })
 
         it('should display the delete buttons correctly', () => {
-            const {getAllByTestId} = renderComponent(defaultState)
+            renderComponent(defaultState)
 
-            const deleteButtons = getAllByTestId('delete-icon-button')
+            const deleteButtons = screen.getAllByLabelText('Delete campaign')
             expect(deleteButtons.length).toBe(4)
         })
 
@@ -407,9 +410,9 @@ describe('<CampaignsView/>', () => {
                 isError: false,
             } as any)
 
-            const {getByTestId} = renderComponent(defaultState)
+            renderComponent(defaultState)
 
-            fireEvent.click(getByTestId('duplicate-icon-button'))
+            fireEvent.click(screen.getByLabelText('Duplicate campaign'))
 
             await waitFor(() => {
                 const duplicateCampaign = {
@@ -441,9 +444,9 @@ describe('<CampaignsView/>', () => {
                 isError: false,
             } as any)
 
-            const {getByTestId} = renderComponent(defaultState)
+            renderComponent(defaultState)
 
-            fireEvent.click(getByTestId('delete-icon-button'))
+            fireEvent.click(screen.getByLabelText('Delete campaign'))
 
             await waitFor(() => {
                 screen.getByText(`Are you sure?`)

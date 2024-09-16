@@ -61,8 +61,9 @@ export const CampaignToolsCell = ({
                 fillStyle="ghost"
                 intent="destructive"
                 title="Delete campaign"
+                aria-label="Delete campaign"
                 id={uid}
-                data-testid="delete-icon-button"
+                data-testid="delete-icon-button" // used in e2e tests
             >
                 delete
             </IconButton>
@@ -73,10 +74,10 @@ export const CampaignToolsCell = ({
         return (
             <IconButton
                 className="mr-1"
-                data-testid="duplicate-icon-button"
                 fillStyle="ghost"
                 intent="secondary"
                 title="Duplicate campaign"
+                aria-label="Duplicate campaign"
                 onClick={(ev) => onClickDuplicate(ev, campaign)}
             >
                 file_copy
@@ -112,7 +113,8 @@ export const CampaignToolsCell = ({
                     fillStyle="ghost"
                     intent="destructive"
                     title="Delete campaign"
-                    data-testid="delete-icon-button"
+                    aria-label="Delete campaign"
+                    data-testid="delete-icon-button" // used in e2e tests
                 >
                     delete
                 </IconButton>
@@ -140,10 +142,10 @@ export const CampaignToolsCell = ({
         return (
             <IconButton
                 className="mr-0 ml-auto"
-                data-testid="edit-icon-button"
                 fillStyle="ghost"
                 intent="secondary"
                 title="Edit campaign"
+                aria-label="Edit campaign"
                 onClick={(ev) => onClickEdit(ev)}
             >
                 edit

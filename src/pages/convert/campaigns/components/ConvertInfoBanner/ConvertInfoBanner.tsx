@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {sanitizeHtmlDefault} from 'utils/html'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -7,21 +7,21 @@ import {BannerType} from 'pages/convert/campaigns/types/CampaignFormConfiguratio
 type OwnProps = {
     type: string
     text: string
-}
+} & Omit<ComponentProps<typeof Alert>, 'children' | 'type'>
 
 const bannerType: Record<string, AlertType> = {
     [BannerType.Warning]: AlertType.Warning,
     [BannerType.Info]: AlertType.Info,
 }
 
-const ConvertInfoBanner = ({type, text}: OwnProps) => {
+const ConvertInfoBanner = ({type, text, ...props}: OwnProps) => {
     return (
-        <Alert icon type={bannerType[type]}>
+        <Alert icon type={bannerType[type]} {...props}>
             <span
                 dangerouslySetInnerHTML={{
                     __html: sanitizeHtmlDefault(text),
                 }}
-            ></span>
+            />
         </Alert>
     )
 }

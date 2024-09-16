@@ -79,10 +79,7 @@ export const OrdersCountTrigger = ({
                 onChange={handleChangeOperator}
                 options={convertTriggerOperatorsToSelectOptions(trigger.type)}
             />
-            <div
-                data-testid="orders-placed-value"
-                style={{display: 'flex', flexGrow: 1}}
-            >
+            <div style={{display: 'flex', flexGrow: 1}}>
                 <InputField
                     className={css.fullWidth}
                     value={innerValue}
