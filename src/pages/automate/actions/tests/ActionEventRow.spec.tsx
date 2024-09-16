@@ -126,7 +126,7 @@ describe('ActionEventRow', () => {
 
         fireEvent.click(screen.getByText('user_journey_id'))
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            '/app/tickets/user_journey_id'
+            '/app/ticket/user_journey_id'
         )
     })
 })

@@ -20,7 +20,7 @@ export default function ActionsRow({execution, onClick, isSelected}: Props) {
     const history = useHistory()
 
     const handleTicketClick = () => {
-        history.push(`/app/tickets/${execution.state.user_journey_id}`)
+        history.push(`/app/ticket/${execution.state.user_journey_id}`)
     }
     return (
         <TableBodyRow
