@@ -4,6 +4,8 @@ import {FROALA_KEY} from 'config'
 
 import {PlaygroundPredefinedMessages} from '../PlaygroundPredefinedMessages/PlaygroundPredefinedMessages'
 import {PlaygroundTemplateMessage} from '../../types'
+import {PlaygroundAction} from '../PlaygroundActions/types'
+import {PlaygroundActions} from '../PlaygroundActions/PlaygroundActions'
 import css from './PlaygroundEditor.less'
 
 const TOOLBAR_CONTAINER_ID = 'froalaToolbarContainer'
@@ -35,6 +37,7 @@ type Props = {
     onSubjectChange: (value: string) => void
     placeholder?: string
     enablePredefinedMessages?: boolean
+    customActions?: PlaygroundAction[]
 }
 
 export const PlaygroundEditor = ({
@@ -42,6 +45,7 @@ export const PlaygroundEditor = ({
     placeholder,
     onMessageChange,
     onSubjectChange,
+    customActions,
     enablePredefinedMessages,
 }: Props) => {
     const onMessageSelect = (message: PlaygroundTemplateMessage) => {
@@ -60,11 +64,18 @@ export const PlaygroundEditor = ({
                 }}
                 onModelChange={onMessageChange}
             />
-            {!value && enablePredefinedMessages && (
-                <PlaygroundPredefinedMessages
-                    onMessageSelect={onMessageSelect}
-                />
-            )}
+
+            {customActions ? (
+                <PlaygroundActions actions={customActions} />
+            ) : null}
+
+            {!value &&
+                enablePredefinedMessages &&
+                customActions === undefined && (
+                    <PlaygroundPredefinedMessages
+                        onMessageSelect={onMessageSelect}
+                    />
+                )}
             <div id={TOOLBAR_CONTAINER_ID} />
         </div>
     )

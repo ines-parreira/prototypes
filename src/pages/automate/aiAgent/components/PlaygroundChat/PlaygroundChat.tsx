@@ -4,15 +4,15 @@ import {
     AccountConfigurationWithHttpIntegration,
     StoreConfiguration,
 } from 'models/aiAgent/types'
-import {MessageType} from 'models/aiAgentPlayground/types'
 import {PlaygroundInputSection} from '../PlaygroundInputSection/PlaygroundInputSection'
 import PlaygroundMessageComponent, {
     AI_AGENT_SENDER,
 } from '../PlaygroundMessage/PlaygroundMessage'
 import {usePlaygroundForm} from '../../hooks/usePlaygroundForm'
 import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
-import TicketEvent from '../TicketEvent/TicketEvent'
 
+import {mapPlaygroundFormValuesToMessage} from '../../utils/playground-messages.utils'
+import {CustomerHttpIntegrationDataMock} from '../../constants'
 import css from './PlaygroundChat.less'
 import {PlaygroundChannels} from './PlaygroundChat.types'
 
@@ -63,7 +63,13 @@ export const PlaygroundChat = ({
             return
         }
 
-        void onMessageSend(formValues)
+        const playgroundMessage = mapPlaygroundFormValuesToMessage(formValues)
+        void onMessageSend(playgroundMessage, {
+            customerEmail:
+                formValues.customerEmail ??
+                CustomerHttpIntegrationDataMock.address,
+            subject: formValues.subject,
+        })
 
         onFormValuesChange('message', '')
     }
@@ -85,21 +91,13 @@ export const PlaygroundChat = ({
         <div className={css.container}>
             <div className={css.outputContainer}>
                 <div className={css.outputInner} ref={messageContainerRef}>
-                    {messages.map((message, index) =>
-                        message.type === MessageType.TICKET_EVENT &&
-                        message.outcome ? (
-                            <TicketEvent key={index} type={message.outcome} />
-                        ) : (
-                            <PlaygroundMessageComponent
-                                sender={message.sender}
-                                type={message.type}
-                                message={message.message}
-                                createdDatetime={message.createdDatetime}
-                                key={index}
-                                withAnimation
-                            />
-                        )
-                    )}
+                    {messages.map((message, index) => (
+                        <PlaygroundMessageComponent
+                            message={message}
+                            key={index}
+                            withAnimation
+                        />
+                    ))}
                 </div>
             </div>
             <div className={css.inputContainer}>

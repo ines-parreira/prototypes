@@ -6,23 +6,6 @@ import PlaygroundMessage, {AI_AGENT_SENDER} from './PlaygroundMessage'
 const meta: Meta<typeof PlaygroundMessage> = {
     title: 'AI Agent/Playground/Message',
     component: PlaygroundMessage,
-    argTypes: {
-        sender: {
-            control: {
-                type: 'text',
-            },
-        },
-        message: {
-            control: {
-                type: 'text',
-            },
-        },
-        type: {
-            control: {
-                type: 'string',
-            },
-        },
-    },
 }
 
 export default meta
@@ -32,45 +15,62 @@ type Story = StoryObj<typeof PlaygroundMessage>
 export const AIAgentErrorMessage: Story = {
     render: (args) => <PlaygroundMessage {...args} />,
     args: {
-        sender: AI_AGENT_SENDER,
-        message: (
-            <div>AI Agent encountered an error and didn’t send a response.</div>
-        ),
-        type: MessageType.ERROR,
+        message: {
+            sender: AI_AGENT_SENDER,
+            content: (
+                <div>
+                    AI Agent encountered an error and didn’t send a response.
+                </div>
+            ),
+            type: MessageType.ERROR,
+            createdDatetime: new Date().toISOString(),
+        },
     },
 }
 
 export const UserMessage: Story = {
     render: (args) => <PlaygroundMessage {...args} />,
     args: {
-        sender: 'John Doe',
-        message: 'Where is my order?',
-        type: MessageType.MESSAGE,
+        message: {
+            sender: 'John Doe',
+            content: 'Where is my order?',
+            type: MessageType.MESSAGE,
+            createdDatetime: new Date().toISOString(),
+        },
     },
 }
 
 export const AIAgentMessageLoading: Story = {
     render: (args) => <PlaygroundMessage {...args} />,
     args: {
-        sender: AI_AGENT_SENDER,
-        type: MessageType.MESSAGE,
+        message: {
+            sender: AI_AGENT_SENDER,
+            type: MessageType.PLACEHOLDER,
+            createdDatetime: new Date().toISOString(),
+        },
     },
 }
 
 export const AIAgentInternalNoteMessage: Story = {
     render: (args) => <PlaygroundMessage {...args} />,
     args: {
-        sender: AI_AGENT_SENDER,
-        message: 'Where is my order?',
-        type: MessageType.INTERNAL_NOTE,
+        message: {
+            sender: AI_AGENT_SENDER,
+            content: 'Where is my order?',
+            type: MessageType.INTERNAL_NOTE,
+            createdDatetime: new Date().toISOString(),
+        },
     },
 }
 
 export const AIAgentMessage: Story = {
     render: (args) => <PlaygroundMessage {...args} />,
     args: {
-        sender: AI_AGENT_SENDER,
-        message: 'Where is my order?',
-        type: MessageType.MESSAGE,
+        message: {
+            sender: AI_AGENT_SENDER,
+            content: 'Where is my order?',
+            type: MessageType.MESSAGE,
+            createdDatetime: new Date().toISOString(),
+        },
     },
 }

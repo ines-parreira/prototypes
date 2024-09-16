@@ -1,0 +1,54 @@
+import React, {useState} from 'react'
+import {Popover, PopoverBody} from 'reactstrap'
+import Button from 'pages/common/components/button/Button'
+import {sanitizeHtmlDefault} from 'utils/html'
+import {useAppNode} from 'appNode'
+
+import css from './PlaygroundActionsItem.less'
+import {PlaygroundAction} from './types'
+
+type Props = {
+    action: PlaygroundAction
+}
+
+export const PlaygroundActionsItem = ({action}: Props) => {
+    const appNode = useAppNode()
+    const [isPreviewOpen, setIsPreviewOpen] = useState(false)
+    const {label, content, id, onClick} = action
+
+    return (
+        <>
+            <Button
+                intent="secondary"
+                id={`template-button-${id}`}
+                onClick={onClick}
+                onMouseEnter={() => {
+                    setIsPreviewOpen(true)
+                }}
+                onMouseLeave={() => setIsPreviewOpen(false)}
+                size="small"
+            >
+                {label}
+            </Button>
+
+            {content ? (
+                <Popover
+                    target={`template-button-${id}`}
+                    placement="top"
+                    container={appNode ?? undefined}
+                    trigger="legacy"
+                    isOpen={isPreviewOpen}
+                    popperClassName={css.popover}
+                >
+                    <PopoverBody className={css.PopoverBody}>
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizeHtmlDefault(content),
+                            }}
+                        />
+                    </PopoverBody>
+                </Popover>
+            ) : null}
+        </>
+    )
+}

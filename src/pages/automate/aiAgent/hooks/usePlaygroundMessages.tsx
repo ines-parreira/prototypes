@@ -3,10 +3,9 @@ import axios from 'axios'
 import {useSubmitPlaygroundTicket} from 'models/aiAgent/queries'
 import {reportError} from 'utils/errors'
 import {
-    AiAgentResponse,
     MessageType,
     PlaygroundMessage,
-    TicketOutcome,
+    PlaygroundTextMessage,
 } from 'models/aiAgentPlayground/types'
 import {StoreConfiguration} from 'models/aiAgent/types'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
@@ -15,55 +14,12 @@ import {
     PlaygroundGenericErrorMessage,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
 import {CustomerHttpIntegrationDataMock} from '../constants'
+import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.types'
 import {
-    PlaygroundChannels,
-    PlaygroundFormValues,
-} from '../components/PlaygroundChat/PlaygroundChat.types'
-
-const mapFormValuesToMessage = (
-    formValues: PlaygroundFormValues
-): PlaygroundMessage => {
-    return {
-        sender:
-            formValues.customerName ??
-            formValues.customerEmail ?? // email as fallback
-            CustomerHttpIntegrationDataMock.name,
-        type: MessageType.MESSAGE,
-        message: formValues.message,
-        createdDatetime: new Date().toISOString(),
-    }
-}
-
-const shouldAiAgentResponseDisplay = (
-    aiAgentResponse: AiAgentResponse,
-    storeData: StoreConfiguration
-) => {
-    const isHandover =
-        aiAgentResponse.generate.output.outcome === TicketOutcome.HANDOVER
-    const isSilentHandover = storeData.silentHandover
-    const hasHtmlReply = aiAgentResponse.postProcessing.htmlReply
-
-    return (
-        aiAgentResponse.qa.output.validate_generated_message &&
-        ((isHandover && !isSilentHandover) || (!isHandover && hasHtmlReply))
-    )
-}
-
-const getInitialMessage = (
-    channel: PlaygroundChannels,
-    currentUserFirstName?: string
-) => {
-    switch (channel) {
-        case 'chat':
-            return `Hi${
-                currentUserFirstName ? ` ${currentUserFirstName}` : ''
-            }<br/><br/>Welcome to your AI Agent test area.<br/><br/>You can use this to send messages to AI Agent in the same way your customers do and test how it responds. If you want to improve the response, you can edit your resources and re-test your question.`
-        default:
-            return `Hi${
-                currentUserFirstName ? ` ${currentUserFirstName}` : ''
-            }!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question.`
-    }
-}
+    getPlaygroundInitialMessage,
+    mapPlaygroundMessagesToServerMessages,
+    shouldAiAgentResponseDisplay,
+} from '../utils/playground-messages.utils'
 
 export const usePlaygroundMessages = ({
     storeData,
@@ -85,7 +41,10 @@ export const usePlaygroundMessages = ({
             {
                 sender: AI_AGENT_SENDER,
                 type: MessageType.MESSAGE,
-                message: getInitialMessage(channel, currentUserFirstName),
+                content: getPlaygroundInitialMessage(
+                    channel,
+                    currentUserFirstName
+                ),
                 createdDatetime: new Date().toISOString(),
             },
         ],
@@ -117,25 +76,25 @@ export const usePlaygroundMessages = ({
     }, [initialMessages])
 
     const onMessageSend = useCallback(
-        async (formValues: PlaygroundFormValues) => {
-            const newMessage = mapFormValuesToMessage(formValues)
-
-            const aiAgentMessagePlaceholder = {
+        async (
+            newMessage: PlaygroundTextMessage,
+            {customerEmail, subject}: {customerEmail: string; subject?: string}
+        ) => {
+            const aiAgentMessagePlaceholder: PlaygroundMessage = {
                 sender: AI_AGENT_SENDER,
-                type: MessageType.MESSAGE,
+                type: MessageType.PLACEHOLDER,
                 createdDatetime: new Date().toISOString(),
             }
             const newMessages = [...messages, newMessage]
             setMessages([...newMessages, aiAgentMessagePlaceholder])
 
             const mockContext =
-                formValues.customerEmail === undefined ||
-                formValues.customerEmail ===
-                    CustomerHttpIntegrationDataMock.address
+                customerEmail === CustomerHttpIntegrationDataMock.address
 
-            const customerEmail =
-                formValues.customerEmail ??
-                CustomerHttpIntegrationDataMock.address
+            const bodyText =
+                newMessage.type === MessageType.MESSAGE
+                    ? newMessage.content
+                    : ''
 
             const emailIntegration = storeData.monitoredEmailIntegrations[0]
 
@@ -156,24 +115,14 @@ export const usePlaygroundMessages = ({
                         use_mock_context: mockContext,
                         domain: gorgiasDomain,
                         customer_email: customerEmail,
-                        body_text: formValues.message,
+                        body_text: bodyText,
                         created_datetime: newMessage.createdDatetime,
                         channel,
                         // TODO: Remove in https://linear.app/gorgias/issue/AUTAI-1418/update-mechanism-to-get-customer-data
                         email_integration_id: emailIntegration?.id,
-                        // TODO: move this logic to the helper
-                        messages: newMessages
-                            .slice(1) // remove initial message
-                            .filter((m) => m.type === MessageType.MESSAGE)
-                            .map((m) => ({
-                                bodyText:
-                                    typeof m.message === 'string'
-                                        ? m.message
-                                        : '',
-                                fromAgent: m.sender === AI_AGENT_SENDER,
-                                createdDatetime: m.createdDatetime,
-                            })),
-                        subject: formValues.subject ?? '',
+                        messages:
+                            mapPlaygroundMessagesToServerMessages(newMessages),
+                        subject: subject ?? '',
                         http_integration_id: httpIntegrationId,
                         account_id: accountId,
                         _action_serialized_state:
@@ -195,7 +144,7 @@ export const usePlaygroundMessages = ({
                     updatedMessages.push({
                         sender: AI_AGENT_SENDER,
                         type: MessageType.MESSAGE,
-                        message:
+                        content:
                             aiAgentResponse.postProcessing.htmlReply ??
                             aiAgentResponse.generate.output.generated_message,
                         createdDatetime: new Date().toISOString(),
@@ -206,7 +155,7 @@ export const usePlaygroundMessages = ({
                     updatedMessages.push({
                         sender: AI_AGENT_SENDER,
                         type: MessageType.INTERNAL_NOTE,
-                        message: aiAgentResponse.postProcessing.internalNote,
+                        content: aiAgentResponse.postProcessing.internalNote,
                         createdDatetime: new Date().toISOString(),
                     })
                 }
@@ -241,10 +190,10 @@ export const usePlaygroundMessages = ({
                     },
                 })
 
-                const errorMessage = {
+                const errorMessage: PlaygroundMessage = {
                     sender: AI_AGENT_SENDER,
                     type: MessageType.ERROR,
-                    message: (
+                    content: (
                         <PlaygroundGenericErrorMessage
                             onClick={() => onNewConversation()}
                         />

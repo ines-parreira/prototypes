@@ -118,15 +118,47 @@ export enum MessageType {
     MESSAGE = 'MESSAGE',
     ERROR = 'ERROR',
     TICKET_EVENT = 'TICKET_EVENT',
+    PLACEHOLDER = 'PLACEHOLDER',
 }
 
-export type PlaygroundMessage = {
+export const isPlaygroundTextMessage = (
+    message: PlaygroundMessage
+): message is PlaygroundTextMessage => message.type === MessageType.MESSAGE
+
+type BaseMessage = {
     sender: string
-    type: MessageType
-    message?: string | React.ReactNode
-    outcome?: TicketOutcome
     createdDatetime: string
 }
+export type PlaygroundTextMessage = BaseMessage & {
+    type: MessageType.MESSAGE
+    content: string
+}
+
+export type PlaygroundInternalNoteMessage = BaseMessage & {
+    type: MessageType.INTERNAL_NOTE
+    content: string
+}
+
+export type PlaygroundErrorMessage = BaseMessage & {
+    type: MessageType.ERROR
+    content: React.ReactNode | string
+}
+
+export type PlaygroundTicketEventMessage = BaseMessage & {
+    type: MessageType.TICKET_EVENT
+    outcome: TicketOutcome
+}
+
+export type PlaygroundPlaceholderMessage = BaseMessage & {
+    type: MessageType.PLACEHOLDER
+}
+
+export type PlaygroundMessage =
+    | PlaygroundTextMessage
+    | PlaygroundInternalNoteMessage
+    | PlaygroundErrorMessage
+    | PlaygroundTicketEventMessage
+    | PlaygroundPlaceholderMessage
 
 export enum TicketOutcome {
     CLOSE = 'close',

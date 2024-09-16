@@ -1,10 +1,13 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 import {useSubmitPlaygroundTicket} from 'models/aiAgent/queries'
-import {TicketOutcome} from 'models/aiAgentPlayground/types'
+import {MessageType, TicketOutcome} from 'models/aiAgentPlayground/types'
+import {AI_AGENT} from 'pages/automate/common/components/constants'
 import {usePlaygroundMessages} from '../usePlaygroundMessages'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'
 import {PlaygroundChannels} from '../../components/PlaygroundChat/PlaygroundChat.types'
+import {playgroundMessageFixture} from '../../fixtures/playgroundMessages.fixture'
+import {CustomerHttpIntegrationDataMock} from '../../constants'
 
 jest.mock('models/aiAgent/queries', () => ({
     useSubmitPlaygroundTicket: jest.fn(),
@@ -40,8 +43,8 @@ describe('usePlaygroundMessages hook', () => {
         expect(result.current.messages.length).toBe(1)
         expect(result.current.messages[0]).toMatchInlineSnapshot(`
             {
+              "content": "Hi Acme!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question.",
               "createdDatetime": "2020-01-01T00:00:00.000Z",
-              "message": "Hi Acme!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question.",
               "sender": "AI Agent",
               "type": "MESSAGE",
             }
@@ -57,15 +60,18 @@ describe('usePlaygroundMessages hook', () => {
         } as unknown as ReturnType<typeof useSubmitPlaygroundTicket>)
 
         const {result} = renderHook(() => usePlaygroundMessages(defaultParams))
+        const message = playgroundMessageFixture
         await act(async () => {
-            await result.current.onMessageSend({message: 'test'})
+            await result.current.onMessageSend(message, {
+                customerEmail: 'oliver.smith@foobar.com',
+            })
         })
 
         expect(onSubmit).toHaveBeenCalledWith([
             {
                 account_id: 1,
-                body_text: 'test',
-                created_datetime: '2020-01-01T00:00:00.000Z',
+                body_text: message.content,
+                created_datetime: message.createdDatetime,
                 email_integration_id: 11,
                 customer_email: 'oliver.smith@foobar.com',
                 domain: 'acme',
@@ -74,14 +80,14 @@ describe('usePlaygroundMessages hook', () => {
                     shopName: defaultParams.storeData.storeName,
                 },
                 http_integration_id: 1,
+                subject: '',
                 messages: [
                     {
-                        bodyText: 'test',
-                        createdDatetime: '2020-01-01T00:00:00.000Z',
-                        fromAgent: false,
+                        bodyText: message.content,
+                        createdDatetime: message.createdDatetime,
+                        fromAgent: true,
                     },
                 ],
-                subject: '',
                 use_mock_context: true,
                 _action_serialized_state: undefined,
             },
@@ -92,39 +98,28 @@ describe('usePlaygroundMessages hook', () => {
         expect(result.current.messages.length).toBe(3)
     })
 
-    it('should throw error when no email integration', async () => {
-        const {result} = renderHook(() =>
-            usePlaygroundMessages({
-                ...defaultParams,
-                storeData: getStoreConfigurationFixture({
-                    monitoredEmailIntegrations: [],
-                }),
-            })
-        )
-
-        try {
-            await act(async () => {
-                await result.current.onMessageSend({message: 'test'})
-            })
-        } catch (e) {
-            if (e instanceof Error) {
-                expect(e.message).toBe('No email integration')
-            }
-        }
-    })
-
     it('should change initial message when channel changed', () => {
         const {result, rerender} = renderHook(
             ({channel}: {channel: PlaygroundChannels}) =>
                 usePlaygroundMessages({...defaultParams, channel}),
             {initialProps: {channel: 'chat'}}
         )
-        expect(result.current.messages[0].message).toMatchInlineSnapshot(
-            `"Hi Acme<br/><br/>Welcome to your AI Agent test area.<br/><br/>You can use this to send messages to AI Agent in the same way your customers do and test how it responds. If you want to improve the response, you can edit your resources and re-test your question."`
+        expect(result.current.messages[0]).toEqual(
+            expect.objectContaining({
+                type: MessageType.MESSAGE,
+                sender: AI_AGENT,
+                content:
+                    'Hi Acme<br/><br/>Welcome to your AI Agent test area.<br/><br/>You can use this to send messages to AI Agent in the same way your customers do and test how it responds. If you want to improve the response, you can edit your resources and re-test your question.',
+            })
         )
         rerender({channel: 'email'})
-        expect(result.current.messages[0].message).toMatchInlineSnapshot(
-            `"Hi Acme!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question."`
+        expect(result.current.messages[0]).toEqual(
+            expect.objectContaining({
+                type: MessageType.MESSAGE,
+                sender: AI_AGENT,
+                content:
+                    'Hi Acme!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question.',
+            })
         )
     })
 
@@ -157,7 +152,9 @@ describe('usePlaygroundMessages hook', () => {
         const {result} = renderHook(() => usePlaygroundMessages(defaultParams))
 
         await act(async () => {
-            await result.current.onMessageSend({message: 'test'})
+            await result.current.onMessageSend(playgroundMessageFixture, {
+                customerEmail: '',
+            })
         })
 
         expect(result.current.messages.length).toBe(4)
@@ -196,7 +193,9 @@ describe('usePlaygroundMessages hook', () => {
         } as unknown as ReturnType<typeof useSubmitPlaygroundTicket>)
         const {result} = renderHook(() => usePlaygroundMessages(defaultParams))
         await act(async () => {
-            await result.current.onMessageSend({message: 'test'})
+            await result.current.onMessageSend(playgroundMessageFixture, {
+                customerEmail: '',
+            })
         })
         expect(result.current.messages.length).toBe(5)
         expect(result.current.messages.map((m) => m.type)).toEqual([
@@ -219,13 +218,15 @@ describe('usePlaygroundMessages hook', () => {
             })
         )
         await act(async () => {
-            await result.current.onMessageSend({message: 'test'})
+            await result.current.onMessageSend(playgroundMessageFixture, {
+                customerEmail: CustomerHttpIntegrationDataMock.address,
+            })
         })
 
         expect(result.current.messages.length).toBe(3)
     })
 
-    it('should throw error when no http integration', async () => {
+    it('should throw error when no email integration', async () => {
         const {result} = renderHook(() =>
             usePlaygroundMessages({
                 ...defaultParams,
@@ -236,9 +237,8 @@ describe('usePlaygroundMessages hook', () => {
         )
         try {
             await act(async () => {
-                await result.current.onMessageSend({
+                await result.current.onMessageSend(playgroundMessageFixture, {
                     customerEmail: 'customer@mail.com',
-                    message: 'test',
                 })
             })
         } catch (e) {
@@ -248,5 +248,25 @@ describe('usePlaygroundMessages hook', () => {
                 )
             }
         }
+    })
+
+    it('should add error message when error occurs', async () => {
+        const onSubmit = () => Promise.reject(new Error('Error'))
+        mockedUseSubmitPlaygroundTicket.mockReturnValue({
+            mutateAsync: onSubmit,
+        } as unknown as ReturnType<typeof useSubmitPlaygroundTicket>)
+        const {result} = renderHook(() => usePlaygroundMessages(defaultParams))
+        await act(async () => {
+            await result.current.onMessageSend(playgroundMessageFixture, {
+                customerEmail: 'test@mail.com',
+            })
+        })
+
+        expect(result.current.messages.length).toBe(3)
+        expect(result.current.messages[2]).toEqual(
+            expect.objectContaining({
+                type: MessageType.ERROR,
+            })
+        )
     })
 })

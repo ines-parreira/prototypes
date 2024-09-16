@@ -1,8 +1,7 @@
 import React from 'react'
 
 import {PlaygroundTemplateMessage} from '../../types'
-import css from './PlaygroundPredefinedMessages.less'
-import {PredefinedMessageItem} from './PredefinedMessageItem'
+import {PlaygroundActions} from '../PlaygroundActions/PlaygroundActions'
 
 const TEMPLATE_MESSAGES: PlaygroundTemplateMessage[] = [
     {
@@ -36,19 +35,17 @@ type Props = {
 }
 
 export const PlaygroundPredefinedMessages = ({onMessageSelect}: Props) => {
+    const actions = TEMPLATE_MESSAGES.map((message) => ({
+        id: message.id,
+        label: message.title,
+        content: message.content,
+        onClick: () => onMessageSelect(message),
+    }))
+
     return (
-        <div className={css.container}>
-            <span className={css.title}>Test a common question</span>
-            <ul className={css.list}>
-                {TEMPLATE_MESSAGES.map((message, index) => (
-                    <li key={index}>
-                        <PredefinedMessageItem
-                            message={message}
-                            onMessageSelect={onMessageSelect}
-                        />
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <PlaygroundActions
+            title="Or test a common question"
+            actions={actions}
+        />
     )
 }

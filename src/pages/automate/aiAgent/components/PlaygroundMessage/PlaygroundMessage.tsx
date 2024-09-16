@@ -12,21 +12,18 @@ import {
     PlaygroundMessage as PlaygroundMessageType,
     ProcessingStatus,
 } from 'models/aiAgentPlayground/types'
+import TicketEvent from '../TicketEvent/TicketEvent'
 import css from './PlaygroundMessage.less'
 
 export const AI_AGENT_SENDER = 'AI Agent'
 
 type Props = {
     withAnimation?: boolean
+    message: PlaygroundMessageType
 }
 
-const PlaygroundMessage = ({
-    sender,
-    type = MessageType.MESSAGE,
-    message,
-    withAnimation = false,
-}: PlaygroundMessageType & Props) => {
-    const isAiAgentSender = sender === AI_AGENT_SENDER
+const PlaygroundMessage = ({withAnimation = false, message}: Props) => {
+    const isAiAgentSender = message.sender === AI_AGENT_SENDER
     const [processingStatus, setProcessingStatus] = useState(
         ProcessingStatus.CHECKING_PERMISSIONS
     )
@@ -42,7 +39,7 @@ const PlaygroundMessage = ({
 
     useEffect(() => {
         const timeoutsToClear: NodeJS.Timeout[] = []
-        if (!message) {
+        if (message.type === MessageType.PLACEHOLDER) {
             timeoutsToClear.push(
                 aiAgentProcessingStatusUpdate(
                     ProcessingStatus.SUMMARIZING,
@@ -63,10 +60,17 @@ const PlaygroundMessage = ({
         }
     }, [message])
 
+    // TODO: refactor component and support render component per message type
+    // https://linear.app/gorgias/issue/AUTAI-1497/create-render-component-for-playgroundmessage
+    if (message.type === MessageType.TICKET_EVENT) {
+        return <TicketEvent type={message.outcome} />
+    }
+
     return (
         <div
             className={classnames(css.messageContainer, {
-                [css.internalNoteContainer]: type === MessageType.INTERNAL_NOTE,
+                [css.internalNoteContainer]:
+                    message.type === MessageType.INTERNAL_NOTE,
                 [css.messageAnimation]: withAnimation,
             })}
         >
@@ -80,34 +84,36 @@ const PlaygroundMessage = ({
                 ) : (
                     <Avatar
                         size={36}
-                        name={sender}
+                        name={message.sender}
                         className={css.messageAvatar}
                     />
                 )}
             </div>
             <div className={css.messageContentContainer}>
                 <div className={css.messageHeader}>
-                    {isAiAgentSender && type === MessageType.INTERNAL_NOTE && (
-                        <i
-                            className={classnames(
-                                'material-icons',
-                                css.avatarIcon
-                            )}
-                        >
-                            account_circle
-                        </i>
-                    )}
+                    {isAiAgentSender &&
+                        message.type === MessageType.INTERNAL_NOTE && (
+                            <i
+                                className={classnames(
+                                    'material-icons',
+                                    css.avatarIcon
+                                )}
+                            >
+                                account_circle
+                            </i>
+                        )}
                     <span
                         className={classnames(
                             css.messageSenderCommon,
                             isAiAgentSender
-                                ? type === MessageType.MESSAGE
+                                ? message.type === MessageType.MESSAGE ||
+                                  message.type === MessageType.PLACEHOLDER
                                     ? css.aiAgentTypeSender
                                     : css.aiAgentInternalNoteTypeSender
                                 : css.shopperTypeSender
                         )}
                     >
-                        {sender}
+                        {message.sender}
                     </span>
                     <i
                         className={classnames(
@@ -115,30 +121,38 @@ const PlaygroundMessage = ({
                             css.messageTypeIcon
                         )}
                     >
-                        {type === MessageType.MESSAGE ? 'mail' : 'note'}
+                        {message.type === MessageType.MESSAGE ||
+                        message.type === MessageType.PLACEHOLDER
+                            ? 'mail'
+                            : 'note'}
                     </i>
                 </div>
                 <div
                     className={classnames(
                         css.messageContainer,
-                        type === MessageType.ERROR && css.messageErrorContainer
+                        message.type === MessageType.ERROR &&
+                            css.messageErrorContainer
                     )}
                 >
-                    {type === MessageType.ERROR && (
+                    {message.type === MessageType.ERROR && (
                         <div className={css.aiAgentErrorIconContainer}>
                             <img alt="timer" src={error} />
                         </div>
                     )}
-                    {message ? (
-                        typeof message === 'string' ? (
+                    {message.type === MessageType.MESSAGE ||
+                    message.type === MessageType.INTERNAL_NOTE ||
+                    message.type === MessageType.ERROR ? (
+                        typeof message.content === 'string' ? (
                             <div
                                 className={css.messageContent}
                                 dangerouslySetInnerHTML={{
-                                    __html: sanitizeHtmlDefault(message),
+                                    __html: sanitizeHtmlDefault(
+                                        message.content
+                                    ),
                                 }}
                             />
                         ) : (
-                            message
+                            message.content
                         )
                     ) : (
                         <div
