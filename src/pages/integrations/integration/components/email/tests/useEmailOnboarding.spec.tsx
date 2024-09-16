@@ -1,38 +1,84 @@
 import React from 'react'
 import {MemoryRouter} from 'react-router-dom'
 import {renderHook} from '@testing-library/react-hooks'
+import {waitFor} from '@testing-library/react'
+import {QueryClientProvider} from '@tanstack/react-query'
+import createMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
 
+import {createIntegration, updateIntegration} from '@gorgias/api-client'
+import {HttpResponse, Integration} from '@gorgias/api-queries'
+
+import {onCreateSuccess} from 'state/integrations/actions'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 import {EmailIntegration} from 'models/integration/types'
+
+const mockStore = createMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const queryClient = mockQueryClient()
+const store = mockStore({})
 
 import {
     EmailIntegrationOnboardingStep,
     UseEmailOnboardingHookOptions,
+    UseEmailOnboardingHookResult,
     useEmailOnboarding,
 } from '../hooks/useEmailOnboarding'
+
+jest.mock('pages/history')
+jest.mock('@gorgias/api-client')
+jest.mock('state/integrations/actions')
+
+jest.mock(
+    'react-router-dom',
+    () =>
+        ({
+            ...jest.requireActual('react-router-dom'),
+            useHistory: () => ({
+                push: mockHistoryPush,
+            }),
+        } as Record<string, unknown>)
+)
+
+const mockHistoryPush = jest.fn()
+const createIntegrationMock = assumeMock(createIntegration)
+const updateIntegrationMock = assumeMock(updateIntegration)
+const onSuccessMock = assumeMock(onCreateSuccess)
 
 const render = (options?: UseEmailOnboardingHookOptions, path?: string) => {
     return renderHook(() => useEmailOnboarding(options), {
         wrapper: ({children}) => (
             <MemoryRouter initialEntries={[path ?? '/']}>
-                {children}
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                </Provider>
             </MemoryRouter>
         ),
     })
 }
 
-describe('useDomainVerification()', () => {
+describe('useEmailOnboarding()', () => {
     it('should have an initial state', () => {
         const {result} = render()
-        expect(result.current.integration).toEqual(undefined)
-        expect(result.current.isConnected).toEqual(false)
-        expect(result.current.isVerifying).toEqual(false)
-        expect(result.current.isVerified).toEqual(false)
-        expect(result.current.currentStep).toEqual(
+        const state: UseEmailOnboardingHookResult = result.current
+        expect(state.integration).toEqual(undefined)
+        expect(state.errors).toEqual(undefined)
+        expect(state.isConnected).toEqual(false)
+        expect(state.isConnecting).toEqual(false)
+        expect(state.isVerified).toEqual(false)
+        expect(state.isVerifying).toEqual(false)
+        expect(state.currentStep).toEqual(
             EmailIntegrationOnboardingStep.ConnectIntegration
         )
-        expect(typeof result.current.connectIntegration).toEqual('function')
-        expect(typeof result.current.sendVerification).toEqual('function')
-        expect(typeof result.current.deleteIntegration).toEqual('function')
+        expect(typeof state.connectIntegration).toEqual('function')
+        expect(typeof state.sendVerification).toEqual('function')
+        expect(typeof state.deleteIntegration).toEqual('function')
+        expect(typeof state.back).toEqual('function')
+        expect(typeof state.cancel).toEqual('function')
     })
 
     describe('current step', () => {
@@ -122,6 +168,134 @@ describe('useDomainVerification()', () => {
                 )
                 expect(result.current.currentStep).toEqual(
                     EmailIntegrationOnboardingStep.ForwardingSetup
+                )
+            })
+        })
+    })
+
+    describe('actions', () => {
+        describe('connectIntegration()', () => {
+            it('creates the integration if it does not exist', async () => {
+                const {result} = render()
+
+                const payload = {
+                    name: 'Support Email',
+                    meta: {
+                        address: 'acme@gorigas.test',
+                    },
+                }
+
+                const integration = {
+                    id: 1,
+                    type: 'email',
+                    ...payload,
+                }
+
+                createIntegrationMock.mockResolvedValue({
+                    data: integration,
+                } as HttpResponse<Integration>)
+
+                result.current.connectIntegration(payload)
+
+                await waitFor(() => {
+                    expect(createIntegrationMock).toHaveBeenCalledWith(
+                        {...payload, type: 'email'},
+                        undefined
+                    )
+
+                    expect(onSuccessMock).toHaveBeenCalledWith(
+                        store.dispatch,
+                        integration,
+                        true,
+                        true
+                    )
+
+                    expect(mockHistoryPush).toHaveBeenCalledWith(
+                        '/app/settings/channels/email/1/onboarding'
+                    )
+                })
+            })
+
+            it('updates the integration if it exists', async () => {
+                const integration = {
+                    id: 1,
+                    name: 'Support Email Update',
+                    meta: {
+                        address: 'acme@gorigas.test',
+                    },
+                }
+
+                const {result} = render({
+                    integration: integration as EmailIntegration,
+                })
+
+                updateIntegrationMock.mockResolvedValue({
+                    data: integration,
+                } as HttpResponse<Integration>)
+
+                result.current.connectIntegration(integration)
+
+                await waitFor(() => {
+                    expect(updateIntegrationMock).toHaveBeenCalledWith(
+                        1,
+                        integration,
+                        undefined
+                    )
+
+                    expect(onSuccessMock).toHaveBeenCalledWith(
+                        store.dispatch,
+                        integration,
+                        true,
+                        true
+                    )
+                })
+            })
+
+            it('should set errors if the API call fails', async () => {
+                const {result, waitForValueToChange} = render()
+
+                const payload = {
+                    name: 'Support Email',
+                    meta: {
+                        address: 'acme@gorigas.test',
+                    },
+                }
+
+                createIntegrationMock.mockRejectedValue({
+                    isAxiosError: true,
+                    response: {
+                        data: {
+                            error: {
+                                msg: "Can't create integration",
+                                data: {
+                                    address: 'Is already used.',
+                                },
+                            },
+                        },
+                    },
+                })
+
+                result.current.connectIntegration(payload)
+
+                await waitForValueToChange(() => result.current.errors)
+
+                expect(createIntegrationMock).toHaveBeenCalledWith(
+                    {...payload, type: 'email'},
+                    undefined
+                )
+
+                expect(result.current.errors).toEqual({
+                    address: 'Is already used.',
+                })
+            })
+        })
+
+        describe('cancel()', () => {
+            it('should redirect to the integrations page', () => {
+                const {result} = render()
+                result.current.cancel()
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/settings/channels/email'
                 )
             })
         })

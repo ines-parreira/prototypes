@@ -1,7 +1,18 @@
-import {useRouteMatch} from 'react-router-dom'
-import {kebabCase} from 'lodash'
+import {useCallback, useState} from 'react'
+import {useHistory, useRouteMatch} from 'react-router-dom'
+import {isObject, kebabCase} from 'lodash'
+import {
+    HttpResponse,
+    UpdateIntegrationBody,
+    useCreateIntegration,
+    useUpdateIntegration,
+} from '@gorgias/api-queries'
 
-import {EmailIntegration} from 'models/integration/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {EmailIntegration, Integration} from 'models/integration/types'
+import {onCreateSuccess} from 'state/integrations/actions'
+import {isGorgiasApiError} from 'models/api/types'
+import {FormErrors} from 'pages/settings/SLAs/features/SLAForm/views/validation'
 
 export enum EmailIntegrationOnboardingStep {
     ConnectIntegration = 'ConnectIntegration',
@@ -9,24 +20,32 @@ export enum EmailIntegrationOnboardingStep {
     Verification = 'Verification',
 }
 
-type ConnectIntegrationPayload = {
+export type ConnectIntegrationPayload = {
     name: string
-    address: string
+    meta: {
+        address: string
+    }
 }
 
 export type UseEmailOnboardingHookOptions = {
     integration?: EmailIntegration | undefined
 }
 
+export type Errors = FormErrors<ConnectIntegrationPayload>
+
 export type UseEmailOnboardingHookResult = {
     integration: EmailIntegration | undefined
     currentStep: EmailIntegrationOnboardingStep
+    errors: Errors | undefined
     connectIntegration: (payload: ConnectIntegrationPayload) => void
     sendVerification: () => void
     deleteIntegration: () => void
+    back: () => void
+    cancel: () => void
     isConnected: boolean
-    isVerifying: boolean
+    isConnecting: boolean
     isVerified: boolean
+    isVerifying: boolean
 }
 
 export function useEmailOnboarding(
@@ -34,13 +53,71 @@ export function useEmailOnboarding(
 ): UseEmailOnboardingHookResult {
     const integration = options?.integration
     const currentStep = useGetCurrentStep(integration)
+    const dispatch = useAppDispatch()
+    const history = useHistory()
+    const [errors, setErrors] = useState<Errors>()
+
+    const mutationOptions = {
+        onSuccess: (response: HttpResponse<unknown>) => {
+            const integration = response.data as Integration
+            onCreateSuccess(dispatch, integration, true, true)
+            history.push(
+                `/app/settings/channels/email/${integration.id}/onboarding`
+            )
+        },
+        onError: (error: HttpResponse<unknown>) => {
+            if (
+                isGorgiasApiError(error) &&
+                isObject(error.response?.data?.error?.data)
+            ) {
+                setErrors(error.response?.data?.error?.data)
+            }
+        },
+    }
+
+    const {mutate: create, isLoading: isCreating} = useCreateIntegration({
+        mutation: mutationOptions,
+    })
+
+    const {mutate: update, isLoading: isUpdating} = useUpdateIntegration({
+        mutation: mutationOptions,
+    })
+
+    const connectIntegration = useCallback(
+        (payload: ConnectIntegrationPayload) => {
+            if (integration) {
+                update({
+                    id: integration.id,
+                    data: {
+                        ...integration,
+                        ...payload,
+                    } as UpdateIntegrationBody,
+                })
+            } else {
+                create({data: {...payload, type: 'email' as 'http'}})
+            }
+        },
+        [integration, create, update]
+    )
+
+    const cancel = useCallback(() => {
+        history.push('/app/settings/channels/email')
+    }, [history])
+
+    const back = useCallback(() => {}, [])
+    const sendVerification = useCallback(() => {}, [])
+    const deleteIntegration = useCallback(() => {}, [])
 
     return {
         integration,
         currentStep,
-        connectIntegration: () => {},
-        sendVerification: () => {},
-        deleteIntegration: () => {},
+        connectIntegration,
+        sendVerification,
+        deleteIntegration,
+        back,
+        cancel,
+        errors,
+        isConnecting: isCreating || isUpdating,
         isConnected: false,
         isVerifying: false,
         isVerified: false,

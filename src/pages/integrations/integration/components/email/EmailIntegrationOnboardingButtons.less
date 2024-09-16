@@ -1,0 +1,15 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        > div {
+            button {
+                margin-right: @layout-spacing-xs;
+            }
+        }
+    }
+}
