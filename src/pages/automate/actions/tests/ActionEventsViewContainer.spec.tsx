@@ -345,7 +345,7 @@ describe('ActionEventsViewContainer', () => {
             </Provider>,
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: `/shopify/my-shop/ai-agent/actions/events/configuration_id?executionId=${executionId}`,
+                route: `/shopify/my-shop/ai-agent/actions/events/configuration_id?execution_id=${executionId}`,
             }
         )
         expect(screen.queryAllByRole('table')).toHaveLength(1)

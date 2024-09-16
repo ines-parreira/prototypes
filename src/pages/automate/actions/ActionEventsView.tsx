@@ -55,13 +55,13 @@ export default function ActionExecutionsView() {
 
     const [selectedExecutionId, setSelectedExecutionId] = useState<
         string | null
-    >(queryParams.get('executionId'))
+    >(queryParams.get('execution_id'))
 
     useEffect(() => {
         if (selectedExecutionId) {
             history.replace({
                 search: new URLSearchParams({
-                    executionId: selectedExecutionId,
+                    execution_id: selectedExecutionId,
                 }).toString(),
             })
         } else {

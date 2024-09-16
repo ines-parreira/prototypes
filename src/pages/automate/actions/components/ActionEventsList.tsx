@@ -28,8 +28,10 @@ export default function ActionEventsList({
     onSelectedExecutionIdChange,
     selectedExecutionId,
 }: Props) {
-    const {orderDirection, orderBy, toggleOrderBy} =
-        useOrderBy<'updated'>('updated')
+    const {orderDirection, orderBy, toggleOrderBy} = useOrderBy<'updated'>(
+        'updated',
+        OrderDirection.Desc
+    )
 
     const hasNoData = !isLoading && !executions?.length
 
