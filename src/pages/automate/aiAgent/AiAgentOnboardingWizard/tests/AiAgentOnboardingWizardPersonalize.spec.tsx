@@ -15,16 +15,21 @@ import AiAgentOnboardingWizardStepPersonalize from '../AiAgentOnboardingWizardPe
 const mockStore = configureMockStore([thunk])
 
 const defaultState = {}
+const defaultProps = {
+    shopType: 'shopify',
+    shopName: 'test-shop',
+}
 
 const renderComponent = (
     props: Partial<
         ComponentProps<typeof AiAgentOnboardingWizardStepPersonalize>
     >
 ) => {
+    const currentProps = {...defaultProps, ...props}
     renderWithRouter(
         <Provider store={mockStore(defaultState)}>
             <Wizard steps={[AiAgentOnboardingWizardStep.Personalize]}>
-                <AiAgentOnboardingWizardStepPersonalize {...props} />
+                <AiAgentOnboardingWizardStepPersonalize {...currentProps} />
             </Wizard>
         </Provider>
     )

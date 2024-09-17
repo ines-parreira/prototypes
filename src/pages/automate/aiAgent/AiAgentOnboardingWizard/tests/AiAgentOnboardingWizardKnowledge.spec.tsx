@@ -1,32 +1,75 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
 import React, {ComponentProps} from 'react'
-import {screen} from '@testing-library/react'
+import {act, fireEvent, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import {renderWithRouter} from 'utils/testing'
+import {QueryClientProvider} from '@tanstack/react-query'
+import userEvent from '@testing-library/user-event'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import AiAgentOnboardingWizardStepKnowledge from '../AiAgentOnboardingWizardKnowledge'
+import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
+import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
+import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import {WIZARD_BUTTON_ACTIONS} from '../../constants'
 
+const SHOP_NAME = 'test-shop'
+const SHOP_TYPE = 'shopify'
+
+jest.mock('../hooks/useAiAgentOnboardingWizard')
+const mockUseAiAgentOnboardingWizard = assumeMock(useAiAgentOnboardingWizard)
+
+const mockedHelpCenters = getHelpCentersResponseFixture.data
+const mockedStoreConfiguration = getStoreConfigurationFixture()
+
+const mockedUseAiAgentOnboardingWizard = {
+    storeFormValues: getStoreConfigurationFormValuesFixture(),
+    faqHelpCenters: mockedHelpCenters,
+    snippetHelpCenter: null,
+    isLoading: false,
+    handleFormUpdate: jest.fn(),
+    handleSave: jest.fn(),
+    handleAction: jest.fn(),
+    updateValue: jest.fn(),
+}
+
+const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
 
 const defaultState = {}
+const defaultProps = {
+    shopType: SHOP_TYPE,
+    shopName: SHOP_NAME,
+    storeConfiguration: mockedStoreConfiguration,
+}
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof AiAgentOnboardingWizardStepKnowledge>>
 ) => {
+    const currentProps = {...defaultProps, ...props}
     renderWithRouter(
         <Provider store={mockStore(defaultState)}>
-            <Wizard steps={[AiAgentOnboardingWizardStep.Knowledge]}>
-                <AiAgentOnboardingWizardStepKnowledge {...props} />
-            </Wizard>
+            <QueryClientProvider client={queryClient}>
+                <Wizard steps={[AiAgentOnboardingWizardStep.Knowledge]}>
+                    <AiAgentOnboardingWizardStepKnowledge {...currentProps} />
+                </Wizard>
+            </QueryClientProvider>
         </Provider>
     )
 }
 
 describe('<AiAgentOnboardingWizardKnowledge />', () => {
+    beforeEach(() => {
+        mockUseAiAgentOnboardingWizard.mockReturnValue(
+            mockedUseAiAgentOnboardingWizard
+        )
+    })
+
     it('should render the header and footer correctly', () => {
         renderComponent({})
 
@@ -41,5 +84,187 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         expect(screen.getByText('Back')).toBeInTheDocument()
         expect(screen.getByText('Finish')).toBeInTheDocument()
         expect(screen.getByText('Save & Customize Later')).toBeInTheDocument
+    })
+
+    it('should call handleAction with PREVIOUS_STEP when Back button is clicked', () => {
+        renderComponent({})
+
+        userEvent.click(screen.getByText('Back'))
+
+        expect(
+            mockedUseAiAgentOnboardingWizard.handleAction
+        ).toHaveBeenCalledWith(WIZARD_BUTTON_ACTIONS.PREVIOUS_STEP)
+    })
+
+    it('should call handleSave with BACK_TO_WELCOME_PAGE when Save & Customize Later button is clicked', () => {
+        renderComponent({})
+
+        userEvent.click(screen.getByText('Save & Customize Later'))
+
+        expect(
+            mockedUseAiAgentOnboardingWizard.handleSave
+        ).toHaveBeenCalledWith({
+            publicUrls: [],
+            redirectTo: WIZARD_BUTTON_ACTIONS.BACK_TO_WELCOME_PAGE,
+        })
+    })
+
+    it('should call handleSave with FINISH_TO_TEST when Finish button is clicked', () => {
+        renderComponent({})
+
+        userEvent.click(screen.getByText('Finish'))
+
+        expect(
+            mockedUseAiAgentOnboardingWizard.handleSave
+        ).toHaveBeenCalledWith({
+            publicUrls: [],
+            redirectTo: WIZARD_BUTTON_ACTIONS.FINISH_TO_TEST,
+            payload: {
+                wizard: {
+                    ...mockedUseAiAgentOnboardingWizard.storeFormValues.wizard,
+                    completedDatetime: expect.any(String),
+                },
+            },
+        })
+    })
+
+    it('should autofill the help center select when there is only 1 connected help center', () => {
+        const mockedStoreConfigurationWithoutHelpCenter = {
+            ...getStoreConfigurationFixture(),
+            helpCenterId: null,
+        }
+
+        const mockedUseAiAgentOnboardingWizard = {
+            storeFormValues: getStoreConfigurationFormValuesFixture(),
+            faqHelpCenters: [{...mockedHelpCenters[0], shop_name: SHOP_NAME}],
+            snippetHelpCenter: null,
+            isLoading: false,
+            handleFormUpdate: jest.fn(),
+            handleSave: jest.fn(),
+            handleAction: jest.fn(),
+            updateValue: jest.fn(),
+        }
+
+        mockUseAiAgentOnboardingWizard.mockReturnValue(
+            mockedUseAiAgentOnboardingWizard
+        )
+
+        renderComponent({
+            storeConfiguration: mockedStoreConfigurationWithoutHelpCenter,
+        })
+
+        expect(
+            mockedUseAiAgentOnboardingWizard.handleFormUpdate
+        ).toHaveBeenCalledWith({
+            helpCenterId: mockedUseAiAgentOnboardingWizard.faqHelpCenters[0].id,
+        })
+    })
+
+    it('should left the help center select empty when there is no connected help center', () => {
+        const mockedStoreConfigurationWithoutHelpCenter = {
+            ...getStoreConfigurationFixture(),
+            helpCenterId: null,
+        }
+
+        renderComponent({
+            storeConfiguration: mockedStoreConfigurationWithoutHelpCenter,
+        })
+
+        expect(
+            mockedUseAiAgentOnboardingWizard.handleFormUpdate
+        ).not.toHaveBeenCalledWith({
+            helpCenterId: mockedUseAiAgentOnboardingWizard.faqHelpCenters[0].id,
+        })
+    })
+
+    it('should have Public URL sources section when snippetHelpCenter is provided', () => {
+        const mockedUseAiAgentOnboardingWizard = {
+            storeFormValues: getStoreConfigurationFormValuesFixture(),
+            faqHelpCenters: mockedHelpCenters,
+            snippetHelpCenter: mockedHelpCenters[0],
+            isLoading: false,
+            handleFormUpdate: jest.fn(),
+            handleSave: jest.fn(),
+            handleAction: jest.fn(),
+            updateValue: jest.fn(),
+        }
+
+        mockUseAiAgentOnboardingWizard.mockReturnValue(
+            mockedUseAiAgentOnboardingWizard
+        )
+
+        renderComponent({})
+
+        expect(screen.getByText('Public URL sources')).toBeInTheDocument()
+    })
+
+    it('should call handleFormUpdate when help center select is changed', () => {
+        renderComponent({})
+
+        const selectedHelpCenter = screen.getByText(mockedHelpCenters[0].name)
+        act(() => {
+            fireEvent.focus(selectedHelpCenter)
+        })
+
+        const emptyHelpCenterItem = screen.getByText('No Help Center')
+        act(() => {
+            fireEvent.click(emptyHelpCenterItem)
+        })
+
+        expect(
+            mockedUseAiAgentOnboardingWizard.handleFormUpdate
+        ).toHaveBeenCalledWith({helpCenterId: null})
+
+        act(() => {
+            fireEvent.focus(selectedHelpCenter)
+        })
+
+        const newSelectedHelpCenter = screen.getByText(
+            mockedHelpCenters[1].name
+        )
+        act(() => {
+            fireEvent.click(newSelectedHelpCenter)
+        })
+
+        expect(
+            mockedUseAiAgentOnboardingWizard.handleFormUpdate
+        ).toHaveBeenCalledWith({helpCenterId: mockedHelpCenters[1].id})
+    })
+
+    it('should include public URL changed in handleSave', async () => {
+        const mockedUseAiAgentOnboardingWizard = {
+            storeFormValues: getStoreConfigurationFormValuesFixture(),
+            faqHelpCenters: mockedHelpCenters,
+            snippetHelpCenter: mockedHelpCenters[0],
+            isLoading: false,
+            handleFormUpdate: jest.fn(),
+            handleSave: jest.fn(),
+            handleAction: jest.fn(),
+            updateValue: jest.fn(),
+        }
+
+        mockUseAiAgentOnboardingWizard.mockReturnValue(
+            mockedUseAiAgentOnboardingWizard
+        )
+
+        renderComponent({})
+
+        const addButton = screen.getByText('Add URL')
+        userEvent.click(addButton)
+
+        const syncButton = screen.getByRole('button', {name: /Sync URL/})
+        const input = screen.getByLabelText('Public URL')
+
+        await userEvent.type(input, 'https://example.com/faqs')
+        userEvent.click(syncButton)
+
+        userEvent.click(screen.getByText('Save & Customize Later'))
+
+        expect(
+            mockedUseAiAgentOnboardingWizard.handleSave
+        ).toHaveBeenCalledWith({
+            publicUrls: ['https://example.com/faqs'],
+            redirectTo: WIZARD_BUTTON_ACTIONS.BACK_TO_WELCOME_PAGE,
+        })
     })
 })

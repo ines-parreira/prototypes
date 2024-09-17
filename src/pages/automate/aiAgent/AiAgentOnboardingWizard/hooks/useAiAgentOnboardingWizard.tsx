@@ -156,13 +156,13 @@ export const useAiAgentOnboardingWizard = ({
                 break
             case WIZARD_BUTTON_ACTIONS.FINISH_TO_TEST:
                 history.replace({
-                    pathname: `/app/automation/${shopType}/${shopName}/ai-agent/test`,
+                    pathname: routes.test,
                     search: searchParams,
                 })
                 break
             case WIZARD_BUTTON_ACTIONS.FINISH_TO_GUIDANCE:
                 history.replace({
-                    pathname: `/app/automation/${shopType}/${shopName}/ai-agent/guidance`,
+                    pathname: routes.guidance,
                     search: searchParams,
                 })
                 break

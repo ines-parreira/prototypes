@@ -22,6 +22,7 @@ import {StoreConfiguration, Wizard} from '../../../../models/aiAgent/types'
 import useAppSelector from '../../../../hooks/useAppSelector'
 import {getCurrentAccountState} from '../../../../state/currentAccount/selectors'
 import {useStoreConfigurationMutation} from './useStoreConfigurationMutation'
+import {useAiAgentNavigation} from './useAiAgentNavigation'
 
 export const useConfigurationForm = ({
     initValues,
@@ -35,7 +36,10 @@ export const useConfigurationForm = ({
     const accountDomain = currentAccount.get('domain')
     const {isLoading, createStoreConfiguration, upsertStoreConfiguration} =
         useStoreConfigurationMutation({shopName, accountDomain})
-
+    const {routes} = useAiAgentNavigation({shopName})
+    const isOnboardingWizardPage = window.location.pathname.includes(
+        routes.onboardingWizard
+    )
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
 
@@ -175,9 +179,11 @@ export const useConfigurationForm = ({
             (!publicUrls || publicUrls.length === 0) &&
             (!formValues.wizard || formValues.wizard.completedDatetime !== null)
         ) {
-            throw new Error(
-                'Select a Help Center or add at least one public URL'
-            )
+            const errorMessage = isOnboardingWizardPage
+                ? 'You must add at least one knowledge source to continue.'
+                : 'Select a Help Center or add at least one public URL'
+
+            throw new Error(errorMessage)
         }
 
         return {
@@ -210,6 +216,10 @@ export const useConfigurationForm = ({
         const enrichedFormValues = {
             ...formValues,
             ...payload,
+            wizard: formValues.wizard && {
+                ...formValues.wizard,
+                ...payload?.wizard,
+            },
         }
         let validFormValues: ValidFormValues
         try {
@@ -275,12 +285,14 @@ export const useConfigurationForm = ({
                 })
             }
 
-            void dispatch(
-                notify({
-                    message: 'AI Agent configuration saved!',
-                    status: NotificationStatus.Success,
-                })
-            )
+            if (!isOnboardingWizardPage) {
+                void dispatch(
+                    notify({
+                        message: 'AI Agent configuration saved!',
+                        status: NotificationStatus.Success,
+                    })
+                )
+            }
 
             return res
         } catch (error) {

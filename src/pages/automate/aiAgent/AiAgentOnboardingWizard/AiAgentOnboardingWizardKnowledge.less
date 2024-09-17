@@ -1,0 +1,22 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .section {
+        margin-bottom: @layout-spacing-l;
+    }
+
+    .label {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .helpCenterSelect {
+        cursor: pointer;
+    }
+
+    .caption {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        margin-top: @layout-spacing-xxs;
+    }
+}

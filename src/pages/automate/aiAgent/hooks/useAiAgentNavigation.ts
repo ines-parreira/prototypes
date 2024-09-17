@@ -33,6 +33,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
             actionsTemplates: `/app/automation/shopify/${shopName}/ai-agent/actions/templates`,
             actionEvents: (configurationId: string) =>
                 `/app/automation/shopify/${shopName}/ai-agent/actions/events/${configurationId}`,
+            onboardingWizard: `/app/automation/shopify/${shopName}/ai-agent/new`,
         }),
         [shopName]
     )

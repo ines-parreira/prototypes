@@ -83,6 +83,30 @@ export const usePublicResourcesPooling = ({
             return
         }
 
+        const isOnboardingWizardPage = window.location.pathname.includes(
+            routes.onboardingWizard
+        )
+        const pendingArticleIngestionIds = processingArticleIngestions.filter(
+            (log) => log.status === 'PENDING'
+        )
+
+        if (
+            isOnboardingWizardPage &&
+            pendingArticleIngestionIds &&
+            pendingArticleIngestionIds.length
+        ) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Loading,
+                    message:
+                        'Syncing in progress. You can finish onboarding while sources are syncing.',
+                    showDismissButton: true,
+                    noAutoDismiss: true,
+                    closeOnNext: true,
+                })
+            )
+        }
+
         const finishedArticleIngestionIds = processingArticleIngestions.filter(
             (log) => log.status !== 'PENDING'
         )
@@ -128,17 +152,21 @@ export const usePublicResourcesPooling = ({
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
-                    message:
-                        'URL sources have successfully synced. AI Agent is now active and you can test the sources.',
-                    buttons: [
-                        {
-                            name: 'Go To Test',
-                            primary: false,
-                            onClick: () => {
-                                history.push(routes.test)
-                            },
-                        },
-                    ],
+                    message: isOnboardingWizardPage
+                        ? 'URL sources have successfully synced.'
+                        : 'URL sources have successfully synced. AI Agent is now active and you can test the sources.',
+                    buttons: isOnboardingWizardPage
+                        ? []
+                        : [
+                              {
+                                  name: 'Go To Test',
+                                  primary: false,
+                                  onClick: () => {
+                                      history.push(routes.test)
+                                  },
+                              },
+                          ],
+                    showDismissButton: isOnboardingWizardPage,
                 })
             )
         } else {
@@ -150,17 +178,19 @@ export const usePublicResourcesPooling = ({
                     status: NotificationStatus.Error,
                     message:
                         'One or more URL sources for AI Agent failed to sync. Review URLs and try again.',
-                    buttons: isConfigurationPage
-                        ? []
-                        : [
-                              {
-                                  name: 'Go to Knowledge settings',
-                                  primary: false,
-                                  onClick: () => {
-                                      history.push(routes.test)
+                    buttons:
+                        isConfigurationPage || isOnboardingWizardPage
+                            ? []
+                            : [
+                                  {
+                                      name: 'Go to Knowledge settings',
+                                      primary: false,
+                                      onClick: () => {
+                                          history.push(routes.test)
+                                      },
                                   },
-                              },
-                          ],
+                              ],
+                    showDismissButton: isOnboardingWizardPage,
                 })
             )
         }

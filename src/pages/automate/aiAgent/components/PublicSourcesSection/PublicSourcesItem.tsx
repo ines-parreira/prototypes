@@ -156,7 +156,7 @@ export const PublicSourcesItem = ({
             />
             <Button
                 intent="secondary"
-                isDisabled={!isValid || isSyncDisabled}
+                isDisabled={!isValid || !!inputError || isSyncDisabled}
                 onClick={handleSync}
                 isLoading={source.status === 'loading'}
             >

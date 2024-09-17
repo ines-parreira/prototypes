@@ -34,15 +34,20 @@ const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
 
 const defaultState = {}
+const defaultProps = {
+    shopType: 'shopify',
+    shopName: 'test-shop',
+}
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof AiAgentOnboardingWizardStepEducation>>
 ) => {
+    const currentProps = {...defaultProps, ...props}
     renderWithRouter(
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider client={queryClient}>
                 <Wizard steps={[AiAgentOnboardingWizardStep.Education]}>
-                    <AiAgentOnboardingWizardStepEducation {...props} />
+                    <AiAgentOnboardingWizardStepEducation {...currentProps} />
                 </Wizard>
             </QueryClientProvider>
         </Provider>

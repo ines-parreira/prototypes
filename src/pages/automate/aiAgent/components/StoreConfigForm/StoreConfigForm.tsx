@@ -585,7 +585,7 @@ export const StoreConfigForm = ({
     )
 }
 
-const CreatePublicSourcesSection = ({
+export const CreatePublicSourcesSection = ({
     onPublicURLsChanged,
     ...props
 }: ComponentProps<typeof PublicSourcesSection>) => {

@@ -19,8 +19,8 @@ import AiAgentOnboardingWizardKnowledge from './AiAgentOnboardingWizardKnowledge
 import css from './AiAgentOnboardingWizard.less'
 
 export type AiAgentOnboardingWizardProps = {
-    shopType?: string
-    shopName?: string
+    shopType: string
+    shopName: string
     storeConfiguration?: StoreConfiguration
 }
 

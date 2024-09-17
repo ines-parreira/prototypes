@@ -7,6 +7,7 @@ import Dropdown from '../../../common/components/dropdown/Dropdown'
 import DropdownBody from '../../../common/components/dropdown/DropdownBody'
 import DropdownItem from '../../../common/components/dropdown/DropdownItem'
 import {HelpCenter} from '../../../../models/helpCenter/types'
+import css from './HelpCenterSelect.less'
 
 export const EMPTY_HELP_CENTER_ID = -1
 
@@ -68,6 +69,7 @@ const HelpCenterSelect = ({
                                         value: helpCenter.id,
                                     }}
                                     onClick={setHelpCenterId}
+                                    className={css.dropdownItem}
                                     shouldCloseOnSelect
                                 />
                             ))}
