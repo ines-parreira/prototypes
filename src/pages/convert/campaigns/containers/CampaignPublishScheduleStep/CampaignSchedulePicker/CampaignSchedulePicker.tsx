@@ -46,9 +46,14 @@ const CampaignSchedulePicker: React.FC<Props> = ({
     }
 
     const minDate = useMemo(() => {
-        return moment(
+        const currentDate = moment.utc()
+        const startDateAsMinDate = moment(
             moment.utc(startDate).tz(timezone, false).format('YYYY-MM-DD')
         )
+
+        return startDateAsMinDate.isBefore(currentDate)
+            ? currentDate
+            : startDateAsMinDate
     }, [startDate, timezone])
 
     const defaultDatePickerProps: Partial<DatePickerProps> = {
