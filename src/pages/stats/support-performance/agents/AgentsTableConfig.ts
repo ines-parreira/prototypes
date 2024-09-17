@@ -25,6 +25,7 @@ import {useMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPer
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
 import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
+import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
 import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
 import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
 import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
@@ -291,6 +292,7 @@ export const getQuery = (
         case AgentsTableColumn.RepliedTickets:
             return useTicketsRepliedMetricPerAgent
         case AgentsTableColumn.PercentageOfClosedTickets:
+            return usePercentageOfClosedTicketsMetricPerAgent
         case AgentsTableColumn.ClosedTickets:
             return useClosedTicketsMetricPerAgent
         case AgentsTableColumn.MessagesSent:
