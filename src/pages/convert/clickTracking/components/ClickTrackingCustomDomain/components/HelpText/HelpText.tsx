@@ -4,9 +4,10 @@ import css from '../../ClickTrackingCustomDomain.less'
 
 type Props = {
     isHidden: boolean
+    domain: string
 }
 
-export const HelpText = ({isHidden}: Props): JSX.Element | null => {
+export const HelpText = ({isHidden, domain}: Props): JSX.Element | null => {
     if (isHidden) {
         return null
     }
@@ -17,7 +18,7 @@ export const HelpText = ({isHidden}: Props): JSX.Element | null => {
                 <p>
                     Visit the admin console of your domain registrar (the
                     website you bought your domain from) and create or update a
-                    CNAME so that it points to <code>clients.gorgias.win</code>
+                    CNAME so that it points to <code>{domain}</code>
                 </p>
             </div>
         </>

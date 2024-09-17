@@ -24,6 +24,8 @@ import {HelpText} from './components/HelpText'
 
 import css from './ClickTrackingCustomDomain.less'
 
+const CUSTOM_DOMAIN_ZONE = 'gorgias-convert.com'
+
 const labels = {
     active: 'Connected',
     unknown: 'Validation error',
@@ -82,6 +84,7 @@ export const ClickTrackingCustomDomain = () => {
             try {
                 const response = await client.create_custom_domain(null, {
                     hostname: domainValue,
+                    zone: CUSTOM_DOMAIN_ZONE,
                 })
 
                 if (response.status === 201) {
@@ -200,7 +203,7 @@ export const ClickTrackingCustomDomain = () => {
                     <InputField
                         className={settingsCss.mb16}
                         isDisabled={!!currentDomain?.status}
-                        caption="Redirect from your gorgias.win subdomain to this custom domain."
+                        caption={`Redirect from your ${CUSTOM_DOMAIN_ZONE} subdomain to this custom domain.`}
                         label="Custom domain"
                         name="domain"
                         placeholder="link.brand-name.com"
@@ -272,7 +275,10 @@ export const ClickTrackingCustomDomain = () => {
                 onCheckStatus={checkDomainStatus}
                 status={currentDomain?.status}
             />
-            <HelpText isHidden={currentDomain?.status === 'active'} />
+            <HelpText
+                isHidden={currentDomain?.status === 'active'}
+                domain={`clients.${CUSTOM_DOMAIN_ZONE}`}
+            />
         </section>
     )
 }

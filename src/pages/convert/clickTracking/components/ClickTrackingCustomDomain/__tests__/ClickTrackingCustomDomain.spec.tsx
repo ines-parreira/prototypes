@@ -40,7 +40,7 @@ jest.mock('pages/convert/common/hooks/useConvertApi', () => {
                 create_custom_domain: () =>
                     Promise.resolve({
                         data: {
-                            hostname: 'gorgias.win',
+                            hostname: 'example.com',
                             status: 'pending',
                         },
                         status: 201,
@@ -48,7 +48,7 @@ jest.mock('pages/convert/common/hooks/useConvertApi', () => {
                 check_custom_domain: () =>
                     Promise.resolve({
                         data: {
-                            hostname: 'gorgias.win',
+                            hostname: 'example.com',
                             status: 'unknown',
                         },
                         status: 200,
@@ -78,9 +78,9 @@ describe('<ClickTrackingCustomDomain />', () => {
 
         const addDomainBtn: HTMLInputElement = screen.getByText('Add Domain')
 
-        fireEvent.change(input, {target: {value: 'gorgias.win'}})
+        fireEvent.change(input, {target: {value: 'example.com'}})
 
-        expect(input.value).toEqual('gorgias.win')
+        expect(input.value).toEqual('example.com')
         expect(addDomainBtn.disabled).toBeFalsy()
     })
 
@@ -97,7 +97,7 @@ describe('<ClickTrackingCustomDomain />', () => {
 
         const addDomainBtn = screen.getByText('Add Domain')
 
-        fireEvent.change(input, {target: {value: 'gorgias.win'}})
+        fireEvent.change(input, {target: {value: 'example.com'}})
         fireEvent.click(addDomainBtn)
 
         await screen.findByText('Verification in progress')
@@ -116,7 +116,7 @@ describe('<ClickTrackingCustomDomain />', () => {
 
         const addDomainBtn = screen.getByText('Add Domain')
 
-        fireEvent.change(input, {target: {value: 'gorgias.win'}})
+        fireEvent.change(input, {target: {value: 'example.com'}})
         fireEvent.click(addDomainBtn)
 
         await screen.findByText('Verification in progress')
@@ -140,7 +140,7 @@ describe('<ClickTrackingCustomDomain />', () => {
         const input = screen.getByPlaceholderText(inputText)
         const addDomainBtn = screen.getByText('Add Domain')
 
-        fireEvent.change(input, {target: {value: 'gorgias.win'}})
+        fireEvent.change(input, {target: {value: 'example.com'}})
         fireEvent.click(addDomainBtn)
 
         await waitForElementToBeRemoved(() =>

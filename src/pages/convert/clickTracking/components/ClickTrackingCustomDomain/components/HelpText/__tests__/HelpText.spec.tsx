@@ -5,7 +5,7 @@ import {HelpText} from '../HelpText'
 
 describe('<HelpText />', () => {
     it('matches snapshot', () => {
-        render(<HelpText isHidden={false} />)
+        render(<HelpText isHidden={false} domain="example.com" />)
 
         expect(
             screen.getByText(/Visit the admin console of your domain registrar/)
@@ -13,7 +13,7 @@ describe('<HelpText />', () => {
     })
 
     it('not renders if isHidden is true', () => {
-        render(<HelpText isHidden />)
+        render(<HelpText isHidden domain="example.com" />)
 
         expect(
             screen.queryByText(
