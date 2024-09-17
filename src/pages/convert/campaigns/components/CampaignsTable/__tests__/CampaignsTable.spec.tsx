@@ -4,12 +4,16 @@ import {screen, fireEvent, render, waitFor, act} from '@testing-library/react'
 
 import useSearch from 'hooks/useSearch'
 
+import {campaign} from 'fixtures/campaign'
 import {campaignWithABGroup} from 'fixtures/abGroup'
 
 import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
 import * as useLocalStorage from 'hooks/useLocalStorage'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import * as useIsConvertScheduleCampaignEnabled from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
+import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
 import {createTrigger} from '../../../utils/createTrigger'
@@ -21,6 +25,8 @@ import {CampaignsTable} from '../CampaignsTable'
 
 jest.mock('hooks/useSearch')
 const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
+
+jest.mock('pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled')
 
 const CAMPAIGNS_COUNT = 19
 const ACTIVE_CAMPAIGNS_COUNT = ACTIVE_CAMPAIGNS_LIMIT + 1
@@ -55,6 +61,23 @@ const useIsConvertSubscriberSpy = jest.spyOn(
     isConvertSubscriberHook,
     'useIsConvertSubscriber'
 )
+
+const campaignWithSchedule = [
+    {
+        ...campaign,
+        id: 'campaign-with-schedule',
+        name: 'campaign with schedule',
+        message_text: 'Campaign message 1',
+        message_html: 'Campaign message 1',
+        status: CampaignStatus.Inactive,
+        schedule: {
+            start_datetime: '2023-08-04T07:25:02.983Z',
+            end_datetime: '2023-08-04T07:25:02.983Z',
+            schedule_rule: CampaignScheduleRuleValueEnum.AllDay,
+            custom_schedule: null,
+        },
+    },
+] as unknown[] as Campaign[]
 
 describe('<CampaignsTable />', () => {
     const onClickDelete = jest.fn()
@@ -148,6 +171,27 @@ describe('<CampaignsTable />', () => {
                 'aria-current',
                 'true'
             )
+        })
+
+        it('blocks toggle activation when campaign has schedule and it is in past', () => {
+            jest.spyOn(
+                useIsConvertScheduleCampaignEnabled,
+                'useIsConvertScheduleCampaignEnabled'
+            ).mockImplementation(() => true)
+
+            const newProps = {
+                ...props,
+                data: campaignWithSchedule,
+            }
+
+            const {container} = render(
+                <CampaignsTable {...newProps} perPage={CAMPAIGNS_COUNT} />
+            )
+
+            const disabledToggles = container.querySelectorAll(
+                'label[class*="isDisabled"]'
+            )
+            expect(disabledToggles.length).toEqual(1)
         })
 
         it('blocks toggle activation when over the limit', () => {

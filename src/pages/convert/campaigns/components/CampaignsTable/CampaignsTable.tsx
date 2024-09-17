@@ -62,11 +62,14 @@ import ABGroupVariants from './components/ABGroupVariants'
 
 import css from './CampaignsTable.less'
 
-const TOOGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS =
+const TOGGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS =
     'You already have 3 or more campaigns active. Disable them to activate this one.'
 
-const TOOGLE_TOOPTIP_AB_TEST_COMPLETED =
+const TOGGLE_TOOLTIP_AB_TEST_COMPLETED =
     'The A/B test is completed and cannot be re-activated.'
+
+const TOGGLE_TOOLTIP_SCHEDULE =
+    'To re-publish the campaign, update the scheduling time.'
 
 type Props = {
     data: Campaign[]
@@ -241,14 +244,16 @@ export const CampaignsTable = ({
                                     aria-label={`Enable campaign ${campaign.name}`}
                                 />
                             </span>
-                            {toggleDisabled && (
+                            {(toggleDisabled || hasCampaignEnded) && (
                                 <Tooltip
                                     target={toggleId}
                                     placement="bottom-start"
                                 >
                                     {campaign.ab_group
-                                        ? TOOGLE_TOOPTIP_AB_TEST_COMPLETED
-                                        : TOOGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS}
+                                        ? TOGGLE_TOOLTIP_AB_TEST_COMPLETED
+                                        : campaign.schedule && hasCampaignEnded
+                                        ? TOGGLE_TOOLTIP_SCHEDULE
+                                        : TOGGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS}
                                 </Tooltip>
                             )}
                         </BodyCell>
