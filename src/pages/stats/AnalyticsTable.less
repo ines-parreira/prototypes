@@ -31,7 +31,7 @@
             }
 
             &:first-child {
-                td:first-child {
+                th:first-child {
                     z-index: 4;
                 }
             }
@@ -48,7 +48,7 @@
 
         tr {
             height: 56px;
-
+            th,
             td {
                 &.withShadow {
                     &:after {
@@ -59,7 +59,6 @@
                         bottom: -1px;
                         width: 30px;
                         box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.15);
-
                         transform: translateX(100%);
                         pointer-events: none;
                     }
