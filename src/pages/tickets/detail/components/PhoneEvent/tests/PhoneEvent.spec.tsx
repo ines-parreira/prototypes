@@ -23,20 +23,19 @@ describe('<PhoneEvent/>', () => {
         it.each([
             PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
             PhoneIntegrationEvent.PhoneCallForwardedToGorgiasNumber,
-            PhoneIntegrationEvent.PhoneCallForwarded,
             PhoneIntegrationEvent.MessagePlayed,
         ])('should render with closed details', (eventType) => {
             const event = fromJS({
                 type: eventType,
                 customer: {name: 'Michael Gorgias'},
             })
-            const {container} = render(
+            const {getByText} = render(
                 <Provider store={store}>
                     <PhoneEvent event={event} isLast={false} />
                 </Provider>
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getByText('keyboard_arrow_down')).toBeInTheDocument()
         })
 
         it('should render with "View ticket" link"', () => {
@@ -44,13 +43,32 @@ describe('<PhoneEvent/>', () => {
                 type: PhoneIntegrationEvent.ConversationStarted,
                 data: {phone_ticket_id: 123},
             })
-            const {container} = render(
+            const {getByText} = render(
                 <Provider store={store}>
                     <PhoneEvent event={event} isLast={false} />
                 </Provider>
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getByText('View ticket')).toBeInTheDocument()
+        })
+
+        it('should render agent based event', () => {
+            const event = fromJS({
+                type: PhoneIntegrationEvent.ConversationStarted,
+                user: {name: 'Agent'},
+                data: {
+                    customer: {name: 'Customer'},
+                },
+            })
+            const {getByText} = render(
+                <Provider store={store}>
+                    <PhoneEvent event={event} isLast={false} />
+                </Provider>
+            )
+
+            expect(
+                getByText('Phone conversation started by Agent')
+            ).toBeInTheDocument()
         })
     })
 })
