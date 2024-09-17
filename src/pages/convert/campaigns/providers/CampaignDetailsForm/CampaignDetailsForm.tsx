@@ -211,9 +211,8 @@ export const CampaignDetailsForm = ({
         variants: campaign?.variants ?? [],
         created_datetime: campaign?.created_datetime ?? null,
         updated_datetime: campaign?.updated_datetime ?? null,
-        // similar behaviour to previous implementation
         publish_mode: displayScheduleSection
-            ? CampaignScheduleModeEnum.SaveAndPublishLater
+            ? CampaignScheduleModeEnum.PublishNow
             : undefined,
         schedule: campaign?.schedule ?? null,
     })
@@ -553,7 +552,10 @@ export const CampaignDetailsForm = ({
             ) {
                 return campaignData.schedule.custom_schedule?.length !== 0
             }
-            return campaignData.publish_mode !== null
+            return (
+                campaignData.publish_mode !== null &&
+                (isEditMode || !pristine.publish_schedule)
+            )
         }
     }
 

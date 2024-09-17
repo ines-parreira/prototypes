@@ -181,7 +181,9 @@ describe('<CampaignDetailsForm />', () => {
             expect(screen.getByText('Campaign name')).toBeInTheDocument()
         })
 
-        it('disables the button until the form is valid', () => {
+        it('disables the button until the form is valid', async () => {
+            isConvertScheduleCampaignEnabledSpy.mockImplementation(() => true)
+
             expect(
                 screen.getByRole('button', {name: 'Create'})
             ).toBeAriaDisabled()
@@ -195,12 +197,19 @@ describe('<CampaignDetailsForm />', () => {
                 </Provider>
             )
 
-            expect(
-                screen.getByRole('button', {name: 'Create'})
-            ).toBeAriaEnabled()
+            act(() => {
+                userEvent.click(screen.getByText(/Publish your campaign/))
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {name: 'Create'})
+                ).toBeAriaEnabled()
+            })
         })
 
         it('console.error when createCampaign is not defined', async () => {
+            isConvertScheduleCampaignEnabledSpy.mockImplementation(() => true)
             const consoleErrorMock = jest.spyOn(console, 'error')
 
             result.rerender(
@@ -214,14 +223,20 @@ describe('<CampaignDetailsForm />', () => {
                 </Provider>
             )
 
-            expect(
-                screen.getByRole('button', {name: 'Create'})
-            ).toBeAriaEnabled()
+            act(() => {
+                userEvent.click(screen.getByText(/Publish your campaign/))
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {name: 'Create'})
+                ).toBeAriaEnabled()
+            })
 
             userEvent.click(screen.getByRole('button', {name: 'Create'}))
 
             await waitFor(() => {
-                const activateButton = screen.getByText('Create & Activate')
+                const activateButton = screen.getByText('Create')
                 activateButton.click()
 
                 expect(consoleErrorMock).toBeCalledWith(
