@@ -15,6 +15,7 @@ import {
 } from 'state/ui/stats/ticketInsightsSlice'
 import {FilterComponentKey} from 'models/stat/types'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {logSegmentEvent} from './helpers'
 
 export const CUSTOM_FIELD_FILTER_NAME =
     FilterLabels[FilterComponentKey.CustomField]
@@ -66,6 +67,10 @@ export const CustomFieldFilter = () => {
         )
     }
 
+    const handleDropdownClosed = () => {
+        logSegmentEvent(`tf_${CUSTOM_FIELD_FILTER_NAME}`, null)
+    }
+
     return (
         <Filter
             filterName={CUSTOM_FIELD_FILTER_NAME}
@@ -81,6 +86,7 @@ export const CustomFieldFilter = () => {
             onSelectAll={_noop}
             onRemoveAll={_noop}
             onChangeLogicalOperator={_noop}
+            onDropdownClosed={handleDropdownClosed}
         />
     )
 }

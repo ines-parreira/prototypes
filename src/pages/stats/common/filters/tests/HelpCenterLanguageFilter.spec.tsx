@@ -15,15 +15,22 @@ import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterKey} from 'models/stat/types'
 import {RootState} from 'state/types'
 import {
+    FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import {emptyFilter} from 'pages/stats/common/filters/helpers'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
 
 const defaultState = {
     stats: {
@@ -242,5 +249,27 @@ describe('HelpCenterLanguageFilter', () => {
         expect(
             screen.queryByText(getLocaleByName('German').name)
         ).not.toBeInTheDocument()
+    })
+
+    it('should call segment analytics log event on filter dropdown close', () => {
+        renderWithStore(
+            <HelpCenterLanguageFilter
+                value={withDefaultLogicalOperator([
+                    getLocaleByName('English').code,
+                ])}
+            />,
+            defaultState
+        )
+
+        userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
+        userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
+
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
+            name: FilterKey.LocaleCodes,
+            logical_operator:
+                LogicalOperatorLabel[
+                    LogicalOperatorEnum.ONE_OF
+                ].toLocaleLowerCase(),
+        })
     })
 })

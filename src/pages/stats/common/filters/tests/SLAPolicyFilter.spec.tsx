@@ -6,6 +6,8 @@ import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_DROPDOWN_ICON,
     FILTER_SELECT_ALL_LABEL,
+    LogicalOperatorEnum,
+    LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import {SLAPolicyFilter} from 'pages/stats/common/filters/SLAPolicyFilter'
 import {TicketChannel} from 'business/types/ticket'
@@ -17,9 +19,16 @@ import {RootState} from 'state/types'
 import {statFiltersClean} from 'state/ui/stats/actions'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock, renderWithStore} from 'utils/testing'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FilterKey} from 'models/stat/types'
 
 jest.mock('@gorgias/api-queries')
 const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
 
 describe('SLAPolicyFilter', () => {
     const policy = {
@@ -216,5 +225,36 @@ describe('SLAPolicyFilter', () => {
                 slaPolicies: withDefaultLogicalOperator([]),
             })
         )
+    })
+
+    it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
+        const selectedPolicy = policies[0]
+        const anotherSelectedPolicy = policies[1]
+        const {rerenderComponent, store} = renderWithStore(
+            <SLAPolicyFilter
+                value={withDefaultLogicalOperator([selectedPolicy.uuid])}
+            />,
+            defaultState
+        )
+
+        userEvent.click(screen.getByText(selectedPolicy.name))
+        userEvent.click(screen.getByText(anotherSelectedPolicy.name))
+        userEvent.click(screen.getAllByText(selectedPolicy.name)[0])
+
+        rerenderComponent(
+            store as any,
+            <SLAPolicyFilter
+                value={withDefaultLogicalOperator([selectedPolicy.uuid])}
+            />
+        )
+
+        expect(store.getActions()).toContainEqual(statFiltersClean())
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
+            name: FilterKey.SlaPolicies,
+            logical_operator:
+                LogicalOperatorLabel[
+                    LogicalOperatorEnum.ONE_OF
+                ].toLocaleLowerCase(),
+        })
     })
 })

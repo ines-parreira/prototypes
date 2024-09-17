@@ -1,9 +1,6 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 import {screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import {fromJS} from 'immutable'
 import isEqual from 'lodash/isEqual'
@@ -23,11 +20,15 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import AgentsFilter from 'pages/stats/common/filters/AgentsFilter'
+import AgentsFilter, {
+    AgentsFiltersWithState,
+} from 'pages/stats/common/filters/AgentsFilter'
 import {extendedAgents} from 'pages/stats/common/filters/tests/fixtures/agents'
 import {extendedTeams} from 'pages/stats/common/filters/tests/fixtures/teams'
 import {FilterKey} from 'models/stat/types'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {STAT_FILTERS_CLEAN} from 'state/ui/stats/constants'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -42,10 +43,12 @@ const defaultState = {
     }),
 } as RootState
 
-const mockStore = configureMockStore([thunk])(defaultState)
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
 
 describe('AgentsFilter', () => {
-    let component: ReturnType<typeof renderWithStore>
     const isOneOfRegex = new RegExp(
         `${LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]}`,
         'i'
@@ -60,20 +63,21 @@ describe('AgentsFilter', () => {
         )
     }
 
-    beforeEach(() => {
-        component = renderWithStore(
+    it('should render AgentsFilter component', () => {
+        renderWithStore(
             <AgentsFilter value={withDefaultLogicalOperator([])} />,
             defaultState
         )
-    })
-
-    it('should render AgentsFilter component', () => {
         expect(
             screen.getByText(FilterLabels[FilterKey.Agents])
         ).toBeInTheDocument()
     })
 
     it('should render AgentsFilter options', () => {
+        renderWithStore(
+            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         expect(screen.getByText(extendedAgents[0].name)).toBeInTheDocument()
@@ -81,6 +85,10 @@ describe('AgentsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting an agent', () => {
+        renderWithStore(
+            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         userEvent.click(screen.getByText(extendedAgents[0].name))
@@ -106,6 +114,10 @@ describe('AgentsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting a team', () => {
+        renderWithStore(
+            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         userEvent.click(screen.getByText(extendedTeams[0].name))
@@ -135,22 +147,24 @@ describe('AgentsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting a team', () => {
-        const {rerender} = component
+        const {rerenderComponent} = renderWithStore(
+            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         const testTeam = extendedTeams.find((t) => t.id === 36) as Team
         const testAgent = extendedAgents[0]
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(testTeam.name))
 
-        rerender(
-            <Provider store={mockStore}>
-                <AgentsFilter
-                    value={withDefaultLogicalOperator([
-                        ...testTeam.members.map((member) => member.id),
-                        testAgent.id,
-                    ])}
-                />
-            </Provider>
+        rerenderComponent(
+            defaultState,
+            <AgentsFilter
+                value={withDefaultLogicalOperator([
+                    ...testTeam.members.map((member) => member.id),
+                    testAgent.id,
+                ])}
+            />
         )
         mockedDispatch.mockClear()
         userEvent.click(screen.getByText(testTeam.name))
@@ -177,7 +191,10 @@ describe('AgentsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting all agents and deselecting all agents', () => {
-        const {rerender} = component
+        const {rerenderComponent} = renderWithStore(
+            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
@@ -204,10 +221,9 @@ describe('AgentsFilter', () => {
         expect(areAllAgentsInDispatch).toBe(true)
         expect(areEmptyAgentsInDispatch).toBe(false)
 
-        rerender(
-            <Provider store={mockStore}>
-                <AgentsFilter value={allAvailableAgentsIds} />
-            </Provider>
+        rerenderComponent(
+            defaultState,
+            <AgentsFilter value={allAvailableAgentsIds} />
         )
 
         userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
@@ -224,16 +240,18 @@ describe('AgentsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting one of the agent', () => {
-        const {rerender} = component
+        const {rerenderComponent} = renderWithStore(
+            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
 
         const allAvailableAgentsIds = withDefaultLogicalOperator(
             extendedAgents.map((agents) => agents.id)
         )
 
-        rerender(
-            <Provider store={mockStore}>
-                <AgentsFilter value={allAvailableAgentsIds} />
-            </Provider>
+        rerenderComponent(
+            defaultState,
+            <AgentsFilter value={allAvailableAgentsIds} />
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
@@ -255,17 +273,19 @@ describe('AgentsFilter', () => {
     })
 
     it('should dispatch mergeStatsFilters action on deselecting all agents when filters dropdown is closed', () => {
-        const {rerender} = component
+        const {rerenderComponent} = renderWithStore(
+            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         const clearFilterIcon = 'close'
 
         const allAvailableAgentsIds = withDefaultLogicalOperator(
             extendedAgents.map((agents) => agents.id)
         )
 
-        rerender(
-            <Provider store={mockStore}>
-                <AgentsFilter value={allAvailableAgentsIds} />
-            </Provider>
+        rerenderComponent(
+            defaultState,
+            <AgentsFilter value={allAvailableAgentsIds} />
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
@@ -281,6 +301,10 @@ describe('AgentsFilter', () => {
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
+        renderWithStore(
+            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         const isOneOfRadioLabel = screen.getByLabelText(
@@ -315,13 +339,45 @@ describe('AgentsFilter', () => {
             })
         )
     })
-})
 
-describe('AgentsFilter with no agents', () => {
     it('should render AgentsFilter component even if value is undefined', () => {
         renderWithStore(<AgentsFilter value={undefined} />, defaultState)
         expect(
             screen.getByText(FilterLabels[FilterKey.Agents])
         ).toBeInTheDocument()
+    })
+
+    it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
+        const {rerenderComponent} = renderWithStore(
+            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
+
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        userEvent.click(screen.getByText(extendedAgents[0].name))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+        rerenderComponent(
+            defaultState,
+            <AgentsFilter value={withDefaultLogicalOperator([])} />
+        )
+
+        expect(mockedDispatch).toHaveBeenCalledWith({type: STAT_FILTERS_CLEAN})
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
+            name: FilterKey.Agents,
+            logical_operator:
+                LogicalOperatorLabel[
+                    LogicalOperatorEnum.ONE_OF
+                ].toLocaleLowerCase(),
+        })
+    })
+
+    describe('AgentsFiltersWithState', () => {
+        it('should render AgentsFilter component', () => {
+            renderWithStore(<AgentsFiltersWithState />, defaultState)
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Agents])
+            ).toBeInTheDocument()
+        })
     })
 })

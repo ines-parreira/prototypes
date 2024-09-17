@@ -24,6 +24,7 @@ import {
     getCustomFieldValueSerializer,
     withDefaultCustomFieldAndLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 const customFieldId = 123
 const filterName = 'Some Custom Field Name'
@@ -35,6 +36,11 @@ jest.mock('models/customField/queries')
 const useGetCustomFieldDefinitionsMock = assumeMock(
     useGetCustomFieldDefinitions
 )
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
 
 const renderComponent = () =>
     renderWithStore(
@@ -344,6 +350,22 @@ describe('CustomFieldsFilter', () => {
                 operator: LogicalOperatorEnum.ONE_OF,
             })
         )
+    })
+
+    it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
+        const {store} = renderComponent()
+
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        expect(store.getActions()).toContainEqual(statFiltersClean())
+
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
+            name: `tf_${filterName}`,
+            logical_operator:
+                LogicalOperatorLabel[
+                    LogicalOperatorEnum.ONE_OF
+                ].toLocaleLowerCase(),
+        })
     })
 })
 

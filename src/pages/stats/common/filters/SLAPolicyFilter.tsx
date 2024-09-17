@@ -2,7 +2,7 @@ import {useListSlaPolicies} from '@gorgias/api-queries'
 import _noop from 'lodash/noop'
 import React, {useCallback, useMemo} from 'react'
 import {connect} from 'react-redux'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -12,6 +12,7 @@ import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import {LogicalOperatorLabel} from '../components/Filter/constants'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.SlaPolicies]
@@ -72,6 +73,10 @@ export const SLAPolicyFilter = ({value = emptyFilter}: Props) => {
         dispatch(statFiltersDirty())
     }
     const handleDropdownClosed = () => {
+        logSegmentEvent(
+            FilterKey.SlaPolicies,
+            LogicalOperatorLabel[value.operator]
+        )
         dispatch(statFiltersClean())
     }
 

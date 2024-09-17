@@ -1,6 +1,7 @@
 import React from 'react'
 import {fireEvent, screen} from '@testing-library/react'
 
+import userEvent from '@testing-library/user-event'
 import CampaignStatusesFilter from 'pages/stats/convert/components/CampaignStatusesFilter/'
 import {
     FILTER_DESELECT_ALL_LABEL,
@@ -17,11 +18,18 @@ import {InferredCampaignStatus} from 'models/convert/campaign/types'
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {FilterKey} from 'models/stat/types'
+import {STAT_FILTERS_CLEAN} from 'state/ui/stats/constants'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedDispatch = jest.fn()
 const mockedRemove = jest.fn()
 
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
 
 const defaultState = {
     stats: initialState,
@@ -41,19 +49,17 @@ const dispatchChangeValuePayload = (
 const CampaignStatusesCapitalized = Object.keys(InferredCampaignStatus)
 
 describe('CampaignStatusesFilter', () => {
-    let component: ReturnType<typeof renderWithStore>
-
-    beforeEach(() => {
-        component = renderWithStore(
+    const renderComponent = () =>
+        renderWithStore(
             <CampaignStatusesFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator([])}
             />,
             defaultState
         )
-    })
 
     it('should render CampaignStatusesFilter component', () => {
+        renderComponent()
         expect(
             screen.getByText(FilterLabels[FilterKey.CampaignStatuses])
         ).toBeInTheDocument()
@@ -61,6 +67,7 @@ describe('CampaignStatusesFilter', () => {
     })
 
     it('should open the select component and contain all options', () => {
+        renderComponent()
         fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         CampaignStatusesCapitalized.forEach((campaignStatus) => {
             expect(screen.getByText(campaignStatus)).toBeInTheDocument()
@@ -69,6 +76,7 @@ describe('CampaignStatusesFilter', () => {
     })
 
     it('should dispatch the right actions on options selection', () => {
+        renderComponent()
         expect(screen.queryByText(InferredCampaignStatus.Active)).toBeFalsy()
         fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         fireEvent.click(screen.getByText(CampaignStatusesCapitalized[0]))
@@ -78,7 +86,7 @@ describe('CampaignStatusesFilter', () => {
     })
 
     it('should dispatch the right actions on options deselection', () => {
-        component.rerenderComponent(
+        renderComponent().rerenderComponent(
             defaultState,
             <CampaignStatusesFilter
                 onRemove={mockedRemove}
@@ -92,13 +100,14 @@ describe('CampaignStatusesFilter', () => {
         )
     })
 
-    it('should disaptch the right action on deselect all', () => {
+    it('should dispatch the right action on deselect all', () => {
+        const {rerenderComponent} = renderComponent()
         fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         fireEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
         expect(mockedDispatch).toHaveBeenCalledWith(
             dispatchChangeValuePayload(Object.values(InferredCampaignStatus))
         )
-        component.rerenderComponent(
+        rerenderComponent(
             defaultState,
             <CampaignStatusesFilter
                 onRemove={mockedRemove}
@@ -115,11 +124,34 @@ describe('CampaignStatusesFilter', () => {
         )
     })
 
-    it('should remove the compaignStatuses filter', () => {
+    it('should remove the campaignStatuses filter', () => {
+        renderComponent()
         fireEvent.click(screen.getByText('close'))
         expect(mockedDispatch).toHaveBeenCalledWith(
             dispatchChangeValuePayload([])
         )
         expect(mockedRemove).toHaveBeenCalled()
+    })
+
+    it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
+        const {rerenderComponent} = renderComponent()
+
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        userEvent.click(screen.getByText(CampaignStatusesCapitalized[0]))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+        rerenderComponent(
+            defaultState,
+            <CampaignStatusesFilter
+                onRemove={mockedRemove}
+                value={withLogicalOperator([InferredCampaignStatus.Active])}
+            />
+        )
+
+        expect(mockedDispatch).toHaveBeenCalledWith({type: STAT_FILTERS_CLEAN})
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
+            name: FilterKey.CampaignStatuses,
+            logical_operator: null,
+        })
     })
 })

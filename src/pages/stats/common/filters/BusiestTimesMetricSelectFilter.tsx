@@ -12,6 +12,8 @@ import {
     getSelectedMetric,
     setSelectedMetric,
 } from 'state/ui/stats/busiestTimesSlice'
+import {FilterComponentKey} from 'models/stat/types'
+import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
 
 export const BUSIEST_TIMES_METRIC_SELECT_FILTER_NAME = 'Report on'
 
@@ -36,6 +38,10 @@ export const BusiestTimesMetricSelectFilter = () => {
         dispatch(setSelectedMetric(option.value))
     }
 
+    const handleDropdownClosed = () => {
+        logSegmentEvent(FilterComponentKey.BusiestTimesMetricSelectFilter, null)
+    }
+
     return (
         <Filter
             filterName={BUSIEST_TIMES_METRIC_SELECT_FILTER_NAME}
@@ -51,6 +57,7 @@ export const BusiestTimesMetricSelectFilter = () => {
             onSelectAll={_noop}
             onRemoveAll={_noop}
             onChangeLogicalOperator={_noop}
+            onDropdownClosed={handleDropdownClosed}
         />
     )
 }

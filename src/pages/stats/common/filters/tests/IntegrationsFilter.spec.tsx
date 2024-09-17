@@ -1,6 +1,7 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 import {screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {emptyFilter} from 'pages/stats/common/filters/helpers'
 
@@ -20,12 +21,23 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {IntegrationsFilter} from 'pages/stats/common/filters/IntegrationsFilter'
+import {
+    IntegrationsFilter,
+    IntegrationsFilterWithState,
+    PhoneIntegrationsFilterWithState,
+} from 'pages/stats/common/filters/IntegrationsFilter'
 import {FilterKey} from 'models/stat/types'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {STAT_FILTERS_CLEAN} from 'state/ui/stats/constants'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
 
 const defaultState = {
     stats: initialState,
@@ -241,5 +253,66 @@ describe('IntegrationsFilter', () => {
                 },
             })
         )
+    })
+
+    it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
+        const {rerenderComponent} = renderComponent()
+
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        userEvent.click(screen.getByText(integrations[0].name))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+        rerenderComponent(
+            defaultState,
+            <IntegrationsFilter
+                value={withDefaultLogicalOperator([])}
+                integrations={integrations}
+            />
+        )
+
+        expect(mockedDispatch).toHaveBeenCalledWith({type: STAT_FILTERS_CLEAN})
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
+            name: FilterKey.Integrations,
+            logical_operator:
+                LogicalOperatorLabel[
+                    LogicalOperatorEnum.ONE_OF
+                ].toLocaleLowerCase(),
+        })
+    })
+
+    describe('IntegrationsFilterWithState', () => {
+        it('should render IntegrationsFilterWithState component', () => {
+            const stateWithIntegrations = {
+                stats: defaultState.stats,
+                integrations: fromJS({
+                    integrations: integrations,
+                }),
+            }
+            renderWithStore(
+                <IntegrationsFilterWithState />,
+                stateWithIntegrations
+            )
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Integrations])
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('PhoneIntegrationsFilterWithState', () => {
+        it('should render IntegrationsFilterWithState component', () => {
+            const stateWithIntegrations = {
+                stats: defaultState.stats,
+                integrations: fromJS({
+                    integrations: integrations,
+                }),
+            }
+            renderWithStore(
+                <PhoneIntegrationsFilterWithState />,
+                stateWithIntegrations
+            )
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Integrations])
+            ).toBeInTheDocument()
+        })
     })
 })

@@ -7,12 +7,19 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
+    LogicalOperatorEnum,
+    LogicalOperatorLabel,
+} from 'pages/stats/common/components/Filter/constants'
 import {
     channelsFilterLogicalOperators,
     FilterLabels,
 } from 'pages/stats/common/filters/constants'
-import {emptyFilter, filterChannels} from 'pages/stats/common/filters/helpers'
+import {
+    emptyFilter,
+    filterChannels,
+    logSegmentEvent,
+} from 'pages/stats/common/filters/helpers'
 import {DropdownOption} from 'pages/stats/types'
 import {
     Channel,
@@ -110,6 +117,10 @@ export function ChannelsFilter({
         dispatch(statFiltersDirty())
     }
     const handleDropdownClosed = () => {
+        logSegmentEvent(
+            FilterKey.Channels,
+            LogicalOperatorLabel[value.operator]
+        )
         dispatch(statFiltersClean())
     }
 

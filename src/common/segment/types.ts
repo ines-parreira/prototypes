@@ -289,6 +289,7 @@ export enum SegmentEvent {
     SidebarViewsChanged = 'sidebar-views-changed',
     SnoozeButtonClicked = 'snooze-button-clicked',
     StatClicked = 'stat-clicked',
+    StatFilterSelected = 'stat-filter-selected',
     StatDownloadClicked = 'stat-download-clicked',
     StatViewLinkClicked = 'stat-view-link-clicked',
     SubscribedToDevNewsletter = 'subscribed-to-dev-newsletter',

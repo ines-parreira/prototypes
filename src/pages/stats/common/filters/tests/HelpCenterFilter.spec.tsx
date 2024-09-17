@@ -12,12 +12,19 @@ import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {initialState} from 'state/stats/statsSlice'
 import {FilterKey} from 'models/stat/types'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {FILTER_DROPDOWN_ICON} from 'pages/stats/common/components/Filter/constants'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedHelpCenterData = getHelpCentersResponseFixture.data
 const HELP_CENTER_FILTER_NAME = FilterLabels[FilterKey.HelpCenters]
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
 
 describe('HelpCenterFilter', () => {
     const mockStore = {
@@ -110,5 +117,22 @@ describe('HelpCenterFilter', () => {
         expect(
             screen.getByText(getHelpCentersResponseFixture.data[0].name)
         ).toBeInTheDocument()
+    })
+
+    it('should call segment analytics log event on filter dropdown close', () => {
+        renderWithStore(
+            <HelpCenterFilter
+                value={withDefaultLogicalOperator([mockedHelpCenterData[0].id])}
+            />,
+            mockStore
+        )
+
+        userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
+        userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
+
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
+            name: FilterKey.HelpCenters,
+            logical_operator: null,
+        })
     })
 })

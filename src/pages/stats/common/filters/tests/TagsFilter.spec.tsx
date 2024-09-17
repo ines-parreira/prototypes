@@ -17,9 +17,17 @@ import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {TagsFilter} from 'pages/stats/common/filters/TagsFilter'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
+import {statFiltersClean} from 'state/ui/stats/actions'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FilterKey} from 'models/stat/types'
 
 jest.mock('hooks/reporting/common/useTagSearch')
 const useTagSearchMock = assumeMock(useTagSearch)
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
 
 describe('<TagsFilter />', () => {
     const someTags = tags
@@ -240,5 +248,38 @@ describe('<TagsFilter />', () => {
                 },
             })
         )
+    })
+
+    it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
+        const selectedTag = tags[0]
+        const anotherSelectedTag = tags[1]
+        const {rerenderComponent, store} = renderWithStore(
+            <TagsFilter value={withDefaultLogicalOperator([selectedTag.id])} />,
+            {}
+        )
+
+        userEvent.click(
+            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
+        )
+        userEvent.click(screen.getByText(anotherSelectedTag.name))
+        userEvent.click(
+            screen.getAllByText(
+                LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]
+            )[0]
+        )
+
+        rerenderComponent(
+            store as any,
+            <TagsFilter value={withDefaultLogicalOperator([selectedTag.id])} />
+        )
+
+        expect(store.getActions()).toContainEqual(statFiltersClean())
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
+            name: FilterKey.Tags,
+            logical_operator:
+                LogicalOperatorLabel[
+                    LogicalOperatorEnum.ONE_OF
+                ].toLocaleLowerCase(),
+        })
     })
 })

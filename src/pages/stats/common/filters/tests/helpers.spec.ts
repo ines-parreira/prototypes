@@ -1,8 +1,12 @@
 import {Channel} from 'services/channels'
-import {filterChannels} from 'pages/stats/common/filters/helpers'
+import {
+    filterChannels,
+    logSegmentEvent,
+} from 'pages/stats/common/filters/helpers'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedChannels = [
     {
@@ -33,6 +37,11 @@ jest.mock('api/queryClient', () => ({
     },
 }))
 
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
+
 describe('filterChannels', () => {
     it('should return all channels when no filter is provided', () => {
         expect(filterChannels(mockedChannels)).toEqual(mockedChannels)
@@ -53,5 +62,29 @@ describe('filterChannels', () => {
                 channel.name.includes('Chat')
             )
         ).toEqual([mockedChannels[1]])
+    })
+})
+
+describe('logSegmentEvent', () => {
+    it('should call logEvent with the expected params', () => {
+        logSegmentEvent('test', 'test-operator')
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.StatFilterSelected,
+            expect.objectContaining({
+                name: 'test',
+                logical_operator: 'test-operator',
+            })
+        )
+    })
+
+    it('should call logEvent with the expected params when logicalOperator is null', () => {
+        logSegmentEvent('test', null)
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.StatFilterSelected,
+            expect.objectContaining({
+                name: 'test',
+                logical_operator: null,
+            })
+        )
     })
 })

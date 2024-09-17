@@ -10,7 +10,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {RootState} from 'state/types'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
@@ -54,6 +54,10 @@ const HelpCenterFilter = ({value = emptyFilter}: HelpCenterFilterProps) => {
         handleFilterChange([Number(opt.value)])
     }
 
+    const handleDropdownClosed = () => {
+        logSegmentEvent(FilterKey.HelpCenters, null)
+    }
+
     return (
         <Filter
             filterName={FilterLabels[FilterKey.HelpCenters]}
@@ -69,6 +73,7 @@ const HelpCenterFilter = ({value = emptyFilter}: HelpCenterFilterProps) => {
             onSelectAll={_noop}
             onRemoveAll={_noop}
             onChangeLogicalOperator={_noop}
+            onDropdownClosed={handleDropdownClosed}
         />
     )
 }

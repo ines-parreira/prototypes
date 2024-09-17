@@ -6,9 +6,15 @@ import {CustomField} from 'models/customField/types'
 import {getCustomFieldValueSerializer} from 'models/reporting/queryFactories/utils'
 import {CustomFieldFilter} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
+    LogicalOperatorEnum,
+    LogicalOperatorLabel,
+} from 'pages/stats/common/components/Filter/constants'
 import {customFieldsFilterLogicalOperators} from 'pages/stats/common/filters/constants'
-import {emptyCustomFieldFilter} from 'pages/stats/common/filters/helpers'
+import {
+    emptyCustomFieldFilter,
+    logSegmentEvent,
+} from 'pages/stats/common/filters/helpers'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {
     activeParams,
@@ -112,6 +118,10 @@ export default function CustomFieldsFilter({
     }
 
     const handleDropdownClosed = () => {
+        logSegmentEvent(
+            `tf_${filterName}`,
+            LogicalOperatorLabel[value.operator]
+        )
         dispatch(statFiltersClean())
     }
 

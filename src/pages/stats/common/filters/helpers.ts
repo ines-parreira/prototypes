@@ -1,5 +1,6 @@
 import isArray from 'lodash/isArray'
 import isFunction from 'lodash/isFunction'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     CleanFilterComponentKeys,
     CustomFieldFilter,
@@ -61,3 +62,15 @@ export const getFilteredFilterComponentKeys = (
         }
         return [...acc, key]
     }, [])
+
+export const logSegmentEvent = (
+    filterName: string,
+    logicalOperator: string | null
+) => {
+    logEvent(SegmentEvent.StatFilterSelected, {
+        name: filterName,
+        logical_operator: logicalOperator
+            ? logicalOperator.toLocaleLowerCase()
+            : null,
+    })
+}

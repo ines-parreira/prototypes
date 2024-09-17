@@ -18,6 +18,7 @@ import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
 
 const filterOptions = [
     {
@@ -109,6 +110,7 @@ export default function CampaignStatusesFilter({
         dispatch(statFiltersDirty())
     }
     const handleDropdownClosed = () => {
+        logSegmentEvent(FilterKey.CampaignStatuses, null)
         dispatch(statFiltersClean())
     }
 

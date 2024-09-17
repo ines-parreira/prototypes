@@ -6,7 +6,7 @@ import {useSupportedLocales} from 'pages/settings/helpCenter/providers/Supported
 import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import Filter from 'pages/stats/common/components/Filter/Filter'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
@@ -17,7 +17,10 @@ import {
     FilterLabels,
     helpCenterLanguageFilterLogicalOperators,
 } from 'pages/stats/common/filters/constants'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
+    LogicalOperatorEnum,
+    LogicalOperatorLabel,
+} from 'pages/stats/common/components/Filter/constants'
 import {RootState} from 'state/types'
 
 type Props = {
@@ -101,6 +104,13 @@ const HelpCenterLanguageFilter = ({value = emptyFilter}: Props) => {
         [dispatch, value.values]
     )
 
+    const handleDropdownClosed = () => {
+        logSegmentEvent(
+            FilterKey.LocaleCodes,
+            LogicalOperatorLabel[value.operator]
+        )
+    }
+
     return (
         <Filter
             filterName={FilterLabels[FilterKey.LocaleCodes]}
@@ -116,6 +126,7 @@ const HelpCenterLanguageFilter = ({value = emptyFilter}: Props) => {
             onChangeLogicalOperator={handleFilterOperatorChange}
             onSelectAll={_noop}
             onRemoveAll={_noop}
+            onDropdownClosed={handleDropdownClosed}
         />
     )
 }

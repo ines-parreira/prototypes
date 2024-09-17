@@ -26,7 +26,7 @@ export type CleanFilterComponentKeys = Exclude<
 >
 
 export enum FilterComponentKey {
-    BusiestTimesMetricSelectFilter = 'BusiestTimesMetricSelectFilter',
+    BusiestTimesMetricSelectFilter = 'busiestTimesMetricSelectFilter',
     Store = 'store',
     PhoneIntegrations = 'phoneIntegrations',
     CustomField = 'customField',

@@ -1,13 +1,16 @@
 import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
 import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {DropdownOption} from 'pages/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
+    LogicalOperatorEnum,
+    LogicalOperatorLabel,
+} from 'pages/stats/common/components/Filter/constants'
 import {
     FilterLabels,
     tagsFilterLogicalOperators,
@@ -79,6 +82,7 @@ export const TagsFilter = ({
         dispatch(statFiltersDirty())
     }
     const handleDropdownClosed = () => {
+        logSegmentEvent(FilterKey.Tags, LogicalOperatorLabel[value.operator])
         handleTagsSearch('')
         dispatch(statFiltersClean())
     }

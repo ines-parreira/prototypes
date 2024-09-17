@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react'
 import {connect} from 'react-redux'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -11,7 +11,10 @@ import {getFilterAgentsJS} from 'state/agents/selectors'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
+    LogicalOperatorEnum,
+    LogicalOperatorLabel,
+} from 'pages/stats/common/components/Filter/constants'
 import {
     agentsFilterLogicalOperators,
     FilterLabels,
@@ -142,6 +145,7 @@ export default function AgentsFilter({
         dispatch(statFiltersDirty())
     }
     const handleDropdownClosed = () => {
+        logSegmentEvent(FilterKey.Agents, LogicalOperatorLabel[value.operator])
         dispatch(statFiltersClean())
     }
 

@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo} from 'react'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -9,7 +9,10 @@ import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {DropdownOption} from 'pages/stats/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
+    LogicalOperatorEnum,
+    LogicalOperatorLabel,
+} from 'pages/stats/common/components/Filter/constants'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {CampaignPreview} from 'models/convert/campaign/types'
@@ -93,6 +96,10 @@ export default function CampaignsFilter({
         dispatch(statFiltersDirty())
     }
     const handleDropdownClosed = () => {
+        logSegmentEvent(
+            FilterKey.Campaigns,
+            LogicalOperatorLabel[value.operator]
+        )
         dispatch(statFiltersClean())
     }
 

@@ -11,7 +11,10 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {ChannelsFilter} from 'pages/stats/common/filters/ChannelsFilter'
+import {
+    ChannelsFilter,
+    ChannelsFilterWithState,
+} from 'pages/stats/common/filters/ChannelsFilter'
 import {getChannels, toChannel} from 'services/channels'
 import {
     initialState,
@@ -22,6 +25,8 @@ import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceT
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {FilterKey} from 'models/stat/types'
+import {STAT_FILTERS_CLEAN} from 'state/ui/stats/constants'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedChannels = channels
 
@@ -34,8 +39,12 @@ jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 jest.mock('config/views.tsx', () => <div />)
 
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
+
 describe('ChannelsFilter', () => {
-    let component: ReturnType<typeof renderWithStore>
     const isOneOfRegex = new RegExp(
         `${LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]}`,
         'i'
@@ -50,19 +59,30 @@ describe('ChannelsFilter', () => {
         mockedToChannels.mockImplementation((arg) =>
             mockedChannels.find((channel) => channel.slug === arg)
         )
-        component = renderWithStore(
-            <ChannelsFilter value={withDefaultLogicalOperator([])} />,
-            defaultState
-        )
+    })
+
+    it('should render ChannelsStatsFilter even if the value is undefined', () => {
+        renderWithStore(<ChannelsFilter value={undefined} />, defaultState)
+        expect(
+            screen.getByText(FilterLabels[FilterKey.Channels])
+        ).toBeInTheDocument()
     })
 
     it('should render ChannelsStatsFilter component', () => {
+        renderWithStore(
+            <ChannelsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         expect(
             screen.getByText(FilterLabels[FilterKey.Channels])
         ).toBeInTheDocument()
     })
 
     it('should render ChannelsStatsFilter options', () => {
+        renderWithStore(
+            <ChannelsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         expect(screen.getByText(mockedChannels[0].name)).toBeInTheDocument()
@@ -70,6 +90,10 @@ describe('ChannelsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting channel', () => {
+        renderWithStore(
+            <ChannelsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(mockedChannels[0].name))
         userEvent.click(screen.getByText(mockedChannels[1].name))
@@ -88,7 +112,10 @@ describe('ChannelsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting all channels and deselecting all channels', () => {
-        const {rerender} = component
+        const {rerender} = renderWithStore(
+            <ChannelsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
@@ -125,7 +152,10 @@ describe('ChannelsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting one of the channels', () => {
-        const {rerender} = component
+        const {rerender} = renderWithStore(
+            <ChannelsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
 
         const allAvailableChannelsSlugs = mockedChannels.map((channel) =>
             getChannelFromSourceType(
@@ -156,7 +186,10 @@ describe('ChannelsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting all channels when filters dropdown is closed', () => {
-        const {rerender} = component
+        const {rerender} = renderWithStore(
+            <ChannelsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         const clearFilterIcon = 'close'
 
         const allAvailableChannelsSlugs = mockedChannels.map((channel) =>
@@ -185,6 +218,10 @@ describe('ChannelsFilter', () => {
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
+        renderWithStore(
+            <ChannelsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         const isOneOfRadioLabel = screen.getByLabelText(
@@ -218,5 +255,39 @@ describe('ChannelsFilter', () => {
                 },
             })
         )
+    })
+
+    it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
+        const {rerenderComponent} = renderWithStore(
+            <ChannelsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
+
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        userEvent.click(screen.getByText(mockedChannels[0].name))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+        rerenderComponent(
+            defaultState,
+            <ChannelsFilter value={withDefaultLogicalOperator([])} />
+        )
+
+        expect(mockedDispatch).toHaveBeenCalledWith({type: STAT_FILTERS_CLEAN})
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
+            name: FilterKey.Channels,
+            logical_operator:
+                LogicalOperatorLabel[
+                    LogicalOperatorEnum.ONE_OF
+                ].toLocaleLowerCase(),
+        })
+    })
+
+    describe('ChannelsFilterWithState', () => {
+        it('should render ChannelsFilterWithState component', () => {
+            renderWithStore(<ChannelsFilterWithState />, defaultState)
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Channels])
+            ).toBeInTheDocument()
+        })
     })
 })

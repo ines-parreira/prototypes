@@ -12,6 +12,13 @@ import {
 } from 'state/ui/stats/busiestTimesSlice'
 import {renderWithStore} from 'utils/testing'
 import {metricLabels} from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FilterComponentKey} from 'models/stat/types'
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
 
 describe('BusiestTimesMetricSelectFilter', () => {
     const defaultState = {
@@ -39,5 +46,17 @@ describe('BusiestTimesMetricSelectFilter', () => {
         userEvent.click(screen.getByText(metricLabels[metric]))
 
         expect(store.getActions()).toContainEqual(setSelectedMetric(metric))
+    })
+
+    it('should call segment analytics log event on filter dropdown close', () => {
+        renderWithStore(<BusiestTimesMetricSelectFilter />, defaultState)
+
+        userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
+        userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
+
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
+            name: FilterComponentKey.BusiestTimesMetricSelectFilter,
+            logical_operator: null,
+        })
     })
 })

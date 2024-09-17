@@ -21,9 +21,15 @@ import {
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 jest.mock('hooks/customField/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
 
 describe('CustomFieldFilter', () => {
     const defaultState = {
@@ -127,5 +133,22 @@ describe('CustomFieldFilter', () => {
                 isLoading: false,
             })
         )
+    })
+
+    it('should call segment analytics log event on filter dropdown close', () => {
+        const {rerenderComponent} = renderWithStore(
+            <CustomFieldFilter />,
+            defaultState
+        )
+
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+        rerenderComponent(defaultState, <CustomFieldFilter />)
+
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
+            name: `tf_${CUSTOM_FIELD_FILTER_NAME}`,
+            logical_operator: null,
+        })
     })
 })

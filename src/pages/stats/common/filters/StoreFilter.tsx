@@ -9,7 +9,7 @@ import {
 import Filter from 'pages/stats/common/components/Filter/Filter'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {
     getStatsFiltersWithLogicalOperators,
     getStoreIntegrations,
@@ -21,6 +21,7 @@ import {Integration} from 'models/integration/types'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {LogicalOperatorLabel} from 'pages/stats/common/components/Filter/constants'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]
@@ -76,6 +77,13 @@ export default function StoreFilter({
         handleFilterValuesChange([Number(opt.value)])
     }
 
+    const handleDropdownClosed = () => {
+        logSegmentEvent(
+            FilterComponentKey.Store,
+            LogicalOperatorLabel[value.operator]
+        )
+    }
+
     return (
         <Filter
             filterName={FilterLabels[FilterComponentKey.Store]}
@@ -90,6 +98,7 @@ export default function StoreFilter({
             showSearch={false}
             showQuickSelect={false}
             isPersistent
+            onDropdownClosed={handleDropdownClosed}
         />
     )
 }

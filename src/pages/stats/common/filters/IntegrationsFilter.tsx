@@ -6,7 +6,7 @@ import {
     getPageStatsFiltersWithLogicalOperators,
     getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -17,7 +17,10 @@ import Filter from 'pages/stats/common/components/Filter'
 import {DropdownOption} from 'pages/stats/types'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
+    LogicalOperatorEnum,
+    LogicalOperatorLabel,
+} from 'pages/stats/common/components/Filter/constants'
 import {
     integrationsFilterLogicalOperators,
     FilterLabels,
@@ -99,6 +102,10 @@ export function IntegrationsFilter({
         dispatch(statFiltersDirty())
     }
     const handleDropdownClosed = () => {
+        logSegmentEvent(
+            FilterKey.Integrations,
+            LogicalOperatorLabel[value.operator]
+        )
         dispatch(statFiltersClean())
     }
 

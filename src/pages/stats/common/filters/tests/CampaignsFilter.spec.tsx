@@ -12,11 +12,14 @@ import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
     FILTER_VALUE_PLACEHOLDER,
+    LogicalOperatorEnum,
+    LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import CampaignsFilter from 'pages/stats/common/filters/CampaignsFilter'
 import {campaignsList} from 'fixtures/campaign'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {FilterKey} from 'models/stat/types'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 const CAMPAIGNS_FILTER_NAME = FilterLabels[FilterKey.Campaigns]
 const mockedCampaignsList = campaignsList
@@ -24,6 +27,10 @@ const mockedDispatch = jest.fn()
 
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('pages/stats/convert/hooks/useGetCampaignsForStore')
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+}))
 
 const mockedUseGetCampaignsForStore = assumeMock(useGetCampaignsForStore)
 const mockedUseParamsReturnValue = jest.fn(() => ({id: 1}))
@@ -241,6 +248,35 @@ describe('CampaignsFilter', () => {
 
         expect(mockedDispatch).toHaveBeenCalledWith({
             type: 'STAT/STAT_FILTERS_CLEAN',
+        })
+    })
+
+    it('should call segment analytics log event on filter dropdown close', () => {
+        const {rerenderComponent} = renderWithStore(
+            <CampaignsFilter
+                value={emptyFilter}
+                campaigns={mockedCampaignsList}
+            />,
+            defaultState
+        )
+
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+        rerenderComponent(
+            defaultState,
+            <CampaignsFilter
+                value={emptyFilter}
+                campaigns={mockedCampaignsList}
+            />
+        )
+
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
+            name: FilterKey.Campaigns,
+            logical_operator:
+                LogicalOperatorLabel[
+                    LogicalOperatorEnum.ONE_OF
+                ].toLocaleLowerCase(),
         })
     })
 })
