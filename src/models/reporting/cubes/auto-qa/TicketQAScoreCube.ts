@@ -35,6 +35,11 @@ export type TicketQAScoreTimeDimension =
     | ValueOf<TicketQAScoreDimension.PeriodEnd>
     | ValueOf<TicketQAScoreDimension.TicketQAScoredDatetime>
 
+export enum TicketQAScoreDimensionName {
+    CommunicationSkills = 'communication_skills',
+    ResolutionCompleteness = 'resolution_completeness',
+}
+
 type TicketQAScoreCube = Cube<
     TicketQAScoreMeasure,
     TicketQAScoreDimension,

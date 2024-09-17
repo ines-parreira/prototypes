@@ -1,3 +1,4 @@
+import {TicketStatus} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {
     TicketQAScoreCubeWithJoins,
@@ -7,6 +8,7 @@ import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -27,7 +29,7 @@ export const reviewedClosedTicketsQueryFactory = (
         {
             member: TicketDimension.Status,
             operator: ReportingFilterOperator.Equals,
-            values: ['closed'],
+            values: [TicketStatus.Closed],
         },
     ],
     timezone,
@@ -43,9 +45,10 @@ export const reviewedClosedTicketsDrillDownQueryFactory = (
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
-    ...reviewedClosedTicketsQueryFactory(filters, timezone),
+    ...reviewedClosedTicketsQueryFactory(filters, timezone, sorting),
     measures: [],
     dimensions: [TicketDimension.TicketId],
+    limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {
               order: [[TicketDimension.CreatedDatetime, sorting]],

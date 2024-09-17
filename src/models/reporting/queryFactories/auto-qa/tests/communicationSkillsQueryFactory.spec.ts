@@ -1,12 +1,16 @@
 import moment from 'moment'
 import {TicketStatus} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
-import {TicketQAScoreMeasure} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {
-    reviewedClosedTicketsDrillDownQueryFactory,
-    reviewedClosedTicketsQueryFactory,
-} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
+    communicationSkillsDrillDownQueryFactory,
+    communicationSkillsQueryFactory,
+} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
+import {OrderDirection} from 'models/api/types'
+import {
+    TicketQAScoreDimension,
+    TicketQAScoreDimensionName,
+    TicketQAScoreMeasure,
+} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -15,7 +19,7 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-describe('reviewedClosedTicketsQueryFactory', () => {
+describe('resolutionCompletenessQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -28,13 +32,10 @@ describe('reviewedClosedTicketsQueryFactory', () => {
     const sorting = OrderDirection.Desc
 
     it('should produce the query', () => {
-        const query = reviewedClosedTicketsQueryFactory(statsFilters, timezone)
+        const query = communicationSkillsQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
-            measures: [
-                TicketQAScoreMeasure.TicketCount,
-                TicketQAScoreMeasure.AverageScore,
-            ],
+            measures: [TicketQAScoreMeasure.AverageScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -47,23 +48,25 @@ describe('reviewedClosedTicketsQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
                 },
+                {
+                    member: TicketQAScoreDimension.DimensionName,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [TicketQAScoreDimensionName.CommunicationSkills],
+                },
             ],
             timezone,
         })
     })
 
     it('should produce the query with sorting', () => {
-        const query = reviewedClosedTicketsQueryFactory(
+        const query = communicationSkillsQueryFactory(
             statsFilters,
             timezone,
             sorting
         )
 
         expect(query).toEqual({
-            measures: [
-                TicketQAScoreMeasure.TicketCount,
-                TicketQAScoreMeasure.AverageScore,
-            ],
+            measures: [TicketQAScoreMeasure.AverageScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -75,6 +78,11 @@ describe('reviewedClosedTicketsQueryFactory', () => {
                     member: TicketDimension.Status,
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
+                },
+                {
+                    member: TicketQAScoreDimension.DimensionName,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [TicketQAScoreDimensionName.CommunicationSkills],
                 },
             ],
             timezone,
@@ -83,7 +91,7 @@ describe('reviewedClosedTicketsQueryFactory', () => {
     })
 })
 
-describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
+describe('communicationSkillsDrillDownQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -96,14 +104,14 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
     const sorting = OrderDirection.Desc
 
     it('should produce the query', () => {
-        const query = reviewedClosedTicketsDrillDownQueryFactory(
+        const query = communicationSkillsDrillDownQueryFactory(
             statsFilters,
             timezone
         )
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [],
+            measures: [TicketQAScoreMeasure.AverageScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -115,6 +123,11 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
                     member: TicketDimension.Status,
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
+                },
+                {
+                    member: TicketQAScoreDimension.DimensionName,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [TicketQAScoreDimensionName.CommunicationSkills],
                 },
             ],
             timezone,
@@ -122,7 +135,7 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
     })
 
     it('should produce the query with sorting', () => {
-        const query = reviewedClosedTicketsDrillDownQueryFactory(
+        const query = communicationSkillsDrillDownQueryFactory(
             statsFilters,
             timezone,
             sorting
@@ -130,7 +143,7 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [],
+            measures: [TicketQAScoreMeasure.AverageScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -143,9 +156,14 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
                 },
+                {
+                    member: TicketQAScoreDimension.DimensionName,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [TicketQAScoreDimensionName.CommunicationSkills],
+                },
             ],
             timezone,
-            order: [[TicketDimension.CreatedDatetime, sorting]],
+            order: [[TicketQAScoreMeasure.AverageScore, sorting]],
         })
     })
 })
