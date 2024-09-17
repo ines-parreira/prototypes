@@ -1,7 +1,7 @@
 import {AiAgentResponse, TicketOutcome} from 'models/aiAgentPlayground/types'
 
 export const getSubmitPlaygroundTicketResponseFixture = (
-    props?: AiAgentResponse
+    props?: Partial<AiAgentResponse>
 ): AiAgentResponse => ({
     generate: {
         output: {

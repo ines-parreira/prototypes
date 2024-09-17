@@ -71,6 +71,7 @@ export const createContextAndSubmitPlaygroundTicket = async (
                 messages: body.messages,
                 created_datetime: body.created_datetime,
                 channel: body.channel,
+                meta: body.meta,
             }),
         }
     } else {

@@ -4,6 +4,7 @@ import {
     AccountConfigurationWithHttpIntegration,
     StoreConfiguration,
 } from 'models/aiAgent/types'
+import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
 import {PlaygroundInputSection} from '../PlaygroundInputSection/PlaygroundInputSection'
 import PlaygroundMessageComponent, {
     AI_AGENT_SENDER,
@@ -11,7 +12,10 @@ import PlaygroundMessageComponent, {
 import {usePlaygroundForm} from '../../hooks/usePlaygroundForm'
 import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
 
-import {mapPlaygroundFormValuesToMessage} from '../../utils/playground-messages.utils'
+import {
+    mapPlaygroundPromptToMessage,
+    mapPlaygroundFormValuesToMessage,
+} from '../../utils/playground-messages.utils'
 import {CustomerHttpIntegrationDataMock} from '../../constants'
 import css from './PlaygroundChat.less'
 import {PlaygroundChannels} from './PlaygroundChat.types'
@@ -30,15 +34,20 @@ export const PlaygroundChat = ({
     const messageContainerRef = useRef<HTMLDivElement>(null)
     const [channel, setChannel] = useState<PlaygroundChannels>('email')
 
-    const {messages, onMessageSend, onNewConversation, isMessageSending} =
-        usePlaygroundMessages({
-            storeData,
-            httpIntegrationId: accountData.httpIntegration?.id,
-            gorgiasDomain: accountData.gorgiasDomain,
-            accountId: accountData.accountId,
-            currentUserFirstName,
-            channel,
-        })
+    const {
+        messages,
+        onMessageSend,
+        onNewConversation,
+        isMessageSending,
+        isWaitingResponse,
+    } = usePlaygroundMessages({
+        storeData,
+        httpIntegrationId: accountData.httpIntegration?.id,
+        gorgiasDomain: accountData.gorgiasDomain,
+        accountId: accountData.accountId,
+        currentUserFirstName,
+        channel,
+    })
 
     const {
         formValues,
@@ -56,6 +65,20 @@ export const PlaygroundChat = ({
     const handleNewConversation = () => {
         onNewConversation()
         clearForm()
+    }
+
+    const onPromptMessage = (prompt: PlaygroundPromptType) => {
+        const playgroundMessage = mapPlaygroundPromptToMessage(
+            prompt,
+            formValues.customerName || formValues.customerEmail
+        )
+        void onMessageSend(playgroundMessage, {
+            customerEmail:
+                formValues.customerEmail ??
+                CustomerHttpIntegrationDataMock.address,
+            subject: formValues.subject,
+        })
+        onFormValuesChange('message', '')
     }
 
     const onSendMessage = () => {
@@ -115,6 +138,8 @@ export const PlaygroundChat = ({
                     onNewConversation={handleNewConversation}
                     onChannelChange={onChannelChange}
                     channel={channel}
+                    isWaitingResponse={isWaitingResponse}
+                    onPromptMessage={onPromptMessage}
                 />
             </div>
         </div>

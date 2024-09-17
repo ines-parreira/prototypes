@@ -4,6 +4,7 @@ import {useSubmitPlaygroundTicket} from 'models/aiAgent/queries'
 import {reportError} from 'utils/errors'
 import {
     MessageType,
+    PlaygroundPromptMessage,
     PlaygroundMessage,
     PlaygroundTextMessage,
 } from 'models/aiAgentPlayground/types'
@@ -17,9 +18,11 @@ import {CustomerHttpIntegrationDataMock} from '../constants'
 import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.types'
 import {
     getPlaygroundInitialMessage,
+    getPlaygroundMessageMeta,
     mapPlaygroundMessagesToServerMessages,
-    shouldAiAgentResponseDisplay,
+    shouldDisplayActions,
 } from '../utils/playground-messages.utils'
+import {handleAiAgentResponse} from '../utils/playground-handler.utils'
 
 export const usePlaygroundMessages = ({
     storeData,
@@ -54,6 +57,8 @@ export const usePlaygroundMessages = ({
     const [messages, setMessages] =
         useState<PlaygroundMessage[]>(initialMessages)
 
+    const [isWaitingResponse, setIsWaitingResponse] = useState(false)
+
     useEffect(() => {
         setMessages(initialMessages)
     }, [initialMessages])
@@ -73,28 +78,18 @@ export const usePlaygroundMessages = ({
 
         actionSerializedStateRef.current = undefined
         setMessages(initialMessages)
+        setIsWaitingResponse(false)
     }, [initialMessages])
 
-    const onMessageSend = useCallback(
+    const processMessage = useCallback(
         async (
-            newMessage: PlaygroundTextMessage,
+            userMessage: PlaygroundTextMessage | PlaygroundPromptMessage,
             {customerEmail, subject}: {customerEmail: string; subject?: string}
         ) => {
-            const aiAgentMessagePlaceholder: PlaygroundMessage = {
-                sender: AI_AGENT_SENDER,
-                type: MessageType.PLACEHOLDER,
-                createdDatetime: new Date().toISOString(),
-            }
-            const newMessages = [...messages, newMessage]
-            setMessages([...newMessages, aiAgentMessagePlaceholder])
+            // Simulate an async API call to process the message
 
             const mockContext =
                 customerEmail === CustomerHttpIntegrationDataMock.address
-
-            const bodyText =
-                newMessage.type === MessageType.MESSAGE
-                    ? newMessage.content
-                    : ''
 
             const emailIntegration = storeData.monitoredEmailIntegrations[0]
 
@@ -109,19 +104,21 @@ export const usePlaygroundMessages = ({
             try {
                 const abortController = new AbortController()
                 abortControllerRef.current = abortController
+                const newMessages = [...messages, userMessage]
 
                 const {data: aiAgentResponse} = await submitPlaygroundTicket([
                     {
                         use_mock_context: mockContext,
                         domain: gorgiasDomain,
                         customer_email: customerEmail,
-                        body_text: bodyText,
-                        created_datetime: newMessage.createdDatetime,
+                        body_text: userMessage.content,
+                        created_datetime: userMessage.createdDatetime,
                         channel,
                         // TODO: Remove in https://linear.app/gorgias/issue/AUTAI-1418/update-mechanism-to-get-customer-data
                         email_integration_id: emailIntegration?.id,
                         messages:
                             mapPlaygroundMessagesToServerMessages(newMessages),
+                        meta: getPlaygroundMessageMeta(userMessage),
                         subject: subject ?? '',
                         http_integration_id: httpIntegrationId,
                         account_id: accountId,
@@ -135,45 +132,28 @@ export const usePlaygroundMessages = ({
                 ])
                 actionSerializedStateRef.current =
                     aiAgentResponse._action_serialized_state
-                const updatedMessages = newMessages
 
-                if (
-                    storeData &&
-                    shouldAiAgentResponseDisplay(aiAgentResponse, storeData)
-                ) {
-                    updatedMessages.push({
-                        sender: AI_AGENT_SENDER,
-                        type: MessageType.MESSAGE,
-                        content:
-                            aiAgentResponse.postProcessing.htmlReply ??
-                            aiAgentResponse.generate.output.generated_message,
-                        createdDatetime: new Date().toISOString(),
-                    })
+                const aiAgentMessages = handleAiAgentResponse({
+                    channel,
+                    aiAgentResponse,
+                    storeData,
+                })
+
+                if (shouldDisplayActions(aiAgentResponse)) {
+                    setIsWaitingResponse(true)
                 }
 
-                if (aiAgentResponse.postProcessing.internalNote.length > 0) {
-                    updatedMessages.push({
-                        sender: AI_AGENT_SENDER,
-                        type: MessageType.INTERNAL_NOTE,
-                        content: aiAgentResponse.postProcessing.internalNote,
-                        createdDatetime: new Date().toISOString(),
-                    })
-                }
+                setMessages((prevMessages) => {
+                    // Remove the placeholder
+                    const filteredMessages: PlaygroundMessage[] =
+                        prevMessages.filter(
+                            (message) =>
+                                message.type !== MessageType.PLACEHOLDER
+                        )
 
-                // Add a ticket event message if outcome is also validated
-                if (
-                    aiAgentResponse.generate.output.outcome &&
-                    aiAgentResponse.qa.output.validate_outcome
-                ) {
-                    updatedMessages.push({
-                        sender: AI_AGENT_SENDER,
-                        type: MessageType.TICKET_EVENT,
-                        outcome: aiAgentResponse.generate.output.outcome,
-                        createdDatetime: new Date().toISOString(),
-                    })
-                }
-
-                setMessages(updatedMessages)
+                    // Add the actual processed message
+                    return [...filteredMessages, ...aiAgentMessages]
+                })
             } catch (error) {
                 // skip if request canceled
                 if (axios.isCancel(error)) {
@@ -185,7 +165,7 @@ export const usePlaygroundMessages = ({
                     extra: {
                         context:
                             'Error during message submission from playground',
-                        message: newMessage,
+                        message: userMessage,
                         accountId,
                     },
                 })
@@ -200,8 +180,13 @@ export const usePlaygroundMessages = ({
                     ),
                     createdDatetime: new Date().toISOString(),
                 }
-                const errorMessages = [...newMessages, errorMessage]
-                setMessages(errorMessages)
+
+                setMessages((prevMessages) => [
+                    ...prevMessages.filter(
+                        (message) => message.type !== MessageType.PLACEHOLDER
+                    ),
+                    errorMessage,
+                ])
             }
         },
         [
@@ -216,10 +201,37 @@ export const usePlaygroundMessages = ({
         ]
     )
 
+    const onMessageSend = useCallback(
+        async (
+            newMessage: PlaygroundTextMessage | PlaygroundPromptMessage,
+            {customerEmail, subject}: {customerEmail: string; subject?: string}
+        ) => {
+            // Add placeholder only for real message processing as for action response is fast and we don't need it
+            if (newMessage.type !== MessageType.PROMPT) {
+                // Add placeholder and user message to the chat
+                const placeholderMessage: PlaygroundMessage = {
+                    sender: AI_AGENT_SENDER,
+                    type: MessageType.PLACEHOLDER,
+                    createdDatetime: new Date().toISOString(),
+                }
+                setMessages([...messages, newMessage, placeholderMessage])
+            } else {
+                setMessages([...messages, newMessage])
+            }
+
+            // Remove waiting state before each message send
+            setIsWaitingResponse(false)
+
+            await processMessage(newMessage, {customerEmail, subject})
+        },
+        [messages, processMessage]
+    )
+
     return {
         messages,
         onMessageSend,
         isMessageSending: isSubmitting,
         onNewConversation,
+        isWaitingResponse,
     }
 }

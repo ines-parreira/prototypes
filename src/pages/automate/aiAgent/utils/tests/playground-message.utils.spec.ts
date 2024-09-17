@@ -1,16 +1,20 @@
 import {
+    AiAgentMessageType,
     CreatePlaygroundMessage,
     MessageType,
+    PlaygroundPromptType,
     PlaygroundMessage,
-    isPlaygroundTextMessage,
+    isApiEligiblePlaygroundMessage,
 } from 'models/aiAgentPlayground/types'
 import {
     mapPlaygroundFormValuesToMessage,
     mapPlaygroundMessagesToServerMessages,
+    shouldDisplayActions,
 } from '../playground-messages.utils'
+import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'
 
 describe('playground-message utils', () => {
-    describe('isPlaygroundTextMessage', () => {
+    describe('isPlaygroundMessageSupportedByServer', () => {
         it('should return true if message type is MESSAGE', () => {
             const message: PlaygroundMessage = {
                 type: MessageType.MESSAGE,
@@ -18,7 +22,7 @@ describe('playground-message utils', () => {
                 createdDatetime: '2021-07-29T09:00:00Z',
                 content: 'Hello, how can I help you?',
             }
-            expect(isPlaygroundTextMessage(message)).toBe(true)
+            expect(isApiEligiblePlaygroundMessage(message)).toBe(true)
         })
         it('should return false if message type is INTERNAL_NOTE', () => {
             const message: PlaygroundMessage = {
@@ -27,7 +31,18 @@ describe('playground-message utils', () => {
                 createdDatetime: '2021-07-29T09:00:00Z',
                 content: 'This is an internal note',
             }
-            expect(isPlaygroundTextMessage(message)).toBe(false)
+            expect(isApiEligiblePlaygroundMessage(message)).toBe(false)
+        })
+
+        it('should return true if action is RELEVANT_RESPONSE', () => {
+            const message: PlaygroundMessage = {
+                type: MessageType.PROMPT,
+                sender: 'agent',
+                content: 'This is a relevant response',
+                createdDatetime: '2021-07-29T09:00:00Z',
+                prompt: PlaygroundPromptType.RELEVANT_RESPONSE,
+            }
+            expect(isApiEligiblePlaygroundMessage(message)).toBe(true)
         })
     })
 
@@ -87,6 +102,33 @@ describe('playground-message utils', () => {
             expect(mapPlaygroundFormValuesToMessage(formValues)).toEqual(
                 expected
             )
+        })
+    })
+
+    describe('shouldDisplayActions ', () => {
+        it('should return true if aiAgentResponse has chatTicketMessageMeta', () => {
+            const aiAgentResponse = getSubmitPlaygroundTicketResponseFixture({
+                postProcessing: {
+                    internalNote: '',
+                    htmlReply: null,
+                    chatTicketMessageMeta: {
+                        ai_agent_message_type:
+                            AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION,
+                    },
+                },
+            })
+            expect(shouldDisplayActions(aiAgentResponse)).toBe(true)
+        })
+
+        it('should return false if aiAgentResponse does not have chatTicketMessageMeta', () => {
+            const aiAgentResponse = getSubmitPlaygroundTicketResponseFixture({
+                postProcessing: {
+                    internalNote: '',
+                    htmlReply: null,
+                    chatTicketMessageMeta: undefined,
+                },
+            })
+            expect(shouldDisplayActions(aiAgentResponse)).toBe(false)
         })
     })
 })

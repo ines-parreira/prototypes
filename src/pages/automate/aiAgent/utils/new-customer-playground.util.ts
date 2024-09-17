@@ -1,5 +1,6 @@
 import {
     AiAgentInput,
+    AiAgentMessageType,
     CreatePlaygroundBody,
     CreatePlaygroundRequest,
     MockTicketMessage,
@@ -9,7 +10,9 @@ import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.ty
 
 const PLAYGROUND_TICKET_ID = '123'
 const PLAYGROUND_INTEGRATION_ID = -1
-const GREETING_MESSAGE_META = {ai_agent_message_type: 'ai_agent_greeting'}
+const GREETING_MESSAGE_META = {
+    ai_agent_message_type: AiAgentMessageType.GREETING,
+}
 
 export type NewCustomerData = {
     body_text: string
@@ -18,6 +21,7 @@ export type NewCustomerData = {
     messages: CreatePlaygroundBody['messages']
     created_datetime: string
     channel: PlaygroundChannels
+    meta?: Record<string, string>
 }
 
 const createMockTicketMessage = ({
@@ -91,6 +95,7 @@ export const createMockHttpIntegrationPayload = ({
     messages,
     subject,
     domain,
+    meta = {},
     created_datetime,
     channel,
 }: NewCustomerData): AiAgentInput => ({
@@ -116,7 +121,7 @@ export const createMockHttpIntegrationPayload = ({
             type: 'email',
         }),
         subject,
-        meta: '',
+        meta,
     },
     ticket: {
         account: {
@@ -147,10 +152,12 @@ export const createMockHttpIntegrationPayload = ({
                     created_datetime,
                     from_agent: message.fromAgent,
                     channel,
-                    meta:
-                        channel === 'chat' && index === 0
+                    meta: {
+                        ...meta,
+                        ...(channel === 'chat' && index === 0
                             ? GREETING_MESSAGE_META
-                            : {},
+                            : {}),
+                    },
                 })
             )
         ),
@@ -171,10 +178,12 @@ export const createMockClientPayload = ({
             subject: body.subject,
             from_agent: message.fromAgent,
             channel: body.channel,
-            meta:
-                body.channel === 'chat' && index === 0
+            meta: {
+                ...body.meta,
+                ...(body.channel === 'chat' && index === 0
                     ? GREETING_MESSAGE_META
-                    : {},
+                    : {}),
+            },
         })
     }),
 })

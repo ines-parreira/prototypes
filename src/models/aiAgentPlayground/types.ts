@@ -22,6 +22,7 @@ export type CreatePlaygroundBody = {
     messages: CreatePlaygroundMessage[]
     created_datetime: string
     channel: PlaygroundChannels
+    meta?: Record<string, string>
     _playground_options: CreatePlaygroundOptions
     // Property for AI Agent to identify actions
     _action_serialized_state?: unknown
@@ -109,7 +110,7 @@ export type AiAgentInput = {
         body_text: string
         integration_id: string
         created_datetime: string
-        meta: string
+        meta: Record<string, string>
     }
 }
 
@@ -119,11 +120,18 @@ export enum MessageType {
     ERROR = 'ERROR',
     TICKET_EVENT = 'TICKET_EVENT',
     PLACEHOLDER = 'PLACEHOLDER',
+    PROMPT = 'PROMPT',
 }
 
-export const isPlaygroundTextMessage = (
+export enum PlaygroundPromptType {
+    RELEVANT_RESPONSE = 'RELEVANT_RESPONSE',
+    NOT_RELEVANT_RESPONSE = 'NOT_RELEVANT_RESPONSE',
+}
+
+export const isApiEligiblePlaygroundMessage = (
     message: PlaygroundMessage
-): message is PlaygroundTextMessage => message.type === MessageType.MESSAGE
+): message is PlaygroundTextMessage | PlaygroundPromptMessage =>
+    message.type === MessageType.MESSAGE || message.type === MessageType.PROMPT
 
 type BaseMessage = {
     sender: string
@@ -131,6 +139,12 @@ type BaseMessage = {
 }
 export type PlaygroundTextMessage = BaseMessage & {
     type: MessageType.MESSAGE
+    content: string
+}
+
+export type PlaygroundPromptMessage = BaseMessage & {
+    type: MessageType.PROMPT
+    prompt: PlaygroundPromptType
     content: string
 }
 
@@ -155,6 +169,7 @@ export type PlaygroundPlaceholderMessage = BaseMessage & {
 
 export type PlaygroundMessage =
     | PlaygroundTextMessage
+    | PlaygroundPromptMessage
     | PlaygroundInternalNoteMessage
     | PlaygroundErrorMessage
     | PlaygroundTicketEventMessage
@@ -164,6 +179,16 @@ export enum TicketOutcome {
     CLOSE = 'close',
     HANDOVER = 'handover',
     WAIT = 'wait',
+}
+
+export enum AiAgentMessageType {
+    WAIT_FOR_CLOSE_TICKET_CONFIRMATION = 'wait_for_close_ticket_confirmation',
+    WAIT_FOR_CUSTOMER_RESPONSE = 'wait_for_customer_response',
+    HANDOVER_TO_AGENT = 'handover_to_agent',
+    GREETING = 'ai_agent_greeting',
+    AI_AGENT_RESPONSE_RELEVANT_TRUE = 'ai_agent_response_relevant_true',
+    AI_AGENT_RESPONSE_RELEVANT_FALSE = 'ai_agent_response_relevant_false',
+    ERROR = 'error',
 }
 
 export type AiAgentResponse = {
@@ -182,6 +207,7 @@ export type AiAgentResponse = {
     postProcessing: {
         internalNote: string
         htmlReply: string | null
+        chatTicketMessageMeta?: {ai_agent_message_type?: AiAgentMessageType}
     }
     _action_serialized_state: unknown
 }

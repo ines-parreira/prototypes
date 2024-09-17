@@ -1,6 +1,10 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 import {useSubmitPlaygroundTicket} from 'models/aiAgent/queries'
-import {MessageType, TicketOutcome} from 'models/aiAgentPlayground/types'
+import {
+    AiAgentMessageType,
+    MessageType,
+    TicketOutcome,
+} from 'models/aiAgentPlayground/types'
 import {AI_AGENT} from 'pages/automate/common/components/constants'
 import {usePlaygroundMessages} from '../usePlaygroundMessages'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
@@ -223,7 +227,7 @@ describe('usePlaygroundMessages hook', () => {
             })
         })
 
-        expect(result.current.messages.length).toBe(3)
+        expect(result.current.messages.length).toBe(4)
     })
 
     it('should throw error when no email integration', async () => {
@@ -266,6 +270,48 @@ describe('usePlaygroundMessages hook', () => {
         expect(result.current.messages[2]).toEqual(
             expect.objectContaining({
                 type: MessageType.ERROR,
+            })
+        )
+    })
+
+    it('should return wait for close ticket confirmation', async () => {
+        const onSubmit = () =>
+            Promise.resolve({
+                data: getSubmitPlaygroundTicketResponseFixture({
+                    postProcessing: {
+                        internalNote: '',
+                        htmlReply: null,
+                        chatTicketMessageMeta: {
+                            ai_agent_message_type:
+                                AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION,
+                        },
+                    },
+                    qa: {
+                        output: {
+                            validate_outcome: false,
+                            validate_generated_message: false,
+                        },
+                    },
+                }),
+            })
+        mockedUseSubmitPlaygroundTicket.mockReturnValue({
+            mutateAsync: onSubmit,
+        } as unknown as ReturnType<typeof useSubmitPlaygroundTicket>)
+        const {result} = renderHook(() =>
+            usePlaygroundMessages({...defaultParams, channel: 'chat'})
+        )
+        await act(async () => {
+            await result.current.onMessageSend(playgroundMessageFixture, {
+                customerEmail: 'test@mail.com',
+            })
+        })
+
+        expect(result.current.messages.length).toBe(4)
+        expect(result.current.isWaitingResponse).toBeTruthy()
+        expect(result.current.messages[3]).toEqual(
+            expect.objectContaining({
+                type: MessageType.TICKET_EVENT,
+                outcome: TicketOutcome.WAIT,
             })
         )
     })

@@ -6,6 +6,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
 import {PlaygroundEditor} from '../PlaygroundEditor/PlaygroundEditor'
 import {
     PlaygroundChannels,
@@ -13,6 +14,8 @@ import {
 } from '../PlaygroundChat/PlaygroundChat.types'
 import {PlaygroundCustomerSelection} from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
 import {PlaygroundSegmentControl} from '../PlaygroundSegmentControl/PlaygroundSegmentControl'
+import {PlaygroundAction} from '../PlaygroundActions/types'
+import {PLAYGROUND_PROMPT_CONTENT} from '../../constants'
 import css from './PlaygroundInputSection.less'
 
 type Props = {
@@ -29,6 +32,8 @@ type Props = {
     isMessageSending: boolean
     onChannelChange: (channel: PlaygroundChannels) => void
     channel: PlaygroundChannels
+    isWaitingResponse: boolean
+    onPromptMessage: (action: PlaygroundPromptType) => void
 }
 export const PlaygroundInputSection = ({
     formValues,
@@ -41,6 +46,8 @@ export const PlaygroundInputSection = ({
     isMessageSending,
     onChannelChange,
     channel,
+    isWaitingResponse,
+    onPromptMessage,
 }: Props) => {
     const isTestModeInChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChatTestMode]
@@ -51,6 +58,31 @@ export const PlaygroundInputSection = ({
     const handleSubjectChange = (subject: string) => {
         onFormValuesChange('subject', subject)
     }
+
+    const customActions: PlaygroundAction[] | undefined = isWaitingResponse
+        ? [
+              {
+                  id: 1,
+                  label: PLAYGROUND_PROMPT_CONTENT[
+                      PlaygroundPromptType.RELEVANT_RESPONSE
+                  ],
+                  onClick: () => {
+                      onPromptMessage(PlaygroundPromptType.RELEVANT_RESPONSE)
+                  },
+              },
+              {
+                  id: 2,
+                  label: PLAYGROUND_PROMPT_CONTENT[
+                      PlaygroundPromptType.NOT_RELEVANT_RESPONSE
+                  ],
+                  onClick: () => {
+                      onPromptMessage(
+                          PlaygroundPromptType.NOT_RELEVANT_RESPONSE
+                      )
+                  },
+              },
+          ]
+        : undefined
 
     const handleCustomerEmailChange = useCallback(
         (customerEmail: string, customerName?: string | null) => {
@@ -120,6 +152,7 @@ export const PlaygroundInputSection = ({
                     onMessageChange={handleMessageChange}
                     onSubjectChange={handleSubjectChange}
                     enablePredefinedMessages={!isMessageSending}
+                    customActions={customActions}
                 />
             </div>
             <div className={classnames(css.section, css.footer)}>

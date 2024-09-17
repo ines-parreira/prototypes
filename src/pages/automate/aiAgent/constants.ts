@@ -1,4 +1,5 @@
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
 import {FormValues} from './types'
 
 export const SIGNATURE_MAX_LENGTH = 250
@@ -116,4 +117,9 @@ export const INITIAL_FORM_VALUES = {
         "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
     helpCenter: null,
     monitoredChatIntegrations: [],
+}
+
+export const PLAYGROUND_PROMPT_CONTENT: Record<PlaygroundPromptType, string> = {
+    [PlaygroundPromptType.RELEVANT_RESPONSE]: 'Yes, thanks',
+    [PlaygroundPromptType.NOT_RELEVANT_RESPONSE]: 'No, I need more help',
 }

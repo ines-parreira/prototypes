@@ -5,27 +5,47 @@ import {
     TicketOutcome,
     PlaygroundMessage,
     CreatePlaygroundMessage,
-    isPlaygroundTextMessage,
+    isApiEligiblePlaygroundMessage,
     PlaygroundTextMessage,
+    PlaygroundPromptMessage,
+    AiAgentMessageType,
+    PlaygroundPromptType,
 } from 'models/aiAgentPlayground/types'
 import {
     PlaygroundFormValues,
     PlaygroundChannels,
 } from '../components/PlaygroundChat/PlaygroundChat.types'
-import {CustomerHttpIntegrationDataMock} from '../constants'
+import {
+    CustomerHttpIntegrationDataMock,
+    PLAYGROUND_PROMPT_CONTENT,
+} from '../constants'
 import {AI_AGENT_SENDER} from '../components/PlaygroundMessage/PlaygroundMessage'
+
+export const getPlaygroundMessageMeta = (message: PlaygroundMessage) => {
+    if (message.type === MessageType.PROMPT) {
+        return {
+            ai_agent_message_type:
+                message.prompt === PlaygroundPromptType.RELEVANT_RESPONSE
+                    ? 'ai_agent_response_relevant_true'
+                    : 'ai_agent_response_relevant_false',
+        }
+    }
+}
 
 export const mapPlaygroundMessagesToServerMessages = (
     messages: PlaygroundMessage[]
 ): CreatePlaygroundMessage[] => {
     return messages
         .slice(1) // remove initial message
-        .filter(isPlaygroundTextMessage)
-        .map((m) => ({
-            bodyText: m.content ?? '',
-            fromAgent: m.sender === AI_AGENT_SENDER,
-            createdDatetime: m.createdDatetime,
-        }))
+        .filter(isApiEligiblePlaygroundMessage)
+        .map((m) => {
+            return {
+                bodyText: m.content,
+                fromAgent: m.sender === AI_AGENT_SENDER,
+                createdDatetime: m.createdDatetime,
+                meta: getPlaygroundMessageMeta(m),
+            }
+        })
 }
 
 export const mapPlaygroundFormValuesToMessage = (
@@ -40,6 +60,27 @@ export const mapPlaygroundFormValuesToMessage = (
         content: formValues.message,
         createdDatetime: new Date().toISOString(),
     }
+}
+
+export const mapPlaygroundPromptToMessage = (
+    prompt: PlaygroundPromptType,
+    sender?: string
+): PlaygroundPromptMessage => {
+    return {
+        sender: sender ?? CustomerHttpIntegrationDataMock.name,
+        type: MessageType.PROMPT,
+        createdDatetime: new Date().toISOString(),
+        content: PLAYGROUND_PROMPT_CONTENT[prompt],
+        prompt,
+    }
+}
+
+export const shouldDisplayActions = (aiAgentResponse: AiAgentResponse) => {
+    return (
+        aiAgentResponse.postProcessing.chatTicketMessageMeta
+            ?.ai_agent_message_type ===
+        AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION
+    )
 }
 
 export const shouldAiAgentResponseDisplay = (

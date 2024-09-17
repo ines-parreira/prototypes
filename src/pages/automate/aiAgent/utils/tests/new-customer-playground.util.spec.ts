@@ -38,7 +38,7 @@ describe('new-customer-playground util', () => {
                 "id": "233881",
                 "integration_id": "-1",
                 "intents": "[]",
-                "meta": "",
+                "meta": {},
                 "source": "{"from":{"address":"oliver.smith@foobar.com","name":"Oliver Smith"},"to":[{"address":"playground@gorgias.com","name":""}],"type":"email"}",
                 "subject": "",
               },

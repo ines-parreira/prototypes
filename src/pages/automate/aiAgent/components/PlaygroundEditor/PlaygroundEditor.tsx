@@ -53,6 +53,9 @@ export const PlaygroundEditor = ({
         onSubjectChange(message.title)
     }
 
+    const hasCustomActions =
+        customActions !== undefined && customActions.length > 0
+
     return (
         <div className={css.editor}>
             <FroalaEditorComponent
@@ -65,17 +68,15 @@ export const PlaygroundEditor = ({
                 onModelChange={onMessageChange}
             />
 
-            {customActions ? (
+            {hasCustomActions ? (
                 <PlaygroundActions actions={customActions} />
             ) : null}
 
-            {!value &&
-                enablePredefinedMessages &&
-                customActions === undefined && (
-                    <PlaygroundPredefinedMessages
-                        onMessageSelect={onMessageSelect}
-                    />
-                )}
+            {!value && enablePredefinedMessages && !hasCustomActions && (
+                <PlaygroundPredefinedMessages
+                    onMessageSelect={onMessageSelect}
+                />
+            )}
             <div id={TOOLBAR_CONTAINER_ID} />
         </div>
     )

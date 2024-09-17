@@ -505,6 +505,7 @@ describe('AiAgentPlayground', () => {
             isMessageSending: false,
             onMessageSend: jest.fn(),
             onNewConversation: jest.fn(),
+            isWaitingResponse: false,
         })
 
         renderWithRouter(

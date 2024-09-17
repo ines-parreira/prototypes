@@ -66,6 +66,11 @@ const PlaygroundMessage = ({withAnimation = false, message}: Props) => {
         return <TicketEvent type={message.outcome} />
     }
 
+    const isAcceptedMessageType =
+        message.type === MessageType.MESSAGE ||
+        message.type === MessageType.PLACEHOLDER ||
+        message.type === MessageType.PROMPT
+
     return (
         <div
             className={classnames(css.messageContainer, {
@@ -106,8 +111,7 @@ const PlaygroundMessage = ({withAnimation = false, message}: Props) => {
                         className={classnames(
                             css.messageSenderCommon,
                             isAiAgentSender
-                                ? message.type === MessageType.MESSAGE ||
-                                  message.type === MessageType.PLACEHOLDER
+                                ? isAcceptedMessageType
                                     ? css.aiAgentTypeSender
                                     : css.aiAgentInternalNoteTypeSender
                                 : css.shopperTypeSender
@@ -121,10 +125,7 @@ const PlaygroundMessage = ({withAnimation = false, message}: Props) => {
                             css.messageTypeIcon
                         )}
                     >
-                        {message.type === MessageType.MESSAGE ||
-                        message.type === MessageType.PLACEHOLDER
-                            ? 'mail'
-                            : 'note'}
+                        {isAcceptedMessageType ? 'mail' : 'note'}
                     </i>
                 </div>
                 <div
@@ -141,6 +142,7 @@ const PlaygroundMessage = ({withAnimation = false, message}: Props) => {
                     )}
                     {message.type === MessageType.MESSAGE ||
                     message.type === MessageType.INTERNAL_NOTE ||
+                    message.type === MessageType.PROMPT ||
                     message.type === MessageType.ERROR ? (
                         typeof message.content === 'string' ? (
                             <div

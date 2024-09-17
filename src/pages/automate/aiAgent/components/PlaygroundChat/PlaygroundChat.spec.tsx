@@ -3,7 +3,11 @@ import React from 'react'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import userEvent from '@testing-library/user-event'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {MessageType, TicketOutcome} from 'models/aiAgentPlayground/types'
+import {
+    MessageType,
+    PlaygroundPromptType,
+    TicketOutcome,
+} from 'models/aiAgentPlayground/types'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {getAccountConfigurationWithHttpIntegrationFixture} from '../../fixtures/accountConfiguration.fixture'
 import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
@@ -214,6 +218,71 @@ describe('PlaygroundChat', () => {
             expect(
                 screen.queryByText('Or test a common question')
             ).not.toBeInTheDocument()
+        })
+
+        it('should generate a relevant prompt type message when user click on "Yes, thanks"', () => {
+            mockedUsePlaygroundForm.mockReturnValue({
+                ...defaultUsePlaygroundFormProps,
+                formValues: {
+                    message: 'Hello',
+                    customerName: 'John',
+                    customerEmail: 'test@mail.com',
+                },
+            })
+            mockedUsePlaygroundMessages.mockReturnValue({
+                ...defaultUsePlaygroundMessagesProps,
+                isWaitingResponse: true,
+            })
+            renderComponent()
+
+            userEvent.click(screen.getByText('Yes, thanks'))
+
+            expect(
+                defaultUsePlaygroundMessagesProps.onMessageSend
+            ).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    content: 'Yes, thanks',
+                    type: MessageType.PROMPT,
+                    sender: 'John',
+                    prompt: PlaygroundPromptType.RELEVANT_RESPONSE,
+                }),
+                {
+                    customerEmail: 'test@mail.com',
+                    subject: undefined,
+                }
+            )
+        })
+
+        it('should generate prompt message when click on it was not relevant prompt', () => {
+            mockedUsePlaygroundForm.mockReturnValue({
+                ...defaultUsePlaygroundFormProps,
+                formValues: {
+                    message: 'Hello',
+                },
+            })
+            mockedUsePlaygroundMessages.mockReturnValue({
+                ...defaultUsePlaygroundMessagesProps,
+                isWaitingResponse: true,
+            })
+
+            renderComponent()
+
+            userEvent.click(screen.getByText('No, I need more help'))
+
+            expect(
+                defaultUsePlaygroundMessagesProps.onMessageSend
+            ).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    content: 'No, I need more help',
+                    type: MessageType.PROMPT,
+                    sender: CustomerHttpIntegrationDataMock.name,
+                    prompt: PlaygroundPromptType.NOT_RELEVANT_RESPONSE,
+                }),
+                {
+                    customerEmail: CustomerHttpIntegrationDataMock.address,
+                    subject: undefined,
+                }
+            )
         })
     })
 })
