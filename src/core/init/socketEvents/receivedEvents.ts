@@ -75,6 +75,7 @@ import {
     ViewSectionUpdatedEvent,
     ViewUpdatedEvent,
     VoiceCallCreatedEvent,
+    VoiceCallRecordingUpdatedEvent,
     VoiceCallUpdatedEvent,
     WhatsAppOnboardingFailedEvent,
     WhatsAppOnboardingSucceededEvent,
@@ -744,6 +745,21 @@ const receivedEvents: ReceivedEvent[] = [
                     return newData
                 }
             )
+        },
+    },
+    {
+        name: SocketEventType.VoiceCallRecordingUpdated,
+        onReceive: async function (json) {
+            const {voice_call_recording} =
+                json as VoiceCallRecordingUpdatedEvent
+
+            if (!!voice_call_recording.transcription_status) {
+                await appQueryClient.refetchQueries(
+                    voiceCallsKeys.listRecordings({
+                        call_id: voice_call_recording.call_id,
+                    })
+                )
+            }
         },
     },
     {

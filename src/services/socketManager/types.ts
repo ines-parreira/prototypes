@@ -1,5 +1,6 @@
 import {Map} from 'immutable'
 
+import {VoiceCallRecording} from '@gorgias/api-types'
 import {RecentChatTicket} from 'business/types/recentChats'
 import {TicketChannel} from 'business/types/ticket'
 import {CustomerExternalData} from 'models/customerExternalData/types'
@@ -86,6 +87,7 @@ export enum SocketEventType {
     VoiceCallCreated = 'voice-call-created',
     VoiceCallUpdated = 'voice-call-updated',
     VoiceCallTransferFailed = 'voice-call-transfer-failed',
+    VoiceCallRecordingUpdated = 'voice-call-recording-updated',
     WhatsAppOnboardingSucceeded = 'whatsapp-onboarding-succeeded',
     WhatsAppOnboardingFailed = 'whatsapp-onboarding-failed',
     ShopperCreated = 'shopper-created',
@@ -351,6 +353,15 @@ export type VoiceCallUpdatedEvent = {
     voice_call: VoiceCall
 }
 
+export type VoiceCallRecordingUpdatedEvent = {
+    event: {
+        type: SocketEventType.VoiceCallRecordingUpdated
+        voice_call_id: number
+        ticket_id: number
+    }
+    voice_call_recording: VoiceCallRecording
+}
+
 export type VoiceCallTransferFailedEvent = {
     event: {
         type: SocketEventType.VoiceCallTransferFailed
@@ -429,6 +440,7 @@ export type ServerMessage =
     | VoiceCallCreatedEvent
     | VoiceCallUpdatedEvent
     | VoiceCallTransferFailedEvent
+    | VoiceCallRecordingUpdatedEvent
     | ShopperEvent
     | ShopperAddressEvent
     | OrderEvent

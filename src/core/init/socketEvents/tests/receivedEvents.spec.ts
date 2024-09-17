@@ -1134,89 +1134,131 @@ describe('receivedEvents', () => {
                 data: [{id: 1}, {id: 2}],
             })
         })
+    })
 
-        describe('Shopper events', () => {
-            it.each([
-                SocketEventType.ShopperCreated,
-                SocketEventType.ShopperUpdated,
-            ])(
-                'should dispatch the shopper data for customer id',
-                (eventType) => {
-                    const handler = _find(receivedEvents, {
-                        name: eventType,
-                    }) as ReceivedEvent
-                    const shopperEvent = {
-                        event: {
-                            type: eventType,
-                            data: {
-                                customer_id: 123,
-                                store: ecommerceStoreFixture,
-                                shopper: shopperFixture,
-                            },
-                        },
-                    } as ShopperEvent
-                    handler.onReceive(shopperEvent)
-                    expect(
-                        mergeCustomerEcommerceDataShopper
-                    ).toHaveBeenCalledTimes(1)
-                }
-            )
+    describe('voice-call-recording-updated', () => {
+        it('should refetch query when the transcription status is provided', () => {
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallRecordingUpdated,
+            }) as ReceivedEvent
+
+            const refetchSpy = jest.spyOn(appQueryClient, 'refetchQueries')
+
+            const voiceCallId = 1
+            const queryKey = voiceCallsKeys.listRecordings({
+                call_id: voiceCallId,
+            })
+
+            handler.onReceive({
+                event: {
+                    type: SocketEventType.VoiceCallRecordingUpdated,
+                    voice_call_id: voiceCallId,
+                    ticket_id: 123,
+                },
+                voice_call_recording: {
+                    id: 12345,
+                    call_id: voiceCallId,
+                    transcription_status: 'completed',
+                },
+            })
+
+            expect(refetchSpy).toHaveBeenCalledWith(queryKey)
         })
 
-        describe('Shopper address events', () => {
-            it.each([
-                SocketEventType.ShopperAddressCreated,
-                SocketEventType.ShopperAddressUpdated,
-            ])(
-                'should dispatch the shopper address data for customer id',
-                (eventType) => {
-                    const handler = _find(receivedEvents, {
-                        name: eventType,
-                    }) as ReceivedEvent
-                    const shopperEvent = {
-                        event: {
-                            type: eventType,
-                            data: {
-                                customer_id: 123,
-                                store_uuid: ecommerceStoreFixture.uuid,
-                                shopper_address: shopperAddressFixture,
-                            },
-                        },
-                    } as ShopperAddressEvent
-                    handler.onReceive(shopperEvent)
-                    expect(
-                        mergeCustomerEcommerceDataShopperAddress
-                    ).toHaveBeenCalledTimes(1)
-                }
-            )
-        })
+        it('should not refetch query when the transcription status is not provided', () => {
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallRecordingUpdated,
+            }) as ReceivedEvent
 
-        describe('Ecommerce order events', () => {
-            it.each([
-                SocketEventType.OrderCreated,
-                SocketEventType.OrderUpdated,
-            ])(
-                'should dispatch the order data for customer id',
-                (eventType) => {
-                    const handler = _find(receivedEvents, {
-                        name: eventType,
-                    }) as ReceivedEvent
-                    const orderEvent = {
-                        event: {
-                            type: eventType,
-                            data: {
-                                customer_id: 123,
-                                store_uuid: ecommerceStoreFixture.uuid,
-                                order: shopperOrderFixture,
-                            },
-                        },
-                    } as OrderEvent
-                    handler.onReceive(orderEvent)
-                    expect(
-                        mergeCustomerEcommerceDataOrder
-                    ).toHaveBeenCalledTimes(1)
-                }
-            )
+            const refetchSpy = jest.spyOn(appQueryClient, 'refetchQueries')
+
+            const voiceCallId = 1
+            handler.onReceive({
+                event: {
+                    type: SocketEventType.VoiceCallRecordingUpdated,
+                    voice_call_id: voiceCallId,
+                    ticket_id: 123,
+                },
+                voice_call_recording: {
+                    id: 12345,
+                    call_id: voiceCallId,
+                },
+            })
+            expect(refetchSpy).not.toHaveBeenCalled()
         })
+    })
+
+    describe('Shopper events', () => {
+        it.each([
+            SocketEventType.ShopperCreated,
+            SocketEventType.ShopperUpdated,
+        ])('should dispatch the shopper data for customer id', (eventType) => {
+            const handler = _find(receivedEvents, {
+                name: eventType,
+            }) as ReceivedEvent
+            const shopperEvent = {
+                event: {
+                    type: eventType,
+                    data: {
+                        customer_id: 123,
+                        store: ecommerceStoreFixture,
+                        shopper: shopperFixture,
+                    },
+                },
+            } as ShopperEvent
+            handler.onReceive(shopperEvent)
+            expect(mergeCustomerEcommerceDataShopper).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('Shopper address events', () => {
+        it.each([
+            SocketEventType.ShopperAddressCreated,
+            SocketEventType.ShopperAddressUpdated,
+        ])(
+            'should dispatch the shopper address data for customer id',
+            (eventType) => {
+                const handler = _find(receivedEvents, {
+                    name: eventType,
+                }) as ReceivedEvent
+                const shopperEvent = {
+                    event: {
+                        type: eventType,
+                        data: {
+                            customer_id: 123,
+                            store_uuid: ecommerceStoreFixture.uuid,
+                            shopper_address: shopperAddressFixture,
+                        },
+                    },
+                } as ShopperAddressEvent
+                handler.onReceive(shopperEvent)
+                expect(
+                    mergeCustomerEcommerceDataShopperAddress
+                ).toHaveBeenCalledTimes(1)
+            }
+        )
+    })
+
+    describe('Ecommerce order events', () => {
+        it.each([SocketEventType.OrderCreated, SocketEventType.OrderUpdated])(
+            'should dispatch the order data for customer id',
+            (eventType) => {
+                const handler = _find(receivedEvents, {
+                    name: eventType,
+                }) as ReceivedEvent
+                const orderEvent = {
+                    event: {
+                        type: eventType,
+                        data: {
+                            customer_id: 123,
+                            store_uuid: ecommerceStoreFixture.uuid,
+                            order: shopperOrderFixture,
+                        },
+                    },
+                } as OrderEvent
+                handler.onReceive(orderEvent)
+                expect(mergeCustomerEcommerceDataOrder).toHaveBeenCalledTimes(1)
+            }
+        )
     })
 })
