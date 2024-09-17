@@ -59,14 +59,15 @@ export default function TranscriptionData({recordingId, recordingType}: Props) {
         }
     }, [data, setDisplayedData, showMore])
 
+    const entityLabel =
+        recordingType === VoiceCallRecordingType.Recording
+            ? 'call'
+            : 'voicemail'
+
     if (isLoading) {
         return (
             <Alert icon type={AlertType.Loading}>
-                {`We're currently loading the ${
-                    recordingType === VoiceCallRecordingType.Recording
-                        ? 'call'
-                        : 'voicemail'
-                } transcription. This may take a few moments.`}
+                {`We're currently loading the ${entityLabel} transcription. This may take a few moments.`}
             </Alert>
         )
     }
@@ -84,11 +85,15 @@ export default function TranscriptionData({recordingId, recordingType}: Props) {
                     )
                 }
             >
-                {`Unable to load ${
-                    recordingType === VoiceCallRecordingType.Recording
-                        ? 'call'
-                        : 'voicemail'
-                } transcription.`}
+                {`Unable to load ${entityLabel} transcription.`}
+            </Alert>
+        )
+    }
+
+    if (data.transcription.length === 0) {
+        return (
+            <Alert icon type={AlertType.Error}>
+                {`Audio quality of this ${entityLabel} was too poor to generate an accurate transcription. Please check your microphone and internet quality to ensure clear audio.`}
             </Alert>
         )
     }

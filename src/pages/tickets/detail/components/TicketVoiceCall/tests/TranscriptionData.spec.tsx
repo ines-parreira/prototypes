@@ -274,6 +274,26 @@ describe('TranscriptionData', () => {
         expect(queryByText('Try again')).not.toBeInTheDocument()
     })
 
+    it('should render poor quality message correctly', () => {
+        const mockRefetch = jest.fn()
+        mockUseGetVoiceCallRecordingTranscription.mockReturnValue({
+            data: {
+                ...callRecordingTranscription,
+                transcription: [],
+            },
+            isLoading: false,
+            isError: false,
+            refetch: mockRefetch,
+        })
+
+        const {getByText} = renderComponent(VoiceCallRecordingType.Recording)
+        expect(
+            getByText(
+                'Audio quality of this call was too poor to generate an accurate transcription. Please check your microphone and internet quality to ensure clear audio.'
+            )
+        ).toBeInTheDocument()
+    })
+
     it('should handle empty speaker list', () => {
         const mockRefetch = jest.fn()
         mockUseGetVoiceCallRecordingTranscription.mockReturnValue({

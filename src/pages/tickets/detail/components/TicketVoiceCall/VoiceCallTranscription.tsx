@@ -39,13 +39,8 @@ export default function VoiceCallTranscription({audio, type}: Props) {
                         setIsOpen={() => toggleTranscriptionOpened(audio.id)}
                         title={
                             <div className={css.title}>
-                                <i className={'material-icons'}>call</i>
-                                <span>
-                                    {type === VoiceCallRecordingType.Recording
-                                        ? 'Call'
-                                        : 'Voicemail'}{' '}
-                                    transcription
-                                </span>
+                                <i className={'material-icons'}>transcribe</i>
+                                <span>Transcription</span>
                             </div>
                         }
                     >

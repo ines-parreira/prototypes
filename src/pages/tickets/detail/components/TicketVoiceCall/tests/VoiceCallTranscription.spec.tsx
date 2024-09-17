@@ -167,15 +167,7 @@ describe('VoiceCallTranscription', () => {
         expect(getByText('completed transcription')).toBeInTheDocument()
 
         // toggle the content
-        fireEvent.click(
-            getByText(
-                `${
-                    recordingType === VoiceCallRecordingType.Recording
-                        ? 'Call'
-                        : 'Voicemail'
-                } transcription`
-            )
-        )
+        fireEvent.click(getByText('Transcription'))
         expect(mockToggleTranscription).toHaveBeenCalledWith(1)
     })
 })
