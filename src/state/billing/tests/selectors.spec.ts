@@ -2,9 +2,15 @@ import {fromJS} from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment'
 
+import {
+    automationSubscriptionProductPrices,
+    legacyWithoutAutomateProductPrices,
+} from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
+import {billingState} from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
+    CONVERT_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
     SMS_PRODUCT_ID,
     VOICE_PRODUCT_ID,
@@ -13,6 +19,7 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
+    convertPlan1,
     customHelpdeskPlan,
     helpdeskProduct,
     legacyBasicAutomatePlan,
@@ -20,20 +27,13 @@ import {
     products,
     smsPlan1,
     voicePlan1,
-    convertPlan1,
-    CONVERT_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {
-    automationSubscriptionProductPrices,
-    legacyWithoutAutomateProductPrices,
-} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {AccountFeature} from 'state/currentAccount/types'
 import {RootState} from 'state/types'
 
-import * as selectors from '../selectors'
 import {initialState} from '../reducers'
+import * as selectors from '../selectors'
 
 describe('billing selectors', () => {
     let state: RootState
@@ -731,6 +731,39 @@ describe('billing selectors', () => {
             expect(cheapestProductPrices.convert).toEqual(convertPlan1)
 
             expect(cheapestProductPrices).toMatchSnapshot()
+        })
+    })
+
+    describe('getIsVettedForPhone', () => {
+        it('should return true if one phone product is in the current subscription', () => {
+            const products = {
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                [VOICE_PRODUCT_ID]: voicePlan1.price_id,
+                [SMS_PRODUCT_ID]: smsPlan1.price_id,
+            }
+            const isVettedForPhone = selectors.getIsVettedForPhone({
+                ...state,
+                currentAccount: state.currentAccount.setIn(
+                    ['current_subscription', 'products'],
+                    fromJS(products)
+                ),
+            })
+            expect(isVettedForPhone).toBeTruthy()
+        })
+
+        it('should return false if no phone product is in the current subscription', () => {
+            const products = {
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+            }
+            const isVettedForPhone = selectors.getIsVettedForPhone({
+                ...state,
+                currentAccount: state.currentAccount.setIn(
+                    ['current_subscription', 'products'],
+                    fromJS(products)
+                ),
+            })
+
+            expect(isVettedForPhone).toBeFalsy()
         })
     })
 })

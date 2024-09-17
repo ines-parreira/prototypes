@@ -1,50 +1,53 @@
+import {useQueryClient} from '@tanstack/react-query'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
 import {useCallback, useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import moment from 'moment'
-import {useQueryClient} from '@tanstack/react-query'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {isGorgiasApiError} from 'models/api/types'
+import {PlanInterval, ProductType} from 'models/billing/types'
+import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
+import useGetConvertStatus, {
+    convertStatusKeys,
+} from 'pages/convert/common/hooks/useGetConvertStatus'
+import {getDefaultConvertPlanIndex} from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
+import {handleConvertProductDowngraded} from 'pages/settings/new_billing/utils/handleConvertProductDowngraded'
+import GorgiasApi from 'services/gorgiasApi'
 import {
     getAvailableAutomatePlans,
-    getCurrentAutomatePlan,
-    getCurrentHelpdeskInterval,
-    getCurrentHelpdeskPlan,
-    getCurrentSmsPlan,
-    getCurrentProductsUsage,
-    getCurrentVoicePlan,
+    getAvailableConvertPlans,
     getAvailableHelpdeskPlans,
     getAvailableSmsPlans,
     getAvailableVoicePlans,
+    getCurrentAutomatePlan,
     getCurrentConvertPlan,
-    getAvailableConvertPlans,
+    getCurrentHelpdeskInterval,
+    getCurrentHelpdeskPlan,
+    getCurrentProductsUsage,
+    getCurrentSmsPlan,
+    getCurrentVoicePlan,
+    getIsVettedForPhone,
 } from 'state/billing/selectors'
-import {PlanInterval, ProductType} from 'models/billing/types'
-import {objKeys} from 'utils'
+import {ProductData, TicketPurpose} from 'state/billing/types'
+import {
+    setCurrentSubscription,
+    updateSubscriptionsForPlans,
+} from 'state/currentAccount/actions'
 import {
     getCurrentAccountState,
     getCurrentSubscription,
     isTrialing,
 } from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
-import {ProductData, TicketPurpose} from 'state/billing/types'
 import {
     Notification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import {
-    setCurrentSubscription,
-    updateSubscriptionsForPlans,
-} from 'state/currentAccount/actions'
-import GorgiasApi from 'services/gorgiasApi'
-import {isGorgiasApiError} from 'models/api/types'
-import useGetConvertStatus, {
-    convertStatusKeys,
-} from 'pages/convert/common/hooks/useGetConvertStatus'
-import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
-import {handleConvertProductDowngraded} from 'pages/settings/new_billing/utils/handleConvertProductDowngraded'
-import {getDefaultConvertPlanIndex} from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
+import {objKeys} from 'utils'
 import {
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
@@ -52,12 +55,12 @@ import {
     PRODUCT_INFO,
     ZAPIER_BILLING_HOOK,
 } from '../constants'
-import {SelectedPlans} from '../views/BillingProcessView/BillingProcessView'
 import {sendSupportTicket} from '../utils/sendSupportTicket'
+import {SelectedPlans} from '../views/BillingProcessView/BillingProcessView'
 import {
     setAutomationNotification,
-    setHelpdeskNotification,
     setConvertNotification,
+    setHelpdeskNotification,
 } from '../views/BillingProcessView/utils'
 
 export type BillingPlansProps = {
@@ -154,6 +157,9 @@ export const useBillingPlans = ({
     const smsAvailablePlans = useAppSelector(getAvailableSmsPlans).filter(
         (plan) => (filterByInterval ? plan.interval === interval : true)
     )
+    const isPhoneSelfServeEnabled =
+        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe]
+    const isVettedForPhone = useAppSelector(getIsVettedForPhone)
 
     const smsInitialIndex =
         smsAvailablePlans?.findIndex((plan) => !!plan.amount) ?? 0
@@ -367,6 +373,11 @@ export const useBillingPlans = ({
     ])
 
     const handleSMSAndVoicePlansChange = useCallback(async () => {
+        // ignore manual process (i.e creating a support ticket) for accounts that have been vetted
+        if (isVettedForPhone && isPhoneSelfServeEnabled) {
+            return
+        }
+
         const plansToBeHandledManually: ProductType[] = []
         objKeys(selectedPlans).forEach((key) => {
             if (selectedPlans[key].isSelected) {
@@ -442,6 +453,8 @@ export const useBillingPlans = ({
         currentVoicePlan?.internal_id,
         isFreeTrial,
         currentHelpdeskPlan?.name,
+        isVettedForPhone,
+        isPhoneSelfServeEnabled,
     ])
 
     const handleStripePlansChange = useCallback(async () => {
@@ -472,7 +485,7 @@ export const useBillingPlans = ({
                 style: NotificationStyle.Alert,
                 showIcon: true,
                 showDismissButton: true,
-                noAutoDismiss: true,
+                dismissAfter: 5000,
             })
         }
 
@@ -497,6 +510,24 @@ export const useBillingPlans = ({
             const plan = selectedPlans[ProductType.Helpdesk]?.plan
             if (plan) {
                 plansToBeUpdated[plan.product] = plan?.price_id ?? ''
+            }
+        }
+
+        if (isVettedForPhone && isPhoneSelfServeEnabled) {
+            if (selectedPlans[ProductType.Voice]?.plan?.product) {
+                const plan = selectedPlans[ProductType.Voice]?.plan
+
+                if (plan) {
+                    plansToBeUpdated[plan.product] = plan?.price_id ?? ''
+                }
+            }
+
+            if (selectedPlans[ProductType.SMS]?.plan?.product) {
+                const plan = selectedPlans[ProductType.SMS]?.plan
+
+                if (plan) {
+                    plansToBeUpdated[plan.product] = plan?.price_id ?? ''
+                }
             }
         }
 
@@ -577,6 +608,7 @@ export const useBillingPlans = ({
                     showIcon: true,
                 })
             }
+
             try {
                 if (anyProductChanged) {
                     setIsSubscriptionUpdating(true)
@@ -602,6 +634,8 @@ export const useBillingPlans = ({
         isPlanCadenceChanged,
         periodEnd,
         isFreeTrial,
+        isVettedForPhone,
+        isPhoneSelfServeEnabled,
         history,
         interval,
         domain,

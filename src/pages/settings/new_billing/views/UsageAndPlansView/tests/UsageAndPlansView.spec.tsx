@@ -11,6 +11,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
+    basicYearlyHelpdeskPlan,
     CONVERT_PRODUCT_ID,
     convertPlan1,
     currentProductsUsage,
@@ -21,6 +22,8 @@ import {
     SMS_PRODUCT_ID,
     smsPlan1,
     starterHelpdeskPlan,
+    VOICE_PRODUCT_ID,
+    voicePlan1,
 } from 'fixtures/productPrices'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {account} from 'fixtures/account'
@@ -588,6 +591,77 @@ describe('UsageAndPlansView', () => {
         ).not.toBeInTheDocument()
 
         expect(screen.queryByText(/Billed monthly/i)).toBeInTheDocument()
+    })
+
+    it('should not be possible to update plan frequency when the user is on a yearly plan', () => {
+        const alteredStore = mockedStore({
+            billing: fromJS(mockedBilling),
+            currentAccount: fromJS({
+                ...mockedAccount,
+                current_subscription: {
+                    ...mockedAccount.current_subscription,
+                    status: 'trialing',
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.price_id,
+                    },
+                },
+            }),
+        })
+
+        const {container} = render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={alteredStore}>
+                    <UsageAndPlansView
+                        contactBilling={jest.fn()}
+                        periodEnd="2021-01-01"
+                        currentUsage={mockedBilling.currentProductsUsage}
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        const updateBillingFrequencyButton = container.querySelector(
+            '#update-billing-frequency'
+        )
+        expect(updateBillingFrequencyButton).toHaveClass('disabledText')
+    })
+
+    it('should be possible to update plan frequency when the user is on a phone monthly plan and vetted for phone', () => {
+        mockFlags({
+            [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
+        })
+        const alteredStore = mockedStore({
+            billing: fromJS(mockedBilling),
+            currentAccount: fromJS({
+                ...mockedAccount,
+                current_subscription: {
+                    ...mockedAccount.current_subscription,
+                    status: 'trialing',
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPlan.price_id,
+                        [SMS_PRODUCT_ID]: smsPlan1.price_id,
+                        [VOICE_PRODUCT_ID]: voicePlan1.price_id,
+                    },
+                },
+            }),
+        })
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={alteredStore}>
+                    <UsageAndPlansView
+                        contactBilling={jest.fn()}
+                        periodEnd="2021-01-01"
+                        currentUsage={mockedBilling.currentProductsUsage}
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+        expect(screen.getByText('Update').closest('a')).toHaveAttribute(
+            'to',
+            '/app/settings/billing/payment/frequency'
+        )
     })
 
     it('should render with the Subscribe button disabled for trialing users', () => {

@@ -20,6 +20,29 @@ exports[`UsageAndPlansView should render 1`] = `
       </div>
     </div>
     <div
+      class="alert info alert"
+    >
+      <div
+        class="iconContainer"
+      >
+        <img
+          alt="icon"
+          src="test-file-stub"
+        />
+      </div>
+      <div
+        class="content"
+      >
+        <span
+          class="label"
+        >
+          Your 
+          Voice
+           subscription will have to be reviewed by our team before you can start using it
+        </span>
+      </div>
+    </div>
+    <div
       class="cards"
     >
       <div

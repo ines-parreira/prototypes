@@ -7,6 +7,13 @@ import Button from 'pages/common/components/button/Button'
 import {reportError} from 'utils/errors'
 import {ShopifyBillingStatus} from 'state/currentAccount/types'
 import useSessionStorage from 'hooks/useSessionStorage'
+import {notify} from 'state/notifications/actions'
+import {
+    Notification,
+    NotificationStatus,
+    NotificationStyle,
+} from 'state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_BASE_PATH,
@@ -68,6 +75,7 @@ const SummaryFooter = ({
         SELECTED_PRODUCTS_SESSION_STORAGE_KEY
     )
     const history = useHistory()
+    const dispatch = useAppDispatch()
 
     const handleUpdateSubscription = async () => {
         try {
@@ -83,6 +91,15 @@ const SummaryFooter = ({
             ) {
                 await startSubscription?.()
             }
+            const notification: Notification = {
+                status: NotificationStatus.Success,
+                style: NotificationStyle.Alert,
+                showIcon: true,
+                showDismissButton: true,
+                dismissAfter: 5000,
+                message: 'Your subscription has successfully been updated.',
+            }
+            void dispatch(notify(notification))
         } catch (error) {
             reportError(error as Error)
         } finally {

@@ -1,26 +1,26 @@
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
 
 import {QueryClientProvider} from '@tanstack/react-query'
 import {screen, waitFor, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {RootState, StoreDispatch} from 'state/types'
 import {
     HELPDESK_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
     currentProductsUsage,
     products,
 } from 'fixtures/productPrices'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     CommonReasonLabel,
     HelpdeskPrimaryReasonLabel,
 } from 'pages/settings/new_billing/components/CancelProductModal/constants'
-import BillingProcessView from '../BillingProcessView'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
+import BillingProcessView from '../BillingProcessView'
 
 const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
@@ -31,6 +31,7 @@ jest.mock(
     () =>
         jest.fn(() => <div data-testid="scheduled-cancellation-summary"></div>)
 )
+
 const ScheduledCancellationSummaryMock = assumeMock(
     ScheduledCancellationSummary
 )
@@ -51,7 +52,7 @@ jest.mock('utils', () => {
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
-const store = mockedStore({
+const storeInitialState = {
     billing: fromJS({
         invoices: [],
         products,
@@ -80,7 +81,9 @@ const store = mockedStore({
             scheduled_to_cancel_at: null,
         },
     }),
-})
+}
+
+const store = mockedStore(storeInitialState)
 
 describe('UsageAndPlansView', () => {
     it('should render', () => {

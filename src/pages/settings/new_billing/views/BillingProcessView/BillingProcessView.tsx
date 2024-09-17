@@ -1,8 +1,10 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {dismissNotification} from 'reapop'
-
 import _capitalize from 'lodash/capitalize'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     AutomatePlan,
     ConvertPlan,
@@ -10,32 +12,30 @@ import {
     ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {fetchCreditCard} from 'state/billing/actions'
 import Button from 'pages/common/components/button/Button'
-import {CurrentProductsUsages, TicketPurpose} from 'state/billing/types'
-import Alert from 'pages/common/components/Alert/Alert'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentSubscription} from 'state/currentAccount/selectors'
+import {fetchCreditCard} from 'state/billing/actions'
 import {getCurrentPlansByProduct} from 'state/billing/selectors'
-import Card from '../../components/Card'
+import {CurrentProductsUsages, TicketPurpose} from 'state/billing/types'
+import {getCurrentSubscription} from 'state/currentAccount/selectors'
 import BackLink from '../../components/BackLink'
+import Card from '../../components/Card'
 import ProductPlanSelection from '../../components/ProductPlanSelection'
-import SummaryItem from '../../components/SummaryItem'
-import SummaryTotal from '../../components/SummaryTotal'
-import SummaryPaymentSection from '../../components/SummaryPaymentSection'
 import SummaryFooter from '../../components/SummaryFooter'
+import SummaryItem from '../../components/SummaryItem'
+import SummaryPaymentSection from '../../components/SummaryPaymentSection'
+import SummaryTotal from '../../components/SummaryTotal'
 import {
     ENTERPRISE_PRICE_ID,
     PRICING_DETAILS_URL,
     PRODUCT_INFO,
 } from '../../constants'
 
-import {formatNumTickets} from '../../utils/formatAmount'
+import ScheduledCancellationSummary from '../../components/ScheduledCancellationSummary'
+import VoiceOrSmsChangeReviewAlert from '../../components/VoiceOrSmsChangeReviewAlert'
 import {useBillingPlans} from '../../hooks/useBillingPlan'
 import {useCreditCard} from '../../hooks/useCreditCard'
-import ScheduledCancellationSummary from '../../components/ScheduledCancellationSummary'
+import {formatNumTickets} from '../../utils/formatAmount'
 import css from './BillingProcessView.less'
 
 type Params = {
@@ -155,14 +155,6 @@ const BillingProcessView = ({
         return 'Update Subscription'
     }, [isCurrentSubscriptionCanceled, hasCreditCard])
 
-    const voiceOrSMSChanged =
-        (selectedPlans[ProductType.Voice].isSelected &&
-            currentVoicePlan?.price_id !==
-                selectedPlans[ProductType.Voice].plan?.price_id) ||
-        (selectedPlans[ProductType.SMS].isSelected &&
-            currentSmsPlan?.price_id !==
-                selectedPlans[ProductType.SMS].plan?.price_id)
-
     // fetch card
     useEffect(() => {
         const fetchCard = async () => {
@@ -205,18 +197,6 @@ const BillingProcessView = ({
 
         return message
     }, [selectedPlans, interval])
-
-    const voiceOrSMSText = useMemo(() => {
-        if (
-            selectedPlans[ProductType.Voice].isSelected &&
-            selectedPlans[ProductType.SMS].isSelected
-        ) {
-            return 'Voice & SMS'
-        } else if (selectedPlans[ProductType.SMS].isSelected) {
-            return 'SMS'
-        }
-        return 'Voice'
-    }, [selectedPlans])
 
     const renderSummary = () => {
         if (isEnterpriseHelpdeskPlanSelected) {
@@ -347,12 +327,9 @@ const BillingProcessView = ({
             <div className={css.header}>
                 <BackLink />
             </div>
-            {voiceOrSMSChanged && (
-                <Alert className={css.alert} icon>
-                    Your {voiceOrSMSText} subscription will have to be reviewed
-                    by our team before you can start using it
-                </Alert>
-            )}
+            <VoiceOrSmsChangeReviewAlert
+                selectedPlans={selectedPlans}
+            ></VoiceOrSmsChangeReviewAlert>
             <div className={css.cards}>
                 <Card
                     title={'Select Plans'}

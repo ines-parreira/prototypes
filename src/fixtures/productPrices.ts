@@ -827,6 +827,22 @@ const voicePlan2: SMSOrVoicePlan = {
     extra_ticket_cost: 0.47,
 }
 
+export const voicePlan3: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 3000,
+    cadence: PlanInterval.Year,
+    currency: 'usd',
+    num_quota_tickets: 300,
+    internal_id: 'voice-01-flat-yearly-usd-5',
+    interval: PlanInterval.Month,
+    name: 'Voice Addon 300 Yearly',
+    price_id: 'price_1O9TX8I9qXomtXqSR9drzVqz',
+    product: ProductType.Voice,
+    product_id: 'prod_MT6fyh00TCFRGZ',
+    extra_ticket_cost: 2.2,
+}
+
 export const smsPlan1: SMSOrVoicePlan = {
     custom: false,
     public: true,
@@ -857,6 +873,22 @@ const smsPlan2: SMSOrVoicePlan = {
     product: ProductType.SMS,
     product_id: 'prod_MT8Fzk7vmcT73m',
     extra_ticket_cost: 0.77,
+}
+
+export const smsPlan3: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 200,
+    cadence: PlanInterval.Year,
+    currency: 'usd',
+    num_quota_tickets: 300,
+    internal_id: 'sms-01-flat-yearly-usd-5',
+    interval: PlanInterval.Month,
+    name: 'SMS Addon 300 Yearly',
+    price_id: 'price_1O9Vc7I9qXomtXqS4a8p3S7e',
+    product: ProductType.SMS,
+    product_id: 'prod_MT8Fzk7vmcT73m',
+    extra_ticket_cost: 1.5,
 }
 
 export const smsPlan0: SMSOrVoicePlan = {
@@ -1029,13 +1061,13 @@ export const automationProduct: Product<AutomatePlan> = {
 export const voiceProduct: Product<SMSOrVoicePlan> = {
     id: VOICE_PRODUCT_ID,
     type: ProductType.Voice,
-    prices: [voicePlan1, voicePlan2, voicePlan0],
+    prices: [voicePlan1, voicePlan2, voicePlan3, voicePlan0],
 }
 
 export const smsProduct: Product<SMSOrVoicePlan> = {
     id: SMS_PRODUCT_ID,
     type: ProductType.SMS,
-    prices: [smsPlan1, smsPlan2, smsPlan0],
+    prices: [smsPlan1, smsPlan2, smsPlan3, smsPlan0],
 }
 
 export const convertAvailablePlans = [

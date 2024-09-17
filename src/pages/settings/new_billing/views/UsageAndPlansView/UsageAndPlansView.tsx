@@ -118,11 +118,16 @@ const UsageAndPlansView = ({
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
     const productDisabledForTrialingUser: boolean =
-        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe] && !!isTrialing
+        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe] &&
+        isTrialingSubscription
 
     const disabledTooltip = productDisabledForTrialingUser
         ? PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP
         : undefined
+
+    const isVettedForPhone =
+        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe] &&
+        (currentSmsPlan?.price_id || currentVoicePlan?.price_id)
 
     useEffect(() => {
         if (isTrialingSubscription) {
@@ -248,7 +253,8 @@ const UsageAndPlansView = ({
                             </Tooltip>
                         </div>
                     ) : isSubscribedToVoiceOrSMS &&
-                      interval === INTERVAL.Month ? (
+                      interval === INTERVAL.Month &&
+                      !isVettedForPhone ? (
                         <div>
                             <span
                                 className={css.disabledText}
@@ -294,7 +300,8 @@ const UsageAndPlansView = ({
                                 a non-legacy plan
                             </Tooltip>
                         </div>
-                    ) : !!scheduledToCancelAt ? (
+                    ) : !!scheduledToCancelAt || interval === INTERVAL.Year ? (
+                        // downgrading from yearly to monthly is not possible
                         <span
                             className={css.disabledText}
                             id="update-billing-frequency"

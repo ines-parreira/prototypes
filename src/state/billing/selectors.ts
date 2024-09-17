@@ -1,14 +1,8 @@
-import {createSelector} from 'reselect'
 import {fromJS, List, Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import moment from 'moment-timezone'
+import {createSelector} from 'reselect'
 
-import {
-    getCheapestPrice,
-    getFormattedAmount,
-    getFullPrice,
-    isHelpdesk,
-} from 'models/billing/utils'
 import {
     AutomatePlan,
     ConvertPlan,
@@ -21,21 +15,27 @@ import {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import {
-    AccountFeature,
-    AccountFeatureMetadata,
-    CurrentAccountState,
-} from 'state/currentAccount/types'
+    getCheapestPrice,
+    getFormattedAmount,
+    getFullPrice,
+    isHelpdesk,
+} from 'models/billing/utils'
 import {
     getCurrentAccountState,
     getCurrentSubscription,
 } from 'state/currentAccount/selectors'
+import {
+    AccountFeature,
+    AccountFeatureMetadata,
+    CurrentAccountState,
+} from 'state/currentAccount/types'
 import {getActiveIntegrations} from 'state/integrations/selectors'
 import {RootState} from '../types'
 
 import {
     BillingImmutableState,
-    ReduxBillingState,
     CurrentProductsUsages,
+    ReduxBillingState,
 } from './types'
 
 export const DEPRECATED_getBillingState = (
@@ -467,3 +467,27 @@ export const getCheapestProductPrices = createSelector(
         }
     }
 )
+
+export const getIsVettedForPhone = createSelector(
+    getCurrentVoicePlan,
+    getCurrentSmsPlan,
+    (voicePlan, smsPlan) => !!(voicePlan?.price_id || smsPlan?.price_id)
+)
+
+export const getVoiceOrSmsPlanChanged = ({
+    selectedVoicePlan,
+    selectedSmsPlan,
+}: {
+    selectedVoicePlan?: SMSOrVoicePlan
+    selectedSmsPlan?: SMSOrVoicePlan
+}) =>
+    createSelector(
+        getCurrentVoicePlan,
+        getCurrentSmsPlan,
+        (voicePlan, smsPlan) => {
+            return (
+                voicePlan?.price_id !== selectedVoicePlan?.price_id ||
+                smsPlan?.price_id !== selectedSmsPlan?.price_id
+            )
+        }
+    )
