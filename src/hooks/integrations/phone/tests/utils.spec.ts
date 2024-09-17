@@ -336,18 +336,20 @@ describe('handleDeviceEvents', () => {
             })
         })
 
-        it('should not send ws event for Unknown and Connection errors', async () => {
-            const connectionError = {
-                code: TwilioErrorCode.GeneralConnection,
-            }
-            const unknownError = {
-                code: TwilioErrorCode.GeneralUnknown,
+        it.each([
+            TwilioErrorCode.GeneralUnknown,
+            TwilioErrorCode.GeneralConnection,
+            TwilioErrorCode.GeneralTransport,
+            TwilioErrorCode.AuthorizationAccessTokenInvalid,
+        ])(`should not send ws event for %s error`, async (code) => {
+            const error = {
+                code,
             }
             const otherError = {
                 code: TwilioErrorCode.ClientBadRequest,
             }
-            device.emit(Device.EventName.Error, connectionError)
-            device.emit(Device.EventName.Error, unknownError)
+
+            device.emit(Device.EventName.Error, error)
             device.emit(Device.EventName.Error, otherError)
 
             await waitFor(() => {
@@ -362,13 +364,7 @@ describe('handleDeviceEvents', () => {
             expect(sendSocketEvent).not.toHaveBeenCalledWith({
                 type: TwilioSocketEventType.DeviceError,
                 data: {
-                    error: connectionError,
-                },
-            })
-            expect(sendSocketEvent).not.toHaveBeenCalledWith({
-                type: TwilioSocketEventType.DeviceError,
-                data: {
-                    error: unknownError,
+                    error,
                 },
             })
         })

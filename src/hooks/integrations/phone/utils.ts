@@ -133,6 +133,8 @@ export function handleDeviceEvents(
         const ignoredWSEventCodes = [
             TwilioErrorCode.GeneralUnknown,
             TwilioErrorCode.GeneralConnection,
+            TwilioErrorCode.AuthorizationAccessTokenInvalid,
+            TwilioErrorCode.GeneralTransport,
         ]
 
         if (!ignoredWSEventCodes.includes(error.code)) {
