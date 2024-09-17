@@ -33,4 +33,5 @@ export enum RuleTemplateRecipeSlugs {
     AutoTagShippingStatus = 'auto-tag-shipping-status',
     AutoTagOfflineCapture = 'auto-tag-offline-capture',
     AutoTagAiIgnore = 'auto-tag-ai-ignore',
+    AutoTagLowCSAT = 'auto-tag-low-csat',
 }

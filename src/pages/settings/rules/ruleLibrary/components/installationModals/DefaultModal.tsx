@@ -33,6 +33,8 @@ const howItWorksText: Record<RuleTemplateRecipeSlugs, string> = {
         'Tags chat tickets coming from the offline capture so that you can create views to separate them from live chat tickets.',
     [RuleTemplateRecipeSlugs.AutoTagAiIgnore]:
         'This rule adds the "ai_ignore" tag to tickets, which will prevent your AI Agent from answering or perform any actions (e.g. auto-tagging).<br/>You can update the conditions in order to exclude tickets coming from certain email addresses, tickets with certain tags, messages from customers that include certain words, etc.',
+    [RuleTemplateRecipeSlugs.AutoTagLowCSAT]:
+        'This rule tags tickets that receive a low CSAT score and sends an email notification to the admin. Use this rule to quickly identify and address customer dissatisfaction, helping to improve overall service quality and customer satisfaction.',
 }
 
 export const DefaultModal = ({
