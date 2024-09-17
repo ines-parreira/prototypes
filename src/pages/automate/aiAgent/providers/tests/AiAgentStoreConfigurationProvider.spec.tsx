@@ -12,6 +12,7 @@ import AiAgentStoreConfigurationProvider from '../AiAgentStoreConfigurationProvi
 import AiAgentStoreConfigurationContext from '../AiAgentStoreConfigurationContext'
 import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
 import {useStoreConfiguration} from '../../hooks/useStoreConfiguration'
+import {ToneOfVoice} from '../../constants'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -43,7 +44,7 @@ const mockStoreConfiguration: StoreConfiguration = {
     helpCenterId: 1,
     snippetHelpCenterId: 1,
     guidanceHelpCenterId: 1,
-    toneOfVoice: 'Friendly',
+    toneOfVoice: ToneOfVoice.Friendly,
     customToneOfVoiceGuidance:
         "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
     signature: 'This response was created by AI',

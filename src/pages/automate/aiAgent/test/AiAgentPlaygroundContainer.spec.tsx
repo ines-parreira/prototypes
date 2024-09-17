@@ -19,6 +19,7 @@ import {AiAgentPlaygroundContainer} from '../AiAgentPlaygroundContainer'
 import {usePublicResources} from '../hooks/usePublicResources'
 import {usePlaygroundMessages} from '../hooks/usePlaygroundMessages'
 import {useGetOrCreateSnippetHelpCenter} from '../hooks/useGetOrCreateSnippetHelpCenter'
+import {ToneOfVoice} from '../constants'
 
 const mockStore = configureMockStore()
 const queryClient = mockQueryClient()
@@ -54,7 +55,7 @@ const storeConfiguration: StoreConfiguration = {
     helpCenterId: 1,
     snippetHelpCenterId: 1,
     guidanceHelpCenterId: 1,
-    toneOfVoice: 'Friendly',
+    toneOfVoice: ToneOfVoice.Friendly,
     customToneOfVoiceGuidance:
         "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
     signature: 'This response was created by AI',

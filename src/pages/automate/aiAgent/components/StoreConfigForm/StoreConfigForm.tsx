@@ -8,19 +8,15 @@ import React, {
     useState,
 } from 'react'
 import {useId} from '@floating-ui/react'
-import {isAxiosError} from 'axios'
 import {Link} from 'react-router-dom'
-import _get from 'lodash/get'
 import {List} from 'immutable'
 import {Label} from '@gorgias/ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 // Absolute Imports
-import classnames from 'classnames'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {reportError} from 'utils/errors'
-import {StoreConfiguration, Tag} from 'models/aiAgent/types'
-import {Value} from 'pages/common/forms/SelectField/types'
+import {Tag} from 'models/aiAgent/types'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
@@ -36,10 +32,8 @@ import HelpCenterSelect, {
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ListField from 'pages/common/forms/ListField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Button from 'pages/common/components/button/Button'
-import TextArea from 'pages/common/forms/TextArea'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
@@ -49,50 +43,29 @@ import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServi
 import {HelpCenter} from 'models/helpCenter/types'
 
 import {useSearchParam} from 'hooks/useSearchParam'
-import {
-    useConfigurationForm,
-    validateConfigurationFormValues,
-} from '../../hooks/useConfigurationForm'
 import {usePublicResources} from '../../hooks/usePublicResources'
-import {FormValues, ValidFormValues} from '../../types'
+import {FormValues} from '../../types'
 import {isAiAgentEnabled, isHandoffEnabled} from '../../util'
 import {AIAgentIntroduction} from '../AIAgentIntroduction/AIAgentIntroduction'
 import {ConfigurationSection} from '../ConfigurationSection/ConfigurationSection'
-import {EmailIntegrationListSelection} from '../EmailIntegrationListSelection/EmailIntegrationListSelection'
 import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection'
 import TagList from '../TicketTag/TagList'
 
 import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
 import {
-    CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
     EXCLUDED_TOPIC_MAX_LENGTH,
     MAX_EXCLUDED_TOPICS,
-    SIGNATURE_MAX_LENGTH,
-    ToneOfVoice,
+    INITIAL_FORM_VALUES,
 } from '../../constants'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
-import {ChatIntegrationListSelection} from '../ChatIntegrationListSelection/ChatIntegrationListSelection'
 
-import {
-    getFormValuesFromStoreConfiguration,
-    getStoreConfigurationFromFormValues,
-} from './StoreConfigForm.utils'
+import {useConfigurationForm} from '../../hooks/useConfigurationForm'
+import {getFormValuesFromStoreConfiguration} from './StoreConfigForm.utils'
 import css from './StoreConfigForm.less'
-
-export const INITIAL_FORM_VALUES = {
-    trialModeActivatedDatetime: null,
-    deactivatedDatetime: new Date().toISOString(),
-    silentHandover: false,
-    monitoredEmailIntegrations: [],
-    tags: [],
-    excludedTopics: [],
-    signature: 'This response was created by AI',
-    toneOfVoice: ToneOfVoice.Friendly,
-    customToneOfVoiceGuidance:
-        "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
-    helpCenter: null,
-    monitoredChatIntegrations: [],
-}
+import {SignatureFormComponent} from './FormComponents/SignatureFormComponent'
+import {ToneOfVoiceFormComponent} from './FormComponents/ToneOfVoiceFormComponent'
+import {EmailFormComponent} from './FormComponents/EmailFormComponent'
+import {ChatSettingsFormComponent} from './FormComponents/ChatSettingsFormComponent'
 
 type Props = {
     shopName: string
@@ -139,14 +112,9 @@ export const StoreConfigForm = ({
 
     const hasAutomate = useAppSelector(getHasAutomate)
     const dispatch = useAppDispatch()
-    const {
-        storeConfiguration,
-        isPendingCreateOrUpdate,
-        createStoreConfiguration,
-        updateStoreConfiguration,
-    } = useAiAgentStoreConfigurationContext()
+    const {storeConfiguration, updateStoreConfiguration} =
+        useAiAgentStoreConfigurationContext()
     const isCreate = storeConfiguration === undefined
-    const [isBlurred, setIsBlurred] = useState(false)
 
     // because this selector is a function which return function we need to memoized it before send to reselect
     const selector = useMemo(
@@ -176,12 +144,36 @@ export const StoreConfigForm = ({
               }
     }, [emailItems, faqHelpCenters, storeConfiguration])
 
-    const {formValues, isFormDirty, resetForm, updateValue} =
-        useConfigurationForm(defaultFormValues)
+    const {
+        handleOnSave,
+        formValues,
+        isFormDirty,
+        resetForm,
+        updateValue,
+        isPendingCreateOrUpdate,
+    } = useConfigurationForm({initValues: defaultFormValues, shopName})
     const [publicUrls, setPublicUrls] = useState<string[]>([])
 
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
+
+    const isAIAgentToggled = isAiAgentEnabled(
+        formValues.deactivatedDatetime !== undefined
+            ? formValues.deactivatedDatetime
+            : INITIAL_FORM_VALUES.deactivatedDatetime
+    )
+
+    const aiAgentMode = useMemo(() => {
+        if (isAIAgentToggled) {
+            if (formValues.trialModeActivatedDatetime === null) {
+                return 'enabled'
+            }
+
+            return 'trial'
+        }
+
+        return 'disabled'
+    }, [isAIAgentToggled, formValues.trialModeActivatedDatetime])
 
     const deactivateAiAgent = useCallback(
         async (silentUpdate?: boolean) => {
@@ -225,85 +217,6 @@ export const StoreConfigForm = ({
         ]
     )
 
-    const handleOnSave = async () => {
-        let validFormValues: ValidFormValues
-        try {
-            validFormValues = validateConfigurationFormValues(
-                formValues,
-                publicUrls,
-                isAiAgentChatEnabled
-            )
-        } catch (error) {
-            if (error instanceof Error) {
-                void dispatch(
-                    notify({
-                        message: error.message,
-                        status: NotificationStatus.Error,
-                    })
-                )
-            } else {
-                throw error
-            }
-
-            return
-        }
-
-        const configurationToSubmit = getStoreConfigurationFromFormValues(
-            shopName,
-            validFormValues
-        )
-
-        try {
-            if (isCreate) {
-                await createStoreConfiguration(configurationToSubmit)
-            } else {
-                await updateStoreConfiguration({
-                    ...storeConfiguration,
-                    ...configurationToSubmit,
-                    wizard: storeConfiguration?.wizard,
-                })
-            }
-
-            if (
-                aiAgentMode === 'enabled' &&
-                (defaultFormValues.deactivatedDatetime !== null ||
-                    defaultFormValues.trialModeActivatedDatetime !== null)
-            ) {
-                logEvent(SegmentEvent.AiAgentEnabled, {
-                    store: shopName,
-                })
-            }
-
-            void dispatch(
-                notify({
-                    message: 'AI Agent configuration saved!',
-                    status: NotificationStatus.Success,
-                })
-            )
-        } catch (error) {
-            if (
-                isAxiosError(error) &&
-                _get(error, 'response.data.message') ===
-                    'Email address already used by AI Agent on a different store.'
-            ) {
-                void dispatch(
-                    notify({
-                        message:
-                            'Email address already used by AI Agent on a different store.',
-                        status: NotificationStatus.Error,
-                    })
-                )
-            } else {
-                void dispatch(
-                    notify({
-                        message: 'Failed to save AI Agent configuration',
-                        status: NotificationStatus.Error,
-                    })
-                )
-            }
-        }
-    }
-
     const selectedHelpCenter = faqHelpCenters.find((helpCenter) => {
         return helpCenter.id === formValues.helpCenterId
     })
@@ -317,70 +230,11 @@ export const StoreConfigForm = ({
         updateValue('helpCenterId', id)
     }
 
-    const handleSelectEmailIntegration = (nextSelectedIds: number[]) => {
-        // preserving the order of the selection
-        const monitoredEmailIntegrations: StoreConfiguration['monitoredEmailIntegrations'] =
-            []
-        for (const id of nextSelectedIds) {
-            const emailIntegration = emailIntegrations.find(
-                (integration) => integration.id === id
-            )
-            if (emailIntegration) {
-                monitoredEmailIntegrations.push({
-                    id: emailIntegration.id,
-                    email: emailIntegration.meta.address,
-                })
-            }
-        }
-        updateValue('monitoredEmailIntegrations', monitoredEmailIntegrations)
-    }
-
-    const handleSelectChatIntegration = (values: number[]) => {
-        const ids = values.map((option) => option)
-
-        updateValue('monitoredChatIntegrations', ids)
-    }
-
-    const handleToneOfVoiceChange = (toneOfVoiceLabel: Value) => {
-        if (
-            toneOfVoiceLabel === ToneOfVoice.Custom &&
-            (!formValues.customToneOfVoiceGuidance ||
-                formValues.customToneOfVoiceGuidance?.length === 0)
-        ) {
-            updateValue(
-                'customToneOfVoiceGuidance',
-                INITIAL_FORM_VALUES.customToneOfVoiceGuidance
-            )
-        }
-        updateValue('toneOfVoice', toneOfVoiceLabel.toString())
-    }
-
-    const isAIAgentToggled = isAiAgentEnabled(
-        formValues.deactivatedDatetime !== undefined
-            ? formValues.deactivatedDatetime
-            : INITIAL_FORM_VALUES.deactivatedDatetime
-    )
-
-    const aiAgentMode = useMemo(() => {
-        if (isAIAgentToggled) {
-            if (formValues.trialModeActivatedDatetime === null) {
-                return 'enabled'
-            }
-
-            return 'trial'
-        }
-
-        return 'disabled'
-    }, [isAIAgentToggled, formValues.trialModeActivatedDatetime])
-
     const isHandoffToggled = isHandoffEnabled(
         formValues.silentHandover !== null
             ? formValues.silentHandover
             : INITIAL_FORM_VALUES.silentHandover
     )
-
-    const isCustomToneOfVoiceSelected =
-        formValues.toneOfVoice === ToneOfVoice.Custom
 
     const {helpCenter: snippetHelpCenter} = useGetOrCreateSnippetHelpCenter({
         accountDomain,
@@ -404,7 +258,12 @@ export const StoreConfigForm = ({
     )
 
     const onSubmit = () => {
-        void handleOnSave()
+        void handleOnSave({
+            publicUrls,
+            shopName,
+            storeConfiguration,
+            aiAgentMode,
+        })
     }
 
     useEffect(() => {
@@ -418,19 +277,32 @@ export const StoreConfigForm = ({
         formValues.trialModeActivatedDatetime,
     ])
 
-    const isSignatureValid = useMemo(() => {
-        return !isBlurred || !!formValues.signature?.trim().length
-    }, [formValues.signature, isBlurred])
+    const handleAiAgentTrialModeChange = (value: string) => {
+        switch (value) {
+            case 'enabled':
+                updateValue('deactivatedDatetime', null)
+                updateValue('trialModeActivatedDatetime', null)
+                break
 
-    const isEmailIntegrationsValid = useMemo(() => {
-        const isEmailSelected = !!formValues.monitoredEmailIntegrations?.length
-        return isEmailSelected || isAiAgentChatEnabled
-    }, [formValues.monitoredEmailIntegrations?.length, isAiAgentChatEnabled])
+            case 'trial':
+                updateValue('deactivatedDatetime', null)
+                updateValue(
+                    'trialModeActivatedDatetime',
+                    new Date().toISOString()
+                )
+                break
+
+            case 'disabled':
+                updateValue('deactivatedDatetime', new Date().toISOString())
+                updateValue('trialModeActivatedDatetime', null)
+                break
+        }
+    }
 
     return (
         <>
             <UnsavedChangesPrompt
-                onSave={handleOnSave}
+                onSave={onSubmit}
                 when={isFormDirty}
                 onDiscard={resetForm}
                 shouldRedirectAfterSave={true}
@@ -473,40 +345,7 @@ export const StoreConfigForm = ({
                                 ]}
                                 selectedValue={aiAgentMode}
                                 onChange={(value) => {
-                                    switch (value) {
-                                        case 'enabled':
-                                            updateValue(
-                                                'deactivatedDatetime',
-                                                null
-                                            )
-                                            updateValue(
-                                                'trialModeActivatedDatetime',
-                                                null
-                                            )
-                                            break
-
-                                        case 'trial':
-                                            updateValue(
-                                                'deactivatedDatetime',
-                                                null
-                                            )
-                                            updateValue(
-                                                'trialModeActivatedDatetime',
-                                                new Date().toISOString()
-                                            )
-                                            break
-
-                                        case 'disabled':
-                                            updateValue(
-                                                'deactivatedDatetime',
-                                                new Date().toISOString()
-                                            )
-                                            updateValue(
-                                                'trialModeActivatedDatetime',
-                                                null
-                                            )
-                                            break
-                                    }
+                                    handleAiAgentTrialModeChange(value)
                                 }}
                             />
                         ) : (
@@ -535,92 +374,13 @@ export const StoreConfigForm = ({
                         )}
                     </div>
 
-                    <div className={css.formGroup}>
-                        <Label
-                            className={css.label}
-                            style={{marginTop: '32px'}}
-                        >
-                            Tone of voice
-                            <IconTooltip className={css.icon}>
-                                Examples of tone of voice:
-                                <br />
-                                <ul>
-                                    <li>
-                                        <b>Friendly</b>: "Hi, could you please
-                                        send a picture of the damaged items?
-                                        Thank you!"
-                                    </li>
-                                    <li>
-                                        <b>Professional</b>: "Hello, could you
-                                        provide a photo of the damaged items?
-                                        Regards."
-                                    </li>
-                                    <li>
-                                        <b>Sophisticated</b>: "Hello, kindly
-                                        provide an image of the damaged articles
-                                        at your earliest convenience. Many
-                                        thanks."
-                                    </li>
-                                    <li>
-                                        <b>Custom</b>: "Add you own
-                                        instructions."
-                                    </li>
-                                </ul>
-                            </IconTooltip>
-                        </Label>
-                        <div
-                            data-candu-id="ai-agent-configuration-tone-of-voice"
-                            data-testid="ai-agent-configuration-tone-of-voice"
-                        >
-                            <SelectField
-                                fullWidth
-                                showSelectedOption
-                                value={
-                                    formValues.toneOfVoice !== null
-                                        ? formValues.toneOfVoice
-                                        : INITIAL_FORM_VALUES.toneOfVoice
-                                }
-                                onChange={handleToneOfVoiceChange}
-                                options={Object.values(ToneOfVoice).map(
-                                    (toneOfVoice) => ({
-                                        label: toneOfVoice,
-                                        value: toneOfVoice,
-                                    })
-                                )}
-                                dropdownMenuClassName={css.longDropdown}
-                            />
-                        </div>
-                        <div className={css.formInputFooterInfo}>
-                            Select a tone of voice for AI Agent to use with
-                            customers.
-                        </div>
-
-                        {isCustomToneOfVoiceSelected && (
-                            <div className={css.customToneOfVoiceGuidance}>
-                                <TextArea
-                                    autoRowHeight={true}
-                                    placeholder="Custom tone of voice"
-                                    maxLength={CUSTOM_TONE_OF_VOICE_MAX_LENGTH}
-                                    value={
-                                        formValues.customToneOfVoiceGuidance ??
-                                        undefined
-                                    }
-                                    onChange={(value: unknown) => {
-                                        if (typeof value !== 'string') return
-                                        updateValue(
-                                            'customToneOfVoiceGuidance',
-                                            value
-                                        )
-                                    }}
-                                />
-                                <div className={css.formInputFooterInfo}>
-                                    Give your AI Agent specific instructions to
-                                    always follow. For example things to always
-                                    say, things to never mention.
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                    <ToneOfVoiceFormComponent
+                        toneOfVoice={formValues.toneOfVoice}
+                        customToneOfVoiceGuidance={
+                            formValues.customToneOfVoiceGuidance
+                        }
+                        updateValue={updateValue}
+                    />
                 </section>
 
                 <ConfigurationSection
@@ -655,24 +415,13 @@ export const StoreConfigForm = ({
 
                 {isAiAgentChatEnabled && (
                     <ConfigurationSection title="Chat settings">
-                        <div className={css.formGroup}>
-                            <Label className={css.label}>
-                                AI Agent responds to tickets sent to the
-                                following Chats
-                            </Label>
-                            <ChatIntegrationListSelection
-                                selectedIds={
-                                    formValues.monitoredChatIntegrations !==
-                                    null
-                                        ? formValues.monitoredChatIntegrations.map(
-                                              (integration) => integration
-                                          )
-                                        : INITIAL_FORM_VALUES.monitoredChatIntegrations
-                                }
-                                onSelectionChange={handleSelectChatIntegration}
-                                chatItems={chatChannels}
-                            />
-                        </div>
+                        <ChatSettingsFormComponent
+                            monitoredChatIntegrations={
+                                formValues.monitoredChatIntegrations
+                            }
+                            updateValue={updateValue}
+                            chatChannels={chatChannels}
+                        />
                     </ConfigurationSection>
                 )}
 
@@ -683,79 +432,16 @@ export const StoreConfigForm = ({
                     >
                         Email settings
                     </h2>
-                    <div className={css.formGroup}>
-                        <Label
-                            isRequired={!isAiAgentChatEnabled}
-                            className={css.label}
-                        >
-                            AI Agent responds to tickets sent to the following
-                            email addresses
-                        </Label>
-                        <EmailIntegrationListSelection
-                            selectedIds={
-                                formValues.monitoredEmailIntegrations !== null
-                                    ? formValues.monitoredEmailIntegrations.map(
-                                          (integration) => integration.id
-                                      )
-                                    : INITIAL_FORM_VALUES.monitoredEmailIntegrations
-                            }
-                            onSelectionChange={handleSelectEmailIntegration}
-                            emailItems={emailItems}
-                        />
-                        <div
-                            className={classnames(css.formInputFooterInfo, {
-                                [css.error]: !isEmailIntegrationsValid,
-                            })}
-                        >
-                            {!isEmailIntegrationsValid
-                                ? 'At least one email is required.'
-                                : 'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.'}
-                        </div>
-                    </div>
-
-                    <div className={css.formGroup}>
-                        <Label
-                            isRequired={true}
-                            className={css.subsectionHeader}
-                        >
-                            Signature
-                            <IconTooltip className={css.icon}>
-                                This will override the current email signature
-                                in your email settings.
-                            </IconTooltip>
-                        </Label>
-                        <TextArea
-                            id="signature-text-area"
-                            innerClassName={css.formInputEditor}
-                            placeholder="AI Agent email signature"
-                            value={
-                                formValues.signature !== null
-                                    ? formValues.signature
-                                    : INITIAL_FORM_VALUES.signature
-                            }
-                            onChange={(value: unknown) => {
-                                if (typeof value !== 'string') return
-                                updateValue('signature', value)
-                                setIsBlurred(false)
-                            }}
-                            onBlur={() => setIsBlurred(true)}
-                            maxLength={SIGNATURE_MAX_LENGTH}
-                            error={
-                                !isSignatureValid
-                                    ? 'Email signature is required.'
-                                    : undefined
-                            }
-                        />
-                        {isSignatureValid && (
-                            <div className={css.formInputFooterInfo}>
-                                At the end of emails you can disclose that the
-                                message was created by AI, or provide a custom
-                                name for AI Agent. Do not include greetings
-                                (e.g. "Best regards"). Greetings will already be
-                                included in the message above the signature.
-                            </div>
-                        )}
-                    </div>
+                    <EmailFormComponent
+                        updateValue={updateValue}
+                        monitoredEmailIntegrations={
+                            formValues.monitoredEmailIntegrations
+                        }
+                    />
+                    <SignatureFormComponent
+                        updateValue={updateValue}
+                        signature={formValues.signature}
+                    />
                 </section>
 
                 <section>
@@ -877,7 +563,7 @@ export const StoreConfigForm = ({
 
                 <section>
                     <Button
-                        onClick={handleOnSave}
+                        onClick={onSubmit}
                         isDisabled={
                             isPendingCreateOrUpdate ||
                             (!isFormDirty && !isCreate)

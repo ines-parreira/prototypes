@@ -1,7 +1,7 @@
 import {CreateArticleDto, LocaleCode} from 'models/helpCenter/types'
 import {Components} from 'rest_api/help_center_api/client.generated'
 import {AiAgentOnboardingWizardStep, Tag} from '../../../models/aiAgent/types'
-import {AiAgentChannel} from './constants'
+import {AiAgentChannel, ToneOfVoice} from './constants'
 
 export type NonNullProperties<T> = {
     [P in keyof T]: NonNullable<T[P]>
@@ -28,12 +28,17 @@ export type FormValues = {
     tags: Tag[] | null
     excludedTopics: string[] | null
     signature: string | null
-    toneOfVoice: string | null
+    toneOfVoice: ToneOfVoice | null
     customToneOfVoiceGuidance: string | null
     helpCenterId: number | null
     monitoredChatIntegrations: number[] | null
     wizard: WizardFormValues | null | undefined
 }
+
+export type UpdateValue<FormValues> = <Key extends keyof FormValues>(
+    key: Key,
+    value: FormValues[Key]
+) => void
 
 export type ValidFormValues = NonNullFields<
     FormValues,

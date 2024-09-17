@@ -1,4 +1,4 @@
-import {AiAgentChannel} from 'pages/automate/aiAgent/constants'
+import {AiAgentChannel, ToneOfVoice} from 'pages/automate/aiAgent/constants'
 
 export type AccountConfigurationResponse = {
     accountConfiguration: Omit<AccountConfiguration, 'helpdeskOAuth'>
@@ -37,7 +37,7 @@ export type StoreConfiguration = {
     snippetHelpCenterId: number
     guidanceHelpCenterId: number
 
-    toneOfVoice: string
+    toneOfVoice: ToneOfVoice
     customToneOfVoiceGuidance: string | null
     signature: string
     excludedTopics: string[]

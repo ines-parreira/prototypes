@@ -33,6 +33,7 @@ const mockedUseAiAgentOnboardingWizard = {
     handleFormUpdate: jest.fn(),
     handleSave: jest.fn(),
     handleAction: jest.fn(),
+    updateValue: jest.fn(),
 }
 
 const mockStore = configureMockStore([thunk])

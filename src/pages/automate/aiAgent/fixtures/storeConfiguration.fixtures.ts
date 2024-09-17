@@ -1,4 +1,5 @@
 import {StoreConfiguration} from 'models/aiAgent/types'
+import {ToneOfVoice} from '../constants'
 
 export const getStoreConfigurationFixture = (
     props?: Partial<StoreConfiguration>
@@ -13,7 +14,7 @@ export const getStoreConfigurationFixture = (
     helpCenterId: 1,
     guidanceHelpCenterId: 102,
     snippetHelpCenterId: 103,
-    toneOfVoice: 'Friendly',
+    toneOfVoice: ToneOfVoice.Friendly,
     customToneOfVoiceGuidance: null,
     excludedTopics: [],
     signature: 'This response was created by AI',

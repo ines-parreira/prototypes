@@ -1,5 +1,9 @@
-import _isEqual from 'lodash/isEqual'
+import {isAxiosError} from 'axios'
+import _get from 'lodash/get'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useCallback, useEffect, useMemo, useState} from 'react'
+import _isEqual from 'lodash/isEqual'
+import {FormValues, ValidFormValues} from '../types'
 import {
     DEFAULT_FORM_VALUES,
     EXCLUDED_TOPIC_MAX_LENGTH,
@@ -8,9 +12,33 @@ import {
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
     ToneOfVoice,
 } from '../constants'
-import {FormValues, ValidFormValues} from '../types'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
+import {getStoreConfigurationFromFormValues} from '../components/StoreConfigForm/StoreConfigForm.utils'
+import {logEvent, SegmentEvent} from '../../../../common/segment'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
+import {FeatureFlagKey} from '../../../../config/featureFlags'
+import {StoreConfiguration, Wizard} from '../../../../models/aiAgent/types'
+import useAppSelector from '../../../../hooks/useAppSelector'
+import {getCurrentAccountState} from '../../../../state/currentAccount/selectors'
+import {useStoreConfigurationMutation} from './useStoreConfigurationMutation'
 
-export const useConfigurationForm = (initValues?: Partial<FormValues>) => {
+export const useConfigurationForm = ({
+    initValues,
+    shopName,
+}: {
+    shopName: string
+    initValues?: Partial<FormValues>
+}) => {
+    const dispatch = useAppDispatch()
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const {isLoading, createStoreConfiguration, upsertStoreConfiguration} =
+        useStoreConfigurationMutation({shopName, accountDomain})
+
+    const isAiAgentChatEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentChat]
+
     const defaultValues = useMemo(
         () => ({
             ...DEFAULT_FORM_VALUES,
@@ -18,6 +46,7 @@ export const useConfigurationForm = (initValues?: Partial<FormValues>) => {
         }),
         [initValues]
     )
+
     // could have used a useReducer instead, but keeping it simple for now
     const [formValues, setFormValues] = useState<FormValues>(defaultValues)
 
@@ -47,122 +76,245 @@ export const useConfigurationForm = (initValues?: Partial<FormValues>) => {
         []
     )
 
-    return {
-        formValues,
-        resetForm,
-        isFormDirty,
-        updateValue,
-        isFieldDirty,
-    }
-}
-
-export const validateConfigurationFormValues = (
-    formValues: FormValues,
-    publicUrls: string[] | null,
-    isChatSupportEnabled?: boolean
-): ValidFormValues => {
-    if (formValues.signature !== null) {
-        if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
-            throw new Error(
-                `Signature must be less than ${SIGNATURE_MAX_LENGTH} characters`
-            )
-        }
-    }
-
-    if (
-        formValues.signature === null ||
-        formValues.signature.trim().length === 0
-    ) {
-        throw new Error('Signature can not be empty')
-    }
-
-    if (
-        formValues.excludedTopics !== null &&
-        formValues.excludedTopics.length > 0
-    ) {
-        const hasEmptyFields = formValues.excludedTopics.some(
-            (topic) => topic === ''
-        )
-        if (hasEmptyFields) {
-            throw new Error('Excluded topic cannot be empty')
-        }
-        if (formValues.excludedTopics.length > MAX_EXCLUDED_TOPICS) {
-            throw new Error(
-                `Excluded topics must be less than ${MAX_EXCLUDED_TOPICS}`
-            )
-        }
-        for (const topic of formValues.excludedTopics) {
-            if (topic.length > EXCLUDED_TOPIC_MAX_LENGTH) {
+    const validateConfigurationFormValues = (
+        formValues: FormValues,
+        publicUrls: string[] | null | undefined,
+        isChatSupportEnabled?: boolean
+    ): ValidFormValues => {
+        if (formValues.signature !== null) {
+            if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
                 throw new Error(
-                    `Excluded topics must be less than ${EXCLUDED_TOPIC_MAX_LENGTH} characters`
+                    `Signature must be less than ${SIGNATURE_MAX_LENGTH} characters`
+                )
+            }
+        }
+
+        if (
+            formValues.signature === null ||
+            formValues.signature.trim().length === 0
+        ) {
+            throw new Error('Signature can not be empty')
+        }
+
+        if (
+            formValues.excludedTopics !== null &&
+            formValues.excludedTopics.length > 0
+        ) {
+            const hasEmptyFields = formValues.excludedTopics.some(
+                (topic) => topic === ''
+            )
+            if (hasEmptyFields) {
+                throw new Error('Excluded topic cannot be empty')
+            }
+            if (formValues.excludedTopics.length > MAX_EXCLUDED_TOPICS) {
+                throw new Error(
+                    `Excluded topics must be less than ${MAX_EXCLUDED_TOPICS}`
+                )
+            }
+            for (const topic of formValues.excludedTopics) {
+                if (topic.length > EXCLUDED_TOPIC_MAX_LENGTH) {
+                    throw new Error(
+                        `Excluded topics must be less than ${EXCLUDED_TOPIC_MAX_LENGTH} characters`
+                    )
+                }
+            }
+        }
+
+        if (formValues.tags !== null && formValues.tags.length > 0) {
+            const hasEmptyFields = formValues.tags.some(
+                (tag) => tag.name === '' || tag.description === ''
+            )
+            if (hasEmptyFields) {
+                throw new Error('Tags must have a name and description')
+            }
+        }
+
+        if (
+            (!formValues.toneOfVoice ||
+                formValues.toneOfVoice === ToneOfVoice.Custom) &&
+            formValues.customToneOfVoiceGuidance?.length === 0
+        ) {
+            throw new Error('Custom tone of voice cannot be empty')
+        }
+
+        const noSelectedChannelsMessage = !!formValues?.wizard
+            ?.completedDatetime
+            ? 'Please select at least 1 email address for AI Agent to use or disable AI Agent to proceed.'
+            : 'At least one channel must be toggled ON.'
+        if (isChatSupportEnabled) {
+            if (
+                formValues.monitoredEmailIntegrations?.length === 0 &&
+                formValues.monitoredChatIntegrations?.length === 0 &&
+                formValues.deactivatedDatetime === null
+            ) {
+                throw new Error(noSelectedChannelsMessage)
+            }
+        } else {
+            if (
+                formValues.monitoredEmailIntegrations?.length === 0 &&
+                formValues.deactivatedDatetime === null
+            ) {
+                throw new Error(noSelectedChannelsMessage)
+            }
+        }
+
+        if (
+            (!formValues.toneOfVoice ||
+                formValues.toneOfVoice === ToneOfVoice.Custom) &&
+            formValues.customToneOfVoiceGuidance &&
+            formValues.customToneOfVoiceGuidance.length >
+                CUSTOM_TONE_OF_VOICE_MAX_LENGTH
+        ) {
+            throw new Error(
+                `Custom tone of voice should be less than ${CUSTOM_TONE_OF_VOICE_MAX_LENGTH} characters`
+            )
+        }
+
+        if (
+            formValues.helpCenterId === null &&
+            (!publicUrls || publicUrls.length === 0) &&
+            (!formValues.wizard || formValues.wizard.completedDatetime !== null)
+        ) {
+            throw new Error(
+                'Select a Help Center or add at least one public URL'
+            )
+        }
+
+        return {
+            ...formValues,
+            // Need to explicitly set these fields to non-null
+            signature: formValues.signature,
+            monitoredEmailIntegrations:
+                formValues.monitoredEmailIntegrations || [],
+            monitoredChatIntegrations:
+                formValues.monitoredChatIntegrations || [],
+        }
+    }
+
+    const handleOnSave = async ({
+        publicUrls,
+        shopName,
+        storeConfiguration,
+        aiAgentMode,
+        payload,
+        stepName,
+    }: {
+        shopName: string
+        publicUrls?: string[]
+        aiAgentMode?: string
+        storeConfiguration?: StoreConfiguration
+        payload?: Partial<FormValues>
+        stepName?: string
+    }) => {
+        const isUpdate = !!storeConfiguration
+        const enrichedFormValues = {
+            ...formValues,
+            ...payload,
+        }
+        let validFormValues: ValidFormValues
+        try {
+            validFormValues = validateConfigurationFormValues(
+                enrichedFormValues,
+                publicUrls,
+                isAiAgentChatEnabled
+            )
+        } catch (error) {
+            if (error instanceof Error) {
+                void dispatch(
+                    notify({
+                        message: error.message,
+                        status: NotificationStatus.Error,
+                    })
+                )
+            } else {
+                throw error
+            }
+
+            return
+        }
+
+        const configurationToSubmit = getStoreConfigurationFromFormValues(
+            shopName,
+            validFormValues
+        )
+
+        let res
+        try {
+            let wizardForUpdate = undefined
+            if (storeConfiguration?.wizard || configurationToSubmit.wizard) {
+                wizardForUpdate = {
+                    ...storeConfiguration?.wizard,
+                    ...configurationToSubmit.wizard,
+                }
+
+                if (stepName) {
+                    wizardForUpdate.stepName = stepName
+                }
+            }
+            if (isUpdate) {
+                res = await upsertStoreConfiguration({
+                    ...storeConfiguration,
+                    ...configurationToSubmit,
+                    wizard: wizardForUpdate as Wizard,
+                })
+            } else {
+                res = await createStoreConfiguration({
+                    ...configurationToSubmit,
+                    wizard: wizardForUpdate as Wizard,
+                })
+            }
+
+            if (
+                aiAgentMode === 'enabled' &&
+                initValues &&
+                (initValues.deactivatedDatetime !== null ||
+                    initValues.trialModeActivatedDatetime !== null)
+            ) {
+                logEvent(SegmentEvent.AiAgentEnabled, {
+                    store: shopName,
+                })
+            }
+
+            void dispatch(
+                notify({
+                    message: 'AI Agent configuration saved!',
+                    status: NotificationStatus.Success,
+                })
+            )
+
+            return res
+        } catch (error) {
+            if (
+                isAxiosError(error) &&
+                _get(error, 'response.data.message') ===
+                    'Email address already used by AI Agent on a different store.'
+            ) {
+                void dispatch(
+                    notify({
+                        message:
+                            'Email address already used by AI Agent on a different store.',
+                        status: NotificationStatus.Error,
+                    })
+                )
+            } else {
+                void dispatch(
+                    notify({
+                        message: 'Failed to save AI Agent configuration',
+                        status: NotificationStatus.Error,
+                    })
                 )
             }
         }
     }
 
-    if (formValues.tags !== null && formValues.tags.length > 0) {
-        const hasEmptyFields = formValues.tags.some(
-            (tag) => tag.name === '' || tag.description === ''
-        )
-        if (hasEmptyFields) {
-            throw new Error('Tags must have a name and description')
-        }
-    }
-
-    if (
-        (!formValues.toneOfVoice ||
-            formValues.toneOfVoice === ToneOfVoice.Custom) &&
-        formValues.customToneOfVoiceGuidance?.length === 0
-    ) {
-        throw new Error('Custom tone of voice cannot be empty')
-    }
-
-    if (isChatSupportEnabled) {
-        if (
-            formValues.monitoredEmailIntegrations?.length === 0 &&
-            formValues.monitoredChatIntegrations?.length === 0 &&
-            formValues.deactivatedDatetime === null
-        ) {
-            throw new Error(
-                'Please select at least 1 email address or chat integrations for AI Agent to use or disable AI Agent to proceed.'
-            )
-        }
-    } else {
-        if (
-            formValues.monitoredEmailIntegrations?.length === 0 &&
-            formValues.deactivatedDatetime === null
-        ) {
-            throw new Error(
-                'Please select at least 1 email address for AI Agent to use or disable AI Agent to proceed.'
-            )
-        }
-    }
-
-    if (
-        (!formValues.toneOfVoice ||
-            formValues.toneOfVoice === ToneOfVoice.Custom) &&
-        formValues.customToneOfVoiceGuidance &&
-        formValues.customToneOfVoiceGuidance.length >
-            CUSTOM_TONE_OF_VOICE_MAX_LENGTH
-    ) {
-        throw new Error(
-            `Custom tone of voice should be less than ${CUSTOM_TONE_OF_VOICE_MAX_LENGTH} characters`
-        )
-    }
-
-    if (
-        formValues.helpCenterId === null &&
-        (publicUrls === null || publicUrls.length === 0) &&
-        (!formValues.wizard || formValues.wizard.completedDatetime !== null)
-    ) {
-        throw new Error('Select a Help Center or add at least one public URL')
-    }
-
     return {
-        ...formValues,
-        // Need to explicitly set these fields to non-null
-        signature: formValues.signature,
-        monitoredEmailIntegrations: formValues.monitoredEmailIntegrations || [],
-        monitoredChatIntegrations: formValues.monitoredChatIntegrations || [],
+        formValues,
+        resetForm,
+        isFormDirty,
+        updateValue,
+        setFormValues,
+        isFieldDirty,
+        handleOnSave,
+        isPendingCreateOrUpdate: isLoading,
     }
 }

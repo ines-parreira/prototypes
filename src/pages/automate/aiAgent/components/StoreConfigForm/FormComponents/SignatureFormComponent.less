@@ -1,0 +1,36 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .formGroup {
+        margin-bottom: @layout-spacing-l;
+        .formGroupDescription {
+            margin-bottom: @layout-spacing-s;
+        }
+    }
+
+    .subsectionHeader {
+        margin-bottom: @layout-spacing-xs;
+        margin-top: @layout-spacing-l;
+    }
+
+    .icon {
+        i {
+            color: var(--neutral-grey-5);
+        }
+    }
+
+    .formInputEditor {
+        min-height: 130px;
+    }
+
+    .formInputFooterInfo {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        margin-top: @layout-spacing-xxs;
+
+        &.error {
+            color: var(--feedback-error);
+        }
+    }
+}

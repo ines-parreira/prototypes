@@ -8,13 +8,11 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import {keyBy} from 'lodash'
 import {QueryClientProvider} from '@tanstack/react-query'
 
+import userEvent from '@testing-library/user-event'
 import {notify} from 'state/notifications/actions'
 import {IntegrationType} from 'models/integration/types'
 import {renderWithRouter} from 'utils/testing'
-import {
-    useConfigurationForm,
-    validateConfigurationFormValues,
-} from 'pages/automate/aiAgent/hooks/useConfigurationForm'
+import {useConfigurationForm} from 'pages/automate/aiAgent/hooks/useConfigurationForm'
 import {NotificationStatus} from 'state/notifications/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
@@ -31,7 +29,7 @@ import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/provid
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {billingState} from 'fixtures/billing'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {FormValues, ValidFormValues} from 'pages/automate/aiAgent/types'
+import {FormValues} from 'pages/automate/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import {mockChatChannels} from 'pages/automate/aiAgent/fixtures/chatChannels.fixture'
 import {applicationsAutomationSettingsAiAgentEnabledFixture} from 'pages/automate/aiAgent/fixtures/applicationAutomationSettings.fixture'
@@ -40,6 +38,7 @@ import {useSearchParam} from 'hooks/useSearchParam'
 import {initialState as articlesState} from '../../../../../../state/entities/helpCenter/articles'
 import {initialState as categoriesState} from '../../../../../../state/entities/helpCenter/categories'
 import {StoreConfigForm} from '../StoreConfigForm'
+import {ToneOfVoice} from '../../../constants'
 
 const queryClient = mockQueryClient()
 
@@ -79,19 +78,9 @@ const mockedUseSelfServiceChatChannels = jest.mocked(useSelfServiceChatChannels)
 const mockedUseConfigurationForm = jest.mocked(useConfigurationForm)
 const mockedUsePublicResources = jest.mocked(usePublicResources)
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
-const mockedValidateConfigurationFormValues = jest.mocked(
-    validateConfigurationFormValues
-)
 
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
-const updateValueMocked = jest.fn()
-const defaultUseConfigurationFormValues = {
-    resetForm: jest.fn(),
-    isFormDirty: false,
-    updateValue: jest.fn(),
-    isFieldDirty: jest.fn(),
-}
 
 const mockStore = configureMockStore([thunk])
 
@@ -145,6 +134,9 @@ const mockedStore = mockStore({
     },
 })
 
+const updateValueMocked = jest.fn()
+const mockHandleOnSave = jest.fn()
+
 const mockUpdateStoreConfiguration = jest
     .fn()
     .mockImplementation((c: StoreConfiguration) => c)
@@ -183,7 +175,7 @@ describe('<StoreConfigForm />', () => {
         helpCenterId: 1,
         snippetHelpCenterId: 1,
         guidanceHelpCenterId: 1,
-        toneOfVoice: 'Friendly',
+        toneOfVoice: ToneOfVoice.Friendly,
         customToneOfVoiceGuidance:
             "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
         signature: 'This response was created by AI',
@@ -215,7 +207,7 @@ describe('<StoreConfigForm />', () => {
         tags: [],
         excludedTopics: [],
         signature: 'This response was created by AI',
-        toneOfVoice: 'Friendly',
+        toneOfVoice: ToneOfVoice.Friendly,
         customToneOfVoiceGuidance:
             "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
         helpCenterId: 1,
@@ -224,16 +216,16 @@ describe('<StoreConfigForm />', () => {
         wizard: undefined,
     }
 
-    const validFormValues = {
-        ...initialFormValues,
-        monitoredEmailIntegrations: [
-            {
-                email: MOCK_EMAIL_ADDRESS,
-                id: MOCK_EMAIL_INTEGRATION.id,
-            },
-        ],
-        monitoredChatIntegrations: [],
-    } as ValidFormValues
+    const defaultUseConfigurationFormValues = {
+        formValues: initialFormValues,
+        resetForm: jest.fn(),
+        isFormDirty: false,
+        updateValue: updateValueMocked,
+        isFieldDirty: jest.fn(),
+        setFormValues: jest.fn(),
+        handleOnSave: mockHandleOnSave,
+        isPendingCreateOrUpdate: false,
+    }
 
     beforeEach(() => {
         updateValueMocked.mockReset()
@@ -252,11 +244,7 @@ describe('<StoreConfigForm />', () => {
             helpCenter: null,
         })
         mockedUseConfigurationForm.mockReturnValue({
-            formValues: initialFormValues,
-            resetForm: jest.fn(),
-            isFormDirty: false,
-            updateValue: updateValueMocked,
-            isFieldDirty: jest.fn(),
+            ...defaultUseConfigurationFormValues,
         })
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: false,
@@ -453,11 +441,11 @@ describe('<StoreConfigForm />', () => {
         it('should display chat channels from store configuration in dropdown', async () => {
             const chatIntegration = mockChatChannels[0]
             mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
                 formValues: {
                     ...initialFormValues,
                     monitoredChatIntegrations: [chatIntegration.value.id],
                 },
-                ...defaultUseConfigurationFormValues,
             })
 
             renderComponent({})
@@ -470,11 +458,11 @@ describe('<StoreConfigForm />', () => {
 
     it('should render error email integration caption when there is none selected', () => {
         mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
             formValues: {
                 ...initialFormValues,
                 monitoredEmailIntegrations: null,
             },
-            ...defaultUseConfigurationFormValues,
         })
 
         renderComponent({})
@@ -485,14 +473,11 @@ describe('<StoreConfigForm />', () => {
 
     it('should render default email signature when signature in form values is null', () => {
         mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
             formValues: {
                 ...initialFormValues,
                 monitoredEmailIntegrations: [],
             },
-            resetForm: jest.fn(),
-            isFormDirty: false,
-            updateValue: jest.fn(),
-            isFieldDirty: jest.fn(),
         })
 
         renderComponent({})
@@ -503,15 +488,12 @@ describe('<StoreConfigForm />', () => {
 
     it('should render error email signature caption when signature is empty', () => {
         mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
             formValues: {
                 ...initialFormValues,
                 monitoredEmailIntegrations: [],
                 signature: '',
             },
-            resetForm: jest.fn(),
-            isFormDirty: false,
-            updateValue: jest.fn(),
-            isFieldDirty: jest.fn(),
         })
 
         renderComponent({})
@@ -568,16 +550,13 @@ describe('<StoreConfigForm />', () => {
             isLoading: false,
         })
         mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
             formValues: {
                 ...initialFormValues,
                 monitoredEmailIntegrations: [],
                 deactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 helpCenterId: 1,
             },
-            resetForm: jest.fn(),
-            isFormDirty: false,
-            updateValue: updateValueMocked,
-            isFieldDirty: jest.fn(),
         })
 
         renderComponent({})
@@ -610,14 +589,8 @@ describe('<StoreConfigForm />', () => {
             isPendingCreateOrUpdate: false,
         })
         mockedUseConfigurationForm.mockReturnValue({
-            formValues: initialFormValues,
-            resetForm: jest.fn(),
-            isFormDirty: true,
-            updateValue: updateValueMocked,
-            isFieldDirty: jest.fn(),
+            ...defaultUseConfigurationFormValues,
         })
-
-        mockedValidateConfigurationFormValues.mockReturnValue(validFormValues)
 
         renderComponent({})
 
@@ -625,7 +598,7 @@ describe('<StoreConfigForm />', () => {
         fireEvent.click(saveButton)
 
         await waitFor(() => {
-            expect(mockCreateStoreConfiguration).toHaveBeenCalled()
+            expect(mockHandleOnSave).toHaveBeenCalled()
         })
     })
 
@@ -653,5 +626,82 @@ describe('<StoreConfigForm />', () => {
         expect(mockUseSearchParam).toHaveBeenCalledWith('section')
         expect(mockScrollIntoView).toHaveBeenCalled()
         expect(mockSetSearchParam).toHaveBeenCalledWith(null)
+    })
+
+    it('should handle enabled mode correctly', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentTrialMode]: true,
+            [FeatureFlagKey.AiAgentChat]: false,
+        })
+        renderComponent({})
+
+        // Simulate the user selecting 'enabled' mode
+        const radioButton = screen.getByLabelText(
+            'Directly respond to customers'
+        )
+        userEvent.click(radioButton)
+
+        // Check that updateValue was called with the correct arguments
+        expect(updateValueMocked).toHaveBeenCalledWith(
+            'deactivatedDatetime',
+            null
+        )
+        expect(updateValueMocked).toHaveBeenCalledWith(
+            'trialModeActivatedDatetime',
+            null
+        )
+    })
+
+    it('should handle trial mode correctly', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentTrialMode]: true,
+            [FeatureFlagKey.AiAgentChat]: false,
+        })
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                trialModeActivatedDatetime: null,
+            },
+        })
+
+        renderComponent({})
+
+        const radioButton = screen.getByLabelText(
+            'Draft responses for agents to review before sending'
+        )
+        userEvent.click(radioButton)
+
+        // Check that updateValue was called with the correct arguments
+        expect(updateValueMocked).toHaveBeenCalledWith(
+            'deactivatedDatetime',
+            null
+        )
+        expect(updateValueMocked).toHaveBeenCalledWith(
+            'trialModeActivatedDatetime',
+            expect.any(String)
+        )
+    })
+
+    it('should handle disabled mode correctly', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentTrialMode]: true,
+            [FeatureFlagKey.AiAgentChat]: false,
+        })
+        renderComponent({})
+
+        // Simulate the user selecting 'disabled' mode
+        const radioButton = screen.getByLabelText('Disabled')
+        userEvent.click(radioButton)
+
+        // Check that updateValue was called with the correct arguments
+        expect(updateValueMocked).toHaveBeenCalledWith(
+            'deactivatedDatetime',
+            expect.any(String)
+        )
+        expect(updateValueMocked).toHaveBeenCalledWith(
+            'trialModeActivatedDatetime',
+            null
+        )
     })
 })

@@ -1,5 +1,6 @@
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import {FormValues} from '../types'
+import {ToneOfVoice} from '../constants'
 
 export const getStoreConfigurationFormValuesFixture = (
     props?: Partial<FormValues>
@@ -13,7 +14,7 @@ export const getStoreConfigurationFormValuesFixture = (
     tags: [],
     excludedTopics: [],
     signature: 'This response was created by AI',
-    toneOfVoice: 'Friendly',
+    toneOfVoice: ToneOfVoice.Friendly,
     customToneOfVoiceGuidance:
         "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
     helpCenterId: 1,

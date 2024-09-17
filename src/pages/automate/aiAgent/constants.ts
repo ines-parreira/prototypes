@@ -102,3 +102,18 @@ export enum WIZARD_BUTTON_ACTIONS {
     FINISH_TO_TEST = 'finish_to_test',
     FINISH_TO_GUIDANCE = 'finish_to_guidance',
 }
+
+export const INITIAL_FORM_VALUES = {
+    trialModeActivatedDatetime: null,
+    deactivatedDatetime: new Date().toISOString(),
+    silentHandover: false,
+    monitoredEmailIntegrations: [],
+    tags: [],
+    excludedTopics: [],
+    signature: 'This response was created by AI',
+    toneOfVoice: ToneOfVoice.Friendly,
+    customToneOfVoiceGuidance:
+        "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
+    helpCenter: null,
+    monitoredChatIntegrations: [],
+}

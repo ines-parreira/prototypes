@@ -1,37 +1,29 @@
 import {useParams} from 'react-router-dom'
-import {useCallback, useMemo, useState} from 'react'
+import {useCallback, useMemo} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import {
     AiAgentOnboardingWizardStep,
-    CreateStoreConfigurationPayload,
     StoreConfiguration,
 } from 'models/aiAgent/types'
 import history from 'pages/history'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {HelpCenter} from 'models/helpCenter/types'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
-import {INITIAL_FORM_VALUES} from '../../components/StoreConfigForm/StoreConfigForm'
-import {FormValues, ValidFormValues, WizardFormValues} from '../../types'
-import {
-    getFormValuesFromStoreConfiguration,
-    getStoreConfigurationFromFormValues,
-} from '../../components/StoreConfigForm/StoreConfigForm.utils'
-import {validateConfigurationFormValues} from '../../hooks/useConfigurationForm'
+import {FormValues, UpdateValue, WizardFormValues} from '../../types'
+import {getFormValuesFromStoreConfiguration} from '../../components/StoreConfigForm/StoreConfigForm.utils'
 import {
     DEFAULT_FORM_VALUES_WITH_WIZARD,
+    INITIAL_FORM_VALUES,
     WIZARD_BUTTON_ACTIONS,
 } from '../../constants'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
+import {useConfigurationForm} from '../../hooks/useConfigurationForm'
+import {getCurrentAccountState} from '../../../../../state/currentAccount/selectors'
+import useAppSelector from '../../../../../hooks/useAppSelector'
+import useEffectOnce from '../../../../../hooks/useEffectOnce'
 import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
-import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
 
 type handleSaveParams = {
     publicUrls?: string[]
@@ -49,6 +41,7 @@ type AiAgentOnboardingWizardOutput = {
     handleAction: (redirectTo: WIZARD_BUTTON_ACTIONS) => void
     handleSave: (params: handleSaveParams) => void
     isLoading: boolean
+    updateValue: UpdateValue<FormValues>
 }
 
 type Props = {
@@ -73,7 +66,6 @@ export const useAiAgentOnboardingWizard = ({
         shopType: string
         shopName: string
     }>()
-    const dispatch = useAppDispatch()
     const navigateWizardSteps = useNavigateWizardSteps()
     const {routes} = useAiAgentNavigation({shopName})
 
@@ -104,23 +96,19 @@ export const useAiAgentOnboardingWizard = ({
         shopName,
     })
 
-    const {
-        isLoading: isPendingCreateOrUpdate,
-        createStoreConfiguration,
-        upsertStoreConfiguration,
-    } = useStoreConfigurationMutation({
-        shopName,
-        accountDomain,
-    })
-
     const isAiAgentOnboardingWizardEducationalStepEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]
 
-    const [newStoreFormValues, setNewStoreFormValues] = useState<FormValues>(
-        DEFAULT_FORM_VALUES_WITH_WIZARD
-    )
-
-    const isUpdate = !!storeConfiguration?.wizard
+    const {
+        isPendingCreateOrUpdate,
+        handleOnSave,
+        formValues,
+        setFormValues,
+        updateValue,
+    } = useConfigurationForm({
+        initValues: DEFAULT_FORM_VALUES_WITH_WIZARD,
+        shopName,
+    })
 
     useEffectOnce(() => {
         const initialStoreFormValues: FormValues = {
@@ -138,7 +126,7 @@ export const useAiAgentOnboardingWizard = ({
             ? getFormValuesFromStoreConfiguration(storeConfiguration)
             : initialStoreFormValues
 
-        setNewStoreFormValues(newStoreFormValues)
+        setFormValues(newStoreFormValues)
     })
 
     const handleAction = (
@@ -185,96 +173,28 @@ export const useAiAgentOnboardingWizard = ({
 
     const handleFormUpdate = useCallback(
         (payload: Partial<FormValues>) => {
-            setNewStoreFormValues((prevStoreFormValues) => ({
+            setFormValues((prevStoreFormValues) => ({
                 ...prevStoreFormValues,
                 ...payload,
             }))
         },
-        [setNewStoreFormValues]
+        [setFormValues]
     )
-
-    const handleCreateStoreConfiguration = async (
-        payload: CreateStoreConfigurationPayload
-    ): Promise<StoreConfiguration | null> => {
-        try {
-            return await createStoreConfiguration(payload)
-        } catch (error) {
-            void dispatch(
-                notify({
-                    message: 'Failed to create AI Agent Configuration',
-                    status: NotificationStatus.Error,
-                })
-            )
-            return null
-        }
-    }
-
-    const handleUpdateStoreConfiguration = async (
-        payload: StoreConfiguration
-    ): Promise<StoreConfiguration | null> => {
-        try {
-            return await upsertStoreConfiguration(payload)
-        } catch (error) {
-            void dispatch(
-                notify({
-                    message: 'Failed to update AI Agent Configuration',
-                    status: NotificationStatus.Error,
-                })
-            )
-            return null
-        }
-    }
 
     const handleSave = async ({
         publicUrls,
         redirectTo,
+        successModalParams,
         stepName,
         payload,
-        successModalParams,
     }: handleSaveParams) => {
-        const storeFormValues = {
-            ...newStoreFormValues,
-            ...payload,
-            wizard: newStoreFormValues.wizard && {
-                ...newStoreFormValues.wizard,
-                stepName: stepName ?? step,
-            },
-        }
-
-        let validFormValues: ValidFormValues
-        try {
-            validFormValues = validateConfigurationFormValues(
-                storeFormValues,
-                publicUrls ?? []
-            )
-        } catch (error) {
-            void dispatch(
-                notify({
-                    message: (error as Error).message,
-                    status: NotificationStatus.Error,
-                })
-            )
-            return
-        }
-
-        const configurationToSubmit = getStoreConfigurationFromFormValues(
+        const res = await handleOnSave({
+            publicUrls,
             shopName,
-            validFormValues
-        )
-
-        const storeConfigurationAction = () =>
-            isUpdate
-                ? handleUpdateStoreConfiguration({
-                      ...storeConfiguration,
-                      ...configurationToSubmit,
-                      wizard: storeConfiguration.wizard && {
-                          ...storeConfiguration.wizard,
-                          ...configurationToSubmit.wizard,
-                      },
-                  })
-                : handleCreateStoreConfiguration(configurationToSubmit)
-
-        const res = await storeConfigurationAction()
+            storeConfiguration,
+            payload,
+            stepName: stepName || step,
+        })
 
         if (res && redirectTo) {
             handleAction(redirectTo, successModalParams)
@@ -282,12 +202,13 @@ export const useAiAgentOnboardingWizard = ({
     }
 
     return {
-        storeFormValues: newStoreFormValues,
+        storeFormValues: formValues,
         faqHelpCenters,
         snippetHelpCenter,
         handleFormUpdate,
         handleAction,
         handleSave,
+        updateValue,
         isLoading:
             isPendingCreateOrUpdate ||
             isLoadingHelpCenters ||

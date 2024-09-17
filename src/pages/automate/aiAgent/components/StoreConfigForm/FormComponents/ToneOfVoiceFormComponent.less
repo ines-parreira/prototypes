@@ -1,0 +1,35 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .formGroup {
+        margin-bottom: @layout-spacing-l;
+        .formGroupDescription {
+            margin-bottom: @layout-spacing-s;
+        }
+    }
+
+    .label {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .icon {
+        i {
+            color: var(--neutral-grey-5);
+        }
+    }
+
+    .customToneOfVoiceGuidance {
+        margin-top: @layout-spacing-s;
+    }
+
+    .formInputFooterInfo {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        margin-top: @layout-spacing-xxs;
+
+        &.error {
+            color: var(--feedback-error);
+        }
+    }
+}
