@@ -12,7 +12,7 @@ import useSplitTicketView from './useSplitTicketView'
 
 export default function useSplitTicketViewSwitcher() {
     const history = useHistory()
-    const {pathname: path} = useLocation()
+    const {pathname: path, search: params} = useLocation()
     const previousPath = usePrevious(path)
     const {isEnabled, shouldRedirectToSplitView} = useSplitTicketView()
     const activeView = useAppSelector(getActiveView)
@@ -64,7 +64,7 @@ export default function useSplitTicketViewSwitcher() {
             }
 
             if (path.match(/^\/app\/views\/?$/)) {
-                history.replace('/app')
+                history.replace('/app' + params)
                 return
             }
 
@@ -94,7 +94,7 @@ export default function useSplitTicketViewSwitcher() {
         }
 
         if (path.match(/^\/app(?:\/tickets)?$/)) {
-            history.replace('/app/views')
+            history.replace('/app/views' + params)
         }
     }, [
         activeViewId,
@@ -107,5 +107,6 @@ export default function useSplitTicketViewSwitcher() {
         viewId,
         previousPath,
         shouldRedirectToSplitView,
+        params,
     ])
 }
