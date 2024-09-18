@@ -26,6 +26,7 @@ export enum FeatureFlagKey {
     NewChannelsView = 'new-channels-view',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
+    BillingStripeElementsPaymentIntegration = 'billing-stripe-elements-payment-integration',
     BillingVoiceSmsSelfServe = 'billing-voice-sms-self-serve',
     BulkActionsDTP = 'bulk-actions-dtp',
     ChangeAutomateSettingButtomPosition = 'change-automate-settings-button-position',
