@@ -2,10 +2,8 @@ import React, {ReactNode, useCallback} from 'react'
 
 import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
 import {PlaygroundEditor} from '../PlaygroundEditor/PlaygroundEditor'
 import {
@@ -34,6 +32,7 @@ type Props = {
     channel: PlaygroundChannels
     isWaitingResponse: boolean
     onPromptMessage: (action: PlaygroundPromptType) => void
+    isChatTestModeEnabled?: boolean
 }
 export const PlaygroundInputSection = ({
     formValues,
@@ -48,9 +47,8 @@ export const PlaygroundInputSection = ({
     channel,
     isWaitingResponse,
     onPromptMessage,
+    isChatTestModeEnabled,
 }: Props) => {
-    const isTestModeInChatEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentChatTestMode]
     const handleMessageChange = (message: string) => {
         onFormValuesChange('message', message)
     }
@@ -103,7 +101,7 @@ export const PlaygroundInputSection = ({
                     [css.disabled]: !isInitialMessage,
                 })}
             >
-                {isTestModeInChatEnabled ? (
+                {isChatTestModeEnabled ? (
                     <div className={css.topSection}>
                         <PlaygroundSegmentControl
                             selectedChannel={channel}
