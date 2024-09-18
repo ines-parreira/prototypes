@@ -11,6 +11,7 @@ import SessionChangeDetection from 'pages/common/components/SessionChangeDetecti
 import ScriptTagMigrationBanner from 'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner'
 import ScriptTagMigrationModal from 'pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal'
 import Spotlight from 'pages/common/components/Spotlight/Spotlight'
+import OutOfRecoveryCodesModal from 'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal'
 import {useTheme} from 'theme'
 
 import EmailDomainVerificationBanner from 'pages/common/components/EmailDomainVerificationBanner'
@@ -56,6 +57,7 @@ export default function App({children}: Props) {
                 <KeyboardHelp />
                 <AlertNotifications />
                 {hasPhone && <PhoneIntegrationBar />}
+                <OutOfRecoveryCodesModal />
             </UIKitRootNodeProvider>
         </AppNode>
     )
