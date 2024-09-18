@@ -65,7 +65,10 @@ const AIArticlesLibraryPreview: React.FC<Props> = ({
                             )}
                             onClick={() => {
                                 logEvent(
-                                    SegmentEvent.HelpCenterAILibraryEditButtonClicked
+                                    SegmentEvent.HelpCenterAILibraryEditButtonClicked,
+                                    {
+                                        ml_key: article.key,
+                                    }
                                 )
                                 onEdit(article)
                             }}
@@ -77,7 +80,10 @@ const AIArticlesLibraryPreview: React.FC<Props> = ({
                             intent="secondary"
                             onClick={() => {
                                 logEvent(
-                                    SegmentEvent.HelpCenterAILibraryArchiveButtonClicked
+                                    SegmentEvent.HelpCenterAILibraryArchiveButtonClicked,
+                                    {
+                                        ml_key: article.key,
+                                    }
                                 )
                                 onArchive(article)
                             }}
