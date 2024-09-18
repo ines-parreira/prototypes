@@ -12,6 +12,8 @@ import {
     useEmailOnboarding,
 } from './hooks/useEmailOnboarding'
 import EmailIntegrationConnectForm from './EmailIntegrationConnectForm'
+import EmailIntegrationForwardingSetupForm from './EmailIntegrationForwardingSetupForm'
+
 import css from './EmailIntegrationOnboarding.less'
 
 type Props = {
@@ -50,31 +52,35 @@ export default function EmailIntegrationOnboarding({integration}: Props) {
                                 }}
                                 className={css.wizardProgressHeader}
                             />
-
                             <WizardStep
                                 name={
                                     EmailIntegrationOnboardingStep.ConnectIntegration
                                 }
                             />
-
                             <WizardStep
                                 name={
                                     EmailIntegrationOnboardingStep.ForwardingSetup
                                 }
                             />
-
                             <WizardStep
                                 name={
                                     EmailIntegrationOnboardingStep.Verification
                                 }
                             />
+
+                            {currentStep ===
+                                EmailIntegrationOnboardingStep.ConnectIntegration && (
+                                <EmailIntegrationConnectForm
+                                    integration={integration}
+                                />
+                            )}
+                            {currentStep ===
+                                EmailIntegrationOnboardingStep.ForwardingSetup && (
+                                <EmailIntegrationForwardingSetupForm
+                                    integration={integration}
+                                />
+                            )}
                         </Wizard>
-                        {currentStep ===
-                            EmailIntegrationOnboardingStep.ConnectIntegration && (
-                            <EmailIntegrationConnectForm
-                                integration={integration}
-                            />
-                        )}
                     </SettingsContent>
                 </SettingsPageContainer>
             </div>

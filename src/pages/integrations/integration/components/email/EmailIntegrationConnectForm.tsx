@@ -5,10 +5,6 @@ import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
 import {EmailIntegration} from 'models/integration/types'
 import FormField from 'pages/settings/SLAs/features/SLAForm/views/FormField'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
-import Button from 'pages/common/components/button/Button'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import FormSubmitButton from 'pages/settings/SLAs/features/SLAForm/views/FormSubmitButton'
 import FormRow from 'pages/common/forms/FormRow'
 import {isEmail} from 'utils'
 
@@ -25,14 +21,7 @@ type Props = {
 }
 
 export default function EmailIntegrationConnectForm(props: Props) {
-    const {
-        integration,
-        errors,
-        deleteIntegration,
-        connectIntegration,
-        cancel,
-        isConnecting,
-    } = useEmailOnboarding(props)
+    const {integration, errors, connectIntegration} = useEmailOnboarding(props)
 
     const defaultValues: Values = integration
         ? pick(integration, ['name', 'meta.address'])
@@ -90,32 +79,7 @@ export default function EmailIntegrationConnectForm(props: Props) {
                         />
                     </FormRow>
                 </FormSection>
-                <EmailIntegrationOnboardingButtons>
-                    <div>
-                        <Button intent="secondary" onClick={cancel}>
-                            Cancel
-                        </Button>
-                        <FormSubmitButton
-                            isDisabled={integration ? false : undefined}
-                            isLoading={isConnecting}
-                        >
-                            Next
-                        </FormSubmitButton>
-                    </div>
-
-                    {integration && (
-                        <ConfirmButton
-                            type="button"
-                            fillStyle="ghost"
-                            intent="destructive"
-                            onConfirm={deleteIntegration}
-                        >
-                            <ButtonIconLabel icon="delete">
-                                Delete Email Address
-                            </ButtonIconLabel>
-                        </ConfirmButton>
-                    )}
-                </EmailIntegrationOnboardingButtons>
+                <EmailIntegrationOnboardingButtons integration={integration} />
             </Form>
         </div>
     )

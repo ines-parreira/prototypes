@@ -1,11 +1,89 @@
-import React from 'react'
+import React, {useContext, useEffect} from 'react'
+
+import {EmailIntegration} from 'models/integration/types'
+
+import Button from 'pages/common/components/button/Button'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import FormSubmitButton from 'pages/settings/SLAs/features/SLAForm/views/FormSubmitButton'
+import {WizardContext} from 'pages/common/components/wizard/Wizard'
+
+import {
+    EmailIntegrationOnboardingStep,
+    useEmailOnboarding,
+} from './hooks/useEmailOnboarding'
 
 import css from './EmailIntegrationOnboardingButtons.less'
 
 type Props = {
-    children: React.ReactNode
+    integration?: EmailIntegration | undefined
 }
 
-export default function EmailIntegrationOnboardingButtons({children}: Props) {
-    return <div className={css.buttons}>{children}</div>
+export default function EmailIntegrationOnboardingButtons(props: Props) {
+    const {
+        integration,
+        deleteIntegration,
+        goBack,
+        currentStep,
+        isConnected,
+        isConnecting,
+        isRequested,
+        isSending,
+    } = useEmailOnboarding(props)
+
+    const wizardContext = useContext(WizardContext)
+
+    useEffect(() => {
+        wizardContext?.setActiveStep(currentStep)
+    }, [currentStep, wizardContext])
+
+    return (
+        <div className={css.buttons}>
+            <div>
+                <Button intent="secondary" onClick={goBack}>
+                    {currentStep ===
+                    EmailIntegrationOnboardingStep.ConnectIntegration
+                        ? 'Cancel'
+                        : 'Back'}
+                </Button>
+                {currentStep ===
+                    EmailIntegrationOnboardingStep.ConnectIntegration && (
+                    <FormSubmitButton
+                        isLoading={isConnecting}
+                        isDisabled={isConnected ? false : undefined}
+                    >
+                        Next
+                    </FormSubmitButton>
+                )}
+                {currentStep ===
+                    EmailIntegrationOnboardingStep.ForwardingSetup && (
+                    <FormSubmitButton
+                        isLoading={isSending}
+                        isDisabled={isRequested ? false : undefined}
+                    >
+                        {isRequested ? 'Next' : 'Begin Verification'}
+                    </FormSubmitButton>
+                )}
+                {currentStep ===
+                    EmailIntegrationOnboardingStep.Verification && (
+                    <FormSubmitButton isLoading={isSending}>
+                        Resend Verification
+                    </FormSubmitButton>
+                )}
+            </div>
+
+            {integration && (
+                <ConfirmButton
+                    type="button"
+                    fillStyle="ghost"
+                    intent="destructive"
+                    onConfirm={deleteIntegration}
+                >
+                    <ButtonIconLabel icon="delete">
+                        Delete Email Address
+                    </ButtonIconLabel>
+                </ConfirmButton>
+            )}
+        </div>
+    )
 }

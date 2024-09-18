@@ -18,14 +18,15 @@ const defaultHookResult: UseEmailOnboardingHookResult = {
     integration: undefined,
     isConnecting: false,
     isConnected: false,
-    isVerifying: false,
+    isSending: false,
     isVerified: false,
+    isDeleting: false,
+    isRequested: false,
     currentStep: EmailIntegrationOnboardingStep.ConnectIntegration,
     connectIntegration: jest.fn(),
     sendVerification: jest.fn(),
     deleteIntegration: jest.fn(),
-    back: jest.fn(),
-    cancel: jest.fn(),
+    goBack: jest.fn(),
     errors: undefined,
 }
 

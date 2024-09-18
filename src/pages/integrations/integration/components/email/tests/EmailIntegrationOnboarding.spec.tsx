@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {MemoryRouter} from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -7,11 +7,25 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {RootState, StoreDispatch} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 import EmailIntegrationOnboarding from '../EmailIntegrationOnboarding'
+import {
+    EmailIntegrationOnboardingStep,
+    UseEmailOnboardingHookResult,
+    useEmailOnboarding,
+} from '../hooks/useEmailOnboarding'
+
+jest.mock('../hooks/useEmailOnboarding')
+jest.mock(
+    '../BaseEmailIntegrationInputField',
+    () => () => '<BaseEmailIntegrationInputField />'
+)
 
 const mockStore = createMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const queryClient = mockQueryClient()
+
+const useEmailOnboardingMock = assumeMock(useEmailOnboarding)
 
 const store = mockStore({})
 
@@ -27,12 +41,51 @@ const renderComponent = () =>
     )
 
 describe('<EmailIntegrationOnboarding />', () => {
-    it('should render', () => {
-        const {container, getByText} = renderComponent()
-        expect(container).toBeInTheDocument()
-        expect(getByText('Connect your support email')).toBeInTheDocument()
-        expect(getByText('Connect email')).toBeInTheDocument()
-        expect(getByText('Forward emails to Gorgias')).toBeInTheDocument()
-        expect(getByText('Verify email integration')).toBeInTheDocument
+    it('should the wizard breadcrumbs', () => {
+        useEmailOnboardingMock.mockReturnValue({
+            currentStep: EmailIntegrationOnboardingStep.ConnectIntegration,
+        } as UseEmailOnboardingHookResult)
+
+        renderComponent()
+
+        expect(screen.getByText('Connect email')).toBeInTheDocument()
+        expect(
+            screen.getByText('Forward emails to Gorgias')
+        ).toBeInTheDocument()
+        expect(screen.getByText('Verify email integration')).toBeInTheDocument()
+    })
+
+    it('should render the connect form as step 1', () => {
+        useEmailOnboardingMock.mockReturnValue({
+            currentStep: EmailIntegrationOnboardingStep.ConnectIntegration,
+        } as UseEmailOnboardingHookResult)
+
+        renderComponent()
+
+        expect(
+            screen.getByText('Connect your support email')
+        ).toBeInTheDocument()
+    })
+
+    it('should render the forwarding setup form as step 2', () => {
+        useEmailOnboardingMock.mockReturnValue({
+            currentStep: EmailIntegrationOnboardingStep.ForwardingSetup,
+        } as UseEmailOnboardingHookResult)
+
+        renderComponent()
+
+        expect(
+            screen.getByText('Forward your support emails to Gorgias')
+        ).toBeInTheDocument()
+    })
+
+    it('should render the verification page as step 3', () => {
+        useEmailOnboardingMock.mockReturnValue({
+            currentStep: EmailIntegrationOnboardingStep.Verification,
+        } as UseEmailOnboardingHookResult)
+
+        renderComponent()
+
+        // TODO
     })
 })

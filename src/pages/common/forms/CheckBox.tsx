@@ -25,6 +25,7 @@ export type Props = {
     isIndeterminate?: boolean
     labelClassName?: string
     name?: string
+    error?: string | ReactNode
     onChange?: (nextValue: boolean) => void
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -42,6 +43,7 @@ function CheckBox(
         isIndeterminate = false,
         labelClassName,
         name,
+        error,
         onChange,
         ...props
     }: Props,
@@ -80,7 +82,11 @@ function CheckBox(
                 />
                 {children}
             </Label>
-            {!!caption && <Caption className={css.caption}>{caption}</Caption>}
+            {!!(caption || error) && (
+                <Caption className={css.caption} error={error}>
+                    {caption}
+                </Caption>
+            )}
         </div>
     )
 }
