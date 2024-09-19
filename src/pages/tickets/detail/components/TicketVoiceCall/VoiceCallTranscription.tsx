@@ -39,7 +39,7 @@ export default function VoiceCallTranscription({audio, type}: Props) {
                         setIsOpen={() => toggleTranscriptionOpened(audio.id)}
                         title={
                             <div className={css.title}>
-                                <i className={'material-icons'}>transcribe</i>
+                                <i className={'material-icons'}>notes</i>
                                 <span>Transcription</span>
                             </div>
                         }
