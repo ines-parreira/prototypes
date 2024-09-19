@@ -20,3 +20,4 @@ export const TWO_FA_REQUIRED_NOTIFICATION_ID = 'two-fa-setup-required-banner'
 export const OPEN_TWO_FA_MODAL_URL =
     '/app/settings/password-2fa?enforce_2fa_setup_modal=true'
 export const TWO_FA_REQUIRED_AFTER_DAYS = 14
+export const TWO_FA_WARN_LESS_THAN_DAYS = 13.5

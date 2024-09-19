@@ -34,6 +34,7 @@ type Props = {
     shouldShowMonthAndYearDropdowns?: boolean
     additionalPickerClassName?: string
     userTimezone?: string | null
+    onHide?: () => void
 }
 
 export type DatePickerProps = Props & Partial<DateRangeProps>
@@ -41,6 +42,7 @@ export type DatePickerProps = Props & Partial<DateRangeProps>
 export const DatePicker = ({
     children,
     onSubmit,
+    onHide,
     initialSettings: {
         alwaysShowCalendars = true,
         applyButtonClasses = 'btn-primary',
@@ -295,6 +297,7 @@ export const DatePicker = ({
                         ...themes,
                         'displayed'
                     )
+                    onHide?.()
                 }}
             >
                 {children || <span />}

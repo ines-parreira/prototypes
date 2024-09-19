@@ -5,9 +5,11 @@ import {screen, render, fireEvent} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import moment from 'moment'
 import {RootState, StoreDispatch} from 'state/types'
 import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
 import {OwnProps} from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
+import {TWO_FA_REQUIRED_AFTER_DAYS} from 'state/currentUser/constants'
 
 jest.mock(
     'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal',
@@ -176,5 +178,160 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
 
         // The seconds are lost since we don't show a second selector in the datetime picker
         expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-21T12:34:00')
+    })
+
+    describe('Early enforcement check', () => {
+        const store = mockStore({
+            currentUser: fromJS({
+                timezone: 'US/Pacific',
+                has_2fa_enabled: true,
+            }),
+        })
+
+        const performEnforcementFlow = () => {
+            // Open calendar
+            fireEvent.click(screen.getByLabelText(/Enforcement time/))
+
+            // Click the day 11 (less than 14 days away)
+            const day = screen
+                .getAllByText('12')
+                .filter((elt) => elt.getAttribute('data-title') === 'r2c1')[0]
+            userEvent.click(day)
+
+            // Confirm choice
+            fireEvent.click(screen.getByText('Apply'))
+        }
+
+        it('should show the confirmation popover when setting a value less than 14 days away', () => {
+            const on2FAEnforced = jest.fn()
+
+            render(
+                <Provider store={store}>
+                    <TwoFactorAuthenticationEnforcement
+                        {...minProps}
+                        twoFAEnforcedDatetime={'2023-06-02T12:34:56'}
+                        on2FAEnforced={on2FAEnforced}
+                    />
+                </Provider>
+            )
+            performEnforcementFlow()
+
+            expect(
+                screen.getByText('Confirm Enforcement Time')
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', {name: 'Review'})
+            ).toBeInTheDocument()
+            expect(on2FAEnforced).not.toHaveBeenCalled()
+        })
+
+        it('should not warn when using the default recommended value', () => {
+            const on2FAEnforced = jest.fn()
+            const recommendedEnforcement = moment()
+                .add(TWO_FA_REQUIRED_AFTER_DAYS, 'days')
+                .toISOString()
+
+            render(
+                <Provider store={store}>
+                    <TwoFactorAuthenticationEnforcement
+                        {...minProps}
+                        twoFAEnforcedDatetime={recommendedEnforcement}
+                        on2FAEnforced={on2FAEnforced}
+                    />
+                </Provider>
+            )
+
+            // Open the calendar and direcly re-apply the same date
+            fireEvent.click(screen.getByLabelText(/Enforcement time/))
+            fireEvent.click(screen.getByText('Apply'))
+
+            expect(
+                screen.queryByText('Confirm Enforcement Time')
+            ).not.toBeInTheDocument()
+            expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-16T12:34:00')
+        })
+
+        it('should not warn when not changing the current date', () => {
+            const on2FAEnforced = jest.fn()
+
+            render(
+                <Provider store={store}>
+                    <TwoFactorAuthenticationEnforcement
+                        {...minProps}
+                        twoFAEnforcedDatetime={'2023-06-12T12:34:00'}
+                        on2FAEnforced={on2FAEnforced}
+                    />
+                </Provider>
+            )
+
+            // Open the calendar and direcly re-apply the same date
+            fireEvent.click(screen.getByLabelText(/Enforcement time/))
+            fireEvent.click(screen.getByText('Apply'))
+
+            expect(
+                screen.queryByText('Confirm Enforcement Time')
+            ).not.toBeInTheDocument()
+            expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-12T12:34:00')
+        })
+
+        it('should re-open the date picker when clicking the review button', () => {
+            const on2FAEnforced = jest.fn()
+
+            render(
+                <Provider store={store}>
+                    <TwoFactorAuthenticationEnforcement
+                        {...minProps}
+                        twoFAEnforcedDatetime={'2023-06-02T12:34:56'}
+                        on2FAEnforced={on2FAEnforced}
+                    />
+                </Provider>
+            )
+            performEnforcementFlow()
+
+            fireEvent.click(screen.getByRole('button', {name: 'Review'}))
+
+            expect(screen.getByText('Apply')).toBeInTheDocument()
+            expect(on2FAEnforced).not.toHaveBeenCalled()
+        })
+
+        it('should re-open the date picker when clicking outside of the popover', () => {
+            const on2FAEnforced = jest.fn()
+
+            render(
+                <Provider store={store}>
+                    <TwoFactorAuthenticationEnforcement
+                        {...minProps}
+                        twoFAEnforcedDatetime={'2023-06-02T12:34:56'}
+                        on2FAEnforced={on2FAEnforced}
+                    />
+                </Provider>
+            )
+            performEnforcementFlow()
+
+            fireEvent.click(screen.getByText(/Two-Factor Authentication/))
+
+            expect(screen.getByText('Apply')).toBeInTheDocument()
+            expect(on2FAEnforced).not.toHaveBeenCalled()
+        })
+
+        it('should save the value when clicking the confirm button', () => {
+            const on2FAEnforced = jest.fn()
+
+            render(
+                <Provider store={store}>
+                    <TwoFactorAuthenticationEnforcement
+                        {...minProps}
+                        twoFAEnforcedDatetime={'2023-06-02T12:34:56'}
+                        on2FAEnforced={on2FAEnforced}
+                    />
+                </Provider>
+            )
+            performEnforcementFlow()
+
+            fireEvent.click(screen.getByRole('button', {name: 'Confirm'}))
+            jest.runAllTimers() // Wait for the popover to close
+
+            expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-12T12:34:00')
+        })
     })
 })

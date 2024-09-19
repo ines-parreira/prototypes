@@ -68,6 +68,9 @@ exports[`<TwoFactorAuthenticationEnforcement /> render() should render turned on
             value="06/02/2023 5:34 AM"
           />
         </div>
+        <div
+          id="confirm-2"
+        />
       </div>
     </div>
   </div>

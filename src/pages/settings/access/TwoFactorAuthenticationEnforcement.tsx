@@ -1,5 +1,6 @@
 import React, {useCallback, useState} from 'react'
-import moment from 'moment-timezone'
+import classNames from 'classnames'
+import moment, {Moment} from 'moment'
 import {Label} from '@gorgias/ui-kit'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -9,9 +10,14 @@ import {
     has2FaEnabled as has2FaEnabledSelector,
 } from 'state/currentUser/selectors'
 import TwoFactorAuthenticationModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
-import {TWO_FA_REQUIRED_AFTER_DAYS} from 'state/currentUser/constants'
+import {
+    TWO_FA_REQUIRED_AFTER_DAYS,
+    TWO_FA_WARN_LESS_THAN_DAYS,
+} from 'state/currentUser/constants'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import {DatePicker} from 'pages/common/forms/DatePicker'
 import TextInput from 'pages/common/forms/input/TextInput'
+import css from './TwoFactorAuthenticationEnforcement.less'
 
 /**
  * Generate a moment datetime based on a string and timezone.
@@ -45,6 +51,11 @@ export default function TwoFactorAuthenticationEnforcement({
     on2FAEnforced,
 }: OwnProps) {
     const [twoFAModalVisible, set2FAModalVisible] = useState(false)
+    const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
+    const [twoFAEnforcement, setTwoFAEnforcement] = useState<string | null>(
+        null
+    )
+
     const has2FAEnabled = useAppSelector(has2FaEnabledSelector)
     const userTimezone = useAppSelector(getTimezone)
 
@@ -52,10 +63,23 @@ export default function TwoFactorAuthenticationEnforcement({
     const enforcementDatetime = setTimezone(twoFAEnforcedDatetime, userTimezone)
 
     const set2FAEnforced = useCallback(
-        (value: moment.Moment | null) => {
-            on2FAEnforced(value ? value.toISOString().split('.')[0] : null)
+        (value: moment.Moment | null, showConfirmationPopover?: () => void) => {
+            const strValue = value ? value.toISOString().split('.')[0] : null
+
+            // Ask for confirmation if setting 2FA enforcement too early
+            if (
+                showConfirmationPopover &&
+                value &&
+                !value.isSame(enforcementDatetime) &&
+                value.diff(moment(), 'days', true) < TWO_FA_WARN_LESS_THAN_DAYS
+            ) {
+                setTwoFAEnforcement(strValue)
+                showConfirmationPopover()
+            } else {
+                on2FAEnforced(strValue)
+            }
         },
-        [on2FAEnforced]
+        [on2FAEnforced, enforcementDatetime]
     )
 
     const handleToggle = useCallback(
@@ -104,24 +128,78 @@ export default function TwoFactorAuthenticationEnforcement({
                         >
                             Enforcement time
                         </Label>
-                        <DatePicker
-                            initialSettings={{
-                                drops: 'auto',
-                                endDate: enforcementDatetime,
-                                startDate: enforcementDatetime,
-                            }}
-                            onSubmit={set2FAEnforced}
+                        <ConfirmationPopover
+                            placement="bottom-end"
+                            title={
+                                <>
+                                    <i
+                                        className={classNames(
+                                            'material-icons',
+                                            css.warningIcon
+                                        )}
+                                    >
+                                        warning
+                                    </i>
+                                    <span>Confirm Enforcement Time</span>
+                                </>
+                            }
+                            content={
+                                <>
+                                    <p>
+                                        Enabling 2-Factor Authentication (2FA)
+                                        is a crucial security measure.{' '}
+                                        <b>
+                                            To avoid disruptions, a two week
+                                            notice is recommended for users to
+                                            comply.
+                                        </b>
+                                    </p>
+                                    <p>
+                                        Insufficient notice can result in access
+                                        issues. Consider sending a secondary
+                                        reminder directly to your users.
+                                    </p>
+                                </>
+                            }
+                            confirmLabel="Confirm"
+                            cancelLabel="Review"
+                            cancelButtonProps={{intent: 'secondary'}}
+                            onConfirm={() => on2FAEnforced(twoFAEnforcement)}
+                            onCancel={() => setIsDatePickerOpen(true)}
+                            showCancelButton
                         >
-                            <div>
-                                <TextInput
-                                    id="twoFAEnforcementDatetime"
-                                    name="twoFAEnforcementDatetime"
-                                    value={enforcementDatetime.format('L LT')}
-                                    isDisabled={disabled || loading}
-                                    data-1p-ignore
-                                />
-                            </div>
-                        </DatePicker>
+                            {({uid, onDisplayConfirmation, elementRef}) => (
+                                <DatePicker
+                                    initialSettings={{
+                                        drops: 'auto',
+                                        endDate: enforcementDatetime,
+                                        startDate: enforcementDatetime,
+                                    }}
+                                    onSubmit={(value: Moment) =>
+                                        set2FAEnforced(
+                                            value,
+                                            onDisplayConfirmation
+                                        )
+                                    }
+                                    onHide={() => setIsDatePickerOpen(false)}
+                                    isOpen={isDatePickerOpen}
+                                >
+                                    <div>
+                                        <TextInput
+                                            id="twoFAEnforcementDatetime"
+                                            name="twoFAEnforcementDatetime"
+                                            value={enforcementDatetime.format(
+                                                'L LT'
+                                            )}
+                                            isDisabled={disabled || loading}
+                                            ref={elementRef}
+                                            data-1p-ignore
+                                        />
+                                        <div id={uid}></div>
+                                    </div>
+                                </DatePicker>
+                            )}
+                        </ConfirmationPopover>
                     </div>
                 )}
             </div>
