@@ -1,4 +1,4 @@
-import React, {MutableRefObject, useContext, useMemo, useRef} from 'react'
+import React, {useContext, useMemo, useState} from 'react'
 
 import {Button} from 'reactstrap'
 import css from 'pages/convert/campaigns/components/ContactForm/ContactFormWrapper.less'
@@ -11,8 +11,12 @@ import {STEPS} from 'pages/convert/campaigns/components/ContactForm/steps'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import EditorDrawerHeader from 'pages/automate/workflows/editor/visualBuilder/EditorDrawerHeader'
-import {CampaignContactFormAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {AttachmentEnum} from 'common/types'
+import {
+    CampaignDiscountOfferAttachment,
+    CampaignFormExtra,
+    ContactFormField,
+    ContactFormTarget,
+} from 'pages/convert/campaigns/types/CampaignAttachment'
 
 type ContactFormWrapperProps = {
     open: boolean
@@ -22,20 +26,24 @@ type ContactFormWrapperProps = {
     onReset?: () => void
 }
 
-const ContactForm = (props: ContactFormWrapperProps) => {
-    const {open, onOpenChange, onCancel, onSubmit, onReset} = props
+type ContactFormProps = {
+    steps: typeof STEPS
+} & ContactFormWrapperProps
 
-    const attachmentBody: MutableRefObject<CampaignContactFormAttachment> =
-        useRef({
-            contentType: AttachmentEnum.ContactForm,
-            name: 'Contact Form',
-            extra: {
-                fields: [],
-                after_form_content: {cta: '', disclaimer: ''},
-                on_success_content: {message: '', attachments: []},
-                targets: [],
-            },
-        })
+const ContactForm = (props: ContactFormProps) => {
+    const [data, setData] = useState<CampaignFormExtra>({
+        fields: [] as ContactFormField[],
+        after_form_content: {cta: '', disclaimer: ''},
+        on_success_content: {
+            message: '',
+            attachments: [] as CampaignDiscountOfferAttachment[],
+        },
+        targets: [
+            {type: 'shopify', subscriber_types: ['email'], tags: []},
+        ] as ContactFormTarget[],
+    })
+
+    const {open, onOpenChange, onCancel, onSubmit, onReset, steps} = props
 
     const handleCancel = () => {
         onOpenChange(false)
@@ -76,6 +84,8 @@ const ContactForm = (props: ContactFormWrapperProps) => {
         setActiveStep(nextStep ?? activeStep)
     }
 
+    const [nextButtonActive, setNextButtonActive] = useState(false)
+
     return (
         <Drawer
             name="Contact Form"
@@ -92,17 +102,19 @@ const ContactForm = (props: ContactFormWrapperProps) => {
             ></EditorDrawerHeader>
             <Drawer.Content className={css.drawerContent}>
                 <WizardProgressHeader
-                    labels={STEPS.reduce((acc, step) => {
+                    labels={steps.reduce((acc, step) => {
                         acc[step.label] = step.label
                         return acc
                     }, {} as Record<string, string>)}
                     className={css.wizardHeaderContainer}
                 />
-                {STEPS.forEach((step) => (
-                    <WizardStep name={step.label}>
+                {steps.map((step, idx) => (
+                    <WizardStep key={idx} name={step.label}>
                         <div className={css.contactFormWizardStep}>
                             {step.getComponent({
-                                attachmentBody: attachmentBody.current,
+                                setNextButtonActive: setNextButtonActive,
+                                attachmentData: data,
+                                setAttachmentData: setData,
                             })}
                         </div>
                     </WizardStep>
@@ -121,7 +133,11 @@ const ContactForm = (props: ContactFormWrapperProps) => {
                 <Button onClick={onClickBack}>
                     {isFirstStep ? 'Cancel' : 'Previous'}
                 </Button>
-                <Button onClick={onClickNext} color="primary">
+                <Button
+                    onClick={onClickNext}
+                    color="primary"
+                    disabled={!nextButtonActive}
+                >
                     {isLastStep ? 'Add Form' : 'Next'}
                 </Button>
             </Drawer.Footer>
@@ -131,7 +147,7 @@ const ContactForm = (props: ContactFormWrapperProps) => {
 
 const ConctactFromWrapper = (props: ContactFormWrapperProps) => (
     <Wizard steps={STEPS.map((step) => step.label)}>
-        <ContactForm {...props} />
+        <ContactForm {...props} steps={STEPS} />
     </Wizard>
 )
 
