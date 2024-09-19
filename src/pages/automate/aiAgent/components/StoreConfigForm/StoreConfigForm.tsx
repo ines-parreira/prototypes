@@ -388,6 +388,7 @@ export const StoreConfigForm = ({
                     isRequired
                     subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
                     sectionRef={knowledgeSectionRef}
+                    data-candu-id="ai-agent-configuration-knowledge-copy"
                 >
                     <div className={css.formGroup}>
                         <Label className={css.label}>Help Center</Label>
