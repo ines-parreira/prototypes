@@ -1,6 +1,5 @@
 import {
     AiAgentInput,
-    AiAgentMessageType,
     CreatePlaygroundBody,
     CreatePlaygroundRequest,
     MockTicketMessage,
@@ -10,9 +9,6 @@ import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.ty
 
 const PLAYGROUND_TICKET_ID = '123'
 const PLAYGROUND_INTEGRATION_ID = -1
-const GREETING_MESSAGE_META = {
-    ai_agent_message_type: AiAgentMessageType.GREETING,
-}
 
 export type NewCustomerData = {
     body_text: string
@@ -145,19 +141,14 @@ export const createMockHttpIntegrationPayload = ({
         },
         id: PLAYGROUND_TICKET_ID,
         messages: JSON.stringify(
-            messages.map((message, index) =>
+            messages.map((message) =>
                 createMockTicketMessage({
                     body_text: message.bodyText,
                     subject,
                     created_datetime,
                     from_agent: message.fromAgent,
                     channel,
-                    meta: {
-                        ...meta,
-                        ...(channel === 'chat' && index === 0
-                            ? GREETING_MESSAGE_META
-                            : {}),
-                    },
+                    meta: message.meta,
                 })
             )
         ),
@@ -171,19 +162,14 @@ export const createMockClientPayload = ({
     ...body
 }: CreatePlaygroundBody): CreatePlaygroundRequest => ({
     ...body,
-    messages: messages.map((message, index) => {
+    messages: messages.map((message) => {
         return createMockTicketMessage({
             body_text: message.bodyText,
             created_datetime: message.createdDatetime.replace('Z', ''),
             subject: body.subject,
             from_agent: message.fromAgent,
             channel: body.channel,
-            meta: {
-                ...body.meta,
-                ...(body.channel === 'chat' && index === 0
-                    ? GREETING_MESSAGE_META
-                    : {}),
-            },
+            meta: message.meta,
         })
     }),
 })

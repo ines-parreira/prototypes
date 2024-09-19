@@ -1,7 +1,4 @@
-import {
-    CreatePlaygroundMessage,
-    MockTicketMessage,
-} from 'models/aiAgentPlayground/types'
+import {CreatePlaygroundMessage} from 'models/aiAgentPlayground/types'
 import {
     createMockClientPayload,
     createMockHttpIntegrationPayload,
@@ -65,30 +62,18 @@ describe('new-customer-playground util', () => {
         `)
     })
 
-    it('should add meta for first message when channel is chat', () => {
-        const result = createMockHttpIntegrationPayload({
-            body_text: 'test',
-            subject: '',
-            domain: 'test-gorgias',
-            messages: [getMockTicketMessage({}), getMockTicketMessage()],
-            created_datetime: '123',
-            channel: 'chat',
-        })
-        const messages = JSON.parse(
-            result.ticket.messages
-        ) as MockTicketMessage[]
-        expect(messages[0].meta).toEqual({
-            ai_agent_message_type: 'ai_agent_greeting',
-        })
-        expect(messages[1].meta).toEqual({})
-    })
-
     it('should create mock client payload for chat', () => {
         const result = createMockClientPayload({
             body_text: 'test',
             subject: '',
             domain: 'test-gorgias',
-            messages: [getMockTicketMessage()],
+            messages: [
+                getMockTicketMessage({
+                    meta: {
+                        ai_agent_message_type: 'ai_agent_greeting',
+                    },
+                }),
+            ],
             created_datetime: '123',
             channel: 'chat',
             use_mock_context: true,

@@ -16,6 +16,7 @@ import TicketEvent from '../TicketEvent/TicketEvent'
 import css from './PlaygroundMessage.less'
 
 export const AI_AGENT_SENDER = 'AI Agent'
+export const GREETING_MESSAGE = 'Hey there 👋'
 
 type Props = {
     withAnimation?: boolean

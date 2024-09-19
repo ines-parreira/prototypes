@@ -7,11 +7,13 @@ import {
     PlaygroundPromptMessage,
     PlaygroundMessage,
     PlaygroundTextMessage,
+    isApiEligiblePlaygroundMessage,
 } from 'models/aiAgentPlayground/types'
 import {StoreConfiguration} from 'models/aiAgent/types'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {
     AI_AGENT_SENDER,
+    GREETING_MESSAGE,
     PlaygroundGenericErrorMessage,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
 import {CustomerHttpIntegrationDataMock} from '../constants'
@@ -61,6 +63,7 @@ export const usePlaygroundMessages = ({
 
     useEffect(() => {
         setMessages(initialMessages)
+        setIsWaitingResponse(false)
     }, [initialMessages])
 
     // We don't care what is in this object we just want to resend it to the AI Agent
@@ -81,9 +84,9 @@ export const usePlaygroundMessages = ({
         setIsWaitingResponse(false)
     }, [initialMessages])
 
-    const processMessage = useCallback(
+    const processMessages = useCallback(
         async (
-            userMessage: PlaygroundTextMessage | PlaygroundPromptMessage,
+            newMessages: PlaygroundMessage[],
             {customerEmail, subject}: {customerEmail: string; subject?: string}
         ) => {
             // Simulate an async API call to process the message
@@ -101,24 +104,30 @@ export const usePlaygroundMessages = ({
                 )
             }
 
+            const filteredMessages = newMessages.filter(
+                isApiEligiblePlaygroundMessage
+            )
+            const lastMessage = filteredMessages[filteredMessages.length - 1]
+
             try {
                 const abortController = new AbortController()
                 abortControllerRef.current = abortController
-                const newMessages = [...messages, userMessage]
 
                 const {data: aiAgentResponse} = await submitPlaygroundTicket([
                     {
                         use_mock_context: mockContext,
                         domain: gorgiasDomain,
                         customer_email: customerEmail,
-                        body_text: userMessage.content,
-                        created_datetime: userMessage.createdDatetime,
+                        body_text: lastMessage.content,
+                        created_datetime: lastMessage.createdDatetime,
                         channel,
                         // TODO: Remove in https://linear.app/gorgias/issue/AUTAI-1418/update-mechanism-to-get-customer-data
                         email_integration_id: emailIntegration?.id,
                         messages:
-                            mapPlaygroundMessagesToServerMessages(newMessages),
-                        meta: getPlaygroundMessageMeta(userMessage),
+                            mapPlaygroundMessagesToServerMessages(
+                                filteredMessages
+                            ),
+                        meta: getPlaygroundMessageMeta(lastMessage),
                         subject: subject ?? '',
                         http_integration_id: httpIntegrationId,
                         account_id: accountId,
@@ -165,7 +174,7 @@ export const usePlaygroundMessages = ({
                     extra: {
                         context:
                             'Error during message submission from playground',
-                        message: userMessage,
+                        messages: newMessages,
                         accountId,
                     },
                 })
@@ -194,7 +203,6 @@ export const usePlaygroundMessages = ({
             channel,
             gorgiasDomain,
             httpIntegrationId,
-            messages,
             onNewConversation,
             storeData,
             submitPlaygroundTicket,
@@ -206,6 +214,7 @@ export const usePlaygroundMessages = ({
             newMessage: PlaygroundTextMessage | PlaygroundPromptMessage,
             {customerEmail, subject}: {customerEmail: string; subject?: string}
         ) => {
+            const newMessages = [...messages, newMessage]
             // Add placeholder only for real message processing as for action response is fast and we don't need it
             if (newMessage.type !== MessageType.PROMPT) {
                 // Add placeholder and user message to the chat
@@ -214,17 +223,29 @@ export const usePlaygroundMessages = ({
                     type: MessageType.PLACEHOLDER,
                     createdDatetime: new Date().toISOString(),
                 }
-                setMessages([...messages, newMessage, placeholderMessage])
-            } else {
-                setMessages([...messages, newMessage])
+                const greetingMessage: PlaygroundMessage = {
+                    sender: AI_AGENT_SENDER,
+                    type: MessageType.MESSAGE,
+                    content: GREETING_MESSAGE,
+                    createdDatetime: new Date().toISOString(),
+                }
+
+                const messagesToAdd =
+                    channel === 'chat' && messages.length === 1
+                        ? [greetingMessage, placeholderMessage]
+                        : [placeholderMessage]
+
+                newMessages.push(...messagesToAdd)
             }
+
+            setMessages(newMessages)
 
             // Remove waiting state before each message send
             setIsWaitingResponse(false)
 
-            await processMessage(newMessage, {customerEmail, subject})
+            await processMessages(newMessages, {customerEmail, subject})
         },
-        [messages, processMessage]
+        [channel, messages, processMessages]
     )
 
     return {

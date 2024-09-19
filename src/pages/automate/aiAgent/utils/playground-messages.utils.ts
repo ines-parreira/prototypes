@@ -19,7 +19,10 @@ import {
     CustomerHttpIntegrationDataMock,
     PLAYGROUND_PROMPT_CONTENT,
 } from '../constants'
-import {AI_AGENT_SENDER} from '../components/PlaygroundMessage/PlaygroundMessage'
+import {
+    AI_AGENT_SENDER,
+    GREETING_MESSAGE,
+} from '../components/PlaygroundMessage/PlaygroundMessage'
 
 export const getPlaygroundMessageMeta = (message: PlaygroundMessage) => {
     if (message.type === MessageType.PROMPT) {
@@ -28,6 +31,15 @@ export const getPlaygroundMessageMeta = (message: PlaygroundMessage) => {
                 message.prompt === PlaygroundPromptType.RELEVANT_RESPONSE
                     ? 'ai_agent_response_relevant_true'
                     : 'ai_agent_response_relevant_false',
+        }
+    }
+
+    if (
+        message.type === MessageType.MESSAGE &&
+        message.content === GREETING_MESSAGE
+    ) {
+        return {
+            ai_agent_message_type: AiAgentMessageType.GREETING,
         }
     }
 }
