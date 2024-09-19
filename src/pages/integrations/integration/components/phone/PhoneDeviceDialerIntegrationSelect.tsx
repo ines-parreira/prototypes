@@ -1,4 +1,5 @@
 import React, {useRef, useState} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -38,9 +39,15 @@ export default function PhoneDeviceDialerIntegrationSelect({
                 data-testid="toggle-integration-dropdown"
             >
                 <ButtonIconLabel icon="phone" />
-                {value.name}
+                <div
+                    className={css.integrationSelectorLabel}
+                    id="integration-selector-label"
+                >
+                    {value.name}
+                </div>
                 <ButtonIconLabel icon="arrow_drop_down" />
             </Button>
+            <Tooltip target="integration-selector-label">{value.name}</Tooltip>
             <Dropdown
                 isOpen={isDropdownOpen}
                 onToggle={setIsDropdownOpen}
