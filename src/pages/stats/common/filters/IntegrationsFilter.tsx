@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
+import {getIntegrationIcon} from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {
@@ -45,6 +46,7 @@ export function IntegrationsFilter({
             .map((integration) => ({
                 label: integration.name,
                 value: `${integration.id}`,
+                icon: getIntegrationIcon(integration),
             }))
     }, [value, integrations])
 
@@ -54,6 +56,7 @@ export function IntegrationsFilter({
                 options: integrations.map((integration) => ({
                     label: integration.name,
                     value: `${integration.id}`,
+                    icon: getIntegrationIcon(integration),
                 })),
             },
         ]

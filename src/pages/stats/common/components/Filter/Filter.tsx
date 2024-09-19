@@ -202,6 +202,7 @@ const Filter = ({
                                     >
                                         <FilterDropdownItemLabel
                                             label={option.label}
+                                            icon={option.icon}
                                         />
                                     </DropdownItem>
                                 ))}

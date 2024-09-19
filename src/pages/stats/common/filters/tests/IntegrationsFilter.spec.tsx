@@ -121,7 +121,7 @@ describe('IntegrationsFilter', () => {
             screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
         )
         userEvent.click(
-            screen.getByRole('option', {name: integrations[0].name})
+            screen.getByRole('option', {name: new RegExp(integrations[0].name)})
         )
 
         expect(mockedDispatch).toHaveBeenCalledWith(

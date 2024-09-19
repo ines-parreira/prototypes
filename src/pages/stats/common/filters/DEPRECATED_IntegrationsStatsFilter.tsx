@@ -64,7 +64,7 @@ const getAppIntegrationIcon = (integration: AppIntegration) => {
     return ''
 }
 
-const getIntegrationIcon = (integration: Integration) => {
+export const getIntegrationIcon = (integration: Integration) => {
     if (integration.type === IntegrationType.App) {
         return getAppIntegrationIcon(integration)
     }

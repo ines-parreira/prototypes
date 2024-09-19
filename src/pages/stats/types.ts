@@ -33,6 +33,7 @@ export type TooltipData = {
 export type DropdownOption = {
     label: string
     value: string
+    icon?: ReactNode
 }
 
 export type FilterOptionGroup = {

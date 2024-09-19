@@ -1,4 +1,11 @@
-import React, {useContext, useEffect, useMemo, useRef, useState} from 'react'
+import React, {
+    ReactNode,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
 
@@ -9,9 +16,10 @@ import {LABEL_MAX_WIDTH} from 'pages/stats/common/components/Filter/constants'
 
 type Props = {
     label: string
+    icon?: ReactNode
 }
 
-const FilterDropdownItemLabel = ({label}: Props) => {
+const FilterDropdownItemLabel = ({label, icon}: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const dropdownContext = useContext(DropdownContext)
 
@@ -41,6 +49,15 @@ const FilterDropdownItemLabel = ({label}: Props) => {
 
     return (
         <>
+            {icon ? (
+                typeof icon === 'string' ? (
+                    <i className={classnames('icon material-icons', css.icon)}>
+                        {icon}
+                    </i>
+                ) : (
+                    icon
+                )
+            ) : null}
             <div
                 ref={ref}
                 className={classnames(showTooltip && css.rtlOption)}
