@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import {ulid} from 'ulidx'
 import {AttachmentEnum} from 'common/types'
@@ -34,6 +34,11 @@ type Props = {
 }
 
 const ProductRecommendationScenarioPicker = ({onClick}: Props) => {
+    useEffect(() => {
+        // a very hackish way that forces the popover element in the parent tree to re-paint itself at the correct location
+        window.dispatchEvent(new Event('resize'))
+    }, [])
+
     const {triggers, addTrigger} = useCampaignDetailsContext()
     const triggerRecommendationModal = useModalManager(
         'TRIGGER_RECOMMENDATION',
