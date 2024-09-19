@@ -12,6 +12,7 @@ import {CampaignTriggerBusinessHoursValuesEnum} from '../types/enums/CampaignTri
 import {
     campaignAttachmentIsDiscountOffer,
     campaignAttachmentIsProduct,
+    campaignAttachmentIsProductRecommendation,
 } from '../types/CampaignAttachment'
 
 export function filterWithProductCards(campaigns: Campaign[]): Campaign[] {
@@ -19,7 +20,9 @@ export function filterWithProductCards(campaigns: Campaign[]): Campaign[] {
         (campaign) =>
             campaign.attachments &&
             campaign.attachments.some(
-                (attachment) => !!campaignAttachmentIsProduct(attachment)
+                (attachment) =>
+                    !!campaignAttachmentIsProduct(attachment) ||
+                    !!campaignAttachmentIsProductRecommendation(attachment)
             )
     )
 }

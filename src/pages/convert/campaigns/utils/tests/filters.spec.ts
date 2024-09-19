@@ -1,4 +1,7 @@
-import {campaign} from 'fixtures/campaign'
+import {
+    campaign,
+    campaignProductRecommendationAttachment,
+} from 'fixtures/campaign'
 import {campaignWithABGroup} from 'fixtures/abGroup'
 import {AttachmentEnum} from 'common/types'
 import {Campaign} from '../../types/Campaign'
@@ -81,7 +84,7 @@ const campaignThree: Campaign = {
             value: CampaignTriggerBusinessHoursValuesEnum.During,
         },
     ],
-    attachments: [],
+    attachments: [campaignProductRecommendationAttachment],
     status: CampaignStatus.Active,
 }
 
@@ -144,8 +147,13 @@ const campaignWithABTest: Campaign = {
 describe('filterWithProductCards()', () => {
     it('should return campaigns with product cards', () => {
         expect(
-            filterWithProductCards([campaignOne, campaignTwo, campaignFive])
-        ).toEqual([campaignOne, campaignFive])
+            filterWithProductCards([
+                campaignOne,
+                campaignTwo,
+                campaignThree,
+                campaignFive,
+            ])
+        ).toEqual([campaignOne, campaignThree, campaignFive])
     })
 
     it('should return empty array if no campaigns with product cards', () => {
