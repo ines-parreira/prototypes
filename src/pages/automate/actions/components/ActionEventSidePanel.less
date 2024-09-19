@@ -11,6 +11,12 @@
     }
     .drawer {
         background-color: var(--neutral-grey-0) !important;
+
+        grid-template-areas:
+            'header'
+            'main' !important;
+        grid-template-rows: 64px auto !important;
+
         .drawerHeader {
             padding: @layout-spacing-s;
             .title {

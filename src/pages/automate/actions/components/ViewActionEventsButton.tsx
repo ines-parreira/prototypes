@@ -14,7 +14,7 @@ export default function BackToActionButton() {
     return (
         <Link to={() => routes.actionEvents(id)}>
             <Button fillStyle="ghost" intent="secondary">
-                View Action Events
+                View Events
             </Button>
         </Link>
     )

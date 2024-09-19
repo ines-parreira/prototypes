@@ -454,6 +454,6 @@ describe('<TemplateActionsForm />', () => {
         expect(screen.getByLabelText('API key', {exact: false})).toHaveValue(
             'test'
         )
-        expect(screen.queryByText('View Action Events')).toBeInTheDocument()
+        expect(screen.queryByText('View Events')).toBeInTheDocument()
     })
 })

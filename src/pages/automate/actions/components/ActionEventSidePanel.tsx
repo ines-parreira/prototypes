@@ -130,7 +130,7 @@ export default function ActionEventSidePanel({
                             <div key={i} className={css.failedStepContainer}>
                                 <div className={css.title}>
                                     <img src={webhooksIcon} alt={'webhooks'} />
-                                    <p>HTTP REQUEST</p>
+                                    <p>HTTP request</p>
                                 </div>
                                 <pre className={css.codeBlock}>
                                     {JSON.stringify(step.error, null, 2)}
@@ -155,7 +155,7 @@ export default function ActionEventSidePanel({
                             <div className={css.actionInfo}>
                                 <div className={css.title}>
                                     <img src={webhooksIcon} alt={'webhooks'} />
-                                    <p>HTTP REQUEST</p>
+                                    <p>HTTP request</p>
                                 </div>
                                 <div className={css.status}>
                                     <p>Status</p>
