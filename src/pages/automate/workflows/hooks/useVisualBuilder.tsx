@@ -131,7 +131,10 @@ export function useVisualBuilder(
                 return []
             }
 
-            const nodeVariable = buildWorkflowVariableFromNode(node)
+            const nodeVariable = buildWorkflowVariableFromNode(
+                visualBuilderGraph,
+                node
+            )
 
             if (!nodeVariable) {
                 return []
@@ -174,7 +177,10 @@ export function useVisualBuilder(
                 return false
             }
 
-            const nodeVariable = buildWorkflowVariableFromNode(node)
+            const nodeVariable = buildWorkflowVariableFromNode(
+                visualBuilderGraph,
+                node
+            )
 
             if (!nodeVariable) {
                 return false

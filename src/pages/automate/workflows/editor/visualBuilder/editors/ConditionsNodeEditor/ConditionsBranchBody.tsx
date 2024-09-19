@@ -16,16 +16,14 @@ import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/compone
 import Button from 'pages/common/components/button/Button'
 import {
     WorkflowVariable,
-    WorkflowVariableFormat,
     WorkflowVariableList,
-    WorkflowVariableType,
 } from 'pages/automate/workflows/models/variables.types'
 import {Condition} from 'pages/common/components/Condition/Condition'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import WorkflowVariableDropdown from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
 import css from './ConditionsNodeEditor.less'
-import {getOperatorListByType} from './constants'
+import {getOperatorListByVariable} from './constants'
 import {BooleanConditionType} from './conditions/BooleanConditionType'
 import {StringConditionType} from './conditions/StringConditionType'
 import {NumberConditionType} from './conditions/NumberConditionType'
@@ -46,10 +44,6 @@ interface Props {
     showNoneOption?: boolean
     hasMultipleChildren: boolean
     maxConditionsTooltipMessage: string
-    renderCustomConditionError?: (
-        condition: ConditionSchema,
-        variable: WorkflowVariable
-    ) => React.ReactNode | undefined
     onConditionTypeChange: (branchId: string, type: 'and' | 'or' | null) => void
     onVariableSelect: (variable: WorkflowVariable) => void
     onConditionChange: (
@@ -76,7 +70,6 @@ export const ConditionsBranchBody = ({
     onVariableSelect,
     onConditionChange,
     onConditionDelete,
-    renderCustomConditionError,
     hasMultipleChildren,
     availableVariables,
     conditions,
@@ -88,19 +81,14 @@ export const ConditionsBranchBody = ({
     isDisabled,
 }: Props) => {
     const renderInput = useCallback(
-        (
-            type: WorkflowVariableType,
-            format: WorkflowVariableFormat | undefined,
-            conditionIndex: number,
-            customConditionError: React.ReactNode | undefined
-        ) => {
+        (variable: WorkflowVariable, conditionIndex: number) => {
             const condition = conditions[conditionIndex]
 
             if ('exists' in condition || 'doesNotExist' in condition) {
                 return null
             }
 
-            switch (type) {
+            switch (variable.type) {
                 case 'boolean': {
                     const condition = conditions[conditionIndex] as Exclude<
                         BooleanSchema,
@@ -129,7 +117,6 @@ export const ConditionsBranchBody = ({
                         <StringConditionType
                             condition={condition}
                             shouldShowErrors={shouldShowErrors}
-                            customError={customConditionError}
                             onChange={(updatedCondition) =>
                                 onConditionChange(
                                     updatedCondition,
@@ -137,6 +124,7 @@ export const ConditionsBranchBody = ({
                                 )
                             }
                             isDisabled={isDisabled}
+                            options={variable.options}
                         />
                     )
                 }
@@ -148,7 +136,7 @@ export const ConditionsBranchBody = ({
                     return (
                         <NumberConditionType
                             condition={condition}
-                            format={format}
+                            format={variable.format}
                             shouldShowErrors={shouldShowErrors}
                             onChange={(updatedCondition) =>
                                 onConditionChange(
@@ -210,12 +198,12 @@ export const ConditionsBranchBody = ({
                         isExistenceOperator(key) &&
                         isStringOrNumberOperator(nextKey)
                     ) {
-                        draft[nextKey] = [schema[0], null]
+                        draft[nextKey] = [schema[0], undefined]
                     } else if (
                         (nextKey === 'lessThan' && key !== 'greaterThan') ||
                         (nextKey === 'greaterThan' && key !== 'lessThan')
                     ) {
-                        draft[nextKey] = [schema[0], null]
+                        draft[nextKey] = [schema[0], undefined]
                     } else {
                         // @ts-expect-error
                         draft[nextKey] = draft[key]
@@ -296,9 +284,8 @@ export const ConditionsBranchBody = ({
                             if (!variable) return null
                             if (!type) return null
 
-                            const operators = getOperatorListByType(
-                                variable.type
-                            )
+                            const operators =
+                                getOperatorListByVariable(variable)
 
                             return (
                                 <div
@@ -322,15 +309,7 @@ export const ConditionsBranchBody = ({
                                         )}
                                         isDisabled={isDisabled}
                                     >
-                                        {renderInput(
-                                            variable.type,
-                                            variable.format,
-                                            index,
-                                            renderCustomConditionError?.(
-                                                condition,
-                                                variable
-                                            )
-                                        )}
+                                        {renderInput(variable, index)}
                                     </Condition>
                                 </div>
                             )

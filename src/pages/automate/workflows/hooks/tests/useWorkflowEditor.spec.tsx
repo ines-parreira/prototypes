@@ -1,141 +1,96 @@
-import {act, renderHook} from '@testing-library/react-hooks'
-import React, {ReactChildren} from 'react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {act} from '@testing-library/react-hooks'
+import {ulid} from 'ulidx'
+import {produce} from 'immer'
+
+import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {
-    useDownloadWorkflowConfigurationStepLogs,
     useGetWorkflowConfiguration,
     useUpsertWorkflowConfiguration,
-    useFetchWorkflowConfiguration,
     useFetchWorkflowConfigurationTranslations,
     useDeleteWorkflowConfigurationTranslations,
     useUpsertWorkflowConfigurationTranslations,
 } from 'models/workflows/queries'
+import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import {shopifyIntegration} from 'fixtures/integrations'
+import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+
 import {useWorkflowEditor} from '../useWorkflowEditor'
 
-jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
-jest.mock('models/workflows/queries', () => ({
-    useDownloadWorkflowConfigurationStepLogs: jest.fn(),
-    useGetWorkflowConfiguration: jest.fn(),
-    useUpsertWorkflowConfiguration: jest.fn(),
-    useFetchWorkflowConfiguration: jest.fn(),
-    useFetchWorkflowConfigurationTranslations: jest.fn(),
-    useDeleteWorkflowConfigurationTranslations: jest.fn(),
-    useUpsertWorkflowConfigurationTranslations: jest.fn(),
-    workflowsConfigurationDefinitionKeys: {
-        get: () => ['get'],
-        lists: () => ['list'],
-    },
-}))
-const mockedUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
-    useDownloadWorkflowConfigurationStepLogs
-)
-const mockedUseGetWorkflowConfiguration = jest.mocked(
-    useGetWorkflowConfiguration
-)
+jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
+jest.mock('models/workflows/queries')
 
-const mockedUseUpsertWorkflowConfiguration = jest.mocked(
+const mockUseGetWorkflowConfiguration = jest.mocked(useGetWorkflowConfiguration)
+const mockUseUpsertWorkflowConfiguration = jest.mocked(
     useUpsertWorkflowConfiguration
 )
-
-const mockUseFetchWorkflowConfiguration = jest.mocked(
-    useFetchWorkflowConfiguration
-)
-
-const mockedUseFetchWorkflowConfigurationTranslations = jest.mocked(
+const mockUseFetchWorkflowConfigurationTranslations = jest.mocked(
     useFetchWorkflowConfigurationTranslations
 )
-const mockedUseDeleteWorkflowConfigurationTranslations = jest.mocked(
+const mockUseDeleteWorkflowConfigurationTranslations = jest.mocked(
     useDeleteWorkflowConfigurationTranslations
 )
-const mocedkUseUpsertWorkflowConfigurationTranslations = jest.mocked(
+const mockUseUpsertWorkflowConfigurationTranslations = jest.mocked(
     useUpsertWorkflowConfigurationTranslations
 )
-const queryClient = mockQueryClient()
+const mockUseSelfServiceStoreIntegrationContext = jest.mocked(
+    useSelfServiceStoreIntegrationContext
+)
 
-function updateMock() {
-    const mockSelfServiceConfiguration: ReturnType<
-        typeof useSelfServiceConfiguration
-    > = {
-        isFetchPending: false,
-        isUpdatePending: false,
-        storeIntegration: undefined,
-        selfServiceConfiguration: undefined,
-        handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
-    } as const
-
-    ;(
-        useSelfServiceConfiguration as jest.MockedFn<
-            typeof useSelfServiceConfiguration
-        >
-    ).mockReturnValue(mockSelfServiceConfiguration)
-    mockedUseDownloadWorkflowConfigurationStepLogs.mockReturnValue({
-        isLoading: false,
-        data: [],
-    } as unknown as ReturnType<typeof useDownloadWorkflowConfigurationStepLogs>)
-    mockedUseGetWorkflowConfiguration.mockReturnValue({
-        isFetching: false,
-        isRefetching: false,
-        isFetched: true,
-        data: [],
-    } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
-    mockUseFetchWorkflowConfiguration.mockReturnValue({
-        mutateAsync: jest.fn(),
-        isLoading: false,
-    } as unknown as ReturnType<typeof useFetchWorkflowConfiguration>)
-    mockedUseUpsertWorkflowConfiguration.mockReturnValue({
-        mutateAsync: jest.fn(),
-    } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
-    mockedUseFetchWorkflowConfigurationTranslations.mockReturnValue({
-        mutateAsync: jest.fn().mockResolvedValue({
-            data: {},
-        }),
-    } as unknown as ReturnType<typeof useFetchWorkflowConfigurationTranslations>)
-    mockedUseDeleteWorkflowConfigurationTranslations.mockReturnValue({
-        mutateAsync: jest.fn(),
-    } as unknown as ReturnType<typeof useDeleteWorkflowConfigurationTranslations>)
-    mocedkUseUpsertWorkflowConfigurationTranslations.mockReturnValue({
-        mutateAsync: jest.fn().mockResolvedValue({
-            data: {},
-        }),
-    } as unknown as ReturnType<typeof useUpsertWorkflowConfigurationTranslations>)
-}
-
-const renderHookOptions = {
-    wrapper: ({children}: {children: ReactChildren}) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    ),
-}
-
-describe('useWorkflowEditor', () => {
+describe('useWorkflowEditor()', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        updateMock()
-    })
-    it('generates an empty workflow configuration when is new', () => {
-        const {result} = renderHook(
-            () => useWorkflowEditor('a', true),
-            renderHookOptions
+
+        mockUseUpsertWorkflowConfiguration.mockReturnValue({
+            mutateAsync: jest.fn(),
+        } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
+        mockUseFetchWorkflowConfigurationTranslations.mockReturnValue({
+            mutateAsync: jest.fn().mockResolvedValue({
+                data: {},
+            }),
+        } as unknown as ReturnType<typeof useFetchWorkflowConfigurationTranslations>)
+        mockUseDeleteWorkflowConfigurationTranslations.mockReturnValue({
+            mutateAsync: jest.fn(),
+        } as unknown as ReturnType<typeof useDeleteWorkflowConfigurationTranslations>)
+        mockUseUpsertWorkflowConfigurationTranslations.mockReturnValue({
+            mutateAsync: jest.fn().mockResolvedValue({
+                data: {},
+            }),
+        } as unknown as ReturnType<typeof useUpsertWorkflowConfigurationTranslations>)
+        mockUseSelfServiceStoreIntegrationContext.mockReturnValue(
+            shopifyIntegration
         )
+    })
+
+    it('should generate an empty configuration when new', () => {
+        mockUseGetWorkflowConfiguration.mockReturnValue({
+            isInitialLoading: false,
+            data: undefined,
+        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+
+        const {result} = renderHookWithQueryClientProvider(() =>
+            useWorkflowEditor(ulid(), true)
+        )
+
         expect(result.current.configuration.name).toEqual('')
     })
 
-    it('should be a draft when is new', () => {
-        const {result} = renderHook(
-            () => useWorkflowEditor('a', true),
-            renderHookOptions
+    it('should be a draft when new', () => {
+        mockUseGetWorkflowConfiguration.mockReturnValue({
+            isInitialLoading: false,
+            data: undefined,
+        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+
+        const {result} = renderHookWithQueryClientProvider(() =>
+            useWorkflowEditor(ulid(), true)
         )
+
         expect(result.current.configuration.is_draft).toBe(true)
     })
 
     it('should be a draft when saved but not published', async () => {
-        const initialConfiguration = {
+        let configuration: WorkflowConfiguration = {
             id: 'a',
             internal_id: 'int-a',
-            account_id: 1,
             is_draft: true,
             name: 'remote name',
             initial_step_id: 'message1',
@@ -171,45 +126,59 @@ describe('useWorkflowEditor', () => {
                     to_step_id: 'handover1',
                 },
             ],
+            available_languages: ['en-US'],
         }
 
-        mockUseFetchWorkflowConfiguration.mockReturnValue({
-            mutateAsync: jest.fn().mockResolvedValue({
-                data: initialConfiguration,
-            }),
-            isLoading: false,
-        } as unknown as ReturnType<typeof useFetchWorkflowConfiguration>)
+        mockUseGetWorkflowConfiguration.mockReturnValue({
+            isInitialLoading: false,
+            data: configuration,
+        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+        mockUseUpsertWorkflowConfiguration.mockReturnValue({
+            mutateAsync: jest.fn().mockImplementation(([, {is_draft}]) => {
+                configuration = produce(configuration, (draft) => {
+                    draft.is_draft = is_draft
+                })
 
-        mockedUseUpsertWorkflowConfiguration.mockReturnValue({
-            mutateAsync: jest.fn().mockResolvedValue({
-                data: initialConfiguration,
+                return {data: configuration}
             }),
         } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
-        const {result, waitForNextUpdate} = renderHook(
-            () => useWorkflowEditor('a', false),
-            renderHookOptions
+        const {result, waitForNextUpdate} = renderHookWithQueryClientProvider(
+            () => useWorkflowEditor(configuration.id, false)
         )
         await waitForNextUpdate()
         expect(result.current.configuration.is_draft).toBe(true)
 
-        // save
-        act(() => void result.current.handleSave())
+        await act(async () => {
+            await result.current.handleSave()
+        })
+
+        mockUseGetWorkflowConfiguration.mockReturnValue({
+            isInitialLoading: false,
+            data: configuration,
+        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+
         await waitForNextUpdate()
         expect(result.current.configuration.is_draft).toBe(true)
 
-        // publish
-        act(() => void result.current.handlePublish())
+        await act(async () => {
+            await result.current.handlePublish()
+        })
+
+        mockUseGetWorkflowConfiguration.mockReturnValue({
+            isInitialLoading: false,
+            data: configuration,
+        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+
         await waitForNextUpdate()
         expect(result.current.configuration.is_draft).toBe(false)
     })
 
-    it('reflects changes on workflow name', async () => {
-        const initialConfiguration = {
+    it('should reflect changes on workflow name', async () => {
+        let configuration: WorkflowConfiguration = {
             id: 'a',
             internal_id: 'int-a',
-            account_id: 1,
-            is_draft: false,
+            is_draft: true,
             name: 'remote name',
             initial_step_id: 'message1',
             entrypoint: {
@@ -244,50 +213,68 @@ describe('useWorkflowEditor', () => {
                     to_step_id: 'handover1',
                 },
             ],
+            available_languages: ['en-US'],
         }
 
-        mockUseFetchWorkflowConfiguration.mockReturnValue({
-            mutateAsync: jest.fn().mockResolvedValue({
-                data: initialConfiguration,
-            }),
-            isLoading: false,
-        } as unknown as ReturnType<typeof useFetchWorkflowConfiguration>)
+        mockUseGetWorkflowConfiguration.mockReturnValue({
+            isInitialLoading: false,
+            data: configuration,
+        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+        mockUseUpsertWorkflowConfiguration.mockReturnValue({
+            mutateAsync: jest
+                .fn()
+                .mockImplementation(([, {is_draft, name}]) => {
+                    configuration = produce(configuration, (draft) => {
+                        draft.is_draft = is_draft
+                        draft.name = name
+                    })
 
-        mockedUseUpsertWorkflowConfiguration.mockReturnValue({
-            mutateAsync: jest.fn().mockResolvedValue({
-                data: {},
-            }),
+                    return {data: configuration}
+                }),
         } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
-        const {result, waitForNextUpdate, rerender} = renderHook(
-            () => useWorkflowEditor('a', false),
-            renderHookOptions
-        )
-        // wait for asynchronous effect to update the local configuration
+        const {result, waitForNextUpdate, rerender} =
+            renderHookWithQueryClientProvider(() =>
+                useWorkflowEditor(configuration.id, false)
+            )
+
         await waitForNextUpdate()
         expect(result.current.isFetchPending).toBe(false)
         expect(result.current.configuration.name).toBe('remote name')
         expect(result.current.isDirty).toBe(false)
 
-        // edit workflow name
         act(() =>
             result.current.dispatch({type: 'SET_NAME', name: 'local name'})
         )
+
         rerender()
+
         expect(result.current.visualBuilderGraph.name).toBe('local name')
         expect(result.current.isDirty).toBe(true)
 
-        // save
-        act(() => void result.current.handleSave())
+        await act(async () => {
+            await result.current.handleSave()
+        })
+
+        mockUseGetWorkflowConfiguration.mockReturnValue({
+            isInitialLoading: false,
+            data: configuration,
+        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+
         await waitForNextUpdate()
         expect(result.current.isSavePending).toBe(false)
         expect(result.current.isDirty).toBe(false)
 
-        // edit again
-        act(() => result.current.dispatch({type: 'SET_NAME', name: 'updated'}))
+        act(() => {
+            result.current.dispatch({type: 'SET_NAME', name: 'updated'})
+        })
+
         expect(result.current.isDirty).toBe(true)
-        // and discard
-        act(() => result.current.handleDiscard())
+
+        act(() => {
+            result.current.handleDiscard()
+        })
+
         expect(result.current.isDirty).toBe(false)
         expect(result.current.visualBuilderGraph.name).toBe('local name')
     })

@@ -7,7 +7,6 @@ import {Provider} from 'react-redux'
 
 import {shopifyIntegration} from 'fixtures/integrations'
 
-import {ShopifyIntegration} from 'models/integration/types'
 import ToolbarProvider from '../../ToolbarProvider'
 import AddDiscountCode from '../AddDiscountCode'
 
@@ -59,9 +58,7 @@ describe('<AddDiscountCode/>', () => {
                         shopifyIntegration,
                         shopifyIntegration,
                     ])}
-                    currentShopifyIntegration={
-                        shopifyIntegration as ShopifyIntegration
-                    }
+                    currentShopifyIntegration={shopifyIntegration}
                 >
                     <AddDiscountCode {...minProps} />
                 </ToolbarProvider>

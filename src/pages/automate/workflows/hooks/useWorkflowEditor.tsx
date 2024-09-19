@@ -7,16 +7,20 @@ import React, {
     useRef,
     useMemo,
 } from 'react'
-
 import {useQueryClient} from '@tanstack/react-query'
+import {produce} from 'immer'
+
 import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 import useThrottledValue from 'hooks/useThrottledValue'
 import {WorkflowStepMetricsMap} from 'hooks/reporting/automate/utils'
 import {
     useUpsertWorkflowConfiguration,
-    useFetchWorkflowConfiguration,
     workflowsConfigurationDefinitionKeys,
+    useGetWorkflowConfiguration,
 } from 'models/workflows/queries'
+import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import {IntegrationType} from 'models/integration/constants'
+
 import {
     LanguageCode,
     WorkflowConfiguration,
@@ -54,7 +58,6 @@ import useWorkflowTranslations, {
 } from './useWorkflowTranslations'
 
 export type WorkflowEditorContext = {
-    hookError: Maybe<string>
     configuration: WorkflowConfiguration
     visualBuilderGraph: VisualBuilderGraph
     isDirty: boolean
@@ -127,20 +130,20 @@ export function useWorkflowEditor(
     isNew: boolean
 ): WorkflowEditorContext {
     const queryClient = useQueryClient()
+    const storeIntegration = useSelfServiceStoreIntegrationContext()
 
-    const [hookError, setHookError] = useState<string | null>(null)
     const {mutateAsync: upsertWorkflowConfiguration} =
         useUpsertWorkflowConfiguration()
-    const {mutateAsync: fetchWorkflowConfiguration, isLoading: isFetchPending} =
-        useFetchWorkflowConfiguration()
+
+    const {data: remoteConfiguration, isInitialLoading: isFetchPending} =
+        useGetWorkflowConfiguration(workflowId, {enabled: !isNew})
+
     const [isSavePending, setIsSavePending] = useState(false)
     const [isPublishPending, setIsPublishPending] = useState(false)
     const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const [isTesting, setIsTesting] = useState(false)
     const [isFlowPublishingInChannels, setFlowPublishingInChannels] =
         useState(false)
-    const [remoteConfiguration, setRemoteConfiguration] =
-        useState<Maybe<WorkflowConfiguration>>(null)
     const workflowFactoryInstance = useRef(
         workflowConfigurationFactory(workflowId)
     )
@@ -148,7 +151,9 @@ export function useWorkflowEditor(
     const [workflowStepMetrics, setWorkflowStepMetrics] =
         useState<WorkflowStepMetricsMap | null>(null)
 
-    const configuration = remoteConfiguration || workflowFactoryInstance.current
+    const configuration =
+        (remoteConfiguration as WorkflowConfiguration | null) ||
+        workflowFactoryInstance.current
 
     const [visualBuilderGraph, setVisualBuilderGraph] =
         useState<VisualBuilderGraph>(
@@ -200,43 +205,49 @@ export function useWorkflowEditor(
             setFlowPublishingInChannels(false)
         }
     }, [isFlowPublishingInChannels, visualBuilderGraphDirty.nodeEditingId])
+
     useEffect(() => {
-        async function fetch() {
-            if (!isNew) {
-                const {data} = await fetchWorkflowConfiguration([workflowId])
-                if (!data) setHookError('workflow not found')
-                setRemoteConfiguration(data as WorkflowConfiguration)
-                if (data) {
-                    dispatch({
-                        type: 'RESET_GRAPH',
-                        graph: transformWorkflowConfigurationIntoVisualBuilderGraph(
-                            data as WorkflowConfiguration
-                        ),
-                    })
-                }
-                setCurrentLanguage(data?.available_languages?.[0] ?? 'en-US')
-            }
+        if (!remoteConfiguration) {
+            return
         }
 
-        void fetch()
-    }, [
-        workflowId,
-        isNew,
-        setCurrentLanguage,
-        dispatch,
-        fetchWorkflowConfiguration,
-    ])
+        const configuration = produce(
+            remoteConfiguration as WorkflowConfiguration,
+            (draft) => {
+                switch (storeIntegration.type) {
+                    case IntegrationType.Shopify: {
+                        if (
+                            draft.apps?.every((app) => app.type !== 'shopify')
+                        ) {
+                            draft.apps ??= []
+                            draft.apps.push({type: 'shopify'})
+                        }
+                        break
+                    }
+                }
+            }
+        )
 
-    useEffect(() => {
-        if (!remoteConfiguration) return
+        dispatch({
+            type: 'RESET_GRAPH',
+            graph: transformWorkflowConfigurationIntoVisualBuilderGraph(
+                configuration
+            ),
+        })
+        setCurrentLanguage(configuration.available_languages[0] ?? 'en-US')
         setVisualBuilderGraph(
             computeNodesPositions(
                 transformWorkflowConfigurationIntoVisualBuilderGraph(
-                    remoteConfiguration
+                    configuration
                 )
             )
         )
-    }, [remoteConfiguration, dispatch])
+    }, [
+        remoteConfiguration,
+        dispatch,
+        setCurrentLanguage,
+        storeIntegration.type,
+    ])
 
     const isVisualBuilderGraphDirty = useMemo(
         () =>
@@ -364,6 +375,15 @@ export function useWorkflowEditor(
 
     const updateWorkflow = useCallback(
         async (configurationDirty: WorkflowConfiguration) => {
+            const configurationUpsertDto = produce(
+                emptyTranslatedTexts(
+                    configurationDirty
+                ) as WorkflowConfigurationUpsertDto,
+                (draft) => {
+                    delete draft.apps
+                }
+            )
+
             let configuration: WorkflowConfiguration
 
             // why saving order differ depending on isNew?
@@ -373,9 +393,7 @@ export function useWorkflowEditor(
                     [
                         visualBuilderGraphDirty.wfConfigurationOriginal
                             .internal_id,
-                        emptyTranslatedTexts(
-                            configurationDirty
-                        ) as WorkflowConfigurationUpsertDto,
+                        configurationUpsertDto,
                     ]
                 )) as {data: WorkflowConfiguration}
 
@@ -387,9 +405,7 @@ export function useWorkflowEditor(
                     [
                         visualBuilderGraphDirty.wfConfigurationOriginal
                             .internal_id,
-                        emptyTranslatedTexts(
-                            configurationDirty
-                        ) as WorkflowConfigurationUpsertDto,
+                        configurationUpsertDto,
                     ]
                 )) as {data: WorkflowConfiguration}
 
@@ -400,8 +416,6 @@ export function useWorkflowEditor(
                 ...configurationDirty,
                 updated_datetime: configuration?.updated_datetime,
             }
-
-            setRemoteConfiguration(updatedConfiguration)
 
             queryClient.setQueriesData<WorkflowConfiguration[]>(
                 workflowsConfigurationDefinitionKeys.lists(),
@@ -417,6 +431,12 @@ export function useWorkflowEditor(
                             : configuration
                     )
                 }
+            )
+            queryClient.setQueriesData<WorkflowConfiguration>(
+                workflowsConfigurationDefinitionKeys.get(
+                    updatedConfiguration.id
+                ),
+                updatedConfiguration
             )
 
             dispatch({
@@ -475,17 +495,12 @@ export function useWorkflowEditor(
     }, [updateWorkflow, visualBuilderGraphDirty, isDirty])
 
     const handleDiscard = useCallback(() => {
-        const nextGraph = computeNodesPositions(
-            transformWorkflowConfigurationIntoVisualBuilderGraph(
-                remoteConfiguration ?? workflowConfigurationFactory(workflowId)
-            )
-        )
         dispatch({
             type: 'RESET_GRAPH',
-            graph: nextGraph,
+            graph: visualBuilderGraph,
         })
         discardTranslations()
-    }, [remoteConfiguration, workflowId, dispatch, discardTranslations])
+    }, [visualBuilderGraph, dispatch, discardTranslations])
 
     const switchLanguageCallback = useCallback(
         (nextLanguage: LanguageCode) => {
@@ -516,7 +531,6 @@ export function useWorkflowEditor(
     )
 
     return {
-        hookError,
         configuration,
         visualBuilderGraph: visualBuilderGraphDirty,
         isFetchPending,
@@ -607,7 +621,7 @@ export function validateConditions(conditions: ConditionSchema[]): boolean {
             return false
         }
 
-        return schema[1] == null
+        return typeof schema[1] === 'undefined'
     })
 }
 
@@ -763,7 +777,6 @@ export function createWorkflowEditorContextForPreview(
     visualBuilderGraph: VisualBuilderGraph
 ): WorkflowEditorContext {
     return {
-        hookError: null,
         configuration: workflowConfigurationFactory('id'),
         visualBuilderGraph,
         isFetchPending: false,

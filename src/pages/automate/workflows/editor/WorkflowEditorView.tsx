@@ -519,6 +519,6 @@ function WorkflowEditorViewWrapped({
     )
 }
 
-export default withWorkflowEditorContext(
-    withSelfServiceStoreIntegrationContext(WorkflowEditorViewWrapped)
+export default withSelfServiceStoreIntegrationContext(
+    withWorkflowEditorContext(WorkflowEditorViewWrapped)
 )

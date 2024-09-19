@@ -14,6 +14,7 @@ import css from './Condition.less'
 type Operator = {
     label: string
     key: string
+    isDisabled?: boolean
 }
 
 export type ConditionProps = {
@@ -84,6 +85,7 @@ export const Condition = ({
                                         }}
                                         onClick={onOperatorSelect}
                                         shouldCloseOnSelect
+                                        isDisabled={operator.isDisabled}
                                     />
                                 ))}
                             </DropdownBody>

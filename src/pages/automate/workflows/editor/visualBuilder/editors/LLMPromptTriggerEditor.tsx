@@ -23,7 +23,8 @@ export default function LLMPromptTriggerEditor({
 }: {
     nodeInEdition: LLMPromptTriggerNodeType
 }) {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch, visualBuilderGraph, shouldShowErrors} =
+        useVisualBuilderContext()
 
     const workflowVariables = useMemo(
         () =>
@@ -136,7 +137,7 @@ export default function LLMPromptTriggerEditor({
                                 branchId={''}
                                 availableVariables={workflowVariables}
                                 showNoneOption
-                                shouldShowErrors
+                                shouldShowErrors={shouldShowErrors}
                                 type={nodeInEdition.data.conditionsType}
                                 conditions={nodeInEdition.data.conditions}
                                 onDeleteBranch={_noop}

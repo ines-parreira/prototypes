@@ -5,6 +5,7 @@ import {
     HttpIntegrationMeta,
     Integration,
     IntegrationType,
+    ShopifyIntegration,
 } from 'models/integration/types'
 import {ContentType, HttpMethod} from 'models/api/types'
 
@@ -25,7 +26,7 @@ export const integrationBase: IntegrationBase = {
     managed: false,
 }
 
-export const shopifyIntegration: Integration = {
+export const shopifyIntegration: ShopifyIntegration = {
     user: {id: 0},
     deleted_datetime: null,
     meta: {

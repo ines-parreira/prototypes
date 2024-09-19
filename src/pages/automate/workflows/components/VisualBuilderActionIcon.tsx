@@ -1,6 +1,5 @@
 import React from 'react'
 
-import {ActionTriggerType} from 'pages/automate/workflows/models/variables.types'
 import {
     colorByVisualBuilderNodeType,
     iconByVisualBuilderNodeType,
@@ -14,7 +13,7 @@ type Props = {
               NonNullable<VisualBuilderNode['type']>,
               'channel_trigger' | 'llm_prompt_trigger' | 'end'
           >
-        | ActionTriggerType
+        | 'custom_input'
         | 'app'
 }
 

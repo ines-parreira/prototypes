@@ -1,24 +1,12 @@
-import React, {useCallback} from 'react'
+import React from 'react'
 import {Label} from '@gorgias/ui-kit'
 
 import {useController, useFieldArray, useFormContext} from 'react-hook-form'
 import {ConditionsBranchBody} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
 import {buildConditionSchemaByVariableType} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'
-import {
-    WorkflowVariable,
-    WorkflowVariableGroup,
-} from 'pages/automate/workflows/models/variables.types'
-import {
-    ConditionSchema,
-    VarSchema,
-} from 'pages/automate/workflows/models/conditions.types'
+import {WorkflowVariableGroup} from 'pages/automate/workflows/models/variables.types'
+import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
 
-import {
-    fulfillmentStatus,
-    orderStatus,
-    paymentStatus,
-    shipmentStatus,
-} from '../utils'
 import {ConditionsFormValues} from '../types'
 import css from './CustomActionsForm.less'
 
@@ -38,56 +26,34 @@ export default function ActionFormInputConditions({inputVariables}: Props) {
         name: 'conditions',
         rules: {
             validate: (conditions: ConditionSchema[], {conditionsType}) => {
-                if (!conditionsType) return true
-                const conditionsValues = conditions.map(
-                    (condition) =>
-                        (
-                            Object.values(condition)[0] as [
-                                VarSchema,
-                                string | null | undefined | boolean
-                            ]
-                        )[1]
-                )
-                for (const value of conditionsValues) {
-                    if (value === null) return false
-                    if (typeof value === 'string' && value.trim().length === 0)
-                        return false
+                if (!conditionsType) {
+                    return true
                 }
+
+                if (!conditions.length) {
+                    return false
+                }
+
+                return !conditions.some((condition) => {
+                    const key = Object.keys(condition)[0] as AllKeys<
+                        typeof condition
+                    >
+                    const schema = condition[key]
+
+                    if (!schema) {
+                        return false
+                    }
+
+                    if (key === 'exists' || key === 'doesNotExist') {
+                        return false
+                    }
+
+                    return typeof schema[1] === 'undefined'
+                })
             },
         },
     })
 
-    // Works only for string conditions.
-    // To add more types, refer to /ConditionsBranchBody -> renderInput method.
-    const handleRenderCustomConditionError = useCallback(
-        (
-            _: ConditionSchema,
-            variable: WorkflowVariable
-        ): React.ReactNode | undefined => {
-            const STATUS_ERROR_VARIABLES = [
-                fulfillmentStatus,
-                orderStatus,
-                shipmentStatus,
-                paymentStatus,
-            ]
-
-            if (STATUS_ERROR_VARIABLES.includes(variable)) {
-                return (
-                    <span>
-                        Enter a value.{' '}
-                        <a
-                            href="https://link.gorgias.com/cys"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            See possible values to use.
-                        </a>
-                    </span>
-                )
-            }
-        },
-        []
-    )
     return (
         <div className={css.formItem}>
             <Label>
@@ -111,7 +77,6 @@ export default function ActionFormInputConditions({inputVariables}: Props) {
                 type={conditionsType.value}
                 conditions={getValues('conditions')}
                 onDeleteBranch={() => {}}
-                renderCustomConditionError={handleRenderCustomConditionError}
                 onConditionDelete={(index) => {
                     remove(index)
                     conditionsType.onChange(conditionsType.value)

@@ -39,26 +39,21 @@ export default function EditActionFormView() {
         })
 
     const {data: configurationData, isInitialLoading} =
-        useGetWorkflowConfiguration(
-            {
-                id,
+        useGetWorkflowConfiguration(id, {
+            initialData: queryClient
+                .getQueryData<StoresWorkflowConfiguration>(
+                    storeConfigurationQueryKey
+                )
+                ?.find((action) => action.id === id),
+            onError: (error) => {
+                handleError(error, 'Failed to fetch action', dispatch)
+                history.push(routes.actions)
             },
-            {
-                initialData: queryClient
-                    .getQueryData<StoresWorkflowConfiguration>(
-                        storeConfigurationQueryKey
-                    )
-                    ?.find((action) => action.id === id),
-                onError: (error) => {
-                    handleError(error, 'Failed to fetch action', dispatch)
-                    history.push(routes.actions)
-                },
-                initialDataUpdatedAt: () =>
-                    queryClient.getQueryState<StoresWorkflowConfiguration>(
-                        storeConfigurationQueryKey
-                    )?.dataUpdatedAt,
-            }
-        )
+            initialDataUpdatedAt: () =>
+                queryClient.getQueryState<StoresWorkflowConfiguration>(
+                    storeConfigurationQueryKey
+                )?.dataUpdatedAt,
+        })
 
     const {
         data: templateConfigurations,

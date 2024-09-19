@@ -50,6 +50,6 @@ function WorkflowAnalyticsFiltersWrapped({
     return <> {hasCheckedInitialDateRange ? children : notReadyFallback}</>
 }
 
-export default withWorkflowEditorContext(
-    withSelfServiceStoreIntegrationContext(WorkflowAnalyticsFiltersWrapped)
+export default withSelfServiceStoreIntegrationContext(
+    withWorkflowEditorContext(WorkflowAnalyticsFiltersWrapped)
 )

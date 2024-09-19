@@ -99,12 +99,14 @@ function withProviders<T extends {visualBuilderGraph: VisualBuilderGraph}>(
             props.visualBuilderGraph
         )
         return (
-            <WorkflowEditorContext.Provider value={workflowEditorContextValue}>
-                <WorkflowChannelSupportContext.Provider
-                    value={workflowChannelSupportContextValue}
+            <StoreIntegrationContext.Provider
+                value={selfServiceStoreIntegrationContextValue}
+            >
+                <WorkflowEditorContext.Provider
+                    value={workflowEditorContextValue}
                 >
-                    <StoreIntegrationContext.Provider
-                        value={selfServiceStoreIntegrationContextValue}
+                    <WorkflowChannelSupportContext.Provider
+                        value={workflowChannelSupportContextValue}
                     >
                         <VisualBuilderContext.Provider
                             value={visualBuilderContextValue}
@@ -113,9 +115,9 @@ function withProviders<T extends {visualBuilderGraph: VisualBuilderGraph}>(
                                 <Component {...props} />
                             </ReactFlowProvider>
                         </VisualBuilderContext.Provider>
-                    </StoreIntegrationContext.Provider>
-                </WorkflowChannelSupportContext.Provider>
-            </WorkflowEditorContext.Provider>
+                    </WorkflowChannelSupportContext.Provider>
+                </WorkflowEditorContext.Provider>
+            </StoreIntegrationContext.Provider>
         )
     }
 }

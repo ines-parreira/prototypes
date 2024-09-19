@@ -8,7 +8,7 @@ export const buildConditionSchemaByVariableType = (
     switch (type) {
         case 'string':
             return {
-                equals: [{var: variable}, null],
+                equals: [{var: variable}, undefined],
             }
         case 'number':
             return {
@@ -20,7 +20,7 @@ export const buildConditionSchemaByVariableType = (
             }
         case 'date':
             return {
-                lessThan: [{var: variable}, null],
+                lessThan: [{var: variable}, undefined],
             }
         default:
             return {

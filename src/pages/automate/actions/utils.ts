@@ -22,34 +22,6 @@ import {
     ActionAppsConfiguration,
 } from './types'
 
-export const shipmentStatus: WorkflowVariable = {
-    name: 'Shipment status',
-    value: 'objects.order.fulfillments.0.external_shipment_status',
-    nodeType: 'order_selection',
-    type: 'string',
-}
-
-export const fulfillmentStatus: WorkflowVariable = {
-    name: 'Fulfillment status',
-    value: 'objects.order.external_fulfillment_status',
-    nodeType: 'order_selection',
-    type: 'string',
-}
-
-export const orderStatus: WorkflowVariable = {
-    name: 'Order status',
-    value: 'objects.order.external_status',
-    nodeType: 'order_selection',
-    type: 'string',
-}
-
-export const paymentStatus: WorkflowVariable = {
-    name: 'Payment status',
-    value: 'objects.order.external_payment_status',
-    nodeType: 'order_selection',
-    type: 'string',
-}
-
 export const orderVariables: WorkflowVariable[] = [
     {
         name: 'Order id',
@@ -94,15 +66,54 @@ export const orderVariables: WorkflowVariable[] = [
         format: 'currency',
         type: 'number',
     },
-    fulfillmentStatus,
+    {
+        name: 'Fulfillment status',
+        value: 'objects.order.external_fulfillment_status',
+        nodeType: 'order_selection',
+        type: 'string',
+        options: [
+            {value: null, label: 'unfulfilled'},
+            {value: 'partial', label: 'partially fulfilled'},
+            {value: 'fulfilled', label: 'fulfilled'},
+            {value: 'restocked', label: 'restocked'},
+        ],
+    },
     {
         name: 'Fulfillment last updated date',
         value: 'objects.order.fulfillments.0.updated_datetime',
         nodeType: 'order_selection',
         type: 'date',
     },
-    paymentStatus,
-    orderStatus,
+    {
+        name: 'Payment status',
+        value: 'objects.order.external_payment_status',
+        nodeType: 'order_selection',
+        type: 'string',
+        options: [
+            {value: 'pending', label: 'pending'},
+            {value: 'authorized', label: 'authorized'},
+            {value: 'paid', label: 'paid'},
+            {value: 'refunded', label: 'refunded'},
+            {
+                value: 'partially_refunded',
+                label: 'partially refunded',
+            },
+            {value: 'voided', label: 'voided'},
+            {value: 'partially_paid', label: 'partially paid'},
+            {value: 'unpaid', label: 'unpaid'},
+        ],
+    },
+    {
+        name: 'Order status',
+        value: 'objects.order.external_status',
+        nodeType: 'order_selection',
+        type: 'string',
+        options: [
+            {value: 'open', label: 'open'},
+            {value: 'archived', label: 'archived'},
+            {value: 'cancelled', label: 'cancelled'},
+        ],
+    },
     {
         name: 'Cancellation date',
         value: 'objects.order.cancelled_datetime',
@@ -217,7 +228,31 @@ export const orderVariables: WorkflowVariable[] = [
         nodeType: 'order_selection',
         type: 'string',
     },
-    shipmentStatus,
+    {
+        name: 'Shipment status',
+        value: 'objects.order.fulfillments.0.external_shipment_status',
+        nodeType: 'order_selection',
+        type: 'string',
+        options: [
+            {value: 'label_printed', label: 'label printed'},
+            {
+                value: 'label_purchased',
+                label: 'label purchased',
+            },
+            {value: 'confirmed', label: 'confirmed'},
+            {value: 'in_transit', label: 'in transit'},
+            {
+                value: 'attempted_delivery',
+                label: 'attempted delivery',
+            },
+            {
+                value: 'ready_for_pickup',
+                label: 'ready for pickup',
+            },
+            {value: 'delivered', label: 'delivered'},
+            {value: 'failure', label: 'failure'},
+        ],
+    },
     {
         name: 'Tracking url',
         value: 'objects.order.tracking_url',

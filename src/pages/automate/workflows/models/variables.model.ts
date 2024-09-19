@@ -245,6 +245,12 @@ export const buildWorkflowVariableFromTrigger = (
                         value: 'objects.order.external_fulfillment_status',
                         nodeType: 'order_selection',
                         type: 'string',
+                        options: [
+                            {value: null, label: 'unfulfilled'},
+                            {value: 'partial', label: 'partially fulfilled'},
+                            {value: 'fulfilled', label: 'fulfilled'},
+                            {value: 'restocked', label: 'restocked'},
+                        ],
                     },
                     {
                         name: 'Fulfillment last updated date',
@@ -257,12 +263,30 @@ export const buildWorkflowVariableFromTrigger = (
                         value: 'objects.order.external_payment_status',
                         nodeType: 'order_selection',
                         type: 'string',
+                        options: [
+                            {value: 'pending', label: 'pending'},
+                            {value: 'authorized', label: 'authorized'},
+                            {value: 'paid', label: 'paid'},
+                            {value: 'refunded', label: 'refunded'},
+                            {
+                                value: 'partially_refunded',
+                                label: 'partially refunded',
+                            },
+                            {value: 'voided', label: 'voided'},
+                            {value: 'partially_paid', label: 'partially paid'},
+                            {value: 'unpaid', label: 'unpaid'},
+                        ],
                     },
                     {
                         name: 'Order status',
                         value: 'objects.order.external_status',
                         nodeType: 'order_selection',
                         type: 'string',
+                        options: [
+                            {value: 'open', label: 'open'},
+                            {value: 'archived', label: 'archived'},
+                            {value: 'cancelled', label: 'cancelled'},
+                        ],
                     },
                     {
                         name: 'Cancellation date',
@@ -383,6 +407,25 @@ export const buildWorkflowVariableFromTrigger = (
                         value: 'objects.order.fulfillments.0.external_shipment_status',
                         nodeType: 'order_selection',
                         type: 'string',
+                        options: [
+                            {value: 'label_printed', label: 'label printed'},
+                            {
+                                value: 'label_purchased',
+                                label: 'label purchased',
+                            },
+                            {value: 'confirmed', label: 'confirmed'},
+                            {value: 'in_transit', label: 'in transit'},
+                            {
+                                value: 'attempted_delivery',
+                                label: 'attempted delivery',
+                            },
+                            {
+                                value: 'ready_for_pickup',
+                                label: 'ready for pickup',
+                            },
+                            {value: 'delivered', label: 'delivered'},
+                            {value: 'failure', label: 'failure'},
+                        ],
                     },
                     {
                         name: 'Tracking url',
@@ -458,6 +501,7 @@ export const buildWorkflowVariableFromTrigger = (
 }
 
 export const buildWorkflowVariableFromNode = (
+    graph: VisualBuilderGraph,
     node: VisualBuilderNode
 ):
     | WorkflowVariable
@@ -466,6 +510,8 @@ export const buildWorkflowVariableFromNode = (
     | undefined => {
     const formatVariableName = (text: string) =>
         text.replace(workflowVariableRegex, '{...}')
+
+    const hasShopifyApp = graph.apps?.some((app) => app.type === 'shopify')
 
     if (node.type === 'text_reply') {
         const {
@@ -558,6 +604,14 @@ export const buildWorkflowVariableFromNode = (
                     value: `steps_state.${node.id}.order.external_fulfillment_status`,
                     nodeType: 'order_selection',
                     type: 'string',
+                    options: hasShopifyApp
+                        ? [
+                              {value: null, label: 'unfulfilled'},
+                              {value: 'partial', label: 'partially fulfilled'},
+                              {value: 'fulfilled', label: 'fulfilled'},
+                              {value: 'restocked', label: 'restocked'},
+                          ]
+                        : undefined,
                 },
                 {
                     name: 'Fulfillment last updated date',
@@ -571,12 +625,37 @@ export const buildWorkflowVariableFromNode = (
                     value: `steps_state.${node.id}.order.external_payment_status`,
                     nodeType: 'order_selection',
                     type: 'string',
+                    options: hasShopifyApp
+                        ? [
+                              {value: 'pending', label: 'pending'},
+                              {value: 'authorized', label: 'authorized'},
+                              {value: 'paid', label: 'paid'},
+                              {value: 'refunded', label: 'refunded'},
+                              {
+                                  value: 'partially_refunded',
+                                  label: 'partially refunded',
+                              },
+                              {value: 'voided', label: 'voided'},
+                              {
+                                  value: 'partially_paid',
+                                  label: 'partially paid',
+                              },
+                              {value: 'unpaid', label: 'unpaid'},
+                          ]
+                        : undefined,
                 },
                 {
                     name: 'Order status',
                     value: `steps_state.${node.id}.order.external_status`,
                     nodeType: 'order_selection',
                     type: 'string',
+                    options: hasShopifyApp
+                        ? [
+                              {value: 'open', label: 'open'},
+                              {value: 'archived', label: 'archived'},
+                              {value: 'cancelled', label: 'cancelled'},
+                          ]
+                        : undefined,
                 },
                 {
                     name: 'Cancellation date',
@@ -698,6 +777,27 @@ export const buildWorkflowVariableFromNode = (
                     value: `steps_state.${node.id}.order.fulfillments.0.external_shipment_status`,
                     nodeType: 'order_selection',
                     type: 'string',
+                    options: hasShopifyApp
+                        ? [
+                              {value: 'label_printed', label: 'label printed'},
+                              {
+                                  value: 'label_purchased',
+                                  label: 'label purchased',
+                              },
+                              {value: 'confirmed', label: 'confirmed'},
+                              {value: 'in_transit', label: 'in transit'},
+                              {
+                                  value: 'attempted_delivery',
+                                  label: 'attempted delivery',
+                              },
+                              {
+                                  value: 'ready_for_pickup',
+                                  label: 'ready for pickup',
+                              },
+                              {value: 'delivered', label: 'delivered'},
+                              {value: 'failure', label: 'failure'},
+                          ]
+                        : undefined,
                 },
                 {
                     name: 'Tracking url',
@@ -942,7 +1042,7 @@ export function getWorkflowVariableListForNode(
     }
 
     for (const ancestor of ancestors.reverse()) {
-        const variable = buildWorkflowVariableFromNode(ancestor)
+        const variable = buildWorkflowVariableFromNode(g, ancestor)
         if (variable) {
             if (Array.isArray(variable)) {
                 workflowVariableList.push(...variable)

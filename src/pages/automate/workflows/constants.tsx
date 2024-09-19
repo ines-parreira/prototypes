@@ -3,8 +3,6 @@ import React, {ReactNode} from 'react'
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm.svg'
 import conditionsMergeIcon from 'assets/img/workflows/icons/conditions-merge-sm.svg'
 
-import {ActionTriggerType} from 'pages/automate/workflows/models/variables.types'
-
 import {EndNodeType, VisualBuilderNode} from './models/visualBuilderGraph.types'
 
 export const colorByVisualBuilderNodeType: Record<
@@ -12,7 +10,7 @@ export const colorByVisualBuilderNodeType: Record<
           NonNullable<VisualBuilderNode['type']>,
           'channel_trigger' | 'llm_prompt_trigger' | 'end'
       >
-    | ActionTriggerType
+    | 'custom_input'
     | 'app',
     {color: string; backgroundColor: string}
 > = {
@@ -87,7 +85,7 @@ export const iconByVisualBuilderNodeType: Record<
           NonNullable<VisualBuilderNode['type']>,
           'channel_trigger' | 'llm_prompt_trigger' | 'end'
       >
-    | ActionTriggerType
+    | 'custom_input'
     | 'app',
     ReactNode
 > = {

@@ -8,7 +8,7 @@ export type WorkflowVariableType =
 
 export type WorkflowVariableFormat = 'currency'
 
-export type WorkflowVariable = {
+type BaseWorkflowVariable<T extends WorkflowVariableType> = {
     name: string
     value: string
     nodeType:
@@ -24,11 +24,32 @@ export type WorkflowVariable = {
         | 'cancel_subscription'
         | 'skip_charge'
         | 'app'
-        | ActionTriggerType
-    type: WorkflowVariableType
+        | 'custom_input'
+    type: T
     format?: WorkflowVariableFormat
     filter?: string
 }
+
+type StringWorkflowVariable = BaseWorkflowVariable<'string'> & {
+    options?: {
+        value: string | null
+        label: string
+    }[]
+}
+
+type NumberWorkflowVariable = BaseWorkflowVariable<'number'>
+type DateWorkflowVariable = BaseWorkflowVariable<'date'>
+type BooleanWorkflowVariable = BaseWorkflowVariable<'boolean'>
+type ArrayWorkflowVariable = BaseWorkflowVariable<'array'>
+type JSONWorkflowVariable = BaseWorkflowVariable<'json'>
+
+export type WorkflowVariable =
+    | StringWorkflowVariable
+    | NumberWorkflowVariable
+    | DateWorkflowVariable
+    | BooleanWorkflowVariable
+    | ArrayWorkflowVariable
+    | JSONWorkflowVariable
 
 export type WorkflowVariableGroup = {
     name: string
@@ -36,10 +57,8 @@ export type WorkflowVariableGroup = {
         | 'order_selection'
         | 'http_request'
         | 'shopper_authentication'
-        | ActionTriggerType
+        | 'custom_input'
     variables: WorkflowVariable[]
 }
-
-export type ActionTriggerType = 'custom_input'
 
 export type WorkflowVariableList = (WorkflowVariable | WorkflowVariableGroup)[]

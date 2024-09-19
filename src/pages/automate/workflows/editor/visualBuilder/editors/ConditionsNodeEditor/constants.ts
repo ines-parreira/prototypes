@@ -1,8 +1,10 @@
 import {ConditionKey} from 'pages/automate/workflows/models/conditions.types'
+import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 
 export interface ConditionOperator {
     label: string
     key: ConditionKey
+    isDisabled?: boolean
 }
 
 export const TIMEPERIOD_REGEX = /^(?<sign>[-+])?(?<value>\d+)(?<unit>[mhdw])$/
@@ -110,18 +112,62 @@ export const DATE_CONDITION_OPERATORS: ConditionOperator[] = [
     },
 ]
 
-export const getOperatorListByType = (type: string) => {
-    if (type === 'date') {
-        return DATE_CONDITION_OPERATORS
+export const getOperatorListByVariable = (
+    variable: WorkflowVariable
+): ConditionOperator[] => {
+    switch (variable.type) {
+        case 'date':
+            return DATE_CONDITION_OPERATORS
+        case 'number':
+            return NUMBER_CONDITION_OPERATORS
+        case 'boolean':
+            return BOOLEAN_CONDITION_OPERATORS
+        case 'string':
+            if (variable.options?.length) {
+                return [
+                    {
+                        label: 'Is',
+                        key: 'equals',
+                    },
+                    {
+                        label: 'Is not',
+                        key: 'notEqual',
+                    },
+                    {
+                        label: 'Starts with',
+                        key: 'startsWith',
+                        isDisabled: true,
+                    },
+                    {
+                        label: 'Ends with',
+                        key: 'endsWith',
+                        isDisabled: true,
+                    },
+                    {
+                        label: 'Contains',
+                        key: 'contains',
+                        isDisabled: true,
+                    },
+                    {
+                        label: 'Does not contain',
+                        key: 'doesNotContain',
+                        isDisabled: true,
+                    },
+                    {
+                        label: 'Does not exist',
+                        key: 'doesNotExist',
+                        isDisabled: true,
+                    },
+                    {
+                        label: 'Exists',
+                        key: 'exists',
+                        isDisabled: true,
+                    },
+                ]
+            }
+
+            return STRING_CONDITION_OPERATORS
+        default:
+            return []
     }
-    if (type === 'number') {
-        return NUMBER_CONDITION_OPERATORS
-    }
-    if (type === 'boolean') {
-        return BOOLEAN_CONDITION_OPERATORS
-    }
-    if (type === 'string') {
-        return STRING_CONDITION_OPERATORS
-    }
-    return []
 }

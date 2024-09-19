@@ -180,12 +180,11 @@ export const useUpsertWorkflowConfigurationTemplate = (
 }
 
 export const useGetWorkflowConfiguration = (
-    params: {id: string},
+    id: string,
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationControllerGet.Responses.$200>
     >
 ) => {
-    const {id} = params
     return useQuery({
         queryKey: workflowsConfigurationDefinitionKeys.get(id),
         queryFn: async () => {
@@ -197,20 +196,6 @@ export const useGetWorkflowConfiguration = (
         },
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
-        ...overrides,
-    })
-}
-
-export const useFetchWorkflowConfiguration = (
-    overrides?: MutationOverrides<
-        OperationMethods['WfConfigurationController_get']
-    >
-) => {
-    return useMutation({
-        mutationFn: async (params) => {
-            const client = await getGorgiasWfApiClient()
-            return await client.WfConfigurationController_get(...params)
-        },
         ...overrides,
     })
 }

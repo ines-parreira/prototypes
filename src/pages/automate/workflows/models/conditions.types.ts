@@ -25,30 +25,30 @@ type BaseConditionSchema = {
 export type EqualsSchema<
     T extends string | number | boolean = string | number | boolean
 > = Omit<BaseConditionSchema, 'equals'> & {
-    equals: [VarSchema, T | null]
+    equals: [VarSchema, T | null | undefined]
 }
 
 export type NotEqualSchema = Omit<BaseConditionSchema, 'notEqual'> & {
-    notEqual: [VarSchema, string | number | boolean | null]
+    notEqual: [VarSchema, string | number | boolean | null | undefined]
 }
 
 export type ContainsSchema = Omit<BaseConditionSchema, 'contains'> & {
-    contains: [VarSchema, string | null]
+    contains: [VarSchema, string | null | undefined]
 }
 
 export type DoesNotContainSchema = Omit<
     BaseConditionSchema,
     'doesNotContain'
 > & {
-    doesNotContain: [VarSchema, string | null]
+    doesNotContain: [VarSchema, string | null | undefined]
 }
 
 export type EndsWithSchema = Omit<BaseConditionSchema, 'endsWith'> & {
-    endsWith: [VarSchema, string | null]
+    endsWith: [VarSchema, string | null | undefined]
 }
 
 export type StartsWithSchema = Omit<BaseConditionSchema, 'startsWith'> & {
-    startsWith: [VarSchema, string | null]
+    startsWith: [VarSchema, string | null | undefined]
 }
 
 export type ExistsSchema = Omit<BaseConditionSchema, 'exists'> & {
@@ -63,13 +63,13 @@ export type LessThanSchema<T extends number | string = number | string> = Omit<
     BaseConditionSchema,
     'lessThan'
 > & {
-    lessThan: [VarSchema, T | null]
+    lessThan: [VarSchema, T | null | undefined]
 }
 
 export type LessThanInterval = Omit<BaseConditionSchema, 'lessThanInterval'> & {
     lessThanInterval: [
         VarSchema,
-        `${IntervalSign}${number}${IntervalUnit}` | null
+        `${IntervalSign}${number}${IntervalUnit}` | null | undefined
     ]
 }
 
@@ -79,24 +79,24 @@ export type GreaterThanInterval = Omit<
 > & {
     greaterThanInterval: [
         VarSchema,
-        `${IntervalSign}${number}${IntervalUnit}` | null
+        `${IntervalSign}${number}${IntervalUnit}` | null | undefined
     ]
 }
 
 export type LessOrEqualSchema = Omit<BaseConditionSchema, 'lessOrEqual'> & {
-    lessOrEqual: [VarSchema, number]
+    lessOrEqual: [VarSchema, number | null | undefined]
 }
 
 export type GreaterThanSchema<T extends number | string = number | string> =
     Omit<BaseConditionSchema, 'greaterThan'> & {
-        greaterThan: [VarSchema, T | null]
+        greaterThan: [VarSchema, T | null | undefined]
     }
 
 export type GreaterOrEqualSchema = Omit<
     BaseConditionSchema,
     'greaterOrEqual'
 > & {
-    greaterOrEqual: [VarSchema, number | null]
+    greaterOrEqual: [VarSchema, number | null | undefined]
 }
 
 export type BooleanSchema =
