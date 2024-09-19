@@ -138,9 +138,7 @@ describe('<AddProductLink/>', () => {
         )
 
         fireEvent.click(getByText(/shopify/i))
-        const productRecommendation = getByText(
-            'Dynamic Product Recommendation'
-        )
+        const productRecommendation = getByText('Product Recommendation')
         expect(productRecommendation).toBeInTheDocument()
 
         fireEvent.click(productRecommendation)

@@ -1,0 +1,25 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
+@import (reference) '~css/typography';
+
+:local {
+    .header {
+        display: flex;
+        justify-content: space-between;
+        text-align: left;
+        min-height: 30px;
+        padding: @layout-spacing-xs @layout-spacing-s;
+        color: var(--neutral-grey-5);
+        text-transform: uppercase;
+        font-family: @caption-all-caps-font-family;
+        font-weight: @caption-all-caps-font-weight;
+        font-size: @caption-all-caps-font-size;
+        line-height: @caption-all-caps-line-height;
+        background-color: var(--neutral-grey-2);
+        border-bottom: 1px solid var(--neutral-grey-3);
+
+        .resultTotal {
+            color: var(--main-primary);
+        }
+    }
+}

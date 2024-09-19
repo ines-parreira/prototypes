@@ -12,11 +12,13 @@ import {
     AttachmentType,
     DiscountOfferAttachment,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
+import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
 import {TooltipTourConfigurationType} from './types'
 
 import {ProductCardAttachment} from './components/AddProductLink'
 
 export type ToolbarContextType = {
+    placementType: RichFieldEditorPlacement | undefined
     // AddLink & AddVideo
     canAddVideoPlayer: boolean
     // AddLink
@@ -54,6 +56,7 @@ export type ToolbarContextType = {
 }
 
 export const ToolbarContext = createContext<ToolbarContextType>({
+    placementType: undefined,
     canAddVideoPlayer: false,
     onInsertVideoAddedFromInsertLink: _noop,
     canAddVideoLink: false,

@@ -54,6 +54,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
         onInsertProductLinkAdded,
         shopifyIntegrations,
         toolbarTour,
+        placementType,
     } = useToolbarContext()
     const [isOpen, setOpen] = useState(false)
     const [pickedShopifyIntegration, setPickedShopifyIntegration] = useState(
@@ -223,6 +224,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
                             : undefined
                     }
                     shopifyIntegration={pickedShopifyIntegration}
+                    placementType={placementType}
                 />
             )}
         </Popover>

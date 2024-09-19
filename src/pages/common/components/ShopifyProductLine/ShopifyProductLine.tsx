@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState, useEffect, useCallback} from 'react'
+import React, {ChangeEvent, useCallback, useEffect, useState} from 'react'
 import {Input, ListGroup, ListGroupItem} from 'reactstrap'
 import {Map} from 'immutable'
 import classnames from 'classnames'
@@ -27,6 +27,8 @@ import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings
 import ProductAutomations from 'pages/common/components/ProductAutomations/ProductAutomations'
 import {ProductRecommendationAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {transformShopifyProductToProductCardDetails} from 'pages/common/draftjs/plugins/toolbar/utils'
+import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
+import {ConvertShopifyProductLineHeader} from 'pages/convert/common/components/ConvertShopifyProductLineHeader/ConvertShopifyProductLineHeader'
 import css from './ShopifyProductLine.less'
 
 type OwnProps = {
@@ -39,6 +41,7 @@ type OwnProps = {
         attachment: ProductRecommendationAttachment
     ) => void
     onResetStoreChoice?: () => void
+    placementType?: RichFieldEditorPlacement
 }
 
 const generateResultProps = (
@@ -82,6 +85,7 @@ export default function ShopifyProductLine({
     productClicked,
     canAddProductAutomations,
     productAutomationClicked,
+    placementType,
 }: OwnProps) {
     const gorgiasApi = new GorgiasApi()
     const shopifyPlaceholderImage = 'integrations/shopify-placeholder.png'
@@ -248,51 +252,62 @@ export default function ShopifyProductLine({
             )}
             {!isProductAutomationPicked && (
                 <>
-                    <div className={css.headerResult}>
-                        {(onResetStoreChoice || subResults.length > 0) && (
-                            <div className={css.backContainer}>
-                                <Button
-                                    className="mr-2"
-                                    onClick={
-                                        subResults.length
-                                            ? handleBackClicked
-                                            : onResetStoreChoice
-                                    }
-                                    size="small"
-                                    tabIndex={-1}
-                                >
-                                    <ButtonIconLabel icon="arrow_back">
-                                        Back
-                                    </ButtonIconLabel>
-                                </Button>
-                            </div>
-                        )}
-                        <div>
-                            <img
-                                src={getIconFromType(IntegrationType.Shopify)}
-                                alt="Shopify logo"
-                                className={css.shopifyLogo}
-                            />
-                            <span className={css.headerText}>
-                                {shopifyIntegration.get('name')}
-                            </span>
-                        </div>
-                        <div className={css.itemCount}>
-                            {subResults.length ? (
-                                <span className={css.resultTotal}>
-                                    {subResults.length} VARIANTS
-                                </span>
-                            ) : (
-                                <span className={css.resultTotal}>
-                                    {shopifyProducts.length}
-                                    {shopifyProducts.length >= PRODUCTS_PER_PAGE
-                                        ? '+'
-                                        : ''}
-                                    {' PRODUCTS'}
-                                </span>
+                    {placementType ===
+                    RichFieldEditorPlacement.ConvertDetail ? (
+                        <ConvertShopifyProductLineHeader
+                            productsLength={shopifyProducts.length}
+                            productsPerPage={PRODUCTS_PER_PAGE}
+                        />
+                    ) : (
+                        <div className={css.headerResult}>
+                            {(onResetStoreChoice || subResults.length > 0) && (
+                                <div className={css.backContainer}>
+                                    <Button
+                                        className="mr-2"
+                                        onClick={
+                                            subResults.length
+                                                ? handleBackClicked
+                                                : onResetStoreChoice
+                                        }
+                                        size="small"
+                                        tabIndex={-1}
+                                    >
+                                        <ButtonIconLabel icon="arrow_back">
+                                            Back
+                                        </ButtonIconLabel>
+                                    </Button>
+                                </div>
                             )}
+                            <div>
+                                <img
+                                    src={getIconFromType(
+                                        IntegrationType.Shopify
+                                    )}
+                                    alt="Shopify logo"
+                                    className={css.shopifyLogo}
+                                />
+                                <span className={css.headerText}>
+                                    {shopifyIntegration.get('name')}
+                                </span>
+                            </div>
+                            <div className={css.itemCount}>
+                                {subResults.length ? (
+                                    <span className={css.resultTotal}>
+                                        {subResults.length} VARIANTS
+                                    </span>
+                                ) : (
+                                    <span className={css.resultTotal}>
+                                        {shopifyProducts.length}
+                                        {shopifyProducts.length >=
+                                        PRODUCTS_PER_PAGE
+                                            ? '+'
+                                            : ''}
+                                        {' PRODUCTS'}
+                                    </span>
+                                )}
+                            </div>
                         </div>
-                    </div>
+                    )}
                     <div className={css.listGroupContainer}>
                         {shopifyProducts.length > 0 && !subResults.length && (
                             <ListGroup flush>

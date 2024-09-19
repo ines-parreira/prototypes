@@ -12,7 +12,7 @@ describe('ProductAutomations', () => {
             />
         )
 
-        expect(getByText('Dynamic Product Recommendation')).toBeInTheDocument()
+        expect(getByText('Product Recommendation')).toBeInTheDocument()
         expect(queryByText('Similar Browsed Products')).not.toBeInTheDocument()
     })
 
@@ -26,9 +26,7 @@ describe('ProductAutomations', () => {
             />
         )
 
-        const productRecommendation = getByText(
-            'Dynamic Product Recommendation'
-        )
+        const productRecommendation = getByText('Product Recommendation')
         fireEvent.click(productRecommendation)
         expect(onClick).toHaveBeenCalled()
 
@@ -45,9 +43,7 @@ describe('ProductAutomations', () => {
             />
         )
 
-        const productRecommendation = getByText(
-            'Dynamic Product Recommendation'
-        )
+        const productRecommendation = getByText('Product Recommendation')
         fireEvent.click(productRecommendation)
 
         const backButton = getByText('Back')

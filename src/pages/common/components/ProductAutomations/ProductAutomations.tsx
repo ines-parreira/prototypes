@@ -21,7 +21,7 @@ const ProductAutomations = ({
     onClick,
     onBackClicked,
 }: Props) => {
-    const title = 'Dynamic Product Recommendation'
+    const title = 'Product Recommendation'
     const [isProductRecommendationClicked, setIsProductRecommendationClicked] =
         useState(false)
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import {fireEvent, render, waitFor, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import configureMockStore from 'redux-mock-store'
@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 import {Provider} from 'react-redux'
 
+import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
 import ShopifyProductLine from '../ShopifyProductLine'
 import {shopifyProductResult} from '../../../../../fixtures/shopify'
 import client from '../../../../../models/api/resources'
@@ -144,12 +145,37 @@ describe('<ShopifyProductLine/>', () => {
             expect(getByText('Automations', {exact: false})).toBeInTheDocument()
         })
 
-        getByText('Dynamic Product Recommendation').click()
+        getByText('Product Recommendation').click()
         expect(getByText('Similar Browsed Products')).toBeInTheDocument()
 
         getByText('Back').click()
         expect(getByText('Automations', {exact: false})).toBeInTheDocument()
     })
+
+    it('should render the products header in Convert design', async () => {
+        const products = shopifyProductResult()
+        mockServer
+            .onGet('/api/integrations/1/product/')
+            .reply(200, {data: products})
+
+        render(
+            <Provider store={store}>
+                <ShopifyProductLine
+                    {...minProps}
+                    placementType={RichFieldEditorPlacement.ConvertDetail}
+                />
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(`${products.length} Products`, {exact: false})
+            ).toBeInTheDocument()
+        })
+
+        expect(screen.queryByText('My store')).not.toBeInTheDocument()
+    })
+
     it('should call productClicked with the correct variant image URL when a variant is clicked', async () => {
         const shopifyProduct = shopifyProductResult()[0]
 
@@ -189,6 +215,7 @@ describe('<ShopifyProductLine/>', () => {
             })
         })
     })
+
     it('should call productClicked with the correct product image URL when a variant is clicked', async () => {
         const shopifyProduct = shopifyProductResult()[0]
 

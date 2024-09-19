@@ -35,6 +35,7 @@ const ToolbarProvider = ({
     canAddUniqueDiscountOffer = false,
     supportsUniqueDiscountOffer = false,
     onAddUniqueDiscountOfferAttachment = _noop,
+    placementType = undefined,
 }: Props) => {
     const toolbarContext: ToolbarContextType = useMemo(
         () => ({
@@ -63,6 +64,7 @@ const ToolbarProvider = ({
             canAddUniqueDiscountOffer,
             supportsUniqueDiscountOffer,
             onAddUniqueDiscountOfferAttachment,
+            placementType,
         }),
         [
             canAddVideoPlayer,
@@ -90,6 +92,7 @@ const ToolbarProvider = ({
             canAddUniqueDiscountOffer,
             supportsUniqueDiscountOffer,
             onAddUniqueDiscountOfferAttachment,
+            placementType,
         ]
     )
 

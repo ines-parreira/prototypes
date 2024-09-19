@@ -31,6 +31,7 @@ import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
 import {TooltipTourConfigurationType} from 'pages/common/draftjs/plugins/toolbar/types'
 import {ShopifyIntegration} from 'models/integration/types'
+import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
 import RichField, {Props as RichFieldProps} from './RichField'
 
 type Props = {
@@ -44,6 +45,7 @@ type Props = {
     canAddUtm?: boolean
     sortAttachments?: boolean
     currentShopifyIntegration?: ShopifyIntegration
+    placementType?: RichFieldEditorPlacement
 } & RichFieldProps
 
 const getShopifyIntegrations = getIntegrationsByType(IntegrationType.Shopify)
@@ -60,6 +62,7 @@ const TicketRichField = (
         sortAttachments = false,
         toolbarTour,
         currentShopifyIntegration,
+        placementType = undefined,
         ...props
     }: Props,
     ref: ForwardedRef<RichField>
@@ -73,6 +76,7 @@ const TicketRichField = (
 
     const toolbarContext: ToolbarContextType = useMemo(
         () => ({
+            placementType: placementType,
             canAddVideoPlayer: canAddVideoPlayer(
                 newMessageChannel,
                 isNewMessagePublic
@@ -193,6 +197,7 @@ const TicketRichField = (
             canAddProductAutomations,
             canAddUtm,
             sortAttachments,
+            placementType,
         ]
     )
 

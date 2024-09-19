@@ -1,4 +1,4 @@
-import React, {memo, useMemo, useState, useEffect} from 'react'
+import React, {memo, useEffect, useMemo, useState} from 'react'
 import classnames from 'classnames'
 
 import {EditorState} from 'draft-js'
@@ -35,6 +35,7 @@ import {
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {useAreConvertLLMProductRecommendationsEnabled} from 'pages/convert/common/hooks/useAreConvertLLMProductRecommendationsEnabled'
 import useCanAddUtm from 'pages/convert/common/hooks/useUtmFlag'
+import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
 import css from './CampaignMessage.less'
 
 type Props = {
@@ -299,6 +300,7 @@ export const CampaignMessage = memo(
                         currentShopifyIntegration={shopifyIntegration}
                         sortAttachments={true}
                         canAddUtm={canAddUtm}
+                        placementType={RichFieldEditorPlacement.ConvertDetail}
                     />
                     <TicketAttachments
                         context="campaign-message"
