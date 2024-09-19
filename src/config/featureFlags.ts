@@ -61,6 +61,7 @@ export enum FeatureFlagKey {
     ConvertABVariants = 'convert-ab-variants',
     ConvertLLMProductRecommendations = 'convert-llm-product-recommendations',
     ConvertScheduleCampaign = 'convert-schedule-campaign',
+    ConvertPerformanceView = 'convert-performance-view',
     CustomerTimelineButton = 'customer-timeline-button',
     DecoupleContactForm = 'decouple-contact-form',
     DefaultEmailAddress = 'default-email-address',
