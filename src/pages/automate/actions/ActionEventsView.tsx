@@ -77,11 +77,8 @@ export default function ActionExecutionsView() {
         shopName: string
     }>()
 
-    const {data: actionConfiguration, isFetching} = useGetWorkflowConfiguration(
-        {
-            id: configurationId,
-        }
-    )
+    const {data: actionConfiguration, isFetching} =
+        useGetWorkflowConfiguration(configurationId)
 
     const {data: executionsData, isFetching: isFechingExecutions} =
         useGetConfigurationExecutions(
