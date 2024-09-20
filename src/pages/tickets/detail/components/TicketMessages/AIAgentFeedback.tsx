@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {FC, useMemo} from 'react'
 import classNames from 'classnames'
 
 import IconButton from 'pages/common/components/button/IconButton'
@@ -40,15 +40,14 @@ type FeedbackIconButtonProps = {
     hasFeedback: boolean
     isMessagePublic?: boolean
     onClick?: () => void
-    ['data-testid']?: string
 }
 
-const FeedbackIconButton: React.FC<FeedbackIconButtonProps> = ({
+const FeedbackIconButton: FC<FeedbackIconButtonProps> = ({
     iconType,
     hasFeedback,
     isMessagePublic = false,
     onClick,
-    ['data-testid']: dataTestId,
+    ...props
 }) => (
     <IconButton
         fillStyle="fill"
@@ -62,7 +61,7 @@ const FeedbackIconButton: React.FC<FeedbackIconButtonProps> = ({
         })}
         onClick={onClick}
         isDisabled={hasFeedback && isMessagePublic}
-        data-testid={dataTestId}
+        {...props}
     >
         {iconType}
     </IconButton>
@@ -224,7 +223,7 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                             }
                             handleSubmitFeedback('thumbs_up')
                         }}
-                        data-testid="thumbs-up-button"
+                        aria-label="Thumbs up button"
                         isMessagePublic={isMessagePublic}
                     />
                 )}
@@ -251,7 +250,7 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
 
                             handleSubmitFeedback('thumbs_down')
                         }}
-                        data-testid={'thumbs-down-button'}
+                        aria-label="Thumbs down button"
                     />
                 )}
             </div>

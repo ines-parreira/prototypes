@@ -151,8 +151,8 @@ const mockCreateStoreConfiguration = jest
     .mockImplementation((c: StoreConfiguration) => c)
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof StoreConfigForm>>
-) => {
+    props?: Partial<ComponentProps<typeof StoreConfigForm>>
+) =>
     renderWithRouter(
         <Provider store={mockedStore}>
             <QueryClientProvider client={queryClient}>
@@ -171,7 +171,6 @@ const renderComponent = (
             </QueryClientProvider>
         </Provider>
     )
-}
 
 describe('<StoreConfigForm />', () => {
     const storeConfiguration = {
@@ -259,13 +258,13 @@ describe('<StoreConfigForm />', () => {
         mockUseSearchParam.mockReturnValue([null, mockSetSearchParam])
     })
     it('should render the component', () => {
-        renderComponent({})
+        renderComponent()
 
         expect(screen.getByText('General settings')).toBeInTheDocument()
     })
 
     it('should render new email integration caption', () => {
-        renderComponent({})
+        renderComponent()
         expect(
             screen.getByText(
                 'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.'
@@ -274,7 +273,7 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should deactivate AI agent if agentMode is in trial and AiAgentTrialMode flag is false', () => {
-        renderComponent({})
+        renderComponent()
 
         expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
             ...storeConfiguration,
@@ -298,7 +297,7 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should deactivate AI agent if agentMode is in trial and AiAgentTrialMode flag is false', () => {
-        renderComponent({})
+        renderComponent()
 
         expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
             ...storeConfiguration,
@@ -327,7 +326,7 @@ describe('<StoreConfigForm />', () => {
             [FeatureFlagKey.AiAgentTrialMode]: true,
         })
 
-        renderComponent({})
+        renderComponent()
 
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
     })
@@ -344,7 +343,7 @@ describe('<StoreConfigForm />', () => {
         })
 
         try {
-            renderComponent({})
+            renderComponent()
 
             await waitFor(() => {
                 expect(reportError).toHaveBeenCalledWith(expect.any(Error), {
@@ -385,7 +384,7 @@ describe('<StoreConfigForm />', () => {
             isSourceItemsListLoading: false,
         } as unknown as ReturnType<typeof usePublicResources>)
 
-        renderComponent({})
+        renderComponent()
 
         await waitFor(() => {
             expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
@@ -411,28 +410,32 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should display chat dropdown', () => {
-            renderComponent({})
+            renderComponent()
 
-            expect(screen.getByTestId('chat-dropdown')).toBeInTheDocument()
+            expect(
+                screen.getByText('Select one or more chat integrations')
+            ).toBeInTheDocument()
         })
 
         it('should not display dropdown if feature flag is false', async () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentChat]: false,
             })
-            renderComponent({})
+            renderComponent()
 
             await waitFor(() => {
                 expect(
-                    screen.queryByTestId('chat-dropdown')
+                    screen.queryByText('Select one or more chat integrations')
                 ).not.toBeInTheDocument()
             })
         })
 
         it('should filter chat channels correctly and populate currentChatChannels', async () => {
-            renderComponent({})
+            renderComponent()
 
-            const dropdown = screen.getByTestId('chat-dropdown')
+            const dropdown = screen.getByText(
+                'Select one or more chat integrations'
+            )
             fireEvent.focus(dropdown)
 
             await waitFor(() => {
@@ -454,7 +457,7 @@ describe('<StoreConfigForm />', () => {
                 },
             })
 
-            renderComponent({})
+            renderComponent()
 
             await waitFor(() =>
                 expect(screen.getByText(chatIntegration.value.name))
@@ -471,7 +474,7 @@ describe('<StoreConfigForm />', () => {
             },
         })
 
-        renderComponent({})
+        renderComponent()
         expect(
             screen.getByText('One or more addresses required.')
         ).toBeInTheDocument()
@@ -486,7 +489,7 @@ describe('<StoreConfigForm />', () => {
             },
         })
 
-        renderComponent({})
+        renderComponent()
         expect(
             screen.getByText('This response was created by AI')
         ).toBeInTheDocument()
@@ -502,7 +505,7 @@ describe('<StoreConfigForm />', () => {
             },
         })
 
-        renderComponent({})
+        renderComponent()
 
         const textArea = screen.getByPlaceholderText('AI Agent email signature')
         fireEvent.blur(textArea)
@@ -517,11 +520,13 @@ describe('<StoreConfigForm />', () => {
             [FeatureFlagKey.AiAgentChat]: true,
         })
 
-        renderComponent({})
+        renderComponent()
 
         const channelToSelect = mockChatChannels[0]
 
-        const dropdown = screen.getByTestId('chat-dropdown')
+        const dropdown = screen.getByText(
+            'Select one or more chat integrations'
+        )
         fireEvent.focus(dropdown)
 
         const channelCheckbox = screen.getByText(/25 Shopify Chat/)
@@ -534,6 +539,7 @@ describe('<StoreConfigForm />', () => {
             )
         })
     })
+
     it('should trigger monitoredEmailIntegration with correct values on dropdown item click', async () => {
         mockFlags({
             [FeatureFlagKey.AiAgentChat]: true,
@@ -565,13 +571,13 @@ describe('<StoreConfigForm />', () => {
             },
         })
 
-        renderComponent({})
+        renderComponent()
 
-        const dropdown = screen.getByTestId('email-dropdown')
+        const dropdown = screen.getByText('Select one or more email addresses')
         fireEvent.focus(dropdown)
-
-        const testId = `email-dropdown-item-${MOCK_EMAIL_INTEGRATION.id}`
-        const emailCheckbox = screen.getByTestId(testId)
+        const emailCheckbox = screen.getByText(
+            MOCK_EMAIL_INTEGRATION.meta.address
+        )
         fireEvent.click(emailCheckbox)
 
         await waitFor(() => {
@@ -586,6 +592,7 @@ describe('<StoreConfigForm />', () => {
             )
         })
     })
+
     it('should call createStoreConfiguration when creating a new configuration', async () => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: undefined,
@@ -598,7 +605,7 @@ describe('<StoreConfigForm />', () => {
             ...defaultUseConfigurationFormValues,
         })
 
-        renderComponent({})
+        renderComponent()
 
         const saveButton = screen.getByText(/Save Changes/i)
         fireEvent.click(saveButton)
@@ -614,7 +621,7 @@ describe('<StoreConfigForm />', () => {
 
         mockUseSearchParam.mockReturnValue(['knowledge', mockSetSearchParam])
 
-        renderComponent({})
+        renderComponent()
 
         expect(mockUseSearchParam).toHaveBeenCalledWith('section')
         expect(mockScrollIntoView).toHaveBeenCalled()
@@ -627,7 +634,7 @@ describe('<StoreConfigForm />', () => {
 
         mockUseSearchParam.mockReturnValue(['email', mockSetSearchParam])
 
-        renderComponent({})
+        renderComponent()
 
         expect(mockUseSearchParam).toHaveBeenCalledWith('section')
         expect(mockScrollIntoView).toHaveBeenCalled()

@@ -21,7 +21,7 @@ exports[`<CurrencyPickerDropdown/> should display the selected currency 1`] = `
   </label>
   <div
     class="wrapper disabled"
-    role="listbox"
+    role="combobox"
     tabindex="0"
   >
     <div

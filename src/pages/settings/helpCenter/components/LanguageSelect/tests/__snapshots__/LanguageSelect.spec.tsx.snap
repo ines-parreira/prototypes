@@ -17,6 +17,7 @@ exports[`<LanguageSelect /> should render the component 1`] = `
         class="select dropdown-toggle"
       >
         <span
+          aria-label="language selector"
           class="label placeholder"
           style="min-width: 130px; opacity: 1;"
         >

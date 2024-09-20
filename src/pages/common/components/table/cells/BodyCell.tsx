@@ -1,23 +1,22 @@
-import React, {HTMLProps, MouseEvent, ReactNode} from 'react'
+import React, {forwardRef, HTMLProps, MouseEvent, ReactNode} from 'react'
 import classNames from 'classnames'
 
 import css from './BodyCell.less'
 import BodyCellContent from './BodyCellContent'
 
-export type Props = Omit<HTMLProps<HTMLTableDataCellElement>, 'size'> & {
+export type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode
     className?: string
     isHighlighted?: boolean
     innerClassName?: string
     innerStyle?: React.CSSProperties
     justifyContent?: 'left' | 'right' | 'center'
-    ['data-testid']?: string
     size?: 'normal' | 'small' | 'smallest'
     width?: number | string
-    onClick?: (event: MouseEvent<HTMLTableDataCellElement>) => void
+    onClick?: (event: MouseEvent<HTMLTableCellElement>) => void
 }
 
-const BodyCell = React.forwardRef<HTMLTableDataCellElement, Props>(
+const BodyCell = forwardRef<HTMLTableCellElement, Props>(
     (
         {
             children,
@@ -29,7 +28,6 @@ const BodyCell = React.forwardRef<HTMLTableDataCellElement, Props>(
             onClick,
             size = 'normal',
             width,
-            ['data-testid']: dataTestId,
             ...otherProps
         }: Props,
         ref
@@ -38,7 +36,6 @@ const BodyCell = React.forwardRef<HTMLTableDataCellElement, Props>(
             <td
                 {...otherProps}
                 ref={ref}
-                data-testid={dataTestId}
                 className={classNames(css.wrapper, className, css[size], {
                     [css.highlight]: isHighlighted,
                 })}

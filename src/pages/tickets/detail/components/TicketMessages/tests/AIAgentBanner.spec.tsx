@@ -1,6 +1,6 @@
 import React from 'react'
 import {Provider} from 'react-redux'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
 
@@ -64,7 +64,7 @@ describe('AIAgentBanner', () => {
         })
     })
 
-    it.skip("doesn't render the component when loading", () => {
+    it("doesn't render the component when loading", () => {
         useGetAiAgentFeedbackMock.mockReturnValue({
             isLoading: true,
             isError: false,
@@ -104,11 +104,9 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        const {queryByTestId} = render(
-            <AIAgentBanner message={{...mockMessage, public: false}} />
-        )
+        render(<AIAgentBanner message={{...mockMessage, public: false}} />)
 
-        expect(queryByTestId('feedback')).not.toBeInTheDocument()
+        expect(screen.queryByTestId('feedback')).not.toBeInTheDocument()
     })
 
     it('should render feedback when not allowed but message is public', () => {
@@ -135,11 +133,9 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        const {queryByTestId} = render(
-            <AIAgentBanner message={{...mockMessage, public: true}} />
-        )
+        render(<AIAgentBanner message={{...mockMessage, public: true}} />)
 
-        expect(queryByTestId('feedback')).toBeInTheDocument()
+        expect(screen.queryByTestId('feedback')).toBeInTheDocument()
     })
 
     it('should render feedback when allowed', () => {
@@ -166,9 +162,9 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        const {getByTestId} = render(<AIAgentBanner message={mockMessage} />)
+        render(<AIAgentBanner message={mockMessage} />)
 
-        expect(getByTestId('feedback')).toBeInTheDocument()
+        expect(screen.getByTestId('feedback')).toBeInTheDocument()
     })
 
     it('should render message in bold', () => {
@@ -194,12 +190,12 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        const {getByTestId} = render(<AIAgentBanner message={mockMessage} />)
+        render(<AIAgentBanner message={mockMessage} />)
 
-        const message = getByTestId('ai-agent-banner-message')
+        const message = screen.getByText('summary')
 
         expect(message).toBeInTheDocument()
-        expect(message).toHaveClass('boldMessage')
+        expect(message.parentElement).toHaveClass('boldMessage')
     })
 
     it('should not render message in bold', () => {
@@ -227,7 +223,7 @@ describe('AIAgentBanner', () => {
         const message = getByText('summary')
 
         expect(message).toBeInTheDocument()
-        expect(message).not.toHaveClass('boldMessage')
+        expect(message.parentElement).not.toHaveClass('boldMessage')
     })
 
     it('should fall back to body_html if no summary was provided', () => {
@@ -285,35 +281,8 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        const {getByTestId} = render(<AIAgentBanner message={mockMessage} />)
+        const {container} = render(<AIAgentBanner message={mockMessage} />)
 
-        const banner = getByTestId('ai-banner')
-
-        expect(banner).toHaveClass('hasError')
-    })
-
-    it('should render error message', () => {
-        useGetAiAgentFeedbackMock.mockReturnValue({
-            data: {
-                data: {
-                    messages: [
-                        {
-                            messageId: mockMessage.id,
-                            summary: '<div data-error-summary="true">bye</div>',
-                        },
-                    ],
-                    shopName: 'shopName',
-                    shopType: 'shopify',
-                },
-            },
-            isLoading: false,
-            isError: false,
-        } as any)
-
-        const {getByTestId} = render(<AIAgentBanner message={mockMessage} />)
-
-        const banner = getByTestId('ai-banner')
-
-        expect(banner).toHaveClass('hasError')
+        expect(container.firstChild).toHaveClass('hasError')
     })
 })

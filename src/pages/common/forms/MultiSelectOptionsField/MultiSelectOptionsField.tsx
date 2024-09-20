@@ -30,7 +30,6 @@ type Props = {
     loading?: boolean
     dropdownMenu?: ComponentType<unknown>
     isCompact?: boolean
-    testId?: string
 }
 
 type State = {
@@ -289,7 +288,6 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
                         />
                     ))}
                     <Dropdown
-                        testId={this.props.testId}
                         placeholder={`Add ${plural}...`}
                         value={input}
                         options={displayOptions}

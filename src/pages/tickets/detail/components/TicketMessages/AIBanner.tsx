@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {FC} from 'react'
 import classNames from 'classnames'
 
 import css from './AIBanner.less'
@@ -8,10 +8,9 @@ type Props = {
     hasError?: boolean
 }
 
-const AIBanner: React.FC<Props> = ({children, className, hasError}) => {
+const AIBanner: FC<Props> = ({children, className, hasError}) => {
     return (
         <div
-            data-testid="ai-banner"
             className={classNames(css.container, className, {
                 [css.hasError]: hasError,
             })}

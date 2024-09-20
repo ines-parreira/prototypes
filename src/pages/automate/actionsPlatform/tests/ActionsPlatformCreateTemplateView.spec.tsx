@@ -91,7 +91,7 @@ describe('<ActionsPlatformCreateTemplateView />', () => {
 
         act(() => {
             fireEvent.focus(
-                within(screen.getByRole('listbox')).getByText('Select App(s)')
+                within(screen.getByRole('combobox')).getByText('Select App(s)')
             )
         })
 

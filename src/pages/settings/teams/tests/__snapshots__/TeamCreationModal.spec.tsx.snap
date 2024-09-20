@@ -119,7 +119,7 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
               </label>
               <div
                 class="wrapper"
-                role="listbox"
+                role="combobox"
                 tabindex="0"
               >
                 <div

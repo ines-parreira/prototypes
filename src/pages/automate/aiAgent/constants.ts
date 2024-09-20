@@ -64,14 +64,6 @@ export const CustomerHttpIntegrationDataMock = {
     lastname: 'Smith',
 }
 
-export const DATA_TEST_ID = {
-    Loader: 'loader',
-    EmptyStateNoAIGuidances: 'empty-state-no-ai-guidances',
-    EmptyStateAIGuidances: 'empty-state-with-ai-guidances',
-    GuidancesOnly: 'guidances-only',
-    GuidancesAndAIGuidances: 'guidances-and-ai-guidances',
-}
-
 export const AI_AGENT_STEPS_LABELS: Record<
     AiAgentOnboardingWizardStep,
     string

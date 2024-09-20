@@ -36,7 +36,6 @@ export type Props<T extends boolean | number | string | null> = {
         label: string
         value: T
     }
-    testId?: string
 }
 
 export const DropdownItem = <T extends boolean | number | string | null>(
@@ -51,7 +50,6 @@ export const DropdownItem = <T extends boolean | number | string | null>(
         tag = 'li',
         option,
         onKeyDown,
-        testId,
         ...rest
     }: Props<T> & Omit<HTMLAttributes<HTMLOrSVGElement>, 'onClick'>,
     ref: ForwardedRef<HTMLElement>
@@ -198,7 +196,6 @@ export const DropdownItem = <T extends boolean | number | string | null>(
             ref={itemRef}
             tabIndex={0}
             title={title}
-            data-testid={testId}
             {...rest}
         >
             {isMultiple && !hasSubItems && (

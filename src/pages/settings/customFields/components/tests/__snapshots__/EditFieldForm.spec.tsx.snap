@@ -166,7 +166,7 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
     </label>
     <div
       class="wrapper"
-      role="listbox"
+      role="combobox"
       tabindex="-1"
     >
       <div

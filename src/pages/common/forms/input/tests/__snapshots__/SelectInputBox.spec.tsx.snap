@@ -3,7 +3,7 @@
 exports[`<SelectInputBox /> should render a prefix and a suffix 1`] = `
 <div
   class="wrapper"
-  role="listbox"
+  role="combobox"
   tabindex="0"
 >
   <div
@@ -36,7 +36,7 @@ exports[`<SelectInputBox /> should render a prefix and a suffix 1`] = `
 exports[`<SelectInputBox /> should render a select input box 1`] = `
 <div
   class="wrapper"
-  role="listbox"
+  role="combobox"
   tabindex="0"
 >
   <div

@@ -1,8 +1,9 @@
 import React from 'react'
 import Loader from 'pages/common/components/Loader/Loader'
-import {AIGuidance} from '../../types'
-import {GuidanceAiSuggestionsList} from '../GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
-import {DATA_TEST_ID} from '../../constants'
+
+import {GuidanceAiSuggestionsList} from 'pages/automate/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
+import {AIGuidance} from 'pages/automate/aiAgent/types'
+
 import css from './GuidanceTopRecommendations.less'
 
 type Props = {
@@ -17,13 +18,7 @@ export const GuidanceTopRecommendations = ({
     isLoading,
 }: Props) => {
     if (isLoading) {
-        return (
-            <Loader
-                data-testid={DATA_TEST_ID.Loader}
-                minHeight="32px"
-                size="32px"
-            />
-        )
+        return <Loader data-testid="loader" minHeight="32px" size="32px" />
     }
 
     if (!aiGuidances || aiGuidances.length === 0) {

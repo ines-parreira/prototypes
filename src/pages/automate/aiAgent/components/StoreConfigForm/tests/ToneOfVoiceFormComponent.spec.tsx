@@ -1,6 +1,8 @@
 import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
-import {ToneOfVoice} from '../../../constants'
+
+import {ToneOfVoice} from 'pages/automate/aiAgent/constants'
+
 import {ToneOfVoiceFormComponent} from '../FormComponents/ToneOfVoiceFormComponent'
 
 // Mock data
@@ -17,9 +19,7 @@ describe('ToneOfVoiceFormComponent', () => {
         render(<ToneOfVoiceFormComponent {...defaultProps} />)
 
         expect(screen.getByText('Tone of voice')).toBeInTheDocument()
-        expect(
-            screen.getByTestId('ai-agent-configuration-tone-of-voice')
-        ).toBeInTheDocument()
+        expect(screen.getByLabelText('Tone of voice')).toBeInTheDocument()
     })
 
     test('displays custom tone of voice guidance when "Custom" is selected', () => {

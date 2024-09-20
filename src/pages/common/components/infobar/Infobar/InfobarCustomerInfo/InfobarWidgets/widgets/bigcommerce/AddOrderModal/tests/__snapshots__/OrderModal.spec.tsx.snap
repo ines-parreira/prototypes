@@ -139,7 +139,7 @@ exports[`OrderModal should render Create Order 1`] = `
               </label>
               <div
                 class="wrapper"
-                role="listbox"
+                role="combobox"
                 tabindex="0"
               >
                 <div
@@ -272,7 +272,7 @@ exports[`OrderModal should render Create Order 1`] = `
                 >
                   <div
                     class="wrapper disabled"
-                    role="listbox"
+                    role="combobox"
                     tabindex="0"
                   >
                     <div
@@ -552,7 +552,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               </label>
               <div
                 class="wrapper"
-                role="listbox"
+                role="combobox"
                 tabindex="-1"
               >
                 <div
@@ -685,7 +685,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                 >
                   <div
                     class="wrapper disabled"
-                    role="listbox"
+                    role="combobox"
                     tabindex="0"
                   >
                     <div

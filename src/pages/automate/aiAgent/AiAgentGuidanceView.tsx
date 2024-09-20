@@ -12,7 +12,6 @@ import {GuidanceHeader} from './components/GuidanceHeader/GuidanceHeader'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
-import {DATA_TEST_ID} from './constants'
 import AiGuidanceEmptyState from './components/AiGuidanceEmptyState/AiGuidanceEmptyState'
 import {GuidanceTopRecommendations} from './components/GuidanceTopRecommendations/GuidanceTopRecommendations'
 
@@ -123,15 +122,11 @@ export const AiAgentGuidanceView = ({
         isLoadingGuidanceArticleList ||
         (!guidanceArticles.length && isLoadingAiGuidances)
     ) {
-        return <Loader data-testid={DATA_TEST_ID.Loader} />
+        return <Loader data-testid="loader" />
     }
 
     if (isEmptyStateNoAIGuidances) {
-        return (
-            <div data-testid={DATA_TEST_ID.EmptyStateNoAIGuidances}>
-                <GuidanceEmptyState shopName={shopName} />
-            </div>
-        )
+        return <GuidanceEmptyState shopName={shopName} />
     }
 
     if (isEmptyStateAIGuidances) {

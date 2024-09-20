@@ -8,7 +8,6 @@ import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavig
 import {AIGuidance} from 'pages/automate/aiAgent/types'
 import {GuidanceAiSuggestionsList} from 'pages/automate/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {DATA_TEST_ID} from 'pages/automate/aiAgent/constants'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import css from './AiGuidanceEmptyState.less'
@@ -32,10 +31,7 @@ const AiGuidanceEmptyState = ({aiGuidances, shopName}: Props) => {
     }
 
     return (
-        <div
-            className={css.container}
-            data-testid={DATA_TEST_ID.EmptyStateAIGuidances}
-        >
+        <div className={css.container}>
             <div className={css.bannerContainer}>
                 <div className={css.innerContainer}>
                     <div className={css.content}>

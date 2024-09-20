@@ -129,7 +129,7 @@ describe('<ActionsPlatformAppForm />', () => {
         )
 
         expect(
-            screen.getByText('Test App').closest('[role="listbox"]')
+            screen.getByText('Test App').closest('[role="combobox"]')
         ).toHaveAttribute('tabindex', '-1')
     })
 
@@ -149,7 +149,7 @@ describe('<ActionsPlatformAppForm />', () => {
         )
 
         expect(
-            screen.getByText('API key').closest('[role="listbox"]')
+            screen.getByText('API key').closest('[role="combobox"]')
         ).toHaveAttribute('tabindex', '-1')
     })
 

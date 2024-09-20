@@ -150,7 +150,7 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
     </label>
     <div
       class="wrapper"
-      role="listbox"
+      role="combobox"
       tabindex="0"
     >
       <div

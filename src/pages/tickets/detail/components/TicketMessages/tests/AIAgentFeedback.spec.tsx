@@ -220,7 +220,7 @@ describe('AIAgentFeedback', () => {
             </QueryClientProvider>
         )
 
-        userEvent.click(screen.getByTestId('thumbs-up-button'))
+        userEvent.click(screen.getByLabelText('Thumbs up button'))
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.AiAgentFeedbackBannerClicked, // Replace with the specific event name if necessary
             expect.objectContaining({
@@ -253,7 +253,7 @@ describe('AIAgentFeedback', () => {
             </QueryClientProvider>
         )
 
-        userEvent.click(screen.getByTestId('thumbs-down-button'))
+        userEvent.click(screen.getByLabelText('Thumbs down button'))
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.AiAgentFeedbackBannerClicked,
             expect.objectContaining({

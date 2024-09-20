@@ -90,11 +90,9 @@ export const ToneOfVoiceFormComponent = (
                     </ul>
                 </IconTooltip>
             </Label>
-            <div
-                data-candu-id="ai-agent-configuration-tone-of-voice"
-                data-testid="ai-agent-configuration-tone-of-voice"
-            >
+            <div data-candu-id="ai-agent-configuration-tone-of-voice">
                 <SelectField
+                    aria-label="Tone of voice"
                     fullWidth
                     showSelectedOption
                     value={toneOfVoiceValue}

@@ -275,7 +275,7 @@ const AutomateExploreDataModal = forwardRef<
                                     step="0.01"
                                     prefix="$"
                                     lang="en"
-                                    data-testid="agent-cost"
+                                    aria-label="Agent cost"
                                 />
                             </div>
                         </div>
@@ -310,7 +310,7 @@ const AutomateExploreDataModal = forwardRef<
                                                     : annualSalaryMultiplier)
                                         )
                                     }}
-                                    data-testid="tickets-closed-per-hour"
+                                    aria-label="Tickets closed per hour"
                                 />
                             </div>
                             <div>
@@ -335,7 +335,7 @@ const AutomateExploreDataModal = forwardRef<
                                 <InputField
                                     value={monthlySupportTickets || 'N/A'}
                                     isDisabled
-                                    data-testid="monthly-support-tickets"
+                                    aria-label="Monthly support tickets"
                                 />
                             </div>
                         </div>
@@ -370,7 +370,7 @@ const AutomateExploreDataModal = forwardRef<
                                             : '0h 0m'
                                     }
                                     isDisabled
-                                    data-testid="current-resolution-time"
+                                    aria-label="Current resolution time"
                                 />
                             </div>
                             <div>
@@ -403,7 +403,7 @@ const AutomateExploreDataModal = forwardRef<
                                             : '0h 0m'
                                     }
                                     isDisabled
-                                    data-testid="current-first-response-time"
+                                    aria-label="Current first response time"
                                 />
                             </div>
                         </div>
@@ -439,7 +439,7 @@ const AutomateExploreDataModal = forwardRef<
                                         : '0h 0m'
                                 }
                                 isDisabled
-                                data-testid="ticket-handle-time"
+                                aria-label="Ticket handle time"
                             />
                         </div>
                     </div>

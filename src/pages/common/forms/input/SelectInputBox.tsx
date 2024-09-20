@@ -35,7 +35,6 @@ type Props = {
     placeholder?: string
     prefix?: ReactNode
     suffix?: ReactNode
-    testId?: string
 } & Omit<HTMLAttributes<HTMLDivElement>, 'prefix'>
 
 type SelectInputBoxContextState = {
@@ -59,7 +58,9 @@ const SelectInputBox = (
         prefix,
         suffix,
         id,
-        testId,
+        ['aria-controls']: ariaControls, // TODO: make aria-controls and aria-expanded required to comply with role="combobox" requirements https://github.com/evcohen/eslint-plugin-jsx-a11y/tree/master/docs/rules/role-has-required-aria-props.md
+        ['aria-expanded']: ariaExpanded,
+        ...props
     }: Props,
     ref: ForwardedRef<HTMLDivElement>
 ) => {
@@ -146,10 +147,11 @@ const SelectInputBox = (
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 ref={inputElement}
-                role="listbox"
+                role="combobox"
+                aria-controls={ariaControls}
+                aria-expanded={ariaExpanded}
                 tabIndex={isDisabledMemoized ? -1 : 0}
                 id={id}
-                data-testid={testId}
             >
                 <div
                     className={classnames(
@@ -176,6 +178,7 @@ const SelectInputBox = (
                         className={classnames(css.input, {
                             [css.isGreyed]: isDisabledMemoized || isPlaceholder,
                         })}
+                        {...props}
                     >
                         {labelMemoized}
                     </div>

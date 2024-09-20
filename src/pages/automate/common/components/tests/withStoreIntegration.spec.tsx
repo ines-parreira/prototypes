@@ -1,19 +1,16 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
-
 import {fromJS} from 'immutable'
+
+import {billingState} from 'fixtures/billing'
+import {IntegrationType} from 'models/integration/constants'
+import withStoreIntegrations from 'pages/automate/common/utils/withStoreIntegrations'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {IntegrationType} from 'models/integration/constants'
-import {billingState} from 'fixtures/billing'
-import withStoreIntegrations from '../../utils/withStoreIntegrations'
-
-const AnyComponent = () => (
-    <div data-testid="aao-component">Just a component...</div>
-)
+const AnyComponent = () => <div>Just a component...</div>
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -30,9 +27,9 @@ describe('withStoreIntegrations', () => {
         }
     }
 
-    it('should not render the passed component when the integeration is not available', () => {
+    it('should not render the passed component when the integration is not available', () => {
         const AaoComponent = withStoreIntegrations('Hello', AnyComponent)
-        const {container, queryByTestId, getByText} = render(
+        render(
             <Provider
                 store={mockStore({
                     billing: fromJS(billingState),
@@ -48,13 +45,20 @@ describe('withStoreIntegrations', () => {
                 <AaoComponent />
             </Provider>
         )
-        expect(queryByTestId('aao-component')).not.toBeInTheDocument()
-        expect(getByText('Hello')).toBeInTheDocument()
-        expect(container).toMatchSnapshot()
+        expect(
+            screen.queryByText(/Just a component.../)
+        ).not.toBeInTheDocument()
+        expect(screen.getByText('Hello')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Connect Shopify, Magento or BigCommerce stores to start using Automate!'
+            )
+        ).toBeInTheDocument()
     })
-    it('should render the passed component when the integeration is available', () => {
+
+    it('should render the passed component when the integration is available', () => {
         const AaoComponent = withStoreIntegrations('Hello', AnyComponent)
-        const {container, getByTestId} = render(
+        render(
             <Provider
                 store={mockStore({
                     billing: fromJS(billingState),
@@ -69,8 +73,6 @@ describe('withStoreIntegrations', () => {
                 <AaoComponent />
             </Provider>
         )
-        expect(getByTestId('aao-component')).toBeInTheDocument()
-
-        expect(container).toMatchSnapshot()
+        expect(screen.getByText(/Just a component.../)).toBeInTheDocument()
     })
 })

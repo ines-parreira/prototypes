@@ -15,6 +15,7 @@ import React, {
     createContext,
     forwardRef,
     Fragment,
+    HTMLAttributes,
     MouseEvent,
     ReactNode,
     Ref,
@@ -49,7 +50,7 @@ type Props = {
     value?: boolean | number | string | Array<number | string> | null
     contained?: boolean
     shouldFlip?: boolean
-}
+} & Pick<HTMLAttributes<HTMLDivElement>, 'id'>
 
 type DropdownContextState = Pick<Props, 'isMultiple' | 'onToggle' | 'value'> & {
     getHighlightedLabel: (label: string) => ReactNode
@@ -76,6 +77,7 @@ const Dropdown = forwardRef(
             value,
             contained = false,
             shouldFlip = true,
+            ...props
         }: Props,
         ref: Ref<HTMLElement> | null | undefined
     ) => {
@@ -243,6 +245,7 @@ const Dropdown = forwardRef(
                                     position: strategy,
                                     top: y ?? '',
                                 }}
+                                {...props}
                             >
                                 {children}
                             </div>

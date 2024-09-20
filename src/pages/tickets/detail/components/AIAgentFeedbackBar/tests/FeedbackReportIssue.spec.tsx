@@ -70,7 +70,7 @@ describe('FeedbackReportIssue', () => {
             <FeedbackReportIssue value={[]} onChange={onChange} accountId={1} />
         )
 
-        const listBox = screen.getByRole('listbox')
+        const listBox = screen.getByRole('combobox')
         fireEvent.focus(listBox)
 
         const dropdownItem = screen.getAllByRole('option')
@@ -99,7 +99,7 @@ describe('FeedbackReportIssue', () => {
             />
         )
 
-        const listBox = screen.getByRole('listbox')
+        const listBox = screen.getByRole('combobox')
         fireEvent.focus(listBox)
 
         const dropdownItem = screen.getAllByRole('option')

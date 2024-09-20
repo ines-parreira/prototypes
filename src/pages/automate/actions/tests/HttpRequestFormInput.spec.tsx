@@ -50,13 +50,13 @@ describe('HttpRequestFormInput', () => {
         expect(urlInput).toBeInTheDocument()
 
         // change to method changes content type
-        const methodSelect = getAllByRole('listbox')[0]
+        const methodSelect = getAllByRole('combobox')[0]
         expect(methodSelect).toBeInTheDocument()
         userEvent.click(methodSelect)
         userEvent.click(getAllByRole('option')[1])
         expect(getByText('POST')).toBeInTheDocument()
 
-        const contentTypeSelect = getAllByRole('listbox')[1]
+        const contentTypeSelect = getAllByRole('combobox')[1]
         expect(contentTypeSelect).toBeInTheDocument()
         expect(getByText('{}')).toBeInTheDocument()
 

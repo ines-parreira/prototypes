@@ -29,7 +29,7 @@ jest.mock('pages/common/forms/SelectField/SelectField', () => ({
             {options.map((option) => (
                 <button
                     key={option.value}
-                    data-testid={option.value}
+                    aria-label={option.value.toString()}
                     onClick={() => onChange(option.value)}
                     data-selected={option.value === value}
                 >
@@ -79,19 +79,23 @@ describe('<AutomateExploreDataModal />', () => {
         modal.current?.open()
 
         // Assert
-        const resolutionTime = screen.getByTestId('current-resolution-time')
-        const firstResponseTime = screen.getByTestId(
-            'current-first-response-time'
-        )
-        const monthlySupportTickets = screen.getByTestId(
-            'monthly-support-tickets'
-        )
-        const ticketsClosedPerHour = screen.getByTestId(
-            'tickets-closed-per-hour'
-        )
-        const agentCost = screen.getByTestId('agent-cost')
-        const yearly = screen.getByTestId('yearly')
-        const ticketHandleTime = screen.getByTestId('ticket-handle-time')
+        const resolutionTime = screen.getByRole('textbox', {
+            name: 'Current resolution time',
+        })
+        const firstResponseTime = screen.getByRole('textbox', {
+            name: 'Current first response time',
+        })
+        const monthlySupportTickets = screen.getByRole('textbox', {
+            name: 'Monthly support tickets',
+        })
+        const ticketsClosedPerHour = screen.getByRole('textbox', {
+            name: 'Tickets closed per hour',
+        })
+        const agentCost = screen.getByRole('textbox', {name: 'Agent cost'})
+        const yearly = screen.getByRole('button', {name: 'yearly'})
+        const ticketHandleTime = screen.getByRole('textbox', {
+            name: 'Ticket handle time',
+        })
 
         expect(resolutionTime).toHaveValue('1h')
         expect(firstResponseTime).toHaveValue('40m')
@@ -139,19 +143,23 @@ describe('<AutomateExploreDataModal />', () => {
         modal.current?.open()
 
         // Assert
-        const resolutionTime = screen.getByTestId('current-resolution-time')
-        const firstResponseTime = screen.getByTestId(
-            'current-first-response-time'
-        )
-        const monthlySupportTickets = screen.getByTestId(
-            'monthly-support-tickets'
-        )
-        const ticketsClosedPerHour = screen.getByTestId(
-            'tickets-closed-per-hour'
-        )
-        const agentCost = screen.getByTestId('agent-cost')
-        const yearly = screen.getByTestId('yearly')
-        const ticketHandleTime = screen.getByTestId('ticket-handle-time')
+        const resolutionTime = screen.getByRole('textbox', {
+            name: 'Current resolution time',
+        })
+        const firstResponseTime = screen.getByRole('textbox', {
+            name: 'Current first response time',
+        })
+        const monthlySupportTickets = screen.getByRole('textbox', {
+            name: 'Monthly support tickets',
+        })
+        const ticketsClosedPerHour = screen.getByRole('textbox', {
+            name: 'Tickets closed per hour',
+        })
+        const agentCost = screen.getByRole('textbox', {name: 'Agent cost'})
+        const yearly = screen.getByRole('button', {name: 'yearly'})
+        const ticketHandleTime = screen.getByRole('textbox', {
+            name: 'Ticket handle time',
+        })
         const updateButton = screen.getByRole('button', {name: 'Update'})
 
         expect(resolutionTime).toHaveValue('1h')
@@ -240,9 +248,9 @@ describe('<AutomateExploreDataModal />', () => {
         modal.current?.open()
 
         // Assert
-        const agentCost = screen.getByTestId('agent-cost')
-
-        expect(agentCost).toHaveValue('****')
+        expect(screen.getByRole('textbox', {name: 'Agent cost'})).toHaveValue(
+            '****'
+        )
     })
 
     it('should fallback to default values when no initial data is provided', () => {
@@ -266,8 +274,8 @@ describe('<AutomateExploreDataModal />', () => {
         modal.current?.open()
 
         // Assert
-        const agentCost = screen.getByTestId('agent-cost')
-        const hourly = screen.getByTestId('hourly')
+        const agentCost = screen.getByRole('textbox', {name: 'Agent cost'})
+        const hourly = screen.getByRole('button', {name: 'hourly'})
 
         expect(agentCost).toHaveValue('15.50')
         expect(hourly).toHaveAttribute('data-selected', 'true')
@@ -293,7 +301,7 @@ describe('<AutomateExploreDataModal />', () => {
         // Act
         modal.current?.open()
 
-        const agentCost = screen.getByTestId('agent-cost')
+        const agentCost = screen.getByRole('textbox', {name: 'Agent cost'})
 
         fireEvent.change(agentCost, {target: {value: '123456789.123'}})
 
@@ -321,8 +329,8 @@ describe('<AutomateExploreDataModal />', () => {
         // Act
         modal.current?.open()
 
-        const agentCost = screen.getByTestId('agent-cost')
-        const yearly = screen.getByTestId('yearly')
+        const agentCost = screen.getByRole('textbox', {name: 'Agent cost'})
+        const yearly = screen.getByRole('button', {name: 'yearly'})
 
         fireEvent.change(agentCost, {target: {value: '50'}})
         fireEvent.click(yearly)
@@ -352,9 +360,9 @@ describe('<AutomateExploreDataModal />', () => {
         // Act
         modal.current?.open()
 
-        const agentCost = screen.getByTestId('agent-cost')
-        const yearly = screen.getByTestId('yearly')
-        const hourly = screen.getByTestId('hourly')
+        const agentCost = screen.getByRole('textbox', {name: 'Agent cost'})
+        const yearly = screen.getByRole('button', {name: 'yearly'})
+        const hourly = screen.getByRole('button', {name: 'hourly'})
 
         fireEvent.click(yearly)
 
@@ -397,7 +405,7 @@ describe('<AutomateExploreDataModal />', () => {
 
         // Act
 
-        fireEvent.change(screen.getByTestId('agent-cost'), {
+        fireEvent.change(screen.getByRole('textbox', {name: 'Agent cost'}), {
             target: {value: '50'},
         })
 
@@ -405,7 +413,7 @@ describe('<AutomateExploreDataModal />', () => {
         expect(updateButton).toBeAriaEnabled()
 
         // Act
-        fireEvent.change(screen.getByTestId('agent-cost'), {
+        fireEvent.change(screen.getByRole('textbox', {name: 'Agent cost'}), {
             target: {value: ''},
         })
 

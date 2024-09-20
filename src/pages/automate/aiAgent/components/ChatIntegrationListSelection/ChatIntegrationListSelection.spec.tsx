@@ -1,7 +1,7 @@
 import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
 
-import {mockChatChannels} from '../../fixtures/chatChannels.fixture'
+import {mockChatChannels} from 'pages/automate/aiAgent/fixtures/chatChannels.fixture'
 
 import {ChatIntegrationListSelection} from './ChatIntegrationListSelection'
 
@@ -23,11 +23,9 @@ describe('ChatIntegrationListSelection', () => {
         )
 
         const chatToSelect = mockChatChannels[1]
-        const dropdown = screen.getByTestId('chat-dropdown')
+        const dropdown = screen.getByRole('combobox')
         fireEvent.focus(dropdown)
-
-        const testId = `chat-dropdown-item-${chatToSelect.value.meta.app_id}`
-        const chatCheckbox = screen.getByTestId(testId)
+        const chatCheckbox = screen.getByText(chatToSelect.value.name)
         fireEvent.click(chatCheckbox)
 
         expect(mockOnSelectionChange).toHaveBeenCalledWith([
@@ -47,11 +45,11 @@ describe('ChatIntegrationListSelection', () => {
             />
         )
 
-        const dropdown = screen.getByTestId('chat-dropdown')
+        const dropdown = screen.getByRole('combobox')
         fireEvent.focus(dropdown)
-
-        const testId = `chat-dropdown-item-${mockSelectedChat.value.meta.app_id}`
-        const chatCheckbox = screen.getByTestId(testId)
+        const chatCheckbox = screen.getByRole('option', {
+            name: mockSelectedChat.value.name,
+        })
         fireEvent.click(chatCheckbox)
 
         expect(mockOnSelectionChange).toHaveBeenCalledWith([])

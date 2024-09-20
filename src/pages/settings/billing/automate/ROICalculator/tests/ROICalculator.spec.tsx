@@ -3,18 +3,13 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
-
 import {fromJS} from 'immutable'
-
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 
 import {billingState} from 'fixtures/billing'
-
-import {RootState, StoreDispatch} from 'state/types'
-
 import * as metricTrends from 'hooks/reporting/metricTrends'
 import * as useGetCostPerBillableTicket from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
-
+import {RootState, StoreDispatch} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import ROICalculator from '../ROICalculator'
@@ -78,7 +73,7 @@ describe('<ROICalculator />', () => {
             },
         })
 
-        const {getByTestId} = render(
+        render(
             <Provider
                 store={mockStore({billing: fromJS(billingState)} as RootState)}
             >
@@ -89,14 +84,24 @@ describe('<ROICalculator />', () => {
         )
 
         // Act
-        const metricsValueInput = getByTestId('metrics-value-input')
-        const salaryValueInput = getByTestId('salary-value-input')
-        const resolutionTimeInput = getByTestId('resolution-time-input')
-        const firstResponseTimeInput = getByTestId('first-response-time-input')
-        const ticketsClosedPerHourInput = getByTestId(
-            'tickets-closed-per-hour-input'
-        )
-        const ticketHandleTimeInput = getByTestId('ticket-handle-time-input')
+        const metricsValueInput = screen.getByRole('textbox', {
+            name: 'Metrics',
+        })
+        const salaryValueInput = screen.getByRole('textbox', {
+            name: 'Salary',
+        })
+        const resolutionTimeInput = screen.getByRole('textbox', {
+            name: 'Resolution time',
+        })
+        const firstResponseTimeInput = screen.getByRole('textbox', {
+            name: 'First response time',
+        })
+        const ticketsClosedPerHourInput = screen.getByRole('textbox', {
+            name: 'Tickets closed per hour',
+        })
+        const ticketHandleTimeInput = screen.getByRole('textbox', {
+            name: 'Ticket handle time',
+        })
 
         fireEvent.change(salaryValueInput, {target: {value: '20'}})
 
@@ -141,7 +146,7 @@ describe('<ROICalculator />', () => {
             isError: false,
         })
 
-        const {getByTestId} = render(
+        render(
             <Provider
                 store={mockStore({billing: fromJS(billingState)} as RootState)}
             >
@@ -152,10 +157,18 @@ describe('<ROICalculator />', () => {
         )
 
         // Act
-        const metricsValueInput = getByTestId('metrics-value-input')
-        const salaryValueInput = getByTestId('salary-value-input')
-        const resolutionTimeInput = getByTestId('resolution-time-input')
-        const firstResponseTimeInput = getByTestId('first-response-time-input')
+        const metricsValueInput = screen.getByRole('textbox', {
+            name: 'Metrics',
+        })
+        const salaryValueInput = screen.getByRole('textbox', {
+            name: 'Salary',
+        })
+        const resolutionTimeInput = screen.getByRole('textbox', {
+            name: 'Resolution time',
+        })
+        const firstResponseTimeInput = screen.getByRole('textbox', {
+            name: 'First response time',
+        })
 
         // Assert
         expect(metricsValueInput).not.toBeDisabled()
@@ -186,11 +199,8 @@ describe('<ROICalculator />', () => {
         expect(resolutionTimeInput).toHaveValue('12hrs')
         expect(firstResponseTimeInput).toHaveValue('12hrs')
 
-        const costWithAutomate = getByTestId('cost-with-automate')
-        const costWithoutAutomate = getByTestId('cost-without-automate')
-
-        expect(costWithAutomate).toHaveTextContent('$6,076')
-        expect(costWithoutAutomate).toHaveTextContent('$7,952')
+        expect(screen.getByText('$6,076')).toBeInTheDocument()
+        expect(screen.getByText('$7,952')).toBeInTheDocument()
     })
 
     it('should display zeros instead of Infinity or NaN', () => {
@@ -239,7 +249,7 @@ describe('<ROICalculator />', () => {
             },
         })
 
-        const {getByTestId} = render(
+        render(
             <Provider
                 store={mockStore({billing: fromJS(billingState)} as RootState)}
             >
@@ -250,19 +260,14 @@ describe('<ROICalculator />', () => {
         )
 
         // Act
-        const ticketsClosedPerHourInput = getByTestId(
-            'tickets-closed-per-hour-input'
-        )
+        const ticketsClosedPerHourInput = screen.getByRole('textbox', {
+            name: 'Tickets closed per hour',
+        })
 
         fireEvent.change(ticketsClosedPerHourInput, {target: {value: ''}})
 
         // Assert
-        const costWithAutomate = getByTestId('cost-with-automate')
-        const costWithoutAutomate = getByTestId('cost-without-automate')
-        const savedInPercentage = getByTestId('saved-in-percentage')
-
-        expect(costWithAutomate).toHaveTextContent('0')
-        expect(costWithoutAutomate).toHaveTextContent('0')
-        expect(savedInPercentage).toHaveTextContent('0%')
+        expect(screen.getAllByText('$0')).toHaveLength(2)
+        expect(screen.getByText('Save 0%')).toBeInTheDocument()
     })
 })

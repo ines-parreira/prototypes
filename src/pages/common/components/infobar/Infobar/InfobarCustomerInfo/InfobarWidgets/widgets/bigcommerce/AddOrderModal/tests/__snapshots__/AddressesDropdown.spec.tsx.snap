@@ -23,7 +23,7 @@ exports[`<ShippingAddressesDropdown/> should display \`No results\` when shippin
     >
       <div
         class="wrapper"
-        role="listbox"
+        role="combobox"
         tabindex="0"
       >
         <div
@@ -81,7 +81,7 @@ exports[`<ShippingAddressesDropdown/> snapshot renders the selected shipping add
     >
       <div
         class="wrapper"
-        role="listbox"
+        role="combobox"
         tabindex="0"
       >
         <div

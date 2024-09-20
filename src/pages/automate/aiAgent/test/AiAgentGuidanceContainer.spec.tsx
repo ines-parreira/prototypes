@@ -14,7 +14,6 @@ import {AiAgentGuidanceContainer} from '../AiAgentGuidanceContainer'
 import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
 import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
 import {
-    DATA_TEST_ID,
     GUIDANCE_ARTICLE_LIMIT,
     GUIDANCE_ARTICLE_LIMIT_WARNING,
 } from '../constants'
@@ -219,7 +218,9 @@ describe('<AiAgentGuidanceContainer />', () => {
         renderComponent()
 
         expect(
-            screen.getByTestId(DATA_TEST_ID.EmptyStateAIGuidances)
+            screen.getByText(
+                /Add Guidance to tell AI Agent how to handle specific/
+            )
         ).toBeInTheDocument()
 
         const createCustomGuidanceButton = screen.getByText(
@@ -370,19 +371,17 @@ describe('<AiAgentGuidanceContainer />', () => {
 
             renderComponent()
 
-            const rowsBefore = screen.getAllByTestId('guidance-row')
-            // Check first row title. Should be Asc be default
-            expect(
-                within(rowsBefore[0]).getByTestId('guidance-title')
-            ).toHaveTextContent('New article')
+            // Check first row title. Should be Asc by default
+            expect(document.querySelector('tbody tr')).toHaveTextContent(
+                'New article'
+            )
 
             userEvent.click(screen.getByText('Last updated'))
 
-            const rowsAfter = screen.getAllByTestId('guidance-row')
             // Check first row title. Should be Desc after click
-            expect(
-                within(rowsAfter[0]).getByTestId('guidance-title')
-            ).toHaveTextContent('Old article')
+            expect(document.querySelector('tbody tr')).toHaveTextContent(
+                'Old article'
+            )
         })
 
         it('should change guidance visibility', () => {
@@ -411,11 +410,9 @@ describe('<AiAgentGuidanceContainer />', () => {
 
             renderComponent()
 
-            const rowsBefore = screen.getAllByTestId('guidance-row')
-
-            const firstRowToggle = within(rowsBefore[0]).getByTestId(
-                'guidance-visibility-toggle'
-            )
+            const firstRowToggle = within(
+                document.querySelector('tbody tr')!
+            ).getByRole('checkbox', {name: 'Toggle guidance visibility'})
 
             expect(firstRowToggle).toBeChecked()
 

@@ -10,6 +10,7 @@ import React, {
     createRef,
     RefObject,
     ReactNode,
+    HTMLAttributes,
 } from 'react'
 import {
     DropdownItem,
@@ -62,7 +63,7 @@ type Props = {
     showSelectedOption?: boolean
     isSearchable?: boolean
     showSelectedOptionIcon?: boolean
-}
+} & Pick<HTMLAttributes<HTMLElement>, 'id' | 'aria-label'>
 
 type State = {
     input: string
@@ -391,6 +392,7 @@ export default class SelectField extends Component<Props, State> {
             caption,
             isSearchable,
             showSelectedOptionIcon,
+            ['aria-label']: ariaLabel,
         } = this.props
         const {
             filteredOptions,
@@ -478,6 +480,7 @@ export default class SelectField extends Component<Props, State> {
                                     )}
                                     {customIcon}
                                     <span
+                                        aria-label={ariaLabel}
                                         style={{
                                             minWidth: selectMinWidth,
                                             // hide the label when the input is filled
@@ -488,7 +491,7 @@ export default class SelectField extends Component<Props, State> {
                                             [css.placeholder]: !label,
                                         })}
                                         data-testid={
-                                            id ? `selected-${id}` : undefined
+                                            id ? `selected-${id}` : undefined // leaving it until we remove usage in e2e, please do not use in tests
                                         }
                                     >
                                         {label ||
@@ -502,7 +505,7 @@ export default class SelectField extends Component<Props, State> {
                                             style={{
                                                 minWidth: selectMinWidth,
                                             }}
-                                            id={id!}
+                                            id={id}
                                             className={classnames(css.input, {
                                                 [css.iconPadding]: !!icon,
                                             })}

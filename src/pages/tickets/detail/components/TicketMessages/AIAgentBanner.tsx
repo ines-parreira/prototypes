@@ -66,7 +66,6 @@ const AIAgentBanner = ({message, className}: AIAgentBannerProps) => {
     return (
         <AIBanner className={className} hasError={messageSummaryHasError}>
             <div
-                data-testid="ai-agent-banner-message"
                 className={classNames({
                     [css.boldMessage]: isMessagePublic,
                 })}

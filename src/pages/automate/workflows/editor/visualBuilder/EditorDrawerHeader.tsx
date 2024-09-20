@@ -47,7 +47,7 @@ const EditorDrawerHeader = ({
                         intent="secondary"
                         size="medium"
                         aria-label="close edit modal"
-                        data-testid={`${testId}-close-drawer`}
+                        data-testid={`${testId}-close-drawer`} // used in e2e tests
                     >
                         keyboard_tab
                     </IconButton>

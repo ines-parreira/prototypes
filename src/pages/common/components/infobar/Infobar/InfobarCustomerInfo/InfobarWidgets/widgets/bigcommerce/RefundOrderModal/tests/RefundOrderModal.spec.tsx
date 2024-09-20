@@ -365,7 +365,7 @@ describe('RefundOrderModalConnected', () => {
         // Select new order status
         const newOrderStatus = 'Partially Shipped'
 
-        userEvent.click(screen.getByRole('listbox'))
+        userEvent.click(screen.getByRole('combobox'))
         userEvent.click(screen.getByRole('option', {name: /Partially Shipped/}))
 
         // Refund order
@@ -473,7 +473,7 @@ describe('RefundOrderModalConnected', () => {
         // Select new order status
         const newOrderStatus = 'Partially Shipped'
 
-        userEvent.click(screen.getByRole('listbox'))
+        userEvent.click(screen.getByRole('combobox'))
         userEvent.click(screen.getByRole('option', {name: /Partially Shipped/}))
 
         // Refund order
@@ -619,7 +619,7 @@ describe('RefundOrderModalConnected', () => {
         // Select new order status
         const newOrderStatus = 'Partially Shipped'
 
-        userEvent.click(screen.getByRole('listbox'))
+        userEvent.click(screen.getByRole('combobox'))
         userEvent.click(screen.getByRole('option', {name: /Partially Shipped/}))
 
         // Refund order

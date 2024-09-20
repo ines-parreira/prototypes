@@ -23,7 +23,6 @@ type Props = {
     onDelete: () => void
     menu: ComponentType<{className?: string}>
     isCompact?: boolean
-    testId?: string
 }
 
 type State = {
@@ -102,7 +101,6 @@ export default class Dropdown extends Component<Props, State> {
                 )}
             >
                 <UncontrolledDropdown
-                    data-testid={this.props.testId}
                     isOpen={isFocused && (!!options.length || !!value)}
                 >
                     <DropdownToggle tag="div" data-toggle="dropdown">

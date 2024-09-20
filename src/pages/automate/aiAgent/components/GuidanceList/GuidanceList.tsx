@@ -114,16 +114,11 @@ export const GuidanceList = ({
                 {sortedGuidanceArticles.map((article) => (
                     <TableBodyRow
                         key={article.id}
-                        data-testid="guidance-row"
                         onClick={() => onRowClick(article.id)}
                     >
-                        <BodyCell
-                            innerClassName={css.itemTitle}
-                            data-testid="guidance-title"
-                        >
+                        <BodyCell innerClassName={css.itemTitle}>
                             <ToggleInput
                                 isToggled={article.visibility === 'PUBLIC'}
-                                data-testid="guidance-visibility-toggle"
                                 aria-label="Toggle guidance visibility"
                                 onClick={(val, event) => {
                                     event.stopPropagation()

@@ -47,7 +47,7 @@ describe('RefundOrderFooter', () => {
         // it will trigger a hook call with user's data
         await userEvent.type(screen.getByRole('textbox'), refundReason)
         act(() => jest.runAllTimers())
-        userEvent.click(screen.getByRole('listbox'))
+        userEvent.click(screen.getByRole('combobox'))
         userEvent.click(screen.getByRole('option', {name: /Partially Shipped/}))
 
         expect(dispatchRefundOrderStateMock).toHaveBeenCalledTimes(2)

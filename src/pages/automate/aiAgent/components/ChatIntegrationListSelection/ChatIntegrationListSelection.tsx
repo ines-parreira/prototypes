@@ -1,4 +1,5 @@
 import React, {useRef, useState} from 'react'
+
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
@@ -68,11 +69,13 @@ export const ChatIntegrationListSelection = ({
             placeholder="Select one or more chat integrations"
             hasError={hasError}
             ref={targetRef}
-            testId="chat-dropdown"
+            aria-expanded={isDropdownOpened}
+            aria-controls="chat-integrations-list"
         >
             <SelectInputBoxContext.Consumer>
                 {(context) => (
                     <Dropdown
+                        id="chat-integrations-list"
                         isMultiple
                         isOpen={isDropdownOpened}
                         onToggle={() => context!.onBlur()}
@@ -87,7 +90,6 @@ export const ChatIntegrationListSelection = ({
                                 .map(({value}) => (
                                     <DropdownItem
                                         key={value.id}
-                                        testId={`chat-dropdown-item-${value.meta.app_id}`}
                                         option={{
                                             label: value.name,
                                             value: value.id,

@@ -139,7 +139,7 @@ exports[`<AddCustomField/> should render 1`] = `
           </label>
           <div
             class="wrapper"
-            role="listbox"
+            role="combobox"
             tabindex="0"
           >
             <div

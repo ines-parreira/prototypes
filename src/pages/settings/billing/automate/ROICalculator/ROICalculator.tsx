@@ -283,7 +283,7 @@ const ROICalculator = () => {
                             }
                             value={metricsValue}
                             isDisabled={isMetricsDisabled}
-                            data-testid="metrics-value-input"
+                            aria-label="Metrics"
                         />
                     </div>
                 </div>
@@ -299,7 +299,7 @@ const ROICalculator = () => {
                             onChange={(val) =>
                                 setTicketsClosedPerHour(formatValue(val))
                             }
-                            data-testid="tickets-closed-per-hour-input"
+                            aria-label="Tickets closed per hour"
                         />
                     </div>
                 </div>
@@ -332,7 +332,7 @@ const ROICalculator = () => {
                             value={salaryValue}
                             className={css.salaryValue}
                             prefix="$"
-                            data-testid="salary-value-input"
+                            aria-label="Salary"
                         />
                     </div>
                 </div>
@@ -375,7 +375,7 @@ const ROICalculator = () => {
                                     'hrs'
                                 )
                             }
-                            data-testid="resolution-time-input"
+                            aria-label="Resolution time"
                         />
                     </div>
                 </div>
@@ -418,7 +418,7 @@ const ROICalculator = () => {
                                     'hrs'
                                 )
                             }}
-                            data-testid="first-response-time-input"
+                            aria-label="First response time"
                         />
                     </div>
                 </div>
@@ -449,7 +449,7 @@ const ROICalculator = () => {
                             }
                             isDisabled={!!ticketHandleTimeTrend.data?.value}
                             placeholder="m"
-                            data-testid="ticket-handle-time-input"
+                            aria-label="Ticket handle time"
                         />
                     </div>
                 </div>
@@ -469,7 +469,6 @@ const ROICalculator = () => {
                                     css.automateCost,
                                     css.withoutAutomateCost
                                 )}
-                                data-testid="cost-without-automate"
                             >
                                 {formatCurrency(
                                     Number(costWithoutAutomate) || 0,
@@ -486,7 +485,6 @@ const ROICalculator = () => {
                                     css.automateCost,
                                     css.withAutomateCost
                                 )}
-                                data-testid="cost-with-automate"
                             >
                                 {formatCurrency(
                                     Number(costWithAutomate) || 0,
@@ -494,10 +492,7 @@ const ROICalculator = () => {
                                 )}
                             </div>
                         </div>
-                        <div
-                            className={css.savePercentage}
-                            data-testid="saved-in-percentage"
-                        >
+                        <div className={css.savePercentage}>
                             Save {savedInPercentage}
                         </div>
                     </div>

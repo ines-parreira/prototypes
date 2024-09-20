@@ -47,7 +47,7 @@ describe('<ModifiersPopover/>', () => {
         render(<ModifiersPopover {...defaultProps} />)
 
         // Cannot target by label because we cannot wrap our select boxes into labels properly ;(
-        userEvent.click(screen.getAllByRole('listbox')[0])
+        userEvent.click(screen.getAllByRole('combobox')[0])
         userEvent.click(screen.getByText(/Test 1/i))
 
         // Confirm that the of the selected dropdown value is visible after it is selected
@@ -95,19 +95,19 @@ describe('<ModifiersPopover/>', () => {
         expect(container).toMatchSnapshot('visible error messages')
 
         // Fill out required fields
-        userEvent.click(screen.getAllByRole('listbox')[0])
+        userEvent.click(screen.getAllByRole('combobox')[0])
         userEvent.click(screen.getByText(/Test 1/i))
 
-        userEvent.click(screen.getAllByRole('listbox')[1])
+        userEvent.click(screen.getAllByRole('combobox')[1])
         fireEvent.click(screen.getByText(/Pattern/i))
 
-        userEvent.click(screen.getAllByRole('listbox')[2])
+        userEvent.click(screen.getAllByRole('combobox')[2])
         userEvent.click(screen.getByText(/Three/i))
 
-        // userEvent.click(screen.getAllByRole('listbox')[3])
+        // userEvent.click(screen.getAllByRole('combobox')[3])
         // userEvent.click(screen.getByText(/Dropdown 2/i))
 
-        userEvent.click(screen.getAllByRole('listbox')[4])
+        userEvent.click(screen.getAllByRole('combobox')[4])
         userEvent.click(screen.getByText(/Terrarium Orbit/i))
 
         // Set "true" value for a checkbox

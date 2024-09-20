@@ -228,7 +228,7 @@ describe('UsageAndPlansView', () => {
         })
 
         userEvent.click(
-            within(screen.getByRole('listbox')).getByText('arrow_drop_down')
+            within(screen.getByRole('combobox')).getByText('arrow_drop_down')
         )
 
         await waitFor(() => {

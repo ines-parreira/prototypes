@@ -172,7 +172,7 @@ const DEPRECATED_ConnectedChannelsView = () => {
                 {hasChannels && (
                     <div
                         className={css.channelsContainer}
-                        data-testid="connected-channels"
+                        data-testid="connected-channels" // used in e2e tests
                     >
                         <ConnectedChannelsViewContext.Provider
                             value={connectedChannelsViewContext}

@@ -26,7 +26,7 @@ describe('CancellationReasons - Helpdesk', () => {
         )
         expect(instructionElement).toHaveTextContent('Cancellation reason*')
 
-        const selectorElement = getByRole('listbox')
+        const selectorElement = getByRole('combobox')
         expect(selectorElement).toBeInTheDocument()
 
         // No other reason rendered
@@ -60,7 +60,7 @@ describe('CancellationReasons - Helpdesk', () => {
         )
         expect(instructionElement).toHaveTextContent('Cancellation reason*')
 
-        const selectorElement = getByRole('listbox')
+        const selectorElement = getByRole('combobox')
         expect(selectorElement).toHaveTextContent(state.primaryReason.label)
 
         const secondaryReasons = getByTestId('secondary-reasons-selector')
