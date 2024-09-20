@@ -50,6 +50,8 @@ export const ticketMessageCreatedEvents: Event[] = [
         type: 'ticket-message.created.phone',
         icon: 'phone',
         label: 'Phone',
+        tooltip:
+            'This setting only controls the messages sent after the original phone call.',
     },
     {
         enabled: true,
