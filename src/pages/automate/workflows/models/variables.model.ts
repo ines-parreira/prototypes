@@ -22,6 +22,14 @@ const templateEngine = new Liquid({
     dateFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
 })
 
+templateEngine.registerFilter('json_escape', (value: unknown) => {
+    if (typeof value === 'string') {
+        return JSON.stringify(value).slice(1, -1)
+    }
+
+    return value
+})
+
 // any text starting with {{ and ending with }} will be interpreted as a variable by the API template engine
 export const workflowVariableRegex = /{{[^{}]*}}/g
 export function extractVariablesFromText(text: string): {
@@ -31,14 +39,13 @@ export function extractVariablesFromText(text: string): {
     const match = text.match(/{{[^{}]*}}/g)
     if (match) {
         return match.map((variable) => {
-            const [value, filter] = variable
-                .slice(2, -2)
-                .trim()
-                .split(/\s*\|\s*/)
+            const [value, ...filters] = variable.slice(2, -2).split('|')
 
             return {
-                value,
-                filter,
+                value: value.trim(),
+                filter: filters.length
+                    ? filters.join('|').trimLeft()
+                    : undefined,
             }
         })
     }

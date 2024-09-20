@@ -17,6 +17,7 @@ import {addEntityToVariable} from './utils'
 type Options = {
     size?: WorkflowVariableTagProps['size']
     getVariables?: () => WorkflowVariableList
+    onClick?: (entityKey: string, element: HTMLElement) => void
 }
 
 export default function createWorkflowVariablesPlugin(options: Options = {}) {
@@ -39,10 +40,19 @@ export default function createWorkflowVariablesPlugin(options: Options = {}) {
                 },
                 component: (props: DecoratorComponentProps) => {
                     const {contentState, entityKey, children} = props
+
+                    const handleClick = (element: HTMLElement) => {
+                        options.onClick?.(entityKey, element)
+                    }
+
                     const value = contentState.getEntity(entityKey).getData()
                         .value as string // eslint-disable-line @typescript-eslint/no-unsafe-member-access
                     return (
-                        <WorkflowVariableTag value={value} size={options.size}>
+                        <WorkflowVariableTag
+                            value={value}
+                            size={options.size}
+                            onClick={handleClick}
+                        >
                             {children}
                         </WorkflowVariableTag>
                     )

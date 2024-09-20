@@ -1,4 +1,4 @@
-import React, {ReactNode, useMemo} from 'react'
+import React, {MouseEvent, ReactNode, useCallback, useMemo} from 'react'
 import classNames from 'classnames'
 
 import {useToolbarContext} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
@@ -12,12 +12,14 @@ import css from './WorkflowVariableTag.less'
 export type WorkflowVariableTagProps = {
     value: string
     size?: 'small' | 'normal'
+    onClick?: (element: HTMLElement) => void
     children: ReactNode
 }
 
 export default function WorkflowVariableTag({
     value,
     size = 'normal',
+    onClick,
     children,
 }: WorkflowVariableTagProps) {
     const {workflowVariables} = useToolbarContext()
@@ -29,6 +31,14 @@ export default function WorkflowVariableTag({
             ),
         [value, workflowVariables]
     )
+
+    const handleClick = useCallback(
+        (event: MouseEvent<HTMLDivElement>) => {
+            onClick?.(event.currentTarget)
+        },
+        [onClick]
+    )
+
     return (
         <span className={css.wrapper}>
             <span
@@ -36,6 +46,7 @@ export default function WorkflowVariableTag({
                     [css.invalid]: !variable,
                 })}
                 contentEditable={false}
+                onClick={handleClick}
             >
                 <span
                     className={classNames(css.content, css[size])}

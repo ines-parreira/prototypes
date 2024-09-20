@@ -208,4 +208,61 @@ describe('<TextareaWithVariables />', () => {
             '{{steps_state.http_request1.content.variable1}}'
         )
     })
+
+    it('should allow to customize filters', () => {
+        const mockOnChange = jest.fn()
+
+        render(
+            <TextareaWithVariables
+                value="{{steps_state.http_request1.content.variable1 | date}}"
+                onChange={mockOnChange}
+                variables={[
+                    {
+                        name: 'HTTP request step',
+                        nodeType: 'http_request',
+                        variables: [
+                            {
+                                name: 'date variable',
+                                value: 'steps_state.http_request1.content.variable1',
+                                nodeType: 'http_request',
+                                type: 'date',
+                            },
+                        ],
+                    },
+                ]}
+                allowFilters
+            />
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByLabelText('date variable'))
+        })
+
+        act(() => {
+            fireEvent.change(screen.getByDisplayValue('date'), {
+                target: {value: 'date | json | default: "null"'},
+            })
+        })
+
+        expect(mockOnChange).toHaveBeenCalledWith(
+            '{{steps_state.http_request1.content.variable1 | date | json | default: "null"}}'
+        )
+    })
+
+    it('should not allow to customize filters for invalid variables', () => {
+        render(
+            <TextareaWithVariables
+                value="{{steps_state.http_request1.content.variable1 | date}}"
+                onChange={jest.fn()}
+                variables={[]}
+                allowFilters
+            />
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByLabelText('Invalid variable'))
+        })
+
+        expect(screen.queryByDisplayValue('date')).not.toBeInTheDocument()
+    })
 })

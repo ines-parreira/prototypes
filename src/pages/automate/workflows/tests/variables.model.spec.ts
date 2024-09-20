@@ -1,6 +1,7 @@
 import {ulid} from 'ulidx'
 import {
     buildWorkflowVariableFromNode,
+    extractVariablesFromText,
     getWorkflowVariableListForNode,
     parseWorkflowVariable,
     prerenderVariables,
@@ -390,5 +391,49 @@ describe('buildWorkflowVariableFromNode()', () => {
                 },
             ]),
         })
+    })
+})
+
+describe('extractVariablesFromText()', () => {
+    it('should extract variable without filter from text', () => {
+        expect(
+            extractVariablesFromText(
+                '{{steps_state.http_request1.content.variable1}}'
+            )
+        ).toEqual([{value: 'steps_state.http_request1.content.variable1'}])
+    })
+
+    it('should trim whitespaces from value', () => {
+        expect(
+            extractVariablesFromText(
+                '{{ steps_state.http_request1.content.variable1 }}'
+            )
+        ).toEqual([{value: 'steps_state.http_request1.content.variable1'}])
+    })
+
+    it('should extract value with filter', () => {
+        expect(
+            extractVariablesFromText(
+                '{{steps_state.http_request1.content.variable1 | json}}'
+            )
+        ).toEqual([
+            {
+                value: 'steps_state.http_request1.content.variable1',
+                filter: 'json',
+            },
+        ])
+    })
+
+    it('should extract value with multiple filter', () => {
+        expect(
+            extractVariablesFromText(
+                '{{steps_state.http_request1.content.variable1 | json | default: "null"}}'
+            )
+        ).toEqual([
+            {
+                value: 'steps_state.http_request1.content.variable1',
+                filter: 'json | default: "null"',
+            },
+        ])
     })
 })

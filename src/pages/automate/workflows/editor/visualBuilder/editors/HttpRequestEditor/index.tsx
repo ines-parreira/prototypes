@@ -305,6 +305,10 @@ export default function HttpRequestEditor({
                                             ? undefined
                                             : 'Invalid JSON'
                                     }
+                                    allowFilters={
+                                        triggerNode.type ===
+                                        'llm_prompt_trigger'
+                                    }
                                 />
                             )}
                             {nodeInEdition.data.bodyContentType ===
