@@ -5,7 +5,6 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
-import {useFlag} from 'common/flags'
 import {ticket} from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
@@ -22,9 +21,6 @@ import TicketListView, {listInfoProps} from '../TicketListView'
 
 jest.mock('react-virtuoso', () => ({Virtuoso: jest.fn()}))
 const VirtuosoMock = Virtuoso as jest.Mock
-
-jest.mock('common/flags', () => ({useFlag: jest.fn()}))
-const useFlagMock = useFlag as jest.Mock
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
@@ -72,7 +68,6 @@ describe('<TicketListView />', () => {
     const clearMock = jest.fn()
 
     beforeEach(() => {
-        useFlagMock.mockReturnValue(false)
         useAppDispatchMock.mockReturnValue(dispatch)
         useSelectionMock.mockReturnValue({
             hasSelectedAll: false,
@@ -214,18 +209,6 @@ describe('<TicketListView />', () => {
     })
 
     it('should display a list of tickets', () => {
-        const {getByText} = render(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>
-        )
-
-        expect(getByText(ticket.id)).toBeInTheDocument()
-    })
-
-    it('should display a list of tickets with the new design', () => {
-        useFlagMock.mockReturnValue(true)
-
         const {getByText} = render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
@@ -471,8 +454,6 @@ describe('<TicketListView />', () => {
     })
 
     it('should display bulk actions', () => {
-        useFlagMock.mockReturnValue(true)
-
         const {getByText} = render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
@@ -483,8 +464,6 @@ describe('<TicketListView />', () => {
     })
 
     it('should hide bulk actions for view with count 0', () => {
-        useFlagMock.mockReturnValue(true)
-
         const {queryByText} = render(
             <Provider
                 store={mockStore({
@@ -506,7 +485,6 @@ describe('<TicketListView />', () => {
 
     describe('selectionCount', () => {
         it('should display select all when nothing is selected', () => {
-            useFlagMock.mockReturnValue(true)
             useSelectionMock.mockReturnValue({
                 hasSelectedAll: false,
                 onSelect: jest.fn(),
@@ -525,7 +503,6 @@ describe('<TicketListView />', () => {
         })
 
         it('should display unknown ticket count when not available (null)', () => {
-            useFlagMock.mockReturnValue(true)
             useSelectionMock.mockReturnValue({
                 hasSelectedAll: true,
                 onSelect: jest.fn(),
@@ -544,7 +521,6 @@ describe('<TicketListView />', () => {
         })
 
         it('should display ticket count when available', () => {
-            useFlagMock.mockReturnValue(true)
             useSelectionMock.mockReturnValue({
                 hasSelectedAll: true,
                 onSelect: jest.fn(),
@@ -573,7 +549,6 @@ describe('<TicketListView />', () => {
         })
 
         it('should display number of selected tickets as ticket count', () => {
-            useFlagMock.mockReturnValue(true)
             useSelectionMock.mockReturnValue({
                 hasSelectedAll: false,
                 onSelect: jest.fn(),

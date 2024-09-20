@@ -16,8 +16,6 @@ import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
 import cn from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
 
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -27,7 +25,7 @@ import {setViewActive, setViewEditMode} from 'state/views/actions'
 import {getViewCount, getViewPlainJS} from 'state/views/selectors'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
-import {TICKET_HEIGHT, TICKET_HEIGHT_NEW} from '../constants'
+import {TICKET_HEIGHT} from '../constants'
 import useSelection from '../hooks/useSelection'
 import useSortOrder, {SortOrder} from '../hooks/useSortOrder'
 import useTickets from '../hooks/useTickets'
@@ -91,7 +89,6 @@ export default function TicketListView({
         pauseUpdates,
         resumeUpdates,
     } = useTickets(viewId, sortOrder, activeTicketId, registerToggleUnread)
-    const hasBulkActions = useFlag(FeatureFlagKey.BulkActionsDTP, false)
     const {setIsEnabled: setSplitTicketView, setShouldRedirectToSplitView} =
         useSplitTicketView()
 
@@ -99,8 +96,6 @@ export default function TicketListView({
         useSelection(tickets)
 
     const initialLoadedRef = useRef(initialLoaded)
-
-    const ticketHeight = hasBulkActions ? TICKET_HEIGHT_NEW : TICKET_HEIGHT
 
     useEffect(() => {
         if (hasSelectedAll || Object.keys(selectedTickets).length) {
@@ -241,11 +236,7 @@ export default function TicketListView({
 
     return (
         <div className={css.wrapper}>
-            <div
-                className={
-                    hasBulkActions ? css.titleWrapperNew : css.titleWrapper
-                }
-            >
+            <div className={css.titleWrapper}>
                 <div className={css.headerChild}>
                     <ViewDecoration view={view} />
                     <span className={css.title}>{view?.name}</span>
@@ -269,7 +260,7 @@ export default function TicketListView({
                     />
                 </div>
             </div>
-            {hasBulkActions && viewCount !== 0 && (
+            {viewCount !== 0 && (
                 <div className={css.subHeader}>
                     <div className={css.selection}>
                         <CheckBox
@@ -295,11 +286,11 @@ export default function TicketListView({
             <div className={css.list}>
                 <Virtuoso
                     ref={virtuosoRef}
-                    atBottomThreshold={ticketHeight * 2}
+                    atBottomThreshold={TICKET_HEIGHT * 2}
                     className={css.scroller}
                     data={tickets}
                     endReached={loadMore}
-                    fixedItemHeight={ticketHeight}
+                    fixedItemHeight={TICKET_HEIGHT}
                     itemContent={getItemContent}
                     computeItemKey={(_index, ticket) => ticket.id}
                     scrollerRef={setScrollerRef}
