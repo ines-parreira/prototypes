@@ -1,6 +1,6 @@
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
-import {FormValues} from './types'
+import {FormValues, WizardFormValues} from './types'
 
 export const SIGNATURE_MAX_LENGTH = 250
 export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 1500
@@ -38,16 +38,18 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     wizard: undefined,
 }
 
+export const DEFAULT_WIZARD_FORM_VALUES: WizardFormValues = {
+    completedDatetime: null,
+    stepName: null,
+    hasEducationStepEnabled: null,
+    enabledChannels: null,
+    isAutoresponderTurnedOff: null,
+    onCompletePathway: null,
+}
+
 export const DEFAULT_FORM_VALUES_WITH_WIZARD: FormValues = {
     ...DEFAULT_FORM_VALUES,
-    wizard: {
-        completedDatetime: null,
-        stepName: null,
-        hasEducationStepEnabled: null,
-        enabledChannels: null,
-        isAutoresponderTurnedOff: null,
-        onCompletePathway: null,
-    },
+    wizard: DEFAULT_WIZARD_FORM_VALUES,
 }
 
 export const GUIDANCE_ARTICLE_LIMIT = 40
@@ -115,7 +117,7 @@ export const INITIAL_FORM_VALUES = {
     signature: 'This response was created by AI',
     toneOfVoice: ToneOfVoice.Friendly,
     customToneOfVoiceGuidance:
-        "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
+        "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions.",
     helpCenter: null,
     monitoredChatIntegrations: [],
 }

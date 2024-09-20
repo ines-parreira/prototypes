@@ -11,6 +11,12 @@ import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {HelpCenter} from 'models/helpCenter/types'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
+import {useConfigurationForm} from 'pages/automate/aiAgent/hooks/useConfigurationForm'
+import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {useGetOrCreateSnippetHelpCenter} from 'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FormValues, UpdateValue, WizardFormValues} from '../../types'
 import {getFormValuesFromStoreConfiguration} from '../../components/StoreConfigForm/StoreConfigForm.utils'
@@ -19,12 +25,6 @@ import {
     INITIAL_FORM_VALUES,
     WIZARD_BUTTON_ACTIONS,
 } from '../../constants'
-import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
-import {useConfigurationForm} from '../../hooks/useConfigurationForm'
-import {getCurrentAccountState} from '../../../../../state/currentAccount/selectors'
-import useAppSelector from '../../../../../hooks/useAppSelector'
-import useEffectOnce from '../../../../../hooks/useEffectOnce'
-import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
 
 type handleSaveParams = {
     publicUrls?: string[]

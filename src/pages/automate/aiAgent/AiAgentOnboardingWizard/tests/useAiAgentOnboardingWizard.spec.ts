@@ -15,13 +15,13 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {account} from 'fixtures/account'
 import {StoreState} from 'state/types'
+import {useGetOrCreateSnippetHelpCenter} from 'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
+import {useStoreConfigurationMutation} from 'pages/automate/aiAgent/hooks/useStoreConfigurationMutation'
+import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
-import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {WIZARD_BUTTON_ACTIONS} from '../../constants'
-import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
-import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
 
 jest.mock('pages/history')
 jest.mock('state/notifications/actions')
@@ -37,21 +37,24 @@ const mockUseNavigateWizardSteps = assumeMock(useNavigateWizardSteps)
 jest.mock('models/helpCenter/queries')
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
 
-jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
-    useAiAgentStoreConfigurationContext: jest.fn(),
-}))
+jest.mock(
+    'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext',
+    () => ({
+        useAiAgentStoreConfigurationContext: jest.fn(),
+    })
+)
 const mockUseAiAgentStoreConfigurationContext = assumeMock(
     useAiAgentStoreConfigurationContext
 )
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = assumeMock(useAppSelector)
 
-jest.mock('../../hooks/useGetOrCreateSnippetHelpCenter')
+jest.mock('pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter')
 const mockUseGetOrCreateSnippetHelpCenter = assumeMock(
     useGetOrCreateSnippetHelpCenter
 )
 
-jest.mock('../../hooks/useStoreConfigurationMutation')
+jest.mock('pages/automate/aiAgent/hooks/useStoreConfigurationMutation')
 const mockUseStoreConfigurationMutation = assumeMock(
     useStoreConfigurationMutation
 )

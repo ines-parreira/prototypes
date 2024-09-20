@@ -104,10 +104,10 @@ export type WizardStepData = {
 }
 
 export type Wizard = {
-    id: number
+    id?: number
     stepName: string
     stepData: WizardStepData
-    completedDatetime: string | null
+    completedDatetime?: string | null
 }
 
 export type CreateWizardPayload = Pick<Wizard, 'stepName' | 'stepData'>

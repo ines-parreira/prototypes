@@ -1,0 +1,52 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography';
+
+:local {
+    .ticketPreview {
+        .body-regular();
+        padding: @layout-spacing-m;
+        background-color: var(--neutral-grey-0);
+        border-radius: 0 0 4px 4px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+        max-width: 428px;
+
+        .message {
+            display: flex;
+            gap: @layout-spacing-s;
+            margin-bottom: @layout-spacing-s;
+        }
+
+        .banner {
+            flex-shrink: 0;
+        }
+
+        .avatar {
+            .caption-semibold();
+            color: var(--neutral-grey-4);
+            background-color: var(--neutral-grey-2);
+        }
+
+        .header {
+            .body-semibold();
+            color: var(--neutral-grey-6);
+            margin-bottom: @layout-spacing-xxs;
+        }
+
+        .aiHeader {
+            color: var(--accessory-magenta-3);
+        }
+
+        .mailIcon {
+            color: var(--neutral-grey-4);
+            margin-left: @layout-spacing-xxs;
+        }
+    }
+
+    .footer {
+        .caption-regular();
+        display: flex;
+        justify-content: center;
+        margin-top: @layout-spacing-s;
+        color: var(--neutral-grey-4);
+    }
+}

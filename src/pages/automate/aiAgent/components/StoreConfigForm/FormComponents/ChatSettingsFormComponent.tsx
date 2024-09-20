@@ -1,10 +1,10 @@
 import {Label} from '@gorgias/ui-kit'
 import React, {useEffect, useMemo} from 'react'
 import classnames from 'classnames'
+import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import {ChatIntegrationListSelection} from '../../ChatIntegrationListSelection/ChatIntegrationListSelection'
 import {INITIAL_FORM_VALUES} from '../../../constants'
 import {FormValues, UpdateValue} from '../../../types'
-import {SelfServiceChatChannel} from '../../../../common/hooks/useSelfServiceChatChannels'
 import css from './ChatSettingsFormComponent.less'
 
 type EmailFormComponentProps = {
@@ -13,7 +13,8 @@ type EmailFormComponentProps = {
     chatChannels: SelfServiceChatChannel[]
     initialValue?: number
     isFieldDirty?: boolean
-    isDisabled?: boolean
+    isRequired?: boolean
+    shouldPrefileValue?: boolean
 }
 
 export const ChatSettingsFormComponent = ({
@@ -21,7 +22,8 @@ export const ChatSettingsFormComponent = ({
     updateValue,
     chatChannels,
     initialValue,
-    isDisabled,
+    isRequired,
+    shouldPrefileValue,
 }: EmailFormComponentProps) => {
     const useInitialValue = React.useRef(true)
 
@@ -29,12 +31,18 @@ export const ChatSettingsFormComponent = ({
         if (
             useInitialValue.current &&
             initialValue &&
-            monitoredChatIntegrations?.length === 0
+            monitoredChatIntegrations?.length === 0 &&
+            shouldPrefileValue
         ) {
             updateValue('monitoredChatIntegrations', [initialValue])
             useInitialValue.current = false
         }
-    }, [initialValue, monitoredChatIntegrations, updateValue])
+    }, [
+        initialValue,
+        monitoredChatIntegrations,
+        shouldPrefileValue,
+        updateValue,
+    ])
 
     const handleSelectChatIntegration = (values: number[]) => {
         const ids = values.map((option) => option)
@@ -44,12 +52,12 @@ export const ChatSettingsFormComponent = ({
 
     const isChatIntegrationsValid = useMemo(() => {
         const isChatSelected = !!monitoredChatIntegrations?.length
-        return isChatSelected || !isDisabled
-    }, [monitoredChatIntegrations?.length, isDisabled])
+        return isChatSelected || !isRequired
+    }, [monitoredChatIntegrations?.length, isRequired])
 
     return (
         <div className={css.formGroup}>
-            <Label className={css.label} isRequired={isDisabled}>
+            <Label className={css.label} isRequired={isRequired}>
                 AI Agent responds to tickets sent to the following Chats
             </Label>
             <ChatIntegrationListSelection
@@ -62,6 +70,7 @@ export const ChatSettingsFormComponent = ({
                 }
                 onSelectionChange={handleSelectChatIntegration}
                 chatItems={chatChannels}
+                hasError={!isChatIntegrationsValid}
             />
             <div
                 className={classnames(css.formInputFooterInfo, {

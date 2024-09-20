@@ -9,8 +9,9 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
+import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import AiAgentOnboardingWizard from '../AiAgentOnboardingWizard'
-import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
 import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
@@ -18,6 +19,16 @@ import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingW
 jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
+
+jest.mock('hooks/useAppSelector')
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
+
+jest.mock('../AiAgentOnboardingWizardPersonalize', () => ({
+    __esModule: true,
+    default: () => <div>Personalize AI Agent </div>,
+}))
+const QueryClientProvider = mockQueryClientProvider()
+
 const mockUseAiAgentStoreConfigurationContext = assumeMock(
     useAiAgentStoreConfigurationContext
 )
@@ -43,7 +54,9 @@ const defaultState = {}
 const renderComponent = () => {
     renderWithRouter(
         <Provider store={mockStore(defaultState)}>
-            <AiAgentOnboardingWizard />
+            <QueryClientProvider>
+                <AiAgentOnboardingWizard />
+            </QueryClientProvider>
         </Provider>,
         {
             path: `/:shopType/:shopName/ai-agent/new`,
@@ -90,6 +103,5 @@ describe('<AiAgentOnboardingWizard />', () => {
         expect(
             screen.getAllByText('Personalize AI Agent')[0]
         ).toBeInTheDocument()
-        expect(screen.getByText('Add knowledge')).toBeInTheDocument()
     })
 })

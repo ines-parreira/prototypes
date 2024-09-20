@@ -43,7 +43,10 @@ const defaultProps = {
 const renderComponent = (
     props: Partial<ComponentProps<typeof AiAgentOnboardingWizardStepEducation>>
 ) => {
-    const currentProps = {...defaultProps, ...props}
+    const currentProps = {
+        ...defaultProps,
+        ...props,
+    }
     renderWithRouter(
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider client={queryClient}>

@@ -35,21 +35,27 @@ import {mockChatChannels} from 'pages/automate/aiAgent/fixtures/chatChannels.fix
 import {applicationsAutomationSettingsAiAgentEnabledFixture} from 'pages/automate/aiAgent/fixtures/applicationAutomationSettings.fixture'
 
 import {useSearchParam} from 'hooks/useSearchParam'
-import {initialState as articlesState} from '../../../../../../state/entities/helpCenter/articles'
-import {initialState as categoriesState} from '../../../../../../state/entities/helpCenter/categories'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories'
 import {StoreConfigForm} from '../StoreConfigForm'
 import {ToneOfVoice} from '../../../constants'
 
 const queryClient = mockQueryClient()
 
 jest.mock('state/notifications/actions')
-jest.mock('../../../providers/AiAgentStoreConfigurationContext', () => ({
-    useAiAgentStoreConfigurationContext: jest.fn(),
-}))
-jest.mock('../../../hooks/useGetOrCreateSnippetHelpCenter', () => ({
-    useGetOrCreateSnippetHelpCenter: jest.fn(),
-}))
-jest.mock('../../../hooks/useConfigurationForm')
+jest.mock(
+    'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext',
+    () => ({
+        useAiAgentStoreConfigurationContext: jest.fn(),
+    })
+)
+jest.mock(
+    'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter',
+    () => ({
+        useGetOrCreateSnippetHelpCenter: jest.fn(),
+    })
+)
+jest.mock('pages/automate/aiAgent/hooks/useConfigurationForm')
 jest.mock('pages/automate/aiAgent/hooks/usePublicResources', () => ({
     usePublicResources: jest.fn(),
 }))
@@ -467,7 +473,7 @@ describe('<StoreConfigForm />', () => {
 
         renderComponent({})
         expect(
-            screen.getByText('At least one email is required.')
+            screen.getByText('One or more addresses required.')
         ).toBeInTheDocument()
     })
 

@@ -61,6 +61,7 @@ type Props = {
     caption?: ReactNode
     showSelectedOption?: boolean
     isSearchable?: boolean
+    showSelectedOptionIcon?: boolean
 }
 
 type State = {
@@ -389,6 +390,7 @@ export default class SelectField extends Component<Props, State> {
             container,
             caption,
             isSearchable,
+            showSelectedOptionIcon,
         } = this.props
         const {
             filteredOptions,
@@ -693,6 +695,17 @@ export default class SelectField extends Component<Props, State> {
                                                         (deprecated)
                                                     </span>
                                                 )}
+                                                {showSelectedOptionIcon &&
+                                                    item.value === value && (
+                                                        <span
+                                                            className={classnames(
+                                                                css.selectedIcon,
+                                                                'material-icons'
+                                                            )}
+                                                        >
+                                                            done
+                                                        </span>
+                                                    )}
                                             </DropdownItem>
                                             {item.tooltipText && (
                                                 <UncontrolledTooltip

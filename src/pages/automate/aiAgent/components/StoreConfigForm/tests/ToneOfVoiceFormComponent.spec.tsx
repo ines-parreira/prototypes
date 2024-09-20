@@ -47,6 +47,7 @@ describe('ToneOfVoiceFormComponent', () => {
 
         const textArea = screen.getByPlaceholderText('Custom tone of voice')
         fireEvent.change(textArea, {target: {value: 'New custom guidance'}})
+        fireEvent.blur(textArea)
 
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'customToneOfVoiceGuidance',

@@ -129,6 +129,8 @@
     }
 
     .option {
+        display: flex;
+        align-items: center;
         font-weight: 400;
         &.option--focused {
             background: var(--neutral-grey-2);
@@ -165,5 +167,11 @@
                 background: var(--feedback-warning-2) !important;
             }
         }
+    }
+
+    .selectedIcon {
+        font-size: 20px;
+        color: var(--neutral-grey-4);
+        margin-left: auto;
     }
 }

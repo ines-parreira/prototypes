@@ -1,7 +1,7 @@
 import {Label} from '@gorgias/ui-kit'
-import React, {useMemo, useState} from 'react'
-import IconTooltip from '../../../../../common/forms/IconTooltip/IconTooltip'
-import TextArea from '../../../../../common/forms/TextArea'
+import React, {useEffect, useState} from 'react'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import TextArea from 'pages/common/forms/TextArea'
 import {INITIAL_FORM_VALUES, SIGNATURE_MAX_LENGTH} from '../../../constants'
 import {FormValues, UpdateValue} from '../../../types'
 import css from './SignatureFormComponent.less'
@@ -15,15 +15,20 @@ export const SignatureFormComponent = ({
     signature,
     updateValue,
 }: SignatureFormComponentProps) => {
-    const [isBlurred, setIsBlurred] = useState(false)
-    const isSignatureValid = useMemo(() => {
-        return !isBlurred || !!signature?.trim().length
-    }, [signature, isBlurred])
+    const defaultValue =
+        signature !== null ? signature : INITIAL_FORM_VALUES.signature
+    const [value, setValue] = useState<string>(defaultValue)
+    const isSignatureValid =
+        (signature && signature.trim() && signature.length > 0) ||
+        (value && value.trim().length > 0)
 
-    const handleChange = (value: unknown) => {
-        if (typeof value !== 'string') return
-        updateValue('signature', value)
-        setIsBlurred(false)
+    useEffect(() => {
+        setValue(defaultValue)
+    }, [defaultValue])
+
+    const handleChange = (newValue: unknown) => {
+        if (typeof newValue !== 'string') return
+        setValue(newValue)
     }
 
     return (
@@ -39,13 +44,11 @@ export const SignatureFormComponent = ({
                 id="signature-text-area"
                 innerClassName={css.formInputEditor}
                 placeholder="AI Agent email signature"
-                value={
-                    signature !== null
-                        ? signature
-                        : INITIAL_FORM_VALUES.signature
-                }
+                value={value}
                 onChange={handleChange}
-                onBlur={() => setIsBlurred(true)}
+                onBlur={() => {
+                    updateValue('signature', value)
+                }}
                 maxLength={SIGNATURE_MAX_LENGTH}
                 error={
                     !isSignatureValid

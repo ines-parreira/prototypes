@@ -3,13 +3,13 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import {fromJS} from 'immutable'
 import {account} from 'fixtures/account'
 import {StoreState} from 'state/types'
+import {useConfigurationForm} from 'pages/automate/aiAgent/hooks/useConfigurationForm'
 import {
     EXCLUDED_TOPIC_MAX_LENGTH,
     MAX_EXCLUDED_TOPICS,
     SIGNATURE_MAX_LENGTH,
     ToneOfVoice,
 } from '../../constants'
-import {useConfigurationForm} from '../useConfigurationForm'
 import {FormValues} from '../../types'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {assumeMock} from '../../../../../utils/testing'

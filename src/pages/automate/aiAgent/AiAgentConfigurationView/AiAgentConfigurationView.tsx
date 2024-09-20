@@ -9,9 +9,9 @@ import {notify} from 'state/notifications/actions'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 
+import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
 import {AiAgentLayout} from '../components/AiAgentLayout/AiAgentLayout'
 import {StoreConfigForm} from '../components/StoreConfigForm/StoreConfigForm'
-import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
 import css from './AiAgentConfigurationView.less'
 
 export const READ_FULFILLMENTS_PERMISSION = 'read_fulfillments'

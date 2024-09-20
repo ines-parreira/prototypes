@@ -43,6 +43,7 @@ import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServi
 import {HelpCenter} from 'models/helpCenter/types'
 
 import {useSearchParam} from 'hooks/useSearchParam'
+import {useConfigurationForm} from 'pages/automate/aiAgent/hooks/useConfigurationForm'
 import {usePublicResources} from '../../hooks/usePublicResources'
 import {FormValues} from '../../types'
 import {isAiAgentEnabled, isHandoffEnabled} from '../../util'
@@ -59,7 +60,6 @@ import {
 } from '../../constants'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 
-import {useConfigurationForm} from '../../hooks/useConfigurationForm'
 import {getFormValuesFromStoreConfiguration} from './StoreConfigForm.utils'
 import css from './StoreConfigForm.less'
 import {SignatureFormComponent} from './FormComponents/SignatureFormComponent'
@@ -438,6 +438,7 @@ export const StoreConfigForm = ({
                         monitoredEmailIntegrations={
                             formValues.monitoredEmailIntegrations
                         }
+                        isRequired
                     />
                     <SignatureFormComponent
                         updateValue={updateValue}

@@ -27,6 +27,7 @@ export type Props = {
     name?: string
     error?: string | ReactNode
     onChange?: (nextValue: boolean) => void
+    inputClassName?: string
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'checked' | 'disabled' | 'indeterminate' | 'name' | 'type' | 'onChange'
@@ -45,6 +46,7 @@ function CheckBox(
         name,
         error,
         onChange,
+        inputClassName,
         ...props
     }: Props,
     ref: ForwardedRef<HTMLInputElement>
@@ -73,7 +75,7 @@ function CheckBox(
                     type="checkbox"
                     id={labelId}
                     name={labelId}
-                    className={css.input}
+                    className={classnames(css.input, inputClassName)}
                     checked={isChecked}
                     disabled={isDisabled}
                     onChange={() => onChange?.(!isChecked)}

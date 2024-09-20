@@ -6,12 +6,12 @@ import {reportError} from 'utils/errors'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import AutomateViewContent from '../common/components/AutomateViewContent'
+import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import {AiAgentGuidanceView} from './AiAgentGuidanceView'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
 import css from './AiAgentGuidanceContainer.less'
-import {useAiAgentStoreConfigurationContext} from './providers/AiAgentStoreConfigurationContext'
 
 export const AiAgentGuidanceContainer = () => {
     const {shopName} = useParams<{

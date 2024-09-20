@@ -81,7 +81,7 @@ export const getFormValuesFromStoreConfiguration = (
     helpCenterId: storeConfig.helpCenterId,
     monitoredChatIntegrations: storeConfig.monitoredChatIntegrations,
     wizard: storeConfig.wizard && {
-        completedDatetime: storeConfig.wizard.completedDatetime,
+        completedDatetime: storeConfig.wizard.completedDatetime || null,
         stepName: isAiAgentOnboardingWizardStep(storeConfig.wizard.stepName)
             ? storeConfig.wizard.stepName
             : null,

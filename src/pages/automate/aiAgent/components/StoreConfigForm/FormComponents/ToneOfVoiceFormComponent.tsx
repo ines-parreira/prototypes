@@ -1,14 +1,15 @@
 import {Label} from '@gorgias/ui-kit'
-import React from 'react'
-import IconTooltip from '../../../../../common/forms/IconTooltip/IconTooltip'
-import SelectField from '../../../../../common/forms/SelectField/SelectField'
-import TextArea from '../../../../../common/forms/TextArea'
+import React, {useEffect, useState} from 'react'
+import classNames from 'classnames'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import TextArea from 'pages/common/forms/TextArea'
+import {Value} from 'pages/common/forms/SelectField/types'
 import {
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
     INITIAL_FORM_VALUES,
     ToneOfVoice,
 } from '../../../constants'
-import {Value} from '../../../../../common/forms/SelectField/types'
 import {FormValues, UpdateValue} from '../../../types'
 import css from './ToneOfVoiceFormComponent.less'
 
@@ -16,29 +17,51 @@ type ToneOfVoiceFormComponentProps = {
     updateValue: UpdateValue<FormValues>
     toneOfVoice: ToneOfVoice | null
     customToneOfVoiceGuidance: string | null
+    hasChat?: boolean
 }
 
 export const ToneOfVoiceFormComponent = (
     props: ToneOfVoiceFormComponentProps
 ) => {
-    const {updateValue, toneOfVoice, customToneOfVoiceGuidance} = props
+    const shouldFocusTextArea = React.useRef(false)
+    const {updateValue, toneOfVoice, customToneOfVoiceGuidance, hasChat} = props
+    const [toneOfVoiceValue, setToneOfVoiceValue] =
+        useState<ToneOfVoice | null>(
+            toneOfVoice || INITIAL_FORM_VALUES.toneOfVoice
+        )
+    const [value, setValue] = useState<string | null>(
+        INITIAL_FORM_VALUES.customToneOfVoiceGuidance
+    )
+
+    useEffect(() => {
+        if (customToneOfVoiceGuidance) setValue(customToneOfVoiceGuidance)
+    }, [customToneOfVoiceGuidance])
+
+    useEffect(() => {
+        if (toneOfVoice) setToneOfVoiceValue(toneOfVoice)
+    }, [toneOfVoice])
 
     const handleToneOfVoiceChange = (toneOfVoiceLabel: Value) => {
-        if (
-            toneOfVoiceLabel === ToneOfVoice.Custom &&
-            (!customToneOfVoiceGuidance ||
-                customToneOfVoiceGuidance?.length === 0)
-        ) {
-            updateValue(
-                'customToneOfVoiceGuidance',
-                INITIAL_FORM_VALUES.customToneOfVoiceGuidance
-            )
+        if (toneOfVoiceLabel !== ToneOfVoice.Custom) {
+            updateValue('toneOfVoice', toneOfVoiceLabel as ToneOfVoice)
+        } else {
+            shouldFocusTextArea.current = true
         }
 
-        updateValue('toneOfVoice', toneOfVoiceLabel as ToneOfVoice)
+        setToneOfVoiceValue(toneOfVoiceLabel as ToneOfVoice)
     }
 
-    const isCustomToneOfVoiceSelected = toneOfVoice === ToneOfVoice.Custom
+    const handleCustomToneOfVoiceChange = () => {
+        updateValue('toneOfVoice', ToneOfVoice.Custom)
+        updateValue('customToneOfVoiceGuidance', value)
+        shouldFocusTextArea.current = false
+    }
+
+    const isCustomToneOfVoiceSelected = toneOfVoiceValue === ToneOfVoice.Custom
+    const isCustomToneOfVoiceValid =
+        (customToneOfVoiceGuidance &&
+            customToneOfVoiceGuidance.trim()?.length > 0) ||
+        (value && value.trim()?.length > 0)
 
     return (
         <div className={css.formGroup}>
@@ -74,21 +97,19 @@ export const ToneOfVoiceFormComponent = (
                 <SelectField
                     fullWidth
                     showSelectedOption
-                    value={
-                        toneOfVoice !== null
-                            ? toneOfVoice
-                            : INITIAL_FORM_VALUES.toneOfVoice
-                    }
+                    value={toneOfVoiceValue}
                     onChange={handleToneOfVoiceChange}
                     options={Object.values(ToneOfVoice).map((toneOfVoice) => ({
                         label: toneOfVoice,
                         value: toneOfVoice,
                     }))}
-                    // showSelectedOptionIcon={true} TODO this is not part of refactor fix me in next PR
+                    showSelectedOptionIcon={true}
                 />
             </div>
             <div className={css.formInputFooterInfo}>
-                Select a tone of voice for AI Agent to use with customers.
+                {hasChat
+                    ? 'Select a tone of voice for AI Agent to use with customers. For Chat, the language used will be more succinct.'
+                    : 'Select a tone of voice for AI Agent to use with customers.'}
             </div>
 
             {isCustomToneOfVoiceSelected && (
@@ -97,17 +118,27 @@ export const ToneOfVoiceFormComponent = (
                         autoRowHeight={true}
                         placeholder="Custom tone of voice"
                         maxLength={CUSTOM_TONE_OF_VOICE_MAX_LENGTH}
-                        value={customToneOfVoiceGuidance ?? undefined}
+                        value={value || ''}
                         onChange={(value: unknown) => {
                             if (typeof value !== 'string') return
-                            updateValue('customToneOfVoiceGuidance', value)
+                            setValue(value)
                         }}
                         style={{minHeight: '104px'}}
+                        autoFocus={shouldFocusTextArea.current}
+                        error={
+                            !isCustomToneOfVoiceValid
+                                ? 'Tone of voice required.'
+                                : undefined
+                        }
+                        onBlur={handleCustomToneOfVoiceChange}
                     />
-                    <div className={css.formInputFooterInfo}>
-                        Give your AI Agent specific instructions to always
-                        follow. For example things to always say, things to
-                        never mention.
+                    <div
+                        className={classNames(css.formInputFooterInfo, {
+                            [css.error]: !isCustomToneOfVoiceValid,
+                        })}
+                    >
+                        {isCustomToneOfVoiceValid &&
+                            'Give your AI Agent specific instructions to always follow. For example things to always say, things to never mention.'}
                     </div>
                 </div>
             )}

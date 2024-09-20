@@ -1,0 +1,38 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography';
+
+:local {
+    .extendableSectionHeader {
+        .heading-section-semibold();
+        display: flex;
+        align-items: center;
+
+        .checkBoxInput {
+            margin: 0;
+        }
+
+        .valid {
+            color: var(--feedback-success);
+        }
+
+        .invalid {
+            color: var(--feedback-error);
+        }
+
+        .checkIcon {
+            font-size: 24px;
+            margin-left: @layout-spacing-s;
+        }
+
+        .arrow {
+            margin-left: auto;
+            color: var(--neutral-grey-4);
+            font-size: 24px;
+        }
+
+        .title {
+            text-transform: capitalize;
+            margin-left: @layout-spacing-s;
+        }
+    }
+}

@@ -47,6 +47,7 @@ describe('SignatureFormComponent', () => {
 
         // Simulate typing
         fireEvent.change(textArea, {target: {value: 'New signature'}})
+        fireEvent.blur(textArea)
 
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'signature',

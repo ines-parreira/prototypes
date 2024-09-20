@@ -1,15 +1,15 @@
 import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import useAppSelector from '../../../../../../hooks/useAppSelector'
+import useAppSelector from 'hooks/useAppSelector'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {EmailFormComponent} from '../FormComponents/EmailFormComponent'
-import {FeatureFlagKey} from '../../../../../../config/featureFlags'
 
 // Mock dependencies
 jest.mock('launchdarkly-react-client-sdk')
 
-jest.mock('../../../../../../hooks/useAppSelector', () => jest.fn())
-jest.mock('../../../../../../state/integrations/selectors', () => ({
+jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('state/integrations/selectors', () => ({
     getIntegrationsByTypes: jest.fn(),
 }))
 
@@ -70,7 +70,7 @@ describe('EmailFormComponent', () => {
     })
 
     it('renders the form with default email list and shows required label', () => {
-        render(<EmailFormComponent {...defaultProps} />)
+        render(<EmailFormComponent {...defaultProps} isRequired={true} />)
 
         expect(
             screen.getByText(
@@ -80,7 +80,7 @@ describe('EmailFormComponent', () => {
         expect(screen.getByText('email1@example.com')).toBeInTheDocument()
         expect(screen.getByText('email2@example.com')).toBeInTheDocument()
         expect(
-            screen.getByText('At least one email is required.')
+            screen.getByText('One or more addresses required.')
         ).toBeInTheDocument()
     })
 
@@ -127,15 +127,15 @@ describe('EmailFormComponent', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('shows an error message when no email is selected and AiAgentChat is disabled', () => {
+    it('shows an error message when no email is selected and AiAgentChat is disabled and value is required', () => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AiAgentChat]: false,
         })
 
-        render(<EmailFormComponent {...defaultProps} />)
+        render(<EmailFormComponent {...defaultProps} isRequired={true} />)
 
         expect(
-            screen.getByText('At least one email is required.')
+            screen.getByText('One or more addresses required.')
         ).toBeInTheDocument()
         expect(
             screen.getByText(

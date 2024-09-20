@@ -5,11 +5,12 @@ import {useCallback, useEffect, useMemo, useState} from 'react'
 import _isEqual from 'lodash/isEqual'
 import {FormValues, ValidFormValues} from '../types'
 import {
+    AiAgentChannel,
+    CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
     DEFAULT_FORM_VALUES,
     EXCLUDED_TOPIC_MAX_LENGTH,
     MAX_EXCLUDED_TOPICS,
     SIGNATURE_MAX_LENGTH,
-    CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
     ToneOfVoice,
 } from '../constants'
 import {notify} from '../../../../state/notifications/actions'
@@ -18,7 +19,10 @@ import {getStoreConfigurationFromFormValues} from '../components/StoreConfigForm
 import {logEvent, SegmentEvent} from '../../../../common/segment'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {FeatureFlagKey} from '../../../../config/featureFlags'
-import {StoreConfiguration, Wizard} from '../../../../models/aiAgent/types'
+import {
+    AiAgentOnboardingWizardStep,
+    StoreConfiguration,
+} from '../../../../models/aiAgent/types'
 import useAppSelector from '../../../../hooks/useAppSelector'
 import {getCurrentAccountState} from '../../../../state/currentAccount/selectors'
 import {useStoreConfigurationMutation} from './useStoreConfigurationMutation'
@@ -80,6 +84,14 @@ export const useConfigurationForm = ({
         []
     )
 
+    const simplifyWizardErrors = (message: string) => {
+        if (formValues.wizard) {
+            return 'One or more required fields not filled.'
+        }
+
+        return message
+    }
+
     const validateConfigurationFormValues = (
         formValues: FormValues,
         publicUrls: string[] | null | undefined,
@@ -97,7 +109,7 @@ export const useConfigurationForm = ({
             formValues.signature === null ||
             formValues.signature.trim().length === 0
         ) {
-            throw new Error('Signature can not be empty')
+            throw new Error(simplifyWizardErrors('Signature can not be empty'))
         }
 
         if (
@@ -138,7 +150,9 @@ export const useConfigurationForm = ({
                 formValues.toneOfVoice === ToneOfVoice.Custom) &&
             formValues.customToneOfVoiceGuidance?.length === 0
         ) {
-            throw new Error('Custom tone of voice cannot be empty')
+            throw new Error(
+                simplifyWizardErrors('Custom tone of voice cannot be empty')
+            )
         }
 
         const noSelectedChannelsMessage = !!formValues?.wizard
@@ -146,6 +160,7 @@ export const useConfigurationForm = ({
             ? 'Please select at least 1 email address for AI Agent to use or disable AI Agent to proceed.'
             : 'At least one channel must be toggled ON.'
         if (isChatSupportEnabled) {
+            // we must have at least one integration selected (email or chat)
             if (
                 formValues.monitoredEmailIntegrations?.length === 0 &&
                 formValues.monitoredChatIntegrations?.length === 0 &&
@@ -154,12 +169,45 @@ export const useConfigurationForm = ({
                 throw new Error(noSelectedChannelsMessage)
             }
         } else {
+            // we must have at least one integration selected (email)
             if (
                 formValues.monitoredEmailIntegrations?.length === 0 &&
                 formValues.deactivatedDatetime === null
             ) {
                 throw new Error(noSelectedChannelsMessage)
             }
+        }
+
+        // we must have at least one channel selected in the wizard
+        if (
+            formValues.wizard &&
+            formValues.wizard.enabledChannels &&
+            formValues.wizard.enabledChannels.length === 0 &&
+            (formValues.wizard.stepName ===
+                AiAgentOnboardingWizardStep.Knowledge ||
+                formValues.wizard.stepName ===
+                    AiAgentOnboardingWizardStep.Personalize)
+        ) {
+            throw new Error('At least one channel must be toggled ON.')
+        }
+
+        // we must have integration for selected channel
+        if (
+            formValues.wizard &&
+            formValues.wizard.enabledChannels &&
+            formValues.wizard.enabledChannels.includes(AiAgentChannel.Email) &&
+            formValues.monitoredEmailIntegrations?.length === 0
+        ) {
+            throw new Error('One or more required fields not filled.')
+        }
+
+        if (
+            formValues.wizard &&
+            formValues.wizard.enabledChannels &&
+            formValues.wizard.enabledChannels.includes(AiAgentChannel.Chat) &&
+            formValues.monitoredChatIntegrations?.length === 0
+        ) {
+            throw new Error('One or more required fields not filled.')
         }
 
         if (
@@ -250,27 +298,33 @@ export const useConfigurationForm = ({
 
         let res
         try {
-            let wizardForUpdate = undefined
-            if (storeConfiguration?.wizard || configurationToSubmit.wizard) {
+            let wizardForUpdate
+            if (storeConfiguration && storeConfiguration.wizard) {
                 wizardForUpdate = {
-                    ...storeConfiguration?.wizard,
+                    ...storeConfiguration.wizard,
+                }
+            }
+
+            if (configurationToSubmit.wizard) {
+                wizardForUpdate = {
+                    ...wizardForUpdate,
                     ...configurationToSubmit.wizard,
                 }
+            }
 
-                if (stepName) {
-                    wizardForUpdate.stepName = stepName
-                }
+            if (stepName && wizardForUpdate) {
+                wizardForUpdate.stepName = stepName
             }
             if (isUpdate) {
                 res = await upsertStoreConfiguration({
                     ...storeConfiguration,
                     ...configurationToSubmit,
-                    wizard: wizardForUpdate as Wizard,
+                    wizard: wizardForUpdate,
                 })
             } else {
                 res = await createStoreConfiguration({
                     ...configurationToSubmit,
-                    wizard: wizardForUpdate as Wizard,
+                    wizard: wizardForUpdate,
                 })
             }
 
