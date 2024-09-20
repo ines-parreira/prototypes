@@ -1,0 +1,123 @@
+import React from 'react'
+import {Route, useRouteMatch} from 'react-router-dom'
+import {render} from '@testing-library/react'
+
+import {useFlag} from 'common/flags'
+import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
+import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNewView'
+import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenterStartView'
+import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
+import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {MigrationApiClientProvider} from 'pages/settings/helpCenter/hooks/useMigrationApi'
+import {assumeMock} from 'utils/testing'
+
+import {renderer} from '../helpers/settingsRenderer'
+import {HelpCenter} from '../HelpCenter'
+
+jest.mock('react-router-dom', () => ({
+    Route: jest.fn(() => <div>route</div>),
+    Switch: jest.fn(({children}) => <div>{children}</div>),
+    useRouteMatch: jest.fn(),
+}))
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn(),
+}))
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    HelpCenterApiClientProvider: jest.fn(({children}) => <div>{children}</div>),
+}))
+jest.mock('pages/settings/helpCenter/hooks/useMigrationApi', () => ({
+    MigrationApiClientProvider: jest.fn(({children}) => <div>{children}</div>),
+}))
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
+    SupportedLocalesProvider: jest.fn(({children}) => <div>{children}</div>),
+}))
+
+const ComponentToRender = () => <div>OK</div>
+jest.mock('../helpers/settingsRenderer', () => ({
+    renderer: jest.fn(() => ComponentToRender),
+}))
+
+const mockedUseFlag = assumeMock(useFlag)
+const mockedRoute = Route as jest.Mock
+const mockedRenderer = assumeMock(renderer)
+const mockedUseRouteMatch = assumeMock(useRouteMatch)
+
+const basePath = 'help-center'
+
+describe('ContactForm', () => {
+    beforeEach(() => {
+        mockedUseFlag.mockReturnValue(true)
+        mockedUseRouteMatch.mockReturnValue({
+            path: basePath,
+        } as ReturnType<typeof useRouteMatch>)
+    })
+
+    it('should call HelpCenterApiClientProvider, MigrationApiClientProvider, and SupportedLocalesProvider', () => {
+        render(<HelpCenter />)
+
+        expect(HelpCenterApiClientProvider).toHaveBeenCalled()
+        expect(MigrationApiClientProvider).toHaveBeenCalled()
+        expect(SupportedLocalesProvider).toHaveBeenCalled()
+    })
+
+    it.each([
+        [
+            {
+                callOrder: 0,
+                creationFlagEnabled: undefined,
+                exact: true,
+                path: [
+                    basePath + '/',
+                    basePath + '/about',
+                    basePath + '/manage',
+                ],
+                component: HelpCenterStartView,
+            },
+        ],
+        [
+            {
+                callOrder: 1,
+                creationFlagEnabled: true,
+                exact: true,
+                path: basePath + '/new',
+                component: HelpCenterCreationWizard,
+            },
+        ],
+        [
+            {
+                callOrder: 1,
+                creationFlagEnabled: false,
+                exact: true,
+                path: basePath + '/new',
+                component: HelpCenterNewView,
+            },
+        ],
+        [
+            {
+                callOrder: 2,
+                creationFlagEnabled: undefined,
+                exact: undefined,
+                path: basePath + '/:helpCenterId',
+                component: CurrentHelpCenter,
+            },
+        ],
+    ])(
+        'should call renderer and Route with correct props',
+        ({callOrder, creationFlagEnabled, exact, path, component}) => {
+            mockedUseFlag.mockReturnValue(creationFlagEnabled)
+
+            render(<HelpCenter />)
+
+            expect(mockedRenderer.mock.calls[callOrder]).toEqual([component])
+            expect(mockedRoute.mock.calls[callOrder]).toEqual([
+                {
+                    path,
+                    exact,
+                    render: ComponentToRender,
+                },
+                {},
+            ])
+        }
+    )
+})

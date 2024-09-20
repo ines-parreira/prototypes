@@ -7,7 +7,6 @@ import {
     Switch,
     useRouteMatch,
 } from 'react-router-dom'
-import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classNames from 'classnames'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -39,8 +38,6 @@ type WorkflowsViewProps = {
     goToNewWorkflowFromTemplatePage: (templateSlug: string) => void
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
 }
-
-const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
 export default function WorkflowsView({
     shopName,
@@ -196,7 +193,7 @@ export default function WorkflowsView({
                 <Route
                     path={`${path}/templates`}
                     exact
-                    component={memoizedWithUserRoleRequired(
+                    component={withUserRoleRequired(
                         WorkflowTemplatesViewContainer,
                         AGENT_ROLE
                     )}

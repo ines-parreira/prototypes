@@ -63,7 +63,7 @@ export enum FeatureFlagKey {
     ConvertScheduleCampaign = 'convert-schedule-campaign',
     ConvertPerformanceView = 'convert-performance-view',
     CustomerTimelineButton = 'customer-timeline-button',
-    DecoupleContactForm = 'decouple-contact-form',
+    CustomerFields = 'customer-fields',
     DefaultEmailAddress = 'default-email-address',
     EarlyAdopter = 'early-adopter',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',

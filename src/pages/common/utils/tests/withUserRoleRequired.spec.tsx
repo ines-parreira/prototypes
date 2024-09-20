@@ -2,7 +2,7 @@ import React, {ComponentProps} from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
-import {render} from '@testing-library/react'
+import {screen, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 
 import RestrictedPage from 'pages/common/components/RestrictedPage'
@@ -12,11 +12,11 @@ import {UserRole} from 'config/types/user'
 import {PageSection} from 'config/pages'
 import {RootState, StoreDispatch} from 'state/types'
 
-import withUserRoleRequired from '../withUserRoleRequired'
+import {rootWithUserRoleRequired} from '../withUserRoleRequired'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-const AnyComponent = () => <div>Just a component...</div>
+const AnyComponent = () => <div>OK</div>
 
 jest.mock(
     'pages/common/components/RestrictedPage',
@@ -29,7 +29,7 @@ jest.mock(
         )
 )
 
-describe('withUserRoleRequired', () => {
+describe('rootWithUserRoleRequired', () => {
     const stateWithAdequateRole: Partial<RootState> = {
         currentUser: fromJS(user),
     }
@@ -47,23 +47,35 @@ describe('withUserRoleRequired', () => {
         jest.resetModules()
     })
 
-    it('should return the wrapped component if the user has an adequate role', () => {
-        const WrappedComponent = withUserRoleRequired(
-            AnyComponent,
-            UserRole.Admin
-        )
+    it('should return the bare component if no role is passed', () => {
+        const WrappedComponent = rootWithUserRoleRequired(AnyComponent)
 
-        const {container} = render(
+        render(
             <Provider store={mockStore(stateWithAdequateRole)}>
                 <WrappedComponent />
             </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('OK')).toBeInTheDocument()
+    })
+
+    it('should return the wrapped component if the user has an adequate role', () => {
+        const WrappedComponent = rootWithUserRoleRequired(
+            AnyComponent,
+            UserRole.Admin
+        )
+
+        render(
+            <Provider store={mockStore(stateWithAdequateRole)}>
+                <WrappedComponent />
+            </Provider>
+        )
+
+        expect(screen.getByText('OK')).toBeInTheDocument()
     })
 
     it('should not return the wrapped component if the user does not have an adequate role and pass necessary props', () => {
-        const WrappedComponent = withUserRoleRequired(
+        const WrappedComponent = rootWithUserRoleRequired(
             AnyComponent,
             UserRole.Admin,
             PageSection.NewBilling
@@ -79,7 +91,7 @@ describe('withUserRoleRequired', () => {
     })
 
     it('should redirect to a page passed via "redirectTo"', () => {
-        const WrappedComponent = withUserRoleRequired(
+        const WrappedComponent = rootWithUserRoleRequired(
             AnyComponent,
             UserRole.Admin,
             undefined,

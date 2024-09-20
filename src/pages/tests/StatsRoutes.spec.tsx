@@ -11,7 +11,7 @@ import {user} from 'fixtures/users'
 import {RootState} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {VOICE_OVERVIEW_PAGE_TITLE} from 'pages/stats/voice/constants/voiceOverview'
-import {StatsRoutes} from 'pages/routes'
+import {StatsRoutes} from 'routes/Routes'
 
 jest.mock('pages/stats/common/StatsNavbarContainer', () => () => (
     <div>Navbar</div>

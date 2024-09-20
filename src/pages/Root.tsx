@@ -11,6 +11,7 @@ import installDevTools from 'immutable-devtools'
 import {Store} from 'redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 
+import Routes from 'routes/'
 import {appQueryClient} from 'api/queryClient'
 import {Core} from 'core/app'
 import {RootState} from 'state/types'
@@ -20,7 +21,6 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import activityTracker from 'services/activityTracker'
 
 import history from './history'
-import Routes from './routes'
 
 type Props = {
     store: Store<RootState>

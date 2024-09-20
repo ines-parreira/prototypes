@@ -41,7 +41,7 @@ describe('twoFactorAuthentication resources', () => {
                     .reply(503, {message: 'error'})
 
                 await expect(fetchAuthenticatorData(renewed)).rejects.toThrow(
-                    new Error('Request failed with status code 503')
+                    'Request failed with status code 503'
                 )
             }
         )
@@ -93,7 +93,7 @@ describe('twoFactorAuthentication resources', () => {
 
             await expect(
                 validateVerificationCode(code, password)
-            ).rejects.toThrow(new Error('Request failed with status code 503'))
+            ).rejects.toThrow('Request failed with status code 503')
         })
     })
 
@@ -110,7 +110,7 @@ describe('twoFactorAuthentication resources', () => {
                 .reply(503, {message: 'error'})
 
             await expect(saveTwoFASecret()).rejects.toThrow(
-                new Error('Request failed with status code 503')
+                'Request failed with status code 503'
             )
         })
     })
@@ -169,7 +169,7 @@ describe('twoFactorAuthentication resources', () => {
                     .reply(503, {message: 'error'})
 
                 await expect(createRecoveryCodes(renewed)).rejects.toThrow(
-                    new Error('Request failed with status code 503')
+                    'Request failed with status code 503'
                 )
             }
         )
