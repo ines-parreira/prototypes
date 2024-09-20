@@ -1,6 +1,7 @@
 import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classNames from 'classnames'
+import useAppSelector from 'hooks/useAppSelector'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import cssNavbar from 'assets/css/navbar.less'
@@ -12,6 +13,8 @@ import NavbarLink, {
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {isAdmin} from 'utils'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
@@ -21,6 +24,8 @@ export const BUSIEST_TIMES_OF_DAYS_NAV_LABEL = 'Busiest times'
 export const NEW_NAV_LABEL = 'NEW'
 
 export default function StatsNavbarView() {
+    const user = useAppSelector(getCurrentUser)
+    const isAdminUser = isAdmin(user)
     const isHelpCenterAnalyticsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
     const isAutoQAEnabled: boolean | undefined =
@@ -176,7 +181,7 @@ export default function StatsNavbarView() {
                             SLAs
                         </NavbarLink>
                     </div>
-                    {!!isAutoQAEnabled && (
+                    {!!isAutoQAEnabled && isAdminUser && (
                         <div
                             className={classNames(
                                 cssNavbar['link-wrapper'],

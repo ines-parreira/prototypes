@@ -1,10 +1,14 @@
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentType, PropsWithChildren, ReactNode} from 'react'
 import {createBrowserHistory} from 'history'
 import {act, render, screen} from '@testing-library/react'
 import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {UserRole} from 'config/types/user'
+import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 import LiveOverview from 'pages/stats/LiveOverview'
 import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
@@ -90,6 +94,8 @@ jest.mock('pages/stats/support-performance/channels/ChannelsReport')
 const ChannelsReportMock = assumeMock(ChannelsReport)
 jest.mock('pages/stats/sla/ServiceLevelAgreements')
 const ServiceLevelAgreementsMock = assumeMock(ServiceLevelAgreements)
+jest.mock('pages/stats/support-performance/auto-qa/AutoQA')
+const AutoQAMock = assumeMock(AutoQA)
 jest.mock('pages/stats/LiveOverview')
 const LiveOverviewMock = assumeMock(LiveOverview)
 
@@ -104,6 +110,7 @@ describe('<Routes/>', () => {
 
         ChannelsReportMock.mockImplementation(() => <div />)
         ServiceLevelAgreementsMock.mockImplementation(() => <div />)
+        AutoQAMock.mockImplementation(() => <div />)
         LiveOverviewMock.mockImplementation(() => <div />)
     })
 
@@ -366,6 +373,27 @@ describe('<Routes/>', () => {
             )
 
             expect(ServiceLevelAgreementsMock).toHaveBeenCalled()
+        })
+
+        it('should render AutoQA page', () => {
+            const state = {
+                currentUser: fromJS({
+                    role: {name: UserRole.Admin},
+                }) as Map<any, any>,
+            }
+            mockFlags({
+                [FeatureFlagKey.AnalyticsAutoQA]: true,
+            })
+
+            render(
+                <Provider store={mockStore(state)}>
+                    <MemoryRouter initialEntries={['/app/stats/auto-qa']}>
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>
+            )
+
+            expect(AutoQAMock).toHaveBeenCalled()
         })
 
         it('should render Live Voice page', () => {

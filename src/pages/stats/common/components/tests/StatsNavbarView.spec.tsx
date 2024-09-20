@@ -3,10 +3,11 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
 import {mockFlags} from 'jest-launchdarkly-mock'
+import {UserRole} from 'config/types/user'
 import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQA'
 
 import {account} from 'fixtures/account'
@@ -160,12 +161,19 @@ describe('StatsNavbarView', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render the link to the Service Level Agreements', () => {
+    it('should render the link to the Auto QA', () => {
+        const state = {
+            ...defaultState,
+            currentUser: fromJS({
+                role: {name: UserRole.Admin},
+            }) as Map<any, any>,
+        }
         mockFlags({
             [FeatureFlagKey.AnalyticsAutoQA]: true,
         })
+
         renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
+            <Provider store={mockStore(state)}>
                 <DndProvider backend={HTML5Backend}>
                     <StatsNavbarView />
                 </DndProvider>

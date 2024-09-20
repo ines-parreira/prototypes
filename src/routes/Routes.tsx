@@ -553,7 +553,10 @@ export function StatsRoutes() {
                         path={`${path}/auto-qa`}
                         render={() => (
                             <App
-                                content={AutoQA}
+                                content={withUserRoleRequired(
+                                    AutoQA,
+                                    ADMIN_ROLE
+                                )}
                                 navbar={StatsNavbarContainer}
                             />
                         )}
