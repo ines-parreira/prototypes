@@ -1,6 +1,12 @@
 import {act} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import {
+    AutoQAAgentsTableColumn,
+    AutoQAAgentsColumnConfig,
+    TableLabels as autoQATableLabels,
+} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {
     ChannelColumnConfig,
     ChannelsTableColumns,
@@ -19,6 +25,7 @@ import {
     TicketFieldsMetric,
     ConvertMetric,
     VoiceAgentsMetric,
+    AutoQAMetric,
 } from 'state/ui/stats/types'
 import {
     initialState,
@@ -257,6 +264,51 @@ describe('drillDownSlice', () => {
                         ].format,
                 },
             },
+            {
+                metricData: {
+                    metricName: AutoQAAgentsTableColumn.ResolutionCompleteness,
+                    perAgentId: 'some-id',
+                },
+                expectedValues: {
+                    metricTitle:
+                        autoQATableLabels[
+                            AutoQAAgentsTableColumn.ResolutionCompleteness
+                        ],
+                    showMetric: true,
+                    metricValueFormat:
+                        AutoQAAgentsColumnConfig[
+                            AutoQAAgentsTableColumn.ResolutionCompleteness
+                        ].format,
+                },
+            },
+            {
+                metricData: {
+                    metricName: AutoQAMetric.ResolutionCompleteness,
+                },
+                expectedValues: {
+                    metricTitle:
+                        TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
+                            .title,
+                    showMetric: true,
+                    metricValueFormat:
+                        TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
+                            .metricFormat,
+                },
+            },
+            {
+                metricData: {
+                    metricName: AutoQAMetric.ReviewedClosedTickets,
+                },
+                expectedValues: {
+                    metricTitle:
+                        TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
+                            .title,
+                    showMetric: false,
+                    metricValueFormat:
+                        TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
+                            .metricFormat,
+                },
+            },
             ...voiceAgentsMetricsWithExpectedValues,
         ])('getDrillDownMetricColumn', ({metricData, expectedValues}) => {
             expect(
@@ -267,7 +319,7 @@ describe('drillDownSlice', () => {
                             metricData,
                         },
                     },
-                } as unknown as RootState)
+                } as RootState)
             ).toEqual(expectedValues)
         })
 

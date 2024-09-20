@@ -4,22 +4,22 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {AgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/agents/AgentPerformanceHeatmapSwitch'
+import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
 import {RootState, StoreDispatch} from 'state/types'
 import {
-    initialState as agentPerformanceInitialState,
+    initialState as autoQAInitialState,
     toggleHeatmapMode,
-} from 'state/ui/stats/agentPerformanceSlice'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
+} from 'state/ui/stats/autoQAAgentPerformanceSlice'
+import {AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('<AgentPerformanceHeatmapSwitch />', () => {
+describe('<AutoQAAgentPerformanceHeatmapSwitch />', () => {
     const defaultState = {
         ui: {
             statsTables: {
-                [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceInitialState,
+                [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: autoQAInitialState,
             },
             stats: uiStatsInitialState,
         },
@@ -30,7 +30,7 @@ describe('<AgentPerformanceHeatmapSwitch />', () => {
 
         render(
             <Provider store={store}>
-                <AgentPerformanceHeatmapSwitch />
+                <AutoQAAgentPerformanceHeatmapSwitch />
             </Provider>
         )
 
@@ -42,7 +42,7 @@ describe('<AgentPerformanceHeatmapSwitch />', () => {
 
         render(
             <Provider store={store}>
-                <AgentPerformanceHeatmapSwitch />
+                <AutoQAAgentPerformanceHeatmapSwitch />
             </Provider>
         )
         act(() => {

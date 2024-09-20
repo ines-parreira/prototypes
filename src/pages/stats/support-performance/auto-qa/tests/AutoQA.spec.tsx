@@ -1,6 +1,8 @@
 import {screen} from '@testing-library/react'
 import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
+import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
 import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
 import AutoQA, {
@@ -36,6 +38,14 @@ jest.mock(
 const CommunicationSkillsTrendCardMock = assumeMock(
     CommunicationSkillsTrendCard
 )
+jest.mock('pages/stats/support-performance/auto-qa/AutoQAAgentsTable')
+const AutoQAAgentsTableMock = assumeMock(AutoQAAgentsTable)
+jest.mock(
+    'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
+)
+const AutoQAAgentPerformanceHeatmapSwitchMock = assumeMock(
+    AutoQAAgentPerformanceHeatmapSwitch
+)
 
 const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 
@@ -49,6 +59,10 @@ describe('AutoQA', () => {
         ))
         ResolutionCompletenessTrendCardMock.mockImplementation(() => <div />)
         CommunicationSkillsTrendCardMock.mockImplementation(() => <div />)
+        AutoQAAgentsTableMock.mockImplementation(() => <div />)
+        AutoQAAgentPerformanceHeatmapSwitchMock.mockImplementation(() => (
+            <div />
+        ))
     })
 
     it('should render page title', () => {
@@ -58,6 +72,8 @@ describe('AutoQA', () => {
         expect(NumberOfClosedTicketsReviewedTrendCardMock).toHaveBeenCalled()
         expect(ResolutionCompletenessTrendCardMock).toHaveBeenCalled()
         expect(CommunicationSkillsTrendCardMock).toHaveBeenCalled()
+        expect(AutoQAAgentPerformanceHeatmapSwitchMock).toHaveBeenCalled()
+        expect(AutoQAAgentsTableMock).toHaveBeenCalled()
     })
 })
 
@@ -81,6 +97,8 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         expect(NumberOfClosedTicketsReviewedTrendCardMock).toHaveBeenCalled()
         expect(ResolutionCompletenessTrendCardMock).toHaveBeenCalled()
         expect(CommunicationSkillsTrendCardMock).toHaveBeenCalled()
+        expect(AutoQAAgentsTableMock).toHaveBeenCalled()
+        expect(AutoQAAgentPerformanceHeatmapSwitchMock).toHaveBeenCalled()
         expect(screen.getByText('FiltersHeaderMock')).toBeTruthy()
     })
 })

@@ -9,6 +9,7 @@ import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
+    perDimensionQueryFactory,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -35,10 +36,16 @@ export const reviewedClosedTicketsQueryFactory = (
     timezone,
     ...(sorting
         ? {
-              order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+              order: [[TicketQAScoreMeasure.TicketCount, sorting]],
           }
         : {}),
 })
+
+export const reviewedClosedTicketsPerAgentQueryFactory =
+    perDimensionQueryFactory(
+        reviewedClosedTicketsQueryFactory,
+        TicketDimension.AssigneeUserId
+    )
 
 export const reviewedClosedTicketsDrillDownQueryFactory = (
     filters: StatsFilters,

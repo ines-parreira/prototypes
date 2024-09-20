@@ -1,5 +1,11 @@
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {AgentPerformanceState} from 'state/ui/stats/agentPerformanceSlice'
+import {
+    AGENT_PERFORMANCE_SLICE_NAME,
+    AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
+} from 'state/ui/stats/constants'
 
 export type StatsState = {
     fetchingMap: {
@@ -97,3 +103,8 @@ export type TableSetting<T> = {
 }
 
 export type TableColumnSet = AgentsTableColumn | ChannelsTableColumns
+
+export type StatsTablesState = {
+    [AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AgentsTableColumn>
+    [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AutoQAAgentsTableColumn>
+}

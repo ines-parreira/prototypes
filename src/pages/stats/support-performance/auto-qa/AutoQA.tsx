@@ -1,5 +1,9 @@
 import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {AutoQAAgentsCardExtra} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsCardExtra'
+import ChartCard from 'pages/stats/ChartCard'
+import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
+import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {useGridSize} from 'hooks/useGridSize'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
@@ -74,6 +78,15 @@ export default function AutoQA() {
                         <CommunicationSkillsTrendCard
                             isAnalyticsNewFilters={isAnalyticsNewFilters}
                         />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(12)}>
+                        <ChartCard
+                            title={AGENT_PERFORMANCE_SECTION_TITLE}
+                            titleExtra={<AutoQAAgentsCardExtra />}
+                            noPadding
+                        >
+                            <AutoQAAgentsTable />
+                        </ChartCard>
                     </DashboardGridCell>
                 </DashboardSection>
                 <AnalyticsFooter />

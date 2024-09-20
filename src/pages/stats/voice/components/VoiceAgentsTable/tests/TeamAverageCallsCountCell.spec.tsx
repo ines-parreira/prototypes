@@ -9,6 +9,7 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import {RootState, StoreDispatch} from 'state/types'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {agents} from 'fixtures/agents'
+import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {useTotalCallsMetric} from 'pages/stats/voice/hooks/agentMetrics'
@@ -36,7 +37,9 @@ const renderComponent = (mockUseMetric: typeof useTotalCallsMetric) => {
                 isFilterDirty: false,
                 fetchingMap: {},
             },
-            agentPerformance: agentPerformanceInitialState,
+            statsTables: {
+                [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceInitialState,
+            },
         },
     } as RootState
 

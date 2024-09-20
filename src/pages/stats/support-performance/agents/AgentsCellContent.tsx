@@ -2,7 +2,6 @@ import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
 import {User} from 'config/types/user'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell, {
     Props as BodyCellProps,
@@ -18,10 +17,6 @@ import {
 } from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import css from 'pages/stats/heatmap.less'
-import {
-    getHeatmapMode,
-    isSortingMetricLoading,
-} from 'state/ui/stats/agentPerformanceSlice'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 
 export type AgentsCellContentProps = {
@@ -30,6 +25,8 @@ export type AgentsCellContentProps = {
     useMetricPerAgentQueryHook: MetricQueryPerAgentQuery
     metricFormat: MetricValueFormat
     drillDownMetricData: DrillDownMetric | null
+    isHeatmapMode: boolean
+    isSortingMetricLoading: boolean
 }
 
 export const AgentsCellContent = ({
@@ -38,10 +35,11 @@ export const AgentsCellContent = ({
     useMetricPerAgentQueryHook,
     metricFormat,
     drillDownMetricData,
+    isHeatmapMode,
+    isSortingMetricLoading,
 }: AgentsCellContentProps) => {
     const {isAnalyticsNewFilters, cleanStatsFilters, userTimezone} =
         useNewStatsFilters()
-    const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const {data, isFetching} = useMetricPerAgentQueryHook(
         cleanStatsFilters,
         userTimezone,
@@ -49,8 +47,7 @@ export const AgentsCellContent = ({
         String(agent.id)
     )
     const metricValue = data?.value
-    const isLoading = isFetching || isMetricLoading
-    const isHeatmapMode = useAppSelector(getHeatmapMode)
+    const isLoading = isFetching || isSortingMetricLoading
     const formattedMetric = formatMetricValue(
         metricValue,
         metricFormat,

@@ -223,7 +223,7 @@ describe('stats components utils', () => {
             expect(formatMetricValue(value, 'integer')).toBe('123,457')
         })
 
-        it('should format value up to two decimal places and render as percentage when format is "percentage"', () => {
+        it('should format value up to two decimal places and render as percentage when format is "percent"', () => {
             expect(formatMetricValue(123456.789, 'percent')).toBe('123,456.79%')
         })
 
@@ -245,6 +245,10 @@ describe('stats components utils', () => {
 
         it('should return fallback when value is null', () => {
             expect(formatMetricValue(null, 'decimal')).toBe(NOT_AVAILABLE_TEXT)
+        })
+
+        it('should return percent on 0-1 float representing percentage', () => {
+            expect(formatMetricValue(0.5, 'decimal-to-percent')).toBe('50%')
         })
     })
 

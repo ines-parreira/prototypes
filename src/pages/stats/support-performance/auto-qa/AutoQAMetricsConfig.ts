@@ -6,6 +6,10 @@ import {MetricTrendFormat} from 'pages/stats/common/utils'
 import {TooltipData} from 'pages/stats/types'
 import {AutoQAMetric} from 'state/ui/stats/types'
 
+export const REVIEWED_CLOSED_TICKETS_LABEL = 'Reviewed tickets'
+export const RESOLUTION_COMPLETENESS_LABEL = 'Resolution completeness rate'
+export const COMMUNICATION_SKILLS_LABEL = 'Communication'
+
 export const TrendCardConfig: Record<
     AutoQAMetric,
     {
@@ -18,7 +22,7 @@ export const TrendCardConfig: Record<
     }
 > = {
     [AutoQAMetric.ReviewedClosedTickets]: {
-        title: 'Reviewed tickets',
+        title: REVIEWED_CLOSED_TICKETS_LABEL,
         hint: {
             title: 'Number of closed tickets that were reviewed (automatically or manually) during the period.\n\nNote: Only closed tickets with at least 1 customer message and 1 agent/rule message are auto-evaluated.',
             link: 'https://link.gorgias.com/xxn',
@@ -29,18 +33,18 @@ export const TrendCardConfig: Record<
         drillDownMetric: AutoQAMetric.ReviewedClosedTickets,
     },
     [AutoQAMetric.ResolutionCompleteness]: {
-        title: 'Resolution completeness rate',
+        title: RESOLUTION_COMPLETENESS_LABEL,
         hint: {
             title: 'Percentage of tickets where the agent addressed ALL customer inquiries. \n\nNote: Only closed tickets with at least 1 customer message and 1 agent/rule message are auto-evaluated for response completeness.',
             link: 'https://link.gorgias.com/e4a',
         },
         interpretAs: 'more-is-better',
-        metricFormat: 'percent',
+        metricFormat: 'decimal-to-percent',
         useTrend: useResolutionCompletenessTrend,
         drillDownMetric: AutoQAMetric.ResolutionCompleteness,
     },
     [AutoQAMetric.CommunicationSkills]: {
-        title: 'Communication',
+        title: COMMUNICATION_SKILLS_LABEL,
         hint: {
             title: 'Average score assessing agent’s empathy, clarity, patience, positivity, and adaptability.\n\nNote: Only closed tickets with at least 1 customer message and 1 agent/rule message are auto-evaluated for communication.',
             link: 'https://link.gorgias.com/8iz',

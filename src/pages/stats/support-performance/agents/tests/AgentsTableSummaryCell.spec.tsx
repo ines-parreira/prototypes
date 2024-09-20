@@ -16,10 +16,8 @@ import {formatMetricValue} from 'pages/stats/common/utils'
 
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
-import {
-    agentPerformanceSlice,
-    initialState,
-} from 'state/ui/stats/agentPerformanceSlice'
+import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
+import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 
@@ -40,7 +38,9 @@ describe('<AgentsTableSummaryCell', () => {
         },
         ui: {
             stats: uiStatsInitialState,
-            [agentPerformanceSlice.name]: initialState,
+            statsTables: {
+                [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceInitialState,
+            },
         },
         agents: fromJS({
             all: agents,

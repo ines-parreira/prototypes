@@ -1,33 +1,30 @@
 import {combineReducers} from 'redux'
-import {
-    agentPerformanceSlice,
-    AgentPerformanceState,
-} from 'state/ui/stats/agentPerformanceSlice'
+import contactForm from 'state/ui/contactForm/reducer'
+import {ContactFormState} from 'state/ui/contactForm/types'
+
+import editor from 'state/ui/editor/reducer'
+import {EditorState} from 'state/ui/editor/types'
+import helpCenter from 'state/ui/helpCenter/reducer'
+import {HelpCenterState} from 'state/ui/helpCenter/types'
 import {
     busiestTimesSlice,
     BusiestTimesState,
 } from 'state/ui/stats/busiestTimesSlice'
 import {ChannelsSlice, channelsSlice} from 'state/ui/stats/channelsSlice'
+import {drillDownSlice, DrillDownState} from 'state/ui/stats/drillDownSlice'
+import stats from 'state/ui/stats/reducer'
+import {statsTablesReducer} from 'state/ui/stats/statsTablesReducer'
 import {
     ticketInsightsSlice,
     TicketInsightsState,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {drillDownSlice, DrillDownState} from 'state/ui/stats/drillDownSlice'
-
-import editor from './editor/reducer'
-import {EditorState} from './editor/types'
-import stats from './stats/reducer'
-import {StatsState} from './stats/types'
-import ticketNavbar from './ticketNavbar/reducer'
-import {TicketNavbarState} from './ticketNavbar/types'
-import views from './views/reducer'
-import {ViewsState} from './views/types'
-import {HelpCenterState} from './helpCenter/types'
-import helpCenter from './helpCenter/reducer'
-import {ContactFormState} from './contactForm/types'
-import contactForm from './contactForm/reducer'
-import ticketAIAgentFeedback from './ticketAIAgentFeedback'
-import {TicketAIAgentFeedbackState} from './ticketAIAgentFeedback/types'
+import {StatsState, StatsTablesState} from 'state/ui/stats/types'
+import ticketAIAgentFeedback from 'state/ui/ticketAIAgentFeedback'
+import {TicketAIAgentFeedbackState} from 'state/ui/ticketAIAgentFeedback/types'
+import ticketNavbar from 'state/ui/ticketNavbar/reducer'
+import {TicketNavbarState} from 'state/ui/ticketNavbar/types'
+import views from 'state/ui/views/reducer'
+import {ViewsState} from 'state/ui/views/types'
 
 const uiReducers = combineReducers<{
     editor: EditorState
@@ -37,7 +34,7 @@ const uiReducers = combineReducers<{
     helpCenter: HelpCenterState
     contactForm: ContactFormState
     ticketAIAgentFeedback: TicketAIAgentFeedbackState
-    [agentPerformanceSlice.name]: AgentPerformanceState
+    statsTables: StatsTablesState
     [channelsSlice.name]: ChannelsSlice
     [ticketInsightsSlice.name]: TicketInsightsState
     [drillDownSlice.name]: DrillDownState
@@ -50,7 +47,7 @@ const uiReducers = combineReducers<{
     helpCenter,
     contactForm,
     ticketAIAgentFeedback,
-    [agentPerformanceSlice.name]: agentPerformanceSlice.reducer,
+    statsTables: statsTablesReducer,
     [busiestTimesSlice.name]: busiestTimesSlice.reducer,
     [channelsSlice.name]: channelsSlice.reducer,
     [ticketInsightsSlice.name]: ticketInsightsSlice.reducer,

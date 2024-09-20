@@ -25,6 +25,7 @@ import {
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
 import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
+import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {
     ChannelColumnConfig,
     ChannelsTableColumns,
@@ -195,6 +196,21 @@ export const getDrillDownQuery = (
             )
         case AutoQAMetric.ReviewedClosedTickets:
             return reviewedClosedTicketsDrillDownQueryFactory
+        case AutoQAAgentsTableColumn.ResolutionCompleteness:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                resolutionCompletenessDrillDownQueryFactory
+            )
+        case AutoQAAgentsTableColumn.CommunicationSkills:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                communicationSkillsDrillDownQueryFactory
+            )
+        case AutoQAAgentsTableColumn.ReviewedClosedTickets:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                reviewedClosedTicketsDrillDownQueryFactory
+            )
         case AutoQAMetric.ResolutionCompleteness:
             return resolutionCompletenessDrillDownQueryFactory
         case AutoQAMetric.CommunicationSkills:

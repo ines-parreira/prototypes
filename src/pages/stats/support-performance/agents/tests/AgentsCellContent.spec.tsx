@@ -9,7 +9,6 @@ import {
 } from 'pages/stats/common/utils'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
-import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {AgentsTableColumn} from 'state/ui/stats/types'
@@ -38,7 +37,6 @@ describe('<AgentsCellContent />', () => {
     const defaultState = {
         stats: initialState,
         ui: {
-            agentPerformance: agentPerformanceInitialState,
             stats: uiStatsInitialState,
         },
     } as RootState
@@ -76,6 +74,8 @@ describe('<AgentsCellContent />', () => {
                 useMetricPerAgentQueryHook={metricHook}
                 metricFormat={metricFormat}
                 drillDownMetricData={null}
+                isHeatmapMode={false}
+                isSortingMetricLoading={false}
             />,
             defaultState
         )
@@ -100,16 +100,6 @@ describe('<AgentsCellContent />', () => {
     })
 
     it('should render value in heatmap mode', () => {
-        const state = {
-            ...defaultState,
-            ui: {
-                ...defaultState.ui,
-                agentPerformance: {
-                    ...agentPerformanceInitialState,
-                    heatmapMode: true,
-                },
-            },
-        }
         const metricFormat = 'decimal'
         const metricHook = jest
             .fn()
@@ -123,8 +113,10 @@ describe('<AgentsCellContent />', () => {
                 useMetricPerAgentQueryHook={metricHook}
                 metricFormat={metricFormat}
                 drillDownMetricData={null}
+                isHeatmapMode={true}
+                isSortingMetricLoading={false}
             />,
-            state
+            defaultState
         )
 
         const elementWithHeatmap = document.querySelector(
@@ -153,6 +145,8 @@ describe('<AgentsCellContent />', () => {
                 useMetricPerAgentQueryHook={metricHook}
                 metricFormat={'decimal'}
                 drillDownMetricData={null}
+                isHeatmapMode={false}
+                isSortingMetricLoading={false}
             />,
             defaultState
         )
@@ -176,6 +170,8 @@ describe('<AgentsCellContent />', () => {
                 useMetricPerAgentQueryHook={metricHook}
                 metricFormat={'decimal'}
                 drillDownMetricData={drillDownMetricData}
+                isHeatmapMode={false}
+                isSortingMetricLoading={false}
             />,
             defaultState
         )

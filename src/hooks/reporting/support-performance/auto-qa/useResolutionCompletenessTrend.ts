@@ -6,8 +6,8 @@ import {getPreviousPeriod} from 'utils/reporting'
 export const useResolutionCompletenessTrend = (
     filters: StatsFilters,
     timezone: string
-) => {
-    const {data, isFetching, isError} = useMetricTrend(
+) =>
+    useMetricTrend(
         resolutionCompletenessQueryFactory(filters, timezone),
         resolutionCompletenessQueryFactory(
             {
@@ -17,10 +17,3 @@ export const useResolutionCompletenessTrend = (
             timezone
         )
     )
-    const dataPercentage =
-        typeof data?.value === 'number' && typeof data?.prevValue === 'number'
-            ? {value: data.value * 100, prevValue: data.prevValue * 100}
-            : data
-
-    return {data: dataPercentage, isFetching, isError}
-}

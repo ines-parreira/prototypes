@@ -17,6 +17,11 @@ import {
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
+    AutoQAAgentsColumnConfig,
+    AutoQAAgentsTableColumn,
+} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import {
     ChannelColumnConfig,
     ChannelsTableColumns,
     ChannelsTableLabels,
@@ -80,6 +85,16 @@ export type AutoQAMetrics = {
     metricName: AutoQAMetric
 } & CommonMetrics
 
+export type AutoQAAgentMetric =
+    | AutoQAAgentsTableColumn.ResolutionCompleteness
+    | AutoQAAgentsTableColumn.ReviewedClosedTickets
+    | AutoQAAgentsTableColumn.CommunicationSkills
+
+export type AutoQAAgentMetrics = {
+    metricName: AutoQAAgentMetric
+    perAgentId: number
+} & CommonMetrics
+
 export type ChannelMetricColumn =
     | ChannelsTableColumns.TicketsCreated
     | ChannelsTableColumns.CreatedTicketsPercentage
@@ -131,6 +146,7 @@ export type VoiceAgentsMetrics = {
 export type DrillDownMetric =
     | AgentsMetrics
     | AutoQAMetrics
+    | AutoQAAgentMetrics
     | ChannelsMetrics
     | PerformanceOverviewMetrics
     | TicketFieldsMetrics
@@ -167,6 +183,7 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AgentsTableColumn.RepliedTicketsPerHour,
     AgentsTableColumn.ClosedTicketsPerHour,
     AutoQAMetric.ReviewedClosedTickets,
+    AutoQAAgentsTableColumn.ReviewedClosedTickets,
     ChannelsTableColumns.TicketsCreated,
     ChannelsTableColumns.CreatedTicketsPercentage,
     ChannelsTableColumns.ClosedTickets,
@@ -317,6 +334,34 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === VoiceAgentsMetric.AgentAverageTalkTime
     ) {
         metricTitle = ''
+    } else if (
+        metricData.metricName === SlaMetric.AchievementRate ||
+        metricData.metricName === SlaMetric.BreachedTicketsRate
+    ) {
+        metricTitle = SLA_STATUS_COLUMN_LABEL
+        metricValueFormat = SLA_FORMAT
+    } else if (
+        metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
+        metricData.metricName === AutoQAMetric.CommunicationSkills ||
+        metricData.metricName === AutoQAMetric.ResolutionCompleteness
+    ) {
+        metricTitle = TrendCardConfig[metricData.metricName].title
+        metricValueFormat = TrendCardConfig[metricData.metricName].metricFormat
+    } else if (
+        metricData.metricName === AutoQAAgentsTableColumn.CommunicationSkills ||
+        metricData.metricName ===
+            AutoQAAgentsTableColumn.ResolutionCompleteness ||
+        metricData.metricName === AutoQAAgentsTableColumn.ReviewedClosedTickets
+    ) {
+        metricTitle = AutoQAAgentsColumnConfig[metricData.metricName].title
+        metricValueFormat =
+            AutoQAAgentsColumnConfig[metricData.metricName].format
+    } else if (
+        metricData.metricName === ConvertMetric.CampaignSalesCount ||
+        metricData.metricName === VoiceMetric.AverageWaitTime ||
+        metricData.metricName === VoiceMetric.AverageTalkTime
+    ) {
+        metricTitle = ''
     } else if ('perAgentId' in metricData) {
         metricTitle = TableLabels[metricData.metricName]
         metricValueFormat = AgentsColumnConfig[metricData.metricName].format
@@ -326,21 +371,6 @@ export const getDrillDownMetricColumn = (
     } else if ('perChannel' in metricData) {
         metricTitle = ChannelsTableLabels[metricData.metricName]
         metricValueFormat = ChannelColumnConfig[metricData.metricName].format
-    } else if (
-        metricData.metricName === SlaMetric.AchievementRate ||
-        metricData.metricName === SlaMetric.BreachedTicketsRate
-    ) {
-        metricTitle = SLA_STATUS_COLUMN_LABEL
-        metricValueFormat = SLA_FORMAT
-    } else if (
-        metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
-        metricData.metricName === AutoQAMetric.ResolutionCompleteness ||
-        metricData.metricName === AutoQAMetric.CommunicationSkills ||
-        metricData.metricName === ConvertMetric.CampaignSalesCount ||
-        metricData.metricName === VoiceMetric.AverageWaitTime ||
-        metricData.metricName === VoiceMetric.AverageTalkTime
-    ) {
-        metricTitle = ''
     } else {
         metricTitle = OverviewMetricConfig[metricData.metricName].title
         metricValueFormat =

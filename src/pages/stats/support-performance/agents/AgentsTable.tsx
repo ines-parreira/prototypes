@@ -28,7 +28,12 @@ import {
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
-import {getPaginatedAgents, pageSet} from 'state/ui/stats/agentPerformanceSlice'
+import {
+    getHeatmapMode,
+    getPaginatedAgents,
+    isSortingMetricLoading,
+    pageSet,
+} from 'state/ui/stats/agentPerformanceSlice'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 
 export const getTableCell = (
@@ -68,6 +73,8 @@ export const AgentsTable = () => {
             setIsTableScrolled(false)
         }
     }
+    const isHeatmapMode = useAppSelector(getHeatmapMode)
+    const isSortingLoading = useAppSelector(isSortingMetricLoading)
 
     return (
         <>
@@ -131,6 +138,9 @@ export const AgentsTable = () => {
                                                         column,
                                                         agent
                                                     ),
+                                                isHeatmapMode: isHeatmapMode,
+                                                isSortingMetricLoading:
+                                                    isSortingLoading,
                                                 bodyCellProps: {
                                                     width: getColumnWidth(
                                                         column

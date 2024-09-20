@@ -5,6 +5,7 @@ import {
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
+import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
     AgentsMetrics,
@@ -91,6 +92,18 @@ describe('getDrillDownQuery', () => {
         },
         {
             metricName: AutoQAMetric.CommunicationSkills,
+        },
+        {
+            metricName: AutoQAAgentsTableColumn.ResolutionCompleteness,
+            perAgentId: 123,
+        },
+        {
+            metricName: AutoQAAgentsTableColumn.ReviewedClosedTickets,
+            perAgentId: 123,
+        },
+        {
+            metricName: AutoQAAgentsTableColumn.CommunicationSkills,
+            perAgentId: 123,
         },
     ]
     const channelMetrics: ChannelsMetrics[] = [

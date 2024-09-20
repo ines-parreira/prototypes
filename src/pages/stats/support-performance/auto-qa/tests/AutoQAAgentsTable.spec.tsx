@@ -8,36 +8,36 @@ import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCe
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
 import {
-    TableColumnsOrderWithOnlineTime,
+    AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
+    AutoQAAgentsTableColumn,
     getColumnWidth,
     TableLabels,
-} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
+} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
 import {agents} from 'fixtures/agents'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {
-    getPaginatedAgents,
-    getSortedAgents,
+    getPaginatedAutoQAAgents,
+    getSortedAutoQAAgents,
     pageSet,
-    isSortingMetricLoading,
     getHeatmapMode,
-} from 'state/ui/stats/agentPerformanceSlice'
+    isSortingMetricLoading,
+} from 'state/ui/stats/autoQAAgentPerformanceSlice'
 import {assumeMock} from 'utils/testing'
-import {AgentsTableColumn} from 'state/ui/stats/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock(
-    'state/ui/stats/agentPerformanceSlice',
+    'state/ui/stats/autoQAAgentPerformanceSlice',
     () =>
         ({
-            ...jest.requireActual('state/ui/stats/agentPerformanceSlice'),
-            getSortedAgents: jest.fn(),
-            getPaginatedAgents: jest.fn(),
-            isSortingMetricLoading: jest.fn(),
+            ...jest.requireActual('state/ui/stats/autoQAAgentPerformanceSlice'),
+            getSortedAutoQAAgents: jest.fn(),
+            getPaginatedAutoQAAgents: jest.fn(),
             getHeatmapMode: jest.fn(),
+            isSortingMetricLoading: jest.fn(),
         } as Record<string, any>)
 )
 jest.mock(
@@ -53,11 +53,11 @@ jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
         children,
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,
 }))
-const getSortedAgentsMock = assumeMock(getSortedAgents)
-const getPaginatedAgentsMock = assumeMock(getPaginatedAgents)
+const getSortedAutoQAAgentsMock = assumeMock(getSortedAutoQAAgents)
+const getPaginatedAutoQAAgentsMock = assumeMock(getPaginatedAutoQAAgents)
 const getPageStatsFiltersMock = assumeMock(getPageStatsFilters)
-const isSortingMetricLoadingMock = assumeMock(isSortingMetricLoading)
 const getHeatmapModeMock = assumeMock(getHeatmapMode)
+const isSortingMetricLoadingMock = assumeMock(isSortingMetricLoading)
 
 jest.mock('pages/stats/support-performance/agents/AgentsCellContent')
 const AgentsCellContentMock = assumeMock(AgentsCellContent)
@@ -70,11 +70,11 @@ const AgentsTableSummaryCellMock = assumeMock(AgentsTableSummaryCell)
 
 const cellMock = () => <div />
 
-describe('<AgentTable>', () => {
+describe('<AutoQAAgentsTable />', () => {
     const currentPage = 2
-    getSortedAgentsMock.mockReturnValue(agents)
+    getSortedAutoQAAgentsMock.mockReturnValue(agents)
     const paginatedAgents = agents.slice(1)
-    getPaginatedAgentsMock.mockReturnValue({
+    getPaginatedAutoQAAgentsMock.mockReturnValue({
         agents: paginatedAgents,
         allAgents: agents,
         currentPage,
@@ -86,8 +86,8 @@ describe('<AgentTable>', () => {
             end_datetime: '2021-02-03T23:59:59.999Z',
         },
     } as any)
-    isSortingMetricLoadingMock.mockReturnValue(false)
     getHeatmapModeMock.mockReturnValue(false)
+    isSortingMetricLoadingMock.mockReturnValue(false)
     AgentsCellContentMock.mockImplementation(cellMock)
     AgentsHeaderCellContentMock.mockImplementation(cellMock)
     AgentsTableSummaryCellMock.mockImplementation(cellMock)
@@ -95,12 +95,12 @@ describe('<AgentTable>', () => {
     it('should render the table title, table header and rows', () => {
         render(
             <Provider store={mockStore({})}>
-                <AgentsTable />
+                <AutoQAAgentsTable />
             </Provider>
         )
 
         expect(screen.getByRole('table')).toBeInTheDocument()
-        TableColumnsOrderWithOnlineTime.forEach((column) => {
+        AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER.forEach((column) => {
             expect(AgentsHeaderCellContentMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     title: TableLabels[column],
@@ -120,7 +120,7 @@ describe('<AgentTable>', () => {
     it('should handle table scrolling', async () => {
         render(
             <Provider store={mockStore({})}>
-                <AgentsTable />
+                <AutoQAAgentsTable />
             </Provider>
         )
         act(() => {
@@ -136,7 +136,7 @@ describe('<AgentTable>', () => {
     it('should handle table scrolling to the left border', async () => {
         render(
             <Provider store={mockStore({})}>
-                <AgentsTable />
+                <AutoQAAgentsTable />
             </Provider>
         )
         act(() => {
@@ -153,7 +153,7 @@ describe('<AgentTable>', () => {
         it('should render if there are more agents then perPage', () => {
             render(
                 <Provider store={mockStore({})}>
-                    <AgentsTable />
+                    <AutoQAAgentsTable />
                 </Provider>
             )
 
@@ -161,7 +161,7 @@ describe('<AgentTable>', () => {
         })
 
         it('should not render if less agent then perPage', () => {
-            getPaginatedAgentsMock.mockReturnValue({
+            getPaginatedAutoQAAgentsMock.mockReturnValue({
                 agents,
                 allAgents: agents,
                 currentPage: 1,
@@ -170,7 +170,7 @@ describe('<AgentTable>', () => {
 
             render(
                 <Provider store={mockStore({})}>
-                    <AgentsTable />
+                    <AutoQAAgentsTable />
                 </Provider>
             )
 
@@ -180,7 +180,7 @@ describe('<AgentTable>', () => {
         it('should dispatch pageSet action on click', () => {
             const store = mockStore({})
             const pageToClick = currentPage - 1
-            getPaginatedAgentsMock.mockReturnValue({
+            getPaginatedAutoQAAgentsMock.mockReturnValue({
                 agents,
                 allAgents: agents,
                 currentPage,
@@ -189,7 +189,7 @@ describe('<AgentTable>', () => {
 
             render(
                 <Provider store={store}>
-                    <AgentsTable />
+                    <AutoQAAgentsTable />
                 </Provider>
             )
             act(() => {
@@ -221,11 +221,11 @@ describe('<AgentTable>', () => {
                 expectedOtherColumnsWidth,
             }) => {
                 global.innerWidth = screenResolution
-                expect(getColumnWidth(AgentsTableColumn.AgentName)).toEqual(
-                    expectedAgentsWidth
-                )
                 expect(
-                    getColumnWidth(AgentsTableColumn.CustomerSatisfaction)
+                    getColumnWidth(AutoQAAgentsTableColumn.AgentName)
+                ).toEqual(expectedAgentsWidth)
+                expect(
+                    getColumnWidth(AutoQAAgentsTableColumn.CommunicationSkills)
                 ).toEqual(expectedOtherColumnsWidth)
             }
         )

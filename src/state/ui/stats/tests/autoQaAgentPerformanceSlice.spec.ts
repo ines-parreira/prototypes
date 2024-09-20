@@ -2,32 +2,34 @@ import {fromJS} from 'immutable'
 import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {personNames} from 'fixtures/personNames'
 import {OrderDirection} from 'models/api/types'
+import {TicketQAScoreMeasure} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
-import {
-    TicketMessagesDimension,
-    TicketMessagesMeasure,
-} from 'models/reporting/cubes/TicketMessagesCube'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
+
 import {
-    agentPerformanceSlice,
+    autoQAAgentPerformanceSlice,
+    initialState,
     getAgentSorting,
     getFilteredAgents,
-    getPaginatedAgents,
-    getSortedAgents,
-    initialState,
     isSortingMetricLoading,
     pageSet,
     sortingLoaded,
     sortingLoading,
     sortingSet,
+    getPaginatedAutoQAAgents,
+    getSortedAutoQAAgents,
     toggleHeatmapMode,
-} from 'state/ui/stats/agentPerformanceSlice'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
+} from 'state/ui/stats/autoQAAgentPerformanceSlice'
+import {
+    AGENT_PERFORMANCE_SLICE_NAME,
+    AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
+} from 'state/ui/stats/constants'
 import {initialState as initialUiStatsState} from 'state/ui/stats/reducer'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+import {AutoQAMetric} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
 
 describe('agentPerformanceSlice', () => {
@@ -41,39 +43,39 @@ describe('agentPerformanceSlice', () => {
 
     const metricData: ReportingMetricItem[] = [
         {
-            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '5',
-            [TicketMessagesMeasure.MedianFirstResponseTime]: '25',
+            [TicketDimension.AssigneeUserId]: '5',
+            [TicketQAScoreMeasure.AverageScore]: '2.5',
         },
         {
-            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '4',
-            [TicketMessagesMeasure.MedianFirstResponseTime]: '20',
+            [TicketDimension.AssigneeUserId]: '4',
+            [TicketQAScoreMeasure.AverageScore]: '2.0',
         },
         {
-            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '3',
-            [TicketMessagesMeasure.MedianFirstResponseTime]: '15',
+            [TicketDimension.AssigneeUserId]: '3',
+            [TicketQAScoreMeasure.AverageScore]: '1.5',
         },
         {
-            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '2',
-            [TicketMessagesMeasure.MedianFirstResponseTime]: '10',
+            [TicketDimension.AssigneeUserId]: '2',
+            [TicketQAScoreMeasure.AverageScore]: '1.0',
         },
         {
-            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '1',
-            [TicketMessagesMeasure.MedianFirstResponseTime]: '5',
+            [TicketDimension.AssigneeUserId]: '1',
+            [TicketQAScoreMeasure.AverageScore]: '.5',
         },
     ]
 
     describe('reducers', () => {
         it('should keep sorting field, direction and loading state', () => {
-            const newState = agentPerformanceSlice.reducer(
+            const newState = autoQAAgentPerformanceSlice.reducer(
                 initialState,
                 sortingSet({
-                    field: AgentsTableColumn.ClosedTickets,
+                    field: AutoQAAgentsTableColumn.CommunicationSkills,
                     direction: OrderDirection.Desc,
                 })
             )
 
             expect(newState.sorting).toEqual({
-                field: AgentsTableColumn.ClosedTickets,
+                field: AutoQAAgentsTableColumn.CommunicationSkills,
                 direction: OrderDirection.Desc,
                 isLoading: true,
                 lastSortingMetric: null,
@@ -91,12 +93,12 @@ describe('agentPerformanceSlice', () => {
             }
             const metricData = [
                 {
-                    [TicketMessagesMeasure.MedianFirstResponseTime]: '123',
+                    [TicketQAScoreMeasure.AverageScore]: '123',
                     [TicketDimension.AssigneeUserId]: '456',
                 },
             ]
 
-            const newState = agentPerformanceSlice.reducer(
+            const newState = autoQAAgentPerformanceSlice.reducer(
                 loadingState,
                 sortingLoaded(metricData)
             )
@@ -114,7 +116,7 @@ describe('agentPerformanceSlice', () => {
         it('should set the page', () => {
             const page = 4
 
-            const newState = agentPerformanceSlice.reducer(
+            const newState = autoQAAgentPerformanceSlice.reducer(
                 initialState,
                 pageSet(page)
             )
@@ -125,7 +127,7 @@ describe('agentPerformanceSlice', () => {
         it('should set the page to 1 if less then 1 given', () => {
             const page = -2
 
-            const newState = agentPerformanceSlice.reducer(
+            const newState = autoQAAgentPerformanceSlice.reducer(
                 initialState,
                 pageSet(page)
             )
@@ -136,7 +138,7 @@ describe('agentPerformanceSlice', () => {
         })
 
         it('should reset the page to first when new sorting data starts loading', () => {
-            const newState = agentPerformanceSlice.reducer(
+            const newState = autoQAAgentPerformanceSlice.reducer(
                 {
                     ...initialState,
                     pagination: {
@@ -157,7 +159,7 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 ui: {
                     statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: initialState,
                     },
                 },
             } as RootState
@@ -171,7 +173,7 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 ui: {
                     statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: initialState,
                     },
                 },
             } as RootState
@@ -188,7 +190,7 @@ describe('agentPerformanceSlice', () => {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
                     statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: initialState,
                     },
                     stats: initialUiStatsState,
                 },
@@ -234,7 +236,7 @@ describe('agentPerformanceSlice', () => {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
                     statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: initialState,
                     },
                     stats: {
                         ...initialUiStatsState,
@@ -267,7 +269,7 @@ describe('agentPerformanceSlice', () => {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
                     statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: initialState,
                     },
                     stats: {
                         ...initialUiStatsState,
@@ -286,17 +288,17 @@ describe('agentPerformanceSlice', () => {
         })
     })
 
-    describe('getSortedAgents', () => {
+    describe('getSortedAutoQAAgents', () => {
         it('should return agents sorted alphabetically if no sorting metric is declared', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
                     statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: {
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
                             ...initialState,
                             sorting: {
                                 ...initialState.sorting,
-                                field: AgentsTableColumn.ClosedTickets,
+                                field: AutoQAAgentsTableColumn.CommunicationSkills,
                                 direction: OrderDirection.Asc,
                             },
                         },
@@ -306,7 +308,9 @@ describe('agentPerformanceSlice', () => {
                 stats: initialStatsFiltersState,
             } as RootState
 
-            expect(getSortedAgents(state)).toEqual(agents.sort(getSortByName))
+            expect(getSortedAutoQAAgents(state)).toEqual(
+                agents.sort(getSortByName)
+            )
         })
 
         it('should return agents in descending order', () => {
@@ -314,7 +318,7 @@ describe('agentPerformanceSlice', () => {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
                     statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: {
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
                             sorting: {
                                 ...initialState.sorting,
                                 direction: OrderDirection.Desc,
@@ -326,7 +330,7 @@ describe('agentPerformanceSlice', () => {
                 stats: initialStatsFiltersState,
             } as RootState
 
-            expect(getSortedAgents(state)).toEqual(
+            expect(getSortedAutoQAAgents(state)).toEqual(
                 [...agents.sort(getSortByName)].reverse()
             )
         })
@@ -336,11 +340,11 @@ describe('agentPerformanceSlice', () => {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
                     statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: {
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
                             ...initialState,
                             sorting: {
                                 ...initialState.sorting,
-                                field: AgentsTableColumn.MedianFirstResponseTime,
+                                field: AutoQAAgentsTableColumn.CommunicationSkills,
                                 direction: OrderDirection.Desc,
                                 isLoading: false,
                                 lastSortingMetric: metricData,
@@ -352,15 +356,12 @@ describe('agentPerformanceSlice', () => {
                 stats: initialStatsFiltersState,
             } as RootState
 
-            expect(getSortedAgents(state)).toEqual(
+            expect(getSortedAutoQAAgents(state)).toEqual(
                 metricData.map((metric) =>
                     agents.find(
                         (agent) =>
                             String(agent.id) ===
-                            metric[
-                                TicketMessagesDimension
-                                    .FirstHelpdeskMessageUserId
-                            ]
+                            metric[TicketDimension.AssigneeUserId]
                     )
                 )
             )
@@ -371,10 +372,10 @@ describe('agentPerformanceSlice', () => {
                 {id: 1, name: 'Adam'},
                 {id: 2, name: 'Zoey'},
             ]
-            const metricData = [
+            const metricData: ReportingMetricItem[] = [
                 {
-                    [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '2',
-                    [TicketMessagesMeasure.MedianFirstResponseTime]: '10',
+                    [TicketDimension.AssigneeUserId]: '2',
+                    [TicketQAScoreMeasure.AverageScore]: '1.0',
                 },
             ]
 
@@ -382,11 +383,11 @@ describe('agentPerformanceSlice', () => {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
                     statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: {
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
                             ...initialState,
                             sorting: {
                                 ...initialState.sorting,
-                                field: AgentsTableColumn.ClosedTickets,
+                                field: AutoQAAgentsTableColumn.CommunicationSkills,
                                 direction: OrderDirection.Desc,
                                 isLoading: false,
                                 lastSortingMetric: metricData,
@@ -396,9 +397,9 @@ describe('agentPerformanceSlice', () => {
                     stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
-            } as unknown as RootState
+            } as RootState
 
-            expect(getSortedAgents(state).pop()).toEqual(agents[0])
+            expect(getSortedAutoQAAgents(state).pop()).toEqual(agents[0])
         })
 
         it('should return agents with no data at the end of sorted agents in any selected order', () => {
@@ -408,8 +409,8 @@ describe('agentPerformanceSlice', () => {
             ]
             const metricData = [
                 {
-                    [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '2',
-                    [TicketMessagesMeasure.MedianFirstResponseTime]: '10',
+                    [TicketDimension.AssigneeUserId]: '2',
+                    [TicketQAScoreMeasure.AverageScore]: '10',
                 },
             ]
             const noDataAgent = agents[0]
@@ -419,9 +420,9 @@ describe('agentPerformanceSlice', () => {
                     agents: fromJS({all: fromJS(agents)}),
                     ui: {
                         statsTables: {
-                            [AGENT_PERFORMANCE_SLICE_NAME]: {
+                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
                                 sorting: {
-                                    field: AgentsTableColumn.ClosedTickets,
+                                    field: AutoQAMetric.CommunicationSkills,
                                     direction,
                                     isLoading: false,
                                     lastSortingMetric: metricData,
@@ -434,13 +435,13 @@ describe('agentPerformanceSlice', () => {
                 } as unknown as RootState)
 
             expect(
-                getSortedAgents(
+                getSortedAutoQAAgents(
                     getStateWithOrderDirection(OrderDirection.Asc)
                 ).pop()
             ).toEqual(noDataAgent)
 
             expect(
-                getSortedAgents(
+                getSortedAutoQAAgents(
                     getStateWithOrderDirection(OrderDirection.Desc)
                 ).pop()
             ).toEqual(noDataAgent)
@@ -450,18 +451,18 @@ describe('agentPerformanceSlice', () => {
             const agents = personNames.map((name, idx) => ({id: idx, name}))
             const lastSortingMetric = agents.map((agent) => ({
                 [TicketMember.AssigneeUserId]: String(agent.id),
-                [TicketMessagesMeasure.MedianFirstResponseTime]: '10',
+                [TicketQAScoreMeasure.AverageScore]: '10',
             }))
             const filteredAgents = [1, 4, 5, 10]
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
                     statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: {
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
                             ...initialState,
                             sorting: {
                                 ...initialState.sorting,
-                                field: AgentsTableColumn.MedianFirstResponseTime,
+                                field: AutoQAMetric.CommunicationSkills,
                                 direction: OrderDirection.Asc,
                                 isLoading: false,
                                 lastSortingMetric,
@@ -478,7 +479,7 @@ describe('agentPerformanceSlice', () => {
                 stats: initialStatsFiltersState,
             } as unknown as RootState
 
-            const sortedAgents = getSortedAgents(state)
+            const sortedAgents = getSortedAutoQAAgents(state)
 
             expect(sortedAgents.length).toEqual(filteredAgents.length)
             expect(sortedAgents).not.toContain(undefined)
@@ -486,7 +487,7 @@ describe('agentPerformanceSlice', () => {
         })
     })
 
-    describe('getPaginatedAgents', () => {
+    describe('getPaginatedAutoQAAgents', () => {
         it('should return agents for current page with currentPage and perPage settings', () => {
             const currentPage = 2
             const perPage = 2
@@ -495,7 +496,7 @@ describe('agentPerformanceSlice', () => {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
                     statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: {
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
                             sorting: {
                                 ...initialState.sorting,
                                 direction: OrderDirection.Asc,
@@ -511,7 +512,7 @@ describe('agentPerformanceSlice', () => {
                 stats: initialStatsFiltersState,
             } as RootState
 
-            expect(getPaginatedAgents(state)).toEqual({
+            expect(getPaginatedAutoQAAgents(state)).toEqual({
                 agents: agents.slice(
                     (currentPage - 1) * perPage,
                     currentPage * perPage
@@ -525,7 +526,7 @@ describe('agentPerformanceSlice', () => {
 
     describe('heatmap mode', () => {
         it('should toggle heatmapMode state', () => {
-            const newState = agentPerformanceSlice.reducer(
+            const newState = autoQAAgentPerformanceSlice.reducer(
                 initialState,
                 toggleHeatmapMode()
             )

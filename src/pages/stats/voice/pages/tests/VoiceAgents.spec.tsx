@@ -20,6 +20,7 @@ import {
 } from 'pages/stats/voice/constants/voiceAgents'
 
 import {fromLegacyStatsFilters} from 'state/stats/utils'
+import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
@@ -79,7 +80,9 @@ const getState = (featureEnabled: boolean) =>
                 isFilterDirty: false,
                 fetchingMap: {},
             },
-            agentPerformance: agentPerformanceInitialState,
+            statsTables: {
+                [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceInitialState,
+            },
         },
         entities: {tags: {[tags[0].id]: tags[0]}},
     } as RootState)

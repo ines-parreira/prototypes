@@ -11,6 +11,7 @@ import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
+    perDimensionQueryFactory,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -43,6 +44,11 @@ export const communicationSkillsQueryFactory = (
           }
         : {}),
 })
+
+export const communicationSkillsPerAgentQueryFactory = perDimensionQueryFactory(
+    communicationSkillsQueryFactory,
+    TicketDimension.AssigneeUserId
+)
 
 export const communicationSkillsDrillDownQueryFactory = (
     filters: StatsFilters,

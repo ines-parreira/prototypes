@@ -17,7 +17,8 @@ import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOne
 import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
 import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
 import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
-import {agentPerformanceSlice} from 'state/ui/stats/agentPerformanceSlice'
+import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
+import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 
 import {assumeMock, mockStore} from 'utils/testing'
@@ -109,8 +110,9 @@ describe('useAgentsMetric', () => {
         },
         ui: {
             stats: uiStatsInitialState,
-            [agentPerformanceSlice.name]:
-                agentPerformanceSlice.getInitialState(),
+            statsTables: {
+                [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceInitialState,
+            },
         },
     } as any
 

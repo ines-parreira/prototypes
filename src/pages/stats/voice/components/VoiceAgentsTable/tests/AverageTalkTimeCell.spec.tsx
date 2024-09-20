@@ -10,6 +10,7 @@ import {User} from 'config/types/user'
 import {RootState, StoreDispatch} from 'state/types'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {agents} from 'fixtures/agents'
+import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
 import {assumeMock} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
@@ -54,7 +55,9 @@ const renderComponent = () => {
                 isFilterDirty: false,
                 fetchingMap: {},
             },
-            agentPerformance: agentPerformanceInitialState,
+            statsTables: {
+                [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceInitialState,
+            },
         },
     } as RootState
     const agent = {

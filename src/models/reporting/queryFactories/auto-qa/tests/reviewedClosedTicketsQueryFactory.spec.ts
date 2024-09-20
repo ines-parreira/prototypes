@@ -78,7 +78,7 @@ describe('reviewedClosedTicketsQueryFactory', () => {
                 },
             ],
             timezone,
-            order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+            order: [[TicketQAScoreMeasure.TicketCount, sorting]],
         })
     })
 })

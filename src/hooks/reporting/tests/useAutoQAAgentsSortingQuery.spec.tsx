@@ -3,26 +3,26 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {TicketQAScoreMeasure} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import {useAutoQAAgentsSortingQuery} from 'hooks/reporting/useAutoQAAgentsSortingQuery'
 import {
-    TicketMessagesCube,
-    TicketMessagesMeasure,
-} from 'models/reporting/cubes/TicketMessagesCube'
-import {getQuery} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+    AutoQAAgentsTableColumn,
+    getQuery,
+} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import {TicketMessagesCube} from 'models/reporting/cubes/TicketMessagesCube'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {opposite, OrderDirection} from 'models/api/types'
-import {useAgentsSortingQuery} from 'hooks/reporting/useAgentsSortingQuery'
 import {RootState, StoreDispatch} from 'state/types'
+import {DEFAULT_SORTING_DIRECTION} from 'state/ui/stats/agentPerformanceSlice'
+import {initialState as filtersInitialState} from 'state/stats/statsSlice'
 import {
-    DEFAULT_SORTING_DIRECTION,
-    initialState,
+    initialState as autoQAInitialState,
     sortingLoaded,
     sortingLoading,
     sortingSet,
-} from 'state/ui/stats/agentPerformanceSlice'
-import {initialState as filtersInitialState} from 'state/stats/statsSlice'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
+} from 'state/ui/stats/autoQAAgentPerformanceSlice'
+import {AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {AgentsTableColumn} from 'state/ui/stats/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -31,13 +31,13 @@ describe('useAgentsSortingQuery', () => {
         stats: filtersInitialState,
         ui: {
             statsTables: {
-                [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: autoQAInitialState,
             },
 
             stats: uiStatsInitialState,
         },
-    } as RootState
-
+    } as unknown as RootState
+    const column = AutoQAAgentsTableColumn.ResolutionCompleteness
     const queryHook = jest.fn()
 
     beforeEach(() => {
@@ -51,10 +51,10 @@ describe('useAgentsSortingQuery', () => {
     describe('sorting callback', () => {
         it('should change the sorting column', () => {
             const store = mockStore(defaultState)
-            const column = AgentsTableColumn.MedianFirstResponseTime
+            const column = AutoQAAgentsTableColumn.ResolutionCompleteness
 
             const {result} = renderHook(
-                () => useAgentsSortingQuery(column, queryHook),
+                () => useAutoQAAgentsSortingQuery(column, queryHook),
                 {
                     wrapper: ({children}) => (
                         <Provider store={store}>{children}</Provider>
@@ -74,10 +74,10 @@ describe('useAgentsSortingQuery', () => {
 
         it('should flip the sorting direction on second call with same column', () => {
             const store = mockStore(defaultState)
-            const column = initialState.sorting.field
+            const column = autoQAInitialState.sorting.field
 
             const {result} = renderHook(
-                () => useAgentsSortingQuery(column, queryHook),
+                () => useAutoQAAgentsSortingQuery(column, queryHook),
                 {
                     wrapper: ({children}) => (
                         <Provider store={store}>{children}</Provider>
@@ -88,7 +88,7 @@ describe('useAgentsSortingQuery', () => {
             result.current.sortCallback()
 
             const expectedSortingDirection = opposite(
-                initialState.sorting.direction
+                autoQAInitialState.sorting.direction
             )
 
             expect(store.getActions()).toContainEqual(
@@ -101,18 +101,17 @@ describe('useAgentsSortingQuery', () => {
     })
 
     it('should dispatch query result on sorting isLoading and data fetched', () => {
-        const column = AgentsTableColumn.ClosedTickets
         const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
-            allData: [{[TicketMessagesMeasure.MedianFirstResponseTime]: '123'}],
+            allData: [{[TicketQAScoreMeasure.AverageScore]: '123'}],
         }
         const store = mockStore({
             ...defaultState,
             ui: {
                 ...defaultState.ui,
                 statsTables: {
-                    [AGENT_PERFORMANCE_SLICE_NAME]: {
+                    [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
                         sorting: {
                             field: column,
                             direction: OrderDirection.Asc,
@@ -128,7 +127,7 @@ describe('useAgentsSortingQuery', () => {
             isError: false,
         })
 
-        renderHook(() => useAgentsSortingQuery(column, queryHook), {
+        renderHook(() => useAutoQAAgentsSortingQuery(column, queryHook), {
             wrapper: ({children}) => (
                 <Provider store={store}>{children}</Provider>
             ),
@@ -140,19 +139,18 @@ describe('useAgentsSortingQuery', () => {
     })
 
     it('should not dispatch query result on sorting isLoading and data is fetching', () => {
-        const column = AgentsTableColumn.ClosedTickets
         const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
-            allData: [{[TicketMessagesMeasure.MedianFirstResponseTime]: '123'}],
+            allData: [{[TicketQAScoreMeasure.AverageScore]: '123'}],
         }
         const store = mockStore({
             ...defaultState,
             ui: {
                 ...defaultState.ui,
                 statsAgents: {
-                    [AGENT_PERFORMANCE_SLICE_NAME]: {
-                        ...initialState,
+                    [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                        ...autoQAInitialState,
                         sorting: {
                             field: column,
                             direction: OrderDirection.Asc,
@@ -168,7 +166,7 @@ describe('useAgentsSortingQuery', () => {
             isError: false,
         })
 
-        renderHook(() => useAgentsSortingQuery(column, queryHook), {
+        renderHook(() => useAutoQAAgentsSortingQuery(column, queryHook), {
             wrapper: ({children}) => (
                 <Provider store={store}>{children}</Provider>
             ),
@@ -180,15 +178,15 @@ describe('useAgentsSortingQuery', () => {
     })
 
     it('should disable loading when sorting by AgentName', () => {
-        const column = AgentsTableColumn.AgentName
+        const agentNameColumn = AutoQAAgentsTableColumn.AgentName
         const store = mockStore({
             ...defaultState,
             ui: {
                 statsTables: {
-                    [AGENT_PERFORMANCE_SLICE_NAME]: {
-                        ...initialState,
+                    [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                        ...autoQAInitialState,
                         sorting: {
-                            field: column,
+                            field: agentNameColumn,
                             direction: OrderDirection.Asc,
                             isLoading: true,
                         },
@@ -200,9 +198,9 @@ describe('useAgentsSortingQuery', () => {
 
         renderHook(
             () =>
-                useAgentsSortingQuery(
-                    AgentsTableColumn.AgentName,
-                    getQuery(column)
+                useAutoQAAgentsSortingQuery(
+                    agentNameColumn,
+                    getQuery(agentNameColumn)
                 ),
             {
                 wrapper: ({children}) => (
@@ -215,13 +213,12 @@ describe('useAgentsSortingQuery', () => {
     })
 
     it('should update loading state when the query of a current sorting column starts loading', () => {
-        const column = AgentsTableColumn.ClosedTickets
         const store = mockStore({
             ...defaultState,
             ui: {
                 statsTables: {
-                    [AGENT_PERFORMANCE_SLICE_NAME]: {
-                        ...initialState,
+                    [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                        ...autoQAInitialState,
                         sorting: {
                             field: column,
                             direction: OrderDirection.Asc,
@@ -237,7 +234,7 @@ describe('useAgentsSortingQuery', () => {
             isFetching: true,
         })
 
-        renderHook(() => useAgentsSortingQuery(column, queryHook), {
+        renderHook(() => useAutoQAAgentsSortingQuery(column, queryHook), {
             wrapper: ({children}) => (
                 <Provider store={store}>{children}</Provider>
             ),

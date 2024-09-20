@@ -1,23 +1,23 @@
 import {PayloadAction} from '@reduxjs/toolkit'
 import {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
+import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import {opposite, OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
+import {DEFAULT_SORTING_DIRECTION} from 'state/ui/stats/agentPerformanceSlice'
 import {
-    DEFAULT_SORTING_DIRECTION,
     getAgentSorting,
     pageSet,
     sortingLoaded,
     sortingLoading,
     sortingSet,
-} from 'state/ui/stats/agentPerformanceSlice'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+} from 'state/ui/stats/autoQAAgentPerformanceSlice'
 
-export const useAgentsSortingQuery = (
-    column: AgentsTableColumn,
+export const useAutoQAAgentsSortingQuery = (
+    column: AutoQAAgentsTableColumn,
     useQuery: (
         statsFilters: StatsFilters,
         timezone: string,

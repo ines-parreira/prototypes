@@ -204,6 +204,7 @@ export type MetricValueFormat =
     | 'duration'
     | 'percent'
     | 'percent-refined'
+    | 'decimal-to-percent'
 
 const metricToDecimal = (
     value: number,
@@ -232,6 +233,10 @@ export const formatMetricValue = (
         return formatDuration(value, 2)
     }
 
+    if (format === 'decimal-to-percent') {
+        return `${metricToDecimal(value * 100)}%`
+    }
+
     if (format === 'percent') {
         return `${metricToDecimal(value)}%`
     }
@@ -249,7 +254,22 @@ export const formatMetricValue = (
     return metricToDecimal(value)
 }
 
-export type MetricTrendFormat = 'decimal' | 'duration' | 'percent'
+export type MetricTrendFormat =
+    | 'decimal'
+    | 'duration'
+    | 'percent'
+    | 'decimal-to-percent'
+
+const formatTrendAsPercent = (prevValue: number, absDiff: number) => {
+    const value = absDiff / prevValue || 0
+    return Number.isFinite(value)
+        ? new Intl.NumberFormat(DEFAULT_LOCALE, {
+              style: 'percent',
+              maximumFractionDigits: 0,
+          }).format(value)
+        : null
+}
+
 export const formatMetricTrend = (
     value: number,
     prevValue: number,
@@ -261,14 +281,10 @@ export const formatMetricTrend = (
 
     if (format === 'duration') {
         formattedDiff = formatDuration(absDiff, 1)
+    } else if (format === 'decimal-to-percent') {
+        formattedDiff = formatTrendAsPercent(prevValue * 100, absDiff * 100)
     } else if (format === 'percent') {
-        const value = absDiff / prevValue || 0
-        formattedDiff = Number.isFinite(value)
-            ? new Intl.NumberFormat(DEFAULT_LOCALE, {
-                  style: 'percent',
-                  maximumFractionDigits: 0,
-              }).format(value)
-            : null
+        formattedDiff = formatTrendAsPercent(prevValue, absDiff)
     } else {
         formattedDiff = Intl.NumberFormat(DEFAULT_LOCALE, {
             maximumFractionDigits: 1,
