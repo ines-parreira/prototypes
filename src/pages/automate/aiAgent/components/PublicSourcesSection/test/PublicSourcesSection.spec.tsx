@@ -6,6 +6,7 @@ import {usePublicResourceMutation} from 'pages/automate/aiAgent/hooks/usePublicR
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {PublicSourcesSection} from '../PublicSourcesSection'
 import {SourceItem} from '../types'
 
@@ -22,6 +23,14 @@ jest.mock(
     'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames',
     () => jest.fn()
 )
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {
+        AiAgentOnboardingWizardPublicUrlIngested:
+            'ai-agent-onboarding-wizard-public-url-ingested',
+    },
+}))
 
 const HELP_CENTER_ID = 1
 
@@ -253,5 +262,23 @@ describe('<PublicSourcesSection />', () => {
 
         expect(syncButton).toBeAriaDisabled()
         expect(input).toBeDisabled()
+    })
+
+    it('should log connected public url', async () => {
+        renderComponent({shouldLogEventOnSync: true})
+
+        const addButton = screen.getByText('Add URL')
+        userEvent.click(addButton)
+
+        const syncButton = screen.getByRole('button', {name: /Sync URL/})
+        const input = screen.getByLabelText('Public URL')
+
+        await userEvent.type(input, 'https://example.com/faqs')
+        userEvent.click(syncButton)
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentOnboardingWizardPublicUrlIngested,
+            {url: 'https://example.com/faqs'}
+        )
     })
 })

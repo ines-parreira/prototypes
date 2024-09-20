@@ -11,6 +11,7 @@ import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {HelpCenter} from 'models/helpCenter/types'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {FormValues, UpdateValue, WizardFormValues} from '../../types'
 import {getFormValuesFromStoreConfiguration} from '../../components/StoreConfigForm/StoreConfigForm.utils'
 import {
@@ -136,18 +137,30 @@ export const useAiAgentOnboardingWizard = ({
         if (!shopType || !shopName) return
 
         switch (redirectTo) {
-            case WIZARD_BUTTON_ACTIONS.BACK_TO_WELCOME_PAGE:
+            case WIZARD_BUTTON_ACTIONS.CANCEL:
+                logEvent(SegmentEvent.AiAgentOnboardingWizardCancelClicked)
+                history.replace(
+                    `/app/automation/${shopType}/${shopName}/ai-agent`
+                )
+                break
+            case WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER:
+                logEvent(SegmentEvent.AiAgentOnboardingWizardSaveClicked)
                 history.replace(
                     `/app/automation/${shopType}/${shopName}/ai-agent`
                 )
                 break
             case WIZARD_BUTTON_ACTIONS.PREVIOUS_STEP:
+                logEvent(SegmentEvent.AiAgentOnboardingWizardBackClicked)
                 navigateWizardSteps.goToPreviousStep()
                 break
             case WIZARD_BUTTON_ACTIONS.NEXT_STEP:
+                logEvent(SegmentEvent.AiAgentOnboardingWizardNextClicked)
                 navigateWizardSteps.goToNextStep()
                 break
             case WIZARD_BUTTON_ACTIONS.FINISH_TO_KNOWLEDGE:
+                logEvent(SegmentEvent.AiAgentOnboardingWizardFinishClicked, {
+                    redirectTo: 'knowledge',
+                })
                 history.replace({
                     // TODO link to knowledge tab once it is implemented
                     pathname: routes.configuration('knowledge'),
@@ -155,12 +168,18 @@ export const useAiAgentOnboardingWizard = ({
                 })
                 break
             case WIZARD_BUTTON_ACTIONS.FINISH_TO_TEST:
+                logEvent(SegmentEvent.AiAgentOnboardingWizardFinishClicked, {
+                    redirectTo: 'test',
+                })
                 history.replace({
                     pathname: routes.test,
                     search: searchParams,
                 })
                 break
             case WIZARD_BUTTON_ACTIONS.FINISH_TO_GUIDANCE:
+                logEvent(SegmentEvent.AiAgentOnboardingWizardFinishClicked, {
+                    redirectTo: 'guidance',
+                })
                 history.replace({
                     pathname: routes.guidance,
                     search: searchParams,
@@ -169,6 +188,13 @@ export const useAiAgentOnboardingWizard = ({
             default:
                 break
         }
+    }
+
+    const logConnectedHelpCenterEvent = (helpCenterId: number | null) => {
+        if (!helpCenterId) return
+        logEvent(SegmentEvent.AiAgentOnboardingWizardHelpCenterConnected, {
+            helpCenterId,
+        })
     }
 
     const handleFormUpdate = useCallback(
@@ -196,7 +222,13 @@ export const useAiAgentOnboardingWizard = ({
             stepName: stepName || step,
         })
 
-        if (res && redirectTo) {
+        if (!res) return
+
+        if (step === AiAgentOnboardingWizardStep.Knowledge) {
+            logConnectedHelpCenterEvent(formValues.helpCenterId)
+        }
+
+        if (redirectTo) {
             handleAction(redirectTo, successModalParams)
         }
     }

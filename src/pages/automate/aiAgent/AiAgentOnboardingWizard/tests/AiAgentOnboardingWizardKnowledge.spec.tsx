@@ -96,7 +96,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         ).toHaveBeenCalledWith(WIZARD_BUTTON_ACTIONS.PREVIOUS_STEP)
     })
 
-    it('should call handleSave with BACK_TO_WELCOME_PAGE when Save & Customize Later button is clicked', () => {
+    it('should call handleSave with SAVE_AND_CUSTOMIZE_LATER when Save & Customize Later button is clicked', () => {
         renderComponent({})
 
         userEvent.click(screen.getByText('Save & Customize Later'))
@@ -105,7 +105,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             mockedUseAiAgentOnboardingWizard.handleSave
         ).toHaveBeenCalledWith({
             publicUrls: [],
-            redirectTo: WIZARD_BUTTON_ACTIONS.BACK_TO_WELCOME_PAGE,
+            redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
         })
     })
 
@@ -264,7 +264,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             mockedUseAiAgentOnboardingWizard.handleSave
         ).toHaveBeenCalledWith({
             publicUrls: ['https://example.com/faqs'],
-            redirectTo: WIZARD_BUTTON_ACTIONS.BACK_TO_WELCOME_PAGE,
+            redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
         })
     })
 })

@@ -8,6 +8,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {usePublicResourceMutation} from '../../hooks/usePublicResourcesMutation'
 import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
 import css from './PublicSourcesSection.less'
@@ -23,6 +24,7 @@ type Props = {
     onPublicURLsChanged: (publicURLs: string[]) => void
     sourceItems?: SourceItem[]
     selectedHelpCenterId?: number
+    shouldLogEventOnSync?: boolean
 }
 
 export const PublicSourcesSection = ({
@@ -31,6 +33,7 @@ export const PublicSourcesSection = ({
     onPublicURLsChanged,
     sourceItems,
     selectedHelpCenterId,
+    shouldLogEventOnSync = false,
 }: Props) => {
     const dispatch = useAppDispatch()
 
@@ -52,6 +55,14 @@ export const PublicSourcesSection = ({
             .filter((url): url is string => !!url)
 
         onPublicURLsChanged(publicURLs)
+    }
+
+    const logConnectedPublicUrl = (url: string) => {
+        if (shouldLogEventOnSync) {
+            logEvent(SegmentEvent.AiAgentOnboardingWizardPublicUrlIngested, {
+                url,
+            })
+        }
     }
 
     const onAddClick = () => {
@@ -101,6 +112,7 @@ export const PublicSourcesSection = ({
 
             setSources(newSources)
             handleAddPublicResource(newSources)
+            logConnectedPublicUrl(url)
             await addPublicResource([url])
         } catch (error) {
             setSources((prev) =>

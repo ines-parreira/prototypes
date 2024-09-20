@@ -98,7 +98,8 @@ export const AI_AGENT_STEPS_DESCRIPTIONS: Partial<
 export enum WIZARD_BUTTON_ACTIONS {
     NEXT_STEP = 'next_step',
     PREVIOUS_STEP = 'previous_step',
-    BACK_TO_WELCOME_PAGE = 'back_to_empty_state',
+    CANCEL = 'cancel',
+    SAVE_AND_CUSTOMIZE_LATER = 'save_and_customize_later',
     FINISH_TO_KNOWLEDGE = 'finish_to_knowledge',
     FINISH_TO_TEST = 'finish_to_test',
     FINISH_TO_GUIDANCE = 'finish_to_guidance',

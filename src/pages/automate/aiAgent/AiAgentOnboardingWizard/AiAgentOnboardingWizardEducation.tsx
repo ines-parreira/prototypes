@@ -31,7 +31,7 @@ const AiAgentOnboardingWizardStepEducation: React.FC<Props> = (props) => {
         switch (buttonClicked) {
             case FOOTER_BUTTONS.CANCEL:
                 handleSave({
-                    redirectTo: WIZARD_BUTTON_ACTIONS.BACK_TO_WELCOME_PAGE,
+                    redirectTo: WIZARD_BUTTON_ACTIONS.CANCEL,
                 })
                 break
             case FOOTER_BUTTONS.NEXT:

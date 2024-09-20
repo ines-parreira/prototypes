@@ -15,6 +15,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {account} from 'fixtures/account'
 import {StoreState} from 'state/types'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
@@ -54,6 +55,14 @@ jest.mock('../../hooks/useStoreConfigurationMutation')
 const mockUseStoreConfigurationMutation = assumeMock(
     useStoreConfigurationMutation
 )
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {
+        AiAgentOnboardingWizardHelpCenterConnected:
+            'ai-agent-onboarding-wizard-help-center-connected',
+    },
+}))
 
 const mockedStoreConfiguration = getStoreConfigurationFixture()
 
@@ -194,9 +203,7 @@ describe('useAiAgentOnboardingWizard', () => {
         )
 
         act(() => {
-            result.current.handleAction(
-                WIZARD_BUTTON_ACTIONS.BACK_TO_WELCOME_PAGE
-            )
+            result.current.handleAction(WIZARD_BUTTON_ACTIONS.CANCEL)
         })
 
         expect(history.replace).toHaveBeenCalledWith(
@@ -216,9 +223,7 @@ describe('useAiAgentOnboardingWizard', () => {
         )
 
         act(() => {
-            result.current.handleAction(
-                WIZARD_BUTTON_ACTIONS.BACK_TO_WELCOME_PAGE
-            )
+            result.current.handleAction(WIZARD_BUTTON_ACTIONS.CANCEL)
         })
         expect(history.replace).not.toHaveBeenCalled()
 
@@ -440,6 +445,54 @@ describe('useAiAgentOnboardingWizard', () => {
                 message: 'Failed to save AI Agent configuration',
                 status: NotificationStatus.Error,
             })
+        })
+    })
+
+    it('should log connected help center event', async () => {
+        const {result} = renderHook(() =>
+            useAiAgentOnboardingWizard({
+                storeConfiguration:
+                    getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
+                step: AiAgentOnboardingWizardStep.Knowledge,
+            })
+        )
+
+        act(() => {
+            result.current.handleSave({
+                publicUrls: [],
+                redirectTo: WIZARD_BUTTON_ACTIONS.FINISH_TO_KNOWLEDGE,
+            })
+        })
+
+        await waitFor(() => {
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentOnboardingWizardHelpCenterConnected,
+                {helpCenterId: 1}
+            )
+        })
+    })
+
+    it('should not log connected help center event', async () => {
+        const {result} = renderHook(() =>
+            useAiAgentOnboardingWizard({
+                storeConfiguration:
+                    getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
+                step: AiAgentOnboardingWizardStep.Personalize,
+            })
+        )
+
+        act(() => {
+            result.current.handleSave({
+                publicUrls: [],
+                redirectTo: WIZARD_BUTTON_ACTIONS.NEXT_STEP,
+            })
+        })
+
+        await waitFor(() => {
+            expect(logEvent).not.toHaveBeenCalledWith(
+                SegmentEvent.AiAgentOnboardingWizardHelpCenterConnected,
+                {helpCenterId: 1}
+            )
         })
     })
 })

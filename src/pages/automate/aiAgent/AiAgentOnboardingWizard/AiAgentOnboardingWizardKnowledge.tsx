@@ -89,7 +89,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({
             case FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER:
                 handleSave({
                     publicUrls,
-                    redirectTo: WIZARD_BUTTON_ACTIONS.BACK_TO_WELCOME_PAGE,
+                    redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
                 })
                 break
             default:
@@ -134,6 +134,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({
                         selectedHelpCenterId={selectedHelpCenter?.id}
                         onPublicURLsChanged={handlePublicURLsChange}
                         shopName={shopName}
+                        shouldLogEventOnSync
                     />
                 ) : null}
             </WizardStepSkeleton>

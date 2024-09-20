@@ -15,6 +15,7 @@ import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/
 import AiAgentOnboardingWizardStepEducation from '../AiAgentOnboardingWizardEducation'
 import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
 import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
+import {WIZARD_BUTTON_ACTIONS} from '../../constants'
 
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 const mockUseAiAgentOnboardingWizard = assumeMock(useAiAgentOnboardingWizard)
@@ -77,7 +78,7 @@ describe('<AiAgentOnboardingWizardEducation />', () => {
         expect(
             mockedUseAiAgentOnboardingWizard.handleSave
         ).toHaveBeenCalledWith({
-            redirectTo: 'back_to_empty_state',
+            redirectTo: WIZARD_BUTTON_ACTIONS.CANCEL,
         })
     })
 
@@ -89,7 +90,7 @@ describe('<AiAgentOnboardingWizardEducation />', () => {
         expect(
             mockedUseAiAgentOnboardingWizard.handleSave
         ).toHaveBeenCalledWith({
-            redirectTo: 'next_step',
+            redirectTo: WIZARD_BUTTON_ACTIONS.NEXT_STEP,
             stepName: AiAgentOnboardingWizardStep.Personalize,
         })
     })
