@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
@@ -155,5 +155,40 @@ describe('<CampaignPreview />', () => {
         )
 
         expect(getByText('Select Options')).toBeInTheDocument()
+    })
+
+    it('renders product cards with reposition image', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <CampaignPreview
+                    html="<div>Jest campaign</div>"
+                    mainColor="#0d87dd"
+                    mainFontFamily="Inter"
+                    translatedTexts={TEXTS}
+                    position={CAMPAIGN_POSITION}
+                    products={[PRODUCT]}
+                />
+            </Provider>
+        )
+
+        expect(screen.getByText('Reposition image')).toBeInTheDocument()
+    })
+
+    it('renders product cards without reposition image with hide option', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <CampaignPreview
+                    html="<div>Jest campaign</div>"
+                    mainColor="#0d87dd"
+                    mainFontFamily="Inter"
+                    translatedTexts={TEXTS}
+                    position={CAMPAIGN_POSITION}
+                    products={[PRODUCT]}
+                    shouldHideRepositionImage={true}
+                />
+            </Provider>
+        )
+
+        expect(screen.queryByText('Reposition image')).not.toBeInTheDocument()
     })
 })

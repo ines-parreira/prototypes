@@ -34,6 +34,7 @@ type Props = {
     hasOptions?: boolean
     isHeadlessStore?: boolean
     position?: AttachmentPosition
+    shouldHideRepositionImage: boolean
 }
 
 export const ProductCard = ({
@@ -47,6 +48,7 @@ export const ProductCard = ({
     productId,
     title,
     hasOptions,
+    shouldHideRepositionImage,
 }: Props) => {
     const dispatch = useAppDispatch()
     const [isEditOn, setIsEdit] = useState(false)
@@ -101,6 +103,7 @@ export const ProductCard = ({
                     price={price}
                     title={title}
                     hasOptions={hasOptions}
+                    shouldHideRepositionImage={shouldHideRepositionImage}
                     onClickEdit={handleClickEdit}
                 />
             )}

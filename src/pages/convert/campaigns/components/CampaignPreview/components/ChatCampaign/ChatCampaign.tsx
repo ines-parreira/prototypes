@@ -75,6 +75,7 @@ type Props = {
     products?: CampaignProduct[]
     discountOffers?: CampaignDiscountOffer[]
     shouldHideReplyInput?: boolean
+    shouldHideRepositionImage?: boolean
     translatedTexts: Record<string, string>
     onCampaignContentChange?: (value: boolean) => void
 }
@@ -89,6 +90,7 @@ export const ChatCampaign = ({
     products = [],
     discountOffers = [],
     shouldHideReplyInput = false,
+    shouldHideRepositionImage = false,
     translatedTexts,
     onCampaignContentChange,
 }: Props) => {
@@ -192,6 +194,7 @@ export const ChatCampaign = ({
                     <ProductCarousel
                         products={products}
                         mainColor={mainColor}
+                        shouldHideRepositionImage={shouldHideRepositionImage}
                     />
                 </div>
             )}

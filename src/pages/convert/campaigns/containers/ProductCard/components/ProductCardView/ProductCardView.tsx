@@ -23,6 +23,7 @@ type Props = {
     hasOptions?: boolean
     isHeadlessStore?: boolean
     position?: AttachmentPosition
+    shouldHideRepositionImage: boolean
     onClickEdit: () => void
 }
 
@@ -36,6 +37,7 @@ export const ProductCardView = ({
     hasOptions = false,
     isHeadlessStore = false,
     position,
+    shouldHideRepositionImage,
     onClickEdit,
 }: Props) => {
     const isConvertSubscriber = useIsConvertSubscriber()
@@ -97,7 +99,9 @@ export const ProductCardView = ({
 
     return (
         <BaseProductCard
-            renderFeaturedImage={() => renderFeaturedImage(isHighlighted)}
+            renderFeaturedImage={() =>
+                renderFeaturedImage(isHighlighted && !shouldHideRepositionImage)
+            }
         >
             <div className={css.details}>
                 <span className={css.title}>{title}</span>

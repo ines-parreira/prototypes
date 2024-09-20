@@ -864,6 +864,9 @@ export const CampaignDetailsForm = ({
                                         shouldHideReplyInput={
                                             !!campaignData.meta?.noReply
                                         }
+                                        shouldHideRepositionImage={
+                                            !!productRecommendations.length
+                                        }
                                         onCampaignContentChange={
                                             setShowContentWarning
                                         }

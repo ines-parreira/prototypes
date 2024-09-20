@@ -20,12 +20,14 @@ type Props = {
         carouselMaxWidth: number
         carouselNavigationPadding: number
     }
+    shouldHideRepositionImage: boolean
 }
 
 export const ProductCarousel = ({
     mainColor,
     products,
     configuration = DEFAULT_CAROUSEL_CONFIGURATION,
+    shouldHideRepositionImage,
 }: Props) => {
     const [currentElement, setCurrentElement] = useState<number>(0)
     const [translate, setTranslate] = useState(
@@ -108,6 +110,9 @@ export const ProductCarousel = ({
                             title={product.title}
                             hasOptions={!!product.variant_name}
                             isHeadlessStore={isHeadlessStore}
+                            shouldHideRepositionImage={
+                                shouldHideRepositionImage
+                            }
                         />
                     </div>
                 ))}

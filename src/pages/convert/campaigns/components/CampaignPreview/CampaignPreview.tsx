@@ -31,6 +31,7 @@ type Props = {
         label?: string
     }
     shouldHideReplyInput?: boolean
+    shouldHideRepositionImage?: boolean
     onCampaignContentChange?: (value: boolean) => void
 }
 
@@ -48,6 +49,7 @@ const CampaignPreview = ({
     products = [],
     discountOffers = [],
     shouldHideReplyInput,
+    shouldHideRepositionImage,
     onCampaignContentChange,
 }: Props) => (
     <CustomizedChatLauncher
@@ -66,6 +68,7 @@ const CampaignPreview = ({
             products={products}
             discountOffers={discountOffers}
             shouldHideReplyInput={shouldHideReplyInput}
+            shouldHideRepositionImage={shouldHideRepositionImage}
             translatedTexts={translatedTexts}
             onCampaignContentChange={onCampaignContentChange}
         />
