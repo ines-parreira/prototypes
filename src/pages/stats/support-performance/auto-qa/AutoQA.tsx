@@ -1,5 +1,6 @@
 import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
 import {AutoQAAgentsCardExtra} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsCardExtra'
 import ChartCard from 'pages/stats/ChartCard'
 import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
@@ -34,6 +35,7 @@ export default function AutoQA() {
                         <SupportPerformanceFilters
                             hidden={isAnalyticsNewFilters}
                         />
+                        <AutoQADownloadDataButton />
                     </>
                 }
             >

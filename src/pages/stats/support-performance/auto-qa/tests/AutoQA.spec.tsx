@@ -1,6 +1,7 @@
 import {screen} from '@testing-library/react'
 import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
 import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
 import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
@@ -46,6 +47,8 @@ jest.mock(
 const AutoQAAgentPerformanceHeatmapSwitchMock = assumeMock(
     AutoQAAgentPerformanceHeatmapSwitch
 )
+jest.mock('pages/stats/support-performance/auto-qa/AutoQADownloadDataButton')
+const AutoQADownloadButtonMock = assumeMock(AutoQADownloadDataButton)
 
 const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 
@@ -63,6 +66,7 @@ describe('AutoQA', () => {
         AutoQAAgentPerformanceHeatmapSwitchMock.mockImplementation(() => (
             <div />
         ))
+        AutoQADownloadButtonMock.mockImplementation(() => <div />)
     })
 
     it('should render page title', () => {
