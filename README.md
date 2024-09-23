@@ -148,4 +148,4 @@ before running `yarn install` or `yarn serve`. Should work without errors.
 ### Revert PR was blocked by Codecov
 
 To disable the check that prevents your PR from merging, make sure
-that the name of the branch starts with `revert/`.
+that the name of the branch starts with `revert/` or `revert-`.

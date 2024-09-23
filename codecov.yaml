@@ -13,6 +13,7 @@ coverage:
         if_ci_failed: error
         branches:
           - '!revert*'
+          - '!revert-*'
 
     patch:
       default:
@@ -21,3 +22,4 @@ coverage:
         if_ci_failed: error
         branches:
           - '!revert*'
+          - '!revert-*'

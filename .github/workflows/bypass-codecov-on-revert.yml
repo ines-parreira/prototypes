@@ -17,7 +17,7 @@ jobs:
       - name: Check if the source branch is a revert branch
         id: check_revert_branch
         run: |
-          if [[ "${{ github.head_ref }}" == revert/* ]]; then
+          if [[ "${{ github.head_ref }}" == revert/* || "${{ github.head_ref }}" == revert-* ]]; then
             echo "IsRevert=true" >> $GITHUB_ENV
           else
             echo "IsRevert=false" >> $GITHUB_ENV
