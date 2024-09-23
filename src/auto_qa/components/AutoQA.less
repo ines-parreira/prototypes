@@ -1,7 +1,19 @@
-@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
 
 :local {
     .container {
         padding: 0 @layout-spacing-s;
+    }
+
+    .title {
+        .heading-subsection-semibold;
+    }
+
+    .lastUpdated {
+        .caption-regular;
+
+        margin: @layout-spacing-xs 0 0;
+        color: var(--neutral-grey-5);
     }
 }

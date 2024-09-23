@@ -1,0 +1,48 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        padding: @layout-spacing-xxs 0;
+    }
+
+    .arrowButton.arrowButton.arrowButton {
+        height: 20px;
+        padding: 0;
+    }
+
+    .arrowIcon.arrowIcon {
+        color: var(--neutral-grey-4);
+        font-size: 20px;
+    }
+
+    .label {
+        flex-grow: 1;
+        margin: 0 0 0 @layout-spacing-xxs;
+    }
+
+    .prediction {
+        width: auto;
+    }
+
+    .explanation {
+        padding: 0 0 0 @layout-spacing-m;
+    }
+
+    .lastUpdateActor {
+        .caption-regular;
+
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+        margin: @layout-spacing-xxs 0 0;
+        color: var(--neutral-grey-5);
+    }
+
+    .aiIcon.aiIcon {
+        color: var(--accessory-magenta-3);
+        font-size: 16px;
+    }
+}

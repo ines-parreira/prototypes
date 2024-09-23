@@ -47,6 +47,11 @@ export const getTicket = createImmutableSelector(
             .toJS() as TicketStateWithoutImmutable
 )
 
+export const getTicketId = createSelector(
+    getTicketState,
+    (ticket) => ticket.get('id') as number
+)
+
 export const getIntegrationsData = createSelector(
     getTicketState,
     (state) =>
