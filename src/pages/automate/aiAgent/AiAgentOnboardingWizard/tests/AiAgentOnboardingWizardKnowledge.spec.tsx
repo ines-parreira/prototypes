@@ -7,16 +7,21 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 import userEvent from '@testing-library/user-event'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {FeatureFlagKey} from 'config/featureFlags'
 import AiAgentOnboardingWizardStepKnowledge from '../AiAgentOnboardingWizardKnowledge'
 import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
 import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
-import {WIZARD_BUTTON_ACTIONS} from '../../constants'
+import {
+    WIZARD_BUTTON_ACTIONS,
+    WizardPostCompletionPathway,
+} from '../../constants'
 
 const SHOP_NAME = 'test-shop'
 const SHOP_TYPE = 'shopify'
@@ -112,7 +117,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         })
     })
 
-    it('should call handleSave with FINISH_TO_TEST when Finish button is clicked', () => {
+    it('should call handleSave and redirect to test tab when Finish button is clicked', () => {
         renderComponent({})
 
         userEvent.click(screen.getByText('Finish'))
@@ -126,6 +131,31 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
                 wizard: {
                     ...mockedUseAiAgentOnboardingWizard.storeFormValues.wizard,
                     completedDatetime: expect.any(String),
+                    onCompletePathway: WizardPostCompletionPathway.test,
+                },
+            },
+        })
+    })
+
+    it('should call handleSave and redirect to guidance tab when Finish button is clicked and feature flag is enabled', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentOnboardingWizardKnowledgeRedirect]: true,
+        })
+
+        renderComponent({})
+
+        userEvent.click(screen.getByText('Finish'))
+
+        expect(
+            mockedUseAiAgentOnboardingWizard.handleSave
+        ).toHaveBeenCalledWith({
+            publicUrls: [],
+            redirectTo: WIZARD_BUTTON_ACTIONS.FINISH_TO_GUIDANCE,
+            payload: {
+                wizard: {
+                    ...mockedUseAiAgentOnboardingWizard.storeFormValues.wizard,
+                    completedDatetime: expect.any(String),
+                    onCompletePathway: WizardPostCompletionPathway.guidance,
                 },
             },
         })

@@ -7,6 +7,12 @@ import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {usePublicResourcesPooling} from 'pages/automate/aiAgent/hooks/usePublicResourcesPooling'
+import {useSearchParam} from 'hooks/useSearchParam'
+import {
+    ARTICLE_INGESTION_LOGS_STATUS,
+    WIZARD_POST_COMPLETION_STATE,
+} from 'pages/automate/aiAgent/constants'
 import {PublicSourcesSection} from '../PublicSourcesSection'
 import {SourceItem} from '../types'
 
@@ -23,6 +29,9 @@ jest.mock(
     'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames',
     () => jest.fn()
 )
+jest.mock('hooks/useSearchParam', () => ({
+    useSearchParam: jest.fn(),
+}))
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
@@ -58,6 +67,8 @@ const mockUsePublicResourcesMutation = jest.mocked(usePublicResourceMutation)
 const mockUseHelpCenterCustomDomainHostnames = jest.mocked(
     useHelpCenterCustomDomainHostnames
 )
+const mockUsePublicResourcesPooling = jest.mocked(usePublicResourcesPooling)
+const mockUseSearchParam = jest.mocked(useSearchParam)
 
 describe('<PublicSourcesSection />', () => {
     beforeEach(() => {
@@ -72,6 +83,10 @@ describe('<PublicSourcesSection />', () => {
             ],
             isLoading: false,
         })
+        mockUsePublicResourcesPooling.mockReturnValue({
+            articleIngestionLogsStatus: [],
+        })
+        mockUseSearchParam.mockReturnValue([null, jest.fn()])
     })
     it('should render component', () => {
         renderComponent()
@@ -262,6 +277,38 @@ describe('<PublicSourcesSection />', () => {
 
         expect(syncButton).toBeAriaDisabled()
         expect(input).toBeDisabled()
+    })
+
+    it('should set isSuccessResources to true when all resources are successfully synced', () => {
+        mockUseSearchParam.mockReturnValue([
+            WIZARD_POST_COMPLETION_STATE.knowledge,
+            jest.fn(),
+        ])
+        mockUsePublicResourcesPooling.mockReturnValue({
+            articleIngestionLogsStatus: [
+                ARTICLE_INGESTION_LOGS_STATUS.SUCCESSFUL,
+            ],
+        })
+        const mockedSetIsSuccessResources = jest.fn()
+
+        renderComponent({setIsSuccessResources: mockedSetIsSuccessResources})
+
+        expect(mockedSetIsSuccessResources).toHaveBeenCalledWith(true)
+    })
+
+    it('should set isFailedResources to true when there is failed sync', () => {
+        mockUseSearchParam.mockReturnValue([
+            WIZARD_POST_COMPLETION_STATE.knowledge,
+            jest.fn(),
+        ])
+        mockUsePublicResourcesPooling.mockReturnValue({
+            articleIngestionLogsStatus: [ARTICLE_INGESTION_LOGS_STATUS.FAILED],
+        })
+        const mockedSetIsFailedResources = jest.fn()
+
+        renderComponent({setIsFailedResources: mockedSetIsFailedResources})
+
+        expect(mockedSetIsFailedResources).toHaveBeenCalledWith(true)
     })
 
     it('should log connected public url', async () => {

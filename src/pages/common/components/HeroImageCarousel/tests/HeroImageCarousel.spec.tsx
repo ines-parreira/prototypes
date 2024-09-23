@@ -93,6 +93,42 @@ describe('<HeroImageCarousel />', () => {
         expect(queryByText(buttonLabel)).not.toBeInTheDocument()
     })
 
+    it('should render with images, description, header and footerButton', () => {
+        const slidesData = [
+            {
+                imageUrl: assetsUrl('/img/slide1.png'),
+                description: 'description 1',
+                header: 'header 1',
+                footerButton: 'footerButton 1',
+            },
+            {
+                imageUrl: assetsUrl('/img/slide2.png'),
+                description: 'description 2',
+                header: 'header 2',
+                footerButton: 'footerButton 2',
+            },
+        ]
+        const {container, getByText, queryByText} = render(
+            <HeroImageCarousel
+                slides={slidesData}
+                singleSlideButtonTitle={buttonLabel}
+                onClose={() => {}}
+            />
+        )
+        const imgs = container.querySelectorAll('img')
+        expect(container.querySelectorAll('.slideDot div').length).toBe(
+            slidesData.length
+        )
+        expect(imgs.length).toBe(slidesData.length)
+        imgs.forEach((img, i) => {
+            expect(img.src).toBe('http://localhost' + slidesData[i].imageUrl)
+            expect(getByText(slidesData[i].description)).toBeInTheDocument()
+            expect(getByText(slidesData[i].header)).toBeInTheDocument()
+        })
+        expect(getByText(slidesData[0].footerButton)).toBeInTheDocument()
+        expect(queryByText(buttonLabel)).not.toBeInTheDocument()
+    })
+
     it('should render buttonLabel when slides length == 1', () => {
         const slidesData = [
             {

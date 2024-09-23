@@ -11,6 +11,7 @@ import {
 } from 'models/aiAgentPlayground/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {useSearchParam} from 'hooks/useSearchParam'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {getAccountConfigurationWithHttpIntegrationFixture} from '../../fixtures/accountConfiguration.fixture'
 import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
@@ -37,6 +38,10 @@ jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js',
     () => () => <div />
 )
+jest.mock('hooks/useSearchParam', () => ({
+    useSearchParam: jest.fn(),
+}))
+const mockUseSearchParam = jest.mocked(useSearchParam)
 const mockedUsePlaygroundMessages = jest.mocked(usePlaygroundMessages)
 const mockedUsePlaygroundForm = jest.mocked(usePlaygroundForm)
 const mockedNotify = jest.mocked(notify)
@@ -89,6 +94,7 @@ describe('PlaygroundChat', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentChatTestMode]: true,
         })
+        mockUseSearchParam.mockReturnValue([null, jest.fn()])
     })
 
     it('should render', () => {

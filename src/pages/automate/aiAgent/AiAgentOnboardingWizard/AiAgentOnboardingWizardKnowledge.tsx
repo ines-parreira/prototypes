@@ -1,5 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Label} from '@gorgias/ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
 import WizardFooter, {
@@ -8,11 +9,13 @@ import WizardFooter, {
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     AI_AGENT_STEPS_DESCRIPTIONS,
     AI_AGENT_STEPS_LABELS,
     AI_AGENT_STEPS_TITLES,
     WIZARD_BUTTON_ACTIONS,
+    WizardPostCompletionPathway,
 } from '../constants'
 import {CreatePublicSourcesSection} from '../components/StoreConfigForm/StoreConfigForm'
 import {AiAgentOnboardingWizardProps} from './AiAgentOnboardingWizard'
@@ -26,6 +29,9 @@ const AiAgentOnboardingWizardStepKnowledge = ({
     storeConfiguration,
 }: Props) => {
     const [publicUrls, setPublicUrls] = useState<string[]>([])
+    const [pendingUrlCount, setPendingUrlCount] = useState(0)
+    const isAiAgentOnboardingWizardKnowledgeRedirectEnabled =
+        useFlags()[FeatureFlagKey.AiAgentOnboardingWizardKnowledgeRedirect]
 
     const {
         storeFormValues,
@@ -68,24 +74,47 @@ const AiAgentOnboardingWizardStepKnowledge = ({
         // we should deactivate AI Agent when there's no knowledge base
     }, [])
 
+    const hasPublicUrlSynced = useMemo(
+        () =>
+            !selectedHelpCenter &&
+            !!publicUrls.length &&
+            publicUrls.length === pendingUrlCount,
+        [pendingUrlCount, publicUrls.length, selectedHelpCenter]
+    )
+
     const onFooterAction = (buttonClicked: string) => {
         switch (buttonClicked) {
             case FOOTER_BUTTONS.BACK:
                 handleAction(WIZARD_BUTTON_ACTIONS.PREVIOUS_STEP)
                 break
-            case FOOTER_BUTTONS.FINISH:
+            case FOOTER_BUTTONS.FINISH: {
+                let onCompletePathway = null
+                let redirectTo
+
+                if (hasPublicUrlSynced) {
+                    redirectTo = WIZARD_BUTTON_ACTIONS.FINISH_TO_KNOWLEDGE
+                    onCompletePathway = WizardPostCompletionPathway.knowledge
+                } else if (isAiAgentOnboardingWizardKnowledgeRedirectEnabled) {
+                    redirectTo = WIZARD_BUTTON_ACTIONS.FINISH_TO_GUIDANCE
+                    onCompletePathway = WizardPostCompletionPathway.guidance
+                } else {
+                    redirectTo = WIZARD_BUTTON_ACTIONS.FINISH_TO_TEST
+                    onCompletePathway = WizardPostCompletionPathway.test
+                }
+
                 handleSave({
                     publicUrls,
-                    // TODO: adjust post completion redirect logic in the next iteration
-                    redirectTo: WIZARD_BUTTON_ACTIONS.FINISH_TO_TEST,
+                    redirectTo,
                     payload: {
                         wizard: storeFormValues.wizard && {
                             ...storeFormValues.wizard,
                             completedDatetime: new Date().toISOString(),
+                            onCompletePathway,
                         },
                     },
                 })
                 break
+            }
             case FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER:
                 handleSave({
                     publicUrls,
@@ -135,6 +164,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({
                         onPublicURLsChanged={handlePublicURLsChange}
                         shopName={shopName}
                         shouldLogEventOnSync
+                        setPendingResourcesCount={setPendingUrlCount}
                     />
                 ) : null}
             </WizardStepSkeleton>

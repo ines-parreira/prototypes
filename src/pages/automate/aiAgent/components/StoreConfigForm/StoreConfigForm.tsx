@@ -57,9 +57,12 @@ import {
     EXCLUDED_TOPIC_MAX_LENGTH,
     MAX_EXCLUDED_TOPICS,
     INITIAL_FORM_VALUES,
+    WIZARD_POST_COMPLETION_QUERY_KEY,
+    WIZARD_POST_COMPLETION_STATE,
 } from '../../constants'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 
+import PostCompletionWizardModal from '../../AiAgentOnboardingWizard/PostCompletionWizardModal'
 import {getFormValuesFromStoreConfiguration} from './StoreConfigForm.utils'
 import css from './StoreConfigForm.less'
 import {SignatureFormComponent} from './FormComponents/SignatureFormComponent'
@@ -83,8 +86,15 @@ export const StoreConfigForm = ({
     const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
+    const dispatch = useAppDispatch()
+
+    const [isUrlSyncSuccess, setIsUrlSyncSuccess] = useState(false)
+    const [isUrlSyncFail, setIsUrlSyncFail] = useState(false)
 
     const [sectionQueryParam, setSectionQueryParam] = useSearchParam('section')
+    const [wizardQueryParam, setWizardQueryParam] = useSearchParam(
+        WIZARD_POST_COMPLETION_QUERY_KEY
+    )
 
     const knowledgeSectionRef = useRef<HTMLDivElement>(null)
     const emailSectionRef = useRef<HTMLDivElement>(null)
@@ -92,7 +102,8 @@ export const StoreConfigForm = ({
     useEffect(() => {
         if (
             knowledgeSectionRef.current !== null &&
-            sectionQueryParam === 'knowledge'
+            (sectionQueryParam === 'knowledge' ||
+                wizardQueryParam === WIZARD_POST_COMPLETION_STATE.knowledge)
         ) {
             knowledgeSectionRef.current?.scrollIntoView({behavior: 'smooth'})
         } else if (
@@ -108,10 +119,43 @@ export const StoreConfigForm = ({
         knowledgeSectionRef,
         emailSectionRef,
         setSectionQueryParam,
+        wizardQueryParam,
+    ])
+
+    useEffect(() => {
+        if (
+            wizardQueryParam === WIZARD_POST_COMPLETION_STATE.knowledge &&
+            (isUrlSyncSuccess || isUrlSyncFail)
+        ) {
+            if (isUrlSyncSuccess) {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: 'URL sources have successfully synced.',
+                        showDismissButton: true,
+                    })
+                )
+            } else {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message:
+                            'One or more URL sources for AI Agent failed to sync. Review URLs and try again.',
+                        showDismissButton: true,
+                    })
+                )
+            }
+            setWizardQueryParam(null)
+        }
+    }, [
+        dispatch,
+        isUrlSyncFail,
+        isUrlSyncSuccess,
+        setWizardQueryParam,
+        wizardQueryParam,
     ])
 
     const hasAutomate = useAppSelector(getHasAutomate)
-    const dispatch = useAppDispatch()
     const {storeConfiguration, updateStoreConfiguration} =
         useAiAgentStoreConfigurationContext()
     const isCreate = storeConfiguration === undefined
@@ -410,6 +454,8 @@ export const StoreConfigForm = ({
                             selectedHelpCenterId={selectedHelpCenter?.id}
                             onPublicURLsChanged={handlePublicURLsChange}
                             shopName={shopName}
+                            setIsFailedResources={setIsUrlSyncFail}
+                            setIsSuccessResources={setIsUrlSyncSuccess}
                         />
                     ) : null}
                 </ConfigurationSection>
@@ -583,6 +629,7 @@ export const StoreConfigForm = ({
                     </p>
                 </section>
             </form>
+            <PostCompletionWizardModal />
         </>
     )
 }

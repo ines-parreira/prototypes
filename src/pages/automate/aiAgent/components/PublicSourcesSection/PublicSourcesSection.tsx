@@ -9,8 +9,14 @@ import {NotificationStatus} from 'state/notifications/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useSearchParam} from 'hooks/useSearchParam'
 import {usePublicResourceMutation} from '../../hooks/usePublicResourcesMutation'
 import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
+import {
+    ARTICLE_INGESTION_LOGS_STATUS,
+    WIZARD_POST_COMPLETION_QUERY_KEY,
+    WIZARD_POST_COMPLETION_STATE,
+} from '../../constants'
 import css from './PublicSourcesSection.less'
 import {PublicSourcesItem} from './PublicSourcesItem'
 import {SourceItem} from './types'
@@ -25,6 +31,9 @@ type Props = {
     sourceItems?: SourceItem[]
     selectedHelpCenterId?: number
     shouldLogEventOnSync?: boolean
+    setPendingResourcesCount?: (pendingResourcesCount: number) => void
+    setIsSuccessResources?: (isSuccessResources: boolean) => void
+    setIsFailedResources?: (isFailedResources: boolean) => void
 }
 
 export const PublicSourcesSection = ({
@@ -34,10 +43,49 @@ export const PublicSourcesSection = ({
     sourceItems,
     selectedHelpCenterId,
     shouldLogEventOnSync = false,
+    setPendingResourcesCount,
+    setIsSuccessResources,
+    setIsFailedResources,
 }: Props) => {
     const dispatch = useAppDispatch()
+    const [wizardQueryParam] = useSearchParam(WIZARD_POST_COMPLETION_QUERY_KEY)
 
-    usePublicResourcesPooling({helpCenterId, shopName})
+    const {articleIngestionLogsStatus} = usePublicResourcesPooling({
+        helpCenterId,
+        shopName,
+    })
+
+    useEffect(() => {
+        const pendingResourcesCount = articleIngestionLogsStatus.filter(
+            (status) => status === ARTICLE_INGESTION_LOGS_STATUS.PENDING
+        ).length
+
+        if (setPendingResourcesCount) {
+            setPendingResourcesCount(pendingResourcesCount)
+        }
+
+        const isPostCompletionWizardPage =
+            wizardQueryParam === WIZARD_POST_COMPLETION_STATE.knowledge
+
+        if (isPostCompletionWizardPage && !pendingResourcesCount) {
+            const isSuccessResources = articleIngestionLogsStatus.every(
+                (status) => status === ARTICLE_INGESTION_LOGS_STATUS.SUCCESSFUL
+            )
+
+            if (isSuccessResources) {
+                setIsSuccessResources && setIsSuccessResources(true)
+            } else {
+                setIsFailedResources && setIsFailedResources(true)
+            }
+        }
+    }, [
+        articleIngestionLogsStatus,
+        wizardQueryParam,
+        setPendingResourcesCount,
+        setIsFailedResources,
+        setIsSuccessResources,
+    ])
+
     const {deletePublicResource, addPublicResource} = usePublicResourceMutation(
         {helpCenterId}
     )

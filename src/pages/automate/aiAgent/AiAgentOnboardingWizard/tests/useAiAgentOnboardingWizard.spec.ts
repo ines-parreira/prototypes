@@ -278,14 +278,13 @@ describe('useAiAgentOnboardingWizard', () => {
         act(() => {
             result.current.handleSave({
                 redirectTo: WIZARD_BUTTON_ACTIONS.FINISH_TO_TEST,
-                successModalParams: 'test',
             })
         })
 
         await waitFor(() => {
             expect(history.replace).toHaveBeenCalledWith({
                 pathname: '/app/automation/shopify/test-shop/ai-agent/test',
-                search: 'test',
+                search: 'with_wizard_completed=test',
             })
         })
     })
@@ -301,14 +300,13 @@ describe('useAiAgentOnboardingWizard', () => {
         act(() => {
             result.current.handleSave({
                 redirectTo: WIZARD_BUTTON_ACTIONS.FINISH_TO_GUIDANCE,
-                successModalParams: 'guidance',
             })
         })
 
         await waitFor(() => {
             expect(history.replace).toHaveBeenCalledWith({
                 pathname: '/app/automation/shopify/test-shop/ai-agent/guidance',
-                search: 'guidance',
+                search: 'with_wizard_completed=guidance',
             })
         })
     })

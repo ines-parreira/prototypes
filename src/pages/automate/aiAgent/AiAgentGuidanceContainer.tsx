@@ -13,6 +13,7 @@ import {AiAgentGuidanceView} from './AiAgentGuidanceView'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
 import css from './AiAgentGuidanceContainer.less'
+import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
 
 export const AiAgentGuidanceContainer = () => {
     const {shopName} = useParams<{
@@ -95,6 +96,7 @@ export const AiAgentGuidanceContainer = () => {
                 shopName={shopName}
                 locale={guidanceHelpCenter.default_locale}
             />
+            <PostCompletionWizardModal />
         </AiAgentLayout>
     )
 }

@@ -1,10 +1,11 @@
-import React, {ReactNode, useCallback} from 'react'
+import React, {ReactNode, useCallback, useEffect, useRef} from 'react'
 
 import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
+import {useSearchParam} from 'hooks/useSearchParam'
 import {PlaygroundEditor} from '../PlaygroundEditor/PlaygroundEditor'
 import {
     PlaygroundChannels,
@@ -13,7 +14,11 @@ import {
 import {PlaygroundCustomerSelection} from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
 import {PlaygroundSegmentControl} from '../PlaygroundSegmentControl/PlaygroundSegmentControl'
 import {PlaygroundAction} from '../PlaygroundActions/types'
-import {PLAYGROUND_PROMPT_CONTENT} from '../../constants'
+import {
+    PLAYGROUND_PROMPT_CONTENT,
+    WIZARD_POST_COMPLETION_QUERY_KEY,
+    WIZARD_POST_COMPLETION_STATE,
+} from '../../constants'
 import css from './PlaygroundInputSection.less'
 
 type Props = {
@@ -52,6 +57,21 @@ export const PlaygroundInputSection = ({
     const handleMessageChange = (message: string) => {
         onFormValuesChange('message', message)
     }
+
+    const [wizardQueryParam, setWizardQueryParam] = useSearchParam(
+        WIZARD_POST_COMPLETION_QUERY_KEY
+    )
+    const subjectInputRef = useRef<HTMLInputElement | null>(null)
+
+    useEffect(() => {
+        if (
+            wizardQueryParam === WIZARD_POST_COMPLETION_STATE.test_subject &&
+            subjectInputRef.current
+        ) {
+            subjectInputRef.current.focus()
+            setWizardQueryParam(null)
+        }
+    }, [setWizardQueryParam, wizardQueryParam])
 
     const handleSubjectChange = (subject: string) => {
         onFormValuesChange('subject', subject)
@@ -133,6 +153,7 @@ export const PlaygroundInputSection = ({
                     })}
                 >
                     <TextInput
+                        ref={subjectInputRef}
                         className={css.subjectInput}
                         value={formValues.subject}
                         onChange={handleSubjectChange}

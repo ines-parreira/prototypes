@@ -24,6 +24,8 @@ import {
     DEFAULT_FORM_VALUES_WITH_WIZARD,
     INITIAL_FORM_VALUES,
     WIZARD_BUTTON_ACTIONS,
+    WIZARD_POST_COMPLETION_QUERY_KEY,
+    WIZARD_POST_COMPLETION_STATE,
 } from '../../constants'
 
 type handleSaveParams = {
@@ -31,7 +33,6 @@ type handleSaveParams = {
     redirectTo?: WIZARD_BUTTON_ACTIONS
     stepName?: AiAgentOnboardingWizardStep
     payload?: Partial<FormValues>
-    successModalParams?: string
 }
 
 type AiAgentOnboardingWizardOutput = {
@@ -131,10 +132,16 @@ export const useAiAgentOnboardingWizard = ({
         setFormValues(newStoreFormValues)
     })
 
-    const handleAction = (
-        redirectTo: WIZARD_BUTTON_ACTIONS,
-        searchParams?: string
+    const getPostCompletionSearchParams = (
+        state: WIZARD_POST_COMPLETION_STATE
     ) => {
+        const searchParams = new URLSearchParams({
+            [WIZARD_POST_COMPLETION_QUERY_KEY]: state,
+        })
+        return searchParams.toString()
+    }
+
+    const handleAction = (redirectTo: WIZARD_BUTTON_ACTIONS) => {
         if (!shopType || !shopName) return
 
         switch (redirectTo) {
@@ -164,8 +171,10 @@ export const useAiAgentOnboardingWizard = ({
                 })
                 history.replace({
                     // TODO link to knowledge tab once it is implemented
-                    pathname: routes.configuration('knowledge'),
-                    search: searchParams,
+                    pathname: routes.configuration(),
+                    search: getPostCompletionSearchParams(
+                        WIZARD_POST_COMPLETION_STATE.configuration
+                    ),
                 })
                 break
             case WIZARD_BUTTON_ACTIONS.FINISH_TO_TEST:
@@ -174,7 +183,9 @@ export const useAiAgentOnboardingWizard = ({
                 })
                 history.replace({
                     pathname: routes.test,
-                    search: searchParams,
+                    search: getPostCompletionSearchParams(
+                        WIZARD_POST_COMPLETION_STATE.test
+                    ),
                 })
                 break
             case WIZARD_BUTTON_ACTIONS.FINISH_TO_GUIDANCE:
@@ -183,7 +194,9 @@ export const useAiAgentOnboardingWizard = ({
                 })
                 history.replace({
                     pathname: routes.guidance,
-                    search: searchParams,
+                    search: getPostCompletionSearchParams(
+                        WIZARD_POST_COMPLETION_STATE.guidance
+                    ),
                 })
                 break
             default:
@@ -211,7 +224,6 @@ export const useAiAgentOnboardingWizard = ({
     const handleSave = async ({
         publicUrls,
         redirectTo,
-        successModalParams,
         stepName,
         payload,
     }: handleSaveParams) => {
@@ -232,7 +244,7 @@ export const useAiAgentOnboardingWizard = ({
         }
 
         if (redirectTo) {
-            handleAction(redirectTo, successModalParams)
+            handleAction(redirectTo)
         }
     }
 

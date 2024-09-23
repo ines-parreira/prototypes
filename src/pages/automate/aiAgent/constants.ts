@@ -118,3 +118,28 @@ export const PLAYGROUND_PROMPT_CONTENT: Record<PlaygroundPromptType, string> = {
     [PlaygroundPromptType.RELEVANT_RESPONSE]: 'Yes, thanks',
     [PlaygroundPromptType.NOT_RELEVANT_RESPONSE]: 'No, I need more help',
 }
+
+export const WIZARD_POST_COMPLETION_QUERY_KEY = 'with_wizard_completed'
+export enum WIZARD_POST_COMPLETION_STATE {
+    configuration = 'configuration',
+    test = 'test',
+    guidance = 'guidance',
+    knowledge = 'knowledge',
+    test_subject = 'test_subject',
+}
+
+export enum WizardPostCompletionPathway {
+    knowledge = 'knowledge',
+    guidance = 'guidance',
+    test = 'test',
+}
+
+export const ARTICLE_INGESTION_LOGS_STATUS = {
+    DISABLED: 'DISABLED',
+    PENDING: 'PENDING',
+    SUCCESSFUL: 'SUCCESSFUL',
+    FAILED: 'FAILED',
+} as const
+
+export type ArticleIngestionLogsStatus =
+    typeof ARTICLE_INGESTION_LOGS_STATUS[keyof typeof ARTICLE_INGESTION_LOGS_STATUS]

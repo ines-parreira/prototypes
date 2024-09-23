@@ -10,12 +10,18 @@ export type CarouselData = {
     imageUrl: string
     description?: string | JSX.Element
     header?: string
+    footerButton?: string
 }
 type Props = {
     slides: CarouselData[]
     width?: number
     singleSlideButtonTitle?: string
     onSingleSlideButtonTitleClick?: () => void
+    classNameHeader?: string
+    classNameDescription?: string
+    classNameImage?: string
+    classNameSlideAction?: string
+    onClose?: () => void
 }
 
 const HeroImageCarousel = ({
@@ -23,9 +29,24 @@ const HeroImageCarousel = ({
     width = 420,
     singleSlideButtonTitle,
     onSingleSlideButtonTitleClick,
+    classNameHeader,
+    classNameDescription,
+    classNameImage,
+    classNameSlideAction,
+    onClose,
 }: Props) => {
     const [currentSlide, setCurrentSlide] = useState(0)
     const sliderRef = useRef<Slider | null>(null)
+
+    const buttonLabel = slides[currentSlide].footerButton
+    const handleButtonClick = () => {
+        if (currentSlide === slides.length - 1) {
+            onClose?.()
+        } else {
+            sliderRef.current?.slickNext()
+        }
+    }
+
     return (
         <div style={{maxWidth: `${width}px`}}>
             <div className={css.sliderWrapper}>
@@ -42,11 +63,21 @@ const HeroImageCarousel = ({
                         return (
                             <div key={i}>
                                 {header && (
-                                    <div className={css.header}>{header}</div>
+                                    <div
+                                        className={classNames(
+                                            css.header,
+                                            classNameHeader
+                                        )}
+                                    >
+                                        {header}
+                                    </div>
                                 )}
                                 <img
                                     width={width}
-                                    className={css.slideImage}
+                                    className={classNames(
+                                        css.slideImage,
+                                        classNameImage
+                                    )}
                                     src={imageUrl}
                                     alt={
                                         _isString(description)
@@ -56,7 +87,10 @@ const HeroImageCarousel = ({
                                 />
                                 {description && (
                                     <div
-                                        className={css.slideDescription}
+                                        className={classNames(
+                                            css.slideDescription,
+                                            classNameDescription
+                                        )}
                                         style={{maxWidth: `${width}px`}}
                                     >
                                         {description}
@@ -80,42 +114,57 @@ const HeroImageCarousel = ({
                     </div>
                 ) : null
             ) : (
-                <div className={css.slideAction}>
-                    <i
-                        onClick={() => sliderRef.current?.slickPrev()}
+                <div>
+                    <div
                         className={classNames(
-                            'material-icons',
-                            css.actionIcon,
-                            {
-                                [css.disabled]: currentSlide === 0,
-                            }
+                            css.slideAction,
+                            classNameSlideAction
                         )}
                     >
-                        chevron_left
-                    </i>
-                    <div className={css.slideDot}>
-                        {slides.map((_, i) => (
-                            <div
-                                className={classNames({
-                                    [css.current]: currentSlide === i,
-                                })}
-                                key={i}
-                            />
-                        ))}
+                        <i
+                            onClick={() => sliderRef.current?.slickPrev()}
+                            className={classNames(
+                                'material-icons',
+                                css.actionIcon,
+                                {
+                                    [css.disabled]: currentSlide === 0,
+                                }
+                            )}
+                        >
+                            chevron_left
+                        </i>
+                        <div className={css.slideDot}>
+                            {slides.map((_, i) => (
+                                <div
+                                    className={classNames({
+                                        [css.current]: currentSlide === i,
+                                    })}
+                                    key={i}
+                                />
+                            ))}
+                        </div>
+                        <i
+                            onClick={() => sliderRef.current?.slickNext()}
+                            className={classNames(
+                                'material-icons',
+                                css.actionIcon,
+                                {
+                                    [css.disabled]:
+                                        currentSlide === slides.length - 1,
+                                }
+                            )}
+                        >
+                            chevron_right
+                        </i>
                     </div>
-                    <i
-                        onClick={() => sliderRef.current?.slickNext()}
-                        className={classNames(
-                            'material-icons',
-                            css.actionIcon,
-                            {
-                                [css.disabled]:
-                                    currentSlide === slides.length - 1,
-                            }
-                        )}
-                    >
-                        chevron_right
-                    </i>
+                    {buttonLabel && (
+                        <Button
+                            className={css.footerButton}
+                            onClick={handleButtonClick}
+                        >
+                            {buttonLabel}
+                        </Button>
+                    )}
                 </div>
             )}
         </div>

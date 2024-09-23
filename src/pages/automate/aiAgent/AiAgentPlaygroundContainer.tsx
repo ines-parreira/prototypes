@@ -4,6 +4,7 @@ import {AiAgentPlaygroundView} from './AiAgentPlaygroundView'
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
 
 import css from './AiAgentPlaygroundContainer.less'
+import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
 
 export const AiAgentPlaygroundContainer = () => {
     const {shopName} = useParams<{
@@ -13,6 +14,7 @@ export const AiAgentPlaygroundContainer = () => {
     return (
         <AiAgentLayout shopName={shopName} className={css.container}>
             <AiAgentPlaygroundView shopName={shopName} />
+            <PostCompletionWizardModal />
         </AiAgentLayout>
     )
 }

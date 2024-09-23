@@ -12,11 +12,20 @@ import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getArticleIngestionLogs} from 'models/helpCenter/resources'
+import {useSearchParam} from 'hooks/useSearchParam'
 import {updateArticleIngestionLogs} from '../components/PublicSourcesSection/utils'
 
+import {
+    ArticleIngestionLogsStatus,
+    WIZARD_POST_COMPLETION_QUERY_KEY,
+} from '../constants'
 import {useAiAgentNavigation} from './useAiAgentNavigation'
 
 const UPDATE_STATUS_INTERVAL = 5000
+
+type UsePublicResourcesPoolingReturn = {
+    articleIngestionLogsStatus: ArticleIngestionLogsStatus[]
+}
 
 export const usePublicResourcesPooling = ({
     shopName,
@@ -24,10 +33,12 @@ export const usePublicResourcesPooling = ({
 }: {
     helpCenterId: number
     shopName: string
-}) => {
+}): UsePublicResourcesPoolingReturn => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
     const {routes} = useAiAgentNavigation({shopName})
+    const [wizardQueryParam] = useSearchParam(WIZARD_POST_COMPLETION_QUERY_KEY)
+
     const {data: articleIngestionLogs} = useGetArticleIngestionLogs(
         {
             help_center_id: helpCenterId,
@@ -101,8 +112,7 @@ export const usePublicResourcesPooling = ({
                     message:
                         'Syncing in progress. You can finish onboarding while sources are syncing.',
                     showDismissButton: true,
-                    noAutoDismiss: true,
-                    closeOnNext: true,
+                    dismissible: true,
                 })
             )
         }
@@ -147,6 +157,8 @@ export const usePublicResourcesPooling = ({
         const isAllSuccess = finishedArticleIngestionIds.every(
             (log) => log.status === 'SUCCESSFUL'
         )
+
+        if (!!wizardQueryParam) return
 
         if (isAllSuccess) {
             void dispatch(
@@ -200,5 +212,13 @@ export const usePublicResourcesPooling = ({
         processingArticleIngestions,
         queryClient,
         routes,
+        wizardQueryParam,
     ])
+
+    const articleIngestionLogsStatus = useMemo(() => {
+        const logs = articleIngestionLogs || []
+        return logs.map((log) => log.status)
+    }, [articleIngestionLogs])
+
+    return {articleIngestionLogsStatus}
 }

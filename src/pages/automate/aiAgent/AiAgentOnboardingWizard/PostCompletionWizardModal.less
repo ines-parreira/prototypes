@@ -1,0 +1,53 @@
+@import (reference) '~css/typography.less';
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .titleWrapper {
+        margin-bottom: @layout-spacing-xs;
+        .heading-page-semibold();
+    }
+
+    .description {
+        .heading-subsection-regular();
+        color: var(--neutral-grey-5);
+    }
+
+    .image {
+        padding: @layout-spacing-s;
+    }
+
+    .modalDialog {
+        max-width: 702px;
+    }
+
+    .header {
+        height: 52px;
+        border-bottom: none;
+    }
+
+    .content {
+        padding: 0 @layout-spacing-l @layout-spacing-l @layout-spacing-l;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        row-gap: @layout-spacing-s;
+    }
+
+    .carouselHeader {
+        .heading-page-semibold();
+    }
+
+    .carouselImage {
+        margin-top: @layout-spacing-m;
+    }
+
+    .carouselDescription {
+        color: var(--neutral-grey-6);
+        margin-top: @layout-spacing-m;
+    }
+
+    .carouselSlideAction {
+        margin-top: @layout-spacing-m;
+    }
+}

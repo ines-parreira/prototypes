@@ -8,6 +8,7 @@ import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {reportError} from 'utils/errors'
 import {assumeMock} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {useSearchParam} from 'hooks/useSearchParam'
 import {useAiAgentNavigation} from '../useAiAgentNavigation'
 import {usePublicResourcesPooling} from '../usePublicResourcesPooling'
 
@@ -30,6 +31,9 @@ jest.mock('models/helpCenter/queries', () => ({
 }))
 const mockUseGetArticleIngestionLogs = assumeMock(useGetArticleIngestionLogs)
 
+jest.mock('hooks/useSearchParam')
+const mockUseSearchParam = assumeMock(useSearchParam)
+
 describe('usePublicResourcesPooling', () => {
     const shopName = 'test-shop'
     const helpCenterId = 1
@@ -50,6 +54,7 @@ describe('usePublicResourcesPooling', () => {
                 {id: 2, status: 'SUCCESSFUL'},
             ],
         } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+        mockUseSearchParam.mockReturnValue([null, jest.fn()])
     })
 
     const setupHook = (shopName: string, helpCenterId: number) => {
@@ -87,8 +92,7 @@ describe('usePublicResourcesPooling', () => {
             message:
                 'Syncing in progress. You can finish onboarding while sources are syncing.',
             showDismissButton: true,
-            noAutoDismiss: true,
-            closeOnNext: true,
+            dismissible: true,
         })
     })
 })
