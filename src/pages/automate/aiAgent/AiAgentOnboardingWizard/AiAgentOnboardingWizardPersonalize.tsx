@@ -49,10 +49,14 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
         handleAction,
         storeFormValues: formValues,
         handleFormUpdate,
+        isLoading,
     } = useAiAgentOnboardingWizard({
         storeConfiguration,
         step,
     })
+
+    const isAiAgentChatEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentChat]
 
     const handleButtonClicks = (action: FOOTER_BUTTONS) => {
         switch (action) {
@@ -71,6 +75,9 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                     stepName: AiAgentOnboardingWizardStep.Knowledge,
                 })
                 break
+            case FOOTER_BUTTONS.CANCEL:
+                handleAction(WIZARD_BUTTON_ACTIONS.CANCEL)
+                break
         }
     }
 
@@ -81,6 +88,10 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
     }, [chatChannels])
 
     const setInitialValues = useRef(true)
+    const isChatAvailable = useMemo(() => {
+        return isAiAgentChatEnabled && chatChannels && chatChannels.length > 0
+    }, [chatChannels, isAiAgentChatEnabled])
+
     useEffect(() => {
         if (
             formValues.wizard &&
@@ -90,7 +101,7 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
         ) {
             const availableChannels = [AiAgentChannel.Email]
 
-            if (chatChannels && chatChannels.length > 0) {
+            if (isChatAvailable) {
                 availableChannels.push(AiAgentChannel.Chat)
             }
 
@@ -102,7 +113,7 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                 },
             })
         }
-    }, [chatChannels, formValues.wizard, handleFormUpdate])
+    }, [chatChannels, formValues.wizard, handleFormUpdate, isChatAvailable])
 
     const isChannelEnabled = (chanel: AiAgentChannel) => {
         return (
@@ -137,6 +148,7 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                         }
                         displayNextButton
                         onClick={handleButtonClicks}
+                        isDisabled={isLoading}
                     />
                 }
                 preview={
@@ -158,7 +170,7 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                             customToneOfVoiceGuidance={
                                 formValues.customToneOfVoiceGuidance
                             }
-                            hasChat={chatChannels && chatChannels.length > 0}
+                            hasChat={isChatAvailable}
                         />
 
                         <SignatureFormComponent
@@ -206,8 +218,7 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                                 </AccordionItem>
                             )}
 
-                            {chatChannels &&
-                                chatChannels.length > 0 &&
+                            {isChatAvailable &&
                                 !!formValues.monitoredChatIntegrations && (
                                     <AccordionItem id="chat">
                                         <AccordionHeader>

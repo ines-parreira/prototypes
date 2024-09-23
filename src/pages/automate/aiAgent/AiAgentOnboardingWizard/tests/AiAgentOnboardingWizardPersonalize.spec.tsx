@@ -87,11 +87,17 @@ const stormFormValues = {
     customToneOfVoiceGuidance:
         "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
     helpCenter: null,
+    wizard: {
+        monitoredEmailIntegrations: [],
+        monitoredChatIntegrations: {},
+        step: AiAgentOnboardingWizardStep.Personalize,
+    },
 } as unknown as FormValues
 
 describe('<AiAgentOnboardingWizardPersonalize />', () => {
     const mockHandleSave = jest.fn()
     const mockHandleFormUpdate = jest.fn()
+    const mockHandleAction = jest.fn()
 
     beforeEach(() => {
         mockFlags({
@@ -103,7 +109,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             handleSave: mockHandleSave,
             storeFormValues: stormFormValues,
             faqHelpCenters: [],
-            handleAction: jest.fn,
+            handleAction: mockHandleAction,
             isLoading: false,
             snippetHelpCenter: null,
             updateValue: jest.fn(),
@@ -191,7 +197,25 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         expect(mockHandleSave).not.toHaveBeenCalled()
     })
 
+    it('call handleAction when cancel button is clicked', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]: false,
+        })
+        renderComponent({
+            shopName: 'test-shop',
+            shopType: 'shopify',
+        })
+        expect(screen.getByText('Cancel')).toBeInTheDocument()
+        userEvent.click(screen.getByText('Cancel'))
+        expect(mockHandleAction).toHaveBeenCalledWith(
+            WIZARD_BUTTON_ACTIONS.CANCEL
+        )
+    })
+
     it('handles initial channel setup in useEffect', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentChat]: true,
+        })
         mockUseAiAgentOnboardingWizard.mockReturnValue({
             handleFormUpdate: mockHandleFormUpdate,
             handleSave: mockHandleSave,
@@ -217,5 +241,32 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
                 enabledChannels: [AiAgentChannel.Email, AiAgentChannel.Chat],
             },
         })
+    })
+
+    it('should render the ChatIntegrationListSelection component when chat flag is enabled', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentChat]: true,
+        })
+        renderComponent({
+            shopName: 'test-shop',
+            shopType: 'shopify',
+        })
+        expect(
+            screen.getByText('ChatIntegrationListSelection')
+        ).toBeInTheDocument()
+    })
+
+    it('should not render the ChatIntegrationListSelection component when chat flag is disabled', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentChat]: false,
+        })
+        renderComponent({
+            shopName: 'test-shop',
+            shopType: 'shopify',
+        })
+
+        expect(
+            screen.queryByText('ChatIntegrationListSelection')
+        ).not.toBeInTheDocument()
     })
 })

@@ -15,14 +15,14 @@ const defaultProps = {
 }
 
 describe('ToneOfVoiceFormComponent', () => {
-    test('renders select field and label', () => {
+    it('renders select field and label', () => {
         render(<ToneOfVoiceFormComponent {...defaultProps} />)
 
         expect(screen.getByText('Tone of voice')).toBeInTheDocument()
         expect(screen.getByLabelText('Tone of voice')).toBeInTheDocument()
     })
 
-    test('displays custom tone of voice guidance when "Custom" is selected', () => {
+    it('displays custom tone of voice guidance when "Custom" is selected', () => {
         const customProps = {
             ...defaultProps,
             toneOfVoice: ToneOfVoice.Custom,
@@ -36,7 +36,7 @@ describe('ToneOfVoiceFormComponent', () => {
         ).toBeInTheDocument()
     })
 
-    test('calls updateValue when custom tone of voice guidance is changed', () => {
+    it('calls updateValue when custom tone of voice guidance is changed', () => {
         const customProps = {
             ...defaultProps,
             toneOfVoice: ToneOfVoice.Custom,
@@ -53,5 +53,30 @@ describe('ToneOfVoiceFormComponent', () => {
             'customToneOfVoiceGuidance',
             'New custom guidance'
         )
+    })
+
+    it('display proper label when chat is available', () => {
+        const customProps = {
+            ...defaultProps,
+            hasChat: true,
+        }
+
+        render(<ToneOfVoiceFormComponent {...customProps} />)
+
+        expect(
+            screen.getByText(
+                'Select a tone of voice for AI Agent to use with customers. For Chat, the language used will be more succinct.'
+            )
+        ).toBeInTheDocument()
+    })
+
+    it('display proper label when chat is not available', () => {
+        render(<ToneOfVoiceFormComponent {...defaultProps} />)
+
+        expect(
+            screen.getByText(
+                'Select a tone of voice for AI Agent to use with customers.'
+            )
+        ).toBeInTheDocument()
     })
 })

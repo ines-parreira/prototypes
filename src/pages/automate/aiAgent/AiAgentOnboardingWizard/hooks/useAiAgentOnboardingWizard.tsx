@@ -1,5 +1,5 @@
 import {useParams} from 'react-router-dom'
-import {useCallback, useMemo} from 'react'
+import {useCallback, useMemo, useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import {
@@ -69,6 +69,7 @@ export const useAiAgentOnboardingWizard = ({
     }>()
     const navigateWizardSteps = useNavigateWizardSteps()
     const {routes} = useAiAgentNavigation({shopName})
+    const [isLoading, setIsLoading] = useState(false)
 
     const {data: helpCenterListData, isLoading: isLoadingHelpCenters} =
         useGetHelpCenterList(
@@ -214,6 +215,7 @@ export const useAiAgentOnboardingWizard = ({
         stepName,
         payload,
     }: handleSaveParams) => {
+        setIsLoading(true)
         const res = await handleOnSave({
             publicUrls,
             shopName,
@@ -222,6 +224,7 @@ export const useAiAgentOnboardingWizard = ({
             stepName: stepName || step,
         })
 
+        setIsLoading(false)
         if (!res) return
 
         if (step === AiAgentOnboardingWizardStep.Knowledge) {
@@ -244,6 +247,7 @@ export const useAiAgentOnboardingWizard = ({
         isLoading:
             isPendingCreateOrUpdate ||
             isLoadingHelpCenters ||
-            isLoadingSnippetHelpCenter,
+            isLoadingSnippetHelpCenter ||
+            isLoading,
     }
 }
