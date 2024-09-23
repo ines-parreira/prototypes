@@ -66,11 +66,21 @@ const getChatChannelMessagesFromResponse = (
 ) => {
     const messages: PlaygroundMessage[] = []
 
-    if (aiAgentResponse.qa.output.validate_generated_message) {
+    if (
+        aiAgentResponse.qa.output.validate_generated_message &&
+        aiAgentResponse.generate.output.generated_message.length > 0
+    ) {
         messages.push({
             sender: AI_AGENT_SENDER,
             type: MessageType.MESSAGE,
             content: aiAgentResponse.generate.output.generated_message,
+            createdDatetime: new Date().toISOString(),
+        })
+    } else if (aiAgentResponse.postProcessing.htmlReply) {
+        messages.push({
+            sender: AI_AGENT_SENDER,
+            type: MessageType.MESSAGE,
+            content: aiAgentResponse.postProcessing.htmlReply,
             createdDatetime: new Date().toISOString(),
         })
     }
@@ -80,6 +90,15 @@ const getChatChannelMessagesFromResponse = (
             sender: AI_AGENT_SENDER,
             type: MessageType.MESSAGE,
             content: 'Was that helpful?',
+            createdDatetime: new Date().toISOString(),
+        })
+    }
+
+    if (aiAgentResponse.postProcessing.internalNote.length > 0) {
+        messages.push({
+            sender: AI_AGENT_SENDER,
+            type: MessageType.INTERNAL_NOTE,
+            content: aiAgentResponse.postProcessing.internalNote,
             createdDatetime: new Date().toISOString(),
         })
     }

@@ -288,5 +288,88 @@ describe('playground-handler.utils', () => {
                 ])
             })
         })
+
+        it('should return an empty array when no messages should be displayed', () => {
+            const aiAgentResponse = getSubmitPlaygroundTicketResponseFixture({
+                generate: {
+                    output: {
+                        generated_message: '',
+                        outcome: TicketOutcome.CLOSE,
+                    },
+                },
+                qa: {
+                    output: {
+                        validate_outcome: false,
+                        validate_generated_message: false,
+                    },
+                },
+            })
+            const result = handleAiAgentResponse({
+                aiAgentResponse,
+                channel: 'chat',
+                storeData: getStoreConfigurationFixture(),
+            })
+            expect(result).toEqual([])
+        })
+
+        it('should return internal note when internal note field is not empty', () => {
+            const aiAgentResponse = getSubmitPlaygroundTicketResponseFixture({
+                postProcessing: {
+                    internalNote: 'Internal note',
+                    htmlReply: null,
+                },
+            })
+            const result = handleAiAgentResponse({
+                aiAgentResponse,
+                channel: 'chat',
+                storeData: getStoreConfigurationFixture(),
+            })
+            expect(result).toEqual(
+                expect.arrayContaining([
+                    {
+                        sender: AI_AGENT_SENDER,
+                        type: MessageType.INTERNAL_NOTE,
+                        content: 'Internal note',
+                        createdDatetime: DATE.toISOString(),
+                    },
+                ])
+            )
+        })
+
+        it('should return message when generated message is not empty and qa is failed and post processing reply is not empty', () => {
+            const aiAgentResponse = getSubmitPlaygroundTicketResponseFixture({
+                generate: {
+                    output: {
+                        generated_message: 'Generated message',
+                        outcome: TicketOutcome.CLOSE,
+                    },
+                },
+                postProcessing: {
+                    internalNote: '',
+                    htmlReply: 'Post Processing message',
+                },
+                qa: {
+                    output: {
+                        validate_outcome: false,
+                        validate_generated_message: false,
+                    },
+                },
+            })
+            const result = handleAiAgentResponse({
+                aiAgentResponse,
+                channel: 'chat',
+                storeData: getStoreConfigurationFixture(),
+            })
+            expect(result).toEqual(
+                expect.arrayContaining([
+                    {
+                        sender: AI_AGENT_SENDER,
+                        type: MessageType.MESSAGE,
+                        content: 'Post Processing message',
+                        createdDatetime: DATE.toISOString(),
+                    },
+                ])
+            )
+        })
     })
 })
