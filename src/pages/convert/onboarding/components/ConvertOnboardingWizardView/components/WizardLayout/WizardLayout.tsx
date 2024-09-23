@@ -115,8 +115,6 @@ const WizardLayout = ({
 
     // Callbacks
     const handleFinishSetup = useCallback(async () => {
-        if (updateChannelConnection.isLoading) return
-
         if (!!channelConnection) {
             try {
                 await Promise.all(
@@ -244,7 +242,11 @@ const WizardLayout = ({
                 nextStepLabel={nextStepLabel}
                 handleNextStep={handleNextStep}
                 handleBack={handleBack}
-                isLoading={isSubmitting}
+                isLoading={
+                    isSubmitting ||
+                    updateChannelConnection.isLoading ||
+                    createCampaign.isLoading
+                }
             />
         </div>
     )
