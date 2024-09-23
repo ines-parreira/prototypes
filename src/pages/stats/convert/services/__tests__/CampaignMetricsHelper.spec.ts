@@ -14,6 +14,7 @@ import {
     transformToRevenueShareOverTime,
     transformToStoreTotal,
     transformToCampaignAbTestEvent,
+    transformToCampaignRevenueOverTime,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {Stat} from 'models/stat/types'
 import {
@@ -611,6 +612,27 @@ describe('Campaign metrics helper tests', () => {
             expect(result).toStrictEqual({
                 [AbTestMetricNames.orderCount]: 1,
                 [AbTestMetricNames.firstImpression]: '2024-03-10T07:31:49.000',
+            })
+        })
+    })
+
+    describe('transformToCampaignRevenueOverTime', () => {
+        const ctrDataPoint = {
+            [OrderConversionMeasure.campaignSales]: '15.65',
+            [`${OrderConversionDimension.createdDatatime}.day`]:
+                '2024-08-16T07:00:00.000',
+            [OrderConversionDimension.createdDatatime]:
+                '2024-08-16T07:00:00.000',
+        }
+
+        it('should return correct data', () => {
+            const result = transformToCampaignRevenueOverTime(
+                ctrDataPoint,
+                ReportingGranularity.Day
+            )
+            expect(result).toStrictEqual({
+                x: '2024-08-16',
+                y: 15.65,
             })
         })
     })

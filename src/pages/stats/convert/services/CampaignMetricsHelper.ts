@@ -200,6 +200,17 @@ export const transformToRevenueShareOverTime = (
     )
 }
 
+export const transformToCampaignRevenueOverTime = (
+    dataPoint: CubeMetric,
+    granularityValue: ReportingGranularity
+): RevenueGraphDataPoint => {
+    return _transformToGraphOverTime(
+        dataPoint,
+        OrderConversionMeasure.campaignSales,
+        `${OrderConversionDimension.createdDatatime}.${granularityValue}`
+    )
+}
+
 export const transformToCampaignCTROverTime = (
     dataPoint: CubeMetric,
     granularityValue: ReportingGranularity
@@ -264,7 +275,6 @@ export const backfillGraphData = (
     endDate: string
 ): RevenueGraphDataPoint[][] => {
     const allDates = _getDefaultsForAllDates(startDate, endDate, data.length)
-
     data.map((dataSet: RevenueGraphDataPoint[], i) => {
         dataSet.map((dataPoint: RevenueGraphDataPoint) => {
             // override default value in allDates with actual data

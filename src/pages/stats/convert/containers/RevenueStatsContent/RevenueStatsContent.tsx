@@ -1,16 +1,24 @@
 import React from 'react'
 
-import DashboardSection from 'pages/stats/DashboardSection'
+import {useIsConvertPerformanceViewEnabled} from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 
+import DashboardSection from 'pages/stats/DashboardSection'
 import {CampaignTotalsStat} from 'pages/stats/convert/components/CampaignTotalsStat'
 import {CampaignRevenueShareStat} from 'pages/stats/convert/components/CampaignRevenueShareStat'
-import {CampaignPerformanceTable} from '../CampaignPerformanceTable'
+import CampaignRevenueChart from 'pages/stats/convert/components/CampaignRevenueChart'
+import {CampaignPerformanceTable} from 'pages/stats/convert/containers/CampaignPerformanceTable'
 
 export const RevenueStatsContent = () => {
+    const isConvertPerformanceViewEnabled = useIsConvertPerformanceViewEnabled()
+
     return (
         <DashboardSection title="">
             <CampaignTotalsStat />
-            <CampaignRevenueShareStat />
+            {isConvertPerformanceViewEnabled ? (
+                <CampaignRevenueChart />
+            ) : (
+                <CampaignRevenueShareStat />
+            )}
             <CampaignPerformanceTable />
         </DashboardSection>
     )
