@@ -20,9 +20,11 @@ import {
     ReportingGranularity,
     ReportingParams,
     ReportingQuery,
+    TimeSeriesQuery,
 } from 'models/reporting/types'
 import {getDateRange} from 'pages/stats/convert/clients/utils'
 import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
+import {ConvertOrderEventsCube} from 'models/reporting/cubes/ConvertOrderEventsCube'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {FilterOperatorMap} from 'models/reporting/queryFactories/utils'
 
@@ -457,4 +459,70 @@ export const getCampaignABTestEvents = ({
             ] as CubeFilter[],
         },
     ]
+}
+
+export const campaignImpressionTimeSeriesQueryFactory = ({
+    shopName,
+    campaignIds,
+    campaignsOperator,
+    startDate,
+    endDate,
+    granularity = ReportingGranularity.Day,
+    timezone,
+}: CubeFilterParams): TimeSeriesQuery<ConvertOrderEventsCube> => {
+    return {
+        dimensions: [],
+        timeDimensions: [
+            {
+                dimension: CampaignOrderEventsDimension.createdDatatime,
+                dateRange: getDateRange(startDate, endDate),
+                granularity: granularity,
+            },
+        ],
+        measures: [CampaignOrderEventsMeasure.impressions],
+        filters: _getDefaultFilters({
+            startDate,
+            endDate,
+            cubeName: Cube.campaignOrderEvents,
+            campaignsOperator,
+            campaignIds,
+            shopName,
+        }),
+        order: [
+            [CampaignOrderEventsDimension.createdDatatime, OrderDirection.Asc],
+        ],
+        timezone: timezone,
+    }
+}
+
+export const campaignOrdersTimeSeriesQueryFactory = ({
+    shopName,
+    campaignIds,
+    campaignsOperator,
+    startDate,
+    endDate,
+    granularity = ReportingGranularity.Day,
+    timezone,
+}: CubeFilterParams): TimeSeriesQuery<ConvertOrderConversionCube> => {
+    return {
+        dimensions: [],
+        timeDimensions: [
+            {
+                dimension: OrderConversionDimension.createdDatatime,
+                dateRange: getDateRange(startDate, endDate),
+                granularity: granularity,
+            },
+        ],
+        measures: [OrderConversionMeasure.campaignSalesCount],
+        filters: _getDefaultFilters({
+            startDate,
+            endDate,
+            cubeName: Cube.orderConversion,
+            campaignsOperator,
+            campaignIds,
+            shopName,
+        }),
+        order: [[OrderConversionDimension.createdDatatime, OrderDirection.Asc]],
+        timezone: timezone,
+    }
 }

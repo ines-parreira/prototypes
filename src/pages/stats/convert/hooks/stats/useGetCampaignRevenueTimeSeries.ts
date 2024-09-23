@@ -25,7 +25,7 @@ export type GetCampaignRevenue = {
     data?: RevenueGraphDataPoint[]
 }
 
-const useGetCampaignRevenue = (
+const useGetCampaignRevenueTimeSeries = (
     namespacedShopName: string,
     campaignIds: string[] | null,
     campaignsOperator: LogicalOperatorEnum,
@@ -87,4 +87,4 @@ const useGetCampaignRevenue = (
     }
 }
 
-export default useGetCampaignRevenue
+export default useGetCampaignRevenueTimeSeries

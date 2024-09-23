@@ -75,4 +75,6 @@ export enum CampaignOrderEventsMeasure {
     firstCampaignDisplay = `CampaignOrderEvents.firstCampaignDisplay`,
 }
 
+export enum CampaignOrderEventsTimeDimension {}
+
 export const CUBE_DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSS'

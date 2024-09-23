@@ -9,12 +9,12 @@ import {usePostReporting} from 'models/reporting/queries'
 import {getDataFromResult} from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
-import useGetCampaignRevenue from '../useGetCampaignRevenue'
+import useGetCampaignRevenueTimeSeries from '../useGetCampaignRevenueTimeSeries'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
 
-describe('useGetCampaignRevenue', () => {
+describe('useGetCampaignRevenueTimeSeries', () => {
     const defaultReporting = {
         isFetching: false,
         isError: false,
@@ -57,7 +57,9 @@ describe('useGetCampaignRevenue', () => {
             isError: true,
         } as UseQueryResult)
 
-        const {result} = renderHook(() => useGetCampaignRevenue(...hookArgs))
+        const {result} = renderHook(() =>
+            useGetCampaignRevenueTimeSeries(...hookArgs)
+        )
 
         expect(result.current.isError).toBe(true)
     })
@@ -66,7 +68,9 @@ describe('useGetCampaignRevenue', () => {
         const args: typeof hookArgs = [...hookArgs]
         args[1] = null
 
-        const {result} = renderHook(() => useGetCampaignRevenue(...args))
+        const {result} = renderHook(() =>
+            useGetCampaignRevenueTimeSeries(...args)
+        )
 
         usePostReportingMock.mock.calls.map((call) => {
             expect(call[1]?.enabled).toBe(false)
@@ -85,7 +89,9 @@ describe('useGetCampaignRevenue', () => {
             data: campaignRevenueData,
         } as UseQueryResult)
 
-        const {result} = renderHook(() => useGetCampaignRevenue(...hookArgs))
+        const {result} = renderHook(() =>
+            useGetCampaignRevenueTimeSeries(...hookArgs)
+        )
 
         expect(usePostReportingMock).toBeCalledWith(
             expect.arrayContaining([

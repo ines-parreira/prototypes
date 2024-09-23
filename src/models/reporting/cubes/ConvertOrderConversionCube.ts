@@ -8,6 +8,5 @@ export type ConvertOrderConversionCube = Cube<
     OrderConversionMeasure,
     OrderConversionDimension,
     never,
-    never,
     never
 >

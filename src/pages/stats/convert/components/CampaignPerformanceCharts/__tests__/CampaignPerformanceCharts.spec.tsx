@@ -1,22 +1,26 @@
 import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
+
 import {fromJS} from 'immutable'
 
 import {campaign} from 'fixtures/campaign'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
-
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import useGetCampaignRevenueTimeSeries from 'pages/stats/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
+import useCampaignPerformanceTimeSeries from 'pages/stats/convert/hooks/stats/useCampaignPerformanceTimeSeries'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 
-import CampaignRevenueChart from '../CampaignRevenueChart'
+import CampaignPerformanceCharts from '../CampaignPerformanceCharts'
 
 jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 
-jest.mock('pages/stats/convert/hooks/stats/useGetCampaignRevenueTimeSeries')
-const useGetCampaignRevenueMock = assumeMock(useGetCampaignRevenueTimeSeries)
+jest.mock('pages/stats/convert/hooks/stats/useCampaignPerformanceTimeSeries')
+const useCampaignPerformanceTimeSeriesMock = assumeMock(
+    useCampaignPerformanceTimeSeries
+)
 
 jest.mock('pages/stats/common/components/charts/LineChart/LineChart', () => ({
     __esModule: true,
@@ -25,7 +29,9 @@ jest.mock('pages/stats/common/components/charts/LineChart/LineChart', () => ({
     },
 }))
 
-describe('<CampaignRevenueChart />', () => {
+const queryClient = mockQueryClient()
+
+describe('CampaignPerformanceCharts', () => {
     beforeAll(() => {
         useCampaignStatsFiltersMock.mockReturnValue({
             selectedPeriod: {
@@ -38,24 +44,29 @@ describe('<CampaignRevenueChart />', () => {
             campaigns: [campaign],
         } as any)
 
-        useGetCampaignRevenueMock.mockReturnValue({
+        useCampaignPerformanceTimeSeriesMock.mockReturnValue({
             isFetching: false,
             isError: false,
-            data: [],
+            data: undefined,
         })
     })
 
-    it('renders without errors', () => {
-        const {getByText} = renderWithStore(<CampaignRevenueChart />, {
-            integrations: fromJS({
-                integrations: [
-                    ...integrationsState.integrations,
-                    shopifyIntegration,
-                ],
-            }),
-        })
+    it('renders', () => {
+        const {getAllByText} = renderWithStore(
+            <QueryClientProvider client={queryClient}>
+                <CampaignPerformanceCharts />
+            </QueryClientProvider>,
+            {
+                integrations: fromJS({
+                    integrations: [
+                        ...integrationsState.integrations,
+                        shopifyIntegration,
+                    ],
+                }),
+            }
+        )
 
-        expect(useGetCampaignRevenueMock).toHaveBeenCalledTimes(1)
-        expect(getByText('LineChart')).toBeInTheDocument()
+        expect(useCampaignPerformanceTimeSeriesMock).toHaveBeenCalledTimes(1)
+        expect(getAllByText('LineChart')).toHaveLength(3)
     })
 })
