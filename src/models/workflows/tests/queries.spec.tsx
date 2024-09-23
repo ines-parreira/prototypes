@@ -13,6 +13,7 @@ import {
     useGetConfigurationExecutions,
     useGetConfigurationExecution,
     useGetConfigurationExecutionLogs,
+    useDeleteWorkflowConfigurationTemplate,
 } from '../queries'
 
 const mockedServer = new MockAdapter(axios)
@@ -232,6 +233,26 @@ describe('queries', () => {
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
             expect(result.current.data).toEqual([])
+        })
+    })
+
+    describe('useDeleteWorkflowConfigurationTemplate()', () => {
+        it('should delete workflow configuration template on success', async () => {
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onDelete(/configuration-templates\/\w+/)
+                .reply(204)
+
+            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
+                useDeleteWorkflowConfigurationTemplate()
+            )
+
+            act(() => {
+                result.current.mutate([{internal_id: 'someid'}])
+            })
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
         })
     })
 })

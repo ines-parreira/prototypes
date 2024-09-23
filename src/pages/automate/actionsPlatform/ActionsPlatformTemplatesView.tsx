@@ -12,6 +12,7 @@ import ActionsPlatformTemplatesTable from './components/ActionsPlatformTemplates
 import ActionsPlatformTemplatesTableRow from './components/ActionsPlatformTemplatesTableRow'
 import useApps from './hooks/useApps'
 import useGetAppFromTemplateApp from './hooks/useGetAppFromTemplateApp'
+import useDeleteActionTemplate from './hooks/useDeleteActionTemplate'
 import {ActionTemplate, App} from './types'
 
 import css from './ActionsPlatformTemplatesView.less'
@@ -23,6 +24,8 @@ const ActionsPlatformTemplatesView = () => {
     } = useGetWorkflowConfigurationTemplates({
         triggers: ['llm-prompt'],
     })
+    const {deleteActionTemplate, isLoading: isDeleteActionTemplateLoading} =
+        useDeleteActionTemplate()
     const {apps, isLoading: areAppsLoading, actionsApps} = useApps()
     const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
     const history = useHistory()
@@ -132,6 +135,12 @@ const ActionsPlatformTemplatesView = () => {
                                 `/app/automation/actions-platform/edit/${template.id}`
                             )
                         }}
+                        onDelete={() => {
+                            void deleteActionTemplate([
+                                {internal_id: template.internal_id},
+                            ])
+                        }}
+                        isDisabled={isDeleteActionTemplateLoading}
                     />
                 ))}
             </ActionsPlatformTemplatesTable>

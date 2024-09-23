@@ -179,6 +179,22 @@ export const useUpsertWorkflowConfigurationTemplate = (
     })
 }
 
+export const useDeleteWorkflowConfigurationTemplate = (
+    overrides?: MutationOverrides<
+        OperationMethods['WfConfigurationTemplateController_delete']
+    >
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.WfConfigurationTemplateController_delete(
+                ...params
+            )
+        },
+        ...overrides,
+    })
+}
+
 export const useGetWorkflowConfiguration = (
     id: string,
     overrides?: UseQueryOptions<
@@ -215,6 +231,7 @@ export const useUpsertWorkflowConfiguration = <TContext = unknown>(
         ...overrides,
     })
 }
+
 export const useDeleteWorkflowConfiguration = (
     overrides?: MutationOverrides<
         OperationMethods['WfConfigurationController_delete']

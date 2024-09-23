@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, screen} from '@testing-library/react'
+import {act, fireEvent, render, screen} from '@testing-library/react'
 
 import {IntegrationType} from 'models/integration/constants'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
@@ -29,6 +29,7 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
                     type: IntegrationType.Shopify,
                 }}
                 onClick={jest.fn()}
+                onDelete={jest.fn()}
             />
         )
 
@@ -56,9 +57,66 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
                     type: IntegrationType.Shopify,
                 }}
                 onClick={jest.fn()}
+                onDelete={jest.fn()}
             />
         )
 
         expect(screen.getByText('draft')).toBeInTheDocument()
+    })
+
+    it('should allow to delete draft template', () => {
+        const mockOnDelete = jest.fn()
+
+        render(
+            <ActionsPlatformTemplatesTableRow
+                template={{
+                    name: 'test',
+                    apps: [{type: 'shopify'}],
+                    updated_datetime: '2024-08-02T08:18:51.611Z',
+                    is_draft: true,
+                }}
+                app={{
+                    icon: '/assets/img/integrations/shopify.png',
+                    id: 'shopify',
+                    name: 'Shopify',
+                    type: IntegrationType.Shopify,
+                }}
+                onClick={jest.fn()}
+                onDelete={mockOnDelete}
+            />
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('delete'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Delete'))
+        })
+
+        expect(mockOnDelete).toHaveBeenCalled()
+    })
+
+    it('should not allow to delete non-draft template', () => {
+        render(
+            <ActionsPlatformTemplatesTableRow
+                template={{
+                    name: 'test',
+                    apps: [{type: 'shopify'}],
+                    updated_datetime: '2024-08-02T08:18:51.611Z',
+                    is_draft: false,
+                }}
+                app={{
+                    icon: '/assets/img/integrations/shopify.png',
+                    id: 'shopify',
+                    name: 'Shopify',
+                    type: IntegrationType.Shopify,
+                }}
+                onClick={jest.fn()}
+                onDelete={jest.fn()}
+            />
+        )
+
+        expect(screen.getByTitle('Delete')).toBeAriaDisabled()
     })
 })

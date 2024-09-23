@@ -4,6 +4,7 @@ import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import {OrderDirection} from 'models/api/types'
 
 type Props = {
@@ -32,6 +33,7 @@ const ActionsPlatformTemplatesTable = ({
                         toggleOrderBy('updated_datetime')
                     }}
                 />
+                <HeaderCell />
             </TableHead>
             <TableBody>{children}</TableBody>
         </TableWrapper>

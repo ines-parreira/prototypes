@@ -6,17 +6,20 @@ import {IntegrationType} from 'models/integration/constants'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 
 import useApps from '../hooks/useApps'
+import useDeleteActionTemplate from '../hooks/useDeleteActionTemplate'
 import ActionsPlatformTemplatesView from '../ActionsPlatformTemplatesView'
 
 jest.mock('models/workflows/queries')
 jest.mock('hooks/useGetDateAndTimeFormat')
 jest.mock('../hooks/useApps')
+jest.mock('../hooks/useDeleteActionTemplate')
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
 )
 const mockUseApps = jest.mocked(useApps)
 const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
+const mockUseDeleteActionTemplate = jest.mocked(useDeleteActionTemplate)
 
 mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
     data: [
@@ -60,6 +63,10 @@ mockUseApps.mockReturnValue({
     actionsApps: [],
 })
 mockUseGetDateAndTimeFormat.mockReturnValue('MM/DD/YYYY')
+mockUseDeleteActionTemplate.mockReturnValue({
+    isLoading: false,
+    deleteActionTemplate: jest.fn(),
+})
 
 describe('<ActionsPlatformTemplatesView />', () => {
     it('should render actions platform templates page', () => {
