@@ -16,7 +16,7 @@ import {
     formatVoiceCallsData,
     filterLiveCallsByStatus,
     orderLiveVoiceCallsByOngoingTime,
-    isLiveOutboundCallRinging,
+    isLiveCallRinging,
 } from './utils'
 import {LiveVoiceStatusFilterOption} from './types'
 
@@ -361,14 +361,14 @@ describe('utils', () => {
         })
     })
 
-    describe('isLiveOutboundCallRinging', () => {
+    describe('isLiveCallRinging', () => {
         it.each([
             VoiceCallStatus.InProgress,
             VoiceCallStatus.Ringing,
             VoiceCallStatus.Initiated,
             VoiceCallStatus.Queued,
         ])('should return true for status %s', (status) => {
-            const result = isLiveOutboundCallRinging(status)
+            const result = isLiveCallRinging(status)
 
             expect(result).toBe(true)
         })
@@ -383,7 +383,7 @@ describe('utils', () => {
             VoiceCallStatus.Connected,
             VoiceCallStatus.Completed,
         ])('should return false for status %s', (status) => {
-            const result = isLiveOutboundCallRinging(status)
+            const result = isLiveCallRinging(status)
 
             expect(result).toBe(false)
         })

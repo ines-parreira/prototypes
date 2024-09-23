@@ -4,8 +4,10 @@ import {isFinalVoiceCallStatus} from 'models/voiceCall/utils'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 import {AgentLabel, CustomerLabel} from 'pages/common/utils/labels'
+import {VoiceCallStatus} from 'models/voiceCall/types'
 import {isInboundVoiceCallSummary, VoiceCallSummary} from '../../models/types'
 
+import {isLiveCallRinging} from '../LiveVoice/utils'
 import css from './VoiceCallActivity.less'
 
 type Props = {
@@ -37,11 +39,7 @@ const InboundVoiceCallActivity = ({voiceCall}: Props) => {
                     }
                 />
             )}
-            <div>
-                {isFinalVoiceCallStatus(voiceCall.status)
-                    ? 'called'
-                    : 'calling'}
-            </div>
+            <div>{getActionLabel(voiceCall.status, voiceCall.agentId)}</div>
 
             {!!voiceCall.agentId && (
                 <div className={css.agent}>
@@ -80,11 +78,8 @@ const OutboundVoiceCallActivity = ({voiceCall}: Props) => {
                     />
                 )}
             </span>
-            <div>
-                {isFinalVoiceCallStatus(voiceCall.status)
-                    ? 'called'
-                    : 'calling'}
-            </div>
+            <div>{getActionLabel(voiceCall.status, voiceCall.agentId)}</div>
+
             {voiceCall.customerId ? (
                 <VoiceCallCustomerLabel
                     customerId={voiceCall.customerId}
@@ -115,4 +110,27 @@ export default function VoiceCallActivity({voiceCall}: Props) {
             )}
         </div>
     )
+}
+
+const getActionLabel = (status: VoiceCallStatus, calleeId: number | null) => {
+    const isCallRinging = isLiveCallRinging(status)
+    const isFinalStatus = isFinalVoiceCallStatus(status)
+
+    if (isCallRinging && !calleeId) {
+        return ''
+    }
+
+    if (isCallRinging && calleeId) {
+        return 'calling'
+    }
+
+    if (!isFinalStatus && calleeId) {
+        return 'on call with'
+    }
+
+    if (isFinalStatus) {
+        return 'called'
+    }
+
+    return ''
 }

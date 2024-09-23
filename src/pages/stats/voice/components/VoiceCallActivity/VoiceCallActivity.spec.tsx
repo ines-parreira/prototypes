@@ -5,14 +5,17 @@ import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall
 import {isFinalVoiceCallStatus} from 'models/voiceCall/utils'
 import {assumeMock} from 'utils/testing'
 import {VoiceCallSummary} from '../../models/types'
+import {isLiveCallRinging} from '../LiveVoice/utils'
 import VoiceCallActivity from './VoiceCallActivity'
 
 jest.mock('models/voiceCall/utils')
+jest.mock('pages/stats/voice/components/LiveVoice/utils')
 
 const useCustomerDetailsSpy = jest.spyOn(voiceCallHooks, 'useCustomerDetails')
 const useAgentDetailsSpy = jest.spyOn(voiceCallHooks, 'useAgentDetails')
 
 const isFinalVoiceCallStatusMock = assumeMock(isFinalVoiceCallStatus)
+const isLiveCallRingingMock = assumeMock(isLiveCallRinging)
 
 describe('VoiceCallActivity', () => {
     it('should render completed inbound call activity', () => {
@@ -42,7 +45,7 @@ describe('VoiceCallActivity', () => {
         expect(getByText('Agent Name')).toBeInTheDocument()
     })
 
-    it('should render ringing inbound call activity', () => {
+    it('should render waiting inbound call activity', () => {
         useCustomerDetailsSpy.mockReturnValue({
             customer: 'Customer Name',
         } as any)
@@ -50,9 +53,41 @@ describe('VoiceCallActivity', () => {
             data: {name: 'Agent Name'},
         } as any)
         isFinalVoiceCallStatusMock.mockReturnValue(false)
+        isLiveCallRingingMock.mockReturnValue(true)
 
         const voiceCall = {
             agentId: null,
+            customerId: 2,
+            phoneNumberSource: '123',
+            phoneNumberDestination: '456',
+            status: VoiceCallStatus.Ringing,
+            direction: 'inbound',
+        } as VoiceCallSummary
+
+        const {getByText, queryByText} = render(
+            <VoiceCallActivity voiceCall={voiceCall} />
+        )
+
+        const icon = getByText('call_received')
+        expect(icon).toBeInTheDocument()
+        expect(getByText('Customer Name')).toBeInTheDocument()
+        // no other "call" text should be present except for the icon
+        expect(queryByText(RegExp('^(?!.*call_received).*call.*'))).toBeNull()
+        expect(useAgentDetailsSpy).not.toHaveBeenCalled()
+    })
+
+    it('should render "ringing agent" inbound call activity', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+        useAgentDetailsSpy.mockReturnValue({
+            data: {name: 'Agent Name'},
+        } as any)
+        isFinalVoiceCallStatusMock.mockReturnValue(false)
+        isLiveCallRingingMock.mockReturnValue(true)
+
+        const voiceCall = {
+            agentId: 1,
             customerId: 2,
             phoneNumberSource: '123',
             phoneNumberDestination: '456',
@@ -66,7 +101,7 @@ describe('VoiceCallActivity', () => {
         expect(icon).toBeInTheDocument()
         expect(getByText('Customer Name')).toBeInTheDocument()
         expect(getByText('calling')).toBeInTheDocument()
-        expect(useAgentDetailsSpy).not.toHaveBeenCalled()
+        expect(getByText('Agent Name')).toBeInTheDocument()
     })
 
     it('should render missed inbound call activity', () => {
@@ -77,6 +112,7 @@ describe('VoiceCallActivity', () => {
             data: {name: 'Agent Name'},
         } as any)
         isFinalVoiceCallStatusMock.mockReturnValue(true)
+        isLiveCallRingingMock.mockReturnValue(false)
 
         const voiceCall = {
             agentId: null,
@@ -94,6 +130,34 @@ describe('VoiceCallActivity', () => {
         expect(getByText('Customer Name')).toBeInTheDocument()
         expect(getByText('called')).toBeInTheDocument()
         expect(useAgentDetailsSpy).not.toHaveBeenCalled()
+    })
+
+    it('should render ongoing inbound call activity', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+        useAgentDetailsSpy.mockReturnValue({
+            data: {name: 'Agent Name'},
+        } as any)
+        isFinalVoiceCallStatusMock.mockReturnValue(false)
+        isLiveCallRingingMock.mockReturnValue(false)
+
+        const voiceCall = {
+            agentId: 1,
+            customerId: 2,
+            phoneNumberSource: '123',
+            phoneNumberDestination: '456',
+            status: VoiceCallStatus.Connected,
+            direction: 'inbound',
+        } as VoiceCallSummary
+
+        const {getByText} = render(<VoiceCallActivity voiceCall={voiceCall} />)
+
+        const icon = getByText('call_received')
+        expect(icon).toBeInTheDocument()
+        expect(getByText('Customer Name')).toBeInTheDocument()
+        expect(getByText('on call with')).toBeInTheDocument()
+        expect(getByText('Agent Name')).toBeInTheDocument()
     })
 
     it.each([
@@ -245,6 +309,7 @@ describe('VoiceCallActivity', () => {
             data: {name: 'Agent Name'},
         } as any)
         isFinalVoiceCallStatusMock.mockReturnValue(false)
+        isLiveCallRingingMock.mockReturnValue(true)
 
         const voiceCall = {
             agentId: 1,
@@ -261,6 +326,34 @@ describe('VoiceCallActivity', () => {
         expect(icon).toBeInTheDocument()
         expect(getByText('Customer Name')).toBeInTheDocument()
         expect(getByText('calling')).toBeInTheDocument()
+        expect(getByText('Agent Name')).toBeInTheDocument()
+    })
+
+    it('should render ongoing outbound call activity', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+        useAgentDetailsSpy.mockReturnValue({
+            data: {name: 'Agent Name'},
+        } as any)
+        isFinalVoiceCallStatusMock.mockReturnValue(false)
+        isLiveCallRingingMock.mockReturnValue(false)
+
+        const voiceCall = {
+            agentId: 1,
+            customerId: 2,
+            phoneNumberSource: '123',
+            phoneNumberDestination: '456',
+            status: VoiceCallStatus.Connected,
+            direction: 'outbound',
+        } as VoiceCallSummary
+
+        const {getByText} = render(<VoiceCallActivity voiceCall={voiceCall} />)
+
+        const icon = getByText('call_made')
+        expect(icon).toBeInTheDocument()
+        expect(getByText('Customer Name')).toBeInTheDocument()
+        expect(getByText('on call with')).toBeInTheDocument()
         expect(getByText('Agent Name')).toBeInTheDocument()
     })
 

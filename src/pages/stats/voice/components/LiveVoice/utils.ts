@@ -127,7 +127,7 @@ export const isLiveInboundVoiceCallAnswered = (
     }
 }
 
-export const isLiveOutboundCallRinging = (status: VoiceCallStatus): boolean => {
+export const isLiveCallRinging = (status: VoiceCallStatus): boolean => {
     switch (status) {
         case VoiceCallStatus.Ringing:
         case VoiceCallStatus.InProgress:

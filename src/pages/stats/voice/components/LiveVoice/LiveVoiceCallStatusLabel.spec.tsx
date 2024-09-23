@@ -5,17 +5,14 @@ import {assumeMock} from 'utils/testing'
 import {VoiceCallStatus} from 'models/voiceCall/types'
 import {VoiceCallSummary} from '../../models/types'
 import LiveVoiceCallStatusLabel from './LiveVoiceCallStatusLabel'
-import {
-    isLiveInboundVoiceCallAnswered,
-    isLiveOutboundCallRinging,
-} from './utils'
+import {isLiveInboundVoiceCallAnswered, isLiveCallRinging} from './utils'
 
 jest.mock('./utils')
 
 const isLiveInboundVoiceCallAnsweredMock = assumeMock(
     isLiveInboundVoiceCallAnswered
 )
-const isLiveOutboundCallRingingMock = assumeMock(isLiveOutboundCallRinging)
+const isLiveCallRingingMock = assumeMock(isLiveCallRinging)
 
 const renderComponent = (
     direction: VoiceCallDirection,
@@ -27,7 +24,7 @@ const renderComponent = (
 describe('LiveVoiceCallStatusLabel', () => {
     describe('outbound calls', () => {
         it('should render "Ringing" status for outbound calls that are ringing', () => {
-            isLiveOutboundCallRingingMock.mockReturnValue(true)
+            isLiveCallRingingMock.mockReturnValue(true)
 
             renderComponent(
                 VoiceCallDirection.Outbound,
@@ -38,7 +35,7 @@ describe('LiveVoiceCallStatusLabel', () => {
         })
 
         it('should render "In progress" status for outbound calls that are not ringing', () => {
-            isLiveOutboundCallRingingMock.mockReturnValue(false)
+            isLiveCallRingingMock.mockReturnValue(false)
 
             renderComponent(
                 VoiceCallDirection.Outbound,
