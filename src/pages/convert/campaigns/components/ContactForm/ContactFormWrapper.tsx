@@ -11,12 +11,7 @@ import {STEPS} from 'pages/convert/campaigns/components/ContactForm/steps'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import EditorDrawerHeader from 'pages/automate/workflows/editor/visualBuilder/EditorDrawerHeader'
-import {
-    CampaignDiscountOfferAttachment,
-    CampaignFormExtra,
-    ContactFormField,
-    ContactFormTarget,
-} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {TransitoryAttachmentData} from 'pages/convert/campaigns/components/ContactForm/types'
 
 type ContactFormWrapperProps = {
     open: boolean
@@ -31,16 +26,30 @@ type ContactFormProps = {
 } & ContactFormWrapperProps
 
 const ContactForm = (props: ContactFormProps) => {
-    const [data, setData] = useState<CampaignFormExtra>({
-        fields: [] as ContactFormField[],
-        after_form_content: {cta: '', disclaimer: ''},
-        on_success_content: {
-            message: '',
-            attachments: [] as CampaignDiscountOfferAttachment[],
+    const [data, setData] = useState<TransitoryAttachmentData>({
+        subscriberTypes: {
+            shopify: {
+                enabled: true,
+                isEmailSubscriber: true,
+                isSmsSubscriber: true,
+                tags: [],
+            },
         },
-        targets: [
-            {type: 'shopify', subscriber_types: ['email'], tags: []},
-        ] as ContactFormTarget[],
+        forms: {
+            email: {
+                label: 'Email',
+                cta: 'Subscribe',
+                disclaimerEnabled: true,
+                disclaimer:
+                    'By entering the email address above, you opt in to receive marketing emails from [x]. ' +
+                    'You can unsubscribe at any time. Terms of Use and Private Policy.',
+                preSelectDisclaimer: false,
+            },
+        },
+        postSubmissionMessage: {
+            enabled: true,
+            message: '',
+        },
     })
 
     const {open, onOpenChange, onCancel, onSubmit, onReset, steps} = props

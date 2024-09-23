@@ -1,11 +1,39 @@
-import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
-
-type SetAttachmentDataCallback = (state: CampaignFormExtra) => CampaignFormExtra
+type SetAttachmentDataCallback = (
+    state: TransitoryAttachmentData
+) => TransitoryAttachmentData
 
 export type StepProps = {
     setNextButtonActive: (state: boolean) => void
-    attachmentData: CampaignFormExtra
+    attachmentData: TransitoryAttachmentData
     setAttachmentData: (
-        data: CampaignFormExtra | SetAttachmentDataCallback
-    ) => void | CampaignFormExtra
+        data: TransitoryAttachmentData | SetAttachmentDataCallback
+    ) => void | TransitoryAttachmentData
+}
+
+export type TransitoryAttachmentSubscriber = {
+    enabled: boolean
+    isEmailSubscriber: boolean
+    isSmsSubscriber: boolean
+    tags: string[]
+}
+
+export type TransitoryAttachmentForm = {
+    label: string
+    cta: string
+    disclaimerEnabled: boolean
+    disclaimer: string
+    preSelectDisclaimer: boolean
+}
+
+export type TransitoryAttachmentData = {
+    subscriberTypes: {
+        shopify: TransitoryAttachmentSubscriber
+    }
+    forms: {
+        email: TransitoryAttachmentForm
+    }
+    postSubmissionMessage: {
+        enabled: boolean
+        message: string
+    }
 }

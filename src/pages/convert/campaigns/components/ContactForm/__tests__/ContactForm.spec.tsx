@@ -7,12 +7,11 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {Provider} from 'react-redux'
 
 import ContactForm from 'pages/convert/campaigns/components/ContactForm/ContactFormWrapper'
-import Wizard from 'pages/common/components/wizard/Wizard'
-import {STEPS} from 'pages/convert/campaigns/components/ContactForm/steps'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import useListTags from 'tags/useListTags'
 import {user} from 'fixtures/users'
 import {UserRole} from 'config/types/user'
+import {Customisation} from 'pages/convert/campaigns/components/ContactForm/steps/Customisation'
 
 jest.mock('tags/useListTags')
 const mockStore = configureMockStore()
@@ -25,7 +24,7 @@ const store = mockStore({
 })
 const mockUseListTags = useListTags as jest.Mock
 
-describe('<ContactFormWrapper />', () => {
+describe('ContactForm test suite', () => {
     beforeEach(() => {
         mockUseListTags.mockReturnValue([])
     })
@@ -35,7 +34,7 @@ describe('<ContactFormWrapper />', () => {
         const mockOnCancel = jest.fn()
         const mockOnReset = jest.fn()
         const {getByText} = render(
-            <Wizard steps={STEPS.map((step) => step.label)}>
+            <Provider store={store}>
                 <ContactForm
                     open
                     onOpenChange={() => {}}
@@ -43,7 +42,7 @@ describe('<ContactFormWrapper />', () => {
                     onSubmit={mockOnSubmit}
                     onReset={mockOnReset}
                 />
-            </Wizard>
+            </Provider>
         )
 
         // It is expected to start at the first step
@@ -89,15 +88,13 @@ describe('<ContactFormWrapper />', () => {
         const {getByText, getByPlaceholderText} = render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
-                    <Wizard steps={STEPS.map((step) => step.label)}>
-                        <ContactForm
-                            open
-                            onOpenChange={() => {}}
-                            onCancel={jest.fn()}
-                            onSubmit={jest.fn()}
-                            onReset={jest.fn()}
-                        />
-                    </Wizard>
+                    <ContactForm
+                        open
+                        onOpenChange={() => {}}
+                        onCancel={jest.fn()}
+                        onSubmit={jest.fn()}
+                        onReset={jest.fn()}
+                    />
                 </QueryClientProvider>
             </Provider>
         )
@@ -116,5 +113,66 @@ describe('<ContactFormWrapper />', () => {
         expect(deleteTagBtn).toBeInTheDocument()
         if (deleteTagBtn) fireEvent.click(deleteTagBtn)
         act(() => getByText('Next').click())
+    })
+
+    it('should render the customisation step', async () => {
+        const state = {
+            subscriberTypes: {
+                shopify: {
+                    enabled: false,
+                    isEmailSubscriber: false,
+                    isSmsSubscriber: false,
+                    tags: [],
+                },
+            },
+            forms: {
+                email: {
+                    label: '',
+                    cta: '',
+                    disclaimerEnabled: true,
+                    disclaimer: '',
+                    preSelectDisclaimer: true,
+                },
+            },
+            postSubmissionMessage: {
+                enabled: false,
+                message: '',
+            },
+        }
+        const setState = (
+            wrapped: (innerState: typeof state) => typeof state
+        ) => {
+            const newState = wrapped(state)
+            state.subscriberTypes = newState.subscriberTypes
+            state.forms = newState.forms
+            state.postSubmissionMessage = newState.postSubmissionMessage
+        }
+
+        const {getByPlaceholderText, getByText} = render(
+            <Provider store={store}>
+                <Customisation
+                    setNextButtonActive={jest.fn()}
+                    setAttachmentData={setState as any}
+                    attachmentData={state}
+                />
+            </Provider>
+        )
+        const fieldLabelInput = getByPlaceholderText('Email')
+        const buttonLabelInput = getByPlaceholderText('Subscribe')
+        const enablePrivacyPolicyToggle = getByText(
+            'Display privacy policy disclaimer'
+        ) as HTMLInputElement
+        const preSelectDisclaimerCheckbox = getByText(
+            'Pre-select sign-up option'
+        ) as HTMLInputElement
+
+        await userEvent.type(fieldLabelInput, 'Your email')
+        expect(state.forms.email.label).toBe('Your email')
+        await userEvent.type(buttonLabelInput, 'Subscribe now!')
+        expect(state.forms.email.cta).toBe('Subscribe now!')
+        act(() => enablePrivacyPolicyToggle.click())
+        expect(state.forms.email.disclaimerEnabled).toBeFalsy()
+        act(() => preSelectDisclaimerCheckbox.click())
+        expect(state.forms.email.preSelectDisclaimer).toBeFalsy()
     })
 })

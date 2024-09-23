@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {fromJS} from 'immutable'
 import {UncontrolledTooltip} from 'reactstrap'
-import {StepProps} from 'pages/convert/campaigns/components/ContactForm/types'
 import {
-    CampaignFormExtra,
-    ContactFormSubscriberType,
-} from 'pages/convert/campaigns/types/CampaignAttachment'
+    StepProps,
+    TransitoryAttachmentData,
+    TransitoryAttachmentSubscriber,
+} from 'pages/convert/campaigns/components/ContactForm/types'
 import {getIconFromType} from 'state/integrations/helpers'
 import {IntegrationType} from 'models/integration/constants'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
@@ -14,30 +14,10 @@ import css from './SetUp.less'
 export const SetUp = (props: StepProps) => {
     const {attachmentData, setAttachmentData, setNextButtonActive} = props
 
-    const attachmentTargetToState = (type: string) => {
-        const target = attachmentData.targets.filter(
-            (target) => target.type === type
-        )[0]
-        return {
-            type: target ? target.type : type,
-            subscriber_types: {
-                sms: target ? target.subscriber_types.includes('sms') : false,
-                email: target
-                    ? target.subscriber_types.includes('email')
-                    : false,
-            },
-            tags: target ? target.tags : [],
-        }
-    }
-
-    const [shopifyTarget, setShopifyTarget] = useState<{
-        type: string
-        subscriber_types: {
-            sms: boolean
-            email: boolean
-        }
-        tags: string[]
-    }>(() => attachmentTargetToState('shopify'))
+    const [shopifyTarget, setShopifyTarget] =
+        useState<TransitoryAttachmentSubscriber>(
+            attachmentData.subscriberTypes.shopify
+        )
 
     const handleAddTag = (tag: string) => {
         setShopifyTarget((state) => ({
@@ -55,24 +35,17 @@ export const SetUp = (props: StepProps) => {
     }
 
     useEffect(() => {
-        const newSubscribers: ContactFormSubscriberType[] = []
-        if (shopifyTarget.subscriber_types.email) newSubscribers.push('email')
-        if (shopifyTarget.subscriber_types.sms) newSubscribers.push('sms')
-        setAttachmentData((state: CampaignFormExtra) => {
-            const targets = [
-                {
-                    type: 'shopify',
-                    subscriber_types: newSubscribers,
-                    tags: shopifyTarget.tags,
-                },
-            ]
+        setAttachmentData((state: TransitoryAttachmentData) => {
             return {
                 ...state,
-                targets,
-            } as CampaignFormExtra
+                subscriberTypes: {
+                    ...state.subscriberTypes,
+                    shopify: shopifyTarget,
+                },
+            } as TransitoryAttachmentData
         })
         setNextButtonActive(
-            Object.values(shopifyTarget.subscriber_types).some((item) => !!item)
+            shopifyTarget.isEmailSubscriber || shopifyTarget.isSmsSubscriber
         )
     }, [setAttachmentData, setNextButtonActive, shopifyTarget])
 

@@ -1,0 +1,40 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography';
+
+:local {
+    @grey: var(--neutral-grey-2);
+
+    .container {
+        display: flex;
+        flex-direction: row;
+        gap: @layout-spacing-xs;
+        flex-grow: 1;
+    }
+
+    .inputGroup {
+        gap: 0;
+    }
+
+    .title {
+        .heading-section-semibold();
+    }
+
+    .label {
+        .body-semibold();
+    }
+
+    .configurationContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        flex-grow: 1;
+        max-width: 60%;
+    }
+
+    .previewContainer {
+        display: flex;
+        flex-grow: 1;
+        background-color: @grey;
+        border-radius: 4px;
+    }
+}
