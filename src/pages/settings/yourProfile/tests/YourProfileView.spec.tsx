@@ -5,14 +5,12 @@ import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {mockFlags} from 'jest-launchdarkly-mock'
 
 import {user} from 'fixtures/users'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
 import {YourProfileView} from 'pages/settings/yourProfile/components/YourProfileView'
 import {Theme, ThemeColors} from 'theme/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -52,7 +50,6 @@ describe('YourProfileView', () => {
             }),
             writable: true,
         })
-        mockFlags({[FeatureFlagKey.NewForwardCallsSection]: false})
     })
 
     afterEach(() => {

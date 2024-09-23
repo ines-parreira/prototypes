@@ -96,8 +96,6 @@ export enum FeatureFlagKey {
     NewBillingInterface = 'new-billing-interface',
     NewChannelsView = 'new-channels-view',
     NewEmailOnboarding = 'new-email-onboarding',
-    NewForwardCallsSection = 'new-forward-calls-section',
-    NewPhoneNumberCustomerSidebar = 'new-phone-number-customer-sidebar',
     NewSenderSelect = 'new-sender-select',
     NotificationsTicketAssigned = 'notifications-ticket-assigned',
     NotificationsTicketMessageCreated = 'notifications-ticket-message-created',

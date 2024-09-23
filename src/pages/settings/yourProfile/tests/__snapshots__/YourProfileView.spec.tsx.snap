@@ -746,6 +746,77 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                 Enable call forwarding
               </label>
             </div>
+            <div
+              class="forwardingPhoneNumber"
+            >
+              <div
+                class="wrapper"
+              >
+                <span
+                  class="wrapper group horizontal"
+                >
+                  <button
+                    aria-disabled="true"
+                    class="wrapper button fill secondary medium left isDisabled isAuxiliaryButton"
+                    type="button"
+                  >
+                    <span
+                      role="img"
+                      style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle;"
+                    >
+                      🇺🇸
+                    </span>
+                    <span
+                      class="ml-2 dropdown-toggle"
+                    >
+                      +
+                      1
+                    </span>
+                  </button>
+                  <div
+                    class="wrapper right isDisabled isFocused isNested"
+                  >
+                    <input
+                      class="input"
+                      disabled=""
+                      id="input-text-14"
+                      name="input-text-14"
+                      type="text"
+                      value=""
+                    />
+                    <span
+                      class="suffix"
+                    >
+                      
+                    </span>
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div
+              class="forwardWhenOffline"
+            >
+              <div>
+                <label
+                  class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+                  for="forward_when_offline"
+                >
+                  <input
+                    class="input"
+                    disabled=""
+                    id="forward_when_offline"
+                    name="forward_when_offline"
+                    type="checkbox"
+                  />
+                  Forward calls when offline
+                </label>
+                <div
+                  class="caption caption"
+                >
+                  Calls will be forwarded to this number when agent is available or offline.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,10 +1,8 @@
 import React from 'react'
 import {FormGroup} from 'reactstrap'
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {CallForwardingCountries} from 'business/twilio'
-import {FeatureFlagKey} from 'config/featureFlags'
 import CheckBox from 'pages/common/forms/CheckBox'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
@@ -25,9 +23,6 @@ function ForwardingCallsPreferences({
     forwardWhenOffline,
     setPreference,
 }: Props) {
-    const useNewForwardCallsSection =
-        useFlags()[FeatureFlagKey.NewForwardCallsSection]
-
     return (
         <FormGroup
             className={classnames(settingsCss.inputField, settingsCss.mb40)}
@@ -53,36 +48,30 @@ function ForwardingCallsPreferences({
             >
                 Enable call forwarding
             </ToggleInput>
-            {(useNewForwardCallsSection || forwardCalls) && (
-                <div className={css.forwardingPhoneNumber}>
-                    <PhoneNumberInput
-                        value={forwardingPhoneNumber ?? ''}
-                        onChange={(value: string) =>
-                            setPreference('forwarding_phone_number', value)
-                        }
-                        allowedCountries={Object.values(
-                            CallForwardingCountries
-                        )}
-                        autoFocus
-                        disabled={!forwardCalls}
-                    />
-                </div>
-            )}
-            {useNewForwardCallsSection && (
-                <div className={css.forwardWhenOffline}>
-                    <CheckBox
-                        name="forward_when_offline"
-                        isChecked={forwardWhenOffline ?? false}
-                        onChange={(value: boolean) =>
-                            setPreference('forward_when_offline', value)
-                        }
-                        isDisabled={!forwardCalls}
-                        caption="Calls will be forwarded to this number when agent is available or offline."
-                    >
-                        Forward calls when offline
-                    </CheckBox>
-                </div>
-            )}
+            <div className={css.forwardingPhoneNumber}>
+                <PhoneNumberInput
+                    value={forwardingPhoneNumber ?? ''}
+                    onChange={(value: string) =>
+                        setPreference('forwarding_phone_number', value)
+                    }
+                    allowedCountries={Object.values(CallForwardingCountries)}
+                    autoFocus
+                    disabled={!forwardCalls}
+                />
+            </div>
+            <div className={css.forwardWhenOffline}>
+                <CheckBox
+                    name="forward_when_offline"
+                    isChecked={forwardWhenOffline ?? false}
+                    onChange={(value: boolean) =>
+                        setPreference('forward_when_offline', value)
+                    }
+                    isDisabled={!forwardCalls}
+                    caption="Calls will be forwarded to this number when agent is available or offline."
+                >
+                    Forward calls when offline
+                </CheckBox>
+            </div>
         </FormGroup>
     )
 }
