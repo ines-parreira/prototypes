@@ -29,6 +29,7 @@ const mockedUseAiAgentOnboardingWizard = {
     handleSave: jest.fn(),
     handleAction: jest.fn(),
     updateValue: jest.fn(),
+    storeConfiguration: undefined,
 }
 
 const queryClient = mockQueryClient()

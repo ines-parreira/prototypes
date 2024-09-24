@@ -84,7 +84,7 @@ export const EmailFormComponent = ({
             </Label>
             <EmailIntegrationListSelection
                 selectedIds={
-                    monitoredEmailIntegrations !== null
+                    !!monitoredEmailIntegrations
                         ? monitoredEmailIntegrations.map(
                               (integration) => integration.id
                           )

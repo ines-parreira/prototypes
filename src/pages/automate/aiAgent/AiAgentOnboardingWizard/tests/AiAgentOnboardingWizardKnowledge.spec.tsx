@@ -41,6 +41,7 @@ const mockedUseAiAgentOnboardingWizard = {
     handleSave: jest.fn(),
     handleAction: jest.fn(),
     updateValue: jest.fn(),
+    storeConfiguration: mockedStoreConfiguration,
 }
 
 const queryClient = mockQueryClient()
@@ -176,15 +177,14 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             handleSave: jest.fn(),
             handleAction: jest.fn(),
             updateValue: jest.fn(),
+            storeConfiguration: mockedStoreConfigurationWithoutHelpCenter,
         }
 
         mockUseAiAgentOnboardingWizard.mockReturnValue(
             mockedUseAiAgentOnboardingWizard
         )
 
-        renderComponent({
-            storeConfiguration: mockedStoreConfigurationWithoutHelpCenter,
-        })
+        renderComponent({})
 
         expect(
             mockedUseAiAgentOnboardingWizard.handleFormUpdate
@@ -220,6 +220,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             handleSave: jest.fn(),
             handleAction: jest.fn(),
             updateValue: jest.fn(),
+            storeConfiguration: mockedStoreConfiguration,
         }
 
         mockUseAiAgentOnboardingWizard.mockReturnValue(
@@ -274,6 +275,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             handleSave: jest.fn(),
             handleAction: jest.fn(),
             updateValue: jest.fn(),
+            storeConfiguration: mockedStoreConfiguration,
         }
 
         mockUseAiAgentOnboardingWizard.mockReturnValue(

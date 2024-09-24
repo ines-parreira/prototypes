@@ -24,10 +24,7 @@ import css from './AiAgentOnboardingWizardKnowledge.less'
 
 type Props = AiAgentOnboardingWizardProps
 
-const AiAgentOnboardingWizardStepKnowledge = ({
-    shopName,
-    storeConfiguration,
-}: Props) => {
+const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
     const [publicUrls, setPublicUrls] = useState<string[]>([])
     const [pendingUrlCount, setPendingUrlCount] = useState(0)
     const isAiAgentOnboardingWizardKnowledgeRedirectEnabled =
@@ -41,8 +38,8 @@ const AiAgentOnboardingWizardStepKnowledge = ({
         handleAction,
         handleSave,
         isLoading,
-    } = useAiAgentOnboardingWizard({
         storeConfiguration,
+    } = useAiAgentOnboardingWizard({
         step: AiAgentOnboardingWizardStep.Knowledge,
     })
 
@@ -53,7 +50,9 @@ const AiAgentOnboardingWizardStepKnowledge = ({
         ) {
             handleFormUpdate({helpCenterId: faqHelpCenters[0].id})
         }
-    }, [faqHelpCenters, handleFormUpdate, storeConfiguration?.helpCenterId])
+
+        // Trigger effect on storeConfiguration change to update values after fetching store configuration
+    }, [faqHelpCenters, handleFormUpdate, storeConfiguration])
 
     const selectedHelpCenter = faqHelpCenters.find(
         (helpCenter) => helpCenter.id === storeFormValues.helpCenterId

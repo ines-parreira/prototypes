@@ -305,7 +305,6 @@ export const StoreConfigForm = ({
         void handleOnSave({
             publicUrls,
             shopName,
-            storeConfiguration,
             aiAgentMode,
         })
     }

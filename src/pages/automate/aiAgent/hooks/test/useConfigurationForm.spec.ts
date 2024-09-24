@@ -11,7 +11,6 @@ import {
     ToneOfVoice,
 } from '../../constants'
 import {FormValues} from '../../types'
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {assumeMock} from '../../../../../utils/testing'
 import {useGetHelpCenterList} from '../../../../../models/helpCenter/queries'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
@@ -21,8 +20,6 @@ import {notify} from '../../../../../state/notifications/actions'
 import {FeatureFlagKey} from '../../../../../config/featureFlags'
 import useAppSelector from '../../../../../hooks/useAppSelector'
 import {useStoreConfigurationMutation} from '../useStoreConfigurationMutation'
-
-const MOCK_EMAIL_ADDRESS = 'test@mail.com'
 
 const INITIAL_FORM_VALUES: FormValues = {
     toneOfVoice: null,
@@ -80,19 +77,22 @@ const mockCreateStoreConfiguration = jest
     .fn()
     .mockImplementation((c: StoreConfiguration) => c)
 
-const storeConfigurationFixture = getStoreConfigurationFixture()
 const shopName = 'test-shop'
+
+const defaultStoreConfigurationContextMock = {
+    storeConfiguration: undefined,
+    isLoading: false,
+    updateStoreConfiguration: mockUpdateStoreConfiguration,
+    createStoreConfiguration: mockCreateStoreConfiguration,
+    isPendingCreateOrUpdate: false,
+}
 
 describe('useConfigurationForm', () => {
     beforeEach(() => {
         mockUseGetHelpCenterList.mockReturnValue(mockHelpCenterListData)
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: getStoreConfigurationFixture(),
-            isLoading: false,
-            updateStoreConfiguration: mockUpdateStoreConfiguration,
-            createStoreConfiguration: mockCreateStoreConfiguration,
-            isPendingCreateOrUpdate: false,
-        })
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue(
+            defaultStoreConfigurationContextMock
+        )
 
         mockUseAppSelector.mockImplementation((selector) =>
             selector({
@@ -108,8 +108,12 @@ describe('useConfigurationForm', () => {
         })
     })
 
-    it('should return default values', () => {
-        // Arrange
+    it('should return default values when store configuration is undefined', () => {
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...defaultStoreConfigurationContextMock,
+            storeConfiguration: undefined,
+        })
+
         const defaultValues = {
             toneOfVoice: ToneOfVoice.Friendly,
             signature: 'test signature',
@@ -177,11 +181,6 @@ describe('useConfigurationForm', () => {
         await act(async () => {
             await result.current.handleOnSave({
                 shopName: shopName,
-                storeConfiguration: {
-                    ...storeConfigurationFixture,
-                    monitoredEmailIntegrations: [],
-                    monitoredChatIntegrations: [],
-                },
             })
         })
 
@@ -199,14 +198,6 @@ describe('useConfigurationForm', () => {
         await act(async () => {
             await result.current.handleOnSave({
                 shopName: 'tests',
-                storeConfiguration: {
-                    ...storeConfigurationFixture,
-                    signature: 'This response was created by AI',
-                    helpCenterId: 1,
-                    monitoredEmailIntegrations: [
-                        {id: 1, email: MOCK_EMAIL_ADDRESS},
-                    ],
-                },
             })
         })
 
@@ -246,8 +237,7 @@ describe('useConfigurationForm', () => {
         await act(async () => {
             await result.current.handleOnSave({
                 shopName: 'test shop',
-                storeConfiguration: {
-                    ...storeConfigurationFixture,
+                payload: {
                     ...customValues,
                 },
             })
@@ -266,6 +256,7 @@ describe('useConfigurationForm', () => {
         const excludedTopics = new Array(MAX_EXCLUDED_TOPICS + 1).fill(
             'Test topic'
         )
+
         const {result} = renderHook(() =>
             useConfigurationForm({
                 initValues: {
@@ -279,8 +270,7 @@ describe('useConfigurationForm', () => {
         await act(async () => {
             await result.current.handleOnSave({
                 shopName: 'test shop',
-                storeConfiguration: {
-                    ...storeConfigurationFixture,
+                payload: {
                     excludedTopics,
                 },
             })
@@ -309,8 +299,7 @@ describe('useConfigurationForm', () => {
         await act(async () => {
             await result.current.handleOnSave({
                 shopName: 'test shop',
-                storeConfiguration: {
-                    ...storeConfigurationFixture,
+                payload: {
                     signature: longSignature,
                 },
             })

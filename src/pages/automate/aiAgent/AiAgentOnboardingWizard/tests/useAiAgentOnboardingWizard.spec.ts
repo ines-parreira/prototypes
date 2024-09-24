@@ -72,20 +72,6 @@ const mockedStoreConfiguration = getStoreConfigurationFixture()
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 
-const MOCK_WIZARD_VALUES = {
-    wizard: {
-        id: 1,
-        stepName: AiAgentOnboardingWizardStep.Education,
-        completedDatetime: null,
-        stepData: {
-            hasEducationStepEnabled: true,
-            enabledChannels: [],
-            isAutoresponderTurnedOff: null,
-            onCompletePathway: null,
-        },
-    },
-}
-
 const mockUpdateStoreConfiguration = jest
     .fn()
     .mockResolvedValue(mockedStoreConfiguration)
@@ -114,6 +100,14 @@ const defaultStoreConfigurationMutation = {
     error: null,
 }
 
+const storeConfigurationContextMock = {
+    storeConfiguration: getStoreConfigurationFixture(),
+    isLoading: false,
+    updateStoreConfiguration: mockUpdateStoreConfiguration,
+    createStoreConfiguration: mockCreateStoreConfiguration,
+    isPendingCreateOrUpdate: false,
+}
+
 describe('useAiAgentOnboardingWizard', () => {
     beforeEach(() => {
         mockUseParams.mockReturnValue({
@@ -121,13 +115,9 @@ describe('useAiAgentOnboardingWizard', () => {
             shopName: 'test-shop',
         })
         mockUseGetHelpCenterList.mockReturnValue(mockHelpCenterListData)
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: getStoreConfigurationFixture(),
-            isLoading: false,
-            updateStoreConfiguration: mockUpdateStoreConfiguration,
-            createStoreConfiguration: mockCreateStoreConfiguration,
-            isPendingCreateOrUpdate: false,
-        })
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue(
+            storeConfigurationContextMock
+        )
         mockUseNavigateWizardSteps.mockReturnValue(mockNavigateWizardSteps)
         mockUseAppSelector.mockImplementation((selector) =>
             selector({
@@ -150,7 +140,6 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should initialize store configuration with default value', () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration: undefined,
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )
@@ -166,7 +155,6 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should handle form updates correctly', () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration: undefined,
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )
@@ -181,7 +169,6 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should handle action and navigate to previous or next step', () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration: undefined,
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )
@@ -200,7 +187,6 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should handle action and navigate to the welcome page', () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration: undefined,
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )
@@ -220,7 +206,6 @@ describe('useAiAgentOnboardingWizard', () => {
         })
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration: undefined,
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )
@@ -253,7 +238,6 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should perform nothing if handlAction is called with an unknown action', () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration: undefined,
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )
@@ -270,7 +254,6 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should handle save and navigate to the test tab', async () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration: undefined,
                 step: AiAgentOnboardingWizardStep.Knowledge,
             })
         )
@@ -292,7 +275,6 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should handle save and navigate to the guidance tab', async () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration: undefined,
                 step: AiAgentOnboardingWizardStep.Knowledge,
             })
         )
@@ -312,9 +294,13 @@ describe('useAiAgentOnboardingWizard', () => {
     })
 
     it('should call create store configuration on save when creating', async () => {
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...storeConfigurationContextMock,
+            storeConfiguration: undefined,
+        })
+
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration: undefined,
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )
@@ -345,9 +331,13 @@ describe('useAiAgentOnboardingWizard', () => {
             createStoreConfiguration: mockErrorCreateStoreConfiguration,
         })
 
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...storeConfigurationContextMock,
+            storeConfiguration: undefined,
+        })
+
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration: undefined,
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )
@@ -372,8 +362,6 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should call update store configuration on save when updating', async () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration:
-                    getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )
@@ -394,9 +382,13 @@ describe('useAiAgentOnboardingWizard', () => {
     })
 
     it('should not call update store configuration if store configuration does not exist', async () => {
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...storeConfigurationContextMock,
+            storeConfiguration: undefined,
+        })
+
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration: undefined,
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )
@@ -426,8 +418,6 @@ describe('useAiAgentOnboardingWizard', () => {
 
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration:
-                    getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
                 step: AiAgentOnboardingWizardStep.Education,
             })
         )
@@ -452,8 +442,6 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should log connected help center event', async () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration:
-                    getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
                 step: AiAgentOnboardingWizardStep.Knowledge,
             })
         )
@@ -476,8 +464,6 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should not log connected help center event', async () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                storeConfiguration:
-                    getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
                 step: AiAgentOnboardingWizardStep.Personalize,
             })
         )

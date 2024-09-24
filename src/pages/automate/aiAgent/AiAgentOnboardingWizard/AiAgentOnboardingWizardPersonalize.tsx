@@ -35,7 +35,6 @@ type Props = AiAgentOnboardingWizardProps
 const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
     shopType,
     shopName,
-    storeConfiguration,
 }) => {
     const isAiAgentOnboardingWizardEducationalStep =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]
@@ -51,7 +50,6 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
         handleFormUpdate,
         isLoading,
     } = useAiAgentOnboardingWizard({
-        storeConfiguration,
         step,
     })
 

@@ -18,12 +18,11 @@ import css from './AiAgentOnboardingWizardEducation.less'
 
 type Props = AiAgentOnboardingWizardProps
 
-const AiAgentOnboardingWizardStepEducation: React.FC<Props> = (props) => {
+const AiAgentOnboardingWizardStepEducation: React.FC<Props> = () => {
     const [ref, setRef] = useCallbackRef()
     useInjectStyleToCandu(ref)
 
     const {handleSave, isLoading} = useAiAgentOnboardingWizard({
-        storeConfiguration: props.storeConfiguration,
         step: AiAgentOnboardingWizardStep.Education,
     })
 

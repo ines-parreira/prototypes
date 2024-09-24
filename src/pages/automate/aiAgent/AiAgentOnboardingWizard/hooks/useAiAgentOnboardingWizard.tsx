@@ -18,6 +18,7 @@ import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavig
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {useGetOrCreateSnippetHelpCenter} from 'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
 import {FormValues, UpdateValue, WizardFormValues} from '../../types'
 import {getFormValuesFromStoreConfiguration} from '../../components/StoreConfigForm/StoreConfigForm.utils'
 import {
@@ -44,10 +45,10 @@ type AiAgentOnboardingWizardOutput = {
     handleSave: (params: handleSaveParams) => void
     isLoading: boolean
     updateValue: UpdateValue<FormValues>
+    storeConfiguration: StoreConfiguration | undefined
 }
 
 type Props = {
-    storeConfiguration?: StoreConfiguration
     step: AiAgentOnboardingWizardStep
 }
 
@@ -61,7 +62,6 @@ const INITIAL_WIZARD_FORM_VALUES: WizardFormValues = {
 }
 
 export const useAiAgentOnboardingWizard = ({
-    storeConfiguration,
     step,
 }: Props): AiAgentOnboardingWizardOutput => {
     const {shopType, shopName} = useParams<{
@@ -71,6 +71,8 @@ export const useAiAgentOnboardingWizard = ({
     const navigateWizardSteps = useNavigateWizardSteps()
     const {routes} = useAiAgentNavigation({shopName})
     const [isLoading, setIsLoading] = useState(false)
+    const {storeConfiguration, isLoading: isLoadingStoreConfiguration} =
+        useAiAgentStoreConfigurationContext()
 
     const {data: helpCenterListData, isLoading: isLoadingHelpCenters} =
         useGetHelpCenterList(
@@ -231,7 +233,6 @@ export const useAiAgentOnboardingWizard = ({
         const res = await handleOnSave({
             publicUrls,
             shopName,
-            storeConfiguration,
             payload,
             stepName: stepName || step,
         })
@@ -260,6 +261,8 @@ export const useAiAgentOnboardingWizard = ({
             isPendingCreateOrUpdate ||
             isLoadingHelpCenters ||
             isLoadingSnippetHelpCenter ||
-            isLoading,
+            isLoading ||
+            isLoadingStoreConfiguration,
+        storeConfiguration,
     }
 }

@@ -3,6 +3,7 @@ import _get from 'lodash/get'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import _isEqual from 'lodash/isEqual'
+import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
 import {FormValues, ValidFormValues} from '../types'
 import {
     AiAgentChannel,
@@ -15,14 +16,14 @@ import {
 } from '../constants'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
-import {getStoreConfigurationFromFormValues} from '../components/StoreConfigForm/StoreConfigForm.utils'
+import {
+    getFormValuesFromStoreConfiguration,
+    getStoreConfigurationFromFormValues,
+} from '../components/StoreConfigForm/StoreConfigForm.utils'
 import {logEvent, SegmentEvent} from '../../../../common/segment'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {FeatureFlagKey} from '../../../../config/featureFlags'
-import {
-    AiAgentOnboardingWizardStep,
-    StoreConfiguration,
-} from '../../../../models/aiAgent/types'
+import {AiAgentOnboardingWizardStep} from '../../../../models/aiAgent/types'
 import useAppSelector from '../../../../hooks/useAppSelector'
 import {getCurrentAccountState} from '../../../../state/currentAccount/selectors'
 import {useStoreConfigurationMutation} from './useStoreConfigurationMutation'
@@ -58,9 +59,17 @@ export const useConfigurationForm = ({
     // could have used a useReducer instead, but keeping it simple for now
     const [formValues, setFormValues] = useState<FormValues>(defaultValues)
 
+    const {storeConfiguration} = useAiAgentStoreConfigurationContext()
+
     useEffect(() => {
-        setFormValues(defaultValues)
-    }, [defaultValues])
+        if (storeConfiguration) {
+            setFormValues(
+                getFormValuesFromStoreConfiguration(storeConfiguration)
+            )
+        } else {
+            setFormValues(defaultValues)
+        }
+    }, [defaultValues, storeConfiguration])
 
     const resetForm = useCallback(() => {
         setFormValues(defaultValues)
@@ -248,7 +257,6 @@ export const useConfigurationForm = ({
     const handleOnSave = async ({
         publicUrls,
         shopName,
-        storeConfiguration,
         aiAgentMode,
         payload,
         stepName,
@@ -256,7 +264,6 @@ export const useConfigurationForm = ({
         shopName: string
         publicUrls?: string[]
         aiAgentMode?: string
-        storeConfiguration?: StoreConfiguration
         payload?: Partial<FormValues>
         stepName?: string
     }) => {

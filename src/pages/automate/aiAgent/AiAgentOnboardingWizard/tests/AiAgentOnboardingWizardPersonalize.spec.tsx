@@ -113,6 +113,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             isLoading: false,
             snippetHelpCenter: null,
             updateValue: jest.fn(),
+            storeConfiguration: undefined,
         })
 
         mockUseAppSelector.mockReturnValue([])
@@ -228,6 +229,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             isLoading: false,
             snippetHelpCenter: null,
             updateValue: jest.fn(),
+            storeConfiguration: undefined,
         })
 
         renderComponent({
