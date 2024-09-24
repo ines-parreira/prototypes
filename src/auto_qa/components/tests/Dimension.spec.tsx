@@ -1,8 +1,8 @@
+import {TicketQAScoreDimension} from '@gorgias/api-queries'
 import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
 import {dimensionConfig} from '../../config'
-import {Dimension as DimensionType} from '../../types'
 
 import Dimension from '../Dimension'
 
@@ -16,7 +16,7 @@ describe('Dimension', () => {
         name: 'communication_skills',
         prediction: 4,
         explanation: 'Beepity-boopity',
-    } as DimensionType
+    } as TicketQAScoreDimension
 
     beforeEach(() => {})
 

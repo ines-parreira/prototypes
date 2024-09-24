@@ -12,6 +12,7 @@ const useAppSelectorMock = useAppSelector as jest.Mock
 jest.mock('../../hooks/useAutoQA', () => jest.fn())
 const useAutoQAMock = useAutoQA as jest.Mock
 
+jest.mock('../AutoQASkeleton', () => () => <div>Loading...</div>)
 jest.mock('../Dimension', () => () => <p>Dimension</p>)
 
 describe('AutoQA', () => {
@@ -20,6 +21,7 @@ describe('AutoQA', () => {
         useAutoQAMock.mockReturnValue({
             changeHandlers: [],
             dimensions: [],
+            isLoading: false,
             lastUpdated: new Date('2024-09-17T21:00:00Z'),
         })
     })
@@ -29,10 +31,35 @@ describe('AutoQA', () => {
         expect(getByText('Auto QA Score')).toBeInTheDocument()
     })
 
+    it('should render a skeleton while data is loading', () => {
+        useAutoQAMock.mockReturnValue({
+            changeHandlers: [jest.fn()],
+            dimensions: [{name: 'communication_skills'}, {name: 'resolution'}],
+            isLoading: true,
+            lastUpdated: new Date('2024-09-17T21:00:00Z'),
+        })
+
+        const {getByText} = render(<AutoQA />)
+        expect(getByText('Loading...')).toBeInTheDocument()
+    })
+
+    it('should render a message if there is no data available', () => {
+        useAutoQAMock.mockReturnValue({
+            changeHandlers: [],
+            dimensions: [],
+            isLoading: false,
+            lastUpdated: null,
+        })
+
+        const {getByText} = render(<AutoQA />)
+        expect(getByText('Score not available.')).toBeInTheDocument()
+    })
+
     it('should render each returned dimension', () => {
         useAutoQAMock.mockReturnValue({
             changeHandlers: [jest.fn()],
             dimensions: [{name: 'communication_skills'}, {name: 'resolution'}],
+            isLoading: false,
             lastUpdated: new Date('2024-09-17T21:00:00Z'),
         })
 
@@ -46,6 +73,7 @@ describe('AutoQA', () => {
         useAutoQAMock.mockReturnValue({
             changeHandlers: [jest.fn()],
             dimensions: [{name: 'communication_skills'}, {name: 'resolution'}],
+            isLoading: false,
             lastUpdated: new Date(
                 now.getFullYear(),
                 now.getMonth(),

@@ -1,15 +1,5 @@
+import type {TicketQAScoreDimension} from '@gorgias/api-queries'
 import type {ReactNode} from 'react'
-
-export type Dimension = {
-    id: number
-    ticket_id: number
-    user_id?: number | null
-    created_datetime: string
-    updated_datetime: string
-    name: 'communication_skills' | 'resolution'
-    prediction: number
-    explanation: string
-}
 
 export type DimensionConfig = {
     label: string
@@ -23,4 +13,7 @@ export type DimensionOption = {
     value: number
 }
 
-export type DimensionSummary = Pick<Dimension, 'explanation' | 'prediction'>
+export type DimensionSummary = Pick<
+    TicketQAScoreDimension,
+    'explanation' | 'prediction'
+>

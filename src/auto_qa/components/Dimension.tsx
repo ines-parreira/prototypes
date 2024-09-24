@@ -1,3 +1,4 @@
+import {TicketQAScoreDimension} from '@gorgias/api-queries'
 import cn from 'classnames'
 import React, {useCallback, useMemo, useRef, useState} from 'react'
 
@@ -10,14 +11,14 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 import TextArea from 'pages/common/forms/TextArea'
 
-import type {Dimension, DimensionConfig} from '../types'
+import type {DimensionConfig} from '../types'
 import DimensionUser from './DimensionUser'
 
 import css from './Dimension.less'
 
 type Props = {
     config: DimensionConfig
-    dimension: Dimension
+    dimension: TicketQAScoreDimension
     onChange: (prediction: number, explanation: string) => void
 }
 

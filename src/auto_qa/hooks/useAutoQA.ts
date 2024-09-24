@@ -1,58 +1,59 @@
-import {useCallback, useMemo, useState} from 'react'
+import {
+    TicketQAScoreDimension,
+    TicketQAScoreDimensionName,
+    useListTicketQaScoreDimensions,
+} from '@gorgias/api-queries'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 
 import {dimensionOrder} from '../config'
-import type {Dimension, DimensionSummary} from '../types'
+import type {DimensionSummary} from '../types'
+
+const defaultValues = dimensionOrder.reduce(
+    (acc, name) => ({
+        ...acc,
+        [name]: {
+            explanation: '',
+            prediction: 0,
+        },
+    }),
+    {} as Record<TicketQAScoreDimensionName, DimensionSummary>
+)
 
 export default function useAutoQA(ticketId: number) {
-    const [response] = useState<{dimensions: Dimension[]}>({
-        dimensions: [
-            {
-                id: 1,
-                ticket_id: ticketId,
-                user_id: 801087805,
-                created_datetime: '2024-01-20T10:00:00Z',
-                updated_datetime: '2024-09-16T08:00:00Z',
-                name: 'resolution',
-                prediction: 0,
-                explanation: 'Beep-boop',
-            },
-            {
-                id: 2,
-                ticket_id: ticketId,
-                user_id: null,
-                created_datetime: '2024-01-20T10:00:00Z',
-                updated_datetime: '2024-01-21T10:00:00Z',
-                name: 'communication_skills',
-                prediction: 4,
-                explanation: 'Beepity-boopity',
-            },
-        ],
-    })
+    const {data, isError, isLoading} = useListTicketQaScoreDimensions(ticketId)
 
-    const [values, setValues] = useState<
-        Record<Dimension['name'], DimensionSummary>
-    >(() =>
-        response.dimensions.reduce(
-            (acc, dim) => ({
-                ...acc,
-                [dim.name]: {
-                    explanation: dim.explanation,
-                    prediction: dim.prediction,
-                },
-            }),
-            {} as Record<Dimension['name'], DimensionSummary>
+    const [values, setValues] =
+        useState<Record<TicketQAScoreDimensionName, DimensionSummary>>(
+            defaultValues
         )
-    )
 
-    const lastUpdated = useMemo(
-        () =>
-            Math.max(
-                ...response.dimensions.map((dim) =>
-                    new Date(dim.updated_datetime).getTime()
-                )
-            ),
-        [response]
-    )
+    useEffect(() => {
+        if (!data?.data.data) return
+
+        setValues(
+            data.data.data.dimensions.reduce(
+                (acc, dim) => ({
+                    ...acc,
+                    [dim.name]: {
+                        explanation: dim.explanation,
+                        prediction: dim.prediction,
+                    },
+                }),
+                {} as Record<TicketQAScoreDimensionName, DimensionSummary>
+            )
+        )
+    }, [data])
+
+    const lastUpdated = useMemo(() => {
+        if (!data?.data.data) return null
+
+        const timestamps = data.data.data.dimensions.map(
+            (dim) => dim.updated_datetime || dim.created_datetime
+        )
+        if (!timestamps.length) return null
+
+        return Math.max(...timestamps.map((t) => new Date(t).getTime()))
+    }, [data])
 
     const handleChange = useCallback(
         (name: string, prediction: number, explanation: string) => {
@@ -66,44 +67,57 @@ export default function useAutoQA(ticketId: number) {
 
     const changeHandlers = useMemo(
         () =>
-            response.dimensions.reduce(
-                (acc, dim) => ({
+            Object.values(TicketQAScoreDimensionName).reduce(
+                (acc, name) => ({
                     ...acc,
-                    [dim.name]: (prediction: number, explanation: string) => {
-                        handleChange(dim.name, prediction, explanation)
+                    [name]: (prediction: number, explanation: string) => {
+                        handleChange(name, prediction, explanation)
                     },
                 }),
                 {} as Record<
-                    Dimension['name'],
+                    TicketQAScoreDimensionName,
                     (prediction: number, explanation: string) => void
                 >
             ),
-        [handleChange, response]
+        [handleChange]
     )
 
     const dimensionsMap = useMemo(
         () =>
-            response.dimensions.reduce(
-                (acc, dim) => ({
-                    ...acc,
-                    [dim.name]: dim,
-                }),
-                {} as Record<Dimension['name'], Dimension>
-            ),
-        [response]
+            !data?.data.data
+                ? ({} as Record<
+                      TicketQAScoreDimensionName,
+                      TicketQAScoreDimension
+                  >)
+                : data.data.data.dimensions.reduce(
+                      (acc, dim) => ({
+                          ...acc,
+                          [dim.name]: dim,
+                      }),
+                      {} as Record<
+                          TicketQAScoreDimensionName,
+                          TicketQAScoreDimension
+                      >
+                  ),
+        [data]
     )
 
     const dimensions = useMemo(
         () =>
-            dimensionOrder.map((name) => ({
-                ...dimensionsMap[name],
-                ...values[name],
-            })),
+            dimensionOrder
+                .filter((name) => !!dimensionsMap[name])
+                .map(
+                    (name) =>
+                        ({
+                            ...dimensionsMap[name],
+                            ...values[name],
+                        } as TicketQAScoreDimension)
+                ),
         [dimensionsMap, values]
     )
 
     return useMemo(
-        () => ({changeHandlers, dimensions, lastUpdated}),
-        [changeHandlers, dimensions, lastUpdated]
+        () => ({changeHandlers, dimensions, isError, isLoading, lastUpdated}),
+        [changeHandlers, dimensions, isError, isLoading, lastUpdated]
     )
 }

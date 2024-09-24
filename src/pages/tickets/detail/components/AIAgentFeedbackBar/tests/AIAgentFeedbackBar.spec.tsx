@@ -13,6 +13,7 @@ import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
 import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
 import {TicketMessage} from 'models/ticket/types'
+import * as utils from 'utils'
 import AIAgentFeedbackBar, {
     FEEDBACK_TICKET_SUMMARY_TEST_ID,
     ticketFeedbackSummary,
@@ -123,8 +124,9 @@ describe('AIAgentFeedbackBar', () => {
         expect(queryByText('AutoQA')).not.toBeInTheDocument()
     })
 
-    it('should render AutoQA if the feature flag is enabled', () => {
+    it('should render AutoQA if the feature flag is enabled and the user is an admin', () => {
         useFlagMock.mockReturnValue(true)
+        jest.spyOn(utils, 'isAdmin').mockReturnValue(true)
         const {queryByText} = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>

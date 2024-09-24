@@ -204,7 +204,7 @@
         "@babel/preset-react": "^7.23.3",
         "@babel/preset-typescript": "^7.23.3",
         "@codecov/webpack-plugin": "^0.0.1-beta.6",
-        "@gorgias/api-queries": "0.2.4",
+        "@gorgias/api-queries": "0.2.5",
         "@gorgias/javascript-shared-config": "0.1.0",
         "@jest/expect": "^29.7.0",
         "@pmmmwh/react-refresh-webpack-plugin": "0.5.10",

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
 import {AutoQA} from 'auto_qa'
 import {useFlag} from 'common/flags'
@@ -15,6 +15,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {getAIAgentMessages} from 'state/ticket/selectors'
 import {logEventWithSampling} from 'common/segment/segment'
 import {SegmentEvent} from 'common/segment'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {isAdmin} from 'utils'
 import AIAgentMessageFeedback from './AIAgentMessageFeedback'
 import AIAgentTicketFeedback from './AIAgentTicketFeedback'
 import css from './AIAgentFeedbackBar.less'
@@ -26,9 +28,10 @@ export const ticketFeedbackSummary =
     'Select a message from AI Agent and provide feedback to improve future responses.'
 
 const AIAgentFeedbackBar = () => {
-    const hasAutoQA = useFlag<boolean>(FeatureFlagKey.AutoQA, false)
+    const hasAutoQAFlag = useFlag<boolean>(FeatureFlagKey.AutoQA, false)
     const dispatch = useAppDispatch()
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
+    const currentUser = useAppSelector(getCurrentUser)
 
     const aiMessages = useAppSelector(getAIAgentMessages)
 
@@ -54,6 +57,11 @@ const AIAgentFeedbackBar = () => {
             {}
         )
     }
+
+    const hasAutoQA = useMemo(
+        () => hasAutoQAFlag && isAdmin(currentUser),
+        [currentUser, hasAutoQAFlag]
+    )
 
     return (
         <div
