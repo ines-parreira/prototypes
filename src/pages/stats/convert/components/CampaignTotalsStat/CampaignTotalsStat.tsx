@@ -83,7 +83,7 @@ export const CampaignTotalsStat = () => {
             <DashboardGridCell size={GRID_SIZE}>
                 <MetricCard
                     title={METRICS.impressions.title}
-                    hint={{title: METRICS.impressions.hint}}
+                    hint={METRICS.impressions.hint}
                 >
                     <BigNumberMetric isLoading={isLoading}>
                         {data?.impressions}
