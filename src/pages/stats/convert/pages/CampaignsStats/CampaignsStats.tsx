@@ -6,6 +6,7 @@ import {isEmpty} from 'lodash'
 
 import classNames from 'classnames'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import {useIsConvertPerformanceViewEnabled} from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 
 import StatsPage from 'pages/stats/StatsPage'
 
@@ -25,6 +26,7 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
 import {RevenueFilters} from 'pages/stats/convert/containers/RevenueFilters'
 import {RevenueStatsContent} from 'pages/stats/convert/containers/RevenueStatsContent'
+import DownloadOverviewData from 'pages/stats/convert/components/DownloadOverviewData'
 
 import css from './CampaignsStats.less'
 
@@ -40,6 +42,7 @@ const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
 
     const showButton = isConvertSubscriber && chatIntegrationId
     const getGridCellSize = useGridSize()
+    const isConvertPerformanceViewEnabled = useIsConvertPerformanceViewEnabled()
 
     return (
         <CampaignStatsFilters>
@@ -49,6 +52,9 @@ const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
                     <>
                         {showButton ? <RequestABTest /> : null}
                         {!AnalyticsNewFiltersConvert && <RevenueFilters />}
+                        {isConvertPerformanceViewEnabled && (
+                            <DownloadOverviewData />
+                        )}
                     </>
                 }
             >
