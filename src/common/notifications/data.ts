@@ -1,6 +1,6 @@
 import {TicketChannel} from 'business/types/ticket'
 
-import type {Channel, Event, NotificationType} from './types'
+import {Channel, Event, LegacyEvent, NotificationType} from './types'
 
 export const channels: Channel[] = [
     {
@@ -9,12 +9,13 @@ export const channels: Channel[] = [
     },
 ]
 
+export const legacyEvent: LegacyEvent = {
+    enabled: true,
+    type: 'legacy-chat-and-messaging',
+    label: 'Chat & messaging tickets',
+}
+
 export const events: Event[] = [
-    {
-        enabled: true,
-        type: 'ticket-message.created',
-        label: 'New messages from all channels',
-    },
     {
         enabled: true,
         type: 'user.mentioned',
@@ -101,7 +102,9 @@ export const ticketMessageCreatedEvents: Event[] = [
     },
 ]
 
-export const enabledEvents = events.filter((event) => event.enabled)
+export const enabledEvents = [legacyEvent, ...events].filter(
+    (event) => event.enabled
+)
 
 export const workflowMap: Record<NotificationType, string> = {
     'ticket.snooze-expired': 'ticket-snooze-expired',

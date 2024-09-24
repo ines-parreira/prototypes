@@ -16,7 +16,7 @@ import {defaultSound, SoundValue} from 'services/NotificationSounds'
 import Loader from 'pages/common/components/Loader/Loader'
 
 import useSettings from '../hooks/useSettings'
-import {NotificationType} from '../types'
+import {LegacyNotificationType, NotificationType} from '../types'
 
 import EventSettings from './EventSettings'
 import VolumeControl from './VolumeControl'
@@ -44,7 +44,10 @@ export default function Settings() {
     const onMouseDown = useMouseRelease(handleMouseUp)
 
     const handleChangeSound = useCallback(
-        (notificationType: NotificationType, sound: '' | SoundValue) => {
+        (
+            notificationType: NotificationType | LegacyNotificationType,
+            sound: '' | SoundValue
+        ) => {
             onChangeSound(notificationType, sound)
             if (sound !== '') {
                 notificationSounds.play(sound, settings.volume)

@@ -20,6 +20,10 @@ export type Event = {
     tooltip?: string
 }
 
+export type LegacyEvent = Omit<Event, 'type'> & {
+    type: LegacyNotificationType
+}
+
 export type Ticket = {
     id: number
     channel: TicketChannel
@@ -68,10 +72,6 @@ export type Notification =
           payload: DefaultPayload
       })
     | (NotificationBase & {
-          type: 'ticket-message.created'
-          payload: PayloadWithSender
-      })
-    | (NotificationBase & {
           type: 'user.mentioned'
           payload: PayloadWithSender
       })
@@ -81,6 +81,8 @@ export type Notification =
       })
 
 export type NotificationType = Notification['type']
+
+export type LegacyNotificationType = 'legacy-chat-and-messaging'
 
 export type RawNotification = UnionOmit<Notification, 'id'>
 

@@ -17,12 +17,20 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import {
     channels,
     events,
+    legacyEvent,
     ticketMessageCreatedEvents,
     workflowMap,
 } from '../data'
-import {NotificationType, Settings} from '../types'
+import {
+    LegacyNotificationType,
+    NotificationType,
+    Settings,
+    Event,
+} from '../types'
 
 const client = getLDClient()
+
+const baseEvents = [legacyEvent, ...events]
 
 export default function useSettings() {
     const dispatch = useAppDispatch()
@@ -43,13 +51,8 @@ export default function useSettings() {
     const allEvents = useMemo(
         () =>
             isTicketMessageCreatedEnabled
-                ? [
-                      ...events.filter(
-                          (event) => event.type !== 'ticket-message.created'
-                      ),
-                      ...ticketMessageCreatedEvents,
-                  ]
-                : events,
+                ? [...baseEvents, ...ticketMessageCreatedEvents]
+                : baseEvents,
         [isTicketMessageCreatedEnabled]
     )
 
@@ -74,13 +77,8 @@ export default function useSettings() {
         )
 
         const allEvents = isTicketMessageCreatedEnabled
-            ? [
-                  ...events.filter(
-                      (event) => event.type !== 'ticket-message.created'
-                  ),
-                  ...ticketMessageCreatedEvents,
-              ]
-            : events
+            ? [...baseEvents, ...ticketMessageCreatedEvents]
+            : baseEvents
 
         const notificationSound =
             allSettings?.data.notification_sound || defaultSound
@@ -93,17 +91,16 @@ export default function useSettings() {
                 ] || {sound: defaultSound.sound}
 
                 const workflowPreferences =
-                    preferences.workflows?.[workflowMap[event.type]]
+                    event.type !== 'legacy-chat-and-messaging'
+                        ? preferences.workflows?.[workflowMap[event.type]]
+                        : undefined
 
                 return {
                     ...eventsAcc,
                     [event.type]: {
                         sound:
-                            event.type === 'ticket-message.created'
-                                ? (isTicketMessageCreatedEnabled &&
-                                      allSettings?.data.events?.[event.type]
-                                          ?.sound) ||
-                                  notificationSound.enabled
+                            event.type === 'legacy-chat-and-messaging'
+                                ? notificationSound.enabled
                                     ? notificationSound.sound
                                     : ''
                                 : eventSettings.sound,
@@ -111,8 +108,7 @@ export default function useSettings() {
                             (channelsAcc, channel) => ({
                                 ...channelsAcc,
                                 [channel.type]:
-                                    event.type === 'ticket-message.created' &&
-                                    !isTicketMessageCreatedEnabled
+                                    event.type === 'legacy-chat-and-messaging'
                                         ? true
                                         : !workflowPreferences ||
                                           typeof workflowPreferences ===
@@ -160,7 +156,10 @@ export default function useSettings() {
     )
 
     const handleChangeSound = useCallback(
-        (notificationType: NotificationType, sound: '' | SoundValue) => {
+        (
+            notificationType: NotificationType | LegacyNotificationType,
+            sound: '' | SoundValue
+        ) => {
             setSettings((s) => {
                 return {
                     ...s,
@@ -182,22 +181,21 @@ export default function useSettings() {
     }, [])
 
     const save = useCallback(async () => {
-        const ticketMessageCreated = settings.events['ticket-message.created']
+        const chatAndMessaging = settings.events['legacy-chat-and-messaging']
         const payload = {
             data: {
                 notification_sound: {
-                    enabled: ticketMessageCreated.sound !== '',
+                    enabled: chatAndMessaging.sound !== '',
                     sound:
-                        ticketMessageCreated.sound !== ''
-                            ? ticketMessageCreated.sound
+                        chatAndMessaging.sound !== ''
+                            ? chatAndMessaging.sound
                             : defaultSound.sound,
                     volume: settings.volume,
                 },
                 events: allEvents
-                    .filter((event) =>
-                        !isTicketMessageCreatedEnabled
-                            ? !event.type.includes('ticket-message.created')
-                            : true
+                    .filter(
+                        (event): event is Event =>
+                            event.type !== 'legacy-chat-and-messaging'
                     )
                     .reduce(
                         (acc, event) => ({
@@ -220,10 +218,9 @@ export default function useSettings() {
                 }
             }
         } = allEvents
-            .filter((event) =>
-                !isTicketMessageCreatedEnabled
-                    ? !event.type.includes('ticket-message.created')
-                    : true
+            .filter(
+                (event): event is Event =>
+                    event.type !== 'legacy-chat-and-messaging'
             )
             .reduce(
                 (eventsAcc, event) => ({
@@ -261,14 +258,7 @@ export default function useSettings() {
         ])
 
         logEvent(SegmentEvent.NotificationSettingsUpdated, settings)
-    }, [
-        allEvents,
-        allSettings,
-        dispatch,
-        knockClient,
-        settings,
-        isTicketMessageCreatedEnabled,
-    ])
+    }, [allEvents, allSettings, dispatch, knockClient, settings])
 
     return useMemo(
         () => ({

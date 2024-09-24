@@ -54,9 +54,6 @@ const notificationPreferences = {
             'ticket.assigned': {
                 sound: 'definite',
             },
-            'ticket-message.created': {
-                sound: 'custom-sound',
-            },
         },
     },
 }
@@ -115,16 +112,16 @@ describe('useSettings', () => {
         }
     )
 
-    it('should use the old notification format for the ticket-message.created event', async () => {
+    it('should use the old notification format for the legacy-chat-and-messaging event', async () => {
         const {result, waitForNextUpdate} = renderHook(() => useSettings())
 
         await act(async () => await waitForNextUpdate())
 
         expect(
-            result.current.settings.events['ticket-message.created'].sound
+            result.current.settings.events['legacy-chat-and-messaging'].sound
         ).toBe('custom-sound')
         expect(
-            result.current.settings.events['ticket-message.created'].channels
+            result.current.settings.events['legacy-chat-and-messaging'].channels
                 .in_app_feed
         ).toBe(true)
     })
@@ -145,11 +142,11 @@ describe('useSettings', () => {
         await act(async () => await waitForNextUpdate())
 
         expect(
-            result.current.settings.events['ticket-message.created'].sound
+            result.current.settings.events['legacy-chat-and-messaging'].sound
         ).toBe('')
     })
 
-    it('should use the default sound for the ticket-message.created event if old user settings are not available', async () => {
+    it('should use the default sound for the legacy-chat-and-messaging event if old user settings are not available', async () => {
         useAppSelectorMock.mockReturnValue({
             data: {
                 events: {},
@@ -161,7 +158,7 @@ describe('useSettings', () => {
         await act(async () => await waitForNextUpdate())
 
         expect(
-            result.current.settings.events['ticket-message.created'].sound
+            result.current.settings.events['legacy-chat-and-messaging'].sound
         ).toBe('default')
     })
 
@@ -243,6 +240,30 @@ describe('useSettings', () => {
             expect(mockSetKnockPreferences).toHaveBeenCalled()
             expect(useAppDispatchMock).toHaveBeenCalled()
         })
+    })
+
+    it('should filter out legacy-chat-and-messaging event on save from settings and knock workflow preferences', async () => {
+        const {result, waitForNextUpdate} = renderHook(() => useSettings(), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore()}>{children}</Provider>
+            ),
+        })
+
+        await act(async () => await waitForNextUpdate())
+        await act(async () => {
+            await result.current.save()
+        })
+
+        expect(
+            // eslint-disable-next-line
+            submitSettingMock.mock.calls[0][0]['data']['events'][
+                'legacy-chat-and-messaging'
+            ]
+        ).not.toBeDefined()
+        expect(
+            // eslint-disable-next-line
+            mockSetKnockPreferences.mock.calls[0][0]['workflows']
+        ).not.toHaveProperty('legacy-chat-and-messaging')
     })
 
     it('should filter out ticket-message.created events on save if the feature flag is disabled', async () => {

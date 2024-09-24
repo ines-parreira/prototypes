@@ -13,9 +13,13 @@ import {SoundValue} from 'services/NotificationSounds'
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
 
-import useAvailableEvents from '../hooks/useAvailableEvents'
-import {channels, ticketMessageCreatedEvents} from '../data'
-import {NotificationType, Settings} from '../types'
+import {
+    channels,
+    events,
+    legacyEvent,
+    ticketMessageCreatedEvents,
+} from '../data'
+import {LegacyNotificationType, NotificationType, Settings} from '../types'
 
 import EventSettingsTableHead from './EventSettingsTableHead'
 import SoundSelect from './SoundSelect'
@@ -29,18 +33,18 @@ type Props = {
         value: boolean
     ) => void
     onChangeSound: (
-        notificationType: NotificationType,
+        notificationType: NotificationType | LegacyNotificationType,
         sound: '' | SoundValue
     ) => void
 }
+
+const availableEvents = [legacyEvent, ...events]
 
 export default function EventSettings({
     settings,
     onChangeChannel,
     onChangeSound,
 }: Props) {
-    const availableEvents = useAvailableEvents()
-
     const isTicketMessageCreatedEnabled = useFlag(
         FeatureFlagKey.NotificationsTicketMessageCreated,
         false
@@ -89,14 +93,13 @@ export default function EventSettings({
                                     <CheckBox
                                         name={
                                             event.type ===
-                                            'ticket-message.created'
-                                                ? 'checkbox'
+                                            'legacy-chat-and-messaging'
+                                                ? 'legacy'
                                                 : undefined
                                         }
                                         isDisabled={
                                             event.type ===
-                                                'ticket-message.created' &&
-                                            !isTicketMessageCreatedEnabled
+                                            'legacy-chat-and-messaging'
                                         }
                                         isChecked={
                                             settings.events[event.type]
@@ -104,20 +107,20 @@ export default function EventSettings({
                                             false
                                         }
                                         onChange={(e) => {
-                                            onChangeChannel(
-                                                event.type,
-                                                channel.type,
-                                                e
-                                            )
+                                            event.type !==
+                                                'legacy-chat-and-messaging' &&
+                                                onChangeChannel(
+                                                    event.type,
+                                                    channel.type,
+                                                    e
+                                                )
                                         }}
                                     />
                                 </BodyCell>
                             ))}
-                            {!isTicketMessageCreatedEnabled && (
-                                <Tooltip target="checkbox">
-                                    This setting cannot be deselected
-                                </Tooltip>
-                            )}
+                            <Tooltip target="legacy">
+                                This setting cannot be deselected
+                            </Tooltip>
                         </TableBodyRow>
                     ))}
                 </TableBody>

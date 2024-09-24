@@ -1,7 +1,7 @@
 import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 
-import {Event, Settings} from 'common/notifications/types'
+import {Settings} from 'common/notifications/types'
 import {
     enabledEvents,
     ticketMessageCreatedEvents,
@@ -30,12 +30,6 @@ jest.mock('common/flags', () => ({
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock
-
-jest.mock('common/notifications/hooks/useAvailableEvents', () => () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const {enabledEvents} = require('common/notifications/data')
-    return enabledEvents as Event[]
-})
 
 const mockOnChangeChannel = jest.fn()
 const mockOnChangeSound = jest.fn()
@@ -104,7 +98,7 @@ describe('<EventSettings/>', () => {
         fireEvent.change(select, {target: {value: 'sound 1'}})
 
         expect(mockOnChangeSound).toHaveBeenCalledWith(
-            'ticket-message.created',
+            'legacy-chat-and-messaging',
             'sound 1'
         )
     })
@@ -118,20 +112,34 @@ describe('<EventSettings/>', () => {
             />
         )
 
-        const checkbox = getAllByRole('checkbox')[0]
+        const checkbox = getAllByRole('checkbox')[1]
 
         fireEvent.click(checkbox)
 
         expect(mockOnChangeChannel).toHaveBeenCalledWith(
-            'ticket-message.created',
+            'user.mentioned',
             'in_app_feed',
             false
         )
     })
 
-    it('should render tooltip if NotificationsTicketMessageCreated FF is false', async () => {
-        mockUseFlag.mockReturnValue(false)
+    it('should disable checkbox change for the legacy notification', () => {
+        const {getAllByRole} = render(
+            <EventSettings
+                settings={settings}
+                onChangeChannel={mockOnChangeChannel}
+                onChangeSound={mockOnChangeSound}
+            />
+        )
 
+        const checkbox = getAllByRole('checkbox')[0]
+
+        fireEvent.click(checkbox)
+
+        expect(mockOnChangeChannel).not.toHaveBeenCalled()
+    })
+
+    it('should render tooltip for the legacy notification', async () => {
         const {getAllByRole, getByText} = render(
             <EventSettings
                 settings={settings}
