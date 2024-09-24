@@ -23,7 +23,7 @@ export const events: Event[] = [
     {
         enabled: true,
         type: 'ticket.snooze-expired',
-        label: 'Snooze expires',
+        label: 'Snooze expired',
     },
     {
         enabled: true,
