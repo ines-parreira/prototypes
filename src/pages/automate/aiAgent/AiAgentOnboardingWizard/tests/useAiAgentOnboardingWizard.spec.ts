@@ -19,6 +19,7 @@ import {useGetOrCreateSnippetHelpCenter} from 'pages/automate/aiAgent/hooks/useG
 import {useStoreConfigurationMutation} from 'pages/automate/aiAgent/hooks/useStoreConfigurationMutation'
 import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useSearchParam} from 'hooks/useSearchParam'
 import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {WIZARD_BUTTON_ACTIONS} from '../../constants'
@@ -67,6 +68,9 @@ jest.mock('common/segment', () => ({
     },
 }))
 
+jest.mock('hooks/useSearchParam')
+const mockUseSearchParam = assumeMock(useSearchParam)
+
 const mockedStoreConfiguration = getStoreConfigurationFixture()
 
 const mockDispatch = jest.fn()
@@ -109,11 +113,14 @@ const storeConfigurationContextMock = {
 }
 
 describe('useAiAgentOnboardingWizard', () => {
+    const mockSetSearchParam = jest.fn()
     beforeEach(() => {
         mockUseParams.mockReturnValue({
             shopType: 'shopify',
             shopName: 'test-shop',
         })
+        mockSetSearchParam.mockClear()
+        mockUseSearchParam.mockImplementation(() => [null, mockSetSearchParam])
         mockUseGetHelpCenterList.mockReturnValue(mockHelpCenterListData)
         mockUseAiAgentStoreConfigurationContext.mockReturnValue(
             storeConfigurationContextMock
@@ -176,6 +183,7 @@ describe('useAiAgentOnboardingWizard', () => {
         act(() => {
             result.current.handleAction(WIZARD_BUTTON_ACTIONS.NEXT_STEP)
         })
+        expect(mockSetSearchParam).toHaveBeenCalledWith(null)
         expect(mockNavigateWizardSteps.goToNextStep).toHaveBeenCalled()
 
         act(() => {
@@ -481,5 +489,38 @@ describe('useAiAgentOnboardingWizard', () => {
                 {helpCenterId: 1}
             )
         })
+    })
+
+    it('should navigate to next step with search params when is on wizard update', () => {
+        const mockedWizardValue = {
+            wizard: {
+                id: 1,
+                stepName: AiAgentOnboardingWizardStep.Knowledge,
+                completedDatetime: null,
+                stepData: {
+                    hasEducationStepEnabled: true,
+                    enabledChannels: [],
+                    isAutoresponderTurnedOff: null,
+                    onCompletePathway: null,
+                },
+            },
+        }
+
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...storeConfigurationContextMock,
+            storeConfiguration: getStoreConfigurationFixture(mockedWizardValue),
+        })
+
+        const {result} = renderHook(() =>
+            useAiAgentOnboardingWizard({
+                step: AiAgentOnboardingWizardStep.Personalize,
+            })
+        )
+
+        act(() => {
+            result.current.handleAction(WIZARD_BUTTON_ACTIONS.NEXT_STEP)
+        })
+        expect(mockSetSearchParam).toHaveBeenCalledWith('true')
+        expect(mockNavigateWizardSteps.goToNextStep).toHaveBeenCalled()
     })
 })

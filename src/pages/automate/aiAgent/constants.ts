@@ -128,6 +128,8 @@ export enum WIZARD_POST_COMPLETION_STATE {
     test_subject = 'test_subject',
 }
 
+export const WIZARD_UPDATE_QUERY_KEY = 'update_setup'
+
 export enum WizardPostCompletionPathway {
     knowledge = 'knowledge',
     guidance = 'guidance',

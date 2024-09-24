@@ -41,6 +41,7 @@ const mockedUseAiAgentOnboardingWizard = {
     faqHelpCenters: getHelpCentersResponseFixture.data,
     snippetHelpCenter: null,
     isLoading: false,
+    isUpdateWizardSetup: false,
     handleFormUpdate: jest.fn(),
     handleSave: jest.fn(),
     handleAction: jest.fn(),

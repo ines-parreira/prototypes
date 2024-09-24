@@ -38,21 +38,29 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
         handleAction,
         handleSave,
         isLoading,
+        isUpdateWizardSetup,
         storeConfiguration,
     } = useAiAgentOnboardingWizard({
         step: AiAgentOnboardingWizardStep.Knowledge,
     })
 
     useEffect(() => {
+        // prefills Help Center if it's a new setup and there's only one Help Center available
         if (
             storeConfiguration?.helpCenterId === null &&
-            faqHelpCenters.length === 1
+            faqHelpCenters.length === 1 &&
+            !isUpdateWizardSetup
         ) {
             handleFormUpdate({helpCenterId: faqHelpCenters[0].id})
         }
 
         // Trigger effect on storeConfiguration change to update values after fetching store configuration
-    }, [faqHelpCenters, handleFormUpdate, storeConfiguration])
+    }, [
+        faqHelpCenters,
+        handleFormUpdate,
+        isUpdateWizardSetup,
+        storeConfiguration,
+    ])
 
     const selectedHelpCenter = faqHelpCenters.find(
         (helpCenter) => helpCenter.id === storeFormValues.helpCenterId

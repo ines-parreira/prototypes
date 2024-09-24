@@ -19,6 +19,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {useGetOrCreateSnippetHelpCenter} from 'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
+import {useSearchParam} from 'hooks/useSearchParam'
 import {FormValues, UpdateValue, WizardFormValues} from '../../types'
 import {getFormValuesFromStoreConfiguration} from '../../components/StoreConfigForm/StoreConfigForm.utils'
 import {
@@ -27,6 +28,7 @@ import {
     WIZARD_BUTTON_ACTIONS,
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
+    WIZARD_UPDATE_QUERY_KEY,
 } from '../../constants'
 
 type handleSaveParams = {
@@ -46,6 +48,7 @@ type AiAgentOnboardingWizardOutput = {
     isLoading: boolean
     updateValue: UpdateValue<FormValues>
     storeConfiguration: StoreConfiguration | undefined
+    isUpdateWizardSetup: boolean
 }
 
 type Props = {
@@ -73,6 +76,30 @@ export const useAiAgentOnboardingWizard = ({
     const [isLoading, setIsLoading] = useState(false)
     const {storeConfiguration, isLoading: isLoadingStoreConfiguration} =
         useAiAgentStoreConfigurationContext()
+    const [wizardUpdate, setWizardUpdate] = useSearchParam(
+        WIZARD_UPDATE_QUERY_KEY
+    )
+
+    const isStepAfter = (
+        registeredStep: AiAgentOnboardingWizardStep,
+        currentStep: AiAgentOnboardingWizardStep
+    ) => {
+        const stepOrder = [
+            AiAgentOnboardingWizardStep.Education,
+            AiAgentOnboardingWizardStep.Personalize,
+            AiAgentOnboardingWizardStep.Knowledge,
+        ]
+
+        return (
+            stepOrder.indexOf(registeredStep) > stepOrder.indexOf(currentStep)
+        )
+    }
+
+    const registeredStep = storeConfiguration?.wizard?.stepName
+    const isOnWizardUpdate = useMemo(
+        () => registeredStep && isStepAfter(registeredStep, step),
+        [registeredStep, step]
+    )
 
     const {data: helpCenterListData, isLoading: isLoadingHelpCenters} =
         useGetHelpCenterList(
@@ -165,6 +192,7 @@ export const useAiAgentOnboardingWizard = ({
                 break
             case WIZARD_BUTTON_ACTIONS.NEXT_STEP:
                 logEvent(SegmentEvent.AiAgentOnboardingWizardNextClicked)
+                setWizardUpdate(isOnWizardUpdate ? 'true' : null)
                 navigateWizardSteps.goToNextStep()
                 break
             case WIZARD_BUTTON_ACTIONS.FINISH_TO_KNOWLEDGE:
@@ -257,6 +285,7 @@ export const useAiAgentOnboardingWizard = ({
         handleAction,
         handleSave,
         updateValue,
+        isUpdateWizardSetup: !!wizardUpdate,
         isLoading:
             isPendingCreateOrUpdate ||
             isLoadingHelpCenters ||

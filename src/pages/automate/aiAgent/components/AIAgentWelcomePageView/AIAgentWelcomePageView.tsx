@@ -12,6 +12,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {StoreConfiguration} from 'models/aiAgent/types'
 import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
+import {WIZARD_UPDATE_QUERY_KEY} from '../../constants'
 import css from './AIAgentWelcomePageView.less'
 
 export type DynamicItem = {
@@ -62,10 +63,13 @@ export const AIAgentWelcomePageView = (props: Props) => {
     }
 
     const onOnboardingWizardClick = useCallback(() => {
-        history.push(
-            `/app/automation/${props.shopType}/${props.shopName}/ai-agent/new`
-        )
-    }, [history, props.shopName, props.shopType])
+        history.push({
+            pathname: `/app/automation/${props.shopType}/${props.shopName}/ai-agent/new`,
+            search: isOnUpdateOnboardingWizard
+                ? `?${WIZARD_UPDATE_QUERY_KEY}=true`
+                : '',
+        })
+    }, [history, isOnUpdateOnboardingWizard, props.shopName, props.shopType])
 
     const onAcknowledgedClick = async () => {
         try {

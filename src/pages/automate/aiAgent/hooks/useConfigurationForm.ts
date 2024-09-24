@@ -265,7 +265,7 @@ export const useConfigurationForm = ({
         publicUrls?: string[]
         aiAgentMode?: string
         payload?: Partial<FormValues>
-        stepName?: string
+        stepName?: AiAgentOnboardingWizardStep
     }) => {
         const isUpdate = !!storeConfiguration
         const enrichedFormValues = {

@@ -11,6 +11,7 @@ import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import {AIAgentWelcomePageView} from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
 import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import {WIZARD_UPDATE_QUERY_KEY} from '../../constants'
 
 const MOCK_WIZARD_VALUES = {
     wizard: {
@@ -488,9 +489,53 @@ describe('<AIAgentWelcomePageView />', () => {
 
         fireEvent.click(button)
 
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/new`
+        expect(historyPushSpy).toHaveBeenCalledWith({
+            pathname: `/app/automation/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/new`,
+            search: '',
+        })
+    })
+
+    it('should redirect to AiAgentOnboardingWizard page with search params when Continue Set Up button is clicked', () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        const SHOP_NAME = 'my-store'
+        const SHOP_TYPE = 'shopify'
+
+        renderWithRouter(
+            <AIAgentWelcomePageView
+                shopType={SHOP_TYPE}
+                shopName={SHOP_NAME}
+                storeConfiguration={getStoreConfigurationFixture(
+                    MOCK_WIZARD_VALUES
+                )}
+                state="onboardingWizard"
+                emailConnected={{
+                    checked: true,
+                }}
+                helpCenterCreated={{
+                    checked: true,
+                }}
+                helpCenter20Articles={{
+                    checked: true,
+                }}
+                shopifyPermissionUpdated={{
+                    checked: true,
+                }}
+            />,
+            {history}
         )
+
+        const button = screen.getByRole('button', {
+            name: /Continue Setup/i,
+        })
+
+        fireEvent.click(button)
+
+        expect(historyPushSpy).toHaveBeenCalledWith({
+            pathname: `/app/automation/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/new`,
+            search: `?${WIZARD_UPDATE_QUERY_KEY}=true`,
+        })
     })
 
     it('should render dynamic state for Onboarding Wizard update when storeConfiguration is exist', () => {

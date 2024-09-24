@@ -37,7 +37,7 @@ export const getStoreConfigurationFromFormValues = (
     }
 
     const wizard = {
-        stepName: formValues.wizard?.stepName as string,
+        stepName: formValues.wizard?.stepName ?? null,
         stepData: wizardStepData,
         completedDatetime: formValues.wizard?.completedDatetime,
     }

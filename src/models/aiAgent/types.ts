@@ -105,7 +105,7 @@ export type WizardStepData = {
 
 export type Wizard = {
     id?: number
-    stepName: string
+    stepName: AiAgentOnboardingWizardStep | null
     stepData: WizardStepData
     completedDatetime?: string | null
 }
