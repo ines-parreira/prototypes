@@ -29,7 +29,7 @@ import {
     Source,
     TicketMessage,
 } from 'models/ticket/types'
-import {generateTicketMessagesId} from 'utils'
+import * as utils from 'utils'
 import {appQueryClient} from 'api/queryClient'
 import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {VoiceCall} from 'models/voiceCall/types'
@@ -1684,7 +1684,7 @@ describe('ticket utils', () => {
     describe('buildFirstTicketMessage', () => {
         it('returns the ticket message untouched if this is not the first ticket message of the first ticket messages group', () => {
             const ticketMessage = {} as TicketMessage
-            const ticketMessageId = generateTicketMessagesId(2)
+            const ticketMessageId = utils.generateTicketMessagesId(2)
             const ticketMeta = fromJS({})
 
             expect(
@@ -1698,7 +1698,7 @@ describe('ticket utils', () => {
 
         it('returns the ticket message untouched if there is no ticket meta to process', () => {
             const ticketMessage = {} as TicketMessage
-            const ticketMessageId = generateTicketMessagesId(1)
+            const ticketMessageId = utils.generateTicketMessagesId(1)
             const ticketMeta = null
 
             expect(
@@ -1712,7 +1712,7 @@ describe('ticket utils', () => {
 
         it('returns the ticket message untouched if the ticket meta fields are not relevant', () => {
             const ticketMessage = {} as TicketMessage
-            const ticketMessageId = generateTicketMessagesId(1)
+            const ticketMessageId = utils.generateTicketMessagesId(1)
             const ticketMeta = fromJS({
                 other: 'field',
             })
@@ -1728,7 +1728,7 @@ describe('ticket utils', () => {
 
         it('returns the transformed ticket message if the ticket meta fields contain a relevant "gorgias_contact_form" field', () => {
             const ticketMessage = {} as TicketMessage
-            const ticketMessageId = generateTicketMessagesId(1)
+            const ticketMessageId = utils.generateTicketMessagesId(1)
             const gorgiasContactFormMeta: GorgiasContactFormTicketMeta = {
                 contact_form_id: 1,
                 contact_form_locale_id: 1,

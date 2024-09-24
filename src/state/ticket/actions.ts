@@ -23,7 +23,6 @@ import {getLDClient} from 'utils/launchDarkly'
 import {MacroActionName} from 'models/macroAction/types'
 import {InTicketSuggestionState} from 'state/entities/rules/types'
 import {CustomFields, CustomFieldState} from 'models/customField/types'
-import browserNotification from 'services/browserNotification'
 import GorgiasApi from 'services/gorgiasApi'
 import socketManager from 'services/socketManager/socketManager'
 import {markChatAsRead} from 'state/chats/actions'
@@ -33,7 +32,7 @@ import {getSourceTypeCache} from 'state/newMessage/responseUtils'
 import {notify} from 'state/notifications/actions'
 import * as ticketsSelectors from 'state/tickets/selectors'
 import * as viewsSelectors from 'state/views/selectors'
-import {isCurrentlyOnTicket, isTabActive} from 'utils'
+import {isCurrentlyOnTicket} from 'utils'
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 
 import {
@@ -79,11 +78,12 @@ import {
     getSourceTypeOfResponse,
     guessReceiversFromTicket,
 } from './utils'
+import notifyOnNewMessage from './notifyOnNewMessage'
 import * as types from './constants'
 
 export const mergeTicket =
     (ticket: Ticket) =>
-    (
+    async (
         dispatch: StoreDispatch,
         getState: () => RootState
     ): Promise<ReturnType<StoreDispatch>> => {
@@ -96,31 +96,9 @@ export const mergeTicket =
             return Promise.resolve()
         }
 
-        // notification on new message while not on tab
-        if (!isTabActive()) {
-            const {ticket: previousTicket} = getState()
+        const {ticket: previousTicket} = getState()
 
-            const messagesLength = (
-                ticketRecord.get('messages', fromJS([])) as List<any>
-            ).size
-            const previousMessagesLength = (
-                previousTicket.get('messages', fromJS([])) as List<any>
-            ).size
-
-            const newMessage = (
-                ticketRecord.get('messages', fromJS([])) as List<any>
-            ).last() as Map<any, any>
-
-            if (
-                messagesLength !== previousMessagesLength &&
-                newMessage &&
-                !newMessage.get('from_agent')
-            ) {
-                const title = newMessage.getIn(['sender', 'name']) as string
-                const body = newMessage.get('body_text') as string
-                browserNotification.newMessage({title, body})
-            }
-        }
+        void notifyOnNewMessage(previousTicket, ticketRecord)
 
         const currentMessages = ticketState.get(
             'messages',

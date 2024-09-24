@@ -13,7 +13,7 @@ export const events: Event[] = [
     {
         enabled: true,
         type: 'ticket-message.created',
-        label: "New messages from all channels & when I'm assigned to a ticket",
+        label: 'New messages from all channels',
     },
     {
         enabled: true,

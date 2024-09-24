@@ -65,7 +65,6 @@ const mockGetKnockPreferences = jest.fn()
 const mockSetKnockPreferences = jest.fn()
 
 const mockFlagSet = {
-    [FeatureFlagKey.NotificationsTicketAssigned]: true,
     [FeatureFlagKey.NotificationsTicketMessageCreated]: true,
 }
 

@@ -8,7 +8,6 @@ import {store as reduxStore} from 'common/store'
 import {isSpecificTicketPath} from 'common/utils'
 import {MAX_RECENT_CHATS} from 'config/recentChats'
 import {appQueryClient} from 'api/queryClient'
-import browserNotification from 'services/browserNotification'
 import {setIsAvailable} from 'state/currentUser/actions'
 import {MACRO_PARAMS_UPDATED} from 'state/macro/constants'
 import {fetchNewPhoneNumbers} from 'models/phoneNumber/resources'
@@ -56,7 +55,6 @@ import {
     ShopperAddressEvent,
     ShopperEvent,
     SocketEventType,
-    TicketAssignedEvent,
     TicketChatUpdatedEvent,
     TicketMessageActionFailedEvent,
     TicketMessageChatCreatedEvent,
@@ -94,6 +92,8 @@ import {
 } from 'state/entities/views/actions'
 import history from 'pages/history'
 import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 /**
  * Events that can be received from server via socket
@@ -150,19 +150,6 @@ const receivedEvents: ReceivedEvent[] = [
                 reduxStore.dispatch(chatsActions.markChatAsUnread(ticket.id))
             }
             reduxStore.dispatch(ticketActions.mergeTicket(ticket) as any)
-        },
-    },
-
-    {
-        name: 'ticket-assigned',
-        onReceive: function (json) {
-            const {ticket} = json as TicketAssignedEvent
-
-            browserNotification.newMessage({
-                body: `New assigned ticket [${ticket.channel}]: ${ticket.subject}`,
-                ticketId: ticket.id,
-                requireInteraction: true,
-            })
         },
     },
     {
@@ -423,15 +410,25 @@ const receivedEvents: ReceivedEvent[] = [
     {
         name: SocketEventType.TicketMessageChatCreated,
         onReceive: function (json) {
+            const state = reduxStore.getState() as RootState
+            const currentUserId = currentUserSelectors.getCurrentUserId(state)
+            const isTicketMessageCreatedEnabled = !!getLDClient().variation(
+                FeatureFlagKey.NotificationsTicketMessageCreated,
+                false
+            )
             const ticket = (json as TicketMessageChatCreatedEvent).data
+
             // send browser notifications only for new customer messages
-            const shouldNotify = !ticket.last_message_from_agent
+            const shouldNotify =
+                !ticket.last_message_from_agent &&
+                (isTicketMessageCreatedEnabled
+                    ? ticket.assignee_user_id !== currentUserId
+                    : true)
 
             const playSoundNotification = (
                 json as TicketMessageChatCreatedEvent
             ).event.play_sound_notification
 
-            const state = reduxStore.getState()
             const {currentUser} = state
 
             const ticketAssignmentSetting =

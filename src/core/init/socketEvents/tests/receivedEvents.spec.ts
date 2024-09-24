@@ -4,7 +4,6 @@ import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 import {EnhancedStore} from '@reduxjs/toolkit'
 
-import {TicketChannel} from 'business/types/ticket'
 import browserNotification from 'services/browserNotification'
 import {
     advancedMonthlyHelpdeskPlan,
@@ -62,6 +61,7 @@ import {appQueryClient} from 'api/queryClient'
 import {voiceCallsKeys} from 'models/voiceCall/queries'
 import * as activityTracker from 'services/activityTracker'
 import {ActivityEvents} from 'services/activityTracker'
+import {getLDClient} from 'utils/launchDarkly'
 
 import {
     ecommerceStoreFixture,
@@ -134,7 +134,14 @@ jest.mock('state/entities/views/actions')
 
 jest.mock('state/views/utils')
 
+jest.mock('utils/launchDarkly')
+const variationMock = getLDClient().variation as jest.Mock
+
 describe('receivedEvents', () => {
+    beforeEach(() => {
+        variationMock.mockImplementation(() => true)
+    })
+
     afterEach(() => {
         window.location.pathname = ''
         window.CLIENT_ID = ''
@@ -540,6 +547,51 @@ describe('receivedEvents', () => {
                 )
             }
         )
+
+        it.each([
+            [1, false],
+            [123, true],
+        ])(
+            'should call addChat with notify depending on the user id',
+            (userId, notifyExpect) => {
+                ;(
+                    shouldTicketBeDisplayedInRecentChats as jest.MockedFunction<
+                        typeof shouldTicketBeDisplayedInRecentChats
+                    >
+                ).mockReturnValue(true)
+                ;(
+                    isCurrentlyOnTicket as jest.MockedFunction<
+                        typeof isCurrentlyOnTicket
+                    >
+                ).mockReturnValue(false)
+
+                const ticket = {
+                    id: 1,
+                    status: TicketStatuses.OPEN,
+                    spam: false,
+                    trashed_datetime: null,
+                    deleted_datetime: null,
+                    assignee_user_id: userId,
+                    is_unread: true,
+                    last_message_from_agent: false,
+                }
+
+                if (mockSocketManager.ticketMessageChatCreatedHandler) {
+                    mockSocketManager.ticketMessageChatCreatedHandler({
+                        event: {
+                            type: SocketEventType.TicketMessageChatCreated,
+                            play_sound_notification: true,
+                        },
+                        data: ticket,
+                    } as any)
+                }
+                expect(chatActions.addChat).toHaveBeenCalledWith(
+                    ticket,
+                    notifyExpect,
+                    true
+                )
+            }
+        )
     })
 
     describe('TICKET_CHAT_UPDATED handler', () => {
@@ -877,31 +929,6 @@ describe('receivedEvents', () => {
         it('should dispatch the updated chat when is unread', () => {
             handler.onReceive({ticket: {id: 1, is_unread: true}} as any)
             expect(chatActions.markChatAsUnread).toHaveBeenNthCalledWith(1, 1)
-        })
-    })
-
-    describe('ticket-assigned', () => {
-        const handler = _find(receivedEvents, {
-            name: 'ticket-assigned',
-        }) as ReceivedEvent
-
-        it('should send a browser notification', () => {
-            handler.onReceive({
-                event: {
-                    type: 'ticket-assigned',
-                },
-                ticket: {
-                    id: 1,
-                    channel: TicketChannel.Email,
-                    subject: 'Foo bar',
-                },
-            })
-
-            expect(browserNotification.newMessage).toHaveBeenNthCalledWith(1, {
-                body: `New assigned ticket [${TicketChannel.Email}]: Foo bar`,
-                ticketId: 1,
-                requireInteraction: true,
-            })
         })
     })
 

@@ -97,7 +97,6 @@ export enum FeatureFlagKey {
     NewChannelsView = 'new-channels-view',
     NewEmailOnboarding = 'new-email-onboarding',
     NewSenderSelect = 'new-sender-select',
-    NotificationsTicketAssigned = 'notifications-ticket-assigned',
     NotificationsTicketMessageCreated = 'notifications-ticket-message-created',
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityAllowAIGeneratedArticlesForMultiStore = 'allow-ai-generated-articles-for-multi-store',
