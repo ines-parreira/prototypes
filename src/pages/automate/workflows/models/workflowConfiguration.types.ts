@@ -165,6 +165,18 @@ export type WorkflowStepUpdateShippingAddress = {
     }
 }
 
+export type WorkflowStepRemoveItem = {
+    id: string
+    kind: 'remove-item'
+    settings: {
+        customer_id: string
+        order_external_id: string
+        integration_id: string
+        product_variant_id: string
+        quantity: string
+    }
+}
+
 export type WorkflowStepCancelSubscription = {
     id: string
     kind: 'cancel-subscription'
@@ -203,6 +215,7 @@ export type WorkflowStep =
     | WorkflowStepCancelOrder
     | WorkflowStepRefundOrder
     | WorkflowStepUpdateShippingAddress
+    | WorkflowStepRemoveItem
     | WorkflowStepCancelSubscription
     | WorkflowStepSkipCharge
 

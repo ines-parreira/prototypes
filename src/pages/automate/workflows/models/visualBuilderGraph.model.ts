@@ -22,6 +22,7 @@ import {
     WorkflowStepOrderLineItemSelection,
     WorkflowStepOrderSelection,
     WorkflowStepRefundOrder,
+    WorkflowStepRemoveItem,
     WorkflowStepShopperAuthentication,
     WorkflowStepSkipCharge,
     WorkflowStepTextInput,
@@ -600,6 +601,32 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
 
                     setObjectInputs(g, node, trigger)
                 }
+            } else if (node.type === 'remove_item') {
+                const step: WorkflowStepRemoveItem = {
+                    id: node.id,
+                    kind: 'remove-item',
+                    settings: {
+                        customer_id: node.data.customerId,
+                        order_external_id: node.data.orderExternalId,
+                        integration_id: node.data.integrationId,
+                        product_variant_id: node.data.productVariantId,
+                        quantity: node.data.quantity,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        description: '',
+                        path: `steps_state.${node.id}.success`,
+                    })
+
+                    setObjectInputs(g, node, trigger)
+                }
             } else if (node.type === 'cancel_subscription') {
                 const step: WorkflowStepCancelSubscription = {
                     id: node.id,
@@ -686,6 +713,7 @@ export function getIncoming(
         | 'cancel_order'
         | 'refund_order'
         | 'update_shipping_address'
+        | 'remove_item'
         | 'cancel_subscription'
         | 'skip_charge'
 ) {
@@ -743,6 +771,7 @@ export function getIncoming(
         case 'cancel_order':
         case 'refund_order':
         case 'update_shipping_address':
+        case 'remove_item':
         case 'cancel_subscription':
         case 'skip_charge': {
             const branchName = incomingEdge.data?.name

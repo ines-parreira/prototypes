@@ -21,6 +21,7 @@ type BaseWorkflowVariable<T extends WorkflowVariableType> = {
         | 'cancel_order'
         | 'refund_order'
         | 'update_shipping_address'
+        | 'remove_item'
         | 'cancel_subscription'
         | 'skip_charge'
         | 'app'

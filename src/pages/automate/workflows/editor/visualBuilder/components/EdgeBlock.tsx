@@ -634,6 +634,51 @@ const UpdateShippingAddressMenuItem = ({
     )
 }
 
+const RemoveItemMenuItem = ({
+    nodeId,
+    floatingRef,
+    customerId,
+    orderExternalId,
+    integrationId,
+}: {
+    nodeId: string
+    floatingRef?: HTMLElement | null
+    customerId: string
+    orderExternalId: string
+    integrationId: string
+}) => {
+    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+
+    return (
+        <MenuItem
+            label={labelByVisualBuilderNodeType.remove_item}
+            description="Remove order item."
+            icon={iconByVisualBuilderNodeType.remove_item}
+            style={colorByVisualBuilderNodeType.remove_item}
+            onClick={() => {
+                dispatch({
+                    type: 'INSERT_REMOVE_ITEM_NODE',
+                    beforeNodeId: nodeId,
+                    customerId,
+                    orderExternalId,
+                    integrationId,
+                })
+            }}
+            floatingRef={floatingRef}
+            disabledText={
+                !isNodeUniquePerPath(
+                    'refund_order',
+                    visualBuilderGraph,
+                    nodeId
+                ) ||
+                !isNodeUniquePerPath('cancel_order', visualBuilderGraph, nodeId)
+                    ? 'This step cannot be used if Cancel order or Refund order step was already added.'
+                    : undefined
+            }
+        />
+    )
+}
+
 const CancelSubscriptionMenuItem = ({
     nodeId,
     floatingRef,
@@ -821,6 +866,13 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                                     integrationId="{{store.helpdesk_integration_id}}"
                                 />
                                 <UpdateShippingAddressMenuItem
+                                    nodeId={nodeId}
+                                    floatingRef={floatingRef}
+                                    customerId="{{objects.customer.id}}"
+                                    orderExternalId="{{objects.order.external_id}}"
+                                    integrationId="{{store.helpdesk_integration_id}}"
+                                />
+                                <RemoveItemMenuItem
                                     nodeId={nodeId}
                                     floatingRef={floatingRef}
                                     customerId="{{objects.customer.id}}"

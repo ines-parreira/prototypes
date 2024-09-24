@@ -235,3 +235,86 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
     choiceEventIdEditing: null,
     branchIdsEditing: [],
 }
+
+export const visualBuilderGraphLlmPromptTriggerFixture: VisualBuilderGraph = {
+    name: 'Remove order item',
+    available_languages: ['en-US'],
+    nodes: [
+        {
+            ...buildNodeCommonProperties(),
+            id: 'trigger',
+            type: 'llm_prompt_trigger',
+            data: {
+                instructions: 'Instructions',
+                requires_confirmation: false,
+                custom_inputs: [],
+                object_inputs: [],
+                conditionsType: null,
+                conditions: [],
+            },
+        },
+        {
+            ...buildNodeCommonProperties(),
+            id: 'http_request1',
+            type: 'http_request',
+            data: {
+                name: '',
+                url: 'https://example.com',
+                method: 'GET',
+                headers: [],
+                variables: [
+                    {
+                        id: 'variable1',
+                        name: '',
+                        jsonpath: '$',
+                        data_type: 'json',
+                    },
+                    {
+                        id: 'variable2',
+                        name: '',
+                        jsonpath: '$.string',
+                        data_type: 'string',
+                    },
+                ],
+            },
+        },
+        {
+            ...buildNodeCommonProperties(),
+            id: 'end1',
+            type: 'end',
+            data: {
+                action: 'end',
+            },
+        },
+    ],
+    edges: [
+        {
+            ...buildEdgeCommonProperties(),
+            source: 'trigger',
+            target: 'http_request1',
+        },
+        {
+            ...buildEdgeCommonProperties(),
+            source: 'http_request1',
+            target: 'end1',
+        },
+    ],
+    wfConfigurationOriginal: {
+        internal_id: 'id_2',
+        id: 'id_2',
+        name: 'Llm prompt trigger configuration',
+        is_draft: false,
+        initial_step_id: 'trigger',
+        entrypoint: null,
+        available_languages: [],
+        steps: [],
+        transitions: [],
+        updated_datetime: '2024-09-17T11:18:00.201Z',
+        triggers: [],
+        entrypoints: [],
+        apps: [],
+    },
+    nodeEditingId: null,
+    choiceEventIdEditing: null,
+    branchIdsEditing: [],
+}

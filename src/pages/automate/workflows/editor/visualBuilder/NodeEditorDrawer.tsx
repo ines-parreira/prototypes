@@ -27,6 +27,7 @@ import LLMPromptTriggerEditor from './editors/LLMPromptTriggerEditor'
 import UpdateShippingAddressEditor from './editors/UpdateShippingAddressEditor'
 import CancelSubscriptionEditor from './editors/CancelSubscriptionEditor'
 import SkipChargeEditor from './editors/SkipChargeEditor'
+import RemoveItemEditor from './editors/RemoveItemEditor'
 
 type Props = {
     nodeInEdition?: VisualBuilderNode | null
@@ -159,6 +160,9 @@ const NodeEditorDrawer = ({nodeInEdition, onClose}: Props) => {
                     <UpdateShippingAddressEditor
                         nodeInEdition={memoizedNodeInEdition}
                     />
+                )}
+                {memoizedNodeInEdition?.type === 'remove_item' && (
+                    <RemoveItemEditor nodeInEdition={memoizedNodeInEdition} />
                 )}
                 {memoizedNodeInEdition?.type === 'cancel_subscription' && (
                     <CancelSubscriptionEditor

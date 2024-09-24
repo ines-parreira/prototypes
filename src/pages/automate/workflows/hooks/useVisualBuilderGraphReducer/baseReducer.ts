@@ -15,6 +15,7 @@ import {
     isTriggerNodeType,
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
+    RemoveItemNodeType,
     SkipChargeNodeType,
     TextReplyNodeType,
     UpdateShippingAddressNodeType,
@@ -32,6 +33,7 @@ import {
     buildOrderLineItemSelectionNode,
     buildOrderSelectionNode,
     buildRefundOrderNode,
+    buildRemoveItemNode,
     buildShopperAuthenticationNode,
     buildSkipChargeNode,
     buildTextReplyNode,
@@ -171,6 +173,19 @@ export type VisualBuilderBaseAction =
           phone: string
           lastName: string
           firstName: string
+      }
+    | {
+          type: 'INSERT_REMOVE_ITEM_NODE'
+          beforeNodeId: string
+          customerId: string
+          orderExternalId: string
+          integrationId: string
+      }
+    | {
+          type: 'SET_REMOVE_ITEM_NODE_SETTINGS'
+          removeItemNodeId: string
+          productVariantId: string
+          quantity: string
       }
     | {
           type: 'SET_BRANCH_IDS_EDITING'
@@ -448,6 +463,14 @@ export function baseReducer(
                     action.beforeNodeId
                 )
             )
+        case 'INSERT_REMOVE_ITEM_NODE':
+            return computeNodesPositions(
+                insertFallibleNode(
+                    graph,
+                    buildRemoveItemNode(action),
+                    action.beforeNodeId
+                )
+            )
         case 'INSERT_CANCEL_SUBSCRIPTION_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
@@ -495,6 +518,18 @@ export function baseReducer(
                     node.data.phone = action.phone
                     node.data.lastName = action.lastName
                     node.data.firstName = action.firstName
+                }
+            })
+        case 'SET_REMOVE_ITEM_NODE_SETTINGS':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is RemoveItemNodeType =>
+                        n.id === action.removeItemNodeId
+                )
+
+                if (node) {
+                    node.data.productVariantId = action.productVariantId
+                    node.data.quantity = action.quantity
                 }
             })
         case 'SET_CANCEL_SUBSCRIPTION_NODE_SETTINGS':

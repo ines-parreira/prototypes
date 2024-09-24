@@ -66,6 +66,10 @@ export const colorByVisualBuilderNodeType: Record<
         color: 'var(--neutral-grey-5)',
         backgroundColor: 'var(--neutral-grey-2)',
     },
+    remove_item: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
     cancel_subscription: {
         color: 'var(--neutral-grey-5)',
         backgroundColor: 'var(--neutral-grey-2)',
@@ -102,6 +106,7 @@ export const iconByVisualBuilderNodeType: Record<
     cancel_order: <i className="material-icons">delete</i>,
     refund_order: <i className="material-icons">history</i>,
     update_shipping_address: <i className="material-icons">local_shipping</i>,
+    remove_item: <i className="material-icons">remove</i>,
     cancel_subscription: <i className="material-icons">unsubscribe</i>,
     skip_charge: <i className="material-icons">skip_next</i>,
     app: <i className="material-icons">key</i>,
@@ -125,6 +130,7 @@ export const labelByVisualBuilderNodeType: Record<
     cancel_order: 'Cancel order',
     refund_order: 'Refund order',
     update_shipping_address: 'Edit order shipping address',
+    remove_item: 'Remove order item',
     cancel_subscription: 'Cancel subscription',
     skip_charge: 'Skip next subscription shipment',
     llm_prompt_trigger: 'Start Flow',

@@ -219,4 +219,217 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             ])
         )
     })
+
+    test('llmprompt trigger configuration', () => {
+        const c: WorkflowConfiguration = {
+            internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+            id: '01J7ZTERAST0PVVPF347XA37FR',
+            name: 'Remove order item',
+            is_draft: true,
+            initial_step_id: 'remove_item',
+            entrypoint: null,
+            available_languages: ['en-US'],
+            steps: [
+                {
+                    id: 'remove_item',
+                    kind: 'remove-item',
+                    settings: {
+                        customer_id: '{{objects.customer.id}}',
+                        order_external_id: '{{objects.order.external_id}}',
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        product_variant_id: '',
+                        quantity: '',
+                    },
+                },
+                {
+                    id: 'end_success',
+                    kind: 'end',
+                },
+                {
+                    id: 'end_failure',
+                    kind: 'end',
+                },
+            ],
+            transitions: [
+                {
+                    id: '01J87E4X5V8YDKSF81BX80CCS5',
+                    from_step_id: 'remove_item',
+                    to_step_id: 'end_success',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+                {
+                    id: '01J87E4X5VZ7NTSXPV74384JKN',
+                    from_step_id: 'remove_item',
+                    to_step_id: 'end_failure',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+            ],
+            updated_datetime: '2024-09-17T11:18:00.201Z',
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [
+                            {
+                                id: '01J7ZTR9XY9M0TQC99836A6PXC',
+                                name: 'Quantity',
+                                data_type: 'number',
+                                instructions: 'Quantity of items to remove',
+                            },
+                            {
+                                id: '01J7ZTRY44ZM21JPNY7A7JK00Z',
+                                name: 'Product variant id',
+                                data_type: 'string',
+                                instructions: 'id of the product variant',
+                            },
+                        ],
+                        object_inputs: [],
+                        conditions: null,
+                        outputs: [
+                            {
+                                id: 'remove_item',
+                                description: '',
+                                path: 'steps_state.remove_item.success',
+                            },
+                        ],
+                    },
+                },
+            ],
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        requires_confirmation: false,
+                        instructions:
+                            'This action removes the item from the order',
+                    },
+                },
+            ],
+        }
+        const visualBuilderGraph =
+            transformWorkflowConfigurationIntoVisualBuilderGraph(
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                )
+            )
+        expect(visualBuilderGraph.nodes.length).toBe(4)
+        expect(visualBuilderGraph.edges.length).toBe(3)
+        expect(visualBuilderGraph.nodes).toEqual([
+            {
+                id: 'trigger_button',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'llm_prompt_trigger',
+                data: {
+                    instructions: 'This action removes the item from the order',
+                    requires_confirmation: false,
+                    custom_inputs: [
+                        {
+                            id: '01J7ZTR9XY9M0TQC99836A6PXC',
+                            name: 'Quantity',
+                            data_type: 'number',
+                            instructions: 'Quantity of items to remove',
+                        },
+                        {
+                            id: '01J7ZTRY44ZM21JPNY7A7JK00Z',
+                            name: 'Product variant id',
+                            data_type: 'string',
+                            instructions: 'id of the product variant',
+                        },
+                    ],
+                    object_inputs: [
+                        {
+                            kind: 'customer',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                        {
+                            kind: 'order',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                    ],
+                    conditionsType: null,
+                    conditions: [],
+                },
+            },
+            {
+                id: 'remove_item',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'remove_item',
+                data: {
+                    customerId: '{{objects.customer.id}}',
+                    orderExternalId: '{{objects.order.external_id}}',
+                    integrationId: '{{store.helpdesk_integration_id}}',
+                    productVariantId: '',
+                    quantity: '',
+                },
+            },
+            {
+                id: 'end_success',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+            {
+                id: 'end_failure',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+        ])
+        expect(visualBuilderGraph.edges).toEqual([
+            {
+                id: 'trigger_button-remove_item',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'trigger_button',
+                target: 'remove_item',
+            },
+            {
+                id: 'remove_item-end_success',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'remove_item',
+                target: 'end_success',
+            },
+            {
+                id: 'remove_item-end_failure',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'remove_item',
+                target: 'end_failure',
+            },
+        ])
+    })
 })

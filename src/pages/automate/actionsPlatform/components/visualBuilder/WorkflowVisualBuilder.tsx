@@ -25,6 +25,7 @@ import ConditionsNode from 'pages/automate/workflows/editor/visualBuilder/nodes/
 import CancelOrderNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CancelOrderNode'
 import RefundOrderNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RefundOrderNode'
 import UpdateShippingAddressNode from 'pages/automate/workflows/editor/visualBuilder/nodes/UpdateShippingAddressNode'
+import RemoveItemNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RemoveItemNode'
 import CancelSubscriptionNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CancelSubscriptionNode'
 import SkipChargeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/SkipChargeNode'
 import CustomEdge from 'pages/automate/workflows/editor/visualBuilder/CustomEdge'
@@ -39,6 +40,7 @@ const nodeTypes = {
     cancel_order: CancelOrderNode,
     refund_order: RefundOrderNode,
     update_shipping_address: UpdateShippingAddressNode,
+    remove_item: RemoveItemNode,
     cancel_subscription: CancelSubscriptionNode,
     skip_charge: SkipChargeNode,
     end: EndNode,

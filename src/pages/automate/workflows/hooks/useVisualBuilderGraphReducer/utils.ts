@@ -22,6 +22,7 @@ import {
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
     RefundOrderNodeType,
+    RemoveItemNodeType,
     ShopperAuthenticationNodeType,
     SkipChargeNodeType,
     TextReplyNodeType,
@@ -322,6 +323,29 @@ export const buildUpdateShippingAddressNode = ({
             phone: '',
             lastName: '',
             firstName: '',
+        },
+    }
+}
+
+export const buildRemoveItemNode = ({
+    customerId,
+    orderExternalId,
+    integrationId,
+}: Pick<
+    RemoveItemNodeType['data'],
+    'customerId' | 'orderExternalId' | 'integrationId'
+>): RemoveItemNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'remove_item',
+        data: {
+            customerId,
+            orderExternalId,
+            integrationId,
+            productVariantId: '',
+            quantity: '',
         },
     }
 }

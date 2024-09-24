@@ -990,6 +990,13 @@ export const buildWorkflowVariableFromNode = (
             value: `steps_state.${node.id}.success`,
             type: 'boolean',
         }
+    } else if (node.type === 'remove_item') {
+        return {
+            name: 'Remove item success',
+            nodeType: 'remove_item',
+            value: `steps_state.${node.id}.success`,
+            type: 'boolean',
+        }
     } else if (node.type === 'cancel_subscription') {
         return {
             name: 'Cancel subscription success',
@@ -1201,6 +1208,22 @@ export function extractVariablesFromNode(
                 ),
             ]
             break
+        case 'remove_item':
+            variables = [
+                ...extractVariablesFromText(node.data.customerId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.orderExternalId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.productVariantId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.quantity).map(
+                    (variable) => variable.value
+                ),
+            ]
+            break
     }
 
     return variables
@@ -1301,6 +1324,11 @@ export function isValidLiquidSyntaxInNode(
             return (
                 isValidLiquidSyntax(node.data.subscriptionId) &&
                 isValidLiquidSyntax(node.data.chargeId)
+            )
+        case 'remove_item':
+            return (
+                isValidLiquidSyntax(node.data.productVariantId) &&
+                isValidLiquidSyntax(node.data.quantity)
             )
         default:
             return true

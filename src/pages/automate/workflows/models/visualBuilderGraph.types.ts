@@ -228,6 +228,17 @@ export type UpdateShippingAddressNodeType = Node<
     },
     'update_shipping_address'
 >
+export type RemoveItemNodeType = Node<
+    {
+        customerId: string
+        orderExternalId: string
+        integrationId: string
+        productVariantId: string
+        quantity: string
+        isGreyedOut?: boolean | null
+    },
+    'remove_item'
+>
 
 export type CancelSubscriptionNodeType = Node<
     {
@@ -267,6 +278,7 @@ export type VisualBuilderNode =
     | CancelOrderNodeType
     | RefundOrderNodeType
     | UpdateShippingAddressNodeType
+    | RemoveItemNodeType
     | CancelSubscriptionNodeType
     | SkipChargeNodeType
 

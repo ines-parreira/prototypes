@@ -1,4 +1,7 @@
-import {visualBuilderGraphSimpleChoicesFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
+import {
+    visualBuilderGraphLlmPromptTriggerFixture,
+    visualBuilderGraphSimpleChoicesFixture,
+} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 import {
     AutomatedMessageNodeType,
     ChannelTriggerNodeType,
@@ -230,5 +233,53 @@ describe('baseReducer', () => {
         })
 
         expect(nextG.apps).toEqual([{type: 'shopify'}])
+    })
+
+    test('INSERT_REMOVE_ITEM_NODE', () => {
+        const g = visualBuilderGraphLlmPromptTriggerFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_REMOVE_ITEM_NODE',
+            beforeNodeId: 'end1',
+            customerId: 'customerId',
+            orderExternalId: 'orderExternalId',
+            integrationId: 'integrationId',
+        })
+
+        expect(nextG.nodes.length).toEqual(g.nodes.length + 2) // 1 new node + 1 failure end
+        expect(nextG.edges.length).toEqual(g.edges.length + 2)
+        expect(
+            nextG.nodes.find(
+                (n) =>
+                    n.type === 'remove_item' &&
+                    n.data.customerId === 'customerId'
+            )
+        ).toBeDefined()
+    })
+
+    test('SET_REMOVE_ITEM_NODE_SETTINGS', () => {
+        const g = baseReducer(visualBuilderGraphLlmPromptTriggerFixture, {
+            type: 'INSERT_REMOVE_ITEM_NODE',
+            beforeNodeId: 'end1',
+            customerId: 'customerId',
+            orderExternalId: 'orderExternalId',
+            integrationId: 'integrationId',
+        })
+
+        const nodeId = g.nodes.find((n) => n.type === 'remove_item')!.id
+        const nextG = baseReducer(g, {
+            type: 'SET_REMOVE_ITEM_NODE_SETTINGS',
+            removeItemNodeId: nodeId,
+            productVariantId: 'productVariantId',
+            quantity: '1',
+        })
+
+        expect(
+            nextG.nodes.find(
+                (n) =>
+                    n.type === 'remove_item' &&
+                    n.data.productVariantId === 'productVariantId' &&
+                    n.data.quantity === '1'
+            )
+        ).toBeDefined()
     })
 })

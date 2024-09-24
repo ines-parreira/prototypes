@@ -20,6 +20,7 @@ import {
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
     RefundOrderNodeType,
+    RemoveItemNodeType,
     ShopperAuthenticationNodeType,
     SkipChargeNodeType,
     TextReplyNodeType,
@@ -404,6 +405,22 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     phone: step.settings.phone,
                     lastName: step.settings.last_name,
                     firstName: step.settings.first_name,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
+        } else if (step.kind === 'remove-item') {
+            const node: RemoveItemNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'remove_item',
+                data: {
+                    customerId: step.settings.customer_id,
+                    orderExternalId: step.settings.order_external_id,
+                    integrationId: step.settings.integration_id,
+                    productVariantId: step.settings.product_variant_id,
+                    quantity: step.settings.quantity,
                 },
             }
 

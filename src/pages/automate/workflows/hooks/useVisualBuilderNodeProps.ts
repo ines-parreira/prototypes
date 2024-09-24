@@ -53,6 +53,11 @@ export function useVisualBuilderNodeProps({
         id,
         'update_shipping_address'
     )
+    const incomingRemoveItemCondition = getIncoming(
+        visualBuilderGraph,
+        id,
+        'remove_item'
+    )
     const incomingCancelSubscriptionCondition = getIncoming(
         visualBuilderGraph,
         id,
@@ -84,6 +89,11 @@ export function useVisualBuilderNodeProps({
             visualBuilderGraph.nodeEditingId
         if (isUpdateShippingAddressSelected) return true
 
+        const isRemoveItemSelected =
+            incomingRemoveItemCondition?.nodeId ===
+            visualBuilderGraph.nodeEditingId
+        if (isRemoveItemSelected) return true
+
         const isCancelSubscriptionSelected =
             incomingCancelSubscriptionCondition?.nodeId ===
             visualBuilderGraph.nodeEditingId
@@ -100,6 +110,7 @@ export function useVisualBuilderNodeProps({
         incomingCondition?.id,
         incomingHttpRequestCondition,
         incomingUpdateShippingAddressCondition,
+        incomingRemoveItemCondition,
         incomingCancelSubscriptionCondition,
         incomingSkipChargeCondition,
         visualBuilderGraph.branchIdsEditing,
@@ -163,6 +174,14 @@ export function useVisualBuilderNodeProps({
                           nodeId: incomingUpdateShippingAddressCondition.nodeId,
                       }
                     : undefined,
+            incomingRemoveItemCondition:
+                incomingRemoveItemCondition?.nodeId &&
+                incomingRemoveItemCondition?.label
+                    ? {
+                          label: incomingRemoveItemCondition.label,
+                          nodeId: incomingRemoveItemCondition.nodeId,
+                      }
+                    : undefined,
             incomingCancelSubscriptionCondition:
                 incomingCancelSubscriptionCondition?.nodeId &&
                 incomingCancelSubscriptionCondition?.label
@@ -200,6 +219,8 @@ export function useVisualBuilderNodeProps({
             incomingRefundOrderCondition?.nodeId,
             incomingUpdateShippingAddressCondition?.label,
             incomingUpdateShippingAddressCondition?.nodeId,
+            incomingRemoveItemCondition?.label,
+            incomingRemoveItemCondition?.nodeId,
             incomingCancelSubscriptionCondition?.label,
             incomingCancelSubscriptionCondition?.nodeId,
             incomingSkipChargeCondition?.label,
