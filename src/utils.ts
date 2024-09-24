@@ -1356,3 +1356,29 @@ const httpHeaderNameCharRegex = /^[\^_`a-zA-Z\-0-9!#$%&'*+.|~]+$/
 export function validateHttpHeaderName(header: string) {
     return httpHeaderNameCharRegex.test(header)
 }
+
+/**
+ * Assert unreachable path a compiler time
+ *
+ * Example:
+ * ```
+ * type MessageType = 'text' | 'image' | 'video'
+ * // or enum
+ * enum MessageType {TEXT = 'text', IMAGE = 'image', VIDEO = 'video'}
+ *
+ * const messageType: MessageType = 'text' // dynamic type
+ *
+ * switch (messageType) {
+ *    case 'text':
+ *     return 'text'
+ *    case 'image':
+ *     return 'image'
+ *    default:
+ *      assertUnreachable(messageType) // TS will throw an error here because not all types covered
+ * }
+ * ```
+ * */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function assertUnreachable(_: never): never {
+    throw new Error("Didn't expect to get here")
+}

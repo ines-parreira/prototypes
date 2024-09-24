@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {ReactNode, useEffect, useState} from 'react'
 import classnames from 'classnames'
 import {sanitizeHtmlDefault} from 'utils/html'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -12,7 +12,9 @@ import {
     PlaygroundMessage as PlaygroundMessageType,
     ProcessingStatus,
 } from 'models/aiAgentPlayground/types'
+import {assertUnreachable} from 'utils'
 import TicketEvent from '../TicketEvent/TicketEvent'
+import {PlaygroundChannels} from '../PlaygroundChat/PlaygroundChat.types'
 import css from './PlaygroundMessage.less'
 
 export const AI_AGENT_SENDER = 'AI Agent'
@@ -21,190 +23,75 @@ export const GREETING_MESSAGE = 'Hey there 👋'
 type Props = {
     withAnimation?: boolean
     message: PlaygroundMessageType
+    channel: PlaygroundChannels
 }
 
-const PlaygroundMessage = ({withAnimation = false, message}: Props) => {
+const PlaygroundMessage = ({
+    withAnimation = false,
+    message,
+    channel,
+}: Props) => {
     const isAiAgentSender = message.sender === AI_AGENT_SENDER
-    const [processingStatus, setProcessingStatus] = useState(
-        ProcessingStatus.CHECKING_PERMISSIONS
-    )
+    const messageType = message.type
 
-    const aiAgentProcessingStatusUpdate = (
-        newStatus: ProcessingStatus,
-        delay: number
-    ) => {
-        return setTimeout(() => {
-            setProcessingStatus(newStatus)
-        }, delay)
-    }
-
-    useEffect(() => {
-        const timeoutsToClear: NodeJS.Timeout[] = []
-        if (message.type === MessageType.PLACEHOLDER) {
-            timeoutsToClear.push(
-                aiAgentProcessingStatusUpdate(
-                    ProcessingStatus.SUMMARIZING,
-                    5000
-                ),
-                aiAgentProcessingStatusUpdate(
-                    ProcessingStatus.GATHERING_INFO,
-                    10000
-                ),
-                aiAgentProcessingStatusUpdate(
-                    ProcessingStatus.GENERATING,
-                    15000
-                )
-            )
-        }
-        return () => {
-            timeoutsToClear.forEach(clearTimeout)
-        }
-    }, [message])
-
-    // TODO: refactor component and support render component per message type
-    // https://linear.app/gorgias/issue/AUTAI-1497/create-render-component-for-playgroundmessage
-    if (message.type === MessageType.TICKET_EVENT) {
-        return <TicketEvent type={message.outcome} />
-    }
-
-    const isAcceptedMessageType =
-        message.type === MessageType.MESSAGE ||
-        message.type === MessageType.PLACEHOLDER ||
-        message.type === MessageType.PROMPT
-
-    return (
-        <div
-            className={classnames(css.messageContainer, {
-                [css.internalNoteContainer]:
-                    message.type === MessageType.INTERNAL_NOTE,
-                [css.messageAnimation]: withAnimation,
-            })}
-        >
-            <div>
-                {isAiAgentSender ? (
-                    <Avatar
-                        size={36}
-                        url={aiAgentAvatarSrc}
-                        className={css.messageAvatar}
-                    />
-                ) : (
-                    <Avatar
-                        size={36}
-                        name={message.sender}
-                        className={css.messageAvatar}
-                    />
-                )}
-            </div>
-            <div className={css.messageContentContainer}>
-                <div className={css.messageHeader}>
-                    {isAiAgentSender &&
-                        message.type === MessageType.INTERNAL_NOTE && (
-                            <i
-                                className={classnames(
-                                    'material-icons',
-                                    css.avatarIcon
-                                )}
-                            >
-                                account_circle
-                            </i>
-                        )}
-                    <span
-                        className={classnames(
-                            css.messageSenderCommon,
-                            isAiAgentSender
-                                ? isAcceptedMessageType
-                                    ? css.aiAgentTypeSender
-                                    : css.aiAgentInternalNoteTypeSender
-                                : css.shopperTypeSender
-                        )}
-                    >
-                        {message.sender}
-                    </span>
-                    <i
-                        className={classnames(
-                            'material-icons',
-                            css.messageTypeIcon
-                        )}
-                    >
-                        {isAcceptedMessageType ? 'mail' : 'note'}
-                    </i>
-                </div>
-                <div
-                    className={classnames(
-                        css.messageContainer,
-                        message.type === MessageType.ERROR &&
-                            css.messageErrorContainer
-                    )}
+    switch (messageType) {
+        case MessageType.ERROR:
+            return (
+                <MessageContainer
+                    channel={channel}
+                    sender={message.sender}
+                    withAnimation={withAnimation}
+                    isAiAgentSender={isAiAgentSender}
+                    type={messageType}
+                    role="alert"
                 >
-                    {message.type === MessageType.ERROR && (
-                        <div className={css.aiAgentErrorIconContainer}>
-                            <img alt="timer" src={error} />
-                        </div>
-                    )}
-                    {message.type === MessageType.MESSAGE ||
-                    message.type === MessageType.INTERNAL_NOTE ||
-                    message.type === MessageType.PROMPT ||
-                    message.type === MessageType.ERROR ? (
-                        typeof message.content === 'string' ? (
-                            <div
-                                className={css.messageContent}
-                                dangerouslySetInnerHTML={{
-                                    __html: sanitizeHtmlDefault(
-                                        message.content
-                                    ),
-                                }}
-                            />
-                        ) : (
-                            message.content
-                        )
-                    ) : (
+                    <div className={css.aiAgentErrorIconContainer}>
+                        <img alt="timer" src={error} />
+                    </div>
+
+                    {message.content}
+                </MessageContainer>
+            )
+        case MessageType.TICKET_EVENT:
+            return <TicketEvent type={message.outcome} />
+        case MessageType.PLACEHOLDER:
+            return (
+                <MessageContainer
+                    channel={channel}
+                    sender={message.sender}
+                    withAnimation={withAnimation}
+                    type={messageType}
+                    isAiAgentSender={isAiAgentSender}
+                >
+                    <PlaygroundPlaceholderMessage />
+                </MessageContainer>
+            )
+        case MessageType.MESSAGE:
+        case MessageType.PROMPT:
+        case MessageType.INTERNAL_NOTE:
+            return (
+                <MessageContainer
+                    channel={channel}
+                    sender={message.sender}
+                    withAnimation={withAnimation}
+                    type={messageType}
+                    isAiAgentSender={isAiAgentSender}
+                >
+                    {typeof message.content === 'string' ? (
                         <div
-                            className={classnames(
-                                css.messageContent,
-                                css.aiAgentLoadingSkeletonContainer
-                            )}
-                        >
-                            <Skeleton
-                                className={css.aiAgentLoadingSkeleton}
-                                height={32}
-                                width="100%"
-                                count={1}
-                            />
-                            <Skeleton
-                                className={css.aiAgentLoadingSkeleton}
-                                height={32}
-                                width="80%"
-                                count={1}
-                            />
-                            <Skeleton
-                                className={css.aiAgentLoadingSkeleton}
-                                height={32}
-                                width="50%"
-                                count={1}
-                            />
-                            {isAiAgentSender && (
-                                <Badge
-                                    type={ColorType.Magenta}
-                                    className={css.aiAgentProcessingBadge}
-                                >
-                                    <Loader
-                                        className={css.aiAgentProcessingIcon}
-                                        minHeight="12px"
-                                        size="12px"
-                                    />
-                                    <div
-                                        className={css.aiAgentProcessingStatus}
-                                    >
-                                        {processingStatus}
-                                    </div>
-                                </Badge>
-                            )}
-                        </div>
+                            className={css.messageContent}
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizeHtmlDefault(message.content),
+                            }}
+                        />
+                    ) : (
+                        message.content
                     )}
-                </div>
-            </div>
-        </div>
-    )
+                </MessageContainer>
+            )
+        default:
+            assertUnreachable(messageType)
+    }
 }
 
 export const PlaygroundGenericErrorMessage = ({
@@ -219,5 +106,179 @@ export const PlaygroundGenericErrorMessage = ({
         </span>
     </div>
 )
+
+type MessageContainerProps = {
+    children: ReactNode
+    channel: PlaygroundChannels
+    sender: string
+    withAnimation: boolean
+    type: MessageType
+    isAiAgentSender: boolean
+    role?: string
+}
+
+const MessageContainer = ({
+    children,
+    sender,
+    withAnimation,
+    type,
+    isAiAgentSender,
+    channel,
+    role,
+}: MessageContainerProps) => {
+    const getChannelIcon = (): string => {
+        switch (channel) {
+            case 'chat':
+                return 'forum'
+            case 'email':
+                return 'mail'
+        }
+    }
+
+    return (
+        <div
+            className={classnames(css.messageContainer, {
+                [css.internalNoteContainer]: type === MessageType.INTERNAL_NOTE,
+                [css.messageAnimation]: withAnimation,
+            })}
+            role={role}
+        >
+            <div>
+                {isAiAgentSender ? (
+                    <Avatar
+                        size={36}
+                        url={aiAgentAvatarSrc}
+                        className={css.messageAvatar}
+                    />
+                ) : (
+                    <Avatar
+                        size={36}
+                        name={sender}
+                        className={css.messageAvatar}
+                    />
+                )}
+            </div>
+            <div className={css.messageContentContainer}>
+                <div className={css.messageHeader}>
+                    {isAiAgentSender && type === MessageType.INTERNAL_NOTE && (
+                        <i
+                            className={classnames(
+                                'material-icons',
+                                css.avatarIcon
+                            )}
+                        >
+                            account_circle
+                        </i>
+                    )}
+                    <span
+                        className={classnames(
+                            css.messageSenderCommon,
+                            isAiAgentSender
+                                ? type === MessageType.INTERNAL_NOTE
+                                    ? css.aiAgentInternalNoteTypeSender
+                                    : css.aiAgentTypeSender
+                                : css.shopperTypeSender
+                        )}
+                    >
+                        {sender}
+                    </span>
+                    <i
+                        className={classnames(
+                            'material-icons',
+                            css.messageTypeIcon
+                        )}
+                        title={`${channel} channel`}
+                    >
+                        {type !== MessageType.INTERNAL_NOTE
+                            ? getChannelIcon()
+                            : 'note'}
+                    </i>
+                </div>
+                <div
+                    className={classnames(
+                        css.messageContainer,
+                        type === MessageType.ERROR && css.messageErrorContainer
+                    )}
+                >
+                    {children}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const PlaygroundPlaceholderMessage = () => {
+    const [processingStatus, setProcessingStatus] = useState(
+        ProcessingStatus.CHECKING_PERMISSIONS
+    )
+
+    useEffect(() => {
+        const timeoutsToClear: NodeJS.Timeout[] = []
+
+        const aiAgentProcessingStatusUpdate = (
+            newStatus: ProcessingStatus,
+            delay: number
+        ) => {
+            return setTimeout(() => {
+                setProcessingStatus(newStatus)
+            }, delay)
+        }
+
+        timeoutsToClear.push(
+            aiAgentProcessingStatusUpdate(ProcessingStatus.SUMMARIZING, 5000),
+            aiAgentProcessingStatusUpdate(
+                ProcessingStatus.GATHERING_INFO,
+                10000
+            ),
+            aiAgentProcessingStatusUpdate(ProcessingStatus.GENERATING, 15000)
+        )
+        return () => {
+            timeoutsToClear.forEach(clearTimeout)
+        }
+    }, [])
+
+    return (
+        <div
+            className={classnames(
+                css.messageContent,
+                css.aiAgentLoadingSkeletonContainer
+            )}
+            role="status"
+            aria-live="polite"
+        >
+            <Skeleton
+                className={css.aiAgentLoadingSkeleton}
+                height={32}
+                width="100%"
+                count={1}
+            />
+            <Skeleton
+                className={css.aiAgentLoadingSkeleton}
+                height={32}
+                width="80%"
+                count={1}
+            />
+            <Skeleton
+                className={css.aiAgentLoadingSkeleton}
+                height={32}
+                width="50%"
+                count={1}
+            />
+            <Badge
+                type={ColorType.Magenta}
+                className={css.aiAgentProcessingBadge}
+            >
+                <Loader
+                    className={css.aiAgentProcessingIcon}
+                    minHeight="12px"
+                    size="12px"
+                />
+                <div className={css.aiAgentProcessingStatus}>
+                    {processingStatus}
+                </div>
+            </Badge>
+        </div>
+    )
+}
 
 export default PlaygroundMessage

@@ -149,6 +149,7 @@ export const PlaygroundChat = ({
                         <PlaygroundMessageComponent
                             message={message}
                             key={index}
+                            channel={channel}
                             withAnimation
                         />
                     ))}

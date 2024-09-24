@@ -16,7 +16,7 @@ import {
     LITE_AGENT_ROLE,
     OBSERVER_AGENT_ROLE,
 } from 'config/user'
-import {getCode} from 'utils'
+import {assertUnreachable, getCode} from 'utils'
 import {mockProductionEnvironment} from 'utils/testing'
 import {getDateAndTimeFormat} from 'utils/datetime'
 import {
@@ -1266,6 +1266,15 @@ describe('global utils', () => {
             const ast = esprima.parseScript(script)
             const code = getCode(ast)
             expect(code).toBe(script)
+        })
+    })
+
+    describe('assertUnreachable', () => {
+        it('should throw an error', () => {
+            // Type cast only for testing purposes
+            expect(() => assertUnreachable('foo' as never)).toThrowError(
+                "Didn't expect to get here"
+            )
         })
     })
 })

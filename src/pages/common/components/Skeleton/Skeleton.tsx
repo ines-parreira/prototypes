@@ -14,6 +14,7 @@ const Skeleton = ({className, ...props}: Props) => (
         height={20}
         duration={1.3}
         borderRadius={4}
+        aria-busy="true"
         {...props}
     />
 )
