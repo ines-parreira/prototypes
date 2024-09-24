@@ -147,7 +147,8 @@ import {AiAgentGuidanceAiSuggestionNewContainer} from 'pages/automate/aiAgent/Ai
 import AiAgentStoreConfigurationProvider from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationProvider'
 import AiAgentOnboardingWizard from 'pages/automate/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 
-import SettingsRoutes from './settings'
+import {NewTagsBlankState} from 'pages/stats/NewTagsBlankState'
+import SettingsRoutes from 'routes/settings'
 
 export default function Routes() {
     return (
@@ -435,6 +436,9 @@ export function StatsRoutes() {
 
     const isAutoQAEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
+    const isNewTagsReportEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewTagsReport]
+
     useEffect(logPageChange, [location.pathname])
 
     return (
@@ -527,6 +531,18 @@ export function StatsRoutes() {
                         />
                     )}
                 />
+                {!!isNewTagsReportEnabled && (
+                    <Route
+                        exact
+                        path={`${path}/new-tags`}
+                        render={() => (
+                            <App
+                                content={NewTagsBlankState}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                )}
                 <Route
                     exact
                     path={`${path}/channels`}

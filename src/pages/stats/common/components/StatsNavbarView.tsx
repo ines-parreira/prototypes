@@ -30,6 +30,8 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
     const isAutoQAEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
+    const isNewTagsReportEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewTagsReport]
 
     return (
         <>
@@ -232,6 +234,27 @@ export default function StatsNavbarView() {
                             Tags
                         </NavbarLink>
                     </div>
+                    {!!isNewTagsReportEnabled && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                        >
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/new-tags"
+                            >
+                                Tags{' '}
+                                <Badge
+                                    type={ColorType.Blue}
+                                    className={cssNavbar.badge}
+                                >
+                                    {NEW_NAV_LABEL}
+                                </Badge>
+                            </NavbarLink>
+                        </div>
+                    )}
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],

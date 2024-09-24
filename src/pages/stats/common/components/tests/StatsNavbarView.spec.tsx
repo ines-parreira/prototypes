@@ -183,6 +183,26 @@ describe('StatsNavbarView', () => {
         expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
     })
 
+    it('should render the link to the New Tags Report page', () => {
+        mockFlags({
+            [FeatureFlagKey.NewTagsReport]: true,
+        })
+
+        const {container} = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
+            </Provider>
+        )
+
+        const newTagsReportLink = container.querySelector(
+            'a[href="/app/stats/new-tags"]'
+        )
+
+        expect(newTagsReportLink).toBeInTheDocument()
+    })
+
     it('should render the link to the New Channels Reports', () => {
         const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
