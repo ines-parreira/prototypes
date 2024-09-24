@@ -66,7 +66,6 @@ export type HelpdeskPlanFeatures = Record<
 
 export type HelpdeskPlan = BasePlan & {
     num_quota_tickets: number
-    addons?: string[]
     integrations: number
     is_legacy: boolean
     legacy_id: string

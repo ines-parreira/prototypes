@@ -38,15 +38,12 @@ import {
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters'
 
-import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
-import {AccountFeature} from 'state/currentAccount/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import CurrentHelpCenterContext from '../../contexts/CurrentHelpCenterContext'
 import {EditionManagerContextProvider} from '../EditionManagerContext'
 import {SearchContextProvider} from '../SearchContext'
 import {HelpCenterTranslationProvider} from '../HelpCenterTranslation'
 import {HelpCenterPreferencesSettings} from '../HelpCenterPreferencesSettings'
-import HelpCenterPaywall from '../../components/Paywalls/HelpCenterPaywall'
 import {HelpCenterMaintenanceView} from '../../components/HelpCenterMaintenanceView'
 import HelpCenterCreationWizard from '../../components/HelpCenterCreationWizard'
 import AILibraryView from '../../components/AIArticlesLibraryView'
@@ -226,7 +223,4 @@ const CurrentHelpCenter: React.FC = () => {
     )
 }
 
-export default withFeaturePaywall(
-    AccountFeature.HelpCenter,
-    HelpCenterPaywall
-)(CurrentHelpCenter)
+export default CurrentHelpCenter

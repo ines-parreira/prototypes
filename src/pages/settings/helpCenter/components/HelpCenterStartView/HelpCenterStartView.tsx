@@ -12,8 +12,6 @@ import {PRODUCT_BANNER_KEY} from 'hooks/useProductBannerStorage'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import Detail from 'pages/common/components/ProductDetail'
-import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
-import {AccountFeature} from 'state/currentAccount/types'
 import Button from 'pages/common/components/button/Button'
 import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import {
@@ -24,7 +22,6 @@ import {
 import {useHelpCenterList} from '../../hooks/useHelpCenterList'
 import {useStandaloneHelpCenterAfterDismiss} from '../../hooks/useStandaloneHelpCenterAfterDismiss'
 
-import HelpCenterPaywall from '../Paywalls/HelpCenterPaywall'
 import {ABOUT_PAGE} from './constants'
 import ManageHelpCenters from './ManageHelpCenters'
 
@@ -187,7 +184,4 @@ const HelpCenterStartView: React.FC = () => {
     )
 }
 
-export default withFeaturePaywall(
-    AccountFeature.HelpCenter,
-    HelpCenterPaywall
-)(HelpCenterStartView)
+export default HelpCenterStartView

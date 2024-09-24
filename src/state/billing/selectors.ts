@@ -14,12 +14,7 @@ import {
     ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
-import {
-    getCheapestPrice,
-    getFormattedAmount,
-    getFullPrice,
-    isHelpdesk,
-} from 'models/billing/utils'
+import {getCheapestPrice, isHelpdesk} from 'models/billing/utils'
 import {
     getCurrentAccountState,
     getCurrentSubscription,
@@ -242,11 +237,6 @@ export const getCurrentHelpdeskPlanName = createSelector(
     (currentHelpdeskPlan) => currentHelpdeskPlan?.name
 )
 
-export const getCurrentHelpdeskAddons = createSelector(
-    getCurrentHelpdeskPlan,
-    (currentHelpdeskPlan) => currentHelpdeskPlan?.addons
-)
-
 export const getCurrentHelpdeskInterval = createSelector(
     getCurrentHelpdeskPlan,
     (currentHelpdeskPlan) => currentHelpdeskPlan?.interval
@@ -336,33 +326,6 @@ export const getHasLegacyAutomateFeatures = createSelector(
 
         return accountCreatedBeforeAutomateLaunch && hasLegacyAutomateFeatures
     }
-)
-
-export const getCurrentHelpdeskAutomateAmount = createSelector(
-    getAvailablePlansMap,
-    getCurrentHelpdeskPlan,
-    getCurrentAutomatePlan,
-    (prices, helpdesk, automation) => {
-        if (automation) {
-            return getFormattedAmount(automation.amount)
-        }
-        const addonId = helpdesk?.addons?.[0]
-
-        if (addonId && prices[addonId]) {
-            return getFormattedAmount(prices[addonId].amount)
-        }
-        return undefined
-    }
-)
-
-export const getCurrentAutomationFullAmount = createSelector(
-    getCurrentAutomatePlan,
-    (plan) =>
-        plan?.amount && plan?.automation_addon_discount
-            ? getFormattedAmount(
-                  getFullPrice(plan.amount, plan.automation_addon_discount)
-              )
-            : undefined
 )
 
 export const invoices = createSelector(

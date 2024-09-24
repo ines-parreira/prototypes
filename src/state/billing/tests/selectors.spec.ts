@@ -15,7 +15,6 @@ import {
     SMS_PRODUCT_ID,
     VOICE_PRODUCT_ID,
     automationProduct,
-    basicDiscountedAutomatePlan,
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
@@ -147,78 +146,6 @@ describe('billing selectors', () => {
                 basicYearlyHelpdeskPlan.price_id
             )
         ).toBe(true)
-    })
-
-    describe('getCurrentHelpdeskAutomateAmount()', () => {
-        it('should return the amount of Automate', () => {
-            expect(
-                selectors.getCurrentHelpdeskAutomateAmount(state)
-            ).toMatchSnapshot()
-        })
-
-        it('should return undefined when addon does not exist', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {
-                            [HELPDESK_PRODUCT_ID]:
-                                legacyBasicHelpdeskPlan.price_id,
-                        },
-                    },
-                }),
-            }
-            expect(
-                selectors.getCurrentHelpdeskAutomateAmount(state)
-            ).toMatchSnapshot()
-        })
-    })
-
-    describe('getCurrentAutomationFullAmount()', () => {
-        it('should return the full amount of Automate', () => {
-            const productsWithDiscountedAutomationPrice = _cloneDeep(products)
-            productsWithDiscountedAutomationPrice[1].prices.push(
-                basicDiscountedAutomatePlan
-            )
-
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {
-                            [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPlan.price_id,
-                            [AUTOMATION_PRODUCT_ID]:
-                                basicDiscountedAutomatePlan.price_id,
-                        },
-                    },
-                }),
-                billing: fromJS({
-                    ...billingFixtures.billingState,
-                    products: productsWithDiscountedAutomationPrice,
-                }),
-            }
-            expect(
-                selectors.getCurrentAutomationFullAmount(state)
-            ).toMatchSnapshot()
-        })
-
-        it('should return undefined when no Automate amount or discount exists', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {
-                            [HELPDESK_PRODUCT_ID]:
-                                legacyBasicHelpdeskPlan.price_id,
-                        },
-                    },
-                }),
-            }
-            expect(
-                selectors.getCurrentAutomationFullAmount(state)
-            ).toMatchSnapshot()
-        })
     })
 
     describe('getHasAutomate()', () => {
@@ -555,14 +482,6 @@ describe('billing selectors', () => {
     describe('getCurrentHelpdeskName', () => {
         it('should return the current product name', () => {
             expect(selectors.getCurrentHelpdeskPlanName(state)).toBe('Basic')
-        })
-    })
-
-    describe('getCurrentHelpdeskAddons', () => {
-        it('should return the product addons', () => {
-            expect(selectors.getCurrentHelpdeskAddons(state)).toEqual(
-                basicMonthlyHelpdeskPlan.addons
-            )
         })
     })
 

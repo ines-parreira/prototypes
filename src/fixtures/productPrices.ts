@@ -210,7 +210,6 @@ export const starterHelpdeskPlanFeatures: HelpdeskPlanFeatures = {
 
 export const basicMonthlyHelpdeskPlan: HelpdeskPlan = {
     custom: false,
-    addons: ['price_1LJBjXI9qXomtXqSSX34F3we'],
     amount: 6000,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -248,7 +247,6 @@ export const basicMonthlyHelpdeskPlan: HelpdeskPlan = {
 
 export const basicYearlyHelpdeskPlan: HelpdeskPlan = {
     custom: false,
-    addons: ['price_1LJBjZI9qXomtXqSPNgkEZpl'],
     amount: 60000,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -286,7 +284,6 @@ export const basicYearlyHelpdeskPlan: HelpdeskPlan = {
 
 export const proMonthlyHelpdeskPlan: HelpdeskPlan = {
     custom: false,
-    addons: ['price_1LJBjbI9qXomtXqS2sfi1J7P'],
     amount: 36000,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -324,7 +321,6 @@ export const proMonthlyHelpdeskPlan: HelpdeskPlan = {
 
 export const proYearlyHelpdeskPlan: HelpdeskPlan = {
     custom: false,
-    addons: ['price_1LJBjdI9qXomtXqSlp9sh6iQ'],
     amount: 360000,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -362,7 +358,6 @@ export const proYearlyHelpdeskPlan: HelpdeskPlan = {
 
 export const advancedMonthlyHelpdeskPlan: HelpdeskPlan = {
     custom: false,
-    addons: ['price_1LJBjeI9qXomtXqSXRjmhPsL'],
     amount: 90000,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -400,7 +395,6 @@ export const advancedMonthlyHelpdeskPlan: HelpdeskPlan = {
 
 export const advancedYearlyHelpdeskPlan: HelpdeskPlan = {
     custom: false,
-    addons: ['price_1LJBjgI9qXomtXqSBZoBcg7G'],
     amount: 900000,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -603,7 +597,6 @@ export const automate05YearlyMeteredPlan: MeteredAutomatePlan = {
 }
 export const legacyBasicHelpdeskPlan: HelpdeskPlan = {
     custom: false,
-    addons: ['price_1LJBlbI9qXomtXqSvvtgyZ1z'],
     amount: 6000,
     cadence: PlanInterval.Month,
     extra_ticket_cost: 0.06,
@@ -662,7 +655,6 @@ export const legacyBasicAutomatePlan: AutomatePlan = {
 }
 
 export const customHelpdeskPlan: HelpdeskPlan = {
-    addons: ['price_1LJBjiI9qXomtXqSvQBcRw5V'],
     amount: 160000,
     extra_ticket_cost: 0.32,
     cadence: PlanInterval.Month,

@@ -304,9 +304,6 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "tier": 1,
   },
   "helpdesk": {
-    "addons": [
-      "price_1LJBjXI9qXomtXqSSX34F3we",
-    ],
     "amount": 6000,
     "cadence": "month",
     "currency": "usd",
@@ -461,14 +458,6 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
 }
 `;
 
-exports[`billing selectors getCurrentAutomationFullAmount() should return the full amount of Automate 1`] = `30`;
-
-exports[`billing selectors getCurrentAutomationFullAmount() should return undefined when no Automate amount or discount exists 1`] = `undefined`;
-
-exports[`billing selectors getCurrentHelpdeskAutomateAmount() should return the amount of Automate 1`] = `30`;
-
-exports[`billing selectors getCurrentHelpdeskAutomateAmount() should return undefined when addon does not exist 1`] = `undefined`;
-
 exports[`billing selectors getCurrentProductsFeatures should return the current features 1`] = `
 {
   "api_1st_party_rate_limit": {
@@ -562,9 +551,6 @@ exports[`billing selectors getCurrentProductsFeatures should return the current 
 exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1`] = `
 [
   {
-    "addons": [
-      "price_1LJBjXI9qXomtXqSSX34F3we",
-    ],
     "amount": 6000,
     "cadence": "month",
     "currency": "usd",
@@ -687,9 +673,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "trial_period_days": 7,
   },
   {
-    "addons": [
-      "price_1LJBjbI9qXomtXqS2sfi1J7P",
-    ],
     "amount": 36000,
     "cadence": "month",
     "currency": "usd",
@@ -812,9 +795,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "trial_period_days": 7,
   },
   {
-    "addons": [
-      "price_1LJBjZI9qXomtXqSPNgkEZpl",
-    ],
     "amount": 60000,
     "cadence": "month",
     "currency": "usd",
@@ -937,9 +917,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "trial_period_days": 7,
   },
   {
-    "addons": [
-      "price_1LJBjeI9qXomtXqSXRjmhPsL",
-    ],
     "amount": 90000,
     "cadence": "month",
     "currency": "usd",
@@ -1062,9 +1039,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "trial_period_days": 7,
   },
   {
-    "addons": [
-      "price_1LJBjdI9qXomtXqSlp9sh6iQ",
-    ],
     "amount": 360000,
     "cadence": "month",
     "currency": "usd",
@@ -1187,9 +1161,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "trial_period_days": 7,
   },
   {
-    "addons": [
-      "price_1LJBjgI9qXomtXqSBZoBcg7G",
-    ],
     "amount": 900000,
     "cadence": "month",
     "currency": "usd",
@@ -1509,9 +1480,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "public": true,
   },
   {
-    "addons": [
-      "price_1LJBjXI9qXomtXqSSX34F3we",
-    ],
     "amount": 6000,
     "cadence": "month",
     "currency": "usd",
@@ -1730,9 +1698,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "public": true,
   },
   {
-    "addons": [
-      "price_1LJBjbI9qXomtXqS2sfi1J7P",
-    ],
     "amount": 36000,
     "cadence": "month",
     "currency": "usd",
@@ -1911,9 +1876,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "public": true,
   },
   {
-    "addons": [
-      "price_1LJBjZI9qXomtXqSPNgkEZpl",
-    ],
     "amount": 60000,
     "cadence": "month",
     "currency": "usd",
@@ -2052,9 +2014,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "tier": 3,
   },
   {
-    "addons": [
-      "price_1LJBjeI9qXomtXqSXRjmhPsL",
-    ],
     "amount": 90000,
     "cadence": "month",
     "currency": "usd",
@@ -2249,9 +2208,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "public": true,
   },
   {
-    "addons": [
-      "price_1LJBjdI9qXomtXqSlp9sh6iQ",
-    ],
     "amount": 360000,
     "cadence": "month",
     "currency": "usd",
@@ -2414,9 +2370,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "public": true,
   },
   {
-    "addons": [
-      "price_1LJBjgI9qXomtXqSBZoBcg7G",
-    ],
     "amount": 900000,
     "cadence": "month",
     "currency": "usd",
@@ -2547,9 +2500,6 @@ exports[`billing selectors getProducts should return products 1`] = `
     "id": "prod_LsH6kV35G6zKWo",
     "prices": [
       {
-        "addons": [
-          "price_1LJBjXI9qXomtXqSSX34F3we",
-        ],
         "amount": 6000,
         "cadence": "month",
         "currency": "usd",
@@ -2672,9 +2622,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "trial_period_days": 7,
       },
       {
-        "addons": [
-          "price_1LJBjZI9qXomtXqSPNgkEZpl",
-        ],
         "amount": 60000,
         "cadence": "month",
         "currency": "usd",
@@ -2797,9 +2744,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "trial_period_days": 7,
       },
       {
-        "addons": [
-          "price_1LJBjbI9qXomtXqS2sfi1J7P",
-        ],
         "amount": 36000,
         "cadence": "month",
         "currency": "usd",
@@ -2922,9 +2866,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "trial_period_days": 7,
       },
       {
-        "addons": [
-          "price_1LJBjdI9qXomtXqSlp9sh6iQ",
-        ],
         "amount": 360000,
         "cadence": "month",
         "currency": "usd",
@@ -3047,9 +2988,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "trial_period_days": 7,
       },
       {
-        "addons": [
-          "price_1LJBjeI9qXomtXqSXRjmhPsL",
-        ],
         "amount": 90000,
         "cadence": "month",
         "currency": "usd",
@@ -3172,9 +3110,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "trial_period_days": 7,
       },
       {
-        "addons": [
-          "price_1LJBjgI9qXomtXqSBZoBcg7G",
-        ],
         "amount": 900000,
         "cadence": "month",
         "currency": "usd",

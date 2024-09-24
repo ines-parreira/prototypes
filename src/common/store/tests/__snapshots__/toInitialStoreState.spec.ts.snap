@@ -69,9 +69,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "extra_ticket_cost": 0.4,
             "cadence": "month",
             "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
-            "addons": Immutable.List [
-              "price_1LJBjXI9qXomtXqSSX34F3we",
-            ],
             "limits": Immutable.Map {
               "messages": Immutable.Map {
                 "default": 100,
@@ -194,9 +191,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "extra_ticket_cost": 0.4,
             "cadence": "month",
             "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
-            "addons": Immutable.List [
-              "price_1LJBjZI9qXomtXqSPNgkEZpl",
-            ],
             "limits": Immutable.Map {
               "messages": Immutable.Map {
                 "default": 100,
@@ -319,9 +313,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "extra_ticket_cost": 0.36,
             "cadence": "month",
             "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
-            "addons": Immutable.List [
-              "price_1LJBjbI9qXomtXqS2sfi1J7P",
-            ],
             "limits": Immutable.Map {
               "messages": Immutable.Map {
                 "default": 100,
@@ -444,9 +435,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "extra_ticket_cost": 0.36,
             "cadence": "month",
             "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
-            "addons": Immutable.List [
-              "price_1LJBjdI9qXomtXqSlp9sh6iQ",
-            ],
             "limits": Immutable.Map {
               "messages": Immutable.Map {
                 "default": 100,
@@ -569,9 +557,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "extra_ticket_cost": 0.36,
             "cadence": "month",
             "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
-            "addons": Immutable.List [
-              "price_1LJBjeI9qXomtXqSXRjmhPsL",
-            ],
             "limits": Immutable.Map {
               "messages": Immutable.Map {
                 "default": 100,
@@ -694,9 +679,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "extra_ticket_cost": 0.36,
             "cadence": "month",
             "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
-            "addons": Immutable.List [
-              "price_1LJBjgI9qXomtXqSBZoBcg7G",
-            ],
             "limits": Immutable.Map {
               "messages": Immutable.Map {
                 "default": 100,
