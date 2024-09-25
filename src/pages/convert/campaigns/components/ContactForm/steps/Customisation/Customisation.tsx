@@ -104,24 +104,28 @@ export const Customisation = (props: StepProps) => {
                     Display privacy policy disclaimer
                 </ToggleInput>
 
-                <RichField
-                    onChange={(data) =>
-                        setDisclaimer(convertToHTML(data.getCurrentContent()))
-                    }
-                    value={{
-                        html: disclaimer,
-                        text: disclaimer,
-                    }}
-                    isRequired={disclaimerEnabled}
-                    canInsertInlineImages={false}
-                    displayedActions={[
-                        ActionName.Bold,
-                        ActionName.Italic,
-                        ActionName.Underline,
-                        ActionName.Link,
-                        ActionName.Emoji,
-                    ]}
-                ></RichField>
+                {disclaimerEnabled && (
+                    <RichField
+                        onChange={(data) =>
+                            setDisclaimer(
+                                convertToHTML(data.getCurrentContent())
+                            )
+                        }
+                        value={{
+                            html: disclaimer,
+                            text: disclaimer,
+                        }}
+                        isRequired={disclaimerEnabled}
+                        canInsertInlineImages={false}
+                        displayedActions={[
+                            ActionName.Bold,
+                            ActionName.Italic,
+                            ActionName.Underline,
+                            ActionName.Link,
+                            ActionName.Emoji,
+                        ]}
+                    />
+                )}
 
                 <CheckBox
                     isChecked={preSelectDisclaimer}

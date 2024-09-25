@@ -12,15 +12,18 @@ import useListTags from 'tags/useListTags'
 import {user} from 'fixtures/users'
 import {UserRole} from 'config/types/user'
 import {Customisation} from 'pages/convert/campaigns/components/ContactForm/steps/Customisation'
+import {PostSubmissionMessage} from 'pages/convert/campaigns/components/ContactForm/steps/PostSubmissionMessage'
 
 jest.mock('tags/useListTags')
 const mockStore = configureMockStore()
+
 const queryClient = mockQueryClient()
 const store = mockStore({
     currentUser: fromJS({
         ...user,
         role: {name: UserRole.Admin},
     }),
+    integrations: fromJS({integrations: []}),
 })
 const mockUseListTags = useListTags as jest.Mock
 
@@ -174,5 +177,52 @@ describe('ContactForm test suite', () => {
         expect(state.forms.email.disclaimerEnabled).toBeFalsy()
         act(() => preSelectDisclaimerCheckbox.click())
         expect(state.forms.email.preSelectDisclaimer).toBeFalsy()
+    })
+
+    it('should render the thank you message', () => {
+        const state = {
+            subscriberTypes: {
+                shopify: {
+                    enabled: false,
+                    isEmailSubscriber: false,
+                    isSmsSubscriber: false,
+                    tags: [],
+                },
+            },
+            forms: {
+                email: {
+                    label: '',
+                    cta: '',
+                    disclaimerEnabled: true,
+                    disclaimer: '',
+                    preSelectDisclaimer: true,
+                },
+            },
+            postSubmissionMessage: {
+                enabled: false,
+                message: '',
+            },
+        }
+        const setState = (
+            wrapped: (innerState: typeof state) => typeof state
+        ) => {
+            const newState = wrapped(state)
+            state.subscriberTypes = newState.subscriberTypes
+            state.forms = newState.forms
+            state.postSubmissionMessage = newState.postSubmissionMessage
+        }
+
+        const {getByText} = render(
+            <Provider store={store}>
+                <PostSubmissionMessage
+                    setNextButtonActive={jest.fn()}
+                    setAttachmentData={setState as any}
+                    attachmentData={state}
+                />
+            </Provider>
+        )
+        const toggleInput = getByText('Thank you message')
+        act(() => toggleInput.click())
+        expect(state.postSubmissionMessage.enabled).toBeTruthy()
     })
 })

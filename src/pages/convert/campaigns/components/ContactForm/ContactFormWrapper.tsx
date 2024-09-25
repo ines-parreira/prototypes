@@ -47,7 +47,7 @@ const ContactForm = (props: ContactFormProps) => {
             },
         },
         postSubmissionMessage: {
-            enabled: true,
+            enabled: false,
             message: '',
         },
     })
