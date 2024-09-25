@@ -111,7 +111,10 @@ describe('resolutionCompletenessDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [TicketQAScoreMeasure.AverageScore],
+            measures: [
+                TicketQAScoreMeasure.AverageScore,
+                TicketQAScoreMeasure.QAScoreData,
+            ],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -143,7 +146,10 @@ describe('resolutionCompletenessDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [TicketQAScoreMeasure.AverageScore],
+            measures: [
+                TicketQAScoreMeasure.AverageScore,
+                TicketQAScoreMeasure.QAScoreData,
+            ],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [

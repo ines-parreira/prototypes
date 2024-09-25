@@ -1,6 +1,9 @@
 import {OrderDirection} from 'models/api/types'
 import {DrillDownReportingQuery} from 'models/job/types'
+import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {ticketHandleTimePerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import {communicationSkillsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
+import {resolutionCompletenessDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import {reviewedClosedTicketsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
 import {
     breachedTicketsDrillDownQueryFactory,
@@ -17,7 +20,15 @@ import {openTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryF
 import {ticketsCreatedPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {customFieldsTicketCountPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {communicationSkillsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
+import {
+    isFilterWithLogicalOperator,
+    withDefaultLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
+import {
+    connectedCallsListQueryFactory,
+    voiceCallListQueryFactory,
+    waitingTimeCallsListQueryFactory,
+} from 'models/reporting/queryFactories/voice/voiceCall'
 import {
     FilterKey,
     LegacyStatsFilters,
@@ -30,6 +41,7 @@ import {
     ChannelColumnConfig,
     ChannelsTableColumns,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
@@ -38,21 +50,9 @@ import {
     OverviewMetric,
     SlaMetric,
     TicketFieldsMetric,
-    VoiceMetric,
     VoiceAgentsMetric,
+    VoiceMetric,
 } from 'state/ui/stats/types'
-import {
-    connectedCallsListQueryFactory,
-    voiceCallListQueryFactory,
-    waitingTimeCallsListQueryFactory,
-} from 'models/reporting/queryFactories/voice/voiceCall'
-import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
-import {
-    isFilterWithLogicalOperator,
-    withDefaultLogicalOperator,
-} from 'models/reporting/queryFactories/utils'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {resolutionCompletenessDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 
 export type DrillDownQueryFactory = (
     statsFilters: StatsFilters,

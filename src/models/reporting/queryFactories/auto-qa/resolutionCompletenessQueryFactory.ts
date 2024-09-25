@@ -57,7 +57,10 @@ export const resolutionCompletenessDrillDownQueryFactory = (
     sorting?: OrderDirection
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...resolutionCompletenessQueryFactory(filters, timezone, sorting),
-    measures: [TicketQAScoreMeasure.AverageScore],
+    measures: [
+        TicketQAScoreMeasure.AverageScore,
+        TicketQAScoreMeasure.QAScoreData,
+    ],
     dimensions: [TicketDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,
 })

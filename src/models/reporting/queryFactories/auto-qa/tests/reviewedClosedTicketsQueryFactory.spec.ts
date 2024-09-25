@@ -103,7 +103,7 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [],
+            measures: [TicketQAScoreMeasure.QAScoreData],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -130,7 +130,7 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [],
+            measures: [TicketQAScoreMeasure.QAScoreData],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [

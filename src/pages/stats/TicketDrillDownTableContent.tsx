@@ -1,10 +1,16 @@
 import classNames from 'classnames'
 import React from 'react'
+import {AutoQACompletenessCell} from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
+import {
+    COMMUNICATION_SKILLS_LABEL,
+    RESOLUTION_COMPLETENESS_SHORT_LABEL,
+} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {
     defaultEnrichmentFields,
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
 import useAppSelector from 'hooks/useAppSelector'
+import {TicketQAScoreDimensionName} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {EnrichmentFields} from 'models/reporting/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -28,6 +34,7 @@ import {
     getDrillDownMetricColumn,
     SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
+import {AutoQAMetric} from 'state/ui/stats/types'
 
 const tooltipHints = {
     metric: 'The metric values displayed in this column are based on the tickets’ state at the end of the selected period.',
@@ -95,6 +102,14 @@ export const TicketDrillDownTableContent = ({
                         tooltip={tooltipHints.metric}
                     />
                 )}
+                {metricData.metricName ===
+                    AutoQAMetric.ResolutionCompleteness && (
+                    <HeaderCellProperty
+                        title={RESOLUTION_COMPLETENESS_SHORT_LABEL}
+                        width={columnWidths.metric}
+                        className={css.headerCell}
+                    />
+                )}
                 <HeaderCellProperty
                     title="Assignee"
                     width={columnWidths.assignee}
@@ -106,6 +121,21 @@ export const TicketDrillDownTableContent = ({
                     width={columnWidths.created}
                     className={css.headerCell}
                 />
+                {metricData.metricName ===
+                    AutoQAMetric.ReviewedClosedTickets && (
+                    <>
+                        <HeaderCellProperty
+                            title={RESOLUTION_COMPLETENESS_SHORT_LABEL}
+                            width={columnWidths.metric}
+                            className={css.headerCell}
+                        />
+                        <HeaderCellProperty
+                            title={COMMUNICATION_SKILLS_LABEL}
+                            width={columnWidths.metric}
+                            className={css.headerCell}
+                        />
+                    </>
+                )}
                 <HeaderCellProperty
                     title="Contact Reason"
                     width={columnWidths.contactReason}
@@ -153,6 +183,21 @@ export const TicketDrillDownTableContent = ({
                                           )}
                                 </BodyCell>
                             )}
+                            {metricData.metricName ===
+                                AutoQAMetric.ResolutionCompleteness && (
+                                <BodyCell width={columnWidths.metric}>
+                                    {
+                                        <AutoQACompletenessCell
+                                            data={
+                                                item?.qaScore?.[
+                                                    TicketQAScoreDimensionName
+                                                        .ResolutionCompleteness
+                                                ]
+                                            }
+                                        />
+                                    }
+                                </BodyCell>
+                            )}
                             <BodyCell width={columnWidths.assignee}>
                                 {item.assignee && (
                                     <AgentAvatar
@@ -172,6 +217,31 @@ export const TicketDrillDownTableContent = ({
                                     NOT_AVAILABLE_PLACEHOLDER
                                 )}
                             </BodyCell>
+                            {metricData.metricName ===
+                                AutoQAMetric.ReviewedClosedTickets && (
+                                <>
+                                    <BodyCell width={columnWidths.metric}>
+                                        {
+                                            <AutoQACompletenessCell
+                                                data={
+                                                    item?.qaScore?.[
+                                                        TicketQAScoreDimensionName
+                                                            .ResolutionCompleteness
+                                                    ]
+                                                }
+                                            />
+                                        }
+                                    </BodyCell>
+                                    <BodyCell width={columnWidths.metric}>
+                                        {item?.qaScore &&
+                                            item.qaScore[
+                                                TicketQAScoreDimensionName
+                                                    .CommunicationSkills
+                                            ]}
+                                    </BodyCell>
+                                </>
+                            )}
+
                             <BodyCell width={columnWidths.contactReason}>
                                 {item.ticket.contactReason ? (
                                     <TruncateCellContent

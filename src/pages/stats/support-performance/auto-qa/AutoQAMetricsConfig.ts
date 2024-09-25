@@ -8,7 +8,10 @@ import {AutoQAMetric} from 'state/ui/stats/types'
 
 export const REVIEWED_CLOSED_TICKETS_LABEL = 'Reviewed tickets'
 export const RESOLUTION_COMPLETENESS_LABEL = 'Resolution completeness rate'
+export const RESOLUTION_COMPLETENESS_SHORT_LABEL = 'Resolution'
 export const COMMUNICATION_SKILLS_LABEL = 'Communication'
+export const COMPLETENESS_STATUS_COMPLETE = 'Complete'
+export const COMPLETENESS_STATUS_INCOMPLETE = 'Incomplete'
 
 export const TrendCardConfig: Record<
     AutoQAMetric,

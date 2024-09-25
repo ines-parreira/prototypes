@@ -4,6 +4,7 @@ import {Cube, JoinedCubesWithMapping} from 'models/reporting/types'
 export enum TicketQAScoreMeasure {
     TicketCount = 'TicketQAScore.ticketCount',
     AverageScore = 'TicketQAScore.averageScore',
+    QAScoreData = 'TicketQAScore.qaScoreData',
 }
 
 export enum TicketQAScoreDimension {

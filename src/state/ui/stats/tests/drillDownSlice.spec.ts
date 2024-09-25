@@ -289,7 +289,7 @@ describe('drillDownSlice', () => {
                     metricTitle:
                         TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
                             .title,
-                    showMetric: true,
+                    showMetric: false,
                     metricValueFormat:
                         TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
                             .metricFormat,

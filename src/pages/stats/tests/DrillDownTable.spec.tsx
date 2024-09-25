@@ -4,6 +4,12 @@ import React, {FunctionComponent} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {
+    COMMUNICATION_SKILLS_LABEL,
+    COMPLETENESS_STATUS_COMPLETE,
+    RESOLUTION_COMPLETENESS_SHORT_LABEL,
+} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import {TicketQAScoreDimensionName} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
 import {
     TicketSLADimension,
@@ -21,7 +27,12 @@ import {
     getDrillDownMetricColumn,
     SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
-import {ConvertMetric, OverviewMetric, SlaMetric} from 'state/ui/stats/types'
+import {
+    AutoQAMetric,
+    ConvertMetric,
+    OverviewMetric,
+    SlaMetric,
+} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
 import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
@@ -249,6 +260,80 @@ describe('<DrillDownTable />', () => {
 
             expect(
                 screen.getByText(SlaStatusLabel[metricStatus])
+            ).toBeInTheDocument()
+        })
+
+        it(`should render auto QA cells for ${AutoQAMetric.ReviewedClosedTickets} metric`, () => {
+            const metricData = {
+                metricName: AutoQAMetric.ReviewedClosedTickets,
+            }
+            getDrillDownMetricColumnMock.mockReturnValue({
+                showMetric: false,
+                metricTitle: '',
+                metricValueFormat: 'decimal',
+            })
+            const dataWithAutoQA = {
+                ...exampleRow,
+                qaScore: {
+                    [TicketQAScoreDimensionName.ResolutionCompleteness]: '1',
+                    [TicketQAScoreDimensionName.CommunicationSkills]: '3.2',
+                },
+            }
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [dataWithAutoQA],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+            } as any)
+
+            renderTableForTicket(metricData)
+
+            expect(
+                screen.getByText(RESOLUTION_COMPLETENESS_SHORT_LABEL)
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(COMMUNICATION_SKILLS_LABEL)
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(COMPLETENESS_STATUS_COMPLETE)
+            ).toBeInTheDocument()
+            expect(screen.getByText('3.2')).toBeInTheDocument()
+        })
+
+        it(`should render auto QA cells ${AutoQAMetric.ResolutionCompleteness} metric`, () => {
+            const metricData = {
+                metricName: AutoQAMetric.ResolutionCompleteness,
+            }
+            getDrillDownMetricColumnMock.mockReturnValue({
+                showMetric: false,
+                metricTitle: '',
+                metricValueFormat: 'decimal',
+            })
+            const dataWithAutoQA = {
+                ...exampleRow,
+                qaScore: {
+                    [TicketQAScoreDimensionName.ResolutionCompleteness]: '1',
+                    [TicketQAScoreDimensionName.CommunicationSkills]: '3.2',
+                },
+            }
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [dataWithAutoQA],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+            } as any)
+
+            renderTableForTicket(metricData)
+
+            expect(
+                screen.getByText(RESOLUTION_COMPLETENESS_SHORT_LABEL)
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(COMPLETENESS_STATUS_COMPLETE)
             ).toBeInTheDocument()
         })
 

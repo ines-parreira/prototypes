@@ -53,7 +53,7 @@ export const reviewedClosedTicketsDrillDownQueryFactory = (
     sorting?: OrderDirection
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...reviewedClosedTicketsQueryFactory(filters, timezone, sorting),
-    measures: [],
+    measures: [TicketQAScoreMeasure.QAScoreData],
     dimensions: [TicketDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting

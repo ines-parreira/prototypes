@@ -56,7 +56,10 @@ export const communicationSkillsDrillDownQueryFactory = (
     sorting?: OrderDirection
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...communicationSkillsQueryFactory(filters, timezone, sorting),
-    measures: [TicketQAScoreMeasure.AverageScore],
+    measures: [
+        TicketQAScoreMeasure.AverageScore,
+        TicketQAScoreMeasure.QAScoreData,
+    ],
     dimensions: [TicketDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,
 })

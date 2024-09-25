@@ -1,5 +1,9 @@
 import {MergedRecord} from 'hooks/reporting/withEnrichment'
 import {User} from 'config/types/user'
+import {
+    TicketQAScoreDimensionName,
+    TicketQAScoreMeasure,
+} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {EnrichmentFields} from 'models/reporting/types'
 import {OrderConversionDimension} from 'pages/stats/convert/clients/constants'
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
@@ -29,6 +33,11 @@ export interface TicketDrillDownRowData extends BaseDrillDownRowData {
               id: number
           } & Partial<User>)
         | null
+    qaScore?: Record<
+        | TicketQAScoreDimensionName.ResolutionCompleteness
+        | TicketQAScoreDimensionName.CommunicationSkills,
+        string | undefined
+    >
 }
 
 export interface CampaignSaleDetails {
@@ -52,6 +61,19 @@ export type DrillDownFormatterProps = {
     metricField: string
     agents?: User[]
     ticketIdField?: string
+}
+
+const getQAMetric = (
+    key: TicketQAScoreDimensionName,
+    data: string
+): string | undefined => {
+    const parsedField = JSON.parse(data)
+    const dataArray: {dimension: string; prediction: string}[] = Array.isArray(
+        parsedField
+    )
+        ? parsedField
+        : []
+    return dataArray.find((item) => item?.dimension === key)?.prediction
 }
 
 export const formatTicketDrillDownRowData = ({
@@ -81,6 +103,24 @@ export const formatTicketDrillDownRowData = ({
           }
         : null,
     ...(row?.['slas'] ? {rowData: row['slas']} : {}),
+    ...(row?.[TicketQAScoreMeasure.QAScoreData]
+        ? {rowData: row[TicketQAScoreMeasure.QAScoreData]}
+        : {}),
+    ...(row?.[TicketQAScoreMeasure.QAScoreData]
+        ? {
+              qaScore: {
+                  [TicketQAScoreDimensionName.ResolutionCompleteness]:
+                      getQAMetric(
+                          TicketQAScoreDimensionName.ResolutionCompleteness,
+                          row[TicketQAScoreMeasure.QAScoreData]
+                      ),
+                  [TicketQAScoreDimensionName.CommunicationSkills]: getQAMetric(
+                      TicketQAScoreDimensionName.CommunicationSkills,
+                      row[TicketQAScoreMeasure.QAScoreData]
+                  ),
+              },
+          }
+        : {}),
 })
 
 export const formatConvertCampaignSalesDrillDownRowData = ({

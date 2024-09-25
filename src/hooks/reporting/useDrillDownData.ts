@@ -1,16 +1,22 @@
 import {useMemo} from 'react'
-import {DrillDownReportingQuery} from 'models/job/types'
-import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import {OrderDirection} from 'models/api/types'
 import {
     useMetricPerDimension,
     useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
 import {IDRecord, MergedRecord} from 'hooks/reporting/withEnrichment'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {OrderDirection} from 'models/api/types'
+import {DrillDownReportingQuery} from 'models/job/types'
 import {TicketSLADimension} from 'models/reporting/cubes/sla/TicketSLACube'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
+import {
+    BaseDrillDownRowData,
+    DrillDownFormatterProps,
+} from 'pages/stats/DrillDownFormatters'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
+import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {
     DrillDownMetric,
@@ -24,14 +30,10 @@ import {
 } from 'state/ui/stats/selectors'
 import {
     AgentsTableColumn,
+    AutoQAMetric,
     OverviewMetric,
     SlaMetric,
 } from 'state/ui/stats/types'
-import {
-    BaseDrillDownRowData,
-    DrillDownFormatterProps,
-} from 'pages/stats/DrillDownFormatters'
-import useAppDispatch from 'hooks/useAppDispatch'
 
 interface DrillDownData<T> {
     isFetching: boolean
@@ -61,7 +63,11 @@ export const getDrillDownMetricOrder = (
 ) => {
     return metricName === OverviewMetric.CustomerSatisfaction ||
         metricName === AgentsTableColumn.CustomerSatisfaction ||
-        metricName === ChannelsTableColumns.CustomerSatisfaction
+        metricName === ChannelsTableColumns.CustomerSatisfaction ||
+        metricName === AutoQAAgentsTableColumn.ResolutionCompleteness ||
+        metricName === AutoQAMetric.ResolutionCompleteness ||
+        metricName === AutoQAAgentsTableColumn.CommunicationSkills ||
+        metricName === AutoQAMetric.CommunicationSkills
         ? OrderDirection.Asc
         : OrderDirection.Desc
 }
