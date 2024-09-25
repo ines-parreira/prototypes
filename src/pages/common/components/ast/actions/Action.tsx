@@ -9,6 +9,7 @@ import classnames from 'classnames'
 import {Map, List} from 'immutable'
 import {Card, CardBody} from 'reactstrap'
 import {Link} from 'react-router-dom'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import Errors from 'pages/common/components/ast/Errors'
 import {computeLeftPadding} from 'pages/common/components/ast/utils'
@@ -66,6 +67,34 @@ export default function Action({
         return errors.filter((error) => !!error)
     }, [config, values])
 
+    const actionTooltip = useMemo(() => {
+        if (value === 'replyToTicket') {
+            return (
+                <>
+                    <i
+                        id="replyToTicketWarningIcon"
+                        className={classnames(
+                            'material-icons',
+                            css.warningIcon
+                        )}
+                    >
+                        warning
+                    </i>
+                    <Tooltip
+                        placement="top-start"
+                        target="replyToTicketWarningIcon"
+                        trigger={['hover']}
+                        autohide={false}
+                    >
+                        Reply to customer won’t trigger if the last message is
+                        from an agent. Use 'Apply macro' instead if you want to
+                        reply to all messages
+                    </Tooltip>
+                </>
+            )
+        }
+    }, [value])
+
     return (
         <div
             className={classnames('Action', {
@@ -79,6 +108,7 @@ export default function Action({
                 parent={parent.push('value')}
                 value={value}
             />
+            {actionTooltip}
             {!value ? (
                 <Errors inline>An action cannot be empty</Errors>
             ) : value === 'facebookHideComment' ||

@@ -119,5 +119,10 @@ describe('Action', () => {
                 screen.getByText('Email must have at least one recipient')
             ).toBeInTheDocument()
         })
+
+        it('should render a warning about reply to ticket action', () => {
+            render(<Action {...minProps} value="replyToTicket" />)
+            expect(screen.getByText('warning')).toBeInTheDocument()
+        })
     })
 })
