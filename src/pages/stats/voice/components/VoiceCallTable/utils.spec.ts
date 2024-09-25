@@ -25,8 +25,11 @@ describe('utils', () => {
     })
 
     describe('getVoiceDrillDownColumns', () => {
-        it('should return the correct columns for AverageWaitTime', () => {
-            const result = getVoiceDrillDownColumns(VoiceMetric.AverageWaitTime)
+        it.each([
+            VoiceMetric.AverageWaitTime,
+            VoiceMetric.QueueAverageWaitTime,
+        ])('should return the correct columns for %s', (metric) => {
+            const result = getVoiceDrillDownColumns(metric)
 
             expect(result).toEqual([
                 VoiceCallTableColumnName.Activity,
@@ -38,8 +41,11 @@ describe('utils', () => {
             ])
         })
 
-        it('should return the correct columns for AverageTalkTime', () => {
-            const result = getVoiceDrillDownColumns(VoiceMetric.AverageTalkTime)
+        it.each([
+            VoiceMetric.AverageTalkTime,
+            VoiceMetric.QueueAverageTalkTime,
+        ])('should return the correct columns for %s', (metric) => {
+            const result = getVoiceDrillDownColumns(metric)
 
             expect(result).toEqual([
                 VoiceCallTableColumnName.Activity,

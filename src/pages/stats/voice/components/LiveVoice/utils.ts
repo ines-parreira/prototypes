@@ -7,6 +7,8 @@ import {
 } from '@gorgias/api-queries'
 import {VoiceCallStatus as LegacyVoiceCallStatus} from 'models/voiceCall/types'
 import {OrderDirection} from 'models/api/types'
+import {getMoment} from 'utils/date'
+import {formatReportingQueryDate} from 'utils/reporting'
 import {VoiceCallSummary} from '../../models/types'
 import {VoiceCallTableColumnName} from '../VoiceCallTable/constants'
 import {LiveVoiceStatusFilterOption} from './types'
@@ -174,4 +176,15 @@ export const orderLiveVoiceCallsByOngoingTime = (
                   voiceCallB.created_datetime
               )
     )
+}
+
+export const getLiveVoicePeriodFilter = (
+    timezone: string
+): {start_datetime: string; end_datetime: string} => {
+    const now = getMoment().tz(timezone)
+
+    return {
+        start_datetime: formatReportingQueryDate(now.clone().startOf('day')),
+        end_datetime: formatReportingQueryDate(now.clone().endOf('day')),
+    }
 }

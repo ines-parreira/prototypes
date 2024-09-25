@@ -35,6 +35,8 @@ const getTableContent = (
             return CampaignSalesDrillDownTableContent
         case VoiceMetric.AverageWaitTime:
         case VoiceMetric.AverageTalkTime:
+        case VoiceMetric.QueueAverageWaitTime:
+        case VoiceMetric.QueueAverageTalkTime:
         case VoiceAgentsMetric.AgentTotalCalls:
         case VoiceAgentsMetric.AgentInboundAnsweredCalls:
         case VoiceAgentsMetric.AgentInboundMissedCalls:

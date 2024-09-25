@@ -68,6 +68,8 @@ export enum ConvertMetric {
 export enum VoiceMetric {
     AverageWaitTime = 'average_wait_time',
     AverageTalkTime = 'average_talk_time',
+    QueueAverageWaitTime = 'queue_average_wait_time',
+    QueueAverageTalkTime = 'queue_average_talk_time',
 }
 
 export enum VoiceAgentsMetric {

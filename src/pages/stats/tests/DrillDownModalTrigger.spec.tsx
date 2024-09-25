@@ -108,6 +108,8 @@ describe('<DrillDownModalTrigger />', () => {
     it.each([
         VoiceMetric.AverageTalkTime,
         VoiceMetric.AverageWaitTime,
+        VoiceMetric.QueueAverageWaitTime,
+        VoiceMetric.QueueAverageTalkTime,
         VoiceAgentsMetric.AgentTotalCalls,
         VoiceAgentsMetric.AgentInboundAnsweredCalls,
         VoiceAgentsMetric.AgentInboundMissedCalls,

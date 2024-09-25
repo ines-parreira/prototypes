@@ -176,6 +176,12 @@ describe('getDrillDownQuery', () => {
             metricName: VoiceMetric.AverageTalkTime,
         },
         {
+            metricName: VoiceMetric.QueueAverageWaitTime,
+        },
+        {
+            metricName: VoiceMetric.QueueAverageTalkTime,
+        },
+        {
             metricName: VoiceAgentsMetric.AgentTotalCalls,
             perAgentId: 123,
         },

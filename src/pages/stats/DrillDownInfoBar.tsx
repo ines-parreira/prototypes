@@ -23,6 +23,8 @@ const getObjectType = (metricData: DrillDownMetric) => {
             return 'orders'
         case VoiceMetric.AverageWaitTime:
         case VoiceMetric.AverageTalkTime:
+        case VoiceMetric.QueueAverageWaitTime:
+        case VoiceMetric.QueueAverageTalkTime:
         case VoiceAgentsMetric.AgentTotalCalls:
         case VoiceAgentsMetric.AgentInboundAnsweredCalls:
         case VoiceAgentsMetric.AgentInboundMissedCalls:
@@ -38,6 +40,8 @@ const isMetricDataDownloadable = (metricData: DrillDownMetric): boolean => {
     switch (metricData.metricName) {
         case VoiceMetric.AverageWaitTime:
         case VoiceMetric.AverageTalkTime:
+        case VoiceMetric.QueueAverageWaitTime:
+        case VoiceMetric.QueueAverageTalkTime:
         case VoiceAgentsMetric.AgentTotalCalls:
         case VoiceAgentsMetric.AgentInboundAnsweredCalls:
         case VoiceAgentsMetric.AgentInboundMissedCalls:

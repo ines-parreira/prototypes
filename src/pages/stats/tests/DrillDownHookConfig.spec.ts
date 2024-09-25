@@ -117,6 +117,8 @@ describe('getDrillDownHook', () => {
     const voiceMetrics = [
         {metricName: VoiceMetric.AverageWaitTime},
         {metricName: VoiceMetric.AverageTalkTime},
+        {metricName: VoiceMetric.QueueAverageWaitTime},
+        {metricName: VoiceMetric.QueueAverageTalkTime},
         {metricName: VoiceAgentsMetric.AgentTotalCalls, perAgentId: 123},
         {
             metricName: VoiceAgentsMetric.AgentInboundMissedCalls,

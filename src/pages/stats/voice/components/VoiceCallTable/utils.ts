@@ -9,6 +9,7 @@ export const getVoiceDrillDownColumns = (
 ): VoiceCallTableColumnName[] => {
     switch (metricName) {
         case VoiceMetric.AverageWaitTime:
+        case VoiceMetric.QueueAverageWaitTime:
             return [
                 VoiceCallTableColumnName.Activity,
                 VoiceCallTableColumnName.WaitTime,
@@ -18,6 +19,7 @@ export const getVoiceDrillDownColumns = (
                 VoiceCallTableColumnName.Recording,
             ]
         case VoiceMetric.AverageTalkTime:
+        case VoiceMetric.QueueAverageTalkTime:
             return [
                 VoiceCallTableColumnName.Activity,
                 VoiceCallTableColumnName.TalkTime,

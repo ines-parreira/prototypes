@@ -192,6 +192,8 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     ConvertMetric.CampaignSalesCount,
     VoiceMetric.AverageWaitTime,
     VoiceMetric.AverageTalkTime,
+    VoiceMetric.QueueAverageWaitTime,
+    VoiceMetric.QueueAverageTalkTime,
     VoiceAgentsMetric.AgentTotalCalls,
     VoiceAgentsMetric.AgentInboundAnsweredCalls,
     VoiceAgentsMetric.AgentInboundMissedCalls,
@@ -332,7 +334,9 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === VoiceAgentsMetric.AgentInboundAnsweredCalls ||
         metricData.metricName === VoiceAgentsMetric.AgentInboundMissedCalls ||
         metricData.metricName === VoiceAgentsMetric.AgentOutboundCalls ||
-        metricData.metricName === VoiceAgentsMetric.AgentAverageTalkTime
+        metricData.metricName === VoiceAgentsMetric.AgentAverageTalkTime ||
+        metricData.metricName === VoiceMetric.QueueAverageTalkTime ||
+        metricData.metricName === VoiceMetric.QueueAverageWaitTime
     ) {
         metricTitle = ''
     } else if (

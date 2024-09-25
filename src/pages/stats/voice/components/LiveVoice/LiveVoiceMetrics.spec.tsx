@@ -1,6 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
-import moment, {Moment} from 'moment'
+import {Moment} from 'moment'
 import {assumeMock} from 'utils/testing'
 import {voiceCallAverageWaitTimeQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
 import {useMetric} from 'hooks/reporting/useMetric'
@@ -9,12 +9,11 @@ import * as constants from 'pages/stats/voice/constants/liveVoice'
 import {Metric} from 'hooks/reporting/metrics'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-import {getMoment} from 'utils/date'
 import {useVoiceCallCountMetric} from '../../hooks/useVoiceCallCountMetric'
 import {useAverageTalkTimeMetric} from '../../hooks/agentMetrics'
 import LiveVoiceMetrics from './LiveVoiceMetrics'
 import LiveVoiceMetricCard from './LiveVoiceMetricCard'
-import {filterLiveCallsByStatus} from './utils'
+import {filterLiveCallsByStatus, getLiveVoicePeriodFilter} from './utils'
 import {LiveVoiceStatusFilterOption} from './types'
 
 const renderComponent = (
@@ -56,8 +55,13 @@ const useMetricMock = assumeMock(useMetric)
 const LiveVoiceMetricCardMock = assumeMock(LiveVoiceMetricCard)
 const formatReportingQueryDateMock = assumeMock(formatReportingQueryDate)
 const getBusinessHoursSettingsMock = assumeMock(getBusinessHoursSettings)
-const getMomentMock = assumeMock(getMoment)
 const filterLiveCallsByStatusMock = assumeMock(filterLiveCallsByStatus)
+const getLiveVoicePeriodFilterMock = assumeMock(getLiveVoicePeriodFilter)
+
+const defaultPeriodFilter = {
+    start_datetime: '2024-01-01T00:00:00+01:00',
+    end_datetime: '2024-01-01T23:59:59+01:00',
+}
 
 describe('LiveVoiceMetrics', () => {
     beforeEach(() => {
@@ -80,8 +84,8 @@ describe('LiveVoiceMetrics', () => {
         formatReportingQueryDateMock.mockImplementation((date) =>
             (date as Moment).format()
         )
-        getMomentMock.mockReturnValue(moment('2024-01-01T14:11:00.000Z'))
         filterLiveCallsByStatusMock.mockReturnValue([] as any)
+        getLiveVoicePeriodFilterMock.mockReturnValue(defaultPeriodFilter)
 
         LiveVoiceMetricCardMock.mockReturnValue(<div />)
     })
@@ -130,27 +134,19 @@ describe('LiveVoiceMetrics', () => {
                     timezone: 'Europe/Paris',
                 },
             },
-            expectedPeriodFilters: {
-                start_datetime: '2024-01-01T00:00:00+01:00',
-                end_datetime: '2024-01-01T23:59:59+01:00',
-            },
             expectedTimezone: 'Europe/Paris',
         },
         {
             businessHours: undefined,
-            expectedPeriodFilters: {
-                start_datetime: '2024-01-01T00:00:00Z',
-                end_datetime: '2024-01-01T23:59:59Z',
-            },
             expectedTimezone: 'UTC',
         },
     ])(
         'should call hooks with correct timezone',
-        ({businessHours, expectedPeriodFilters, expectedTimezone}) => {
+        ({businessHours, expectedTimezone}) => {
             getBusinessHoursSettingsMock.mockReturnValue(businessHours as any)
 
             const filters = {
-                period: expectedPeriodFilters,
+                period: defaultPeriodFilter,
             }
 
             renderComponent()

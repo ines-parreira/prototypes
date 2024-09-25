@@ -5,7 +5,10 @@ import {
     VoiceCallDirection,
     VoiceCallStatus,
 } from '@gorgias/api-queries'
+import moment from 'moment'
 import {OrderDirection} from 'models/api/types'
+import {getMoment} from 'utils/date'
+import {assumeMock} from 'utils/testing'
 import {
     groupAgentsByStatus,
     AgentStatusCategory,
@@ -17,10 +20,19 @@ import {
     filterLiveCallsByStatus,
     orderLiveVoiceCallsByOngoingTime,
     isLiveCallRinging,
+    getLiveVoicePeriodFilter,
 } from './utils'
 import {LiveVoiceStatusFilterOption} from './types'
 
+jest.mock('utils/date')
+
+const getMomentMock = assumeMock(getMoment)
+
 describe('utils', () => {
+    beforeEach(() => {
+        getMomentMock.mockReturnValue(moment('2024-01-02T14:11:00.000Z'))
+    })
+
     describe('isAgentBusy', () => {
         it('should return true if agent is busy', () => {
             const agent: LiveCallQueueAgent = {
@@ -478,5 +490,31 @@ describe('utils', () => {
 
             expect(result.map((voiceCall) => voiceCall.id)).toEqual([3, 1, 2])
         })
+    })
+
+    describe('getLiveVoicePeriodFilter', () => {
+        it.each([
+            {
+                expectedResult: {
+                    start_datetime: '2024-01-02T00:00:00.000',
+                    end_datetime: '2024-01-02T23:59:59.999',
+                },
+                timezone: 'UTC',
+            },
+            {
+                expectedResult: {
+                    start_datetime: '2024-01-01T23:00:00.000',
+                    end_datetime: '2024-01-02T22:59:59.999',
+                },
+                timezone: 'Europe/Paris',
+            },
+        ])(
+            'should return correct period filter for timezone %s',
+            ({expectedResult, timezone}) => {
+                const result = getLiveVoicePeriodFilter(timezone)
+
+                expect(result).toEqual(expectedResult)
+            }
+        )
     })
 })

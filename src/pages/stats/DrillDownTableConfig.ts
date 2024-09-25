@@ -26,6 +26,8 @@ import {
 } from 'models/reporting/queryFactories/utils'
 import {
     connectedCallsListQueryFactory,
+    liveDashboardConnectedCallsListQueryFactory,
+    liveDashboardWaitingTimeCallsListQueryFactory,
     voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
@@ -269,6 +271,15 @@ export const getDrillDownQuery = (
                 waitingTimeCallsListQueryFactory(
                     statsFilters,
                     timezone,
+                    VoiceCallSegment.inboundCalls
+                )
+        case VoiceMetric.QueueAverageTalkTime:
+            return (statsFilters: StatsFilters) =>
+                liveDashboardConnectedCallsListQueryFactory(statsFilters)
+        case VoiceMetric.QueueAverageWaitTime:
+            return (statsFilters: StatsFilters) =>
+                liveDashboardWaitingTimeCallsListQueryFactory(
+                    statsFilters,
                     VoiceCallSegment.inboundCalls
                 )
         case VoiceAgentsMetric.AgentTotalCalls:

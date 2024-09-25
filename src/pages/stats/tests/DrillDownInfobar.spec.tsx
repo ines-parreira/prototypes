@@ -139,6 +139,8 @@ describe('<DrillDownInfobar />', () => {
         [ConvertMetric.CampaignSalesCount, 'orders'],
         [VoiceMetric.AverageWaitTime, 'voice calls'],
         [VoiceMetric.AverageTalkTime, 'voice calls'],
+        [VoiceMetric.QueueAverageWaitTime, 'voice calls'],
+        [VoiceMetric.QueueAverageTalkTime, 'voice calls'],
         [VoiceAgentsMetric.AgentAverageTalkTime, 'voice calls'],
         [VoiceAgentsMetric.AgentInboundAnsweredCalls, 'voice calls'],
         [VoiceAgentsMetric.AgentInboundMissedCalls, 'voice calls'],

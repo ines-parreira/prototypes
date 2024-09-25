@@ -65,6 +65,8 @@ describe('<DrillDownModal />', () => {
         [ConvertMetric.CampaignSalesCount, CampaignSalesDrillDownTableContent],
         [VoiceMetric.AverageWaitTime, VoiceCallDrillDownTableContent],
         [VoiceMetric.AverageTalkTime, VoiceCallDrillDownTableContent],
+        [VoiceMetric.QueueAverageWaitTime, VoiceCallDrillDownTableContent],
+        [VoiceMetric.QueueAverageTalkTime, VoiceCallDrillDownTableContent],
         [VoiceAgentsMetric.AgentTotalCalls, VoiceCallDrillDownTableContent],
         [
             VoiceAgentsMetric.AgentInboundAnsweredCalls,

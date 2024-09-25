@@ -6,6 +6,8 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import MetricCard from 'pages/stats/MetricCard'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {VoiceMetric} from 'state/ui/stats/types'
 
 type Props = {
     title: string
@@ -13,6 +15,7 @@ type Props = {
     metricValueFormat?: MetricValueFormat
     value?: number | null
     isLoading: boolean
+    metricName?: VoiceMetric
 }
 
 export default function LiveVoiceMetricCard({
@@ -21,6 +24,7 @@ export default function LiveVoiceMetricCard({
     metricValueFormat = 'integer',
     value,
     isLoading,
+    metricName,
 }: Props) {
     const metricValue = formatMetricValue(
         value,
@@ -37,7 +41,19 @@ export default function LiveVoiceMetricCard({
             isLoading={isLoading}
         >
             <BigNumberMetric isLoading={isLoading}>
-                {metricValue}
+                {metricName ? (
+                    <DrillDownModalTrigger
+                        metricData={{
+                            metricName,
+                            title,
+                        }}
+                        useNewFilterData
+                    >
+                        {metricValue}
+                    </DrillDownModalTrigger>
+                ) : (
+                    metricValue
+                )}
             </BigNumberMetric>
         </MetricCard>
     )

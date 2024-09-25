@@ -5,16 +5,15 @@ import * as constants from 'pages/stats/voice/constants/liveVoice'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import useAppSelector from 'hooks/useAppSelector'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
-import {getMoment} from 'utils/date'
-import {formatReportingQueryDate} from 'utils/reporting'
 import {voiceCallAverageWaitTimeQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
 import {useMetric} from 'hooks/reporting/useMetric'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import {VoiceMetric} from 'state/ui/stats/types'
 import {useVoiceCallCountMetric} from '../../hooks/useVoiceCallCountMetric'
 import {useAverageTalkTimeMetric} from '../../hooks/agentMetrics'
 import LiveVoiceMetricCard from './LiveVoiceMetricCard'
-import {filterLiveCallsByStatus} from './utils'
+import {filterLiveCallsByStatus, getLiveVoicePeriodFilter} from './utils'
 import {LiveVoiceStatusFilterOption} from './types'
 
 const CARD_SIZE = 4
@@ -39,18 +38,9 @@ export default function LiveVoiceMetrics({
     }
 
     const filters = useMemo(() => {
-        const now = getMoment().tz(timezone)
-
         return {
             ...cleanStatsFilters,
-            period: {
-                start_datetime: formatReportingQueryDate(
-                    now.clone().startOf('day')
-                ),
-                end_datetime: formatReportingQueryDate(
-                    now.clone().endOf('day')
-                ),
-            },
+            period: getLiveVoicePeriodFilter(timezone),
         }
     }, [cleanStatsFilters, timezone])
 
@@ -90,6 +80,7 @@ export default function LiveVoiceMetrics({
             metricValueFormat: 'duration',
             value: averageWaitTime.data?.value,
             isLoading: averageWaitTime.isFetching,
+            metricName: VoiceMetric.QueueAverageWaitTime,
         },
         {
             title: constants.MISSED_INBOUND_CALLS_METRIC_TITLE,
@@ -115,6 +106,7 @@ export default function LiveVoiceMetrics({
             metricValueFormat: 'duration',
             value: averageTalkTime.data?.value,
             isLoading: averageTalkTime.isFetching,
+            metricName: VoiceMetric.QueueAverageTalkTime,
         },
     ]
 

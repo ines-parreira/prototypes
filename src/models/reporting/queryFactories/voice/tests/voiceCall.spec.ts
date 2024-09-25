@@ -10,8 +10,13 @@ import {
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
 import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
+import {AccountSettingType} from 'state/currentAccount/types'
+import {getLiveVoicePeriodFilter} from 'pages/stats/voice/components/LiveVoice/utils'
+import {assumeMock} from 'utils/testing'
 import {
     connectedCallsListQueryFactory,
+    liveDashboardConnectedCallsListQueryFactory,
+    liveDashboardWaitingTimeCallsListQueryFactory,
     voiceCallAverageTalkTimePerAgentQueryFactory,
     voiceCallAverageTalkTimeQueryFactory,
     voiceCallAverageWaitTimeQueryFactory,
@@ -21,6 +26,10 @@ import {
     voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from '../voiceCall'
+
+const getLiveVoicePeriodFilterMock = assumeMock(getLiveVoicePeriodFilter)
+
+jest.mock('pages/stats/voice/components/LiveVoice/utils')
 
 const voiceCallListDimensions = [
     VoiceCallDimension.AgentId,
@@ -51,6 +60,13 @@ describe('voice queries factories', () => {
         },
     }
     const timezone = 'someTimeZone'
+
+    beforeEach(() => {
+        getLiveVoicePeriodFilterMock.mockReturnValue({
+            end_datetime: periodEnd,
+            start_datetime: periodStart,
+        })
+    })
 
     it.each([
         [[VoiceCallMeasure.VoiceCallCount], [], undefined],
@@ -354,4 +370,125 @@ describe('voice queries factories', () => {
             })
         }
     )
+
+    describe('liveDashboardConnectedCallsListQueryFactory', () => {
+        it('should create a query', () => {
+            window.GORGIAS_STATE = {
+                currentAccount: {
+                    settings: [
+                        {
+                            type: AccountSettingType.BusinessHours,
+                            data: {},
+                        },
+                    ],
+                },
+            } as any
+
+            const query =
+                liveDashboardConnectedCallsListQueryFactory(statsFilters)
+
+            expect(query).toEqual({
+                measures: [VoiceCallMeasure.VoiceCallCount],
+                dimensions: voiceCallListDimensions,
+                timezone: 'UTC',
+                filters: [
+                    {
+                        member: VoiceCallMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: VoiceCallMember.TalkTime,
+                        operator: ReportingFilterOperator.Set,
+                        values: [],
+                    },
+                ],
+            })
+        })
+
+        it('should use the account timezone if it is set', () => {
+            window.GORGIAS_STATE = {
+                currentAccount: {
+                    settings: [
+                        {
+                            type: AccountSettingType.BusinessHours,
+                            data: {
+                                timezone: 'Europe/Paris',
+                            },
+                        },
+                    ],
+                },
+            } as any
+            const query =
+                liveDashboardConnectedCallsListQueryFactory(statsFilters)
+
+            expect(query.timezone).toEqual('Europe/Paris')
+        })
+    })
+
+    describe('liveDashboardWaitingTimeCallsListQueryFactory', () => {
+        it('should create a query', () => {
+            window.GORGIAS_STATE = {
+                currentAccount: {
+                    settings: [
+                        {
+                            type: AccountSettingType.BusinessHours,
+                            data: {},
+                        },
+                    ],
+                },
+            } as any
+
+            const query =
+                liveDashboardWaitingTimeCallsListQueryFactory(statsFilters)
+
+            expect(query).toEqual({
+                dimensions: voiceCallListDimensions,
+                measures: [VoiceCallMeasure.VoiceCallCount],
+                timezone: 'UTC',
+                filters: [
+                    {
+                        member: VoiceCallMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: VoiceCallMember.WaitTime,
+                        operator: ReportingFilterOperator.Set,
+                        values: [],
+                    },
+                ],
+                segments: [],
+            })
+        })
+
+        it('should use the account timezone if it is set', () => {
+            window.GORGIAS_STATE = {
+                currentAccount: {
+                    settings: [
+                        {
+                            type: AccountSettingType.BusinessHours,
+                            data: {
+                                timezone: 'Europe/Paris',
+                            },
+                        },
+                    ],
+                },
+            } as any
+            const query =
+                liveDashboardWaitingTimeCallsListQueryFactory(statsFilters)
+
+            expect(query.timezone).toEqual('Europe/Paris')
+        })
+    })
 })
