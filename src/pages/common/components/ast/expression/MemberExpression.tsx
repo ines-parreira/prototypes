@@ -19,10 +19,7 @@ import {ObjectExpressionPropertyKey, RuleOperation} from 'state/rules/types'
 import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
 import {RuleItemActions} from 'pages/settings/rules/types'
 import {getIconFromUrl} from 'utils'
-import {
-    getHasAutomate,
-    getHasLegacyAutomateFeatures,
-} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 
 import RuleSelect from '../widget/RuleSelect'
 
@@ -39,7 +36,6 @@ type OwnProps = {
 export function MemberExpressionContainer({
     hasIntegrationType,
     hasAutomate,
-    hasLegacyAutomateFeatures,
     object,
     property,
     parent,
@@ -81,12 +77,12 @@ export function MemberExpressionContainer({
                 case IdentifierCategoryKey.BigCommerceLastOrder:
                     return hasIntegrationType(IntegrationType.BigCommerce)
                 case IdentifierCategoryKey.SelfServiceFlow:
-                    return hasAutomate || hasLegacyAutomateFeatures
+                    return hasAutomate
                 default:
                     return true
             }
         })
-    }, [hasIntegrationType, hasAutomate, hasLegacyAutomateFeatures])
+    }, [hasIntegrationType, hasAutomate])
 
     const handleSelect = (value: string) => {
         const expression = fromJS(
@@ -237,7 +233,6 @@ export function MemberExpressionContainer({
 const connector = connect((state: RootState) => ({
     hasIntegrationType: makeHasIntegrationOfTypes(state),
     hasAutomate: getHasAutomate(state),
-    hasLegacyAutomateFeatures: getHasLegacyAutomateFeatures(state),
 }))
 
 export default connector(MemberExpressionContainer)

@@ -1,6 +1,5 @@
 import {fromJS, List, Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
-import moment from 'moment-timezone'
 import {createSelector} from 'reselect'
 
 import {
@@ -14,17 +13,13 @@ import {
     ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
-import {getCheapestPrice, isHelpdesk} from 'models/billing/utils'
-import {
-    getCurrentAccountState,
-    getCurrentSubscription,
-} from 'state/currentAccount/selectors'
+import {getCheapestPrice} from 'models/billing/utils'
+import {getCurrentSubscription} from 'state/currentAccount/selectors'
 import {
     AccountFeature,
     AccountFeatureMetadata,
     CurrentAccountState,
 } from 'state/currentAccount/types'
-import {getActiveIntegrations} from 'state/integrations/selectors'
 import {RootState} from '../types'
 
 import {
@@ -312,22 +307,6 @@ export const getHasAutomate = createSelector(
     (plan) => !!plan
 )
 
-export const getHasLegacyAutomateFeatures = createSelector(
-    getCurrentAccountState,
-    getCurrentHelpdeskPlan,
-    (accountState, product) => {
-        const automateLaunchDate = '2021-10-04T00:00:00Z'
-        const accountCreatedBeforeAutomateLaunch = moment
-            .utc(accountState.get('created_datetime'))
-            .isBefore(moment.utc(automateLaunchDate))
-
-        const hasLegacyAutomateFeatures =
-            !!product?.legacy_automation_addon_features
-
-        return accountCreatedBeforeAutomateLaunch && hasLegacyAutomateFeatures
-    }
-)
-
 export const invoices = createSelector(
     DEPRECATED_getBillingState,
     (billing) =>
@@ -371,21 +350,6 @@ export const getCurrentUsage = createSelector(
 export const getCurrentProductsUsage = createSelector(
     DEPRECATED_getBillingState,
     (billing) => billing.get('currentProductsUsage') as CurrentProductsUsages
-)
-
-export const makeGetIsAllowedToChangePrice = createSelector(
-    getAvailablePlansMap,
-    getActiveIntegrations,
-    (prices, activeIntegrations) => {
-        return (priceId: string) => {
-            const plan = prices[priceId]
-
-            return (
-                (isHelpdesk(plan) ? plan.integrations : 0) >=
-                activeIntegrations.size
-            )
-        }
-    }
 )
 
 export const getCheapestSMSPrice = createSelector(

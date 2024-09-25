@@ -1,10 +1,7 @@
 import React from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {
-    getHasAutomate,
-    getHasLegacyAutomateFeatures,
-} from 'state/billing/selectors'
+import {getHasAutomate} from 'state/billing/selectors'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 
 import {AutomateFeatures} from '../types'
@@ -15,15 +12,10 @@ import AutomateLandingPage from './AutomateLandingPage'
 
 const AutomateLandingPageContainer = () => {
     const hasAutomateFeature = useAppSelector(getHasAutomate)
-    const hasLegacyAutomateFeatures = useAppSelector(
-        getHasLegacyAutomateFeatures
-    )
 
     const storeIntegrations = useStoreIntegrations()
-    const hasAutomateOrLegacyAutomateFeatures =
-        hasAutomateFeature || hasLegacyAutomateFeatures
 
-    if (!hasAutomateOrLegacyAutomateFeatures) {
+    if (!hasAutomateFeature) {
         return (
             <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
         )

@@ -71,7 +71,6 @@ export type HelpdeskPlan = BasePlan & {
     legacy_id: string
     order?: number
     features: HelpdeskPlanFeatures
-    legacy_automation_addon_features?: AutomatePlanFeatures
     limits: {
         messages: PlanLimits
         tickets: PlanLimits

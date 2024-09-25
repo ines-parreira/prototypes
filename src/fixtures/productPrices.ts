@@ -62,16 +62,6 @@ export const automatePlanFeatures: AutomatePlanFeatures = {
     [AccountFeature.AutomationReturnFlow]: {enabled: true},
     [AccountFeature.AutomationSelfServiceStatistics]: {enabled: true},
 }
-
-export const legacyAutomatePlanFeatures: AutomatePlanFeatures = {
-    [AccountFeature.AutomationManagedRules]: {enabled: false},
-    [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
-    [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
-    [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
-    [AccountFeature.AutomationReturnFlow]: {enabled: true},
-    [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
-}
-
 const proHelpdeskPlanFeatures: HelpdeskPlanFeatures = {
     [AccountFeature.Api1stPartyRateLimit]: {
         enabled: true,
@@ -602,7 +592,6 @@ export const legacyBasicHelpdeskPlan: HelpdeskPlan = {
     extra_ticket_cost: 0.06,
     currency: 'usd',
     features: basicHelpdeskPlanFeatures,
-    legacy_automation_addon_features: legacyAutomatePlanFeatures,
     num_quota_tickets: 600,
     integrations: 7,
     interval: PlanInterval.Month,
@@ -688,50 +677,6 @@ export const customHelpdeskPlan: HelpdeskPlan = {
     price_id: 'price_1LJBjhI9qXomtXqSAUwsyU2z',
     public: true,
     trial_period_days: 7,
-}
-
-export const customAutomatePlan: AutomatePlan = {
-    custom: false,
-    order: 0,
-    public: true,
-    extra_ticket_cost: 0.16,
-    num_quota_tickets: null,
-    cadence: PlanInterval.Month,
-    amount: 80000,
-    automation_addon_discount: 0,
-    automation_addon_included: true,
-    base_price_id: 'price_1LJBjhI9qXomtXqSAUwsyU2z',
-    currency: 'usd',
-    features: automatePlanFeatures,
-    interval: PlanInterval.Month,
-    legacy_id: 'custom-automation-full-price-monthly-usd-4-1',
-    internal_id: 'aut-addon-custom-full-price-monthly-usd-4-1',
-    name: 'Custom',
-    product: ProductType.Automation,
-    product_id: 'prod_LsHD5xmSqoFBBs',
-    price_id: 'price_1LJBjiI9qXomtXqSvQBcRw5V',
-}
-
-export const basicDiscountedAutomatePlan: AutomatePlan = {
-    custom: false,
-    public: true,
-    extra_ticket_cost: 0.1,
-    num_quota_tickets: null,
-    cadence: PlanInterval.Month,
-    amount: 1500,
-    automation_addon_discount: 0.5,
-    automation_addon_included: true,
-    base_price_id: 'price_1LJBjWI9qXomtXqSPZn8LqlD',
-    currency: 'usd',
-    interval: PlanInterval.Month,
-    legacy_id: 'basic-automation-monthly-usd-4',
-    internal_id: 'aut-addon-basic-monthly-usd-4',
-    name: 'Basic',
-    order: 2,
-    product: ProductType.Automation,
-    product_id: 'prod_LsHD5xmSqoFBBs',
-    price_id: 'price_1LJBjWI9qXomtXqSTxkBsRWM',
-    features: automatePlanFeatures,
 }
 
 export const starterHelpdeskPlan: HelpdeskPlan = {

@@ -8,20 +8,12 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
 
 import {user} from 'fixtures/users'
-import {
-    account,
-    automationSubscriptionProductPrices,
-    legacyWithoutAutomateProductPrices,
-} from 'fixtures/account'
+import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {AGENT_ROLE} from 'config/user'
 import {RootState} from 'state/types'
 import {billingState} from 'fixtures/billing'
 import {getLDClient} from 'utils/launchDarkly'
 import {integrationsState} from 'fixtures/integrations'
-import {
-    legacyBasicAutomatePlan,
-    legacyBasicHelpdeskPlan,
-} from 'fixtures/productPrices'
 import {ThemeProvider} from 'theme'
 import {useFlag} from 'common/flags'
 
@@ -101,55 +93,6 @@ describe('<AutomateNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automate navbar for agent with legacy automate features', () => {
-            const {container} = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        integrations,
-                        currentUser: fromJS({
-                            ...user,
-                            role: {name: AGENT_ROLE},
-                        }),
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                ...account.current_subscription,
-                                products: legacyWithoutAutomateProductPrices,
-                            },
-                        }),
-                        billing: fromJS({
-                            ...billingState,
-                            products: [
-                                {
-                                    ...billingState.products[0],
-                                    prices: [
-                                        ...billingState.products[0].prices,
-                                        legacyBasicHelpdeskPlan,
-                                    ],
-                                },
-                                {
-                                    ...billingState.products[1],
-                                    prices: [
-                                        ...billingState.products[1].prices,
-                                        legacyBasicAutomatePlan,
-                                    ],
-                                },
-                            ],
-                        }),
-                    })}
-                >
-                    <DndProvider backend={HTML5Backend}>
-                        <ThemeProvider>
-                            <AutomateNavbar />
-                        </ThemeProvider>
-                    </DndProvider>
-                </Provider>
-            )
-
-            expect(container).toMatchSnapshot()
-        })
-
         it('should render automate navbar for agent with Automate', () => {
             const {container} = render(
                 <Provider
@@ -189,51 +132,6 @@ describe('<AutomateNavbar />', () => {
                             ...account,
                             created_datetime:
                                 '2022-08-23T01:38:52.479339+00:00',
-                        }),
-                    })}
-                >
-                    <DndProvider backend={HTML5Backend}>
-                        <ThemeProvider>
-                            <AutomateNavbar />
-                        </ThemeProvider>
-                    </DndProvider>
-                </Provider>
-            )
-
-            expect(container).toMatchSnapshot()
-        })
-
-        it('should render automate navbar for admin with legacy automate features', () => {
-            const {container} = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        integrations,
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                ...account.current_subscription,
-                                products: legacyWithoutAutomateProductPrices,
-                            },
-                        }),
-                        billing: fromJS({
-                            ...billingState,
-                            products: [
-                                {
-                                    ...billingState.products[0],
-                                    prices: [
-                                        ...billingState.products[0].prices,
-                                        legacyBasicHelpdeskPlan,
-                                    ],
-                                },
-                                {
-                                    ...billingState.products[1],
-                                    prices: [
-                                        ...billingState.products[1].prices,
-                                        legacyBasicAutomatePlan,
-                                    ],
-                                },
-                            ],
                         }),
                     })}
                 >

@@ -1,29 +1,18 @@
 import {fromJS} from 'immutable'
-import _cloneDeep from 'lodash/cloneDeep'
-import moment from 'moment'
 
-import {
-    automationSubscriptionProductPrices,
-    legacyWithoutAutomateProductPrices,
-} from 'fixtures/account'
+import {automationSubscriptionProductPrices} from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
-import {billingState} from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     CONVERT_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
     SMS_PRODUCT_ID,
     VOICE_PRODUCT_ID,
-    automationProduct,
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
-    basicYearlyHelpdeskPlan,
     convertPlan1,
     customHelpdeskPlan,
-    helpdeskProduct,
-    legacyBasicAutomatePlan,
     legacyBasicHelpdeskPlan,
-    products,
     smsPlan1,
     voicePlan1,
 } from 'fixtures/productPrices'
@@ -116,38 +105,6 @@ describe('billing selectors', () => {
         expect(selectors.getCurrentHelpdeskMaxIntegrations(state)).toBe(150)
     })
 
-    it('makeGetIsAllowedToChangePrice', () => {
-        expect(
-            selectors.makeGetIsAllowedToChangePrice({
-                ...state,
-                billing: fromJS({
-                    ...billingFixtures.billingState,
-                    products: [
-                        {
-                            ...helpdeskProduct,
-                            prices: [
-                                basicMonthlyHelpdeskPlan,
-                                {
-                                    ...basicYearlyHelpdeskPlan,
-                                    integrations: 5,
-                                },
-                            ],
-                        },
-                        {
-                            ...automationProduct,
-                            prices: [basicMonthlyAutomationPlan],
-                        },
-                    ],
-                }),
-            } as RootState)(basicYearlyHelpdeskPlan.price_id)
-        ).toBe(false)
-        expect(
-            selectors.makeGetIsAllowedToChangePrice(state)(
-                basicYearlyHelpdeskPlan.price_id
-            )
-        ).toBe(true)
-    })
-
     describe('getHasAutomate()', () => {
         it('should return true', () => {
             expect(
@@ -164,87 +121,6 @@ describe('billing selectors', () => {
 
         it('should return false', () => {
             expect(selectors.getHasAutomate(state)).toBeFalsy()
-        })
-    })
-
-    describe('getHasLegacyAutomateFeatures', () => {
-        const automateLaunchDate = '2021-10-04T00:00:00Z'
-        const productsWithLegacy = _cloneDeep(products)
-        productsWithLegacy[0].prices.push(legacyBasicHelpdeskPlan)
-        productsWithLegacy[1].prices.push(legacyBasicAutomatePlan)
-
-        it('should return true when the account was created before the add-on launch date and has legacy features', () => {
-            expect(
-                selectors.getHasLegacyAutomateFeatures({
-                    ...state,
-                    currentAccount: fromJS({
-                        created_datetime: moment
-                            .utc(automateLaunchDate)
-                            .subtract(10, 'd'),
-                        current_subscription: {
-                            products: legacyWithoutAutomateProductPrices,
-                        },
-                    }),
-                    billing: fromJS({
-                        ...billingState,
-                        products: productsWithLegacy,
-                    }),
-                })
-            ).toBeTruthy()
-        })
-
-        it('should return false when the account was created before the add-on launch date and does not have legacy features', () => {
-            expect(
-                selectors.getHasLegacyAutomateFeatures({
-                    ...state,
-                    currentAccount: fromJS({
-                        created_datetime: moment
-                            .utc(automateLaunchDate)
-                            .subtract(10, 'd'),
-                    }),
-                    billing: fromJS({
-                        ...billingState,
-                        products: productsWithLegacy,
-                    }),
-                })
-            ).toBeFalsy()
-        })
-
-        it('should return false when the account was created after the add-on launch date and has legacy features', () => {
-            expect(
-                selectors.getHasLegacyAutomateFeatures({
-                    ...state,
-                    currentAccount: fromJS({
-                        current_subscription: {
-                            products: legacyWithoutAutomateProductPrices,
-                        },
-                        created_datetime: moment
-                            .utc(automateLaunchDate)
-                            .add(10, 'd'),
-                    }),
-                    billing: fromJS({
-                        ...billingState,
-                        products: productsWithLegacy,
-                    }),
-                })
-            ).toBeFalsy()
-        })
-
-        it('should return false when the account was created after the add-on launch date and does not legacy features', () => {
-            expect(
-                selectors.getHasLegacyAutomateFeatures({
-                    ...state,
-                    currentAccount: fromJS({
-                        created_datetime: moment
-                            .utc(automateLaunchDate)
-                            .add(10, 'd'),
-                    }),
-                    billing: fromJS({
-                        ...billingState,
-                        products: productsWithLegacy,
-                    }),
-                })
-            ).toBeFalsy()
         })
     })
 
