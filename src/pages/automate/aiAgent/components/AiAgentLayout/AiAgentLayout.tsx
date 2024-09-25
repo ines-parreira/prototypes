@@ -9,6 +9,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
+import {useAiAgentEnabled} from '../../hooks/useAiAgentEnabled'
 import css from './AiAgentLayout.less'
 
 type Props = {
@@ -27,6 +28,8 @@ export const AiAgentLayout = ({
     isLoading,
 }: Props) => {
     const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
+    const isAiAgentOnboardingWizardEnabled =
+        useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
 
     const {headerNavbarItems} = useAiAgentNavigation({shopName})
 
@@ -36,6 +39,11 @@ export const AiAgentLayout = ({
         updateStoreConfiguration,
         isPendingCreateOrUpdate,
     } = useAiAgentStoreConfigurationContext()
+
+    const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled(
+        storeConfiguration?.monitoredEmailIntegrations ?? [],
+        storeConfiguration?.monitoredChatIntegrations ?? []
+    )
 
     const globalToggleAiAgentId = `global-toggle-ai-agent-${useId()}`
 
@@ -66,6 +74,10 @@ export const AiAgentLayout = ({
                             store: shopName,
                         })
                     }
+
+                    if (isEnabled && isAiAgentOnboardingWizardEnabled) {
+                        updateSettingsAfterAiAgentEnabled()
+                    }
                 }}
                 name={globalToggleAiAgentId}
                 dataCanduId="global-ai-agent-configuration-toggle"
@@ -81,6 +93,8 @@ export const AiAgentLayout = ({
         isPendingCreateOrUpdate,
         trialModeAvailable,
         shopName,
+        isAiAgentOnboardingWizardEnabled,
+        updateSettingsAfterAiAgentEnabled,
     ])
 
     return (

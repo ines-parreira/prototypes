@@ -2,6 +2,7 @@ import React from 'react'
 import {screen} from '@testing-library/react'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {renderWithRouter} from 'utils/testing'
+import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import {AiAgentGuidanceTemplatesContainer} from '../AiAgentGuidanceTemplatesContainer'
 import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
 import {useGuidanceTemplates} from '../hooks/useGuidanceTemplates'
@@ -16,9 +17,11 @@ jest.mock('../hooks/useGuidanceTemplates', () => ({
 }))
 
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
+jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
 
 const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceTemplates = jest.mocked(useGuidanceTemplates)
+const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
 
@@ -32,6 +35,9 @@ describe('<AiAgentGuidanceTemplatesContainer />', () => {
     beforeEach(() => {
         mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceTemplates.mockReturnValue({guidanceTemplates: []})
+        mockUseEnableAiAgent.mockReturnValue({
+            updateSettingsAfterAiAgentEnabled: jest.fn(),
+        })
     })
 
     it('should render loader', () => {

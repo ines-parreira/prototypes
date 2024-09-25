@@ -260,12 +260,14 @@ export const useConfigurationForm = ({
         aiAgentMode,
         payload,
         stepName,
+        silentNotification,
     }: {
         shopName: string
         publicUrls?: string[]
         aiAgentMode?: string
         payload?: Partial<FormValues>
         stepName?: AiAgentOnboardingWizardStep
+        silentNotification?: boolean
     }) => {
         const isUpdate = !!storeConfiguration
         const enrichedFormValues = {
@@ -346,14 +348,16 @@ export const useConfigurationForm = ({
                 })
             }
 
-            if (!isOnboardingWizardPage) {
-                void dispatch(
-                    notify({
-                        message: 'AI Agent configuration saved!',
-                        status: NotificationStatus.Success,
-                    })
-                )
+            if (isOnboardingWizardPage || silentNotification) {
+                return res
             }
+
+            void dispatch(
+                notify({
+                    message: 'AI Agent configuration saved!',
+                    status: NotificationStatus.Success,
+                })
+            )
 
             return res
         } catch (error) {

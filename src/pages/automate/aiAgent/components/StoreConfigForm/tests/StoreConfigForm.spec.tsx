@@ -9,6 +9,7 @@ import {keyBy} from 'lodash'
 import {QueryClientProvider} from '@tanstack/react-query'
 
 import userEvent from '@testing-library/user-event'
+import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import {notify} from 'state/notifications/actions'
 import {IntegrationType} from 'models/integration/types'
 import {renderWithRouter} from 'utils/testing'
@@ -71,6 +72,7 @@ jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(),
 }))
+jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
 const mockUseSearchParam = jest.mocked(useSearchParam)
 const mockSetSearchParam = jest.fn()
 
@@ -84,6 +86,7 @@ const mockedUseSelfServiceChatChannels = jest.mocked(useSelfServiceChatChannels)
 const mockedUseConfigurationForm = jest.mocked(useConfigurationForm)
 const mockedUsePublicResources = jest.mocked(usePublicResources)
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
+const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
@@ -256,6 +259,9 @@ describe('<StoreConfigForm />', () => {
             [FeatureFlagKey.AiAgentChat]: false,
         })
         mockUseSearchParam.mockReturnValue([null, mockSetSearchParam])
+        mockUseEnableAiAgent.mockReturnValue({
+            updateSettingsAfterAiAgentEnabled: jest.fn(),
+        })
     })
     it('should render the component', () => {
         renderComponent()

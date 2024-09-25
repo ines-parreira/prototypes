@@ -45,7 +45,7 @@
 
         .sectionHeader {
             .heading-section-semibold();
-            margin-bottom: 24px;
+            margin-bottom: @layout-spacing-s;
         }
         .sectionDescription {
             .body-regular();
@@ -72,6 +72,10 @@
         }
         .featureToggle {
             margin-bottom: @layout-spacing-xxs;
+        }
+
+        .storeConfigurationAlert {
+            margin-bottom: @layout-spacing-s;
         }
     }
     .aiAgentToggle {
@@ -106,5 +110,14 @@
         i {
             color: var(--neutral-grey-4);
         }
+    }
+
+    .banner {
+        display: flex;
+        align-items: center;
+    }
+
+    .callToActionButton {
+        flex-shrink: 0;
     }
 }

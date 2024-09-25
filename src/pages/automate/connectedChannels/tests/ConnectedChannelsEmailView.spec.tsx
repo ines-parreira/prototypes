@@ -12,6 +12,7 @@ import {RootState} from 'state/types'
 import history from 'pages/history'
 import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
 import {useStoreConfigurationMutation} from 'pages/automate/aiAgent/hooks/useStoreConfigurationMutation'
+import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import {ConnectedChannelsEmailView} from '../components/ConnectedChannelsEmailView'
 
 jest.mock('pages/automate/aiAgent/hooks/useStoreConfiguration')
@@ -23,7 +24,9 @@ jest.mock('react-router-dom', () => ({
         shopName: 'shopName',
     })),
 }))
+jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
 
+const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 const mockStore = configureMockStore([thunk])
 
 const defaultState = {
@@ -42,6 +45,10 @@ describe('ConnectedChannelsEmailView', () => {
         ;(useStoreConfigurationMutation as jest.Mock).mockReturnValue({
             upsertStoreConfiguration: jest.fn(),
             error: null,
+        })
+
+        mockUseEnableAiAgent.mockReturnValue({
+            updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
     })
     it('should show loading spinner when fetching data', () => {

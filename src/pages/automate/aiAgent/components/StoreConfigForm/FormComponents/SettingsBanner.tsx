@@ -1,0 +1,52 @@
+import React, {useState} from 'react'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+import css from '../StoreConfigForm.less'
+import {BannerText, SettingsBannerType} from '../constants'
+
+type SettingsBannerProps = {
+    type: SettingsBannerType
+    deactivatedDatetime?: string | null
+}
+
+export const SettingsBanner = ({
+    deactivatedDatetime,
+    type,
+}: SettingsBannerProps) => {
+    const initialValue = localStorage.getItem(
+        `ai-settings-${type}-banner-acknowledged`
+    )
+    const [bannerAcknowledge, setBannerAcknowledge] = useState(
+        Boolean(initialValue)
+    )
+
+    return (
+        <>
+            {deactivatedDatetime && !bannerAcknowledge && (
+                <Alert
+                    className={css.storeConfigurationAlert}
+                    icon
+                    type={AlertType.Info}
+                >
+                    <div className={css.banner}>
+                        {BannerText[type]}
+                        <Button
+                            size="small"
+                            fillStyle="ghost"
+                            className={css.callToActionButton}
+                            onClick={() => {
+                                localStorage.setItem(
+                                    `ai-settings-${type}-banner-acknowledged`,
+                                    'true'
+                                )
+                                setBannerAcknowledge(true)
+                            }}
+                        >
+                            Got it
+                        </Button>
+                    </div>
+                </Alert>
+            )}
+        </>
+    )
+}

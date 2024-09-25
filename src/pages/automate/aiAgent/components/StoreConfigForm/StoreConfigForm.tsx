@@ -62,6 +62,7 @@ import {
 } from '../../constants'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 
+import {useAiAgentEnabled} from '../../hooks/useAiAgentEnabled'
 import PostCompletionWizardModal from '../../AiAgentOnboardingWizard/PostCompletionWizardModal'
 import {getFormValuesFromStoreConfiguration} from './StoreConfigForm.utils'
 import css from './StoreConfigForm.less'
@@ -69,6 +70,8 @@ import {SignatureFormComponent} from './FormComponents/SignatureFormComponent'
 import {ToneOfVoiceFormComponent} from './FormComponents/ToneOfVoiceFormComponent'
 import {EmailFormComponent} from './FormComponents/EmailFormComponent'
 import {ChatSettingsFormComponent} from './FormComponents/ChatSettingsFormComponent'
+import {SettingsBanner} from './FormComponents/SettingsBanner'
+import {SettingsBannerType} from './constants'
 
 type Props = {
     shopName: string
@@ -86,6 +89,8 @@ export const StoreConfigForm = ({
     const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
+    const isAiAgentOnboardingWizardEnabled =
+        useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
     const dispatch = useAppDispatch()
 
     const [isUrlSyncSuccess, setIsUrlSyncSuccess] = useState(false)
@@ -219,6 +224,11 @@ export const StoreConfigForm = ({
         return 'disabled'
     }, [isAIAgentToggled, formValues.trialModeActivatedDatetime])
 
+    const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled(
+        formValues.monitoredEmailIntegrations ?? [],
+        formValues.monitoredChatIntegrations ?? []
+    )
+
     const deactivateAiAgent = useCallback(
         async (silentUpdate?: boolean) => {
             if (isCreate) return
@@ -302,11 +312,20 @@ export const StoreConfigForm = ({
     )
 
     const onSubmit = () => {
+        const shouldUpdateSettingsAfterAiAgentEnabled =
+            isAiAgentOnboardingWizardEnabled &&
+            formValues.deactivatedDatetime === null
+
         void handleOnSave({
             publicUrls,
             shopName,
             aiAgentMode,
+            silentNotification: shouldUpdateSettingsAfterAiAgentEnabled,
         })
+
+        if (shouldUpdateSettingsAfterAiAgentEnabled) {
+            updateSettingsAfterAiAgentEnabled()
+        }
     }
 
     useEffect(() => {
@@ -461,6 +480,10 @@ export const StoreConfigForm = ({
 
                 {isAiAgentChatEnabled && (
                     <ConfigurationSection title="Chat settings">
+                        <SettingsBanner
+                            type={SettingsBannerType.Chat}
+                            deactivatedDatetime={formValues.deactivatedDatetime}
+                        />
                         <ChatSettingsFormComponent
                             monitoredChatIntegrations={
                                 formValues.monitoredChatIntegrations
@@ -478,6 +501,10 @@ export const StoreConfigForm = ({
                     >
                         Email settings
                     </h2>
+                    <SettingsBanner
+                        type={SettingsBannerType.Email}
+                        deactivatedDatetime={formValues.deactivatedDatetime}
+                    />
                     <EmailFormComponent
                         updateValue={updateValue}
                         monitoredEmailIntegrations={

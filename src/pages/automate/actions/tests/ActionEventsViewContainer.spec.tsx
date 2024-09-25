@@ -22,11 +22,13 @@ import {
     useGetConfigurationExecution,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
+import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 import ActionEventsViewContainer from '../ActionEventsViewContainer'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useGetAppImageUrl')
+jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
@@ -46,6 +48,7 @@ const useGetConfigurationExecutionMocked = assumeMock(
 const useGetWorkflowConfigurationTemplatesMocked = assumeMock(
     useGetWorkflowConfigurationTemplates
 )
+const mockUseEnableAiAgent = assumeMock(useAiAgentEnabled)
 mockUseGetAppImageUrl.mockReturnValue('https://example.com/app.png')
 
 const defaultStore = mockStore({
@@ -121,6 +124,9 @@ describe('ActionEventsViewContainer', () => {
                 },
             ],
         } as UseQueryResult<Paths.WfConfigurationTemplateControllerList.Responses.$200>)
+        mockUseEnableAiAgent.mockReturnValue({
+            updateSettingsAfterAiAgentEnabled: jest.fn(),
+        })
     })
 
     it('redirect if has no automate subscription', () => {

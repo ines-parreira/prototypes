@@ -10,6 +10,7 @@ import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import {AiAgentGuidanceContainer} from '../AiAgentGuidanceContainer'
 import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
 import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
@@ -47,6 +48,8 @@ jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 
 jest.mock('models/helpCenter/queries')
 
+jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
+
 const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)
@@ -54,6 +57,7 @@ const mockUseGetHelpCenterList = jest.mocked(useGetHelpCenterList)
 const mockedUseAiAgentStoreConfigurationContext = assumeMock(
     useAiAgentStoreConfigurationContext
 )
+const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
 const helpCenter = {...getHelpCentersResponseFixture.data[0], type: 'guidance'}
 const defaultGuidanceArticleProps: ReturnType<typeof useGuidanceArticles> = {
@@ -139,6 +143,10 @@ describe('<AiAgentGuidanceContainer />', () => {
             }),
             isLoading: false,
         } as unknown as ReturnType<typeof useGetHelpCenterList>)
+
+        mockUseEnableAiAgent.mockReturnValue({
+            updateSettingsAfterAiAgentEnabled: jest.fn(),
+        })
     })
 
     it('should render loader', () => {

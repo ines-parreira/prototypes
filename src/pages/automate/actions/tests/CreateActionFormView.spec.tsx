@@ -10,6 +10,7 @@ import {
 } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 
+import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
 import useAddStoreApp from '../hooks/useAddStoreApp'
 import useUpsertAction from '../hooks/useUpsertAction'
@@ -28,6 +29,7 @@ jest.mock('../hooks/useGetAppImageUrl')
 jest.mock('common/flags', () => ({
     useFlag: jest.fn(),
 }))
+jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
@@ -40,6 +42,7 @@ const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
 const mockUseApps = jest.mocked(useApps)
+const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
 mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
     data: [
@@ -113,6 +116,11 @@ mockUseApps.mockReturnValue({
 } as unknown as ReturnType<typeof useApps>)
 
 describe('<CreateActionFormView />', () => {
+    beforeEach(() => {
+        mockUseEnableAiAgent.mockReturnValue({
+            updateSettingsAfterAiAgentEnabled: jest.fn(),
+        })
+    })
     it('should render template action form with prefilled API key', () => {
         const history = createMemoryHistory()
 

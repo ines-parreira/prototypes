@@ -3,6 +3,7 @@ import {fireEvent, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {renderWithRouter} from 'utils/testing'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 import {AiAgentGuidanceDetailContainer} from '../AiAgentGuidanceDetailContainer'
@@ -26,10 +27,12 @@ jest.mock(
         return ComponentToMock
     }
 )
+jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
 
 const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceArticle = jest.mocked(useGuidanceArticle)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
+const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
 const defaultGuidanceArticleMutationProps: ReturnType<
@@ -58,6 +61,10 @@ describe('<AiAgentGuidanceDetail />', () => {
         mockedUseGuidanceArticle.mockReturnValue({
             guidanceArticle: guidanceArticle,
             isGuidanceArticleLoading: false,
+        })
+
+        mockUseEnableAiAgent.mockReturnValue({
+            updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
     })
 

@@ -2,6 +2,7 @@ import React from 'react'
 import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
 import {useDispatch} from 'react-redux'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Spinner from 'pages/common/components/Spinner'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -9,11 +10,16 @@ import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfig
 import {isAiAgentEnabled} from 'pages/automate/aiAgent/util'
 import {useStoreConfigurationMutation} from 'pages/automate/aiAgent/hooks/useStoreConfigurationMutation'
 import {notify} from 'state/notifications/actions'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import css from './ConnectedChannelsChatView.less'
 import cssEmail from './ConnectedChannelsEmailView.less'
 import {FeatureSettings} from './FeatureSettings'
 
 export const ConnectedChannelsEmailView = () => {
+    const isAiAgentOnboardingWizardEnabled =
+        useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
+
     const {shopType, shopName} = useParams<{
         shopType: string
         shopName: string
@@ -28,6 +34,11 @@ export const ConnectedChannelsEmailView = () => {
         shopName,
         accountDomain,
     })
+
+    const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled(
+        storeConfiguration?.monitoredEmailIntegrations ?? [],
+        storeConfiguration?.monitoredChatIntegrations ?? []
+    )
 
     const {
         upsertStoreConfiguration,
@@ -84,6 +95,12 @@ export const ConnectedChannelsEmailView = () => {
                                             'Could not update store configuration',
                                     })
                                 )
+                            }
+                            if (
+                                !isAIAgentToggled &&
+                                isAiAgentOnboardingWizardEnabled
+                            ) {
+                                updateSettingsAfterAiAgentEnabled()
                             }
                         }}
                     />

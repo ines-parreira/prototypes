@@ -48,7 +48,8 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
     ] = useAsyncFn(
         async (
             applicationAutomationSettings: ChatApplicationAutomationSettings,
-            notificationMessage?: string
+            notificationMessage?: string,
+            silentNotification?: boolean
         ) => {
             try {
                 const {articleRecommendation, orderManagement, workflows} =
@@ -65,6 +66,9 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
 
                 void dispatch(chatApplicationAutomationSettingsUpdated(res))
 
+                if (silentNotification) {
+                    return
+                }
                 void dispatch(
                     notify({
                         message: notificationMessage ?? 'Successfully updated',
@@ -72,6 +76,9 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
                     })
                 )
             } catch (error) {
+                if (silentNotification) {
+                    return
+                }
                 void dispatch(
                     notify({
                         message: 'Failed to update',

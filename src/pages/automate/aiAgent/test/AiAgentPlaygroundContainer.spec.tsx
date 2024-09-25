@@ -15,6 +15,7 @@ import {
 } from 'models/aiAgent/queries'
 import {AccountConfiguration, StoreConfiguration} from 'models/aiAgent/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import {AiAgentPlaygroundContainer} from '../AiAgentPlaygroundContainer'
 import {usePublicResources} from '../hooks/usePublicResources'
 import {usePlaygroundMessages} from '../hooks/usePlaygroundMessages'
@@ -47,6 +48,8 @@ jest.mock('../hooks/useGetOrCreateSnippetHelpCenter', () => ({
 const mockUseGetOrCreateSnippetHelpCenter = jest.mocked(
     useGetOrCreateSnippetHelpCenter
 )
+jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
+const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
 const storeConfiguration: StoreConfiguration = {
     deactivatedDatetime: null,
@@ -84,6 +87,11 @@ const accountConfiguration: AccountConfiguration = {
 }
 
 describe('AiAgentPlayground', () => {
+    beforeEach(() => {
+        mockUseEnableAiAgent.mockReturnValue({
+            updateSettingsAfterAiAgentEnabled: jest.fn(),
+        })
+    })
     it('renders loader if data is fetching', () => {
         mockUseGetStoreConfigurationPure.mockReturnValue({
             data: undefined,
