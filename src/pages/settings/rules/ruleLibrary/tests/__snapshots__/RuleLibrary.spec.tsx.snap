@@ -8,19 +8,6 @@ exports[`<RuleLibrary/> render should filter cards for the library 1`] = `
     class="libraryHeader autoResponders"
   >
     <div>
-      <h1>
-        <i
-          class="material-icons mr-2"
-        >
-          auto_awesome
-        </i>
-        Autoresponders
-      </h1>
-      <p>
-        Install autoresponders to leverage AI to resolve tickets. Available only to Automate subscribers.
-      </p>
-    </div>
-    <div>
       <div>
         <div
           class="d-flex align-items-center upgradeLink"
@@ -49,23 +36,45 @@ exports[`<RuleLibrary/> render should filter cards for the library 1`] = `
     class="libraryHeader ruleTemplates"
   >
     <h1>
-      Rule Templates
+      Choose a template and customize it to fit your needs
     </h1>
-    <p>
-      Install and adapt rule templates to streamline your team’s workflow.
-    </p>
-    <a
-      href="https://docs.gorgias.com/en-US/rule-library-new-81974"
-      rel="noreferrer"
-      target="_blank"
+  </div>
+  <div
+    class="card"
+  >
+    <div
+      class="header"
     >
-      <i
-        class="material-icons mr-2"
+      <span
+        class="badge badge-secondary"
+        style="color: rgb(148, 17, 181); background-color: rgb(237, 234, 255);"
       >
-        menu_book
-      </i>
-      Learn About Rule Templates
-    </a>
+        Auto Close
+      </span>
+    </div>
+    <div
+      class="content"
+    >
+      <div
+        class="title"
+      >
+        my rule
+      </div>
+      <div
+        class="description"
+      >
+        foo
+      </div>
+    </div>
+    <div>
+      <div
+        class="ticketCount"
+      >
+        Target up to 
+        0
+         tickets/month
+      </div>
+    </div>
   </div>
   <div
     class="card"
@@ -115,19 +124,6 @@ exports[`<RuleLibrary/> render should render cards for the library 1`] = `
     class="libraryHeader autoResponders"
   >
     <div>
-      <h1>
-        <i
-          class="material-icons mr-2"
-        >
-          auto_awesome
-        </i>
-        Autoresponders
-      </h1>
-      <p>
-        Install autoresponders to leverage AI to resolve tickets. Available only to Automate subscribers.
-      </p>
-    </div>
-    <div>
       <div>
         <div
           class="d-flex align-items-center upgradeLink"
@@ -156,23 +152,8 @@ exports[`<RuleLibrary/> render should render cards for the library 1`] = `
     class="libraryHeader ruleTemplates"
   >
     <h1>
-      Rule Templates
+      Choose a template and customize it to fit your needs
     </h1>
-    <p>
-      Install and adapt rule templates to streamline your team’s workflow.
-    </p>
-    <a
-      href="https://docs.gorgias.com/en-US/rule-library-new-81974"
-      rel="noreferrer"
-      target="_blank"
-    >
-      <i
-        class="material-icons mr-2"
-      >
-        menu_book
-      </i>
-      Learn About Rule Templates
-    </a>
   </div>
   <div
     class="card"

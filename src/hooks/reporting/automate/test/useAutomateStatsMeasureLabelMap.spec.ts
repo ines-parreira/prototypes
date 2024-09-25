@@ -55,11 +55,5 @@ describe('useAutomateStatsMeasureLabelMap', () => {
                     .AutomatedInteractionsByAutomatedResponse
             ]
         ).toBe('Report order issue')
-        expect(
-            labelMap[
-                AutomationBillingEventMeasure
-                    .AutomatedInteractionsByAutoResponders
-            ]
-        ).toBe('Autoresponders')
     })
 })

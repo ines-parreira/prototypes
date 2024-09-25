@@ -36,6 +36,7 @@ import {
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
+import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {AutomateTimeseries} from 'hooks/reporting/automate/types'
 import {
     useAutomateMetricsTimeseriesV2,
@@ -615,6 +616,103 @@ describe('<AutomateOverview />', () => {
             )
             fireEvent.click(screen.getByText(/Show tips/))
             expect(screen.getByText('0'))
+        })
+    })
+
+    describe('Autoresponder deprecation', () => {
+        it('should display autoresponder filter label', () => {
+            const automateMetricsTimeseries: AutomateTimeseries = {
+                isFetching: false,
+                isError: false,
+                automationRateTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionByEventTypesTimeSeries: [
+                    [
+                        {
+                            label: AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders,
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+            }
+            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+                automateMetricsTimeseries
+            )
+            const screen = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>
+            )
+
+            expect(
+                screen.getByText('Automated interactions by feature')
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Autoresponders (deprecated)')
+            ).toBeInTheDocument()
+        })
+
+        it('should not show Auto-Responder label if not autoresponder in timeseries', () => {
+            const automateMetricsTimeseries: AutomateTimeseries = {
+                isFetching: false,
+                isError: false,
+                automationRateTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionByEventTypesTimeSeries: [
+                    [
+                        {
+                            label: AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation,
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+            }
+            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+                automateMetricsTimeseries
+            )
+            const screen = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>
+            )
+
+            expect(
+                screen.queryByText('Autoresponders (deprecated)')
+            ).not.toBeInTheDocument()
         })
     })
 })

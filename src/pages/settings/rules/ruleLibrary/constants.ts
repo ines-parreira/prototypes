@@ -34,4 +34,5 @@ export enum RuleTemplateRecipeSlugs {
     AutoTagOfflineCapture = 'auto-tag-offline-capture',
     AutoTagAiIgnore = 'auto-tag-ai-ignore',
     AutoTagLowCSAT = 'auto-tag-low-csat',
+    AutoCloseSpamFilter = 'non-support-related-emails',
 }

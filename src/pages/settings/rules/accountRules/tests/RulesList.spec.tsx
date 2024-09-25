@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -8,7 +8,7 @@ import {fromJS} from 'immutable'
 import {RootState} from 'state/types'
 import {RuleLimitStatus} from 'state/rules/types'
 import {billingState} from 'fixtures/billing'
-import {emptyRule as ruleFixture} from 'fixtures/rule'
+import {emptyRule as ruleFixture, emptyManagedRule} from 'fixtures/rule'
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
 import {RulesList} from '../RulesList'
@@ -51,5 +51,17 @@ describe('<RulesList/>', () => {
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('it should not display managed rules', () => {
+        const rules = [emptyManagedRule, ...createRuleFixtures(5)]
+        render(
+            <Provider store={store}>
+                <RulesList {...minProps} rules={rules} />
+            </Provider>
+        )
+        expect(
+            screen.queryByText(emptyManagedRule.name)
+        ).not.toBeInTheDocument()
     })
 })

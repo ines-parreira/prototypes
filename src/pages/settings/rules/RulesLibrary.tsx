@@ -23,21 +23,18 @@ import {rulesFetched} from 'state/entities/rules/actions'
 
 import {getSortedRuleRecipes} from 'state/entities/ruleRecipes/selectors'
 import {fetchRuleRecipes} from 'models/ruleRecipe/resources'
-import {RuleRecipeTag} from 'models/ruleRecipe/types'
 import {ruleRecipesFetched} from 'state/entities/ruleRecipes/actions'
 
 import {notify} from 'state/notifications/actions'
 
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
-import settingsCss from 'pages/settings/settings.less'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useAsyncFn from 'hooks/useAsyncFn'
-import SelectFilter from 'pages/stats/common/SelectFilter'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
 import RuleLibrary from './ruleLibrary/RuleLibrary'
@@ -66,7 +63,6 @@ export function RulesLibraryContainer() {
     const rules = useAppSelector(getSortedRules)
     const ruleRecipes = useAppSelector(getSortedRuleRecipes)
     const limitStatus = useAppSelector(getRulesLimitStatus)
-    const recipeTags = Object.values(RuleRecipeTag)
 
     const {isLoading: isHelpCenterLoading} = useHelpCenterList({per_page: 900})
     const isReady = useMemo(() => !isHelpCenterLoading, [isHelpCenterLoading])
@@ -105,7 +101,6 @@ export function RulesLibraryContainer() {
 
     const [searchTerm, setSearchTerm] = useState('')
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
-    const [selectedTags, setSelectedTags] = useState<string[]>([])
     const [slug, setSlug] = useState('')
     const [autoInstall, setAutoInstall] = useState(false)
     const history = useHistory()
@@ -156,22 +151,6 @@ export function RulesLibraryContainer() {
                     }
                 >
                     <div className={css.headerContainer}>
-                        <SelectFilter
-                            plural="rules"
-                            singular="rule"
-                            onChange={(values) =>
-                                setSelectedTags(values as string[])
-                            }
-                            value={selectedTags}
-                        >
-                            {recipeTags.map((tag) => (
-                                <SelectFilter.Item
-                                    key={tag}
-                                    value={tag}
-                                    label={tag}
-                                />
-                            ))}
-                        </SelectFilter>
                         <Search
                             placeholder="Search rule templates..."
                             className="mr-2"
@@ -182,6 +161,7 @@ export function RulesLibraryContainer() {
                         />
                         <Button
                             className="float-right"
+                            intent="secondary"
                             isDisabled={
                                 limitStatus === RuleLimitStatus.Reached ||
                                 !hasAgentPrivileges
@@ -195,10 +175,7 @@ export function RulesLibraryContainer() {
                     </div>
                 </PageHeader>
             </div>
-            <Container
-                fluid
-                className={classnames(css.info, settingsCss.pageContainer)}
-            >
+            <Container fluid className={classnames(css.info)}>
                 {limitStatus === RuleLimitStatus.Reaching && (
                     <Alert type={AlertType.Warning} icon className="mb-4">
                         You have {rules.length} out of 70 rules installed.
@@ -217,7 +194,6 @@ export function RulesLibraryContainer() {
                         <RuleLibrary
                             recipes={ruleRecipes}
                             searchTerm={debouncedSearchTerm}
-                            selectedTags={selectedTags}
                             activeSlug={slug}
                             isReady={isReady}
                             rules={rules}

@@ -74,6 +74,7 @@ import {
 
 import TipsToggle from 'pages/stats/TipsToggle'
 import {AutomatedInteractionByFeatures} from 'pages/stats/types'
+import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
@@ -129,6 +130,17 @@ function useTimeSeriesFormattedData(
             AUTOMATION_RATE_LABEL,
             granularity
         )
+
+        const hasAutomatedInteractionsByAutoResponders =
+            automatedInteractionByEventTypesTimeSeries.some((item) =>
+                item.some(
+                    (item) =>
+                        (item.label as AutomatedInteractionByFeatures) ===
+                            AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders &&
+                        item.value > 0
+                )
+            )
+
         const automatedInteractionByEventTypesTimeSeriesData =
             formatLabeledTimeSeriesData(
                 automatedInteractionByEventTypesTimeSeries,
@@ -140,7 +152,21 @@ function useTimeSeriesFormattedData(
                         : 'Others'
                 ),
                 granularity
-            ).sort(sortByAutomateFeatureLabels(automateStatsMeasureLabelMap))
+            )
+                .filter((item) => {
+                    if (
+                        !hasAutomatedInteractionsByAutoResponders &&
+                        item.label ===
+                            automateStatsMeasureLabelMap[
+                                AutomationBillingEventMeasure
+                                    .AutomatedInteractionsByAutoResponders
+                            ]
+                    ) {
+                        return false
+                    }
+                    return true
+                })
+                .sort(sortByAutomateFeatureLabels(automateStatsMeasureLabelMap))
 
         return {
             automationRateTimeSeriesData: addZeroValueTimeSeriesForGreyArea(

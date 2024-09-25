@@ -11,7 +11,7 @@ export default function useAutomationFeatures() {
         {
             title: 'AI Agent',
             icon: 'auto_awesome',
-            description: 'Your virtual agent for automatic support',
+            description: 'Your virtual agent for automated support',
         },
         {
             title: FLOWS,
@@ -27,11 +27,6 @@ export default function useAutomationFeatures() {
             title: ARTICLE_RECOMMENDATION,
             icon: 'menu_book',
             description: 'Answer customer questions with AI',
-        },
-        {
-            title: 'Autoresponders',
-            icon: 'email',
-            description: 'Filter and resolve email requests with AI',
         },
         {
             title: 'Automate statistics',

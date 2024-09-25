@@ -8,7 +8,13 @@ import css from '../RuleRecipeModal.less'
 import TargetCount from './components/TargetCount'
 import {AiAgentRequirements} from './components/AiAgentRequirement'
 
-const howItWorksText: Record<RuleTemplateRecipeSlugs, string> = {
+const howItWorksText: Record<
+    Exclude<
+        RuleTemplateRecipeSlugs,
+        RuleTemplateRecipeSlugs.AutoCloseSpamFilter
+    >,
+    string
+> = {
     [RuleTemplateRecipeSlugs.AutoCloseStory]:
         'This rule closes tickets created whenever your handle is mentioned in an Instagram story. Use this rule to auto-close these tickets to save time and prioritize important support requests. Keep this rule above auto-reply rules on your rules page to prevent irrelevant billable tickets.',
     [RuleTemplateRecipeSlugs.AutoCloseSocialComments]:
@@ -58,7 +64,10 @@ export const DefaultModal = ({
             <p
                 dangerouslySetInnerHTML={{
                     __html: howItWorksText[
-                        recipeSlug as RuleTemplateRecipeSlugs
+                        recipeSlug as Exclude<
+                            RuleTemplateRecipeSlugs,
+                            RuleTemplateRecipeSlugs.AutoCloseSpamFilter
+                        >
                     ],
                 }}
             />

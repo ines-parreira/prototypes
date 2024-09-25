@@ -39,133 +39,6 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
           class="headerContainer"
         >
           <div
-            class="dropdown"
-          >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
-              type="button"
-            >
-              <span>
-                All rules
-              </span>
-            </button>
-            <div
-              aria-hidden="true"
-              class="dropdown dropdown-menu dropdown-menu-right"
-              role="menu"
-              tabindex="-1"
-            >
-              <h6
-                class="dropdown-item-input dropdownItemInput dropdown-header"
-                tabindex="-1"
-              >
-                <input
-                  class="form-control"
-                  placeholder="Search rules..."
-                  type="text"
-                  value=""
-                />
-              </h6>
-              <button
-                class="component dropdown-item"
-                role="menuitem"
-                tabindex="0"
-              >
-                <div
-                  class="checkbox"
-                >
-                  <label
-                    class="Label--label--QAnfT label quickSelectionOption"
-                    for="checkbox-9"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-9"
-                      name="checkbox-9"
-                      type="checkbox"
-                    />
-                    Select all
-                    <div
-                      class="badge"
-                    >
-                      3
-                    </div>
-                  </label>
-                </div>
-              </button>
-              <div
-                class="dropdownDivider dropdown-divider"
-                tabindex="-1"
-              />
-              <div
-                class="content"
-              >
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="Label--label--QAnfT label labelItem"
-                    for="checkbox-10"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-10"
-                      name="checkbox-10"
-                      type="checkbox"
-                    />
-                    <span
-                      id="label-tooltip-11"
-                    >
-                      Auto Close
-                    </span>
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="Label--label--QAnfT label labelItem"
-                    for="checkbox-12"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-12"
-                      name="checkbox-12"
-                      type="checkbox"
-                    />
-                    <span
-                      id="label-tooltip-13"
-                    >
-                      Auto Tag
-                    </span>
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="Label--label--QAnfT label labelItem"
-                    for="checkbox-14"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-14"
-                      name="checkbox-14"
-                      type="checkbox"
-                    />
-                    <span
-                      id="label-tooltip-15"
-                    >
-                      Auto Reply
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
             class="component mr-2"
           >
             <div
@@ -182,8 +55,8 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
               </span>
               <input
                 class="input"
-                id="input-text-16"
-                name="input-text-16"
+                id="input-text-2"
+                name="input-text-2"
                 placeholder="Search rule templates..."
                 type="text"
                 value=""
@@ -192,7 +65,7 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill primary medium"
+            class="wrapper float-right fill secondary medium"
             type="button"
           >
             <span>
@@ -204,7 +77,7 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
     </div>
   </div>
   <div
-    class="info pageContainer container-fluid"
+    class="info container-fluid"
   >
     <div
       class="container"
@@ -262,133 +135,6 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
           class="headerContainer"
         >
           <div
-            class="dropdown"
-          >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
-              type="button"
-            >
-              <span>
-                All rules
-              </span>
-            </button>
-            <div
-              aria-hidden="true"
-              class="dropdown dropdown-menu dropdown-menu-right"
-              role="menu"
-              tabindex="-1"
-            >
-              <h6
-                class="dropdown-item-input dropdownItemInput dropdown-header"
-                tabindex="-1"
-              >
-                <input
-                  class="form-control"
-                  placeholder="Search rules..."
-                  type="text"
-                  value=""
-                />
-              </h6>
-              <button
-                class="component dropdown-item"
-                role="menuitem"
-                tabindex="0"
-              >
-                <div
-                  class="checkbox"
-                >
-                  <label
-                    class="Label--label--QAnfT label quickSelectionOption"
-                    for="checkbox-1"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-1"
-                      name="checkbox-1"
-                      type="checkbox"
-                    />
-                    Select all
-                    <div
-                      class="badge"
-                    >
-                      3
-                    </div>
-                  </label>
-                </div>
-              </button>
-              <div
-                class="dropdownDivider dropdown-divider"
-                tabindex="-1"
-              />
-              <div
-                class="content"
-              >
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="Label--label--QAnfT label labelItem"
-                    for="checkbox-2"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-2"
-                      name="checkbox-2"
-                      type="checkbox"
-                    />
-                    <span
-                      id="label-tooltip-3"
-                    >
-                      Auto Close
-                    </span>
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="Label--label--QAnfT label labelItem"
-                    for="checkbox-4"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-4"
-                      name="checkbox-4"
-                      type="checkbox"
-                    />
-                    <span
-                      id="label-tooltip-5"
-                    >
-                      Auto Tag
-                    </span>
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="Label--label--QAnfT label labelItem"
-                    for="checkbox-6"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-6"
-                      name="checkbox-6"
-                      type="checkbox"
-                    />
-                    <span
-                      id="label-tooltip-7"
-                    >
-                      Auto Reply
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
             class="component mr-2"
           >
             <div
@@ -405,8 +151,8 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
               </span>
               <input
                 class="input"
-                id="input-text-8"
-                name="input-text-8"
+                id="input-text-1"
+                name="input-text-1"
                 placeholder="Search rule templates..."
                 type="text"
                 value=""
@@ -415,7 +161,7 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill primary medium"
+            class="wrapper float-right fill secondary medium"
             type="button"
           >
             <span>
@@ -427,7 +173,7 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
     </div>
   </div>
   <div
-    class="info pageContainer container-fluid"
+    class="info container-fluid"
   >
     <div
       class="container"

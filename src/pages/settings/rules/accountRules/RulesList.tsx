@@ -181,19 +181,28 @@ export function RulesList({
                         </tr>
                     </thead>
                     <TableBodyComponent>
-                        {filteredRules.map((rule) => (
-                            <RuleRow
-                                key={rule.id}
-                                rule={rule}
-                                canDuplicate={
-                                    limitStatus !== RuleLimitStatus.Reached
-                                }
-                                handleUpgrade={setManagedRuleUpgradeID}
-                                onActivate={handleActivate}
-                                shouldDisplayError={shouldDisplayError}
-                                isSearching={!!searchTerm}
-                            />
-                        ))}
+                        {filteredRules
+                            .filter(
+                                (rule) =>
+                                    !(
+                                        rule.deactivated_datetime &&
+                                        rule.type === 'managed' &&
+                                        !rule.name.includes('[Auto Close]')
+                                    )
+                            )
+                            .map((rule) => (
+                                <RuleRow
+                                    key={rule.id}
+                                    rule={rule}
+                                    canDuplicate={
+                                        limitStatus !== RuleLimitStatus.Reached
+                                    }
+                                    handleUpgrade={setManagedRuleUpgradeID}
+                                    onActivate={handleActivate}
+                                    shouldDisplayError={shouldDisplayError}
+                                    isSearching={!!searchTerm}
+                                />
+                            ))}
                     </TableBodyComponent>
                 </Table>
             )}

@@ -15,7 +15,7 @@ const CreateCustomRuleFooter: React.FC = () => {
                 </p>
                 <p>Create a rule from scratch to fit your needs.</p>
                 <Link to={`/app/settings/rules/new`}>
-                    <Button>Create Custom Rule</Button>
+                    <Button intent="secondary">Create Custom Rule</Button>
                 </Link>
             </div>
         </div>

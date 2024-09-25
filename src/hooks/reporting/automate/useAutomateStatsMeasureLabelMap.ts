@@ -14,7 +14,7 @@ export enum DisplayEventType {
     TRACK_ORDER = 'Track order',
     RETURN_ORDER = 'Return order',
     REPORT_ORDER_ISSUE = 'Report order issue',
-    AUTORESPONDERS = 'Autoresponders',
+    AUTORESPONDERS = 'Autoresponders (deprecated)',
 }
 
 export const useAutomateStatsMeasureLabelMap = (): Record<

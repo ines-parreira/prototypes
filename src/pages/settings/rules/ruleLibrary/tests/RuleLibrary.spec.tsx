@@ -33,7 +33,6 @@ describe('<RuleLibrary/>', () => {
                 recipe_tag: RuleRecipeTag.AUTO_TAG,
             },
         ],
-        selectedTags: [],
         searchTerm: '',
         isReady: true,
         rules: [ruleFixture],
@@ -50,10 +49,7 @@ describe('<RuleLibrary/>', () => {
         it('should filter cards for the library', () => {
             const {container} = render(
                 <Provider store={defaultStore}>
-                    <RuleLibrary
-                        {...minProps}
-                        selectedTags={[RuleRecipeTag.AUTO_TAG]}
-                    />
+                    <RuleLibrary {...minProps} />
                 </Provider>
             )
             expect(container.firstChild).toMatchSnapshot()

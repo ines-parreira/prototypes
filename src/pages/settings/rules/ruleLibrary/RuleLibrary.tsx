@@ -18,7 +18,6 @@ import {RuleTemplateRecipeSlugs} from './constants'
 export type Props = {
     recipes: RuleRecipe[]
     searchTerm: string
-    selectedTags: string[]
     activeSlug?: string
     isReady: boolean
     autoInstall?: boolean
@@ -27,25 +26,19 @@ export type Props = {
 
 export function RuleLibrary({
     recipes,
-    selectedTags,
     searchTerm,
     isReady,
     rules,
     activeSlug = '',
-    autoInstall,
 }: Props) {
     const history = useHistory()
     const hasAutomate = useAppSelector(getHasAutomate)
     const [filteredRecipes, setFilteredRecipes] = useState(recipes)
     const [installedSlugs, setInstalledSlugs] = useState<string[]>([])
-    const [installedManagedRules, setInstalledManagedRules] = useState<
-        string[]
-    >([])
 
     const filterRecipes = useCallback(() => {
         return recipes.filter((recipe) => {
             let includedInSearch = true
-            let includedInTags = true
             if (searchTerm) {
                 includedInSearch =
                     recipe.rule.name
@@ -55,14 +48,10 @@ export function RuleLibrary({
                         .toLowerCase()
                         .includes(searchTerm.toLowerCase())
             }
-            if (selectedTags.length) {
-                includedInTags = !!selectedTags.find(
-                    (tag) => tag === recipe.recipe_tag
-                )
-            }
-            return includedInSearch && includedInTags
+
+            return includedInSearch
         })
-    }, [recipes, searchTerm, selectedTags])
+    }, [recipes, searchTerm])
 
     useEffect(() => {
         setFilteredRecipes(filterRecipes())
@@ -94,31 +83,9 @@ export function RuleLibrary({
         [recipes, rules, isRecipeInstalled]
     )
 
-    useEffect(
-        () =>
-            setInstalledManagedRules(
-                rules
-                    .filter((rule) => rule.type === RuleType.Managed)
-                    .map(
-                        (rule) => (rule as ManagedRule).settings.slug as string
-                    )
-            ),
-        [rules]
-    )
-
     return (
         <div className={css.container}>
             <div className={classnames(css.libraryHeader, css.autoResponders)}>
-                <div>
-                    <h1>
-                        <i className="material-icons mr-2">auto_awesome</i>
-                        Autoresponders
-                    </h1>
-                    <p>
-                        Install autoresponders to leverage AI to resolve
-                        tickets. Available only to Automate subscribers.
-                    </p>
-                </div>
                 {!hasAutomate && (
                     <div>
                         <AutomateSubscriptionButton
@@ -138,48 +105,18 @@ export function RuleLibrary({
                     </div>
                 )}
             </div>
-            {filteredRecipes.length ? (
-                filteredRecipes
-                    .filter((recipe) => recipe.rule.type === RuleType.Managed)
-                    .map((recipe) => (
-                        <RuleRecipeCard
-                            recipe={recipe}
-                            key={recipe.slug}
-                            isModalOpenOnLoad={activeSlug === recipe.slug}
-                            isReady={isReady}
-                            autoInstall={
-                                autoInstall && activeSlug === recipe.slug
-                            }
-                            isInstalled={
-                                !!installedManagedRules.find(
-                                    (slug) => slug === recipe.slug
-                                )
-                            }
-                        />
-                    ))
-            ) : (
-                <div>Sorry, there is no rule matching your search...</div>
-            )}
+
             <div className={classnames(css.libraryHeader, css.ruleTemplates)}>
-                <h1>Rule Templates</h1>
-                <p>
-                    Install and adapt rule templates to streamline your team’s
-                    workflow.
-                </p>
-                <a
-                    href="https://docs.gorgias.com/en-US/rule-library-new-81974"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    <i className="material-icons mr-2">menu_book</i>
-                    Learn About Rule Templates
-                </a>
+                <h1>Choose a template and customize it to fit your needs</h1>
             </div>
+
             {filteredRecipes.length ? (
                 filteredRecipes
                     .filter(
                         (recipe) =>
-                            recipe.rule.type !== RuleType.Managed &&
+                            (recipe.rule.type !== RuleType.Managed ||
+                                recipe.slug ===
+                                    RuleTemplateRecipeSlugs.AutoCloseSpamFilter) &&
                             (recipe.slug !==
                                 RuleTemplateRecipeSlugs.AutoTagAiIgnore ||
                                 recipe.slug ===
