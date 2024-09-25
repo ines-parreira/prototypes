@@ -1,11 +1,7 @@
-import React from 'react'
-
-import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {IntegrationType} from 'models/integration/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {CONTACT_FORM_PAGE_TITLE} from 'pages/settings/contactForm/constants'
-import css from 'assets/css/navbar.less'
 
 import {Category} from './types'
 
@@ -104,11 +100,6 @@ export const NavbarConfig: Category[] = [
                 requiredRole: AGENT_ROLE,
                 to: 'sla',
                 text: 'SLAs',
-                extra: (
-                    <Badge type={ColorType.Blue} className={css.badge}>
-                        NEW
-                    </Badge>
-                ),
             },
         ],
     },
