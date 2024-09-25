@@ -70,7 +70,7 @@ describe('guidance.utils', () => {
                 content: article.translation.content,
                 locale: article.translation.locale,
                 visibility: 'PUBLIC',
-                lastUpdated: article.updated_datetime,
+                lastUpdated: article.translation.updated_datetime,
                 templateKey: null,
             }
 

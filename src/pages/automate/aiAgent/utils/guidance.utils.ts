@@ -56,7 +56,7 @@ export const mapArticleApiToGuidanceArticle = (
         content: article.translation.content,
         locale: article.translation.locale,
         visibility: article.translation.visibility_status,
-        lastUpdated: article.updated_datetime,
+        lastUpdated: article.translation.updated_datetime,
         templateKey: article.template_key || null,
     }
 }
