@@ -12,6 +12,7 @@ import {
     mergeStatsFiltersWithLogicalOperator,
     resetStatsFilters,
     setStatsFilters,
+    setStatsFiltersWithLogicalOperators,
     statsSlice,
 } from 'state/stats/statsSlice'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
@@ -56,6 +57,25 @@ describe('stats reducer', () => {
             expect(statsSlice.reducer(initialState, action)).toEqual({
                 ...initialState,
                 filters: fromLegacyStatsFilters(filters),
+            })
+        })
+    })
+
+    describe(`setStatsFiltersWithLogicalOperators`, () => {
+        it('should set stats filters with logical operators', () => {
+            const filters = {
+                period: {
+                    start_datetime: '1970-01-01T00:00:00+00:00',
+                    end_datetime: '1970-01-01T00:00:00+00:00',
+                },
+                tags: withDefaultLogicalOperator([1, 2, 4]),
+                agents: withDefaultLogicalOperator([1]),
+            }
+            const action = setStatsFiltersWithLogicalOperators(filters)
+
+            expect(statsSlice.reducer(initialState, action)).toEqual({
+                ...initialState,
+                filters,
             })
         })
     })

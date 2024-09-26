@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
@@ -6,12 +6,14 @@ import {Route, Switch} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import {act} from '@testing-library/react'
 import {createBrowserHistory} from 'history'
+import {mockFlags} from 'jest-launchdarkly-mock'
 
 import {user} from 'fixtures/users'
 import {RootState} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {VOICE_OVERVIEW_PAGE_TITLE} from 'pages/stats/voice/constants/voiceOverview'
 import {StatsRoutes} from 'routes/Routes'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('pages/stats/common/StatsNavbarContainer', () => () => (
     <div>Navbar</div>
@@ -26,6 +28,15 @@ jest.mock('pages/stats/voice/pages/VoiceOverview', () => () => (
 jest.mock('pages/stats/voice/pages/VoiceAgents', () => () => (
     <div>Voice Agents</div>
 ))
+jest.mock('pages/stats/automate/ai-agent/AutomateAiAgentStats', () => () => (
+    <div>AI Agent Stats</div>
+))
+jest.mock(
+    'pages/stats/automate/ai-agent/AiAgentStatsFilters',
+    () =>
+        ({children}: {children?: ReactNode}) =>
+            children
+)
 const mockHistory = createBrowserHistory()
 
 describe('<StatsRoutes/>', () => {
@@ -79,5 +90,29 @@ describe('<StatsRoutes/>', () => {
         act(() => mockHistory.push('/stats/voice-agents'))
 
         expect(await findByText('Voice Agents')).toBeInTheDocument()
+    })
+
+    it('should make AI Agent Stats route available if feature flag is enabled', async () => {
+        mockFlags({
+            [FeatureFlagKey.AIAgentStatsPage]: true,
+        })
+
+        const {findByText} = renderStatsRoutes()
+
+        act(() => mockHistory.push('/stats/automate-ai-agent'))
+
+        expect(await findByText('AI Agent Stats')).toBeInTheDocument()
+    })
+
+    it('should not make AI Agent Stats route available if feature flag is disabled', () => {
+        mockFlags({
+            [FeatureFlagKey.AIAgentStatsPage]: false,
+        })
+
+        const {container} = renderStatsRoutes()
+
+        act(() => mockHistory.push('/stats/automate-ai-agent'))
+
+        expect(container).toBeEmptyDOMElement()
     })
 })

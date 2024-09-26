@@ -11,6 +11,7 @@ export enum FeatureFlagKey {
     AiAgentOnboardingWizard = 'ai-agent-onboarding-wizard',
     AiAgentOnboardingWizardEducationalStep = 'ai-agent-onboarding-wizard-educational-step',
     AiAgentOnboardingWizardKnowledgeRedirect = 'ai-agent-onboarding-wizard-knowledge-redirect',
+    AIAgentStatsPage = 'ai-agent-stats-page',
     AiAgentTrialMode = 'ai-agent-trial-mode-allowed',
     AIAgentWelcomePage = 'ai-agent-welcome-page',
     AnalyticsAutoQA = 'analytics-auto-qa',

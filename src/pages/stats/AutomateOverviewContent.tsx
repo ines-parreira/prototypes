@@ -81,7 +81,7 @@ export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 
 const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 
-function getGreyAreaHint(showGreyArea: GreyArea | null) {
+export function getGreyAreaHint(showGreyArea: GreyArea | null) {
     return (
         showGreyArea && {
             titleExtra: (
@@ -106,7 +106,7 @@ function getGreyAreaHint(showGreyArea: GreyArea | null) {
     )
 }
 
-function useTimeSeriesFormattedData(
+export function useTimeSeriesFormattedData(
     timeseries: AutomateTimeseries,
     granularity: ReportingGranularity,
     showGreyArea: GreyArea | null

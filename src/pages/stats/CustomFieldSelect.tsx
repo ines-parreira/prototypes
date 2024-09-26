@@ -30,7 +30,11 @@ export const selectDropdownTextFields = (field: CustomField) =>
     field.definition.data_type === 'text' &&
     field.definition.input_settings.input_type === 'dropdown'
 
-export const CustomFieldSelect = () => {
+export const CustomFieldSelect = ({
+    filter,
+}: {
+    filter?: (customField: CustomField) => boolean
+}) => {
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const dispatch = useAppDispatch()
 
@@ -39,7 +43,9 @@ export const CustomFieldSelect = () => {
 
     const {data: {data: activeFields = []} = {}, isLoading} =
         useCustomFieldDefinitions(activeParams)
-    const activeDropdownFields = activeFields.filter(selectDropdownTextFields)
+    const activeDropdownFields = activeFields
+        .filter(selectDropdownTextFields)
+        .filter((customField) => (filter ? filter(customField) : true))
 
     const selectedField = activeDropdownFields.find(
         (field) => field.id === selectedCustomField.id

@@ -10,6 +10,8 @@ import {
 } from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
+import AutomateAiAgentStats from 'pages/stats/automate/ai-agent/AutomateAiAgentStats'
 import {logPageChange} from 'common/segment'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {PageSection} from 'config/pages'
@@ -63,6 +65,7 @@ import {
     ROUTE_OLD_PERFORMANCE_BY_FEATURES,
     ROUTE_AUTOMATE_OVERVIEW,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
+    ROUTE_AUTOMATE_AI_AGENT,
 } from 'pages/stats/self-service/constants'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
@@ -436,8 +439,12 @@ export function StatsRoutes() {
 
     const isAutoQAEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
+
     const isNewTagsReportEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.NewTagsReport]
+
+    const isAiAgentStatsPageEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AIAgentStatsPage]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -665,6 +672,20 @@ export function StatsRoutes() {
                         />
                     )}
                 />
+
+                {isAiAgentStatsPageEnabled && (
+                    <Route
+                        exact
+                        path={`${path}/${ROUTE_AUTOMATE_AI_AGENT}`}
+                        render={() => (
+                            <App navbar={StatsNavbarContainer}>
+                                <AiAgentStatsFilters>
+                                    <AutomateAiAgentStats />
+                                </AiAgentStatsFilters>
+                            </App>
+                        )}
+                    />
+                )}
 
                 <Route
                     exact

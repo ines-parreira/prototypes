@@ -36,6 +36,12 @@ export const statsSlice = createSlice({
                 period: action.payload.period,
             }
         },
+        setStatsFiltersWithLogicalOperators(
+            state,
+            action: PayloadAction<StatsFiltersWithLogicalOperator>
+        ) {
+            state.filters = action.payload
+        },
         mergeStatsFilters(
             state,
             action: PayloadAction<Partial<LegacyStatsFilters>>
@@ -89,6 +95,7 @@ export const statsSlice = createSlice({
 export const {
     resetStatsFilters,
     setStatsFilters,
+    setStatsFiltersWithLogicalOperators,
     mergeStatsFilters,
     mergeStatsFiltersWithLogicalOperator,
     mergeCustomFieldsFilter,

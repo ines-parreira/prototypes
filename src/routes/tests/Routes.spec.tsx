@@ -80,6 +80,9 @@ jest.mock(
     'pages/automate/actionsPlatform/ActionsPlatformEditAppFormView',
     () => () => <div>ActionsPlatformEditAppFormView</div>
 )
+jest.mock('pages/stats/automate/ai-agent/AutomateAiAgentStats', () => () => (
+    <div>AutomateAiAgentStats</div>
+))
 jest.mock(
     'pages/stats/DefaultStatsFilters',
     () =>
@@ -87,6 +90,17 @@ jest.mock(
             (
                 <>
                     <div>Default stats filters</div>
+                    <>{children}</>
+                </>
+            )
+)
+jest.mock(
+    'pages/stats/automate/ai-agent/AiAgentStatsFilters',
+    () =>
+        ({children}: PropsWithChildren<any>) =>
+            (
+                <>
+                    <div>AI Agent stats filters</div>
                     <>{children}</>
                 </>
             )
@@ -414,6 +428,27 @@ describe('<Routes/>', () => {
             )
 
             expect(NewTagsBlankStateMock).toHaveBeenCalled()
+        })
+
+        it('should render Automate AI Agent page', () => {
+            mockFlags({
+                [FeatureFlagKey.AIAgentStatsPage]: true,
+            })
+
+            render(
+                <Provider store={mockStore({})}>
+                    <MemoryRouter
+                        initialEntries={['/app/stats/automate-ai-agent']}
+                    >
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>
+            )
+
+            expect(
+                screen.getByText('AI Agent stats filters')
+            ).toBeInTheDocument()
+            expect(screen.getByText('AutomateAiAgentStats')).toBeInTheDocument()
         })
 
         it('should render Live Voice page', () => {

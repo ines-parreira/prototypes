@@ -1,0 +1,57 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .pageContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .contentContainer {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        padding: @layout-spacing-m;
+        width: 100%;
+        max-width: 1154px;
+    }
+
+    .leftContainer {
+        flex: 1 1 50%;
+        padding: 0 @layout-spacing-l;
+    }
+
+    .rightContainer {
+        flex: 1 1 50%;
+        padding: 0 @layout-spacing-s;
+    }
+
+    .content {
+        padding: 0 @layout-spacing-l;
+        display: flex;
+        gap: @layout-spacing-l;
+        flex-direction: column;
+    }
+
+    .description {
+        display: flex;
+        gap: @layout-spacing-s;
+        flex-direction: column;
+    }
+
+    .heading {
+        color: var(--neutral-grey-6);
+        .heading-page-semibold();
+    }
+
+    .text {
+        color: var(--neutral-grey-5);
+        .heading-subsection-regular();
+    }
+
+    .exampleImg {
+        max-width: 484px;
+        width: 100%;
+    }
+}
