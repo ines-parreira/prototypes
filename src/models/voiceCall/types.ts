@@ -63,6 +63,7 @@ export enum VoiceCallRecordingTranscriptionStatus {
     Failed = 'failed',
     RecordingTooShort = 'recording_too_short',
     RecordingTooLong = 'recording_too_long',
+    LowQualityTranscription = 'low_quality_transcription',
 }
 
 export enum VoiceCallRecordingErrorCode {

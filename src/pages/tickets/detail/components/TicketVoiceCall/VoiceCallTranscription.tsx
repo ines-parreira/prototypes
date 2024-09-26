@@ -59,6 +59,12 @@ export default function VoiceCallTranscription({audio, type}: Props) {
                     moments.`}
                 </Alert>
             )
+        case VoiceCallRecordingTranscriptionStatus.LowQualityTranscription:
+            return (
+                <Alert icon type={AlertType.Error}>
+                    {`Audio quality of this ${entity} was too poor to generate an accurate transcription. Please check your microphone and internet quality to ensure clear audio.`}
+                </Alert>
+            )
         case VoiceCallRecordingTranscriptionStatus.Failed:
             return (
                 <Alert icon type={AlertType.Error}>

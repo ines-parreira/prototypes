@@ -158,6 +158,21 @@ describe('VoiceCallTranscription', () => {
     it.each([
         VoiceCallRecordingType.Recording,
         VoiceCallRecordingType.Voicemail,
+    ])('should render low quality status for %s', (recordingType) => {
+        const {getByText} = renderComponent(
+            VoiceCallRecordingTranscriptionStatus.LowQualityTranscription,
+            recordingType
+        )
+        expect(
+            getByText(
+                `Audio quality of this ${entityMapping[recordingType]} was too poor to generate an accurate transcription. Please check your microphone and internet quality to ensure clear audio.`
+            )
+        ).toBeInTheDocument()
+    })
+
+    it.each([
+        VoiceCallRecordingType.Recording,
+        VoiceCallRecordingType.Voicemail,
     ])('should render completed status for %s', (recordingType) => {
         const {getByText} = renderComponent(
             VoiceCallRecordingTranscriptionStatus.Completed,
