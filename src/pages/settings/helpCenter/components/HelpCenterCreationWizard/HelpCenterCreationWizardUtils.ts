@@ -22,7 +22,6 @@ import {
 import {Language as LanguagePickerItem} from 'pages/common/components/LanguagePicker/LanguagePicker'
 import {IntegrationFromType, IntegrationType} from 'models/integration/types'
 import {validLocaleCode} from 'models/helpCenter/utils'
-import {isGorgiasApiError} from 'models/api/types'
 import {StoreDispatch} from 'state/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -261,17 +260,7 @@ export const handleOnError = (
     message: string,
     dispatch: StoreDispatch
 ) => {
-    let newError
-    if (
-        error instanceof Error ||
-        (isErrorRecord(error) && isGorgiasApiError(error))
-    ) {
-        newError = error
-    } else {
-        newError = new Error('Oups something went wrong')
-    }
-
-    reportError(newError)
+    reportError(error)
     void dispatch(
         notify({
             status: NotificationStatus.Error,

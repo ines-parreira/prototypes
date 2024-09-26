@@ -22,12 +22,16 @@ import {
 import {AIArticlesListFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {mapHelpCenterArticleItemToArticle} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {reportError} from 'utils/errors'
 import {
     findArticleByKey,
     getEnabledArticlesCount,
     getHelpCenterWizardInitialData,
     getUpdatedFields,
     groupArticlesByCategory,
+    handleOnError,
     isErrorRecord,
     mapAIHelpCenterArticleData,
     mapApiHelpCenterToUIHelpCenter,
@@ -37,6 +41,9 @@ import {
     mapHelpCenterLocalesToLanguagePicker,
     mapUIHelpCenterToApiHelpCenter,
 } from '../HelpCenterCreationWizardUtils'
+
+jest.mock('state/notifications/actions')
+jest.mock('utils/errors')
 
 const defaultApiHelpCenter = HelpCenterApiBasicsFixture
 const emptyUIHelpCenter = EmptyHelpCenterUiFixture
@@ -295,6 +302,29 @@ describe('helpCenterCreationWizardUtils', () => {
                 uiLanguageOptions
             )
             expect(result).toEqual(expected)
+        })
+    })
+
+    describe('handleOnError', () => {
+        it('reports error to Sentry and dispatches notification', () => {
+            const dispatch = jest.fn()
+            handleOnError(
+                new Error('An error occurred'),
+                'An error occurred',
+                dispatch
+            )
+
+            expect(notify).toHaveBeenNthCalledWith(1, {
+                message: `An error occurred`,
+                status: NotificationStatus.Error,
+            })
+
+            expect(dispatch).toHaveBeenCalledTimes(1)
+
+            expect(reportError).toHaveBeenCalledTimes(1)
+            expect(reportError).toHaveBeenCalledWith(
+                new Error('An error occurred')
+            )
         })
     })
 
