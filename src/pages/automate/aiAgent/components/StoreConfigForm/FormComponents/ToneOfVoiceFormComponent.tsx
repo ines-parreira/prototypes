@@ -1,5 +1,5 @@
 import {Label} from '@gorgias/ui-kit'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import classNames from 'classnames'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -32,44 +32,41 @@ export const ToneOfVoiceFormComponent = (
         hasChat,
         setIsPristine,
     } = props
-    const [toneOfVoiceValue, setToneOfVoiceValue] =
-        useState<ToneOfVoice | null>(
-            toneOfVoice || INITIAL_FORM_VALUES.toneOfVoice
-        )
-    const [value, setValue] = useState<string | null>(
-        INITIAL_FORM_VALUES.customToneOfVoiceGuidance
-    )
-
-    useEffect(() => {
-        if (customToneOfVoiceGuidance) setValue(customToneOfVoiceGuidance)
-    }, [customToneOfVoiceGuidance])
-
-    useEffect(() => {
-        if (toneOfVoice) setToneOfVoiceValue(toneOfVoice)
-    }, [toneOfVoice])
+    const [isBlurred, setIsBlurred] = useState<boolean | null>(null)
+    const initialToneOfVoiceValue =
+        toneOfVoice ?? INITIAL_FORM_VALUES.toneOfVoice
 
     const handleToneOfVoiceChange = (toneOfVoiceLabel: Value) => {
-        if (toneOfVoiceLabel !== ToneOfVoice.Custom) {
-            updateValue('toneOfVoice', toneOfVoiceLabel as ToneOfVoice)
-        } else {
+        if (toneOfVoiceLabel === ToneOfVoice.Custom) {
+            if (
+                !customToneOfVoiceGuidance ||
+                !customToneOfVoiceGuidance?.length
+            ) {
+                updateValue(
+                    'customToneOfVoiceGuidance',
+                    INITIAL_FORM_VALUES.customToneOfVoiceGuidance
+                )
+            }
             shouldFocusTextArea.current = true
         }
 
         if (setIsPristine) setIsPristine(false)
-        setToneOfVoiceValue(toneOfVoiceLabel as ToneOfVoice)
+        updateValue('toneOfVoice', toneOfVoiceLabel as ToneOfVoice)
     }
 
-    const handleCustomToneOfVoiceChange = () => {
-        updateValue('toneOfVoice', ToneOfVoice.Custom)
-        updateValue('customToneOfVoiceGuidance', value)
+    const handleCustomToneOfVoiceChange = (newValue: unknown) => {
+        if (typeof newValue !== 'string') return
+        if (setIsPristine) setIsPristine(false)
+        updateValue('customToneOfVoiceGuidance', newValue)
+        setIsBlurred(false)
         shouldFocusTextArea.current = false
     }
 
-    const isCustomToneOfVoiceSelected = toneOfVoiceValue === ToneOfVoice.Custom
+    const isCustomToneOfVoiceSelected = toneOfVoice === ToneOfVoice.Custom
     const isCustomToneOfVoiceValid =
+        isBlurred === false ||
         (customToneOfVoiceGuidance &&
-            customToneOfVoiceGuidance.trim()?.length > 0) ||
-        (value && value.trim()?.length > 0)
+            customToneOfVoiceGuidance.trim()?.length > 0)
 
     return (
         <div className={css.formGroup}>
@@ -103,7 +100,7 @@ export const ToneOfVoiceFormComponent = (
                     aria-label="Tone of voice"
                     fullWidth
                     showSelectedOption
-                    value={toneOfVoiceValue}
+                    value={initialToneOfVoiceValue}
                     onChange={handleToneOfVoiceChange}
                     options={Object.values(ToneOfVoice).map((toneOfVoice) => ({
                         label: toneOfVoice,
@@ -124,12 +121,11 @@ export const ToneOfVoiceFormComponent = (
                         autoRowHeight={true}
                         placeholder="Custom tone of voice"
                         maxLength={CUSTOM_TONE_OF_VOICE_MAX_LENGTH}
-                        value={value || ''}
-                        onChange={(value: unknown) => {
-                            if (typeof value !== 'string') return
-                            if (setIsPristine) setIsPristine(false)
-                            setValue(value)
-                        }}
+                        value={
+                            customToneOfVoiceGuidance ??
+                            INITIAL_FORM_VALUES.customToneOfVoiceGuidance
+                        }
+                        onChange={handleCustomToneOfVoiceChange}
                         style={{minHeight: '104px'}}
                         autoFocus={shouldFocusTextArea.current}
                         error={
@@ -137,7 +133,7 @@ export const ToneOfVoiceFormComponent = (
                                 ? 'Tone of voice required.'
                                 : undefined
                         }
-                        onBlur={handleCustomToneOfVoiceChange}
+                        onBlur={() => setIsBlurred(true)}
                     />
                     <div
                         className={classNames(css.formInputFooterInfo, {

@@ -115,8 +115,12 @@ export const useConfigurationForm = ({
         }
 
         if (
-            formValues.signature === null ||
-            formValues.signature.trim().length === 0
+            (formValues.signature === null ||
+                formValues.signature.trim().length === 0) &&
+            (!formValues.wizard ||
+                formValues.wizard.stepName ===
+                    AiAgentOnboardingWizardStep.Knowledge ||
+                formValues.wizard.completedDatetime !== null)
         ) {
             throw new Error(simplifyWizardErrors('Signature can not be empty'))
         }
@@ -157,7 +161,11 @@ export const useConfigurationForm = ({
         if (
             (!formValues.toneOfVoice ||
                 formValues.toneOfVoice === ToneOfVoice.Custom) &&
-            formValues.customToneOfVoiceGuidance?.length === 0
+            formValues.customToneOfVoiceGuidance?.length === 0 &&
+            (!formValues.wizard ||
+                formValues.wizard.stepName ===
+                    AiAgentOnboardingWizardStep.Knowledge ||
+                formValues.wizard.completedDatetime !== null)
         ) {
             throw new Error(
                 simplifyWizardErrors('Custom tone of voice cannot be empty')
@@ -194,8 +202,7 @@ export const useConfigurationForm = ({
             formValues.wizard.enabledChannels.length === 0 &&
             (formValues.wizard.stepName ===
                 AiAgentOnboardingWizardStep.Knowledge ||
-                formValues.wizard.stepName ===
-                    AiAgentOnboardingWizardStep.Personalize)
+                formValues.wizard.completedDatetime !== null)
         ) {
             throw new Error('At least one channel must be toggled ON.')
         }
@@ -205,7 +212,10 @@ export const useConfigurationForm = ({
             formValues.wizard &&
             formValues.wizard.enabledChannels &&
             formValues.wizard.enabledChannels.includes(AiAgentChannel.Email) &&
-            formValues.monitoredEmailIntegrations?.length === 0
+            formValues.monitoredEmailIntegrations?.length === 0 &&
+            (formValues.wizard.stepName ===
+                AiAgentOnboardingWizardStep.Knowledge ||
+                formValues.wizard.completedDatetime !== null)
         ) {
             throw new Error('One or more required fields not filled.')
         }
@@ -214,7 +224,10 @@ export const useConfigurationForm = ({
             formValues.wizard &&
             formValues.wizard.enabledChannels &&
             formValues.wizard.enabledChannels.includes(AiAgentChannel.Chat) &&
-            formValues.monitoredChatIntegrations?.length === 0
+            formValues.monitoredChatIntegrations?.length === 0 &&
+            (formValues.wizard.stepName ===
+                AiAgentOnboardingWizardStep.Knowledge ||
+                formValues.wizard.completedDatetime !== null)
         ) {
             throw new Error('One or more required fields not filled.')
         }
@@ -246,7 +259,7 @@ export const useConfigurationForm = ({
         return {
             ...formValues,
             // Need to explicitly set these fields to non-null
-            signature: formValues.signature,
+            signature: formValues.signature || '',
             monitoredEmailIntegrations:
                 formValues.monitoredEmailIntegrations || [],
             monitoredChatIntegrations:
@@ -276,6 +289,7 @@ export const useConfigurationForm = ({
             wizard: formValues.wizard && {
                 ...formValues.wizard,
                 ...payload?.wizard,
+                stepName: stepName ?? formValues.wizard.stepName,
             },
         }
         let validFormValues: ValidFormValues

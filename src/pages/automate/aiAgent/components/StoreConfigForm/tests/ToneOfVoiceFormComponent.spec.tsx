@@ -1,7 +1,10 @@
 import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
 
-import {ToneOfVoice} from 'pages/automate/aiAgent/constants'
+import {
+    CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,
+    ToneOfVoice,
+} from 'pages/automate/aiAgent/constants'
 
 import {ToneOfVoiceFormComponent} from '../FormComponents/ToneOfVoiceFormComponent'
 
@@ -36,6 +39,94 @@ describe('ToneOfVoiceFormComponent', () => {
         ).toBeInTheDocument()
     })
 
+    it('renders default tone of voice when there is no tone of voice', () => {
+        const customProps = {
+            ...defaultProps,
+            toneOfVoice: null,
+        }
+
+        render(<ToneOfVoiceFormComponent {...customProps} />)
+
+        expect(screen.getByLabelText('Tone of voice')).toBeInTheDocument()
+        expect(screen.getAllByText('Friendly')[0]).toBeInTheDocument()
+    })
+
+    it('displays default custom tone of voice guidance when "Custom" is selected, but no guidance', () => {
+        const customProps = {
+            ...defaultProps,
+            toneOfVoice: ToneOfVoice.Custom,
+            customToneOfVoiceGuidance: null,
+        }
+
+        render(<ToneOfVoiceFormComponent {...customProps} />)
+
+        expect(
+            screen.getByText(CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE)
+        ).toBeInTheDocument()
+        expect(
+            screen.getByPlaceholderText('Custom tone of voice')
+        ).toBeInTheDocument()
+    })
+
+    it('calls updateValue when custom tone of voice is selected', () => {
+        const customProps = {
+            ...defaultProps,
+            toneOfVoice: ToneOfVoice.Friendly,
+            customToneOfVoiceGuidance: 'Initial guidance',
+        }
+
+        render(<ToneOfVoiceFormComponent {...customProps} />)
+
+        fireEvent.click(screen.getByText('Custom'))
+
+        expect(mockUpdateValue).toHaveBeenCalledWith(
+            'toneOfVoice',
+            ToneOfVoice.Custom
+        )
+    })
+
+    it('calls updateValue when custom tone of voice is selected, and no guidance', () => {
+        const customProps = {
+            ...defaultProps,
+            toneOfVoice: ToneOfVoice.Friendly,
+            customToneOfVoiceGuidance: null,
+        }
+
+        render(<ToneOfVoiceFormComponent {...customProps} />)
+
+        fireEvent.click(screen.getByText('Custom'))
+
+        expect(mockUpdateValue).toHaveBeenCalledWith(
+            'customToneOfVoiceGuidance',
+            CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE
+        )
+        expect(mockUpdateValue).toHaveBeenCalledWith(
+            'toneOfVoice',
+            ToneOfVoice.Custom
+        )
+    })
+
+    it('calls updateValue when custom tone of voice is selected', () => {
+        const customProps = {
+            ...defaultProps,
+            toneOfVoice: ToneOfVoice.Friendly,
+            customToneOfVoiceGuidance: '',
+        }
+
+        render(<ToneOfVoiceFormComponent {...customProps} />)
+
+        fireEvent.click(screen.getByText('Custom'))
+
+        expect(mockUpdateValue).toHaveBeenCalledWith(
+            'customToneOfVoiceGuidance',
+            CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE
+        )
+        expect(mockUpdateValue).toHaveBeenCalledWith(
+            'toneOfVoice',
+            ToneOfVoice.Custom
+        )
+    })
+
     it('calls updateValue and setIsPristine to false when custom tone of voice guidance is changed', () => {
         const mockedSetIsPristine = jest.fn()
         const customProps = {
@@ -51,6 +142,7 @@ describe('ToneOfVoiceFormComponent', () => {
         fireEvent.change(textArea, {target: {value: 'New custom guidance'}})
         fireEvent.blur(textArea)
 
+        expect(mockedSetIsPristine).toHaveBeenCalledWith(false)
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'customToneOfVoiceGuidance',
             'New custom guidance'

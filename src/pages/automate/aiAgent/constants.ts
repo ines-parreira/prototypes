@@ -118,8 +118,7 @@ export const INITIAL_FORM_VALUES = {
     excludedTopics: [],
     signature: 'This response was created by AI',
     toneOfVoice: ToneOfVoice.Friendly,
-    customToneOfVoiceGuidance:
-        "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions.",
+    customToneOfVoiceGuidance: CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,
     helpCenter: null,
     monitoredChatIntegrations: [],
 }

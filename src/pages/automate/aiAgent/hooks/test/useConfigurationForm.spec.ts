@@ -5,6 +5,7 @@ import {account} from 'fixtures/account'
 import {StoreState} from 'state/types'
 import {useConfigurationForm} from 'pages/automate/aiAgent/hooks/useConfigurationForm'
 import {
+    DEFAULT_WIZARD_FORM_VALUES,
     EXCLUDED_TOPIC_MAX_LENGTH,
     MAX_EXCLUDED_TOPICS,
     SIGNATURE_MAX_LENGTH,
@@ -142,6 +143,55 @@ describe('useConfigurationForm', () => {
         // Assert
         expect(result.current.isFormDirty).toBe(true)
         expect(result.current.isFieldDirty('signature')).toBe(true)
+    })
+
+    it('should throw error when signature is null', async () => {
+        const {result} = renderHook(() =>
+            useConfigurationForm({
+                initValues: {...INITIAL_FORM_VALUES, signature: null},
+                shopName,
+            })
+        )
+
+        await act(async () => {
+            await result.current.handleOnSave({
+                shopName: 'tests',
+            })
+        })
+
+        expect(mockDispatch).toHaveBeenCalled()
+        expect(notify).toHaveBeenCalledWith({
+            message: 'Signature can not be empty',
+            status: 'error',
+        })
+    })
+
+    it('should throw error when signature is null in wizard page', async () => {
+        const {result} = renderHook(() =>
+            useConfigurationForm({
+                initValues: {
+                    ...INITIAL_FORM_VALUES,
+                    signature: null,
+                    wizard: {
+                        ...DEFAULT_WIZARD_FORM_VALUES,
+                        completedDatetime: new Date().toISOString(),
+                    },
+                },
+                shopName,
+            })
+        )
+
+        await act(async () => {
+            await result.current.handleOnSave({
+                shopName: 'tests',
+            })
+        })
+
+        expect(mockDispatch).toHaveBeenCalled()
+        expect(notify).toHaveBeenCalledWith({
+            message: 'One or more required fields not filled.',
+            status: 'error',
+        })
     })
 
     it('should throw error when signature is empty', async () => {

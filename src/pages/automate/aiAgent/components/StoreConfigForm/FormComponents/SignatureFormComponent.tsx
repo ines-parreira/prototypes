@@ -1,5 +1,5 @@
 import {Label} from '@gorgias/ui-kit'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import TextArea from 'pages/common/forms/TextArea'
 import {INITIAL_FORM_VALUES, SIGNATURE_MAX_LENGTH} from '../../../constants'
@@ -17,21 +17,18 @@ export const SignatureFormComponent = ({
     updateValue,
     setIsPristine,
 }: SignatureFormComponentProps) => {
-    const defaultValue =
+    const initialValue =
         signature !== null ? signature : INITIAL_FORM_VALUES.signature
-    const [value, setValue] = useState<string>(defaultValue)
+    const [isBlurred, setIsBlurred] = useState<boolean | null>(null)
     const isSignatureValid =
-        (signature && signature.trim() && signature.length > 0) ||
-        (value && value.trim().length > 0)
-
-    useEffect(() => {
-        setValue(defaultValue)
-    }, [defaultValue])
+        isBlurred === false ||
+        (signature && signature.trim() && signature.length > 0)
 
     const handleChange = (newValue: unknown) => {
         if (typeof newValue !== 'string') return
         if (setIsPristine) setIsPristine(false)
-        setValue(newValue)
+        updateValue('signature', newValue)
+        setIsBlurred(false)
     }
 
     return (
@@ -47,11 +44,9 @@ export const SignatureFormComponent = ({
                 id="signature-text-area"
                 innerClassName={css.formInputEditor}
                 placeholder="AI Agent email signature"
-                value={value}
+                value={initialValue}
                 onChange={handleChange}
-                onBlur={() => {
-                    updateValue('signature', value)
-                }}
+                onBlur={() => setIsBlurred(true)}
                 maxLength={SIGNATURE_MAX_LENGTH}
                 error={
                     !isSignatureValid
