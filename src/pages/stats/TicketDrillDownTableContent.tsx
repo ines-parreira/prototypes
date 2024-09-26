@@ -4,6 +4,7 @@ import {AutoQACompletenessCell} from 'pages/stats/support-performance/auto-qa/Au
 import {
     COMMUNICATION_SKILLS_LABEL,
     RESOLUTION_COMPLETENESS_SHORT_LABEL,
+    TrendCardConfig,
 } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {
     defaultEnrichmentFields,
@@ -108,6 +109,10 @@ export const TicketDrillDownTableContent = ({
                         title={RESOLUTION_COMPLETENESS_SHORT_LABEL}
                         width={columnWidths.metric}
                         className={css.headerCell}
+                        tooltip={
+                            TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
+                                .hint
+                        }
                     />
                 )}
                 <HeaderCellProperty
@@ -128,11 +133,21 @@ export const TicketDrillDownTableContent = ({
                             title={RESOLUTION_COMPLETENESS_SHORT_LABEL}
                             width={columnWidths.metric}
                             className={css.headerCell}
+                            tooltip={
+                                TrendCardConfig[
+                                    AutoQAMetric.ResolutionCompleteness
+                                ].hint
+                            }
                         />
                         <HeaderCellProperty
                             title={COMMUNICATION_SKILLS_LABEL}
                             width={columnWidths.metric}
                             className={css.headerCell}
+                            tooltip={
+                                TrendCardConfig[
+                                    AutoQAMetric.CommunicationSkills
+                                ].hint
+                            }
                         />
                     </>
                 )}
