@@ -7,14 +7,16 @@ import css from './FormSection.less'
 
 type FormSectionProps = {
     title?: string
-    description?: string
+    description?: ReactNode | string
     children: ReactNode
+    headingSize?: 's' | 'm' | 'l'
 }
 
 export default function FormSection({
     title,
     description,
     children,
+    headingSize,
 }: FormSectionProps) {
     return (
         <div className={settingsCss.mb48}>
@@ -24,7 +26,12 @@ export default function FormSection({
                         <h2
                             className={classNames(
                                 settingsCss.headingSection,
-                                settingsCss.mb4
+                                settingsCss.mb4,
+                                {
+                                    [css.headingSizeS]: headingSize === 's',
+                                    [css.headingSizeM]: headingSize === 'm',
+                                    [css.headingSizeL]: headingSize === 'l',
+                                }
                             )}
                         >
                             {title}

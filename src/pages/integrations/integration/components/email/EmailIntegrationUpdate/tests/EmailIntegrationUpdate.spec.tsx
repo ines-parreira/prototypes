@@ -165,9 +165,9 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             const {getByRole, getAllByRole} = helpers
             const saveButton = getByRole('button', {name: 'Save changes'})
             const deliverabilitySettingsRadioButtons = getAllByRole('radio')
-            const useDefaultProviderRadioButton =
-                deliverabilitySettingsRadioButtons[0]
             const useInternalProviderRadioButton =
+                deliverabilitySettingsRadioButtons[0]
+            const useDefaultProviderRadioButton =
                 deliverabilitySettingsRadioButtons[1]
             expect(saveButton).toBeAriaDisabled()
             fireEvent.click(useInternalProviderRadioButton)

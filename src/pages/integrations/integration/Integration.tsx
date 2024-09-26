@@ -631,6 +631,7 @@ export const IntegrationDetail = ({
                 if (isUpdate) {
                     if (
                         isNewEmailOnboardingEnabled &&
+                        integration.get('type') === 'email' &&
                         integration.getIn(['meta', 'verified']) === false
                     ) {
                         return (

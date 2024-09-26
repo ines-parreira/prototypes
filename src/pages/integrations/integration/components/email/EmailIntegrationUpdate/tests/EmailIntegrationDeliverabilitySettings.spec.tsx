@@ -1,161 +1,324 @@
 import React from 'react'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-
-import {integrationBase, integrationsState} from 'fixtures/integrations'
+import {fireEvent, render, screen} from '@testing-library/react'
+import {capitalize} from 'lodash'
+import {integrationBase} from 'fixtures/integrations'
 
 import {EmailProvider, IntegrationType} from 'models/integration/constants'
 
-import {OutboundVerificationStatusValue} from 'models/integration/types'
+import {
+    GmailIntegration,
+    OutboundVerificationStatusValue,
+    OutlookIntegration,
+} from 'models/integration/types'
 import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
 import EmailIntegrationDeliverabilitySettings from '../EmailIntegrationDeliverabilitySettings'
 
-type Props = {
-    integration: Map<any, any>
+const onChange = jest.fn()
+
+type TestProps = {
+    type: IntegrationType.Gmail | IntegrationType.Outlook
+    sendViaAPI: boolean
+    verified: boolean
+    provider?: EmailProvider
+}
+
+const renderComponent = (props: TestProps) => {
+    return render(
+        <EmailIntegrationDeliverabilitySettings
+            integration={getIntegration(props)}
+            onChange={onChange}
+        />
+    )
+}
+
+const getIntegration = ({
+    type,
+    sendViaAPI,
+    verified,
+    provider,
+}: {
+    type: IntegrationType.Gmail | IntegrationType.Outlook
+    sendViaAPI: boolean
+    verified: boolean
+    provider?: EmailProvider
+}): GmailIntegration | OutlookIntegration => {
+    return {
+        ...integrationBase,
+        id: 1,
+        type,
+        name: `My shiny ${type} integration`,
+        meta: {
+            address: `support@${type}.com`,
+            provider: provider ?? EmailProvider.Sendgrid,
+            [getOutboundEmailProviderSettingKey(type)]: sendViaAPI,
+            ...getProviderSettings(verified),
+        },
+    } as unknown as GmailIntegration | OutlookIntegration
+}
+
+const getProviderSettings = (domainVerified: boolean) => {
+    return {
+        outbound_verification_status: {
+            domain: domainVerified
+                ? OutboundVerificationStatusValue.Success
+                : OutboundVerificationStatusValue.Unverified,
+            single_sender: OutboundVerificationStatusValue.Unverified,
+        },
+    }
 }
 
 describe('<EmailIntegrationDeliverabilitySettings />', () => {
-    const mockStore = configureMockStore([thunk])
-    let store = mockStore({integrations: fromJS(integrationsState)})
-    const onChange: jest.MockedFunction<(newValue: boolean) => void> = jest.fn()
+    const types: [IntegrationType.Gmail, IntegrationType.Outlook] = [
+        IntegrationType.Gmail,
+        IntegrationType.Outlook,
+    ]
 
-    beforeEach(() => {
-        store = mockStore({integrations: fromJS(integrationsState)})
+    describe.each(types)('for integration type: %s', (type) => {
+        const providerName = capitalize(type)
+
+        const nativeProviderLabel =
+            'Send emails via Gorgias email delivery platform (recommended)'
+        const apiProviderLabel = `Send emails via ${providerName} API`
+
+        it(`should render with the correct wording when the domain IS NOT verified`, () => {
+            renderComponent({
+                type,
+                verified: false,
+                sendViaAPI: true,
+            })
+
+            expect(
+                screen.getByText('Outbound Email Delivery Settings')
+            ).toBeInTheDocument()
+
+            const nativeRadio = screen.getByRole('radio', {
+                name: nativeProviderLabel,
+            })
+
+            const apiRadio = screen.getByRole('radio', {
+                name: apiProviderLabel,
+            })
+
+            expect(
+                screen.getByText(
+                    'Send emails via Gorgias email delivery platform (recommended)'
+                )
+            ).toBeInTheDocument()
+
+            expect(
+                screen.getByText(
+                    'Potential risk of deliverability issues with high email volume.'
+                )
+            ).toBeInTheDocument()
+
+            expect(
+                screen.getByText(
+                    `To avoid deliverability issues that can occur when using ${providerName}'s API`,
+                    {exact: false}
+                )
+            ).toBeInTheDocument()
+
+            expect(
+                screen.getByText(`Domain Verification`).getAttribute('to')
+            ).toBe('/app/settings/channels/email/1/outbound-verification')
+
+            expect(nativeRadio).toBeInTheDocument()
+            expect(nativeRadio).toBeDisabled()
+            expect(nativeRadio).not.toBeChecked()
+
+            expect(apiRadio).toBeInTheDocument()
+            expect(apiRadio).not.toBeDisabled()
+            expect(apiRadio).toBeChecked()
+        })
+
+        it(`should render with the correct wording when the domain IS verified`, () => {
+            renderComponent({
+                type,
+                verified: true,
+                sendViaAPI: false,
+            })
+
+            expect(
+                screen.getByText('Outbound Email Delivery Settings')
+            ).toBeInTheDocument()
+
+            const nativeRadio = screen.getByRole('radio', {
+                name: nativeProviderLabel,
+            })
+
+            const apiRadio = screen.getByRole('radio', {
+                name: apiProviderLabel,
+            })
+
+            expect(
+                screen.getByText(
+                    'Send emails via Gorgias email delivery platform (recommended)'
+                )
+            ).toBeInTheDocument()
+
+            expect(
+                screen.getByText(
+                    'Potential risk of deliverability issues with high email volume.'
+                )
+            ).toBeInTheDocument()
+
+            expect(
+                screen.getByText(
+                    `Your emails are now being sent via Gorgias’ email delivery platform to prevent deliverability issues that can occur when using ${providerName}’s API with high email volumes.`,
+                    {exact: false}
+                )
+            ).toBeInTheDocument()
+
+            expect(nativeRadio).toBeInTheDocument()
+            expect(nativeRadio).not.toBeDisabled()
+            expect(nativeRadio).toBeChecked()
+
+            expect(apiRadio).toBeInTheDocument()
+            expect(apiRadio).not.toBeDisabled()
+            expect(apiRadio).not.toBeChecked()
+        })
+
+        it(`should render with the correct wording when the domain IS verified but API is selected`, () => {
+            renderComponent({
+                type,
+                verified: true,
+                sendViaAPI: true,
+            })
+
+            expect(
+                screen.getByText('Outbound Email Delivery Settings')
+            ).toBeInTheDocument()
+
+            const nativeRadio = screen.getByRole('radio', {
+                name: nativeProviderLabel,
+            })
+
+            const apiRadio = screen.getByRole('radio', {
+                name: apiProviderLabel,
+            })
+
+            expect(
+                screen.getByText(
+                    'Send emails via Gorgias email delivery platform (recommended)'
+                )
+            ).toBeInTheDocument()
+
+            expect(
+                screen.getByText(
+                    'Potential risk of deliverability issues with high email volume.'
+                )
+            ).toBeInTheDocument()
+
+            expect(
+                screen.getByText(
+                    `To avoid deliverability issues that can occur when using ${providerName}’s API, it is recommended to use Gorgias’ email delivery platform to send your emails. This ensures successful delivery and tracking.`,
+                    {exact: false}
+                )
+            ).toBeInTheDocument()
+
+            expect(nativeRadio).toBeInTheDocument()
+            expect(nativeRadio).not.toBeDisabled()
+            expect(nativeRadio).not.toBeChecked()
+
+            expect(apiRadio).toBeInTheDocument()
+            expect(apiRadio).not.toBeDisabled()
+            expect(apiRadio).toBeChecked()
+        })
+
+        it(`should handle value change correctly`, () => {
+            renderComponent({
+                type,
+                verified: true,
+                sendViaAPI: true,
+            })
+
+            expect(
+                screen.getByText('Outbound Email Delivery Settings')
+            ).toBeInTheDocument()
+
+            const nativeRadio = screen.getByRole('radio', {
+                name: nativeProviderLabel,
+            })
+
+            const apiRadio = screen.getByRole('radio', {
+                name: apiProviderLabel,
+            })
+
+            expect(nativeRadio).toBeInTheDocument()
+            expect(nativeRadio).not.toBeDisabled()
+            expect(nativeRadio).not.toBeChecked()
+
+            expect(apiRadio).toBeInTheDocument()
+            expect(apiRadio).not.toBeDisabled()
+            expect(apiRadio).toBeChecked()
+
+            fireEvent.click(nativeRadio)
+            expect(onChange).toHaveBeenCalledWith(false)
+
+            fireEvent.click(apiRadio)
+            expect(onChange).toHaveBeenCalledWith(true)
+        })
     })
 
-    function getProviderSettings(domainVerified: boolean) {
-        return {
-            outbound_verification_status: {
-                domain: domainVerified
-                    ? OutboundVerificationStatusValue.Success
-                    : OutboundVerificationStatusValue.Unverified,
-                single_sender: OutboundVerificationStatusValue.Unverified,
-            },
-        }
-    }
+    it('should render the correct domain verification URL for Sendgrid', () => {
+        renderComponent({
+            type: IntegrationType.Gmail,
+            verified: false,
+            sendViaAPI: true,
+            provider: EmailProvider.Sendgrid,
+        })
 
-    function generateIntegration(
-        useDefaultProvider: boolean,
-        domainVerified: boolean,
-        emailProvider: EmailProvider.Sendgrid | EmailProvider.Mailgun,
-        integrationType: IntegrationType.Gmail | IntegrationType.Outlook
-    ) {
-        return {
-            ...integrationBase,
-            id: 1,
-            type: integrationType,
-            name: `My shiny ${integrationType} integration`,
-            meta: {
-                address: `support@${integrationType}.com`,
-                provider: emailProvider,
-                [getOutboundEmailProviderSettingKey(integrationType)]:
-                    useDefaultProvider,
-                ...getProviderSettings(domainVerified),
-            },
-        }
-    }
+        expect(
+            screen.getByText('Outbound Email Delivery Settings')
+        ).toBeInTheDocument()
 
-    const renderWithStore = ({integration}: Props) =>
-        render(
-            <Provider store={store}>
-                <EmailIntegrationDeliverabilitySettings
-                    integration={integration.toJS()}
-                    onChange={onChange}
-                />
-            </Provider>
+        expect(screen.getByText('Domain Verification').getAttribute('to')).toBe(
+            '/app/settings/channels/email/1/outbound-verification'
         )
-    it.each([
-        {
-            integrationType: IntegrationType.Gmail,
-            useDefaultProviderSettingEnabled: true,
-        },
-        {
-            integrationType: IntegrationType.Gmail,
-            useDefaultProviderSettingEnabled: false,
-        },
-        {
-            integrationType: IntegrationType.Outlook,
-            useDefaultProviderSettingEnabled: true,
-        },
-        {
-            integrationType: IntegrationType.Outlook,
-            useDefaultProviderSettingEnabled: false,
-        },
-    ])(
-        'should set the correct "selectedValue" radio button based on the integration setting',
-        ({integrationType, useDefaultProviderSettingEnabled}) => {
-            const newIntegration = generateIntegration(
-                useDefaultProviderSettingEnabled,
-                true,
-                EmailProvider.Mailgun,
-                integrationType as
-                    | IntegrationType.Gmail
-                    | IntegrationType.Outlook
-            )
-            const props = {
-                integration: fromJS(newIntegration),
-            }
-            const {getAllByRole} = renderWithStore(props)
-            const radioButtons = getAllByRole('radio')
-            const useDefaultProviderRadioButton = radioButtons[0]
-            const useInternalProviderRadioButton = radioButtons[1]
+    })
 
-            expect(useDefaultProviderRadioButton).toBeEnabled()
-            expect(useInternalProviderRadioButton).toBeEnabled()
+    it('should render the correct domain verification URL for Mailgun', () => {
+        renderComponent({
+            type: IntegrationType.Gmail,
+            verified: false,
+            sendViaAPI: true,
+            provider: EmailProvider.Mailgun,
+        })
 
-            if (useDefaultProviderSettingEnabled) {
-                expect(useDefaultProviderRadioButton).toBeChecked()
-                expect(useInternalProviderRadioButton).not.toBeChecked()
-            } else {
-                expect(useInternalProviderRadioButton).toBeChecked()
-                expect(useDefaultProviderRadioButton).not.toBeChecked()
-            }
-        }
-    )
+        expect(
+            screen.getByText('Outbound Email Delivery Settings')
+        ).toBeInTheDocument()
 
-    it.each([IntegrationType.Outlook, IntegrationType.Gmail])(
-        'should render initial state with default provider setting enabled on and domain verified. [%s]',
-        async (integrationType) => {
-            const newIntegration = generateIntegration(
-                true,
-                false,
-                EmailProvider.Sendgrid,
-                integrationType as
-                    | IntegrationType.Gmail
-                    | IntegrationType.Outlook
-            )
-            const props = {
-                integration: fromJS(newIntegration),
-            }
-            const {getAllByRole, getByText} = renderWithStore(props)
-            const radioButtons = getAllByRole('radio')
-            const useDefaultProviderRadioButton = radioButtons[0]
-            const useInternalProviderRadioButton = radioButtons[1]
+        expect(screen.getByText('Domain Verification').getAttribute('to')).toBe(
+            '/app/settings/channels/email/1/dns'
+        )
+    })
 
-            expect(useDefaultProviderRadioButton).toBeEnabled()
-            expect(useDefaultProviderRadioButton).toBeChecked()
-            expect(useInternalProviderRadioButton).toBeDisabled()
-            expect(useInternalProviderRadioButton).not.toBeChecked()
+    it('should have a correct default value', () => {
+        renderComponent({
+            type: IntegrationType.Email as IntegrationType.Gmail,
+            verified: true,
+            sendViaAPI: true,
+        })
 
-            const infoIcon = getByText('info_outline')
-            expect(infoIcon).toBeInTheDocument()
+        const nativeProviderLabel =
+            'Send emails via Gorgias email delivery platform (recommended)'
+        const apiProviderLabel = `Send emails via Email API`
 
-            fireEvent.mouseOver(infoIcon)
-            await waitFor(() => {
-                const tooltip_ = screen.getByRole('tooltip')
-                expect(tooltip_).toBeInTheDocument()
-                const expectedTooltipLink = `/app/settings/channels/email/1/${
-                    newIntegration.meta.provider === EmailProvider.Sendgrid
-                        ? 'outbound-verification'
-                        : 'dns'
-                }`
-                expect(tooltip_.innerHTML).toContain(
-                    `to="${expectedTooltipLink}"`
-                )
-            })
-        }
-    )
+        const nativeRadio = screen.getByRole('radio', {
+            name: nativeProviderLabel,
+        })
+
+        const apiRadio = screen.getByRole('radio', {
+            name: apiProviderLabel,
+        })
+
+        expect(nativeRadio).toBeInTheDocument()
+        expect(nativeRadio).not.toBeDisabled()
+        expect(nativeRadio).not.toBeChecked()
+
+        expect(apiRadio).toBeInTheDocument()
+        expect(apiRadio).not.toBeDisabled()
+        expect(apiRadio).toBeChecked()
+    })
 })

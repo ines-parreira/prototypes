@@ -469,13 +469,14 @@ describe('<IntegrationDetail />', () => {
                 ).toBeInTheDocument()
             })
 
-            it('should render the new onboarding for the update route when integration is unverified', () => {
+            it('should render the new onboarding for the update route when an email integration is unverified', () => {
                 mockUseFlag.mockReturnValue(true)
                 const props = {
                     ...minProps,
                     integrations: fromJS({
                         integration: {
                             id: 1,
+                            type: 'email',
                             meta: {verified: false},
                         },
                     }),

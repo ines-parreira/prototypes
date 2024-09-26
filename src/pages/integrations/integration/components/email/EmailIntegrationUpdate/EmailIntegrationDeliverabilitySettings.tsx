@@ -1,15 +1,19 @@
 import _capitalize from 'lodash/capitalize'
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
-import {Tooltip} from '@gorgias/ui-kit'
+
 import {EmailProvider, IntegrationType} from 'models/integration/constants'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import {GmailIntegration, OutlookIntegration} from 'models/integration/types'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
+
 import {canEnableEmailingViaInternalProvider} from '../helpers'
 
+import css from './EmailIntegrationDeliverabilitySettings.less'
+
 export enum DeliverabilityProviderSetting {
-    UseDefaultProvider = 'use-default-provider',
-    UseInternalProvider = 'use-internal-provider',
+    UseNativeProvider = 'use-native-provider',
+    UseProviderAPI = 'use-provider-api',
 }
 
 type Props = {
@@ -21,37 +25,34 @@ export default function EmailIntegrationDeliverabilitySettings({
     integration,
     onChange,
 }: Props) {
-    const isUseInternalProviderSettingAlreadyEnabled = () => {
+    const [currentProvider, setCurrentProvider] = useState(() => {
         switch (integration.type) {
             case IntegrationType.Gmail:
                 return integration.meta?.enable_gmail_sending
-                    ? DeliverabilityProviderSetting.UseDefaultProvider
-                    : DeliverabilityProviderSetting.UseInternalProvider
+                    ? DeliverabilityProviderSetting.UseProviderAPI
+                    : DeliverabilityProviderSetting.UseNativeProvider
             case IntegrationType.Outlook:
                 return integration.meta?.enable_outlook_sending
-                    ? DeliverabilityProviderSetting.UseDefaultProvider
-                    : DeliverabilityProviderSetting.UseInternalProvider
+                    ? DeliverabilityProviderSetting.UseProviderAPI
+                    : DeliverabilityProviderSetting.UseNativeProvider
             default:
-                return DeliverabilityProviderSetting.UseDefaultProvider
+                return DeliverabilityProviderSetting.UseProviderAPI
         }
-    }
-    const [currentProvider, setCurrentProvider] = useState(
-        isUseInternalProviderSettingAlreadyEnabled()
-    )
+    })
+
     const handleOnChange = (selectedProvider: string) => {
         onChange(
-            selectedProvider ===
-                DeliverabilityProviderSetting.UseDefaultProvider
+            selectedProvider === DeliverabilityProviderSetting.UseProviderAPI
         )
         setCurrentProvider(selectedProvider as DeliverabilityProviderSetting)
     }
 
     const capitalizedIntegrationType = _capitalize(integration.type)
-    const isUseInternalProviderOptionDisabled =
+    const isUseNativeProviderOptionDisabled =
         !canEnableEmailingViaInternalProvider(integration)
 
-    const useDefaultProviderLabel =
-        'Send emails from Gorgias with ' + capitalizedIntegrationType
+    const useProviderAPILabel = `Send emails via ${capitalizedIntegrationType} API`
+
     const domainVerificationPageLink = `/app/settings/channels/email/${
         integration.id
     }/${
@@ -59,60 +60,77 @@ export default function EmailIntegrationDeliverabilitySettings({
             ? 'outbound-verification'
             : 'dns'
     }`
-    const useInternalProviderLabelTooltip = (
-        <>
-            <i
-                className="material-icons"
-                id={`${DeliverabilityProviderSetting.UseInternalProvider}-info-icon`}
-            >
-                info_outline
-            </i>
-            <Tooltip
-                target={`${DeliverabilityProviderSetting.UseInternalProvider}-info-icon`}
-                autohide={false}
-            >
-                To enable this setting, you must first{' '}
-                <Link to={domainVerificationPageLink}>verify your domain</Link>.
-            </Tooltip>
-        </>
-    )
 
     const useInternalProviderLabel = (
         <>
             <div>
-                Send emails using email provider{' '}
-                {isUseInternalProviderOptionDisabled &&
-                    useInternalProviderLabelTooltip}
+                Send emails via Gorgias email delivery platform (recommended)
             </div>
         </>
     )
 
-    const useDefaultProviderCaption =
-        'Send lower volume of emails through ' + capitalizedIntegrationType
     const useInternalProviderCaption =
-        'Send higher volume of emails through our internal email provider.'
+        'Recommended to avoid deliverability issues.'
+    const useDefaultProviderCaption =
+        'Potential risk of deliverability issues with high email volume.'
+
+    const caption = canEnableEmailingViaInternalProvider(integration) ? (
+        currentProvider === DeliverabilityProviderSetting.UseProviderAPI ? (
+            <>
+                To avoid deliverability issues that can occur when using{' '}
+                {capitalizedIntegrationType}’s API, it is recommended to use
+                Gorgias’ email delivery platform to send your emails. This
+                ensures successful delivery and tracking.
+            </>
+        ) : (
+            <>
+                Your emails are now being sent via Gorgias’ email delivery
+                platform to prevent deliverability issues that can occur when
+                using {capitalizedIntegrationType}’s API with high email
+                volumes.
+            </>
+        )
+    ) : (
+        <>
+            To avoid deliverability issues that can occur when using{' '}
+            {capitalizedIntegrationType}'s API, complete{' '}
+            <Link to={domainVerificationPageLink}>Domain Verification</Link> to
+            enable Gorgias’ email delivery platform.
+        </>
+    )
 
     return (
-        <RadioFieldSet
-            options={[
-                {
-                    value: DeliverabilityProviderSetting.UseDefaultProvider,
-                    label: useDefaultProviderLabel,
-                    disabled: false,
-                    caption: useDefaultProviderCaption,
-                },
-                {
-                    value: DeliverabilityProviderSetting.UseInternalProvider,
-                    label: useInternalProviderLabel,
-                    disabled: isUseInternalProviderOptionDisabled,
-                    caption: useInternalProviderCaption,
-                },
-            ]}
-            selectedValue={currentProvider}
-            key="outbound-email-deliverability-settings"
-            label="Outbound Email Deliverability"
-            name="Button"
-            onChange={handleOnChange}
-        />
+        <FormSection
+            title="Outbound Email Delivery Settings"
+            description={caption}
+            headingSize="s"
+        >
+            <RadioFieldSet
+                options={[
+                    {
+                        value: DeliverabilityProviderSetting.UseNativeProvider,
+                        label: useInternalProviderLabel,
+                        disabled: isUseNativeProviderOptionDisabled,
+                        caption: useInternalProviderCaption,
+                    },
+                    {
+                        value: DeliverabilityProviderSetting.UseProviderAPI,
+                        label: useProviderAPILabel,
+                        disabled: false,
+                        caption:
+                            currentProvider ===
+                            DeliverabilityProviderSetting.UseProviderAPI ? (
+                                <div className={css.warningCaption}>
+                                    {useDefaultProviderCaption}
+                                </div>
+                            ) : (
+                                useDefaultProviderCaption
+                            ),
+                    },
+                ]}
+                selectedValue={currentProvider}
+                onChange={handleOnChange}
+            />
+        </FormSection>
     )
 }
