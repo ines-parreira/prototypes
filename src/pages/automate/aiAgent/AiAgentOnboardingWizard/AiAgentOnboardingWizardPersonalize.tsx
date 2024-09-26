@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'
 import WizardFooter, {
@@ -11,6 +11,7 @@ import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {
     AI_AGENT_STEPS_DESCRIPTIONS,
     AI_AGENT_STEPS_LABELS,
@@ -36,6 +37,7 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
     shopType,
     shopName,
 }) => {
+    const [isPristine, setIsPristine] = useState(true)
     const isAiAgentOnboardingWizardEducationalStep =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]
 
@@ -57,6 +59,9 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
         useFlags()[FeatureFlagKey.AiAgentChat]
 
     const handleButtonClicks = (action: FOOTER_BUTTONS) => {
+        if (action !== FOOTER_BUTTONS.CANCEL) {
+            setIsPristine(true)
+        }
         switch (action) {
             case FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER:
                 handleSave({
@@ -122,12 +127,19 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
     }
 
     const handleChannelsUpdate = (params: Partial<FormValues>) => {
+        setIsPristine(false)
         setInitialValues.current = false
         handleFormUpdate(params)
     }
 
     return (
         <>
+            <UnsavedChangesPrompt
+                onSave={() =>
+                    handleButtonClicks(FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER)
+                }
+                when={!isPristine && !isLoading}
+            />
             <WizardStepSkeleton
                 step={step}
                 labels={AI_AGENT_STEPS_LABELS}
@@ -169,11 +181,13 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                                 formValues.customToneOfVoiceGuidance
                             }
                             hasChat={isChatAvailable}
+                            setIsPristine={setIsPristine}
                         />
 
                         <SignatureFormComponent
                             signature={formValues.signature}
                             updateValue={updateValue}
+                            setIsPristine={setIsPristine}
                         />
                     </div>
                     <div className={css.subTitle}>Connect channels</div>
@@ -206,11 +220,12 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                                             isRequired={isChannelEnabled(
                                                 AiAgentChannel.Email
                                             )}
-                                            shouldPrefileValue={
+                                            shouldPrefillValue={
                                                 formValues.wizard
                                                     .enabledChannels?.length ===
                                                 0
                                             }
+                                            setIsPristine={setIsPristine}
                                         />
                                     </AccordionBody>
                                 </AccordionItem>
@@ -247,11 +262,12 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                                                 isRequired={isChannelEnabled(
                                                     AiAgentChannel.Chat
                                                 )}
-                                                shouldPrefileValue={
+                                                shouldPrefillValue={
                                                     formValues.wizard
                                                         .enabledChannels
                                                         ?.length === 0
                                                 }
+                                                setIsPristine={setIsPristine}
                                             />
                                         </AccordionBody>
                                     </AccordionItem>

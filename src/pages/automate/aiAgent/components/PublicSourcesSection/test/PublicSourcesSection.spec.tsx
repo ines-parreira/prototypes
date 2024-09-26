@@ -328,4 +328,27 @@ describe('<PublicSourcesSection />', () => {
             {url: 'https://example.com/faqs'}
         )
     })
+
+    it('should sync URL when syncUrlOnCommand triggers', async () => {
+        const mockedSetSyncUrlOnCommand = jest.fn()
+        const mockedSetIsPristine = jest.fn()
+        renderComponent({
+            syncUrlOnCommand: true,
+            setSyncUrlOnCommand: mockedSetSyncUrlOnCommand,
+            setIsPristine: mockedSetIsPristine,
+        })
+
+        const addButton = screen.getByText('Add URL')
+        userEvent.click(addButton)
+
+        const input = screen.getByLabelText('Public URL')
+        await userEvent.type(input, 'https://example.com/faqs')
+
+        expect(mockedSetIsPristine).toHaveBeenCalledWith(true)
+        const syncButton = screen.getByRole('button', {name: /Sync URL/})
+        expect(syncButton).toBeAriaDisabled()
+        expect(input).toBeDisabled()
+
+        expect(mockedSetSyncUrlOnCommand).toHaveBeenCalledWith(false)
+    })
 })

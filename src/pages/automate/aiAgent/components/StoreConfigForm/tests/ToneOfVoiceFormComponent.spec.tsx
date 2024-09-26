@@ -36,11 +36,13 @@ describe('ToneOfVoiceFormComponent', () => {
         ).toBeInTheDocument()
     })
 
-    it('calls updateValue when custom tone of voice guidance is changed', () => {
+    it('calls updateValue and setIsPristine to false when custom tone of voice guidance is changed', () => {
+        const mockedSetIsPristine = jest.fn()
         const customProps = {
             ...defaultProps,
             toneOfVoice: ToneOfVoice.Custom,
             customToneOfVoiceGuidance: 'Initial guidance',
+            setIsPristine: mockedSetIsPristine,
         }
 
         render(<ToneOfVoiceFormComponent {...customProps} />)
@@ -52,6 +54,25 @@ describe('ToneOfVoiceFormComponent', () => {
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'customToneOfVoiceGuidance',
             'New custom guidance'
+        )
+    })
+
+    it('calls updateValue and setIsPristine to false when tone of voice is changed', () => {
+        const mockedSetIsPristine = jest.fn()
+        const customProps = {
+            ...defaultProps,
+            toneOfVoice: ToneOfVoice.Friendly,
+            setIsPristine: mockedSetIsPristine,
+        }
+
+        render(<ToneOfVoiceFormComponent {...customProps} />)
+
+        fireEvent.click(screen.getByText('Professional'))
+
+        expect(mockedSetIsPristine).toHaveBeenCalledWith(false)
+        expect(mockUpdateValue).toHaveBeenCalledWith(
+            'toneOfVoice',
+            'Professional'
         )
     })
 

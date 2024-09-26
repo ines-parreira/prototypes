@@ -7,6 +7,8 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import userEvent from '@testing-library/user-event'
+import {createMemoryHistory} from 'history'
+import {Router} from 'react-router-dom'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
@@ -54,6 +56,7 @@ const defaultProps = {
     shopName: 'test-shop',
 }
 
+const history = createMemoryHistory()
 const renderComponent = (
     props: Partial<
         ComponentProps<typeof AiAgentOnboardingWizardStepPersonalize>
@@ -64,13 +67,17 @@ const renderComponent = (
         ...props,
     }
     renderWithRouter(
-        <Provider store={mockStore(defaultState)}>
-            <QueryClientProvider>
-                <Wizard steps={[AiAgentOnboardingWizardStep.Personalize]}>
-                    <AiAgentOnboardingWizardStepPersonalize {...currentProps} />
-                </Wizard>
-            </QueryClientProvider>
-        </Provider>
+        <Router history={history}>
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider>
+                    <Wizard steps={[AiAgentOnboardingWizardStep.Personalize]}>
+                        <AiAgentOnboardingWizardStepPersonalize
+                            {...currentProps}
+                        />
+                    </Wizard>
+                </QueryClientProvider>
+            </Provider>
+        </Router>
     )
 }
 
@@ -163,10 +170,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
     })
 
     it('call save form when next button is clicked', () => {
-        renderComponent({
-            shopName: 'test-shop',
-            shopType: 'shopify',
-        })
+        renderComponent({})
         const nextButton = screen.getByText('Next')
         expect(nextButton).toBeInTheDocument()
         userEvent.click(nextButton)
@@ -177,10 +181,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
     })
 
     it('call save form when save&customize later button is clicked', () => {
-        renderComponent({
-            shopName: 'test-shop',
-            shopType: 'shopify',
-        })
+        renderComponent({})
         expect(screen.getByText('Save & Customize Later')).toBeInTheDocument()
         userEvent.click(screen.getByText('Save & Customize Later'))
         expect(mockHandleSave).toHaveBeenCalledWith({
@@ -203,10 +204,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]: false,
         })
-        renderComponent({
-            shopName: 'test-shop',
-            shopType: 'shopify',
-        })
+        renderComponent({})
         expect(screen.getByText('Cancel')).toBeInTheDocument()
         userEvent.click(screen.getByText('Cancel'))
         expect(mockHandleAction).toHaveBeenCalledWith(
@@ -234,10 +232,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             isUpdateWizardSetup: false,
         })
 
-        renderComponent({
-            shopName: 'test-shop',
-            shopType: 'shopify',
-        })
+        renderComponent({})
 
         expect(mockHandleFormUpdate).toHaveBeenCalledWith({
             wizard: {
@@ -251,10 +246,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentChat]: true,
         })
-        renderComponent({
-            shopName: 'test-shop',
-            shopType: 'shopify',
-        })
+        renderComponent({})
         expect(
             screen.getByText('ChatIntegrationListSelection')
         ).toBeInTheDocument()
@@ -264,13 +256,31 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentChat]: false,
         })
-        renderComponent({
-            shopName: 'test-shop',
-            shopType: 'shopify',
-        })
+        renderComponent({})
 
         expect(
             screen.queryByText('ChatIntegrationListSelection')
         ).not.toBeInTheDocument()
+    })
+
+    it('should display confirmation dialog modal when user try to leave the page after changes are made', () => {
+        renderComponent({})
+
+        userEvent.click(screen.getByText('Professional'))
+        history.push('/test')
+
+        expect(
+            screen.getByText(
+                'Your changes to this page will be lost if you don’t save them.'
+            )
+        ).toBeInTheDocument()
+        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        expect(screen.getByText('Discard Changes')).toBeInTheDocument()
+
+        userEvent.click(screen.getByText('Save Changes'))
+        expect(mockHandleSave).toHaveBeenCalledWith({
+            stepName: AiAgentOnboardingWizardStep.Personalize,
+            redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
+        })
     })
 })

@@ -10,6 +10,7 @@ import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'
 import {FeatureFlagKey} from 'config/featureFlags'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {
     AI_AGENT_STEPS_DESCRIPTIONS,
     AI_AGENT_STEPS_LABELS,
@@ -27,6 +28,10 @@ type Props = AiAgentOnboardingWizardProps
 const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
     const [publicUrls, setPublicUrls] = useState<string[]>([])
     const [pendingUrlCount, setPendingUrlCount] = useState(0)
+    const [isPristine, setIsPristine] = useState(true)
+    const [isPublicUrlsPristine, setIsPublicUrlsPristine] = useState(true)
+    const [synchingPublicUrls, setSynchingPublicUrls] = useState(false)
+
     const isAiAgentOnboardingWizardKnowledgeRedirectEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizardKnowledgeRedirect]
 
@@ -67,6 +72,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
     )
 
     const handleHelpCenterChange = (helpCenterId: number) => {
+        setIsPristine(false)
         handleFormUpdate({
             helpCenterId:
                 helpCenterId === EMPTY_HELP_CENTER_ID ? null : helpCenterId,
@@ -90,6 +96,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
     )
 
     const onFooterAction = (buttonClicked: string) => {
+        setIsPristine(true)
         switch (buttonClicked) {
             case FOOTER_BUTTONS.BACK:
                 handleAction(WIZARD_BUTTON_ACTIONS.PREVIOUS_STEP)
@@ -135,6 +142,17 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
 
     return (
         <>
+            <UnsavedChangesPrompt
+                onSave={() => {
+                    if (!isPublicUrlsPristine) {
+                        setSynchingPublicUrls(true)
+                    }
+                    if (!isPristine) {
+                        onFooterAction(FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER)
+                    }
+                }}
+                when={(!isPristine || !isPublicUrlsPristine) && !isLoading}
+            />
             <WizardStepSkeleton
                 step={AiAgentOnboardingWizardStep.Knowledge}
                 labels={AI_AGENT_STEPS_LABELS}
@@ -172,6 +190,9 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
                         shopName={shopName}
                         shouldLogEventOnSync
                         setPendingResourcesCount={setPendingUrlCount}
+                        setIsPristine={setIsPublicUrlsPristine}
+                        syncUrlOnCommand={synchingPublicUrls}
+                        setSyncUrlOnCommand={setSynchingPublicUrls}
                     />
                 ) : null}
             </WizardStepSkeleton>

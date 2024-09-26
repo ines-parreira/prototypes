@@ -18,13 +18,20 @@ type ToneOfVoiceFormComponentProps = {
     toneOfVoice: ToneOfVoice | null
     customToneOfVoiceGuidance: string | null
     hasChat?: boolean
+    setIsPristine?: (isPristine: boolean) => void
 }
 
 export const ToneOfVoiceFormComponent = (
     props: ToneOfVoiceFormComponentProps
 ) => {
     const shouldFocusTextArea = React.useRef(false)
-    const {updateValue, toneOfVoice, customToneOfVoiceGuidance, hasChat} = props
+    const {
+        updateValue,
+        toneOfVoice,
+        customToneOfVoiceGuidance,
+        hasChat,
+        setIsPristine,
+    } = props
     const [toneOfVoiceValue, setToneOfVoiceValue] =
         useState<ToneOfVoice | null>(
             toneOfVoice || INITIAL_FORM_VALUES.toneOfVoice
@@ -48,6 +55,7 @@ export const ToneOfVoiceFormComponent = (
             shouldFocusTextArea.current = true
         }
 
+        if (setIsPristine) setIsPristine(false)
         setToneOfVoiceValue(toneOfVoiceLabel as ToneOfVoice)
     }
 
@@ -119,6 +127,7 @@ export const ToneOfVoiceFormComponent = (
                         value={value || ''}
                         onChange={(value: unknown) => {
                             if (typeof value !== 'string') return
+                            if (setIsPristine) setIsPristine(false)
                             setValue(value)
                         }}
                         style={{minHeight: '104px'}}

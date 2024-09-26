@@ -14,7 +14,8 @@ type EmailFormComponentProps = {
     initialValue?: number
     isFieldDirty?: boolean
     isRequired?: boolean
-    shouldPrefileValue?: boolean
+    shouldPrefillValue?: boolean
+    setIsPristine?: (isPristine: boolean) => void
 }
 
 export const ChatSettingsFormComponent = ({
@@ -23,7 +24,8 @@ export const ChatSettingsFormComponent = ({
     chatChannels,
     initialValue,
     isRequired,
-    shouldPrefileValue,
+    shouldPrefillValue,
+    setIsPristine,
 }: EmailFormComponentProps) => {
     const useInitialValue = React.useRef(true)
 
@@ -32,7 +34,7 @@ export const ChatSettingsFormComponent = ({
             useInitialValue.current &&
             initialValue &&
             monitoredChatIntegrations?.length === 0 &&
-            shouldPrefileValue
+            shouldPrefillValue
         ) {
             updateValue('monitoredChatIntegrations', [initialValue])
             useInitialValue.current = false
@@ -40,13 +42,14 @@ export const ChatSettingsFormComponent = ({
     }, [
         initialValue,
         monitoredChatIntegrations,
-        shouldPrefileValue,
+        shouldPrefillValue,
         updateValue,
     ])
 
     const handleSelectChatIntegration = (values: number[]) => {
         const ids = values.map((option) => option)
 
+        if (setIsPristine) setIsPristine(false)
         updateValue('monitoredChatIntegrations', ids)
     }
 

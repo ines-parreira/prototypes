@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 
 import InputField from 'pages/common/forms/input/InputField'
 import Button from 'pages/common/components/button/Button'
@@ -85,6 +85,9 @@ type Props = {
     onDelete: (source: SourceItem) => void
     onSync: (url: string, sourceId: number) => void
     helpCenterCustomDomains: string[]
+    setIsPristine?: (isPristine: boolean) => void
+    syncUrlOnCommand?: boolean
+    setSyncUrlOnCommand?: (value: boolean) => void
 }
 
 export const PublicSourcesItem = ({
@@ -93,10 +96,16 @@ export const PublicSourcesItem = ({
     onSync,
     existingUrls,
     helpCenterCustomDomains,
+    setIsPristine,
+    syncUrlOnCommand,
+    setSyncUrlOnCommand,
 }: Props) => {
     const [value, setValue] = useState(source.url ?? '')
+    const [isCurrentUrlPristine, setIsCurrentUrlPristine] = useState(true)
 
     const handleChange = (value: string) => {
+        if (setIsPristine) setIsPristine(false)
+        setIsCurrentUrlPristine(false)
         setValue(value)
     }
 
@@ -104,9 +113,11 @@ export const PublicSourcesItem = ({
         onDelete(source)
     }
 
-    const handleSync = () => {
+    const handleSync = useCallback(() => {
+        if (setIsPristine) setIsPristine(true)
+        setIsCurrentUrlPristine(true)
         onSync(value, source.id)
-    }
+    }, [onSync, setIsPristine, source.id, value])
 
     const handleOpen = () => {
         if (value) {
@@ -141,6 +152,30 @@ export const PublicSourcesItem = ({
         isDuplicate,
         source.status
     )
+
+    useEffect(() => {
+        if (
+            !!syncUrlOnCommand &&
+            !isCurrentUrlPristine &&
+            isValid &&
+            !inputError &&
+            !isSyncDisabled
+        ) {
+            handleSync()
+        }
+
+        if (!!syncUrlOnCommand && setSyncUrlOnCommand) {
+            setSyncUrlOnCommand(false)
+        }
+    }, [
+        handleSync,
+        inputError,
+        isCurrentUrlPristine,
+        isSyncDisabled,
+        isValid,
+        syncUrlOnCommand,
+        setSyncUrlOnCommand,
+    ])
 
     return (
         <div className={css.container}>

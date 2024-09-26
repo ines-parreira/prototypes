@@ -34,6 +34,9 @@ type Props = {
     setPendingResourcesCount?: (pendingResourcesCount: number) => void
     setIsSuccessResources?: (isSuccessResources: boolean) => void
     setIsFailedResources?: (isFailedResources: boolean) => void
+    setIsPristine?: (isPristine: boolean) => void
+    syncUrlOnCommand?: boolean
+    setSyncUrlOnCommand?: (syncUrlOnCommand: boolean) => void
 }
 
 export const PublicSourcesSection = ({
@@ -46,6 +49,9 @@ export const PublicSourcesSection = ({
     setPendingResourcesCount,
     setIsSuccessResources,
     setIsFailedResources,
+    setIsPristine,
+    syncUrlOnCommand,
+    setSyncUrlOnCommand,
 }: Props) => {
     const dispatch = useAppDispatch()
     const [wizardQueryParam] = useSearchParam(WIZARD_POST_COMPLETION_QUERY_KEY)
@@ -223,6 +229,9 @@ export const PublicSourcesSection = ({
                                 onDelete={onDeleteSource}
                                 onSync={onSyncSource}
                                 helpCenterCustomDomains={customDomainHostnames}
+                                setIsPristine={setIsPristine}
+                                syncUrlOnCommand={syncUrlOnCommand}
+                                setSyncUrlOnCommand={setSyncUrlOnCommand}
                             />
                         </li>
                     ))}

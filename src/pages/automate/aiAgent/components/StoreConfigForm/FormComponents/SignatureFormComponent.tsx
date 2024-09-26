@@ -9,11 +9,13 @@ import css from './SignatureFormComponent.less'
 type SignatureFormComponentProps = {
     signature: string | null
     updateValue: UpdateValue<FormValues>
+    setIsPristine?: (isPristine: boolean) => void
 }
 
 export const SignatureFormComponent = ({
     signature,
     updateValue,
+    setIsPristine,
 }: SignatureFormComponentProps) => {
     const defaultValue =
         signature !== null ? signature : INITIAL_FORM_VALUES.signature
@@ -28,6 +30,7 @@ export const SignatureFormComponent = ({
 
     const handleChange = (newValue: unknown) => {
         if (typeof newValue !== 'string') return
+        if (setIsPristine) setIsPristine(false)
         setValue(newValue)
     }
 

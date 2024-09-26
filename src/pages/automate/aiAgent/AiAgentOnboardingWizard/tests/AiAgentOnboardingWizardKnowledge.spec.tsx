@@ -8,6 +8,8 @@ import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 import userEvent from '@testing-library/user-event'
 import {mockFlags} from 'jest-launchdarkly-mock'
+import {createMemoryHistory} from 'history'
+import {Router} from 'react-router-dom'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
@@ -55,6 +57,8 @@ const defaultProps = {
     storeConfiguration: mockedStoreConfiguration,
 }
 
+const history = createMemoryHistory()
+
 const renderComponent = (
     props: Partial<ComponentProps<typeof AiAgentOnboardingWizardStepKnowledge>>
 ) => {
@@ -63,13 +67,17 @@ const renderComponent = (
         ...props,
     }
     renderWithRouter(
-        <Provider store={mockStore(defaultState)}>
-            <QueryClientProvider client={queryClient}>
-                <Wizard steps={[AiAgentOnboardingWizardStep.Knowledge]}>
-                    <AiAgentOnboardingWizardStepKnowledge {...currentProps} />
-                </Wizard>
-            </QueryClientProvider>
-        </Provider>
+        <Router history={history}>
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <Wizard steps={[AiAgentOnboardingWizardStep.Knowledge]}>
+                        <AiAgentOnboardingWizardStepKnowledge
+                            {...currentProps}
+                        />
+                    </Wizard>
+                </QueryClientProvider>
+            </Provider>
+        </Router>
     )
 }
 
@@ -303,6 +311,40 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             mockedUseAiAgentOnboardingWizard.handleSave
         ).toHaveBeenCalledWith({
             publicUrls: ['https://example.com/faqs'],
+            redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
+        })
+    })
+
+    it('should display confirmation dialog modal when user tries to leave after changes help center select', () => {
+        renderComponent({})
+
+        const selectedHelpCenter = screen.getByText(mockedHelpCenters[0].name)
+        act(() => {
+            fireEvent.focus(selectedHelpCenter)
+        })
+
+        const newSelectedHelpCenter = screen.getByText(
+            mockedHelpCenters[1].name
+        )
+        act(() => {
+            fireEvent.click(newSelectedHelpCenter)
+        })
+
+        history.push('/test')
+
+        expect(
+            screen.getByText(
+                'Your changes to this page will be lost if you don’t save them.'
+            )
+        ).toBeInTheDocument()
+        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        expect(screen.getByText('Discard Changes')).toBeInTheDocument()
+
+        userEvent.click(screen.getByText('Save Changes'))
+        expect(
+            mockedUseAiAgentOnboardingWizard.handleSave
+        ).toHaveBeenCalledWith({
+            publicUrls: [],
             redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
         })
     })

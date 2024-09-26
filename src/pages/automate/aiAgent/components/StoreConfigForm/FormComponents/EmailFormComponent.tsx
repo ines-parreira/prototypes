@@ -16,13 +16,15 @@ type EmailFormComponentProps = {
     updateValue: UpdateValue<FormValues>
     monitoredEmailIntegrations: {id: number; email: string}[] | null
     isRequired?: boolean
-    shouldPrefileValue?: boolean
+    shouldPrefillValue?: boolean
+    setIsPristine?: (isPristine: boolean) => void
 }
 export const EmailFormComponent = ({
     monitoredEmailIntegrations,
     updateValue,
     isRequired,
-    shouldPrefileValue,
+    shouldPrefillValue,
+    setIsPristine,
 }: EmailFormComponentProps) => {
     const useInitialValue = React.useRef(true)
     const isAiAgentChatEnabled: boolean | undefined =
@@ -50,13 +52,13 @@ export const EmailFormComponent = ({
         if (
             emailItems.length === 1 &&
             useInitialValue.current &&
-            shouldPrefileValue
+            shouldPrefillValue
         ) {
             updateValue('monitoredEmailIntegrations', [emailItems[0]])
 
             useInitialValue.current = false
         }
-    }, [emailItems, shouldPrefileValue, updateValue])
+    }, [emailItems, shouldPrefillValue, updateValue])
 
     const handleSelectEmailIntegration = (nextSelectedIds: number[]) => {
         // preserving the order of the selection
@@ -73,6 +75,7 @@ export const EmailFormComponent = ({
                 })
             }
         }
+        if (setIsPristine) setIsPristine(false)
         updateValue('monitoredEmailIntegrations', monitoredEmailIntegrations)
     }
 
