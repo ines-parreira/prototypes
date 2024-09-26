@@ -31,10 +31,7 @@ describe('reviewedClosedTicketsQueryFactory', () => {
         const query = reviewedClosedTicketsQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
-            measures: [
-                TicketQAScoreMeasure.TicketCount,
-                TicketQAScoreMeasure.AverageScore,
-            ],
+            measures: [TicketQAScoreMeasure.TicketCount],
             dimensions: [],
             segments: [],
             filters: [
@@ -60,10 +57,7 @@ describe('reviewedClosedTicketsQueryFactory', () => {
         )
 
         expect(query).toEqual({
-            measures: [
-                TicketQAScoreMeasure.TicketCount,
-                TicketQAScoreMeasure.AverageScore,
-            ],
+            measures: [TicketQAScoreMeasure.TicketCount],
             dimensions: [],
             segments: [],
             filters: [

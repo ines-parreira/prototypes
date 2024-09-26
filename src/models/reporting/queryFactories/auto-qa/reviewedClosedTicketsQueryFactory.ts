@@ -19,10 +19,7 @@ export const reviewedClosedTicketsQueryFactory = (
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
-    measures: [
-        TicketQAScoreMeasure.TicketCount,
-        TicketQAScoreMeasure.AverageScore,
-    ],
+    measures: [TicketQAScoreMeasure.TicketCount],
     dimensions: [],
     segments: [],
     filters: [
