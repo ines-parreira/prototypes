@@ -126,7 +126,7 @@ export function Discount({
             >
                 {isUpdatingDiscount && (
                     <div className="mr-3">
-                        <Spinner color="dark" width="20px" />
+                        <Spinner color="dark" size="small" />
                     </div>
                 )}
                 <MoneyAmount

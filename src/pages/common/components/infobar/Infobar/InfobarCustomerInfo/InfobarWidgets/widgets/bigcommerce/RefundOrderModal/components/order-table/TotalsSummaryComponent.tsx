@@ -85,8 +85,8 @@ export function TotalsSummaryComponent({
                         >
                             {isLoading ? (
                                 <Spinner
-                                    color="gloom"
                                     className={bigcommerceTableCss.spinner}
+                                    size="small"
                                 />
                             ) : (
                                 <MoneyAmount
@@ -160,8 +160,8 @@ export function TotalsSummaryComponent({
                         >
                             {isLoading ? (
                                 <Spinner
-                                    color="gloom"
                                     className={bigcommerceTableCss.spinner}
+                                    size="small"
                                 />
                             ) : (
                                 <MoneyAmount
@@ -190,8 +190,8 @@ export function TotalsSummaryComponent({
                         >
                             {isLoading ? (
                                 <Spinner
-                                    color="gloom"
                                     className={bigcommerceTableCss.spinner}
+                                    size="small"
                                 />
                             ) : (
                                 <MoneyAmount
@@ -225,8 +225,8 @@ export function TotalsSummaryComponent({
                             >
                                 {isLoading ? (
                                     <Spinner
-                                        color="gloom"
                                         className={bigcommerceTableCss.spinner}
+                                        size="small"
                                     />
                                 ) : (
                                     <MoneyAmount
@@ -252,8 +252,8 @@ export function TotalsSummaryComponent({
                         >
                             {isLoading ? (
                                 <Spinner
-                                    color="gloom"
                                     className={bigcommerceTableCss.spinner}
+                                    size="small"
                                 />
                             ) : (
                                 <MoneyAmount

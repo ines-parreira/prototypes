@@ -33,7 +33,7 @@ const alertIcon = {
     [AlertType.Error]: errorIcon,
     [AlertType.Loading]: (
         <span className={css.loadingIcon}>
-            <Spinner color="dark" />
+            <Spinner color="dark" size="small" />
         </span>
     ),
     [AlertType.Ai]: autoAwesomeIcon,

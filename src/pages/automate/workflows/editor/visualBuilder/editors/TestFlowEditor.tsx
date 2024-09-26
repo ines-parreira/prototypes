@@ -284,7 +284,7 @@ export const TestFlowEditor = ({
 
                     <div className={classNames(css['iframe-container'])}>
                         {!isFlowInterpreterStarted && (
-                            <Spinner color="dark" className={css.spinner} />
+                            <Spinner color="dark" size="big" />
                         )}
 
                         <div

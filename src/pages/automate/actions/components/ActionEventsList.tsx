@@ -75,7 +75,7 @@ export default function ActionEventsList({
             </TableWrapper>
             {isLoading && (
                 <div className={css.spinner}>
-                    <Spinner color="dark" />
+                    <Spinner color="dark" size="medium" />
                 </div>
             )}
             {hasNoData && (

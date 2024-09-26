@@ -160,7 +160,7 @@ export function Coupon({
             >
                 {state.isLoading && (
                     <div className="mr-3">
-                        <Spinner color="dark" width="20px" />
+                        <Spinner color="dark" size="small" />
                     </div>
                 )}
                 <MoneyAmount

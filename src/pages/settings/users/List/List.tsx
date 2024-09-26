@@ -84,7 +84,7 @@ const UserList = () => {
                         <p>Something went wrong</p>
                     ) : paginatedAgents.isLoading ? (
                         <div className={css.spinnerWrapper}>
-                            <Spinner color="gloom" width="50" />
+                            <Spinner size="big" />
                         </div>
                     ) : (
                         <ul className={css.list}>

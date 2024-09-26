@@ -21,7 +21,7 @@ import css from './AutomateAllRecommendationsTable.less'
 
 const DEFAULT_COLUMN_WIDTH = 224
 
-type AutomateAllRecommendationTableProps = {
+type Props = {
     isLoading?: boolean
     columns: AllRecomendationsColumn[]
     articles: AIArticleRecommendationItem[]
@@ -144,7 +144,7 @@ const ArticleStatus = ({
         </span>
     ) : isCreating ? (
         <div className={css.creatingArticle}>
-            <Spinner color="gloom" width={16} />
+            <Spinner width={16} />
             Creating...
         </div>
     ) : (
@@ -175,7 +175,7 @@ const AutomateAllRecommendationsTable = ({
     pagesCount,
     onPageChange,
     helpCenterId,
-}: AutomateAllRecommendationTableProps) => {
+}: Props) => {
     const tableWidth = columns.map((column) => column.width)
     return (
         <>

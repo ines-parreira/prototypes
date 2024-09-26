@@ -85,8 +85,9 @@ const InfiniteScroll = ({
                 <div className={css.wrapper}>
                     <Spinner
                         className={css.spinner}
-                        style={{...(loaderSize ? {width: loaderSize} : {})}}
-                        color="gloom"
+                        {...(loaderSize
+                            ? {width: loaderSize}
+                            : {size: 'small'})}
                     />
                 </div>
             )}

@@ -1,9 +1,22 @@
 import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 
+import Spinner from 'pages/common/components/Spinner'
+
 import InfiniteScroll from '../InfiniteScroll'
 
-jest.mock('pages/common/components/Spinner', () => () => 'SpinnerMock')
+jest.mock(
+    'pages/common/components/Spinner',
+    () =>
+        ({size, width}: ComponentProps<typeof Spinner>) =>
+            (
+                <div>
+                    SpinnerMock
+                    <div>size-{size}</div>
+                    <div>width-{width}</div>
+                </div>
+            )
+)
 
 describe('<InfiniteScroll />', () => {
     const originalClientHeight = Object.getOwnPropertyDescriptor(
@@ -126,7 +139,18 @@ describe('<InfiniteScroll />', () => {
     it('should use external isLoading prop', async () => {
         const {getByText} = render(<InfiniteScroll {...minProps} isLoading />)
 
-        await waitFor(() => expect(minProps.onLoad).not.toBeCalled())
+        await waitFor(() => expect(minProps.onLoad).not.toHaveBeenCalled())
         expect(getByText('SpinnerMock')).toBeInTheDocument()
+        expect(getByText(/size-small/)).toBeInTheDocument()
+    })
+
+    it('should use specified Spinner width', () => {
+        const loaderSize = 10
+        const {getByText} = render(
+            <InfiniteScroll {...minProps} isLoading loaderSize={loaderSize} />
+        )
+
+        expect(getByText('SpinnerMock')).toBeInTheDocument()
+        expect(getByText(/width-10/)).toBeInTheDocument()
     })
 })

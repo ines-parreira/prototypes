@@ -37,7 +37,7 @@ const CreateArticle = ({onCreateArticle}: Pick<Props, 'onCreateArticle'>) => {
 
     return isCreating ? (
         <div className={css.creatingArticle}>
-            <Spinner color="gloom" width={20} />
+            <Spinner width={20} />
             Creating...
         </div>
     ) : (

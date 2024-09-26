@@ -116,11 +116,10 @@ exports[`RefundMethodPickerSection snapshot renders the initial disabled state 1
       class="spinnerWrapper"
     >
       <svg
-        class="spinner gloom spinner"
+        class="spinner gloom medium spinner"
         preserveAspectRatio="xMidYMid meet"
         role="status"
         viewBox="0 0 20 20"
-        width="100%"
       >
         <circle
           class="dot"

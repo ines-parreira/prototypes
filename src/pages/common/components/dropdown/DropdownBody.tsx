@@ -23,7 +23,7 @@ function DropdownBody(
         >
             {isLoading ? (
                 <div className={css.spinnerWrapper}>
-                    <Spinner className={css.spinner} color="gloom" />
+                    <Spinner size="medium" />
                 </div>
             ) : (
                 children

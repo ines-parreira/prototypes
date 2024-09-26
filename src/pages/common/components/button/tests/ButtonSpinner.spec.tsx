@@ -1,4 +1,4 @@
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import React from 'react'
 
 import {BaseButtonContext} from '../BaseButton'
@@ -6,18 +6,19 @@ import ButtonSpinner from '../ButtonSpinner'
 
 describe('<ButtonSpinner />', () => {
     it('should render a spinner', () => {
-        const {container} = render(<ButtonSpinner />)
+        render(<ButtonSpinner />)
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
+        expect(screen.getByRole('status')).toHaveAttribute('width', '22')
     })
 
     it('should render a small loader', () => {
-        const {container} = render(
+        render(
             <BaseButtonContext.Provider value={{size: 'small'}}>
                 <ButtonSpinner />
             </BaseButtonContext.Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByRole('status')).toHaveAttribute('width', '15')
     })
 })

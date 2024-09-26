@@ -1,4 +1,4 @@
-import {Meta, Story} from '@storybook/react'
+import {Meta, StoryFn} from '@storybook/react'
 import React, {ComponentProps} from 'react'
 import {Button} from 'reactstrap'
 
@@ -33,14 +33,18 @@ const storyConfig: Meta = {
         icon: {
             description:
                 'Precise whether you want to show the default icon or not. You can also pass custom JSX you want to use as the icon.',
-            control: {
-                type: null,
-            },
+            control: 'boolean',
         },
     },
 }
 
-const Template: Story<ComponentProps<typeof Alert>> = (props) => (
+const parameters = {
+    controls: {
+        include: ['customActions', 'icon', 'type'],
+    },
+}
+
+const Template: StoryFn<ComponentProps<typeof Alert>> = (props) => (
     <Alert {...props} />
 )
 
@@ -49,6 +53,7 @@ const defaultProps: ComponentProps<typeof Alert> = {
 }
 export const Info = Template.bind({})
 Info.args = {...defaultProps}
+Info.parameters = parameters
 
 export const WithIcon = Template.bind({})
 WithIcon.args = {...defaultProps, icon: true}

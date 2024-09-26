@@ -209,7 +209,13 @@ export default class Actions extends Component<Props, State> {
                     let color = '#20C08C'
 
                     if (action.status === ActionStatus.Pending) {
-                        icon = <Spinner className={css.spinner} color="dark" />
+                        icon = (
+                            <Spinner
+                                className={css.spinner}
+                                width={18}
+                                color="dark"
+                            />
+                        )
                         color = '#1D365C'
                     } else if (
                         action.status === ActionStatus.Error ||

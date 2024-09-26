@@ -1009,11 +1009,12 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
             type="button"
           >
             <svg
-              class="spinner gloom spinner medium"
+              class="spinner gloom spinner"
+              height="22"
               preserveAspectRatio="xMidYMid meet"
               role="status"
               viewBox="0 0 20 20"
-              width="100%"
+              width="22"
             >
               <circle
                 class="dot"
@@ -1235,11 +1236,12 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
             type="button"
           >
             <svg
-              class="spinner gloom spinner medium"
+              class="spinner gloom spinner"
+              height="22"
               preserveAspectRatio="xMidYMid meet"
               role="status"
               viewBox="0 0 20 20"
-              width="100%"
+              width="22"
             >
               <circle
                 class="dot"
@@ -1375,11 +1377,12 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
             type="button"
           >
             <svg
-              class="spinner gloom spinner medium"
+              class="spinner gloom spinner"
+              height="22"
               preserveAspectRatio="xMidYMid meet"
               role="status"
               viewBox="0 0 20 20"
-              width="100%"
+              width="22"
             >
               <circle
                 class="dot"

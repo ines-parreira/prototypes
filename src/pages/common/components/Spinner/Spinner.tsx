@@ -5,16 +5,33 @@ import css from './Spinner.less'
 
 type Props = {
     color?: 'light' | 'gloom' | 'dark'
-} & SVGProps<SVGSVGElement>
+} & SVGProps<SVGSVGElement> &
+    XOR<
+        Required<Pick<SVGProps<SVGSVGElement>, 'width'>> & {
+            size: 'small' | 'medium' | 'big'
+        }
+    >
 
-const Spinner = ({className, color = 'light', ...props}: Props) => {
+const Spinner = ({
+    className,
+    color = 'gloom',
+    size,
+    width,
+    ...props
+}: Props) => {
     return (
         <svg
-            className={classnames(css.spinner, css[color], className)}
-            width="100%"
+            className={classnames(
+                css.spinner,
+                css[color],
+                size && css[size],
+                className
+            )}
             viewBox="0 0 20 20"
             preserveAspectRatio="xMidYMid meet"
             role="status"
+            width={width}
+            height={width}
             {...props}
         >
             <circle

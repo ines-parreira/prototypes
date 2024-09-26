@@ -1,5 +1,6 @@
 import React, {Dispatch} from 'react'
 import classnames from 'classnames'
+
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import Spinner from 'pages/common/components/Spinner'
 import {
@@ -36,7 +37,7 @@ export function RefundMethodPickerSection({
             <p className={css.modalSectionHeader}>Refund method</p>
             {isLoading && (
                 <div className={css.spinnerWrapper}>
-                    <Spinner color="gloom" className={css.spinner} />
+                    <Spinner className={css.spinner} size="medium" />
                 </div>
             )}
             {!availablePaymentOptionsData && (

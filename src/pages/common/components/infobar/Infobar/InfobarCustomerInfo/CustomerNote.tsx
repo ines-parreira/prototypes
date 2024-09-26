@@ -81,12 +81,7 @@ export default function CustomerNote({customer}: {customer: Map<any, any>}) {
                         </p>
                     )}
                     {isLoading && (
-                        <Spinner
-                            color="gloom"
-                            className={css.loaderIcon}
-                            height={20}
-                            width={20}
-                        />
+                        <Spinner className={css.loaderIcon} size="small" />
                     )}
                 </div>
             </div>

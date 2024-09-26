@@ -79,6 +79,8 @@ const ToggleInput = ({
                 <div className={css.slider} />
                 {isLoading && (
                     <Spinner
+                        color="light"
+                        size="small"
                         className={classnames(css.spinner, {
                             [css.spinnerLeft]: isToggled,
                         })}

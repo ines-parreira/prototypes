@@ -1,4 +1,4 @@
-import {Meta, Story} from '@storybook/react'
+import {Meta, StoryFn} from '@storybook/react'
 import React, {ComponentProps} from 'react'
 
 import Spinner from './Spinner'
@@ -20,21 +20,27 @@ const storyConfig: Meta = {
                 type: 'select',
             },
         },
+        size: {
+            control: {
+                type: 'select',
+            },
+        },
     },
 }
 
-const Template: Story<ComponentProps<typeof Spinner>> = (props) => (
-    <Spinner {...props} width="40px" />
+const Template: StoryFn<ComponentProps<typeof Spinner>> = (props) => (
+    <Spinner {...props} />
 )
 
 const templateParameters = {
     controls: {
-        include: ['color'],
+        include: ['color', 'size', 'width'],
     },
 }
 
 const defaultProps: ComponentProps<typeof Spinner> = {
-    color: 'light',
+    color: 'gloom',
+    width: '40px',
 }
 export const Default = Template.bind({})
 Default.args = defaultProps

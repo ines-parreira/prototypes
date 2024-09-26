@@ -60,7 +60,7 @@ export function EntireOrderRefundOrderModal({
                 Refundable items
             </p>
             {isLoading && !productRefundData && (
-                <Spinner color="gloom" className={css.spinner} />
+                <Spinner className={css.spinner} size="medium" />
             )}
             {currencyCode &&
                 refundData?.order_level_refund_data &&

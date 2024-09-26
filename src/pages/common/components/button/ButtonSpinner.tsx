@@ -6,6 +6,11 @@ import Spinner from 'pages/common/components/Spinner'
 import {BaseButtonContext} from './BaseButton'
 import css from './ButtonSpinner.less'
 
+const spinnerSize = {
+    medium: 22,
+    small: 15,
+}
+
 type Props = {
     className?: string
 }
@@ -15,12 +20,8 @@ export default function ButtonSpinner({className}: Props) {
 
     return (
         <Spinner
-            className={classnames(
-                css.spinner,
-                className,
-                css[contextValue.size]
-            )}
-            color="gloom"
+            width={spinnerSize[contextValue.size]}
+            className={classnames(css.spinner, className)}
         />
     )
 }

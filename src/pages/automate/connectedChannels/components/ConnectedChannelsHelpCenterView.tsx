@@ -130,7 +130,7 @@ export const ConnectedChannelsHelpCenterView = ({
     if (isLoading) {
         return (
             <div className={css.loadingContainer}>
-                <Spinner color="dark" className={css.spinner} />
+                <Spinner color="dark" size="big" />
             </div>
         )
     }
