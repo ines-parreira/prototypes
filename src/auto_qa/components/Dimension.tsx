@@ -1,8 +1,10 @@
 import {TicketQAScoreDimension} from '@gorgias/api-queries'
 import cn from 'classnames'
 import React, {useCallback, useMemo, useRef, useState} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
-import IconButton from 'pages/common/components/button/IconButton'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -56,17 +58,35 @@ export default function Dimension({config, dimension, onChange}: Props) {
     return (
         <>
             <div className={css.container}>
-                <IconButton
-                    className={css.arrowButton}
-                    fillStyle="ghost"
-                    iconClassName={cn('material-icons-round', css.arrowIcon)}
-                    intent="secondary"
-                    size="small"
-                    onClick={handleClickExpand}
-                >
-                    {isExpanded ? 'arrow_drop_down' : 'arrow_right'}
-                </IconButton>
-                <label className={css.label}>{config.label}</label>
+                <div className={css.label}>
+                    <Button
+                        className={css.button}
+                        fillStyle="ghost"
+                        intent="secondary"
+                        onClick={handleClickExpand}
+                    >
+                        <ButtonIconLabel
+                            iconClassName={cn(
+                                'material-icons-round',
+                                css.arrowIcon
+                            )}
+                            icon={
+                                isExpanded ? 'arrow_drop_down' : 'arrow_right'
+                            }
+                        >
+                            {config.label}
+                        </ButtonIconLabel>
+                    </Button>
+                    <i
+                        id={dimension.name}
+                        className={cn('material-icons-outlined', css.icon)}
+                    >
+                        info
+                    </i>
+                    <Tooltip target={dimension.name} placement="top-end">
+                        {config.tooltip}
+                    </Tooltip>
+                </div>
 
                 <SelectInputBox
                     className={css.prediction}

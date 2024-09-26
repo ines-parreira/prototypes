@@ -23,8 +23,6 @@ import {getSourcesWithCustomer, getWidgetsState} from 'state/widgets/selectors'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import AIAgentFeedbackBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentFeedbackBar'
 
-import secondaryNavbarCSS from 'pages/common/components/SecondaryNavbar/SecondaryNavbar.less'
-import css from 'pages/tickets/detail/TicketInforbarContainer.less'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {logEventWithSampling} from 'common/segment/segment'
 import {SegmentEvent} from 'common/segment'
@@ -34,6 +32,8 @@ import {
     TRIAL_MESSAGE_TAG,
 } from './components/AIAgentFeedbackBar/constants'
 
+import css from './TicketInfobarContainer.less'
+
 type OwnProps = {
     isEditingWidgets?: boolean
     isOnNewLayout?: boolean
@@ -42,7 +42,7 @@ type OwnProps = {
 type Props = OwnProps & ConnectedProps<typeof connector>
 
 export const CUSTOMER_INFORMATION_TAB = 'Customer Information'
-export const AI_AGENT_TAB = 'AI Agent'
+export const AI_AGENT_TAB = 'Ticket Feedback'
 
 const SIDE_PANEL_VIEWED_EVENT_TYPE = 'summary'
 
@@ -135,10 +135,10 @@ export const TicketInfobarContainer = ({
             })}
         >
             {showNavbar && (
-                <Navbar className={secondaryNavbarCSS.navbar}>
+                <Navbar className={css.navbar}>
                     <div
-                        className={classNames(secondaryNavbarCSS.link, {
-                            [secondaryNavbarCSS.active]: !isAIAgentTabActive,
+                        className={classNames(css.link, {
+                            [css.active]: !isAIAgentTabActive,
                         })}
                         onClick={() =>
                             handleChangeTab(
@@ -149,19 +149,11 @@ export const TicketInfobarContainer = ({
                         {CUSTOMER_INFORMATION_TAB}
                     </div>
                     <div
-                        className={classNames(secondaryNavbarCSS.link, {
-                            [secondaryNavbarCSS.active]: isAIAgentTabActive,
+                        className={classNames(css.link, {
+                            [css.active]: isAIAgentTabActive,
                         })}
                         onClick={handleAIAgentTabClick}
                     >
-                        <i
-                            className={classNames(
-                                css.autoAwesomeIcon,
-                                'material-icons'
-                            )}
-                        >
-                            auto_awesome
-                        </i>{' '}
                         {AI_AGENT_TAB}
                     </div>
                 </Navbar>

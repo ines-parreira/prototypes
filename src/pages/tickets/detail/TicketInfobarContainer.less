@@ -1,0 +1,45 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .infoBarContainer {
+        height: 100%;
+
+        &.infoBarContainerWithNavbar {
+            height: calc(100% - 52px);
+        }
+    }
+
+    .navbar {
+        background-color: var(--neutral-grey-1);
+        border-bottom: 1px solid var(--neutral-grey-3);
+        height: 52px;
+        justify-content: normal;
+        padding: 0 8px;
+    }
+
+    .link {
+        color: var(--neutral-grey-5);
+        font-weight: 500;
+        line-height: 20px;
+        margin: 0 16px;
+        padding: 16px 0;
+        cursor: pointer;
+
+        &.active {
+            border-bottom: 2px solid var(--main-primary);
+            color: var(--neutral-grey-6);
+            padding: 16px 0 14px 0;
+        }
+
+        &:hover {
+            color: var(--neutral-grey-6);
+        }
+    }
+}

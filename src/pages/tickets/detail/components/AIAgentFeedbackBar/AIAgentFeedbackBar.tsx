@@ -69,9 +69,10 @@ const AIAgentFeedbackBar = () => {
             data-testid={FEEDBACK_MESSAGE_CONTAINER_TEST_ID}
         >
             {hasAutoQA && <AutoQA />}
+            <div className={css.lineSeparator} />
             <div className={css.summaryContainer}>
                 <div className={css.title}>
-                    {messageFeedback ? 'Response summary' : 'Ticket overview'}
+                    {messageFeedback ? 'Response summary' : 'AI Agent overview'}
                 </div>
                 <div
                     className={css.summary}

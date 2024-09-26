@@ -1,7 +1,10 @@
 import moment from 'moment'
 import React, {useMemo} from 'react'
+import cn from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {getTicketId} from 'state/ticket/selectors'
 
 import {dimensionConfig} from '../config'
@@ -22,7 +25,19 @@ export default function AutoQA() {
 
     return (
         <div className={css.container}>
-            <h2 className={css.title}>Auto QA Score</h2>
+            <div className={css.titleWrapper}>
+                <h2 className={css.title}>Auto QA Score</h2>
+                <i
+                    id="auto-qa-score"
+                    className={cn('material-icons-outlined', css.icon)}
+                >
+                    info
+                </i>
+                <Tooltip target="auto-qa-score" placement="top-end">
+                    AI generated results, edit to improve AI model.
+                </Tooltip>
+                <Badge type={ColorType.Magenta}>BETA</Badge>
+            </div>
 
             {isLoading ? (
                 <AutoQASkeleton />
