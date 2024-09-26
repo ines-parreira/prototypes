@@ -16,7 +16,10 @@ import {
     GREETING_MESSAGE,
     PlaygroundGenericErrorMessage,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
-import {CustomerHttpIntegrationDataMock} from '../constants'
+import {
+    CustomerHttpIntegrationDataMock,
+    PLAYGROUND_CUSTOMER_MOCK,
+} from '../constants'
 import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.types'
 import {
     getPlaygroundInitialMessage,
@@ -123,6 +126,8 @@ export const usePlaygroundMessages = ({
                         channel,
                         // TODO: Remove in https://linear.app/gorgias/issue/AUTAI-1418/update-mechanism-to-get-customer-data
                         email_integration_id: emailIntegration?.id,
+                        // TODO: add real customer data after implementing helpdesk endpoint
+                        customer: PLAYGROUND_CUSTOMER_MOCK,
                         messages:
                             mapPlaygroundMessagesToServerMessages(
                                 filteredMessages

@@ -1,6 +1,7 @@
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
 import {FormValues, WizardFormValues} from './types'
+import {PlaygroundCustomer} from './utils/playground-ticket.util'
 
 export const SIGNATURE_MAX_LENGTH = 250
 export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 1500
@@ -62,6 +63,15 @@ export const CustomerHttpIntegrationDataMock = {
     name: 'Oliver Smith',
     firstname: 'Oliver',
     lastname: 'Smith',
+}
+
+export const PLAYGROUND_CUSTOMER_MOCK: PlaygroundCustomer = {
+    email: CustomerHttpIntegrationDataMock.address,
+    firstname: CustomerHttpIntegrationDataMock.firstname,
+    id: '601409',
+    integrations: '{"shopify":{"customer":{},"last_order":null,"orders":[]}}',
+    lastname: CustomerHttpIntegrationDataMock.lastname,
+    name: CustomerHttpIntegrationDataMock.name,
 }
 
 export const AI_AGENT_STEPS_LABELS: Record<

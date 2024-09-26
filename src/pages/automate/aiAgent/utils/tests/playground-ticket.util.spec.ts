@@ -2,7 +2,8 @@ import {CreatePlaygroundMessage} from 'models/aiAgentPlayground/types'
 import {
     createMockClientPayload,
     createMockHttpIntegrationPayload,
-} from '../new-customer-playground.util'
+} from '../playground-ticket.util'
+import {PLAYGROUND_CUSTOMER_MOCK} from '../../constants'
 
 const getMockTicketMessage = (
     props?: Partial<CreatePlaygroundMessage>
@@ -22,6 +23,7 @@ describe('new-customer-playground util', () => {
             messages: [],
             created_datetime: '123',
             channel: 'email',
+            customer: PLAYGROUND_CUSTOMER_MOCK,
         })
 
         expect(result.ticket.id).toBe('123')
@@ -84,6 +86,7 @@ describe('new-customer-playground util', () => {
             http_integration_id: -1,
             account_id: 1,
             customer_email: 'test@gorgias.com',
+            customer: PLAYGROUND_CUSTOMER_MOCK,
         })
 
         expect(result.messages[0].meta).toEqual({
@@ -98,6 +101,14 @@ describe('new-customer-playground util', () => {
               "body_text": "test",
               "channel": "chat",
               "created_datetime": "123",
+              "customer": {
+                "email": "oliver.smith@foobar.com",
+                "firstname": "Oliver",
+                "id": "601409",
+                "integrations": "{"shopify":{"customer":{},"last_order":null,"orders":[]}}",
+                "lastname": "Smith",
+                "name": "Oliver Smith",
+              },
               "customer_email": "test@gorgias.com",
               "domain": "test-gorgias",
               "email_integration_id": -1,

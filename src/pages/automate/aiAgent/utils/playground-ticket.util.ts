@@ -10,7 +10,17 @@ import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.ty
 const PLAYGROUND_TICKET_ID = '123'
 const PLAYGROUND_INTEGRATION_ID = -1
 
+export type PlaygroundCustomer = {
+    id: string
+    name: string
+    email: string
+    firstname: string
+    lastname: string
+    integrations: string
+}
+
 export type NewCustomerData = {
+    customer: PlaygroundCustomer
     body_text: string
     subject: string
     domain: string
@@ -94,6 +104,7 @@ export const createMockHttpIntegrationPayload = ({
     meta = {},
     created_datetime,
     channel,
+    customer,
 }: NewCustomerData): AiAgentInput => ({
     message: {
         body_text,
@@ -125,20 +136,7 @@ export const createMockHttpIntegrationPayload = ({
         },
         channel,
         created_datetime,
-        customer: {
-            email: CustomerHttpIntegrationDataMock.address,
-            firstname: CustomerHttpIntegrationDataMock.firstname,
-            id: '601409',
-            integrations: JSON.stringify({
-                shopify: {
-                    customer: {},
-                    last_order: null,
-                    orders: [],
-                },
-            }),
-            lastname: CustomerHttpIntegrationDataMock.lastname,
-            name: CustomerHttpIntegrationDataMock.name,
-        },
+        customer,
         id: PLAYGROUND_TICKET_ID,
         messages: JSON.stringify(
             messages.map((message) =>

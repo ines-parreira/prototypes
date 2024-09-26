@@ -11,7 +11,10 @@ import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fi
 import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'
 import {PlaygroundChannels} from '../../components/PlaygroundChat/PlaygroundChat.types'
 import {playgroundMessageFixture} from '../../fixtures/playgroundMessages.fixture'
-import {CustomerHttpIntegrationDataMock} from '../../constants'
+import {
+    CustomerHttpIntegrationDataMock,
+    PLAYGROUND_CUSTOMER_MOCK,
+} from '../../constants'
 
 jest.mock('models/aiAgent/queries', () => ({
     useSubmitPlaygroundTicket: jest.fn(),
@@ -85,6 +88,7 @@ describe('usePlaygroundMessages hook', () => {
                 },
                 http_integration_id: 1,
                 subject: '',
+                customer: PLAYGROUND_CUSTOMER_MOCK,
                 messages: [
                     {
                         bodyText: message.content,

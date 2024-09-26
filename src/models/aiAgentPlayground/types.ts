@@ -1,4 +1,5 @@
 import {PlaygroundChannels} from 'pages/automate/aiAgent/components/PlaygroundChat/PlaygroundChat.types'
+import {PlaygroundCustomer} from 'pages/automate/aiAgent/utils/playground-ticket.util'
 
 export type CreatePlaygroundMessage = {
     bodyText: string
@@ -13,6 +14,7 @@ export type CreatePlaygroundOptions = {
 
 export type CreatePlaygroundBody = {
     use_mock_context: boolean
+    customer: PlaygroundCustomer
     domain: string
     customer_email: string
     body_text: string
@@ -40,10 +42,11 @@ export type MockTicketMessage = {
     id: number
     integration_id: number
     channel: PlaygroundChannels
+    customer?: PlaygroundCustomer
     sender: {
         firstname: string
         email: string
-        id: 601409
+        id: number
         lastname: string
         meta: Record<string, string>
         name: string

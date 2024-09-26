@@ -3,7 +3,7 @@ import {createPlayground} from 'models/aiAgentPlayground/resources'
 import {
     createMockClientPayload,
     createMockHttpIntegrationPayload,
-} from 'pages/automate/aiAgent/utils/new-customer-playground.util'
+} from 'pages/automate/aiAgent/utils/playground-ticket.util'
 import {
     AiAgentInput,
     AiAgentResponse,
@@ -72,6 +72,7 @@ export const createContextAndSubmitPlaygroundTicket = async (
                 created_datetime: body.created_datetime,
                 channel: body.channel,
                 meta: body.meta,
+                customer: body.customer,
             }),
         }
     } else {

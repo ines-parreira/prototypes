@@ -127,7 +127,6 @@ export const PlaygroundChat = ({
 
         onFormValuesChange('message', '')
     }
-
     const onChannelChange = (channel: PlaygroundChannels) => {
         setChannel(channel)
     }
