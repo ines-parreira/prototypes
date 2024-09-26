@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
+import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {AutoQACompletenessCell} from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
 import {
     COMMUNICATION_SKILLS_LABEL,
@@ -103,8 +104,10 @@ export const TicketDrillDownTableContent = ({
                         tooltip={tooltipHints.metric}
                     />
                 )}
-                {metricData.metricName ===
-                    AutoQAMetric.ResolutionCompleteness && (
+                {(metricData.metricName ===
+                    AutoQAMetric.ResolutionCompleteness ||
+                    metricData.metricName ===
+                        AutoQAAgentsTableColumn.ResolutionCompleteness) && (
                     <HeaderCellProperty
                         title={RESOLUTION_COMPLETENESS_SHORT_LABEL}
                         width={columnWidths.metric}
@@ -126,8 +129,10 @@ export const TicketDrillDownTableContent = ({
                     width={columnWidths.created}
                     className={css.headerCell}
                 />
-                {metricData.metricName ===
-                    AutoQAMetric.ReviewedClosedTickets && (
+                {(metricData.metricName ===
+                    AutoQAMetric.ReviewedClosedTickets ||
+                    metricData.metricName ===
+                        AutoQAAgentsTableColumn.ReviewedClosedTickets) && (
                     <>
                         <HeaderCellProperty
                             title={RESOLUTION_COMPLETENESS_SHORT_LABEL}
@@ -198,8 +203,10 @@ export const TicketDrillDownTableContent = ({
                                           )}
                                 </BodyCell>
                             )}
-                            {metricData.metricName ===
-                                AutoQAMetric.ResolutionCompleteness && (
+                            {(metricData.metricName ===
+                                AutoQAMetric.ResolutionCompleteness ||
+                                metricData.metricName ===
+                                    AutoQAAgentsTableColumn.ResolutionCompleteness) && (
                                 <BodyCell width={columnWidths.metric}>
                                     {
                                         <AutoQACompletenessCell
@@ -232,8 +239,10 @@ export const TicketDrillDownTableContent = ({
                                     NOT_AVAILABLE_PLACEHOLDER
                                 )}
                             </BodyCell>
-                            {metricData.metricName ===
-                                AutoQAMetric.ReviewedClosedTickets && (
+                            {(metricData.metricName ===
+                                AutoQAMetric.ReviewedClosedTickets ||
+                                metricData.metricName ===
+                                    AutoQAAgentsTableColumn.ReviewedClosedTickets) && (
                                 <>
                                     <BodyCell width={columnWidths.metric}>
                                         {

@@ -274,7 +274,7 @@ describe('drillDownSlice', () => {
                         autoQATableLabels[
                             AutoQAAgentsTableColumn.ResolutionCompleteness
                         ],
-                    showMetric: true,
+                    showMetric: false,
                     metricValueFormat:
                         AutoQAAgentsColumnConfig[
                             AutoQAAgentsTableColumn.ResolutionCompleteness

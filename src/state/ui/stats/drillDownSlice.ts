@@ -185,6 +185,7 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AutoQAMetric.ReviewedClosedTickets,
     AutoQAMetric.ResolutionCompleteness,
     AutoQAAgentsTableColumn.ReviewedClosedTickets,
+    AutoQAAgentsTableColumn.ResolutionCompleteness,
     ChannelsTableColumns.TicketsCreated,
     ChannelsTableColumns.CreatedTicketsPercentage,
     ChannelsTableColumns.ClosedTickets,
