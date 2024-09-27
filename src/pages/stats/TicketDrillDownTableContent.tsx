@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
+import {HintTooltipContent} from 'pages/stats/common/HintTooltip'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {AutoQACompletenessCell} from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
 import {
@@ -62,6 +63,12 @@ export const TicketDrillDownTableContent = ({
 }: {
     metricData: DrillDownMetric
 }) => {
+    const isAutoQAResolutionCompleteness =
+        metricData.metricName === AutoQAMetric.ResolutionCompleteness ||
+        metricData.metricName === AutoQAAgentsTableColumn.ResolutionCompleteness
+    const isAutoQAReviewedClosedTickets =
+        metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
+        metricData.metricName === AutoQAAgentsTableColumn.ReviewedClosedTickets
     const {showMetric, metricTitle, metricValueFormat} = useAppSelector(
         getDrillDownMetricColumn
     )
@@ -104,17 +111,17 @@ export const TicketDrillDownTableContent = ({
                         tooltip={tooltipHints.metric}
                     />
                 )}
-                {(metricData.metricName ===
-                    AutoQAMetric.ResolutionCompleteness ||
-                    metricData.metricName ===
-                        AutoQAAgentsTableColumn.ResolutionCompleteness) && (
+                {isAutoQAResolutionCompleteness && (
                     <HeaderCellProperty
                         title={RESOLUTION_COMPLETENESS_SHORT_LABEL}
                         width={columnWidths.metric}
                         className={css.headerCell}
                         tooltip={
-                            TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
-                                .hint
+                            <HintTooltipContent
+                                {...TrendCardConfig[
+                                    AutoQAMetric.ResolutionCompleteness
+                                ].hint}
+                            />
                         }
                     />
                 )}
@@ -129,19 +136,18 @@ export const TicketDrillDownTableContent = ({
                     width={columnWidths.created}
                     className={css.headerCell}
                 />
-                {(metricData.metricName ===
-                    AutoQAMetric.ReviewedClosedTickets ||
-                    metricData.metricName ===
-                        AutoQAAgentsTableColumn.ReviewedClosedTickets) && (
+                {isAutoQAReviewedClosedTickets && (
                     <>
                         <HeaderCellProperty
                             title={RESOLUTION_COMPLETENESS_SHORT_LABEL}
                             width={columnWidths.metric}
                             className={css.headerCell}
                             tooltip={
-                                TrendCardConfig[
-                                    AutoQAMetric.ResolutionCompleteness
-                                ].hint
+                                <HintTooltipContent
+                                    {...TrendCardConfig[
+                                        AutoQAMetric.ResolutionCompleteness
+                                    ].hint}
+                                />
                             }
                         />
                         <HeaderCellProperty
@@ -149,9 +155,11 @@ export const TicketDrillDownTableContent = ({
                             width={columnWidths.metric}
                             className={css.headerCell}
                             tooltip={
-                                TrendCardConfig[
-                                    AutoQAMetric.CommunicationSkills
-                                ].hint
+                                <HintTooltipContent
+                                    {...TrendCardConfig[
+                                        AutoQAMetric.CommunicationSkills
+                                    ].hint}
+                                />
                             }
                         />
                     </>
@@ -203,10 +211,7 @@ export const TicketDrillDownTableContent = ({
                                           )}
                                 </BodyCell>
                             )}
-                            {(metricData.metricName ===
-                                AutoQAMetric.ResolutionCompleteness ||
-                                metricData.metricName ===
-                                    AutoQAAgentsTableColumn.ResolutionCompleteness) && (
+                            {isAutoQAResolutionCompleteness && (
                                 <BodyCell width={columnWidths.metric}>
                                     {
                                         <AutoQACompletenessCell
@@ -239,10 +244,7 @@ export const TicketDrillDownTableContent = ({
                                     NOT_AVAILABLE_PLACEHOLDER
                                 )}
                             </BodyCell>
-                            {(metricData.metricName ===
-                                AutoQAMetric.ReviewedClosedTickets ||
-                                metricData.metricName ===
-                                    AutoQAAgentsTableColumn.ReviewedClosedTickets) && (
+                            {isAutoQAReviewedClosedTickets && (
                                 <>
                                     <BodyCell width={columnWidths.metric}>
                                         {

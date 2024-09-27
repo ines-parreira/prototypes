@@ -6,6 +6,20 @@ import {DOCUMENTATION_LINK_TEXT} from 'services/reporting/constants'
 import {hintTooltipDelay} from 'pages/stats/common/constants'
 import css from 'pages/stats/common/HintTooltip.less'
 
+export const HintTooltipContent = ({title, link}: TooltipData) => {
+    return (
+        <>
+            {title}
+            {typeof title !== 'boolean' && title !== '' && <br />}
+            {link && (
+                <a href={link} target="_blank" rel="noopener noreferrer">
+                    {DOCUMENTATION_LINK_TEXT}
+                </a>
+            )}
+        </>
+    )
+}
+
 export const HintTooltip = ({title, link, className}: TooltipData) => {
     return (
         <IconTooltip
@@ -20,13 +34,7 @@ export const HintTooltip = ({title, link, className}: TooltipData) => {
             }}
             className={classnames(css.tooltip, className)}
         >
-            {title}
-            {typeof title !== 'boolean' && title !== '' && <br />}
-            {link && (
-                <a href={link} target="_blank" rel="noopener noreferrer">
-                    {DOCUMENTATION_LINK_TEXT}
-                </a>
-            )}
+            <HintTooltipContent title={title} link={link} />
         </IconTooltip>
     )
 }
