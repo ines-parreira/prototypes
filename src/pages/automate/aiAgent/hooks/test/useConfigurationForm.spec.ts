@@ -467,7 +467,38 @@ describe('useConfigurationForm', () => {
         expect(mockDispatch).toHaveBeenCalled()
         expect(notify).toHaveBeenCalledWith(
             expect.objectContaining({
-                message: 'At least one channel must be toggled ON.',
+                message: 'At least one channel must be selected.',
+                status: 'error',
+            })
+        )
+    })
+
+    it('should throw error when there is no channel selected in wizard', async () => {
+        const {result} = renderHook(() =>
+            useConfigurationForm({
+                initValues: {
+                    ...INITIAL_FORM_VALUES,
+                    toneOfVoice: ToneOfVoice.Friendly,
+                    signature: 'Initial signature',
+                    wizard: {
+                        ...DEFAULT_WIZARD_FORM_VALUES,
+                        enabledChannels: [],
+                        completedDatetime: new Date().toISOString(),
+                    },
+                },
+                shopName,
+            })
+        )
+        await act(async () => {
+            await result.current.handleOnSave({
+                shopName: 'test shop',
+            })
+        })
+
+        expect(mockDispatch).toHaveBeenCalled()
+        expect(notify).toHaveBeenCalledWith(
+            expect.objectContaining({
+                message: 'At least one channel must be selected.',
                 status: 'error',
             })
         )

@@ -175,7 +175,7 @@ export const useConfigurationForm = ({
         const noSelectedChannelsMessage = !!formValues?.wizard
             ?.completedDatetime
             ? 'Please select at least 1 email address for AI Agent to use or disable AI Agent to proceed.'
-            : 'At least one channel must be toggled ON.'
+            : 'At least one channel must be selected.'
         if (isChatSupportEnabled) {
             // we must have at least one integration selected (email or chat)
             if (
@@ -204,7 +204,7 @@ export const useConfigurationForm = ({
                 AiAgentOnboardingWizardStep.Knowledge ||
                 formValues.wizard.completedDatetime !== null)
         ) {
-            throw new Error('At least one channel must be toggled ON.')
+            throw new Error('At least one channel must be selected.')
         }
 
         // we must have integration for selected channel

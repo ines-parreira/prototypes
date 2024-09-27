@@ -21,6 +21,7 @@ type Props = {
     classNameDescription?: string
     classNameImage?: string
     classNameSlideAction?: string
+    classNameActionIcon?: string
     onClose?: () => void
 }
 
@@ -33,6 +34,7 @@ const HeroImageCarousel = ({
     classNameDescription,
     classNameImage,
     classNameSlideAction,
+    classNameActionIcon,
     onClose,
 }: Props) => {
     const [currentSlide, setCurrentSlide] = useState(0)
@@ -126,6 +128,7 @@ const HeroImageCarousel = ({
                             className={classNames(
                                 'material-icons',
                                 css.actionIcon,
+                                classNameActionIcon,
                                 {
                                     [css.disabled]: currentSlide === 0,
                                 }
@@ -148,6 +151,7 @@ const HeroImageCarousel = ({
                             className={classNames(
                                 'material-icons',
                                 css.actionIcon,
+                                classNameActionIcon,
                                 {
                                     [css.disabled]:
                                         currentSlide === slides.length - 1,

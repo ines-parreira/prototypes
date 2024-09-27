@@ -65,7 +65,7 @@ const AIAgentMessage = ({
                     </i>
                 </div>
                 <div>
-                    <div>{greetings && `${greetings} ${CUSTOMER_NAME}`}</div>
+                    <div>{greetings && `${greetings} ${CUSTOMER_NAME},`}</div>
                     <div>
                         {greetings && <br />}
                         {showMessage && (

@@ -22,7 +22,7 @@ describe('TicketPreview', () => {
             />
         )
 
-        expect(screen.getByText('Hey Alex')).toBeInTheDocument()
+        expect(screen.getByText('Hey Alex,')).toBeInTheDocument()
         expect(
             screen.getByText(
                 "We totally get it—sometimes things just don't work out. You can return your items within 30 days of purchase for a full refund or exchange, as long as they're unused and in their original packaging."
@@ -44,7 +44,7 @@ describe('TicketPreview', () => {
             />
         )
 
-        expect(screen.getByText('Hi Alex')).toBeInTheDocument()
+        expect(screen.getByText('Hi Alex,')).toBeInTheDocument()
         expect(
             screen.getByText(
                 'We accept returns within 30 days of purchase for a full refund or exchange, provided the items are unused and in their original packaging.'
@@ -66,7 +66,7 @@ describe('TicketPreview', () => {
             />
         )
 
-        expect(screen.getByText('Dear Alex')).toBeInTheDocument()
+        expect(screen.getByText('Dear Alex,')).toBeInTheDocument()
         expect(
             screen.getByText(
                 'We are pleased to inform you that we accept returns within 30 days of purchase for a full refund or exchange, contingent upon the items being unused and in their original packaging.'

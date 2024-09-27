@@ -126,11 +126,12 @@ const PostCompletionWizardModal = () => {
                     <ModalBody className={css.content}>
                         <HeroImageCarousel
                             slides={modalParams.slidesData}
-                            width={606}
+                            width={638}
                             classNameHeader={css.carouselHeader}
                             classNameImage={css.carouselImage}
                             classNameDescription={css.carouselDescription}
                             classNameSlideAction={css.carouselSlideAction}
+                            classNameActionIcon={css.carouselActionIcon}
                             onClose={onClose}
                         />
                     </ModalBody>
