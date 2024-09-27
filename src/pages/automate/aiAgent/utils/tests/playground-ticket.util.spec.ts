@@ -14,12 +14,13 @@ const getMockTicketMessage = (
     meta: {},
     ...props,
 })
-describe('new-customer-playground util', () => {
+describe('playground-ticket util', () => {
     it('should create mock http payload', () => {
         const result = createMockHttpIntegrationPayload({
             body_text: 'test',
             subject: '',
             domain: 'test-gorgias',
+            from_agent: false,
             messages: [],
             created_datetime: '123',
             channel: 'email',
@@ -30,15 +31,39 @@ describe('new-customer-playground util', () => {
         expect(result).toMatchInlineSnapshot(`
             {
               "message": {
+                "attachments": [],
+                "body_html": "",
                 "body_text": "test",
                 "channel": "email",
                 "created_datetime": "123",
                 "from_agent": false,
-                "id": "233881",
-                "integration_id": "-1",
-                "intents": "[]",
+                "id": 233881,
+                "integration_id": -1,
+                "intents": [],
                 "meta": {},
-                "source": "{"from":{"address":"oliver.smith@foobar.com","name":"Oliver Smith"},"to":[{"address":"playground@gorgias.com","name":""}],"type":"email"}",
+                "sender": {
+                  "email": "oliver.smith@foobar.com",
+                  "firstname": "Oliver",
+                  "id": 601409,
+                  "lastname": "Smith",
+                  "meta": {
+                    "name_set_via": "shopify",
+                  },
+                  "name": "Oliver Smith",
+                },
+                "source": {
+                  "from": {
+                    "address": "oliver.smith@foobar.com",
+                    "name": "Oliver Smith",
+                  },
+                  "to": [
+                    {
+                      "address": "playground@gorgias.com",
+                      "name": "",
+                    },
+                  ],
+                  "type": "email",
+                },
                 "subject": "",
               },
               "ticket": {
@@ -86,6 +111,7 @@ describe('new-customer-playground util', () => {
             http_integration_id: -1,
             account_id: 1,
             customer_email: 'test@gorgias.com',
+            from_agent: true,
             customer: PLAYGROUND_CUSTOMER_MOCK,
         })
 
@@ -112,6 +138,7 @@ describe('new-customer-playground util', () => {
               "customer_email": "test@gorgias.com",
               "domain": "test-gorgias",
               "email_integration_id": -1,
+              "from_agent": true,
               "http_integration_id": -1,
               "messages": [
                 {
@@ -123,6 +150,7 @@ describe('new-customer-playground util', () => {
                   "from_agent": false,
                   "id": 233881,
                   "integration_id": -1,
+                  "intents": [],
                   "meta": {
                     "ai_agent_message_type": "ai_agent_greeting",
                   },
@@ -137,8 +165,6 @@ describe('new-customer-playground util', () => {
                     "name": "Oliver Smith",
                   },
                   "source": {
-                    "bcc": [],
-                    "cc": [],
                     "from": {
                       "address": "oliver.smith@foobar.com",
                       "name": "Oliver Smith",

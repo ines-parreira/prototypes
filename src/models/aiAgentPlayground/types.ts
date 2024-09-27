@@ -16,6 +16,7 @@ export type CreatePlaygroundBody = {
     use_mock_context: boolean
     customer: PlaygroundCustomer
     domain: string
+    from_agent: boolean
     customer_email: string
     body_text: string
     subject: string
@@ -37,6 +38,7 @@ export type MockTicketMessage = {
     attachments: []
     body_html: string
     body_text: string
+    intents: []
     created_datetime: string
     from_agent: boolean
     id: number
@@ -52,8 +54,6 @@ export type MockTicketMessage = {
         name: string
     }
     source: {
-        bcc: []
-        cc: []
         from: {
             address: string
             name: string
@@ -103,18 +103,7 @@ export type AiAgentInput = {
         messages: string
         created_datetime: string
     }
-    message: {
-        id: string
-        from_agent: boolean
-        source: string
-        channel: string
-        intents: string
-        subject: string
-        body_text: string
-        integration_id: string
-        created_datetime: string
-        meta: Record<string, string>
-    }
+    message: MockTicketMessage
 }
 
 export enum MessageType {

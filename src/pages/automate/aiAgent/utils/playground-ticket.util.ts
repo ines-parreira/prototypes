@@ -22,6 +22,7 @@ export type PlaygroundCustomer = {
 export type NewCustomerData = {
     customer: PlaygroundCustomer
     body_text: string
+    from_agent: boolean
     subject: string
     domain: string
     messages: CreatePlaygroundBody['messages']
@@ -50,6 +51,7 @@ const createMockTicketMessage = ({
     body_text,
     channel,
     created_datetime,
+    intents: [],
     from_agent,
     id: 233881,
     integration_id: PLAYGROUND_INTEGRATION_ID,
@@ -73,8 +75,6 @@ const createMockTicketMessage = ({
               name: CustomerHttpIntegrationDataMock.name,
           },
     source: {
-        bcc: [],
-        cc: [],
         from: from_agent
             ? {
                   address: 'bot',
@@ -105,31 +105,16 @@ export const createMockHttpIntegrationPayload = ({
     created_datetime,
     channel,
     customer,
+    from_agent,
 }: NewCustomerData): AiAgentInput => ({
-    message: {
-        body_text,
-        channel,
-        created_datetime,
-        from_agent: false,
-        id: '233881',
-        integration_id: String(PLAYGROUND_INTEGRATION_ID),
-        intents: '[]',
-        source: JSON.stringify({
-            from: {
-                address: CustomerHttpIntegrationDataMock.address,
-                name: CustomerHttpIntegrationDataMock.name,
-            },
-            to: [
-                {
-                    address: 'playground@gorgias.com',
-                    name: '',
-                },
-            ],
-            type: 'email',
-        }),
+    message: createMockTicketMessage({
+        body_text: body_text,
         subject,
+        created_datetime,
+        from_agent,
+        channel,
         meta,
-    },
+    }),
     ticket: {
         account: {
             domain,

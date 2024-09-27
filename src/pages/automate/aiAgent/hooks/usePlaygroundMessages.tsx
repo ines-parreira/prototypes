@@ -123,6 +123,7 @@ export const usePlaygroundMessages = ({
                         customer_email: customerEmail,
                         body_text: lastMessage.content,
                         created_datetime: lastMessage.createdDatetime,
+                        from_agent: lastMessage.sender === AI_AGENT_SENDER,
                         channel,
                         // TODO: Remove in https://linear.app/gorgias/issue/AUTAI-1418/update-mechanism-to-get-customer-data
                         email_integration_id: emailIntegration?.id,

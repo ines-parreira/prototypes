@@ -83,6 +83,7 @@ describe('usePlaygroundMessages hook', () => {
                 customer_email: 'oliver.smith@foobar.com',
                 domain: 'acme',
                 channel: 'email',
+                from_agent: true,
                 _playground_options: {
                     shopName: defaultParams.storeData.storeName,
                 },

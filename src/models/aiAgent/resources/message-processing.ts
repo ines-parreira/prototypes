@@ -73,6 +73,7 @@ export const createContextAndSubmitPlaygroundTicket = async (
                 channel: body.channel,
                 meta: body.meta,
                 customer: body.customer,
+                from_agent: body.from_agent,
             }),
         }
     } else {

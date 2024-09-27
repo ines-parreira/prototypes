@@ -14,6 +14,7 @@ export const AiAgentPlaygroundContainer = () => {
     return (
         <AiAgentLayout shopName={shopName} className={css.container}>
             <AiAgentPlaygroundView shopName={shopName} />
+
             <PostCompletionWizardModal />
         </AiAgentLayout>
     )
