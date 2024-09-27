@@ -195,6 +195,7 @@ export const AIAgentWelcomePageView = (props: Props) => {
                                         </a>
                                     ))}
                                 </div>
+                                <div data-candu-id="ai-agent-welcome-page"></div>
                             </>
                         )}
                     </div>
