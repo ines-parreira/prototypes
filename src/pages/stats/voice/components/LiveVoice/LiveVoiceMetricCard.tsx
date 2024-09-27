@@ -47,6 +47,7 @@ export default function LiveVoiceMetricCard({
                             metricName,
                             title,
                         }}
+                        enabled={!!value}
                         useNewFilterData
                     >
                         {metricValue}

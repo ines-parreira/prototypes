@@ -116,4 +116,22 @@ describe('LiveVoiceMetricCard', () => {
 
         expect(DrillDownModalTriggerMock).not.toHaveBeenCalled()
     })
+
+    it('renders the DrillDownModalTrigger with enabled=false when value is not provided', () => {
+        const props = {
+            title: 'Test Title',
+            hint: 'Test Hint',
+            isLoading: false,
+            metricName: 'Test Metric',
+        }
+
+        renderComponent(props)
+
+        expect(DrillDownModalTriggerMock).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                enabled: false,
+            }),
+            {}
+        )
+    })
 })
