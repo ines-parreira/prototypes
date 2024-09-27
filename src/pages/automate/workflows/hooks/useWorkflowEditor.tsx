@@ -136,7 +136,10 @@ export function useWorkflowEditor(
         useUpsertWorkflowConfiguration()
 
     const {data: remoteConfiguration, isInitialLoading: isFetchPending} =
-        useGetWorkflowConfiguration(workflowId, {enabled: !isNew})
+        useGetWorkflowConfiguration(workflowId, {
+            enabled: !isNew,
+            refetchOnMount: 'always',
+        })
 
     const [isSavePending, setIsSavePending] = useState(false)
     const [isPublishPending, setIsPublishPending] = useState(false)
@@ -207,6 +210,15 @@ export function useWorkflowEditor(
     }, [isFlowPublishingInChannels, visualBuilderGraphDirty.nodeEditingId])
 
     useEffect(() => {
+        if (!isNew && remoteConfiguration) {
+            setCurrentLanguage(
+                remoteConfiguration.available_languages[0] ?? 'en-US'
+            )
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [remoteConfiguration?.id, setCurrentLanguage, isNew])
+
+    useEffect(() => {
         if (!remoteConfiguration) {
             return
         }
@@ -234,7 +246,6 @@ export function useWorkflowEditor(
                 configuration
             ),
         })
-        setCurrentLanguage(configuration.available_languages[0] ?? 'en-US')
         setVisualBuilderGraph(
             computeNodesPositions(
                 transformWorkflowConfigurationIntoVisualBuilderGraph(
@@ -242,12 +253,7 @@ export function useWorkflowEditor(
                 )
             )
         )
-    }, [
-        remoteConfiguration,
-        dispatch,
-        setCurrentLanguage,
-        storeIntegration.type,
-    ])
+    }, [dispatch, remoteConfiguration, storeIntegration.type])
 
     const isVisualBuilderGraphDirty = useMemo(
         () =>

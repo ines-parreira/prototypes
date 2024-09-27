@@ -85,6 +85,7 @@ describe('useWorkflowEditor()', () => {
         )
 
         expect(result.current.configuration.is_draft).toBe(true)
+        expect(result.current.currentLanguage).toBe('en-US')
     })
 
     it('should be a draft when saved but not published', async () => {
@@ -160,6 +161,7 @@ describe('useWorkflowEditor()', () => {
 
         await waitForNextUpdate()
         expect(result.current.configuration.is_draft).toBe(true)
+        expect(result.current.currentLanguage).toBe('en-US')
 
         await act(async () => {
             await result.current.handlePublish()
@@ -174,7 +176,7 @@ describe('useWorkflowEditor()', () => {
         expect(result.current.configuration.is_draft).toBe(false)
     })
 
-    it('should reflect changes on workflow name', async () => {
+    it('should reflect changes on workflow name and language', async () => {
         let configuration: WorkflowConfiguration = {
             id: 'a',
             internal_id: 'int-a',
@@ -213,7 +215,7 @@ describe('useWorkflowEditor()', () => {
                     to_step_id: 'handover1',
                 },
             ],
-            available_languages: ['en-US'],
+            available_languages: ['en-US', 'it-IT'],
         }
 
         mockUseGetWorkflowConfiguration.mockReturnValue({
@@ -258,12 +260,14 @@ describe('useWorkflowEditor()', () => {
 
         mockUseGetWorkflowConfiguration.mockReturnValue({
             isInitialLoading: false,
+            isFetched: true,
             data: configuration,
         } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
         await waitForNextUpdate()
         expect(result.current.isSavePending).toBe(false)
         expect(result.current.isDirty).toBe(false)
+        expect(result.current.currentLanguage).toBe('en-US')
 
         act(() => {
             result.current.dispatch({type: 'SET_NAME', name: 'updated'})
@@ -277,5 +281,82 @@ describe('useWorkflowEditor()', () => {
 
         expect(result.current.isDirty).toBe(false)
         expect(result.current.visualBuilderGraph.name).toBe('local name')
+    })
+
+    it('should keep selected language after saving configuration', async () => {
+        let configuration: WorkflowConfiguration = {
+            id: 'a',
+            internal_id: 'int-a',
+            is_draft: true,
+            name: 'remote name',
+            initial_step_id: 'message1',
+            entrypoint: {
+                label: 'entrypoint',
+                label_tkey: 'entrypoint',
+            },
+            steps: [
+                {
+                    id: 'message1',
+                    kind: 'message',
+                    settings: {
+                        message: {
+                            content: {
+                                text: 'Hello',
+                                html: '<p>Hello</p>',
+                                text_tkey: 'Hello',
+                                html_tkey: '<p>Hello</p>',
+                            },
+                        },
+                    },
+                },
+                {
+                    id: 'handover1',
+                    kind: 'handover',
+                    settings: {},
+                },
+            ],
+            transitions: [
+                {
+                    id: 'message1-handover1',
+                    from_step_id: 'message1',
+                    to_step_id: 'handover1',
+                },
+            ],
+            available_languages: ['de-DE', 'pt-BR'],
+        }
+
+        mockUseGetWorkflowConfiguration.mockReturnValue({
+            isInitialLoading: false,
+            data: configuration,
+        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+
+        mockUseUpsertWorkflowConfiguration.mockReturnValue({
+            mutateAsync: jest.fn().mockImplementation(([, {is_draft}]) => {
+                configuration = produce(configuration, (draft) => {
+                    draft.is_draft = is_draft
+                })
+
+                return {data: configuration}
+            }),
+        } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
+
+        const {result, waitForNextUpdate} = renderHookWithQueryClientProvider(
+            () => useWorkflowEditor(configuration.id, false)
+        )
+        await waitForNextUpdate()
+        expect(result.current.currentLanguage).toBe('de-DE')
+
+        await act(async () => {
+            result.current.switchLanguage('pt-BR')
+            await result.current.handleSave()
+        })
+
+        mockUseGetWorkflowConfiguration.mockReturnValue({
+            isInitialLoading: false,
+            data: configuration,
+        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+
+        await waitForNextUpdate()
+        expect(result.current.currentLanguage).toBe('pt-BR')
     })
 })
