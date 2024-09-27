@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react'
 import {Label} from 'reactstrap'
-import {StepProps} from 'pages/convert/campaigns/components/ContactForm/types'
+import {StepProps} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import InputField from 'pages/common/forms/input/InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import CheckBox from 'pages/common/forms/CheckBox'

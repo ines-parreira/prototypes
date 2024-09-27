@@ -6,13 +6,14 @@ import userEvent from '@testing-library/user-event'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {Provider} from 'react-redux'
 
-import ContactForm from 'pages/convert/campaigns/components/ContactForm/ContactFormWrapper'
+import AddContactCaptureForm from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import useListTags from 'tags/useListTags'
 import {user} from 'fixtures/users'
 import {UserRole} from 'config/types/user'
-import {Customisation} from 'pages/convert/campaigns/components/ContactForm/steps/Customisation'
-import {PostSubmissionMessage} from 'pages/convert/campaigns/components/ContactForm/steps/PostSubmissionMessage'
+import {Customisation} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customisation'
+import {PostSubmissionMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage'
+import {ContactFormCaptureFormIconButton} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
 
 jest.mock('tags/useListTags')
 const mockStore = configureMockStore()
@@ -38,7 +39,7 @@ describe('ContactForm test suite', () => {
         const mockOnReset = jest.fn()
         const {getByText} = render(
             <Provider store={store}>
-                <ContactForm
+                <AddContactCaptureForm
                     open
                     onOpenChange={() => {}}
                     onCancel={mockOnCancel}
@@ -91,7 +92,7 @@ describe('ContactForm test suite', () => {
         const {getByText, getByPlaceholderText} = render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
-                    <ContactForm
+                    <AddContactCaptureForm
                         open
                         onOpenChange={() => {}}
                         onCancel={jest.fn()}
@@ -224,5 +225,34 @@ describe('ContactForm test suite', () => {
         const toggleInput = getByText('Thank you message')
         act(() => toggleInput.click())
         expect(state.postSubmissionMessage.enabled).toBeTruthy()
+    })
+
+    it('should close when the collapse is called', () => {
+        const mockOnOpenChange = jest.fn()
+        const {getByText} = render(
+            <Provider store={store}>
+                <AddContactCaptureForm
+                    open
+                    onOpenChange={mockOnOpenChange}
+                    onCancel={jest.fn()}
+                    onSubmit={jest.fn()}
+                    onReset={jest.fn()}
+                />
+            </Provider>
+        )
+        act(() => getByText('keyboard_tab').click())
+        expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+    })
+
+    it('should open when the toolbar icon is clicked', () => {
+        const mockOnOpenChange = jest.fn()
+        const {getByText} = render(
+            <ContactFormCaptureFormIconButton
+                onOpenChange={mockOnOpenChange}
+                isDisabled={false}
+            />
+        )
+        act(() => getByText('wysiwyg').click())
+        expect(mockOnOpenChange).toHaveBeenCalledWith(true)
     })
 })

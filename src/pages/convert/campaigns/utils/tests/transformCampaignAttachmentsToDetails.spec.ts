@@ -5,6 +5,7 @@ import {
     campaignProductAttachment,
     campaignProductRecommendationAttachment,
 } from 'fixtures/campaign'
+import {sampleContactFormAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/tests/fixtures'
 
 describe('transformCampaignAttachmentsToDetails', () => {
     it('should transform product attachment', () => {
@@ -60,5 +61,15 @@ describe('transformCampaignAttachmentsToDetails', () => {
                 },
             },
         ])
+    })
+
+    it('should transform contact form attachment', () => {
+        const jsAttachment = sampleContactFormAttachment.toJS()
+        const attachments = [jsAttachment]
+        const {contentType: __, ...expected} = jsAttachment
+        const result = transformCampaignAttachmentsToDetails(attachments)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        expected.content_type = AttachmentEnum.ContactForm
+        expect(result[0]).toMatchObject(expected)
     })
 })

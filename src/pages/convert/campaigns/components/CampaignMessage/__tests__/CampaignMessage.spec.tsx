@@ -22,6 +22,7 @@ import {CampaignMessage} from '../CampaignMessage'
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('pages/convert/common/hooks/useUtmFlag')
+jest.mock('pages/convert/common/hooks/useContactFormFlag')
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {

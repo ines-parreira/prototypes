@@ -14,7 +14,10 @@ import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule
 import {transformProductToAttachment} from 'pages/convert/campaigns/utils/transformProductToAttachment'
 import {transformDiscountOfferToAttachment} from 'pages/convert/campaigns/utils/transformDiscountOfferToAttachment'
 import {replaceUrlsWithUtmUrl} from 'pages/convert/campaigns/utils/attachUtmParams'
-import {CampaignProductRecommendation} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {
+    CampaignContactFormAttachment,
+    CampaignProductRecommendation,
+} from 'pages/convert/campaigns/types/CampaignAttachment'
 
 type CreateCampaignPayloadType = {
     campaignData: Campaign
@@ -24,6 +27,7 @@ type CreateCampaignPayloadType = {
     shopifyProducts: CampaignProduct[]
     discountOffers: CampaignDiscountOffer[]
     productRecommendations: CampaignProductRecommendation[]
+    contactForm: CampaignContactFormAttachment[]
     shopifyIntegration: Map<any, any>
     canChangeStatus: boolean
     isActive: boolean
@@ -39,6 +43,7 @@ export const createCampaignPayload = ({
     shopifyProducts = [],
     discountOffers = [],
     productRecommendations = [],
+    contactForm = [],
     chatMultiLanguagesEnabled = true,
     isConvertSubscriber = false,
     canChangeStatus = false,
@@ -67,7 +72,7 @@ export const createCampaignPayload = ({
             delete draft.language
         }
 
-        draft.attachments = [...productRecommendations]
+        draft.attachments = [...productRecommendations, ...contactForm]
 
         if (discountOffers.length > 0) {
             const discountOfferAttachment = transformDiscountOfferToAttachment(

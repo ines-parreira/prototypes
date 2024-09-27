@@ -345,7 +345,7 @@ describe('ABGroupView', () => {
             campaignId: campaignWithABGroup.id,
         })
 
-        const {getByRole} = renderComponent(
+        const {getAllByRole} = renderComponent(
             {
                 campaign: campaignWithABGroup,
                 integrationId: integrationId,
@@ -353,7 +353,7 @@ describe('ABGroupView', () => {
             abVariantAddUrl(integrationId, campaignWithABGroup.id)
         )
 
-        const cancelBtn = getByRole('button', {name: 'Cancel'})
+        const cancelBtn = getAllByRole('button', {name: 'Cancel'})[0]
         expect(cancelBtn).toBeInTheDocument()
 
         act(() => {

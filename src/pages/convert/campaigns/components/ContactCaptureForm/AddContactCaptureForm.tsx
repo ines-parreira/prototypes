@@ -1,31 +1,34 @@
 import React, {useContext, useMemo, useState} from 'react'
 
 import {Button} from 'reactstrap'
-import css from 'pages/convert/campaigns/components/ContactForm/ContactFormWrapper.less'
+import css from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm.less'
 import Wizard, {
     WizardContext,
     WizardContextState,
 } from 'pages/common/components/wizard/Wizard'
 import {Drawer} from 'pages/common/components/Drawer'
-import {STEPS} from 'pages/convert/campaigns/components/ContactForm/steps'
+import {STEPS} from 'pages/convert/campaigns/components/ContactCaptureForm/steps'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import EditorDrawerHeader from 'pages/automate/workflows/editor/visualBuilder/EditorDrawerHeader'
-import {TransitoryAttachmentData} from 'pages/convert/campaigns/components/ContactForm/types'
+import {TransitoryAttachmentData} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
+import {transformTransitoryToAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
 
-type ContactFormWrapperProps = {
+type AddContactCaptureFormProps = {
     open: boolean
     onOpenChange: (openState: boolean) => void
-    onSubmit?: () => void
+    onSubmit?: (newAttachmentExtra: CampaignFormExtra) => void
     onCancel?: () => void
     onReset?: () => void
+    buttonDisabled?: boolean
 }
 
-type ContactFormProps = {
+type AddContactCaptureFormInnerProps = {
     steps: typeof STEPS
-} & ContactFormWrapperProps
+} & AddContactCaptureFormProps
 
-const ContactForm = (props: ContactFormProps) => {
+const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
     const [data, setData] = useState<TransitoryAttachmentData>({
         subscriberTypes: {
             shopify: {
@@ -60,8 +63,8 @@ const ContactForm = (props: ContactFormProps) => {
     }
 
     const handleSubmit = () => {
+        if (onSubmit) onSubmit(transformTransitoryToAttachment(data))
         onOpenChange(false)
-        if (onSubmit) onSubmit()
     }
 
     const handleReset = () => {
@@ -97,14 +100,17 @@ const ContactForm = (props: ContactFormProps) => {
 
     return (
         <Drawer
-            name="Contact Form"
+            name="Email Capture"
             fullscreen={false}
             open={open}
             isLoading={false}
             className={css.contactWizardDrawer}
+            onBackdropClick={() => onOpenChange(!open)}
+            portalRootId="app-root"
+            containerZIndices={[1051, -1]}
         >
             <EditorDrawerHeader
-                label="Contact Form"
+                label="Email Capture"
                 onClose={handleCancel}
                 testId="drawer-header"
                 headerSaperator
@@ -154,10 +160,12 @@ const ContactForm = (props: ContactFormProps) => {
     )
 }
 
-const ConctactFromWrapper = (props: ContactFormWrapperProps) => (
-    <Wizard steps={STEPS.map((step) => step.label)}>
-        <ContactForm {...props} steps={STEPS} />
-    </Wizard>
+const AddContactCaptureForm = (props: AddContactCaptureFormProps) => (
+    <>
+        <Wizard steps={STEPS.map((step) => step.label)}>
+            <AddContactCaptureInnerForm {...props} steps={STEPS} />
+        </Wizard>
+    </>
 )
 
-export default ConctactFromWrapper
+export default AddContactCaptureForm

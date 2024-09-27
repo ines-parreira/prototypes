@@ -5,7 +5,7 @@ import {
     StepProps,
     TransitoryAttachmentData,
     TransitoryAttachmentSubscriber,
-} from 'pages/convert/campaigns/components/ContactForm/types'
+} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import {getIconFromType} from 'state/integrations/helpers'
 import {IntegrationType} from 'models/integration/constants'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'

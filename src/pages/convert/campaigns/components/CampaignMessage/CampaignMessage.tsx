@@ -3,6 +3,7 @@ import classnames from 'classnames'
 
 import {EditorState} from 'draft-js'
 
+import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import {UploadType} from 'common/types'
 import {User} from 'config/types/user'
 import {AgentLabel} from 'pages/common/utils/labels'
@@ -31,11 +32,18 @@ import {
     attachmentIsProduct,
     attachmentIsProductRecommendation,
     AttachmentType,
+    CampaignFormExtra,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {useAreConvertLLMProductRecommendationsEnabled} from 'pages/convert/common/hooks/useAreConvertLLMProductRecommendationsEnabled'
 import useCanAddUtm from 'pages/convert/common/hooks/useUtmFlag'
 import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
+import useCanAddContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
+import AddContactCaptureForm from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm'
+import {handleContactFormSubmitted} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {getTicketState} from 'state/ticket/selectors'
+import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import css from './CampaignMessage.less'
 
 type Props = {
@@ -66,6 +74,8 @@ export const CampaignMessage = memo(
         onChangeMessage,
         onDeleteAttachment,
     }: Props): JSX.Element => {
+        const dispatch = useAppDispatch()
+        const ticket = useAppSelector(getTicketState)
         const {shopifyIntegration} = useIntegrationContext()
         const {getStepConfiguration, getTourConfiguration} =
             useCampaignFormContext()
@@ -201,6 +211,11 @@ export const CampaignMessage = memo(
             attachments,
             shopifyIntegration?.id,
         ])
+        const {campaign} = useCampaignDetailsContext()
+        const canAddContactForm =
+            useCanAddContactFormFlag() &&
+            !campaign.is_light &&
+            isConvertSubscriber
 
         const displayedActions = useMemo(() => {
             const actions = [
@@ -211,6 +226,10 @@ export const CampaignMessage = memo(
                 ActionName.Image,
                 ActionName.Emoji,
             ]
+
+            if (canAddContactForm) {
+                actions.push(ActionName.ContactCaptureForm)
+            }
 
             if (isConvertSubscriber) {
                 actions.push(ActionName.DiscountCodePicker)
@@ -229,9 +248,31 @@ export const CampaignMessage = memo(
             actions.push(ActionName.Video)
 
             return actions
-        }, [attachments, anyProductRecommendationAttached, isConvertSubscriber])
+        }, [
+            attachments,
+            anyProductRecommendationAttached,
+            isConvertSubscriber,
+            canAddContactForm,
+        ])
 
         const canAddUtm = useCanAddUtm(isConvertSubscriber)
+        const contactFormButtonEnabled = useMemo(() => {
+            return (
+                transformAttachmentsToContactCaptureForms(attachments)
+                    .length === 0
+            )
+        }, [attachments])
+        const [isContactFormOpen, onContactFormOpenChange] = useState(false)
+        const onContactFormSubmit = (newAttachmentExtra: CampaignFormExtra) => {
+            handleContactFormSubmitted(
+                dispatch,
+                attachments,
+                newAttachmentExtra,
+                ticket,
+                false
+            )
+        }
+
         return (
             <div>
                 {showAgentSelector && (
@@ -276,6 +317,13 @@ export const CampaignMessage = memo(
                     </div>
                 )}
 
+                <AddContactCaptureForm
+                    open={isContactFormOpen}
+                    onOpenChange={onContactFormOpenChange}
+                    onSubmit={onContactFormSubmit}
+                    buttonDisabled={!contactFormButtonEnabled}
+                />
+
                 <div className={css.textEditorWrapper}>
                     <TicketRichField
                         ref={(ref) => richAreaRef(ref)}
@@ -300,6 +348,8 @@ export const CampaignMessage = memo(
                         currentShopifyIntegration={shopifyIntegration}
                         sortAttachments={true}
                         canAddUtm={canAddUtm}
+                        contactFormButtonEnabled={contactFormButtonEnabled}
+                        onContactFormOpenChange={onContactFormOpenChange}
                         placementType={RichFieldEditorPlacement.ConvertDetail}
                     />
                     <TicketAttachments

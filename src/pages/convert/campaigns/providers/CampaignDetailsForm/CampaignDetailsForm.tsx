@@ -50,11 +50,15 @@ import {createCampaignPayload} from 'pages/convert/campaigns/utils/createCampaig
 
 import {useIsConvertScheduleCampaignEnabled} from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
-import {CampaignProductRecommendation} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {
+    CampaignContactFormAttachment,
+    CampaignProductRecommendation,
+} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import useCanAddUtm from 'pages/convert/common/hooks/useUtmFlag'
+import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
 
 import {usePristineSteps} from '../../hooks/usePristineSteps'
@@ -312,6 +316,10 @@ export const CampaignDetailsForm = ({
         return transformAttachmentsToProductRecommendations(attachments)
     }, [attachments])
 
+    const contactForm = useMemo<CampaignContactFormAttachment[]>(() => {
+        return transformAttachmentsToContactCaptureForms(attachments)
+    }, [attachments])
+
     const productRecommendationScenario = useMemo(() => {
         return productRecommendations.length > 0
             ? productRecommendations[0].extra.scenario
@@ -461,6 +469,7 @@ export const CampaignDetailsForm = ({
                 shopifyProducts: shopifyProducts,
                 discountOffers: discountOffers,
                 productRecommendations: productRecommendations,
+                contactForm: contactForm,
                 // When we display ability to schedule campaign,
                 // we should have ability to decide whether we can activate campaign or not
                 canChangeStatus:

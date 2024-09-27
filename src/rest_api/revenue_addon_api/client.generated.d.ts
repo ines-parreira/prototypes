@@ -307,30 +307,44 @@ declare namespace Components {
          */
         export interface CampaignAttachmentVisitorFormExtraSchemaInput {
             /**
-             * Fields
+             * Steps
              */
-            fields: VisitorFormFieldsSchema[]
-            after_form_content: VisitorFormAfterContentSchema
-            on_success_content: VisitorFormOnSuccessContentSchemaInput
+            steps: VisitorFormStepSchemaInput[]
+            on_success_content?: VisitorFormOnSuccessContentSchema | null
             /**
              * Targets
              */
             targets: VisitorFormTargetsSchema[]
+            /**
+             * Disclaimer
+             */
+            disclaimer?: string | null
+            /**
+             * Disclaimer Default Accepted
+             */
+            disclaimer_default_accepted?: boolean
         }
         /**
          * CampaignAttachmentVisitorFormExtraSchema
          */
         export interface CampaignAttachmentVisitorFormExtraSchemaOutput {
             /**
-             * Fields
+             * Steps
              */
-            fields: VisitorFormFieldsSchema[]
-            after_form_content: VisitorFormAfterContentSchema
-            on_success_content: VisitorFormOnSuccessContentSchemaOutput
+            steps: VisitorFormStepSchemaOutput[]
+            on_success_content?: VisitorFormOnSuccessContentSchema | null
             /**
              * Targets
              */
             targets: VisitorFormTargetsSchema[]
+            /**
+             * Disclaimer
+             */
+            disclaimer?: string | null
+            /**
+             * Disclaimer Default Accepted
+             */
+            disclaimer_default_accepted?: boolean
         }
         /**
          * CampaignAttachmentVisitorFormSchema
@@ -500,8 +514,8 @@ declare namespace Components {
          */
         export type CampaignPublishType =
             | 'publish_now'
-            | 'publish_later'
             | 'schedule'
+            | 'publish_later'
         /**
          * CampaignResponseSchema
          */
@@ -834,15 +848,19 @@ declare namespace Components {
          */
         export type ChannelType = 'widget'
         /**
-         * ConfigSchema
+         * ConfigResponseSchema
          */
-        export interface ConfigSchema {
+        export interface ConfigResponseSchema {
             subscription: SubscriptionStatusSchema
             /**
              * Campaigns
              */
             campaigns: PublicCampaignResponseSchema[]
             ab_test?: ABTestConfigurationResponseSchema | null
+            /**
+             * Id
+             */
+            id: string
         }
         /**
          * CustomDomainOperationSchema
@@ -1218,7 +1236,11 @@ declare namespace Components {
             /**
              * Shop Name
              */
-            shop_name: string
+            shop_name?: string | null
+            /**
+             * Installation Id
+             */
+            installation_id?: string | null
             /**
              * Widget App Id
              */
@@ -1785,19 +1807,6 @@ declare namespace Components {
             type: string
         }
         /**
-         * VisitorFormAfterContentSchema
-         */
-        export interface VisitorFormAfterContentSchema {
-            /**
-             * Cta
-             */
-            cta: string
-            /**
-             * Disclaimer
-             */
-            disclaimer: string
-        }
-        /**
          * VisitorFormFieldName
          */
         export type VisitorFormFieldName =
@@ -1817,7 +1826,7 @@ declare namespace Components {
             /**
              * Label
              */
-            label: string
+            label?: string | null
             type: VisitorFormFieldType
             /**
              * Required
@@ -1827,28 +1836,78 @@ declare namespace Components {
         /**
          * VisitorFormOnSuccessContentSchema
          */
-        export interface VisitorFormOnSuccessContentSchemaInput {
+        export interface VisitorFormOnSuccessContentSchema {
             /**
              * Message
              */
-            message: string
-            /**
-             * Attachments
-             */
-            attachments: CampaignAttachmentDiscountOfferSchema[]
+            message?: string | null
         }
         /**
-         * VisitorFormOnSuccessContentSchema
+         * VisitorFormStepSchema
          */
-        export interface VisitorFormOnSuccessContentSchemaOutput {
+        export interface VisitorFormStepSchemaInput {
             /**
-             * Message
+             * Cta
              */
-            message: string
+            cta?: string | null
             /**
-             * Attachments
+             * Fields
              */
-            attachments: CampaignAttachmentDiscountOfferSchema[]
+            fields: VisitorFormFieldsSchema[]
+        }
+        /**
+         * VisitorFormStepSchema
+         */
+        export interface VisitorFormStepSchemaOutput {
+            /**
+             * Cta
+             */
+            cta?: string | null
+            /**
+             * Fields
+             */
+            fields: VisitorFormFieldsSchema[]
+        }
+        /**
+         * VisitorFormSubmissionSchema
+         */
+        export interface VisitorFormSubmissionSchema {
+            /**
+             * First Name
+             */
+            first_name?: string | null
+            /**
+             * Last Name
+             */
+            last_name?: string | null
+            /**
+             * Phone
+             */
+            phone?: string /* phone */ | null
+            /**
+             * Email
+             */
+            email?: string /* email */ | null
+            /**
+             * Campaign Id
+             */
+            campaign_id: string
+            /**
+             * Shop Name
+             */
+            shop_name: string
+            /**
+             * Guest Id
+             */
+            guest_id?: string | null
+            /**
+             * Session Id
+             */
+            session_id?: string | null
+            /**
+             * Ab Variant
+             */
+            ab_variant?: string | null
         }
         /**
          * VisitorFormSubscriberType
@@ -2184,47 +2243,47 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
-    namespace GetConfigAssistantConfigsRevenue_RevenueId_Get {
+    namespace GetConfigAssistantConfigsRevenue_InstallationId_Get {
         namespace Parameters {
             /**
-             * Revenue Id
+             * Installation Id
              */
-            export type RevenueId = string
+            export type InstallationId = string
             /**
              * Widget-App-Id
              */
             export type WidgetAppId = string | null
         }
         export interface PathParameters {
-            revenue_id: Parameters.RevenueId
+            installation_id: Parameters.InstallationId
         }
         export interface QueryParameters {
             'widget-app-id'?: Parameters.WidgetAppId
         }
         namespace Responses {
-            export type $200 = Components.Schemas.ConfigSchema
+            export type $200 = Components.Schemas.ConfigResponseSchema
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
     namespace GetConfigByRevenueId {
         namespace Parameters {
             /**
-             * Revenue Id
+             * Installation Id
              */
-            export type RevenueId = string
+            export type InstallationId = string
             /**
              * Widget-App-Id
              */
             export type WidgetAppId = string | null
         }
         export interface PathParameters {
-            revenue_id: Parameters.RevenueId
+            installation_id: Parameters.InstallationId
         }
         export interface QueryParameters {
             'widget-app-id'?: Parameters.WidgetAppId
         }
         namespace Responses {
-            export type $200 = Components.Schemas.ConfigSchema
+            export type $200 = Components.Schemas.ConfigResponseSchema
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -2246,7 +2305,7 @@ declare namespace Paths {
             'widget-app-id'?: Parameters.WidgetAppId
         }
         namespace Responses {
-            export type $200 = Components.Schemas.ConfigSchema
+            export type $200 = Components.Schemas.ConfigResponseSchema
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -2558,6 +2617,22 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace SubmitContactForm {
+        namespace Parameters {
+            /**
+             * Revenue Id
+             */
+            export type RevenueId = string
+        }
+        export interface PathParameters {
+            revenue_id: Parameters.RevenueId
+        }
+        export type RequestBody = Components.Schemas.VisitorFormSubmissionSchema
+        namespace Responses {
+            export type $202 = any
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace UpdateAutoUpgradeFlag {
         export type RequestBody = Components.Schemas.UpdateAutoUpgradeSchema
         namespace Responses {
@@ -2637,18 +2712,18 @@ export interface OperationMethods {
         | Paths.EvaluateCampaignRules.Responses.$422
     >
     /**
-     * get_config_assistant_configs_revenue__revenue_id__get - Get Config
+     * get_config_assistant_configs_revenue__installation_id__get - Get Config
      */
-    'get_config_assistant_configs_revenue__revenue_id__get'(
+    'get_config_assistant_configs_revenue__installation_id__get'(
         parameters?: Parameters<
-            Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.PathParameters &
-                Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.QueryParameters
+            Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.PathParameters &
+                Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.QueryParameters
         > | null,
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<
-        | Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.Responses.$200
-        | Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.Responses.$422
+        | Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.Responses.$200
+        | Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.Responses.$422
     >
     /**
      * get_config_by_revenue_id - Get Config
@@ -2710,6 +2785,17 @@ export interface OperationMethods {
     ): OperationResponse<
         | Paths.RecommendationsProduct.Responses.$200
         | Paths.RecommendationsProduct.Responses.$422
+    >
+    /**
+     * submit_contact_form - Submit Contact Form
+     */
+    'submit_contact_form'(
+        parameters?: Parameters<Paths.SubmitContactForm.PathParameters> | null,
+        data?: Paths.SubmitContactForm.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.SubmitContactForm.Responses.$202
+        | Paths.SubmitContactForm.Responses.$422
     >
     /**
      * get_discount_offers - Get Discount Offers
@@ -3213,23 +3299,23 @@ export interface PathsDictionary {
             | Paths.EvaluateCampaignRules.Responses.$422
         >
     }
-    ['/assistant/configs/revenue/{revenue_id}']: {
+    ['/assistant/configs/revenue/{installation_id}']: {
         /**
-         * get_config_assistant_configs_revenue__revenue_id__get - Get Config
+         * get_config_assistant_configs_revenue__installation_id__get - Get Config
          */
         'get'(
             parameters?: Parameters<
-                Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.PathParameters &
-                    Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.QueryParameters
+                Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.PathParameters &
+                    Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.QueryParameters
             > | null,
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<
-            | Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.Responses.$200
-            | Paths.GetConfigAssistantConfigsRevenue_RevenueId_Get.Responses.$422
+            | Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.Responses.$200
+            | Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.Responses.$422
         >
     }
-    ['/assistant/configs/{revenue_id}']: {
+    ['/assistant/configs/{installation_id}']: {
         /**
          * get_config_by_revenue_id - Get Config
          */
@@ -3298,6 +3384,19 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.RecommendationsProduct.Responses.$200
             | Paths.RecommendationsProduct.Responses.$422
+        >
+    }
+    ['/assistant/contact-form/{revenue_id}']: {
+        /**
+         * submit_contact_form - Submit Contact Form
+         */
+        'post'(
+            parameters?: Parameters<Paths.SubmitContactForm.PathParameters> | null,
+            data?: Paths.SubmitContactForm.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.SubmitContactForm.Responses.$202
+            | Paths.SubmitContactForm.Responses.$422
         >
     }
     ['/discount-offers']: {

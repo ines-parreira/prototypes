@@ -46,6 +46,8 @@ type Props = {
     sortAttachments?: boolean
     currentShopifyIntegration?: ShopifyIntegration
     placementType?: RichFieldEditorPlacement
+    onContactFormOpenChange?: (value: boolean) => void
+    contactFormButtonEnabled?: boolean
 } & RichFieldProps
 
 const getShopifyIntegrations = getIntegrationsByType(IntegrationType.Shopify)
@@ -63,6 +65,8 @@ const TicketRichField = (
         toolbarTour,
         currentShopifyIntegration,
         placementType = undefined,
+        onContactFormOpenChange,
+        contactFormButtonEnabled,
         ...props
     }: Props,
     ref: ForwardedRef<RichField>
@@ -179,6 +183,8 @@ const TicketRichField = (
             },
             shopifyIntegrations: fromJS(shopifyIntegrations),
             currentShopifyIntegration: currentShopifyIntegration,
+            onContactFormOpenChange: onContactFormOpenChange,
+            contactFormButtonEnabled: contactFormButtonEnabled,
         }),
         [
             disableOutOfStockProducts,
@@ -198,6 +204,8 @@ const TicketRichField = (
             canAddUtm,
             sortAttachments,
             placementType,
+            onContactFormOpenChange,
+            contactFormButtonEnabled,
         ]
     )
 

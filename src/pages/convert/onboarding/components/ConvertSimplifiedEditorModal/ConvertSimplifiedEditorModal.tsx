@@ -49,13 +49,17 @@ import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
 import {GorgiasChatIntegration} from 'models/integration/types'
-import {CampaignProductRecommendation} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {
+    CampaignContactFormAttachment,
+    CampaignProductRecommendation,
+} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
 
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
 import useCanAddUtm from 'pages/convert/common/hooks/useUtmFlag'
+import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import css from './ConvertSimplifiedEditorModal.less'
 
 type Props = {
@@ -173,6 +177,11 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
         return transformAttachmentsToProductRecommendations(attachments)
     }, [attachments])
 
+    const contactForm = useMemo<CampaignContactFormAttachment[]>(
+        () => transformAttachmentsToContactCaptureForms(attachments),
+        [attachments]
+    )
+
     const productRecommendationScenario = useMemo(() => {
         return productRecommendations.length > 0
             ? productRecommendations[0].extra.scenario
@@ -212,6 +221,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
             shopifyProducts: shopifyProducts,
             discountOffers: discountOffers,
             productRecommendations: productRecommendations,
+            contactForm: contactForm,
             isActive: activate,
             canChangeStatus: !campaign?.id,
             canAddUtm: canAddUtm,

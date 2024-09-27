@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {StepProps} from 'pages/convert/campaigns/components/ContactForm/types'
+import {StepProps} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {UploadType} from 'common/types'

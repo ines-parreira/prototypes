@@ -28,6 +28,7 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import CampaignDetailsFactory from '../CampaignDetailsFactory'
 
 jest.mock('pages/convert/common/hooks/useUtmFlag')
+jest.mock('pages/convert/common/hooks/useContactFormFlag')
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
     return jest.fn(() => {
         return <div data-testid="mock-convert-subscription-modal" />

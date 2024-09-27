@@ -11,6 +11,7 @@ import {proxifyURL, replaceAttachmentURL} from 'utils'
 
 import {DiscountOfferTicketAttachment} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/DiscountOfferTicketAttachment'
 import {AttachmentEnum} from 'common/types'
+import {ContactFormAttachmentContainer} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactFormAttachmentContainer'
 import css from './TicketAttachments.less'
 
 type Attachment = Map<any, any>
@@ -102,6 +103,10 @@ export default class TicketAttachments extends Component<Props, State> {
 
     isUniqueDiscountOffer = (attachment: Attachment) => {
         return attachment.get('content_type') === AttachmentEnum.DiscountOffer
+    }
+
+    isContactForm = (attachment: Attachment) => {
+        return attachment.get('content_type') === AttachmentEnum.ContactForm
     }
 
     setImagePreview = (attachment: Attachment) => {
@@ -268,6 +273,17 @@ export default class TicketAttachments extends Component<Props, State> {
         )
     }
 
+    _renderContactFormAttachment(attachment: Attachment, idx: number) {
+        return (
+            <ContactFormAttachmentContainer
+                attachment={attachment}
+                css={css}
+                onClose={(e) => this.removeAttachment(idx, e)}
+                onEdit={(__) => {}}
+            />
+        )
+    }
+
     renderAttachment = (
         attachment: Attachment,
         index: number,
@@ -282,6 +298,8 @@ export default class TicketAttachments extends Component<Props, State> {
                 attachment,
                 index
             )
+        } else if (this.isContactForm(attachment)) {
+            return this._renderContactFormAttachment(attachment, index)
         }
 
         return this._renderDefaultAttachment(attachment, index, images)

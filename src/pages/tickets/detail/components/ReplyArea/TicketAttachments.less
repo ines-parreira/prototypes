@@ -253,4 +253,71 @@
             }
         }
     }
+
+    .contactForm {
+        width: fit-content;
+        height: 80px;
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 4px;
+        display: flex;
+        flex-direction: row;
+        margin-right: @layout-spacing-xs;
+
+        .contactFormIconContainer {
+            height: 100%;
+            width: 80px;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            background-color: var(--neutral-grey-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            i {
+                font-size: 32px;
+                color: var(--neutral-grey-4);
+            }
+        }
+
+        .contactFormDataContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 16px 20px;
+
+            .contactFormDataContainerTitle {
+                .body-semibold();
+            }
+
+            .contactFormDataContainerBody {
+                .caption-regular();
+                color: var(--neutral-grey-5);
+                text-transform: capitalize;
+            }
+        }
+
+        .contactFormDataActionButtons {
+            width: auto;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+
+            align-items: self-start;
+            justify-content: flex-end;
+
+            padding: 4px;
+
+            i {
+                cursor: pointer;
+                color: var(--neutral-grey-5);
+                padding: 4px;
+
+                &:hover,
+                &:active {
+                    background: var(--neutral-grey-6);
+                    color: var(--neutral-grey-0);
+                }
+            }
+        }
+    }
 }

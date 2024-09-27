@@ -53,6 +53,8 @@ export type ToolbarContextType = {
     // WorkflowVariablePicker
     workflowVariables?: WorkflowVariableList
     workflowVariablesDataTypes?: WorkflowVariableType[]
+    onContactFormOpenChange?: (value: boolean) => void
+    contactFormButtonEnabled?: boolean
 }
 
 export const ToolbarContext = createContext<ToolbarContextType>({
@@ -80,6 +82,8 @@ export const ToolbarContext = createContext<ToolbarContextType>({
     shopifyIntegrations: List([]),
     canAddUniqueDiscountOffer: false,
     supportsUniqueDiscountOffer: false,
+    onContactFormOpenChange: _noop,
+    contactFormButtonEnabled: true,
 })
 
 export const useToolbarContext = () => useContext(ToolbarContext)

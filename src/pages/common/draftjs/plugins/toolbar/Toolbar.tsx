@@ -10,6 +10,7 @@ import {
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
 import {toLiquidSyntax} from 'pages/automate/workflows/models/variables.model'
+import {ContactFormCaptureFormIconButton} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
 import {
     AddDiscountCode,
     AddEmoji,
@@ -86,7 +87,11 @@ const Toolbar = ({
 }: Props) => {
     const [isHovered, setIsHovered] = useState(false)
 
-    const {shopifyIntegrations} = useToolbarContext()
+    const {
+        shopifyIntegrations,
+        onContactFormOpenChange,
+        contactFormButtonEnabled,
+    } = useToolbarContext()
 
     const handleDrop = (e: DragEvent) => {
         e.preventDefault()
@@ -185,6 +190,13 @@ const Toolbar = ({
                         displayedActions &&
                         shopifyIntegrations.size > 0 && (
                             <AddDiscountCode {...actionsProps} />
+                        )}
+                    {isActionDisplayed(ActionName.ContactCaptureForm) &&
+                        onContactFormOpenChange && (
+                            <ContactFormCaptureFormIconButton
+                                onOpenChange={onContactFormOpenChange}
+                                isDisabled={!contactFormButtonEnabled}
+                            />
                         )}
                     {buttons?.map(renderButton)}
 

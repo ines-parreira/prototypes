@@ -2,6 +2,7 @@ import {SCENARIO_CONFIG} from 'pages/convert/campaigns/constants/productRecommen
 import {
     AttachmentType,
     CampaignAttachment,
+    campaignAttachmentIsContactForm,
     campaignAttachmentIsDiscountOffer,
     campaignAttachmentIsProduct,
     campaignAttachmentIsProductRecommendation,
@@ -53,6 +54,13 @@ export const transformCampaignAttachmentsToDetails = (
                         SCENARIO_CONFIG[attachment.extra.scenario].description,
                 },
             } as ProductRecommendationAttachment
+        }
+        if (campaignAttachmentIsContactForm(attachment)) {
+            return {
+                content_type: attachment.contentType,
+                name: attachment.name,
+                extra: attachment.extra,
+            } as unknown
         }
     })
     return transformed

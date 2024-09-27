@@ -137,6 +137,18 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
             insert_emoticon
           </i>
         </button>
+        <button
+          aria-disabled="false"
+          class="wrapper wrapper ghost small ghost secondary small"
+          id="contactFormButton"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            wysiwyg
+          </i>
+        </button>
         <div
           class="hoverOverlay"
         >
@@ -288,6 +300,18 @@ exports[`RichField should render a basic input 1`] = `
             insert_emoticon
           </i>
         </button>
+        <button
+          aria-disabled="false"
+          class="wrapper wrapper ghost small ghost secondary small"
+          id="contactFormButton"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            wysiwyg
+          </i>
+        </button>
         <div
           class="hoverOverlay"
         >
@@ -437,6 +461,18 @@ exports[`RichField should render default content state 1`] = `
             class="material-icons icon"
           >
             insert_emoticon
+          </i>
+        </button>
+        <button
+          aria-disabled="false"
+          class="wrapper wrapper ghost small ghost secondary small"
+          id="contactFormButton"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            wysiwyg
           </i>
         </button>
         <div
@@ -629,6 +665,18 @@ exports[`RichField should render immutable variable 1`] = `
             class="material-icons icon"
           >
             insert_emoticon
+          </i>
+        </button>
+        <button
+          aria-disabled="false"
+          class="wrapper wrapper ghost small ghost secondary small"
+          id="contactFormButton"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            wysiwyg
           </i>
         </button>
         <div
@@ -3389,6 +3437,7 @@ exports[`RichField should render mutable variable 1`] = `
                             canAddUtm={false}
                             canAddVideoLink={false}
                             canAddVideoPlayer={false}
+                            contactFormButtonEnabled={true}
                             disableOutOfStockProducts={false}
                             disableVariantSelection={false}
                             getEditorState={[Function]}
@@ -3399,6 +3448,7 @@ exports[`RichField should render mutable variable 1`] = `
                             onAddProductCardAttachment={[Function]}
                             onAddUniqueDiscountOfferAttachment={[Function]}
                             onClose={[Function]}
+                            onContactFormOpenChange={[Function]}
                             onInsertDiscountCodeAdded={[Function]}
                             onInsertDiscountCodeOpen={[Function]}
                             onInsertProductLinkAdded={[Function]}
@@ -3789,6 +3839,90 @@ exports[`RichField should render mutable variable 1`] = `
                           />
                         </ButtonPopover>
                       </AddEmoji>
+                      <ContactFormCaptureFormIconButton
+                        isDisabled={false}
+                        onOpenChange={[Function]}
+                      >
+                        <ForwardRef(IconButton)
+                          fillStyle="ghost"
+                          id="contactFormButton"
+                          intent="secondary"
+                          isDisabled={false}
+                          onClick={[Function]}
+                          size="small"
+                        >
+                          <ForwardRef(Button)
+                            className="wrapper ghost small"
+                            fillStyle="ghost"
+                            id="contactFormButton"
+                            intent="secondary"
+                            isDisabled={false}
+                            onClick={[Function]}
+                            size="small"
+                          >
+                            <BaseButton
+                              className="wrapper ghost small"
+                              fillStyle="ghost"
+                              intent="secondary"
+                              size="small"
+                            >
+                              <button
+                                aria-disabled={false}
+                                className="wrapper wrapper ghost small ghost secondary small"
+                                id="contactFormButton"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <i
+                                  className="material-icons icon"
+                                >
+                                  wysiwyg
+                                </i>
+                              </button>
+                            </BaseButton>
+                          </ForwardRef(Button)>
+                        </ForwardRef(IconButton)>
+                        <Tooltip
+                          placement="bottom"
+                          target="contactFormButton"
+                        >
+                          <UncontrolledTooltip
+                            autohide={true}
+                            className="Tooltip--tooltip--_tAyW Tooltip--noPointerEvents--cuNcB"
+                            delay={0}
+                            placement="bottom"
+                            target="contactFormButton"
+                          >
+                            <Tooltip
+                              autohide={true}
+                              className="Tooltip--tooltip--_tAyW Tooltip--noPointerEvents--cuNcB"
+                              delay={0}
+                              isOpen={false}
+                              placement="bottom"
+                              placementPrefix="bs-tooltip"
+                              target="contactFormButton"
+                              toggle={[Function]}
+                              trigger="hover focus"
+                            >
+                              <TooltipPopoverWrapper
+                                autohide={true}
+                                className="Tooltip--tooltip--_tAyW Tooltip--noPointerEvents--cuNcB"
+                                delay={0}
+                                fade={true}
+                                hideArrow={false}
+                                innerClassName="tooltip-inner"
+                                isOpen={false}
+                                placement="bottom"
+                                placementPrefix="bs-tooltip"
+                                popperClassName="tooltip show"
+                                target="contactFormButton"
+                                toggle={[Function]}
+                                trigger="hover focus"
+                              />
+                            </Tooltip>
+                          </UncontrolledTooltip>
+                        </Tooltip>
+                      </ContactFormCaptureFormIconButton>
                       <div
                         className="hoverOverlay"
                       >

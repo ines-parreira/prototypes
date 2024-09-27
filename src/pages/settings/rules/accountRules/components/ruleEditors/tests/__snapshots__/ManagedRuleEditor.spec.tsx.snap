@@ -968,6 +968,18 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                           insert_emoticon
                         </i>
                       </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper wrapper ghost small ghost secondary small"
+                        id="contactFormButton"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          wysiwyg
+                        </i>
+                      </button>
                       <div
                         class="hoverOverlay"
                       >
@@ -1177,6 +1189,18 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                           class="material-icons icon"
                         >
                           insert_emoticon
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper wrapper ghost small ghost secondary small"
+                        id="contactFormButton"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          wysiwyg
                         </i>
                       </button>
                       <div
@@ -2182,6 +2206,18 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                           insert_emoticon
                         </i>
                       </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper wrapper ghost small ghost secondary small"
+                        id="contactFormButton"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          wysiwyg
+                        </i>
+                      </button>
                       <div
                         class="hoverOverlay"
                       >
@@ -2343,6 +2379,18 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                           class="material-icons icon"
                         >
                           insert_emoticon
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper wrapper ghost small ghost secondary small"
+                        id="contactFormButton"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          wysiwyg
                         </i>
                       </button>
                       <div
@@ -3310,6 +3358,18 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                           insert_emoticon
                         </i>
                       </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper wrapper ghost small ghost secondary small"
+                        id="contactFormButton"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          wysiwyg
+                        </i>
+                      </button>
                       <div
                         class="hoverOverlay"
                       >
@@ -3540,6 +3600,18 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                           class="material-icons icon"
                         >
                           insert_emoticon
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper wrapper ghost small ghost secondary small"
+                        id="contactFormButton"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          wysiwyg
                         </i>
                       </button>
                       <div

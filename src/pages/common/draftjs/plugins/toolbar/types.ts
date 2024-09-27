@@ -12,6 +12,7 @@ export enum ActionName {
     ProductPicker = 'PRODUCTPICKER',
     DiscountCodePicker = 'DISCOUNTCODE',
     WorkflowVariable = 'WORKFLOWVARIABLE',
+    ContactCaptureForm = 'CONTACT_CAPTURE_FORM',
 }
 
 export type EditorStateSetter = (editorState: EditorState) => any

@@ -239,18 +239,18 @@
                 }
             }
         },
-        "/assistant/configs/revenue/{revenue_id}": {
+        "/assistant/configs/revenue/{installation_id}": {
             "get": {
                 "tags": ["configs"],
                 "summary": "Get Config",
-                "operationId": "get_config_assistant_configs_revenue__revenue_id__get",
+                "operationId": "get_config_assistant_configs_revenue__installation_id__get",
                 "deprecated": true,
                 "parameters": [
                     {
-                        "name": "revenue_id",
+                        "name": "installation_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Revenue Id"}
+                        "schema": {"type": "string", "title": "Installation Id"}
                     },
                     {
                         "name": "widget-app-id",
@@ -268,7 +268,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ConfigSchema"
+                                    "$ref": "#/components/schemas/ConfigResponseSchema"
                                 }
                             }
                         }
@@ -286,17 +286,17 @@
                 }
             }
         },
-        "/assistant/configs/{revenue_id}": {
+        "/assistant/configs/{installation_id}": {
             "get": {
                 "tags": ["configs"],
                 "summary": "Get Config",
                 "operationId": "get_config_by_revenue_id",
                 "parameters": [
                     {
-                        "name": "revenue_id",
+                        "name": "installation_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Revenue Id"}
+                        "schema": {"type": "string", "title": "Installation Id"}
                     },
                     {
                         "name": "widget-app-id",
@@ -314,7 +314,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ConfigSchema"
+                                    "$ref": "#/components/schemas/ConfigResponseSchema"
                                 }
                             }
                         }
@@ -360,7 +360,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ConfigSchema"
+                                    "$ref": "#/components/schemas/ConfigResponseSchema"
                                 }
                             }
                         }
@@ -482,6 +482,47 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/assistant/contact-form/{revenue_id}": {
+            "post": {
+                "tags": ["visitor-forms"],
+                "summary": "Submit Contact Form",
+                "operationId": "submit_contact_form",
+                "parameters": [
+                    {
+                        "name": "revenue_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Revenue Id"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VisitorFormSubmissionSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Successful Response",
+                        "content": {"application/json": {"schema": {}}}
                     },
                     "422": {
                         "description": "Validation Error",
@@ -2507,18 +2548,20 @@
             },
             "CampaignAttachmentVisitorFormExtraSchema-Input": {
                 "properties": {
-                    "fields": {
+                    "steps": {
                         "items": {
-                            "$ref": "#/components/schemas/VisitorFormFieldsSchema"
+                            "$ref": "#/components/schemas/VisitorFormStepSchema-Input"
                         },
                         "type": "array",
-                        "title": "Fields"
-                    },
-                    "after_form_content": {
-                        "$ref": "#/components/schemas/VisitorFormAfterContentSchema"
+                        "title": "Steps"
                     },
                     "on_success_content": {
-                        "$ref": "#/components/schemas/VisitorFormOnSuccessContentSchema-Input"
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/VisitorFormOnSuccessContentSchema"
+                            },
+                            {"type": "null"}
+                        ]
                     },
                     "targets": {
                         "items": {
@@ -2526,31 +2569,37 @@
                         },
                         "type": "array",
                         "title": "Targets"
+                    },
+                    "disclaimer": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Disclaimer"
+                    },
+                    "disclaimer_default_accepted": {
+                        "type": "boolean",
+                        "title": "Disclaimer Default Accepted",
+                        "default": false
                     }
                 },
                 "type": "object",
-                "required": [
-                    "fields",
-                    "after_form_content",
-                    "on_success_content",
-                    "targets"
-                ],
+                "required": ["steps", "targets"],
                 "title": "CampaignAttachmentVisitorFormExtraSchema"
             },
             "CampaignAttachmentVisitorFormExtraSchema-Output": {
                 "properties": {
-                    "fields": {
+                    "steps": {
                         "items": {
-                            "$ref": "#/components/schemas/VisitorFormFieldsSchema"
+                            "$ref": "#/components/schemas/VisitorFormStepSchema-Output"
                         },
                         "type": "array",
-                        "title": "Fields"
-                    },
-                    "after_form_content": {
-                        "$ref": "#/components/schemas/VisitorFormAfterContentSchema"
+                        "title": "Steps"
                     },
                     "on_success_content": {
-                        "$ref": "#/components/schemas/VisitorFormOnSuccessContentSchema-Output"
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/VisitorFormOnSuccessContentSchema"
+                            },
+                            {"type": "null"}
+                        ]
                     },
                     "targets": {
                         "items": {
@@ -2558,15 +2607,19 @@
                         },
                         "type": "array",
                         "title": "Targets"
+                    },
+                    "disclaimer": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Disclaimer"
+                    },
+                    "disclaimer_default_accepted": {
+                        "type": "boolean",
+                        "title": "Disclaimer Default Accepted",
+                        "default": false
                     }
                 },
                 "type": "object",
-                "required": [
-                    "fields",
-                    "after_form_content",
-                    "on_success_content",
-                    "targets"
-                ],
+                "required": ["steps", "targets"],
                 "title": "CampaignAttachmentVisitorFormExtraSchema"
             },
             "CampaignAttachmentVisitorFormSchema-Input": {
@@ -2894,7 +2947,7 @@
             },
             "CampaignPublishType": {
                 "type": "string",
-                "enum": ["publish_now", "schedule"],
+                "enum": ["publish_now", "schedule", "publish_later"],
                 "title": "CampaignPublishType"
             },
             "CampaignResponseSchema": {
@@ -3379,7 +3432,7 @@
                 "const": "widget",
                 "title": "ChannelType"
             },
-            "ConfigSchema": {
+            "ConfigResponseSchema": {
                 "properties": {
                     "subscription": {
                         "$ref": "#/components/schemas/SubscriptionStatusSchema"
@@ -3398,11 +3451,12 @@
                             },
                             {"type": "null"}
                         ]
-                    }
+                    },
+                    "id": {"type": "string", "title": "Id"}
                 },
                 "type": "object",
-                "required": ["subscription", "campaigns"],
-                "title": "ConfigSchema"
+                "required": ["subscription", "campaigns", "id"],
+                "title": "ConfigResponseSchema"
             },
             "CustomDomainOperationSchema": {
                 "properties": {
@@ -3774,7 +3828,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-mariuszjanczyn.eu.ngrok.io/loader.js"
+                        "default": "https://bundle-joaotavares.eu.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",
@@ -3831,7 +3885,14 @@
             },
             "ProductRecommendationRequestSchema": {
                 "properties": {
-                    "shop_name": {"type": "string", "title": "Shop Name"},
+                    "shop_name": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Shop Name"
+                    },
+                    "installation_id": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Installation Id"
+                    },
                     "widget_app_id": {
                         "type": "string",
                         "title": "Widget App Id"
@@ -3868,7 +3929,6 @@
                 },
                 "type": "object",
                 "required": [
-                    "shop_name",
                     "widget_app_id",
                     "campaign_id",
                     "scenario",
@@ -4617,15 +4677,6 @@
                 "required": ["loc", "msg", "type"],
                 "title": "ValidationError"
             },
-            "VisitorFormAfterContentSchema": {
-                "properties": {
-                    "cta": {"type": "string", "title": "Cta"},
-                    "disclaimer": {"type": "string", "title": "Disclaimer"}
-                },
-                "type": "object",
-                "required": ["cta", "disclaimer"],
-                "title": "VisitorFormAfterContentSchema"
-            },
             "VisitorFormFieldName": {
                 "type": "string",
                 "enum": ["email", "phone", "first_name", "last_name"],
@@ -4641,45 +4692,112 @@
                     "name": {
                         "$ref": "#/components/schemas/VisitorFormFieldName"
                     },
-                    "label": {"type": "string", "title": "Label"},
+                    "label": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Label"
+                    },
                     "type": {
                         "$ref": "#/components/schemas/VisitorFormFieldType"
                     },
                     "required": {"type": "boolean", "title": "Required"}
                 },
                 "type": "object",
-                "required": ["name", "label", "type", "required"],
+                "required": ["name", "type", "required"],
                 "title": "VisitorFormFieldsSchema"
             },
-            "VisitorFormOnSuccessContentSchema-Input": {
+            "VisitorFormOnSuccessContentSchema": {
                 "properties": {
-                    "message": {"type": "string", "title": "Message"},
-                    "attachments": {
-                        "items": {
-                            "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
-                        },
-                        "type": "array",
-                        "title": "Attachments"
+                    "message": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Message"
                     }
                 },
                 "type": "object",
-                "required": ["message", "attachments"],
                 "title": "VisitorFormOnSuccessContentSchema"
             },
-            "VisitorFormOnSuccessContentSchema-Output": {
+            "VisitorFormStepSchema-Input": {
                 "properties": {
-                    "message": {"type": "string", "title": "Message"},
-                    "attachments": {
+                    "cta": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Cta"
+                    },
+                    "fields": {
                         "items": {
-                            "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
+                            "$ref": "#/components/schemas/VisitorFormFieldsSchema"
                         },
                         "type": "array",
-                        "title": "Attachments"
+                        "title": "Fields"
                     }
                 },
                 "type": "object",
-                "required": ["message", "attachments"],
-                "title": "VisitorFormOnSuccessContentSchema"
+                "required": ["fields"],
+                "title": "VisitorFormStepSchema"
+            },
+            "VisitorFormStepSchema-Output": {
+                "properties": {
+                    "cta": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Cta"
+                    },
+                    "fields": {
+                        "items": {
+                            "$ref": "#/components/schemas/VisitorFormFieldsSchema"
+                        },
+                        "type": "array",
+                        "title": "Fields"
+                    }
+                },
+                "type": "object",
+                "required": ["fields"],
+                "title": "VisitorFormStepSchema"
+            },
+            "VisitorFormSubmissionSchema": {
+                "properties": {
+                    "first_name": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "First Name"
+                    },
+                    "last_name": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Last Name"
+                    },
+                    "phone": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "maxLength": 64,
+                                "minLength": 7,
+                                "format": "phone"
+                            },
+                            {"type": "null"}
+                        ],
+                        "title": "Phone"
+                    },
+                    "email": {
+                        "anyOf": [
+                            {"type": "string", "format": "email"},
+                            {"type": "null"}
+                        ],
+                        "title": "Email"
+                    },
+                    "campaign_id": {"type": "string", "title": "Campaign Id"},
+                    "shop_name": {"type": "string", "title": "Shop Name"},
+                    "guest_id": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Guest Id"
+                    },
+                    "session_id": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Session Id"
+                    },
+                    "ab_variant": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Ab Variant"
+                    }
+                },
+                "type": "object",
+                "required": ["campaign_id", "shop_name"],
+                "title": "VisitorFormSubmissionSchema"
             },
             "VisitorFormSubscriberType": {
                 "type": "string",

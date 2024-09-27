@@ -6,6 +6,7 @@ import {StyleSheetTestUtils} from 'aphrodite'
 import {act, render, screen} from '@testing-library/react'
 import {Account} from 'state/currentAccount/types'
 import {replaceAttachmentURL} from 'utils'
+import {AttachmentEnum} from 'common/types'
 import TicketAttachments from '../TicketAttachments'
 
 describe('TicketAttachments component', () => {
@@ -44,6 +45,36 @@ describe('TicketAttachments component', () => {
                 extra: {
                     id: '01J4VFPQ477Z2CNXAB5ES70GN3',
                     scenario: 'similar_seen',
+                },
+            },
+            {
+                name: 'Contact Form',
+                content_type: AttachmentEnum.ContactForm,
+                extra: {
+                    steps: [
+                        {
+                            fields: [
+                                {
+                                    name: 'email',
+                                    type: 'email',
+                                    required: true,
+                                    label: 'Enter your email',
+                                },
+                            ],
+                            cta: 'Subscribe now!',
+                        },
+                    ],
+                    disclaimer: 'Disclaimer',
+                    on_success_content: {
+                        message: 'Congrats',
+                    },
+                    targets: [
+                        {
+                            type: 'shopify',
+                            subscriber_types: ['email', 'sms'],
+                            tags: [],
+                        },
+                    ],
                 },
             },
         ])

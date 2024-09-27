@@ -145,7 +145,7 @@ describe('<ABTestVariantEditPage />', () => {
         })
 
         it('user discards changes', () => {
-            const {getByText, getByRole} = renderComponent({
+            const {getByText, getByRole, getAllByRole} = renderComponent({
                 isControlVersion: false,
                 onCreate: onCreateMock,
                 onDiscard: onDiscardMock,
@@ -153,7 +153,7 @@ describe('<ABTestVariantEditPage />', () => {
             expect(getByText('Set up the basics')).toBeInTheDocument()
             expect(getByRole('button', {name: 'Create'})).toBeInTheDocument()
 
-            userEvent.click(getByRole('button', {name: 'Cancel'}))
+            userEvent.click(getAllByRole('button', {name: 'Cancel'})[1])
 
             expect(onCreateMock).not.toBeCalled()
             expect(onDiscardMock).toBeCalled()
