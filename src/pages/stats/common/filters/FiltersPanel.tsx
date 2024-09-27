@@ -219,6 +219,14 @@ export const FiltersPanel = ({
             ) {
                 return {...filter, active: true}
             }
+            if (
+                isFilterTypeWithValues(filter.type) &&
+                (cleanStatsFilters[filter.type]?.values ?? []).length === 0 &&
+                !filter.initializeAsOpen
+            ) {
+                return {...filter, active: false}
+            }
+
             return filter
         })
 

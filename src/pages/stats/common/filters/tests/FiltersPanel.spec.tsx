@@ -512,6 +512,120 @@ describe('FiltersPanel', () => {
         ).toBeInTheDocument()
     })
 
+    it('should not hide a filter if the value was removed but filter was initialised by the User', () => {
+        const state = {
+            ...defaultState,
+            [statsSlice.name]: {
+                filters: fromLegacyStatsFilters({
+                    period: initialState.filters.period,
+                }),
+            },
+        } as RootState
+
+        const {rerenderComponent} = renderWithStore(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={optionalFilters}
+            />,
+            state
+        )
+
+        userEvent.click(
+            screen.getByRole('button', {
+                name: new RegExp(ADD_FILTER_BUTTON_LABEL),
+            })
+        )
+        userEvent.click(
+            screen.getByRole('option', {name: FilterLabels[optionalFilter]})
+        )
+
+        expect(
+            screen.getByText(new RegExp(FilterLabels[optionalFilter]))
+        ).toBeInTheDocument()
+
+        rerenderComponent(
+            {
+                ...defaultState,
+                [statsSlice.name]: {
+                    filters: fromLegacyStatsFilters({
+                        period: initialState.filters.period,
+                        [optionalFilter]: ['1', '2'],
+                    }),
+                },
+            },
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={optionalFilters}
+            />
+        )
+
+        expect(
+            screen.getByText(new RegExp(FilterLabels[optionalFilter]))
+        ).toBeInTheDocument()
+
+        rerenderComponent(
+            {
+                ...defaultState,
+                [statsSlice.name]: {
+                    filters: fromLegacyStatsFilters({
+                        period: initialState.filters.period,
+                    }),
+                },
+            },
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={optionalFilters}
+            />
+        )
+
+        expect(
+            screen.getByText(new RegExp(FilterLabels[optionalFilter]))
+        ).toBeInTheDocument()
+    })
+
+    it('should hide a filter if the value was removed but filter was not initialised by the User', () => {
+        const state = {
+            ...defaultState,
+            [statsSlice.name]: {
+                filters: fromLegacyStatsFilters({
+                    period: initialState.filters.period,
+                    [optionalFilter]: ['1', '2'],
+                }),
+            },
+        } as RootState
+
+        const {rerenderComponent} = renderWithStore(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={optionalFilters}
+            />,
+            state
+        )
+
+        expect(
+            screen.getByText(new RegExp(FilterLabels[optionalFilter]))
+        ).toBeInTheDocument()
+
+        rerenderComponent(
+            {
+                ...defaultState,
+                [statsSlice.name]: {
+                    filters: fromLegacyStatsFilters({
+                        period: initialState.filters.period,
+                    }),
+                },
+            },
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={optionalFilters}
+            />
+        )
+
+        expect(
+            screen.queryByText(new RegExp(FilterLabels[optionalFilter]))
+        ).not.toBeInTheDocument()
+    })
+
     it('should render customFields filter', async () => {
         const customFieldLabel = customFieldsMockReponse.data[0].label
         const customFieldsFilters = [FilterKey.CustomFields]
