@@ -1,16 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react'
 
-import {dismissNotification} from 'reapop'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     AccountConfigurationWithHttpIntegration,
     StoreConfiguration,
 } from 'models/aiAgent/types'
 import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import {FeatureFlagKey} from 'config/featureFlags'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {PlaygroundInputSection} from '../PlaygroundInputSection/PlaygroundInputSection'
 import PlaygroundMessageComponent, {
     AI_AGENT_SENDER,
@@ -26,8 +23,6 @@ import {CustomerHttpIntegrationDataMock} from '../../constants'
 import css from './PlaygroundChat.less'
 import {PlaygroundChannels} from './PlaygroundChat.types'
 
-const PLAYGROUND_NOTIFICATION = 'playground-notification'
-
 type Props = {
     storeData: StoreConfiguration
     accountData: AccountConfigurationWithHttpIntegration
@@ -41,7 +36,6 @@ export const PlaygroundChat = ({
 }: Props) => {
     const messageContainerRef = useRef<HTMLDivElement>(null)
     const [channel, setChannel] = useState<PlaygroundChannels>('email')
-    const dispatch = useAppDispatch()
 
     const isTestModeInChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChatTestMode]
@@ -73,25 +67,6 @@ export const PlaygroundChat = ({
         shopName: storeData.storeName,
         snippetHelpCenterId: storeData.snippetHelpCenterId,
     })
-
-    useEffect(() => {
-        if (!isTestModeInChatEnabled) return
-
-        // When only initial message
-        if (messages.length === 1) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    id: PLAYGROUND_NOTIFICATION,
-                    message:
-                        'No messages will be sent, no data will change and no actions will be performed while testing.',
-                    noAutoDismiss: true,
-                })
-            )
-        } else {
-            void dispatch(dismissNotification(PLAYGROUND_NOTIFICATION))
-        }
-    }, [dispatch, isTestModeInChatEnabled, messages])
 
     const handleNewConversation = () => {
         onNewConversation()
@@ -140,8 +115,23 @@ export const PlaygroundChat = ({
         }
     }, [messages])
 
+    const isInitialMessage =
+        messages.filter((m) => m.sender !== AI_AGENT_SENDER).length === 0
+
     return (
         <div className={css.container}>
+            {isTestModeInChatEnabled && isInitialMessage && (
+                <Alert
+                    className={css.alertContainer}
+                    type={AlertType.Success}
+                    icon
+                    role="alert"
+                >
+                    No messages will be sent, no data will change and no actions
+                    will be performed while testing.
+                </Alert>
+            )}
+
             <div className={css.outputContainer}>
                 <div className={css.outputInner} ref={messageContainerRef}>
                     {messages.map((message, index) => (
@@ -160,10 +150,7 @@ export const PlaygroundChat = ({
                     onFormValuesChange={onFormValuesChange}
                     isDisabled={isDisabled || isMessageSending}
                     disabledMessage={disabledMessage}
-                    isInitialMessage={
-                        messages.filter((m) => m.sender !== AI_AGENT_SENDER)
-                            .length === 0
-                    }
+                    isInitialMessage={isInitialMessage}
                     isMessageSending={isMessageSending}
                     onSendMessage={onSendMessage}
                     onNewConversation={handleNewConversation}

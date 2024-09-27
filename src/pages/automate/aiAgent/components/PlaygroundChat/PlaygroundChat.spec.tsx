@@ -2,15 +2,12 @@ import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import userEvent from '@testing-library/user-event'
-import {dismissNotification} from 'reapop'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     MessageType,
     PlaygroundPromptType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {getAccountConfigurationWithHttpIntegrationFixture} from '../../fixtures/accountConfiguration.fixture'
@@ -18,14 +15,6 @@ import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
 import {usePlaygroundForm} from '../../hooks/usePlaygroundForm'
 import {CustomerHttpIntegrationDataMock} from '../../constants'
 import {PlaygroundChat} from './PlaygroundChat'
-
-jest.mock('hooks/useAppDispatch', () => jest.fn(() => jest.fn()))
-jest.mock('reapop', () => ({
-    dismissNotification: jest.fn(),
-}))
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
 
 jest.mock('../../hooks/usePlaygroundMessages', () => ({
     usePlaygroundMessages: jest.fn(),
@@ -44,8 +33,6 @@ jest.mock('hooks/useSearchParam', () => ({
 const mockUseSearchParam = jest.mocked(useSearchParam)
 const mockedUsePlaygroundMessages = jest.mocked(usePlaygroundMessages)
 const mockedUsePlaygroundForm = jest.mocked(usePlaygroundForm)
-const mockedNotify = jest.mocked(notify)
-const mockedDismissNotification = jest.mocked(dismissNotification)
 
 const defaultUsePlaygroundMessagesProps = {
     messages: [],
@@ -149,13 +136,9 @@ describe('PlaygroundChat', () => {
                 isWaitingResponse: false,
             })
             renderComponent()
-            expect(mockedNotify).toHaveBeenCalledWith({
-                id: 'playground-notification',
-                message:
-                    'No messages will be sent, no data will change and no actions will be performed while testing.',
-                status: NotificationStatus.Success,
-                noAutoDismiss: true,
-            })
+            expect(screen.getByRole('alert')).toHaveTextContent(
+                'No messages will be sent, no data will change and no actions will be performed while testing.'
+            )
         })
 
         it('should dismiss notification when messages are sent', () => {
@@ -181,9 +164,7 @@ describe('PlaygroundChat', () => {
             })
             renderComponent()
 
-            expect(mockedDismissNotification).toHaveBeenCalledWith(
-                'playground-notification'
-            )
+            expect(screen.queryByRole('alert')).not.toBeInTheDocument()
         })
 
         it('should render ticket close event', () => {
