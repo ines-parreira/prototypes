@@ -17,7 +17,7 @@ export default function SaveBadge({state}: Props) {
         return (
             <Badge className={css.badge} type={ColorType.Grey}>
                 <span className={cn(css.icon)}>
-                    <Spinner className={css.spinner} />
+                    <Spinner className={css.spinner} size="small" />
                 </span>
                 Saving
             </Badge>
