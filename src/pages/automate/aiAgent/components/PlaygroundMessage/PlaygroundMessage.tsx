@@ -101,9 +101,14 @@ export const PlaygroundGenericErrorMessage = ({
 }) => (
     <div className={css.errorMessageText}>
         AI Agent encountered an error and didn’t send a response.
-        <span className={css.errorMessageLink} onClick={onClick}>
-            Try again
-        </span>
+        <div
+            className={css.errorMessageLink}
+            role="button"
+            tabIndex={0}
+            onClick={onClick}
+        >
+            Try again.
+        </div>
     </div>
 )
 
