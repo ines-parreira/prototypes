@@ -27,6 +27,7 @@ import {
 import {assumeMock} from 'utils/testing'
 import {
     connectedCallsListQueryFactory,
+    liveDashBoardVoiceCallListQueryFactory,
     voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
@@ -52,6 +53,9 @@ const waitingTimeCallsListQueryFactoryMock = assumeMock(
     waitingTimeCallsListQueryFactory
 )
 const voiceCallListQueryFactoryMock = assumeMock(voiceCallListQueryFactory)
+const liveDashboardVoiceCallListQueryFactoryMock = assumeMock(
+    liveDashBoardVoiceCallListQueryFactory
+)
 const campaignSalesDrillDownQueryFactoryMock = assumeMock(
     campaignSalesDrillDownQueryFactory
 )
@@ -180,6 +184,15 @@ describe('getDrillDownQuery', () => {
         },
         {
             metricName: VoiceMetric.QueueAverageTalkTime,
+        },
+        {
+            metricName: VoiceMetric.QueueInboundCalls,
+        },
+        {
+            metricName: VoiceMetric.QueueMissedInboundCalls,
+        },
+        {
+            metricName: VoiceMetric.QueueOutboundCalls,
         },
         {
             metricName: VoiceAgentsMetric.AgentTotalCalls,
@@ -380,6 +393,30 @@ describe('getDrillDownQuery', () => {
             getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
 
             expect(voiceCallListQueryFactoryMock).toHaveBeenCalled()
+        }
+    )
+
+    it.each([
+        {
+            metricName: VoiceMetric.QueueInboundCalls,
+            segment: VoiceCallSegment.inboundCalls,
+        },
+        {
+            metricName: VoiceMetric.QueueMissedInboundCalls,
+            segment: VoiceCallSegment.missedCalls,
+        },
+        {
+            metricName: VoiceMetric.QueueOutboundCalls,
+            segment: VoiceCallSegment.outboundCalls,
+        },
+    ])(
+        'should call liveDashboardVoiceCallListQueryFactory for (%d)',
+        ({metricName, segment}) => {
+            getDrillDownQuery({metricName})(statsFilters, segment)
+
+            expect(
+                liveDashboardVoiceCallListQueryFactoryMock
+            ).toHaveBeenCalledWith(statsFilters, segment)
         }
     )
 

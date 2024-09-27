@@ -119,6 +119,9 @@ describe('getDrillDownHook', () => {
         {metricName: VoiceMetric.AverageTalkTime},
         {metricName: VoiceMetric.QueueAverageWaitTime},
         {metricName: VoiceMetric.QueueAverageTalkTime},
+        {metricName: VoiceMetric.QueueInboundCalls},
+        {metricName: VoiceMetric.QueueMissedInboundCalls},
+        {metricName: VoiceMetric.QueueOutboundCalls},
         {metricName: VoiceAgentsMetric.AgentTotalCalls, perAgentId: 123},
         {
             metricName: VoiceAgentsMetric.AgentInboundMissedCalls,

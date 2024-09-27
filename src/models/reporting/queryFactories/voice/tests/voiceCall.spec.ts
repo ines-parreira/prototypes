@@ -16,6 +16,7 @@ import {assumeMock} from 'utils/testing'
 import {
     connectedCallsListQueryFactory,
     liveDashboardConnectedCallsListQueryFactory,
+    liveDashBoardVoiceCallListQueryFactory,
     liveDashboardWaitingTimeCallsListQueryFactory,
     voiceCallAverageTalkTimePerAgentQueryFactory,
     voiceCallAverageTalkTimeQueryFactory,
@@ -487,6 +488,69 @@ describe('voice queries factories', () => {
             } as any
             const query =
                 liveDashboardWaitingTimeCallsListQueryFactory(statsFilters)
+
+            expect(query.timezone).toEqual('Europe/Paris')
+        })
+    })
+
+    describe('liveDashBoardVoiceCallListQueryFactory', () => {
+        it('should create a query', () => {
+            window.GORGIAS_STATE = {
+                currentAccount: {
+                    settings: [
+                        {
+                            type: AccountSettingType.BusinessHours,
+                            data: {},
+                        },
+                    ],
+                },
+            } as any
+
+            const query = liveDashBoardVoiceCallListQueryFactory(
+                statsFilters,
+                VoiceCallSegment.inboundCalls
+            )
+
+            expect(query).toEqual({
+                measures: [VoiceCallMeasure.VoiceCallCount],
+                dimensions: voiceCallListDimensions,
+                timezone: 'UTC',
+                filters: [
+                    {
+                        member: VoiceCallMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ],
+                segments: [VoiceCallSegment.inboundCalls],
+                limit: undefined,
+                offset: undefined,
+                order: [[VoiceCallDimension.CreatedAt, OrderDirection.Desc]],
+            })
+        })
+
+        it('should use the account timezone if it is set', () => {
+            window.GORGIAS_STATE = {
+                currentAccount: {
+                    settings: [
+                        {
+                            type: AccountSettingType.BusinessHours,
+                            data: {
+                                timezone: 'Europe/Paris',
+                            },
+                        },
+                    ],
+                },
+            } as any
+            const query = liveDashBoardVoiceCallListQueryFactory(
+                statsFilters,
+                VoiceCallSegment.inboundCalls
+            )
 
             expect(query.timezone).toEqual('Europe/Paris')
         })

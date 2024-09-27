@@ -18,6 +18,13 @@ import {
     AccountSettingType,
 } from 'state/currentAccount/types'
 
+const getAccountBusinessHoursTimezone = () =>
+    (
+        window.GORGIAS_STATE?.currentAccount?.settings?.find(
+            (setting) => setting.type === AccountSettingType.BusinessHours
+        ) as AccountSettingBusinessHours | undefined
+    )?.data?.timezone ?? 'UTC'
+
 export const getAdvancedVoicePeriodFilters = (
     period: StatsFilters['period']
 ) => {
@@ -94,12 +101,8 @@ export const connectedCallsListQueryFactory = (
 export const liveDashboardConnectedCallsListQueryFactory = (
     filters: StatsFilters
 ): ReportingQuery<VoiceCallCube> => {
-    const timezone =
-        (
-            window.GORGIAS_STATE?.currentAccount?.settings?.find(
-                (setting) => setting.type === AccountSettingType.BusinessHours
-            ) as AccountSettingBusinessHours | undefined
-        )?.data?.timezone ?? 'UTC'
+    const timezone = getAccountBusinessHoursTimezone()
+
     return connectedCallsListQueryFactory(
         {
             ...filters,
@@ -125,12 +128,8 @@ export const liveDashboardWaitingTimeCallsListQueryFactory = (
     filters: StatsFilters,
     segment?: VoiceCallSegment
 ): ReportingQuery<VoiceCallCube> => {
-    const timezone =
-        (
-            window.GORGIAS_STATE?.currentAccount?.settings?.find(
-                (setting) => setting.type === AccountSettingType.BusinessHours
-            ) as AccountSettingBusinessHours | undefined
-        )?.data?.timezone ?? 'UTC'
+    const timezone = getAccountBusinessHoursTimezone()
+
     return waitingTimeCallsListQueryFactory(
         {
             ...filters,
@@ -193,6 +192,22 @@ export const voiceCallListQueryFactory = (
     limit: limit,
     offset: offset,
 })
+
+export const liveDashBoardVoiceCallListQueryFactory = (
+    filters: StatsFilters,
+    segment?: VoiceCallSegment
+): ReportingQuery<VoiceCallCube> => {
+    const timezone = getAccountBusinessHoursTimezone()
+
+    return voiceCallListQueryFactory(
+        {
+            ...filters,
+            period: getLiveVoicePeriodFilter(timezone),
+        },
+        timezone,
+        segment
+    )
+}
 
 export const voiceCallAverageTalkTimeQueryFactory = (
     filters: StatsFilters,

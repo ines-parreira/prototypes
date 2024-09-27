@@ -87,18 +87,21 @@ export default function LiveVoiceMetrics({
             hint: constants.MISSED_INBOUND_CALLS_METRIC_HINT,
             value: missedInboundCallsCount.data?.value,
             isLoading: missedInboundCallsCount.isFetching,
+            metricName: VoiceMetric.QueueMissedInboundCalls,
         },
         {
             title: constants.INBOUND_CALLS_METRIC_TITLE,
             hint: constants.INBOUND_CALLS_METRIC_HINT,
             value: inboundCallsCount.data?.value,
             isLoading: inboundCallsCount.isFetching,
+            metricName: VoiceMetric.QueueInboundCalls,
         },
         {
             title: constants.OUTBOUND_CALLS_METRIC_TITLE,
             hint: constants.OUTBOUND_CALLS_METRIC_HINT,
             value: outboundCallsCount.data?.value,
             isLoading: outboundCallsCount.isFetching,
+            metricName: VoiceMetric.QueueOutboundCalls,
         },
         {
             title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,

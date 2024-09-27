@@ -28,6 +28,9 @@ export const getVoiceDrillDownColumns = (
                 VoiceCallTableColumnName.State,
                 VoiceCallTableColumnName.Recording,
             ]
+        case VoiceMetric.QueueInboundCalls:
+        case VoiceMetric.QueueMissedInboundCalls:
+        case VoiceMetric.QueueOutboundCalls:
         case VoiceAgentsMetric.AgentTotalCalls:
         case VoiceAgentsMetric.AgentInboundAnsweredCalls:
         case VoiceAgentsMetric.AgentInboundMissedCalls:

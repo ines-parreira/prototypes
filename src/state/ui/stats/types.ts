@@ -70,6 +70,9 @@ export enum VoiceMetric {
     AverageTalkTime = 'average_talk_time',
     QueueAverageWaitTime = 'queue_average_wait_time',
     QueueAverageTalkTime = 'queue_average_talk_time',
+    QueueInboundCalls = 'queue_inbound_calls',
+    QueueOutboundCalls = 'queue_outbound_calls',
+    QueueMissedInboundCalls = 'queue_missed_inbound_calls',
 }
 
 export enum VoiceAgentsMetric {

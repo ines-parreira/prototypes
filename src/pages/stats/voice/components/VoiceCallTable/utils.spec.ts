@@ -62,6 +62,9 @@ describe('utils', () => {
             VoiceAgentsMetric.AgentInboundAnsweredCalls,
             VoiceAgentsMetric.AgentInboundMissedCalls,
             VoiceAgentsMetric.AgentOutboundCalls,
+            VoiceMetric.QueueInboundCalls,
+            VoiceMetric.QueueMissedInboundCalls,
+            VoiceMetric.QueueOutboundCalls,
         ])('should return the correct columns for %s', (metric) => {
             const result = getVoiceDrillDownColumns(metric)
 

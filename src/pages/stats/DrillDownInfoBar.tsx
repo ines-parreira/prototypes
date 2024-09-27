@@ -25,6 +25,9 @@ const getObjectType = (metricData: DrillDownMetric) => {
         case VoiceMetric.AverageTalkTime:
         case VoiceMetric.QueueAverageWaitTime:
         case VoiceMetric.QueueAverageTalkTime:
+        case VoiceMetric.QueueInboundCalls:
+        case VoiceMetric.QueueMissedInboundCalls:
+        case VoiceMetric.QueueOutboundCalls:
         case VoiceAgentsMetric.AgentTotalCalls:
         case VoiceAgentsMetric.AgentInboundAnsweredCalls:
         case VoiceAgentsMetric.AgentInboundMissedCalls:
@@ -42,6 +45,9 @@ const isMetricDataDownloadable = (metricData: DrillDownMetric): boolean => {
         case VoiceMetric.AverageTalkTime:
         case VoiceMetric.QueueAverageWaitTime:
         case VoiceMetric.QueueAverageTalkTime:
+        case VoiceMetric.QueueInboundCalls:
+        case VoiceMetric.QueueMissedInboundCalls:
+        case VoiceMetric.QueueOutboundCalls:
         case VoiceAgentsMetric.AgentTotalCalls:
         case VoiceAgentsMetric.AgentInboundAnsweredCalls:
         case VoiceAgentsMetric.AgentInboundMissedCalls:

@@ -27,6 +27,7 @@ import {
 import {
     connectedCallsListQueryFactory,
     liveDashboardConnectedCallsListQueryFactory,
+    liveDashBoardVoiceCallListQueryFactory,
     liveDashboardWaitingTimeCallsListQueryFactory,
     voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
@@ -281,6 +282,24 @@ export const getDrillDownQuery = (
                 liveDashboardWaitingTimeCallsListQueryFactory(
                     statsFilters,
                     VoiceCallSegment.inboundCalls
+                )
+        case VoiceMetric.QueueInboundCalls:
+            return (statsFilters: StatsFilters) =>
+                liveDashBoardVoiceCallListQueryFactory(
+                    statsFilters,
+                    VoiceCallSegment.inboundCalls
+                )
+        case VoiceMetric.QueueMissedInboundCalls:
+            return (statsFilters: StatsFilters) =>
+                liveDashBoardVoiceCallListQueryFactory(
+                    statsFilters,
+                    VoiceCallSegment.missedCalls
+                )
+        case VoiceMetric.QueueOutboundCalls:
+            return (statsFilters: StatsFilters) =>
+                liveDashBoardVoiceCallListQueryFactory(
+                    statsFilters,
+                    VoiceCallSegment.outboundCalls
                 )
         case VoiceAgentsMetric.AgentTotalCalls:
             return queryBuilderWithAgentFilter(

@@ -38,6 +38,9 @@ export const getDrillDownHook = (
         case VoiceMetric.AverageTalkTime:
         case VoiceMetric.QueueAverageWaitTime:
         case VoiceMetric.QueueAverageTalkTime:
+        case VoiceMetric.QueueInboundCalls:
+        case VoiceMetric.QueueMissedInboundCalls:
+        case VoiceMetric.QueueOutboundCalls:
         case VoiceAgentsMetric.AgentTotalCalls:
         case VoiceAgentsMetric.AgentInboundAnsweredCalls:
         case VoiceAgentsMetric.AgentInboundMissedCalls:
