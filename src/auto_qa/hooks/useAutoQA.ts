@@ -2,11 +2,15 @@ import {
     TicketQAScoreDimension,
     TicketQAScoreDimensionName,
     useListTicketQaScoreDimensions,
+    useUpsertTicketQaScoreDimension,
 } from '@gorgias/api-queries'
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
+import useDebouncedValue from 'hooks/useDebouncedValue'
 import {dimensionOrder} from '../config'
 import type {DimensionSummary} from '../types'
+
+import useSaveState from './useSaveState'
 
 const defaultValues = dimensionOrder.reduce(
     (acc, name) => ({
@@ -21,17 +25,23 @@ const defaultValues = dimensionOrder.reduce(
 
 export default function useAutoQA(ticketId: number) {
     const {data, isError, isLoading} = useListTicketQaScoreDimensions(ticketId)
+    const {isLoading: isSaving, mutateAsync: upsertTicketQaScoreDimension} =
+        useUpsertTicketQaScoreDimension()
 
     const [values, setValues] =
         useState<Record<TicketQAScoreDimensionName, DimensionSummary>>(
             defaultValues
         )
+    const dirtyRef = useRef(false)
+    const dimensionsData = data?.data.data?.dimensions
+
+    const saveState = useSaveState(isSaving)
 
     useEffect(() => {
-        if (!data?.data.data) return
+        if (!dimensionsData) return
 
         setValues(
-            data.data.data.dimensions.reduce(
+            dimensionsData.reduce(
                 (acc, dim) => ({
                     ...acc,
                     [dim.name]: {
@@ -42,7 +52,7 @@ export default function useAutoQA(ticketId: number) {
                 {} as Record<TicketQAScoreDimensionName, DimensionSummary>
             )
         )
-    }, [data])
+    }, [dimensionsData])
 
     const lastUpdated = useMemo(() => {
         if (!data?.data.data) return null
@@ -57,6 +67,7 @@ export default function useAutoQA(ticketId: number) {
 
     const handleChange = useCallback(
         (name: string, prediction: number, explanation: string) => {
+            dirtyRef.current = true
             setValues((dims) => ({
                 ...dims,
                 [name]: {explanation, prediction},
@@ -116,8 +127,38 @@ export default function useAutoQA(ticketId: number) {
         [dimensionsMap, values]
     )
 
+    const debouncedValues = useDebouncedValue(values, 500)
+
+    useEffect(() => {
+        if (!dirtyRef.current) return
+        dirtyRef.current = false
+
+        void (async () => {
+            await upsertTicketQaScoreDimension({
+                data: {
+                    // @ts-expect-error the types in `@gorgias/api-queries` need to be fixed
+                    dimensions: Object.entries(debouncedValues).map(
+                        ([name, {explanation, prediction}]) => ({
+                            explanation,
+                            name,
+                            prediction,
+                        })
+                    ),
+                },
+                ticketId,
+            })
+        })()
+    }, [debouncedValues, ticketId, upsertTicketQaScoreDimension])
+
     return useMemo(
-        () => ({changeHandlers, dimensions, isError, isLoading, lastUpdated}),
-        [changeHandlers, dimensions, isError, isLoading, lastUpdated]
+        () => ({
+            changeHandlers,
+            dimensions,
+            isError,
+            isLoading,
+            lastUpdated,
+            saveState,
+        }),
+        [changeHandlers, dimensions, isError, isLoading, lastUpdated, saveState]
     )
 }

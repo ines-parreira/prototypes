@@ -1,6 +1,7 @@
 import {
     TicketQAScoreDimensionName,
     useListTicketQaScoreDimensions,
+    useUpsertTicketQaScoreDimension,
 } from '@gorgias/api-queries'
 import {act, renderHook} from '@testing-library/react-hooks'
 
@@ -12,12 +13,17 @@ jest.mock('@gorgias/api-queries', () => ({
         ResolutionCompleteness: 'resolution_completeness',
     },
     useListTicketQaScoreDimensions: jest.fn(),
+    useUpsertTicketQaScoreDimension: jest.fn(),
 }))
 const useListTicketQaScoreDimensionsMock =
     useListTicketQaScoreDimensions as jest.Mock
+const useUpsertTicketQaScoreDimensionMock =
+    useUpsertTicketQaScoreDimension as jest.Mock
 
 describe('useAutoQA', () => {
     beforeEach(() => {
+        jest.useRealTimers()
+
         useListTicketQaScoreDimensionsMock.mockReturnValue({
             data: {
                 data: {
@@ -47,6 +53,11 @@ describe('useAutoQA', () => {
                     },
                 },
             },
+        })
+
+        useUpsertTicketQaScoreDimensionMock.mockReturnValue({
+            isLoading: false,
+            mutateAsync: jest.fn(),
         })
     })
 
@@ -97,5 +108,43 @@ describe('useAutoQA', () => {
                 explanation: 'Excellent',
             }),
         ])
+    })
+
+    it('should save changed values with a delay', () => {
+        jest.useFakeTimers()
+        const mutateAsync = jest.fn()
+        useUpsertTicketQaScoreDimensionMock.mockReturnValue({
+            isLoading: false,
+            mutateAsync,
+        })
+
+        const {result} = renderHook(() => useAutoQA(1))
+
+        act(() => {
+            result.current.changeHandlers[
+                TicketQAScoreDimensionName.CommunicationSkills
+            ](5, 'Excellent')
+        })
+        act(() => {
+            jest.advanceTimersByTime(500)
+        })
+
+        expect(mutateAsync).toHaveBeenCalledWith({
+            data: {
+                dimensions: [
+                    {
+                        explanation: 'Beep-boop',
+                        name: 'resolution_completeness',
+                        prediction: 0,
+                    },
+                    {
+                        explanation: 'Excellent',
+                        name: 'communication_skills',
+                        prediction: 5,
+                    },
+                ],
+            },
+            ticketId: 1,
+        })
     })
 })

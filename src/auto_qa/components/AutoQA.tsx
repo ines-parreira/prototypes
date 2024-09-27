@@ -11,11 +11,12 @@ import {dimensionConfig} from '../config'
 import useAutoQA from '../hooks/useAutoQA'
 import AutoQASkeleton from './AutoQASkeleton'
 import Dimension from './Dimension'
+import SaveBadge from './SaveBadge'
 import css from './AutoQA.less'
 
 export default function AutoQA() {
     const ticketId = useAppSelector(getTicketId)
-    const {changeHandlers, dimensions, isLoading, lastUpdated} =
+    const {changeHandlers, dimensions, isLoading, lastUpdated, saveState} =
         useAutoQA(ticketId)
 
     const lastUpdatedString = useMemo(
@@ -25,19 +26,22 @@ export default function AutoQA() {
 
     return (
         <div className={css.container}>
-            <div className={css.titleWrapper}>
-                <h2 className={css.title}>Auto QA Score</h2>
-                <i
-                    id="auto-qa-score"
-                    className={cn('material-icons-outlined', css.icon)}
-                >
-                    info
-                </i>
-                <Tooltip target="auto-qa-score" placement="top-end">
-                    AI generated results, edit to improve AI model.
-                </Tooltip>
-                <Badge type={ColorType.Magenta}>BETA</Badge>
-            </div>
+            <header className={css.header}>
+                <div className={css.titleWrapper}>
+                    <h2 className={css.title}>Auto QA Score</h2>
+                    <i
+                        id="auto-qa-score"
+                        className={cn('material-icons-outlined', css.icon)}
+                    >
+                        info
+                    </i>
+                    <Tooltip target="auto-qa-score" placement="top-end">
+                        AI generated results, edit to improve AI model.
+                    </Tooltip>
+                    <Badge type={ColorType.Magenta}>BETA</Badge>
+                </div>
+                <SaveBadge state={saveState} />
+            </header>
 
             {isLoading ? (
                 <AutoQASkeleton />
