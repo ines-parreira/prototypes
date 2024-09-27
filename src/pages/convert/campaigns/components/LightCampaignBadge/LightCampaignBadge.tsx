@@ -21,7 +21,7 @@ const LightCampaignBadge = ({
         return null
     }
 
-    return <Badge label={'light'} color="accessoryGrey" className={className} />
+    return <Badge label={'light'} color="accessoryBlue" className={className} />
 }
 
 export default LightCampaignBadge

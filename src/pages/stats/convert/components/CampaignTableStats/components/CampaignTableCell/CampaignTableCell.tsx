@@ -166,7 +166,7 @@ export const CampaignTableCell = ({
                         {cell.campaign.is_light && (
                             <Badge
                                 label="light"
-                                color={'accessoryGrey'}
+                                color={'accessoryBlue'}
                                 className={css.lightBadge}
                             />
                         )}
