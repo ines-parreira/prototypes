@@ -11,6 +11,10 @@
         }
     }
 
+    .action {
+        flex-shrink: 0;
+    }
+
     .agentLabel {
         color: var(--main-primary);
     }
@@ -22,10 +26,9 @@
     .agent,
     .agent ~ .customerLabel,
     .customerLabel.hasAgent {
-        max-width: 19ch;
-    }
+        min-width: 3ch;
+        max-width: 17ch;
 
-    .customerLabel.hasAgent {
         & > span {
             display: inline-block;
             white-space: nowrap;

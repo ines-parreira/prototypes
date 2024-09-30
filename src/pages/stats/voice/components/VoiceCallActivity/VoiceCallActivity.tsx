@@ -39,7 +39,9 @@ const InboundVoiceCallActivity = ({voiceCall}: Props) => {
                     }
                 />
             )}
-            <div>{getActionLabel(voiceCall.status, voiceCall.agentId)}</div>
+            <div className={css.action}>
+                {getActionLabel(voiceCall.status, voiceCall.agentId)}
+            </div>
 
             {!!voiceCall.agentId && (
                 <div className={css.agent}>
@@ -78,7 +80,9 @@ const OutboundVoiceCallActivity = ({voiceCall}: Props) => {
                     />
                 )}
             </span>
-            <div>{getActionLabel(voiceCall.status, voiceCall.agentId)}</div>
+            <div className={css.action}>
+                {getActionLabel(voiceCall.status, voiceCall.agentId)}
+            </div>
 
             {voiceCall.customerId ? (
                 <VoiceCallCustomerLabel
