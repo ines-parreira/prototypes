@@ -8,15 +8,21 @@ import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
 import NoMatch from 'pages/common/components/NoMatch'
 
+import {OBJECT_TYPES} from 'models/customField/constants'
+import {CustomFieldObjectTypes} from 'models/customField/types'
 import CustomFieldsComponent from 'pages/settings/customFields/CustomFields'
 import AddCustomField from 'pages/settings/customFields/AddCustomField'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
 
 import {renderAppSettings} from './helpers/settingsRenderer'
 
-export function CustomFields() {
+export function CustomFields({
+    objectType,
+}: {
+    objectType: CustomFieldObjectTypes
+}) {
     const {path} = useRouteMatch()
-    const isCustomerFields = path.includes('customer-fields')
+    const isCustomerFields = objectType === OBJECT_TYPES.CUSTOMER
     const hasCustomerFieldsEnabled = useFlag(
         FeatureFlagKey.CustomerFields,
         false
@@ -28,6 +34,9 @@ export function CustomFields() {
         <Switch>
             <Route path={`${path}/add`} exact>
                 {renderAppSettings(AddCustomField, {
+                    componentProps: {
+                        objectType: objectType,
+                    },
                     roleParams: [
                         ADMIN_ROLE,
                         isCustomerFields
@@ -38,6 +47,9 @@ export function CustomFields() {
             </Route>
             <Route path={`${path}/:id/edit`} exact>
                 {renderAppSettings(EditCustomField, {
+                    componentProps: {
+                        objectType: objectType,
+                    },
                     roleParams: [
                         ADMIN_ROLE,
                         isCustomerFields
@@ -51,6 +63,9 @@ export function CustomFields() {
             </Route>
             <Route path={`${path}/:activeTab`} exact>
                 {renderAppSettings(CustomFieldsComponent, {
+                    componentProps: {
+                        objectType: objectType,
+                    },
                     roleParams: [
                         ADMIN_ROLE,
                         isCustomerFields

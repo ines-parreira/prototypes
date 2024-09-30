@@ -7,7 +7,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
 
+import {OBJECT_TYPES} from 'models/customField/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import AddCustomField from '../AddCustomField'
 
 const mockStore = configureMockStore([thunk])()
@@ -23,7 +25,7 @@ describe('<AddCustomField/>', () => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
-                        <AddCustomField />
+                        <AddCustomField objectType={OBJECT_TYPES.TICKET} />
                     </DndProvider>
                 </Provider>
             </QueryClientProvider>

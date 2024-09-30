@@ -4,10 +4,14 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, screen} from '@testing-library/react'
 import uniqueId from 'lodash/uniqueId'
+
+import {
+    OBJECT_TYPES,
+    DROPDOWN_NESTING_DELIMITER as delimiter,
+} from 'models/customField/constants'
+import {ticketDropdownFieldDefinition} from 'fixtures/customField'
 import {renderWithDnD} from 'utils/testing'
 
-import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
-import {ticketDropdownFieldDefinition} from 'fixtures/customField'
 import DropdownInputRow from '../DropdownInputRow'
 import DropdownInput from '../DropdownInput'
 
@@ -31,9 +35,16 @@ describe('<DropdownInput/>', () => {
         idCount = 1
     })
 
+    const defaultProps = {
+        field: ticketDropdownFieldDefinition,
+        value: ['Option 1', 'Option 2'],
+        onChange: jest.fn(),
+        objectType: OBJECT_TYPES.TICKET,
+    }
+
     it('should render correctly', () => {
         const props = {
-            field: ticketDropdownFieldDefinition,
+            ...defaultProps,
             value: [
                 'Option 1',
                 'Option 2',
@@ -44,7 +55,6 @@ describe('<DropdownInput/>', () => {
                 true,
                 false,
             ],
-            onChange: jest.fn(),
         }
 
         const {container} = renderWithDnD(
@@ -58,13 +68,12 @@ describe('<DropdownInput/>', () => {
 
     it('should show an error for too much nesting', () => {
         const props = {
-            field: ticketDropdownFieldDefinition,
+            ...defaultProps,
             value: [
                 'Option 1',
                 'Option 2',
                 `Option 3${delimiter}Sub 2${delimiter}Sub 3${delimiter}Sub 4${delimiter}Sub 5${delimiter}Sub 6`,
             ],
-            onChange: jest.fn(),
         }
 
         renderWithDnD(
@@ -79,9 +88,8 @@ describe('<DropdownInput/>', () => {
 
     it('should show an error for duplicate values', () => {
         const props = {
-            field: ticketDropdownFieldDefinition,
+            ...defaultProps,
             value: ['Option 1', 'Option 2', 'Option 1', 'Option 3'],
-            onChange: jest.fn(),
         }
 
         renderWithDnD(
@@ -96,9 +104,8 @@ describe('<DropdownInput/>', () => {
 
     it('should trigger an onChange event when changing a value', () => {
         const props = {
-            field: ticketDropdownFieldDefinition,
+            ...defaultProps,
             value: ['Option 1', 'Option 2', 'Option 3'],
-            onChange: jest.fn(),
         }
 
         renderWithDnD(
@@ -119,9 +126,8 @@ describe('<DropdownInput/>', () => {
 
     it('should trigger an onChange event when removing a value', () => {
         const props = {
-            field: ticketDropdownFieldDefinition,
+            ...defaultProps,
             value: ['Option 1', 'Option 2', 'Option 3'],
-            onChange: jest.fn(),
         }
 
         renderWithDnD(
@@ -138,9 +144,8 @@ describe('<DropdownInput/>', () => {
 
     it('should trigger an onChange event when adding a value', () => {
         const props = {
-            field: ticketDropdownFieldDefinition,
+            ...defaultProps,
             value: ['Option 1', 'Option 2', 'Option 3'],
-            onChange: jest.fn(),
         }
 
         renderWithDnD(
@@ -162,9 +167,8 @@ describe('<DropdownInput/>', () => {
 
     it('should trigger an onChange event when re-ordering values with drag and drop', () => {
         const props = {
-            field: ticketDropdownFieldDefinition,
+            ...defaultProps,
             value: ['Option 1', 'Option 2', 'Option 3'],
-            onChange: jest.fn(),
         }
 
         renderWithDnD(
@@ -191,9 +195,7 @@ describe('<DropdownInput/>', () => {
     describe('isDisabled', () => {
         it('should pass isDisabled to DropdownInputRow', () => {
             const props = {
-                field: ticketDropdownFieldDefinition,
-                value: ['Option 1', 'Option 2'],
-                onChange: jest.fn(),
+                ...defaultProps,
                 isDisabled: true,
             }
 
@@ -213,9 +215,7 @@ describe('<DropdownInput/>', () => {
 
         it('should render without csv import when disabled', () => {
             const props = {
-                field: ticketDropdownFieldDefinition,
-                value: ['Option 1', 'Option 2'],
-                onChange: jest.fn(),
+                ...defaultProps,
                 isDisabled: true,
             }
 
@@ -231,9 +231,7 @@ describe('<DropdownInput/>', () => {
 
         it('should render without instructions when disabled', () => {
             const props = {
-                field: ticketDropdownFieldDefinition,
-                value: ['Option 1', 'Option 2'],
-                onChange: jest.fn(),
+                ...defaultProps,
                 isDisabled: true,
             }
 

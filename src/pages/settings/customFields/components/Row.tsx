@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import {Tooltip} from '@gorgias/ui-kit'
 import {ulid} from 'ulidx'
 
+import {DateAndTimeFormatting} from 'constants/datetime'
 import {CustomField, isCustomFieldAIManagedType} from 'models/customField/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
@@ -14,30 +15,33 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import {Callbacks} from 'pages/common/hooks/useReorderDnD'
 import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
+
 import css from './Row.less'
 
 export type Props = {
     position: number
-    ticketField: CustomField
+    customField: CustomField
     canReorder: boolean
     onMoveEntity: Callbacks['onHover']
     onDropEntity: Callbacks['onDrop']
 }
 export default function Row({
     position,
-    ticketField,
+    customField,
     canReorder,
     onMoveEntity,
     onDropEntity,
 }: Props) {
     const {mutate, isLoading} = useUpdateCustomFieldArchiveStatus(
-        ticketField.id
+        customField.id
     )
 
-    const link = `/app/settings/ticket-fields/${ticketField.id}/edit`
+    const link = `/app/settings/${
+        CUSTOM_FIELD_ROUTES[customField.object_type]
+    }/${customField.id}/edit`
     const [archiveModalVisible, setArchiveModalVisible] = useState(false)
-    const isAIManaged = isCustomFieldAIManagedType(ticketField.managed_type)
+    const isAIManaged = isCustomFieldAIManagedType(customField.managed_type)
     const tooltipId = 'a' + ulid()
 
     return (
@@ -48,19 +52,19 @@ export default function Row({
                 canReorder && css.canReorder
             )}
             dragItem={{
-                id: ticketField.id,
+                id: customField.id,
                 position,
-                type: 'ticket-fields-row',
+                type: 'custom-fields-row',
             }}
             shouldRenderDragHandle={canReorder}
             onMoveEntity={onMoveEntity}
             onDropEntity={onDropEntity}
         >
-            <td id={`ticket-field-label-${ticketField.id}`}>
+            <td id={`custom-field-label-${customField.id}`}>
                 <Link to={link}>
                     <BodyCellContent>
                         <strong className={classnames('mr-4', css.label)}>
-                            {ticketField.label}
+                            {customField.label}
                             {isAIManaged && (
                                 <>
                                     {' '}
@@ -77,7 +81,7 @@ export default function Row({
                                     </i>
                                     <>
                                         <Tooltip target={tooltipId}>
-                                            {ticketField.label} is a Gorgias AI
+                                            {customField.label} is a Gorgias AI
                                             managed field and cannot be edited
                                         </Tooltip>
                                     </>
@@ -86,28 +90,28 @@ export default function Row({
                         </strong>
                         <span className="d-inline-flex text-faded">
                             <span className={css.description}>
-                                {ticketField.description}
+                                {customField.description}
                             </span>
                         </span>
                     </BodyCellContent>
                 </Link>
             </td>
             <BodyCell>
-                {ticketField.required && !ticketField.deactivated_datetime && (
+                {customField.required && !customField.deactivated_datetime && (
                     <Badge type={ColorType.Warning}>REQUIRED</Badge>
                 )}
             </BodyCell>
             <BodyCell>
                 <div className={'text-faded'}>
                     <DatetimeLabel
-                        dateTime={ticketField.updated_datetime}
+                        dateTime={customField.updated_datetime}
                         labelFormat={DateAndTimeFormatting.CompactDate}
                     />
                 </div>
             </BodyCell>
 
             <BodyCell>
-                {!ticketField.deactivated_datetime && (
+                {!customField.deactivated_datetime && (
                     <>
                         <IconButton
                             className={classnames(css.actionButton, 'mr-1')}
@@ -116,27 +120,28 @@ export default function Row({
                             intent="secondary"
                             isLoading={isLoading}
                             isDisabled={isCustomFieldAIManagedType(
-                                ticketField.managed_type
+                                customField.managed_type
                             )}
                             title="Archive"
-                            id={`archive-ticket-field-${ticketField.id}`}
+                            id={`archive-custom-field-${customField.id}`}
                         >
                             archive
                         </IconButton>
 
                         <ArchiveConfirmationModal
-                            ticketFieldLabel={ticketField.label}
+                            customFieldLabel={customField.label}
                             isOpen={archiveModalVisible}
                             onConfirm={() => {
                                 setArchiveModalVisible(false)
                                 mutate(true)
                             }}
                             onClose={() => setArchiveModalVisible(false)}
+                            objectType={customField.object_type}
                         />
                     </>
                 )}
 
-                {ticketField.deactivated_datetime && (
+                {customField.deactivated_datetime && (
                     <IconButton
                         className={classnames(css.actionButton, 'mr-1')}
                         onClick={() => {
@@ -145,11 +150,11 @@ export default function Row({
                         fillStyle="ghost"
                         intent="secondary"
                         isDisabled={isCustomFieldAIManagedType(
-                            ticketField.managed_type
+                            customField.managed_type
                         )}
                         isLoading={isLoading}
                         title="Unarchive"
-                        id={`restore-ticket-field-${ticketField.id}`}
+                        id={`restore-custom-field-${customField.id}`}
                     >
                         unarchive
                     </IconButton>

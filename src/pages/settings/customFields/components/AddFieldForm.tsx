@@ -1,21 +1,26 @@
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {CustomFieldInput} from 'models/customField/types'
+import {OBJECT_TYPES} from 'models/customField/constants'
+import {
+    CustomFieldInput,
+    CustomFieldObjectTypes,
+} from 'models/customField/types'
 import history from 'pages/history'
 import {useCreateCustomFieldDefinition} from 'hooks/customField/useCreateCustomFieldDefinition'
+import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
 import FieldForm from './FieldForm'
 
-interface AddFieldFormProps {
-    objectType: CustomFieldInput['object_type']
-}
-
-export default function AddFieldForm(props: AddFieldFormProps) {
+export default function AddFieldForm({
+    objectType,
+}: {
+    objectType: CustomFieldObjectTypes
+}) {
     const {mutateAsync} = useCreateCustomFieldDefinition()
 
     const newField: CustomFieldInput = {
-        object_type: props.objectType,
+        object_type: objectType,
         label: '',
         required: false,
         managed_type: null,
@@ -28,11 +33,14 @@ export default function AddFieldForm(props: AddFieldFormProps) {
         },
     }
 
-    const close = () => history.push('/app/settings/ticket-fields')
+    const close = () =>
+        history.push(`/app/settings/${CUSTOM_FIELD_ROUTES[objectType]}`)
     const handleSubmit = async (field: CustomFieldInput) => {
-        logEvent(SegmentEvent.CustomFieldTicketSaveNewFieldClicked, {
-            fieldType: field.definition.input_settings.input_type,
-        })
+        if (objectType === OBJECT_TYPES.TICKET) {
+            logEvent(SegmentEvent.CustomFieldTicketSaveNewFieldClicked, {
+                fieldType: field.definition.input_settings.input_type,
+            })
+        }
         await mutateAsync([field])
     }
 
@@ -42,6 +50,7 @@ export default function AddFieldForm(props: AddFieldFormProps) {
             onSubmit={handleSubmit}
             onClose={close}
             submitLabel="Create field"
+            objectType={objectType}
         />
     )
 }

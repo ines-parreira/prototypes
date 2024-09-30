@@ -31,7 +31,7 @@ const TableBodyRowDraggableMock = assumeMock(TableBodyRowDraggable)
 const updateMutateMock = jest.fn()
 
 const defaultProps = {
-    ticketField: ticketInputFieldDefinition,
+    customField: ticketInputFieldDefinition,
     canReorder: true,
     position: 0,
     onMoveEntity: jest.fn(),
@@ -75,7 +75,7 @@ describe('<Row />', () => {
                     dragItem: {
                         id: ticketInputFieldDefinition.id,
                         position: props.position,
-                        type: 'ticket-fields-row',
+                        type: 'custom-fields-row',
                     },
                 }),
                 {}
@@ -86,7 +86,7 @@ describe('<Row />', () => {
     it('should render correctly the required badge', () => {
         const props = {
             ...defaultProps,
-            ticketField: {
+            customField: {
                 ...ticketInputFieldDefinition,
                 required: true,
             },
@@ -105,7 +105,7 @@ describe('<Row />', () => {
     it('should show a tooltip on AI managed fields', async () => {
         const props = {
             ...defaultProps,
-            ticketField: aiManagedTicketInputFieldDefinition,
+            customField: aiManagedTicketInputFieldDefinition,
         }
 
         render(
@@ -129,7 +129,7 @@ describe('<Row />', () => {
         (ticketFieldDefinition) => {
             const props = {
                 ...defaultProps,
-                ticketField: {
+                customField: {
                     ...ticketFieldDefinition,
                     deactivated_datetime: null,
                 },
@@ -157,7 +157,7 @@ describe('<Row />', () => {
         (ticketFieldDefinition) => {
             const props = {
                 ...defaultProps,
-                ticketField: {
+                customField: {
                     ...ticketFieldDefinition,
                     deactivated_datetime: '2022-01-02T03:04:05.123456+00:00',
                 },
@@ -184,7 +184,7 @@ describe('<Row />', () => {
     it('should archive correctly', async () => {
         const props = {
             ...defaultProps,
-            ticketField: {
+            customField: {
                 ...ticketInputFieldDefinition,
                 deactivated_datetime: null,
             },
@@ -235,7 +235,7 @@ describe('<Row />', () => {
     it('should unarchive correctly', async () => {
         const props = {
             ...defaultProps,
-            ticketField: {
+            customField: {
                 ...ticketInputFieldDefinition,
                 deactivated_datetime: '2022-01-02T03:04:05.123456+00:00',
             },

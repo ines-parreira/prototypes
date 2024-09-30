@@ -20,7 +20,8 @@ exports[`<AddCustomField/> should render 1`] = `
           <a
             to="/app/settings/ticket-fields/active"
           >
-            Ticket fields
+            Ticket
+             fields
           </a>
         </li>
         <li
@@ -113,7 +114,8 @@ exports[`<AddCustomField/> should render 1`] = `
               name="checkbox-4"
               type="checkbox"
             />
-            Required to close ticket
+            Required to close 
+            ticket
           </label>
           <div
             class="caption caption"

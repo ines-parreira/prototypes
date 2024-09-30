@@ -8,6 +8,7 @@ import Button from 'pages/common/components/button/Button'
 import {
     CustomField,
     CustomFieldInput,
+    CustomFieldObjectTypes,
     CustomFieldValue,
 } from 'models/customField/types'
 import DropdownCSVImport from './DropdownCSVImport'
@@ -20,6 +21,7 @@ interface DropdownInputProps {
     value: CustomFieldValue[]
     onChange: (value: string[]) => void
     isDisabled?: boolean
+    objectType: CustomFieldObjectTypes
 }
 
 interface InternalValue {
@@ -60,6 +62,7 @@ export function DropdownInput({
     value,
     onChange,
     isDisabled = false,
+    objectType,
 }: DropdownInputProps) {
     const [isImportOpen, setImportOpen] = useState(false)
 
@@ -229,6 +232,7 @@ export function DropdownInput({
                 }}
                 onClose={() => setImportOpen(false)}
                 needsConfirmation={values.length > 1}
+                objectType={objectType}
             />
         </>
     )

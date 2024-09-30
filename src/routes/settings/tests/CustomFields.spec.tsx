@@ -5,10 +5,12 @@ import {render, screen} from '@testing-library/react'
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
 import {useFlag} from 'common/flags'
+import {CustomFieldObjectTypes} from 'models/customField/types'
 import CustomFieldsComponent from 'pages/settings/customFields/CustomFields'
 import AddCustomField from 'pages/settings/customFields/AddCustomField'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
 import {assumeMock} from 'utils/testing'
+import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
 import {renderAppSettings} from '../helpers/settingsRenderer'
 import {CustomFields} from '../CustomFields'
@@ -33,39 +35,33 @@ const mockedRoute = Route as jest.Mock
 const mockedUseFlag = assumeMock(useFlag)
 const mockedRenderAppSettings = assumeMock(renderAppSettings)
 
-const baseTicketPath = 'ticket-fields'
-const baseCustomerPath = 'customer-fields'
-
 describe('CustomFields', () => {
     beforeEach(() => {
         mockedUseFlag.mockReturnValue(true)
         mockedUseRouteMatch.mockReturnValue({
-            path: baseTicketPath,
+            path: CUSTOM_FIELD_ROUTES['Ticket'],
         } as ReturnType<typeof useRouteMatch>)
     })
 
-    it("should render the NoMatch component if the feature flag isn't enabled and path contains customer-fields", () => {
+    it("should render the NoMatch component if the feature flag isn't enabled and objectType prop is customer-fields", () => {
         mockedUseFlag.mockReturnValue(false)
-        mockedUseRouteMatch.mockReturnValue({
-            path: baseCustomerPath,
-        } as ReturnType<typeof useRouteMatch>)
 
-        render(<CustomFields />)
+        render(<CustomFields objectType="Customer" />)
 
         expect(screen.getByText('404')).toBeInTheDocument()
     })
 
     it('should call Redirect with correct props', () => {
-        render(<CustomFields />)
+        render(<CustomFields objectType="Ticket" />)
 
         expect(mockedRoute.mock.calls[2]).toEqual([
             {
                 exact: true,
-                path: baseTicketPath + '/',
+                path: CUSTOM_FIELD_ROUTES['Ticket'] + '/',
                 children: expect.objectContaining({
                     type: Redirect,
                     props: expect.objectContaining({
-                        to: `${baseTicketPath}/active`,
+                        to: `${CUSTOM_FIELD_ROUTES['Ticket']}/active`,
                     }),
                 }),
             },
@@ -76,8 +72,9 @@ describe('CustomFields', () => {
     const defaults = {
         exact: true,
         role: ADMIN_ROLE,
-        basePath: baseTicketPath,
+        basePath: CUSTOM_FIELD_ROUTES['Ticket'],
         pageSection: PageSection.TicketFields,
+        objectType: 'Ticket',
     }
 
     it.each([
@@ -97,7 +94,8 @@ describe('CustomFields', () => {
                 routeCallOrder: 0,
                 path: '/add',
                 component: AddCustomField,
-                basePath: baseCustomerPath,
+                basePath: CUSTOM_FIELD_ROUTES['Customer'],
+                objectType: 'Customer',
                 pageSection: PageSection.CustomerFields,
             },
         ],
@@ -117,7 +115,8 @@ describe('CustomFields', () => {
                 routeCallOrder: 1,
                 path: '/:id/edit',
                 component: EditCustomField,
-                basePath: baseCustomerPath,
+                basePath: CUSTOM_FIELD_ROUTES['Customer'],
+                objectType: 'Customer',
                 pageSection: PageSection.CustomerFields,
             },
         ],
@@ -135,9 +134,10 @@ describe('CustomFields', () => {
                 ...defaults,
                 callOrder: 2,
                 routeCallOrder: 3,
-                basePath: baseCustomerPath,
+                basePath: CUSTOM_FIELD_ROUTES['Customer'],
                 path: '/:activeTab',
                 component: CustomFieldsComponent,
+                objectType: 'Customer',
                 pageSection: PageSection.CustomerFields,
             },
         ],
@@ -152,17 +152,25 @@ describe('CustomFields', () => {
             component,
             role,
             pageSection,
+            objectType,
         }) => {
             mockedUseRouteMatch.mockReturnValue({
                 path: basePath,
             } as ReturnType<typeof useRouteMatch>)
 
-            render(<CustomFields />)
+            render(
+                <CustomFields
+                    objectType={objectType as CustomFieldObjectTypes}
+                />
+            )
 
             expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
                 component,
                 {
                     roleParams: [role, pageSection],
+                    componentProps: {
+                        objectType,
+                    },
                 },
             ])
             expect(mockedRoute.mock.calls[routeCallOrder]).toEqual([

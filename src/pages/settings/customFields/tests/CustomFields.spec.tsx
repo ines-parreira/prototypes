@@ -4,12 +4,13 @@ import userEvent from '@testing-library/user-event'
 import {useParams} from 'react-router-dom'
 
 import {assumeMock} from 'utils/testing'
+import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 import {ticketInputFieldDefinition} from 'fixtures/customField'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {useUpdateCustomFieldDefinitions} from 'hooks/customField/useUpdateCustomFieldDefinitions'
+import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'models/customField/constants'
 
-import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 import CustomFields from '../CustomFields'
 
 jest.mock(
@@ -27,7 +28,7 @@ jest.mock('hooks/customField/useUpdateCustomFieldDefinitions')
 jest.mock('hooks/useDebouncedValue')
 jest.mock('../components/List', () =>
     jest.fn(() => {
-        return <div data-testid="ticket-fields-list"></div>
+        return <div data-testid="custom-fields-list"></div>
     })
 )
 
@@ -59,10 +60,10 @@ describe('<CustomFields/>', () => {
     })
 
     it('should render get started', () => {
-        render(<CustomFields />)
+        render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
 
         expect(screen.getByText(/Get started with Ticket Fields/)).toBeDefined()
-        expect(screen.queryByTestId('ticket-fields-list')).toBeNull()
+        expect(screen.queryByTestId('custom-fields-list')).toBeNull()
     })
 
     it('should render no active ticket fields when there is at least one archived ticket field', () => {
@@ -73,28 +74,28 @@ describe('<CustomFields/>', () => {
             return emptyFieldDefinitions
         })
 
-        render(<CustomFields />)
+        render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
 
         expect(
             screen.getByText(
                 /You don't have any active ticket fields at the moment/
             )
         ).toBeDefined()
-        expect(screen.queryByTestId('ticket-fields-list')).toBeNull()
+        expect(screen.queryByTestId('custom-fields-list')).toBeNull()
     })
 
     it('should render active ticket fields', () => {
         useCustomFieldDefinitionsMock.mockReturnValue(notEmptyFieldDefinitions)
 
-        render(<CustomFields />)
+        render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
 
-        expect(screen.getByTestId('ticket-fields-list')).toBeInTheDocument()
+        expect(screen.getByTestId('custom-fields-list')).toBeInTheDocument()
     })
 
     it('should render no results found', async () => {
         useDebouncedValueMock.mockReturnValue('foo')
 
-        render(<CustomFields />)
+        render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
         await userEvent.type(
             screen.getByPlaceholderText('Search ticket fields...'),
             'foo'
@@ -114,22 +115,46 @@ describe('<CustomFields/>', () => {
         })
         useParamsMock.mockReturnValue({activeTab: 'archived'})
 
-        render(<CustomFields />)
+        render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
 
         expect(
             screen.getByText(
                 /You don't have any archived ticket fields at the moment/
             )
         ).toBeDefined()
-        expect(screen.queryByTestId('ticket-fields-list')).toBeNull()
+        expect(screen.queryByTestId('custom-fields-list')).toBeNull()
     })
 
     it('should render archived ticket fields', () => {
         useCustomFieldDefinitionsMock.mockReturnValue(notEmptyFieldDefinitions)
         useParamsMock.mockReturnValue({activeTab: 'archived'})
 
-        render(<CustomFields />)
+        render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
 
-        expect(screen.getByTestId('ticket-fields-list')).toBeInTheDocument()
+        expect(screen.getByTestId('custom-fields-list')).toBeInTheDocument()
     })
+
+    it.each([[OBJECT_TYPES.TICKET], [OBJECT_TYPES.CUSTOMER]])(
+        'should disable the create button when max limit is reached and display an alert',
+        (objectType) => {
+            useCustomFieldDefinitionsMock.mockReturnValue({
+                data: apiListCursorPaginationResponse(
+                    Array.from(
+                        {length: OBJECT_TYPE_SETTINGS[objectType].MAX_FIELDS},
+                        () => ticketInputFieldDefinition
+                    )
+                ),
+                isLoading: false,
+            } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
+
+            render(<CustomFields objectType={objectType} />)
+
+            expect(
+                screen.getByText(/Please archive some fields before creating/)
+            ).toBeDefined()
+            expect(
+                screen.getByRole('button', {name: 'Create Field'})
+            ).toBeAriaDisabled()
+        }
+    )
 })

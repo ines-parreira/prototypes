@@ -7,6 +7,7 @@ import {PageSection} from 'config/pages'
 import {assumeMock} from 'utils/testing'
 
 import IntegrationDetail from 'pages/integrations/integration/Integration'
+import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
 import {renderAppSettings} from '../helpers/settingsRenderer'
 import {SettingRoutes} from '../Settings'
@@ -24,6 +25,7 @@ import {Rules} from '../Rules'
 import {SLA} from '../SLA'
 import {Teams} from '../Teams'
 import {Users} from '../Users'
+import {HelpCenter} from '../HelpCenter'
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),
@@ -84,14 +86,20 @@ const testingMap = [
     {
         callOrder: 5,
         exact: undefined,
-        path: `${basePath}/ticket-fields`,
+        path: `${basePath}/${CUSTOM_FIELD_ROUTES['Customer']}`,
         component: CustomFields,
     },
     {
         callOrder: 6,
         exact: undefined,
-        path: `${basePath}/customer-fields`,
+        path: `${basePath}/${CUSTOM_FIELD_ROUTES['Ticket']}`,
         component: CustomFields,
+    },
+    {
+        callOrder: 7,
+        exact: undefined,
+        path: `${basePath}/help-center`,
+        component: HelpCenter,
     },
     {
         callOrder: 8,

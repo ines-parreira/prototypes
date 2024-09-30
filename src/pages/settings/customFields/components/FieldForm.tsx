@@ -8,10 +8,12 @@ import history from 'pages/history'
 import {
     CustomField,
     CustomFieldInput,
+    CustomFieldObjectTypes,
     isCustomField,
     isCustomFieldAIManagedType,
 } from 'models/customField/types'
 import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
+import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'models/customField/constants'
 import InputField from 'pages/common/forms/input/InputField'
 import CheckBox from 'pages/common/forms/CheckBox'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
@@ -34,6 +36,7 @@ interface FieldFormProps {
     onSubmit: (field: CustomFieldInput) => Promise<void>
     onClose: () => void
     submitLabel?: string
+    objectType: CustomFieldObjectTypes
 }
 
 const pickMap = {
@@ -53,6 +56,9 @@ function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
 }
 
 export default function FieldForm(props: FieldFormProps) {
+    const customFieldTypeLabel = OBJECT_TYPE_SETTINGS[props.objectType].LABEL
+    const customFieldTitleLabel =
+        OBJECT_TYPE_SETTINGS[props.objectType].TITLE_LABEL
     const isAIManaged = isCustomFieldAIManagedType(props.field.managed_type)
     const {mutateAsync} = useUpdateCustomFieldArchiveStatus(
         // this `: 0` case should never happen
@@ -170,14 +176,14 @@ export default function FieldForm(props: FieldFormProps) {
                 className={css.formRow}
                 isDisabled={isAIManaged}
             />
-            {!isAIManaged && (
+            {props.objectType === OBJECT_TYPES.TICKET && !isAIManaged && (
                 <CheckBox
                     isChecked={form.required}
-                    caption="Enable to prevent agents from closing the ticket if the field is left empty. Snooze and Send actions will still work."
+                    caption={`Enable to prevent agents from closing the ${customFieldTypeLabel} if the field is left empty. Snooze and Send actions will still work.`}
                     onChange={(val) => setValue('required', val)}
                     className={css.formRow}
                 >
-                    Required to close ticket
+                    Required to close {customFieldTypeLabel}
                 </CheckBox>
             )}
             <div className={css.formRow}>
@@ -232,6 +238,7 @@ export default function FieldForm(props: FieldFormProps) {
                             value={form.definition.input_settings.choices}
                             onChange={handleChoiceChange}
                             isDisabled={isAIManaged}
+                            objectType={props.objectType}
                         />
                     </div>
                 )}
@@ -241,7 +248,7 @@ export default function FieldForm(props: FieldFormProps) {
                     {isAIManaged ? (
                         <Button intent="secondary" onClick={props.onClose}>
                             <ButtonIconLabel icon="arrow_back">
-                                Return to Ticket Fields
+                                Return to {customFieldTitleLabel} Fields
                             </ButtonIconLabel>
                         </Button>
                     ) : (
@@ -259,7 +266,10 @@ export default function FieldForm(props: FieldFormProps) {
                                 Cancel
                             </Button>
                             <Tooltip
-                                disabled={!isFormDirty}
+                                disabled={
+                                    !isFormDirty ||
+                                    props.objectType === OBJECT_TYPES.CUSTOMER
+                                }
                                 target={SAVE_BUTTON_ID}
                             >
                                 Note: The values you have changed may be in use
@@ -286,7 +296,7 @@ export default function FieldForm(props: FieldFormProps) {
                                 </Button>
 
                                 <ArchiveConfirmationModal
-                                    ticketFieldLabel={props.field.label}
+                                    customFieldLabel={props.field.label}
                                     isOpen={archiveModalVisible}
                                     onConfirm={async () => {
                                         await handleArchivingCustomField(true)
@@ -295,6 +305,7 @@ export default function FieldForm(props: FieldFormProps) {
                                     onClose={() =>
                                         setArchiveModalVisible(false)
                                     }
+                                    objectType={props.objectType}
                                 />
                             </div>
                         )}

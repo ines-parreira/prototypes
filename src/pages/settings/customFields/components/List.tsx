@@ -9,21 +9,21 @@ import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import css from './List.less'
 
 export type Props = {
-    ticketFields: CustomField[]
+    customFields: CustomField[]
     canReorder: boolean
     onReorder: (
         updatedPriorities: [Pick<CustomField, 'id' | 'priority'>[]]
     ) => void
 }
 
-export default function List({ticketFields, canReorder, onReorder}: Props) {
+export default function List({customFields, canReorder, onReorder}: Props) {
     const [draggedFields, setDraggedFields] = useState<CustomField[]>([])
 
     useEffect(() => {
-        setDraggedFields(ticketFields)
-    }, [ticketFields])
+        setDraggedFields(customFields)
+    }, [customFields])
 
-    if (!ticketFields.length) {
+    if (!customFields.length) {
         return null
     }
 
@@ -57,9 +57,9 @@ export default function List({ticketFields, canReorder, onReorder}: Props) {
             .map((customField) => customField.priority)
             .sort((a, b) => +a - +b)
 
-        const updatedPriorities = draggedFields.map((ticketField) => {
+        const updatedPriorities = draggedFields.map((customField) => {
             return {
-                id: ticketField.id,
+                id: customField.id,
                 priority: sortedPriorities.pop() as number,
             }
         })
@@ -79,11 +79,11 @@ export default function List({ticketFields, canReorder, onReorder}: Props) {
                 <HeaderCell size="smallest"></HeaderCell>
             </TableHead>
             <TableBody>
-                {draggedFields.map((ticketField, index) => (
+                {draggedFields.map((customField, index) => (
                     <Row
-                        key={ticketField.id}
+                        key={customField.id}
                         position={index}
-                        ticketField={ticketField}
+                        customField={customField}
                         canReorder={canReorder}
                         onMoveEntity={handleMoveEntity}
                         onDropEntity={handleDropEntity}

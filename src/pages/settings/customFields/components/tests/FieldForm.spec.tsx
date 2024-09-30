@@ -19,6 +19,7 @@ import {
 } from 'fixtures/customField'
 import {assumeMock, getLastMockCall, renderWithRouter} from 'utils/testing'
 import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
+import {OBJECT_TYPES} from 'models/customField/constants'
 import FieldForm from 'pages/settings/customFields/components/FieldForm'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 
@@ -47,6 +48,7 @@ const defaultProps = {
     field: ticketInputFieldDefinition,
     onSubmit: jest.fn(),
     onClose: jest.fn(),
+    objectType: OBJECT_TYPES.TICKET,
 }
 
 describe('<FieldForm/>', () => {
@@ -225,7 +227,7 @@ describe('<FieldForm/>', () => {
         fireEvent.click(screen.getByText(/Archive/))
         expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
             expect.objectContaining({
-                ticketFieldLabel: defaultProps.field.label,
+                customFieldLabel: defaultProps.field.label,
                 isOpen: true,
             }),
             {}
@@ -241,7 +243,7 @@ describe('<FieldForm/>', () => {
         fireEvent.click(screen.getByText(/Archive/))
         expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
             expect.objectContaining({
-                ticketFieldLabel: defaultProps.field.label,
+                customFieldLabel: defaultProps.field.label,
                 isOpen: true,
             }),
             {}
@@ -250,7 +252,7 @@ describe('<FieldForm/>', () => {
         getLastMockCall(ArchiveConfirmationModalMock)[0].onClose()
         expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
             expect.objectContaining({
-                ticketFieldLabel: defaultProps.field.label,
+                customFieldLabel: defaultProps.field.label,
                 isOpen: false,
             }),
             {}

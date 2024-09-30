@@ -1,6 +1,8 @@
 import React from 'react'
 import {screen, render} from '@testing-library/react'
 
+import {OBJECT_TYPES} from 'models/customField/constants'
+import {CustomField} from 'models/customField/types'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
 import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
 import {
@@ -10,7 +12,6 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import {assumeMock} from 'utils/testing'
-import {CustomField} from 'models/customField/types'
 
 import EditFieldForm from '../components/EditFieldForm'
 
@@ -37,7 +38,7 @@ describe('<EditCustomField/>', () => {
     })
 
     it('should provide EditFieldForm with fields returned from query hook', () => {
-        render(<EditCustomField />)
+        render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
 
         expect(useCustomFieldDefinition).toHaveBeenCalledWith(10)
         expect(EditFieldForm).toHaveBeenCalledWith(
@@ -47,7 +48,7 @@ describe('<EditCustomField/>', () => {
     })
 
     it('should render no text when field is not a managed field', () => {
-        render(<EditCustomField />)
+        render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
         expect(
             screen.queryByText(/This field is managed/)
         ).not.toBeInTheDocument()
@@ -56,14 +57,14 @@ describe('<EditCustomField/>', () => {
 
     it('should render text for AI managed field', () => {
         setTicketFieldDefinition(aiManagedTicketInputFieldDefinition)
-        render(<EditCustomField />)
+        render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
         expect(screen.queryByText(/Use this field/)).not.toBeInTheDocument()
         expect(screen.getByText(/This field is managed/)).toBeInTheDocument()
     })
 
     it('should render text for contact_reason managed field', () => {
         setTicketFieldDefinition(managedTicketInputFieldDefinition)
-        render(<EditCustomField />)
+        render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
         expect(screen.getByText(/Use this field /))
         expect(screen.findByText(/This field is powered /))
         expect(
@@ -75,7 +76,7 @@ describe('<EditCustomField/>', () => {
 
     it('should render text for non contact_reason managed field', () => {
         setTicketFieldDefinition(productManagedTicketInputFieldDefinition)
-        render(<EditCustomField />)
+        render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
 
         expect(
             screen.queryByText(/This field is powered /)

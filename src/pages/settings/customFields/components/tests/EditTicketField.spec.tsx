@@ -11,7 +11,9 @@ import {
     managedTicketInputFieldDefinition,
 } from 'fixtures/customField'
 import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
+import {OBJECT_TYPES} from 'models/customField/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import EditTicketField from '../../EditCustomField'
 
 jest.mock('react-router')
@@ -30,7 +32,9 @@ describe('<EditTicketField/>', () => {
             isLoading: true,
         })
 
-        const {container} = render(<EditTicketField />)
+        const {container} = render(
+            <EditTicketField objectType={OBJECT_TYPES.TICKET} />
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -45,7 +49,7 @@ describe('<EditTicketField/>', () => {
         const {container} = render(
             <Provider store={mockedStore({})}>
                 <QueryClientProvider client={queryClient}>
-                    <EditTicketField />
+                    <EditTicketField objectType={OBJECT_TYPES.TICKET} />
                 </QueryClientProvider>
             </Provider>
         )
@@ -65,7 +69,7 @@ describe('<EditTicketField/>', () => {
         const {container} = render(
             <Provider store={mockedStore({})}>
                 <QueryClientProvider client={queryClient}>
-                    <EditTicketField />
+                    <EditTicketField objectType={OBJECT_TYPES.TICKET} />
                 </QueryClientProvider>
             </Provider>
         )

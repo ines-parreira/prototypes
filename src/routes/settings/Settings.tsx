@@ -24,6 +24,7 @@ import TicketAssignment from 'pages/settings/ticketAssignment/TicketAssignment'
 import PasswordAnd2FA from 'pages/settings/yourProfile/PasswordAnd2FA'
 import YourProfileContainer from 'pages/settings/yourProfile/YourProfileContainer'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
+import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
 import {renderAppSettings} from './helpers/settingsRenderer'
 import {Billing} from './Billing'
@@ -68,18 +69,15 @@ export function SettingRoutes() {
             <Route path={`${path}/convert`}>
                 <Convert />
             </Route>
-            <Route path={`${path}/ticket-fields`}>
-                <CustomFields />
+            <Route path={`${path}/${CUSTOM_FIELD_ROUTES['Customer']}`}>
+                <CustomFields objectType={'Customer'} />
             </Route>
-            <Route path={`${path}/customer-fields`}>
-                <CustomFields />
+            <Route path={`${path}/${CUSTOM_FIELD_ROUTES['Ticket']}`}>
+                <CustomFields objectType={'Ticket'} />
             </Route>
-            {/* TODO: remove the condition once the production infrastructure is setup */}
-            {window.location.hostname.indexOf('gorgias.help') === -1 && (
-                <Route path={`${path}/help-center`}>
-                    <HelpCenter />
-                </Route>
-            )}
+            <Route path={`${path}/help-center`}>
+                <HelpCenter />
+            </Route>
             <Route path={`${path}/import-data`}>
                 <Import />
             </Route>

@@ -4,15 +4,25 @@ import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import useTitle from 'hooks/useTitle'
 import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
+import {OBJECT_TYPE_SETTINGS} from 'models/customField/constants'
+import {
+    CustomFieldObjectTypes,
+    isCustomFieldAIManagedType,
+} from 'models/customField/types'
+import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {isCustomFieldAIManagedType} from 'models/customField/types'
 import EditFieldForm from './components/EditFieldForm'
 
-export default function EditCustomField() {
+export default function EditCustomField({
+    objectType,
+}: {
+    objectType: CustomFieldObjectTypes
+}) {
+    const customFieldTitleLabel = OBJECT_TYPE_SETTINGS[objectType].TITLE_LABEL
     const params = useParams<{id: string}>()
     const id = parseInt(params.id, 10)
 
@@ -30,8 +40,10 @@ export default function EditCustomField() {
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/ticket-fields/active">
-                                Ticket fields
+                            <Link
+                                to={`/app/settings/${CUSTOM_FIELD_ROUTES[objectType]}/active`}
+                            >
+                                {customFieldTitleLabel} fields
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>{field.label}</BreadcrumbItem>

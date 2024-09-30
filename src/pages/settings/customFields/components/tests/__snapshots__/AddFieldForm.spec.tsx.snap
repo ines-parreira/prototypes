@@ -124,7 +124,8 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
         name="checkbox-4"
         type="checkbox"
       />
-      Required to close ticket
+      Required to close 
+      ticket
     </label>
     <div
       class="caption caption"

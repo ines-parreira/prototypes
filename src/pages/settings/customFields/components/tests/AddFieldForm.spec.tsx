@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
 
 import {ticketInputFieldDefinition} from 'fixtures/customField'
+import {OBJECT_TYPES} from 'models/customField/constants'
 import client from 'models/api/resources'
 import history from 'pages/history'
 import {renderWithRouter} from 'utils/testing'
@@ -36,7 +37,7 @@ describe('<AddFieldForm/>', () => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
-                        <AddFieldForm objectType="Ticket" />
+                        <AddFieldForm objectType={OBJECT_TYPES.TICKET} />
                     </DndProvider>
                 </Provider>
             </QueryClientProvider>
@@ -53,7 +54,7 @@ describe('<AddFieldForm/>', () => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
-                        <AddFieldForm objectType="Ticket" />
+                        <AddFieldForm objectType={OBJECT_TYPES.TICKET} />
                     </DndProvider>
                 </Provider>
             </QueryClientProvider>
@@ -81,7 +82,7 @@ describe('<AddFieldForm/>', () => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
-                        <AddFieldForm objectType="Ticket" />
+                        <AddFieldForm objectType={OBJECT_TYPES.TICKET} />
                     </DndProvider>
                 </Provider>
             </QueryClientProvider>

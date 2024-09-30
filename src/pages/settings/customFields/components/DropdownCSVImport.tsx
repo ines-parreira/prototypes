@@ -12,11 +12,14 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import {
     DROPDOWN_CSV_TEMPLATE,
     DROPDOWN_NESTING_DELIMITER,
+    OBJECT_TYPE_SETTINGS,
+    OBJECT_TYPES,
 } from 'models/customField/constants'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getText, saveFileAsDownloaded} from 'utils/file'
 
+import {CustomFieldObjectTypes} from 'models/customField/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
@@ -31,6 +34,7 @@ type Props = {
     onImport: (choices: string[]) => void
     onClose: () => void
     needsConfirmation?: boolean
+    objectType: CustomFieldObjectTypes
 }
 
 function validate(lines: string[]): string[] {
@@ -55,9 +59,10 @@ export const DropdownCSVImport = ({
     onImport,
     onClose,
     needsConfirmation,
+    objectType,
 }: Props) => {
     const dispatch = useAppDispatch()
-
+    const customFieldTypeLabel = OBJECT_TYPE_SETTINGS[objectType].LABEL
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false)
     const [pickedFile, setPickedFile] = useState<File | null>(null)
     const tooltipId = 'app-permission-tooltip-' + useId()
@@ -92,10 +97,12 @@ export const DropdownCSVImport = ({
         // Report result
         if (errors.length === 0) {
             onImport(lines)
-            logEvent(
-                SegmentEvent.CustomFieldTicketDropdownCsvImportSuccessful,
-                {count: lines.length}
-            )
+            if (objectType === OBJECT_TYPES.TICKET) {
+                logEvent(
+                    SegmentEvent.CustomFieldTicketDropdownCsvImportSuccessful,
+                    {count: lines.length}
+                )
+            }
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
@@ -103,7 +110,9 @@ export const DropdownCSVImport = ({
                 })
             )
         } else {
-            logEvent(SegmentEvent.CustomFieldTicketDropdownCsvImportError)
+            if (objectType === OBJECT_TYPES.TICKET) {
+                logEvent(SegmentEvent.CustomFieldTicketDropdownCsvImportError)
+            }
             const errorMsg =
                 errors.length > 1
                     ? '<ul><li>' + errors.join('</li><li>') + '</li></ul>'
@@ -234,7 +243,7 @@ export const DropdownCSVImport = ({
             >
                 <p>
                     Importing new values will overwrite the old ones. Existing
-                    tickets using the old values will keep them.
+                    {customFieldTypeLabel}s using the old values will keep them.
                 </p>
                 <p className="mb-0">
                     Are you sure you want to overwrite the values?

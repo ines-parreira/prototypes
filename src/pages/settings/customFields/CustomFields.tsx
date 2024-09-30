@@ -6,6 +6,7 @@ import useTitle from 'hooks/useTitle'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {useUpdateCustomFieldDefinitions} from 'hooks/customField/useUpdateCustomFieldDefinitions'
+import {OBJECT_TYPE_SETTINGS, OBJECT_TYPES} from 'models/customField/constants'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import List from 'pages/settings/customFields/components/List'
@@ -14,16 +15,23 @@ import Loader from 'pages/common/components/Loader/Loader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Search from 'pages/common/components/Search'
-import {ListParams} from 'models/customField/types'
+import {CustomFieldObjectTypes, ListParams} from 'models/customField/types'
 import useCallbackRef from 'hooks/useCallbackRef'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 
+import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
+
 import css from './CustomFields.less'
 
-const MAX_TICKET_FIELDS = 25
-
-export default function CustomFields() {
-    useTitle('Ticket fields')
+export default function CustomFields({
+    objectType,
+}: {
+    objectType: CustomFieldObjectTypes
+}) {
+    const customFieldLabel = OBJECT_TYPE_SETTINGS[objectType].LABEL
+    const customFieldTitleLabel = OBJECT_TYPE_SETTINGS[objectType].TITLE_LABEL
+    const MAX_FIELDS = OBJECT_TYPE_SETTINGS[objectType].MAX_FIELDS
+    useTitle(`${customFieldTitleLabel} fields`)
     const {activeTab} = useParams<{activeTab: string}>()
     const [activeCursor, setActiveCursor] = useState<Maybe<string>>(null)
     const [archivedCursor, setArchivedCursor] = useState<Maybe<string>>(null)
@@ -38,7 +46,7 @@ export default function CustomFields() {
 
     const activeParams: ListParams = {
         archived: false,
-        object_type: 'Ticket',
+        object_type: objectType,
         cursor: activeCursor,
         search: debouncedSearch,
     }
@@ -58,12 +66,12 @@ export default function CustomFields() {
         isLoading: isLoadingArchived,
     } = useCustomFieldDefinitions({
         archived: true,
-        object_type: 'Ticket',
+        object_type: objectType,
         cursor: archivedCursor,
         search: debouncedSearch,
     })
 
-    const ticketFields = activeTab === 'active' ? activeFields : archivedFields
+    const customFields = activeTab === 'active' ? activeFields : archivedFields
 
     const paginationMeta =
         activeTab === 'active'
@@ -78,14 +86,18 @@ export default function CustomFields() {
     const isLoading = isLoadingActive || isLoadingArchived
 
     const createFieldButton =
-        activeFields.length >= MAX_TICKET_FIELDS ? (
+        activeFields.length >= MAX_FIELDS ? (
             <Button isDisabled>Create Field</Button>
         ) : (
             <Link
-                to="/app/settings/ticket-fields/add"
-                onClick={() =>
-                    logEvent(SegmentEvent.CustomFieldTicketCreateFieldClicked)
-                }
+                to={`/app/settings/${CUSTOM_FIELD_ROUTES[objectType]}/add`}
+                onClick={() => {
+                    if (objectType === OBJECT_TYPES.TICKET) {
+                        logEvent(
+                            SegmentEvent.CustomFieldTicketCreateFieldClicked
+                        )
+                    }
+                }}
             >
                 <Button>Create Field</Button>
             </Link>
@@ -94,7 +106,7 @@ export default function CustomFields() {
     return (
         <div className={`full-width overflow-auto ${css.pageContainer}`}>
             <div className={css.pageHeaderContainer}>
-                <PageHeader title="Ticket Fields">
+                <PageHeader title={`${customFieldTitleLabel} Fields`}>
                     <div className={css.headerContainer}>
                         {shouldDisplayListingPage && (
                             <>
@@ -103,7 +115,7 @@ export default function CustomFields() {
                                     name="custom-fields-search"
                                     value={search}
                                     onChange={setSearch}
-                                    placeholder="Search ticket fields..."
+                                    placeholder={`Search ${customFieldLabel} fields...`}
                                     className="mr-2"
                                 />
                                 {createFieldButton}
@@ -115,17 +127,17 @@ export default function CustomFields() {
                     <>
                         <div
                             ref={setListingNode}
-                            data-candu-id="ticket-fields-listing-educational-material"
+                            data-candu-id="custom-fields-listing-educational-material"
                         />
                         <SecondaryNavbar>
                             <NavLink
-                                to="/app/settings/ticket-fields/active"
+                                to={`/app/settings/${CUSTOM_FIELD_ROUTES[objectType]}/active`}
                                 exact
                             >
                                 Active
                             </NavLink>
                             <NavLink
-                                to="/app/settings/ticket-fields/archived"
+                                to={`/app/settings/${CUSTOM_FIELD_ROUTES[objectType]}/archived`}
                                 exact
                             >
                                 Archived
@@ -142,15 +154,15 @@ export default function CustomFields() {
                     {!shouldDisplayListingPage ? (
                         <div className={css.emptyViewContainer}>
                             <h2 className={css.emptyViewContainerHeader}>
-                                Get started with Ticket Fields
+                                Get started with {customFieldTitleLabel} Fields
                             </h2>
                             <p className={css.emptyViewContainerText}>
-                                Create custom fields to track and report common
-                                ticket categories.
+                                Create custom fields to track and report common{' '}
+                                {customFieldLabel} categories.
                             </p>
                             <div
                                 ref={setLandingNode}
-                                data-candu-id="ticket-fields-landing-educational-material"
+                                data-candu-id="custom-fields-landing-educational-material"
                             />
                             {createFieldButton}
                         </div>
@@ -168,19 +180,18 @@ export default function CustomFields() {
                                     {activeTab === 'active'
                                         ? 'active'
                                         : 'archived'}{' '}
-                                    ticket fields at the moment
+                                    {customFieldLabel} fields at the moment
                                 </div>
                             ) : (
                                 <>
                                     {activeTab === 'active' &&
-                                        activeFields.length >=
-                                            MAX_TICKET_FIELDS && (
+                                        activeFields.length >= MAX_FIELDS && (
                                             <Alert
                                                 type={AlertType.Info}
                                                 icon
                                                 className="m-4"
                                             >
-                                                {`You can only have ${MAX_TICKET_FIELDS}
+                                                {`You can only have ${MAX_FIELDS}
                                                  active fields
                                                 at a time. Please archive some
                                                 fields before creating a new
@@ -188,11 +199,11 @@ export default function CustomFields() {
                                             </Alert>
                                         )}
                                     <List
-                                        ticketFields={ticketFields}
+                                        customFields={customFields}
                                         canReorder={
                                             !debouncedSearch &&
                                             activeTab !== 'archived' &&
-                                            ticketFields.length > 1
+                                            customFields.length > 1
                                         }
                                         onReorder={mutateCustomFieldPriorities}
                                     />

@@ -1,3 +1,29 @@
+import {CustomFieldObjectTypes} from './types'
+
+export const OBJECT_TYPES = {
+    TICKET: 'Ticket',
+    CUSTOMER: 'Customer',
+} as const
+
+export const OBJECT_TYPE_SETTINGS: {
+    [key in CustomFieldObjectTypes]: {
+        LABEL: string
+        TITLE_LABEL: string
+        MAX_FIELDS: number
+    }
+} = {
+    [OBJECT_TYPES.TICKET]: {
+        LABEL: 'ticket',
+        TITLE_LABEL: 'Ticket',
+        MAX_FIELDS: 25,
+    },
+    [OBJECT_TYPES.CUSTOMER]: {
+        LABEL: 'customer',
+        TITLE_LABEL: 'Customer',
+        MAX_FIELDS: 4,
+    },
+}
+
 export const VALUE_TYPES = [
     {
         value: 'dropdown_text',

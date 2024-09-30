@@ -36,7 +36,8 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
           <a
             to="/app/settings/ticket-fields/active"
           >
-            Ticket fields
+            Ticket
+             fields
           </a>
         </li>
         <li
@@ -176,7 +177,8 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
               name="checkbox-10"
               type="checkbox"
             />
-            Required to close ticket
+            Required to close 
+            ticket
           </label>
           <div
             class="caption caption"
@@ -313,7 +315,8 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
           <a
             to="/app/settings/ticket-fields/active"
           >
-            Ticket fields
+            Ticket
+             fields
           </a>
         </li>
         <li
@@ -422,7 +425,8 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
               name="checkbox-4"
               type="checkbox"
             />
-            Required to close ticket
+            Required to close 
+            ticket
           </label>
           <div
             class="caption caption"

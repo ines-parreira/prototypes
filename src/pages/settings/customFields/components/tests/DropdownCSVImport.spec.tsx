@@ -5,8 +5,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {OBJECT_TYPES} from 'models/customField/constants'
 import * as notificationActions from 'state/notifications/actions'
 import * as fileUtils from 'utils/file'
+
 import {DropdownCSVImport} from '../DropdownCSVImport'
 
 jest.mock('common/segment')
@@ -19,6 +21,7 @@ const props = {
     onImport: jest.fn(),
     onClose: jest.fn(),
     needsConfirmation: false,
+    objectType: OBJECT_TYPES.TICKET,
 }
 
 describe('<DropdownCSVImport/>', () => {
@@ -36,10 +39,6 @@ describe('<DropdownCSVImport/>', () => {
             })
         )
     }
-
-    beforeEach(() => {
-        jest.resetAllMocks()
-    })
 
     it('should render when open', () => {
         const {baseElement} = render(
@@ -95,7 +94,7 @@ describe('<DropdownCSVImport/>', () => {
         expect(getByText('Import File')).toBeTruthy()
     })
 
-    it('should call onImport() and onClose() on sucessful import', async () => {
+    it('should call onImport() and onClose() on successful import', async () => {
         const notify = jest.spyOn(notificationActions, 'notify')
 
         const {getByText} = render(
@@ -268,5 +267,23 @@ describe('<DropdownCSVImport/>', () => {
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.CustomFieldTicketDropdownCsvImportError
         )
+    })
+
+    it("should not call log events if objectType is not 'Ticket'", async () => {
+        const {getByText} = render(
+            <Provider store={mockStore}>
+                <DropdownCSVImport
+                    {...props}
+                    objectType={OBJECT_TYPES.CUSTOMER}
+                />
+            </Provider>
+        )
+
+        const dropZone = getByText('Drop your CSV here, or')
+        await simulateDrop(dropZone, 'value1,sub1\nvalue2,sub2')
+        await waitFor(() => fireEvent.click(getByText('Import File')))
+        await waitFor(() => props.onClose.mock.calls.length > 0)
+
+        expect(logEventMock).not.toHaveBeenCalled()
     })
 })

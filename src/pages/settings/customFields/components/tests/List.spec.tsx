@@ -2,23 +2,41 @@ import React from 'react'
 import {screen, render} from '@testing-library/react'
 
 import {ticketInputFieldDefinition} from 'fixtures/customField'
-import List from '../List'
-import {Props} from '../Row'
+import {assumeMock} from 'utils/testing'
 
-jest.mock('../Row', () => (props: Props) => {
-    return (
-        <tr>
-            <td>This is a row for {props.ticketField.id}</td>
-        </tr>
-    )
-})
+import List from '../List'
+import Row from '../Row'
+
+jest.mock('../Row', () =>
+    jest.fn(() => {
+        return (
+            <tr>
+                <td>This is a row</td>
+            </tr>
+        )
+    })
+)
+
+const MockedRow = assumeMock(Row)
 
 describe('<List />', () => {
+    it("should not render anything if there aren't any custom fields", () => {
+        const props = {
+            customFields: [],
+            canReorder: true,
+            onReorder: jest.fn(),
+        }
+
+        const {container} = render(<List {...props} />)
+
+        expect(container.firstChild).toBeNull()
+    })
+
     it.each([true, false])(
         'should render correct number of table headers',
         (canReorder) => {
             const props = {
-                ticketFields: [ticketInputFieldDefinition],
+                customFields: [ticketInputFieldDefinition],
                 canReorder: canReorder,
                 onFieldChange: jest.fn(),
                 onReorder: jest.fn(),
@@ -31,4 +49,27 @@ describe('<List />', () => {
             )
         }
     )
+
+    it('should call Row component with the correct props', () => {
+        const props = {
+            customFields: [ticketInputFieldDefinition],
+            canReorder: true,
+            onReorder: jest.fn(),
+        }
+
+        render(<List {...props} />)
+
+        expect(MockedRow).toHaveBeenCalledWith(
+            {
+                position: 0,
+                customField: ticketInputFieldDefinition,
+                canReorder: true,
+                onMoveEntity: expect.any(Function),
+                onDropEntity: expect.any(Function),
+            },
+            {}
+        )
+        expect(MockedRow).toHaveBeenCalledTimes(1)
+        expect(screen.getByText('This is a row')).toBeInTheDocument()
+    })
 })
