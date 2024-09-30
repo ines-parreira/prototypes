@@ -537,6 +537,111 @@
                 }
             }
         },
+        "/settings/{channel_connection_id}": {
+            "get": {
+                "tags": ["settings"],
+                "summary": "Get Settings For Channel Connection",
+                "operationId": "get_settings",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Channel Connection Id"
+                        }
+                    },
+                    {
+                        "name": "setting_type",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "description": "Get settings by type",
+                            "title": "Setting Type"
+                        },
+                        "description": "Get settings by type"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SettingResponseSchema"
+                                    },
+                                    "title": "Response Get Settings"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["settings"],
+                "summary": "Update Setting For Channel Connection",
+                "operationId": "update_setting",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Channel Connection Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestSettingSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SettingResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/discount-offers": {
             "post": {
                 "tags": ["discount-offers"],
@@ -3828,7 +3933,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-joaotavares.eu.ngrok.io/loader.js"
+                        "default": "https://bundle-mariuszjanczyn.eu.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",
@@ -4212,6 +4317,15 @@
                 "required": ["message_text", "id"],
                 "title": "PublicCampaignVariantResponseSchema"
             },
+            "RequestSettingSchema": {
+                "properties": {
+                    "data": {"type": "object", "title": "Data"},
+                    "type": {"$ref": "#/components/schemas/SettingType"}
+                },
+                "type": "object",
+                "required": ["data", "type"],
+                "title": "RequestSettingSchema"
+            },
             "RevealDiscountCodeRequestSchema": {
                 "properties": {
                     "account_id": {"type": "integer", "title": "Account Id"},
@@ -4366,6 +4480,21 @@
                 "type": "string",
                 "enum": ["anytime", "during", "outside", "custom"],
                 "title": "ScheduleRule"
+            },
+            "SettingResponseSchema": {
+                "properties": {
+                    "type": {"$ref": "#/components/schemas/SettingType"},
+                    "data": {"type": "object", "title": "Data"}
+                },
+                "type": "object",
+                "required": ["type", "data"],
+                "title": "SettingResponseSchema"
+            },
+            "SettingType": {
+                "type": "string",
+                "enum": ["performance_report_visible_fields"],
+                "const": "performance_report_visible_fields",
+                "title": "SettingType"
             },
             "StatusEnum": {
                 "type": "string",

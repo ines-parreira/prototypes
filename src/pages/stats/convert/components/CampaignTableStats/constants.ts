@@ -1,6 +1,20 @@
+import {TableSetting} from 'state/ui/stats/types'
+import {TooltipData} from 'pages/stats/types'
+
 import {CampaignTableKeys} from '../../types/enums/CampaignTableKeys.enum'
 import {CampaignTableColumn} from '../../types/CampaignTableColumn'
 import {CampaignTableValueFormat} from '../../types/enums/CampaignTableValueFormat.enum'
+
+export const CampaignSettingIdentifier = 'performance_report_visible_fields'
+
+export const CampaignTableColumnDefaultSelect: CampaignTableKeys[] = [
+    CampaignTableKeys.CampaignName,
+    CampaignTableKeys.CampaignCurrentStatus,
+    CampaignTableKeys.TotalRevenue,
+    CampaignTableKeys.Impressions,
+    CampaignTableKeys.Engagement,
+    CampaignTableKeys.Conversions,
+]
 
 export const CAMPAIGN_TABLE_COLUMN_TITLES: Record<CampaignTableKeys, string> = {
     [CampaignTableKeys.CampaignName]: 'Campaign name',
@@ -36,41 +50,50 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
         title: CAMPAIGN_TABLE_COLUMN_TITLES[
             CampaignTableKeys.CampaignCurrentStatus
         ],
-        tooltip: 'Current status of the campaign',
+        hint: {
+            title: 'Current status of the campaign',
+        },
     },
     {
         key: CampaignTableKeys.TotalRevenue,
         title: CAMPAIGN_TABLE_COLUMN_TITLES[CampaignTableKeys.TotalRevenue],
         format: CampaignTableValueFormat.Currency,
-        tooltip:
-            'Sum of revenue from all potential revenue sources for a campaign: tickets converted, products recommended bought, links visited followed by an order, discount codes applied',
+        hint: {
+            title: 'Sum of revenue from all potential revenue sources for a campaign: tickets converted, products recommended bought, links visited followed by an order, discount codes applied',
+        },
     },
     {
         key: CampaignTableKeys.Impressions,
         title: CAMPAIGN_TABLE_COLUMN_TITLES[CampaignTableKeys.Impressions],
         format: CampaignTableValueFormat.Number,
-        tooltip: 'How often the campaign was displayed',
+        hint: {
+            title: 'How often the campaign was displayed',
+        },
     },
     {
         key: CampaignTableKeys.Engagement,
         title: CAMPAIGN_TABLE_COLUMN_TITLES[CampaignTableKeys.Engagement],
         format: CampaignTableValueFormat.Number,
-        tooltip:
-            'How often shoppers interacted with the campaign including starting a chat conversation, clicking on a link, clicking on a product recommended, or using a discount code displayed in the campaign. Calculated here as Tickets created + Clicks + Discount codes used',
+        hint: {
+            title: 'How often shoppers interacted with the campaign including starting a chat conversation, clicking on a link, clicking on a product recommended, or using a discount code displayed in the campaign. Calculated here as Tickets created + Clicks + Discount codes used',
+        },
     },
     {
         key: CampaignTableKeys.ClickThroughRate,
         title: CAMPAIGN_TABLE_COLUMN_TITLES[CampaignTableKeys.ClickThroughRate],
         format: CampaignTableValueFormat.Percentage,
-        tooltip:
-            'It measures the attractiveness of the campaign, calculated as engagement divided by impressions',
+        hint: {
+            title: 'It measures the attractiveness of the campaign, calculated as engagement divided by impressions',
+        },
         className: 'clickThroughRate',
     },
     {
         key: CampaignTableKeys.Conversions,
         title: CAMPAIGN_TABLE_COLUMN_TITLES[CampaignTableKeys.Conversions],
         format: CampaignTableValueFormat.Number,
-        tooltip: 'Numbers of orders following an engagement with the campaign',
+        hint: {
+            title: 'Numbers of orders following an engagement with the campaign',
+        },
     },
     {
         key: CampaignTableKeys.TotalConversionRate,
@@ -78,7 +101,9 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
             CampaignTableKeys.TotalConversionRate
         ],
         format: CampaignTableValueFormat.Percentage,
-        tooltip: 'Calculated as orders divided by engagement',
+        hint: {
+            title: 'Calculated as orders divided by engagement',
+        },
         className: 'totalConversionRate',
     },
     {
@@ -93,15 +118,18 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
             CampaignTableKeys.TicketsCreationRate
         ],
         format: CampaignTableValueFormat.Percentage,
-        tooltip: 'Tickets created divided by Impressions',
+        hint: {
+            title: 'Tickets created divided by Impressions',
+        },
         className: 'ticketCreationRate',
     },
     {
         key: CampaignTableKeys.TicketsConverted,
         title: CAMPAIGN_TABLE_COLUMN_TITLES[CampaignTableKeys.TicketsConverted],
         format: CampaignTableValueFormat.Number,
-        tooltip:
-            'A ticket is converted when an order is placed by the shopper less than 5 days after the last message of the ticket',
+        hint: {
+            title: 'A ticket is converted when an order is placed by the shopper less than 5 days after the last message of the ticket',
+        },
         className: 'ticketsConverted',
     },
     {
@@ -124,22 +152,26 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
         key: CampaignTableKeys.NumberOfClicks,
         title: CAMPAIGN_TABLE_COLUMN_TITLES[CampaignTableKeys.NumberOfClicks],
         format: CampaignTableValueFormat.Number,
-        tooltip:
-            'Clicks on any content of the campaign (links or product cards)',
+        hint: {
+            title: 'Clicks on any content of the campaign (links or product cards)',
+        },
         className: 'numberOfClicks',
     },
     {
         key: CampaignTableKeys.ClicksRate,
         title: CAMPAIGN_TABLE_COLUMN_TITLES[CampaignTableKeys.ClicksRate],
         format: CampaignTableValueFormat.Percentage,
-        tooltip: 'Campaign clicks divide by impressions',
+        hint: {
+            title: 'Campaign clicks divide by impressions',
+        },
     },
     {
         key: CampaignTableKeys.ClicksConverted,
         title: CAMPAIGN_TABLE_COLUMN_TITLES[CampaignTableKeys.ClicksConverted],
         format: CampaignTableValueFormat.Number,
-        tooltip:
-            'A click is considered converted when an order is placed by the shopper during the session',
+        hint: {
+            title: 'A click is considered converted when an order is placed by the shopper during the session',
+        },
         className: 'clicksConverted',
     },
     {
@@ -160,8 +192,9 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
         key: CampaignTableKeys.DiscountCodeUsed,
         title: CAMPAIGN_TABLE_COLUMN_TITLES[CampaignTableKeys.DiscountCodeUsed],
         format: CampaignTableValueFormat.Number,
-        tooltip:
-            'If a discount code is displayed in the campaign message, the number of times the discount code was applied to an order placed during the selected period',
+        hint: {
+            title: 'If a discount code is displayed in the campaign message, the number of times the discount code was applied to an order placed during the selected period',
+        },
         className: 'discountCodeUsed',
     },
     {
@@ -170,8 +203,40 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
             CampaignTableKeys.RevenueGeneratedDiscountCode
         ],
         format: CampaignTableValueFormat.Currency,
-        tooltip:
-            'Sum of the order amount for all orders using the discount code displayed',
+        hint: {
+            title: 'Sum of the order amount for all orders using the discount code displayed',
+        },
         className: 'revenueDiscountCode',
     },
 ]
+
+export const CampaignTableColumnOrder: CampaignTableKeys[] =
+    CAMPAIGN_TABLE_CELLS.map((column) => column.key)
+
+export const campaignPerformanceMetrics = CampaignTableColumnOrder.map(
+    (column) => ({
+        id: column,
+        visibility: CampaignTableColumnDefaultSelect.includes(column),
+    })
+)
+
+export const CampaignPerformanceTableViews: TableSetting<CampaignTableKeys> = {
+    active_view: 'Campaign Performance Table',
+    views: [],
+}
+
+export const CampaignPerformanceTableDefaultConfigurationViews = {
+    type: CampaignSettingIdentifier,
+    metrics: campaignPerformanceMetrics,
+}
+
+// Convert CAMPAIGN_TABLE_CELLS into EditColumn required format and type
+export const CampaignPerformanceTooltipConfig = CAMPAIGN_TABLE_CELLS.reduce(
+    (obj, item) => Object.assign(obj, {[item.key]: item}),
+    {} as Record<CampaignTableKeys, {hint: TooltipData | null}>
+)
+
+export const CampaignPerformanceConfig = CAMPAIGN_TABLE_CELLS.reduce(
+    (obj, item) => Object.assign(obj, {[item.key]: item}),
+    {} as Record<CampaignTableKeys, CampaignTableColumn>
+)

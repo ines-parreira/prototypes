@@ -97,6 +97,7 @@ describe('<AgentsEditColumns>', () => {
 
         fireEvent.click(element)
         expect(input).not.toBeChecked()
+
         fireEvent.click(element)
         expect(input).toBeChecked()
     })

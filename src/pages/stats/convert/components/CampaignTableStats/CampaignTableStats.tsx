@@ -1,4 +1,4 @@
-import React, {UIEventHandler, useCallback, useState} from 'react'
+import React, {UIEventHandler, useCallback, useState, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 
 import {OrderDirection} from 'models/api/types'
@@ -14,17 +14,21 @@ import useMeasure from 'hooks/useMeasure'
 
 import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
-import {CampaignTableKeys} from '../../types/enums/CampaignTableKeys.enum'
-import {CampaignTableColumn} from '../../types/CampaignTableColumn'
-import {CampaignTableContentCell} from '../../types/CampaignTableContentCell'
+import {useIsConvertPerformanceViewEnabled} from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
+import {useCampaignPerformanceTableSetting} from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
 
-import {ITEMS_PER_PAGE} from '../../constants/campaignPerformanceTable'
+import {CampaignPerformanceEditColumns} from 'pages/stats/convert/components/CampaignPerformanceEditColumns'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import {CampaignTableColumn} from 'pages/stats/convert/types/CampaignTableColumn'
+import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
 
-import {getDataFromTableCell} from '../../utils/getDataFromTableCell'
+import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
 
-import {useSortedAndPaginatedTableRows} from '../../hooks/useSortedAndPaginatedTableRows'
+import {getDataFromTableCell} from 'pages/stats/convert/utils/getDataFromTableCell'
 
-import {CAMPAIGN_TABLE_CELLS} from './constants'
+import {useSortedAndPaginatedTableRows} from 'pages/stats/convert/hooks/useSortedAndPaginatedTableRows'
+
+import {CampaignPerformanceConfig} from './constants'
 
 import {CampaignTableCell} from './components/CampaignTableCell'
 
@@ -48,6 +52,9 @@ export const CampaignTableStats = ({
     onClickPrevPage,
 }: Props) => {
     const [ref, {width}] = useMeasure<HTMLDivElement>()
+    const isConvertPerformanceViewEnabled = useIsConvertPerformanceViewEnabled()
+    const {isLoading: isLoadingConfiguration, columnsOrder: selectedColumns} =
+        useCampaignPerformanceTableSetting()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
     const [orderKey, setOrderKey] = useState<CampaignTableKeys>(
         CampaignTableKeys.TotalRevenue
@@ -55,6 +62,14 @@ export const CampaignTableStats = ({
     const [orderDirection, setOrderDirection] = useState<OrderDirection>(
         OrderDirection.Desc
     )
+
+    const columnsOrder: CampaignTableKeys[] = useMemo(() => {
+        if (isConvertPerformanceViewEnabled) {
+            return selectedColumns
+        }
+
+        return Object.keys(CampaignPerformanceConfig) as CampaignTableKeys[]
+    }, [isConvertPerformanceViewEnabled, selectedColumns])
 
     const paginatedRows = useSortedAndPaginatedTableRows(rows, {
         orderKey,
@@ -89,7 +104,7 @@ export const CampaignTableStats = ({
                 <HeaderCellProperty
                     key={headerCell.key}
                     title={headerCell.title}
-                    tooltip={headerCell?.tooltip}
+                    tooltip={headerCell?.hint?.title}
                     direction={orderDirection}
                     isOrderedBy={orderKey === headerCell.key}
                     className={
@@ -139,15 +154,19 @@ export const CampaignTableStats = ({
             return (
                 <>
                     <TableBodyRow key={index}>
-                        {CAMPAIGN_TABLE_CELLS.map((column) =>
-                            renderCells(column, cell)
+                        {columnsOrder.map((column) =>
+                            renderCells(CampaignPerformanceConfig[column], cell)
                         )}
                     </TableBodyRow>
                     {variantToggleState[cell.campaign.id] && (
                         <>
                             <TableBodyRow key={`variant-${cell.campaign.id}`}>
-                                {CAMPAIGN_TABLE_CELLS.map((column) =>
-                                    renderCells(column, cell, 'Control Variant')
+                                {columnsOrder.map((column) =>
+                                    renderCells(
+                                        CampaignPerformanceConfig[column],
+                                        cell,
+                                        'Control Variant'
+                                    )
                                 )}
                             </TableBodyRow>
                             {(cell.campaign.variants ?? []).map(
@@ -155,9 +174,11 @@ export const CampaignTableStats = ({
                                     <TableBodyRow
                                         key={`variant-${cell.campaign.id}-${variantIdx}`}
                                     >
-                                        {CAMPAIGN_TABLE_CELLS.map((column) =>
+                                        {columnsOrder.map((column) =>
                                             renderCells(
-                                                column,
+                                                CampaignPerformanceConfig[
+                                                    column
+                                                ],
                                                 cell,
                                                 generateVariantName(variantIdx),
                                                 variant
@@ -171,7 +192,7 @@ export const CampaignTableStats = ({
                 </>
             )
         },
-        [renderCells, variantToggleState]
+        [renderCells, variantToggleState, columnsOrder]
     )
 
     const renderTableBody = useCallback(() => {
@@ -180,7 +201,11 @@ export const CampaignTableStats = ({
                 const url = `/app/convert/${chatIntegrationId}/campaigns/new`
                 return (
                     <TableBodyRow>
-                        <BodyCell colSpan={CAMPAIGN_TABLE_CELLS.length}>
+                        <BodyCell
+                            colSpan={
+                                Object.values(CampaignPerformanceConfig).length
+                            }
+                        >
                             Start by
                             <Link
                                 to={url}
@@ -196,16 +221,26 @@ export const CampaignTableStats = ({
             }
             return (
                 <TableBodyRow>
-                    <BodyCell colSpan={CAMPAIGN_TABLE_CELLS.length}>
+                    <BodyCell
+                        colSpan={
+                            Object.values(CampaignPerformanceConfig).length
+                        }
+                    >
                         This store is not associated with any chat integration!
                     </BodyCell>
                 </TableBodyRow>
             )
         }
-        return isLoading
+        return isLoading || isLoadingConfiguration
             ? paginatedRows.slice(0, ITEMS_PER_PAGE).map(renderRows)
             : paginatedRows.map(renderRows)
-    }, [chatIntegrationId, isLoading, paginatedRows, renderRows])
+    }, [
+        chatIntegrationId,
+        isLoading,
+        isLoadingConfiguration,
+        paginatedRows,
+        renderRows,
+    ])
 
     const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
         if (event.currentTarget.scrollLeft > 0) {
@@ -217,13 +252,20 @@ export const CampaignTableStats = ({
 
     return (
         <div className={css.wrapper}>
-            <div className={css.header}>
+            <div className={css.tableHeader}>
                 <p className={css.title}>Campaigns performance</p>
+                {isConvertPerformanceViewEnabled && (
+                    <div className={css.editColumns}>
+                        <CampaignPerformanceEditColumns />
+                    </div>
+                )}
             </div>
             <div ref={ref} className={css.container} onScroll={handleScroll}>
                 <TableWrapper className={css.table} style={{width}}>
                     <TableHead className={css.header}>
-                        {CAMPAIGN_TABLE_CELLS.map(renderHeaderCells)}
+                        {columnsOrder.map((column) =>
+                            renderHeaderCells(CampaignPerformanceConfig[column])
+                        )}
                     </TableHead>
                     <TableBody>{renderTableBody()}</TableBody>
                 </TableWrapper>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import classNames from 'classnames'
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
 import {Selector} from 'reselect'
@@ -7,6 +7,7 @@ import {TooltipData} from 'pages/stats/types'
 import {AccountSettingTableConfig} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
 import useAppSelector from 'hooks/useAppSelector'
+import useDeepEffect from 'hooks/useDeepEffect'
 import {
     TableColumnSet,
     TableSetting,
@@ -62,11 +63,12 @@ export const EditTableColumns = <T extends TableColumnSet>({
         currentView: TableView<T>
         submitActiveView: (
             activeView: TableView<T>
-        ) => Promise<ReturnType<StoreDispatch>>
+        ) => Promise<ReturnType<StoreDispatch>> | Promise<boolean>
     }
 }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [hasChanges, setHasChanges] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const settings = useAppSelector(settingsSelector)
     const currentSettings = settings ? settings.data : fallbackViews
 
@@ -76,15 +78,9 @@ export const EditTableColumns = <T extends TableColumnSet>({
         TableViewColumn<T>[]
     >(currentView.metrics)
 
-    useEffect(() => {
-        if (columnsVisibility.length !== currentView.metrics.length) {
-            setColumnsVisibility(currentView.metrics)
-        }
-    }, [
-        columnsVisibility.length,
-        currentView.metrics,
-        currentView.metrics.length,
-    ])
+    useDeepEffect(() => {
+        setColumnsVisibility(currentView.metrics)
+    }, [currentView.metrics])
 
     const toggle = () => setDropdownOpen((prevState) => !prevState)
 
@@ -122,6 +118,8 @@ export const EditTableColumns = <T extends TableColumnSet>({
             (view) => view.id === currentView.id
         )
 
+        setIsLoading(true)
+
         await submitActiveView({
             ...(hasChanges && isNewView
                 ? {
@@ -131,6 +129,8 @@ export const EditTableColumns = <T extends TableColumnSet>({
                 : currentView),
             metrics: columnsVisibility,
         })
+
+        setIsLoading(false)
 
         setHasChanges(false)
         closeDropdown()
@@ -174,6 +174,7 @@ export const EditTableColumns = <T extends TableColumnSet>({
                         <Button
                             intent="primary"
                             isDisabled={!hasChanges}
+                            isLoading={isLoading}
                             onClick={handleSave}
                         >
                             {SAVE_BUTTON_TEXT}

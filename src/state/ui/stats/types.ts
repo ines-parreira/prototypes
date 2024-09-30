@@ -1,6 +1,8 @@
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+
 import {AgentPerformanceState} from 'state/ui/stats/agentPerformanceSlice'
 import {
     AGENT_PERFORMANCE_SLICE_NAME,
@@ -107,7 +109,10 @@ export type TableSetting<T> = {
     views: TableView<T>[]
 }
 
-export type TableColumnSet = AgentsTableColumn | ChannelsTableColumns
+export type TableColumnSet =
+    | AgentsTableColumn
+    | ChannelsTableColumns
+    | CampaignTableKeys
 
 export type StatsTablesState = {
     [AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AgentsTableColumn>

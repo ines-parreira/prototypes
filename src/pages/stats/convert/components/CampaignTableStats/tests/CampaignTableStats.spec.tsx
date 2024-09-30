@@ -8,11 +8,13 @@ import {CampaignPreview} from 'models/convert/campaign/types'
 import {campaign, campaignVariant} from 'fixtures/campaign'
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import {ConvertMetric} from 'state/ui/stats/types'
+import {ConvertMetric, TableView} from 'state/ui/stats/types'
 import {integrationsState} from 'fixtures/integrations'
 import {GorgiasChatIntegration} from 'models/integration/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {CampaignTableStats} from 'pages/stats/convert/components/CampaignTableStats/CampaignTableStats'
+import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
+import {useCampaignPerformanceTableSetting} from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
 
 const chatIntegration = {
     type: 'gorgias_chat',
@@ -21,6 +23,11 @@ const chatIntegration = {
 
 jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
+
+jest.mock('pages/stats/convert/hooks/useCampaignPerformanceTableSetting')
+const useCampaignPerformanceTableSettingMock = assumeMock(
+    useCampaignPerformanceTableSetting
+)
 
 describe('CampaignTableStats', () => {
     const rows = [
@@ -60,6 +67,14 @@ describe('CampaignTableStats', () => {
                 end_datetime: '2020-01-31T23:59:59.999Z',
             },
         } as any)
+        useCampaignPerformanceTableSettingMock.mockReturnValue({
+            isLoading: false,
+            currentView: {} as TableView<CampaignTableKeys>,
+            columnsOrder: Object.keys(
+                CAMPAIGN_TABLE_COLUMN_TITLES
+            ) as CampaignTableKeys[],
+            submitActiveView: jest.fn(),
+        })
     })
 
     it('should render CampaignTableStats with campaigns and variants', () => {

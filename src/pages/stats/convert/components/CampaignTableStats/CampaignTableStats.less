@@ -7,14 +7,25 @@
         border: 1px solid #d2d7de;
         border-radius: 4px;
     }
-
+    .tableHeader,
     .header {
         padding-left: @layout-spacing-m;
         padding-top: @layout-spacing-m;
     }
 
+    .tableHeader {
+        padding-right: @layout-spacing-m;
+        display: flex;
+        align-items: center;
+    }
+
+    .editColumns {
+        margin-left: auto;
+    }
+
     .title {
         .heading-section-semibold();
+        margin-bottom: 0;
     }
 
     .container {

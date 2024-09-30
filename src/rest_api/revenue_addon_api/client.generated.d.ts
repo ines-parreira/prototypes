@@ -1447,6 +1447,16 @@ declare namespace Components {
             id: string
         }
         /**
+         * RequestSettingSchema
+         */
+        export interface RequestSettingSchema {
+            /**
+             * Data
+             */
+            data: {}
+            type: SettingType
+        }
+        /**
          * RevealDiscountCodeRequestSchema
          */
         export interface RevealDiscountCodeRequestSchema {
@@ -1561,6 +1571,20 @@ declare namespace Components {
          * ScheduleRule
          */
         export type ScheduleRule = 'anytime' | 'during' | 'outside' | 'custom'
+        /**
+         * SettingResponseSchema
+         */
+        export interface SettingResponseSchema {
+            type: SettingType
+            /**
+             * Data
+             */
+            data: {}
+        }
+        /**
+         * SettingType
+         */
+        export type SettingType = 'performance_report_visible_fields'
         /**
          * StatusEnum
          */
@@ -2354,6 +2378,32 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace GetSettings {
+        namespace Parameters {
+            /**
+             * Channel Connection Id
+             */
+            export type ChannelConnectionId = string
+            /**
+             * Setting Type
+             * Get settings by type
+             */
+            export type SettingType = string | null
+        }
+        export interface PathParameters {
+            channel_connection_id: Parameters.ChannelConnectionId
+        }
+        export interface QueryParameters {
+            setting_type?: Parameters.SettingType
+        }
+        namespace Responses {
+            /**
+             * Response Get Settings
+             */
+            export type $200 = Components.Schemas.SettingResponseSchema[]
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace GetStatusAndUsage {
         namespace Parameters {
             /**
@@ -2657,6 +2707,22 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace UpdateSetting {
+        namespace Parameters {
+            /**
+             * Channel Connection Id
+             */
+            export type ChannelConnectionId = string
+        }
+        export interface PathParameters {
+            channel_connection_id: Parameters.ChannelConnectionId
+        }
+        export type RequestBody = Components.Schemas.RequestSettingSchema
+        namespace Responses {
+            export type $202 = Components.Schemas.SettingResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
 }
 
 export interface OperationMethods {
@@ -2796,6 +2862,28 @@ export interface OperationMethods {
     ): OperationResponse<
         | Paths.SubmitContactForm.Responses.$202
         | Paths.SubmitContactForm.Responses.$422
+    >
+    /**
+     * get_settings - Get Settings For Channel Connection
+     */
+    'get_settings'(
+        parameters?: Parameters<
+            Paths.GetSettings.PathParameters & Paths.GetSettings.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.GetSettings.Responses.$200 | Paths.GetSettings.Responses.$422
+    >
+    /**
+     * update_setting - Update Setting For Channel Connection
+     */
+    'update_setting'(
+        parameters?: Parameters<Paths.UpdateSetting.PathParameters> | null,
+        data?: Paths.UpdateSetting.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.UpdateSetting.Responses.$202 | Paths.UpdateSetting.Responses.$422
     >
     /**
      * get_discount_offers - Get Discount Offers
@@ -3397,6 +3485,32 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.SubmitContactForm.Responses.$202
             | Paths.SubmitContactForm.Responses.$422
+        >
+    }
+    ['/settings/{channel_connection_id}']: {
+        /**
+         * get_settings - Get Settings For Channel Connection
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetSettings.PathParameters &
+                    Paths.GetSettings.QueryParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            Paths.GetSettings.Responses.$200 | Paths.GetSettings.Responses.$422
+        >
+        /**
+         * update_setting - Update Setting For Channel Connection
+         */
+        'put'(
+            parameters?: Parameters<Paths.UpdateSetting.PathParameters> | null,
+            data?: Paths.UpdateSetting.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.UpdateSetting.Responses.$202
+            | Paths.UpdateSetting.Responses.$422
         >
     }
     ['/discount-offers']: {
