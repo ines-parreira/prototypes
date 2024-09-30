@@ -10,7 +10,7 @@ import RuleDetailForm from 'pages/settings/rules/accountRules/RuleDetailForm'
 import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {assumeMock} from 'utils/testing'
 
-import {renderer} from '../helpers/settingsRenderer'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 import {Rules} from '../Rules'
 
 jest.mock('react-router-dom', () => ({
@@ -24,11 +24,11 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({
-    renderer: jest.fn(() => ComponentToRender),
+    renderAppSettings: jest.fn(() => ComponentToRender),
 }))
 
 const mockedRoute = Route as jest.Mock
-const mockedRenderer = assumeMock(renderer)
+const mockedRenderAppSettings = assumeMock(renderAppSettings)
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 
 const basePath = 'rules'
@@ -88,16 +88,18 @@ describe('Rules', () => {
         ({callOrder, path, pageSection, role, component}) => {
             render(<Rules />)
 
-            expect(mockedRenderer.mock.calls[callOrder]).toEqual([
+            expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
                 component,
-                role,
-                pageSection,
+                (role && {
+                    roleParams: [role, pageSection],
+                }) ||
+                    undefined,
             ])
             expect(mockedRoute.mock.calls[callOrder]).toEqual([
                 {
                     path,
                     exact: true,
-                    render: ComponentToRender,
+                    children: ComponentToRender,
                 },
                 {},
             ])

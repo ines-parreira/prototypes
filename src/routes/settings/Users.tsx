@@ -8,28 +8,30 @@ import {PageSection} from 'config/pages'
 import AgentList from 'pages/settings/users/List'
 import AgentDetail from 'pages/settings/users/Detail'
 
-import {renderer} from './helpers/settingsRenderer'
+import {renderAppSettings} from './helpers/settingsRenderer'
 
 export function Users() {
     const {path} = useRouteMatch()
 
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={renderer(AgentList, ADMIN_ROLE, PageSection.Users)}
-            />
-            <Route
-                path={`${path}/add`}
-                exact
-                render={renderer(AgentDetail, ADMIN_ROLE, PageSection.Users)}
-            />
-            <Route
-                path={`${path}/:id`}
-                exact
-                render={renderer(AgentDetail, ADMIN_ROLE, PageSection.Users)}
-            />
+            <Route path={`${path}/`} exact>
+                {renderAppSettings(AgentList, {
+                    roleParams: [ADMIN_ROLE, PageSection.Users],
+                })}
+            </Route>
+
+            <Route path={`${path}/add`} exact>
+                {renderAppSettings(AgentDetail, {
+                    roleParams: [ADMIN_ROLE, PageSection.Users],
+                })}
+            </Route>
+
+            <Route path={`${path}/:id`} exact>
+                {renderAppSettings(AgentDetail, {
+                    roleParams: [ADMIN_ROLE, PageSection.Users],
+                })}
+            </Route>
         </Switch>
     )
 }

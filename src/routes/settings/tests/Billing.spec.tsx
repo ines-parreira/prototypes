@@ -8,7 +8,7 @@ import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConve
 import NewBilling from 'pages/settings/new_billing/views/BillingStartView'
 import {assumeMock} from 'utils/testing'
 
-import {renderer} from '../helpers/settingsRenderer'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 import {Billing} from '../Billing'
 
 jest.mock('react-router-dom', () => ({
@@ -23,12 +23,12 @@ jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
 }))
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({
-    renderer: jest.fn(() => ComponentToRender),
+    renderAppSettings: jest.fn(() => ComponentToRender),
 }))
 
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 const mockedRoute = Route as jest.Mock
-const mockedRenderer = assumeMock(renderer)
+const mockedRenderAppSettings = assumeMock(renderAppSettings)
 
 const basePath = 'billing'
 
@@ -52,10 +52,11 @@ describe('Billing', () => {
 
         render(<Billing />)
 
-        expect(mockedRenderer.mock.calls[0]).toEqual([
+        expect(mockedRenderAppSettings.mock.calls[0]).toEqual([
             NewBilling,
-            ADMIN_ROLE,
-            PageSection.NewBilling,
+            {
+                roleParams: [ADMIN_ROLE, PageSection.NewBilling],
+            },
         ])
         expect(mockedRoute.mock.calls[0]).toEqual([
             {
@@ -64,7 +65,7 @@ describe('Billing', () => {
                     basePath + '/payment',
                     basePath + '/payment-history',
                 ],
-                render: ComponentToRender,
+                children: ComponentToRender,
             },
             {},
         ])

@@ -12,7 +12,7 @@ import CustomFieldsComponent from 'pages/settings/customFields/CustomFields'
 import AddCustomField from 'pages/settings/customFields/AddCustomField'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
 
-import {renderer} from './helpers/settingsRenderer'
+import {renderAppSettings} from './helpers/settingsRenderer'
 
 export function CustomFields() {
     const {path} = useRouteMatch()
@@ -26,42 +26,39 @@ export function CustomFields() {
 
     return (
         <Switch>
-            <Route
-                path={`${path}/add`}
-                exact
-                render={renderer(
-                    AddCustomField,
-                    ADMIN_ROLE,
-                    isCustomerFields
-                        ? PageSection.CustomerFields
-                        : PageSection.TicketFields
-                )}
-            />
-            <Route
-                path={`${path}/:id/edit`}
-                exact
-                render={renderer(
-                    EditCustomField,
-                    ADMIN_ROLE,
-                    isCustomerFields
-                        ? PageSection.CustomerFields
-                        : PageSection.TicketFields
-                )}
-            />
+            <Route path={`${path}/add`} exact>
+                {renderAppSettings(AddCustomField, {
+                    roleParams: [
+                        ADMIN_ROLE,
+                        isCustomerFields
+                            ? PageSection.CustomerFields
+                            : PageSection.TicketFields,
+                    ],
+                })}
+            </Route>
+            <Route path={`${path}/:id/edit`} exact>
+                {renderAppSettings(EditCustomField, {
+                    roleParams: [
+                        ADMIN_ROLE,
+                        isCustomerFields
+                            ? PageSection.CustomerFields
+                            : PageSection.TicketFields,
+                    ],
+                })}
+            </Route>
             <Route exact path={`${path}/`}>
                 <Redirect to={`${path}/active`} />
             </Route>
-            <Route
-                path={`${path}/:activeTab`}
-                exact
-                render={renderer(
-                    CustomFieldsComponent,
-                    ADMIN_ROLE,
-                    isCustomerFields
-                        ? PageSection.CustomerFields
-                        : PageSection.TicketFields
-                )}
-            />
+            <Route path={`${path}/:activeTab`} exact>
+                {renderAppSettings(CustomFieldsComponent, {
+                    roleParams: [
+                        ADMIN_ROLE,
+                        isCustomerFields
+                            ? PageSection.CustomerFields
+                            : PageSection.TicketFields,
+                    ],
+                })}
+            </Route>
         </Switch>
     )
 }

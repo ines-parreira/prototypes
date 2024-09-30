@@ -9,7 +9,7 @@ import TeamsForm from 'pages/settings/teams/Form'
 import List from 'pages/settings/teams/members/List'
 import {assumeMock} from 'utils/testing'
 
-import {renderer} from '../helpers/settingsRenderer'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 import {Teams} from '../Teams'
 
 jest.mock('react-router-dom', () => ({
@@ -20,11 +20,11 @@ jest.mock('react-router-dom', () => ({
 
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({
-    renderer: jest.fn(() => ComponentToRender),
+    renderAppSettings: jest.fn(() => ComponentToRender),
 }))
 
 const mockedRoute = Route as jest.Mock
-const mockedRenderer = assumeMock(renderer)
+const mockedRenderAppSettings = assumeMock(renderAppSettings)
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 
 const basePath = 'teams'
@@ -63,16 +63,17 @@ describe('Teams', () => {
         ({callOrder, path, component}) => {
             render(<Teams />)
 
-            expect(mockedRenderer.mock.calls[callOrder]).toEqual([
+            expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
                 component,
-                ADMIN_ROLE,
-                PageSection.Teams,
+                {
+                    roleParams: [ADMIN_ROLE, PageSection.Teams],
+                },
             ])
             expect(mockedRoute.mock.calls[callOrder]).toEqual([
                 {
                     path,
                     exact: true,
-                    render: ComponentToRender,
+                    children: ComponentToRender,
                 },
                 {},
             ])

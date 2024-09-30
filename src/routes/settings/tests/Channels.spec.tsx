@@ -9,7 +9,7 @@ import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHe
 import IntegrationDetail from 'pages/integrations/integration/Integration'
 import {assumeMock} from 'utils/testing'
 
-import {renderer} from '../helpers/settingsRenderer'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 import {Channels} from '../Channels'
 
 jest.mock('react-router-dom', () => ({
@@ -27,12 +27,12 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 }))
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({
-    renderer: jest.fn(() => ComponentToRender),
+    renderAppSettings: jest.fn(() => ComponentToRender),
 }))
 
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 const mockedRoute = Route as jest.Mock
-const mockedRenderer = assumeMock(renderer)
+const mockedRenderAppSettings = assumeMock(renderAppSettings)
 
 const basePath = 'channels'
 
@@ -57,10 +57,11 @@ describe('Channels', () => {
 
         render(<Channels />)
 
-        expect(mockedRenderer.mock.calls[0]).toEqual([
+        expect(mockedRenderAppSettings.mock.calls[0]).toEqual([
             IntegrationDetail,
-            ADMIN_ROLE,
-            PageSection.Channels,
+            {
+                roleParams: [ADMIN_ROLE, PageSection.Channels],
+            },
         ])
         expect(mockedRoute.mock.calls[0]).toEqual([
             {
@@ -68,7 +69,7 @@ describe('Channels', () => {
                     basePath +
                     '/:integrationType/:integrationId?/:extra?/:subId?',
                 exact: true,
-                render: ComponentToRender,
+                children: ComponentToRender,
             },
             {},
         ])

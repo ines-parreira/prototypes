@@ -9,40 +9,30 @@ import PhoneNumbersListContainer from 'pages/phoneNumbers/PhoneNumbersListContai
 import PhoneNumberCreateContainer from 'pages/phoneNumbers/PhoneNumberCreateContainer'
 import PhoneNumberDetailContainer from 'pages/phoneNumbers/PhoneNumberDetailContainer'
 
-import {renderer} from './helpers/settingsRenderer'
+import {renderAppSettings} from './helpers/settingsRenderer'
 
 export function PhoneNumbers() {
     const {path} = useRouteMatch()
 
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={renderer(
-                    PhoneNumbersListContainer,
-                    ADMIN_ROLE,
-                    PageSection.PhoneNumbers
-                )}
-            />
-            <Route
-                path={`${path}/new`}
-                exact
-                render={renderer(
-                    PhoneNumberCreateContainer,
-                    ADMIN_ROLE,
-                    PageSection.PhoneNumbers
-                )}
-            />
-            <Route
-                path={`${path}/:phoneNumberId`}
-                exact
-                render={renderer(
-                    PhoneNumberDetailContainer,
-                    ADMIN_ROLE,
-                    PageSection.PhoneNumbers
-                )}
-            />
+            <Route path={`${path}/`} exact>
+                {renderAppSettings(PhoneNumbersListContainer, {
+                    roleParams: [ADMIN_ROLE, PageSection.PhoneNumbers],
+                })}
+            </Route>
+
+            <Route path={`${path}/new`} exact>
+                {renderAppSettings(PhoneNumberCreateContainer, {
+                    roleParams: [ADMIN_ROLE, PageSection.PhoneNumbers],
+                })}
+            </Route>
+
+            <Route path={`${path}/:phoneNumberId`} exact>
+                {renderAppSettings(PhoneNumberDetailContainer, {
+                    roleParams: [ADMIN_ROLE, PageSection.PhoneNumbers],
+                })}
+            </Route>
         </Switch>
     )
 }

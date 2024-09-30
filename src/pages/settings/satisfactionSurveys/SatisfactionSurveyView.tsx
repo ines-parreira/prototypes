@@ -1,12 +1,13 @@
-import React, {Component, FormEvent} from 'react'
+import React, {FormEvent, useState} from 'react'
 import classnames from 'classnames'
 import {Form, FormGroup, Label} from 'reactstrap'
-import {connect, ConnectedProps} from 'react-redux'
 import {Map} from 'immutable'
 import {EditorState} from 'draft-js'
 
 import {UploadType} from 'common/types'
 import {DELAY_SURVEY_FOR} from 'config'
+import useAppSelector from 'hooks/useAppSelector'
+import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -18,198 +19,159 @@ import {
     AccountSettingSatisfactionSurvey,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import {RootState} from 'state/types'
 import {convertToHTML, getPlainText} from 'utils/editor'
+
 import css from '../settings.less'
 
-type Props = ConnectedProps<typeof connector>
+function SatisfactionSurveyView() {
+    const surveysSettings = useAppSelector(getSurveysSettings)
+    const dispatch = useAppDispatch()
 
-type State = {
-    isLoading: boolean
-    settings: Map<any, any>
-}
+    const [isLoading, setIsLoading] = useState(false)
+    const [settings, setSettings] = useState<Map<string, any>>(
+        surveysSettings.get('data')
+    )
 
-class SatisfactionSurveyView extends Component<Props, State> {
-    constructor(props: Props) {
-        super(props)
-
-        this.state = {
-            isLoading: false,
-            settings: props.surveysSettings.get('data'),
-        }
-    }
-
-    _updateSurveyEmail = (editorState: EditorState) => {
+    const updateSurveyEmail = (editorState: EditorState) => {
         const contentState = editorState.getCurrentContent()
 
-        this.setState((prevState) => ({
-            settings: prevState.settings.mergeDeep({
+        setSettings((prevState) =>
+            prevState.mergeDeep({
                 survey_email_text: getPlainText(contentState),
                 survey_email_html: convertToHTML(contentState),
-            }),
-        }))
+            })
+        )
     }
 
-    _onSubmit = (e: FormEvent) => {
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
 
-        this.setState({isLoading: true})
+        setIsLoading(true)
 
         const newSettings: AccountSettingSatisfactionSurvey = {
-            id: this.props.surveysSettings.get('id'),
+            id: surveysSettings.get('id'),
             type: AccountSettingType.SatisfactionSurveys,
-            data: this.state.settings.toJS(),
+            data: settings.toJS(),
         }
 
-        return this.props.submitSetting(newSettings).then(() => {
-            this.setState({isLoading: false})
+        return dispatch(submitSetting(newSettings)).then(() => {
+            setIsLoading(false)
         })
     }
 
-    render() {
-        return (
-            <div className="full-width">
-                <PageHeader title="Satisfaction survey" />
-                <div className={css.pageContainer}>
-                    <div
-                        className={classnames(
-                            css.contentWrapper,
-                            'body-regular'
-                        )}
-                    >
-                        <div className={css.mb24}>
-                            <p>
-                                Keep track of the performance of your support
-                                team by sending a satisfaction survey after a
-                                ticket is closed.
-                            </p>
-                        </div>
-                        <div>
-                            <Form onSubmit={this._onSubmit}>
-                                <FormGroup className={css.inputField}>
-                                    <Label className="control-label">
-                                        Send survey after the ticket has been
-                                        closed for
-                                    </Label>
-                                    <SelectField
-                                        value={this.state.settings.get(
-                                            'survey_interval'
-                                        )}
-                                        options={DELAY_SURVEY_FOR}
-                                        onChange={(value) =>
-                                            this.setState({
-                                                settings:
-                                                    this.state.settings.set(
-                                                        'survey_interval',
-                                                        value
-                                                    ),
-                                            })
-                                        }
-                                        fullWidth
-                                    />
-                                    <div
-                                        className={classnames(
-                                            css.mt4,
-                                            'caption-regular'
-                                        )}
-                                    >
-                                        No survey will be sent after the ticket
-                                        is snoozed.
-                                    </div>
-                                </FormGroup>
-                                <FormGroup className={css.mb24}>
-                                    <Label
-                                        className={classnames(
-                                            'control-label',
-                                            css.mb8
-                                        )}
-                                    >
-                                        Send survey email for following channels
-                                    </Label>
-                                    <CheckBox
-                                        name="send_survey_on_email"
-                                        isChecked={this.state.settings.get(
-                                            'send_survey_for_email'
-                                        )}
-                                        onChange={(value: boolean) =>
-                                            this.setState({
-                                                settings:
-                                                    this.state.settings.set(
-                                                        'send_survey_for_email',
-                                                        value
-                                                    ),
-                                            })
-                                        }
-                                        className={css.mb8}
-                                    >
-                                        Email
-                                    </CheckBox>
-                                    <CheckBox
-                                        name="send_survey_on_chat"
-                                        isChecked={this.state.settings.get(
-                                            'send_survey_for_chat'
-                                        )}
-                                        onChange={(value: boolean) =>
-                                            this.setState({
-                                                settings:
-                                                    this.state.settings.set(
-                                                        'send_survey_for_chat',
-                                                        value
-                                                    ),
-                                            })
-                                        }
-                                    >
-                                        Chat
-                                    </CheckBox>
-                                </FormGroup>
-                                <FormGroup
+    return (
+        <div className="full-width">
+            <PageHeader title="Satisfaction survey" />
+            <div className={css.pageContainer}>
+                <div className={classnames(css.contentWrapper, 'body-regular')}>
+                    <div className={css.mb24}>
+                        <p>
+                            Keep track of the performance of your support team
+                            by sending a satisfaction survey after a ticket is
+                            closed.
+                        </p>
+                    </div>
+                    <div>
+                        <Form onSubmit={handleSubmit}>
+                            <FormGroup className={css.inputField}>
+                                <Label className="control-label">
+                                    Send survey after the ticket has been closed
+                                    for
+                                </Label>
+                                <SelectField
+                                    value={settings.get('survey_interval')}
+                                    options={DELAY_SURVEY_FOR}
+                                    onChange={(value) =>
+                                        setSettings(
+                                            settings.set(
+                                                'survey_interval',
+                                                value
+                                            )
+                                        )
+                                    }
+                                    fullWidth
+                                />
+                                <div
                                     className={classnames(
-                                        css.inputField,
-                                        css.mb24
+                                        css.mt4,
+                                        'caption-regular'
                                     )}
                                 >
-                                    <RichFieldWithVariables
-                                        allowExternalChanges
-                                        label="Survey message"
-                                        value={{
-                                            text: this.state.settings.get(
-                                                'survey_email_text'
-                                            ),
-                                            html: this.state.settings.get(
-                                                'survey_email_html'
-                                            ),
-                                        }}
-                                        variableTypes={[
-                                            'ticket.customer',
-                                            'current_user',
-                                            'survey',
-                                        ]}
-                                        onChange={this._updateSurveyEmail}
-                                        uploadType={UploadType.PublicAttachment}
-                                    />
-                                </FormGroup>
-                                <Button
-                                    type="submit"
-                                    isLoading={this.state.isLoading}
+                                    No survey will be sent after the ticket is
+                                    snoozed.
+                                </div>
+                            </FormGroup>
+                            <FormGroup className={css.mb24}>
+                                <Label
+                                    className={classnames(
+                                        'control-label',
+                                        css.mb8
+                                    )}
                                 >
-                                    Save
-                                </Button>
-                            </Form>
-                        </div>
+                                    Send survey email for following channels
+                                </Label>
+                                <CheckBox
+                                    name="send_survey_on_email"
+                                    isChecked={settings.get(
+                                        'send_survey_for_email'
+                                    )}
+                                    onChange={(value: boolean) =>
+                                        setSettings(
+                                            settings.set(
+                                                'send_survey_for_email',
+                                                value
+                                            )
+                                        )
+                                    }
+                                    className={css.mb8}
+                                >
+                                    Email
+                                </CheckBox>
+                                <CheckBox
+                                    name="send_survey_on_chat"
+                                    isChecked={settings.get(
+                                        'send_survey_for_chat'
+                                    )}
+                                    onChange={(value: boolean) =>
+                                        setSettings(
+                                            settings.set(
+                                                'send_survey_for_chat',
+                                                value
+                                            )
+                                        )
+                                    }
+                                >
+                                    Chat
+                                </CheckBox>
+                            </FormGroup>
+                            <FormGroup
+                                className={classnames(css.inputField, css.mb24)}
+                            >
+                                <RichFieldWithVariables
+                                    allowExternalChanges
+                                    label="Survey message"
+                                    value={{
+                                        text: settings.get('survey_email_text'),
+                                        html: settings.get('survey_email_html'),
+                                    }}
+                                    variableTypes={[
+                                        'ticket.customer',
+                                        'current_user',
+                                        'survey',
+                                    ]}
+                                    onChange={updateSurveyEmail}
+                                    uploadType={UploadType.PublicAttachment}
+                                />
+                            </FormGroup>
+                            <Button type="submit" isLoading={isLoading}>
+                                Save
+                            </Button>
+                        </Form>
                     </div>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        surveysSettings: getSurveysSettings(state),
-    }),
-    {
-        submitSetting,
-    }
-)
-
-export default connector(SatisfactionSurveyView)
+export default SatisfactionSurveyView

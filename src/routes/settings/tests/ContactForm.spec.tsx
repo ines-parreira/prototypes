@@ -16,7 +16,7 @@ import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHe
 import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {assumeMock} from 'utils/testing'
 
-import {renderer} from '../helpers/settingsRenderer'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 import {ContactForm} from '../ContactForm'
 
 jest.mock('react-router-dom', () => ({
@@ -33,11 +33,11 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
 
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({
-    renderer: jest.fn(() => ComponentToRender),
+    renderAppSettings: jest.fn(() => ComponentToRender),
 }))
 
 const mockedRoute = Route as jest.Mock
-const mockedRenderer = assumeMock(renderer)
+const mockedRenderAppSettings = assumeMock(renderAppSettings)
 
 describe('ContactForm', () => {
     it('should call HelpCenterApiClientProvider and SupportedLocalesProvider', () => {
@@ -81,12 +81,14 @@ describe('ContactForm', () => {
         ({callOrder, exact, path, component}) => {
             render(<ContactForm />)
 
-            expect(mockedRenderer.mock.calls[callOrder]).toEqual([component])
+            expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
+                component,
+            ])
             expect(mockedRoute.mock.calls[callOrder]).toEqual([
                 {
                     path,
                     exact,
-                    render: ComponentToRender,
+                    children: ComponentToRender,
                 },
                 {},
             ])

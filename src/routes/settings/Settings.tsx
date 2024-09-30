@@ -10,10 +10,6 @@ import {
 } from 'config/paywalls'
 import {AccountFeature} from 'state/currentAccount/types'
 import {assetsUrl} from 'utils'
-import App from 'pages/App'
-import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
-import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 
 import IntegrationDetail from 'pages/integrations/integration/Integration'
 import Access from 'pages/settings/access/Access'
@@ -29,7 +25,7 @@ import PasswordAnd2FA from 'pages/settings/yourProfile/PasswordAnd2FA'
 import YourProfileContainer from 'pages/settings/yourProfile/YourProfileContainer'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 
-import {renderer} from './helpers/settingsRenderer'
+import {renderAppSettings} from './helpers/settingsRenderer'
 import {Billing} from './Billing'
 import {Channels} from './Channels'
 import {ContactForm} from './ContactForm'
@@ -48,24 +44,16 @@ import {Users} from './Users'
 export function SettingRoutes() {
     const {path} = useRouteMatch()
 
-    const satisfactionPaywallConfig = {
-        [AccountFeature.SatisfactionSurveys]: {
-            ...defaultPaywallConfigs[AccountFeature.SatisfactionSurveys],
-            preview: assetsUrl(
-                '/img/paywalls/screens/satisfaction-surveys-settings.png'
-            ),
-        } as PaywallConfig,
-    }
-
     return (
         <Switch>
             <Route path={`${path}/`} exact>
-                {renderer(
-                    IntegrationDetail,
-                    ADMIN_ROLE,
-                    PageSection.Channels,
-                    `${path}/help-center`
-                )}
+                {renderAppSettings(IntegrationDetail, {
+                    roleParams: [
+                        ADMIN_ROLE,
+                        PageSection.Channels,
+                        `${path}/help-center`,
+                    ],
+                })}
             </Route>
 
             <Route path={`${path}/billing`}>
@@ -118,60 +106,68 @@ export function SettingRoutes() {
             </Route>
 
             <Route path={`${path}/profile`} exact>
-                {renderer(YourProfileContainer)}
+                {renderAppSettings(YourProfileContainer)}
             </Route>
             <Route path={`${path}/notifications`} exact>
-                {renderer(NotificationsSettings)}
+                {renderAppSettings(NotificationsSettings)}
             </Route>
             <Route path={`${path}/password-2fa`} exact>
-                {renderer(PasswordAnd2FA)}
+                {renderAppSettings(PasswordAnd2FA)}
             </Route>
             <Route path={`${path}/api`} exact>
-                {renderer(APIView, ADMIN_ROLE, PageSection.Api)}
+                {renderAppSettings(APIView, {
+                    roleParams: [ADMIN_ROLE, PageSection.Api],
+                })}
             </Route>
             <Route path={`${path}/audit`} exact>
-                {renderer(UserAuditList, ADMIN_ROLE, PageSection.Audit)}
+                {renderAppSettings(UserAuditList, {
+                    roleParams: [ADMIN_ROLE, PageSection.Audit],
+                })}
             </Route>
             <Route path={`${path}/manage-tags`} exact>
-                {renderer(ManageTags, AGENT_ROLE, PageSection.ManageTags)}
+                {renderAppSettings(ManageTags, {
+                    roleParams: [AGENT_ROLE, PageSection.ManageTags],
+                })}
             </Route>
             <Route path={`${path}/access`} exact>
-                {renderer(Access, ADMIN_ROLE, PageSection.Access)}
+                {renderAppSettings(Access, {
+                    roleParams: [ADMIN_ROLE, PageSection.Access],
+                })}
             </Route>
             <Route path={`${path}/business-hours`} exact>
-                {renderer(BusinessHours, ADMIN_ROLE, PageSection.BusinessHours)}
+                {renderAppSettings(BusinessHours, {
+                    roleParams: [ADMIN_ROLE, PageSection.BusinessHours],
+                })}
             </Route>
             <Route path={`${path}/sidebar`}>
-                {renderer(
-                    SidebarSettings,
-                    ADMIN_ROLE,
-                    PageSection.SidebarSettings
-                )}
+                {renderAppSettings(SidebarSettings, {
+                    roleParams: [ADMIN_ROLE, PageSection.SidebarSettings],
+                })}
             </Route>
             <Route path={`${path}/ticket-assignment`} exact>
-                {renderer(TicketAssignment)}
+                {renderAppSettings(TicketAssignment)}
             </Route>
             <Route path={`${path}/auto-merge`} exact>
-                {renderer(AutoMergeSettings)}
+                {renderAppSettings(AutoMergeSettings)}
             </Route>
-            {
-                // maybe we should tailor `renderer` to also allow paywall
-            }
             <Route path={`${path}/satisfaction-surveys`} exact>
-                <App
-                    content={withFeaturePaywall(
+                {renderAppSettings(SatisfactionSurveyView, {
+                    roleParams: [ADMIN_ROLE, PageSection.SatisfactionSurveys],
+                    paywallParams: [
                         AccountFeature.SatisfactionSurveys,
                         undefined,
-                        satisfactionPaywallConfig
-                    )(
-                        withUserRoleRequired(
-                            SatisfactionSurveyView,
-                            ADMIN_ROLE,
-                            PageSection.SatisfactionSurveys
-                        )
-                    )}
-                    navbar={SettingsNavbar}
-                />
+                        {
+                            [AccountFeature.SatisfactionSurveys]: {
+                                ...defaultPaywallConfigs[
+                                    AccountFeature.SatisfactionSurveys
+                                ],
+                                preview: assetsUrl(
+                                    '/img/paywalls/screens/satisfaction-surveys-settings.png'
+                                ),
+                            } as PaywallConfig,
+                        },
+                    ],
+                })}
             </Route>
         </Switch>
     )

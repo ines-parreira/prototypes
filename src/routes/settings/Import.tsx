@@ -9,40 +9,30 @@ import ImportZendeskDetail from 'pages/settings/importData/zendesk/ImportZendesk
 import ImportData from 'pages/settings/importData/ImportData'
 import ImportZendeskCreate from 'pages/settings/importData/zendesk/ImportZendeskCreate'
 
-import {renderer} from './helpers/settingsRenderer'
+import {renderAppSettings} from './helpers/settingsRenderer'
 
 export function Import() {
     const {path} = useRouteMatch()
 
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={renderer(
-                    ImportData,
-                    ADMIN_ROLE,
-                    PageSection.ImportData
-                )}
-            />
-            <Route
-                path={`${path}/zendesk`}
-                exact
-                render={renderer(
-                    ImportZendeskCreate,
-                    ADMIN_ROLE,
-                    PageSection.ImportData
-                )}
-            />
-            <Route
-                path={`${path}/zendesk/:integrationId/:extra?`}
-                exact
-                render={renderer(
-                    ImportZendeskDetail,
-                    ADMIN_ROLE,
-                    PageSection.ImportData
-                )}
-            />
+            <Route path={`${path}/`} exact>
+                {renderAppSettings(ImportData, {
+                    roleParams: [ADMIN_ROLE, PageSection.ImportData],
+                })}
+            </Route>
+
+            <Route path={`${path}/zendesk`} exact>
+                {renderAppSettings(ImportZendeskCreate, {
+                    roleParams: [ADMIN_ROLE, PageSection.ImportData],
+                })}
+            </Route>
+
+            <Route path={`${path}/zendesk/:integrationId/:extra?`} exact>
+                {renderAppSettings(ImportZendeskDetail, {
+                    roleParams: [ADMIN_ROLE, PageSection.ImportData],
+                })}
+            </Route>
         </Switch>
     )
 }

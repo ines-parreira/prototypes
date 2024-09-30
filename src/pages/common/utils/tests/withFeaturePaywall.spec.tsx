@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
@@ -11,14 +11,14 @@ import {RootState, StoreDispatch} from 'state/types'
 import {PaywallConfig, paywallConfigs} from 'config/paywalls'
 import {account} from 'fixtures/account'
 
-import withFeaturePaywall from '../withFeaturePaywall'
+import {withFeaturePaywall} from '../withFeaturePaywall'
 
 const AnyComponent = () => (
-    <div data-testid="paywalled-component">Just a component...</div>
+    <div data-testid="paywalled-component">Not paywalled</div>
 )
 
 const CustomPaywallComponent = () => (
-    <div data-testid="custom-paywall-component">Custom Paywall</div>
+    <div data-testid="custom-paywall-component">Paywalled</div>
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -35,30 +35,45 @@ describe('withFeaturePaywall', () => {
         billing: fromJS(billingState),
     }
 
-    it('should render the passed component when the feature is available', () => {
-        const PaywalledComponent = withFeaturePaywall(
-            AccountFeature.InstagramComment
-        )(AnyComponent)
-        const {container} = render(
+    it('should render the passed component when the feature is not specified', () => {
+        const PaywalledComponent = withFeaturePaywall()(AnyComponent)
+        render(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
             </Provider>
         )
 
-        expect(container).toMatchSnapshot()
+        expect(screen.getByText('Not paywalled')).toBeInTheDocument()
+    })
+
+    it('should render the passed component when the feature is available', () => {
+        const PaywalledComponent = withFeaturePaywall(
+            AccountFeature.InstagramComment
+        )(AnyComponent)
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <PaywalledComponent />
+            </Provider>
+        )
+
+        expect(screen.getByText('Not paywalled')).toBeInTheDocument()
     })
 
     it('should not render the passed component when the feature is unavailable', () => {
         const PaywalledComponent = withFeaturePaywall(
             AccountFeature.RevenueStatistics
         )(AnyComponent)
-        const {container} = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
             </Provider>
         )
 
-        expect(container).toMatchSnapshot()
+        expect(
+            screen.getByText(
+                paywallConfigs[AccountFeature.RevenueStatistics]!.header
+            )
+        ).toBeInTheDocument()
     })
 
     it('should not render the passed component when the feature is unavailable and use a custom paywall', () => {
@@ -66,13 +81,13 @@ describe('withFeaturePaywall', () => {
             AccountFeature.RevenueStatistics,
             CustomPaywallComponent
         )(AnyComponent)
-        const {container} = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
             </Provider>
         )
 
-        expect(container).toMatchSnapshot()
+        expect(screen.getByText('Paywalled')).toBeInTheDocument()
     })
 
     it('should pass custom paywall configuration props', () => {
@@ -88,12 +103,12 @@ describe('withFeaturePaywall', () => {
             undefined,
             customPaywallConfigs
         )(AnyComponent)
-        const {container} = render(
+        render(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
             </Provider>
         )
 
-        expect(container).toMatchSnapshot()
+        expect(screen.getByText('Custom page header')).toBeInTheDocument()
     })
 })

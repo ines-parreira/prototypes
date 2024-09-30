@@ -16,7 +16,7 @@ import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormC
 import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView'
 import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView'
 
-import {renderer} from './helpers/settingsRenderer'
+import {renderAppSettings} from './helpers/settingsRenderer'
 
 export function ContactForm() {
     return (
@@ -30,17 +30,17 @@ export function ContactForm() {
                             CONTACT_FORM_ABOUT_PATH,
                             CONTACT_FORM_FORMS_PATH,
                         ]}
-                        render={renderer(ContactFormStartView)}
-                    />
-                    <Route
-                        exact
-                        path={CONTACT_FORM_CREATE_PATH}
-                        render={renderer(ContactFormCreateView)}
-                    />
-                    <Route
-                        path={CONTACT_FORM_SETTINGS_PATH}
-                        render={renderer(ContactFormSettingsView)}
-                    />
+                    >
+                        {renderAppSettings(ContactFormStartView)}
+                    </Route>
+
+                    <Route exact path={CONTACT_FORM_CREATE_PATH}>
+                        {renderAppSettings(ContactFormCreateView)}
+                    </Route>
+
+                    <Route path={CONTACT_FORM_SETTINGS_PATH}>
+                        {renderAppSettings(ContactFormSettingsView)}
+                    </Route>
                 </Switch>
             </SupportedLocalesProvider>
         </HelpCenterApiClientProvider>

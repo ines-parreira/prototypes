@@ -7,7 +7,7 @@ import {AGENT_ROLE} from 'config/user'
 import {SLAForm, SLAList, SLATemplateList} from 'pages/settings/SLAs'
 import {assumeMock} from 'utils/testing'
 
-import {renderer} from '../helpers/settingsRenderer'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 import {SLA} from '../SLA'
 
 jest.mock('react-router-dom', () => ({
@@ -18,11 +18,11 @@ jest.mock('react-router-dom', () => ({
 
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({
-    renderer: jest.fn(() => ComponentToRender),
+    renderAppSettings: jest.fn(() => ComponentToRender),
 }))
 
 const mockedRoute = Route as jest.Mock
-const mockedRenderer = assumeMock(renderer)
+const mockedRenderAppSettings = assumeMock(renderAppSettings)
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 
 const basePath = 'sla'
@@ -64,16 +64,17 @@ describe('SLA', () => {
         ({callOrder, path, exact, component}) => {
             render(<SLA />)
 
-            expect(mockedRenderer.mock.calls[callOrder]).toEqual([
+            expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
                 component,
-                AGENT_ROLE,
-                PageSection.SLAPolicies,
+                {
+                    roleParams: [AGENT_ROLE, PageSection.SLAPolicies],
+                },
             ])
             expect(mockedRoute.mock.calls[callOrder]).toEqual([
                 {
                     path,
                     exact,
-                    render: ComponentToRender,
+                    children: ComponentToRender,
                 },
                 {},
             ])

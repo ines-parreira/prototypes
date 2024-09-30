@@ -11,7 +11,7 @@ import MyIntegrations from 'pages/integrations/Store/Mine'
 import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {assumeMock} from 'utils/testing'
 
-import {renderer} from '../helpers/settingsRenderer'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 import {Integrations} from '../Integrations'
 
 jest.mock('react-router-dom', () => ({
@@ -25,11 +25,11 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({
-    renderer: jest.fn(() => ComponentToRender),
+    renderAppSettings: jest.fn(() => ComponentToRender),
 }))
 
 const mockedRoute = Route as jest.Mock
-const mockedRenderer = assumeMock(renderer)
+const mockedRenderAppSettings = assumeMock(renderAppSettings)
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 
 const basePath = 'integrations'
@@ -87,16 +87,17 @@ describe('Integration', () => {
         ({callOrder, path, pageSection, component}) => {
             render(<Integrations />)
 
-            expect(mockedRenderer.mock.calls[callOrder]).toEqual([
+            expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
                 component,
-                ADMIN_ROLE,
-                pageSection,
+                {
+                    roleParams: [ADMIN_ROLE, pageSection],
+                },
             ])
             expect(mockedRoute.mock.calls[callOrder]).toEqual([
                 {
                     path,
                     exact: true,
-                    render: ComponentToRender,
+                    children: ComponentToRender,
                 },
                 {},
             ])

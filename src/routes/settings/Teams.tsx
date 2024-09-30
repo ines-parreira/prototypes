@@ -9,28 +9,30 @@ import TeamsList from 'pages/settings/teams/List'
 import TeamsForm from 'pages/settings/teams/Form'
 import List from 'pages/settings/teams/members/List'
 
-import {renderer} from './helpers/settingsRenderer'
+import {renderAppSettings} from './helpers/settingsRenderer'
 
 export function Teams() {
     const {path} = useRouteMatch()
 
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={renderer(TeamsList, ADMIN_ROLE, PageSection.Teams)}
-            />
-            <Route
-                path={`${path}/:id`}
-                exact
-                render={renderer(TeamsForm, ADMIN_ROLE, PageSection.Teams)}
-            />
-            <Route
-                path={`${path}/:id/members`}
-                exact
-                render={renderer(List, ADMIN_ROLE, PageSection.Teams)}
-            />
+            <Route path={`${path}/`} exact>
+                {renderAppSettings(TeamsList, {
+                    roleParams: [ADMIN_ROLE, PageSection.Teams],
+                })}
+            </Route>
+
+            <Route path={`${path}/:id`} exact>
+                {renderAppSettings(TeamsForm, {
+                    roleParams: [ADMIN_ROLE, PageSection.Teams],
+                })}
+            </Route>
+
+            <Route path={`${path}/:id/members`} exact>
+                {renderAppSettings(List, {
+                    roleParams: [ADMIN_ROLE, PageSection.Teams],
+                })}
+            </Route>
         </Switch>
     )
 }

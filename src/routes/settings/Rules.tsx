@@ -10,7 +10,7 @@ import RulesLibrary from 'pages/settings/rules/RulesLibrary'
 import RulesView from 'pages/settings/rules/RulesList'
 import RuleDetailForm from 'pages/settings/rules/accountRules/RuleDetailForm'
 
-import {renderer} from './helpers/settingsRenderer'
+import {renderAppSettings} from './helpers/settingsRenderer'
 
 export function Rules() {
     const {path} = useRouteMatch()
@@ -18,26 +18,23 @@ export function Rules() {
     return (
         <HelpCenterApiClientProvider>
             <Switch>
-                <Route path={`${path}`} exact render={renderer(RulesView)} />
-                <Route
-                    path={`${path}/library`}
-                    exact
-                    render={renderer(RulesLibrary)}
-                />
-                <Route
-                    path={`${path}/new`}
-                    exact
-                    render={renderer(
-                        RuleDetailForm,
-                        AGENT_ROLE,
-                        PageSection.SidebarSettings
-                    )}
-                />
-                <Route
-                    path={`${path}/:ruleId`}
-                    exact
-                    render={renderer(RuleDetailForm)}
-                />
+                <Route path={`${path}`} exact>
+                    {renderAppSettings(RulesView)}
+                </Route>
+
+                <Route path={`${path}/library`} exact>
+                    {renderAppSettings(RulesLibrary)}
+                </Route>
+
+                <Route path={`${path}/new`} exact>
+                    {renderAppSettings(RuleDetailForm, {
+                        roleParams: [AGENT_ROLE, PageSection.SidebarSettings],
+                    })}
+                </Route>
+
+                <Route path={`${path}/:ruleId`} exact>
+                    {renderAppSettings(RuleDetailForm)}
+                </Route>
             </Switch>
         </HelpCenterApiClientProvider>
     )

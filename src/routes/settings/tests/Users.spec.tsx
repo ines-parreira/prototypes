@@ -8,7 +8,7 @@ import AgentList from 'pages/settings/users/List'
 import AgentDetail from 'pages/settings/users/Detail'
 import {assumeMock} from 'utils/testing'
 
-import {renderer} from '../helpers/settingsRenderer'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 import {Users} from '../Users'
 
 jest.mock('react-router-dom', () => ({
@@ -19,11 +19,11 @@ jest.mock('react-router-dom', () => ({
 
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({
-    renderer: jest.fn(() => ComponentToRender),
+    renderAppSettings: jest.fn(() => ComponentToRender),
 }))
 
 const mockedRoute = Route as jest.Mock
-const mockedRenderer = assumeMock(renderer)
+const mockedRenderAppSettings = assumeMock(renderAppSettings)
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 
 const basePath = 'users'
@@ -62,16 +62,17 @@ describe('Users', () => {
         ({callOrder, path, component}) => {
             render(<Users />)
 
-            expect(mockedRenderer.mock.calls[callOrder]).toEqual([
+            expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
                 component,
-                ADMIN_ROLE,
-                PageSection.Users,
+                {
+                    roleParams: [ADMIN_ROLE, PageSection.Users],
+                },
             ])
             expect(mockedRoute.mock.calls[callOrder]).toEqual([
                 {
                     path,
                     exact: true,
-                    render: ComponentToRender,
+                    children: ComponentToRender,
                 },
                 {},
             ])

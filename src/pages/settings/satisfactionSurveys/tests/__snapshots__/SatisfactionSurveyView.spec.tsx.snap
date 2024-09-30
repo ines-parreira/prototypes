@@ -1,8 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SatisfactionSurveyView _onSubmit should submit user data 1`] = `[]`;
-
-exports[`SatisfactionSurveyView render should render current survey settings form 1`] = `
+exports[`SatisfactionSurveyView should render current survey settings form 1`] = `
 <div
   class="full-width"
 >
@@ -54,10 +52,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                     class="select dropdown-toggle selectFullWidth"
                   >
                     <span
-                      class="label placeholder"
+                      class="label"
                       style="min-width: 10px; opacity: 1;"
                     >
-                      Select an option
+                      1 hour
                     </span>
                     <input
                       autocomplete="chrome-off"
@@ -98,16 +96,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                   >
                     <span>
                       30 minutes
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      1 hour
                     </span>
                   </button>
                   <button
@@ -205,6 +193,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                 for="send_survey_on_email"
               >
                 <input
+                  checked=""
                   class="input"
                   id="send_survey_on_email"
                   name="send_survey_on_email"
@@ -219,6 +208,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                 for="send_survey_on_chat"
               >
                 <input
+                  checked=""
                   class="input"
                   id="send_survey_on_chat"
                   name="send_survey_on_chat"
@@ -231,338 +221,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
           <div
             class="inputField mb24 form-group"
           >
-            <div
-              class="field"
-            >
-              <label
-                class="control-label"
-              >
-                Survey message
-              </label>
-              <div
-                class="textarea-toolbar toolbar"
-              >
-                <div
-                  class="dropdown"
-                >
-                  <div
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    class=""
-                  >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper ghost secondary medium"
-                      type="button"
-                    >
-                      <span
-                        class="wrapper"
-                      >
-                        Ticket customer
-                        <i
-                          class="material-icons icon isRight medium"
-                        >
-                          arrow_drop_down
-                        </i>
-                      </span>
-                    </button>
-                  </div>
-                  <div
-                    aria-hidden="true"
-                    class="dropdown-menu"
-                    role="menu"
-                    tabindex="-1"
-                  >
-                    <div>
-                      <button
-                        class="dropdown-item"
-                        id="variable-0"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        First name
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        class="dropdown-item"
-                        id="variable-1"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        Last name
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        class="dropdown-item"
-                        id="variable-2"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        Full name
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        class="dropdown-item"
-                        id="variable-3"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        Email
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="dropdown"
-                >
-                  <div
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    class=""
-                  >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper ghost secondary medium"
-                      type="button"
-                    >
-                      <span
-                        class="wrapper"
-                      >
-                        Current agent
-                        <i
-                          class="material-icons icon isRight medium"
-                        >
-                          arrow_drop_down
-                        </i>
-                      </span>
-                    </button>
-                  </div>
-                  <div
-                    aria-hidden="true"
-                    class="dropdown-menu"
-                    role="menu"
-                    tabindex="-1"
-                  >
-                    <div>
-                      <button
-                        class="dropdown-item"
-                        id="variable-0"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        First name
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        class="dropdown-item"
-                        id="variable-1"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        Last name
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        class="dropdown-item"
-                        id="variable-2"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        Full name
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        class="dropdown-item"
-                        id="variable-3"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        Email
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        class="dropdown-item"
-                        id="variable-4"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        Bio
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <button
-                  aria-disabled="false"
-                  class="wrapper ghost secondary medium"
-                  type="button"
-                >
-                  <span>
-                    Satisfaction Survey
-                  </span>
-                </button>
-              </div>
-              <div
-                class="rich-textarea-wrapper"
-              >
-                <div
-                  class="editor-wrapper"
-                >
-                  <div
-                    class="withMinHeight"
-                  >
-                    <div
-                      class="DraftEditor-root"
-                    >
-                      <div
-                        class="DraftEditor-editorContainer"
-                      >
-                        <div
-                          aria-autocomplete="list"
-                          aria-describedby="placeholder-someRandomKey"
-                          aria-expanded="true"
-                          class="notranslate public-DraftEditor-content"
-                          contenteditable="true"
-                          role="combobox"
-                          spellcheck="false"
-                          style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
-                        >
-                          <div
-                            data-contents="true"
-                          >
-                            <div
-                              class=""
-                              data-block="true"
-                              data-editor="someRandomKey"
-                              data-offset-key="someRandomKey-0-0"
-                            >
-                              <div
-                                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                                data-offset-key="someRandomKey-0-0"
-                              >
-                                <span
-                                  data-offset-key="someRandomKey-0-0"
-                                >
-                                  <br
-                                    data-text="true"
-                                  />
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="editor-toolbar page"
-                >
-                  <div
-                    class="actionsWrapper"
-                  >
-                    <div
-                      class="actions"
-                    >
-                      <button
-                        aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-3"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          format_bold
-                        </i>
-                      </button>
-                      <button
-                        aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-4"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          format_italic
-                        </i>
-                      </button>
-                      <button
-                        aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-5"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          format_underline
-                        </i>
-                      </button>
-                      <button
-                        aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-6"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          link
-                        </i>
-                      </button>
-                      <button
-                        aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-7"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          insert_photo
-                        </i>
-                      </button>
-                      <button
-                        aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-8"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          insert_emoticon
-                        </i>
-                      </button>
-                      <div
-                        class="hoverOverlay"
-                      >
-                        Add files as attachments
-                      </div>
-                      <div
-                        class="rightSection"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div>
+              RichFieldWithVariables
             </div>
           </div>
           <button

@@ -10,7 +10,7 @@ import AddCustomField from 'pages/settings/customFields/AddCustomField'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
 import {assumeMock} from 'utils/testing'
 
-import {renderer} from '../helpers/settingsRenderer'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 import {CustomFields} from '../CustomFields'
 
 jest.mock('react-router-dom', () => ({
@@ -25,13 +25,13 @@ jest.mock('common/flags', () => ({
 }))
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({
-    renderer: jest.fn(() => ComponentToRender),
+    renderAppSettings: jest.fn(() => ComponentToRender),
 }))
 
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 const mockedRoute = Route as jest.Mock
 const mockedUseFlag = assumeMock(useFlag)
-const mockedRenderer = assumeMock(renderer)
+const mockedRenderAppSettings = assumeMock(renderAppSettings)
 
 const baseTicketPath = 'ticket-fields'
 const baseCustomerPath = 'customer-fields'
@@ -159,16 +159,17 @@ describe('CustomFields', () => {
 
             render(<CustomFields />)
 
-            expect(mockedRenderer.mock.calls[callOrder]).toEqual([
+            expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
                 component,
-                role,
-                pageSection,
+                {
+                    roleParams: [role, pageSection],
+                },
             ])
             expect(mockedRoute.mock.calls[routeCallOrder]).toEqual([
                 {
                     path: basePath + path,
                     exact,
-                    render: ComponentToRender,
+                    children: ComponentToRender,
                 },
                 {},
             ])

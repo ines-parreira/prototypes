@@ -9,7 +9,7 @@ import PhoneNumberCreateContainer from 'pages/phoneNumbers/PhoneNumberCreateCont
 import PhoneNumberDetailContainer from 'pages/phoneNumbers/PhoneNumberDetailContainer'
 import {assumeMock} from 'utils/testing'
 
-import {renderer} from '../helpers/settingsRenderer'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 import {PhoneNumbers} from '../PhoneNumbers'
 
 jest.mock('react-router-dom', () => ({
@@ -20,11 +20,11 @@ jest.mock('react-router-dom', () => ({
 
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({
-    renderer: jest.fn(() => ComponentToRender),
+    renderAppSettings: jest.fn(() => ComponentToRender),
 }))
 
 const mockedRoute = Route as jest.Mock
-const mockedRenderer = assumeMock(renderer)
+const mockedRenderAppSettings = assumeMock(renderAppSettings)
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 
 const basePath = 'phone-numbers'
@@ -63,16 +63,17 @@ describe('PhoneNumbers', () => {
         ({callOrder, path, component}) => {
             render(<PhoneNumbers />)
 
-            expect(mockedRenderer.mock.calls[callOrder]).toEqual([
+            expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
                 component,
-                ADMIN_ROLE,
-                PageSection.PhoneNumbers,
+                {
+                    roleParams: [ADMIN_ROLE, PageSection.PhoneNumbers],
+                },
             ])
             expect(mockedRoute.mock.calls[callOrder]).toEqual([
                 {
                     path,
                     exact: true,
-                    render: ComponentToRender,
+                    children: ComponentToRender,
                 },
                 {},
             ])

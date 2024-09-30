@@ -13,7 +13,7 @@ import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNe
 import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenterStartView'
 import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
 
-import {renderer} from './helpers/settingsRenderer'
+import {renderAppSettings} from './helpers/settingsRenderer'
 
 export function HelpCenter() {
     const {path} = useRouteMatch()
@@ -33,21 +33,21 @@ export function HelpCenter() {
                                 `${path}/manage`,
                             ]}
                             exact
-                            render={renderer(HelpCenterStartView)}
-                        />
-                        <Route
-                            path={`${path}/new`}
-                            exact
-                            render={renderer(
+                        >
+                            {renderAppSettings(HelpCenterStartView)}
+                        </Route>
+
+                        <Route path={`${path}/new`} exact>
+                            {renderAppSettings(
                                 isHelpCenterCreationWizardEnabled
                                     ? HelpCenterCreationWizard
                                     : HelpCenterNewView
                             )}
-                        />
-                        <Route
-                            path={`${path}/:helpCenterId`}
-                            render={renderer(CurrentHelpCenter)}
-                        />
+                        </Route>
+
+                        <Route path={`${path}/:helpCenterId`}>
+                            {renderAppSettings(CurrentHelpCenter)}
+                        </Route>
                     </Switch>
                 </SupportedLocalesProvider>
             </MigrationApiClientProvider>

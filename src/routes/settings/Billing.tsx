@@ -8,7 +8,7 @@ import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConve
 
 import NewBilling from 'pages/settings/new_billing/views/BillingStartView'
 
-import {renderer} from './helpers/settingsRenderer'
+import {renderAppSettings} from './helpers/settingsRenderer'
 
 export function Billing() {
     const {path} = useRouteMatch()
@@ -22,12 +22,11 @@ export function Billing() {
                         `${path}/payment`,
                         `${path}/payment-history`,
                     ]}
-                    render={renderer(
-                        NewBilling,
-                        ADMIN_ROLE,
-                        PageSection.NewBilling
-                    )}
-                />
+                >
+                    {renderAppSettings(NewBilling, {
+                        roleParams: [ADMIN_ROLE, PageSection.NewBilling],
+                    })}
+                </Route>
             </Switch>
         </RevenueAddonApiClientProvider>
     )
