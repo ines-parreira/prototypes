@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import {fromJS} from 'immutable'
 import {UncontrolledTooltip} from 'reactstrap'
 import {
     StepProps,
@@ -8,30 +7,33 @@ import {
 } from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import {getIconFromType} from 'state/integrations/helpers'
 import {IntegrationType} from 'models/integration/constants'
-import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
+import {ShopifyCustomerTagsInput} from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
 import css from './SetUp.less'
 
 export const SetUp = (props: StepProps) => {
     const {attachmentData, setAttachmentData, setNextButtonActive} = props
 
     const [shopifyTarget, setShopifyTarget] =
-        useState<TransitoryAttachmentSubscriber>(
-            attachmentData.subscriberTypes.shopify
-        )
+        useState<TransitoryAttachmentSubscriber>({
+            ...attachmentData.subscriberTypes.shopify,
+            tags:
+                attachmentData.subscriberTypes.shopify.tags.length > 0
+                    ? attachmentData.subscriberTypes.shopify.tags
+                    : ['source: Gorgias Convert'],
+        })
 
-    const handleAddTag = (tag: string) => {
-        setShopifyTarget((state) => ({
-            ...state,
-            tags: Array.from(new Set([...state.tags, tag])),
-        }))
-    }
-
-    const handleDeleteTag = (tag: string) => {
-        const tags = shopifyTarget.tags.filter((name) => name !== tag)
-        setShopifyTarget((state) => ({
-            ...state,
-            tags,
-        }))
+    const handleTagsChanged = (
+        tags: {
+            label: string
+            value: string
+        }[]
+    ) => {
+        setShopifyTarget((state) => {
+            return {
+                ...state,
+                tags: Array.from(new Set(tags.map((tag) => tag.value))),
+            }
+        })
     }
 
     useEffect(() => {
@@ -84,15 +86,12 @@ export const SetUp = (props: StepProps) => {
                                 </UncontrolledTooltip>
                             </span>
                         </span>
-                        <TicketTags
-                            ticketTags={fromJS(
-                                shopifyTarget.tags.map((tag) => ({
-                                    name: tag,
-                                }))
-                            )}
-                            addTag={handleAddTag}
-                            removeTag={handleDeleteTag}
-                            transparent
+                        <ShopifyCustomerTagsInput
+                            value={shopifyTarget.tags.map((tag) => ({
+                                label: tag,
+                                value: tag,
+                            }))}
+                            onChange={handleTagsChanged}
                         />
                     </div>
                 </div>

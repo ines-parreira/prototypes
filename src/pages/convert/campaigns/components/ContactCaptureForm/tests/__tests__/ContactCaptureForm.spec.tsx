@@ -1,6 +1,6 @@
 import React from 'react'
 import configureMockStore from 'redux-mock-store'
-import {act, render, screen, waitFor, fireEvent} from '@testing-library/react'
+import {act, render, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import userEvent from '@testing-library/user-event'
 import {QueryClientProvider} from '@tanstack/react-query'
@@ -102,17 +102,9 @@ describe('ContactForm test suite', () => {
                 </QueryClientProvider>
             </Provider>
         )
-        const addTagsBtn = getByText('Add tags')
+        const addTagsBtn = getByPlaceholderText('Add tags...')
         act(() => addTagsBtn.click())
-        await waitFor(() =>
-            expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-        )
-        const textField = getByPlaceholderText('Search')
-        await userEvent.type(textField, 'Foo')
-        await waitFor(() =>
-            expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-        )
-        act(() => getByText('Create').click())
+        await userEvent.type(addTagsBtn, 'Foo{enter}')
         const deleteTagBtn = getByText('Foo').nextElementSibling
         expect(deleteTagBtn).toBeInTheDocument()
         if (deleteTagBtn) fireEvent.click(deleteTagBtn)
