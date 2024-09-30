@@ -2,12 +2,12 @@
 @import '~css/typography';
 
 :local {
-    @grey: var(--neutral-grey-2);
+    @grey: var(--neutral-grey-1);
 
     .container {
         display: flex;
         flex-direction: row;
-        gap: @layout-spacing-xs;
+        gap: @layout-spacing-m;
         flex-grow: 1;
     }
 
@@ -16,13 +16,17 @@
         flex-direction: column;
         gap: @layout-spacing-s;
         flex-grow: 1;
-        max-width: 60%;
     }
 
     .previewContainer {
-        display: flex;
-        flex-grow: 1;
         background-color: @grey;
         border-radius: 4px;
+    }
+
+    .campaignPreview {
+        margin-left: auto;
+        margin-right: auto;
+
+        background: transparent;
     }
 }

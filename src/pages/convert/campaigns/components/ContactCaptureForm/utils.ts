@@ -2,9 +2,12 @@ import {fromJS, List} from 'immutable'
 import {AttachmentEnum} from 'common/types'
 import {TransitoryAttachmentData} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import {
+    attachmentIsContactCaptureForm,
+    AttachmentType,
     CampaignAttachment,
     campaignAttachmentIsContactForm,
     CampaignFormExtra,
+    ContactFormFieldType,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import {addAttachment, deleteAttachment} from 'state/newMessage/actions'
 import {TicketState} from 'state/ticket/types'
@@ -25,7 +28,7 @@ export const transformTransitoryToAttachment = (
             fields: [
                 {
                     name: 'email',
-                    type: 'email',
+                    type: ContactFormFieldType.Email,
                     required: true,
                     label: emailForm.label,
                 },
@@ -35,7 +38,7 @@ export const transformTransitoryToAttachment = (
     output.on_success_content = {
         message: postSubmissionMessage.enabled
             ? postSubmissionMessage.message
-            : '',
+            : undefined,
     }
     output.targets = [
         {
@@ -65,7 +68,7 @@ export const transformAttachmentToTransitory = (
         const field = step.fields[0]
         output.forms[field.type as 'email'] = {
             cta: step.cta || '',
-            label: field.label,
+            label: field.label ?? '',
             disclaimerEnabled:
                 (attachment.disclaimer && attachment.disclaimer !== '') ||
                 false,
@@ -112,4 +115,14 @@ export const handleContactFormSubmitted = (
             sortAttachments
         )
     )
+}
+
+export const findContactCaptureForm = (
+    attachments: List<any>
+): CampaignFormExtra | undefined => {
+    const attachmentsJS: AttachmentType[] = attachments.toJS()
+
+    const attachment = attachmentsJS.find(attachmentIsContactCaptureForm)
+
+    return attachment && attachment.extra ? attachment.extra : undefined
 }

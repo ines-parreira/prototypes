@@ -52,12 +52,14 @@ import {useIsConvertScheduleCampaignEnabled} from 'pages/convert/common/hooks/us
 import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
 import {
     CampaignContactFormAttachment,
+    CampaignFormExtra,
     CampaignProductRecommendation,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import useCanAddUtm from 'pages/convert/common/hooks/useUtmFlag'
+import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
 
@@ -308,6 +310,10 @@ export const CampaignDetailsForm = ({
 
     const discountOffers = useMemo<CampaignDiscountOffer[]>(() => {
         return transformAttachmentsToDiscountOffers(attachments)
+    }, [attachments])
+
+    const contactCaptureForm = useMemo<CampaignFormExtra | undefined>(() => {
+        return findContactCaptureForm(attachments)
     }, [attachments])
 
     const productRecommendations = useMemo<
@@ -854,6 +860,7 @@ export const CampaignDetailsForm = ({
                                         className={css.campaignPreview}
                                         products={productsToPreview}
                                         discountOffers={discountOffers}
+                                        contactCaptureForm={contactCaptureForm}
                                         html={sanitizeHtmlDefault(
                                             campaignData.message_html || ''
                                         )}

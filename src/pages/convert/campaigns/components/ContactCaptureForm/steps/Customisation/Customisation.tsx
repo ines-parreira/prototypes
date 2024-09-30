@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react'
 import {Label} from 'reactstrap'
+import {fromJS} from 'immutable'
 import {StepProps} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import InputField from 'pages/common/forms/input/InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -7,10 +8,24 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import {convertToHTML} from 'utils/editor'
+import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import {
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    GORGIAS_CHAT_WIDGET_TEXTS,
+} from 'config/integrations/gorgias_chat'
+import {sanitizeHtmlDefault} from 'utils/html'
+import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
+import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewProps'
+import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
+import {transformTransitoryToAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import css from './Customisation.less'
 
 export const Customisation = (props: StepProps) => {
     const {attachmentData, setAttachmentData, setNextButtonActive} = props
+
+    const {chatIntegration} = useIntegrationContext()
+    const chatPreviewProps = useChatPreviewProps(fromJS(chatIntegration || {}))
+    const {campaign} = useCampaignDetailsContext()
 
     const [disclaimer, setDisclaimer] = useState<string>(
         attachmentData.forms.email.disclaimer
@@ -134,7 +149,30 @@ export const Customisation = (props: StepProps) => {
                     Pre-select sign-up option
                 </CheckBox>
             </div>
-            <div className={css.previewContainer}></div>
+            <div className={css.previewContainer}>
+                <CampaignPreview
+                    {...chatPreviewProps}
+                    translatedTexts={
+                        campaign.language
+                            ? GORGIAS_CHAT_WIDGET_TEXTS[campaign.language]
+                            : chatPreviewProps.translatedTexts
+                    }
+                    className={css.campaignPreview}
+                    contactCaptureForm={transformTransitoryToAttachment(
+                        attachmentData
+                    )}
+                    html={sanitizeHtmlDefault(campaign.message_html || '')}
+                    authorName={campaign.meta?.agentName ?? ``}
+                    authorAvatarUrl={campaign.meta?.agentAvatarUrl ?? ''}
+                    chatTitle={chatIntegration?.name ?? ''}
+                    mainFontFamily={
+                        chatPreviewProps.mainFontFamily ??
+                        GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                    }
+                    shouldHideReplyInput={!!campaign.meta?.noReply}
+                    onCampaignContentChange={() => {}}
+                />
+            </div>
         </div>
     )
 }

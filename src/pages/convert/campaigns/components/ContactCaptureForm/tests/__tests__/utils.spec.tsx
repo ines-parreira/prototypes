@@ -80,7 +80,7 @@ describe('CampaignForm Utils', () => {
 
             expect(output).toMatchObject({
                 ...baseExpectedAttachment,
-                on_success_content: {message: ''},
+                on_success_content: {message: undefined},
             })
         })
 

@@ -9,6 +9,7 @@ import {
 
 import CustomizedChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/CustomizedChatLauncher'
 import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {CampaignProduct} from '../../types/CampaignProduct'
 import {ChatCampaign} from './components/ChatCampaign'
 import css from './CampaignPreview.less'
@@ -26,6 +27,7 @@ type Props = {
     position: GorgiasChatPosition
     products?: CampaignProduct[]
     discountOffers?: CampaignDiscountOffer[]
+    contactCaptureForm?: CampaignFormExtra
     launcher?: {
         type: GorgiasChatLauncherType
         label?: string
@@ -48,6 +50,7 @@ const CampaignPreview = ({
     position,
     products = [],
     discountOffers = [],
+    contactCaptureForm,
     shouldHideReplyInput,
     shouldHideRepositionImage,
     onCampaignContentChange,
@@ -67,6 +70,7 @@ const CampaignPreview = ({
             mainColor={mainColor}
             products={products}
             discountOffers={discountOffers}
+            contactCaptureForm={contactCaptureForm}
             shouldHideReplyInput={shouldHideReplyInput}
             shouldHideRepositionImage={shouldHideRepositionImage}
             translatedTexts={translatedTexts}

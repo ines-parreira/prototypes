@@ -152,16 +152,17 @@ describe('ContactForm test suite', () => {
             state.postSubmissionMessage = newState.postSubmissionMessage
         }
 
-        const {getByPlaceholderText, getByText} = render(
-            <Provider store={store}>
-                <Customisation
-                    setNextButtonActive={jest.fn()}
-                    setAttachmentData={setState as any}
-                    attachmentData={state}
-                />
-            </Provider>
-        )
-        const fieldLabelInput = getByPlaceholderText('Email')
+        const {getByPlaceholderText, getAllByPlaceholderText, getByText} =
+            render(
+                <Provider store={store}>
+                    <Customisation
+                        setNextButtonActive={jest.fn()}
+                        setAttachmentData={setState as any}
+                        attachmentData={state}
+                    />
+                </Provider>
+            )
+        const fieldLabelInputs = getAllByPlaceholderText('Email')
         const buttonLabelInput = getByPlaceholderText('Subscribe')
         const enablePrivacyPolicyToggle = getByText(
             'Display privacy policy disclaimer'
@@ -170,7 +171,7 @@ describe('ContactForm test suite', () => {
             'Pre-select sign-up option'
         ) as HTMLInputElement
 
-        await userEvent.type(fieldLabelInput, 'Your email')
+        await userEvent.type(fieldLabelInputs[0], 'Your email')
         expect(state.forms.email.label).toBe('Your email')
         await userEvent.type(buttonLabelInput, 'Subscribe now!')
         expect(state.forms.email.cta).toBe('Subscribe now!')

@@ -51,6 +51,7 @@ import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormCon
 import {GorgiasChatIntegration} from 'models/integration/types'
 import {
     CampaignContactFormAttachment,
+    CampaignFormExtra,
     CampaignProductRecommendation,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
@@ -59,6 +60,7 @@ import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/Pr
 
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
 import useCanAddUtm from 'pages/convert/common/hooks/useUtmFlag'
+import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import css from './ConvertSimplifiedEditorModal.less'
 
@@ -194,6 +196,10 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
         shopifyProducts
     )
 
+    const contactCaptureForm = useMemo<CampaignFormExtra | undefined>(() => {
+        return findContactCaptureForm(attachments)
+    }, [attachments])
+
     const chatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]
 
@@ -323,6 +329,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
                                     className={css.campaignPreview}
                                     products={productsToPreview}
                                     discountOffers={discountOffers}
+                                    contactCaptureForm={contactCaptureForm}
                                     html={sanitizeHtmlDefault(
                                         campaign.message_html || ''
                                     )}

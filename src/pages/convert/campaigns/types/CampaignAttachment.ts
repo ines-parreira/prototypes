@@ -92,7 +92,11 @@ export type ContactFormTarget = {
     tags: string[] | undefined
 }
 
-export type ContactFormFieldType = 'email' | 'phone' | 'text'
+export enum ContactFormFieldType {
+    Email = 'email',
+    Phone = 'phone',
+    Text = 'text',
+}
 
 export type ContactFormFieldName =
     | 'email'
@@ -102,7 +106,7 @@ export type ContactFormFieldName =
 
 export type ContactFormField = {
     name: ContactFormFieldName
-    label: string
+    label: string | undefined
     type: ContactFormFieldType
     required: boolean
 }
@@ -157,10 +161,17 @@ export type ProductRecommendationAttachment = {
     }
 }
 
+export type ContactCaptureFormAttachment = {
+    content_type: AttachmentEnum.ContactForm
+    name: string
+    extra?: CampaignFormExtra | null
+}
+
 export type AttachmentType =
     | DiscountOfferAttachment
     | ProductCardAttachment
     | ProductRecommendationAttachment
+    | ContactCaptureFormAttachment
 
 export const attachmentIsDiscountOffer = (
     attachment: AttachmentType
@@ -178,4 +189,10 @@ export const attachmentIsProductRecommendation = (
     attachment: AttachmentType
 ): attachment is ProductRecommendationAttachment => {
     return attachment.content_type === AttachmentEnum.ProductRecommendation
+}
+
+export const attachmentIsContactCaptureForm = (
+    attachment: AttachmentType
+): attachment is ContactCaptureFormAttachment => {
+    return attachment.content_type === AttachmentEnum.ContactForm
 }

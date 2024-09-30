@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import ReactPlayer from 'react-player'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import classNames from 'classnames'
+import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {extractGorgiasVideoDivFromHtmlContent} from 'utils'
 import {
     GorgiasChatAvatarImageType,
@@ -21,6 +22,7 @@ import {CampaignProduct} from '../../../../types/CampaignProduct'
 import {ProductCarousel} from '../ProductCarousel'
 
 import {DiscountOfferPreview} from '../DiscountOfferPreview/DiscountOfferPreview'
+import {ContactCaptureFormPreview} from '../ContactCaptureFormPreview/ContactCaptureFormPreview'
 import css from './ChatCampaign.less'
 
 type AuthorNameProps = {
@@ -74,6 +76,7 @@ type Props = {
     mainColor?: string
     products?: CampaignProduct[]
     discountOffers?: CampaignDiscountOffer[]
+    contactCaptureForm?: CampaignFormExtra
     shouldHideReplyInput?: boolean
     shouldHideRepositionImage?: boolean
     translatedTexts: Record<string, string>
@@ -89,6 +92,7 @@ export const ChatCampaign = ({
     mainColor,
     products = [],
     discountOffers = [],
+    contactCaptureForm,
     shouldHideReplyInput = false,
     shouldHideRepositionImage = false,
     translatedTexts,
@@ -98,7 +102,11 @@ export const ChatCampaign = ({
     const isAgentAvatarCustomizationEnabled =
         useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
 
-    const {videoUrls, htmlCleaned} = extractGorgiasVideoDivFromHtmlContent(html)
+    const [newMessage, setNewMessage] = useState<string>()
+
+    const {videoUrls, htmlCleaned} = extractGorgiasVideoDivFromHtmlContent(
+        newMessage || html
+    )
 
     const isAuthorSelected = !!authorName
 
@@ -182,6 +190,13 @@ export const ChatCampaign = ({
             {discountOffers.length > 0 && (
                 <DiscountOfferPreview
                     offer={discountOffers[0]}
+                    mainColor={mainColor}
+                />
+            )}
+            {contactCaptureForm && (
+                <ContactCaptureFormPreview
+                    form={contactCaptureForm}
+                    onMessageHtmlChange={setNewMessage}
                     mainColor={mainColor}
                 />
             )}
