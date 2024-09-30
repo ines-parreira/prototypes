@@ -268,8 +268,8 @@ describe('ChannelsFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         rerenderComponent(
-            defaultState,
-            <ChannelsFilter value={withDefaultLogicalOperator([])} />
+            <ChannelsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
         )
 
         expect(mockedDispatch).toHaveBeenCalledWith({type: STAT_FILTERS_CLEAN})

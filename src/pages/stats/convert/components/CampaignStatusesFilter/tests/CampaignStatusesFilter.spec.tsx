@@ -87,11 +87,11 @@ describe('CampaignStatusesFilter', () => {
 
     it('should dispatch the right actions on options deselection', () => {
         renderComponent().rerenderComponent(
-            defaultState,
             <CampaignStatusesFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator([InferredCampaignStatus.Active])}
-            />
+            />,
+            defaultState
         )
         fireEvent.click(screen.getByText(InferredCampaignStatus.Active))
         fireEvent.click(screen.getByText(CampaignStatusesCapitalized[0]))
@@ -108,7 +108,6 @@ describe('CampaignStatusesFilter', () => {
             dispatchChangeValuePayload(Object.values(InferredCampaignStatus))
         )
         rerenderComponent(
-            defaultState,
             <CampaignStatusesFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator([
@@ -116,7 +115,8 @@ describe('CampaignStatusesFilter', () => {
                     InferredCampaignStatus.Inactive,
                     InferredCampaignStatus.Deleted,
                 ])}
-            />
+            />,
+            defaultState
         )
         fireEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
         expect(mockedDispatch).toHaveBeenCalledWith(
@@ -141,11 +141,11 @@ describe('CampaignStatusesFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         rerenderComponent(
-            defaultState,
             <CampaignStatusesFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator([InferredCampaignStatus.Active])}
-            />
+            />,
+            defaultState
         )
 
         expect(mockedDispatch).toHaveBeenCalledWith({type: STAT_FILTERS_CLEAN})

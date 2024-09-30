@@ -143,11 +143,11 @@ describe('CampaignsFilter', () => {
         )
 
         rerenderComponent(
-            defaultState,
             <CampaignsFilter
                 value={withDefaultLogicalOperator(allAvailableCampaignsIds)}
                 campaigns={mockedCampaignsList}
-            />
+            />,
+            defaultState
         )
 
         userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
@@ -167,11 +167,11 @@ describe('CampaignsFilter', () => {
         )
 
         rerenderComponent(
-            defaultState,
             <CampaignsFilter
                 value={withDefaultLogicalOperator(allAvailableCampaignsIds)}
                 campaigns={mockedCampaignsList}
-            />
+            />,
+            defaultState
         )
 
         userEvent.click(
@@ -203,11 +203,11 @@ describe('CampaignsFilter', () => {
         )
 
         rerenderComponent(
-            defaultState,
             <CampaignsFilter
                 value={withDefaultLogicalOperator(allAvailableCampaignsIds)}
                 campaigns={mockedCampaignsList}
-            />
+            />,
+            defaultState
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
@@ -239,11 +239,11 @@ describe('CampaignsFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         rerenderComponent(
-            defaultState,
             <CampaignsFilter
                 value={emptyFilter}
                 campaigns={mockedCampaignsList}
-            />
+            />,
+            defaultState
         )
 
         expect(mockedDispatch).toHaveBeenCalledWith({
@@ -264,11 +264,11 @@ describe('CampaignsFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         rerenderComponent(
-            defaultState,
             <CampaignsFilter
                 value={emptyFilter}
                 campaigns={mockedCampaignsList}
-            />
+            />,
+            defaultState
         )
 
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {

@@ -144,7 +144,7 @@ describe('CustomFieldFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
-        rerenderComponent(defaultState, <CustomFieldFilter />)
+        rerenderComponent(<CustomFieldFilter />, defaultState)
 
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: `tf_${CUSTOM_FIELD_FILTER_NAME}`,

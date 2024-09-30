@@ -263,11 +263,11 @@ describe('IntegrationsFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         rerenderComponent(
-            defaultState,
             <IntegrationsFilter
                 value={withDefaultLogicalOperator([])}
                 integrations={integrations}
-            />
+            />,
+            defaultState
         )
 
         expect(mockedDispatch).toHaveBeenCalledWith({type: STAT_FILTERS_CLEAN})

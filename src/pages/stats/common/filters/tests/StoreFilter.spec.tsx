@@ -95,19 +95,16 @@ describe('StoreFilter', () => {
     })
 
     it('should have a default selected option and should not be able to deselect it', () => {
-        renderComponent().rerenderComponent(
-            {
-                ...defaultState,
-                stats: {
-                    ...initialState,
-                    filters: {
-                        ...initialState.filters,
-                        integrations: withLogicalOperator([firstId]),
-                    },
+        renderComponent().rerenderComponent(<StoreFilterWithState />, {
+            ...defaultState,
+            stats: {
+                ...initialState,
+                filters: {
+                    ...initialState.filters,
+                    integrations: withLogicalOperator([firstId]),
                 },
             },
-            <StoreFilterWithState />
-        )
+        })
         expect(screen.getByText(firstStoreName)).toBeInTheDocument()
         fireEvent.click(screen.getByText(firstStoreName))
         fireEvent.click(screen.getAllByText(firstStoreName)['1'])

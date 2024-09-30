@@ -242,10 +242,10 @@ describe('SLAPolicyFilter', () => {
         userEvent.click(screen.getAllByText(selectedPolicy.name)[0])
 
         rerenderComponent(
-            store as any,
             <SLAPolicyFilter
                 value={withDefaultLogicalOperator([selectedPolicy.uuid])}
-            />
+            />,
+            store as any
         )
 
         expect(store.getActions()).toContainEqual(statFiltersClean())

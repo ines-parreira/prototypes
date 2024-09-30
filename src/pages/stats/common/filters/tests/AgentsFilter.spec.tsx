@@ -158,13 +158,13 @@ describe('AgentsFilter', () => {
         userEvent.click(screen.getByText(testTeam.name))
 
         rerenderComponent(
-            defaultState,
             <AgentsFilter
                 value={withDefaultLogicalOperator([
                     ...testTeam.members.map((member) => member.id),
                     testAgent.id,
                 ])}
-            />
+            />,
+            defaultState
         )
         mockedDispatch.mockClear()
         userEvent.click(screen.getByText(testTeam.name))
@@ -222,8 +222,8 @@ describe('AgentsFilter', () => {
         expect(areEmptyAgentsInDispatch).toBe(false)
 
         rerenderComponent(
-            defaultState,
-            <AgentsFilter value={allAvailableAgentsIds} />
+            <AgentsFilter value={allAvailableAgentsIds} />,
+            defaultState
         )
 
         userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
@@ -250,8 +250,8 @@ describe('AgentsFilter', () => {
         )
 
         rerenderComponent(
-            defaultState,
-            <AgentsFilter value={allAvailableAgentsIds} />
+            <AgentsFilter value={allAvailableAgentsIds} />,
+            defaultState
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
@@ -284,8 +284,8 @@ describe('AgentsFilter', () => {
         )
 
         rerenderComponent(
-            defaultState,
-            <AgentsFilter value={allAvailableAgentsIds} />
+            <AgentsFilter value={allAvailableAgentsIds} />,
+            defaultState
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
@@ -358,8 +358,8 @@ describe('AgentsFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         rerenderComponent(
-            defaultState,
-            <AgentsFilter value={withDefaultLogicalOperator([])} />
+            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
         )
 
         expect(mockedDispatch).toHaveBeenCalledWith({type: STAT_FILTERS_CLEAN})

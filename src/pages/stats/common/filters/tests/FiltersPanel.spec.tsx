@@ -450,11 +450,11 @@ describe('FiltersPanel', () => {
         })
 
         rerenderComponent(
-            newState,
             <FiltersPanel
                 persistentFilters={persistentFilters}
                 optionalFilters={initialFilters}
-            />
+            />,
+            newState
         )
 
         expect(
@@ -544,6 +544,10 @@ describe('FiltersPanel', () => {
         ).toBeInTheDocument()
 
         rerenderComponent(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={optionalFilters}
+            />,
             {
                 ...defaultState,
                 [statsSlice.name]: {
@@ -552,11 +556,7 @@ describe('FiltersPanel', () => {
                         [optionalFilter]: ['1', '2'],
                     }),
                 },
-            },
-            <FiltersPanel
-                persistentFilters={persistentFilters}
-                optionalFilters={optionalFilters}
-            />
+            }
         )
 
         expect(
@@ -564,6 +564,10 @@ describe('FiltersPanel', () => {
         ).toBeInTheDocument()
 
         rerenderComponent(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={optionalFilters}
+            />,
             {
                 ...defaultState,
                 [statsSlice.name]: {
@@ -571,11 +575,7 @@ describe('FiltersPanel', () => {
                         period: initialState.filters.period,
                     }),
                 },
-            },
-            <FiltersPanel
-                persistentFilters={persistentFilters}
-                optionalFilters={optionalFilters}
-            />
+            }
         )
 
         expect(
@@ -607,6 +607,10 @@ describe('FiltersPanel', () => {
         ).toBeInTheDocument()
 
         rerenderComponent(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={optionalFilters}
+            />,
             {
                 ...defaultState,
                 [statsSlice.name]: {
@@ -614,11 +618,7 @@ describe('FiltersPanel', () => {
                         period: initialState.filters.period,
                     }),
                 },
-            },
-            <FiltersPanel
-                persistentFilters={persistentFilters}
-                optionalFilters={optionalFilters}
-            />
+            }
         )
 
         expect(

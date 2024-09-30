@@ -38,8 +38,8 @@ export const renderWithStore = (
     return {
         ...component,
         rerenderComponent: (
-            newState: Partial<RootState>,
-            newUi: ReactElement
+            newUi: ReactElement,
+            newState: Partial<RootState>
         ) =>
             component.rerender(
                 <Provider store={configureMockStore(middlewares)(newState)}>

@@ -269,8 +269,8 @@ describe('<TagsFilter />', () => {
         )
 
         rerenderComponent(
-            store as any,
-            <TagsFilter value={withDefaultLogicalOperator([selectedTag.id])} />
+            <TagsFilter value={withDefaultLogicalOperator([selectedTag.id])} />,
+            store as any
         )
 
         expect(store.getActions()).toContainEqual(statFiltersClean())
