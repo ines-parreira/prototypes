@@ -170,7 +170,7 @@ const TrainMyAiView = () => {
 
     const isLoading =
         !selfServiceConfiguration ||
-        isFetchPending ||
+        (isFetchPending && isArticleRecommendationEnabled) ||
         isInitialLoadingArticleRecommndations ||
         helpCenterInitialLoading
 
