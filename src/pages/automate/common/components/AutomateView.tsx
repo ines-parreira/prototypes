@@ -35,25 +35,27 @@ const AutomateView = ({
 }: Props) => {
     const content = (
         <>
-            {title && <PageHeader title={title}>{action}</PageHeader>}
-            {headerNavbarItems && (
-                <SecondaryNavbar>
-                    {headerNavbarItems.map(
-                        ({route, title, exact, dataCanduId}) => (
-                            <NavLink
-                                key={route}
-                                to={route}
-                                exact={exact ?? true}
-                                {...(dataCanduId
-                                    ? {'data-candu-id': dataCanduId}
-                                    : {})}
-                            >
-                                {title}
-                            </NavLink>
-                        )
-                    )}
-                </SecondaryNavbar>
-            )}{' '}
+            <div className={css.pageHeaderContainer}>
+                {title && <PageHeader title={title}>{action}</PageHeader>}
+                {headerNavbarItems && (
+                    <SecondaryNavbar>
+                        {headerNavbarItems.map(
+                            ({route, title, exact, dataCanduId}) => (
+                                <NavLink
+                                    key={route}
+                                    to={route}
+                                    exact={exact ?? true}
+                                    {...(dataCanduId
+                                        ? {'data-candu-id': dataCanduId}
+                                        : {})}
+                                >
+                                    {title}
+                                </NavLink>
+                            )
+                        )}
+                    </SecondaryNavbar>
+                )}{' '}
+            </div>
             <Container
                 fluid
                 className={classnames(className, {
