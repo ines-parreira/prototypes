@@ -5,7 +5,7 @@ export const ContactFormAttachmentContainer = (props: {
     attachment: Map<any, any>
     css: Record<string, string>
     onClose: (event: any) => void
-    onEdit: (event: any) => void
+    onEdit: () => void
 }) => {
     const {attachment, css, onClose, onEdit} = props
     const flatFields = useMemo(() => {

@@ -21,6 +21,7 @@ type Props = {
     removable: boolean
     deleteAttachment?: (number: number) => void
     className?: string
+    onCampaignFormEdit?: () => void
     context:
         | 'campaign-message'
         | 'ticket-reply'
@@ -279,7 +280,7 @@ export default class TicketAttachments extends Component<Props, State> {
                 attachment={attachment}
                 css={css}
                 onClose={(e) => this.removeAttachment(idx, e)}
-                onEdit={(__) => {}}
+                onEdit={this.props.onCampaignFormEdit ?? (() => {})}
             />
         )
     }

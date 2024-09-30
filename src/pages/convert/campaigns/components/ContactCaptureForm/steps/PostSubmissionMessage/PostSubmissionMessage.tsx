@@ -92,7 +92,9 @@ export const PostSubmissionMessage = (props: StepProps) => {
                     }
                     className={css.campaignPreview}
                     html={sanitizeHtmlDefault(
-                        messageEnabled ? message : DEFAULT_THANK_YOU_MESSAGE
+                        messageEnabled
+                            ? message ?? ''
+                            : DEFAULT_THANK_YOU_MESSAGE
                     )}
                     authorName={campaign.meta?.agentName ?? ``}
                     authorAvatarUrl={campaign.meta?.agentAvatarUrl ?? ''}

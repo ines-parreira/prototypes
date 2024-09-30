@@ -147,7 +147,7 @@ describe('CampaignForm Utils', () => {
                 mockDispatch,
                 fromJS([
                     {
-                        contentType: AttachmentEnum.ContactForm,
+                        content_type: AttachmentEnum.ContactForm,
                         name: 'Foo',
                         extra: undefined,
                     },

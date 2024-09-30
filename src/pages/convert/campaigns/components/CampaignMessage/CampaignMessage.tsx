@@ -3,6 +3,7 @@ import classnames from 'classnames'
 
 import {EditorState} from 'draft-js'
 
+import objectHash from 'object-hash'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import {UploadType} from 'common/types'
 import {User} from 'config/types/user'
@@ -256,12 +257,14 @@ export const CampaignMessage = memo(
         ])
 
         const canAddUtm = useCanAddUtm(isConvertSubscriber)
-        const contactFormButtonEnabled = useMemo(() => {
-            return (
-                transformAttachmentsToContactCaptureForms(attachments)
-                    .length === 0
-            )
-        }, [attachments])
+        const contactFormAttachment = useMemo(
+            () => transformAttachmentsToContactCaptureForms(attachments)[0],
+            [attachments]
+        )
+        const contactFormButtonEnabled = useMemo(
+            () => !contactFormAttachment,
+            [contactFormAttachment]
+        )
         const [isContactFormOpen, onContactFormOpenChange] = useState(false)
         const onContactFormSubmit = (newAttachmentExtra: CampaignFormExtra) => {
             handleContactFormSubmitted(
@@ -318,10 +321,12 @@ export const CampaignMessage = memo(
                 )}
 
                 <AddContactCaptureForm
+                    key={objectHash(contactFormAttachment ?? {})}
                     open={isContactFormOpen}
                     onOpenChange={onContactFormOpenChange}
                     onSubmit={onContactFormSubmit}
                     buttonDisabled={!contactFormButtonEnabled}
+                    initialAttachment={contactFormAttachment}
                 />
 
                 <div className={css.textEditorWrapper}>
@@ -358,6 +363,7 @@ export const CampaignMessage = memo(
                         attachments={attachments}
                         className="d-flex flex-wrap"
                         deleteAttachment={onDeleteAttachment}
+                        onCampaignFormEdit={() => onContactFormOpenChange(true)}
                     />
                 </div>
             </div>

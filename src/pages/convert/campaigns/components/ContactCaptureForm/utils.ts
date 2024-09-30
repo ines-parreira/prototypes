@@ -4,8 +4,6 @@ import {TransitoryAttachmentData} from 'pages/convert/campaigns/components/Conta
 import {
     attachmentIsContactCaptureForm,
     AttachmentType,
-    CampaignAttachment,
-    campaignAttachmentIsContactForm,
     CampaignFormExtra,
     ContactFormFieldType,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
@@ -97,9 +95,9 @@ export const handleContactFormSubmitted = (
     ticket: TicketState,
     sortAttachments: boolean
 ) => {
-    const jsAttachments = attachments.toJS() as CampaignAttachment[]
+    const jsAttachments = attachments.toJS() as AttachmentType[]
     const prevAttachmentIdx = jsAttachments.findIndex(
-        campaignAttachmentIsContactForm
+        attachmentIsContactCaptureForm
     )
     if (prevAttachmentIdx >= 0) {
         dispatch(deleteAttachment(prevAttachmentIdx))

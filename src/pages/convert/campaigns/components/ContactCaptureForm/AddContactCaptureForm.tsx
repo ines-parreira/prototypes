@@ -1,6 +1,18 @@
-import React, {useContext, useMemo, useState} from 'react'
+import React, {
+    useContext,
+    useEffect,
+    useMemo,
+    useReducer,
+    useRef,
+    useState,
+} from 'react'
 
 import {Button} from 'reactstrap'
+import {
+    transformAttachmentToTransitory,
+    transformTransitoryToAttachment,
+} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import {TransitoryAttachmentData} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import css from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm.less'
 import Wizard, {
     WizardContext,
@@ -11,9 +23,10 @@ import {STEPS} from 'pages/convert/campaigns/components/ContactCaptureForm/steps
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import EditorDrawerHeader from 'pages/automate/workflows/editor/visualBuilder/EditorDrawerHeader'
-import {TransitoryAttachmentData} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
-import {transformTransitoryToAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
-import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {
+    CampaignContactFormAttachment,
+    CampaignFormExtra,
+} from 'pages/convert/campaigns/types/CampaignAttachment'
 
 type AddContactCaptureFormProps = {
     open: boolean
@@ -22,6 +35,7 @@ type AddContactCaptureFormProps = {
     onCancel?: () => void
     onReset?: () => void
     buttonDisabled?: boolean
+    initialAttachment?: CampaignContactFormAttachment
 }
 
 type AddContactCaptureFormInnerProps = {
@@ -29,7 +43,8 @@ type AddContactCaptureFormInnerProps = {
 } & AddContactCaptureFormProps
 
 const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
-    const [data, setData] = useState<TransitoryAttachmentData>({
+    const [key, incrementKey] = useReducer((x: number) => x + 1, 0)
+    const initialTransitoryData = useRef<TransitoryAttachmentData>({
         subscriberTypes: {
             shopify: {
                 enabled: true,
@@ -55,12 +70,34 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
         },
     })
 
-    const {open, onOpenChange, onCancel, onSubmit, onReset, steps} = props
+    const [data, setData] = useState<TransitoryAttachmentData>(
+        initialTransitoryData.current
+    )
 
-    const handleCancel = () => {
-        onOpenChange(false)
-        if (onCancel) onCancel()
-    }
+    const {
+        open,
+        onOpenChange,
+        onCancel,
+        onSubmit,
+        onReset,
+        steps,
+        initialAttachment,
+    } = props
+
+    const isEditing = useMemo(
+        () => !!initialAttachment?.extra,
+        [initialAttachment]
+    )
+
+    useEffect(() => {
+        if (initialAttachment?.extra) {
+            const injectedTransitoryData = transformAttachmentToTransitory(
+                initialAttachment.extra
+            )
+            initialTransitoryData.current = injectedTransitoryData
+            setData(injectedTransitoryData)
+        }
+    }, [initialAttachment])
 
     const handleSubmit = () => {
         if (onSubmit) onSubmit(transformTransitoryToAttachment(data))
@@ -69,6 +106,15 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
 
     const handleReset = () => {
         if (onReset) onReset()
+        setData(initialTransitoryData.current)
+        setActiveStep(steps[0].label)
+        incrementKey()
+    }
+
+    const handleCancel = () => {
+        handleReset()
+        onOpenChange(false)
+        if (onCancel) onCancel()
     }
 
     const {activeStepIndex, setActiveStep, previousStep, activeStep, nextStep} =
@@ -125,7 +171,7 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
                 />
                 {steps.map((step, idx) => (
                     <WizardStep key={idx} name={step.label}>
-                        <div className={css.contactFormWizardStep}>
+                        <div key={key} className={css.contactFormWizardStep}>
                             {step.getComponent({
                                 setNextButtonActive: setNextButtonActive,
                                 attachmentData: data,
@@ -153,7 +199,11 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
                     color="primary"
                     disabled={!nextButtonActive}
                 >
-                    {isLastStep ? 'Add Form' : 'Next'}
+                    {isLastStep
+                        ? isEditing
+                            ? 'Update Form'
+                            : 'Add Form'
+                        : 'Next'}
                 </Button>
             </Drawer.Footer>
         </Drawer>
