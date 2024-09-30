@@ -46,13 +46,13 @@ exports[`<ContactFormTableRow /> should display the name, ecom platform logo and
         class="language-bullet-list"
       >
         <div
+          aria-label="Item for locale en-US"
           class="language-bullet-item"
-          data-testid="locale-bullet-en-US"
         >
           <img
             alt="en-US"
+            aria-label="Picture for language en-US"
             class="flag-emoji"
-            data-testid="flag-en-US"
             src="test-file-stub"
           />
         </div>
@@ -113,13 +113,13 @@ exports[`<ContactFormTableRow /> should display the placeholder label when not c
         class="language-bullet-list"
       >
         <div
+          aria-label="Item for locale en-US"
           class="language-bullet-item"
-          data-testid="locale-bullet-en-US"
         >
           <img
             alt="en-US"
+            aria-label="Picture for language en-US"
             class="flag-emoji"
-            data-testid="flag-en-US"
             src="test-file-stub"
           />
         </div>

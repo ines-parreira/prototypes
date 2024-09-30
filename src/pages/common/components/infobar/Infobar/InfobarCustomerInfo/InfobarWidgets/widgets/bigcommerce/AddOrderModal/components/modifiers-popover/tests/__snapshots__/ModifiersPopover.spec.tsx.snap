@@ -7,7 +7,6 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
   >
     <div
       class="wrapper body"
-      data-testid="popover-container-body"
       tabindex="-1"
     >
       <div
@@ -259,7 +258,6 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
     </div>
     <div
       class="footer"
-      data-testid="popover-container-footer"
       tabindex="-1"
     >
       <button
@@ -292,7 +290,6 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
   >
     <div
       class="wrapper body"
-      data-testid="popover-container-body"
       tabindex="-1"
     >
       <div
@@ -534,7 +531,6 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
     </div>
     <div
       class="footer"
-      data-testid="popover-container-footer"
       tabindex="-1"
     >
       <button
@@ -567,7 +563,6 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
   >
     <div
       class="wrapper body"
-      data-testid="popover-container-body"
       tabindex="-1"
     >
       <div
@@ -794,7 +789,6 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
     </div>
     <div
       class="footer"
-      data-testid="popover-container-footer"
       tabindex="-1"
     >
       <button

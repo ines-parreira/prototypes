@@ -117,7 +117,7 @@ const Example = ({
 
 describe('<HelpCenterCategoryEdit />', () => {
     it('renders in a hidden state by default', () => {
-        const {getByTestId} = render(
+        render(
             <HelpCenterCategoryEdit
                 isOpen={false}
                 isLoading={false}
@@ -130,13 +130,15 @@ describe('<HelpCenterCategoryEdit />', () => {
             {wrapper}
         )
 
-        expect(getByTestId('category-edit').className).toEqual('drawer drawer')
+        expect(screen.getByLabelText('Category edit').className).toEqual(
+            'drawer drawer'
+        )
     })
 
     it('appears when isOpen is true', () => {
-        const {getByTestId} = render(<Example isOpen />)
+        render(<Example isOpen />)
 
-        expect(getByTestId('category-edit').className).toEqual(
+        expect(screen.getByLabelText('Category edit').className).toEqual(
             'drawer opened drawer'
         )
     })
@@ -289,7 +291,10 @@ describe('<HelpCenterCategoryEdit />', () => {
 
             await userEvent.type(screen.getByTestId('title-input'), 'Title')
 
-            userEvent.upload(screen.getByTestId('input-category-image'), file)
+            userEvent.upload(
+                screen.getByLabelText('Drop zone files input'),
+                file
+            )
 
             userEvent.click(screen.getByTestId('button-save'))
 

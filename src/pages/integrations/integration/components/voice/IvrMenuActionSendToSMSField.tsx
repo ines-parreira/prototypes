@@ -140,7 +140,7 @@ const IvrMenuActionSendToSMSField = ({
             </Button>
 
             <Drawer
-                name="deflect-to-sms"
+                aria-label="Deflect to sms"
                 open={isDrawerOpen}
                 fullscreen={false}
                 isLoading={false}

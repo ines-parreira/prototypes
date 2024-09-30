@@ -6,10 +6,9 @@ import navBarCss from 'assets/css/navbar.less'
 
 import css from './HomePageLink.less'
 
-export const HomePageLink = () => (
+const HomePageLink = () => (
     <NavLink
         to="/app/home"
-        data-testid="home-page-link"
         data-candu-id="home-page-button"
         className={classnames(css.link, navBarCss.link)}
     >

@@ -1,4 +1,4 @@
-import React, {ReactElement, ReactNode} from 'react'
+import React, {HTMLAttributes, ReactElement, ReactNode} from 'react'
 import classNames from 'classnames'
 
 import infoIcon from 'assets/img/icons/info.svg'
@@ -30,9 +30,11 @@ export type Props = {
 } & Pick<
     Notification,
     'allowHTML' | 'closable' | 'dismissible' | 'onClick' | 'showIcon'
->
+> &
+    Pick<HTMLAttributes<HTMLDivElement>, 'aria-label'>
 
 const BannerNotification = ({
+    'aria-label': ariaLabel,
     allowHTML = true,
     closable = false,
     dismissible = true,
@@ -62,6 +64,7 @@ const BannerNotification = ({
 
     return (
         <div
+            aria-label={ariaLabel}
             className={classNames(css.bannerNotification, css[status], {
                 [css.clickable]: onClick || dismissible,
                 [css.borderPositionTop]: borderPosition === 'top',

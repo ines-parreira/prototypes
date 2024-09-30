@@ -77,7 +77,7 @@ const IvrMenuActionField = ({
                             </Button>
                         )}
                         <Drawer
-                            name="voice-message"
+                            aria-label="Voice message"
                             open={isDrawerOpen}
                             fullscreen={false}
                             isLoading={false}

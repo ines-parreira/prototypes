@@ -323,9 +323,7 @@ describe('ActionEventsViewContainer', () => {
         expect(
             component.container.querySelector('[aria-label="previous"]')
         ).not.toBeNull()
-        expect(screen.getByTestId('actions-event-details')).not.toHaveClass(
-            'opened'
-        )
+        expect(screen.getByLabelText('Event details')).not.toHaveClass('opened')
     })
     it('opens events side panel from query param', () => {
         const executionId = 'execution_id'
@@ -357,13 +355,9 @@ describe('ActionEventsViewContainer', () => {
         expect(screen.queryAllByRole('table')).toHaveLength(1)
         expect(screen.queryAllByRole('cell')).toHaveLength(0)
 
-        expect(screen.getByTestId('actions-event-details')).toHaveClass(
-            'opened'
-        )
+        expect(screen.getByLabelText('Event details')).toHaveClass('opened')
         fireEvent.click(screen.getByText('keyboard_tab'))
-        expect(screen.getByTestId('actions-event-details')).not.toHaveClass(
-            'opened'
-        )
+        expect(screen.getByLabelText('Event details')).not.toHaveClass('opened')
     })
 
     it('open side panel for success execution', () => {
@@ -450,13 +444,9 @@ describe('ActionEventsViewContainer', () => {
             }
         )
 
-        expect(screen.getByTestId('actions-event-details')).not.toHaveClass(
-            'opened'
-        )
+        expect(screen.getByLabelText('Event details')).not.toHaveClass('opened')
         fireEvent.click(screen.getAllByRole('cell')[0])
-        expect(screen.getByTestId('actions-event-details')).toHaveClass(
-            'opened'
-        )
+        expect(screen.getByLabelText('Event details')).toHaveClass('opened')
         expect(screen.getByText('Action configuration')).toBeInTheDocument()
 
         expect(screen.getByText('success')).toBeInTheDocument()
@@ -467,20 +457,14 @@ describe('ActionEventsViewContainer', () => {
         expect(screen.queryByText(/response body/)).toBeInTheDocument()
 
         fireEvent.click(screen.getByText('keyboard_tab'))
-        expect(screen.getByTestId('actions-event-details')).not.toHaveClass(
-            'opened'
-        )
+        expect(screen.getByLabelText('Event details')).not.toHaveClass('opened')
 
         // open side panel again
         fireEvent.click(screen.getAllByRole('cell')[0])
-        expect(screen.getByTestId('actions-event-details')).toHaveClass(
-            'opened'
-        )
-        fireEvent.keyDown(screen.getByTestId('actions-event-details'), {
+        expect(screen.getByLabelText('Event details')).toHaveClass('opened')
+        fireEvent.keyDown(screen.getByLabelText('Event details'), {
             key: 'Escape',
         })
-        expect(screen.getByTestId('actions-event-details')).not.toHaveClass(
-            'opened'
-        )
+        expect(screen.getByLabelText('Event details')).not.toHaveClass('opened')
     })
 })

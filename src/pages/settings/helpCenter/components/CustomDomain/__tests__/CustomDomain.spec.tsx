@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-    act,
     fireEvent,
     render,
     screen,
@@ -153,7 +152,7 @@ describe('<CustomDomain />', () => {
         expect(addDomainBtn.disabled).toBeFalsy()
     })
 
-    it('adds a new domain', () => {
+    it('adds a new domain', async () => {
         render(<CustomDomain />, {wrapper: ReduxProvider})
 
         const input = screen.queryByPlaceholderText(
@@ -164,12 +163,10 @@ describe('<CustomDomain />', () => {
             'create-domain-btn'
         ) as HTMLButtonElement
 
-        void act(async () => {
-            fireEvent.change(input, {target: {value: 'gorgias.help'}})
-            fireEvent.click(addDomainBtn)
+        fireEvent.change(input, {target: {value: 'gorgias.help'}})
+        fireEvent.click(addDomainBtn)
 
-            await screen.findByText('Verification in progress')
-        })
+        await screen.findByText('Verification in progress')
     })
 
     it('"Check Status" button updates the status of the connection', async () => {
@@ -213,7 +210,7 @@ describe('<CustomDomain />', () => {
 
         await waitForElementToBeRemoved(addDomainBtn)
 
-        const connectionStatus = screen.queryByTestId('connection-status')
+        const connectionStatus = screen.getByText('Verification in progress')
         const deleteDomain = screen.queryByTestId(
             'delete-domain-btn'
         ) as HTMLButtonElement

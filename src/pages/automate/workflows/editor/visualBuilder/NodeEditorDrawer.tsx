@@ -74,7 +74,8 @@ const NodeEditorDrawer = ({nodeInEdition, onClose}: Props) => {
                     ? css[_camelCase(memoizedNodeInEdition.type)]
                     : undefined
             )}
-            name="visual-builder-node-edition"
+            data-testid="visual-builder-node-edition" // used in e2e tests
+            aria-label="Node editor"
             open={!!nodeInEdition}
             fullscreen={false}
             isLoading={false}

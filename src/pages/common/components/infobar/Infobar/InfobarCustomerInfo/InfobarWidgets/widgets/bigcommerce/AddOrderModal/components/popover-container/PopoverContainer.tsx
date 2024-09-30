@@ -27,18 +27,12 @@ export const PopoverContainerBody = ({
         <>
             <DropdownBody
                 className={css.body}
-                data-testid="popover-container-body"
                 tabIndex={-1}
                 onKeyDown={handleKeyDown}
             >
                 {body}
             </DropdownBody>
-            <div
-                className={css.footer}
-                data-testid="popover-container-footer"
-                tabIndex={-1}
-                onKeyDown={handleKeyDown}
-            >
+            <div className={css.footer} tabIndex={-1} onKeyDown={handleKeyDown}>
                 {footer}
             </div>
         </>

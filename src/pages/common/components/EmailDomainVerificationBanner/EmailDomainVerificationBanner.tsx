@@ -43,7 +43,7 @@ export default function EmailDomainVerificationBanner() {
     }
 
     const message = (
-        <span data-testid="email-domain-verification-banner">
+        <span>
             In order for your email messages to reach your audience’s inbox, you
             need to verify your domains.{' '}
             <Link to="/app/settings/channels/email">Click to verify.</Link>
@@ -52,13 +52,13 @@ export default function EmailDomainVerificationBanner() {
 
     return (
         <BannerNotification
+            aria-label="Email domain verification"
             message={message}
             status={NotificationStatus.Warning}
-            id={'domain-verification-banner'}
+            id="domain-verification-banner"
             dismissible={false}
             closable={true}
             onClose={() => setIsBannerVisible(false)}
-            allowHTML={true}
             showIcon={true}
         />
     )

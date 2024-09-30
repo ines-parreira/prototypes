@@ -37,7 +37,6 @@ import {
     AppliesTypeEnum,
     CollectionFormGroup,
 } from 'pages/convert/discountOffer/components/CollectionFormGroup/CollectionFormGroup'
-import {testIds} from './utils'
 import css from './DiscountCodeCreateModal.less'
 
 type Props = {
@@ -214,7 +213,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
             <ReactStrapForm onSubmit={handleSubmit}>
                 <ModalBody>
                     <FormGroup>
-                        <Label htmlFor="discountType" className={css.label}>
+                        <Label htmlFor="discountValue" className={css.label}>
                             Discount
                         </Label>
                         <InputGroup className={css.inputGroup}>
@@ -223,7 +222,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                     showSelectedOption
                                     fullWidth
                                     value={discountType}
-                                    id={testIds.discountTypeSelect}
+                                    aria-label="Discount type"
                                     options={DISCOUNT_CHOICES}
                                     onChange={(value) => {
                                         setDiscountType(value as string)
@@ -234,8 +233,8 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                             {discountType === DISCOUNT_TYPE.FIXED && (
                                 <div className={css.inputChild}>
                                     <NumberInput
-                                        data-testid={testIds.discountValueInput}
-                                        name="discountType"
+                                        id="discountValue"
+                                        name="discountValue"
                                         value={Number(discountValue)}
                                         onChange={(value) =>
                                             setDiscountValue(value ?? 0)
@@ -255,8 +254,8 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                             {discountType === DISCOUNT_TYPE.PERCENTAGE && (
                                 <div className={css.inputChild}>
                                     <NumberInput
-                                        data-testid={testIds.discountValueInput}
-                                        name="discountType"
+                                        id="discountValue"
+                                        name="discountValue"
                                         value={Number(discountValue * 100)}
                                         onChange={(value) =>
                                             setDiscountValue((value ?? 0) / 100)
@@ -278,13 +277,13 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                         <InputGroup>
                             <Input
                                 value={discountCode}
+                                id="code"
                                 name="code"
                                 onChange={(event) =>
                                     setDiscountCode(event.target.value)
                                 }
                                 required={true}
                                 invalid={!!formErrors?.code}
-                                data-testid={testIds.codeInput}
                             />
                             <Button
                                 onClick={handleGenerate}
@@ -297,14 +296,23 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                         </InputGroup>
                     </FormGroup>
                     <FormGroup>
-                        <Label className={css.label} htmlFor="minimumPurchase">
+                        <Label
+                            className={css.label}
+                            htmlFor="minimum-purchase-requirement"
+                        >
                             Minimum purchase requirements
                         </Label>
-                        <InputGroup className={css.options}>
-                            <label className={css.purchaseRadio}>
+                        <InputGroup
+                            id="minimum-purchase-requirement"
+                            className={css.options}
+                        >
+                            <label
+                                htmlFor="no-minimum-requirement"
+                                className={css.purchaseRadio}
+                            >
                                 <input
                                     type="radio"
-                                    data-testid={testIds.noMinRequirementsRadio}
+                                    id="no-minimum-requirement"
                                     checked={!minRequirementsPurchase}
                                     onChange={() => {
                                         setMinRequirementsPurchase(false)
@@ -314,12 +322,13 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                 No minimum requirements
                             </label>
                             <div>
-                                <label className={css.purchaseRadio}>
+                                <label
+                                    htmlFor="minimum-purchase-required"
+                                    className={css.purchaseRadio}
+                                >
                                     <input
                                         type="radio"
-                                        data-testid={
-                                            testIds.minRequirementsRadio
-                                        }
+                                        id="minimum-purchase-required"
                                         className={css.radioButton}
                                         checked={minRequirementsPurchase}
                                         onChange={() =>
@@ -331,9 +340,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                 {minRequirementsPurchase && (
                                     <NumberInput
                                         name="minAmount"
-                                        data-testid={
-                                            testIds.minPurchaseAmountInput
-                                        }
+                                        aria-label="Minimum purchase amount value"
                                         value={minRequirementsPurchaseAmount}
                                         onChange={(value) =>
                                             setMinRequirementsPurchaseAmount(
@@ -370,13 +377,14 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                     <FormGroup>
                         <Label
                             className={css.label}
-                            htmlFor="customerEligibility"
+                            htmlFor="customer-eligibility"
                         >
                             Customer eligibility
                         </Label>
                         <InputGroup className={css.inputGroup}>
                             <div className={css.customerSegmentWrapper}>
                                 <CustomerSegmentSelector
+                                    id="customer-eligibility"
                                     value={selectedSegments}
                                     integrationId={
                                         integration.get(
@@ -419,11 +427,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                     >
                         Cancel
                     </Button>
-                    <Button
-                        color="primary"
-                        type="submit"
-                        data-testid={testIds.saveBtn}
-                    >
+                    <Button color="primary" type="submit">
                         Save
                     </Button>
                 </ModalActionsFooter>

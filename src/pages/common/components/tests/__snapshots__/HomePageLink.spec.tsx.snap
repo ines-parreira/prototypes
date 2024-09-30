@@ -6,7 +6,6 @@ exports[`<HomePageLink /> should render the link 1`] = `
     <a
       class="link link"
       data-candu-id="home-page-button"
-      data-testid="home-page-link"
       href="/app/home"
     >
       <span

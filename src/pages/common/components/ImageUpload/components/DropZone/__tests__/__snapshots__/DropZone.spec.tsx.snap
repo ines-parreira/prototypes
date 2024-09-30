@@ -3,8 +3,8 @@
 exports[`<DropZone> matches snapshot 1`] = `
 <div>
   <label
+    aria-label="Drop zone files"
     class="wrapper"
-    data-testid="dropZone"
     for="dropZone"
   >
     <div
@@ -38,7 +38,7 @@ exports[`<DropZone> matches snapshot 1`] = `
     </div>
   </label>
   <input
-    data-testid="input-dropZone"
+    aria-label="Drop zone files input"
     id="dropZone"
     style="display: none;"
     type="file"

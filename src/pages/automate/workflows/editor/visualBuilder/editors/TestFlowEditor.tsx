@@ -193,7 +193,7 @@ export const TestFlowEditor = ({
     return (
         <Drawer
             className={nodeEditorCss.drawer}
-            name="visual-builder-test-editor-drawer"
+            aria-label="Visual builder test editor"
             open={isTesting}
             fullscreen={false}
             isLoading={false}

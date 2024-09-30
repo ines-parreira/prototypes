@@ -52,7 +52,7 @@ export default function WorkflowsPublisher() {
     return (
         <Drawer
             className={nodeEditorCss.drawer}
-            name="flow-publisher-drawer"
+            aria-label="Flow publisher"
             open={isFlowPublishingInChannels}
             fullscreen={false}
             isLoading={false}

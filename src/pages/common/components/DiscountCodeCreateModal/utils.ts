@@ -1,37 +1,28 @@
+import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-export const testIds = {
-    codeInput: 'codeInput',
-    discountTypeSelect: 'discountTypeSelect',
-    discountValueInput: 'discountValueInput',
-    noMinRequirementsRadio: 'noMinRequirementsRadio',
-    minRequirementsRadio: 'minRequirementsRadio',
-    minPurchaseAmountInput: 'minPurchaseAmountInput',
-    saveBtn: 'saveBtn',
-}
+export const setupValidModalParameters = async () => {
+    const codeInput = screen.getByLabelText('Discount code')
+    await userEvent.type(codeInput, 'MYCODE')
 
-export const setupValidModalParameters = async (
-    getByTestId: CallableFunction,
-    getByRole: CallableFunction
-): Promise<void> => {
-    const codeInput = getByTestId(testIds.codeInput)
-    await userEvent.type(codeInput, 'MYCODE2')
-
-    const discountTypeSelect = getByTestId(
-        `selected-${testIds.discountTypeSelect}`
+    const discountTypeSelect = screen.getByLabelText('Discount type')
+    const discountValueInput = screen.getByLabelText('Discount')
+    const minRequirementsRadio = screen.getByLabelText(
+        'Minimum purchase amount'
     )
-    const discountValueInput = getByTestId(testIds.discountValueInput)
-    const minRequirementsRadio = getByTestId(testIds.minRequirementsRadio)
-    const noMinRequirementsRadio = getByTestId(testIds.noMinRequirementsRadio)
+    const noMinRequirementsRadio = screen.getByLabelText(
+        'No minimum requirements'
+    )
 
     userEvent.click(discountTypeSelect)
-
-    userEvent.click(getByRole('menuitem', {name: 'Percentage'}))
+    userEvent.click(screen.getByRole('menuitem', {name: 'Percentage'}))
 
     // set discount min amount
     userEvent.click(noMinRequirementsRadio)
     userEvent.click(minRequirementsRadio)
-    const minPurchaseAmountInput = getByTestId(testIds.minPurchaseAmountInput)
+    const minPurchaseAmountInput = screen.getByLabelText(
+        'Minimum purchase amount value'
+    )
     userEvent.clear(minPurchaseAmountInput)
     await userEvent.type(minPurchaseAmountInput, '199')
 

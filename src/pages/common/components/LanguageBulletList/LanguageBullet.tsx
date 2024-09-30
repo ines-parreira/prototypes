@@ -17,14 +17,14 @@ export const LanguageBullet = ({id, code, count = 0}: Props) => {
 
     return (
         <div
-            data-testid={`locale-bullet-${code || 'overflow'}`}
+            aria-label={`Item for locale ${code || 'overflow'}`}
             id={id}
             className={css['language-bullet-item']}
         >
             {code ? (
                 <img
                     alt={code}
-                    data-testid={`flag-${code}`}
+                    aria-label={`Picture for language ${code}`}
                     className={css['flag-emoji']}
                     src={getEmojiFlag(code)}
                 />

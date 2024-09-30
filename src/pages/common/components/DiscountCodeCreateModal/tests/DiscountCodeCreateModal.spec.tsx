@@ -1,5 +1,5 @@
 import React from 'react'
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
@@ -19,7 +19,7 @@ import {
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import client from 'models/api/resources'
 import DiscountCodeCreateModal from '../DiscountCodeCreateModal'
-import {setupValidModalParameters, testIds} from '../utils'
+import {setupValidModalParameters} from '../utils'
 
 jest.mock('models/integration/queries')
 
@@ -101,7 +101,7 @@ describe('<DiscountCodeCreateModal />', () => {
     })
 
     it('creates a new discount', async () => {
-        const {getByTestId, getByRole} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
@@ -109,38 +109,9 @@ describe('<DiscountCodeCreateModal />', () => {
             </Provider>
         )
 
-        // setup
-        const codeInput = getByTestId(testIds.codeInput)
-        await userEvent.type(codeInput, 'MYCODE')
+        await setupValidModalParameters()
 
-        const discountTypeSelect = getByTestId(
-            `selected-${testIds.discountTypeSelect}`
-        )
-        const discountValueInput = getByTestId(testIds.discountValueInput)
-        const minRequirementsRadio = getByTestId(testIds.minRequirementsRadio)
-        const noMinRequirementsRadio = getByTestId(
-            testIds.noMinRequirementsRadio
-        )
-
-        const saveBtn = getByTestId(testIds.saveBtn)
-
-        userEvent.click(discountTypeSelect)
-
-        userEvent.click(getByRole('menuitem', {name: 'Percentage'}))
-
-        // set discount min amount
-        userEvent.click(noMinRequirementsRadio)
-        userEvent.click(minRequirementsRadio)
-        const minPurchaseAmountInput = getByTestId(
-            testIds.minPurchaseAmountInput
-        )
-        userEvent.clear(minPurchaseAmountInput)
-        await userEvent.type(minPurchaseAmountInput, '199')
-
-        userEvent.clear(discountValueInput)
-        await userEvent.type(discountValueInput, '20')
-
-        saveBtn.click()
+        screen.getByText('Save').click()
 
         await waitFor(() => {
             expect(mockedServer.history.post.length).toBe(1)
@@ -152,7 +123,7 @@ describe('<DiscountCodeCreateModal />', () => {
     })
 
     it('creates a new discount with multiple segments', async () => {
-        const {getByTestId, getByRole, getByText} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
@@ -160,42 +131,13 @@ describe('<DiscountCodeCreateModal />', () => {
             </Provider>
         )
 
-        // setup
-        const codeInput = getByTestId(testIds.codeInput)
-        await userEvent.type(codeInput, 'MYCODE2')
+        await setupValidModalParameters()
 
-        const discountTypeSelect = getByTestId(
-            `selected-${testIds.discountTypeSelect}`
-        )
-        const discountValueInput = getByTestId(testIds.discountValueInput)
-        const minRequirementsRadio = getByTestId(testIds.minRequirementsRadio)
-        const noMinRequirementsRadio = getByTestId(
-            testIds.noMinRequirementsRadio
-        )
-
-        const saveBtn = getByTestId(testIds.saveBtn)
-
-        userEvent.click(discountTypeSelect)
-
-        userEvent.click(getByRole('menuitem', {name: 'Percentage'}))
-
-        // set discount min amount
-        userEvent.click(noMinRequirementsRadio)
-        userEvent.click(minRequirementsRadio)
-        const minPurchaseAmountInput = getByTestId(
-            testIds.minPurchaseAmountInput
-        )
-        userEvent.clear(minPurchaseAmountInput)
-        await userEvent.type(minPurchaseAmountInput, '199')
-
-        userEvent.clear(discountValueInput)
-        await userEvent.type(discountValueInput, '20')
-
-        const inputElement = getByText('All customers')
+        const inputElement = screen.getByText('All customers')
         fireEvent.focus(inputElement)
 
-        const validSegmentSample = getByText(VALID_SEGMENT_1.name)
-        const validSegmentSample2 = getByText(VALID_SEGMENT_2.name)
+        const validSegmentSample = screen.getByText(VALID_SEGMENT_1.name)
+        const validSegmentSample2 = screen.getByText(VALID_SEGMENT_2.name)
 
         // Selects the first segment
         userEvent.click(validSegmentSample)
@@ -210,7 +152,7 @@ describe('<DiscountCodeCreateModal />', () => {
         expect(inputElement.textContent).toBe(VALID_SEGMENT_2.name)
         userEvent.click(validSegmentSample)
 
-        saveBtn.click()
+        screen.getByText('Save').click()
 
         await waitFor(() => {
             expect(mockedServer.history.post.length).toBe(1)
@@ -222,7 +164,7 @@ describe('<DiscountCodeCreateModal />', () => {
     })
 
     it('creates a new discount with multiple collections', async () => {
-        const {getByTestId, getByRole, getByText} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
@@ -230,16 +172,16 @@ describe('<DiscountCodeCreateModal />', () => {
             </Provider>
         )
 
-        await setupValidModalParameters(getByTestId, getByRole)
+        await setupValidModalParameters()
 
-        getByText('To specific collection').click()
-        const inputElement = getByText('Select a product collection')
+        screen.getByText('To specific collection').click()
+        const inputElement = screen.getByText('Select a product collection')
         fireEvent.focus(inputElement)
 
-        const validCollectionSample = getByText(
+        const validCollectionSample = screen.getByText(
             VALID_PRODUCT_COLLECTION_1.title
         )
-        const validCollectionSample2 = getByText(
+        const validCollectionSample2 = screen.getByText(
             VALID_PRODUCT_COLLECTION_2.title
         )
 
@@ -256,7 +198,7 @@ describe('<DiscountCodeCreateModal />', () => {
         expect(inputElement.textContent).toBe(VALID_PRODUCT_COLLECTION_2.title)
         userEvent.click(validCollectionSample)
 
-        getByTestId(testIds.saveBtn).click()
+        screen.getByText('Save').click()
 
         await waitFor(() => {
             expect(mockedServer.history.post.length).toBe(1)
@@ -268,7 +210,7 @@ describe('<DiscountCodeCreateModal />', () => {
     })
 
     it('creates a new discount selecting collections and moving back to total order amount', async () => {
-        const {getByTestId, getByRole, getByText} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
@@ -276,16 +218,16 @@ describe('<DiscountCodeCreateModal />', () => {
             </Provider>
         )
 
-        await setupValidModalParameters(getByTestId, getByRole)
+        await setupValidModalParameters()
 
-        getByText('To specific collection').click()
-        const inputElement = getByText('Select a product collection')
+        screen.getByText('To specific collection').click()
+        const inputElement = screen.getByText('Select a product collection')
         fireEvent.focus(inputElement)
 
-        const validCollectionSample = getByText(
+        const validCollectionSample = screen.getByText(
             VALID_PRODUCT_COLLECTION_1.title
         )
-        const validCollectionSample2 = getByText(
+        const validCollectionSample2 = screen.getByText(
             VALID_PRODUCT_COLLECTION_2.title
         )
 
@@ -298,9 +240,9 @@ describe('<DiscountCodeCreateModal />', () => {
         expect(inputElement.textContent).toBe('2 collections selected')
 
         // Move back to total order amount
-        getByText('Total order amount').click()
+        screen.getByText('Total order amount').click()
 
-        getByTestId(testIds.saveBtn).click()
+        screen.getByText('Save').click()
 
         await waitFor(() => {
             expect(mockedServer.history.post.length).toBe(1)
@@ -312,7 +254,7 @@ describe('<DiscountCodeCreateModal />', () => {
     })
 
     it('selects some collections then switches to free shipping and collections are not sent', async () => {
-        const {getByTestId, getByRole, getByText} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
@@ -320,17 +262,17 @@ describe('<DiscountCodeCreateModal />', () => {
             </Provider>
         )
 
-        await setupValidModalParameters(getByTestId, getByRole)
+        await setupValidModalParameters()
 
-        getByText('To specific collection').click()
-        const inputElement = getByText('Select a product collection')
+        screen.getByText('To specific collection').click()
+        const inputElement = screen.getByText('Select a product collection')
         fireEvent.focus(inputElement)
 
         // Select 2 collections
-        const validCollectionSample = getByText(
+        const validCollectionSample = screen.getByText(
             VALID_PRODUCT_COLLECTION_1.title
         )
-        const validCollectionSample2 = getByText(
+        const validCollectionSample2 = screen.getByText(
             VALID_PRODUCT_COLLECTION_2.title
         )
         userEvent.click(validCollectionSample)
@@ -338,10 +280,10 @@ describe('<DiscountCodeCreateModal />', () => {
         expect(inputElement.textContent).toBe('2 collections selected')
 
         // Move back to free shipping
-        getByText('Free shipping').click()
+        screen.getByText('Free shipping').click()
 
         // Saves
-        getByTestId(testIds.saveBtn).click()
+        screen.getByText('Save').click()
 
         await waitFor(() => {
             expect(mockedServer.history.post.length).toBe(1)
@@ -353,7 +295,7 @@ describe('<DiscountCodeCreateModal />', () => {
     })
 
     it('creates a new discount with multiple products', async () => {
-        const {getByTestId, getByRole, getByText} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
@@ -361,14 +303,14 @@ describe('<DiscountCodeCreateModal />', () => {
             </Provider>
         )
 
-        await setupValidModalParameters(getByTestId, getByRole)
+        await setupValidModalParameters()
 
-        act(() => getByText('To specific products').click())
-        const inputElement = getByText('Select specific products')
+        act(() => screen.getByText('To specific products').click())
+        const inputElement = screen.getByText('Select specific products')
         fireEvent.focus(inputElement)
 
-        const validProductSample = getByText(VALID_PRODUCT_1.data.title)
-        const validProductSample2 = getByText(VALID_PRODUCT_2.data.title)
+        const validProductSample = screen.getByText(VALID_PRODUCT_1.data.title)
+        const validProductSample2 = screen.getByText(VALID_PRODUCT_2.data.title)
 
         // Selects the first product
         act(() => userEvent.click(validProductSample))
@@ -383,7 +325,7 @@ describe('<DiscountCodeCreateModal />', () => {
         expect(inputElement.textContent).toBe(VALID_PRODUCT_2.data.title)
         act(() => userEvent.click(validProductSample))
 
-        act(() => getByTestId(testIds.saveBtn).click())
+        act(() => screen.getByText('Save').click())
 
         await waitFor(() => {
             expect(mockedServer.history.post.length).toBe(1)
@@ -395,7 +337,7 @@ describe('<DiscountCodeCreateModal />', () => {
     })
 
     it('creates a new discount selecting products and moving back to total order amount', async () => {
-        const {getByTestId, getByRole, getByText} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
@@ -403,14 +345,14 @@ describe('<DiscountCodeCreateModal />', () => {
             </Provider>
         )
 
-        await setupValidModalParameters(getByTestId, getByRole)
+        await setupValidModalParameters()
 
-        act(() => getByText('To specific products').click())
-        const inputElement = getByText('Select specific products')
+        act(() => screen.getByText('To specific products').click())
+        const inputElement = screen.getByText('Select specific products')
         fireEvent.focus(inputElement)
 
-        const validProductSample = getByText(VALID_PRODUCT_1.data.title)
-        const validProductSample2 = getByText(VALID_PRODUCT_2.data.title)
+        const validProductSample = screen.getByText(VALID_PRODUCT_1.data.title)
+        const validProductSample2 = screen.getByText(VALID_PRODUCT_2.data.title)
 
         // Selects the first product
         userEvent.click(validProductSample)
@@ -421,9 +363,9 @@ describe('<DiscountCodeCreateModal />', () => {
         expect(inputElement.textContent).toBe('2 products selected')
 
         // Move back to total order amount
-        getByText('Total order amount').click()
+        screen.getByText('Total order amount').click()
 
-        getByTestId(testIds.saveBtn).click()
+        screen.getByText('Save').click()
 
         await waitFor(() => {
             expect(mockedServer.history.post.length).toBe(1)
@@ -435,7 +377,7 @@ describe('<DiscountCodeCreateModal />', () => {
     })
 
     it('selects some products then switches to free shipping and products are not sent', async () => {
-        const {getByTestId, getByRole, getByText} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
@@ -443,23 +385,23 @@ describe('<DiscountCodeCreateModal />', () => {
             </Provider>
         )
 
-        await setupValidModalParameters(getByTestId, getByRole)
+        await setupValidModalParameters()
 
-        act(() => getByText('To specific products').click())
-        const inputElement = getByText('Select specific products')
+        act(() => screen.getByText('To specific products').click())
+        const inputElement = screen.getByText('Select specific products')
         fireEvent.focus(inputElement)
 
-        const validProductSample = getByText(VALID_PRODUCT_1.data.title)
-        const validProductSample2 = getByText(VALID_PRODUCT_2.data.title)
+        const validProductSample = screen.getByText(VALID_PRODUCT_1.data.title)
+        const validProductSample2 = screen.getByText(VALID_PRODUCT_2.data.title)
         act(() => userEvent.click(validProductSample))
         act(() => userEvent.click(validProductSample2))
         expect(inputElement.textContent).toBe('2 products selected')
 
         // Move back to free shipping
-        getByText('Free shipping').click()
+        screen.getByText('Free shipping').click()
 
         // Saves
-        getByTestId(testIds.saveBtn).click()
+        screen.getByText('Save').click()
 
         await waitFor(() => {
             expect(mockedServer.history.post.length).toBe(1)

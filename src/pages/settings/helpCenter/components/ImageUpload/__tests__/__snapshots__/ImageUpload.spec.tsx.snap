@@ -17,8 +17,8 @@ exports[`<ImageUpload /> matches snapshot 1`] = `
       </i>
     </div>
     <label
+      aria-label="Drop zone files"
       class="wrapper"
-      data-testid="dropZone"
       for="jest-file"
     >
       <div
@@ -57,7 +57,7 @@ exports[`<ImageUpload /> matches snapshot 1`] = `
     </label>
     <input
       accept="image/jpeg,image/png"
-      data-testid="input-jest-file"
+      aria-label="Drop zone files input"
       id="jest-file"
       style="display: none;"
       type="file"

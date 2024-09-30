@@ -1,4 +1,4 @@
-import React, {useMemo, useRef, useState} from 'react'
+import React, {FC, HTMLAttributes, useMemo, useRef, useState} from 'react'
 
 import {useListShopifyCustomerSegments} from 'models/integration/queries'
 
@@ -21,9 +21,10 @@ type Props = {
     integrationId: number
     value: string[] | string | null
     onChange: (nextValue: string | null) => void
-}
+} & Omit<HTMLAttributes<HTMLDivElement>, 'onChange'>
 
-const CustomerSegmentSelector: React.FC<Props> = ({
+const CustomerSegmentSelector: FC<Props> = ({
+    id,
     integrationId,
     value,
     onChange,
@@ -75,6 +76,7 @@ const CustomerSegmentSelector: React.FC<Props> = ({
     return (
         <SelectInputBox
             ref={targetRef}
+            id={id}
             floating={floatingRef}
             placeholder={'Select a Shopify customer segment'}
             onToggle={setIsSelectOpen}

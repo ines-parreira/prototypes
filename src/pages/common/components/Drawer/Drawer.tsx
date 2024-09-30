@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {HTMLAttributes, useEffect, useState} from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import {Container} from 'reactstrap'
@@ -38,7 +38,6 @@ const Content = ({children, className, ...props}: CommonProps) => (
 
 type Props = {
     open: boolean
-    name: string
     portalRootId?: string
     fullscreen: boolean
     children: React.ReactNode | null
@@ -47,12 +46,13 @@ type Props = {
     transitionDurationMs?: number
     containerZIndices?: [number, number]
     className?: string
-}
+    ['data-testid']?: string
+} & Pick<HTMLAttributes<HTMLDivElement>, 'aria-label'>
 
 const Drawer = ({
+    ['aria-label']: ariaLabel,
     children,
     open,
-    name,
     fullscreen,
     portalRootId,
     isLoading,
@@ -60,6 +60,7 @@ const Drawer = ({
     transitionDurationMs = 300,
     containerZIndices = [5, -1],
     className,
+    ['data-testid']: dataTestId,
 }: Props): JSX.Element => {
     const [zIndexOpen, zIndexClosed] = containerZIndices
     const [containerZIndex, setContainerZIndex] = useState(
@@ -102,7 +103,8 @@ const Drawer = ({
                 />
             )}
             <div
-                data-testid={name}
+                aria-label={ariaLabel}
+                data-testid={dataTestId}
                 style={{
                     transitionDuration: `${transitionDurationMs}ms`,
                 }}
@@ -118,11 +120,7 @@ const Drawer = ({
                 {...(!open ? {inert: ''} : {})}
             >
                 {isLoading ? (
-                    <Container
-                        data-testid="spinner-loader"
-                        fluid
-                        className="page-container"
-                    >
+                    <Container fluid className="page-container">
                         <Loader />
                     </Container>
                 ) : (

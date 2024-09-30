@@ -19,6 +19,7 @@ exports[`ColorField should render with minimal props 1`] = `
     >
       <button
         aria-disabled="false"
+        aria-label="color-picker-button_a_label"
         class="wrapper button fill secondary medium"
         data-testid="color-picker-button_a_label"
         id="color-picker-2"

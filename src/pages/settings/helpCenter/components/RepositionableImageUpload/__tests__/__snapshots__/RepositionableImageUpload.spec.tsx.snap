@@ -17,8 +17,8 @@ exports[`<RepositionableImageUpload /> matches snapshot with preview 1`] = `
       </i>
     </div>
     <label
+      aria-label="Drop zone files"
       class="wrapper"
-      data-testid="dropZone"
       for="banner_image"
     >
       <div
@@ -43,7 +43,7 @@ exports[`<RepositionableImageUpload /> matches snapshot with preview 1`] = `
     </label>
     <input
       accept="image/jpeg,image/png"
-      data-testid="input-banner_image"
+      aria-label="Drop zone files input"
       id="banner_image"
       style="display: none;"
       type="file"

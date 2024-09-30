@@ -124,7 +124,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         <a
           class="link link"
           data-candu-id="home-page-button"
-          data-testid="home-page-link"
           href="/app/home"
         >
           <span
@@ -584,7 +583,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         <a
           class="link link"
           data-candu-id="home-page-button"
-          data-testid="home-page-link"
           href="/app/home"
         >
           <span
@@ -781,7 +779,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         <a
           class="link link"
           data-candu-id="home-page-button"
-          data-testid="home-page-link"
           href="/app/home"
         >
           <span
@@ -1228,7 +1225,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         <a
           class="link link"
           data-candu-id="home-page-button"
-          data-testid="home-page-link"
           href="/app/home"
         >
           <span

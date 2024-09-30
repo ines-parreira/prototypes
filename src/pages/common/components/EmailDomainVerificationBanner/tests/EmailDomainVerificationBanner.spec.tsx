@@ -3,12 +3,14 @@ import {Provider} from 'react-redux'
 import React from 'react'
 import {MemoryRouter} from 'react-router-dom'
 import {fromJS} from 'immutable'
+
 import {mockStore, renderWithRouter} from 'utils/testing'
 import * as hooks from 'common/hooks'
-import EmailDomainVerificationBanner from '..'
-import {IntegrationType} from '../../../../../models/integration/constants'
-import {UserRole} from '../../../../../config/types/user'
-import {OutboundVerificationStatusValue} from '../../../../../models/integration/types'
+import {IntegrationType} from 'models/integration/constants'
+import {UserRole} from 'config/types/user'
+import {OutboundVerificationStatusValue} from 'models/integration/types'
+
+import EmailDomainVerificationBanner from '../EmailDomainVerificationBanner'
 
 const usePersistedStateSpy = jest.spyOn(hooks, 'usePersistedState')
 
@@ -51,9 +53,7 @@ describe('EmailDomainVerificationBanner', () => {
 
     it('should display the banner text', () => {
         renderComponent()
-        expect(
-            screen.getByTestId('email-domain-verification-banner')
-        ).toBeVisible()
+        expect(screen.getByLabelText('Email domain verification')).toBeVisible()
     })
 
     it('should not display the banner if it was previously dismissed', () => {
@@ -62,8 +62,8 @@ describe('EmailDomainVerificationBanner', () => {
 
         renderComponent()
         expect(
-            screen.queryByTestId('email-domain-verification-banner')
-        ).toBeNull()
+            screen.queryByLabelText('Email domain verification')
+        ).not.toBeInTheDocument()
     })
 
     it('should not display the banner if all email domains are verified', () => {
@@ -72,8 +72,8 @@ describe('EmailDomainVerificationBanner', () => {
 
         renderComponent(UserRole.Admin, OutboundVerificationStatusValue.Success)
         expect(
-            screen.queryByTestId('email-domain-verification-banner')
-        ).toBeNull()
+            screen.queryByLabelText('Email domain verification')
+        ).not.toBeInTheDocument()
     })
 
     it('should not display to non-admin users', () => {
@@ -83,7 +83,7 @@ describe('EmailDomainVerificationBanner', () => {
         renderComponent(UserRole.Agent)
         expect(
             screen.queryByTestId('email-domain-verification-banner')
-        ).toBeNull()
+        ).not.toBeInTheDocument()
     })
 
     it('should have the option to dismiss the banner', () => {

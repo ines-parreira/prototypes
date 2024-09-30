@@ -213,8 +213,8 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         style="transition-delay: 0ms; transition-duration: 150ms;"
       />
       <div
+        aria-label="Category edit"
         class="drawer drawer"
-        data-testid="category-edit"
         inert=""
         style="transition-duration: 300ms;"
       >
@@ -443,8 +443,8 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                   Image
                 </div>
                 <label
+                  aria-label="Drop zone files"
                   class="wrapper"
-                  data-testid="dropZone"
                   for="category-image"
                 >
                   <div
@@ -483,7 +483,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 </label>
                 <input
                   accept="image/jpeg,image/png"
-                  data-testid="input-category-image"
+                  aria-label="Drop zone files input"
                   id="category-image"
                   style="display: none;"
                   type="file"

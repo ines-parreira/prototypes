@@ -1,38 +1,44 @@
 import React from 'react'
-
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 
 import {ConnectionStatus} from '../ConnectionStatus'
 
 describe('<ConnectionStatus />', () => {
-    it('matches snapshot with status unknown', () => {
-        const {container} = render(
-            <ConnectionStatus status="unknown" label="Error connecting" />
+    it('renders with status: active', () => {
+        const statusActive = 'active'
+        const label = 'Connected'
+        render(<ConnectionStatus status={statusActive} label={label} />)
+        const icon = screen.getByLabelText(
+            `Icon for connection ${statusActive}`
         )
-        expect(container).toMatchSnapshot()
+
+        expect(icon).toBeInTheDocument()
+        expect(icon).toHaveClass('connected')
+        expect(screen.getByText(label)).toBeInTheDocument()
     })
 
-    it('matches snapshot with status active', () => {
-        const {container} = render(
-            <ConnectionStatus status="active" label="Connected" />
+    it('renders with status: pending', () => {
+        const statusPending = 'pending'
+        const label = 'Connecting'
+        render(<ConnectionStatus status={statusPending} label={label} />)
+        const icon = screen.queryByLabelText(
+            `Icon for connection ${statusPending}`
         )
-        expect(container).toMatchSnapshot()
+
+        expect(icon).not.toBeInTheDocument()
+        expect(screen.getByText(label)).toBeInTheDocument()
     })
 
-    it('matches snapshot while loading', () => {
-        const {container} = render(
-            <ConnectionStatus status="pending" label="Connecting" />
+    it('renders with status: unknown', () => {
+        const statusUnknown = 'unknown'
+        const label = 'Error connecting'
+        render(<ConnectionStatus status={statusUnknown} label={label} />)
+        const icon = screen.getByLabelText(
+            `Icon for connection ${statusUnknown}`
         )
-        expect(container).toMatchSnapshot()
-    })
 
-    it('renders the expected icon', () => {
-        const {getByTestId, rerender} = render(
-            <ConnectionStatus status="active" label="Connecting" />
-        )
-        getByTestId('icon-wifi')
-
-        rerender(<ConnectionStatus status="unknown" label="Error connecting" />)
-        getByTestId('icon-error_outline')
+        expect(icon).toBeInTheDocument()
+        expect(icon).toHaveClass('disconnected')
+        expect(screen.getByText(label)).toBeInTheDocument()
     })
 })

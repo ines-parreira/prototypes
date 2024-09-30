@@ -14,7 +14,7 @@ import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import OutOfRecoveryCodesModal from 'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal'
 import {useTheme} from 'theme'
 
-import EmailDomainVerificationBanner from 'pages/common/components/EmailDomainVerificationBanner'
+import EmailDomainVerificationBanner from 'pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner'
 
 import useActivityTracker from '../hooks/useActivityTracker'
 import useAppShortcuts from '../hooks/useAppShortcuts'

@@ -11,8 +11,8 @@ exports[`<CategoryImageEdit /> should render component with default state 1`] = 
       Image
     </div>
     <label
+      aria-label="Drop zone files"
       class="wrapper"
-      data-testid="dropZone"
       for="category-image"
     >
       <div
@@ -51,7 +51,7 @@ exports[`<CategoryImageEdit /> should render component with default state 1`] = 
     </label>
     <input
       accept="image/jpeg,image/png"
-      data-testid="input-category-image"
+      aria-label="Drop zone files input"
       id="category-image"
       style="display: none;"
       type="file"

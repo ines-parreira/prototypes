@@ -146,10 +146,10 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
     return (
         <>
             <label
-                data-testid="dropZone"
                 className={css.wrapper}
                 ref={dropZone}
                 htmlFor={id}
+                aria-label="Drop zone files"
             >
                 <div
                     className={classNames(
@@ -186,7 +186,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
                 accept={accept}
                 type="file"
                 id={id}
-                data-testid={`input-${id}`}
+                aria-label="Drop zone files input"
                 name={name}
                 style={{display: 'none'}}
                 onChange={(...args) => {

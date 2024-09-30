@@ -216,8 +216,8 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 </i>
               </div>
               <label
+                aria-label="Drop zone files"
                 class="wrapper"
-                data-testid="dropZone"
                 for="primary_logo"
               >
                 <div
@@ -256,7 +256,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </label>
               <input
                 accept="image/jpeg,image/png"
-                data-testid="input-primary_logo"
+                aria-label="Drop zone files input"
                 id="primary_logo"
                 style="display: none;"
                 type="file"
@@ -295,8 +295,8 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 </i>
               </div>
               <label
+                aria-label="Drop zone files"
                 class="wrapper"
-                data-testid="dropZone"
                 for="light_logo"
               >
                 <div
@@ -335,7 +335,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </label>
               <input
                 accept="image/jpeg,image/png"
-                data-testid="input-light_logo"
+                aria-label="Drop zone files input"
                 id="light_logo"
                 style="display: none;"
                 type="file"
@@ -374,8 +374,8 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 </i>
               </div>
               <label
+                aria-label="Drop zone files"
                 class="wrapper"
-                data-testid="dropZone"
                 for="favicon"
               >
                 <div
@@ -414,7 +414,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </label>
               <input
                 accept="image/png,image/jpeg,image/x-icon"
-                data-testid="input-favicon"
+                aria-label="Drop zone files input"
                 id="favicon"
                 style="display: none;"
                 type="file"
@@ -526,6 +526,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 >
                   <button
                     aria-disabled="false"
+                    aria-label="color-picker-button_accent_color"
                     class="wrapper button fill secondary medium"
                     data-testid="color-picker-button_accent_color"
                     id="color-picker-4"
@@ -917,8 +918,8 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               Background
             </div>
             <label
+              aria-label="Drop zone files"
               class="wrapper"
-              data-testid="dropZone"
               for="banner_image"
             >
               <div
@@ -957,7 +958,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             </label>
             <input
               accept="image/jpeg,image/png"
-              data-testid="input-banner_image"
+              aria-label="Drop zone files input"
               id="banner_image"
               style="display: none;"
               type="file"

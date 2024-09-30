@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 
 import {LanguageBullet} from '../LanguageBullet'
 
@@ -10,14 +10,16 @@ describe('<LanguageBullet />', () => {
     })
 
     it('displays the flag if a locale code is passed', () => {
-        const {getByTestId} = render(<LanguageBullet code="en-us" />)
+        const code = 'en-us'
+        render(<LanguageBullet code={code} />)
 
-        getByTestId('flag-en-us')
+        screen.getByLabelText(`Picture for language ${code}`)
     })
 
     it('displays the overflow text if a count is passed', () => {
-        const {getByText, getByTestId} = render(<LanguageBullet count={3} />)
-        getByText('+3')
-        getByTestId('locale-bullet-overflow')
+        render(<LanguageBullet count={3} />)
+
+        screen.getByText('+3')
+        screen.getByLabelText('Item for locale overflow')
     })
 })

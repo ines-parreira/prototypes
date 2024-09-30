@@ -12,7 +12,6 @@ exports[`<Drawer/> should display the component correctly 1`] = `
     />
     <div
       class="drawer opened"
-      data-testid="test"
       style="transition-duration: 300ms;"
     >
       Modal content
@@ -33,7 +32,6 @@ exports[`<Drawer/> should display the component in fullscreen mode correctly 1`]
     />
     <div
       class="drawer fullscreen opened"
-      data-testid="test"
       style="transition-duration: 300ms;"
     >
       Modal content

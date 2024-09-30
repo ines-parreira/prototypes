@@ -1,4 +1,4 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
 import {ImageUpload} from '../ImageUpload'
@@ -32,11 +32,11 @@ describe('<ImageUpload />', () => {
     })
 
     it('shows the defaultPreview only if the component is in untouched state', async () => {
-        const {findByAltText, rerender} = render(
+        const {rerender} = render(
             <ImageUpload {...baseProps} defaultPreview="preview.png" />
         )
 
-        await findByAltText('preview.png')
+        await screen.findByAltText('preview.png')
 
         rerender(
             <ImageUpload
@@ -47,7 +47,7 @@ describe('<ImageUpload />', () => {
             />
         )
 
-        await findByAltText('image.png')
+        await screen.findByAltText('image.png')
     })
 
     it('transforms the defaultPreview value when it points to an older attachment bucket', async () => {
@@ -57,7 +57,7 @@ describe('<ImageUpload />', () => {
         const expectedUrl =
             'https://attachments.gorgias.help/uploads.gorgias.io/zKB3oxw4pl6rkVOL/delivery-c2fea9c0-f200-434c-b726-bc89ba74d4f9.png'
 
-        const {findByAltText} = render(
+        render(
             <ImageUpload
                 {...baseProps}
                 isTouched={false}
@@ -65,13 +65,14 @@ describe('<ImageUpload />', () => {
             />
         )
 
-        await findByAltText(expectedUrl)
+        await screen.findByAltText(expectedUrl)
     })
 
     it('calls the change file callback', async () => {
-        const {getByTestId} = render(<ImageUpload {...baseProps} />)
+        render(<ImageUpload {...baseProps} />)
 
-        const dropZone = getByTestId('dropZone')
+        const dropZone = screen.getByLabelText('Drop zone files')
+
         await waitFor(() =>
             fireEvent.drop(dropZone, {
                 dataTransfer: {

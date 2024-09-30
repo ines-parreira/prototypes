@@ -413,13 +413,13 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         class="language-bullet-list"
                       >
                         <div
+                          aria-label="Item for locale en-US"
                           class="language-bullet-item"
-                          data-testid="locale-bullet-en-US"
                         >
                           <img
                             alt="en-US"
+                            aria-label="Picture for language en-US"
                             class="flag-emoji"
-                            data-testid="flag-en-US"
                             src="test-file-stub"
                           />
                         </div>
@@ -511,24 +511,24 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         class="language-bullet-list"
                       >
                         <div
+                          aria-label="Item for locale en-US"
                           class="language-bullet-item"
-                          data-testid="locale-bullet-en-US"
                         >
                           <img
                             alt="en-US"
+                            aria-label="Picture for language en-US"
                             class="flag-emoji"
-                            data-testid="flag-en-US"
                             src="test-file-stub"
                           />
                         </div>
                         <div
+                          aria-label="Item for locale de-DE"
                           class="language-bullet-item"
-                          data-testid="locale-bullet-de-DE"
                         >
                           <img
                             alt="de-DE"
+                            aria-label="Picture for language de-DE"
                             class="flag-emoji"
-                            data-testid="flag-de-DE"
                             src="test-file-stub"
                           />
                         </div>
@@ -620,24 +620,24 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         class="language-bullet-list"
                       >
                         <div
+                          aria-label="Item for locale en-US"
                           class="language-bullet-item"
-                          data-testid="locale-bullet-en-US"
                         >
                           <img
                             alt="en-US"
+                            aria-label="Picture for language en-US"
                             class="flag-emoji"
-                            data-testid="flag-en-US"
                             src="test-file-stub"
                           />
                         </div>
                         <div
+                          aria-label="Item for locale fr-FR"
                           class="language-bullet-item"
-                          data-testid="locale-bullet-fr-FR"
                         >
                           <img
                             alt="fr-FR"
+                            aria-label="Picture for language fr-FR"
                             class="flag-emoji"
-                            data-testid="flag-fr-FR"
                             src="test-file-stub"
                           />
                         </div>
@@ -729,24 +729,24 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         class="language-bullet-list"
                       >
                         <div
+                          aria-label="Item for locale en-US"
                           class="language-bullet-item"
-                          data-testid="locale-bullet-en-US"
                         >
                           <img
                             alt="en-US"
+                            aria-label="Picture for language en-US"
                             class="flag-emoji"
-                            data-testid="flag-en-US"
                             src="test-file-stub"
                           />
                         </div>
                         <div
+                          aria-label="Item for locale fr-FR"
                           class="language-bullet-item"
-                          data-testid="locale-bullet-fr-FR"
                         >
                           <img
                             alt="fr-FR"
+                            aria-label="Picture for language fr-FR"
                             class="flag-emoji"
-                            data-testid="flag-fr-FR"
                             src="test-file-stub"
                           />
                         </div>

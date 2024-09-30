@@ -538,7 +538,7 @@ export const HelpCenterCategoryEdit = ({
 
     return (
         <Drawer
-            name="category-edit"
+            aria-label="Category edit"
             open={isOpen}
             fullscreen={screenSize === SCREEN_SIZE.SMALL}
             isLoading={isLoading}

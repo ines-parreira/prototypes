@@ -36,7 +36,6 @@ const ARROW_ICON_WIDTH = 10
 const MAXIMUM_MIN_WIDTH = 305
 
 type Props = {
-    id: string | null
     allowCustomValue: boolean
     options: Option[]
     placeholder: string

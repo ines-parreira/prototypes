@@ -33,7 +33,7 @@ export default function WhatsAppMessageTemplateDetailsDrawer({
 
     return (
         <Drawer
-            name="voice-message"
+            aria-label="Voice message"
             open={isOpen}
             fullscreen={false}
             isLoading={false}

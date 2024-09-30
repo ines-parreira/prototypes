@@ -1,8 +1,8 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 
-import {LocaleCode} from '../../../../../models/helpCenter/types'
-import {getLocalesResponseFixture} from '../../../../settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import {LocaleCode} from 'models/helpCenter/types'
+import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 
 import {LanguageList} from '../LanguageList'
 
@@ -26,7 +26,7 @@ describe('<LanguageList />', () => {
     })
 
     it('renders the default language last', () => {
-        const {getAllByTestId} = render(
+        render(
             <LanguageList
                 id="1"
                 defaultLanguage={LOCALE}
@@ -34,24 +34,26 @@ describe('<LanguageList />', () => {
             />
         )
 
-        const bullets = getAllByTestId(/locale-bullet-*/).reverse()
-        expect(bullets[0].dataset.testid).toEqual('locale-bullet-en-US')
+        const bullets = screen.getAllByLabelText(/Item for locale */).reverse()
+        expect(bullets[0]).toHaveAccessibleName('Item for locale en-US')
     })
 
     describe('when we have equal or less locales than limit', () => {
         it('renders all the locales', () => {
             const fewerLocales = getLocalesResponseFixture.slice(0, 2)
-            const {getAllByTestId} = render(
+            render(
                 <LanguageList
                     id="1"
                     defaultLanguage={LOCALE}
                     languageList={fewerLocales}
                 />
             )
-            const bullets = getAllByTestId(/locale-bullet-*/).reverse()
+            const bullets = screen
+                .getAllByLabelText(/Item for locale */)
+                .reverse()
             bullets.forEach((locale, index) => {
-                expect(locale.dataset.testid).toEqual(
-                    `locale-bullet-${fewerLocales[index].code}`
+                expect(locale).toHaveAccessibleName(
+                    `Item for locale ${fewerLocales[index].code}`
                 )
             })
         })
@@ -59,14 +61,14 @@ describe('<LanguageList />', () => {
 
     describe('when we have more locales than the limit', () => {
         it('limits the bullets and shows the overflow', () => {
-            const {getByTestId} = render(
+            render(
                 <LanguageList
                     id="1"
                     defaultLanguage={LOCALE}
                     languageList={getLocalesResponseFixture}
                 />
             )
-            getByTestId('locale-bullet-overflow')
+            screen.getByLabelText('Item for locale overflow')
         })
     })
 })

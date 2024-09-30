@@ -158,7 +158,7 @@ describe('<ClickTrackingCustomDomain />', () => {
         fireEvent.click(confirm_button)
 
         await waitForElementToBeRemoved(() =>
-            screen.getByTestId('connection-status')
+            screen.getByText('Verification in progress')
         )
     })
 })

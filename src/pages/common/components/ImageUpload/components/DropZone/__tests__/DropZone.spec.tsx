@@ -1,5 +1,5 @@
 import React from 'react'
-import {createEvent, fireEvent, render} from '@testing-library/react'
+import {createEvent, fireEvent, render, screen} from '@testing-library/react'
 
 import {DropText} from '../../DropText'
 
@@ -33,7 +33,7 @@ describe('<DropZone>', () => {
     })
 
     it('calls the right in and out handlers', () => {
-        const {getByTestId} = render(
+        render(
             <DropZone
                 accept="image/png"
                 id="dropZone"
@@ -43,29 +43,29 @@ describe('<DropZone>', () => {
                 <DropText />
             </DropZone>
         )
-        const dropZone = getByTestId('dropZone')
+        const dropZone = screen.getByLabelText('Drop zone files')
         const mockedDragEnterEvent = createEvent.dragEnter(dropZone)
         const mockedDragLeaveEvent = createEvent.dragLeave(dropZone)
 
         expect(onDragInFn).not.toHaveBeenCalled()
         expect(onDragOutFn).not.toHaveBeenCalled()
 
-        fireEvent.dragEnter(getByTestId('dropZone'), mockedDragEnterEvent)
+        fireEvent.dragEnter(dropZone, mockedDragEnterEvent)
         expect(onDragInFn).toHaveBeenCalledTimes(1)
         expect(onDragOutFn).not.toHaveBeenCalled()
 
-        fireEvent.dragLeave(getByTestId('dropZone'), mockedDragLeaveEvent)
+        fireEvent.dragLeave(dropZone, mockedDragLeaveEvent)
         expect(onDragInFn).toHaveBeenCalledTimes(1)
         expect(onDragOutFn).toHaveBeenCalledTimes(1)
     })
 
     it('calls the onDrop handler if file is accepted', () => {
-        const {rerender, getByTestId} = render(
+        const {rerender} = render(
             <DropZone accept="image/png" id="dropZone" onDrop={onDropFn}>
                 <DropText />
             </DropZone>
         )
-        const dropZone = getByTestId('dropZone')
+        const dropZone = screen.getByLabelText('Drop zone files')
 
         expect(onDropFn).not.toHaveBeenCalled()
 

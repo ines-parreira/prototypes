@@ -146,7 +146,7 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
 
     return (
         <Drawer
-            name="Email Capture"
+            aria-label="Email Capture"
             fullscreen={false}
             open={open}
             isLoading={false}
@@ -160,7 +160,7 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
                 onClose={handleCancel}
                 testId="drawer-header"
                 headerSaperator
-            ></EditorDrawerHeader>
+            />
             <Drawer.Content className={css.drawerContent}>
                 <WizardProgressHeader
                     labels={steps.reduce((acc, step) => {

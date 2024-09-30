@@ -67,6 +67,10 @@ export default function ColorPicker({
 
     const colorValue = value || defaultValue
 
+    const ariaLabel = label
+        ? `color-picker-button_${label.replace(/\s/g, '_').toLowerCase()}`
+        : undefined
+
     return (
         <div className={cn(css.wrapper, className)}>
             <Button
@@ -75,13 +79,8 @@ export default function ColorPicker({
                 onClick={() => setPopupVisible(!isPopupVisible)}
                 ref={buttonEl}
                 className={css.button}
-                data-testid={
-                    label
-                        ? `color-picker-button_${label
-                              .replace(/\s/g, '_')
-                              .toLowerCase()}`
-                        : undefined
-                }
+                data-testid={ariaLabel} // used in e2e tests
+                aria-label={ariaLabel}
             >
                 {colorValue ? (
                     <div
@@ -95,7 +94,7 @@ export default function ColorPicker({
                 )}
             </Button>
             <Input
-                data-testid="color-picker-input"
+                data-testid="color-picker-input" // used in e2e tests
                 className={css.input}
                 value={value ?? undefined}
                 onChange={(evt) => {

@@ -39,7 +39,7 @@ const dummyFile = new File(['image.png'], 'image.png', {
 })
 
 const uploadImage = async (dummyFile: File) => {
-    const dropZone = screen.getByTestId('dropZone')
+    const dropZone = screen.getByLabelText('Drop zone files')
     await waitFor(() =>
         fireEvent.drop(dropZone, {
             dataTransfer: {
@@ -49,6 +49,7 @@ const uploadImage = async (dummyFile: File) => {
         })
     )
 }
+
 describe('<CategoryImageEdit />', () => {
     it('should render component with default state', () => {
         const {container} = renderComponent({})

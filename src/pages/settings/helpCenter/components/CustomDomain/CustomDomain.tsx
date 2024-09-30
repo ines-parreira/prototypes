@@ -14,15 +14,12 @@ import Loader from 'pages/common/components/Loader/Loader'
 import settingsCss from 'pages/settings/settings.less'
 
 import {StatusCheck} from 'pages/common/components/StatusCheck'
-import {
-    ConnectionStatus,
-    ConnectionStatusProps,
-} from 'pages/common/components/ConnectionStatus'
+import {ConnectionStatus} from 'pages/common/components/ConnectionStatus'
 import {reportError} from 'utils/errors'
-import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
-import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
-import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
-import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
+import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 
 import {HelpText} from './components/HelpText'
 
@@ -186,31 +183,6 @@ export const CustomDomain = ({className}: CustomDomainProps) => {
         void deleteDomain()
     }
 
-    const renderConnection = () => {
-        if (currentDomain?.status) {
-            let status: ConnectionStatusProps['status'] = currentDomain.status
-            let label = labels[currentDomain.status]
-            let tooltip = tooltips[currentDomain.status]
-
-            if (currentDomain.verification_errors) {
-                status = 'unknown'
-                label = labels[status]
-                tooltip = currentDomain.verification_errors[0]
-            }
-
-            return (
-                <ConnectionStatus
-                    className={css.domainStatus}
-                    status={status}
-                    label={label}
-                    tooltip={tooltip}
-                />
-            )
-        }
-
-        return null
-    }
-
     let appendEl = null
 
     if (deleteDomainDto.loading) {
@@ -247,7 +219,22 @@ export const CustomDomain = ({className}: CustomDomainProps) => {
                     />
                     {appendEl}
                 </div>
-                {renderConnection()}
+                {!!currentDomain?.status && (
+                    <ConnectionStatus
+                        className={css.domainStatus}
+                        {...(currentDomain.verification_errors
+                            ? {
+                                  status: 'unknown',
+                                  label: labels.unknown,
+                                  tooltip: currentDomain.verification_errors[0],
+                              }
+                            : {
+                                  status: currentDomain.status,
+                                  label: labels[currentDomain.status],
+                                  tooltip: tooltips[currentDomain.status],
+                              })}
+                    />
+                )}
             </div>
             {!currentDomain?.status && (
                 <Button

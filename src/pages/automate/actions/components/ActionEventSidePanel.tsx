@@ -51,7 +51,7 @@ export default function ActionEventSidePanel({
             className={css.drawer}
             fullscreen={false}
             isLoading={isLoading}
-            name="actions-event-details"
+            aria-label="Event details"
             onBackdropClick={onClose}
             open={isOpen}
             portalRootId="app-root"
