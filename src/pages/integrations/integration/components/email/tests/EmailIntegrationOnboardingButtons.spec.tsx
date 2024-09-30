@@ -28,6 +28,7 @@ const defaultHookResult: UseEmailOnboardingHookResult = {
     isConnecting: false,
     isConnected: false,
     isSending: false,
+    isPending: false,
     isVerified: false,
     isDeleting: false,
     isRequested: false,
@@ -36,6 +37,7 @@ const defaultHookResult: UseEmailOnboardingHookResult = {
     sendVerification: jest.fn(),
     deleteIntegration: jest.fn(),
     goBack: jest.fn(),
+    goToNext: jest.fn(),
     errors: undefined,
 }
 
@@ -188,7 +190,7 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
         })
 
         describe('Verification step', () => {
-            it('should render a Resend Verification CTA', () => {
+            it('should render a Begin Verification CTA', () => {
                 useEmailOnboardingMock.mockReturnValue({
                     ...defaultHookResult,
                     currentStep: EmailIntegrationOnboardingStep.Verification,
@@ -197,7 +199,23 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                 renderComponent()
 
                 const button = screen.getByRole('button', {
-                    name: 'Resend Verification',
+                    name: 'Begin Verification',
+                })
+                expect(button).toBeInTheDocument()
+                expect(button.getAttribute('type')).toBe('submit')
+            })
+
+            it('should render as Re-Send Verification CTA once requested', () => {
+                useEmailOnboardingMock.mockReturnValue({
+                    ...defaultHookResult,
+                    currentStep: EmailIntegrationOnboardingStep.Verification,
+                    isRequested: true,
+                })
+
+                renderComponent()
+
+                const button = screen.getByRole('button', {
+                    name: 'markunread Re-Send Verification Email',
                 })
                 expect(button).toBeInTheDocument()
                 expect(button.getAttribute('type')).toBe('submit')
@@ -213,7 +231,7 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                 renderComponent()
 
                 const button = screen.getByRole('button', {
-                    name: 'Loading... Resend Verification',
+                    name: 'Loading... Begin Verification',
                 })
                 expect(button).toBeInTheDocument()
                 expect(button.getAttribute('type')).toBe('submit')

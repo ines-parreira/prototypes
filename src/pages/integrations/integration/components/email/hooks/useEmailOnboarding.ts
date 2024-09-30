@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react'
+import {useCallback, useMemo, useState} from 'react'
 import {useHistory, useRouteMatch} from 'react-router-dom'
 import {isObject, kebabCase} from 'lodash'
 import {
@@ -18,6 +18,7 @@ import {FormErrors} from 'pages/settings/SLAs/features/SLAForm/views/validation'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
+import useInterval from 'hooks/useInterval'
 
 export enum EmailIntegrationOnboardingStep {
     ConnectIntegration = 'ConnectIntegration',
@@ -46,20 +47,24 @@ export type UseEmailOnboardingHookResult = {
     sendVerification: () => void
     deleteIntegration: () => void
     goBack: () => void
+    goToNext: () => void
     isConnected: boolean
     isConnecting: boolean
     isVerified: boolean
     isRequested: boolean
     isSending: boolean
+    isPending: boolean
     isDeleting: boolean
 }
+
+const FORWARDING_VERIFICATION_TIMEOUT_IN_SECONDS = 2 * 60
 
 export function useEmailOnboarding(
     options?: UseEmailOnboardingHookOptions
 ): UseEmailOnboardingHookResult {
     const integration = options?.integration
     const currentStep = useGetCurrentStep(integration)
-    const history = useHistory()
+    const {goBack, goToNext} = useStepNavigation(integration)
 
     const {
         connectIntegration,
@@ -70,45 +75,11 @@ export function useEmailOnboarding(
         isSending,
         isRequested,
         isDeleting,
+        isPending,
     } = useMutations(integration)
 
     const isConnected = !!integration
-
-    const goBack = useCallback(() => {
-        if (!integration) {
-            history.push('/app/settings/channels/email')
-            return
-        }
-
-        switch (currentStep) {
-            case EmailIntegrationOnboardingStep.ConnectIntegration: {
-                history.push('/app/settings/channels/email')
-                return
-            }
-
-            case EmailIntegrationOnboardingStep.ForwardingSetup: {
-                history.push(
-                    `/app/settings/channels/email/${
-                        integration.id
-                    }/onboarding/${kebabCase(
-                        EmailIntegrationOnboardingStep.ConnectIntegration
-                    )}`
-                )
-                return
-            }
-
-            case EmailIntegrationOnboardingStep.Verification: {
-                history.push(
-                    `/app/settings/channels/email/${
-                        integration.id
-                    }/onboarding/${kebabCase(
-                        EmailIntegrationOnboardingStep.ForwardingSetup
-                    )}`
-                )
-                return
-            }
-        }
-    }, [history, currentStep, integration])
+    const isVerified = integration?.meta?.verified ?? false
 
     return {
         integration,
@@ -117,13 +88,15 @@ export function useEmailOnboarding(
         sendVerification,
         deleteIntegration,
         goBack,
+        goToNext,
         errors,
         isConnecting,
         isSending,
         isDeleting,
         isRequested,
         isConnected,
-        isVerified: false,
+        isPending,
+        isVerified,
     }
 }
 
@@ -134,6 +107,7 @@ type UseMutationsHookResult = {
     deleteIntegration: () => void
     isConnecting: boolean
     isSending: boolean
+    isPending: boolean
     isDeleting: boolean
     isRequested: boolean
 }
@@ -144,7 +118,7 @@ function useMutations(
     const dispatch = useAppDispatch()
     const history = useHistory()
     const [errors, setErrors] = useState<Errors>()
-    const {isRequested, setRequestedAt} =
+    const {isPending, isRequested, setRequestedAt} =
         useVerificationRequestStatus(integration)
 
     const connectMutationOptions = {
@@ -242,6 +216,7 @@ function useMutations(
         isConnecting,
         isSending,
         isRequested,
+        isPending,
         isDeleting: false,
     }
 }
@@ -290,6 +265,7 @@ export const forwardingVerificationStorageKey = (id: number) =>
     `email-forwarding-verification-requested-at-${id}`
 
 type UseVerificationStateHookResult = {
+    isPending: boolean
     isRequested: boolean
     setRequestedAt: (value: Date) => void
 }
@@ -301,7 +277,127 @@ function useVerificationRequestStatus(
         forwardingVerificationStorageKey(integration?.id ?? 0)
     )
 
-    const isRequested = !!requestedAt
+    const [currentTime, setCurrentTime] = useState(new Date())
 
-    return {isRequested, setRequestedAt}
+    const isRequested = !!requestedAt
+    const isPending = useMemo(
+        () => computeIsPending(requestedAt, currentTime),
+        [requestedAt, currentTime]
+    )
+
+    useInterval(() => {
+        setCurrentTime(new Date())
+    }, FORWARDING_VERIFICATION_TIMEOUT_IN_SECONDS * 1000)
+
+    return {isPending, isRequested, setRequestedAt}
+}
+
+function computeIsPending(
+    requestedAt: Date | undefined,
+    currentTime: Date
+): boolean {
+    if (!requestedAt) {
+        return false
+    }
+
+    return (
+        (new Date(currentTime).getTime() - new Date(requestedAt).getTime()) /
+            1000 <
+        FORWARDING_VERIFICATION_TIMEOUT_IN_SECONDS
+    )
+}
+
+function useStepNavigation(integration: EmailIntegration | undefined) {
+    const history = useHistory()
+    const currentStep = useGetCurrentStep(integration)
+
+    const goBack = useCallback(() => {
+        if (!integration) {
+            history.push(listUrl())
+            return
+        }
+
+        switch (currentStep) {
+            case EmailIntegrationOnboardingStep.ConnectIntegration: {
+                history.push(listUrl())
+                return
+            }
+
+            case EmailIntegrationOnboardingStep.ForwardingSetup: {
+                history.push(
+                    stepUrl(
+                        EmailIntegrationOnboardingStep.ConnectIntegration,
+                        integration
+                    )
+                )
+                return
+            }
+
+            case EmailIntegrationOnboardingStep.Verification: {
+                history.push(
+                    stepUrl(
+                        EmailIntegrationOnboardingStep.ForwardingSetup,
+                        integration
+                    )
+                )
+                return
+            }
+        }
+    }, [history, currentStep, integration])
+
+    const goToNext = useCallback(() => {
+        if (!integration) {
+            history.push(listUrl())
+            return
+        }
+
+        switch (currentStep) {
+            case EmailIntegrationOnboardingStep.ConnectIntegration: {
+                history.push(
+                    stepUrl(
+                        EmailIntegrationOnboardingStep.ForwardingSetup,
+                        integration
+                    )
+                )
+                return
+            }
+
+            case EmailIntegrationOnboardingStep.ForwardingSetup: {
+                history.push(
+                    stepUrl(
+                        EmailIntegrationOnboardingStep.Verification,
+                        integration
+                    )
+                )
+                return
+            }
+
+            case EmailIntegrationOnboardingStep.Verification: {
+                history.push(listUrl())
+                return
+            }
+        }
+    }, [history, currentStep, integration])
+
+    return {
+        goBack,
+        goToNext,
+    }
+}
+
+export function listUrl(): string {
+    return '/app/settings/channels/email'
+}
+
+export function stepUrl(
+    step?: EmailIntegrationOnboardingStep,
+    integration?: EmailIntegration | undefined
+): string {
+    if (!step || !integration) {
+        return '/app/settings/channels/email/new/onboarding/connect-integration'
+    }
+
+    return `/app/settings/channels/email/${
+        integration.id
+    }/onboarding/${kebabCase(step)}`
 }

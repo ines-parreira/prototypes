@@ -1,6 +1,7 @@
-import React from 'react'
-import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
+import React, {useCallback} from 'react'
+import {Label} from '@gorgias/ui-kit'
 
+import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
 import {EmailIntegration} from 'models/integration/types'
 import FormField from 'pages/settings/SLAs/features/SLAForm/views/FormField'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
@@ -20,47 +21,50 @@ type Props = {
 }
 
 export default function EmailIntegrationForwardingSetupForm(props: Props) {
-    const {integration, sendVerification, isRequested} =
+    const {integration, sendVerification, isRequested, goToNext} =
         useEmailOnboarding(props)
+
     const address = integration?.meta.address ?? ''
 
     const defaultValues = {
         checked: isRequested ?? false,
     }
 
+    const handleSubmit = useCallback(() => {
+        isRequested ? goToNext() : sendVerification()
+    }, [sendVerification, isRequested, goToNext])
+
     return (
         <div>
-            <Form<Values>
-                defaultValues={defaultValues}
-                onSubmit={sendVerification}
-            >
+            <Form<Values> defaultValues={defaultValues} onSubmit={handleSubmit}>
                 <FormSection
                     title="Forward your support emails to Gorgias"
                     description="In this step, you will go to your email provider to set up forwarding rules
                     that will forward a copy of incoming customer emails to Gorgias, where they will appear as tickets."
+                    headingSize="large"
                 >
                     <FormRow>
-                        <h3>
+                        <Label>
                             1. Sign into {address} and open the email forwarding
                             settings
-                        </h3>
+                        </Label>
                         <p>
                             In a new window, sign into {address} and navigate to
                             the email forwarding settings.
                         </p>
                     </FormRow>
                     <FormRow>
-                        <h3>
+                        <Label>
                             2. Update forwarding settings to forward a copy of
                             incoming customer emails to:
-                        </h3>
+                        </Label>
                         <BaseEmailIntegrationInputField />
                     </FormRow>
                     <FormRow>
-                        <h3>
+                        <Label>
                             3. Verify emails are forwarding into Gorgias
                             correctly
-                        </h3>
+                        </Label>
                         <p>
                             Check the box to confirm you’ve updated your email
                             forwarding settings and begin verification – Gorgias
@@ -75,6 +79,7 @@ export default function EmailIntegrationForwardingSetupForm(props: Props) {
                     field={CheckBoxField}
                     label="Yes, I’ve set up email forwarding from my support email address to Gorgias"
                     caption="Check the box to confirm you’ve updated your email forwarding settings."
+                    isDisabled={isRequested}
                     isRequired
                 />
                 <EmailIntegrationOnboardingButtons integration={integration} />

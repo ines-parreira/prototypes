@@ -15,6 +15,7 @@ import EmailIntegrationConnectForm from './EmailIntegrationConnectForm'
 import EmailIntegrationForwardingSetupForm from './EmailIntegrationForwardingSetupForm'
 
 import css from './EmailIntegrationOnboarding.less'
+import EmailIntegrationVerificationForm from './EmailIntegrationVerificationForm'
 
 type Props = {
     integration?: EmailIntegration | undefined
@@ -77,6 +78,12 @@ export default function EmailIntegrationOnboarding({integration}: Props) {
                             {currentStep ===
                                 EmailIntegrationOnboardingStep.ForwardingSetup && (
                                 <EmailIntegrationForwardingSetupForm
+                                    integration={integration}
+                                />
+                            )}
+                            {currentStep ===
+                                EmailIntegrationOnboardingStep.Verification && (
+                                <EmailIntegrationVerificationForm
                                     integration={integration}
                                 />
                             )}

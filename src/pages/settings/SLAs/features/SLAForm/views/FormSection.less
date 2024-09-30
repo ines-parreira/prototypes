@@ -1,9 +1,23 @@
 @import (reference) '~css/typography';
+@import '~@gorgias/design-tokens/dist/css/layout';
 
 :local {
     .infoText {
         .body-regular();
         color: var(--neutral-grey-5);
+    }
+
+    .headingWithIcon {
+        display: flex;
+        gap: @layout-spacing-xs;
+
+        .materialIcon {
+            font-size: 28px;
+            line-height: @layout-spacing-l;
+            width: @layout-spacing-l;
+            height: @layout-spacing-l;
+            text-align: center;
+        }
     }
 
     .headingSizeS {

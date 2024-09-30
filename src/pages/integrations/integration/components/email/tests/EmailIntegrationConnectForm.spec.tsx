@@ -19,6 +19,7 @@ const defaultHookResult: UseEmailOnboardingHookResult = {
     isConnecting: false,
     isConnected: false,
     isSending: false,
+    isPending: false,
     isVerified: false,
     isDeleting: false,
     isRequested: false,
@@ -27,6 +28,7 @@ const defaultHookResult: UseEmailOnboardingHookResult = {
     sendVerification: jest.fn(),
     deleteIntegration: jest.fn(),
     goBack: jest.fn(),
+    goToNext: jest.fn(),
     errors: undefined,
 }
 

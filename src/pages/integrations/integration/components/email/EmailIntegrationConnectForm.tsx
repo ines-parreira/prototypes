@@ -49,6 +49,7 @@ export default function EmailIntegrationConnectForm(props: Props) {
                 connect your support email. Enter the email address you
                 currently use to talk with customers and then choose a display
                 name that customers will see on your responses."
+                    headingSize="large"
                 >
                     <FormRow>
                         <FormField

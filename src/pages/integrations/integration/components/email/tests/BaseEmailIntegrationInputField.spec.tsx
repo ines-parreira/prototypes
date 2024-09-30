@@ -42,10 +42,10 @@ jest.mock('state/notifications/actions')
 jest.mock('copy-to-clipboard')
 const copyMock = assumeMock(copy)
 
-const renderComponent = () =>
+const renderComponent = (label?: string) =>
     render(
         <Provider store={store}>
-            <BaseEmailIntegrationInputField />
+            <BaseEmailIntegrationInputField label={label} />
         </Provider>
     )
 
@@ -60,6 +60,12 @@ describe('<BaseEmailIntegrationInputField />', () => {
         expect(
             screen.getByRole('button', {name: 'Copy content_copy'})
         ).toBeInTheDocument()
+    })
+
+    it('should render with label', () => {
+        renderComponent('Your Base Email Address')
+
+        expect(screen.getByText('Your Base Email Address')).toBeInTheDocument()
     })
 
     it('should copy the value when clicking on the auxiliary button', () => {

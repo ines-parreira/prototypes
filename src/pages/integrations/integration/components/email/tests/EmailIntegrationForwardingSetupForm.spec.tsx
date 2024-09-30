@@ -30,6 +30,7 @@ const defaultHookResult = {
     currentStep: EmailIntegrationOnboardingStep.ForwardingSetup,
     integration: existingIntegration,
     sendVerification: jest.fn(),
+    goToNext: jest.fn(),
 } as unknown as UseEmailOnboardingHookResult
 
 const useEmailOnboardingMock = assumeMock(useEmailOnboarding)
@@ -91,7 +92,23 @@ describe('<EmailIntegrationForwardingSetupForm />', () => {
         })
     })
 
-    it('should render as checked if the request has been made', async () => {
+    it('should render as checked if the request has been made', () => {
+        useEmailOnboardingMock.mockReturnValue({
+            ...defaultHookResult,
+            isRequested: true,
+        })
+
+        renderComponent()
+
+        const checkbox = screen.getByRole('checkbox', {
+            name: 'Yes, I’ve set up email forwarding from my support email address to Gorgias',
+        })
+
+        expect(checkbox).toBeChecked()
+        expect(checkbox).toBeDisabled()
+    })
+
+    it('should advance to next step is already requested', async () => {
         useEmailOnboardingMock.mockReturnValue({
             ...defaultHookResult,
             isRequested: true,
@@ -102,7 +119,8 @@ describe('<EmailIntegrationForwardingSetupForm />', () => {
         fireEvent.submit(screen.getByRole('form'))
 
         await waitFor(() => {
-            expect(defaultHookResult.sendVerification).toHaveBeenCalled()
+            expect(defaultHookResult.goToNext).toHaveBeenCalled()
+            expect(defaultHookResult.sendVerification).not.toHaveBeenCalled()
         })
     })
 })

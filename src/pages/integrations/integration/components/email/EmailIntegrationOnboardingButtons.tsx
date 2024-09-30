@@ -29,6 +29,7 @@ export default function EmailIntegrationOnboardingButtons(props: Props) {
         isConnecting,
         isRequested,
         isSending,
+        isPending,
     } = useEmailOnboarding(props)
 
     const wizardContext = useContext(WizardContext)
@@ -66,8 +67,17 @@ export default function EmailIntegrationOnboardingButtons(props: Props) {
                 )}
                 {currentStep ===
                     EmailIntegrationOnboardingStep.Verification && (
-                    <FormSubmitButton isLoading={isSending}>
-                        Resend Verification
+                    <FormSubmitButton
+                        isLoading={isSending}
+                        isDisabled={isPending}
+                    >
+                        {isRequested ? (
+                            <ButtonIconLabel icon="markunread">
+                                Re-Send Verification Email
+                            </ButtonIconLabel>
+                        ) : (
+                            'Begin Verification'
+                        )}
                     </FormSubmitButton>
                 )}
             </div>
@@ -76,6 +86,7 @@ export default function EmailIntegrationOnboardingButtons(props: Props) {
                 <ConfirmButton
                     type="button"
                     fillStyle="ghost"
+                    confirmationContent="Are you sure you want to delete this integration?"
                     intent="destructive"
                     onConfirm={deleteIntegration}
                 >

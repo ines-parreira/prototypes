@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react'
 import copy from 'copy-to-clipboard'
+import {Label} from '@gorgias/ui-kit'
 
 import {EmailIntegration} from 'models/integration/types'
 import {getBaseEmailIntegration} from 'state/integrations/selectors'
@@ -13,7 +14,11 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-export default function BaseEmailIntegrationInputField() {
+type Props = {
+    label?: string
+}
+
+export default function BaseEmailIntegrationInputField({label}: Props) {
     const baseIntegration: EmailIntegration = useAppSelector(
         getBaseEmailIntegration
     )?.toJS()
@@ -43,13 +48,16 @@ export default function BaseEmailIntegrationInputField() {
     }, [baseAddress, dispatch])
 
     return (
-        <InputGroup>
-            <TextInput value={baseAddress} isDisabled />
-            <Button intent="secondary" onClick={handleCopy}>
-                <ButtonIconLabel icon="content_copy" position="right">
-                    Copy
-                </ButtonIconLabel>
-            </Button>
-        </InputGroup>
+        <>
+            {label && <Label>{label}</Label>}
+            <InputGroup>
+                <TextInput value={baseAddress} isDisabled />
+                <Button intent="secondary" onClick={handleCopy}>
+                    <ButtonIconLabel icon="content_copy" position="right">
+                        Copy
+                    </ButtonIconLabel>
+                </Button>
+            </InputGroup>
+        </>
     )
 }

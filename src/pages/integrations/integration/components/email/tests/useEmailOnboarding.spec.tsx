@@ -30,6 +30,7 @@ import {
     EmailIntegrationOnboardingStep,
     UseEmailOnboardingHookOptions,
     UseEmailOnboardingHookResult,
+    stepUrl,
     useEmailOnboarding,
 } from '../hooks/useEmailOnboarding'
 
@@ -406,6 +407,51 @@ describe('useEmailOnboarding()', () => {
                 result.current.sendVerification()
                 expect(sendVerificationEmailMock).not.toHaveBeenCalled()
             })
+
+            it('should change requested and pending flags after sending a verification request', async () => {
+                const {result, waitForValueToChange} = render({integration})
+
+                sendVerificationEmailMock.mockResolvedValue({
+                    data: undefined,
+                } as HttpResponse<undefined>)
+
+                expect(result.current.isRequested).toEqual(false)
+                expect(result.current.isPending).toEqual(false)
+
+                result.current.sendVerification()
+
+                await waitForValueToChange(() => result.current.isRequested)
+
+                expect(result.current.isRequested).toEqual(true)
+                expect(result.current.isPending).toEqual(true)
+            })
+
+            it('should should change pending back to false after the timeout expires', async () => {
+                jest.useFakeTimers()
+
+                const {result, waitForValueToChange} = render({integration})
+
+                sendVerificationEmailMock.mockResolvedValue({
+                    data: undefined,
+                } as HttpResponse<undefined>)
+
+                expect(result.current.isRequested).toEqual(false)
+                expect(result.current.isPending).toEqual(false)
+
+                result.current.sendVerification()
+
+                await waitForValueToChange(() => result.current.isRequested)
+
+                expect(result.current.isPending).toEqual(true)
+                expect(result.current.isRequested).toEqual(true)
+
+                jest.advanceTimersByTime(2 * 60 * 1000 + 500)
+
+                expect(result.current.isPending).toEqual(false)
+                expect(result.current.isRequested).toEqual(true)
+
+                jest.useRealTimers()
+            })
         })
 
         describe('goBack()', () => {
@@ -456,6 +502,107 @@ describe('useEmailOnboarding()', () => {
                 result.current.goBack()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
                     '/app/settings/channels/email/1/onboarding/forwarding-setup'
+                )
+            })
+        })
+
+        describe('goToNext()', () => {
+            const integration = {
+                id: 1,
+                type: 'email',
+            } as EmailIntegration
+
+            it('should redirect to the integrations page if no integration is connected', () => {
+                mockIsRequested(false)
+                const {result} = render()
+                result.current.goToNext()
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/settings/channels/email'
+                )
+            })
+
+            it('should redirect to Forwarding Setup if the current step is Connect Integration', () => {
+                mockIsRequested(false)
+                const {result} = render(
+                    {integration},
+                    '/app/settings/channels/email/1/onboarding/connect-integration'
+                )
+                result.current.goToNext()
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/settings/channels/email/1/onboarding/forwarding-setup'
+                )
+            })
+
+            it('should redirect to the Verification if the current step is Forwarding Setup', () => {
+                mockIsRequested(false)
+                const {result} = render(
+                    {integration},
+                    '/app/settings/channels/email/1/onboarding/forwarding-setup'
+                )
+                result.current.goToNext()
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/settings/channels/email/1/onboarding/verification'
+                )
+            })
+
+            it('should redirect to the integrations page if the current step is Verification', () => {
+                mockIsRequested(true)
+                const {result} = render(
+                    {integration},
+                    '/app/settings/channels/email/1/onboarding/verification'
+                )
+                result.current.goToNext()
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/settings/channels/email'
+                )
+            })
+        })
+    })
+
+    describe('URLs', () => {
+        describe('stepUrl()', () => {
+            it('should return the connect step URL if no integration provided', () => {
+                expect(stepUrl()).toEqual(
+                    '/app/settings/channels/email/new/onboarding/connect-integration'
+                )
+
+                expect(
+                    stepUrl(EmailIntegrationOnboardingStep.ConnectIntegration)
+                ).toEqual(
+                    '/app/settings/channels/email/new/onboarding/connect-integration'
+                )
+            })
+
+            it('should return the correct step URL', () => {
+                const integration = {
+                    id: 1,
+                } as EmailIntegration
+
+                expect(
+                    stepUrl(
+                        EmailIntegrationOnboardingStep.ConnectIntegration,
+                        integration
+                    )
+                ).toEqual(
+                    '/app/settings/channels/email/1/onboarding/connect-integration'
+                )
+
+                expect(
+                    stepUrl(
+                        EmailIntegrationOnboardingStep.ForwardingSetup,
+                        integration
+                    )
+                ).toEqual(
+                    '/app/settings/channels/email/1/onboarding/forwarding-setup'
+                )
+
+                expect(
+                    stepUrl(
+                        EmailIntegrationOnboardingStep.Verification,
+                        integration
+                    )
+                ).toEqual(
+                    '/app/settings/channels/email/1/onboarding/verification'
                 )
             })
         })
