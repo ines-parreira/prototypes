@@ -10,7 +10,7 @@ export const BLANK_STATE_TITLE = 'Nothing to report on'
 export const BLANK_STATE_TEXT =
     'You don’t have any active tags. Create your first tag to start getting insights.'
 
-export function NewTagsBlankState() {
+export function TagsBlankState() {
     return (
         <div className={classnames(css.wrapper)}>
             <img

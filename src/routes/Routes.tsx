@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {Tags} from 'pages/stats/ticket-insights/components/Tags'
 import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
 import AutomateAiAgentStats from 'pages/stats/automate/ai-agent/AutomateAiAgentStats'
 import {logPageChange} from 'common/segment'
@@ -150,7 +151,6 @@ import {AiAgentGuidanceAiSuggestionNewContainer} from 'pages/automate/aiAgent/Ai
 import AiAgentStoreConfigurationProvider from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationProvider'
 import AiAgentOnboardingWizard from 'pages/automate/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 
-import {NewTagsBlankState} from 'pages/stats/NewTagsBlankState'
 import SettingsRoutes from 'routes/settings'
 
 export default function Routes() {
@@ -543,10 +543,7 @@ export function StatsRoutes() {
                         exact
                         path={`${path}/new-tags`}
                         render={() => (
-                            <App
-                                content={NewTagsBlankState}
-                                navbar={StatsNavbarContainer}
-                            />
+                            <App content={Tags} navbar={StatsNavbarContainer} />
                         )}
                     />
                 )}

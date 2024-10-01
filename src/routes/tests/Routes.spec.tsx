@@ -9,7 +9,6 @@ import {fromJS, Map} from 'immutable'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
-import {NewTagsBlankState} from 'pages/stats/NewTagsBlankState'
 import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 import LiveOverview from 'pages/stats/LiveOverview'
 import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
@@ -20,8 +19,9 @@ import {assumeMock, renderWithRouter} from 'utils/testing'
 import {useFlag} from 'common/flags'
 
 import Routes from 'routes/Routes'
+import {Tags} from 'pages/stats/ticket-insights/components/Tags'
 
-jest.mock('../settings', () => () => <div>SettingsRoutes</div>)
+jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
 jest.mock('common/segment')
 const logPageMock = assumeMock(logPageChange)
 
@@ -113,8 +113,8 @@ jest.mock('pages/stats/support-performance/auto-qa/AutoQA')
 const AutoQAMock = assumeMock(AutoQA)
 jest.mock('pages/stats/LiveOverview')
 const LiveOverviewMock = assumeMock(LiveOverview)
-jest.mock('pages/stats/NewTagsBlankState')
-const NewTagsBlankStateMock = assumeMock(NewTagsBlankState)
+jest.mock('pages/stats/ticket-insights/components/Tags')
+const TagsMock = assumeMock(Tags)
 
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
@@ -128,7 +128,7 @@ describe('<Routes/>', () => {
         ChannelsReportMock.mockImplementation(() => <div />)
         ServiceLevelAgreementsMock.mockImplementation(() => <div />)
         AutoQAMock.mockImplementation(() => <div />)
-        NewTagsBlankStateMock.mockImplementation(() => <div />)
+        TagsMock.mockImplementation(() => <div />)
         LiveOverviewMock.mockImplementation(() => <div />)
     })
 
@@ -414,7 +414,7 @@ describe('<Routes/>', () => {
             expect(AutoQAMock).toHaveBeenCalled()
         })
 
-        it('should render NewTagsBlankState page', () => {
+        it('should render NewTagsPage page', () => {
             mockFlags({
                 [FeatureFlagKey.NewTagsReport]: true,
             })
@@ -427,7 +427,7 @@ describe('<Routes/>', () => {
                 </Provider>
             )
 
-            expect(NewTagsBlankStateMock).toHaveBeenCalled()
+            expect(TagsMock).toHaveBeenCalled()
         })
 
         it('should render Automate AI Agent page', () => {
