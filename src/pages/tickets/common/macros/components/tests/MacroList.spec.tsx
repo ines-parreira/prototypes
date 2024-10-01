@@ -1,6 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {fromJS, List} from 'immutable'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
@@ -29,6 +29,7 @@ describe('MacroList component', () => {
             name: 'Pizza Margherita',
             actions: [{name: 'http'}],
         },
+        {id: 4, name: ''},
     ])
 
     const minProps: ComponentProps<typeof MacroListContainer> = {
@@ -38,17 +39,27 @@ describe('MacroList component', () => {
         onHoverItem: jest.fn(),
         loadMore: jest.fn(),
     }
+
     it('should render the macro list', () => {
-        const {container} = render(
+        render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroListContainer {...minProps} />
             </Provider>
         )
-        expect(container.firstChild).toMatchSnapshot()
+
+        expect(screen.getByText(macros.getIn([0, 'name']))).toHaveClass(
+            'active'
+        )
+        expect(screen.getByText(macros.getIn([0, 'name'])).textContent).toMatch(
+            /auto_awesome/
+        )
+        expect(screen.getByText(macros.getIn([1, 'name']))).toBeInTheDocument()
+        expect(screen.getByText(macros.getIn([2, 'name']))).toBeInTheDocument()
+        expect(screen.getByText('No name')).toBeInTheDocument()
     })
 
     it('should render active and disabled macros', () => {
-        const {container} = render(
+        render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroListContainer
                     {...minProps}
@@ -57,7 +68,13 @@ describe('MacroList component', () => {
                 />
             </Provider>
         )
-        expect(container.firstChild).toMatchSnapshot()
+
+        expect(screen.getByText(macros.getIn([1, 'name']))).toHaveClass(
+            'active'
+        )
+        expect(screen.getByText(macros.getIn([2, 'name']))).toHaveClass(
+            'disabled'
+        )
     })
 
     it('should send event to segment on send', () => {
@@ -71,6 +88,14 @@ describe('MacroList component', () => {
             </Provider>
         )
         fireEvent.click(getAllByText('Pizza Capricciosa')[0])
-        expect(logEventMock.mock.calls).toMatchSnapshot()
+        expect(logEventMock.mock.calls[0]).toEqual([
+            'macro-applied-searchbar',
+            {
+                is_recommended: false,
+                macro_id: 2,
+                rank: undefined,
+                user_id: 2,
+            },
+        ])
     })
 })

@@ -70,7 +70,7 @@ const MacroListContainer = ({
                         }}
                         onMouseEnter={() => onHoverItem(macro)}
                     >
-                        {macro.get('name')}
+                        {macro.get('name') || <i>No name</i>}
                         {isSuggestion(macro.get('relevance_rank', 0)) && (
                             <span
                                 className={classnames(
