@@ -2,6 +2,7 @@ import _capitalize from 'lodash/capitalize'
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 
+import warningIcon from 'assets/img/icons/warning.svg'
 import {EmailProvider, IntegrationType} from 'models/integration/constants'
 import {GmailIntegration, OutlookIntegration} from 'models/integration/types'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
@@ -121,6 +122,7 @@ export default function EmailIntegrationDeliverabilitySettings({
                             currentProvider ===
                             DeliverabilityProviderSetting.UseProviderAPI ? (
                                 <div className={css.warningCaption}>
+                                    <img alt="warning" src={warningIcon} />
                                     {useDefaultProviderCaption}
                                 </div>
                             ) : (
