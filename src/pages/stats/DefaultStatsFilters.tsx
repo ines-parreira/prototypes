@@ -1,7 +1,7 @@
 import React, {ReactNode, useEffect, useMemo} from 'react'
 import _isEqual from 'lodash/isEqual'
+import moment from 'moment-timezone'
 
-import moment from 'moment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -42,6 +42,7 @@ export default function DefaultStatsFilters({
             end_datetime: currentDay.clone().endOf('day').format(),
         },
     }
+
     const {filters, persistFilters} = useCurrentFilters(defaultFilters)
 
     const isReady = useMemo(
