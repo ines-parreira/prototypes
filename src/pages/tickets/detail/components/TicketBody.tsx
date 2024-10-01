@@ -77,9 +77,6 @@ export default function TicketBody({
     const virtuosoComponents: Components<TicketFooterContext> = useMemo(
         () => ({
             Footer: TicketFooter,
-            TopItemList: ({children, style}) => (
-                <div style={{...style, zIndex: 2}}>{children}</div>
-            ),
             Item: (props) => {
                 const {context: __context, style, children, ...rest} = props
                 return (

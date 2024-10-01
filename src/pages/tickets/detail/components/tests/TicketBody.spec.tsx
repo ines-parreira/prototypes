@@ -17,7 +17,6 @@ const mockStore = configureMockStore([thunk])
 interface VirtuosoMockProps {
     components: {
         Item: React.FC<any>
-        TopItemList: React.FC<any>
     }
 }
 const mockVirtuoso = jest.fn<
@@ -173,56 +172,6 @@ describe('TicketBody', () => {
             expect(itemElement).toBeInTheDocument()
             expect(itemElement.parentElement).toHaveStyle(
                 'position: relative; margin: 5px'
-            )
-        }
-    })
-
-    it('should pass correct props to the TopItemList component', () => {
-        // Render the component
-        render(
-            <Provider store={mockStore({})}>
-                <TicketBody
-                    elements={fromJS([defaultMessage, defaultMessage])}
-                    hideTicket={() => Promise.resolve()}
-                    isShopperTyping={false}
-                    setStatus={() => {}}
-                    shopperName=""
-                    submit={() => {}}
-                />
-            </Provider>
-        )
-
-        // Check if Virtuoso is called with the correct component props
-        expect(mockVirtuoso).toHaveBeenCalledWith(
-            expect.objectContaining({
-                components: expect.objectContaining({
-                    TopItemList: expect.any(Function),
-                }),
-            })
-        )
-        const virtuosoCall = mockVirtuoso.mock.calls[0][0]
-
-        expect(virtuosoCall).toBeDefined()
-        expect(virtuosoCall?.components).toBeDefined()
-
-        if (virtuosoCall && virtuosoCall.components) {
-            // Extract the TopItemList function from Virtuoso call
-            const TopItemListComponent = virtuosoCall.components
-                .TopItemList as React.FC<any>
-
-            // Render the TopItemList component manually and check if it receives the correct props
-            const mockProps = {
-                style: {margin: '5px'},
-                children: <p>Top Item Content</p>,
-            }
-
-            const {getByText} = render(<TopItemListComponent {...mockProps} />)
-
-            const topItemElement = getByText('Top Item Content')
-
-            expect(topItemElement).toBeInTheDocument()
-            expect(topItemElement.parentElement).toHaveStyle(
-                'z-index: 2; margin: 5px'
             )
         }
     })

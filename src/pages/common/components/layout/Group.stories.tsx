@@ -16,8 +16,8 @@ const storyConfig: Meta = {
 const WithButtonTemplate: Story<ComponentProps<typeof Group>> = () => (
     <Group>
         <IconButton>add</IconButton>
-        <Button>Foo</Button>
-        <Button>Bar</Button>
+        <Button intent="secondary">Foo</Button>
+        <Button intent="secondary">Bar</Button>
         <ConfirmButton>Baz</ConfirmButton>
     </Group>
 )
