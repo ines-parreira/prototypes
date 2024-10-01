@@ -1,17 +1,19 @@
 import React, {ReactNode, useEffect, useMemo} from 'react'
-import moment from 'moment-timezone'
 import _isEqual from 'lodash/isEqual'
 
+import moment from 'moment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {getTimezone} from 'state/currentUser/selectors'
 import {
-    defaultStatsFilters,
     resetStatsFilters,
-    setStatsFilters,
+    defaultStatsFilters,
+    setStatsFiltersWithLogicalOperators,
 } from 'state/stats/statsSlice'
-import {getStatsFilters} from 'state/stats/selectors'
-import {LegacyStatsFilters} from 'models/stat/types'
+import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {isCleanStatsDirty} from 'state/ui/stats/selectors'
+import useCurrentFilters from 'hooks/useCurrentFilters'
+import {getTimezone} from 'state/currentUser/selectors'
+import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 type Props = {
     children?: ReactNode
@@ -23,8 +25,24 @@ export default function DefaultStatsFilters({
     notReadyFallback,
 }: Props) {
     const dispatch = useAppDispatch()
+    const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
+    const isFilterDirty = useAppSelector(isCleanStatsDirty)
     const userTimezone = useAppSelector(getTimezone)
-    const statsFilters = useAppSelector(getStatsFilters)
+
+    const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
+
+    const defaultFilters: StatsFiltersWithLogicalOperator = {
+        period: {
+            // default period: last 7 days
+            start_datetime: currentDay
+                .clone()
+                .startOf('day')
+                .subtract(6, 'days')
+                .format(),
+            end_datetime: currentDay.clone().endOf('day').format(),
+        },
+    }
+    const {filters, persistFilters} = useCurrentFilters(defaultFilters)
 
     const isReady = useMemo(
         () => !_isEqual(statsFilters, defaultStatsFilters),
@@ -32,26 +50,19 @@ export default function DefaultStatsFilters({
     )
 
     useEffect(() => {
-        const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
-
-        const defaultFilters: LegacyStatsFilters = {
-            period: {
-                // default period: last 7 days
-                start_datetime: currentDay
-                    .clone()
-                    .startOf('day')
-                    .subtract(6, 'days')
-                    .format(),
-                end_datetime: currentDay.clone().endOf('day').format(),
-            },
-        }
-
-        dispatch(setStatsFilters(defaultFilters))
+        dispatch(setStatsFiltersWithLogicalOperators(filters))
         return () => {
             dispatch(resetStatsFilters())
+            persistFilters(defaultStatsFilters)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+        if (isReady && !isFilterDirty) {
+            persistFilters(statsFilters)
+        }
+    }, [isReady, isFilterDirty, persistFilters, statsFilters])
 
     return <>{isReady ? children : notReadyFallback}</>
 }

@@ -16,6 +16,7 @@ import {
     statsSlice,
 } from 'state/stats/statsSlice'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
+import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 describe('stats reducer', () => {
     it('should return initial state', () => {
@@ -61,20 +62,38 @@ describe('stats reducer', () => {
         })
     })
 
-    describe(`setStatsFiltersWithLogicalOperators`, () => {
-        it('should set stats filters with logical operators', () => {
+    describe('setStatsFiltersWithLogicalOperators', () => {
+        it('should set stats with operators filters', () => {
             const filters = {
                 period: {
-                    start_datetime: '1970-01-01T00:00:00+00:00',
-                    end_datetime: '1970-01-01T00:00:00+00:00',
+                    start_datetime: '2019-09-19T00:00:00Z',
+                    end_datetime: '2019-09-25T23:59:59Z',
                 },
-                tags: withDefaultLogicalOperator([1, 2, 4]),
-                agents: withDefaultLogicalOperator([1]),
-            }
+                agents: {
+                    values: [789726418],
+                    operator: LogicalOperatorEnum.ONE_OF,
+                },
+                customFields: [
+                    {
+                        customFieldId: 5235,
+                        values: ['5235::France'],
+                        operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    },
+                    {
+                        customFieldId: 4960,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [],
+                    },
+                ],
+                slaPolicies: {
+                    values: ['c489f8ec-0ca8-404b-8c4b-153cb578e212'],
+                    operator: LogicalOperatorEnum.ONE_OF,
+                },
+            } as StatsFiltersWithLogicalOperator
+
             const action = setStatsFiltersWithLogicalOperators(filters)
 
             expect(statsSlice.reducer(initialState, action)).toEqual({
-                ...initialState,
                 filters,
             })
         })

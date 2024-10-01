@@ -34,6 +34,11 @@ describe('DefaultStatsFilters', () => {
                 },
             },
         },
+        ui: {
+            stats: {
+                isFilterDirty: false,
+            },
+        },
     } as RootState
 
     it('should render children when stats filters are not the default stats filters', () => {

@@ -55,6 +55,11 @@ describe('<StatsRoutes/>', () => {
             },
         },
         notifications: fromJS([]),
+        ui: {
+            stats: {
+                isFilterDirty: false,
+            },
+        },
     } as RootState
 
     beforeEach(() => {

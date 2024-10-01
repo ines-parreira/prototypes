@@ -11,7 +11,7 @@ import {
 } from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
-type OptionalFilter =
+export type OptionalFilter =
     | string[]
     | number[]
     | CustomFieldFilter[]
@@ -20,29 +20,28 @@ type OptionalFilter =
     | undefined
 
 export const isFilterWithLogicalOperator = (
-    filter:
-        | string[]
-        | number[]
-        | WithLogicalOperator<string>
-        | WithLogicalOperator<number>
-        | CustomFieldFilter[]
+    filter: OptionalFilter
 ): filter is WithLogicalOperator<string> | WithLogicalOperator<number> =>
-    !Array.isArray(filter) && 'operator' in filter
+    !Array.isArray(filter) &&
+    filter !== undefined &&
+    'operator' in filter &&
+    'values' in filter
+
+export const isPeriodFilter = (filter: OptionalFilter): boolean =>
+    filter !== undefined &&
+    'start_datetime' in filter &&
+    'end_datetime' in filter
 
 export const isCustomFieldFilter = (
-    filter:
-        | string[]
-        | number[]
-        | CustomFieldFilter[]
-        | WithLogicalOperator<string>
-        | WithLogicalOperator<number>
+    filter: OptionalFilter
 ): filter is CustomFieldFilter[] =>
     Array.isArray(filter) &&
     filter.every(
         (subFilter) =>
             typeof subFilter === 'object' &&
             'operator' in subFilter &&
-            'customFieldId' in subFilter
+            'customFieldId' in subFilter &&
+            'values' in subFilter
     )
 
 export const hasFilter = (filter: OptionalFilter) => {

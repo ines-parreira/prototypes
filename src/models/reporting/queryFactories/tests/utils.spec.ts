@@ -6,6 +6,8 @@ import {
     getCustomFieldValueSerializer,
     hasFilter,
     injectDrillDownCustomFieldId,
+    isCustomFieldFilter,
+    isPeriodFilter,
     toLowerCaseString,
     withDefaultLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
@@ -385,6 +387,62 @@ describe('utils', () => {
                     getCustomFieldValueSerializer(customFieldId)
                 ),
             ])
+        })
+    })
+
+    describe('isPeriodFilter', () => {
+        it('should return true', () => {
+            const periodFilter = {
+                start_datetime: '1970-01-01T00:00:00+00:00',
+                end_datetime: '1970-01-01T00:00:00+00:00',
+            }
+
+            expect(isPeriodFilter(periodFilter as any)).toBe(true)
+        })
+
+        it('should return false', () => {
+            expect(
+                isPeriodFilter({
+                    test: '1970-01-01T00:00:00+00:00',
+                    end_datetime: '1970-01-01T00:00:00+00:00',
+                } as any)
+            ).toBe(false)
+
+            expect(isPeriodFilter(['test'])).toBe(false)
+        })
+    })
+
+    describe('isCustomFieldFilter', () => {
+        it('should return true', () => {
+            const customFieldFilters = [
+                {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    customFieldId: 'customFieldId',
+                    values: ['1::asd'],
+                },
+            ] as any
+
+            expect(isCustomFieldFilter(customFieldFilters)).toBe(true)
+        })
+
+        it('should return false', () => {
+            expect(
+                isCustomFieldFilter([
+                    {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        customFieldId: 'customFieldId',
+                    },
+                ] as any)
+            ).toBe(false)
+
+            expect(
+                isCustomFieldFilter([
+                    {
+                        customFieldId: 'customFieldId',
+                        values: ['1::asd'],
+                    },
+                ] as any)
+            ).toBe(false)
         })
     })
 })
