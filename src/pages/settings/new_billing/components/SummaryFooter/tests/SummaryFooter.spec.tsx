@@ -3,14 +3,16 @@ import {render, fireEvent, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
-import {RootState, StoreDispatch} from 'state/types'
+
 import {
     HELPDESK_PRODUCT_ID,
     products,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
+import {BILLING_BASE_PATH} from 'pages/settings/new_billing/constants'
+import {RootState, StoreDispatch} from 'state/types'
+
 import SummaryFooter, {SummaryFooterProps} from '../SummaryFooter'
-import {BILLING_BASE_PATH} from '../../../constants'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
@@ -60,35 +62,47 @@ describe('SummaryFooter', () => {
                 <SummaryFooter {...props} isPaymentEnabled={false} />
             </Provider>
         )
+
         expect(container.firstChild).toHaveClass('disabled')
     })
 
     it('renders legal text and checkboxes when anyProductChanged is true', () => {
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <SummaryFooter {...props} />
             </Provider>
         )
-        expect(getByTestId('legalText')).toBeInTheDocument()
-        expect(getByTestId('terms')).toBeInTheDocument()
+
+        expect(
+            screen.getByText(
+                /You agree to be charged in accordance with the subscription plan/
+            )
+        ).toBeInTheDocument()
+        expect(screen.getByText(/I agree to the/)).toBeInTheDocument()
     })
 
     it('does not render checkboxes when anyNewProductSelected is false', () => {
-        const {queryByTestId} = render(
+        render(
             <Provider store={store}>
                 <SummaryFooter {...props} anyNewProductSelected={false} />
             </Provider>
         )
-        expect(queryByTestId('terms')).toBeNull()
+
+        expect(screen.queryByText(/I agree to the/)).not.toBeInTheDocument()
     })
 
     it('renders downgrade text when anyDowngradedPlanSelected is true and anyNewProductSelected is false', () => {
-        const {queryByTestId} = render(
+        render(
             <Provider store={store}>
                 <SummaryFooter {...props} anyNewProductSelected={false} />
             </Provider>
         )
-        expect(queryByTestId('downgradeText')).toBeInTheDocument()
+
+        expect(
+            screen.queryByText(
+                /Changes to your subscription will apply starting/
+            )
+        ).toBeInTheDocument()
     })
 
     it('enables the update subscription button when all conditions are met', () => {

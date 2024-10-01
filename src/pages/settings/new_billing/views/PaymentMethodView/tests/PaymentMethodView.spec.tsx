@@ -180,7 +180,7 @@ describe('PaymentMethodView', () => {
             creditCard: jest.fn(() => mockCreditCard),
         }))
 
-        const {getByTestId, getByText} = render(
+        render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <PaymentMethodView
@@ -192,16 +192,16 @@ describe('PaymentMethodView', () => {
         )
 
         // Fill form fields
-        const nameInput = getByTestId('name')
-        const numberInput = getByTestId('number')
-        const expDateInput = getByTestId('expDate')
-        const cvcInput = getByTestId('cvc')
+        const nameInput = screen.getByLabelText(/Name on the card/)
+        const numberInput = screen.getByLabelText(/Card number/)
+        const expDateInput = screen.getByLabelText(/Exp date/)
+        const cvcInput = screen.getByLabelText(/CVC/)
         fireEvent.change(nameInput, {target: {value: 'John Doe'}})
         fireEvent.change(numberInput, {target: {value: '1234567890123456'}})
         fireEvent.change(expDateInput, {target: {value: '12/24'}})
         fireEvent.change(cvcInput, {target: {value: '123'}})
 
-        fireEvent.submit(getByText('Update card'))
+        fireEvent.submit(screen.getByText('Update card'))
 
         expect(createStripeCardToken).toHaveBeenCalledWith({
             name: 'John Doe',
@@ -228,7 +228,6 @@ describe('PaymentMethodView', () => {
                 },
             }),
         })
-        const {getByText, getByTestId} = screen
 
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
@@ -241,11 +240,11 @@ describe('PaymentMethodView', () => {
             </QueryClientProvider>
         )
 
-        expect(getByText('Summary')).toBeInTheDocument()
+        expect(screen.getByText('Summary')).toBeInTheDocument()
 
         //We show the total sum based on the selected products from the redux store,
         //not from the session storage, which is used only for canceled subscriptions
-        expect(getByTestId('totalSum')).toHaveTextContent('$90')
+        expect(screen.getByLabelText('Total price')).toHaveTextContent('$90')
     })
 
     it('should show the Summary component with the correct sums for canceled subscription', () => {
@@ -256,7 +255,6 @@ describe('PaymentMethodView', () => {
                 current_subscription: null,
             }),
         })
-        const {getByText, getByTestId} = screen
 
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
@@ -269,10 +267,10 @@ describe('PaymentMethodView', () => {
             </QueryClientProvider>
         )
 
-        expect(getByText('Summary')).toBeInTheDocument()
+        expect(screen.getByText('Summary')).toBeInTheDocument()
 
         //Even though there are no current products (as we have for canceled subscription),
         //we still show the total sum based on the selected products from the session storage
-        expect(getByTestId('totalSum')).toHaveTextContent('$60')
+        expect(screen.getByLabelText('Total price')).toHaveTextContent('$60')
     })
 })

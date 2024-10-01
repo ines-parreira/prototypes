@@ -167,7 +167,7 @@ exports[`UsageAndPlansView should render 1`] = `
                   class="totalPrice"
                 >
                   <span
-                    data-testid="totalSum"
+                    aria-label="Total price"
                   >
                     $0
                   </span>

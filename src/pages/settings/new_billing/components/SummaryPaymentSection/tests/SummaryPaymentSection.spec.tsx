@@ -1,14 +1,16 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
+
 import {
     HELPDESK_PRODUCT_ID,
     products,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {RootState, StoreDispatch} from 'state/types'
+
 import SummaryPaymentSection from '../SummaryPaymentSection'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
@@ -125,12 +127,15 @@ describe('SummaryPaymentSection', () => {
             }),
         })
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <SummaryPaymentSection {...props} />
             </Provider>
         )
-        expect(getByTestId('inactiveShopifyPayment')).toBeInTheDocument()
+
+        expect(
+            screen.getByText(/Payment with Shopify is inactive/)
+        ).toBeInTheDocument()
     })
 
     it('should render valid payment method - Shopify', () => {
@@ -154,12 +159,15 @@ describe('SummaryPaymentSection', () => {
             }),
         })
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <SummaryPaymentSection {...props} />
             </Provider>
         )
-        expect(getByTestId('activeShopifyPayment')).toBeInTheDocument()
+
+        expect(
+            screen.getByText(/Payment with Shopify is active/)
+        ).toBeInTheDocument()
     })
 
     it('should render canceled payment method - Shopify', () => {
@@ -183,11 +191,14 @@ describe('SummaryPaymentSection', () => {
             }),
         })
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <SummaryPaymentSection {...props} />
             </Provider>
         )
-        expect(getByTestId('canceledShopifyPayment')).toBeInTheDocument()
+
+        expect(
+            screen.getByText(/Payment with Shopify is canceled/)
+        ).toBeInTheDocument()
     })
 })

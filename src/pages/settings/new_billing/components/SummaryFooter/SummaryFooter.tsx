@@ -144,11 +144,7 @@ const SummaryFooter = ({
                 "You agree to be charged in accordance with the subscription plan until you cancel your subscription. Previous charges won't be refunded when you cancel unless it is legally required. Your payment data is encrypted and secure. All amounts shown are in USD."
         }
 
-        return (
-            <div className={css.legalText} data-testid="legalText">
-                {text}
-            </div>
-        )
+        return <div className={css.legalText}>{text}</div>
     }, [isTrialing, isCurrentSubscriptionCanceled, isPaymentMethodFooter])
 
     return (
@@ -186,7 +182,6 @@ const SummaryFooter = ({
                                 <label
                                     htmlFor="terms"
                                     className={css.termsLabel}
-                                    data-testid="terms"
                                 >
                                     I agree to the{' '}
                                     <a
@@ -220,7 +215,7 @@ const SummaryFooter = ({
                     {!isTrialing &&
                         anyDowngradedPlanSelected &&
                         !anyNewProductSelected && (
-                            <div data-testid="downgradeText">
+                            <div>
                                 Changes to your subscription will apply starting
                                 on <strong>{periodEnd}</strong>.
                             </div>

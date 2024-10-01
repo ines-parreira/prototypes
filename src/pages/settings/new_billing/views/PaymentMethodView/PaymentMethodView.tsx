@@ -127,7 +127,6 @@ const PaymentMethodView = ({
                                 updateField('name', name)
                             }}
                             error={errors.name}
-                            data-testid="name"
                         />
                         <div className={css.row}>
                             <InputField
@@ -147,7 +146,6 @@ const PaymentMethodView = ({
                                     )
                                 }
                                 error={errors.number}
-                                data-testid="number"
                             />
                             <InputField
                                 className={css.inputRow}
@@ -166,7 +164,6 @@ const PaymentMethodView = ({
                                     )
                                 }
                                 error={errors.expDate}
-                                data-testid="expDate"
                             />
                             <InputField
                                 className={css.inputRow}
@@ -185,7 +182,6 @@ const PaymentMethodView = ({
                                     )
                                 }
                                 error={errors.cvc}
-                                data-testid="cvc"
                             />
                         </div>
                         <div className={css.disclaimer}>

@@ -175,7 +175,6 @@ const SummaryPaymentSection = ({
                             [css.paymentInformationView]:
                                 isPaymentInformationView,
                         })}
-                        data-testid="activeShopifyPayment"
                     >
                         <div
                             className={classNames(css.method, {

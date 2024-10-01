@@ -116,7 +116,7 @@ const SummaryItem = ({
                 {!!oldPlanPrice &&
                     selectedPlan.isSelected &&
                     !isFrequencyChanged && (
-                        <div data-testid="oldPrice" className={css.oldPrice}>
+                        <div aria-label="Old price" className={css.oldPrice}>
                             {formatAmount(oldPlanPrice, currency)}
                         </div>
                     )}

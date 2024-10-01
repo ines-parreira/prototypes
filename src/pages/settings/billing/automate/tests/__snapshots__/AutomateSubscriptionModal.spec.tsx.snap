@@ -71,7 +71,6 @@ exports[`<AutomateSubscriptionModal /> should render for customers already with 
             >
               <div
                 class="container"
-                data-testid="automateModalDescription"
               >
                 <div
                   class="card"
@@ -375,7 +374,6 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
             >
               <div
                 class="container"
-                data-testid="automateModalDescription"
               >
                 <div
                   class="card"

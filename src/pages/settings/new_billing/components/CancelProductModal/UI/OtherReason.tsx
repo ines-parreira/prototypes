@@ -14,7 +14,7 @@ const OtherReason = ({
     handleOtherReasonChange,
 }: OtherReasonProps) => {
     return (
-        <div data-testid="other-reason" className={css.otherReasonContainer}>
+        <div className={css.otherReasonContainer}>
             <Instruction isRequired={isRequired}>
                 Please share any additional details
             </Instruction>

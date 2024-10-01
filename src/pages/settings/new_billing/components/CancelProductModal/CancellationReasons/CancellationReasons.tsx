@@ -57,10 +57,7 @@ const CancellationReasons = (props: Props) => {
         )
     }
     return (
-        <div
-            data-testid="cancellation-reasons"
-            className={css.cancellationReasonsContainer}
-        >
+        <div className={css.cancellationReasonsContainer}>
             <div>
                 Your opinion means a lot to us. Please tell us why you are
                 cancelling your plan.

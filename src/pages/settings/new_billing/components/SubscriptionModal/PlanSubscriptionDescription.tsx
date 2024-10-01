@@ -125,10 +125,7 @@ const PlanSubscriptionDescription = ({
     }, [isEnterprisePlan, isTrialing, isPaymentEnabled])
 
     return (
-        <div
-            className={css.container}
-            data-testid={`${productInfo.title.toLowerCase()}ModalDescription`}
-        >
+        <div className={css.container}>
             <div className={css.card}>
                 <div className={css.cardHeader}>
                     <div className={css.title}>

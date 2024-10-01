@@ -1,7 +1,9 @@
 import React from 'react'
-import {render} from '@testing-library/react'
-import {PlanInterval, ProductType} from 'models/billing/types'
+import {render, screen} from '@testing-library/react'
+
 import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
+import {PlanInterval, ProductType} from 'models/billing/types'
+
 import SummaryItem, {SummaryItemProps} from '../SummaryItem'
 
 describe('SummaryItem', () => {
@@ -51,24 +53,29 @@ describe('SummaryItem', () => {
                 currentPlan={undefined}
             />
         )
+
         expect(container.firstChild).toBeNull()
     })
 
     it('displays correct details when selectedPlan.isSelected is true', () => {
-        const {getByText} = render(<SummaryItem {...props} />)
-        expect(getByText('Helpdesk')).toBeInTheDocument()
-        expect(getByText('Basic - 300 tickets/month')).toBeInTheDocument()
+        render(<SummaryItem {...props} />)
+
+        expect(screen.getByText('Helpdesk')).toBeInTheDocument()
+        expect(
+            screen.getByText('Basic - 300 tickets/month')
+        ).toBeInTheDocument()
     })
 
     it('does not display old plan when product.price_id matches selected plan', () => {
-        const {queryByTestId} = render(
+        render(
             <SummaryItem {...props} currentPlan={basicMonthlyHelpdeskPlan} />
         )
-        expect(queryByTestId('oldPrice')).toBeNull()
+
+        expect(screen.queryByLabelText('Old price')).not.toBeInTheDocument()
     })
 
     it('displays old plan when currentPlan.price_id does not match selected plan', () => {
-        const {queryByTestId} = render(
+        render(
             <SummaryItem
                 {...props}
                 currentPlan={{
@@ -77,6 +84,8 @@ describe('SummaryItem', () => {
                 }}
             />
         )
-        expect(queryByTestId('oldPrice')).toBeInTheDocument() // Replace '50' with the expected old price you want to display
+
+        // Replace '50' with the expected old price you want to display
+        expect(screen.getByLabelText('Old price')).toBeInTheDocument()
     })
 })

@@ -1,10 +1,15 @@
 import React from 'react'
 import {fireEvent, render, within, screen} from '@testing-library/react'
+
+import {
+    CommonReasonLabel,
+    HelpdeskPrimaryReasonLabel,
+} from 'pages/settings/new_billing/components/CancelProductModal/constants'
+import {DEFAULT_STATE} from 'pages/settings/new_billing/components/CancelProductModal/reducers'
+import {HELPDESK_CANCELLATION_SCENARIO} from 'pages/settings/new_billing/components/CancelProductModal/scenarios'
+import {CancellationReasonsActionType} from 'pages/settings/new_billing/components/CancelProductModal/types'
+
 import CancellationReasons from '../CancellationReasons'
-import {DEFAULT_STATE} from '../../reducers'
-import {CommonReasonLabel, HelpdeskPrimaryReasonLabel} from '../../constants'
-import {CancellationReasonsActionType} from '../../types'
-import {HELPDESK_CANCELLATION_SCENARIO} from '../../scenarios'
 
 describe('CancellationReasons - Helpdesk', () => {
     it('renders with no reasons selected', () => {
@@ -43,7 +48,7 @@ describe('CancellationReasons - Helpdesk', () => {
             completed: true,
         }
 
-        const {container, getByText, getByRole, getByTestId} = render(
+        const {container, getByText, getByRole} = render(
             <CancellationReasons
                 reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
                 reasonsState={state}
@@ -63,13 +68,23 @@ describe('CancellationReasons - Helpdesk', () => {
         const selectorElement = getByRole('combobox')
         expect(selectorElement).toHaveTextContent(state.primaryReason.label)
 
-        const secondaryReasons = getByTestId('secondary-reasons-selector')
+        const secondaryReasons = screen.getByText(
+            'Could you please share more?'
+        )
+        const secondaryReasonsValue = screen.getByLabelText(
+            state.secondaryReason.label
+        )
         expect(secondaryReasons).toBeInTheDocument()
-        expect(secondaryReasons).toHaveTextContent(state.secondaryReason.label)
+        expect(secondaryReasonsValue).toBeChecked()
 
-        const otherReason = getByTestId('other-reason')
+        const otherReason = screen.getByText(
+            'Please share any additional details'
+        )
+        const otherReasonValue = screen.getByDisplayValue(
+            state.otherReason.label
+        )
         expect(otherReason).toBeInTheDocument()
-        expect(otherReason).toHaveTextContent(state.otherReason.label)
+        expect(otherReasonValue).toBeInTheDocument()
     })
 
     it('renders with Other primary reason', () => {
@@ -79,7 +94,7 @@ describe('CancellationReasons - Helpdesk', () => {
             primaryReason: {label: CommonReasonLabel.Other},
         }
 
-        const {getByTestId} = render(
+        render(
             <div>
                 <CancellationReasons
                     reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
@@ -89,7 +104,9 @@ describe('CancellationReasons - Helpdesk', () => {
             </div>
         )
 
-        expect(getByTestId('other-reason')).toBeInTheDocument()
+        expect(
+            screen.getByText('Please share any additional details')
+        ).toBeInTheDocument()
     })
 
     it('renders with "I prefer not to say" primary reason', () => {

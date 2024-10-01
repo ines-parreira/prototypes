@@ -259,7 +259,7 @@ describe('CampaignPublishScheduleStep', () => {
         )
     })
 
-    it('user is not able to select `durign` option, because there is trigger definied', () => {
+    it('user is not able to select `during` option, because there is trigger defined', () => {
         const triggerId = '1'
         const campaignTrigger = {
             id: triggerId,
@@ -273,13 +273,17 @@ describe('CampaignPublishScheduleStep', () => {
             publish_mode: CampaignScheduleModeEnum.Schedule,
         }
 
-        const {getByTestId} = renderComponent({
+        renderComponent({
             campaignData,
             props: defaultProps,
         })
 
-        const duringOptionSelect = getByTestId('selected-schedule-rule')
-        expect(duringOptionSelect.textContent).toEqual('Business hours')
+        const duringOptionSelect = screen.getByLabelText('During')
+        userEvent.click(duringOptionSelect)
+
+        expect(screen.getByLabelText('Scheduled duration').textContent).toEqual(
+            'Business hours'
+        )
     })
 
     it('user is able to select `during` option when mode is schedule', () => {
@@ -378,7 +382,7 @@ describe('CampaignPublishScheduleStep', () => {
 
         userEvent.click(getByText('cancel'))
 
-        expect(updateCampaignSpy).toBeCalledWith('schedule', {
+        expect(updateCampaignSpy).toHaveBeenCalledWith('schedule', {
             custom_schedule: [],
             end_datetime: null,
             schedule_rule: 'anytime',

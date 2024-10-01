@@ -256,6 +256,7 @@ export const CampaignPublishScheduleStep = ({
                             </Label>
                             <SelectField
                                 id="schedule-rule"
+                                aria-label="Scheduled duration"
                                 fullWidth
                                 showSelectedOption
                                 value={

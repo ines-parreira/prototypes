@@ -45,11 +45,11 @@ const SummaryTotal = ({
                 <div className={css.totalTitle}>Total</div>
                 <div className={css.totalPrice}>
                     {!!oldPlanPrice && !isFrequencyChanged && (
-                        <div className={css.oldPrice} data-testid="oldPrice">
+                        <div className={css.oldPrice} aria-label="Old price">
                             {formatAmount(oldPlanPrice / 100, currency)}
                         </div>
                     )}
-                    <span data-testid="totalSum">
+                    <span aria-label="Total price">
                         {formatAmount(amountSelectedPlans / 100, currency)}
                     </span>
                     /{interval}

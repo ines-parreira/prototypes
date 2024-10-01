@@ -1,11 +1,13 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
+
 import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import {PlanInterval} from 'models/billing/types'
+import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+
 import SummaryTotal from '../SummaryTotal'
 
 const selectedPlans: SelectedPlans = {
@@ -35,7 +37,7 @@ const currency = 'USD'
 
 describe('SummaryTotal', () => {
     it('should render total price without old price', () => {
-        const {queryByTestId} = render(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -44,11 +46,11 @@ describe('SummaryTotal', () => {
             />
         )
 
-        expect(queryByTestId('oldPrice')).toBeNull()
+        expect(screen.queryByLabelText('Old price')).not.toBeInTheDocument()
     })
 
     it('should render total price with old price', () => {
-        const {queryByTestId} = render(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmountDifferent}
@@ -57,6 +59,6 @@ describe('SummaryTotal', () => {
             />
         )
 
-        expect(queryByTestId('oldPrice')).toBeInTheDocument()
+        expect(screen.getByLabelText('Old price')).toBeInTheDocument()
     })
 })

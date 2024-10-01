@@ -18,10 +18,7 @@ const SecondaryReasons = ({
         value: secondaryReason,
     }))
     return (
-        <div
-            data-testid="secondary-reasons-selector"
-            className={css.secondaryReasonsContainer}
-        >
+        <div className={css.secondaryReasonsContainer}>
             <Instruction isRequired>Could you please share more? </Instruction>
             <RadioFieldSet
                 onChange={handleSecondaryReasonSelection}
