@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import _escapeRegExp from 'lodash/escapeRegExp'
 
 import css from 'pages/stats/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel.less'
 import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
@@ -36,7 +37,7 @@ const FilterDropdownItemLabel = ({label, icon}: Props) => {
             return label
         }
 
-        return highlightString(label, query)
+        return highlightString(label, _escapeRegExp(query))
     }, [label, query])
 
     const [showTooltip, setShowTooltip] = useState(false)

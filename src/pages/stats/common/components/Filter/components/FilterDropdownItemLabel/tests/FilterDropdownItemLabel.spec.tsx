@@ -55,16 +55,24 @@ describe('FilterDropdownItemLabel', () => {
         )
     })
 
-    it('highlights the label correctly', () => {
-        const label = 'Test Label'
-        const query = 'Label'
+    it.each([
+        {
+            query: '[',
+            expectedHightlight: '<b>[</b>Test] Label',
+        },
+        {
+            query: 'Label',
+            expectedHightlight: '[Test] <b>Label</b>',
+        },
+    ])('highlights the label correctly', ({query, expectedHightlight}) => {
+        const label = '[Test] Label'
         render(
             <DropdownContext.Provider value={{...mockContext, query}}>
                 <FilterDropdownItemLabel label={label} />
             </DropdownContext.Provider>
         )
         expect(screen.getByTestId('filter-dropdown-item-label')).toContainHTML(
-            'Test <b>Label</b>'
+            expectedHightlight
         )
     })
 })
