@@ -248,16 +248,16 @@ function GorgiasTranslateText({
         )
     }, [textsLoadingState, translationsLoadingState])
 
-    useEffect(() => {
-        if (language && integration?.get('id')) {
-            history.replace(
-                `/app/settings/channels/gorgias_chat/${
-                    integration.get('id') as number
-                }/languages/${language.get('value')}`
-            )
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [integration, language])
+    // useEffect(() => {
+    //     if (language && integration?.get('id')) {
+    //         history.replace(
+    //             `/app/settings/channels/gorgias_chat/${
+    //                 integration.get('id') as number
+    //             }/languages/${language.get('value')}`
+    //         )
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [integration, language])
 
     useEffect(() => {
         if (languageBasedOnUrl) {

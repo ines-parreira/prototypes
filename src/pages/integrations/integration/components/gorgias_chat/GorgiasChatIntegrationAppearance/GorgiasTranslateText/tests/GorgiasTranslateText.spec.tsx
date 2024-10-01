@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, screen, fireEvent} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -80,19 +80,19 @@ describe('GorgiasTranslateText', () => {
     })
 
     // TODO. Finish the test by mocking the API calls, etc...
-    it.skip('handles language change', async () => {
-        useLocationSpy.mockReturnValue({
-            pathname: '/app/settings/channels/gorgias_chat/45/languages/it',
-        } as any)
+    // it.skip('handles language change', async () => {
+    //     useLocationSpy.mockReturnValue({
+    //         pathname: '/app/settings/channels/gorgias_chat/45/languages/it',
+    //     } as any)
 
-        render(
-            <Provider store={store}>
-                <GorgiasTranslateText integration={integration} />
-            </Provider>
-        )
-        await screen.findByText('Send us a message')
-        fireEvent.click(screen.getByText('English - US'))
-        fireEvent.click(screen.getByText('Italian'))
-        await screen.findByText('Inviaci un messaggio')
-    })
+    //     render(
+    //         <Provider store={store}>
+    //             <GorgiasTranslateText integration={integration} />
+    //         </Provider>
+    //     )
+    //     await screen.findByText('Send us a message')
+    //     fireEvent.click(screen.getByText('English - US'))
+    //     fireEvent.click(screen.getByText('Italian'))
+    //     await screen.findByText('Inviaci un messaggio')
+    // })
 })
