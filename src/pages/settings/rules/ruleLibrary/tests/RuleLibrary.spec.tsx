@@ -5,8 +5,9 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {render, screen} from '@testing-library/react'
 
+import {ManagedRulesSlugs} from 'state/rules/types'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {rule as ruleFixture} from 'fixtures/rule'
+import {rule as ruleFixture, emptyManagedRule} from 'fixtures/rule'
 import {billingState} from 'fixtures/billing'
 import {RuleRecipeTag} from 'models/ruleRecipe/types'
 import {account} from 'fixtures/account'
@@ -62,6 +63,40 @@ describe('<RuleLibrary/>', () => {
                 </Provider>
             )
             expect(screen.queryByText(/Get Automate Features/)).toBeTruthy()
+        })
+
+        it('should display badge for installed autoresponder', () => {
+            const autoCloseSpamRule = {
+                ...emptyRuleRecipeFixture,
+                slug: ManagedRulesSlugs.AutoCloseSpam,
+                rule: emptyManagedRule,
+            }
+            const props: ComponentProps<typeof RuleLibrary> = {
+                recipes: [autoCloseSpamRule],
+                rules: [emptyManagedRule],
+                searchTerm: '',
+                isReady: true,
+            }
+
+            const store = mockStore({
+                entities: {
+                    rules: {
+                        [emptyManagedRule.id]: emptyManagedRule,
+                    },
+                    ruleRecepies: {
+                        [autoCloseSpamRule.slug]: autoCloseSpamRule,
+                    },
+                },
+                billing: fromJS(billingState),
+                currentAccount: fromJS(account),
+                integrations: fromJS({integrations: []}),
+            })
+            render(
+                <Provider store={store}>
+                    <RuleLibrary {...props} />
+                </Provider>
+            )
+            expect(screen.getByAltText('installed')).toBeInTheDocument()
         })
     })
 })

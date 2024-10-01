@@ -34,7 +34,6 @@ export function RuleLibrary({
     const history = useHistory()
     const hasAutomate = useAppSelector(getHasAutomate)
     const [filteredRecipes, setFilteredRecipes] = useState(recipes)
-    const [installedSlugs, setInstalledSlugs] = useState<string[]>([])
 
     const filterRecipes = useCallback(() => {
         return recipes.filter((recipe) => {
@@ -56,32 +55,6 @@ export function RuleLibrary({
     useEffect(() => {
         setFilteredRecipes(filterRecipes())
     }, [recipes, searchTerm, filterRecipes])
-
-    const isRecipeInstalled = useCallback(
-        (recipe: RuleRecipe) => {
-            return !!rules.find((rule: Rule) => {
-                const formattedName = recipe.recipe_tag
-                    ? `[${recipe.recipe_tag}] ${recipe.rule.name}`
-                    : `${recipe.rule.name}`
-                return (
-                    formattedName === rule.name &&
-                    recipe.rule.code === rule.code &&
-                    rule.event_types === recipe.rule.event_types
-                )
-            })
-        },
-        [rules]
-    )
-
-    useEffect(
-        () =>
-            setInstalledSlugs(
-                recipes
-                    .filter((recipe) => isRecipeInstalled(recipe))
-                    .map((recipe) => recipe.slug)
-            ),
-        [recipes, rules, isRecipeInstalled]
-    )
 
     return (
         <div className={css.container}>
@@ -128,11 +101,12 @@ export function RuleLibrary({
                             key={recipe.slug}
                             isModalOpenOnLoad={activeSlug === recipe.slug}
                             isReady={isReady}
-                            isInstalled={
-                                !!installedSlugs.find(
-                                    (slug) => slug === recipe.slug
+                            isInstalled={rules.some((rule) => {
+                                return (
+                                    'settings' in rule &&
+                                    rule.settings?.slug === recipe.slug
                                 )
-                            }
+                            })}
                         />
                     ))
             ) : (
