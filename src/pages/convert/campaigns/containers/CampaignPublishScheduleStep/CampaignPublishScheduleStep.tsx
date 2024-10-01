@@ -7,6 +7,8 @@ import {Label} from '@gorgias/ui-kit'
 
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import useAppSelector from 'hooks/useAppSelector'
+import {useModalManager} from 'hooks/useModalManager'
+
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
@@ -23,6 +25,7 @@ import {
     CampaignScheduleModeEnum,
     CampaignScheduleRuleValueEnum,
 } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
 import CampaignScheduleSummary from 'pages/convert/campaigns/components/CampaignScheduleSummary'
 import CampaignCustomSchedule from 'pages/convert/campaigns//components/CampaignCustomSchedule'
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
@@ -57,6 +60,7 @@ export const CampaignPublishScheduleStep = ({
 }: Props) => {
     const {isEditMode} = useCampaignFormContext()
     const {campaign, updateCampaign, triggers} = useCampaignDetailsContext()
+    const convertModal = useModalManager('ConvertSubscriber')
 
     const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
     const timezone = businessHoursSettings?.data?.timezone ?? DEFAULT_TIMEZONE
@@ -109,6 +113,14 @@ export const CampaignPublishScheduleStep = ({
             ...scheduleInnerConfiguration,
             schedule_rule: value,
         })
+    }
+
+    const openModal = () => {
+        convertModal.openModal()
+    }
+
+    const closeModal = () => {
+        convertModal.closeModal()
     }
 
     const updateDates = ({
@@ -171,97 +183,120 @@ export const CampaignPublishScheduleStep = ({
     }, [scheduleInnerConfiguration.schedule_rule])
 
     return (
-        <StatefulAccordion
-            {...stateProps}
-            id={CampaignStepsKeys.PublishSchedule}
-            title="Publish your campaign"
-        >
-            <RadioFieldSet
-                selectedValue={campaign.publish_mode as string}
-                options={[
-                    {
-                        value: CampaignScheduleModeEnum.PublishNow,
-                        label: 'Publish now',
-                        caption:
-                            'Launch your campaign immediately to start running on your store right away',
-                    },
-                    {
-                        value: CampaignScheduleModeEnum.SaveAndPublishLater,
-                        label: 'Save and publish later',
-                        caption:
-                            'Save your work in progress and publish your campaign later',
-                    },
-                    {
-                        value: CampaignScheduleModeEnum.Schedule,
-                        label: (
-                            <>
-                                Schedule{' '}
-                                {!isConvertSubscriber && (
-                                    <span style={{color: '#0075FF'}}>
-                                        Subscribe to Convert
-                                    </span>
-                                )}
-                            </>
-                        ),
-                        caption:
-                            'Plan your campaign in advance by choosing a future date and time for publication',
-                        disabled: isLightCampaign || !isConvertSubscriber,
-                    },
-                ]}
-                onChange={(value: any) => updateCampaign('publish_mode', value)}
+        <>
+            <StatefulAccordion
+                {...stateProps}
+                id={CampaignStepsKeys.PublishSchedule}
+                title="Publish your campaign"
+            >
+                <RadioFieldSet
+                    selectedValue={campaign.publish_mode as string}
+                    options={[
+                        {
+                            value: CampaignScheduleModeEnum.PublishNow,
+                            label: 'Publish now',
+                            caption:
+                                'Launch your campaign immediately to start running on your store right away',
+                        },
+                        {
+                            value: CampaignScheduleModeEnum.SaveAndPublishLater,
+                            label: 'Save and publish later',
+                            caption:
+                                'Save your work in progress and publish your campaign later',
+                        },
+                        {
+                            value: CampaignScheduleModeEnum.Schedule,
+                            label: (
+                                <>
+                                    Schedule{' '}
+                                    {!isConvertSubscriber && (
+                                        <span
+                                            className={
+                                                css.convertSubscriberLabel
+                                            }
+                                            onClick={openModal}
+                                        >
+                                            Subscribe to Convert
+                                        </span>
+                                    )}
+                                </>
+                            ),
+                            caption:
+                                'Plan your campaign in advance by choosing a future date and time for publication',
+                            disabled: isLightCampaign || !isConvertSubscriber,
+                        },
+                    ]}
+                    onChange={(value: any) =>
+                        updateCampaign('publish_mode', value)
+                    }
+                />
+
+                {campaign.publish_mode ===
+                    CampaignScheduleModeEnum.Schedule && (
+                    <>
+                        <div className={css.marginTop}>
+                            <CampaignSchedulePicker
+                                timezone={timezone}
+                                startDate={
+                                    scheduleInnerConfiguration.start_datetime
+                                }
+                                endDate={
+                                    scheduleInnerConfiguration.end_datetime
+                                }
+                                onChange={updateDates}
+                            />
+                        </div>
+
+                        <div className={css.marginTop}>
+                            <Label
+                                htmlFor="schedule-rule"
+                                className={css.label}
+                            >
+                                During
+                            </Label>
+                            <SelectField
+                                id="schedule-rule"
+                                fullWidth
+                                showSelectedOption
+                                value={
+                                    (!!businessHourTrigger
+                                        ? businessHourTrigger.value
+                                        : campaign.schedule
+                                              ?.schedule_rule) as string
+                                }
+                                onChange={updateScheduleRule}
+                                options={DURATION_VALUES}
+                                disabled={!!businessHourTrigger}
+                            />
+                        </div>
+
+                        {scheduleInnerConfiguration.schedule_rule ===
+                            CampaignScheduleRuleValueEnum.Custom && (
+                            <CampaignCustomSchedule
+                                customSchedule={
+                                    scheduleInnerConfiguration.custom_schedule as CustomScheduleSchema[]
+                                }
+                                onChange={updateCustomSchedule}
+                            />
+                        )}
+
+                        <div className={css.marginTop}>
+                            <CampaignScheduleSummary
+                                scheduleConfiguration={
+                                    scheduleInnerConfiguration
+                                }
+                            />
+                        </div>
+                    </>
+                )}
+            </StatefulAccordion>
+            <ConvertSubscriptionModal
+                canduId={'campaign-triggers-convert-modal-body'}
+                isOpen={convertModal.isOpen()}
+                onClose={closeModal}
+                onSubscribe={closeModal}
             />
-
-            {campaign.publish_mode === CampaignScheduleModeEnum.Schedule && (
-                <>
-                    <div className={css.marginTop}>
-                        <CampaignSchedulePicker
-                            timezone={timezone}
-                            startDate={
-                                scheduleInnerConfiguration.start_datetime
-                            }
-                            endDate={scheduleInnerConfiguration.end_datetime}
-                            onChange={updateDates}
-                        />
-                    </div>
-
-                    <div className={css.marginTop}>
-                        <Label htmlFor="schedule-rule" className={css.label}>
-                            During
-                        </Label>
-                        <SelectField
-                            id="schedule-rule"
-                            fullWidth
-                            showSelectedOption
-                            value={
-                                (!!businessHourTrigger
-                                    ? businessHourTrigger.value
-                                    : campaign.schedule
-                                          ?.schedule_rule) as string
-                            }
-                            onChange={updateScheduleRule}
-                            options={DURATION_VALUES}
-                            disabled={!!businessHourTrigger}
-                        />
-                    </div>
-
-                    {scheduleInnerConfiguration.schedule_rule ===
-                        CampaignScheduleRuleValueEnum.Custom && (
-                        <CampaignCustomSchedule
-                            customSchedule={
-                                scheduleInnerConfiguration.custom_schedule as CustomScheduleSchema[]
-                            }
-                            onChange={updateCustomSchedule}
-                        />
-                    )}
-
-                    <div className={css.marginTop}>
-                        <CampaignScheduleSummary
-                            scheduleConfiguration={scheduleInnerConfiguration}
-                        />
-                    </div>
-                </>
-            )}
-        </StatefulAccordion>
+        </>
     )
 }
 

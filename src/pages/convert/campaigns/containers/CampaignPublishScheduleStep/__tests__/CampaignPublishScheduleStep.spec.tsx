@@ -1,11 +1,15 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-
+import {ulid} from 'ulidx'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import userEvent from '@testing-library/user-event'
 import {act, render, fireEvent} from '@testing-library/react'
+
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
 
 import {campaign, campaignSchedule} from 'fixtures/campaign'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
@@ -26,6 +30,24 @@ import {
 import CampaignPublishScheduleStep from '../CampaignPublishScheduleStep'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
+
+const mockOpenFn = jest.fn()
+jest.mock('hooks/useModalManager/useModalManager.tsx', () => {
+    return {
+        useModalManager: () => ({
+            getParams: jest.fn().mockReturnValue({id: 1}),
+            isOpen: jest.fn().mockReturnValue(false),
+            on: jest.fn(),
+            openModal: mockOpenFn,
+        }),
+    }
+})
+
+jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
+    return jest.fn(() => {
+        return <div>ConvertSubscriptionModal</div>
+    })
+})
 
 const defaultState = {
     currentAccount: fromJS({
@@ -71,12 +93,23 @@ describe('CampaignPublishScheduleStep', () => {
         campaignData?: Partial<Campaign>
         props: any
     }) => {
+        const triggers = (campaignData?.triggers ?? []).reduce(
+            (acc, trigger) => {
+                const id = ulid()
+                return {
+                    ...acc,
+                    [trigger?.id ?? id.toString()]: trigger,
+                }
+            },
+            {}
+        )
+
         const campaignContextValues: CampaignDetailsFormApi = {
             campaign: {
                 ...campaign,
                 ...(campaignData ? campaignData : {}),
             } as Campaign,
-            triggers: {},
+            triggers: triggers,
             updateCampaign: updateCampaignSpy,
             addTrigger: jest.fn(),
             updateTrigger: jest.fn(),
@@ -169,6 +202,21 @@ describe('CampaignPublishScheduleStep', () => {
         expect(getByText('Subscribe to Convert')).toBeInTheDocument()
     })
 
+    it('user can open and close `subscribe to convert` modal', () => {
+        const {getByText} = renderComponent({
+            props: {
+                ...defaultProps,
+                isConvertSubscriber: false,
+            },
+        })
+
+        act(() => {
+            getByText('Subscribe to Convert').click()
+        })
+
+        expect(mockOpenFn).toBeCalled()
+    })
+
     it('schedule option is disabled for light campaign', () => {
         const {container} = renderComponent({
             props: {
@@ -209,6 +257,29 @@ describe('CampaignPublishScheduleStep', () => {
             'publish_mode',
             'publish_now'
         )
+    })
+
+    it('user is not able to select `durign` option, because there is trigger definied', () => {
+        const triggerId = '1'
+        const campaignTrigger = {
+            id: triggerId,
+            type: CampaignTriggerType.BusinessHours,
+            operator: CampaignTriggerOperator.Eq,
+            value: CampaignTriggerBusinessHoursValuesEnum.During,
+        }
+        const campaignData = {
+            trigger_rule: `{${triggerId}}`,
+            triggers: [campaignTrigger],
+            publish_mode: CampaignScheduleModeEnum.Schedule,
+        }
+
+        const {getByTestId} = renderComponent({
+            campaignData,
+            props: defaultProps,
+        })
+
+        const duringOptionSelect = getByTestId('selected-schedule-rule')
+        expect(duringOptionSelect.textContent).toEqual('Business hours')
     })
 
     it('user is able to select `during` option when mode is schedule', () => {
