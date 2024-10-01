@@ -590,6 +590,7 @@ export const HelpCenterCategoryEdit = ({
                         <SelectField
                             allowCustomValue
                             id="parentCategory"
+                            aria-label="Parent category"
                             dropdownMenuClassName={classNames(
                                 css['parentDropdown'],
                                 {

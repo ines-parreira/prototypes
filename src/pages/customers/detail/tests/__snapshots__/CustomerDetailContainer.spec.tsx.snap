@@ -63,8 +63,8 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
               class="AgentLabel assigneeLabel"
             >
               <span
+                aria-label="Alex Plugaru icon"
                 class="material-icons md-2"
-                data-testid="accountCircle"
               >
                 account_circle
               </span>

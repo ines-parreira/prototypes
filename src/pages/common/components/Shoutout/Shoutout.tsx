@@ -1,23 +1,22 @@
-import React, {ReactNode, useMemo, useRef} from 'react'
+import React, {Fragment, ReactNode, useMemo, useRef} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
-
 import isNil from 'lodash/isNil'
-
 import classNames from 'classnames'
+
 import Avatar from '../Avatar/Avatar'
+
 import css from './Shoutout.less'
 
 type Props = {
     className?: string
-    testId?: string
 
     persons: ShoutoutPerson[]
     /**
      * The label of the shoutout card in case there are multiple persons
      */
-    multiplePersonsLabel: React.ReactNode | ((count: number) => React.ReactNode)
-    metricName: React.ReactNode
-    value: React.ReactNode
+    multiplePersonsLabel: ReactNode | ((count: number) => ReactNode)
+    metricName: string
+    value: ReactNode
     maxTooltipPersons?: number
 }
 
@@ -32,7 +31,6 @@ export const SHOUTOUT_NO_VALUE_PLACEHOLDER = '-'
 
 export default function Shoutout({
     className,
-    testId,
     persons,
     multiplePersonsLabel,
     metricName,
@@ -61,7 +59,7 @@ export default function Shoutout({
     const personsLengthExceeded = persons.length > maxTooltipPersons
 
     return (
-        <div className={classNames(css.card, className)} data-testid={testId}>
+        <div className={classNames(css.card, className)}>
             {persons.length !== 1 ? (
                 <div className={css.avatarPlaceholder}>
                     {!persons.length ? (
@@ -81,7 +79,10 @@ export default function Shoutout({
                 />
             )}
             <div className={css.content}>
-                <div className={css.label}>
+                <div
+                    className={css.label}
+                    aria-label={`Agents' information for ${metricName}`}
+                >
                     {getLabel()}{' '}
                     {moreThanOnePerson && (
                         <>
@@ -91,26 +92,26 @@ export default function Shoutout({
                                     'material-icons',
                                     css.infoIcon
                                 )}
-                                data-testid="shoutout-tooltip-trigger"
+                                aria-label="Hover to display more people"
                             >
                                 info_outline
                             </i>
                             <Tooltip
-                                boundariesElement={'window'}
+                                boundariesElement="window"
                                 target={tooltipRef}
                                 autohide={false}
-                                placement={'top-start'}
+                                placement="top-start"
                                 delay={{show: 0, hide: 500}}
                             >
                                 {tooltipPersons.map((person, idx, source) => (
-                                    <React.Fragment key={idx}>
+                                    <Fragment key={idx}>
                                         {person.name}
                                         {idx !== source.length - 1 && (
                                             <>
                                                 ; <br />
                                             </>
                                         )}
-                                    </React.Fragment>
+                                    </Fragment>
                                 ))}
                                 {personsLengthExceeded && (
                                     <>

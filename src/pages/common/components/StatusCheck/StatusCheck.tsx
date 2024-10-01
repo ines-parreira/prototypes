@@ -27,7 +27,7 @@ export const StatusCheck = ({
                 intent="secondary"
             >
                 {isLoading ? (
-                    <Row noGutters data-testid="icon-loading">
+                    <Row noGutters>
                         <Col className="mr-2">
                             <Loader minHeight="16px" size="16px" />
                         </Col>

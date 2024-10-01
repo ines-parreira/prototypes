@@ -2,11 +2,12 @@ import React from 'react'
 import {Call} from '@twilio/voice-sdk'
 import classNames from 'classnames'
 
+import {useCallStatus} from 'hooks/integrations/phone/useCallStatus'
 import Button from 'pages/common/components/button/Button'
-import {useCallStatus} from '../../../../../hooks/integrations/phone/useCallStatus'
-import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
-import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
-import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
+import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
+import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
+import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
+
 import {useConnectionParameters} from '../hooks'
 
 import css from './OutgoingPhoneCall.less'
@@ -25,10 +26,7 @@ export default function OutgoingPhoneCall({
     const status = useCallStatus(call)
 
     return (
-        <div
-            data-testid="outgoing-phone-call"
-            className={classNames(css.container, className)}
-        >
+        <div className={classNames(css.container, className)}>
             <div className={css.inner}>
                 <PhoneIntegrationName integrationId={integrationId} primary />
                 <span className="mr-1">Outgoing call to</span>
@@ -38,7 +36,6 @@ export default function OutgoingPhoneCall({
                 />
                 <Button
                     intent="secondary"
-                    data-testid="end-call-button"
                     className={css.end}
                     onClick={() => call.disconnect()}
                 >

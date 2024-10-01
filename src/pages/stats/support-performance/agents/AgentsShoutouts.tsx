@@ -3,7 +3,8 @@ import React from 'react'
 import css from 'pages/stats/support-performance/agents/AgentsShoutouts.less'
 import {agentsShoutoutsConfig} from 'pages/stats/support-performance/agents/AgentsShoutoutsConfig'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
-import AgentsShoutout from 'pages/stats/support-performance/agents/AgentShoutout'
+
+import AgentsShoutout from './AgentsShoutout'
 
 export default function AgentsShoutouts() {
     const isMobileResolution = useIsMobileResolution()

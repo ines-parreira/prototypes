@@ -142,7 +142,6 @@ const PageEmbedmentForm = ({
                 <InputField
                     isRequired
                     className={css.inputField}
-                    data-testid="page-name-input"
                     label="Page name"
                     placeholder={pageNamePlaceholder}
                     onChange={(nextValue) => {
@@ -169,7 +168,6 @@ const PageEmbedmentForm = ({
                 <InputField
                     isRequired
                     className={css.inputField}
-                    data-testid="page-slug-input"
                     label="Slug"
                     placeholder={pageSlugPlaceholder}
                     onChange={(nextValue) => {

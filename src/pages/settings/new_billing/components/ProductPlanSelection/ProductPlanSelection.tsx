@@ -338,11 +338,11 @@ const ProductPlanSelection = ({
                         <SelectField
                             options={options}
                             id="priceSelect"
+                            aria-label="Price value"
                             placeholder="Select a plan"
                             value={selectedPlan?.price_id}
                             fullWidth
                             onChange={handleSelectProductPlan}
-                            data-testid="priceSelect"
                             showSelectedOption
                             dropdownMenuClassName={css.select}
                             disabled={!editingAvailable}

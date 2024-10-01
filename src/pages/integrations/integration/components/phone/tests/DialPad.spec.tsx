@@ -26,7 +26,7 @@ describe('<DialPad/>', () => {
         renderComponent()
 
         act(() => {
-            fireEvent.click(screen.getByTestId(`digit-${digit}`))
+            fireEvent.click(screen.getByText(digit))
         })
 
         expect(onDigitClick).toHaveBeenCalledWith(digit)
@@ -36,7 +36,7 @@ describe('<DialPad/>', () => {
         renderComponent('123')
 
         act(() => {
-            fireEvent.click(screen.getByTestId('digit-4'))
+            fireEvent.click(screen.getByText(digits[3]))
         })
 
         expect(onChange).toHaveBeenCalledWith('1234')

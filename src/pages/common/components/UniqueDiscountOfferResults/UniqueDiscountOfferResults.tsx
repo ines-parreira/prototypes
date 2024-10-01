@@ -33,7 +33,7 @@ import {UniqueDiscountOfferCreateModal} from 'pages/common/components/UniqueDisc
 
 import {toJS} from 'utils'
 import css from './UniqueDiscountOfferResults.less'
-import {computeDiscountOfferSummary, testIds} from './utils'
+import {computeDiscountOfferSummary} from './utils'
 
 const MAX_LIMIT: number = 15
 
@@ -270,10 +270,6 @@ export default function UniqueDiscountCodeResults({
                                             className={css.discountContainer}
                                         >
                                             <ListGroupItem
-                                                data-testid={
-                                                    testIds.discountOffer +
-                                                    index
-                                                }
                                                 key={index}
                                                 tag="button"
                                                 id={'resultRow'.concat(
@@ -315,9 +311,7 @@ export default function UniqueDiscountCodeResults({
                                                 <IconButton
                                                     intent="secondary"
                                                     fillStyle="ghost"
-                                                    data-testid={
-                                                        testIds.editBtn
-                                                    }
+                                                    aria-label="Edit discount offer"
                                                     onClick={(e) =>
                                                         onEditDiscountOffer(
                                                             e,
@@ -330,9 +324,7 @@ export default function UniqueDiscountCodeResults({
                                                 <IconButton
                                                     intent="destructive"
                                                     fillStyle="ghost"
-                                                    data-testid={
-                                                        testIds.deleteIntentBtn
-                                                    }
+                                                    aria-label="Delete discount offer"
                                                     onClick={(e) =>
                                                         onDeleteDiscountOfferIntent(
                                                             e,

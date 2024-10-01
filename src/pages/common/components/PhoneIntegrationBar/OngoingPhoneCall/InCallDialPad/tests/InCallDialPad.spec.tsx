@@ -1,9 +1,10 @@
 import React from 'react'
-import {fireEvent, render, findByTestId, waitFor} from '@testing-library/react'
+import {fireEvent, render, waitFor, screen} from '@testing-library/react'
 import {Call} from '@twilio/voice-sdk'
 import {act} from '@testing-library/react-hooks'
 
-import {mockIncomingCall} from '../../../../../../../tests/twilioMocks'
+import {mockIncomingCall} from 'tests/twilioMocks'
+
 import InCallDialPad from '../InCallDialPad'
 
 const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#']
@@ -49,44 +50,45 @@ jest.mock(
         }
 )
 
-describe('<InCallDialPad/>', () => {
+describe('<InCallDialPad />', () => {
     it('should render as closed', async () => {
         const call = mockIncomingCall() as Call
 
-        const {findByTestId, queryByTestId} = render(
-            <InCallDialPad call={call} />
-        )
+        render(<InCallDialPad call={call} />)
 
-        await waitFor(() => findByTestId('dial-pad-button'))
-        expect(queryByTestId('digit-1')).toBeNull()
+        await waitFor(() => screen.getByLabelText('Phone dial pad'))
+
+        expect(screen.queryByTestId('digit-1')).toBeNull()
     })
 
     it('should render as open', async () => {
         const call = mockIncomingCall() as Call
 
-        const {getByTestId} = render(<InCallDialPad call={call} />)
+        render(<InCallDialPad call={call} />)
 
         act(() => {
-            fireEvent.click(getByTestId('dial-pad-button'))
+            fireEvent.click(screen.getByLabelText('Phone dial pad'))
         })
 
-        await waitFor(() => expect(getByTestId('digit-1')).toBeInTheDocument())
+        await waitFor(() =>
+            expect(screen.getByTestId('digit-1')).toBeInTheDocument()
+        )
     })
 
     it.each(digits)('should send clicked digit', async (digit) => {
         const call = mockIncomingCall() as Call
 
-        const {getByTestId} = render(<InCallDialPad call={call} />)
+        render(<InCallDialPad call={call} />)
 
         act(() => {
-            fireEvent.click(getByTestId('dial-pad-button'))
+            fireEvent.click(screen.getByLabelText('Phone dial pad'))
         })
 
         const digitTestId = `digit-${digit}`
-        await waitFor(() => findByTestId(document.body, digitTestId))
+        await waitFor(() => screen.getByTestId(digitTestId))
 
         act(() => {
-            fireEvent.click(getByTestId(digitTestId))
+            fireEvent.click(screen.getByTestId(digitTestId))
         })
 
         expect(call.sendDigits).toHaveBeenCalledWith(digit)
@@ -95,13 +97,15 @@ describe('<InCallDialPad/>', () => {
     it('should format output when output is longer than max length', async () => {
         const call = mockIncomingCall() as Call
 
-        const {getByTestId} = render(<InCallDialPad call={call} />)
+        render(<InCallDialPad call={call} />)
 
         act(() => {
-            fireEvent.click(getByTestId('dial-pad-button'))
+            fireEvent.click(screen.getByLabelText('Phone dial pad'))
         })
 
-        await waitFor(() => expect(getByTestId('digit-1')).toBeInTheDocument())
+        await waitFor(() =>
+            expect(screen.getByTestId('digit-1')).toBeInTheDocument()
+        )
 
         act(() => {
             const dialedDigits = [
@@ -119,12 +123,12 @@ describe('<InCallDialPad/>', () => {
                 '2',
             ]
             dialedDigits.forEach((digit) => {
-                fireEvent.click(getByTestId(`digit-${digit}`))
+                fireEvent.click(screen.getByTestId(`digit-${digit}`))
             })
         })
 
         await waitFor(() =>
-            expect(getByTestId('output')).toHaveTextContent('...3456789012')
+            expect(screen.getByText('...3456789012')).toBeInTheDocument()
         )
     })
 })

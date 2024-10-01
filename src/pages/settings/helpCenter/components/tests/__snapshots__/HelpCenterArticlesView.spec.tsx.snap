@@ -288,6 +288,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                     class="select dropdown-toggle selectFullWidth"
                   >
                     <span
+                      aria-label="Parent category"
                       class="label placeholder"
                       data-testid="selected-parentCategory"
                       style="min-width: 10px; opacity: 1;"

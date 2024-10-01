@@ -259,10 +259,12 @@ const ChatApplication = () => {
                             <Label
                                 disabled={!chatAppKey}
                                 className="control-label"
+                                for="chatIntegrationValue"
                             >
                                 Select chat integration
                             </Label>
                             <SelectField
+                                id="chatIntegrationValue"
                                 value={chatAppKey}
                                 options={chatOptions}
                                 onChange={(value) =>

@@ -3,12 +3,6 @@ import {Map} from 'immutable'
 import {getMoneySymbol} from 'utils/getMoneySymbol'
 import {UniqueDiscountOfferTypeEnum} from 'models/convert/discountOffer/types'
 
-export const testIds = {
-    discountOffer: 'discountOffer',
-    deleteIntentBtn: 'deleteIntentBtn',
-    editBtn: 'editBtn',
-}
-
 // TODO: Revisit the summary text
 // We have to compute the offer summary everytime because this field is not part of the
 // payload, and it depends on the currency

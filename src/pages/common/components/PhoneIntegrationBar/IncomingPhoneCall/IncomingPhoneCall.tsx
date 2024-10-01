@@ -53,7 +53,6 @@ export default function IncomingPhoneCall({
 
     return (
         <div
-            data-testid="incoming-phone-call"
             className={classNames(css.container, className)}
             onClick={openTicket}
         >
@@ -76,7 +75,7 @@ export default function IncomingPhoneCall({
                     />
                 </div>
                 <Button
-                    data-testid="accept-call-button"
+                    aria-label="Accept phone call"
                     intent="secondary"
                     className={css.accept}
                     onClick={() => call.accept()}
@@ -86,7 +85,7 @@ export default function IncomingPhoneCall({
                 </Button>
                 <Button
                     intent="secondary"
-                    data-testid="decline-call-button"
+                    aria-label="Decline phone call"
                     className={css.decline}
                     onClick={(event: SyntheticEvent<HTMLButtonElement>) => {
                         event.stopPropagation()

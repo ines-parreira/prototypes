@@ -99,6 +99,7 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
                   class="select dropdown-toggle selectFullWidth"
                 >
                   <span
+                    aria-label="Phone number"
                     class="label"
                     data-testid="selected-phoneNumber"
                     style="min-width: 10px; opacity: 1;"
@@ -334,6 +335,7 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
                   class="select dropdown-toggle selectFullWidth"
                 >
                   <span
+                    aria-label="Phone number"
                     class="label"
                     data-testid="selected-phoneNumber"
                     style="min-width: 10px; opacity: 1;"
@@ -539,6 +541,7 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
                   class="select dropdown-toggle selectFullWidth"
                 >
                   <span
+                    aria-label="Phone number"
                     class="label"
                     data-testid="selected-phoneNumber"
                     style="min-width: 10px; opacity: 1;"

@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, waitFor} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
@@ -22,7 +22,7 @@ import {
     DELETE_DISCOUNT_MODAL_NAME,
     UNIQUE_DISCOUNT_MODAL_NAME,
 } from 'models/discountCodes/constants'
-import {testIds} from 'pages/common/components/UniqueDiscountOfferResults/utils'
+
 import UniqueDiscountCodeResults from '../UniqueDiscountOfferResults'
 
 jest.mock('models/convert/discountOffer/queries')
@@ -131,7 +131,7 @@ describe('<DiscountCodeResults />', () => {
             refetch: jest.fn(),
         } as any)
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountCodeResults {...minProps} />
@@ -139,7 +139,7 @@ describe('<DiscountCodeResults />', () => {
             </Provider>
         )
 
-        const deleteIntentBtn = getByTestId(testIds.deleteIntentBtn)
+        const deleteIntentBtn = screen.getByLabelText('Delete discount offer')
 
         userEvent.click(deleteIntentBtn)
 
@@ -159,7 +159,7 @@ describe('<DiscountCodeResults />', () => {
             refetch: jest.fn(),
         } as any)
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountCodeResults {...minProps} />
@@ -167,7 +167,7 @@ describe('<DiscountCodeResults />', () => {
             </Provider>
         )
 
-        const editBtn = getByTestId(testIds.editBtn)
+        const editBtn = screen.getByLabelText('Edit discount offer')
 
         userEvent.click(editBtn)
 
@@ -187,7 +187,7 @@ describe('<DiscountCodeResults />', () => {
             refetch: jest.fn(),
         } as any)
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountCodeResults {...minProps} />
@@ -195,8 +195,7 @@ describe('<DiscountCodeResults />', () => {
             </Provider>
         )
 
-        const discount = getByTestId(testIds.discountOffer + 0)
-
+        const discount = screen.getByText(uniqueDiscountOffers[0].prefix)
         userEvent.click(discount)
 
         await waitFor(() => {
@@ -213,7 +212,7 @@ describe('<DiscountCodeResults />', () => {
             refetch: jest.fn(),
         } as any)
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountCodeResults
@@ -224,7 +223,7 @@ describe('<DiscountCodeResults />', () => {
             </Provider>
         )
 
-        const discount = getByTestId(testIds.discountOffer + 0)
+        const discount = screen.getByText(uniqueDiscountOffers[0].prefix)
 
         userEvent.click(discount)
 

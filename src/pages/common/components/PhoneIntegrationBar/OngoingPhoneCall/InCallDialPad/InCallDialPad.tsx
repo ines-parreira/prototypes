@@ -30,7 +30,7 @@ export default function InCallDialPad({className, call}: Props): JSX.Element {
         <>
             <IconButtonTooltip
                 id="dial-pad-button"
-                data-testid="dial-pad-button"
+                aria-label="Phone dial pad"
                 className={className}
                 intent="secondary"
                 icon="dialpad"
@@ -45,9 +45,7 @@ export default function InCallDialPad({className, call}: Props): JSX.Element {
             >
                 <PopoverBody>
                     <div className={css.container}>
-                        <div data-testid="output" className={css.output}>
-                            {formattedOutput}
-                        </div>
+                        <div className={css.output}>{formattedOutput}</div>
                         <div className={css.dialpad}>
                             <DialPad
                                 value={output}

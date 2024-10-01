@@ -252,8 +252,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-assigned
         class="AgentLabel assigneeLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -272,8 +272,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-assigned
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -324,8 +324,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-assigned
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -376,8 +376,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-closed 1
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -428,8 +428,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-created 
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -482,8 +482,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-marked-s
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -534,8 +534,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-merged 1
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -600,8 +600,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-message-
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -652,8 +652,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-reopened
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -704,8 +704,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-self-uns
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -756,8 +756,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-snoozed 
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -828,8 +828,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-subject-
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -889,8 +889,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -959,8 +959,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -1020,8 +1020,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -1090,8 +1090,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -1161,8 +1161,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-team-ass
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -1213,8 +1213,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-team-ass
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -1265,8 +1265,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-team-una
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -1317,8 +1317,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-trashed 
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -1369,8 +1369,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-unassign
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -1421,8 +1421,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-unmarked
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>
@@ -1473,8 +1473,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-untrashe
         class="AgentLabel"
       >
         <span
+          aria-label="User 1 icon"
           class="material-icons md-2"
-          data-testid="accountCircle"
         >
           account_circle
         </span>

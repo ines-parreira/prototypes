@@ -74,6 +74,10 @@ describe('StartMigrationIntegrationsTable', () => {
 
     it('should display empty state row', () => {
         renderComponent([])
-        expect(screen.getByTestId('empty-row')).toBeVisible()
+        expect(
+            screen.getByText(
+                'All set! You have no email integrations to be migrated.'
+            )
+        ).toBeVisible()
     })
 })

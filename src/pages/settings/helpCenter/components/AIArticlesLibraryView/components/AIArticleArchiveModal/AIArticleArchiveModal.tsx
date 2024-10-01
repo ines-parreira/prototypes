@@ -79,10 +79,11 @@ const AIArticleArchiveModal = forwardRef<AIArticleArchiveModalHandle, Props>(
                 <ModalBody>
                     <div className={css.formGroup}>
                         <div className={css.formGroup}>
-                            <Label>
+                            <Label htmlFor="archiveReason">
                                 Select a reason for archiving the article:
                             </Label>
                             <SelectField
+                                id="archiveReason"
                                 fullWidth
                                 value={reason}
                                 placeholder="Select a reason..."

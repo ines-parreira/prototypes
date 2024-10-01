@@ -154,7 +154,7 @@ export function OngoingPhoneCall({
     }, [])
 
     return (
-        <div data-testid="ongoing-phone-call" className={css.container}>
+        <div className={css.container}>
             <div className={css.inner}>
                 <PhoneIntegrationName integrationId={integrationId} />
                 {transferringTo ? (
@@ -171,7 +171,7 @@ export function OngoingPhoneCall({
                 <InCallDialPad className={css.dialPad} call={call} />
                 <IconButtonTooltip
                     intent="secondary"
-                    data-testid="transfer-call-button"
+                    aria-label="Transfer phone call"
                     onClick={() =>
                         setIsTransferDropdownOpen((isOpen) => !isOpen)
                     }
@@ -194,7 +194,7 @@ export function OngoingPhoneCall({
                 />
                 <IconButtonTooltip
                     intent="secondary"
-                    data-testid="mute-call-button"
+                    aria-label={`${isMuted ? 'Unmute' : 'Mute'} phone call`}
                     onClick={onToggleMute}
                     icon={isMuted ? 'mic_off' : 'mic'}
                 >
@@ -202,7 +202,9 @@ export function OngoingPhoneCall({
                 </IconButtonTooltip>
                 <IconButtonTooltip
                     intent="secondary"
-                    data-testid="hold-call-button"
+                    aria-label={`${
+                        isOnHold ? 'Take off hold on' : 'Hold'
+                    } phone call`}
                     onClick={() =>
                         changeHoldState({
                             data: {
@@ -217,7 +219,9 @@ export function OngoingPhoneCall({
                     {isOnHold ? 'Take off hold' : 'Hold'}
                 </IconButtonTooltip>
                 <IconButtonTooltip
-                    data-testid="record-call-button"
+                    aria-label={`${
+                        isRecording ? 'Stop' : 'Start'
+                    } recording phone call`}
                     intent="secondary"
                     isDisabled={isRequestPending}
                     onClick={startRecording}
@@ -231,7 +235,7 @@ export function OngoingPhoneCall({
                 </IconButtonTooltip>
                 {isTransferring ? (
                     <ConfirmButton
-                        data-testid="end-call-button-with-confirmation"
+                        aria-label="End phone call"
                         confirmationContent={
                             'Ending this call before the transfer is complete will end the call for the customer as well.'
                         }
@@ -245,7 +249,7 @@ export function OngoingPhoneCall({
                     </ConfirmButton>
                 ) : (
                     <IconButton
-                        data-testid="end-call-button"
+                        aria-label="End phone call"
                         intent="destructive"
                         onClick={handleDisconnect}
                     >

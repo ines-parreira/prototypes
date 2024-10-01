@@ -467,6 +467,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                         ) : (
                             <SelectField
                                 fullWidth
+                                aria-label="Select store"
                                 placeholder="Select store"
                                 customIcon={shopifyIcon}
                                 options={shopifyShopsOptions}

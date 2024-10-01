@@ -171,6 +171,7 @@ const PlanSubscriptionDescription = ({
                         <SelectField
                             options={options}
                             id="priceSelect"
+                            aria-label="Plan"
                             placeholder="Select a plan"
                             value={selectedPlan?.price_id}
                             fullWidth

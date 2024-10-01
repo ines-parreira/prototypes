@@ -24,9 +24,9 @@ describe('<PageEmbedmentForm />', () => {
 
         screen.getByText(baseProps.modeSelectionTitle)
 
-        let input = screen.getByTestId('page-name-input')
+        const nameInput = screen.getByLabelText(/Page name/)
 
-        await userEvent.type(input, 'A')
+        await userEvent.type(nameInput, 'A')
 
         expect(dispatch.mock.lastCall).toMatchInlineSnapshot(`
             [
@@ -42,9 +42,9 @@ describe('<PageEmbedmentForm />', () => {
 
         expect(dispatch).toHaveBeenCalledTimes(2)
 
-        input = screen.getByTestId('page-slug-input')
+        const slugInput = screen.getByLabelText(/Slug/)
 
-        await userEvent.type(input, 'B')
+        await userEvent.type(slugInput, 'B')
 
         expect(dispatch.mock.lastCall).toMatchInlineSnapshot(`
             [

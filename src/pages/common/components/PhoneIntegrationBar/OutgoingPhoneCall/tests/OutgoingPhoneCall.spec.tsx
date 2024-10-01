@@ -1,19 +1,21 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {Call} from '@twilio/voice-sdk'
 import {fromJS} from 'immutable'
-
 import {mockFlags} from 'jest-launchdarkly-mock'
-import {mockOutgoingCall} from '../../../../../../tests/twilioMocks'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
+
+import {RootState, StoreDispatch} from 'state/types'
+import {mockOutgoingCall} from 'tests/twilioMocks'
+
 import OutgoingPhoneCall from '../OutgoingPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
 
 describe('<OutgoingPhoneCall/>', () => {
+    let state: RootState
     let store: MockStoreEnhanced
     const integrationId = 1
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -22,8 +24,7 @@ describe('<OutgoingPhoneCall/>', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-
-        store = mockStore({
+        state = {
             integrations: fromJS({
                 integrations: [
                     {
@@ -33,33 +34,39 @@ describe('<OutgoingPhoneCall/>', () => {
                     },
                 ],
             }),
-        })
-
+        } as RootState
+        store = mockStore(state)
         mockFlags({})
     })
 
     it('should render', () => {
         const call = mockOutgoingCall(integrationId) as Call
 
-        const {container} = render(
+        render(
             <Provider store={store}>
                 <OutgoingPhoneCall call={call} />
             </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('My Phone Integration')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                state.integrations.getIn(['integrations', 0, 'name'])
+            )
+        ).toBeInTheDocument()
+        expect(screen.getByText('Outgoing call to')).toBeInTheDocument()
     })
 
     it('should end call', () => {
         const call = mockOutgoingCall(integrationId) as Call
 
-        const {getByTestId} = render(
+        render(
             <Provider store={store}>
                 <OutgoingPhoneCall call={call} />
             </Provider>
         )
 
-        fireEvent.click(getByTestId('end-call-button'))
+        fireEvent.click(screen.getByText('End Call'))
         expect(call.disconnect).toHaveBeenCalled()
     })
 })

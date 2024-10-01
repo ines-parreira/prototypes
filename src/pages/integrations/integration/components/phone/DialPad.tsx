@@ -49,7 +49,6 @@ export default function DialPad({
                             className={css.digit}
                             tabIndex={0}
                             data-digit={digit}
-                            data-testid={`digit-${digit}`}
                             onClick={handleDigitClick}
                         >
                             {digit}

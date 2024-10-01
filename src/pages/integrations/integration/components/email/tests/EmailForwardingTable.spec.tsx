@@ -1,9 +1,11 @@
 import {cleanup, render, screen} from '@testing-library/react'
 import React from 'react'
+
 import {
     EmailMigrationInboundVerification,
     EmailMigrationInboundVerificationStatus,
 } from 'models/integration/types'
+
 import EmailForwardingTable from '../EmailMigration/EmailForwardingTable'
 
 jest.mock('fixtures/emailMigration.ts', () => ({migrations: undefined}))
@@ -40,20 +42,12 @@ describe('EmailForwardingTable', () => {
 
     afterEach(cleanup)
 
-    it('renders the correct number of migrations', () => {
-        renderComponent()
-        const rows = screen.getAllByTestId('migration-row')
-        expect(rows.length).toBe(mockMigrations.length)
-    })
-
     it('renders the email address for each migration', () => {
         renderComponent()
-        const emailCells = screen.getAllByTestId('email-address-value')
-        expect(emailCells.length).toBe(mockMigrations.length)
-        emailCells.forEach((cell, index) => {
-            expect(cell.textContent).toBe(
-                mockMigrations[index].integration.meta.address
-            )
+        mockMigrations.forEach((migration) => {
+            expect(
+                screen.getByText(migration.integration.meta.address)
+            ).toBeInTheDocument()
         })
     })
 
@@ -73,6 +67,10 @@ describe('EmailForwardingTable', () => {
 
     it('renders the empty state row when there are no unverified migrations', () => {
         renderComponent([])
-        expect(screen.getByTestId('empty-row'))
+        expect(
+            screen.getByText(
+                "All set! You don't have any email forwarding to set up."
+            )
+        )
     })
 })

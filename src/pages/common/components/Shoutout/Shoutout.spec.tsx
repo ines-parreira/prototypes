@@ -53,7 +53,9 @@ describe('<Shoutout />', () => {
     test('the tooltip should show "x more" when the number of provided persons is too big', async () => {
         render(<Shoutout {...commonProps} persons={manyPersonsList} />)
 
-        const tooltipTrigger = screen.getByTestId('shoutout-tooltip-trigger')
+        const tooltipTrigger = screen.getByLabelText(
+            'Hover to display more people'
+        )
 
         userEvent.hover(tooltipTrigger)
 

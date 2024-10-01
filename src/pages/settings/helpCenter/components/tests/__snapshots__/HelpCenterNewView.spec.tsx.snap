@@ -520,6 +520,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
                     src="test-file-stub"
                   />
                   <span
+                    aria-label="Select store"
                     class="label placeholder"
                     style="min-width: 10px; opacity: 1;"
                   >

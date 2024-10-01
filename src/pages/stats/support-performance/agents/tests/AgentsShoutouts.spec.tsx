@@ -2,6 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {render, screen, within} from '@testing-library/react'
 import {Provider} from 'react-redux'
+
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
@@ -19,8 +20,10 @@ import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {initialState} from 'state/stats/statsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {SHOUTOUT_NO_VALUE_PLACEHOLDER} from 'pages/common/components/Shoutout/Shoutout'
-import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShoutouts'
 import {TableLabels} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+
+import AgentsShoutouts from '../AgentsShoutouts'
+import {agentsShoutoutsConfig} from '../AgentsShoutoutsConfig'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(
@@ -150,31 +153,29 @@ describe('<AgentsShoutouts />', () => {
                 <AgentsShoutouts />
             </Provider>
         )
-
         const satisfactionShoutout = within(
-            screen.getByTestId(
-                `shoutout-for-${TicketSatisfactionSurveyMeasure.AvgSurveyScore}`
+            screen.getByLabelText(
+                `Agents' information for ${agentsShoutoutsConfig[0].metricName}`
             )
         )
 
-        const multipleAgentsLabel = satisfactionShoutout.getByText(
+        const agentsElement = satisfactionShoutout.getByText(
             `${agents.length} agents`
         )
-        expect(multipleAgentsLabel).toBeInTheDocument()
-
         agents.forEach((agent) => {
-            const agentName = satisfactionShoutout.queryByText(agent.name)
+            const agentName = within(agentsElement).queryByText(agent.name)
             expect(agentName).not.toBeInTheDocument()
         })
 
         const frtShoutout = within(
-            screen.getByTestId(
-                `shoutout-for-${TicketMessagesMeasure.MedianFirstResponseTime}`
+            screen.getByLabelText(
+                `Agents' information for ${agentsShoutoutsConfig[1].metricName}`
             )
         )
         const shoutoutedAgent = frtShoutout.queryByText(agents[0].name)
-        expect(shoutoutedAgent).toBeInTheDocument()
         const otherAgent = frtShoutout.queryByText(agents[1].name)
+
+        expect(shoutoutedAgent).toBeInTheDocument()
         expect(otherAgent).not.toBeInTheDocument()
     })
 
@@ -197,14 +198,9 @@ describe('<AgentsShoutouts />', () => {
             </Provider>
         )
 
-        const satisfactionShoutout = within(
-            screen.getByTestId(
-                `shoutout-for-${TicketSatisfactionSurveyMeasure.AvgSurveyScore}`
-            )
+        expect(screen.getAllByText(SHOUTOUT_NO_VALUE_PLACEHOLDER)).toHaveLength(
+            3
         )
-        expect(
-            satisfactionShoutout.getAllByText(SHOUTOUT_NO_VALUE_PLACEHOLDER)
-        ).toHaveLength(3)
     })
 
     it.each([

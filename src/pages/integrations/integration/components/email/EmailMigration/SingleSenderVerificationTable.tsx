@@ -37,10 +37,7 @@ export default function SingleSenderVerificationTable({
                 </TableHead>
                 <TableBody>
                     {paginatedItems.map((integration) => (
-                        <TableBodyRow
-                            key={integration.id}
-                            data-testid="sender-verification-row"
-                        >
+                        <TableBodyRow key={integration.id}>
                             <SingleSenderVerificationTableRow
                                 integration={integration}
                                 hasSubmittedBulkVerification={

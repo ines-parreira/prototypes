@@ -101,6 +101,7 @@ function PhoneNumberSelectField({
         <>
             <SelectField
                 id="phoneNumber"
+                aria-label="Phone number"
                 placeholder="Select number"
                 onChange={handleSelection}
                 options={options}

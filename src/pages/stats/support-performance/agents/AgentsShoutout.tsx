@@ -1,13 +1,12 @@
 import React from 'react'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {ShoutoutConfig} from 'pages/stats/support-performance/agents/AgentsShoutoutsConfig'
 
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'
 import Shoutout, {
     SHOUTOUT_HEIGHT_PX,
 } from 'pages/common/components/Shoutout/Shoutout'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-
-import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'
+import {ShoutoutConfig} from 'pages/stats/support-performance/agents/AgentsShoutoutsConfig'
 
 export default function AgentsShoutout({
     useQuery,
@@ -25,7 +24,6 @@ export default function AgentsShoutout({
 
     return (
         <Shoutout
-            testId={`shoutout-for-${measure}`}
             persons={data.agents.map((agent) => ({
                 name: agent.name,
                 image: agent.meta?.profile_picture_url,

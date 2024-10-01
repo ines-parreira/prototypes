@@ -72,7 +72,7 @@ export function AgentLabel({
                 !isAIAgent && (
                     <span
                         className="material-icons md-2"
-                        data-testid="accountCircle"
+                        aria-label={`${name} icon`}
                     >
                         account_circle
                     </span>

@@ -60,6 +60,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
         <label
           class="control-label"
           disabled=""
+          for="chatIntegrationValue"
         >
           Select chat integration
         </label>
@@ -83,6 +84,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
                 </i>
                 <span
                   class="label placeholder"
+                  data-testid="selected-chatIntegrationValue"
                   style="min-width: 10px; opacity: 1;"
                 >
                   Select a chat
@@ -91,6 +93,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
                   autocomplete="chrome-off"
                   class="input iconPadding"
                   disabled=""
+                  id="chatIntegrationValue"
                   style="min-width: 10px;"
                   type="text"
                   value=""

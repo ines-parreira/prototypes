@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import userEvent from '@testing-library/user-event'
-import {act, render, fireEvent} from '@testing-library/react'
+import {act, render, fireEvent, screen} from '@testing-library/react'
 
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
@@ -283,12 +283,12 @@ describe('CampaignPublishScheduleStep', () => {
     })
 
     it('user is able to select `during` option when mode is schedule', () => {
-        const {getByTestId, getByRole} = renderComponent({
+        const {getByRole} = renderComponent({
             campaignData: {publish_mode: CampaignScheduleModeEnum.Schedule},
             props: defaultProps,
         })
 
-        const duringOptionSelect = getByTestId('selected-schedule-rule')
+        const duringOptionSelect = screen.getByLabelText('During')
 
         userEvent.click(duringOptionSelect)
 

@@ -129,6 +129,7 @@ exports[`UsageAndPlansView should render 1`] = `
                           class="select dropdown-toggle selectFullWidth"
                         >
                           <span
+                            aria-label="Price value"
                             class="label"
                             data-testid="selected-priceSelect"
                             style="min-width: 10px; opacity: 1;"

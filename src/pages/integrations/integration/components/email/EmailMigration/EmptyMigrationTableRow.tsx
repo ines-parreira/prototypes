@@ -1,4 +1,5 @@
 import React, {ReactNode} from 'react'
+
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
@@ -10,7 +11,7 @@ type Props = {
 
 export default function EmptyMigrationTableRow({children}: Props) {
     return (
-        <TableBodyRow data-testid="empty-row">
+        <TableBodyRow>
             <BodyCell colSpan={3} innerClassName={css.emptyState}>
                 {children}
             </BodyCell>

@@ -44,6 +44,7 @@ describe('AddSalesCouponModal', () => {
         screen.getByRole('button', {name: 'Cancel'})
         screen.getByRole('button', {name: 'Apply Coupon'})
     })
+
     it('should show the selected coupon and the Delete Coupon button when a coupon has already been applied', () => {
         const expectedSelectedCoupon = availableCoupons[1]
         render(
@@ -60,17 +61,21 @@ describe('AddSalesCouponModal', () => {
             </Provider>
         )
 
-        const selectedCoupon = screen.getByTestId('selected-couponSelect')
+        const selectedCoupon = screen.getByLabelText('Select coupon')
+        selectedCoupon.click()
+        const items = screen.getAllByRole('menuitem')
 
         expect(selectedCoupon).toHaveTextContent(expectedSelectedCoupon)
-
-        const items = document.getElementsByClassName('dropdown-item')
         expect(items[0]).toHaveTextContent(availableCoupons[0])
         expect(items[1]).toHaveTextContent(availableCoupons[1])
 
-        screen.getByRole('button', {name: 'Delete Coupon'})
-        screen.getByRole('button', {name: 'Cancel'})
-        screen.getByRole('button', {name: 'Apply Coupon'})
+        expect(
+            screen.getByRole('button', {name: 'Delete Coupon'})
+        ).toBeInTheDocument()
+        expect(screen.getByRole('button', {name: 'Cancel'})).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', {name: 'Apply Coupon'})
+        ).toBeInTheDocument()
     })
 
     it('should not be possible to click on "Apply Coupon" button before a coupon is selected and a reason is given', () => {
@@ -88,26 +93,23 @@ describe('AddSalesCouponModal', () => {
             </Provider>
         )
 
-        expect(
-            screen.getByRole('button', {name: 'Apply Coupon'})
-        ).toBeAriaDisabled()
+        const applyCouponButton = screen.getByRole('button', {
+            name: 'Apply Coupon',
+        })
+
+        expect(applyCouponButton).toBeAriaDisabled()
+
         const items = document.getElementsByClassName('dropdown-item')
         fireEvent.click(items[0])
 
-        expect(
-            screen.getByRole('button', {name: 'Apply Coupon'})
-        ).toBeAriaDisabled()
+        expect(applyCouponButton).toBeAriaDisabled()
 
-        const reasonTextBox = screen.getByPlaceholderText('your reason')
-
+        const reasonTextBox = screen.getByPlaceholderText('Your reason')
         fireEvent.change(reasonTextBox, {
             target: {value: 'a good reason'},
         })
 
-        expect(
-            screen.getByRole('button', {name: 'Apply Coupon'})
-        ).toBeAriaEnabled()
-
-        fireEvent.click(screen.getByRole('button', {name: 'Apply Coupon'}))
+        expect(applyCouponButton).toBeAriaEnabled()
+        fireEvent.click(applyCouponButton)
     })
 })

@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {Label} from '@gorgias/ui-kit'
 import {isGorgiasApiError} from 'models/api/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
@@ -124,36 +125,41 @@ export default function AddSalesCouponModal({
             >
                 <ModalHeader title={title} />
                 <ModalBody>
-                    <div className={css.subtitle}>
+                    <Label
+                        htmlFor="couponValue"
+                        isRequired
+                        className={css.label}
+                    >
                         Coupon value
-                        <span className={css.red}>*</span>
-                    </div>
+                    </Label>
                     <SelectField
                         options={options}
-                        id="couponSelect"
+                        aria-label="Select coupon"
+                        id="couponValue"
                         placeholder="Select coupon"
                         value={selectedCoupon || alreadyAppliedCoupon}
                         fullWidth
                         onChange={(coupon) => {
                             setSelectedCoupon(coupon as string)
                         }}
-                        data-testid="couponSelect"
                         showSelectedOption
-                        caption={
-                            'If a required coupon is not available, contact Sales Manager or Billing support for manual approval.'
-                        }
+                        caption="If a required coupon is not available, contact Sales Manager or Billing support for manual approval."
                     />
                     <br />
-                    <div className={css.subtitle}>
+                    <Label
+                        htmlFor="reasonForDiscount"
+                        isRequired
+                        className={css.label}
+                    >
                         Reason for discount
-                        <span className={css.red}>*</span>
-                    </div>
+                    </Label>
                     <TextArea
+                        id="reasonForDiscount"
                         value={reason}
                         rows={4}
                         onChange={setReason}
                         maxLength={255}
-                        placeholder={'your reason'}
+                        placeholder="Your reason"
                     />
                 </ModalBody>
                 <ModalFooter className={css.footer}>

@@ -1,5 +1,5 @@
 import React, {ReactElement} from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -281,14 +281,14 @@ describe('components utils: labels', () => {
             AvatarSpy.mockImplementation((() => (
                 <div data-testid="avatar" />
             )) as jest.Mock)
-            const {getByTestId} = render(
+            render(
                 <labels.AgentLabel
                     name="Marie Curie"
                     profilePictureUrl="https://gorgias.io/profilepicture.png"
                 />
             )
 
-            const avatar = getByTestId('avatar')
+            const avatar = screen.getByTestId('avatar')
             expect(avatar).toBeInTheDocument()
         })
 
@@ -316,7 +316,7 @@ describe('components utils: labels', () => {
             }: {
                 badgeColor: string
             }) => <div data-testid="avatar">{badgeColor}</div>) as jest.Mock)
-            const {getByTestId} = render(
+            render(
                 <labels.AgentLabel
                     name="Marie Curie"
                     shouldDisplayAvatar
@@ -324,7 +324,7 @@ describe('components utils: labels', () => {
                 />
             )
 
-            const avatar = getByTestId('avatar')
+            const avatar = screen.getByTestId('avatar')
             expect(avatar).toHaveTextContent('testColor')
         })
 
@@ -334,11 +334,9 @@ describe('components utils: labels', () => {
             }: {
                 badgeColor: string
             }) => <div data-testid="avatar">{badgeColor}</div>) as jest.Mock)
-            const {getByTestId} = render(
-                <labels.AgentLabel name="Marie Curie" shouldDisplayAvatar />
-            )
+            render(<labels.AgentLabel name="Marie Curie" shouldDisplayAvatar />)
 
-            const avatar = getByTestId('avatar')
+            const avatar = screen.getByTestId('avatar')
             expect(avatar).toHaveTextContent('')
         })
 
@@ -346,19 +344,16 @@ describe('components utils: labels', () => {
             AvatarSpy.mockImplementation((() => (
                 <div data-testid="avatar" />
             )) as jest.Mock)
-            const {getByTestId} = render(
-                <labels.AgentLabel name="Marie Curie" shouldDisplayAvatar />
-            )
+            render(<labels.AgentLabel name="Marie Curie" shouldDisplayAvatar />)
 
-            const avatar = getByTestId('avatar')
+            const avatar = screen.getByTestId('avatar')
             expect(avatar).toBeInTheDocument()
         })
 
         it('should render the agent icon because no profile picture url nor the `avatar` option are passed', () => {
-            const {getByTestId} = render(
-                <labels.AgentLabel name="Marie Curie" />
-            )
-            const agentIcon = getByTestId('accountCircle')
+            const name = 'Marie Curie'
+            render(<labels.AgentLabel name={name} />)
+            const agentIcon = screen.getByLabelText(`${name} icon`)
 
             expect(agentIcon).toBeInTheDocument()
         })

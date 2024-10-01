@@ -1517,6 +1517,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             these messages
                                         </Label>
                                         <SelectField
+                                            id="linkedEmailIntegration"
                                             placeholder="Select an email integration"
                                             value={linkedEmailIntegration}
                                             options={emailIntegrations.map(
@@ -1564,6 +1565,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         </Label>
                                         <SelectField
                                             placeholder="Select an email integration"
+                                            id="linkedEmailIntegration"
                                             value={linkedEmailIntegration}
                                             options={emailIntegrations.map(
                                                 (integration) => ({

@@ -46,10 +46,7 @@ export default function EmailForwardingTable({migrations}: Props) {
                                 )
 
                             return (
-                                <TableBodyRow
-                                    key={migration.integration.id}
-                                    data-testid="migration-row"
-                                >
+                                <TableBodyRow key={migration.integration.id}>
                                     <BodyCell
                                         innerClassName={classNames(
                                             css.address,
