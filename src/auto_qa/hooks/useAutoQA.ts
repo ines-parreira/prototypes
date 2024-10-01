@@ -6,7 +6,7 @@ import {
 } from '@gorgias/api-queries'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
-import useDebouncedValue from 'hooks/useDebouncedValue'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {dimensionOrder} from '../config'
 import type {DimensionSummary} from '../types'
 
@@ -24,7 +24,8 @@ const defaultValues = dimensionOrder.reduce(
 )
 
 export default function useAutoQA(ticketId: number) {
-    const {data, isError, isLoading} = useListTicketQaScoreDimensions(ticketId)
+    const {data, isError, isLoading, refetch} =
+        useListTicketQaScoreDimensions(ticketId)
     const {isLoading: isSaving, mutateAsync: upsertTicketQaScoreDimension} =
         useUpsertTicketQaScoreDimension()
 
@@ -32,6 +33,9 @@ export default function useAutoQA(ticketId: number) {
         useState<Record<TicketQAScoreDimensionName, DimensionSummary>>(
             defaultValues
         )
+    const [newDimensionValue, setNewDimensionValue] = useState<
+        {name: TicketQAScoreDimensionName} & DimensionSummary
+    >()
     const dirtyRef = useRef(false)
     const dimensionsData = data?.data.data?.dimensions
 
@@ -72,6 +76,11 @@ export default function useAutoQA(ticketId: number) {
                 ...dims,
                 [name]: {explanation, prediction},
             }))
+            setNewDimensionValue({
+                name: name as TicketQAScoreDimensionName,
+                explanation,
+                prediction,
+            })
         },
         []
     )
@@ -127,28 +136,32 @@ export default function useAutoQA(ticketId: number) {
         [dimensionsMap, values]
     )
 
-    const debouncedValues = useDebouncedValue(values, 500)
+    useDebouncedEffect(
+        () => {
+            if (!dirtyRef.current) return
+            dirtyRef.current = false
 
-    useEffect(() => {
-        if (!dirtyRef.current) return
-        dirtyRef.current = false
-
-        void (async () => {
-            await upsertTicketQaScoreDimension({
-                data: {
-                    // @ts-expect-error the types in `@gorgias/api-queries` need to be fixed
-                    dimensions: Object.entries(debouncedValues).map(
-                        ([name, {explanation, prediction}]) => ({
-                            explanation,
-                            name,
-                            prediction,
-                        })
-                    ),
-                },
-                ticketId,
-            })
-        })()
-    }, [debouncedValues, ticketId, upsertTicketQaScoreDimension])
+            void (async () => {
+                await upsertTicketQaScoreDimension(
+                    {
+                        data: {
+                            dimensions: [
+                                newDimensionValue as TicketQAScoreDimension,
+                            ],
+                        },
+                        ticketId,
+                    },
+                    {
+                        onSuccess: () => {
+                            void refetch()
+                        },
+                    }
+                )
+            })()
+        },
+        [newDimensionValue, ticketId, upsertTicketQaScoreDimension],
+        500
+    )
 
     return useMemo(
         () => ({

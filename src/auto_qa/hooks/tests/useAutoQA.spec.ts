@@ -19,6 +19,7 @@ const useListTicketQaScoreDimensionsMock =
     useListTicketQaScoreDimensions as jest.Mock
 const useUpsertTicketQaScoreDimensionMock =
     useUpsertTicketQaScoreDimension as jest.Mock
+const refetchMock = jest.fn()
 
 describe('useAutoQA', () => {
     beforeEach(() => {
@@ -53,12 +54,24 @@ describe('useAutoQA', () => {
                     },
                 },
             },
+            refetch: refetchMock,
         })
 
         useUpsertTicketQaScoreDimensionMock.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
         })
+    })
+
+    it('should return empty data', () => {
+        useListTicketQaScoreDimensionsMock.mockReturnValue({
+            data: {
+                data: {},
+            },
+        })
+
+        const {result} = renderHook(() => useAutoQA(1))
+        expect(result.current.dimensions).toEqual([])
     })
 
     it('should return the dimensions', () => {
@@ -129,22 +142,26 @@ describe('useAutoQA', () => {
             jest.advanceTimersByTime(500)
         })
 
-        expect(mutateAsync).toHaveBeenCalledWith({
-            data: {
-                dimensions: [
-                    {
-                        explanation: 'Beep-boop',
-                        name: 'resolution_completeness',
-                        prediction: 0,
-                    },
-                    {
-                        explanation: 'Excellent',
-                        name: 'communication_skills',
-                        prediction: 5,
-                    },
-                ],
+        expect(mutateAsync).toHaveBeenCalledWith(
+            {
+                data: {
+                    dimensions: [
+                        {
+                            explanation: 'Excellent',
+                            name: 'communication_skills',
+                            prediction: 5,
+                        },
+                    ],
+                },
+                ticketId: 1,
             },
-            ticketId: 1,
-        })
+            {
+                onSuccess: expect.anything(),
+            }
+        )
+        ;(
+            mutateAsync.mock.calls[0] as [{data: []}, {onSuccess: () => void}]
+        )[1].onSuccess()
+        expect(refetchMock).toHaveBeenCalled()
     })
 })
