@@ -16,16 +16,16 @@ import {ConvertMetric} from 'state/ui/stats/types'
 import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 import {SharedDimension} from 'pages/stats/convert/clients/constants'
-import {useCampaignStatsFilters} from '../../hooks/useCampaignStatsFilters'
-import {useGetChatForStore} from '../../hooks/useGetChatForStore'
-import {useGetCurrencyForStore} from '../../hooks/useGetCurrencyForStore'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {useGetChatForStore} from 'pages/stats/convert/hooks/useGetChatForStore'
+import {useGetCurrencyForStore} from 'pages/stats/convert/hooks/useGetCurrencyForStore'
 
-import {CampaignTableStats} from '../../components/CampaignTableStats'
+import {CampaignTableStats} from 'pages/stats/convert/components/CampaignTableStats'
 
-import {ITEMS_PER_PAGE} from '../../constants/campaignPerformanceTable'
+import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
 
-import {CampaignTableContentCell} from '../../types/CampaignTableContentCell'
-import {useGetNamespacedShopNameForStore} from '../../hooks/useGetNamespacedShopNameForStore'
+import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
+import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
 
 export const CampaignPerformanceTable = () => {
     const {
