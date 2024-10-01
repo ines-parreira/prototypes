@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react'
+import React, {useState, useMemo, useEffect} from 'react'
 
 import {
     ContactFormField,
@@ -40,6 +40,10 @@ export const ContactCaptureStep: React.FC<ContactCaptureStepProps> = ({
             color: getContrastColor(color),
         }
     }, [mainColor])
+
+    useEffect(() => {
+        setPolicyAccepted(disclaimerDefaultAccepted ?? false)
+    }, [disclaimerDefaultAccepted])
 
     const isFormValid = useMemo(() => {
         return step.fields.every((field) => {

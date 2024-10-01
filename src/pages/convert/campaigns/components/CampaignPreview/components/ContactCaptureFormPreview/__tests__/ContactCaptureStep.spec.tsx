@@ -93,4 +93,18 @@ describe('ContactCaptureStep', () => {
 
         expect(screen.queryByPlaceholderText('Email')).toBeNull()
     })
+
+    it('renders the component with undefined as the default disclaimer selected value', () => {
+        render(
+            <ContactCaptureStep
+                step={mockStep}
+                onSubmit={mockOnSubmit}
+                disclaimer="Accept the policy"
+                disclaimerDefaultAccepted={undefined}
+            />
+        )
+
+        const checkbox = screen.getByRole('checkbox')
+        expect(checkbox.ariaChecked).toBeFalsy()
+    })
 })
