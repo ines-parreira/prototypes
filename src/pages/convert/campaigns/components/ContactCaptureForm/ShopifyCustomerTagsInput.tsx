@@ -15,9 +15,10 @@ type Props = {
     value: SelectedValues[]
     onChange: (value: SelectedValues[]) => void
     shopifyIntegration?: ShopifyIntegration
+    className?: string
 }
 
-export function ShopifyCustomerTagsInput({value, onChange}: Props) {
+export function ShopifyCustomerTagsInput({value, onChange, className}: Props) {
     const [options, setOptions] = useState<Option[]>([])
     const {shopifyIntegration} = useIntegrationContext()
 
@@ -44,6 +45,7 @@ export function ShopifyCustomerTagsInput({value, onChange}: Props) {
             onChange={onChange}
             onFocus={onFocus}
             options={options}
+            className={className}
             allowCustomOptions
             matchInput
             isCompact

@@ -1,13 +1,14 @@
 import React, {useState, useEffect, useMemo} from 'react'
 import {Label} from 'reactstrap'
 import {fromJS} from 'immutable'
+import classnames from 'classnames'
 import {StepProps} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import InputField from 'pages/common/forms/input/InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import CheckBox from 'pages/common/forms/CheckBox'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
-import {convertToHTML} from 'utils/editor'
+import {convertFromHTML, convertToHTML} from 'utils/editor'
 import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
@@ -18,9 +19,11 @@ import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
 import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewProps'
 import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
 import {transformTransitoryToAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import {ErrorMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/styled'
 import css from './Customisation.less'
 
 export const Customisation = (props: StepProps) => {
+    const disclaimerCharacterLimit = 280
     const {attachmentData, setAttachmentData, setNextButtonActive} = props
 
     const {chatIntegration} = useIntegrationContext()
@@ -42,12 +45,29 @@ export const Customisation = (props: StepProps) => {
     )
     const [nextButtonEnabled, setInnerNextButtonEnabled] = useState(false)
 
+    const disclaimerPureText = useMemo(() => {
+        const blocksFromHtml = convertFromHTML(disclaimer)
+        return blocksFromHtml.getPlainText()
+    }, [disclaimer])
+
+    const [onError, errorMessage] = useMemo(() => {
+        if (disclaimerPureText.length > disclaimerCharacterLimit) {
+            return [
+                true,
+                `The disclaimer should be under or equals to ${disclaimerCharacterLimit} characters.`,
+            ]
+        }
+        return [false, '']
+    }, [disclaimerPureText])
+
     const shouldEnableNextButton = useMemo(() => {
         const requiredFieldsFilled = !!emailFieldLabel && !!cta
         const conditionalRequiredFieldsFilled =
             !disclaimerEnabled || !!disclaimer
-        return requiredFieldsFilled && conditionalRequiredFieldsFilled
-    }, [emailFieldLabel, cta, disclaimerEnabled, disclaimer])
+        return (
+            requiredFieldsFilled && conditionalRequiredFieldsFilled && !onError
+        )
+    }, [emailFieldLabel, cta, disclaimerEnabled, disclaimer, onError])
 
     useEffect(() => {
         setAttachmentData((state) => ({
@@ -120,26 +140,33 @@ export const Customisation = (props: StepProps) => {
                 </ToggleInput>
 
                 {disclaimerEnabled && (
-                    <RichField
-                        onChange={(data) =>
-                            setDisclaimer(
-                                convertToHTML(data.getCurrentContent())
-                            )
-                        }
-                        value={{
-                            html: disclaimer,
-                            text: disclaimer,
-                        }}
-                        isRequired={disclaimerEnabled}
-                        canInsertInlineImages={false}
-                        displayedActions={[
-                            ActionName.Bold,
-                            ActionName.Italic,
-                            ActionName.Underline,
-                            ActionName.Link,
-                            ActionName.Emoji,
-                        ]}
-                    />
+                    <div>
+                        <RichField
+                            onChange={(data) =>
+                                setDisclaimer(
+                                    convertToHTML(data.getCurrentContent())
+                                )
+                            }
+                            value={{
+                                html: disclaimer,
+                                text: disclaimer,
+                            }}
+                            isRequired={disclaimerEnabled}
+                            canInsertInlineImages={false}
+                            displayedActions={[
+                                ActionName.Bold,
+                                ActionName.Italic,
+                                ActionName.Underline,
+                                ActionName.Link,
+                                ActionName.Emoji,
+                            ]}
+                            maxLength={disclaimerCharacterLimit}
+                            className={classnames(css.richField, {
+                                [css.onError]: onError,
+                            })}
+                        />
+                        {onError && <ErrorMessage>{errorMessage}</ErrorMessage>}
+                    </div>
                 )}
 
                 <CheckBox

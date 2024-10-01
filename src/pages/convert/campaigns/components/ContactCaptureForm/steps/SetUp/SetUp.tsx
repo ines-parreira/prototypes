@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {UncontrolledTooltip} from 'reactstrap'
+import classnames from 'classnames'
 import {
     StepProps,
     TransitoryAttachmentData,
@@ -8,9 +9,11 @@ import {
 import {getIconFromType} from 'state/integrations/helpers'
 import {IntegrationType} from 'models/integration/constants'
 import {ShopifyCustomerTagsInput} from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
+import {ErrorMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/styled'
 import css from './SetUp.less'
 
 export const SetUp = (props: StepProps) => {
+    const tagsLimit = 5
     const {attachmentData, setAttachmentData, setNextButtonActive} = props
 
     const [shopifyTarget, setShopifyTarget] =
@@ -21,6 +24,13 @@ export const SetUp = (props: StepProps) => {
                     ? attachmentData.subscriberTypes.shopify.tags
                     : ['source: Gorgias Convert'],
         })
+
+    const [onError, errorMessage] = useMemo(() => {
+        if (shopifyTarget.tags.length > tagsLimit) {
+            return [true, `You are allowed up to ${tagsLimit} tags.`]
+        }
+        return [false, '']
+    }, [shopifyTarget.tags])
 
     const handleTagsChanged = (
         tags: {
@@ -37,6 +47,8 @@ export const SetUp = (props: StepProps) => {
     }
 
     useEffect(() => {
+        const atListOneSubscriberType =
+            shopifyTarget.isEmailSubscriber || shopifyTarget.isSmsSubscriber
         setAttachmentData((state: TransitoryAttachmentData) => {
             return {
                 ...state,
@@ -46,10 +58,8 @@ export const SetUp = (props: StepProps) => {
                 },
             } as TransitoryAttachmentData
         })
-        setNextButtonActive(
-            shopifyTarget.isEmailSubscriber || shopifyTarget.isSmsSubscriber
-        )
-    }, [setAttachmentData, setNextButtonActive, shopifyTarget])
+        setNextButtonActive(atListOneSubscriberType && !onError)
+    }, [setAttachmentData, setNextButtonActive, shopifyTarget, onError])
 
     return (
         <>
@@ -91,7 +101,11 @@ export const SetUp = (props: StepProps) => {
                                 value: tag,
                             }))}
                             onChange={handleTagsChanged}
+                            className={classnames({
+                                [css.fieldOnError]: onError,
+                            })}
                         />
+                        {onError && <ErrorMessage>{errorMessage}</ErrorMessage>}
                     </div>
                 </div>
             </div>

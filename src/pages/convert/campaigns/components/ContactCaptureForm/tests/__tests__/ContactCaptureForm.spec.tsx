@@ -29,6 +29,30 @@ const store = mockStore({
 const mockUseListTags = useListTags as jest.Mock
 
 describe('ContactForm test suite', () => {
+    const baseState = {
+        subscriberTypes: {
+            shopify: {
+                enabled: false,
+                isEmailSubscriber: false,
+                isSmsSubscriber: false,
+                tags: [],
+            },
+        },
+        forms: {
+            email: {
+                label: '',
+                cta: '',
+                disclaimerEnabled: true,
+                disclaimer: '',
+                preSelectDisclaimer: true,
+            },
+        },
+        postSubmissionMessage: {
+            enabled: false,
+            message: '',
+        },
+    }
+
     beforeEach(() => {
         mockUseListTags.mockReturnValue([])
     })
@@ -169,29 +193,7 @@ describe('ContactForm test suite', () => {
     })
 
     it('should render the thank you message', () => {
-        const state = {
-            subscriberTypes: {
-                shopify: {
-                    enabled: false,
-                    isEmailSubscriber: false,
-                    isSmsSubscriber: false,
-                    tags: [],
-                },
-            },
-            forms: {
-                email: {
-                    label: '',
-                    cta: '',
-                    disclaimerEnabled: true,
-                    disclaimer: '',
-                    preSelectDisclaimer: true,
-                },
-            },
-            postSubmissionMessage: {
-                enabled: false,
-                message: '',
-            },
-        }
+        const state = baseState
         const setState = (
             wrapped: (innerState: typeof state) => typeof state
         ) => {
@@ -262,5 +264,71 @@ describe('ContactForm test suite', () => {
             userEvent.click(baseElement.getElementsByClassName('backdrop')[0])
         )
         expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+    })
+
+    it('should show error state when tags number is over 5 on setup', async () => {
+        const {getByPlaceholderText, getByText} = render(
+            <Provider store={store}>
+                <AddContactCaptureForm open={true} onOpenChange={jest.fn()} />
+            </Provider>
+        )
+        const addTagsBtn = getByPlaceholderText('Add tags...')
+        act(() => addTagsBtn.click())
+        await userEvent.type(addTagsBtn, 'abc{enter}')
+        await userEvent.type(addTagsBtn, 'def{enter}')
+        await userEvent.type(addTagsBtn, 'ghi{enter}')
+        await userEvent.type(addTagsBtn, 'jkl{enter}')
+        await userEvent.type(addTagsBtn, 'mno{enter}')
+        await userEvent.type(addTagsBtn, 'pqr{enter}')
+        const nextBtn = getByText('Next')
+        expect(nextBtn).toBeDisabled()
+        expect(getByText('You are allowed up to 5 tags.')).toBeInTheDocument()
+    })
+
+    it('should show error state when disclaimer text is too big on customisation step', () => {
+        const state = {...baseState}
+        state.forms.email.disclaimer = 'f'.repeat(281)
+        const mockSetActiveButton = jest.fn()
+
+        const {getByText} = render(
+            <Provider store={store}>
+                <Customisation
+                    setNextButtonActive={mockSetActiveButton}
+                    setAttachmentData={() => {}}
+                    attachmentData={state}
+                />
+            </Provider>
+        )
+
+        expect(mockSetActiveButton).toHaveBeenCalledWith(false)
+        expect(
+            getByText(
+                'The disclaimer should be under or equals to 280 characters.'
+            )
+        ).toBeInTheDocument()
+    })
+
+    it('should show error state when message is too long on post submission message step', () => {
+        const state = {...baseState}
+        state.postSubmissionMessage.message = 'f'.repeat(281)
+        state.postSubmissionMessage.enabled = true
+        const mockSetActiveButton = jest.fn()
+
+        const {getByText} = render(
+            <Provider store={store}>
+                <PostSubmissionMessage
+                    setNextButtonActive={mockSetActiveButton}
+                    setAttachmentData={() => {}}
+                    attachmentData={state}
+                />
+            </Provider>
+        )
+
+        expect(mockSetActiveButton).toHaveBeenCalledWith(false)
+        expect(
+            getByText(
+                'The message should be under or equals to 280 characters.'
+            )
+        ).toBeInTheDocument()
     })
 })

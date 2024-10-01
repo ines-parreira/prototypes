@@ -1,11 +1,12 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {fromJS} from 'immutable'
+import classnames from 'classnames'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {StepProps} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {UploadType} from 'common/types'
-import {convertToHTML} from 'utils/editor'
+import {convertFromHTML, convertToHTML} from 'utils/editor'
 import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
@@ -16,9 +17,11 @@ import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
 import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewProps'
 import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
 import {DEFAULT_THANK_YOU_MESSAGE} from 'pages/convert/campaigns/components/CampaignPreview/components/ContactCaptureFormPreview/ContactCaptureFormPreview'
+import {ErrorMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/styled'
 import css from './PostSubmissionMessage.less'
 
 export const PostSubmissionMessage = (props: StepProps) => {
+    const messageCharacterLimit = 280
     const {attachmentData, setAttachmentData, setNextButtonActive} = props
     const [messageEnabled, setMessageEnabled] = useState(
         attachmentData.postSubmissionMessage.enabled
@@ -27,9 +30,25 @@ export const PostSubmissionMessage = (props: StepProps) => {
         attachmentData.postSubmissionMessage.message
     )
 
+    const messagePureText = useMemo(() => {
+        const blocksFromHtml = convertFromHTML(message)
+        return blocksFromHtml.getPlainText()
+    }, [message])
+
+    const [onError, errorMessage] = useMemo(() => {
+        if (messagePureText.length > messageCharacterLimit) {
+            return [
+                true,
+                `The message should be under or equals to ${messageCharacterLimit} characters.`,
+            ]
+        }
+        return [false, '']
+    }, [messagePureText.length])
+
     const isSubmitButtonActive = useMemo(() => {
-        return !messageEnabled || !!message
-    }, [messageEnabled, message])
+        const messageIsSet = !messageEnabled || !!message
+        return messageIsSet && !onError
+    }, [messageEnabled, message, onError])
 
     const {chatIntegration} = useIntegrationContext()
     const chatPreviewProps = useChatPreviewProps(fromJS(chatIntegration || {}))
@@ -62,24 +81,33 @@ export const PostSubmissionMessage = (props: StepProps) => {
                     Thank you message
                 </ToggleInput>
                 {messageEnabled && (
-                    <TicketRichField
-                        onChange={(data) => {
-                            setMessage(convertToHTML(data.getCurrentContent()))
-                        }}
-                        value={{html: message, text: message}}
-                        placeholder={'Write your message'}
-                        displayedActions={[
-                            ActionName.Bold,
-                            ActionName.Italic,
-                            ActionName.Underline,
-                            ActionName.Link,
-                            ActionName.Image,
-                            ActionName.Emoji,
-                            ActionName.DiscountCodePicker,
-                        ]}
-                        uploadType={UploadType.PublicAttachment}
-                        isRequired
-                    />
+                    <div>
+                        <TicketRichField
+                            onChange={(data) => {
+                                setMessage(
+                                    convertToHTML(data.getCurrentContent())
+                                )
+                            }}
+                            value={{html: message, text: message}}
+                            placeholder={'Write your message'}
+                            displayedActions={[
+                                ActionName.Bold,
+                                ActionName.Italic,
+                                ActionName.Underline,
+                                ActionName.Link,
+                                ActionName.Image,
+                                ActionName.Emoji,
+                                ActionName.DiscountCodePicker,
+                            ]}
+                            uploadType={UploadType.PublicAttachment}
+                            maxLength={messageCharacterLimit}
+                            className={classnames(css.richField, {
+                                [css.onError]: onError,
+                            })}
+                            isRequired
+                        />
+                        {onError && <ErrorMessage>{errorMessage}</ErrorMessage>}
+                    </div>
                 )}
             </div>
             <div className={css.previewContainer}>
