@@ -4,7 +4,6 @@ import configureMockStore from 'redux-mock-store'
 import {render, screen} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import {useFlag} from 'common/flags'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 import {RootState, StoreDispatch} from 'state/types'
@@ -13,21 +12,11 @@ import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
 import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
 import {TicketMessage} from 'models/ticket/types'
-import * as utils from 'utils'
 import AIAgentFeedbackBar, {
     FEEDBACK_TICKET_SUMMARY_TEST_ID,
     ticketFeedbackSummary,
 } from '../AIAgentFeedbackBar'
 import {messageFeedback} from './fixtures'
-
-jest.mock('auto_qa', () => ({
-    AutoQA: () => <div>AutoQA</div>,
-}))
-
-jest.mock('common/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const useFlagMock = useFlag as jest.Mock
 
 jest.mock('../AIAgentMessageFeedback', () => () => (
     <div data-testid="message-feedback"></div>
@@ -61,7 +50,6 @@ const store = mockStore({
 
 describe('AIAgentFeedbackBar', () => {
     beforeEach(() => {
-        useFlagMock.mockReturnValue(false)
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
                 data: {
@@ -122,19 +110,5 @@ describe('AIAgentFeedbackBar', () => {
         )
 
         expect(queryByText('AutoQA')).not.toBeInTheDocument()
-    })
-
-    it('should render AutoQA if the feature flag is enabled and the user is an admin', () => {
-        useFlagMock.mockReturnValue(true)
-        jest.spyOn(utils, 'isAdmin').mockReturnValue(true)
-        const {queryByText} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <AIAgentFeedbackBar />
-                </Provider>
-            </QueryClientProvider>
-        )
-
-        expect(queryByText('AutoQA')).toBeInTheDocument()
     })
 })

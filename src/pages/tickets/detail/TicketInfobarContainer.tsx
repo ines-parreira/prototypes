@@ -2,13 +2,13 @@ import React, {useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import {useParams} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import classNames from 'classnames'
 import {Navbar} from 'reactstrap'
 
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     changeActiveTab,
     changeTicketMessage,
@@ -21,16 +21,15 @@ import {getAIAgentMessages} from 'state/ticket/selectors'
 import {WidgetEnvironment} from 'state/widgets/types'
 import {getSourcesWithCustomer, getWidgetsState} from 'state/widgets/selectors'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
-import AIAgentFeedbackBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentFeedbackBar'
+import TicketFeedback, {
+    useHasAIAgent,
+} from 'pages/tickets/detail/components/TicketFeedback'
 
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {logEventWithSampling} from 'common/segment/segment'
 import {SegmentEvent} from 'common/segment'
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {
-    DATE_FEATURE_AVAILABLE,
-    TRIAL_MESSAGE_TAG,
-} from './components/AIAgentFeedbackBar/constants'
+import {DATE_FEATURE_AVAILABLE} from './components/AIAgentFeedbackBar/constants'
 
 import css from './TicketInfobarContainer.less'
 
@@ -42,7 +41,7 @@ type OwnProps = {
 type Props = OwnProps & ConnectedProps<typeof connector>
 
 export const CUSTOMER_INFORMATION_TAB = 'Customer Information'
-export const AI_AGENT_TAB = 'Ticket Feedback'
+export const TICKET_FEEDBACK_TAB = 'Ticket Feedback'
 
 const SIDE_PANEL_VIEWED_EVENT_TYPE = 'summary'
 
@@ -56,8 +55,10 @@ export const TicketInfobarContainer = ({
     const params = useParams<{ticketId: string}>()
     const dispatch = useAppDispatch()
     const accountId = useAppSelector(getCurrentAccountId)
-    const isFeedbackToAiAgentEnabled =
-        useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViews]
+
+    const hasAIAgent = useHasAIAgent()
+    const hasAutoQA = useFlag<boolean>(FeatureFlagKey.AutoQA, false)
+    const hasTicketFeedback = hasAIAgent || hasAutoQA
 
     useEffect(() => {
         dispatch(actions.selectContext())
@@ -80,12 +81,6 @@ export const TicketInfobarContainer = ({
 
     const aiMessages = useAppSelector(getAIAgentMessages).filter(
         (message) => new Date(message.created_datetime) > DATE_FEATURE_AVAILABLE
-    )
-
-    const allAIMessagesOnTrialMode = aiMessages.every(
-        (message) =>
-            message.body_html &&
-            message.body_html.indexOf(TRIAL_MESSAGE_TAG) !== -1
     )
 
     const handleChangeTab = (tab: TicketAIAgentFeedbackTab) => {
@@ -120,13 +115,8 @@ export const TicketInfobarContainer = ({
         })
     }
 
-    const showNavbar =
-        aiMessages.length > 0 &&
-        isFeedbackToAiAgentEnabled &&
-        !allAIMessagesOnTrialMode
-
     const activeTab = useAppSelector(getActiveTab)
-    const isAIAgentTabActive = activeTab === TicketAIAgentFeedbackTab.AIAgent
+    const showTicketFeedback = activeTab === TicketAIAgentFeedbackTab.AIAgent
 
     return (
         <div
@@ -134,11 +124,11 @@ export const TicketInfobarContainer = ({
                 'hidden-panel': !isOpenedPanel,
             })}
         >
-            {showNavbar && (
+            {hasTicketFeedback && (
                 <Navbar className={css.navbar}>
                     <div
                         className={classNames(css.link, {
-                            [css.active]: !isAIAgentTabActive,
+                            [css.active]: !showTicketFeedback,
                         })}
                         onClick={() =>
                             handleChangeTab(
@@ -150,20 +140,20 @@ export const TicketInfobarContainer = ({
                     </div>
                     <div
                         className={classNames(css.link, {
-                            [css.active]: isAIAgentTabActive,
+                            [css.active]: showTicketFeedback,
                         })}
                         onClick={handleAIAgentTabClick}
                     >
-                        {AI_AGENT_TAB}
+                        {TICKET_FEEDBACK_TAB}
                     </div>
                 </Navbar>
             )}
-            {isAIAgentTabActive ? (
-                <AIAgentFeedbackBar />
+            {hasTicketFeedback && showTicketFeedback ? (
+                <TicketFeedback />
             ) : (
                 <div
                     className={classNames(css.infoBarContainer, {
-                        [css.infoBarContainerWithNavbar]: showNavbar,
+                        [css.infoBarContainerWithNavbar]: hasTicketFeedback,
                     })}
                 >
                     <Infobar

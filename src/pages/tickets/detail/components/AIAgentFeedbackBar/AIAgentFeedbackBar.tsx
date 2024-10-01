@@ -1,8 +1,5 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 
-import {AutoQA} from 'auto_qa'
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     changeTicketMessage,
@@ -15,8 +12,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {getAIAgentMessages} from 'state/ticket/selectors'
 import {logEventWithSampling} from 'common/segment/segment'
 import {SegmentEvent} from 'common/segment'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isAdmin} from 'utils'
 import AIAgentMessageFeedback from './AIAgentMessageFeedback'
 import AIAgentTicketFeedback from './AIAgentTicketFeedback'
 import css from './AIAgentFeedbackBar.less'
@@ -28,10 +23,8 @@ export const ticketFeedbackSummary =
     'Select a message from AI Agent and provide feedback to improve future responses.'
 
 const AIAgentFeedbackBar = () => {
-    const hasAutoQAFlag = useFlag<boolean>(FeatureFlagKey.AutoQA, false)
     const dispatch = useAppDispatch()
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
-    const currentUser = useAppSelector(getCurrentUser)
 
     const aiMessages = useAppSelector(getAIAgentMessages)
 
@@ -58,18 +51,8 @@ const AIAgentFeedbackBar = () => {
         )
     }
 
-    const hasAutoQA = useMemo(
-        () => hasAutoQAFlag && isAdmin(currentUser),
-        [currentUser, hasAutoQAFlag]
-    )
-
     return (
-        <div
-            className={css.container}
-            data-testid={FEEDBACK_MESSAGE_CONTAINER_TEST_ID}
-        >
-            {hasAutoQA && <AutoQA />}
-            <div className={css.lineSeparator} />
+        <>
             <div className={css.summaryContainer}>
                 <div className={css.title}>
                     {messageFeedback ? 'Response summary' : 'AI Agent overview'}
@@ -98,7 +81,7 @@ const AIAgentFeedbackBar = () => {
             ) : (
                 <AIAgentTicketFeedback ticketFeedback={ticketFeedback} />
             )}
-        </div>
+        </>
     )
 }
 

@@ -3,10 +3,10 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
-import LD from 'launchdarkly-react-client-sdk'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import {useFlag} from 'common/flags'
 import {selectContext, fetchWidgets} from 'state/widgets/actions'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {RootState, StoreState} from 'state/types'
@@ -16,17 +16,26 @@ import {
     getActiveTab,
 } from 'state/ui/ticketAIAgentFeedback'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getAIAgentMessages} from 'state/ticket/selectors'
 import {user} from 'fixtures/users'
 import {ticket} from 'fixtures/ticket'
+import {useHasAIAgent} from 'pages/tickets/detail/components/TicketFeedback'
 import {
-    AI_AGENT_TAB,
     CUSTOMER_INFORMATION_TAB,
+    TICKET_FEEDBACK_TAB,
     TicketInfobarContainer,
 } from '../TicketInfobarContainer'
 import {Infobar} from '../../../common/components/infobar/Infobar/Infobar'
 import {TRIAL_MESSAGE_TAG} from '../components/AIAgentFeedbackBar/constants'
+
+jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
+    default: () => <div>TicketFeedback</div>,
+    useHasAIAgent: jest.fn(),
+}))
+const useHasAIAgentMock = useHasAIAgent as jest.Mock
+
+jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+const useFlagMock = useFlag as jest.Mock
 
 jest.mock('state/widgets/actions')
 
@@ -106,9 +115,8 @@ describe('<TicketInfobarContainer />', () => {
     } as unknown as ComponentProps<typeof TicketInfobarContainer>
 
     beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockReturnValue({
-            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
-        })
+        useFlagMock.mockReturnValue(false)
+        useHasAIAgentMock.mockReturnValue(true)
         mockedGetAIAgentMessages.mockReturnValue([
             {
                 id: '1',
@@ -146,7 +154,7 @@ describe('<TicketInfobarContainer />', () => {
             }
         )
 
-        const aiAgentTab = screen.getByText(AI_AGENT_TAB)
+        const aiAgentTab = screen.getByText(TICKET_FEEDBACK_TAB)
         userEvent.click(aiAgentTab)
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
@@ -180,7 +188,7 @@ describe('<TicketInfobarContainer />', () => {
             }
         )
 
-        const aiAgentTab = screen.getByText(AI_AGENT_TAB)
+        const aiAgentTab = screen.getByText(TICKET_FEEDBACK_TAB)
         userEvent.click(aiAgentTab)
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
@@ -220,7 +228,7 @@ describe('<TicketInfobarContainer />', () => {
             }
         )
 
-        const aiAgentTab = screen.getByText(AI_AGENT_TAB)
+        const aiAgentTab = screen.getByText(TICKET_FEEDBACK_TAB)
         userEvent.click(aiAgentTab)
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
@@ -254,7 +262,8 @@ describe('<TicketInfobarContainer />', () => {
         expect(mockedChangeActiveTab).not.toHaveBeenCalled()
     })
 
-    it('should not render secondary navbar if there are no AI messages', () => {
+    it('should not render secondary navbar if there is no ticket feedback', () => {
+        useHasAIAgentMock.mockReturnValue(false)
         mockedGetAIAgentMessages.mockReturnValue([])
 
         renderWithRouter(
@@ -278,6 +287,7 @@ describe('<TicketInfobarContainer />', () => {
             body_html: TRIAL_MESSAGE_TAG,
         } as any
 
+        useHasAIAgentMock.mockReturnValue(false)
         mockedGetAIAgentMessages.mockReturnValue([aiMessage])
 
         renderWithRouter(

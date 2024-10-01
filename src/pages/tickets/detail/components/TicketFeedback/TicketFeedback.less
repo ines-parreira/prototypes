@@ -1,0 +1,19 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        background-color: var(--neutral-grey-0);
+        padding: @layout-spacing-s 0;
+        gap: @layout-spacing-m;
+        overflow: auto;
+    }
+
+    .lineSeparator {
+        border-top: 1px solid var(--neutral-grey-3);
+        height: 1px;
+        margin: 0 @layout-spacing-s;
+    }
+}
