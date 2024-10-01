@@ -67,10 +67,9 @@ export const SetUp = (props: StepProps) => {
                 <div className={css.contentColumn}>
                     <span className={css.title}>Shopify</span>
                     <span className={css.subText}>
-                        To collect Email and SMS marketing consent, you need to
-                        set up a terms of service and privacy policy according
-                        to your regions’ regulations. You will be able to so in
-                        the next step.
+                        To collect Email marketing consent, you must set up
+                        terms of service and a privacy policy in line with your
+                        region’s regulations. You’ll do this in the next step.
                     </span>
                     <div className={css.tagsContainer}>
                         <span className={css.text}>
