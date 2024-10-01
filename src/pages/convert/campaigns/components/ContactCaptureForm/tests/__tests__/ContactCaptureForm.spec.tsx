@@ -1,6 +1,6 @@
 import React from 'react'
 import configureMockStore from 'redux-mock-store'
-import {act, render, fireEvent, waitFor} from '@testing-library/react'
+import {act, render, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import userEvent from '@testing-library/user-event'
 import {QueryClientProvider} from '@tanstack/react-query'
@@ -13,8 +13,6 @@ import {user} from 'fixtures/users'
 import {UserRole} from 'config/types/user'
 import {Customisation} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customisation'
 import {PostSubmissionMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage'
-import {sampleContactFormAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/tests/fixtures'
-import {CampaignContactFormAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {ContactFormCaptureFormIconButton} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
 
 jest.mock('tags/useListTags')
@@ -264,69 +262,5 @@ describe('ContactForm test suite', () => {
             userEvent.click(baseElement.getElementsByClassName('backdrop')[0])
         )
         expect(mockOnOpenChange).toHaveBeenCalledWith(false)
-    })
-
-    it('should reset to the initial state when reset is clicked', async () => {
-        const mockOnReset = jest.fn()
-        const {getByText, getAllByPlaceholderText} = render(
-            <Provider store={store}>
-                <AddContactCaptureForm
-                    open={true}
-                    onOpenChange={jest.fn()}
-                    onReset={mockOnReset}
-                />
-            </Provider>
-        )
-
-        const nextButton = getByText('Next')
-        act(() => nextButton.click())
-        let fieldLabelInput = getAllByPlaceholderText(
-            'Email'
-        )[0] as HTMLInputElement
-        await userEvent.type(fieldLabelInput, ' - Star Talk')
-        expect(fieldLabelInput.value).toBe('Email - Star Talk')
-        await waitFor(() => {
-            getByText('Reset').click()
-        })
-        act(() => nextButton.click())
-        fieldLabelInput = getAllByPlaceholderText(
-            'Email'
-        )[0] as HTMLInputElement
-        expect(mockOnReset).toHaveBeenCalled()
-        expect(fieldLabelInput.value).toBe('Email')
-    })
-
-    it('should reset to the attachment state when reset is clicked with an attachment selected', async () => {
-        const jsAttachment =
-            sampleContactFormAttachment.toJS() as CampaignContactFormAttachment
-        const attachmentEmailLabel =
-            jsAttachment.extra?.steps[0].fields[0].label
-        const mockOnReset = jest.fn()
-        const {getByText, getByPlaceholderText} = render(
-            <Provider store={store}>
-                <AddContactCaptureForm
-                    open={true}
-                    onOpenChange={jest.fn()}
-                    onReset={mockOnReset}
-                    initialAttachment={jsAttachment}
-                />
-            </Provider>
-        )
-
-        const nextButton = getByText('Next')
-        act(() => nextButton.click())
-        let fieldLabelInput = getByPlaceholderText('Email') as HTMLInputElement
-        await userEvent.type(fieldLabelInput, ' - Rolling Stones')
-        expect(fieldLabelInput.value).toBe(
-            `${attachmentEmailLabel} - Rolling Stones`
-        )
-
-        await waitFor(() => {
-            act(() => getByText('Reset').click())
-        })
-        act(() => nextButton.click())
-        fieldLabelInput = getByPlaceholderText('Email') as HTMLInputElement
-        expect(mockOnReset).toHaveBeenCalled()
-        expect(fieldLabelInput.value).toBe(attachmentEmailLabel)
     })
 })

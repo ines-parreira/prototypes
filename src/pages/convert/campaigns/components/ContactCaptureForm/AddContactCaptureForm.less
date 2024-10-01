@@ -34,22 +34,7 @@
         gap: @layout-spacing-xs;
         width: 100%;
         padding: @layout-spacing-s !important;
-    }
-
-    .buttonsSeparator {
-        display: flex;
-        flex-grow: 1;
-    }
-
-    .resetBtn {
-        border: 0;
-        background-color: @grey;
-        color: @darkerGrey;
-
-        :hover {
-            background-color: @grey !important;
-            box-shadow: none !important;
-            border-color: @grey !important;
-        }
+        flex-direction: row-reverse;
+        justify-content: flex-end;
     }
 }

@@ -151,13 +151,13 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
             open={open}
             isLoading={false}
             className={css.contactWizardDrawer}
-            onBackdropClick={() => onOpenChange(!open)}
+            onBackdropClick={() => onOpenChange(false)}
             portalRootId="app-root"
             containerZIndices={[1051, -1]}
         >
             <EditorDrawerHeader
                 label="Email Capture"
-                onClose={handleCancel}
+                onClose={() => onOpenChange(false)}
                 testId="drawer-header"
                 headerSaperator
             />
@@ -182,15 +182,6 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
                 ))}
             </Drawer.Content>
             <Drawer.Footer className={css.wizardFooterButtons}>
-                <Button
-                    className={css.resetBtn}
-                    fillStyle="ghost"
-                    color="secondary"
-                    onClick={handleReset}
-                >
-                    Reset
-                </Button>
-                <div className={css.buttonsSeparator}></div>
                 <Button onClick={onClickBack}>
                     {isFirstStep ? 'Cancel' : 'Previous'}
                 </Button>
