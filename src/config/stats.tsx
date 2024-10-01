@@ -57,8 +57,6 @@ export const SUPPORT_VOLUME_PER_HOUR = 'support-volume-per-hour'
 export const SELF_SERVICE_OVERVIEW_V2 = 'self-service-overview-v2'
 export const SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE =
     'self-service-article-recommendation-performance'
-export const SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE =
-    'self-service-quick-response-performance'
 export const SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS =
     'self-service-products-with-most-issues-and-return-requests'
 export const SELF_SERVICE_TOP_REPORTED_ISSUES =
@@ -1126,27 +1124,6 @@ export const stats = toImmutable<
                 },
             },
         }),
-    },
-    [SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE]: {
-        style: 'table',
-        downloadable: true,
-        tableOptions: {
-            showLines: 6,
-        },
-        axisHelpers: {
-            'Automation rate':
-                'Number of interactions resolved by Quick Response divided by the total number of times a user views the Quick Response.',
-            // TODO: deprecated by AUTEN-463
-            'Served by an agent after quick response':
-                'If a customer is not satisfied with the response provided or if there is no response configured for a Quick Response, a ticket is created.',
-            'Served by an agent after quick response flow':
-                'If a customer is not satisfied with the response provided or if there is no response configured for a Quick Response, a ticket is created.',
-        },
-        callbacks: {
-            cell: ({value}) => {
-                return value
-            },
-        },
     },
     [SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE]: {
         style: 'table',

@@ -16,7 +16,6 @@ import {AccountFeature} from 'state/currentAccount/types'
 import {integrationsState} from 'fixtures/integrations'
 import {
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
-    SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
     SELF_SERVICE_TOP_REPORTED_ISSUES,
     SELF_SERVICE_WORKFLOWS_PERFORMANCE,
 } from 'config/stats'
@@ -26,8 +25,6 @@ import {
     selfServiceFlowsPerformance,
     selfServiceProductsWithMostIssuesAndReturnRequests,
     selfServiceProductsWithMostIssuesAndReturnRequestsNoData,
-    selfServiceQuickResponsePerformance,
-    selfServiceQuickResponsePerformanceNoData,
     selfServiceTopReportedIssues,
     selfServiceTopReportedIssuesNoData,
 } from 'fixtures/stats'
@@ -386,9 +383,7 @@ describe('<SelfServiceStatsPage />', () => {
 
     it('should render the filters and stats when stats filters are defined', async () => {
         useStatResourceMock.mockImplementation(({resourceName}) => {
-            if (resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE) {
-                return [selfServiceQuickResponsePerformance, false, _noop]
-            } else if (
+            if (
                 resourceName === SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
             ) {
                 return [
@@ -421,9 +416,7 @@ describe('<SelfServiceStatsPage />', () => {
 
     it('should render the stats with the feature preview when there is no data and the features are disabled', async () => {
         useStatResourceMock.mockImplementation(({resourceName}) => {
-            if (resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE) {
-                return [selfServiceQuickResponsePerformanceNoData, false, _noop]
-            } else if (
+            if (
                 resourceName === SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
             ) {
                 return [
@@ -535,9 +528,7 @@ describe('<SelfServiceStatsPage />', () => {
 
     it('should call refineDownloadedWorkflows on clicking of CSV', async () => {
         useStatResourceMock.mockImplementation(({resourceName}) => {
-            if (resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE) {
-                return [selfServiceQuickResponsePerformance, false, _noop]
-            } else if (
+            if (
                 resourceName === SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
             ) {
                 return [
@@ -569,7 +560,7 @@ describe('<SelfServiceStatsPage />', () => {
             </QueryClientProvider>
         )
 
-        expect(getAllByText('file_download').length).toBe(5)
+        expect(getAllByText('file_download').length).toBe(4)
         // eslint-disable-next-line @typescript-eslint/require-await
         await act(async () => {
             fireEvent.click(getAllByText('file_download')[0])
@@ -581,120 +572,5 @@ describe('<SelfServiceStatsPage />', () => {
             downloadData.data,
             downloadData.contentType
         )
-    })
-
-    it('should not hide quick response if date filter before 15th of Aug 2024', () => {
-        useStatResourceMock.mockImplementation(({resourceName}) => {
-            if (resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE) {
-                return [selfServiceQuickResponsePerformance, false, _noop]
-            } else if (
-                resourceName === SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
-            ) {
-                return [
-                    selfServiceArticleRecommendationPerformance,
-                    false,
-                    _noop,
-                ]
-            } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
-                return [selfServiceTopReportedIssues, false, _noop]
-            } else if (resourceName === SELF_SERVICE_WORKFLOWS_PERFORMANCE) {
-                return [selfServiceFlowsPerformance, false, _noop]
-            }
-            return [
-                selfServiceProductsWithMostIssuesAndReturnRequests,
-                false,
-                _noop,
-            ]
-        })
-
-        mockedUseWorkflowConfigurations.mockReturnValue({
-            isLoading: false,
-            data: WFConfigData,
-        } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
-
-        const {getByText} = renderWithRouter(
-            <QueryClientProvider client={mockClient}>
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        stats: {
-                            filters: fromLegacyStatsFilters({
-                                period: {
-                                    start_datetime: '2024-07-03T00:00:00.000Z',
-                                    end_datetime: '2024-08-20T23:59:59.999Z',
-                                },
-                                integrations: [
-                                    integrationsState.integrations[0].id,
-                                ],
-                            }),
-                        },
-                    })}
-                >
-                    <SelfServiceStatsPage />
-                </Provider>
-            </QueryClientProvider>
-        )
-        expect(
-            getByText('Quick Responses performance (removed)')
-        ).toBeInTheDocument()
-    })
-
-    it('should hide quick response if date filter after 15th of Aug 2024 ', () => {
-        useStatResourceMock.mockImplementation(({resourceName}) => {
-            if (resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE) {
-                return [selfServiceQuickResponsePerformance, false, _noop]
-            } else if (
-                resourceName === SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
-            ) {
-                return [
-                    selfServiceArticleRecommendationPerformance,
-                    false,
-                    _noop,
-                ]
-            } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
-                return [selfServiceTopReportedIssues, false, _noop]
-            } else if (resourceName === SELF_SERVICE_WORKFLOWS_PERFORMANCE) {
-                return [selfServiceFlowsPerformance, false, _noop]
-            }
-            return [
-                selfServiceProductsWithMostIssuesAndReturnRequests,
-                false,
-                _noop,
-            ]
-        })
-
-        mockedUseWorkflowConfigurations.mockReturnValue({
-            isLoading: false,
-            data: WFConfigData,
-        } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
-
-        const {queryByText} = renderWithRouter(
-            <QueryClientProvider client={mockClient}>
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        stats: {
-                            filters: fromLegacyStatsFilters({
-                                period: {
-                                    start_datetime: '2024-08-16T00:00:00.000Z',
-                                    end_datetime: '2024-08-20T23:59:59.999Z',
-                                },
-                                integrations: [
-                                    integrationsState.integrations[0].id,
-                                ],
-                            }),
-                        },
-                    })}
-                >
-                    <SelfServiceStatsPage />
-                </Provider>
-            </QueryClientProvider>
-        )
-        expect(
-            queryByText('Quick Responses performance')
-        ).not.toBeInTheDocument()
-        expect(
-            queryByText('Quick Responses performance (removed)')
-        ).not.toBeInTheDocument()
     })
 })

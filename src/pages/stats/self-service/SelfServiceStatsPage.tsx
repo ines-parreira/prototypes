@@ -3,7 +3,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
 import {stringify} from 'csv-stringify/sync' // eslint-disable-line import/no-unresolved
-import moment from 'moment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PaywallConfig,
@@ -12,7 +11,6 @@ import {
 import {
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
-    SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
     SELF_SERVICE_TOP_REPORTED_ISSUES,
     SELF_SERVICE_WORKFLOWS_PERFORMANCE,
     stats as statsConfig,
@@ -57,8 +55,6 @@ import {SelfServiceFeaturePreview} from './SelfServiceFeaturePreview'
 
 import css from './SelfServiceStatsPage.less'
 import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
-
-const QUICK_RESPONSE_DEPRECATION_DATE = '2024-08-15'
 
 export const SelfServiceStatsPage = (): JSX.Element => {
     const isFlowsBuilderAnalyticsEnabled =
@@ -167,16 +163,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     const workflowsPerformanceNoData =
         (workflowsPerformance?.data.data.lines.length ?? 0) === 0
 
-    const [quickResponsePerformance, isFetchingQuickResponsePerformance] =
-        useStatResource<TwoDimensionalChart>({
-            statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
-            resourceName: SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
-            statsFilters: pageStatsFilters,
-        })
-
-    const quickResponsePerformanceNoData =
-        (quickResponsePerformance?.data.data.lines.length ?? 0) === 0
-
     const [
         articleRecommendationPerformance,
         isFetchingArticleRecommendationPerformance,
@@ -253,18 +239,10 @@ export const SelfServiceStatsPage = (): JSX.Element => {
 
     const allSectionsNoData =
         workflowsPerformanceNoData &&
-        quickResponsePerformanceNoData &&
         articleRecommendationPerformanceNoData &&
         topReportedIssuesNoData &&
         productsWithMostIssuesAndReturnRequestsNoData
 
-    const isDateAfter15thOfAug = useMemo(
-        () =>
-            moment(pageStatsFilters.period.start_datetime).isAfter(
-                moment(QUICK_RESPONSE_DEPRECATION_DATE)
-            ),
-        [pageStatsFilters]
-    )
     if (isSelfServiceFetchPending || isWorkflowsFetchPending) {
         return <Loader data-testid="self-service-loader" />
     }
@@ -320,54 +298,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             />
                         )}
                     </StatWrapper>
-                    {isDateAfter15thOfAug ? (
-                        <></>
-                    ) : (
-                        <StatWrapper
-                            stat={quickResponsePerformance}
-                            isFetchingStat={isFetchingQuickResponsePerformance}
-                            resourceName={
-                                SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
-                            }
-                            statDataLabelOverride={
-                                'Quick Responses performance (removed)'
-                            }
-                            statsFilters={pageStatsFilters}
-                            helpText={
-                                <span>
-                                    Only Quick Responses enabled during the
-                                    selected time period are displayed below.{' '}
-                                    <a
-                                        href="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Learn more
-                                    </a>
-                                </span>
-                            }
-                            helpAutoHide={false}
-                            isDownloadable={!quickResponsePerformanceNoData}
-                        >
-                            {(stat) => (
-                                <TableStat
-                                    context={{tagColors: null}}
-                                    data={stat.getIn(['data', 'data'])}
-                                    meta={stat.get('meta')}
-                                    config={statsConfig.get(
-                                        SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
-                                    )}
-                                    name={
-                                        SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
-                                    }
-                                    integrations={integrations}
-                                    selfServiceConfigurations={
-                                        selfServiceConfigurations
-                                    }
-                                />
-                            )}
-                        </StatWrapper>
-                    )}
                     <StatWrapper
                         stat={articleRecommendationPerformance}
                         isFetchingStat={

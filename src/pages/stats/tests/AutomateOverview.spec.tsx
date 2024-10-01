@@ -714,5 +714,238 @@ describe('<AutomateOverview />', () => {
                 screen.queryByText('Autoresponders (deprecated)')
             ).not.toBeInTheDocument()
         })
+        it('should return false when hasAutomatedInteractionsByAutoResponders is false and item label matches', () => {
+            const automateMetricsTimeseries: AutomateTimeseries = {
+                isFetching: false,
+                isError: false,
+                automationRateTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionByEventTypesTimeSeries: [
+                    [
+                        {
+                            label: AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders,
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+            }
+            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+                automateMetricsTimeseries
+            )
+
+            const {container} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>
+            )
+
+            // Add assertions to check the specific behavior
+            expect(container.firstChild).toMatchSnapshot()
+        })
+    })
+
+    describe('Quickresponse deprecation', () => {
+        it('should display quickresponse filter label', () => {
+            const automateMetricsTimeseries: AutomateTimeseries = {
+                isFetching: false,
+                isError: false,
+                automationRateTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionByEventTypesTimeSeries: [
+                    [
+                        {
+                            label: AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse,
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+            }
+            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+                automateMetricsTimeseries
+            )
+            const screen = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>
+            )
+
+            expect(
+                screen.getByText('Automated interactions by feature')
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Quick Responses (deprecated)')
+            ).toBeInTheDocument()
+        })
+
+        it('should not show Auto-Responder label if not quickresponse in timeseries', () => {
+            const automateMetricsTimeseries: AutomateTimeseries = {
+                isFetching: false,
+                isError: false,
+                automationRateTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionByEventTypesTimeSeries: [
+                    [
+                        {
+                            label: AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation,
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+            }
+            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+                automateMetricsTimeseries
+            )
+            const screen = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>
+            )
+
+            expect(
+                screen.queryByText('Quick Responses (deprecated)')
+            ).not.toBeInTheDocument()
+        })
+        it('should return false when hasAutomatedInteractionsByQuickResponses is false and item label matches', () => {
+            const automateMetricsTimeseries: AutomateTimeseries = {
+                isFetching: false,
+                isError: false,
+                automationRateTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionByEventTypesTimeSeries: [
+                    [
+                        {
+                            label: AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse,
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+            }
+            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+                automateMetricsTimeseries
+            )
+
+            const {container} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>
+            )
+
+            // Add assertions to check the specific behavior
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should return false when hasAutomatedInteractionsByQuickResponse is false and item label matches', () => {
+            const automateMetricsTimeseries: AutomateTimeseries = {
+                isFetching: false,
+                isError: false,
+                automationRateTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionTimeSeries: [
+                    [
+                        {
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 23,
+                        },
+                    ],
+                ],
+                automatedInteractionByEventTypesTimeSeries: [
+                    [
+                        {
+                            label: AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse,
+                            dateTime: '2022-02-02T12:45:33.122',
+                            value: 0,
+                        },
+                    ],
+                ],
+            }
+            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+                automateMetricsTimeseries
+            )
+
+            const {container} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>
+            )
+
+            // Add assertions to check the specific behavior
+            expect(container.firstChild).toMatchSnapshot()
+        })
     })
 })

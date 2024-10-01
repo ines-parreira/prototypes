@@ -140,6 +140,15 @@ export function useTimeSeriesFormattedData(
                         item.value > 0
                 )
             )
+        const hasAutomatedInteractionsByQuickResponse =
+            automatedInteractionByEventTypesTimeSeries.some((item) =>
+                item.some(
+                    (item) =>
+                        (item.label as AutomatedInteractionByFeatures) ===
+                            AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse &&
+                        item.value > 0
+                )
+            )
 
         const automatedInteractionByEventTypesTimeSeriesData =
             formatLabeledTimeSeriesData(
@@ -160,6 +169,15 @@ export function useTimeSeriesFormattedData(
                             automateStatsMeasureLabelMap[
                                 AutomationBillingEventMeasure
                                     .AutomatedInteractionsByAutoResponders
+                            ]
+                    ) {
+                        return false
+                    } else if (
+                        !hasAutomatedInteractionsByQuickResponse &&
+                        item.label ===
+                            automateStatsMeasureLabelMap[
+                                AutomationBillingEventMeasure
+                                    .AutomatedInteractionsByQuickResponse
                             ]
                     ) {
                         return false
