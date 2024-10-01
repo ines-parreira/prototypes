@@ -7,6 +7,7 @@ import {screen} from '@testing-library/react'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {
     BILLING_BASE_PATH,
+    BILLING_INFORMATION_PATH,
     BILLING_PAYMENT_PATH,
 } from 'pages/settings/new_billing/constants'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
@@ -41,6 +42,12 @@ jest.mock('state/billing/actions', () => {
 })
 
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
+
+jest.mock('../../BillingAddressSetupView/BillingAddressSetupView', () => ({
+    BillingAddressSetupView: () => (
+        <div data-testid="billing-address-setup-view" />
+    ),
+}))
 
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
@@ -84,8 +91,6 @@ describe('BillingStartView', () => {
             expect(
                 screen.queryByText(/Gorgias Internal/i)
             ).not.toBeInTheDocument()
-
-            screen.debug()
         })
 
         it('should show the "Gorgias internal" tab if user is impersonated AND feature flag is ON', () => {
@@ -240,6 +245,55 @@ describe('BillingStartView', () => {
             })
 
             expect(button).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Billing Stripe Elements Integration', () => {
+        it('should NOT show the new Stripe elements address form if the integration flag is off', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.BillingStripeElementsPaymentIntegration]: false,
+            }))
+
+            jest.mock(
+                '../../BillingAddressSetupView/BillingAddressSetupView',
+                () => ({
+                    BillingAddressSetupView: () => (
+                        <div data-testid="billing-address-setup-view" />
+                    ),
+                })
+            )
+
+            renderWithRouter(
+                <Provider store={storeWithCanceledSubscription}>
+                    <BillingStartView />
+                </Provider>,
+                {
+                    route: BILLING_INFORMATION_PATH,
+                }
+            )
+
+            expect(
+                screen.queryByTestId('billing-address-setup-view')
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show the new Stripe elements address form if the integration flag is on', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.BillingStripeElementsPaymentIntegration]: true,
+            }))
+
+            renderWithRouter(
+                <Provider store={storeWithCanceledSubscription}>
+                    <BillingStartView />
+                </Provider>,
+                {
+                    route: BILLING_INFORMATION_PATH,
+                }
+            )
+
+            expect(
+                screen.getByTestId('billing-address-setup-view')
+            ).toBeInTheDocument()
         })
     })
 })

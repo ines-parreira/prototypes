@@ -1,0 +1,56 @@
+import React, {useContext} from 'react'
+import {Elements} from '@stripe/react-stripe-js'
+import {loadStripe} from '@stripe/stripe-js'
+import {ThemeContext} from 'theme'
+
+const stripePromise = loadStripe(window.STRIPE_PUBLIC_KEY!)
+
+export const StripeElementsProvider: React.FC = ({children}) => {
+    const {colorTokens} = useContext(ThemeContext) ?? {}
+
+    return (
+        <Elements
+            stripe={stripePromise}
+            options={{
+                appearance: {
+                    theme: 'stripe',
+                    variables: {
+                        colorText: colorTokens?.Neutral.Grey_6.value,
+                        colorPrimary: colorTokens?.Main.Primary.value,
+                        colorBackground: colorTokens?.Neutral.Grey_0.value,
+                        colorDanger: colorTokens?.Feedback.Error.value,
+                        colorWarning: 'purple',
+                        colorSuccess: 'orange',
+                        colorTextSecondary: colorTokens?.Neutral.Grey_4.value,
+                        colorTextPlaceholder: colorTokens?.Neutral.Grey_4.value,
+                        spacingUnit: '2.33px',
+                        gridRowSpacing: '16px',
+                        fontSizeBase: '14px',
+                        borderRadius: '4px',
+                        fontFamily:
+                            "'Inter', 'Helvetica Neue', Arial, Helvetica, sans-serif",
+                    },
+                    rules: {
+                        '.Block': {
+                            boxShadow: 'none',
+                        },
+                        '.Label': {
+                            fontWeight: '600',
+                            marginBottom: '1px',
+                            fontSize: '14px',
+                            lineHeight: '20px',
+                            letterSpacing: '-0.1px',
+                        },
+                        '.Input': {
+                            boxShadow: 'none',
+                            borderColor: colorTokens?.Neutral.Grey_3
+                                .value as string,
+                        },
+                    },
+                },
+            }}
+        >
+            {children}
+        </Elements>
+    )
+}

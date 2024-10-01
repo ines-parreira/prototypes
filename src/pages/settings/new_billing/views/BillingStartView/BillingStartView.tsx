@@ -67,6 +67,7 @@ import BillingFrequencyView from '../BillingFrequencyView'
 import ContactSupportModal from '../../components/ContactSupportModal/ContactSupportModal'
 import PaymentMethodView from '../PaymentMethodView/PaymentMethodView'
 import BillingInternalView from '../BillingInternalView'
+import {BillingAddressSetupView} from '../BillingAddressSetupView/BillingAddressSetupView'
 import css from './BillingStartView.less'
 
 const BillingStartView = () => {
@@ -367,6 +368,9 @@ const BillingStartView = () => {
     const isInternalUIEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.InternalBillingInterface]
 
+    const isStripeElementsIntegrationEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.BillingStripeElementsPaymentIntegration]
+
     return (
         <div className="full-width">
             <PageHeader title="Billing" />
@@ -462,7 +466,11 @@ const BillingStartView = () => {
                             />
                         </Route>
                         <Route exact path={BILLING_INFORMATION_PATH}>
-                            <BillingInformationView />
+                            {isStripeElementsIntegrationEnabled ? (
+                                <BillingAddressSetupView />
+                            ) : (
+                                <BillingInformationView />
+                            )}
                         </Route>
                         <Route exact path={BILLING_PAYMENT_FREQUENCY_PATH}>
                             <BillingFrequencyView

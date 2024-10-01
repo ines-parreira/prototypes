@@ -134,7 +134,7 @@ export const useCreditCard = ({
 
     useEffect(() => {
         // load Stripe.js because we need it to create token for credit card
-        if (typeof Stripe === 'undefined') {
+        if (typeof Stripe === 'undefined' || typeof Stripe === 'function') {
             loadScript('https://js.stripe.com/v2/', () => {
                 if (window.STRIPE_PUBLIC_KEY) {
                     Stripe.setPublishableKey(window.STRIPE_PUBLIC_KEY)

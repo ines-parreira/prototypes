@@ -78,6 +78,8 @@
         "@shopify/theme-images": "3.0.3",
         "@storybook/addon-interactions": "^7.6.14",
         "@storybook/icons": "^1.2.9",
+        "@stripe/react-stripe-js": "^2.8.0",
+        "@stripe/stripe-js": "^4.5.0",
         "@tanstack/react-query": "4.36.1",
         "@twilio/voice-sdk": "^2.11.1",
         "algoliasearch": "^4.13.1",
