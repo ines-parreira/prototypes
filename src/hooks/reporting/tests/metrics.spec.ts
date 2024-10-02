@@ -68,20 +68,11 @@ describe('metrics', () => {
             medianFirstResponseTimeQueryFactory,
         ],
         [
-            'useMessagesSentMetric',
-            useMessagesSentMetric,
-            messagesSentQueryFactory,
-        ],
-        [
             'useMedianResolutionTimeMetric',
             useMedianResolutionTimeMetric,
             medianResolutionTimeQueryFactory,
         ],
-        [
-            'useTicketsRepliedMetric',
-            useTicketsRepliedMetric,
-            ticketsRepliedQueryFactory,
-        ],
+
         [
             'useOneTouchTicketsMetric',
             useOneTouchTicketsMetric,
@@ -119,6 +110,16 @@ describe('metrics', () => {
     )
 
     describe.each([
+        [
+            'useMessagesSentMetric',
+            useMessagesSentMetric,
+            messagesSentQueryFactory,
+        ],
+        [
+            'useTicketsRepliedMetric',
+            useTicketsRepliedMetric,
+            ticketsRepliedQueryFactory,
+        ],
         ['useOnlineTimeMetric', useOnlineTimeMetric, onlineTimeQueryFactory],
         [
             'useTicketsCreatedMetric',

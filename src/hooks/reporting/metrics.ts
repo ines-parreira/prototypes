@@ -81,24 +81,12 @@ export const useMedianResolutionTimeMetric = (
 export const useTicketsRepliedMetric = (
     statsFilters: StatsFilters,
     timezone: string
-): Metric =>
-    useMetric(
-        withFilter(
-            ticketsRepliedQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter
-        )
-    )
+): Metric => useMetric(ticketsRepliedQueryFactory(statsFilters, timezone))
 
 export const useMessagesSentMetric = (
     statsFilters: StatsFilters,
     timezone: string
-): Metric =>
-    useMetric(
-        withFilter(
-            messagesSentQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter
-        )
-    )
+): Metric => useMetric(messagesSentQueryFactory(statsFilters, timezone))
 
 export const useOneTouchTicketsMetric = (
     statsFilters: StatsFilters,
