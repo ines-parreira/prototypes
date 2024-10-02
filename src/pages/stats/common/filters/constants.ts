@@ -1,3 +1,4 @@
+import {ReportingGranularity} from 'models/reporting/types'
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
@@ -18,6 +19,7 @@ export const agentsFilterLogicalOperators = [
 
 export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.Period]: 'Date',
+    [FilterKey.AggregationWindow]: 'Aggregation',
     [FilterKey.Integrations]: 'Integration',
     [FilterKey.Tags]: 'Tag',
     [FilterKey.Agents]: 'Agent',
@@ -34,6 +36,17 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterComponentKey.Store]: 'Report on',
     [FilterComponentKey.PhoneIntegrations]: 'Integration',
 }
+export const ReportingGranularityLabels: Record<ReportingGranularity, string> =
+    {
+        [ReportingGranularity.Year]: 'Year',
+        [ReportingGranularity.Quarter]: 'Quarter',
+        [ReportingGranularity.Month]: 'Month',
+        [ReportingGranularity.Week]: 'Week',
+        [ReportingGranularity.Day]: 'Day',
+        [ReportingGranularity.Hour]: 'Hour',
+        [ReportingGranularity.Minute]: 'Minute',
+        [ReportingGranularity.Second]: 'Second',
+    }
 
 export const tagsFilterLogicalOperators = [
     LogicalOperatorEnum.ONE_OF,

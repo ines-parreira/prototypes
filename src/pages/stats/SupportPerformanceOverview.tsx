@@ -1,38 +1,38 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {FeatureFlagKey} from 'config/featureFlags'
+
+import useAppSelector from 'hooks/useAppSelector'
+import {useGridSize} from 'hooks/useGridSize'
+import useLocalStorage from 'hooks/useLocalStorage'
 import {FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-import TipsToggle from 'pages/stats/TipsToggle'
-import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
-import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
+import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {TrendCard} from 'pages/stats/common/components/TrendCard'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardSection from 'pages/stats/DashboardSection'
+import StatsPage from 'pages/stats/StatsPage'
+import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
+import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
+import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
+import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
 
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
-import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
+import {
+    OverviewChartConfig,
+    OverviewMetricConfig,
+} from 'pages/stats/SupportPerformanceOverviewConfig'
+import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
+import TipsToggle from 'pages/stats/TipsToggle'
+import {MetricName} from 'services/reporting/constants'
 
 import {
     currentAccountHasFeature,
     getSurveysSettingsJS,
 } from 'state/currentAccount/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
-
-import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorage from 'hooks/useLocalStorage'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import StatsPage from 'pages/stats/StatsPage'
-import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
-import {
-    OverviewChartConfig,
-    OverviewMetricConfig,
-} from 'pages/stats/SupportPerformanceOverviewConfig'
-import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
-import {MetricName} from 'services/reporting/constants'
 import {OverviewMetric} from 'state/ui/stats/types'
-import {useGridSize} from 'hooks/useGridSize'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import DashboardSection from 'pages/stats/DashboardSection'
-import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
 
 const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE = 'Support performance overview'
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
@@ -80,7 +80,10 @@ export default function SupportPerformanceOverview() {
                             className="pb-0"
                         >
                             <FiltersPanel
-                                persistentFilters={[FilterKey.Period]}
+                                persistentFilters={[
+                                    FilterKey.Period,
+                                    FilterKey.AggregationWindow,
+                                ]}
                                 optionalFilters={[
                                     FilterKey.Channels,
                                     FilterKey.Integrations,

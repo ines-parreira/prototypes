@@ -12,15 +12,13 @@ import {OrderDirection} from 'models/api/types'
 import {TICKET_CUSTOM_FIELDS_NEW_SEPARATOR} from 'pages/stats/utils'
 
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
-import {periodToReportingGranularity} from 'utils/reporting'
 import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
 
 const DATASET_VISIBILITY_ITEMS = 3
 
 export const useTicketsFieldTrend = (topAmount = 10) => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
     const selectedCustomField = useAppSelector(getSelectedCustomField)
-    const granularity = periodToReportingGranularity(cleanStatsFilters.period)
 
     const {data = {}, isFetching} = useCustomFieldsTicketCountTimeSeries(
         cleanStatsFilters,

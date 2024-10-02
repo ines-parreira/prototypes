@@ -62,6 +62,7 @@ export function SupportPerformanceTicketInsights() {
                             persistentFilters={[
                                 FilterKey.Period,
                                 FilterComponentKey.CustomField,
+                                FilterKey.AggregationWindow,
                             ]}
                             optionalFilters={[
                                 FilterKey.Channels,

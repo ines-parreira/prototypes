@@ -49,6 +49,7 @@ export function ServiceLevelAgreements() {
                                     persistentFilters={[
                                         FilterKey.Period,
                                         FilterKey.SlaPolicies,
+                                        FilterKey.AggregationWindow,
                                     ]}
                                     optionalFilters={[
                                         FilterKey.Integrations,

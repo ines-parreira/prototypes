@@ -12,7 +12,7 @@ import {
 } from 'hooks/reporting/timeSeries'
 import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
-import {periodToReportingGranularity} from 'utils/reporting'
+import {periodAndAggregationWindowToReportingGranularity} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 import {ReportingGranularity} from 'models/reporting/types'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
@@ -27,8 +27,8 @@ jest.mock('pages/stats/common/utils')
 const mockedFormatTimeSeriesData = assumeMock(formatTimeSeriesData)
 
 jest.mock('utils/reporting')
-const mockedPeriodToReportingGranularity = assumeMock(
-    periodToReportingGranularity
+const mockedPeriodAndAggregationWindowToReportingGranularity = assumeMock(
+    periodAndAggregationWindowToReportingGranularity
 )
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
@@ -80,7 +80,9 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
             isError: false,
         } as UseQueryResult<TimeSeriesDataItem[][]>)
         mockedFormatTimeSeriesData.mockReturnValue(mockTimeSeriesData)
-        mockedPeriodToReportingGranularity.mockReturnValue(mockGranularity)
+        mockedPeriodAndAggregationWindowToReportingGranularity.mockReturnValue(
+            mockGranularity
+        )
     })
 
     it('should return formatted time series for closed and created tickets', () => {

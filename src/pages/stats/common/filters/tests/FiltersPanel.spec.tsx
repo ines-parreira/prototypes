@@ -159,6 +159,7 @@ describe('FiltersPanel', () => {
     ]
     const supportedFilters: StaticFilter[] = [
         FilterKey.Period,
+        FilterKey.AggregationWindow,
         FilterKey.Channels,
         FilterKey.Integrations,
         FilterKey.Agents,

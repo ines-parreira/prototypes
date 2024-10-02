@@ -1,8 +1,13 @@
+import moment from 'moment/moment'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {ReportingGranularity} from 'models/reporting/types'
 import {
+    AggregationWindow,
     CustomFieldFilter,
     FilterKey,
     LegacyStatsFilters,
+    Period,
+    StatsFilters,
     StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'models/stat/types'
@@ -38,6 +43,11 @@ export const fromPartialLegacyStatsFilters = (
             switch (key) {
                 case FilterKey.Period:
                     acc[key] = statsFilters[key]
+                    break
+                case FilterKey.AggregationWindow:
+                    if (statsFilters[key] !== undefined) {
+                        acc[key] = statsFilters[key]
+                    }
                     break
                 case FilterKey.Tags:
                     if (
@@ -102,6 +112,11 @@ export const fromLegacyStatsFilters = (
                         ]
                     }
                     break
+                case FilterKey.AggregationWindow:
+                    if (statsFilters[key] !== undefined) {
+                        acc[key] = statsFilters[key]
+                    }
+                    break
                 case FilterKey.Integrations:
                 case FilterKey.Agents:
                 case FilterKey.HelpCenters:
@@ -156,6 +171,11 @@ export const fromFiltersWithLogicalOperators = (
                             )?.values
                         }
                         break
+                    case FilterKey.AggregationWindow:
+                        if (statsFilters[filter] !== undefined) {
+                            acc[filter] = statsFilters[filter]
+                        }
+                        break
                     case FilterKey.Integrations:
                     case FilterKey.Agents:
                     case FilterKey.HelpCenters:
@@ -188,4 +208,43 @@ export const fromFiltersWithLogicalOperators = (
             {}
         ),
     }
+}
+
+export const getAllowedAggregationWindows = (
+    period: Period
+): AggregationWindow[] => {
+    const periodInDays = Math.abs(
+        moment
+            .duration(
+                moment(period.start_datetime)
+                    .startOf('day')
+                    .diff(moment(period.end_datetime).endOf('day'))
+            )
+            .asDays()
+    )
+    const isLessThenADay = periodInDays <= 1
+    const isUpTo92days = periodInDays <= 92
+    if (isLessThenADay) {
+        return [ReportingGranularity.Hour]
+    } else if (isUpTo92days) {
+        return [
+            ReportingGranularity.Day,
+            ReportingGranularity.Week,
+            ReportingGranularity.Month,
+        ]
+    }
+    return [ReportingGranularity.Week, ReportingGranularity.Month]
+}
+
+export const getAdjustedAggregationWindow = (
+    filters: StatsFilters
+): StatsFilters[FilterKey.AggregationWindow] => {
+    if (filters.aggregationWindow === undefined) {
+        return undefined
+    }
+
+    const allowedAggregations = getAllowedAggregationWindows(filters.period)
+    return allowedAggregations.includes(filters.aggregationWindow)
+        ? filters.aggregationWindow
+        : allowedAggregations[0]
 }

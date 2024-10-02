@@ -1,4 +1,3 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import React, {
     ComponentProps,
@@ -8,6 +7,7 @@ import React, {
     useMemo,
     useState,
 } from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
@@ -21,6 +21,7 @@ import {
 } from 'models/stat/types'
 import {AddFilterButton} from 'pages/stats/common/filters/AddFilterButton'
 import {AgentsFiltersWithState} from 'pages/stats/common/filters/AgentsFilter'
+import {AggregationWindowFilterWithState} from 'pages/stats/common/filters/AggregationWindowFilter'
 import {BusiestTimesMetricSelectFilter} from 'pages/stats/common/filters/BusiestTimesMetricSelectFilter'
 import {CampaignsFilterFromContext} from 'pages/stats/common/filters/CampaignsFilter'
 import {ChannelsFilterWithState} from 'pages/stats/common/filters/ChannelsFilter'
@@ -96,6 +97,8 @@ export const renderFilter = (filter: FilterKey | FilterComponentKey) => {
             return CampaignsFilterFromContext
         case FilterKey.CampaignStatuses:
             return CampaignStatusesFilterFromContext
+        case FilterKey.AggregationWindow:
+            return AggregationWindowFilterWithState
         case FilterComponentKey.Store:
             return StoreFilterFromContext
         default:
@@ -109,12 +112,14 @@ export function isFilterTypeWithValues(
     FilterKey | FilterComponentKey,
     | FilterKey.CustomFields
     | FilterKey.Period
+    | FilterKey.AggregationWindow
     | FilterComponentKey.CustomField
     | FilterComponentKey.Store
     | FilterComponentKey.BusiestTimesMetricSelectFilter
     | FilterComponentKey.PhoneIntegrations
 > {
     return (
+        type !== FilterKey.AggregationWindow &&
         type !== FilterKey.CustomFields &&
         type !== FilterKey.Tags &&
         type !== FilterKey.Period &&
@@ -134,6 +139,7 @@ const getActiveFilters = (
         if (
             filterKey !== FilterKey.CustomFields &&
             filterKey !== FilterKey.Tags &&
+            filterKey !== FilterKey.AggregationWindow &&
             filterKey !== FilterKey.Period
         ) {
             const filter =

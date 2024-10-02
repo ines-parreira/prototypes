@@ -1,7 +1,7 @@
 import {ChartArea, TooltipItem} from 'chart.js'
 import moment from 'moment'
 import {ReportingGranularity} from 'models/reporting/types'
-import {Period} from 'models/stat/types'
+import {AggregationWindow, Period} from 'models/stat/types'
 import {formatPercentage} from 'pages/common/utils/numbers'
 import {comparedPeriodString, getFormat} from 'pages/stats/common/utils'
 
@@ -102,11 +102,7 @@ export const formatDates = (
 
 export const getUtcPeriodFromDateAndGranularity = (
     dateTime: string,
-    granularity:
-        | ReportingGranularity.Hour
-        | ReportingGranularity.Day
-        | ReportingGranularity.Week
-        | ReportingGranularity.Month
+    granularity: AggregationWindow
 ) => {
     let startDate = moment.utc(dateTime).startOf('day').toISOString()
     let endDate = moment.utc(dateTime).endOf('day').toISOString()

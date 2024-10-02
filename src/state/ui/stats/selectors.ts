@@ -1,4 +1,5 @@
 import {createSelector} from '@reduxjs/toolkit'
+import {FilterKey} from 'models/stat/types'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {getTimezone} from 'state/currentUser/selectors'
 import {
@@ -9,7 +10,7 @@ import {
 } from 'state/stats/selectors'
 import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
 import {RootState} from 'state/types'
-import {periodToReportingGranularity} from 'utils/reporting'
+import {periodAndAggregationWindowToReportingGranularity} from 'utils/reporting'
 
 export const isCleanStatsDirty = (state: RootState) =>
     state.ui.stats.isFilterDirty
@@ -29,8 +30,9 @@ export const getCleanStatsFiltersWithTimezone = createSelector(
         return {
             userTimezone: timezone || DEFAULT_TIMEZONE,
             cleanStatsFilters: legacyCleanStatsFilters,
-            granularity: periodToReportingGranularity(
-                legacyCleanStatsFilters.period
+            granularity: periodAndAggregationWindowToReportingGranularity(
+                legacyCleanStatsFilters.period,
+                legacyCleanStatsFilters[FilterKey.AggregationWindow]
             ),
         }
     }
@@ -46,7 +48,10 @@ export const getCleanStatsFiltersWithLogicalOperatorsWithTimezone =
             return {
                 userTimezone: timezone || DEFAULT_TIMEZONE,
                 cleanStatsFilters: statsFilters,
-                granularity: periodToReportingGranularity(statsFilters.period),
+                granularity: periodAndAggregationWindowToReportingGranularity(
+                    statsFilters.period,
+                    statsFilters[FilterKey.AggregationWindow]
+                ),
             }
         }
     )

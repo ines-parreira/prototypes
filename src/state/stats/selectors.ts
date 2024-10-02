@@ -120,6 +120,7 @@ export const getPageStatsFilters = createSelector(
     getMessagingAndAppIntegrationsStatsFilter,
     (statsFilters, integrationsStatsFilter) => {
         const {
+            aggregationWindow,
             channels,
             agents,
             period,
@@ -133,6 +134,7 @@ export const getPageStatsFilters = createSelector(
             slaPolicies,
         } = statsFilters
         return {
+            aggregationWindow,
             channels,
             agents,
             period,
@@ -181,6 +183,7 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
         integrationsStatsFilter
     ): StatsFiltersWithLogicalOperator => {
         const {
+            aggregationWindow,
             channels,
             customFields,
             agents,
@@ -194,6 +197,7 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
             slaPolicies,
         } = statsFilters
         return {
+            aggregationWindow,
             channels,
             customFields,
             agents,

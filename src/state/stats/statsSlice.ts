@@ -7,6 +7,7 @@ import {
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
 import {
+    getAdjustedAggregationWindow,
     fromLegacyStatsFilters,
     fromPartialLegacyStatsFilters,
 } from 'state/stats/utils'
@@ -35,12 +36,20 @@ export const statsSlice = createSlice({
                 ...fromLegacyStatsFilters(action.payload),
                 period: action.payload.period,
             }
+            if (state.filters[FilterKey.AggregationWindow]) {
+                state.filters[FilterKey.AggregationWindow] =
+                    getAdjustedAggregationWindow(state.filters)
+            }
         },
         setStatsFiltersWithLogicalOperators(
             state,
             action: PayloadAction<StatsFiltersWithLogicalOperator>
         ) {
             state.filters = action.payload
+            if (state.filters[FilterKey.AggregationWindow]) {
+                state.filters[FilterKey.AggregationWindow] =
+                    getAdjustedAggregationWindow(state.filters)
+            }
         },
         mergeStatsFilters(
             state,
@@ -54,6 +63,10 @@ export const statsSlice = createSlice({
                 ...fromPartialLegacyStatsFilters(action.payload),
                 period: action.payload.period ?? state.filters.period,
             }
+            if (state.filters[FilterKey.AggregationWindow]) {
+                state.filters[FilterKey.AggregationWindow] =
+                    getAdjustedAggregationWindow(state.filters)
+            }
         },
         mergeStatsFiltersWithLogicalOperator(
             state,
@@ -63,6 +76,10 @@ export const statsSlice = createSlice({
                 ...state.filters,
                 ...action.payload,
                 period: action.payload.period ?? state.filters.period,
+            }
+            if (state.filters[FilterKey.AggregationWindow]) {
+                state.filters[FilterKey.AggregationWindow] =
+                    getAdjustedAggregationWindow(state.filters)
             }
         },
         mergeCustomFieldsFilter(

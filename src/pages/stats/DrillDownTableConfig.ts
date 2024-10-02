@@ -76,6 +76,7 @@ const queryBuilderWithAgentFilter =
         const areFiltersWithLogicalOperator = Object.values(FilterKey).some(
             (val) =>
                 val !== FilterKey.Period &&
+                val !== FilterKey.AggregationWindow &&
                 isFilterWithLogicalOperator(statsFilters?.[val] || [])
         )
         const statsFiltersWithLogicalOperators = areFiltersWithLogicalOperator
@@ -108,6 +109,7 @@ const queryBuilderWithChannelFilter =
         const areFiltersWithLogicalOperator = Object.values(FilterKey).some(
             (val) =>
                 val !== FilterKey.Period &&
+                val !== FilterKey.AggregationWindow &&
                 isFilterWithLogicalOperator(statsFilters?.[val] || [])
         )
         const statsFiltersWithLogicalOperators = areFiltersWithLogicalOperator

@@ -1,8 +1,10 @@
 import {AnyAction} from 'redux'
 import {
+    FilterKey,
     StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'models/stat/types'
+import {ReportingGranularity} from 'models/reporting/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     withDefaultCustomFieldAndLogicalOperator,
@@ -18,8 +20,12 @@ import {
     setStatsFilters,
     setStatsFiltersWithLogicalOperators,
     statsSlice,
+    StatsState,
 } from 'state/stats/statsSlice'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
+import {
+    fromLegacyStatsFilters,
+    getAllowedAggregationWindows,
+} from 'state/stats/utils'
 
 describe('stats reducer', () => {
     it('should return initial state', () => {
@@ -248,5 +254,41 @@ describe('stats reducer', () => {
                 },
             })
         })
+    })
+
+    describe('aggregationWindow', () => {
+        it.each([
+            setStatsFilters,
+            setStatsFiltersWithLogicalOperators,
+            mergeStatsFilters,
+            mergeStatsFiltersWithLogicalOperator,
+        ])(
+            'should adjust defined aggregation window on dates change',
+            (actionCreator) => {
+                const state = {
+                    ...initialState,
+                    filters: {
+                        ...initialState.filters,
+                        [FilterKey.AggregationWindow]:
+                            ReportingGranularity.Hour,
+                    },
+                } as StatsState
+                const newPeriod = {
+                    start_datetime: '1970-01-01T00:00:00+00:00',
+                    end_datetime: '1970-03-01T00:00:00+00:00',
+                }
+
+                const action = actionCreator({
+                    period: newPeriod,
+                    [FilterKey.AggregationWindow]: ReportingGranularity.Hour,
+                })
+
+                expect(
+                    statsSlice.reducer(state, action).filters[
+                        FilterKey.AggregationWindow
+                    ]
+                ).toEqual(getAllowedAggregationWindows(newPeriod)[0])
+            }
+        )
     })
 })

@@ -30,7 +30,12 @@ import {
     ReportingGranularity,
     ReportingQuery,
 } from 'models/reporting/types'
-import {Period, StatsFilters} from 'models/stat/types'
+import {
+    AggregationWindow,
+    FilterKey,
+    Period,
+    StatsFilters,
+} from 'models/stat/types'
 import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 
@@ -224,11 +229,7 @@ export const statsFiltersToReportingFilters = (
 
 export const periodToReportingGranularity = (
     period: StatsFilters['period']
-):
-    | ReportingGranularity.Hour
-    | ReportingGranularity.Day
-    | ReportingGranularity.Week
-    | ReportingGranularity.Month => {
+): AggregationWindow => {
     const start = moment(period.start_datetime)
     const end = moment(period.end_datetime)
     const diff = moment.duration(end.diff(start) + 1)
@@ -245,6 +246,14 @@ export const periodToReportingGranularity = (
 
     return granularity
 }
+
+export const periodAndAggregationWindowToReportingGranularity = (
+    period: StatsFilters[FilterKey.Period],
+    aggregationWindow: StatsFilters[FilterKey.AggregationWindow]
+): AggregationWindow => {
+    return aggregationWindow ?? periodToReportingGranularity(period)
+}
+
 export const getPreviousPeriod = (
     period: StatsFilters['period']
 ): StatsFilters['period'] => {

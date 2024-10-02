@@ -1,9 +1,11 @@
+import {ReportingGranularity} from 'models/reporting/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {CursorMeta} from 'models/api/types'
 
 export enum FilterKey {
     Agents = 'agents',
+    AggregationWindow = 'aggregationWindow',
     Campaigns = 'campaigns',
     CampaignStatuses = 'campaignStatuses',
     Channels = 'channels',
@@ -17,8 +19,10 @@ export enum FilterKey {
     Tags = 'tags',
 }
 
-export type StateOnlyFilterKeys = Exclude<FilterKey, FilterKey.Period> &
-    Exclude<FilterKey, FilterKey.CustomFields>
+export type StateOnlyFilterKeys = Exclude<
+    FilterKey,
+    FilterKey.Period | FilterKey.CustomFields | FilterKey.AggregationWindow
+>
 
 export type CleanFilterComponentKeys = Exclude<
     FilterComponentKey,
@@ -33,6 +37,7 @@ export enum FilterComponentKey {
 }
 
 export type StaticFilter =
+    | FilterKey.AggregationWindow
     | FilterKey.Agents
     | FilterKey.Campaigns
     | FilterKey.CampaignStatuses
@@ -80,6 +85,7 @@ export type LegacyStatsFilters = {
     [FilterKey.HelpCenters]?: number[]
     [FilterKey.Integrations]?: number[]
     [FilterKey.LocaleCodes]?: string[]
+    [FilterKey.AggregationWindow]?: AggregationWindow
     [FilterKey.Period]: Period
     [FilterKey.Score]?: string[]
     [FilterKey.SlaPolicies]?: string[]
@@ -98,6 +104,12 @@ export type WorkflowStatsFilters = {
     workflowId: string
 }
 
+export type AggregationWindow =
+    | ReportingGranularity.Hour
+    | ReportingGranularity.Day
+    | ReportingGranularity.Week
+    | ReportingGranularity.Month
+
 export type StatsFiltersWithLogicalOperator = {
     [FilterKey.Agents]?: WithLogicalOperator<number>
     [FilterKey.Campaigns]?: WithLogicalOperator<string>
@@ -111,6 +123,7 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.Score]?: WithLogicalOperator<string>
     [FilterKey.SlaPolicies]?: WithLogicalOperator<string>
     [FilterKey.Tags]?: TagFilter[]
+    [FilterKey.AggregationWindow]?: AggregationWindow
 }
 
 export type StatsFilters = LegacyStatsFilters | StatsFiltersWithLogicalOperator

@@ -379,7 +379,10 @@ export default function AutomateOverviewContent({
                     <DashboardSection className={'pb-0'}>
                         <DashboardGridCell size={12}>
                             <FiltersPanel
-                                persistentFilters={[FilterKey.Period]}
+                                persistentFilters={[
+                                    FilterKey.Period,
+                                    FilterKey.AggregationWindow,
+                                ]}
                                 optionalFilters={
                                     isAutomateOverviewChannelsFilter
                                         ? [FilterKey.Channels]
