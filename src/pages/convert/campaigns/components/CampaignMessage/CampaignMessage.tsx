@@ -23,7 +23,6 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {Option, Value} from 'pages/common/forms/SelectField/types'
 
 import RichField from 'pages/common/forms/RichField/RichField'
-import {useIsConvertUniqueDiscountCodesEnabled} from 'pages/convert/common/hooks/useIsConvertUniqueDiscountCodesEnabled'
 import useAppSelector from 'hooks/useAppSelector'
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
 
@@ -89,9 +88,6 @@ export const CampaignMessage = memo(
             return getTourConfiguration()
         }, [getTourConfiguration])
 
-        const isConvertUniqueDiscountCodesEnabled =
-            useIsConvertUniqueDiscountCodesEnabled()
-
         const attachments = useAppSelector(getNewMessageAttachments)
 
         const [previousFirstProductId, setPreviousFirstProductId] = useState<
@@ -147,9 +143,6 @@ export const CampaignMessage = memo(
         const anyDiscountOfferAttached = (
             attachments.toJS() as AttachmentType[]
         ).find((att) => attachmentIsDiscountOffer(att))
-
-        const supportsUniqueDiscountOffer =
-            isConvertUniqueDiscountCodesEnabled && isConvertSubscriber
 
         const canAddUniqueDiscountOffer = !anyDiscountOfferAttached
 
@@ -345,9 +338,7 @@ export const CampaignMessage = memo(
                         isRequired
                         countCharacters={isConvertSubscriber}
                         uploadType={UploadType.PublicAttachment}
-                        supportsUniqueDiscountOffer={
-                            supportsUniqueDiscountOffer
-                        }
+                        supportsUniqueDiscountOffer={isConvertSubscriber}
                         canAddUniqueDiscountOffer={canAddUniqueDiscountOffer}
                         canAddProductAutomations={canAddProductRecommendation}
                         currentShopifyIntegration={shopifyIntegration}
