@@ -37,6 +37,37 @@ export interface AutomateReportData {
     automatedInteractionTrend: MetricTrend
 }
 
+const valueOrZero = (value?: number | null) => value || 0
+
+export const getPerformanceFeatureData = (
+    automateStatsMeasureLabelMap: Record<
+        AutomatedInteractionByFeatures,
+        string
+    >,
+    automatedInteractionByEventTypesTimeSeries: TimeSeriesDataItem[][]
+) => {
+    const labels =
+        automatedInteractionByEventTypesTimeSeries?.map(
+            (item) =>
+                automateStatsMeasureLabelMap[
+                    item[0].label as AutomatedInteractionByFeatures
+                ]
+        ) || []
+
+    return [
+        [EMPTY_LABEL, ...labels],
+        ...(automatedInteractionByEventTypesTimeSeries?.[0]?.map((date) => [
+            date.dateTime,
+            ...(automatedInteractionByEventTypesTimeSeries?.map((timeseries) =>
+                valueOrZero(
+                    timeseries.find(({dateTime}) => date.dateTime === dateTime)
+                        ?.value
+                )
+            ) || []),
+        ]) || []),
+    ]
+}
+
 export const saveReport = async (
     data: AutomateReportData,
     period: Period,
@@ -53,19 +84,18 @@ export const saveReport = async (
     } = data
 
     const round = (value?: number | null) => (value ? Math.round(value) : 0)
-    const ifNullNa = (value?: number | null) => value || 0
 
     const impactData = () => [
         [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
         [
             AUTOMATION_RATE_LABEL,
-            ifNullNa(automationRateTrend.data?.value),
-            ifNullNa(automationRateTrend.data?.prevValue),
+            valueOrZero(automationRateTrend.data?.value),
+            valueOrZero(automationRateTrend.data?.prevValue),
         ],
         [
             AUTOMATED_INTERACTIONS_LABEL,
-            ifNullNa(automatedInteractionTrend.data?.value),
-            ifNullNa(automatedInteractionTrend.data?.prevValue),
+            valueOrZero(automatedInteractionTrend.data?.value),
+            valueOrZero(automatedInteractionTrend.data?.prevValue),
         ],
         [
             DECREASE_IN_FIRST_RESPONSE,
@@ -83,12 +113,12 @@ export const saveReport = async (
         [EMPTY_LABEL, AUTOMATED_INTERACTIONS_LABEL, AUTOMATION_RATE_LABEL],
         ...(automatedInteractionTimeSeries?.[0]?.map((date) => [
             date.dateTime,
-            ifNullNa(
+            valueOrZero(
                 automatedInteractionTimeSeries?.[0]?.find(
                     ({dateTime}) => date.dateTime === dateTime
                 )?.value
             ),
-            ifNullNa(
+            valueOrZero(
                 automationRateTimeSeries?.[0]?.find(
                     ({dateTime}) => date.dateTime === dateTime
                 )?.value
@@ -96,25 +126,11 @@ export const saveReport = async (
         ]) || []),
     ]
 
-    const labels =
-        automatedInteractionByEventTypesTimeSeries?.map(
-            (item) =>
-                automateStatsMeasureLabelMap[
-                    item[0].label as AutomatedInteractionByFeatures
-                ]
-        ) || []
-    const performanceFeatureData = [
-        [EMPTY_LABEL, ...labels],
-        ...(automatedInteractionByEventTypesTimeSeries?.[0]?.map((date) => [
-            date.dateTime,
-            ...(automatedInteractionByEventTypesTimeSeries?.map((timeseries) =>
-                ifNullNa(
-                    timeseries.find(({dateTime}) => date.dateTime === dateTime)
-                        ?.value
-                )
-            ) || []),
-        ]) || []),
-    ]
+    const performanceFeatureData = getPerformanceFeatureData(
+        automateStatsMeasureLabelMap,
+        automatedInteractionByEventTypesTimeSeries
+    )
+
     const export_datetime = moment().format(DATE_TIME_FORMAT)
     const startDate = moment(period.start_datetime).format(DATE_TIME_FORMAT)
     const endDate = moment(period.end_datetime).format(DATE_TIME_FORMAT)

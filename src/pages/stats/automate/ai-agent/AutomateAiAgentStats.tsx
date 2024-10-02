@@ -35,15 +35,12 @@ import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
 import {TicketInsightsFieldTrend} from 'pages/stats/TicketInsightsFieldTrend'
 import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/CustomFieldsTicketCountBreakdownReport'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
-import {CustomField} from 'models/customField/types'
 import {FilterKey} from 'models/stat/types'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-import {AUTOMATE_ENABLED_CHANNELS} from 'pages/stats/AutomateOverviewFilters'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-
-const isAiAgentCustomField = (customField: CustomField) =>
-    ['AI Agent Contact Reason', 'AI Agent Outcome'].includes(customField.label)
+import {AiAgentStatsDownloadButton} from 'pages/stats/automate/ai-agent/AiAgentStatsDownloadButton'
+import {isAiAgentCustomField} from 'pages/automate/aiAgent/util'
 
 export default function AutomateAiAgentStats() {
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
@@ -112,7 +109,10 @@ export default function AutomateAiAgentStats() {
     }, [statsFilters.period.end_datetime, statsFilters.period.start_datetime])
 
     return (
-        <StatsPage title={PAGE_TITLE_AI_AGENT}>
+        <StatsPage
+            title={PAGE_TITLE_AI_AGENT}
+            titleExtra={<AiAgentStatsDownloadButton />}
+        >
             {showNoActivityAlert && !isNoActivityAlertDismissed && (
                 <div style={{padding: '24px'}}>
                     <Alert
@@ -129,15 +129,7 @@ export default function AutomateAiAgentStats() {
 
             <DashboardSection>
                 <DashboardGridCell size={getGridCellSize(12)} className="pb-0">
-                    <FiltersPanel
-                        persistentFilters={[FilterKey.Period]}
-                        optionalFilters={[FilterKey.Channels]}
-                        filterSettingsOverrides={{
-                            [FilterKey.Channels]: {
-                                channelsFilter: AUTOMATE_ENABLED_CHANNELS,
-                            },
-                        }}
-                    />
+                    <FiltersPanel persistentFilters={[FilterKey.Period]} />
                 </DashboardGridCell>
             </DashboardSection>
 

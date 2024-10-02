@@ -1,3 +1,4 @@
+import {CustomField} from 'models/customField/types'
 import {NonNullProperties} from './types'
 
 export const filterNonNull = <T extends object>(
@@ -19,3 +20,6 @@ export const isHandoffEnabled = (silentHandover: boolean) => !silentHandover
 export const isAiAgentEnabled = (deactivatedDatetime: string | null) => {
     return deactivatedDatetime === null
 }
+
+export const isAiAgentCustomField = (customField: CustomField) =>
+    ['AI Intent', 'AI Agent Outcome'].includes(customField.label)

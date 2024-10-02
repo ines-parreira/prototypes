@@ -129,11 +129,10 @@ const getMetric = (
               )
           )
 
-export const saveReport = async (
+export const getData = (
     data: AgentsPerformanceReportData,
     summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
-    columnsOrder: AgentsTableColumn[],
-    period?: Period
+    columnsOrder: AgentsTableColumn[]
 ) => {
     const AssigneeUserId = TicketDimension.AssigneeUserId
     const AvgSurveyScore = TicketSatisfactionSurveyMeasure.AvgSurveyScore
@@ -263,6 +262,17 @@ export const saveReport = async (
             )
         }),
     ]
+
+    return agentsMetricData
+}
+
+export const saveReport = async (
+    data: AgentsPerformanceReportData,
+    summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
+    columnsOrder: AgentsTableColumn[],
+    period?: Period
+) => {
+    const agentsMetricData = getData(data, summary, columnsOrder)
 
     const export_datetime = moment().format(DATE_TIME_FORMAT)
     const startDate = moment(period?.start_datetime).format(DATE_TIME_FORMAT)

@@ -180,6 +180,7 @@ describe('AutomateAiAgentStats', () => {
             automatedInteractionByEventTypesTimeSeriesData: [
                 {label: 'AI Agent', values: {x: 5, y: 10}},
             ],
+            exportableData: {},
         })
 
         return render(<AutomateAiAgentStats />)
