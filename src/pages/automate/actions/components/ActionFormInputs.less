@@ -1,0 +1,28 @@
+@import (reference) '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .label {
+        margin-bottom: @layout-spacing-xxs;
+    }
+
+    .description {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .inputs {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: @layout-spacing-xs;
+    }
+
+    .footer {
+        .caption-regular();
+
+        color: var(--neutral-grey-5);
+        display: grid;
+        grid-template-columns: 110px 160px 1fr;
+        gap: @layout-spacing-xs;
+    }
+}

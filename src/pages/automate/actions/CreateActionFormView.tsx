@@ -1,19 +1,20 @@
 import React, {useMemo, useRef} from 'react'
 import {useParams, useLocation} from 'react-router-dom'
+import {ulid} from 'ulidx'
+
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import useEffectOnce from 'hooks/useEffectOnce'
+import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 
-import CustomActionsForm from './components/CustomActionsForm'
-import TemplateActionsForm from './components/TemplateActionsForm'
-import {TemplateConfiguration, TemplateConfigurationFormInput} from './types'
-import {
-    generateNewCustomActionConfigurationFormInput,
-    getTriggerstByKind,
-} from './utils'
+import CustomActionForm from './components/CustomActionForm'
+import TemplateActionForm from './components/TemplateActionForm'
+import {TemplateConfiguration} from './types'
+import {getInitialConfiguration} from './utils'
+
 import css from './ActionsView.less'
 
-export default function CreateActionFormView() {
+const CreateActionFormView = () => {
     const {search, state: initialState} = useLocation<
         | Omit<
               Extract<TemplateConfiguration['apps'][number], {type: 'app'}>,
@@ -22,7 +23,7 @@ export default function CreateActionFormView() {
         | undefined
     >()
     const params = useMemo(() => new URLSearchParams(search), [search])
-    const templateConfigurationId = params.get('template_id')
+    const templateId = params.get('template_id')
 
     const state = useRef(initialState)
 
@@ -30,30 +31,24 @@ export default function CreateActionFormView() {
         window.history.replaceState(null, '')
     })
 
-    const {
-        data: templateConfigurations,
-        isInitialLoading: isTemplateConfigurationsLoading,
-    } = useGetWorkflowConfigurationTemplates(
-        {triggers: ['llm-prompt']},
-        {
-            enabled: !!templateConfigurationId,
-        }
+    const {data: templates = [], isInitialLoading: isTemplatesLoading} =
+        useGetWorkflowConfigurationTemplates(
+            {triggers: ['llm-prompt']},
+            {enabled: !!templateId}
+        )
+
+    const template = useMemo(
+        () => templates.find((template) => template.id === templateId),
+        [templates, templateId]
     )
 
-    const [templateConfiguration, newActionConfiguration] = useMemo(() => {
-        const template = templateConfigurations?.find(
-            (template) => template.id === templateConfigurationId
-        )
-        if (!template?.triggers) {
-            return []
-        }
-        const llmPromptTrigger = getTriggerstByKind(
-            template.triggers,
-            'llm-prompt'
-        )
+    const {shopName} = useParams<{shopName: string}>()
 
-        const newActionConfigurationFormInput: TemplateConfigurationFormInput =
-            {
+    const configuration = useMemo<WorkflowConfiguration>(() => {
+        if (template) {
+            return {
+                id: ulid(),
+                internal_id: ulid(),
                 name: template.name,
                 initial_step_id: null,
                 available_languages: [],
@@ -63,48 +58,47 @@ export default function CreateActionFormView() {
                         ? {...app, api_key: state.current.api_key}
                         : app
                 ),
-                // FIXME: "requires_confirmation" should not be copied from template
                 entrypoints: template.entrypoints,
-                triggers: [
-                    {
-                        kind: 'llm-prompt',
-                        settings: {
-                            custom_inputs: [],
-                            object_inputs: [],
-                            outputs: [],
-                            conditions: llmPromptTrigger?.settings.conditions,
-                        },
-                    },
-                ],
+                triggers: template.triggers.map((trigger) => {
+                    if (trigger.kind === 'llm-prompt') {
+                        return {
+                            kind: 'llm-prompt',
+                            settings: {
+                                custom_inputs: [],
+                                object_inputs: [],
+                                outputs: [],
+                                conditions: trigger.settings.conditions,
+                            },
+                        }
+                    }
+
+                    return trigger
+                }),
                 steps: [],
                 transitions: [],
+                template_internal_id: template.internal_id,
             }
-        return [template, newActionConfigurationFormInput]
-    }, [templateConfigurations, templateConfigurationId])
+        }
 
-    const {shopName} = useParams<{
-        shopType: string
-        shopName: string
-    }>()
-
-    const isTemplateAction = templateConfiguration && newActionConfiguration
+        return getInitialConfiguration()
+    }, [template])
 
     return (
         <AiAgentLayout
             shopName={shopName}
             className={css.actionsFormContainer}
-            isLoading={isTemplateConfigurationsLoading}
+            isLoading={isTemplatesLoading}
         >
-            {isTemplateAction ? (
-                <TemplateActionsForm
-                    initialConfigurationData={newActionConfiguration}
-                    templateConfiguration={templateConfiguration}
+            {template ? (
+                <TemplateActionForm
+                    configuration={configuration}
+                    template={template}
                 />
             ) : (
-                <CustomActionsForm
-                    initialConfigurationData={generateNewCustomActionConfigurationFormInput()}
-                />
+                <CustomActionForm configuration={configuration} />
             )}
         </AiAgentLayout>
     )
 }
+
+export default CreateActionFormView

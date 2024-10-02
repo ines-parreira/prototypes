@@ -330,7 +330,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 data: {
                     instructions: 'This action removes the item from the order',
                     requires_confirmation: false,
-                    custom_inputs: [
+                    inputs: [
                         {
                             id: '01J7ZTR9XY9M0TQC99836A6PXC',
                             name: 'Quantity',
@@ -342,16 +342,6 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                             name: 'Product variant id',
                             data_type: 'string',
                             instructions: 'id of the product variant',
-                        },
-                    ],
-                    object_inputs: [
-                        {
-                            kind: 'customer',
-                            integration_id: '{{store.helpdesk_integration_id}}',
-                        },
-                        {
-                            kind: 'order',
-                            integration_id: '{{store.helpdesk_integration_id}}',
                         },
                     ],
                     conditionsType: null,

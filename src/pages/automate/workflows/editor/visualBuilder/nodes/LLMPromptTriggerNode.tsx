@@ -68,7 +68,7 @@ export default function LLMPromptTriggerNodeWrapper(
     const instructions = node.data.instructions
     const isErrored =
         !instructions.trim() ||
-        node.data.custom_inputs.some(
+        node.data.inputs.some(
             (input) => !input.name.trim() || !input.instructions.trim()
         ) ||
         (node.data.conditionsType !== null &&

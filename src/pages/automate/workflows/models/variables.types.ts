@@ -59,7 +59,7 @@ export type WorkflowVariableGroup = {
         | 'http_request'
         | 'shopper_authentication'
         | 'custom_input'
-    variables: WorkflowVariable[]
+    variables: (WorkflowVariable | WorkflowVariableGroup)[]
 }
 
 export type WorkflowVariableList = (WorkflowVariable | WorkflowVariableGroup)[]

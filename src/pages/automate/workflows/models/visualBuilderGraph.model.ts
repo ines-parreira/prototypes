@@ -235,37 +235,79 @@ function setObjectInputs(
         .forEach((variable) => {
             switch (variable?.nodeType) {
                 case 'shopper_authentication':
-                    if (
-                        trigger.settings.object_inputs.every(
-                            (input) => input.kind !== 'customer'
-                        )
-                    ) {
-                        trigger.settings.object_inputs.unshift({
-                            kind: 'customer',
-                            integration_id: '{{store.helpdesk_integration_id}}',
-                        })
+                    {
+                        if (
+                            trigger.settings.object_inputs.every(
+                                (input) => input.kind !== 'customer'
+                            )
+                        ) {
+                            const index =
+                                trigger.settings.object_inputs.findIndex(
+                                    (input) => input.kind === 'order'
+                                )
+
+                            if (index !== -1) {
+                                trigger.settings.object_inputs.splice(
+                                    index,
+                                    0,
+                                    {
+                                        kind: 'customer',
+                                        integration_id:
+                                            '{{store.helpdesk_integration_id}}',
+                                    }
+                                )
+                            } else {
+                                trigger.settings.object_inputs.push({
+                                    kind: 'customer',
+                                    integration_id:
+                                        '{{store.helpdesk_integration_id}}',
+                                })
+                            }
+                        }
                     }
                     break
                 case 'order_selection':
-                    if (
-                        trigger.settings.object_inputs.every(
-                            (input) => input.kind !== 'customer'
-                        )
-                    ) {
-                        trigger.settings.object_inputs.unshift({
-                            kind: 'customer',
-                            integration_id: '{{store.helpdesk_integration_id}}',
-                        })
-                    }
-                    if (
-                        trigger.settings.object_inputs.every(
-                            (input) => input.kind !== 'order'
-                        )
-                    ) {
-                        trigger.settings.object_inputs.push({
-                            kind: 'order',
-                            integration_id: '{{store.helpdesk_integration_id}}',
-                        })
+                    {
+                        if (
+                            trigger.settings.object_inputs.every(
+                                (input) => input.kind !== 'customer'
+                            )
+                        ) {
+                            const index =
+                                trigger.settings.object_inputs.findIndex(
+                                    (input) => input.kind === 'order'
+                                )
+
+                            if (index !== -1) {
+                                trigger.settings.object_inputs.splice(
+                                    index,
+                                    0,
+                                    {
+                                        kind: 'customer',
+                                        integration_id:
+                                            '{{store.helpdesk_integration_id}}',
+                                    }
+                                )
+                            } else {
+                                trigger.settings.object_inputs.push({
+                                    kind: 'customer',
+                                    integration_id:
+                                        '{{store.helpdesk_integration_id}}',
+                                })
+                            }
+                        }
+
+                        if (
+                            trigger.settings.object_inputs.every(
+                                (input) => input.kind !== 'order'
+                            )
+                        ) {
+                            trigger.settings.object_inputs.push({
+                                kind: 'order',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                            })
+                        }
                     }
                     break
             }
@@ -301,8 +343,30 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     {
                         kind: 'llm-prompt',
                         settings: {
-                            custom_inputs: node.data.custom_inputs,
-                            object_inputs: [],
+                            custom_inputs: node.data.inputs.filter(
+                                (
+                                    input
+                                ): input is Extract<
+                                    NonNullable<
+                                        WorkflowConfiguration['triggers']
+                                    >[number],
+                                    {kind: 'llm-prompt'}
+                                >['settings']['custom_inputs'][number] =>
+                                    'data_type' in input
+                            ),
+                            object_inputs: node.data.inputs.filter(
+                                (
+                                    input
+                                ): input is Extract<
+                                    Extract<
+                                        NonNullable<
+                                            WorkflowConfiguration['triggers']
+                                        >[number],
+                                        {kind: 'llm-prompt'}
+                                    >['settings']['object_inputs'][number],
+                                    {kind: 'product'}
+                                > => 'kind' in input && input.kind === 'product'
+                            ),
                             conditions:
                                 node.data.conditionsType === 'or'
                                     ? {
@@ -328,6 +392,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                                 node.data.requires_confirmation,
                             instructions: node.data.instructions,
                         },
+                        deactivated_datetime: node.data.deactivated_datetime,
                     },
                 ]
                 return
@@ -451,7 +516,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     headers['content-type'] = node.data.bodyContentType
                 }
 
-                let body: string | undefined
+                let body: string | undefined | null
 
                 switch (node.data.bodyContentType) {
                     case 'application/json':

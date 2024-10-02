@@ -1,14 +1,14 @@
 import React, {useMemo} from 'react'
-
 import {Label} from '@gorgias/ui-kit'
 import _noop from 'lodash/noop'
+
 import {Drawer} from 'pages/common/components/Drawer'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import TextArea from 'pages/common/forms/TextArea'
 import CheckBox from 'pages/common/forms/CheckBox'
-import ActionFormInputVariable from 'pages/automate/actions/components/ActionFormInputVariable'
+import ActionFormInputs from 'pages/automate/actions/components/ActionFormInputs'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import {getTriggerNode} from 'pages/automate/workflows/models/workflowConfiguration.model'
 
@@ -80,42 +80,25 @@ export default function LLMPromptTriggerEditor({
                         Require AI Agent to confirm with customers before
                         completing the Action
                     </CheckBox>
-                    <ActionFormInputVariable
-                        customInputs={
-                            nodeInEdition.data.custom_inputs.map((input) => ({
-                                id: input.id,
-                                name: input.name,
-                                instructions: input.instructions,
-                                dataType: input.data_type,
-                                isNotFullyEditable:
-                                    !isDraft &&
-                                    initialTriggerNode.data.custom_inputs.some(
-                                        (initialInput) =>
-                                            initialInput.id === input.id
-                                    ),
-                            })) ?? []
-                        }
-                        onAddInput={() => {
+                    <ActionFormInputs
+                        inputs={nodeInEdition.data.inputs}
+                        semiImmutableInputs={initialTriggerNode.data.inputs}
+                        onAdd={() => {
                             dispatch({
-                                type: 'ADD_LLM_PROMPT_TRIGGER_CUSTOM_INPUT',
+                                type: 'ADD_LLM_PROMPT_TRIGGER_INPUT',
                             })
                         }}
-                        onDeleteInput={(index) => {
+                        onDelete={(index) => {
                             dispatch({
-                                type: 'DELETE_LLM_PROMPT_TRIGGER_CUSTOM_INPUT',
+                                type: 'DELETE_LLM_PROMPT_TRIGGER_INPUT',
                                 index,
                             })
                         }}
                         onChange={(nextValue, index) => {
                             dispatch({
-                                type: 'SET_LLM_PROMPT_TRIGGER_CUSTOM_INPUT',
+                                type: 'SET_LLM_PROMPT_TRIGGER_INPUT',
                                 index,
-                                input: {
-                                    id: nextValue.id,
-                                    name: nextValue.name,
-                                    instructions: nextValue.instructions,
-                                    data_type: nextValue.dataType,
-                                },
+                                input: nextValue,
                             })
                         }}
                     />

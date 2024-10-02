@@ -1,20 +1,39 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {FormProvider, useForm} from 'react-hook-form'
 import userEvent from '@testing-library/user-event'
-import ToolbarContext, {
-    ToolbarContextType,
-} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
-import {getInputVariables} from '../utils'
-import ActionFormInputConditions from '../components/ActionFormInputConditions'
-import {ConditionsFormValues} from '../types'
 
-const defaultValues: ConditionsFormValues = {
-    conditions: [],
-    conditionsType: null,
+import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+
+import {ActionFormInputValues} from '../types'
+import ActionFormInputConditions from '../components/ActionFormInputConditions'
+
+const defaultValues: ActionFormInputValues = {
+    name: '',
+    trigger: {
+        instructions: '',
+        requires_confirmation: false,
+        conditionsType: null,
+        conditions: [],
+        inputs: [],
+    },
 }
 
-const inputVariables = getInputVariables([])
+const inputVariables: WorkflowVariableList = [
+    {
+        name: 'Existing customer',
+        nodeType: 'shopper_authentication',
+        variables: [
+            {
+                name: 'Customer first name',
+                value: 'objects.customer.firstname',
+                nodeType: 'shopper_authentication',
+                type: 'string',
+            },
+        ],
+    },
+]
 
 const Form = (props: any) => {
     const methods = useForm({
@@ -22,52 +41,42 @@ const Form = (props: any) => {
         mode: 'onBlur',
     })
     return (
-        <ToolbarContext.Provider
-            value={
-                {
-                    workflowVariables: inputVariables,
-                } as ToolbarContextType
-            }
-        >
+        <ToolbarProvider workflowVariables={inputVariables}>
             <FormProvider {...methods}>
                 <form>
                     <ActionFormInputConditions {...props} />
                 </form>
             </FormProvider>
-        </ToolbarContext.Provider>
+        </ToolbarProvider>
     )
 }
 
 describe('ActionFormInputConditions', () => {
     it('renders form with valid state', async () => {
-        const {
-            getByText,
-            getAllByRole,
-            getAllByLabelText,
-            getByPlaceholderText,
-        } = render(
-            <Form
-                inputVariables={inputVariables}
-                defaultValues={defaultValues}
-            />
+        render(
+            <Form variables={inputVariables} defaultValues={defaultValues} />
         )
 
-        const [noConditions] = getAllByRole('radio')
+        const [noConditions] = screen.getAllByRole('radio')
         expect(noConditions).toHaveAttribute('aria-checked', 'true')
 
-        const [andType] = getAllByLabelText('All conditions are met')
+        const [andType] = screen.getAllByLabelText('All conditions are met')
         userEvent.click(andType)
 
-        const addConditionButton = getByText('Add condition', {exact: false})
+        const addConditionButton = screen.getByText('Add condition', {
+            exact: false,
+        })
         expect(addConditionButton).toBeInTheDocument()
 
         userEvent.click(addConditionButton)
-        userEvent.click(getByText('Existing customer', {exact: false}))
-        userEvent.click(getByText('Customer first name', {exact: false}))
+        userEvent.click(screen.getByText('Existing customer', {exact: false}))
+        userEvent.click(screen.getByText('Customer first name', {exact: false}))
 
-        expect(getByText('Enter a value')).toBeInTheDocument()
-        await userEvent.type(getByPlaceholderText('value'), 'value')
-        userEvent.click(getByText('clear'))
+        expect(screen.getByText('Enter a value')).toBeInTheDocument()
+
+        expect(screen.getByText('Enter a value')).toBeInTheDocument()
+        await userEvent.type(screen.getByPlaceholderText('value'), 'value')
+        userEvent.click(screen.getByText('clear'))
         userEvent.click(noConditions)
 
         expect(addConditionButton).not.toBeInTheDocument()

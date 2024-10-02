@@ -1,22 +1,25 @@
 import React from 'react'
 import {UseControllerProps, useController, useFieldArray} from 'react-hook-form'
 import {Label} from '@gorgias/ui-kit'
+
 import BodyContentTypeSelect from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/BodyContentTypeSelect'
-import FormUrlencoded from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/FormUrlencoded'
 import {validateJSONWithVariables} from 'pages/automate/workflows/models/variables.model'
 import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
 import TextareaWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextareaWithVariables'
 import MethodSelect from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/MethodSelect'
 import Headers from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/Headers'
 import TextArea from 'pages/common/forms/TextArea'
+import {validateHttpHeaderName, validateWebhookURL} from 'utils'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import Caption from 'pages/common/forms/Caption/Caption'
+
 import {CustomActionFormInputValues} from '../types'
-import {validateHttpHeaderName, validateWebhookURL} from '../../../../utils'
-import {WorkflowVariableGroup} from '../../workflows/models/variables.types'
-import Caption from '../../../common/forms/Caption/Caption'
-import css from './CustomActionsForm.less'
+
+import css from './CustomActionForm.less'
+import HttpRequestFormUrlencoded from './HttpRequestFormUrlencoded'
 
 type Props = {
-    inputVariables: WorkflowVariableGroup[]
+    variables: WorkflowVariableList
 } & Pick<
     UseControllerProps<CustomActionFormInputValues>,
     'control' | 'disabled'
@@ -25,11 +28,11 @@ type Props = {
 export default function HttpRequestFormInput({
     control,
     disabled,
-    inputVariables,
+    variables,
 }: Props) {
     const {field: httpUrl, fieldState: httpUrlState} = useController({
         control,
-        name: 'httpUrl',
+        name: 'http.url',
         rules: {
             required: 'URL is required',
             validate: (value) => validateWebhookURL(value) || undefined,
@@ -37,36 +40,25 @@ export default function HttpRequestFormInput({
     })
     const {field: httpMethod} = useController({
         control,
-        name: 'httpMethod',
+        name: 'http.method',
     })
-    const {field: httpBody, fieldState: httpBodyState} = useController({
+    const {field: httpJSON, fieldState: httpJSONState} = useController({
         control,
-        name: 'httpBody',
+        name: 'http.json',
         rules: {
-            validate: (value, {httpContentType}) => {
-                if (httpContentType === 'application/json') {
-                    return (
-                        validateJSONWithVariables(
-                            value ?? '',
-                            inputVariables
-                        ) || 'Invalid JSON'
-                    )
-                }
-                if (httpContentType === 'application/x-www-form-urlencoded') {
-                    return !Array.from(new URLSearchParams(value ?? '')).some(
-                        ([key, value]) => !key.trim() || !value.trim()
-                    )
-                }
-            },
+            validate: (value, {http}) =>
+                http.bodyContentType !== 'application/json' ||
+                validateJSONWithVariables(value ?? '', variables) ||
+                'Invalid JSON',
         },
     })
     const {field: httpContentType} = useController({
         control,
-        name: 'httpContentType',
+        name: 'http.bodyContentType',
     })
 
     const {field: headersField, fieldState: headersState} = useController({
-        name: 'httpHeaders',
+        name: 'http.headers',
         control,
         rules: {
             validate: (value) =>
@@ -78,14 +70,24 @@ export default function HttpRequestFormInput({
         },
     })
 
+    const {field: formUrlencodedField} = useController({
+        name: 'http.formUrlencoded',
+        control,
+        rules: {
+            validate: (value, {http}) =>
+                http.bodyContentType !== 'application/x-www-form-urlencoded' ||
+                !value?.some((item) => !item.key.trim() || !item.value.trim()),
+        },
+    })
+
     const {
-        remove,
-        update,
-        append,
+        remove: removeHeader,
+        update: updateHeader,
+        append: appendHeader,
         fields: headers,
     } = useFieldArray({
         control,
-        name: 'httpHeaders',
+        name: 'http.headers',
     })
 
     const hasBody =
@@ -93,7 +95,7 @@ export default function HttpRequestFormInput({
         httpContentType.value === 'application/x-www-form-urlencoded'
 
     const {field: outputDescription} = useController({
-        name: 'outputsDescription',
+        name: 'http.outputs.0.description',
         control,
     })
 
@@ -106,18 +108,17 @@ export default function HttpRequestFormInput({
                 <div className={css.urlFormContainer}>
                     <div className={css.formItem}>
                         <Label isRequired>URL</Label>
-
                         <TextInputWithVariables
                             toolTipMessage={null}
                             isDisabled={disabled}
                             noSelectedCategoryText="INSERT variable"
-                            variables={inputVariables}
+                            variables={variables}
                             value={httpUrl.value}
                             onChange={httpUrl.onChange}
                             onBlur={httpUrl.onBlur}
                         />
                         <Caption
-                            error={httpUrlState?.error?.message}
+                            error={httpUrlState.error?.message}
                             className={css.caption}
                         />
                     </div>
@@ -128,20 +129,19 @@ export default function HttpRequestFormInput({
                             value={httpMethod.value}
                             onChange={(value) => {
                                 httpMethod.onChange(value)
-                                const newBody =
-                                    value === 'GET'
-                                        ? null
-                                        : httpBody.value ?? '{}'
 
-                                httpBody.onChange(newBody)
-
-                                const newContentType =
-                                    value === 'GET'
-                                        ? null
-                                        : httpContentType.value ??
-                                          'application/json'
-
-                                httpContentType.onChange(newContentType)
+                                if (value === 'GET') {
+                                    httpJSON.onChange(null)
+                                    formUrlencodedField.onChange(null)
+                                    httpContentType.onChange(null)
+                                } else {
+                                    if (!httpContentType.value) {
+                                        httpContentType.onChange(
+                                            'application/json'
+                                        )
+                                        httpJSON.onChange('{}')
+                                    }
+                                }
                             }}
                         />
                     </div>
@@ -149,15 +149,14 @@ export default function HttpRequestFormInput({
 
                 <div className={css.formItem}>
                     <Label>Headers</Label>
-
                     <Headers
                         noSelectedCategoryText="INSERT variable"
                         inputVariableToolTipMessage={null}
                         isDisabled={disabled}
-                        variables={inputVariables}
+                        variables={variables}
                         headers={headers}
-                        onChange={update}
-                        onDelete={remove}
+                        onChange={updateHeader}
+                        onDelete={removeHeader}
                         onBlur={headersField.onBlur}
                         error={
                             headersState.error
@@ -165,7 +164,7 @@ export default function HttpRequestFormInput({
                                 : undefined
                         }
                         onAdd={() =>
-                            append({
+                            appendHeader({
                                 name: '',
                                 value: '',
                             })
@@ -184,9 +183,14 @@ export default function HttpRequestFormInput({
                             }
                             onChange={(value) => {
                                 httpContentType.onChange(value)
-                                httpBody.onChange(
-                                    value === 'application/json' ? '{}' : '='
-                                )
+
+                                if (value === 'application/json') {
+                                    httpJSON.onChange('{}')
+                                    formUrlencodedField.onChange(null)
+                                } else {
+                                    formUrlencodedField.onChange([])
+                                    httpJSON.onChange(null)
+                                }
                             }}
                         />
                         <div className={css.httpBodyInput}>
@@ -195,70 +199,25 @@ export default function HttpRequestFormInput({
                                     variablePickerTooltipMessage={null}
                                     noSelectedCategoryText="INSERT variable"
                                     isDisabled={disabled}
-                                    value={httpBody.value ?? ''}
-                                    onChange={httpBody.onChange}
-                                    onBlur={httpBody.onBlur}
-                                    variables={inputVariables}
-                                    error={httpBodyState?.error?.message}
+                                    value={httpJSON.value ?? ''}
+                                    onChange={httpJSON.onChange}
+                                    onBlur={httpJSON.onBlur}
+                                    variables={variables}
+                                    error={httpJSONState?.error?.message}
                                 />
                             )}
                             {httpContentType.value ===
                                 'application/x-www-form-urlencoded' && (
-                                <FormUrlencoded
-                                    inputVariableToolTipMessage={null}
-                                    noSelectedCategoryText="INSERT variable"
+                                <HttpRequestFormUrlencoded
+                                    variables={variables}
+                                    control={control}
                                     isDisabled={disabled}
-                                    items={Array.from(
-                                        new URLSearchParams(
-                                            httpBody.value ?? ''
-                                        )
-                                    ).map(([key, value]) => ({
-                                        key,
-                                        value,
-                                    }))}
-                                    variables={inputVariables}
-                                    onBlur={httpBody.onBlur}
-                                    onChange={(index, item) => {
-                                        const params = new URLSearchParams(
-                                            httpBody.value ?? ''
-                                        )
-                                        const entries = Array.from(params)
-                                        entries[index] = [item.key, item.value]
-                                        const newValue = new URLSearchParams(
-                                            entries
-                                        ).toString()
-                                        httpBody.onChange(newValue)
-                                    }}
-                                    onDelete={(index) => {
-                                        const params = new URLSearchParams(
-                                            httpBody.value ?? ''
-                                        )
-                                        const entries = Array.from(params)
-                                        entries.splice(index, 1)
-
-                                        const newValue = new URLSearchParams(
-                                            entries
-                                        ).toString()
-                                        httpBody.onChange(newValue)
-                                    }}
-                                    onAdd={() => {
-                                        const params = new URLSearchParams(
-                                            httpBody.value ?? ''
-                                        )
-                                        const entries = Array.from(params)
-                                        entries.push(['', ''])
-
-                                        const newValue = new URLSearchParams(
-                                            entries
-                                        ).toString()
-                                        httpBody.onChange(newValue)
-                                    }}
+                                    onBlur={formUrlencodedField.onBlur}
                                 />
                             )}
                         </div>
                     </div>
                 )}
-
                 <TextArea
                     className={css.formItem}
                     label="Request results explanation for AI Agent (optional)"

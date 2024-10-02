@@ -1,6 +1,7 @@
 import {ulid} from 'ulidx'
 import {
     buildWorkflowVariableFromNode,
+    buildWorkflowVariableFromTrigger,
     extractVariablesFromText,
     getWorkflowVariableListForNode,
     parseWorkflowVariable,
@@ -8,7 +9,10 @@ import {
 } from '../models/variables.model'
 import {WorkflowVariableList} from '../models/variables.types'
 import {buildNodeCommonProperties} from '../models/visualBuilderGraph.model'
-import {OrderSelectionNodeType} from '../models/visualBuilderGraph.types'
+import {
+    OrderSelectionNodeType,
+    VisualBuilderGraph,
+} from '../models/visualBuilderGraph.types'
 import {visualBuilderGraphSimpleChoicesFixture} from './visualBuilderGraph.fixtures'
 
 describe('parseWorkflowVariable()', () => {
@@ -435,5 +439,109 @@ describe('extractVariablesFromText()', () => {
                 filter: 'json | default: "null"',
             },
         ])
+    })
+})
+
+describe('buildWorkflowVariableFromTrigger()', () => {
+    it('should return product variables', () => {
+        const graph: VisualBuilderGraph = {
+            name: '',
+            available_languages: [],
+            nodes: [
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'trigger',
+                    type: 'llm_prompt_trigger',
+                    data: {
+                        instructions: 'Instructions',
+                        requires_confirmation: false,
+                        inputs: [
+                            {
+                                id: 'someid',
+                                name: 'some name',
+                                instructions: 'some instructions',
+                                kind: 'product',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                            },
+                        ],
+                        conditionsType: null,
+                        conditions: [],
+                    },
+                },
+            ],
+            edges: [],
+            wfConfigurationOriginal: {
+                internal_id: 'id_2',
+                id: 'id_2',
+                name: 'Llm prompt trigger configuration',
+                is_draft: false,
+                initial_step_id: 'trigger',
+                entrypoint: null,
+                available_languages: [],
+                steps: [],
+                transitions: [],
+                updated_datetime: '2024-09-17T11:18:00.201Z',
+                triggers: [],
+                entrypoints: [],
+                apps: [],
+            },
+            nodeEditingId: null,
+            choiceEventIdEditing: null,
+            branchIdsEditing: [],
+        }
+
+        expect(buildWorkflowVariableFromTrigger(graph)).toEqual(
+            expect.arrayContaining([
+                {
+                    name: 'Inputs',
+                    nodeType: 'custom_input',
+                    variables: [
+                        {
+                            name: 'some name',
+                            nodeType: 'custom_input',
+                            variables: [
+                                {
+                                    name: 'Product id',
+                                    nodeType: 'custom_input',
+                                    type: 'string',
+                                    value: 'objects.products.someid.external_id',
+                                },
+                                {
+                                    name: 'Product name',
+                                    nodeType: 'custom_input',
+                                    type: 'string',
+                                    value: 'objects.products.someid.name',
+                                },
+                                {
+                                    name: 'Product type',
+                                    nodeType: 'custom_input',
+                                    type: 'string',
+                                    value: 'objects.products.someid.external_type',
+                                },
+                                {
+                                    name: 'Product variant id',
+                                    nodeType: 'custom_input',
+                                    type: 'string',
+                                    value: 'objects.products.someid.selected_variant.external_id',
+                                },
+                                {
+                                    name: 'Product variant quantity in stock',
+                                    nodeType: 'custom_input',
+                                    type: 'number',
+                                    value: 'objects.products.someid.selected_variant.quantity',
+                                },
+                                {
+                                    name: 'Product variant name',
+                                    nodeType: 'custom_input',
+                                    type: 'string',
+                                    value: 'objects.products.someid.selected_variant.name',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ])
+        )
     })
 })
