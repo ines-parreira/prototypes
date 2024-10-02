@@ -17,6 +17,7 @@ import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     AnyManagedRuleSettings,
+    ManagedRulesSlugs,
     RuleLimitStatus,
     RuleType,
 } from 'state/rules/types'
@@ -76,7 +77,10 @@ export const RuleRecipeModal = ({
     const hasAutomate = useAppSelector(getHasAutomate)
     const appNode = useAppNode()
 
-    const isBehindPaywall = rule.type === RuleType.Managed && !hasAutomate
+    const isBehindPaywall =
+        rule.type === RuleType.Managed &&
+        !hasAutomate &&
+        rule.settings?.slug !== ManagedRulesSlugs.AutoCloseSpam
 
     const handleSubscription = () => {
         if (!managedRuleId) {

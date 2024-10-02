@@ -235,31 +235,15 @@ exports[`RuleRecipeModal should render the modal 1`] = `
               <span
                 id="rule-recipe-fixture-install-button"
               >
-                <div
-                  class=""
+                <button
+                  aria-disabled="false"
+                  class="wrapper fill primary medium"
+                  type="button"
                 >
-                  <div
-                    class="d-flex align-items-center upgradeLink"
-                  >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper fill primary medium"
-                      id="rule-recipe-fixture-install-button"
-                      type="button"
-                    >
-                      <span
-                        class="wrapper"
-                      >
-                        <i
-                          class="material-icons icon isLeft medium"
-                        >
-                          bolt
-                        </i>
-                        Add Automate Features to Install
-                      </span>
-                    </button>
-                  </div>
-                </div>
+                  <span>
+                    Install rule
+                  </span>
+                </button>
               </span>
             </div>
           </div>

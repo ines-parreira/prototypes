@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
@@ -11,6 +11,7 @@ import {billingState} from 'fixtures/billing'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {emptyManagedRule} from 'fixtures/rule'
 
+import type {ManagedRuleSettings} from 'state/rules/types'
 import {RuleRecipeModal} from '../RuleRecipeModal'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -52,5 +53,26 @@ describe('RuleRecipeModal', () => {
             </Provider>
         )
         expect(baseElement).toMatchSnapshot()
+    })
+
+    it('should render "Install" button on auto-close-spam rule', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <RuleRecipeModal
+                    {...minProps}
+                    recipe={{
+                        ...minProps.recipe,
+                        rule: {
+                            ...minProps.recipe.rule,
+                            settings: {
+                                ...minProps.recipe.rule.settings,
+                                slug: 'non-support-related-emails',
+                            } as ManagedRuleSettings,
+                        },
+                    }}
+                />
+            </Provider>
+        )
+        expect(screen.getByText(/Install rule/)).toBeInTheDocument()
     })
 })
