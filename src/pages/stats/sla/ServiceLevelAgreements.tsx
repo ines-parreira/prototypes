@@ -58,6 +58,13 @@ export function ServiceLevelAgreements() {
                                         FilterKey.Tags,
                                         FilterKey.CustomFields,
                                     ]}
+                                    filterSettingsOverrides={{
+                                        [FilterKey.Period]: {
+                                            initialSettings: {
+                                                maxSpan: 365,
+                                            },
+                                        },
+                                    }}
                                 />
                             </DashboardGridCell>
                         </DashboardSection>

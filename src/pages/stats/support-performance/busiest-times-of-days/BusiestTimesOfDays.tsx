@@ -101,6 +101,13 @@ export const BusiestTimesOfDays = () => {
                                     FilterKey.Agents,
                                     FilterKey.CustomFields,
                                 ]}
+                                filterSettingsOverrides={{
+                                    [FilterKey.Period]: {
+                                        initialSettings: {
+                                            maxSpan: 365,
+                                        },
+                                    },
+                                }}
                             />
                         </DashboardGridCell>
                     </DashboardSection>

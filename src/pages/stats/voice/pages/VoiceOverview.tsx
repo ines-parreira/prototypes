@@ -208,6 +208,13 @@ function VoiceOverview() {
                                 FilterKey.Tags,
                                 FilterKey.Agents,
                             ]}
+                            filterSettingsOverrides={{
+                                [FilterKey.Period]: {
+                                    initialSettings: {
+                                        maxSpan: 365,
+                                    },
+                                },
+                            }}
                         />
                     </DashboardGridCell>
                 </DashboardSection>

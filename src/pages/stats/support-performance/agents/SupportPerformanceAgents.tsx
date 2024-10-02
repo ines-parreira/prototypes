@@ -52,6 +52,13 @@ export default function SupportPerformanceAgents() {
                                     FilterKey.Agents,
                                     FilterKey.CustomFields,
                                 ]}
+                                filterSettingsOverrides={{
+                                    [FilterKey.Period]: {
+                                        initialSettings: {
+                                            maxSpan: 365,
+                                        },
+                                    },
+                                }}
                             />
                         </DashboardGridCell>
                     </DashboardSection>

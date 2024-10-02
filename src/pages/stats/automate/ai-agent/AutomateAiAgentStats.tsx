@@ -129,7 +129,16 @@ export default function AutomateAiAgentStats() {
 
             <DashboardSection>
                 <DashboardGridCell size={getGridCellSize(12)} className="pb-0">
-                    <FiltersPanel persistentFilters={[FilterKey.Period]} />
+                    <FiltersPanel
+                        persistentFilters={[FilterKey.Period]}
+                        filterSettingsOverrides={{
+                            [FilterKey.Period]: {
+                                initialSettings: {
+                                    maxSpan: 365,
+                                },
+                            },
+                        }}
+                    />
                 </DashboardGridCell>
             </DashboardSection>
 
