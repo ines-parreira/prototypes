@@ -54,11 +54,7 @@ export default function EmailIntegrationForwardingSetupForm(props: Props) {
                         </p>
                     </FormRow>
                     <FormRow>
-                        <Label>
-                            2. Update forwarding settings to forward a copy of
-                            incoming customer emails to:
-                        </Label>
-                        <BaseEmailIntegrationInputField />
+                        <BaseEmailIntegrationInputField label="2. Update forwarding settings to forward a copy of incoming customer emails to:" />
                     </FormRow>
                     <FormRow>
                         <Label>

@@ -1,37 +1,17 @@
 import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
-import createMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 import copy from 'copy-to-clipboard'
 
 import {notify} from 'state/notifications/actions'
-import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
 import BaseEmailIntegrationInputField from '../BaseEmailIntegrationInputField'
-
-const mockStore = createMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const store = mockStore({
-    integrations: fromJS({
-        integrations: [
-            {
-                id: 1,
-                type: 'email',
-                meta: {
-                    address: 'acme@gorgias.com',
-                },
-            },
-        ],
-    }),
-})
 
 window.GORGIAS_STATE = {
     integrations: {
         authentication: {
             email: {
-                forwarding_email_address: 'gorgias.com',
+                forwarding_email_address: 'acme123@email.gorgias.com',
             },
         },
     },
@@ -42,20 +22,13 @@ jest.mock('state/notifications/actions')
 jest.mock('copy-to-clipboard')
 const copyMock = assumeMock(copy)
 
-const renderComponent = (label?: string) =>
-    render(
-        <Provider store={store}>
-            <BaseEmailIntegrationInputField label={label} />
-        </Provider>
-    )
-
 describe('<BaseEmailIntegrationInputField />', () => {
     it('should render', () => {
-        renderComponent()
+        render(<BaseEmailIntegrationInputField />)
 
         expect(screen.getByRole('textbox')).toBeInTheDocument()
         expect(screen.getByRole('textbox').getAttribute('value')).toBe(
-            'acme@gorgias.com'
+            'acme123@email.gorgias.com'
         )
         expect(
             screen.getByRole('button', {name: 'Copy content_copy'})
@@ -63,17 +36,19 @@ describe('<BaseEmailIntegrationInputField />', () => {
     })
 
     it('should render with label', () => {
-        renderComponent('Your Base Email Address')
+        render(
+            <BaseEmailIntegrationInputField label="Your Base Email Address" />
+        )
 
         expect(screen.getByText('Your Base Email Address')).toBeInTheDocument()
     })
 
     it('should copy the value when clicking on the auxiliary button', () => {
-        renderComponent()
+        render(<BaseEmailIntegrationInputField />)
 
         fireEvent.click(screen.getByRole('button', {name: 'Copy content_copy'}))
 
-        expect(copyMock).toHaveBeenCalledWith('acme@gorgias.com')
+        expect(copyMock).toHaveBeenCalledWith('acme123@email.gorgias.com')
 
         expect(notify).toHaveBeenCalledWith({
             status: 'success',
@@ -82,18 +57,25 @@ describe('<BaseEmailIntegrationInputField />', () => {
     })
 
     it('should display an error notification when copying fails', () => {
-        renderComponent()
+        render(<BaseEmailIntegrationInputField />)
 
         copyMock.mockImplementationOnce(() => {
             throw new Error('copy failed')
         })
 
         fireEvent.click(screen.getByRole('button', {name: 'Copy content_copy'}))
-        expect(copyMock).toHaveBeenCalledWith('acme@gorgias.com')
+        expect(copyMock).toHaveBeenCalledWith('acme123@email.gorgias.com')
 
         expect(notify).toHaveBeenCalledWith({
             status: 'error',
             title: 'Failed to copy address',
         })
+    })
+
+    it("shouldn't render in case the base address is missing", () => {
+        window.GORGIAS_STATE = {} as any
+        render(<BaseEmailIntegrationInputField />)
+
+        expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
     })
 })

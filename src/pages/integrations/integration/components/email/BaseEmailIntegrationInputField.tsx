@@ -1,13 +1,11 @@
 import React, {useCallback} from 'react'
+import {isEmpty} from 'lodash'
 import copy from 'copy-to-clipboard'
 import {Label} from '@gorgias/ui-kit'
 
-import {EmailIntegration} from 'models/integration/types'
-import {getBaseEmailIntegration} from 'state/integrations/selectors'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import Button from 'pages/common/components/button/Button'
-import useAppSelector from 'hooks/useAppSelector'
 
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -19,12 +17,10 @@ type Props = {
 }
 
 export default function BaseEmailIntegrationInputField({label}: Props) {
-    const baseIntegration: EmailIntegration = useAppSelector(
-        getBaseEmailIntegration
-    )?.toJS()
-
     const dispatch = useAppDispatch()
-    const baseAddress = baseIntegration?.meta.address ?? ''
+    const baseAddress =
+        window.GORGIAS_STATE?.integrations?.authentication?.email
+            ?.forwarding_email_address ?? ''
 
     const handleCopy = useCallback(() => {
         try {
@@ -46,6 +42,10 @@ export default function BaseEmailIntegrationInputField({label}: Props) {
 
         copy(baseAddress)
     }, [baseAddress, dispatch])
+
+    if (isEmpty(baseAddress)) {
+        return null
+    }
 
     return (
         <>
