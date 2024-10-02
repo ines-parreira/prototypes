@@ -1181,4 +1181,54 @@ describe('actions', () => {
             expect(socketManager.send).toHaveBeenCalledTimes(11)
         })
     })
+
+    describe('updateFieldFilter', () => {
+        it('should create an action to update a field filter', () => {
+            const index = 1
+            const value = 'new value'
+            const expectedAction = {
+                type: types.UPDATE_VIEW_FIELD_FILTER,
+                index,
+                value,
+            }
+
+            expect(actions.updateFieldFilter(index, value)).toEqual(
+                expectedAction
+            )
+        })
+    })
+
+    describe('updateCustomFieldFilterId', () => {
+        it('should create an action to update a custom field filter id', () => {
+            const index = 1
+            const customFieldId = 2
+            const customFieldOperator = 'eq'
+            const expectedAction = {
+                type: types.UPDATE_VIEW_CUSTOM_FIELD_FILTER_ID,
+                index,
+                customFieldId,
+                customFieldOperator,
+            }
+
+            expect(
+                actions.updateCustomFieldFilterId(index, customFieldId, 'eq')
+            ).toEqual(expectedAction)
+        })
+    })
+
+    describe('updateFieldFilterOperator', () => {
+        it('should create an action to update a field filter operator', () => {
+            const index = 1
+            const operator = 'eq'
+            const expectedAction = {
+                type: types.UPDATE_VIEW_FIELD_FILTER_OPERATOR,
+                index,
+                operator,
+            }
+
+            expect(actions.updateFieldFilterOperator(index, operator)).toEqual(
+                expectedAction
+            )
+        })
+    })
 })

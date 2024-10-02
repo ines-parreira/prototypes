@@ -87,6 +87,64 @@ describe('reducers', () => {
             ).toMatchSnapshot()
         })
 
+        it('should update the custom field id', () => {
+            const state = fromJS({
+                active: {
+                    dirty: false,
+                    filters: "eq(ticket.custom_fields, '')",
+                    filters_ast: {
+                        type: 'Program',
+                        body: [
+                            {
+                                type: 'ExpressionStatement',
+                                expression: {
+                                    type: 'CallExpression',
+                                    callee: {
+                                        type: 'Identifier',
+                                        name: 'eq',
+                                    },
+                                    arguments: [
+                                        {
+                                            type: 'MemberExpression',
+                                            computed: false,
+                                            object: {
+                                                type: 'Identifier',
+                                                name: 'ticket',
+                                            },
+                                            property: {
+                                                type: 'Identifier',
+                                                name: 'custom_fields',
+                                            },
+                                        },
+                                        {
+                                            type: 'Literal',
+                                            value: '',
+                                            raw: "''",
+                                        },
+                                    ],
+                                },
+                            },
+                        ],
+                        sourceType: 'script',
+                    },
+                },
+            })
+
+            expect(
+                reducers(state, {
+                    type: types.UPDATE_VIEW_CUSTOM_FIELD_FILTER_ID,
+                    index: 0,
+                    customFieldId: 123,
+                    customFieldOperator: 'neq',
+                }).toJS()
+            ).toStrictEqual({
+                active: expect.objectContaining({
+                    dirty: true,
+                    filters: "neq(ticket.custom_fields[123].value, '')",
+                }),
+            })
+        })
+
         it('should update field operator of active view', () => {
             const state = fromJS({
                 active: {

@@ -1,8 +1,8 @@
 import crypto from 'crypto'
 
 import {
-    SyntheticEvent,
     MouseEvent as MouseEventReact,
+    SyntheticEvent,
     TouchEvent as TouchEventReact,
 } from 'react'
 import {EditorState, Modifier} from 'draft-js'
@@ -36,6 +36,7 @@ import URLSafeBase64 from 'urlsafe-base64'
 import {fromAST, isImmutable, isPrivateAsset} from 'common/utils'
 import {TicketEvent} from 'models/ticket/types'
 import {VoiceCall} from 'models/voiceCall/types'
+
 import {TicketChannel} from './business/types/ticket'
 import {humanize} from './business/format'
 import {ACTION_TEMPLATES} from './config'

@@ -124,14 +124,26 @@ export const removeFieldFilter = (index: number) => ({
 // update a filter value
 export const updateFieldFilter = (
     index: number,
-    value: string | number | Array<any>
+    value: string | number | boolean | Array<any>
 ) => ({
     type: types.UPDATE_VIEW_FIELD_FILTER,
     index,
     value,
 })
 
-// remove a filter based on index
+// update selected custom field filter id
+export const updateCustomFieldFilterId = (
+    index: number,
+    customFieldId: number,
+    customFieldOperator: string
+) => ({
+    type: types.UPDATE_VIEW_CUSTOM_FIELD_FILTER_ID,
+    index,
+    customFieldId,
+    customFieldOperator,
+})
+
+// update a filter operator based on index
 export const updateFieldFilterOperator = (index: number, operator: string) => ({
     type: types.UPDATE_VIEW_FIELD_FILTER_OPERATOR,
     index,

@@ -26,3 +26,11 @@ export function getStealthLabel(choice?: CustomFieldValue) {
 
     return getLabel(_choice)
 }
+
+export function getMultiLabel(choices?: CustomFieldValue[]) {
+    return choices?.length
+        ? choices.length >= 2
+            ? `${choices.length} fields selected`
+            : choices.map(getStealthLabel).join(', ')
+        : ''
+}

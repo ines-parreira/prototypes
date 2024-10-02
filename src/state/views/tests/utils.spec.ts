@@ -5,8 +5,8 @@ import {ViewType} from 'models/view/types'
 import {fromAST} from 'common/utils'
 import {CollectionOperator, EqualityOperator} from 'state/rules/types'
 import {getAST} from 'utils'
-
 import * as utils from 'state/views/utils'
+import {updateCustomFieldFilter} from 'state/views/utils'
 
 describe('utils', () => {
     describe('RecentViewStorage', () => {
@@ -166,6 +166,33 @@ describe('utils', () => {
             const res = utils.updateFilterValue(fromAST(ast), 0, null)
             expect(res.toJS()).toEqual(
                 getAST("gte(ticket.created_datetime, '')")
+            )
+        })
+    })
+
+    describe('updateCustomFieldFilter', () => {
+        it('should update the initial AST without ID', () => {
+            const ast = getAST("eq(ticket.custom_fields, '')")
+            const res = updateCustomFieldFilter(
+                fromAST(ast),
+                0,
+                10,
+                'containsAny'
+            )
+
+            expect(res.toJS()).toEqual(
+                getAST('containsAny(ticket.custom_fields[10].value, [])')
+            )
+        })
+
+        it('should update existing formatted AST', () => {
+            const ast = getAST(
+                'containsAny(ticket.custom_fields[10].value, [])'
+            )
+            const res = updateCustomFieldFilter(fromAST(ast), 0, 11, 'eq')
+
+            expect(res.toJS()).toEqual(
+                getAST("eq(ticket.custom_fields[11].value, '')")
             )
         })
     })

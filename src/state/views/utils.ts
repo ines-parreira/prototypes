@@ -30,13 +30,13 @@ import {
 
 import {ViewFilter} from './types'
 
-export const rawify = (data: Maybe<string | number>): string => {
+export const rawify = (data: Maybe<string | number | boolean>): string => {
     if (typeof data === 'string') {
         // escape ' and \ chars so that it's a valid string
         return `'${data.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`
     }
 
-    if (typeof data === 'number') {
+    if (typeof data === 'number' || typeof data === 'boolean') {
         return `${data}`
     }
 
@@ -162,7 +162,7 @@ export function getIn(
     ast: Map<any, any>,
     index: number,
     path: Array<string | number>
-): Maybe<Map<any, any>> {
+): Maybe<Map<any, any>> | string {
     let count = 0
 
     function walker(node: Map<any, any>): Map<any, any> | typeof undefined {
@@ -256,6 +256,43 @@ export function updateFilterValue(
             getFirstExpressionOfAST(getAST(raw))
         )
     )
+}
+
+/**
+ * Update the custom field used, and set a new null value.
+ * It's used when adding a new TF filter to the expression,
+ * or when changing the custom field used in an existing filter.
+ *
+ * After the initial filter add - the custom field MemberExpression
+ * is further segmented in the AST after being parsed through `updateAstLoc`,
+ * namely, custom_fields[customFieldId].value rather than being one Identifier,
+ * becomes a Member expression, where all of its parts are separate nodes.
+ * It will update the custom field ID, reset to a fresh value,
+ * and update the operator of the expression itself.
+ */
+export function updateCustomFieldFilter(
+    ast: Map<any, any>,
+    index: number,
+    customFieldId: number,
+    customFieldOperator: string
+) {
+    const isInitialAstWithoutLiteral =
+        getIn(ast, index, ['arguments', 0, 'property', 'name']) !== 'value'
+    const path = isInitialAstWithoutLiteral
+        ? ['arguments', 0, 'property', 'name']
+        : ['arguments', 0, 'object', 'property', 'value']
+    const value = isInitialAstWithoutLiteral
+        ? `custom_fields[${customFieldId}].value`
+        : customFieldId
+
+    let newAst = setIn(ast, index, path, value)
+
+    const rightRaw = resolveSecondArg(customFieldOperator, null)
+    const clearArg = getFirstExpressionOfAST(getAST(rightRaw || "''"))
+    newAst = setIn(newAst, index, ['arguments', 1], clearArg)
+    newAst = updateFilterOperator(newAst, index, customFieldOperator)
+
+    return updateAstLoc(newAst)
 }
 
 /**

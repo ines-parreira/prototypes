@@ -208,6 +208,8 @@ export type GorgiasAction = {
     withHighlight?: boolean
     shouldStoreFieldConfig?: boolean
     accountSettings?: AccountSetting[]
+    customFieldId?: number
+    customFieldOperator?: string
 }
 
 export type CurrentUser = Map<any, any>

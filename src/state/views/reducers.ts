@@ -17,6 +17,7 @@ import {
     recentViewsStorage,
     updateFilterOperator,
     updateFilterValue,
+    updateCustomFieldFilter,
 } from './utils'
 import * as selectors from './selectors'
 import {ViewsState} from './types'
@@ -191,6 +192,30 @@ export default function reducer(
             activeView = activeView
                 .set('filters_ast', nextAst)
                 .set('filters', code)
+            return state.set('active', activeView.set('dirty', true))
+        }
+
+        case constants.UPDATE_VIEW_CUSTOM_FIELD_FILTER_ID: {
+            const ast = activeView.get('filters_ast') as Map<any, any>
+            if (
+                action.index == null ||
+                action.customFieldId == null ||
+                action.customFieldOperator == null
+            ) {
+                return state
+            }
+            const nextAst = updateCustomFieldFilter(
+                ast,
+                action.index,
+                action.customFieldId,
+                action.customFieldOperator
+            )
+
+            code = getCode(nextAst.toJS())
+            activeView = activeView
+                .set('filters_ast', nextAst)
+                .set('filters', code)
+
             return state.set('active', activeView.set('dirty', true))
         }
 

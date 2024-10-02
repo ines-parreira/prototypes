@@ -1,4 +1,4 @@
-import {getStealthLabel, getLabel} from '../getLabels'
+import {getStealthLabel, getLabel, getMultiLabel} from '../getLabels'
 
 describe('getStealthLabel', () => {
     it.each([
@@ -38,6 +38,23 @@ describe('getLabel', () => {
             output: ReturnType<typeof getLabel>
         ) => {
             expect(getLabel(input)).toEqual(output)
+        }
+    )
+})
+
+describe('getMultiLabel', () => {
+    it.each([
+        [undefined, ''],
+        [[], ''],
+        [['hello::world'], 'world'],
+        [['hello::world', 'hello::world::foo'], '2 fields selected'],
+    ])(
+        'should return the correct path',
+        (
+            input: Parameters<typeof getMultiLabel>[0],
+            output: ReturnType<typeof getMultiLabel>
+        ) => {
+            expect(getMultiLabel(input)).toEqual(output)
         }
     )
 })
