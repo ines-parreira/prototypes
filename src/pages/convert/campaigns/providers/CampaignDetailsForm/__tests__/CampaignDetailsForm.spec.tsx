@@ -22,7 +22,6 @@ import {integrationsState} from 'fixtures/integrations'
 import {RootState, StoreDispatch} from 'state/types'
 
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import * as isConvertScheduleCampaignEnabled from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 
 import {
     campaign as campaignFixture,
@@ -114,11 +113,6 @@ const isConvertSubscriberSpy = jest.spyOn(
     'useIsConvertSubscriber'
 )
 
-const isConvertScheduleCampaignEnabledSpy = jest.spyOn(
-    isConvertScheduleCampaignEnabled,
-    'useIsConvertScheduleCampaignEnabled'
-)
-
 describe('<CampaignDetailsForm />', () => {
     const onUpdateCampaign = jest.fn()
 
@@ -136,7 +130,6 @@ describe('<CampaignDetailsForm />', () => {
         allFlagsMock.mockReturnValue({})
 
         isConvertSubscriberSpy.mockImplementation(() => false)
-        isConvertScheduleCampaignEnabledSpy.mockImplementation(() => false)
 
         useGetPreviewProductsMock.mockReturnValue([])
         getNewMessageAttachmentsMock.mockReturnValue(fromJS([]))
@@ -182,8 +175,6 @@ describe('<CampaignDetailsForm />', () => {
         })
 
         it('disables the button until the form is valid', async () => {
-            isConvertScheduleCampaignEnabledSpy.mockImplementation(() => true)
-
             expect(
                 screen.getByRole('button', {name: 'Create'})
             ).toBeAriaDisabled()
@@ -209,7 +200,6 @@ describe('<CampaignDetailsForm />', () => {
         })
 
         it('console.error when createCampaign is not defined', async () => {
-            isConvertScheduleCampaignEnabledSpy.mockImplementation(() => true)
             const consoleErrorMock = jest.spyOn(console, 'error')
 
             result.rerender(
@@ -244,25 +234,6 @@ describe('<CampaignDetailsForm />', () => {
                 )
             })
         })
-
-        it('schedule section is visible for the user', () => {
-            expect(
-                screen.queryByText(/Publish your campaign/)
-            ).not.toBeInTheDocument()
-
-            // Change the feature flag
-            isConvertScheduleCampaignEnabledSpy.mockImplementation(() => true)
-
-            result.rerender(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignDetailsForm {...defaultProps} />
-                </Provider>
-            )
-
-            expect(
-                screen.getByText(/Publish your campaign/)
-            ).toBeInTheDocument()
-        })
     })
 
     describe('Edit campaign', () => {
@@ -283,8 +254,6 @@ describe('<CampaignDetailsForm />', () => {
         })
 
         it('populate schedule data correctly', () => {
-            isConvertScheduleCampaignEnabledSpy.mockImplementation(() => true)
-
             const campaignWithSchedule = {
                 ...campaignFixture,
                 schedule: campaignScheduleFixture,
@@ -313,8 +282,6 @@ describe('<CampaignDetailsForm />', () => {
         })
 
         it('updates state on schedule rule change', () => {
-            isConvertScheduleCampaignEnabledSpy.mockImplementation(() => true)
-
             const campaignWithSchedule = {
                 ...campaignFixture,
                 schedule: campaignScheduleFixture,

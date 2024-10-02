@@ -39,7 +39,6 @@ import LightCampaignBadge from 'pages/convert/campaigns/components/LightCampaign
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
 import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
 import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
-import {useIsConvertScheduleCampaignEnabled} from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
@@ -162,8 +161,6 @@ export const CampaignsTable = ({
         )
     }, [integration])
 
-    const isScheduleCampaignEnabled = useIsConvertScheduleCampaignEnabled()
-
     const renderRows = useCallback(
         (campaign: Campaign, index: number) => {
             let editLink = `/app/convert/${
@@ -222,7 +219,6 @@ export const CampaignsTable = ({
                   (isAtCampaignsLimit || isOverCampaignsLimit)
 
             const hasCampaignEnded =
-                isScheduleCampaignEnabled &&
                 campaign.status === CampaignStatus.Inactive &&
                 campaign.schedule?.end_datetime
                     ? new Date(campaign.schedule.end_datetime) < currentDate
@@ -309,11 +305,9 @@ export const CampaignsTable = ({
                         <BodyCell>
                             <div>{creationDate}</div>
                         </BodyCell>
-                        {isScheduleCampaignEnabled && (
-                            <BodyCell style={{minWidth: 200}}>
-                                <div>{scheduleLabel()}</div>
-                            </BodyCell>
-                        )}
+                        <BodyCell style={{minWidth: 200}}>
+                            <div>{scheduleLabel()}</div>
+                        </BodyCell>
 
                         {chatMultiLanguagesEnabled && (
                             <BodyCell size="small">
@@ -368,7 +362,6 @@ export const CampaignsTable = ({
             onClickToggle,
             setToggleState,
             toggleState,
-            isScheduleCampaignEnabled,
         ]
     )
 
@@ -407,21 +400,16 @@ export const CampaignsTable = ({
                         onClick={handleChangeSort('created_datetime')}
                         titleClassName={css.headerCellTitle}
                     />
-                    {isScheduleCampaignEnabled && (
-                        <HeaderCellProperty
-                            style={{minWidth: 200}}
-                            isOrderedBy={sortBy === 'schedule'}
-                            direction={
-                                sortBy === 'schedule'
-                                    ? sortDirection
-                                    : undefined
-                            }
-                            title="Schedule"
-                            onClick={handleChangeSort('schedule')}
-                            titleClassName={css.headerCellTitle}
-                        />
-                    )}
-
+                    <HeaderCellProperty
+                        style={{minWidth: 200}}
+                        isOrderedBy={sortBy === 'schedule'}
+                        direction={
+                            sortBy === 'schedule' ? sortDirection : undefined
+                        }
+                        title="Schedule"
+                        onClick={handleChangeSort('schedule')}
+                        titleClassName={css.headerCellTitle}
+                    />
                     {chatMultiLanguagesEnabled && (
                         <HeaderCellProperty
                             title="Language"

@@ -6,11 +6,7 @@ import userEvent from '@testing-library/user-event'
 import * as useDismissFlag from 'hooks/useDismissFlag'
 import * as useLocalStorage from 'hooks/useLocalStorage'
 
-import * as useIsConvertScheduleCampaignEnabled from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
-
 import {CampaignFooter} from '../CampaignFooter'
-
-jest.mock('pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled')
 
 jest.mock('hooks/useDismissFlag')
 
@@ -257,7 +253,7 @@ describe('<CampaignFooter />', () => {
         const onSave = jest.fn()
 
         it('blocks the create button when creation is disabled', () => {
-            const {getByRole, getByText} = renderComponent({
+            const {getByRole} = renderComponent({
                 ...defaultProps,
                 onSave,
                 isCreateDisabled: true,
@@ -265,21 +261,7 @@ describe('<CampaignFooter />', () => {
             })
 
             expect(getByRole('button', {name: 'Create'})).toBeAriaDisabled()
-            expect(getByText('arrow_drop_down')).toBeInTheDocument()
             expect(onSave).not.toHaveBeenCalled()
-        })
-
-        it('cannot activate campaign', () => {
-            const {getByRole, queryByText} = renderComponent({
-                ...defaultProps,
-                onSave,
-                isCreateDisabled: false,
-                isUpdate: false,
-                allowActivate: false,
-            })
-
-            expect(getByRole('button', {name: 'Create'})).toBeAriaEnabled()
-            expect(queryByText('arrow_drop_down')).not.toBeInTheDocument()
         })
 
         it('blocks creation when user manually enables button', () => {
@@ -296,32 +278,10 @@ describe('<CampaignFooter />', () => {
 
             button.click()
 
-            const activateButton = getByText('Create & Activate')
+            const activateButton = getByText('Create')
             activateButton.click()
 
             expect(onSave).not.toHaveBeenCalled()
-        })
-    })
-
-    describe('Schedule Campaign is enabled', () => {
-        const onSave = jest.fn()
-
-        beforeEach(() => {
-            jest.spyOn(
-                useIsConvertScheduleCampaignEnabled,
-                'useIsConvertScheduleCampaignEnabled'
-            ).mockImplementation(() => true)
-        })
-
-        it('create & activate button is not available', () => {
-            const {queryByText, getByRole} = renderComponent({
-                ...defaultProps,
-                onSave,
-                isUpdate: false,
-            })
-
-            expect(getByRole('button', {name: 'Create'})).toBeInTheDocument()
-            expect(queryByText('Create & Activate')).not.toBeInTheDocument()
         })
     })
 })

@@ -30,7 +30,6 @@ export type WizardStepConfiguration = {
 
 export enum Label {
     Create = 'Create',
-    CreateAndActivate = 'CreateAndActivate',
     Update = 'Update',
     Duplicate = 'Duplicate',
     Cancel = 'Cancel',

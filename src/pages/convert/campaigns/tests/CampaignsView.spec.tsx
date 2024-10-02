@@ -27,7 +27,6 @@ import {
 import {campaign} from 'fixtures/campaign'
 import {channelConnection} from 'fixtures/channelConnection'
 
-import * as useIsConvertScheduleCampaignEnabled from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 
 import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
@@ -61,7 +60,6 @@ const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
 
-jest.mock('pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled')
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
     return jest.fn(() => <div>Mocked Banner</div>)
@@ -204,10 +202,6 @@ describe('<CampaignsView/>', () => {
                 mutate: mutateDeleteMock,
             } as unknown as ReturnType<typeof useDeleteCampaign>
         })
-        jest.spyOn(
-            useIsConvertScheduleCampaignEnabled,
-            'useIsConvertScheduleCampaignEnabled'
-        ).mockImplementation(() => false)
     })
 
     afterEach(() => {
@@ -248,11 +242,6 @@ describe('<CampaignsView/>', () => {
         useParamsMock.mockReturnValue({
             [CONVERT_ROUTE_PARAM_NAME]: '118',
         })
-
-        jest.spyOn(
-            useIsConvertScheduleCampaignEnabled,
-            'useIsConvertScheduleCampaignEnabled'
-        ).mockImplementation(() => true)
 
         const {getByText} = renderComponent(defaultState)
 
@@ -466,11 +455,6 @@ describe('<CampaignsView/>', () => {
         })
 
         it('should show additional notification when disabling campaign with schedule', () => {
-            jest.spyOn(
-                useIsConvertScheduleCampaignEnabled,
-                'useIsConvertScheduleCampaignEnabled'
-            ).mockImplementation(() => true)
-
             useListCampaignMock.mockReturnValue({
                 data: [campaignWithSchedule],
                 isLoading: false,

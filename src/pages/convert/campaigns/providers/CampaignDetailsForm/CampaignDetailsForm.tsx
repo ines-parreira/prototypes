@@ -48,7 +48,6 @@ import {
 } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import {createCampaignPayload} from 'pages/convert/campaigns/utils/createCampaignPayload'
 
-import {useIsConvertScheduleCampaignEnabled} from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
 import {
     CampaignContactFormAttachment,
@@ -156,7 +155,6 @@ export const CampaignDetailsForm = ({
     banners,
     backUrl,
     openedStep,
-    allowActivate = true,
     allowChangeSection = true,
     displayScheduleSection = true,
     className,
@@ -187,8 +185,6 @@ export const CampaignDetailsForm = ({
     }, [isEditMode, wizardConfiguration, openedStep])
 
     const isConvertSubscriber = useIsConvertSubscriber()
-    const isConvertScheduleCampaignEnabled =
-        useIsConvertScheduleCampaignEnabled()
 
     const {pristine, onChangePristine} = usePristineSteps(defaultOpenedStep)
     const chatPreviewProps = useChatPreviewProps(integration)
@@ -457,7 +453,7 @@ export const CampaignDetailsForm = ({
         }
 
         let activateCampaign = activate
-        if (isConvertScheduleCampaignEnabled && displayScheduleSection) {
+        if (displayScheduleSection) {
             activateCampaign = shouldActivateCampaign(
                 campaignData.publish_mode as string
             )
@@ -478,10 +474,7 @@ export const CampaignDetailsForm = ({
                 contactForm: contactForm,
                 // When we display ability to schedule campaign,
                 // we should have ability to decide whether we can activate campaign or not
-                canChangeStatus:
-                    isConvertScheduleCampaignEnabled && displayScheduleSection
-                        ? true
-                        : !isEditMode,
+                canChangeStatus: displayScheduleSection ? true : !isEditMode,
                 isActive: activateCampaign,
                 canAddUtm: canAddUtm,
                 utmEnabled: appliedUtmEnabled,
@@ -759,30 +752,29 @@ export const CampaignDetailsForm = ({
                                                 handleDeleteAttachment
                                             }
                                         />
-                                        {displayScheduleSection &&
-                                            isConvertScheduleCampaignEnabled && (
-                                                <CampaignPublishScheduleStep
-                                                    count={4}
-                                                    key={
-                                                        CampaignStepsKeys.PublishSchedule
-                                                    }
-                                                    isPristine={
-                                                        pristine.publish_schedule
-                                                    }
-                                                    isValid={isStepValid(
-                                                        CampaignStepsKeys.PublishSchedule
-                                                    )}
-                                                    isDisabled={isStepDisabled(
-                                                        CampaignStepsKeys.PublishSchedule
-                                                    )}
-                                                    isConvertSubscriber={
-                                                        isConvertSubscriber
-                                                    }
-                                                    isLightCampaign={
-                                                        isLightCampaign
-                                                    }
-                                                />
-                                            )}
+                                        {displayScheduleSection && (
+                                            <CampaignPublishScheduleStep
+                                                count={4}
+                                                key={
+                                                    CampaignStepsKeys.PublishSchedule
+                                                }
+                                                isPristine={
+                                                    pristine.publish_schedule
+                                                }
+                                                isValid={isStepValid(
+                                                    CampaignStepsKeys.PublishSchedule
+                                                )}
+                                                isDisabled={isStepDisabled(
+                                                    CampaignStepsKeys.PublishSchedule
+                                                )}
+                                                isConvertSubscriber={
+                                                    isConvertSubscriber
+                                                }
+                                                isLightCampaign={
+                                                    isLightCampaign
+                                                }
+                                            />
+                                        )}
                                     </Accordion>
                                     <div className="mt-4">
                                         <CampaignFooter
@@ -817,7 +809,6 @@ export const CampaignDetailsForm = ({
                                             onABVariantCreate={
                                                 handleCreateABVariant
                                             }
-                                            allowActivate={allowActivate}
                                             disableActions={disableActions}
                                         />
                                     </div>

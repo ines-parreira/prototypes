@@ -59,7 +59,6 @@ export enum FeatureFlagKey {
     ContactFormNewEntrypointView = 'contact-form-new-entrypoint-view',
     ConvertLLMProductRecommendations = 'convert-llm-product-recommendations',
     ConvertPerformanceView = 'convert-performance-view',
-    ConvertScheduleCampaign = 'convert-schedule-campaign',
     ConvertUtmConfigurationTab = 'convert-utm-configuration-tab',
     ConvertContactForm = 'convert-contact-form',
     CustomerTimelineButton = 'customer-timeline-button',

@@ -14,7 +14,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {useIsConvertScheduleCampaignEnabled} from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {useListCampaigns} from 'models/convert/campaign/queries'
@@ -56,7 +55,6 @@ export const CampaignsView = () => {
     const chatIntegrationId = parseInt(integrationId)
     const integration = useAppSelector(getIntegrationById(chatIntegrationId))
     const isConvertSubscriber: boolean = useIsConvertSubscriber()
-    const isCampaignScheduleEnabled = useIsConvertScheduleCampaignEnabled()
 
     const immutableIntegration = useMemo(
         () => fromJS(integration) as Map<any, any>,
@@ -102,7 +100,6 @@ export const CampaignsView = () => {
                     {
                         onSuccess: () => {
                             if (
-                                isCampaignScheduleEnabled &&
                                 campaign.schedule &&
                                 status === CampaignStatus.Inactive
                             ) {
@@ -123,7 +120,7 @@ export const CampaignsView = () => {
                 )
             }
         },
-        [updateCampaign, channelConnection, isCampaignScheduleEnabled, dispatch]
+        [updateCampaign, channelConnection, dispatch]
     )
 
     const handleDuplicateCampaign = useCallback(

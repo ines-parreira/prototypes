@@ -11,7 +11,6 @@ import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.e
 import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
 import * as useLocalStorage from 'hooks/useLocalStorage'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import * as useIsConvertScheduleCampaignEnabled from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
@@ -25,8 +24,6 @@ import {CampaignsTable} from '../CampaignsTable'
 
 jest.mock('hooks/useSearch')
 const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
-
-jest.mock('pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled')
 
 const CAMPAIGNS_COUNT = 19
 const ACTIVE_CAMPAIGNS_COUNT = ACTIVE_CAMPAIGNS_LIMIT + 1
@@ -174,11 +171,6 @@ describe('<CampaignsTable />', () => {
         })
 
         it('blocks toggle activation when campaign has schedule and it is in past', () => {
-            jest.spyOn(
-                useIsConvertScheduleCampaignEnabled,
-                'useIsConvertScheduleCampaignEnabled'
-            ).mockImplementation(() => true)
-
             const newProps = {
                 ...props,
                 data: campaignWithSchedule,

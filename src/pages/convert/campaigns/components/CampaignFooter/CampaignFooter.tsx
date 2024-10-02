@@ -1,6 +1,5 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react'
+import React, {useCallback, useMemo, useState} from 'react'
 import classnames from 'classnames'
-import _noop from 'lodash/noop'
 
 import {Tooltip} from '@gorgias/ui-kit'
 
@@ -10,15 +9,10 @@ import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-import DropdownButton from 'pages/common/components/button/DropdownButton'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 
 import {ABVariantModalType} from 'pages/convert/abVariants/types/enums'
 import CreateABTestInfoModal from 'pages/convert/abVariants/components/CreateABTestInfoModal'
-import {useIsConvertScheduleCampaignEnabled} from 'pages/convert/common/hooks/useIsConvertScheduleCampaignEnabled'
 
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
 import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
@@ -38,7 +32,6 @@ type Props = {
     disableActions?: boolean
     canCreateABVariants?: boolean
     aBVariantsDisabled?: boolean
-    allowActivate?: boolean
 
     onSave: (activate?: boolean) => void
     onDiscard?: () => void
@@ -58,7 +51,6 @@ export const CampaignFooter = ({
     isUpdate = false,
     disableActions = false,
     canCreateABVariants = false,
-    allowActivate = true,
     aBVariantsDisabled = false,
     onSave,
     onDiscard,
@@ -69,9 +61,6 @@ export const CampaignFooter = ({
     const [isLightModalOpen, setIsLightModalOpen] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const {configuration} = useCampaignFormContext()
-
-    const dropdownTargetRef = useRef<HTMLDivElement>(null)
-    const isScheduleCampaignEnabled = useIsConvertScheduleCampaignEnabled()
 
     const storageAbVariantModalKey = useMemo(() => {
         return `convert:abVariant:${ABVariantModalType.CreateABGroup}`
@@ -285,97 +274,21 @@ export const CampaignFooter = ({
 
     return (
         <div className={css.footerContainer}>
-            {!isScheduleCampaignEnabled && (
-                <div className={css.createBtnWrapper}>
-                    {allowActivate && (
-                        <>
-                            <DropdownButton
-                                color="primary"
-                                fillStyle="fill"
-                                ref={dropdownTargetRef}
-                                isLoading={actionInProgress === 'create'}
-                                isDisabled={
-                                    disableActions ||
-                                    !isCampaignValid ||
-                                    isCreateDisabled
-                                }
-                                className={classnames({
-                                    'btn-loading':
-                                        actionInProgress === 'create',
-                                })}
-                                onToggleClick={_noop}
-                            >
-                                {configuration?.labels?.Create ?? 'Create'}
-                            </DropdownButton>
-                            <UncontrolledDropdown
-                                target={dropdownTargetRef}
-                                placement="bottom-end"
-                            >
-                                <DropdownBody>
-                                    <DropdownItem
-                                        option={{
-                                            label:
-                                                configuration?.labels?.Create ??
-                                                'Create',
-                                            value: 'create',
-                                        }}
-                                        onClick={() => onCreate(false)}
-                                        shouldCloseOnSelect
-                                    />
-
-                                    <DropdownItem
-                                        option={{
-                                            label:
-                                                configuration?.labels
-                                                    ?.CreateAndActivate ??
-                                                'Create & Activate',
-                                            value: 'create_activate',
-                                        }}
-                                        onClick={() => onCreate(true)}
-                                        shouldCloseOnSelect
-                                    />
-                                </DropdownBody>
-                            </UncontrolledDropdown>
-                        </>
-                    )}
-                    {!allowActivate && (
-                        <Button
-                            onClick={() => onCreate(false)}
-                            title="Create"
-                            isLoading={actionInProgress === 'create'}
-                            isDisabled={
-                                disableActions ||
-                                !isCampaignValid ||
-                                isCreateDisabled
-                            }
-                            className={classnames({
-                                'btn-loading': actionInProgress === 'create',
-                            })}
-                        >
-                            {configuration?.labels?.Create ?? 'Create'}
-                        </Button>
-                    )}
-                </div>
-            )}
-            {isScheduleCampaignEnabled && (
-                <div className={css.createBtnWrapper}>
-                    <Button
-                        onClick={() => onCreate(false)}
-                        title="Create"
-                        isLoading={actionInProgress === 'create'}
-                        isDisabled={
-                            disableActions ||
-                            !isCampaignValid ||
-                            isCreateDisabled
-                        }
-                        className={classnames({
-                            'btn-loading': actionInProgress === 'create',
-                        })}
-                    >
-                        {configuration?.labels?.Create ?? 'Create'}
-                    </Button>
-                </div>
-            )}
+            <div className={css.createBtnWrapper}>
+                <Button
+                    onClick={() => onCreate(false)}
+                    title="Create"
+                    isLoading={actionInProgress === 'create'}
+                    isDisabled={
+                        disableActions || !isCampaignValid || isCreateDisabled
+                    }
+                    className={classnames({
+                        'btn-loading': actionInProgress === 'create',
+                    })}
+                >
+                    {configuration?.labels?.Create ?? 'Create'}
+                </Button>
+            </div>
             {onDiscard && (
                 <div>
                     <Button intent="secondary" onClick={onDiscard}>
