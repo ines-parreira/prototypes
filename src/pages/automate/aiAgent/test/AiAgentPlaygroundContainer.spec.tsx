@@ -3,7 +3,6 @@ import {screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
-import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState} from 'state/types'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
@@ -13,22 +12,37 @@ import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
-import {AccountConfiguration, StoreConfiguration} from 'models/aiAgent/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
 import {AiAgentPlaygroundContainer} from '../AiAgentPlaygroundContainer'
 import {usePublicResources} from '../hooks/usePublicResources'
 import {usePlaygroundMessages} from '../hooks/usePlaygroundMessages'
 import {useGetOrCreateSnippetHelpCenter} from '../hooks/useGetOrCreateSnippetHelpCenter'
-import {ToneOfVoice} from '../constants'
+import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
+import {getAccountConfigurationWithHttpIntegrationFixture} from '../fixtures/accountConfiguration.fixture'
 
 const mockStore = configureMockStore()
-const queryClient = mockQueryClient()
 
 const defaultState: Partial<RootState> = {
     currentUser: fromJS(user),
     currentAccount: fromJS(account),
 }
+
+jest.mock('utils/errors', () => ({
+    reportError: jest.fn(),
+}))
+
+// Test playground chat in the different file
+jest.mock('../components/PlaygroundChat/PlaygroundChat', () => ({
+    PlaygroundChat: jest.fn(() => <div>PlaygroundChat</div>),
+}))
+
+jest.mock('hooks/useAppDispatch')
+const mockUseAppDispatch = assumeMock(useAppDispatch)
+
+jest.mock('state/notifications/actions')
+const mockNotify = assumeMock(notify)
 
 jest.mock('models/aiAgent/queries')
 const mockUseGetStoreConfigurationPure = assumeMock(
@@ -51,39 +65,22 @@ const mockUseGetOrCreateSnippetHelpCenter = jest.mocked(
 jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
-const storeConfiguration: StoreConfiguration = {
-    deactivatedDatetime: null,
-    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
-    storeName: 'test-shop',
-    helpCenterId: 1,
-    snippetHelpCenterId: 1,
-    guidanceHelpCenterId: 1,
-    toneOfVoice: ToneOfVoice.Friendly,
-    customToneOfVoiceGuidance:
-        "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
-    signature: 'This response was created by AI',
-    excludedTopics: [],
-    tags: [],
-    conversationBot: {
-        id: 1,
-        email: 'test@mail.com',
-    },
-    monitoredEmailIntegrations: [{id: 1000, email: 'foo@bar.com'}],
-    silentHandover: false,
-    ticketSampleRate: 100,
-    dryRun: false,
-    isDraft: false,
-    monitoredChatIntegrations: [],
-    wizardId: null,
-}
+const storeConfiguration = getStoreConfigurationFixture({})
 
-const accountConfiguration: AccountConfiguration = {
-    accountId: 10,
-    gorgiasDomain: 'my-domain',
-    helpdeskOAuth: null,
-    httpIntegration: {
-        id: 1000,
-    },
+const accountConfiguration = getAccountConfigurationWithHttpIntegrationFixture(
+    {}
+)
+
+const renderComponent = () => {
+    renderWithRouter(
+        <Provider store={mockStore(defaultState)}>
+            <AiAgentPlaygroundContainer />
+        </Provider>,
+        {
+            path: `/app/automation/:shopType/:shopName/ai-agent/test`,
+            route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',
+        }
+    )
 }
 
 describe('AiAgentPlayground', () => {
@@ -91,7 +88,10 @@ describe('AiAgentPlayground', () => {
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
+
+        mockUseAppDispatch.mockReturnValue(jest.fn())
     })
+
     it('renders loader if data is fetching', () => {
         mockUseGetStoreConfigurationPure.mockReturnValue({
             data: undefined,
@@ -110,28 +110,21 @@ describe('AiAgentPlayground', () => {
             helpCenter: {id: 1},
         } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentPlaygroundContainer />
-            </Provider>,
-            {
-                path: `/app/automation/:shopType/:shopName/ai-agent/test`,
-                route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',
-            }
-        )
+        renderComponent()
 
         expect(screen.getByTestId('loader')).toBeInTheDocument()
     })
 
-    it('renders loader if public resources are fetching', () => {
+    it('should notify when account configuration is exists but no http integration', () => {
+        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
+            isLoading: false,
+            helpCenter: {id: 1},
+        } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
+
         mockUseGetStoreConfigurationPure.mockReturnValue({
             data: {
                 data: {
-                    storeConfiguration: {
-                        ...storeConfiguration,
-                        helpCenterId: null,
-                        monitoredEmailIntegrations: [],
-                    },
+                    storeConfiguration,
                 },
             },
             error: undefined,
@@ -139,349 +132,29 @@ describe('AiAgentPlayground', () => {
         } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
 
         mockUseGetAccountConfiguration.mockReturnValue({
-            data: {data: {accountConfiguration}},
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetAccountConfiguration>)
-
-        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
-            isLoading: false,
-            helpCenter: {id: 1},
-        } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
-
-        mockUsePublicResources.mockReturnValue({
-            sourceItems: [],
-            isSourceItemsListLoading: true,
-        })
-
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentPlaygroundContainer />
-            </Provider>,
-            {
-                path: `/app/automation/:shopType/:shopName/ai-agent/test`,
-                route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',
-            }
-        )
-
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
-    })
-
-    it('renders alert of missing email and knowledge if there is no account configuration', () => {
-        mockUseGetStoreConfigurationPure.mockReturnValue({
-            data: {data: {storeConfiguration}},
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
-
-        mockUseGetAccountConfiguration.mockReturnValue({
-            data: undefined,
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetAccountConfiguration>)
-
-        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
-            isLoading: false,
-            helpCenter: null,
-        } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
-
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentPlaygroundContainer />
-            </Provider>,
-            {
-                path: `/app/automation/:shopType/:shopName/ai-agent/test`,
-                route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',
-            }
-        )
-
-        expect(
-            screen.getByText(
-                (_, element) =>
-                    element?.textContent ===
-                    'Your email and knowledge settings must be saved to use test mode. Click save in settings to proceed.'
-            )
-        ).toBeInTheDocument()
-    })
-
-    it('renders email alert there is no store configuration but there is a snippet help center with public sources', () => {
-        mockUseGetStoreConfigurationPure.mockReturnValue({
-            data: undefined,
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
-
-        mockUseGetAccountConfiguration.mockReturnValue({
-            data: {data: {accountConfiguration}},
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetAccountConfiguration>)
-
-        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
-            isLoading: false,
-            helpCenter: {id: 1},
-        } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
-
-        mockUsePublicResources.mockReturnValue({
-            sourceItems: [{status: 'done', id: 60}],
-            isSourceItemsListLoading: false,
-        })
-
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentPlaygroundContainer />
-            </Provider>,
-            {
-                path: `/app/automation/:shopType/:shopName/ai-agent/test`,
-                route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',
-            }
-        )
-
-        expect(
-            screen.getByText(
-                (_, element) =>
-                    element?.textContent ===
-                    'At least one email must be connected to AI Agent to use test mode.'
-            )
-        ).toBeInTheDocument()
-    })
-
-    it('renders alert of missing email and knowledge if there is no store configuration and snippet help center', () => {
-        mockUseGetStoreConfigurationPure.mockReturnValue({
-            data: undefined,
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
-
-        mockUseGetAccountConfiguration.mockReturnValue({
-            data: {data: {accountConfiguration}},
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetAccountConfiguration>)
-
-        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
-            isLoading: false,
-            helpCenter: null,
-        } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
-
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentPlaygroundContainer />
-            </Provider>,
-            {
-                path: `/app/automation/:shopType/:shopName/ai-agent/test`,
-                route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',
-            }
-        )
-
-        expect(
-            screen.getByText(
-                (_, element) =>
-                    element?.textContent ===
-                    'Your email and knowledge settings must be saved to use test mode. Click save in settings to proceed.'
-            )
-        ).toBeInTheDocument()
-    })
-
-    it('renders alert of missing email and knowledge if there is neither email nor knowledge', () => {
-        mockUseGetStoreConfigurationPure.mockReturnValue({
             data: {
                 data: {
-                    storeConfiguration: {
-                        ...storeConfiguration,
-                        helpCenterId: null,
-                        monitoredEmailIntegrations: [],
+                    accountConfiguration: {
+                        ...accountConfiguration,
+                        httpIntegration: null,
                     },
                 },
             },
             error: undefined,
             isLoading: false,
-        } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
-
-        mockUseGetAccountConfiguration.mockReturnValue({
-            data: {data: {accountConfiguration}},
-            error: undefined,
-            isLoading: false,
         } as unknown as ReturnType<typeof useGetAccountConfiguration>)
 
-        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
-            isLoading: false,
-            helpCenter: {id: 1},
-        } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
+        renderComponent()
 
-        mockUsePublicResources.mockReturnValue({
-            sourceItems: [],
-            isSourceItemsListLoading: false,
-        })
-
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentPlaygroundContainer />
-            </Provider>,
-            {
-                path: `/app/automation/:shopType/:shopName/ai-agent/test`,
-                route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',
-            }
+        expect(mockNotify).toHaveBeenCalledWith(
+            expect.objectContaining({
+                message:
+                    'There was an error initializing the AI Agent Test mode',
+            })
         )
-
-        expect(
-            screen.getByText(
-                (_, element) =>
-                    element?.textContent ===
-                    'Your email and knowledge settings must be saved to use test mode. Click save in settings to proceed.'
-            )
-        ).toBeInTheDocument()
     })
 
-    it('renders alert of missing knowledge if there is no knowledge but there is an email', () => {
-        mockUseGetStoreConfigurationPure.mockReturnValue({
-            data: {
-                data: {
-                    storeConfiguration: {
-                        ...storeConfiguration,
-                        helpCenterId: null,
-                    },
-                },
-            },
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
-
-        mockUseGetAccountConfiguration.mockReturnValue({
-            data: {data: {accountConfiguration}},
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetAccountConfiguration>)
-
-        mockUsePublicResources.mockReturnValue({
-            sourceItems: [],
-            isSourceItemsListLoading: false,
-        })
-
-        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
-            isLoading: false,
-            helpCenter: null,
-        } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
-
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentPlaygroundContainer />
-            </Provider>,
-            {
-                path: `/app/automation/:shopType/:shopName/ai-agent/test`,
-                route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',
-            }
-        )
-
-        expect(
-            screen.getByText(
-                (_, element) =>
-                    element?.textContent ===
-                    'At least one knowledge source is required to use test mode.'
-            )
-        ).toBeInTheDocument()
-    })
-
-    it('renders alert of missing email if there is no email but there is a help center', () => {
-        mockUseGetStoreConfigurationPure.mockReturnValue({
-            data: {
-                data: {
-                    storeConfiguration: {
-                        ...storeConfiguration,
-                        monitoredEmailIntegrations: [],
-                    },
-                },
-            },
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
-
-        mockUseGetAccountConfiguration.mockReturnValue({
-            data: {data: {accountConfiguration}},
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetAccountConfiguration>)
-
-        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
-            isLoading: false,
-            helpCenter: {id: 1},
-        } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
-
-        mockUsePublicResources.mockReturnValue({
-            sourceItems: [],
-            isSourceItemsListLoading: false,
-        })
-
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentPlaygroundContainer />
-            </Provider>,
-            {
-                path: `/app/automation/:shopType/:shopName/ai-agent/test`,
-                route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',
-            }
-        )
-
-        expect(
-            screen.getByText(
-                (_, element) =>
-                    element?.textContent ===
-                    'At least one email must be connected to AI Agent to use test mode.'
-            )
-        ).toBeInTheDocument()
-    })
-
-    it('renders alert of missing email if there is no email but there are public resources', () => {
-        mockUseGetStoreConfigurationPure.mockReturnValue({
-            data: {
-                data: {
-                    storeConfiguration: {
-                        ...storeConfiguration,
-                        helpCenterId: null,
-                        monitoredEmailIntegrations: [],
-                    },
-                },
-            },
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
-
-        mockUseGetAccountConfiguration.mockReturnValue({
-            data: {data: {accountConfiguration}},
-            error: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetAccountConfiguration>)
-
-        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
-            isLoading: false,
-            helpCenter: {id: 1},
-        } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
-
-        mockUsePublicResources.mockReturnValue({
-            sourceItems: [{status: 'done', id: 60}],
-            isSourceItemsListLoading: false,
-        })
-
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentPlaygroundContainer />
-            </Provider>,
-            {
-                path: `/app/automation/:shopType/:shopName/ai-agent/test`,
-                route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',
-            }
-        )
-
-        expect(
-            screen.getByText(
-                (_, element) =>
-                    element?.textContent ===
-                    'At least one email must be connected to AI Agent to use test mode.'
-            )
-        ).toBeInTheDocument()
-    })
-
-    it('renders playground if both email and knowledge are present', () => {
+    it('renders playground if knowledge base is present', () => {
         mockUseGetStoreConfigurationPure.mockReturnValue({
             data: {
                 data: {
@@ -516,18 +189,74 @@ describe('AiAgentPlayground', () => {
             isWaitingResponse: false,
         })
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentPlaygroundContainer />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: `/app/automation/:shopType/:shopName/ai-agent/test`,
-                route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',
-            }
-        )
+        renderComponent()
 
-        expect(screen.getByText('New Conversation')).toBeInTheDocument()
+        expect(screen.getByText('PlaygroundChat')).toBeInTheDocument()
+    })
+
+    it('renders alert of missing knowledge base if there is no knowledge base', () => {
+        mockUseGetStoreConfigurationPure.mockReturnValue({
+            data: {
+                data: {
+                    storeConfiguration: {
+                        ...storeConfiguration,
+                        helpCenterId: null,
+                    },
+                },
+            },
+            error: undefined,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
+        mockUseGetAccountConfiguration.mockReturnValue({
+            data: {data: {accountConfiguration}},
+            error: undefined,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetAccountConfiguration>)
+        mockUsePublicResources.mockReturnValue({
+            sourceItems: [],
+            isSourceItemsListLoading: false,
+        })
+        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
+            isLoading: false,
+            helpCenter: null,
+        } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
+        renderComponent()
+        expect(screen.getByRole('alert')).toHaveTextContent(
+            'Test AI Agent as a customerAt least one knowledge source is required to use test mode'
+        )
+    })
+
+    it('renders playground if knowledge base is present', () => {
+        mockUseGetStoreConfigurationPure.mockReturnValue({
+            data: {
+                data: {
+                    storeConfiguration,
+                },
+            },
+            error: undefined,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
+        mockUseGetAccountConfiguration.mockReturnValue({
+            data: {data: {accountConfiguration}},
+            error: undefined,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetAccountConfiguration>)
+        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
+            isLoading: false,
+            helpCenter: {id: 1},
+        } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
+        mockUsePublicResources.mockReturnValue({
+            sourceItems: [{status: 'done', id: 60}],
+            isSourceItemsListLoading: false,
+        })
+        mockUsePlaygroundMessages.mockReturnValue({
+            messages: [],
+            isMessageSending: false,
+            onMessageSend: jest.fn(),
+            onNewConversation: jest.fn(),
+            isWaitingResponse: false,
+        })
+        renderComponent()
+        expect(screen.getByText('PlaygroundChat')).toBeInTheDocument
     })
 })

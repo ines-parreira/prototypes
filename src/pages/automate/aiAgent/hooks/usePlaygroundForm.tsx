@@ -1,12 +1,14 @@
 import React, {useCallback, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {PlaygroundFormValues} from '../components/PlaygroundChat/PlaygroundChat.types'
+import {DEFAULT_PLAYGROUND_CUSTOMER} from '../constants'
 import {usePublicResources} from './usePublicResources'
 import {usePublicResourcesPooling} from './usePublicResourcesPooling'
 import {useAiAgentNavigation} from './useAiAgentNavigation'
 
 const INITIAL_FORM_VALUES: PlaygroundFormValues = {
     message: '',
+    customer: DEFAULT_PLAYGROUND_CUSTOMER,
 }
 
 export const usePlaygroundForm = ({
@@ -41,9 +43,6 @@ export const usePlaygroundForm = ({
     const validateFormValues = (formValues: PlaygroundFormValues) => {
         const formValuesValidity: Record<string, boolean> = {
             message: formValues.message.length > 0,
-            customerEmail:
-                !formValues.customerEmail ||
-                formValues.customerEmail.length > 0,
         }
 
         return Object.values(formValuesValidity).every(Boolean)

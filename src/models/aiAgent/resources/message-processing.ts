@@ -1,9 +1,5 @@
 import axios from 'axios'
-import {createPlayground} from 'models/aiAgentPlayground/resources'
-import {
-    createMockClientPayload,
-    createMockHttpIntegrationPayload,
-} from 'pages/automate/aiAgent/utils/playground-ticket.util'
+import {createMockHttpIntegrationPayload} from 'pages/automate/aiAgent/utils/playground-ticket.util'
 import {
     AiAgentInput,
     AiAgentResponse,
@@ -31,7 +27,7 @@ export function createBaseUrl(isProd = isProduction(), isStg = isStaging()) {
 const baseURL = createBaseUrl()
 
 // eslint-disable-next-line no-restricted-properties
-const apiClient = axios.create({
+export const apiClient = axios.create({
     baseURL,
     headers: {
         'Content-Type': 'application/json',
@@ -60,11 +56,9 @@ export const createContextAndSubmitPlaygroundTicket = async (
     body: CreatePlaygroundBody,
     abortController?: AbortController
 ) => {
-    let context
-
-    if (body.use_mock_context) {
-        context = {
-            data: createMockHttpIntegrationPayload({
+    return await submitAiAgentTicket(
+        {
+            ...createMockHttpIntegrationPayload({
                 body_text: body.body_text,
                 subject: body.subject,
                 domain: body.domain,
@@ -75,15 +69,6 @@ export const createContextAndSubmitPlaygroundTicket = async (
                 customer: body.customer,
                 from_agent: body.from_agent,
             }),
-        }
-    } else {
-        const payload = createMockClientPayload(body)
-        context = {data: (await createPlayground(payload)).data}
-    }
-
-    return await submitAiAgentTicket(
-        {
-            ...context.data,
             _action_serialized_state: body._action_serialized_state,
             _playground_options: body._playground_options,
         },

@@ -88,3 +88,9 @@ export type PlaygroundTemplateMessage = {
     title: string
     content: string
 }
+
+export type PlaygroundCustomer = {
+    email: string
+    name?: string
+    id: number
+}

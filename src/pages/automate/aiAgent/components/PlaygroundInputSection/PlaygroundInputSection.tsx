@@ -19,6 +19,7 @@ import {
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
 } from '../../constants'
+import {PlaygroundCustomer} from '../../types'
 import css from './PlaygroundInputSection.less'
 
 type Props = {
@@ -103,16 +104,11 @@ export const PlaygroundInputSection = ({
         : undefined
 
     const handleCustomerEmailChange = useCallback(
-        (customerEmail: string, customerName?: string | null) => {
-            onFormValuesChange('customerEmail', customerEmail)
-            if (customerName) {
-                onFormValuesChange('customerName', customerName)
-            }
+        (customer: PlaygroundCustomer) => {
+            onFormValuesChange('customer', customer)
         },
         [onFormValuesChange]
     )
-
-    const customerEmail = formValues.customerEmail ?? ''
 
     return (
         <div className={css.container}>
@@ -130,7 +126,7 @@ export const PlaygroundInputSection = ({
                         />
                         {channel === 'email' && (
                             <PlaygroundCustomerSelection
-                                customerEmail={customerEmail}
+                                customer={formValues.customer}
                                 onCustomerEmailChange={
                                     handleCustomerEmailChange
                                 }
@@ -140,7 +136,7 @@ export const PlaygroundInputSection = ({
                     </div>
                 ) : (
                     <PlaygroundCustomerSelection
-                        customerEmail={customerEmail}
+                        customer={formValues.customer}
                         onCustomerEmailChange={handleCustomerEmailChange}
                         isDisabled={!isInitialMessage}
                     />

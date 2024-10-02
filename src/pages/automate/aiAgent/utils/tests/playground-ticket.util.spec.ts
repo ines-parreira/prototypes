@@ -1,19 +1,21 @@
-import {CreatePlaygroundMessage} from 'models/aiAgentPlayground/types'
+import {AxiosResponse} from 'axios'
+import {getCustomer} from 'models/customer/resources'
+import {Customer} from 'models/customer/types'
 import {
-    createMockClientPayload,
     createMockHttpIntegrationPayload,
+    getTicketCustomer,
 } from '../playground-ticket.util'
-import {PLAYGROUND_CUSTOMER_MOCK} from '../../constants'
+import {
+    CustomerHttpIntegrationDataMock,
+    DEFAULT_PLAYGROUND_CUSTOMER,
+    PLAYGROUND_CUSTOMER_MOCK,
+} from '../../constants'
 
-const getMockTicketMessage = (
-    props?: Partial<CreatePlaygroundMessage>
-): CreatePlaygroundMessage => ({
-    bodyText: 'test',
-    fromAgent: false,
-    createdDatetime: '123',
-    meta: {},
-    ...props,
-})
+jest.mock('models/customer/resources', () => ({
+    getCustomer: jest.fn(),
+}))
+const mockGetCustomer = jest.mocked(getCustomer)
+
 describe('playground-ticket util', () => {
     it('should create mock http payload', () => {
         const result = createMockHttpIntegrationPayload({
@@ -89,100 +91,48 @@ describe('playground-ticket util', () => {
         `)
     })
 
-    it('should create mock client payload for chat', () => {
-        const result = createMockClientPayload({
-            body_text: 'test',
-            subject: '',
-            domain: 'test-gorgias',
-            messages: [
-                getMockTicketMessage({
-                    meta: {
-                        ai_agent_message_type: 'ai_agent_greeting',
-                    },
-                }),
-            ],
-            created_datetime: '123',
-            channel: 'chat',
-            use_mock_context: true,
-            _playground_options: {
-                shopName: 'test',
-            },
-            email_integration_id: -1,
-            http_integration_id: -1,
-            account_id: 1,
-            customer_email: 'test@gorgias.com',
-            from_agent: true,
-            customer: PLAYGROUND_CUSTOMER_MOCK,
+    describe('getTicketCustomer', () => {
+        it('should return mock customer', async () => {
+            const expected = {
+                name: CustomerHttpIntegrationDataMock.name,
+                email: CustomerHttpIntegrationDataMock.address,
+                firstname: CustomerHttpIntegrationDataMock.firstname,
+                lastname: CustomerHttpIntegrationDataMock.lastname,
+                integrations: '{}',
+                id: '0',
+            }
+
+            const result = await getTicketCustomer(
+                DEFAULT_PLAYGROUND_CUSTOMER.id
+            )
+
+            expect(result).toEqual(expected)
         })
 
-        expect(result.messages[0].meta).toEqual({
-            ai_agent_message_type: 'ai_agent_greeting',
+        it('should return customer from API', async () => {
+            mockGetCustomer.mockResolvedValue(
+                Promise.resolve({
+                    data: {
+                        name: 'Oliver Smith',
+                        email: 'oliver@mail.com',
+                        firstname: 'Oliver',
+                        lastname: 'Smith',
+                        integrations: {},
+                        id: 601409,
+                    },
+                }) as unknown as AxiosResponse<Customer>
+            )
+
+            const result = await getTicketCustomer(601409)
+
+            expect(result).toEqual({
+                name: 'Oliver Smith',
+                email: 'oliver@mail.com',
+                firstname: 'Oliver',
+                lastname: 'Smith',
+                integrations: '{}',
+                id: '601409',
+            })
         })
-        expect(result).toMatchInlineSnapshot(`
-            {
-              "_playground_options": {
-                "shopName": "test",
-              },
-              "account_id": 1,
-              "body_text": "test",
-              "channel": "chat",
-              "created_datetime": "123",
-              "customer": {
-                "email": "oliver.smith@foobar.com",
-                "firstname": "Oliver",
-                "id": "601409",
-                "integrations": "{"shopify":{"customer":{},"last_order":null,"orders":[]}}",
-                "lastname": "Smith",
-                "name": "Oliver Smith",
-              },
-              "customer_email": "test@gorgias.com",
-              "domain": "test-gorgias",
-              "email_integration_id": -1,
-              "from_agent": true,
-              "http_integration_id": -1,
-              "messages": [
-                {
-                  "attachments": [],
-                  "body_html": "",
-                  "body_text": "test",
-                  "channel": "chat",
-                  "created_datetime": "123",
-                  "from_agent": false,
-                  "id": 233881,
-                  "integration_id": -1,
-                  "intents": [],
-                  "meta": {
-                    "ai_agent_message_type": "ai_agent_greeting",
-                  },
-                  "sender": {
-                    "email": "oliver.smith@foobar.com",
-                    "firstname": "Oliver",
-                    "id": 601409,
-                    "lastname": "Smith",
-                    "meta": {
-                      "name_set_via": "shopify",
-                    },
-                    "name": "Oliver Smith",
-                  },
-                  "source": {
-                    "from": {
-                      "address": "oliver.smith@foobar.com",
-                      "name": "Oliver Smith",
-                    },
-                    "to": [
-                      {
-                        "address": "playground@gorgias.com",
-                        "name": "",
-                      },
-                    ],
-                    "type": "email",
-                  },
-                  "subject": "",
-                },
-              ],
-              "subject": "",
-              "use_mock_context": true,
-            }
-        `)
     })
 })

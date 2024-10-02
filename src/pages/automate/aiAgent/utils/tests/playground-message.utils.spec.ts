@@ -12,6 +12,7 @@ import {
     shouldDisplayActions,
 } from '../playground-messages.utils'
 import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'
+import {DEFAULT_PLAYGROUND_CUSTOMER} from '../../constants'
 
 describe('playground-message utils', () => {
     describe('isPlaygroundMessageSupportedByServer', () => {
@@ -89,12 +90,11 @@ describe('playground-message utils', () => {
     describe('mapPlaygroundFormValuesToMessage', () => {
         it('should map PlaygroundFormValues to PlaygroundMessage', () => {
             const formValues = {
-                customerName: 'John Doe',
-                customerEmail: 'test@mail.com',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
                 message: 'Hello, how can I help you?',
             }
             const expected: PlaygroundMessage = {
-                sender: 'John Doe',
+                sender: DEFAULT_PLAYGROUND_CUSTOMER.name!,
                 type: MessageType.MESSAGE,
                 content: 'Hello, how can I help you?',
                 createdDatetime: expect.any(String),

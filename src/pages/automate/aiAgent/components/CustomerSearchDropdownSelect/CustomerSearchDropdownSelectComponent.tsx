@@ -94,7 +94,7 @@ export const CustomerSearchDropdownSelectComponent = ({
             </div>
             {isDropdownVisible && (
                 <div className={css.dropdownContainer}>
-                    <div className={css.dropdown}>
+                    <div className={css.dropdown} role="listbox">
                         {isDropdownLoading && (
                             <div>
                                 <Skeleton

@@ -64,10 +64,7 @@ export const mapPlaygroundFormValuesToMessage = (
     formValues: PlaygroundFormValues
 ): PlaygroundTextMessage => {
     return {
-        sender:
-            formValues.customerName ??
-            formValues.customerEmail ?? // email as fallback
-            CustomerHttpIntegrationDataMock.name,
+        sender: formValues.customer.name ?? formValues.customer.email,
         type: MessageType.MESSAGE,
         content: formValues.message,
         createdDatetime: new Date().toISOString(),

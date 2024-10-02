@@ -1,8 +1,9 @@
+import {PlaygroundCustomer} from '../../types'
+
 export type PlaygroundFormValues = {
     message: string
     subject?: string
-    customerEmail?: string
-    customerName?: string
+    customer: PlaygroundCustomer
 }
 
 export type PlaygroundChannels = 'chat' | 'email'

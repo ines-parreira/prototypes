@@ -1,9 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
-import {CustomerHttpIntegrationDataMock} from '../../constants'
+import {
+    CustomerHttpIntegrationDataMock,
+    DEFAULT_PLAYGROUND_CUSTOMER,
+} from '../../constants'
 import {CustomerSearchDropdownSelectView} from '../CustomerSearchDropdownSelect/CustomerSearchDropdownSelectView'
 
+import {PlaygroundCustomer} from '../../types'
 import css from './PlaygroundCustomerSelection.less'
 
 export enum SenderTypeValues {
@@ -23,14 +27,14 @@ const senderSelectOptions = [
 ]
 
 type Props = {
-    onCustomerEmailChange: (email: string, name?: string) => void
-    customerEmail: string
+    onCustomerEmailChange: (customer: PlaygroundCustomer) => void
+    customer: PlaygroundCustomer
     isDisabled?: boolean
 }
 
 export const PlaygroundCustomerSelection = ({
     onCustomerEmailChange,
-    customerEmail,
+    customer,
     isDisabled,
 }: Props) => {
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
@@ -43,20 +47,25 @@ export const PlaygroundCustomerSelection = ({
         }
         setSenderSelectedOption(value)
         if (value === SenderTypeValues.NEW_CUSTOMER) {
-            onCustomerEmailChange(
-                CustomerHttpIntegrationDataMock.address,
-                CustomerHttpIntegrationDataMock.name
-            )
+            const playgroundCustomer: PlaygroundCustomer = {
+                email: CustomerHttpIntegrationDataMock.address,
+                id: CustomerHttpIntegrationDataMock.id,
+                name: CustomerHttpIntegrationDataMock.name,
+            }
+            onCustomerEmailChange(playgroundCustomer)
         } else {
-            onCustomerEmailChange('', '')
+            onCustomerEmailChange(DEFAULT_PLAYGROUND_CUSTOMER)
         }
     }
 
     useEffect(() => {
-        if (customerEmail === '') {
+        if (customer.id === DEFAULT_PLAYGROUND_CUSTOMER.id) {
             setSenderSelectedOption(SenderTypeValues.NEW_CUSTOMER)
         }
-    }, [customerEmail])
+    }, [customer])
+
+    const customerEmail =
+        customer.id === DEFAULT_PLAYGROUND_CUSTOMER.id ? '' : customer.email
 
     return (
         <div className={css.container}>

@@ -19,7 +19,6 @@ import {
     mapPlaygroundPromptToMessage,
     mapPlaygroundFormValuesToMessage,
 } from '../../utils/playground-messages.utils'
-import {CustomerHttpIntegrationDataMock} from '../../constants'
 import css from './PlaygroundChat.less'
 import {PlaygroundChannels} from './PlaygroundChat.types'
 
@@ -76,12 +75,10 @@ export const PlaygroundChat = ({
     const onPromptMessage = (prompt: PlaygroundPromptType) => {
         const playgroundMessage = mapPlaygroundPromptToMessage(
             prompt,
-            formValues.customerName || formValues.customerEmail
+            formValues.customer.name || formValues.customer.email
         )
         void onMessageSend(playgroundMessage, {
-            customerEmail:
-                formValues.customerEmail ??
-                CustomerHttpIntegrationDataMock.address,
+            customer: formValues.customer,
             subject: formValues.subject,
         })
         onFormValuesChange('message', '')
@@ -94,9 +91,7 @@ export const PlaygroundChat = ({
 
         const playgroundMessage = mapPlaygroundFormValuesToMessage(formValues)
         void onMessageSend(playgroundMessage, {
-            customerEmail:
-                formValues.customerEmail ??
-                CustomerHttpIntegrationDataMock.address,
+            customer: formValues.customer,
             subject: formValues.subject,
         })
 

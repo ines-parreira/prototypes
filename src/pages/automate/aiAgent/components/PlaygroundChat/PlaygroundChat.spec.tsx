@@ -9,11 +9,15 @@ import {
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 import {useSearchParam} from 'hooks/useSearchParam'
+import {useSearchCustomer} from 'models/aiAgent/queries'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {getAccountConfigurationWithHttpIntegrationFixture} from '../../fixtures/accountConfiguration.fixture'
 import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
 import {usePlaygroundForm} from '../../hooks/usePlaygroundForm'
-import {CustomerHttpIntegrationDataMock} from '../../constants'
+import {
+    CustomerHttpIntegrationDataMock,
+    DEFAULT_PLAYGROUND_CUSTOMER,
+} from '../../constants'
 import {PlaygroundChat} from './PlaygroundChat'
 
 jest.mock('../../hooks/usePlaygroundMessages', () => ({
@@ -22,6 +26,11 @@ jest.mock('../../hooks/usePlaygroundMessages', () => ({
 jest.mock('../../hooks/usePlaygroundForm', () => ({
     usePlaygroundForm: jest.fn(),
 }))
+
+jest.mock('models/aiAgent/queries', () => ({
+    useSearchCustomer: jest.fn(),
+}))
+const mockUseSearchCustomer = jest.mocked(useSearchCustomer)
 
 jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js',
@@ -68,7 +77,7 @@ describe('PlaygroundChat', () => {
             defaultUsePlaygroundMessagesProps
         )
         mockedUsePlaygroundForm.mockReturnValue({
-            formValues: {message: ''},
+            formValues: {message: '', customer: DEFAULT_PLAYGROUND_CUSTOMER},
             onFormValuesChange: jest.fn(),
             isDisabled: false,
             isFormValid: false,
@@ -101,6 +110,37 @@ describe('PlaygroundChat', () => {
         expect(screen.getByRole('tab', {selected: true})).toHaveTextContent(
             'Chat'
         )
+    })
+
+    it('should change customer', async () => {
+        const customer = {
+            id: 0,
+            address: 'test@example.com',
+            user: {
+                name: 'test',
+                id: 0,
+            },
+        }
+
+        mockUseSearchCustomer.mockReturnValue({
+            isLoading: false,
+            error: null,
+            isRefetching: false,
+            isRefetchError: false,
+            data: {
+                data: {data: [customer]},
+            },
+            refetch: jest.fn(),
+        } as unknown as ReturnType<typeof useSearchCustomer>)
+
+        renderComponent()
+        userEvent.click(screen.getByText('Existing customer'))
+        await userEvent.type(
+            screen.getByPlaceholderText('Search'),
+            customer.address
+        )
+        userEvent.click(await screen.findByText(customer.address))
+        expect(screen.getByDisplayValue(customer.address)).toBeInTheDocument()
     })
 
     describe('Chat', () => {
@@ -217,7 +257,10 @@ describe('PlaygroundChat', () => {
         it('should call onSendMessage with default email when no customer selected', () => {
             mockedUsePlaygroundForm.mockReturnValue({
                 ...defaultUsePlaygroundFormProps,
-                formValues: {message: 'Hello'},
+                formValues: {
+                    message: 'Hello',
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                },
                 isFormValid: true,
             })
             renderComponent()
@@ -231,7 +274,7 @@ describe('PlaygroundChat', () => {
                     sender: CustomerHttpIntegrationDataMock.name,
                 }),
                 {
-                    customerEmail: CustomerHttpIntegrationDataMock.address,
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
                     subject: undefined,
                 }
             )
@@ -241,7 +284,10 @@ describe('PlaygroundChat', () => {
             mockedUsePlaygroundForm.mockReturnValue({
                 ...defaultUsePlaygroundFormProps,
                 isFormValid: true,
-                formValues: {message: 'Hello', customerEmail: 'test@mail.com'},
+                formValues: {
+                    message: 'Hello',
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                },
             })
 
             renderComponent()
@@ -253,10 +299,10 @@ describe('PlaygroundChat', () => {
                 expect.objectContaining({
                     content: 'Hello',
                     type: MessageType.MESSAGE,
-                    sender: 'test@mail.com',
+                    sender: DEFAULT_PLAYGROUND_CUSTOMER.name,
                 }),
                 {
-                    customerEmail: 'test@mail.com',
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
                     subject: undefined,
                 }
             )
@@ -278,8 +324,7 @@ describe('PlaygroundChat', () => {
                 ...defaultUsePlaygroundFormProps,
                 formValues: {
                     message: 'Hello',
-                    customerName: 'John',
-                    customerEmail: 'test@mail.com',
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
                 },
             })
             mockedUsePlaygroundMessages.mockReturnValue({
@@ -295,12 +340,13 @@ describe('PlaygroundChat', () => {
             ).toHaveBeenCalledWith(
                 expect.objectContaining({
                     content: 'Yes, thanks',
+                    sender: DEFAULT_PLAYGROUND_CUSTOMER.name,
                     type: MessageType.PROMPT,
-                    sender: 'John',
                     prompt: PlaygroundPromptType.RELEVANT_RESPONSE,
                 }),
                 {
-                    customerEmail: 'test@mail.com',
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
+
                     subject: undefined,
                 }
             )
@@ -311,6 +357,7 @@ describe('PlaygroundChat', () => {
                 ...defaultUsePlaygroundFormProps,
                 formValues: {
                     message: 'Hello',
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
                 },
             })
             mockedUsePlaygroundMessages.mockReturnValue({
@@ -328,11 +375,11 @@ describe('PlaygroundChat', () => {
                 expect.objectContaining({
                     content: 'No, I need more help',
                     type: MessageType.PROMPT,
-                    sender: CustomerHttpIntegrationDataMock.name,
+                    sender: DEFAULT_PLAYGROUND_CUSTOMER.name,
                     prompt: PlaygroundPromptType.NOT_RELEVANT_RESPONSE,
                 }),
                 {
-                    customerEmail: CustomerHttpIntegrationDataMock.address,
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
                     subject: undefined,
                 }
             )

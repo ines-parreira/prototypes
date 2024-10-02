@@ -1,7 +1,7 @@
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
-import {FormValues, WizardFormValues} from './types'
-import {PlaygroundCustomer} from './utils/playground-ticket.util'
+import {FormValues, PlaygroundCustomer, WizardFormValues} from './types'
+import {TicketCustomer} from './utils/playground-ticket.util'
 
 export const SIGNATURE_MAX_LENGTH = 250
 export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 1500
@@ -61,11 +61,18 @@ export const CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE = `Be concise. Use an e
 export const CustomerHttpIntegrationDataMock = {
     address: 'oliver.smith@foobar.com',
     name: 'Oliver Smith',
+    id: 0,
     firstname: 'Oliver',
     lastname: 'Smith',
 }
 
-export const PLAYGROUND_CUSTOMER_MOCK: PlaygroundCustomer = {
+export const DEFAULT_PLAYGROUND_CUSTOMER: PlaygroundCustomer = {
+    email: CustomerHttpIntegrationDataMock.address,
+    name: CustomerHttpIntegrationDataMock.name,
+    id: 0,
+}
+
+export const PLAYGROUND_CUSTOMER_MOCK: TicketCustomer = {
     email: CustomerHttpIntegrationDataMock.address,
     firstname: CustomerHttpIntegrationDataMock.firstname,
     id: '601409',

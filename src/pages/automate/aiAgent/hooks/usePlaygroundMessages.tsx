@@ -16,10 +16,7 @@ import {
     GREETING_MESSAGE,
     PlaygroundGenericErrorMessage,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
-import {
-    CustomerHttpIntegrationDataMock,
-    PLAYGROUND_CUSTOMER_MOCK,
-} from '../constants'
+import {PLAYGROUND_CUSTOMER_MOCK} from '../constants'
 import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.types'
 import {
     getPlaygroundInitialMessage,
@@ -28,6 +25,8 @@ import {
     shouldDisplayActions,
 } from '../utils/playground-messages.utils'
 import {handleAiAgentResponse} from '../utils/playground-handler.utils'
+import {PlaygroundCustomer} from '../types'
+import {getTicketCustomer} from '../utils/playground-ticket.util'
 
 export const usePlaygroundMessages = ({
     storeData,
@@ -90,27 +89,31 @@ export const usePlaygroundMessages = ({
     const processMessages = useCallback(
         async (
             newMessages: PlaygroundMessage[],
-            {customerEmail, subject}: {customerEmail: string; subject?: string}
+            {
+                customer,
+                subject,
+            }: {customer: PlaygroundCustomer; subject?: string}
         ) => {
             // Simulate an async API call to process the message
-
-            const mockContext =
-                customerEmail === CustomerHttpIntegrationDataMock.address
-
-            const emailIntegration = storeData.monitoredEmailIntegrations[0]
-
-            // TODO: Remove in https://linear.app/gorgias/issue/AUTAI-1418/update-mechanism-to-get-customer-data
-            // This should not happen because we check email integration in the parent component
-            if (!emailIntegration && !mockContext) {
-                throw new Error(
-                    'Monitored Email Integration not found in storeConfiguration'
-                )
-            }
 
             const filteredMessages = newMessages.filter(
                 isApiEligiblePlaygroundMessage
             )
             const lastMessage = filteredMessages[filteredMessages.length - 1]
+
+            let messageCustomer = PLAYGROUND_CUSTOMER_MOCK
+            try {
+                messageCustomer = await getTicketCustomer(customer.id)
+            } catch (error) {
+                reportError(error, {
+                    tags: {team: AI_AGENT_SENTRY_TEAM},
+                    extra: {
+                        context: 'Error during get customer for playground',
+                        customer,
+                        accountId,
+                    },
+                })
+            }
 
             try {
                 const abortController = new AbortController()
@@ -118,17 +121,13 @@ export const usePlaygroundMessages = ({
 
                 const {data: aiAgentResponse} = await submitPlaygroundTicket([
                     {
-                        use_mock_context: mockContext,
                         domain: gorgiasDomain,
-                        customer_email: customerEmail,
+                        customer_email: customer.email,
                         body_text: lastMessage.content,
                         created_datetime: lastMessage.createdDatetime,
                         from_agent: lastMessage.sender === AI_AGENT_SENDER,
                         channel,
-                        // TODO: Remove in https://linear.app/gorgias/issue/AUTAI-1418/update-mechanism-to-get-customer-data
-                        email_integration_id: emailIntegration?.id,
-                        // TODO: add real customer data after implementing helpdesk endpoint
-                        customer: PLAYGROUND_CUSTOMER_MOCK,
+                        customer: messageCustomer,
                         messages:
                             mapPlaygroundMessagesToServerMessages(
                                 filteredMessages
@@ -218,7 +217,10 @@ export const usePlaygroundMessages = ({
     const onMessageSend = useCallback(
         async (
             newMessage: PlaygroundTextMessage | PlaygroundPromptMessage,
-            {customerEmail, subject}: {customerEmail: string; subject?: string}
+            {
+                customer,
+                subject,
+            }: {customer: PlaygroundCustomer; subject?: string}
         ) => {
             const newMessages = [...messages, newMessage]
             // Add placeholder only for real message processing as for action response is fast and we don't need it
@@ -249,7 +251,7 @@ export const usePlaygroundMessages = ({
             // Remove waiting state before each message send
             setIsWaitingResponse(false)
 
-            await processMessages(newMessages, {customerEmail, subject})
+            await processMessages(newMessages, {customer, subject})
         },
         [channel, messages, processMessages]
     )

@@ -12,12 +12,23 @@ import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPla
 import {PlaygroundChannels} from '../../components/PlaygroundChat/PlaygroundChat.types'
 import {playgroundMessageFixture} from '../../fixtures/playgroundMessages.fixture'
 import {
-    CustomerHttpIntegrationDataMock,
+    DEFAULT_PLAYGROUND_CUSTOMER,
     PLAYGROUND_CUSTOMER_MOCK,
 } from '../../constants'
+import {getTicketCustomer} from '../../utils/playground-ticket.util'
 
 jest.mock('models/aiAgent/queries', () => ({
     useSubmitPlaygroundTicket: jest.fn(),
+}))
+const mockedUseSubmitPlaygroundTicket = jest.mocked(useSubmitPlaygroundTicket)
+
+jest.mock('../../utils/playground-ticket.util', () => ({
+    getTicketCustomer: jest.fn(),
+}))
+const mockedGetTicketCustomer = jest.mocked(getTicketCustomer)
+
+jest.mock('utils/errors', () => ({
+    reportError: jest.fn(),
 }))
 
 const defaultParams = {
@@ -29,10 +40,11 @@ const defaultParams = {
     channel: 'email' as const,
 }
 
-const mockedUseSubmitPlaygroundTicket = jest.mocked(useSubmitPlaygroundTicket)
-
 describe('usePlaygroundMessages hook', () => {
     beforeEach(() => {
+        mockedGetTicketCustomer.mockReturnValue(
+            Promise.resolve(PLAYGROUND_CUSTOMER_MOCK)
+        )
         mockedUseSubmitPlaygroundTicket.mockReturnValue({
             mutateAsync: () =>
                 Promise.resolve({
@@ -70,7 +82,7 @@ describe('usePlaygroundMessages hook', () => {
         const message = playgroundMessageFixture
         await act(async () => {
             await result.current.onMessageSend(message, {
-                customerEmail: 'oliver.smith@foobar.com',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
             })
         })
 
@@ -79,7 +91,6 @@ describe('usePlaygroundMessages hook', () => {
                 account_id: 1,
                 body_text: message.content,
                 created_datetime: message.createdDatetime,
-                email_integration_id: 11,
                 customer_email: 'oliver.smith@foobar.com',
                 domain: 'acme',
                 channel: 'email',
@@ -90,14 +101,15 @@ describe('usePlaygroundMessages hook', () => {
                 http_integration_id: 1,
                 subject: '',
                 customer: PLAYGROUND_CUSTOMER_MOCK,
+                meta: undefined,
                 messages: [
                     {
                         bodyText: message.content,
                         createdDatetime: message.createdDatetime,
                         fromAgent: true,
+                        meta: undefined,
                     },
                 ],
-                use_mock_context: true,
                 _action_serialized_state: undefined,
             },
             new AbortController(),
@@ -105,6 +117,31 @@ describe('usePlaygroundMessages hook', () => {
 
         // Initial message + user message + AI response
         expect(result.current.messages.length).toBe(3)
+    })
+
+    it('should use mock playground customer when customer is not found', async () => {
+        mockedGetTicketCustomer.mockReturnValue(Promise.reject())
+        const onSubmit = jest.fn(() =>
+            Promise.resolve({data: getSubmitPlaygroundTicketResponseFixture()})
+        )
+        mockedUseSubmitPlaygroundTicket.mockReturnValue({
+            mutateAsync: onSubmit,
+        } as unknown as ReturnType<typeof useSubmitPlaygroundTicket>)
+        const {result} = renderHook(() => usePlaygroundMessages(defaultParams))
+        const message = playgroundMessageFixture
+        await act(async () => {
+            await result.current.onMessageSend(message, {
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            })
+        })
+
+        expect(onSubmit).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    customer: PLAYGROUND_CUSTOMER_MOCK,
+                }),
+            ])
+        )
     })
 
     it('should add error message when error occurs', async () => {
@@ -115,7 +152,7 @@ describe('usePlaygroundMessages hook', () => {
         const {result} = renderHook(() => usePlaygroundMessages(defaultParams))
         await act(async () => {
             await result.current.onMessageSend(playgroundMessageFixture, {
-                customerEmail: 'test@mail.com',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
             })
         })
 
@@ -157,7 +194,7 @@ describe('usePlaygroundMessages hook', () => {
 
         await act(async () => {
             await result.current.onMessageSend(playgroundMessageFixture, {
-                customerEmail: '',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
             })
         })
 
@@ -198,7 +235,7 @@ describe('usePlaygroundMessages hook', () => {
         const {result} = renderHook(() => usePlaygroundMessages(defaultParams))
         await act(async () => {
             await result.current.onMessageSend(playgroundMessageFixture, {
-                customerEmail: '',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
             })
         })
         expect(result.current.messages.length).toBe(5)
@@ -224,7 +261,7 @@ describe('usePlaygroundMessages hook', () => {
             )
             await act(async () => {
                 await result.current.onMessageSend(playgroundMessageFixture, {
-                    customerEmail: CustomerHttpIntegrationDataMock.address,
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
                 })
             })
 
@@ -285,7 +322,7 @@ describe('usePlaygroundMessages hook', () => {
             )
             await act(async () => {
                 await result.current.onMessageSend(playgroundMessageFixture, {
-                    customerEmail: 'test@mail.com',
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
                 })
             })
 
@@ -306,7 +343,7 @@ describe('usePlaygroundMessages hook', () => {
 
             await act(async () => {
                 await result.current.onMessageSend(playgroundMessageFixture, {
-                    customerEmail: 'test@mail.com',
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
                 })
             })
 
@@ -337,7 +374,7 @@ describe('usePlaygroundMessages hook', () => {
                     await result.current.onMessageSend(
                         playgroundMessageFixture,
                         {
-                            customerEmail: 'customer@mail.com',
+                            customer: DEFAULT_PLAYGROUND_CUSTOMER,
                         }
                     )
                 })
@@ -357,7 +394,7 @@ describe('usePlaygroundMessages hook', () => {
 
             await act(async () => {
                 await result.current.onMessageSend(playgroundMessageFixture, {
-                    customerEmail: 'test@mail.com',
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
                 })
             })
 

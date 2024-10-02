@@ -20,7 +20,7 @@ import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {PlaygroundChat} from './components/PlaygroundChat/PlaygroundChat'
 import {CheckPlaygroundPrerequisites} from './components/PlaygroundPrerequisites/PlaygroundPrerequisites'
 import {useGetOrCreateSnippetHelpCenter} from './hooks/useGetOrCreateSnippetHelpCenter'
-import {MissingEmailAndKnowledgeSourceAlert} from './components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts'
+import {MissingKnowledgeSourceAlert} from './components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts'
 
 type Props = {
     shopName: string
@@ -138,7 +138,7 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
     }
 
     if (!accountData) {
-        return <MissingEmailAndKnowledgeSourceAlert shopName={shopName} />
+        return <MissingKnowledgeSourceAlert shopName={shopName} />
     }
 
     return (

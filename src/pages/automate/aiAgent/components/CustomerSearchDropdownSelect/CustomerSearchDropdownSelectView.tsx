@@ -3,10 +3,11 @@ import {useSearchCustomer} from 'models/aiAgent/queries'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {reportError} from 'utils/errors'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import {PlaygroundCustomer} from '../../types'
 import {CustomerSearchDropdownSelectComponent} from './CustomerSearchDropdownSelectComponent'
 
 type Props = {
-    onSelect: (email: string, name?: string) => void
+    onSelect: (customer: PlaygroundCustomer) => void
     className?: string
     baseSearchTerm?: string
     isDisabled?: boolean
@@ -62,9 +63,15 @@ export const CustomerSearchDropdownSelectView = ({
             const customerData = data?.data.data.find(
                 (customer) => customer.address === value
             )
+
             setIsSelected(true)
             if (customerData) {
-                onSelect(value, customerData.customer.name)
+                const playgroundCustomer: PlaygroundCustomer = {
+                    email: customerData.address,
+                    name: customerData.user.name,
+                    id: customerData.user.id,
+                }
+                onSelect(playgroundCustomer)
             }
             setSearchTerm(value)
         },

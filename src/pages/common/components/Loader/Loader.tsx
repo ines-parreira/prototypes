@@ -9,6 +9,8 @@ type Props = {
     minHeight?: string
     size?: string
     className?: string
+    role?: string
+    'aria-label'?: string
     'data-testid'?: string
 }
 
@@ -19,11 +21,15 @@ export default function Loader({
     minHeight = '500px',
     size = '40px',
     'data-testid': dataTestId,
+    'aria-label': ariaLabel,
+    role,
 }: Props) {
     return (
         <div
             className={classnames(css.container, className)}
+            aria-label={ariaLabel}
             data-testid={dataTestId}
+            role={role}
         >
             <div className={css.inner} style={{minHeight}}>
                 <i

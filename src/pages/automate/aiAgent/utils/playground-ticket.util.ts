@@ -1,16 +1,19 @@
 import {
     AiAgentInput,
     CreatePlaygroundBody,
-    CreatePlaygroundRequest,
     MockTicketMessage,
 } from 'models/aiAgentPlayground/types'
-import {CustomerHttpIntegrationDataMock} from '../constants'
+import {getCustomer} from 'models/customer/resources'
+import {
+    CustomerHttpIntegrationDataMock,
+    DEFAULT_PLAYGROUND_CUSTOMER,
+} from '../constants'
 import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.types'
 
 const PLAYGROUND_TICKET_ID = '123'
 const PLAYGROUND_INTEGRATION_ID = -1
 
-export type PlaygroundCustomer = {
+export type TicketCustomer = {
     id: string
     name: string
     email: string
@@ -20,7 +23,7 @@ export type PlaygroundCustomer = {
 }
 
 export type NewCustomerData = {
-    customer: PlaygroundCustomer
+    customer: TicketCustomer
     body_text: string
     from_agent: boolean
     subject: string
@@ -140,19 +143,28 @@ export const createMockHttpIntegrationPayload = ({
     },
 })
 
-export const createMockClientPayload = ({
-    messages,
-    ...body
-}: CreatePlaygroundBody): CreatePlaygroundRequest => ({
-    ...body,
-    messages: messages.map((message) => {
-        return createMockTicketMessage({
-            body_text: message.bodyText,
-            created_datetime: message.createdDatetime.replace('Z', ''),
-            subject: body.subject,
-            from_agent: message.fromAgent,
-            channel: body.channel,
-            meta: message.meta,
-        })
-    }),
-})
+export const getTicketCustomer = async (
+    playgroundCustomerId: number
+): Promise<TicketCustomer> => {
+    if (playgroundCustomerId === DEFAULT_PLAYGROUND_CUSTOMER.id) {
+        return {
+            id: String(playgroundCustomerId),
+            name: CustomerHttpIntegrationDataMock.name,
+            email: CustomerHttpIntegrationDataMock.address,
+            firstname: CustomerHttpIntegrationDataMock.firstname,
+            lastname: CustomerHttpIntegrationDataMock.lastname,
+            integrations: '{}',
+        }
+    }
+
+    const {data: customerData} = await getCustomer(playgroundCustomerId)
+
+    return {
+        id: String(customerData.id),
+        name: customerData.name,
+        email: customerData.email ?? '',
+        firstname: customerData.firstname,
+        lastname: customerData.lastname,
+        integrations: JSON.stringify(customerData.integrations),
+    }
+}
