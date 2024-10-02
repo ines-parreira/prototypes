@@ -21,6 +21,10 @@ export const Disclaimer = styled.label`
     a {
         color: ${gorgiasColors.primary};
     }
+
+    input {
+        margin-top: 5px;
+    }
 `
 export const ErrorMessage = styled.span`
     color: ${gorgiasColors.supportingRed5};
@@ -35,6 +39,7 @@ export const MailInput = styled.input`
     border-radius: 4px;
     padding: 12px;
     font-size: 14px;
+    margin-top: 12px;
 
     &:focus {
         outline: none;
