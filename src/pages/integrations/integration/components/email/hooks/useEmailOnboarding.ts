@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 import {useHistory, useRouteMatch} from 'react-router-dom'
 import {isObject, kebabCase} from 'lodash'
 import {
@@ -6,19 +6,27 @@ import {
     HttpResponse,
     UpdateIntegrationBody,
     useCreateIntegration,
+    useDeleteIntegration,
     useSendVerificationEmail,
     useUpdateIntegration,
 } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {EmailIntegration, Integration} from 'models/integration/types'
-import {onCreateSuccess} from 'state/integrations/actions'
+import {
+    EmailIntegration,
+    Integration,
+    IntegrationType,
+} from 'models/integration/types'
+import {fetchIntegration, onCreateSuccess} from 'state/integrations/actions'
 import {isGorgiasApiError} from 'models/api/types'
 import {FormErrors} from 'pages/settings/SLAs/features/SLAForm/views/validation'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import useInterval from 'hooks/useInterval'
+import socketManager from 'services/socketManager'
+import {JoinEventType} from 'services/socketManager/types'
+import {DELETE_INTEGRATION_SUCCESS} from 'state/integrations/constants'
 
 export enum EmailIntegrationOnboardingStep {
     ConnectIntegration = 'ConnectIntegration',
@@ -153,6 +161,18 @@ function useMutations(
                 ? error.response.data.error.msg
                 : 'Failed to send verification message'
 
+            if (
+                integration &&
+                message === 'This integration is already verified.'
+            ) {
+                void dispatch(
+                    fetchIntegration(
+                        String(integration.id),
+                        IntegrationType.Email
+                    )
+                )
+            }
+
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
@@ -162,24 +182,59 @@ function useMutations(
         },
     }
 
-    const {mutate: create, isLoading: isCreating} = useCreateIntegration({
-        mutation: connectMutationOptions,
-    })
+    const deleteMutationOptions = {
+        onSuccess: () => {
+            if (integration) {
+                dispatch({
+                    type: DELETE_INTEGRATION_SUCCESS,
+                    id: integration.id,
+                })
+                history.push(listUrl())
+            }
+        },
+        onError: (error: HttpResponse<unknown>) => {
+            const message = isGorgiasApiError(error)
+                ? error.response.data.error.msg
+                : 'Failed to delete integration'
 
-    const {mutate: update, isLoading: isUpdating} = useUpdateIntegration({
-        mutation: connectMutationOptions,
-    })
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message,
+                })
+            )
+        },
+    }
 
-    const {mutate: send, isLoading: isSending} = useSendVerificationEmail({
-        mutation: sendMutationOptions,
-    })
+    const {mutate: performCreate, isLoading: isCreating} = useCreateIntegration(
+        {
+            mutation: connectMutationOptions,
+        }
+    )
+
+    const {mutate: performUpdate, isLoading: isUpdating} = useUpdateIntegration(
+        {
+            mutation: connectMutationOptions,
+        }
+    )
+
+    const {mutate: performDelete, isLoading: isDeleting} = useDeleteIntegration(
+        {
+            mutation: deleteMutationOptions,
+        }
+    )
+
+    const {mutate: performSend, isLoading: isSending} =
+        useSendVerificationEmail({
+            mutation: sendMutationOptions,
+        })
 
     const isConnecting = isCreating || isUpdating
 
     const connectIntegration = useCallback(
         (payload: ConnectIntegrationPayload) => {
             if (integration) {
-                update({
+                performUpdate({
                     id: integration.id,
                     data: {
                         ...integration,
@@ -187,7 +242,7 @@ function useMutations(
                     } as UpdateIntegrationBody,
                 })
             } else {
-                create({
+                performCreate({
                     data: {
                         ...payload,
                         type: 'email' as 'http',
@@ -195,7 +250,7 @@ function useMutations(
                 })
             }
         },
-        [integration, create, update]
+        [integration, performUpdate, performCreate]
     )
 
     const sendVerification = useCallback(() => {
@@ -203,10 +258,28 @@ function useMutations(
             return
         }
 
-        send({integrationId: integration.id})
-    }, [integration, send])
+        performSend({integrationId: integration.id})
+    }, [integration, performSend])
 
-    const deleteIntegration = useCallback(() => {}, [])
+    const deleteIntegration = useCallback(() => {
+        if (!integration) {
+            return
+        }
+
+        performDelete({
+            id: integration.id,
+        })
+    }, [integration, performDelete])
+
+    useEffect(() => {
+        if (!integration) {
+            return
+        }
+
+        isPending
+            ? socketManager.join(JoinEventType.Integration, integration.id)
+            : socketManager.leave(JoinEventType.Integration, integration.id)
+    }, [integration, isPending])
 
     return {
         connectIntegration,
@@ -217,7 +290,7 @@ function useMutations(
         isSending,
         isRequested,
         isPending,
-        isDeleting: false,
+        isDeleting,
     }
 }
 

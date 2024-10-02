@@ -10,11 +10,15 @@ import thunk from 'redux-thunk'
 import {
     createIntegration,
     updateIntegration,
+    deleteIntegration,
     sendVerificationEmail,
 } from '@gorgias/api-client'
 import {HttpResponse, Integration} from '@gorgias/api-queries'
 
-import {onCreateSuccess} from 'state/integrations/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import socketManager from 'services/socketManager'
+import {fetchIntegration, onCreateSuccess} from 'state/integrations/actions'
+import {DELETE_INTEGRATION_SUCCESS} from 'state/integrations/constants'
 import {notify} from 'state/notifications/actions'
 import {RootState, StoreDispatch} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -38,6 +42,8 @@ jest.mock('pages/history')
 jest.mock('@gorgias/api-client')
 jest.mock('state/integrations/actions')
 jest.mock('state/notifications/actions')
+jest.mock('services/socketManager')
+jest.mock('hooks/useAppDispatch')
 
 jest.mock(
     'react-router-dom',
@@ -51,10 +57,13 @@ jest.mock(
 )
 
 const mockHistoryPush = jest.fn()
+const mockDispatch = jest.fn()
 const createIntegrationMock = assumeMock(createIntegration)
 const updateIntegrationMock = assumeMock(updateIntegration)
+const deleteIntegrationMock = assumeMock(deleteIntegration)
 const sendVerificationEmailMock = assumeMock(sendVerificationEmail)
 const onSuccessMock = assumeMock(onCreateSuccess)
+assumeMock(useAppDispatch).mockReturnValue(mockDispatch)
 
 const render = (options?: UseEmailOnboardingHookOptions, path?: string) => {
     return renderHook(() => useEmailOnboarding(options), {
@@ -225,7 +234,7 @@ describe('useEmailOnboarding()', () => {
                     )
 
                     expect(onSuccessMock).toHaveBeenCalledWith(
-                        store.dispatch,
+                        mockDispatch,
                         integration,
                         true,
                         true
@@ -264,7 +273,7 @@ describe('useEmailOnboarding()', () => {
                     )
 
                     expect(onSuccessMock).toHaveBeenCalledWith(
-                        store.dispatch,
+                        mockDispatch,
                         integration,
                         true,
                         true
@@ -377,6 +386,37 @@ describe('useEmailOnboarding()', () => {
                 })
             })
 
+            it('should trigger an integration refetch if the integration has already been verified', async () => {
+                const {result} = render({integration})
+
+                sendVerificationEmailMock.mockRejectedValue({
+                    isAxiosError: true,
+                    response: {
+                        data: {
+                            error: {
+                                msg: 'This integration is already verified.',
+                            },
+                        },
+                    },
+                })
+
+                expect(result.current.isRequested).toBe(false)
+
+                result.current.sendVerification()
+
+                await waitFor(() => {
+                    expect(sendVerificationEmailMock).toHaveBeenCalledWith(
+                        1,
+                        undefined
+                    )
+                    expect(result.current.isRequested).toBe(false)
+                    expect(fetchIntegration).toHaveBeenCalledWith(
+                        String(integration.id),
+                        'email'
+                    )
+                })
+            })
+
             it('should display a generic error message if the sending fails without details', async () => {
                 const {result} = render({integration})
 
@@ -451,6 +491,128 @@ describe('useEmailOnboarding()', () => {
                 expect(result.current.isRequested).toEqual(true)
 
                 jest.useRealTimers()
+            })
+
+            it('should subscribe to integration events while pending', async () => {
+                jest.useFakeTimers()
+
+                const {result, waitForValueToChange} = render({integration})
+
+                sendVerificationEmailMock.mockResolvedValue({
+                    data: undefined,
+                } as HttpResponse<undefined>)
+
+                expect(result.current.isRequested).toEqual(false)
+                expect(result.current.isPending).toEqual(false)
+
+                result.current.sendVerification()
+
+                await waitForValueToChange(() => result.current.isPending)
+
+                expect(result.current.isPending).toEqual(true)
+                expect(result.current.isRequested).toEqual(true)
+
+                expect(socketManager.join).toHaveBeenCalledWith(
+                    'integration',
+                    integration.id
+                )
+
+                jest.advanceTimersByTime(2 * 60 * 1000 + 500)
+
+                expect(result.current.isPending).toEqual(false)
+                expect(result.current.isRequested).toEqual(true)
+
+                expect(socketManager.leave).toHaveBeenCalledWith(
+                    'integration',
+                    integration.id
+                )
+            })
+        })
+
+        describe('deleteIntegration()', () => {
+            const integration = {
+                id: 1,
+                type: 'email',
+            } as EmailIntegration
+
+            it('deletes the integration', async () => {
+                const {result} = render({integration})
+
+                deleteIntegrationMock.mockResolvedValue({
+                    data: undefined,
+                } as HttpResponse<undefined>)
+
+                result.current.deleteIntegration()
+
+                await waitFor(() => {
+                    expect(deleteIntegrationMock).toHaveBeenCalledWith(
+                        1,
+                        undefined
+                    )
+                    expect(mockDispatch).toHaveBeenCalledWith({
+                        type: DELETE_INTEGRATION_SUCCESS,
+                        id: 1,
+                    })
+                    expect(mockHistoryPush).toHaveBeenCalledWith(
+                        '/app/settings/channels/email'
+                    )
+                })
+            })
+
+            it('should display a banner if the deleting fails', async () => {
+                const {result} = render({integration})
+
+                deleteIntegrationMock.mockRejectedValue({
+                    isAxiosError: true,
+                    response: {
+                        data: {
+                            error: {
+                                msg: 'Deletion failed',
+                            },
+                        },
+                    },
+                })
+
+                result.current.deleteIntegration()
+
+                await waitFor(() => {
+                    expect(deleteIntegrationMock).toHaveBeenCalledWith(
+                        1,
+                        undefined
+                    )
+                    expect(notify).toHaveBeenCalledWith({
+                        message: 'Deletion failed',
+                        status: 'error',
+                    })
+                })
+            })
+
+            it('should display a generic error message if the deleting fails without details', async () => {
+                const {result} = render({integration})
+
+                deleteIntegrationMock.mockRejectedValue({
+                    isAxiosError: true,
+                    response: undefined,
+                })
+
+                result.current.deleteIntegration()
+
+                await waitFor(() => {
+                    expect(deleteIntegrationMock).toHaveBeenCalledWith(
+                        1,
+                        undefined
+                    )
+                    expect(notify).toHaveBeenCalledWith({
+                        message: 'Failed to delete integration',
+                        status: 'error',
+                    })
+                })
+            })
+
+            it('is a no-op if no integration is connected', () => {
+                const {result} = render()
+                result.current.deleteIntegration()
+                expect(deleteIntegrationMock).not.toHaveBeenCalled()
             })
         })
 
