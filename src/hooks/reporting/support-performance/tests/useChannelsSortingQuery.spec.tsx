@@ -4,6 +4,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {mockFlags} from 'jest-launchdarkly-mock'
+import {TagFilterInstanceId} from 'models/stat/types'
 import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {useChannelsSortingQuery} from 'hooks/reporting/support-performance/useChannelsSortingQuery'
@@ -307,7 +308,12 @@ describe('useChannelsSortingQuery', () => {
             stats: {
                 filters: {
                     ...filtersInitialState.filters,
-                    tags: withDefaultLogicalOperator(mockedTags),
+                    tags: [
+                        {
+                            ...withDefaultLogicalOperator(mockedTags),
+                            filterInstanceId: TagFilterInstanceId.First,
+                        },
+                    ],
                     channels: withDefaultLogicalOperator(mockedChannels),
                 },
             },
@@ -344,7 +350,12 @@ describe('useChannelsSortingQuery', () => {
             stats: {
                 filters: {
                     ...filtersInitialState.filters,
-                    tags: withDefaultLogicalOperator(mockedTags),
+                    tags: [
+                        {
+                            ...withDefaultLogicalOperator(mockedTags),
+                            filterInstanceId: TagFilterInstanceId.First,
+                        },
+                    ],
                     channels: withDefaultLogicalOperator(mockedChannels),
                 },
             },
@@ -364,7 +375,12 @@ describe('useChannelsSortingQuery', () => {
 
         expect(queryHook).toHaveBeenCalledWith(
             expect.objectContaining({
-                tags: withDefaultLogicalOperator(mockedTags),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator(mockedTags),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
                 channels: withDefaultLogicalOperator(mockedChannels),
             }),
             expect.anything(),

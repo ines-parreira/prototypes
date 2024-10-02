@@ -6,6 +6,7 @@ import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import LD from 'launchdarkly-react-client-sdk'
+import {TagFilterInstanceId} from 'models/stat/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {AutomateOverviewFilters} from 'pages/stats/AutomateOverviewFilters'
 import {TicketChannel} from 'business/types/ticket'
@@ -30,7 +31,12 @@ describe('<AutomateOverviewFilters />', () => {
                 ]),
                 channels: withDefaultLogicalOperator([TicketChannel.Chat]),
                 agents: withDefaultLogicalOperator([agents[0].id]),
-                tags: withDefaultLogicalOperator([1]),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',

@@ -12,7 +12,12 @@ import {
     withDefaultLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
-import {CustomFieldFilter, FilterKey} from 'models/stat/types'
+import {
+    CustomFieldFilter,
+    FilterKey,
+    TagFilter,
+    TagFilterInstanceId,
+} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 describe('utils', () => {
@@ -69,10 +74,13 @@ describe('utils', () => {
         })
 
         it('should use TicketMember.AllTags for ALL_OF operator with Tags', () => {
-            const filter = {
-                values: [123, 456],
-                operator: LogicalOperatorEnum.ALL_OF,
-            }
+            const filter: TagFilter[] = [
+                {
+                    values: [123, 456],
+                    operator: LogicalOperatorEnum.ALL_OF,
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+            ]
             const filters: ReportingFilter[] = []
             const filterDefaults = {
                 member: TicketMember.Tags,
@@ -87,9 +95,9 @@ describe('utils', () => {
 
             expect(updatedFilters).toEqual([
                 {
-                    values: filter.values.map(toLowerCaseString),
+                    values: filter[0].values.map(toLowerCaseString),
                     member: TicketMember.AllTags,
-                    operator: FilterOperatorMap[filter.operator],
+                    operator: FilterOperatorMap[filter[0].operator],
                 },
             ])
         })
@@ -241,10 +249,13 @@ describe('utils', () => {
 
         it('should use alternative member for tags with NOT_ONE_OF operator', () => {
             const filters: ReportingFilter[] = []
-            const filter = {
-                values: ['123', '456'],
-                operator: LogicalOperatorEnum.NOT_ONE_OF,
-            }
+            const filter: TagFilter[] = [
+                {
+                    values: [123, 456],
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+            ]
 
             const updatedFilters = addOptionalFilter(filters, filter, {
                 member: TicketMember.Tags,
@@ -255,7 +266,7 @@ describe('utils', () => {
                 {
                     member: TicketMember.TagsToExclude,
                     operator: ReportingFilterOperator.NotEquals,
-                    values: filter.values,
+                    values: filter[0].values.map(String),
                 },
             ])
         })

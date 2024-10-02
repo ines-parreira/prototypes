@@ -6,6 +6,7 @@ import {
     isCustomFieldFilter,
     isFilterWithLogicalOperator,
     isPeriodFilter,
+    isTagFilter,
     OptionalFilter,
 } from 'models/reporting/queryFactories/utils'
 import {defaultStatsFilters} from 'state/stats/statsSlice'
@@ -39,6 +40,8 @@ export const getShallowTypedFilters = (
                         return isPeriodFilter(filter)
                     case FilterKey.CustomFields:
                         return isCustomFieldFilter(filter)
+                    case FilterKey.Tags:
+                        return isTagFilter(filter)
                     default:
                         return isFilterWithLogicalOperator(filter)
                 }

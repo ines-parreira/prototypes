@@ -1,11 +1,11 @@
 import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
 import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {DropdownOption} from 'pages/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import {FilterKey, TagFilter, TagFilterInstanceId} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {
     LogicalOperatorEnum,
@@ -21,11 +21,26 @@ import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 
 type Props = {
-    value: StatsFiltersWithLogicalOperator[FilterKey.Tags]
+    value: TagFilter
+    otherValue?: TagFilter
+    filterInstanceId?: TagFilterInstanceId
 } & RemovableFilter
 
+const emptyTagFilter = (
+    filterInstanceId: TagFilterInstanceId,
+    excludedOperator: LogicalOperatorEnum | undefined
+) => ({
+    operator:
+        excludedOperator === LogicalOperatorEnum.ONE_OF
+            ? LogicalOperatorEnum.NOT_ONE_OF
+            : LogicalOperatorEnum.ONE_OF,
+    values: [],
+    filterInstanceId,
+})
+
 export const TagsFilter = ({
-    value = emptyFilter,
+    value,
+    otherValue,
     initializeAsOpen = false,
     onRemove,
 }: Props) => {
@@ -38,34 +53,56 @@ export const TagsFilter = ({
         label: tagsState[id.toString()].name,
     }))
 
-    const options = tags.map((tag) => ({
-        value: String(tag.id),
-        label: tag.name,
-    }))
+    const options = tags
+        .filter((tag) => !otherValue?.values.includes(tag.id))
+        .map((tag) => ({
+            value: String(tag.id),
+            label: tag.name,
+        }))
 
     const handleFilterValuesChange = useCallback(
         (values: number[]) => {
+            const tagsToUpdate = []
+            if (values.length > 0) {
+                tagsToUpdate.push({
+                    values,
+                    operator: value.operator,
+                    filterInstanceId: value.filterInstanceId,
+                })
+            }
+            if (otherValue) {
+                tagsToUpdate.push(otherValue)
+            }
+
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
-                    tags: {values, operator: value.operator},
+                    tags: tagsToUpdate,
                 })
             )
         },
-        [dispatch, value.operator]
+        [dispatch, otherValue, value.filterInstanceId, value.operator]
     )
 
     const handleFilterOperatorChange = useCallback(
         (operator: LogicalOperatorEnum) => {
+            const tagsToUpdate = [
+                {
+                    values: value.values,
+                    operator: operator,
+                    filterInstanceId: value.filterInstanceId,
+                },
+            ]
+            if (otherValue) {
+                tagsToUpdate.push(otherValue)
+            }
+
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
-                    tags: {
-                        values: value.values,
-                        operator: operator,
-                    },
+                    tags: tagsToUpdate,
                 })
             )
         },
-        [dispatch, value.values]
+        [dispatch, otherValue, value.filterInstanceId, value.values]
     )
 
     const onOptionChange = (opt: DropdownOption) => {
@@ -92,7 +129,9 @@ export const TagsFilter = ({
             filterName={FilterLabels[FilterKey.Tags]}
             filterOptionGroups={[{options}]}
             selectedOptions={selectedOptions}
-            logicalOperators={tagsFilterLogicalOperators}
+            logicalOperators={tagsFilterLogicalOperators.filter(
+                (operator) => operator !== otherValue?.operator
+            )}
             selectedLogicalOperator={value.operator}
             onChangeOption={onOptionChange}
             onSearch={handleTagsSearch}
@@ -105,9 +144,13 @@ export const TagsFilter = ({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
+                const tagsToUpdate: TagFilter[] = []
+                if (otherValue) {
+                    tagsToUpdate.push(otherValue)
+                }
                 dispatch(
                     mergeStatsFiltersWithLogicalOperator({
-                        tags: emptyFilter,
+                        tags: tagsToUpdate,
                     })
                 )
                 handleTagsSearch('')
@@ -125,6 +168,31 @@ export const TagsFilter = ({
     )
 }
 
-export const TagsFilterWithState = connect((state: RootState) => ({
-    value: getPageStatsFiltersWithLogicalOperators(state)[FilterKey.Tags],
-}))(TagsFilter)
+export const stateToProps = (
+    state: RootState,
+    ownProps: Omit<Props, 'value' | 'otherValue'>
+) => {
+    const tagFilters =
+        getPageStatsFiltersWithLogicalOperators(state)[FilterKey.Tags] ?? []
+    let currentInstance = tagFilters.find(
+        (filter) => filter.filterInstanceId === ownProps.filterInstanceId
+    )
+    const otherInstanceId =
+        ownProps.filterInstanceId === TagFilterInstanceId.First
+            ? TagFilterInstanceId.Second
+            : TagFilterInstanceId.First
+    const otherInstance = tagFilters.find(
+        (filter) => filter.filterInstanceId === otherInstanceId
+    )
+
+    if (tagFilters.length === 0 || !currentInstance) {
+        currentInstance = emptyTagFilter(
+            ownProps.filterInstanceId ?? TagFilterInstanceId.First,
+            otherInstance?.operator
+        )
+    }
+
+    return {value: currentInstance, otherValue: otherInstance}
+}
+
+export const TagsFilterWithState = connect(stateToProps)(TagsFilter)

@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
+import {TagFilterInstanceId} from 'models/stat/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import useStatResource from 'hooks/reporting/useStatResource'
 
@@ -202,7 +203,12 @@ describe('SupportPerformanceRevenue', () => {
                     shopifyIntegration &&
                     withDefaultLogicalOperator([shopifyIntegration.id]),
                 agents: withDefaultLogicalOperator([agents[0].id]),
-                tags: withDefaultLogicalOperator([1]),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
                 campaigns: withDefaultLogicalOperator([campaign.id]),
             },
         },

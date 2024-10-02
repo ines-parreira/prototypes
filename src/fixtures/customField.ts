@@ -195,7 +195,7 @@ export const aiManagedTicketInputFieldDefinition: CustomField = {
     },
 }
 
-export const customFieldsMockReponse = {
+export const customFieldsMockResponse = {
     object: 'list',
     uri: '/api/custom-fields/?archived=false&object_type=Ticket',
     data: [

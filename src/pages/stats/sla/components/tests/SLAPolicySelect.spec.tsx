@@ -5,6 +5,7 @@ import React from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {TagFilterInstanceId} from 'models/stat/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
@@ -68,7 +69,12 @@ describe('<SLAPolicySelect />', () => {
                 ]),
                 channels: withDefaultLogicalOperator([TicketChannel.Chat]),
                 agents: withDefaultLogicalOperator([agents[0].id]),
-                tags: withDefaultLogicalOperator([1]),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',

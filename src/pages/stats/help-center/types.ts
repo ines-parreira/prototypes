@@ -1,14 +1,18 @@
-import {LegacyStatsFilters} from 'models/stat/types'
+import {
+    StatsFiltersWithLogicalOperator,
+    WithLogicalOperator,
+} from 'models/stat/types'
 
 export type HelpCenterStatsFilters = Omit<
-    LegacyStatsFilters,
+    StatsFiltersWithLogicalOperator,
     'helpCenters' | 'localeCodes'
 > & {
-    helpCenters: number[]
-    localeCodes: string[]
+    helpCenters: WithLogicalOperator<number>
+    localeCodes: WithLogicalOperator<string>
 }
 
 export const isHelpCenterStatsFiltersValid = (
-    filters: LegacyStatsFilters
+    filters: StatsFiltersWithLogicalOperator
 ): filters is HelpCenterStatsFilters =>
-    Array.isArray(filters.helpCenters) && Array.isArray(filters.localeCodes)
+    Array.isArray(filters.helpCenters?.values) &&
+    Array.isArray(filters.localeCodes?.values)

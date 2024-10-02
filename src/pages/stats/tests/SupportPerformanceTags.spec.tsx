@@ -4,6 +4,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
+import {TagFilterInstanceId} from 'models/stat/types'
 
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {RootState, StoreDispatch} from 'state/types'
@@ -47,7 +48,12 @@ describe('SupportPerformanceTags', () => {
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
                 channels: withDefaultLogicalOperator([TicketChannel.Chat]),
-                tags: withDefaultLogicalOperator([1]),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
                 integrations: withDefaultLogicalOperator([
                     integrationsState.integrations[0].id,
                 ]),

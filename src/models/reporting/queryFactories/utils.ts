@@ -7,6 +7,7 @@ import {
     CustomFieldFilter,
     FilterKey,
     StatsFilters,
+    TagFilter,
     WithLogicalOperator,
 } from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
@@ -15,6 +16,7 @@ export type OptionalFilter =
     | string[]
     | number[]
     | CustomFieldFilter[]
+    | TagFilter[]
     | WithLogicalOperator<string>
     | WithLogicalOperator<number>
     | undefined
@@ -44,11 +46,21 @@ export const isCustomFieldFilter = (
             'values' in subFilter
     )
 
+export const isTagFilter = (filter: OptionalFilter): filter is TagFilter[] =>
+    filter !== undefined &&
+    Array.isArray(filter) &&
+    filter.every(
+        (subFilter) =>
+            typeof subFilter === 'object' &&
+            'operator' in subFilter &&
+            'filterInstanceId' in subFilter
+    )
+
 export const hasFilter = (filter: OptionalFilter) => {
     if (filter === undefined) {
         return false
     }
-    if (isCustomFieldFilter(filter)) {
+    if (isCustomFieldFilter(filter) || isTagFilter(filter)) {
         return filter.some((subFilter) => subFilter.values.length > 0)
     }
     if (isFilterWithLogicalOperator(filter)) {
@@ -109,7 +121,7 @@ export const addOptionalFilter = (
     if (filter === undefined) {
         return commonFilters
     }
-    let reportingFilters
+    let reportingFilters: ReportingFilter[] = []
     if (isCustomFieldFilter(filter)) {
         const values = filter
             .filter((f) => f.values.length > 0)
@@ -164,29 +176,47 @@ export const addOptionalFilter = (
         if (uniqueCustomFieldIds.length > 1) {
             reportingFilters.push({
                 member: TicketMember.TotalCustomFieldIdsToMatch,
-                operator: ReportingFilterOperator.Equals,
                 values: [String(uniqueCustomFieldIds.length)],
+                operator: ReportingFilterOperator.Equals,
             })
         }
+    } else if (isTagFilter(filter)) {
+        filter.forEach((tagFilter) => {
+            if (
+                tagFilter.operator === LogicalOperatorEnum.ALL_OF &&
+                filterDefaults.member === TicketMember.Tags &&
+                tagFilter.values.length > 0
+            ) {
+                reportingFilters.push({
+                    member: TicketMember.AllTags,
+                    values: tagFilter.values.map(toLowerCaseString),
+                    operator: ReportingFilterOperator.Equals,
+                })
+            } else if (
+                tagFilter.operator === LogicalOperatorEnum.NOT_ONE_OF &&
+                filterDefaults.member === TicketMember.Tags &&
+                tagFilter.values.length > 0
+            ) {
+                reportingFilters.push({
+                    member: NotEqualsMap[filterDefaults.member],
+                    values: tagFilter.values.map(toLowerCaseString),
+                    operator: FilterOperatorMap[tagFilter.operator],
+                })
+            } else if (tagFilter.values.length > 0) {
+                reportingFilters.push({
+                    member: filterDefaults.member,
+                    values: tagFilter.values.map(toLowerCaseString),
+                    operator: FilterOperatorMap[tagFilter.operator],
+                })
+            }
+        })
     } else if (isFilterWithLogicalOperator(filter)) {
         if (filter.values.length === 0) {
             return commonFilters
         }
         if (
-            filter.operator === LogicalOperatorEnum.ALL_OF &&
-            filterDefaults.member === TicketMember.Tags
-        ) {
-            reportingFilters = [
-                {
-                    member: TicketMember.AllTags,
-                    operator: ReportingFilterOperator.Equals,
-                    values: filter.values.map(toLowerCaseString),
-                },
-            ]
-        } else if (
             filter.operator === LogicalOperatorEnum.NOT_ONE_OF &&
-            (filterDefaults.member === TicketMember.Tags ||
-                filterDefaults.member === TicketMember.MessageSenderId)
+            filterDefaults.member === TicketMember.MessageSenderId
         ) {
             reportingFilters = [
                 {
@@ -210,8 +240,8 @@ export const addOptionalFilter = (
             reportingFilters = [
                 {
                     member: filterDefaults.member,
-                    operator: FilterOperatorMap[filter.operator],
                     values: filter.values.map(toLowerCaseString),
+                    operator: FilterOperatorMap[filter.operator],
                 },
             ]
         }
@@ -235,8 +265,8 @@ export function withDefaultLogicalOperator<T extends number | string>(
     operator?: LogicalOperatorEnum
 ): WithLogicalOperator<T> {
     return {
-        values: values ?? [],
         operator: operator ?? LogicalOperatorEnum.ONE_OF,
+        values: values ?? [],
     }
 }
 
@@ -245,8 +275,8 @@ export function withLogicalOperator<T extends number | string>(
     operator = LogicalOperatorEnum.ONE_OF
 ): WithLogicalOperator<T> {
     return {
-        values: values ?? [],
         operator,
+        values: values ?? [],
     }
 }
 

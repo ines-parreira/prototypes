@@ -147,7 +147,7 @@ function VoiceOverview() {
                         variant={'ghost'}
                     />
                     <DEPRECATED_TagsStatsFilter
-                        value={pageStatsFilters.tags?.values}
+                        value={legacyStatsFilters.tags}
                         variant={'ghost'}
                     />
                     <DEPRECATED_AgentsStatsFilter
@@ -169,10 +169,10 @@ function VoiceOverview() {
             ) : null,
         [
             isAnalyticsNewFilters,
-            pageStatsFilters.agents,
-            pageStatsFilters.integrations,
+            legacyStatsFilters.tags,
+            pageStatsFilters.agents?.values,
+            pageStatsFilters.integrations?.values,
             pageStatsFilters.period,
-            pageStatsFilters.tags,
             phoneIntegrations,
         ]
     )

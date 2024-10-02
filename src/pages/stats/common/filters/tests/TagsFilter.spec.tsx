@@ -14,12 +14,16 @@ import {
 } from 'pages/stats/common/components/Filter/constants'
 import {tags} from 'fixtures/tag'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {TagsFilter} from 'pages/stats/common/filters/TagsFilter'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
+import {stateToProps, TagsFilter} from 'pages/stats/common/filters/TagsFilter'
+import {
+    initialState,
+    mergeStatsFiltersWithLogicalOperator,
+} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {statFiltersClean} from 'state/ui/stats/actions'
 import {SegmentEvent, logEvent} from 'common/segment'
-import {FilterKey} from 'models/stat/types'
+import {FilterKey, TagFilter, TagFilterInstanceId} from 'models/stat/types'
 
 jest.mock('hooks/reporting/common/useTagSearch')
 const useTagSearchMock = assumeMock(useTagSearch)
@@ -50,7 +54,12 @@ describe('<TagsFilter />', () => {
         const selectedTags: number[] = []
 
         renderWithStore(
-            <TagsFilter value={withDefaultLogicalOperator(selectedTags)} />,
+            <TagsFilter
+                value={{
+                    ...withDefaultLogicalOperator(selectedTags),
+                    filterInstanceId: TagFilterInstanceId.First,
+                }}
+            />,
             {}
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -58,18 +67,44 @@ describe('<TagsFilter />', () => {
         expect(screen.getByText(tags[0].name)).toBeInTheDocument()
     })
 
-    it('Should render first batch of tags with no selected values provided', () => {
-        renderWithStore(<TagsFilter value={undefined} />, {})
-        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+    it('Should not render values selected in the second instance', () => {
+        const selectedTags = [1, 2]
+        const anotherInstance: TagFilter = {
+            ...withDefaultLogicalOperator(selectedTags),
+            filterInstanceId: TagFilterInstanceId.First,
+        }
+        const currentInstance: TagFilter = {
+            operator: LogicalOperatorEnum.NOT_ONE_OF,
+            values: [],
+            filterInstanceId: TagFilterInstanceId.Second,
+        }
 
-        expect(screen.getByText(tags[0].name)).toBeInTheDocument()
+        renderWithStore(
+            <TagsFilter value={currentInstance} otherValue={anotherInstance} />,
+            {}
+        )
+        userEvent.click(
+            screen.getByText(LogicalOperatorLabel[currentInstance.operator])
+        )
+
+        tags.filter((tag) => !selectedTags.includes(tag.id)).forEach((tag) => {
+            expect(screen.getByText(tag.name)).toBeInTheDocument()
+        })
+        tags.filter((tag) => selectedTags.includes(tag.id)).forEach((tag) => {
+            expect(screen.queryByText(tag.name)).not.toBeInTheDocument()
+        })
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting tag', () => {
         const selectedTags: number[] = []
 
         const {store} = renderWithStore(
-            <TagsFilter value={withDefaultLogicalOperator(selectedTags)} />,
+            <TagsFilter
+                value={{
+                    ...withDefaultLogicalOperator(selectedTags),
+                    filterInstanceId: TagFilterInstanceId.First,
+                }}
+            />,
             {}
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -77,7 +112,46 @@ describe('<TagsFilter />', () => {
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFiltersWithLogicalOperator({
-                tags: withDefaultLogicalOperator([someTags[0].id]),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([someTags[0].id]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
+            })
+        )
+    })
+
+    it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting tag, including the value of a second filter', () => {
+        const selectedTags: number[] = []
+        const otherValue: TagFilter = {
+            operator: LogicalOperatorEnum.NOT_ONE_OF,
+            values: [3],
+            filterInstanceId: TagFilterInstanceId.Second,
+        }
+
+        const {store} = renderWithStore(
+            <TagsFilter
+                value={{
+                    ...withDefaultLogicalOperator(selectedTags),
+                    filterInstanceId: TagFilterInstanceId.First,
+                }}
+                otherValue={otherValue}
+            />,
+            {}
+        )
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        userEvent.click(screen.getByText(someTags[0].name))
+
+        expect(store.getActions()).toContainEqual(
+            mergeStatsFiltersWithLogicalOperator({
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([someTags[0].id]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                    otherValue,
+                ],
             })
         )
     })
@@ -86,7 +160,12 @@ describe('<TagsFilter />', () => {
         const selectedTags: number[] = []
 
         const {rerender, store} = renderWithStore(
-            <TagsFilter value={withDefaultLogicalOperator(selectedTags)} />,
+            <TagsFilter
+                value={{
+                    ...withDefaultLogicalOperator(selectedTags),
+                    filterInstanceId: TagFilterInstanceId.First,
+                }}
+            />,
             {}
         )
 
@@ -97,17 +176,23 @@ describe('<TagsFilter />', () => {
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFiltersWithLogicalOperator({
-                tags: {
-                    values: allAvailableTags,
-                    operator: LogicalOperatorEnum.ONE_OF,
-                },
+                tags: [
+                    {
+                        values: allAvailableTags,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
             })
         )
 
         rerender(
             <Provider store={store}>
                 <TagsFilter
-                    value={withDefaultLogicalOperator(allAvailableTags)}
+                    value={{
+                        ...withDefaultLogicalOperator(allAvailableTags),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    }}
                 />
             </Provider>
         )
@@ -116,7 +201,7 @@ describe('<TagsFilter />', () => {
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFiltersWithLogicalOperator({
-                tags: withDefaultLogicalOperator([]),
+                tags: [],
             })
         )
     })
@@ -126,7 +211,12 @@ describe('<TagsFilter />', () => {
         const selectedTag = tags[0]
 
         const {rerender, store} = renderWithStore(
-            <TagsFilter value={withDefaultLogicalOperator(selectedTags)} />,
+            <TagsFilter
+                value={{
+                    ...withDefaultLogicalOperator(selectedTags),
+                    filterInstanceId: TagFilterInstanceId.First,
+                }}
+            />,
             {}
         )
 
@@ -135,7 +225,10 @@ describe('<TagsFilter />', () => {
         rerender(
             <Provider store={store}>
                 <TagsFilter
-                    value={withDefaultLogicalOperator(allAvailableTags)}
+                    value={{
+                        ...withDefaultLogicalOperator(allAvailableTags),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    }}
                 />
             </Provider>
         )
@@ -152,12 +245,15 @@ describe('<TagsFilter />', () => {
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFiltersWithLogicalOperator({
-                tags: {
-                    operator: LogicalOperatorEnum.ONE_OF,
-                    values: allAvailableTags.filter(
-                        (tag) => tag !== selectedTag.id
-                    ),
-                },
+                tags: [
+                    {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: allAvailableTags.filter(
+                            (tag) => tag !== selectedTag.id
+                        ),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
             })
         )
     })
@@ -166,7 +262,12 @@ describe('<TagsFilter />', () => {
         const selectedTags: number[] = []
 
         const {rerender, store} = renderWithStore(
-            <TagsFilter value={withDefaultLogicalOperator(selectedTags)} />,
+            <TagsFilter
+                value={{
+                    ...withDefaultLogicalOperator(selectedTags),
+                    filterInstanceId: TagFilterInstanceId.First,
+                }}
+            />,
             {}
         )
         const clearFilterIcon = 'close'
@@ -176,7 +277,10 @@ describe('<TagsFilter />', () => {
         rerender(
             <Provider store={store}>
                 <TagsFilter
-                    value={withDefaultLogicalOperator(allAvailableTags)}
+                    value={{
+                        ...withDefaultLogicalOperator(allAvailableTags),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    }}
                 />
             </Provider>
         )
@@ -185,10 +289,50 @@ describe('<TagsFilter />', () => {
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFiltersWithLogicalOperator({
-                tags: {
-                    operator: LogicalOperatorEnum.ONE_OF,
-                    values: [],
-                },
+                tags: [],
+            })
+        )
+    })
+
+    it('should dispatch mergeStatsFiltersWithLogicalOperator action with otherFilterValue intact on deselecting all tags when filters dropdown is closed', () => {
+        const selectedTags: number[] = []
+        const otherValue: TagFilter = {
+            operator: LogicalOperatorEnum.ALL_OF,
+            values: [3],
+            filterInstanceId: TagFilterInstanceId.Second,
+        }
+
+        const {rerender, store} = renderWithStore(
+            <TagsFilter
+                value={{
+                    ...withDefaultLogicalOperator(selectedTags),
+                    filterInstanceId: TagFilterInstanceId.First,
+                }}
+                otherValue={otherValue}
+            />,
+            {}
+        )
+        const clearFilterIcon = 'close'
+
+        const allAvailableTags = tags.map((tag) => tag.id)
+
+        rerender(
+            <Provider store={store}>
+                <TagsFilter
+                    value={{
+                        ...withDefaultLogicalOperator(allAvailableTags),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    }}
+                    otherValue={otherValue}
+                />
+            </Provider>
+        )
+
+        userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
+
+        expect(store.getActions()).toContainEqual(
+            mergeStatsFiltersWithLogicalOperator({
+                tags: [otherValue],
             })
         )
     })
@@ -197,7 +341,12 @@ describe('<TagsFilter />', () => {
         const selectedTags: number[] = []
 
         const {store} = renderWithStore(
-            <TagsFilter value={withDefaultLogicalOperator(selectedTags)} />,
+            <TagsFilter
+                value={{
+                    ...withDefaultLogicalOperator(selectedTags),
+                    filterInstanceId: TagFilterInstanceId.First,
+                }}
+            />,
             {}
         )
 
@@ -220,10 +369,13 @@ describe('<TagsFilter />', () => {
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFiltersWithLogicalOperator({
-                tags: {
-                    operator: LogicalOperatorEnum.NOT_ONE_OF,
-                    values: [],
-                },
+                tags: [
+                    {
+                        operator: LogicalOperatorEnum.NOT_ONE_OF,
+                        values: [],
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
             })
         )
 
@@ -231,10 +383,13 @@ describe('<TagsFilter />', () => {
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFiltersWithLogicalOperator({
-                tags: {
-                    operator: LogicalOperatorEnum.NOT_ONE_OF,
-                    values: [],
-                },
+                tags: [
+                    {
+                        operator: LogicalOperatorEnum.NOT_ONE_OF,
+                        values: [],
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
             })
         )
 
@@ -242,10 +397,57 @@ describe('<TagsFilter />', () => {
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFiltersWithLogicalOperator({
-                tags: {
-                    operator: LogicalOperatorEnum.ALL_OF,
-                    values: [],
-                },
+                tags: [
+                    {
+                        operator: LogicalOperatorEnum.ALL_OF,
+                        values: [],
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
+            })
+        )
+    })
+
+    it('should change selection of logical operator including value from another filter', () => {
+        const selectedTags: number[] = []
+        const otherValue: TagFilter = {
+            operator: LogicalOperatorEnum.ALL_OF,
+            values: [3],
+            filterInstanceId: TagFilterInstanceId.Second,
+        }
+
+        const {store} = renderWithStore(
+            <TagsFilter
+                value={{
+                    ...withDefaultLogicalOperator(selectedTags),
+                    filterInstanceId: TagFilterInstanceId.First,
+                }}
+                otherValue={otherValue}
+            />,
+            {}
+        )
+
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+        const isNotOneOfRadioLabel = screen.getByLabelText(
+            new RegExp(
+                LogicalOperatorLabel[LogicalOperatorEnum.NOT_ONE_OF],
+                'i'
+            )
+        )
+
+        userEvent.click(isNotOneOfRadioLabel)
+
+        expect(store.getActions()).toContainEqual(
+            mergeStatsFiltersWithLogicalOperator({
+                tags: [
+                    {
+                        operator: LogicalOperatorEnum.NOT_ONE_OF,
+                        values: [],
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                    otherValue,
+                ],
             })
         )
     })
@@ -254,7 +456,12 @@ describe('<TagsFilter />', () => {
         const selectedTag = tags[0]
         const anotherSelectedTag = tags[1]
         const {rerenderComponent, store} = renderWithStore(
-            <TagsFilter value={withDefaultLogicalOperator([selectedTag.id])} />,
+            <TagsFilter
+                value={{
+                    ...withDefaultLogicalOperator([selectedTag.id]),
+                    filterInstanceId: TagFilterInstanceId.First,
+                }}
+            />,
             {}
         )
 
@@ -269,7 +476,12 @@ describe('<TagsFilter />', () => {
         )
 
         rerenderComponent(
-            <TagsFilter value={withDefaultLogicalOperator([selectedTag.id])} />,
+            <TagsFilter
+                value={{
+                    ...withDefaultLogicalOperator([selectedTag.id]),
+                    filterInstanceId: TagFilterInstanceId.First,
+                }}
+            />,
             store as any
         )
 
@@ -280,6 +492,54 @@ describe('<TagsFilter />', () => {
                 LogicalOperatorLabel[
                     LogicalOperatorEnum.ONE_OF
                 ].toLocaleLowerCase(),
+        })
+    })
+})
+
+describe('stateToProps', () => {
+    it('when called without tag filters in state it should assign default value', () => {
+        const state = {
+            stats: initialState,
+        } as RootState
+
+        const props = stateToProps(state, {})
+
+        expect(props).toEqual({
+            value: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [],
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+            otherValue: undefined,
+        })
+    })
+
+    it('when called without tag filters in state it should assign empty opposite operator', () => {
+        const existingFilter = {
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: [1, 2],
+            filterInstanceId: TagFilterInstanceId.Second,
+        }
+        const state = {
+            stats: {
+                filters: {
+                    ...initialState.filters,
+                    tags: [existingFilter],
+                },
+            },
+        } as RootState
+
+        const props = stateToProps(state, {
+            filterInstanceId: TagFilterInstanceId.First,
+        })
+
+        expect(props).toEqual({
+            value: {
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+                values: [],
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+            otherValue: existingFilter,
         })
     })
 })

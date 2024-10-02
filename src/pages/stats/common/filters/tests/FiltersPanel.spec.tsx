@@ -1,18 +1,48 @@
-import {useListSlaPolicies} from '@gorgias/api-queries'
+import {Tag, useListSlaPolicies} from '@gorgias/api-queries'
 import {within} from '@testing-library/dom'
+import {act, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {act, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
+import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
+import {tags} from 'fixtures/tag'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {FILTER_SELECT_ALL_LABEL} from 'pages/stats/common/components/Filter/constants'
-import * as PeriodFilter from 'pages/stats/common/filters/PeriodFilter'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
+import {billingState} from 'fixtures/billing'
+import {customFieldsMockResponse} from 'fixtures/customField'
 import {useGetCustomFieldDefinitions} from 'models/customField/queries'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {HelpCenter} from 'models/helpCenter/types'
+import {IntegrationType} from 'models/integration/constants'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {
+    CleanFilterComponentKeys,
+    FilterComponentKey,
+    FilterKey,
+    StateOnlyFilterKeys,
+    StaticFilter,
+    TagFilterInstanceId,
+} from 'models/stat/types'
+import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {
+    FILTER_SELECT_ALL_LABEL,
+    LogicalOperatorEnum,
+} from 'pages/stats/common/components/Filter/constants'
 import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {
+    FiltersPanel,
+    isFilterTypeWithValues,
+    UNSUPPORTED_FILTER_PLACEHOLDER,
+} from 'pages/stats/common/filters/FiltersPanel'
+import {
+    filterKeyToStateKeyMapper,
+    getFilteredFilterComponentKeys,
+} from 'pages/stats/common/filters/helpers'
+import * as PeriodFilter from 'pages/stats/common/filters/PeriodFilter'
+import {initialState, statsSlice} from 'state/stats/statsSlice'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState} from 'state/types'
 import {
@@ -21,34 +51,10 @@ import {
 } from 'state/ui/stats/busiestTimesSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {
-    CleanFilterComponentKeys,
-    FilterComponentKey,
-    FilterKey,
-    StateOnlyFilterKeys,
-    StaticFilter,
-} from 'models/stat/types'
-import {
     initialState as ticketInsightsSliceStatsInitialState,
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {
-    FiltersPanel,
-    isFilterTypeWithValues,
-    UNSUPPORTED_FILTER_PLACEHOLDER,
-} from 'pages/stats/common/filters/FiltersPanel'
-import {initialState, statsSlice} from 'state/stats/statsSlice'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {HelpCenter} from 'models/helpCenter/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
-import {customFieldsMockReponse} from 'fixtures/customField'
-import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
-import {IntegrationType} from 'models/integration/constants'
-import {billingState} from 'fixtures/billing'
-import {
-    filterKeyToStateKeyMapper,
-    getFilteredFilterComponentKeys,
-} from 'pages/stats/common/filters/helpers'
 
 const mockedLocales = [
     {name: 'English', code: 'en-US'},
@@ -66,6 +72,8 @@ jest.mock('models/customField/queries')
 const useGetCustomFieldDefinitionsMock = assumeMock(
     useGetCustomFieldDefinitions
 )
+jest.mock('hooks/reporting/common/useTagSearch')
+const useTagSearchMock = assumeMock(useTagSearch)
 
 jest.mock(
     'pages/stats/common/filters/PeriodFilter',
@@ -153,7 +161,6 @@ describe('FiltersPanel', () => {
         FilterKey.Period,
         FilterKey.Channels,
         FilterKey.Integrations,
-        FilterKey.Tags,
         FilterKey.Agents,
         FilterKey.HelpCenters,
         FilterKey.LocaleCodes,
@@ -166,12 +173,26 @@ describe('FiltersPanel', () => {
         FilterKey.CampaignStatuses,
     ]
 
+    const someTags = tags
+    const tagState = tags.reduce<Record<string, Tag>>((state, tag) => {
+        state[tag.id] = tag
+        return state
+    }, {})
+
     beforeEach(() => {
         useGetCustomFieldDefinitionsMock.mockReturnValue(
-            apiListCursorPaginationResponse(customFieldsMockReponse) as any
+            apiListCursorPaginationResponse(customFieldsMockResponse) as any
         )
         mockFlags({
             [FeatureFlagKey.AnalyticsCustomFieldsFilter]: true,
+        })
+        useTagSearchMock.mockReturnValue({
+            tags: someTags,
+            handleTagsSearch: jest.fn(),
+            onLoad: jest.fn(),
+            shouldLoadMore: false,
+            tagIds: someTags.map((tag) => String(tag.id)),
+            tagsState: tagState,
         })
     })
 
@@ -290,10 +311,10 @@ describe('FiltersPanel', () => {
             FilterLabels[FilterKey.Tags]
         )
         expect(filtersOnDropDown?.children?.[3]?.textContent).toBe(
-            customFieldsMockReponse.data[1].label
+            customFieldsMockResponse.data[1].label
         )
         expect(filtersOnDropDown?.children?.[4]?.textContent).toBe(
-            customFieldsMockReponse.data[0].label
+            customFieldsMockResponse.data[0].label
         )
     })
 
@@ -627,7 +648,7 @@ describe('FiltersPanel', () => {
     })
 
     it('should render customFields filter', async () => {
-        const customFieldLabel = customFieldsMockReponse.data[0].label
+        const customFieldLabel = customFieldsMockResponse.data[0].label
         const customFieldsFilters = [FilterKey.CustomFields]
         const state = {
             ...defaultState,
@@ -702,8 +723,49 @@ describe('FiltersPanel', () => {
         )
 
         expect(
-            screen.queryByText(customFieldsMockReponse.data[0].label)
+            screen.queryByText(customFieldsMockResponse.data[0].label)
         ).not.toBeInTheDocument()
+    })
+
+    describe('TagsFilter', () => {
+        it('should render two instances of the Tags filter', () => {
+            const optionalFilters = [FilterKey.Tags]
+            const state = {
+                ...defaultState,
+                [statsSlice.name]: {
+                    filters: {
+                        period: initialState.filters.period,
+                        [FilterKey.Tags]: [
+                            {
+                                operator: LogicalOperatorEnum.ONE_OF,
+                                values: [1, 2],
+                                filterInstanceId: TagFilterInstanceId.First,
+                            },
+                            {
+                                operator: LogicalOperatorEnum.NOT_ONE_OF,
+                                values: [3, 4],
+                                filterInstanceId: TagFilterInstanceId.Second,
+                            },
+                        ],
+                    },
+                },
+            } as RootState
+
+            act(() => {
+                renderWithStore(
+                    <FiltersPanel
+                        persistentFilters={persistentFilters}
+                        optionalFilters={optionalFilters}
+                    />,
+                    state
+                )
+            })
+
+            expect(
+                screen.getAllByText(new RegExp(FilterLabels[FilterKey.Tags]))
+                    .length
+            ).toEqual(2)
+        })
     })
 
     it('should allow passing some initialSettings to the PeriodFilter', () => {
@@ -748,7 +810,6 @@ describe('isFilterTypeWithValues', () => {
             FilterKey.LocaleCodes,
             FilterKey.Score,
             FilterKey.SlaPolicies,
-            FilterKey.Tags,
         ]
 
         validFilterTypes.forEach((type) => {

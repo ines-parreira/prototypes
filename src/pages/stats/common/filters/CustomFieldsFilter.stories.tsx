@@ -11,7 +11,7 @@ import {activeParams} from 'pages/stats/CustomFieldSelect'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {withDefaultCustomFieldAndLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {customFieldsMockReponse} from 'fixtures/customField'
+import {customFieldsMockResponse} from 'fixtures/customField'
 
 const defaultState = {
     stats: initialState,
@@ -26,7 +26,7 @@ const Template: StoryFn<ComponentProps<typeof CustomFieldsFilter>> = (
     props
 ) => {
     appQueryClient.setQueryData(customFieldDefinitionKeys.list(activeParams), {
-        data: customFieldsMockReponse,
+        data: customFieldsMockResponse,
     })
     return (
         <QueryClientProvider client={appQueryClient}>

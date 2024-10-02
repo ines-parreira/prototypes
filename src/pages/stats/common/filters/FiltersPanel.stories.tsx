@@ -15,7 +15,7 @@ import {customFieldDefinitionKeys} from 'models/customField/queries'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {RootState} from 'state/types'
 import {integrationsState} from 'fixtures/integrations'
-import {customFieldsMockReponse} from 'fixtures/customField'
+import {customFieldsMockResponse} from 'fixtures/customField'
 
 const defaultState = {
     stats: initialState,
@@ -32,7 +32,7 @@ const storyConfig: Meta = {
 
 const Template: StoryFn<ComponentProps<typeof FiltersPanel>> = (props) => {
     appQueryClient.setQueryData(customFieldDefinitionKeys.list(activeParams), {
-        data: customFieldsMockReponse,
+        data: customFieldsMockResponse,
     })
     return (
         <QueryClientProvider client={appQueryClient}>

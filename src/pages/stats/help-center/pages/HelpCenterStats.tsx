@@ -77,7 +77,7 @@ const HelpCenterStatsComponent = ({
 
     const selectedHelpCenter =
         helpCenters.find((helpCenter) =>
-            statsFilters.helpCenters?.includes(helpCenter.id)
+            statsFilters.helpCenters?.values?.includes(helpCenter.id)
         ) ?? helpCenters[0]
 
     const selectedHelpCenterDomain = getHelpCenterDomain(selectedHelpCenter)
@@ -110,7 +110,9 @@ const HelpCenterStatsComponent = ({
                                 supportedLocales={
                                     selectedHelpCenter.supported_locales
                                 }
-                                selectedLocaleCodes={statsFilters.localeCodes}
+                                selectedLocaleCodes={
+                                    statsFilters.localeCodes.values
+                                }
                                 onFilterChange={onLanguageFilterChange}
                             />
                             <PeriodStatsFilter

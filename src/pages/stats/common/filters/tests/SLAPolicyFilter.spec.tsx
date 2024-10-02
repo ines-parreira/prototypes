@@ -20,7 +20,7 @@ import {statFiltersClean} from 'state/ui/stats/actions'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {SegmentEvent, logEvent} from 'common/segment'
-import {FilterKey} from 'models/stat/types'
+import {FilterKey, TagFilterInstanceId} from 'models/stat/types'
 
 jest.mock('@gorgias/api-queries')
 const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
@@ -69,7 +69,12 @@ describe('SLAPolicyFilter', () => {
                 ]),
                 channels: withDefaultLogicalOperator([TicketChannel.Chat]),
                 agents: withDefaultLogicalOperator([agents[0].id]),
-                tags: withDefaultLogicalOperator([1]),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',

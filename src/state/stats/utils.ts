@@ -4,6 +4,7 @@ import {
     FilterKey,
     LegacyStatsFilters,
     StatsFiltersWithLogicalOperator,
+    TagFilterInstanceId,
 } from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
@@ -38,8 +39,22 @@ export const fromPartialLegacyStatsFilters = (
                 case FilterKey.Period:
                     acc[key] = statsFilters[key]
                     break
-                case FilterKey.Integrations:
                 case FilterKey.Tags:
+                    if (
+                        statsFilters[key] !== undefined &&
+                        statsFilters[key]?.values !== undefined
+                    ) {
+                        acc[key] = [
+                            {
+                                ...withDefaultLogicalOperator(
+                                    statsFilters[key]
+                                ),
+                                filterInstanceId: TagFilterInstanceId.First,
+                            },
+                        ]
+                    }
+                    break
+                case FilterKey.Integrations:
                 case FilterKey.Agents:
                 case FilterKey.HelpCenters:
                     if (statsFilters[key] !== undefined) {
@@ -72,8 +87,22 @@ export const fromLegacyStatsFilters = (
                 case FilterKey.Period:
                     acc[key] = statsFilters[key]
                     break
-                case FilterKey.Integrations:
                 case FilterKey.Tags:
+                    if (
+                        statsFilters[key] !== undefined &&
+                        statsFilters[key]?.values !== undefined
+                    ) {
+                        acc[key] = [
+                            {
+                                ...withDefaultLogicalOperator(
+                                    statsFilters[key]
+                                ),
+                                filterInstanceId: TagFilterInstanceId.First,
+                            },
+                        ]
+                    }
+                    break
+                case FilterKey.Integrations:
                 case FilterKey.Agents:
                 case FilterKey.HelpCenters:
                     if (
@@ -107,67 +136,6 @@ export const fromLegacyStatsFilters = (
     )
 }
 
-export const fromLegacyAndLogicalOperatorStatsFilters = (
-    legacyStatsFilters: LegacyStatsFilters,
-    statsFilters: StatsFiltersWithLogicalOperator
-): StatsFiltersWithLogicalOperator => {
-    const filterKeys = Object.values(FilterKey)
-    return filterKeys.reduce<StatsFiltersWithLogicalOperator>(
-        (acc, key) => {
-            switch (key) {
-                case FilterKey.Period:
-                    acc[key] = legacyStatsFilters[key]
-                    break
-                case FilterKey.Integrations:
-                case FilterKey.Tags:
-                case FilterKey.Agents:
-                case FilterKey.HelpCenters:
-                    if (
-                        legacyStatsFilters[key] !== undefined &&
-                        legacyStatsFilters[key]?.values !== undefined
-                    ) {
-                        acc[key] = withDefaultLogicalOperator(
-                            legacyStatsFilters[key],
-                            statsFilters[key]?.operator
-                        )
-                    }
-                    break
-                case FilterKey.CustomFields:
-                    if (
-                        legacyStatsFilters[key] !== undefined &&
-                        legacyStatsFilters[key]?.values !== undefined
-                    ) {
-                        acc[key] = statsFilters[key]?.map((filter) => ({
-                            values:
-                                getCustomFields(legacyStatsFilters).find(
-                                    (formattedFilter) =>
-                                        formattedFilter.customFieldId ===
-                                        filter.customFieldId
-                                )?.values || [],
-                            customFieldId: filter.customFieldId,
-                            operator: filter.operator,
-                        }))
-                    }
-                    break
-                default:
-                    if (
-                        legacyStatsFilters[key] !== undefined &&
-                        legacyStatsFilters[key]?.values !== undefined
-                    ) {
-                        acc[key] = withDefaultLogicalOperator(
-                            legacyStatsFilters[key],
-                            statsFilters[key]?.operator
-                        )
-                    }
-            }
-            return acc
-        },
-        {
-            period: legacyStatsFilters.period,
-        }
-    )
-}
-
 export const fromFiltersWithLogicalOperators = (
     statsFilters: StatsFiltersWithLogicalOperator
 ): LegacyStatsFilters => {
@@ -179,8 +147,16 @@ export const fromFiltersWithLogicalOperators = (
                     case FilterKey.Period:
                         acc[filter] = statsFilters[filter]
                         break
-                    case FilterKey.Integrations:
                     case FilterKey.Tags:
+                        if (statsFilters[filter] !== undefined) {
+                            acc[filter] = (statsFilters[filter] ?? []).find(
+                                (tagFilter) =>
+                                    tagFilter.operator ===
+                                    LogicalOperatorEnum.ONE_OF
+                            )?.values
+                        }
+                        break
+                    case FilterKey.Integrations:
                     case FilterKey.Agents:
                     case FilterKey.HelpCenters:
                         if (statsFilters[filter]?.values !== undefined) {

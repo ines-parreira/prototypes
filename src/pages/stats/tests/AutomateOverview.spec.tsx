@@ -20,7 +20,6 @@ import {account} from 'fixtures/account'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
 import TrendBadge from 'pages/stats/TrendBadge'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
 import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
@@ -82,9 +81,6 @@ const useAutomateMetricsTimeseriesV2Mock = assumeMock(
     useAutomateMetricsTimeseriesV2
 )
 const useAutomateMetricsTrendV2Mock = assumeMock(useAutomateMetricsTrendV2)
-
-jest.mock('hooks/reporting/useCleanStatsFilters')
-const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -256,7 +252,6 @@ describe('<AutomateOverview />', () => {
                 decreaseInResolutionTimeWithAutomateTrend,
         })
 
-        useCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
         trendBadgeMock.mockImplementation(() => <div>TrendBadgeMock</div>)
 
         mockedUseSearchParam.mockReturnValue([null, jest.fn()])

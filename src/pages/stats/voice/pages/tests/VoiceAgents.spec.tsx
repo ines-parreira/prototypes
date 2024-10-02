@@ -76,7 +76,7 @@ const getState = (featureEnabled: boolean) =>
         integrations: fromJS({integrations: []}),
         ui: {
             stats: {
-                cleanStatsFilters: statsFilters,
+                cleanStatsFilters: fromLegacyStatsFilters(statsFilters),
                 isFilterDirty: false,
                 fetchingMap: {},
             },
@@ -107,11 +107,13 @@ describe('VoiceAgents with the new filters', () => {
     it('should render page when AnalyticsNewFiltersVoice is true', () => {
         const {getByText, getAllByText} = renderVoiceAgents()
         expect(getByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
+
         fireEvent.click(getByText(ADD_FILTER_BUTTON_LABEL))
+
         expect(
             getByText(FilterLabels[FilterKey.Integrations])
         ).toBeInTheDocument()
-        expect(getByText(FilterLabels[FilterKey.Tags])).toBeInTheDocument()
+        expect(getAllByText(FilterLabels[FilterKey.Tags])).toHaveLength(2)
         expect(getAllByText(FilterLabels[FilterKey.Agents])).toHaveLength(2)
     })
 })

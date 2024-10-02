@@ -3,9 +3,11 @@ import moment from 'moment'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {mockFlags} from 'jest-launchdarkly-mock'
+import {TagFilterInstanceId} from 'models/stat/types'
 import {channels} from 'fixtures/channels'
 import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
 import {useChannelsReportMetrics} from 'hooks/reporting/useChannelsReportMetrics'
+import {RootState} from 'state/types'
 import {agentPerformanceSlice} from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock, mockStore} from 'utils/testing'
@@ -64,22 +66,29 @@ describe('useChannelsReportMetrics', () => {
         end_datetime: periodEnd.toISOString(),
         start_datetime: periodStart.toISOString(),
     }
-    const mockedTags = ['a', 'b']
-    const mockedChannels = [1, 2, 3]
+    const mockedTags = [1, 2]
+    const mockedChannels = ['1', '2', '3']
     const state = {
         stats: {
             filters: {
                 period,
                 channels: withDefaultLogicalOperator(mockedChannels),
-                tags: withDefaultLogicalOperator(mockedTags),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator(mockedTags),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
             },
         },
         ui: {
             stats: uiStatsInitialState,
-            [agentPerformanceSlice.name]:
-                agentPerformanceSlice.getInitialState(),
+            statsTables: {
+                [agentPerformanceSlice.name]:
+                    agentPerformanceSlice.getInitialState(),
+            },
         },
-    } as any
+    } as RootState
 
     const metricData = {
         isFetching: false,
@@ -165,7 +174,12 @@ describe('useChannelsReportMetrics', () => {
 
         expect(useClosedTicketsMetricPerChannelMock.mock.calls[0][0]).toEqual(
             expect.objectContaining({
-                tags: withDefaultLogicalOperator(mockedTags),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator(mockedTags),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
                 channels: withDefaultLogicalOperator(mockedChannels),
             })
         )

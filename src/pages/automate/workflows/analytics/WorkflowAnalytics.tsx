@@ -19,8 +19,8 @@ import * as ToggleButton from 'pages/common/components/ToggleButton'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import {useWorkflowDataset} from 'hooks/reporting/automate/useWorkflowDataset'
 import {WorkflowStatsFilters} from 'models/stat/types'
-import {getStatsFilters} from 'state/stats/selectors'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import {useWorkflowEditorContext} from '../hooks/useWorkflowEditor'
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
@@ -62,8 +62,8 @@ export default function WorkflowAnalytics({
         shopName
     )
 
-    const statsFilters = useAppSelector(getStatsFilters)
-    useCleanStatsFilters(statsFilters)
+    const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
+    useCleanStatsFiltersWithLogicalOperators(statsFilters)
 
     const filters = useMemo<WorkflowStatsFilters>(() => {
         const period = getWorkflowAnalyticsDateRange({

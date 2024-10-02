@@ -211,7 +211,7 @@ describe('<HelpCenterStats />', () => {
 
         expect(mockUseArticleViewTimeSeries).toHaveBeenCalledWith(
             expect.objectContaining({
-                helpCenters: [helpCenters[0].id],
+                helpCenters: withDefaultLogicalOperator([helpCenters[0].id]),
             }),
             expect.anything(),
             expect.anything()
@@ -222,7 +222,7 @@ describe('<HelpCenterStats />', () => {
 
         expect(mockUseArticleViewTimeSeries).toHaveBeenLastCalledWith(
             expect.objectContaining({
-                helpCenters: [helpCenters[1].id],
+                helpCenters: withDefaultLogicalOperator([helpCenters[1].id]),
             }),
             expect.anything(),
             expect.anything()
@@ -361,7 +361,7 @@ describe('<HelpCenterStats />', () => {
 
         expect(mockUseArticleViewTimeSeries).toHaveBeenCalledWith(
             expect.objectContaining({
-                localeCodes: ['en-US', 'fr-FR'],
+                localeCodes: withDefaultLogicalOperator(['en-US', 'fr-FR']),
             }),
             expect.anything(),
             expect.anything()
@@ -376,7 +376,7 @@ describe('<HelpCenterStats />', () => {
 
         expect(mockUseArticleViewTimeSeries).toHaveBeenLastCalledWith(
             expect.objectContaining({
-                localeCodes: ['fr-FR'],
+                localeCodes: withDefaultLogicalOperator(['fr-FR']),
             }),
             expect.anything(),
             expect.anything()

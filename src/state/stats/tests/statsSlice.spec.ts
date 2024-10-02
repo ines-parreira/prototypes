@@ -1,4 +1,8 @@
 import {AnyAction} from 'redux'
+import {
+    StatsFiltersWithLogicalOperator,
+    TagFilterInstanceId,
+} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     withDefaultCustomFieldAndLogicalOperator,
@@ -16,7 +20,6 @@ import {
     statsSlice,
 } from 'state/stats/statsSlice'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 describe('stats reducer', () => {
     it('should return initial state', () => {
@@ -50,7 +53,7 @@ describe('stats reducer', () => {
                     start_datetime: '1970-01-01T00:00:00+00:00',
                     end_datetime: '1970-01-01T00:00:00+00:00',
                 },
-                tags: [1, 2, 4],
+                integrations: [1, 2, 4],
                 agents: [1],
             }
             const action = setStatsFilters(filters)
@@ -118,7 +121,12 @@ describe('stats reducer', () => {
                 ...initialState,
                 filters: {
                     ...state.filters,
-                    tags: withDefaultLogicalOperator(filters.tags),
+                    tags: [
+                        {
+                            ...withDefaultLogicalOperator(filters.tags),
+                            filterInstanceId: TagFilterInstanceId.First,
+                        },
+                    ],
                     agents: withDefaultLogicalOperator(filters.agents),
                 },
             })
@@ -127,8 +135,13 @@ describe('stats reducer', () => {
 
     describe('mergeStatsFiltersWithLogicalOperator', () => {
         it('should merge stats filters', () => {
-            const filters = {
-                tags: withDefaultLogicalOperator([1, 2, 4]),
+            const filters: Partial<StatsFiltersWithLogicalOperator> = {
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1, 2, 4]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
                 agents: withDefaultLogicalOperator([1]),
             }
             const action = mergeStatsFiltersWithLogicalOperator(filters)

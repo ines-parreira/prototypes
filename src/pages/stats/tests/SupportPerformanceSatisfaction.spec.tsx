@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
+import {TagFilterInstanceId} from 'models/stat/types'
 
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {RootState, StoreDispatch} from 'state/types'
@@ -67,7 +68,12 @@ describe('SupportPerformanceSatisfaction', () => {
                 integrations: withDefaultLogicalOperator([
                     integrationsState.integrations[0].id,
                 ]),
-                tags: withDefaultLogicalOperator([1]),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
                 agents: withDefaultLogicalOperator([agents[0].id]),
                 score: withDefaultLogicalOperator(['2']),
             },

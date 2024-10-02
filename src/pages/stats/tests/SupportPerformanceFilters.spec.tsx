@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {TagFilterInstanceId} from 'models/stat/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {TicketChannel} from 'business/types/ticket'
@@ -35,7 +36,12 @@ describe('Support Performance Filters', () => {
                 ]),
                 channels: withDefaultLogicalOperator([TicketChannel.Chat]),
                 agents: withDefaultLogicalOperator([agents[0].id]),
-                tags: withDefaultLogicalOperator([1]),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
@@ -76,7 +82,13 @@ describe('Support Performance Filters', () => {
                                 integrations: withDefaultLogicalOperator([]),
                                 channels: withDefaultLogicalOperator([]),
                                 agents: withDefaultLogicalOperator([]),
-                                tags: withDefaultLogicalOperator([]),
+                                tags: [
+                                    {
+                                        ...withDefaultLogicalOperator([]),
+                                        filterInstanceId:
+                                            TagFilterInstanceId.First,
+                                    },
+                                ],
                                 period: {
                                     start_datetime: '',
                                     end_datetime: '',

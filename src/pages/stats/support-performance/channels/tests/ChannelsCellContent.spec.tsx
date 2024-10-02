@@ -1,6 +1,7 @@
 import React from 'react'
 import {screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
+import {TagFilterInstanceId} from 'models/stat/types'
 import {formatMetricValue} from 'pages/stats/common/utils'
 import {ChannelsCellContent} from 'pages/stats/support-performance/channels/ChannelsCellContent'
 import {
@@ -30,7 +31,12 @@ describe('<ChannelsCellContent />', () => {
             filters: {
                 ...statsInitialState.filters,
                 helpCenters: withDefaultLogicalOperator(mockedHelpCenters),
-                tags: withDefaultLogicalOperator(mockedTags),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator(mockedTags),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
             },
         },
         ui: {
@@ -212,7 +218,12 @@ describe('<ChannelsCellContent />', () => {
 
         expect((metricHook.mock.calls[0] as Record<string, any>[])[0]).toEqual(
             expect.objectContaining({
-                tags: withDefaultLogicalOperator(mockedTags),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator(mockedTags),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
                 helpCenters: withDefaultLogicalOperator(mockedHelpCenters),
             })
         )

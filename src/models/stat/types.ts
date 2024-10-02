@@ -43,7 +43,6 @@ export type StaticFilter =
     | FilterKey.Period
     | FilterKey.Score
     | FilterKey.SlaPolicies
-    | FilterKey.Tags
     | FilterComponentKey.BusiestTimesMetricSelectFilter
     | FilterComponentKey.CustomField
     | FilterComponentKey.Store
@@ -61,6 +60,15 @@ export interface WithLogicalOperator<T extends number | string> {
 
 export interface CustomFieldFilter extends WithLogicalOperator<string> {
     customFieldId: number
+}
+
+export enum TagFilterInstanceId {
+    First = 'first',
+    Second = 'second',
+}
+
+export interface TagFilter extends WithLogicalOperator<number> {
+    filterInstanceId: TagFilterInstanceId
 }
 
 export type LegacyStatsFilters = {
@@ -102,7 +110,7 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.Period]: Period
     [FilterKey.Score]?: WithLogicalOperator<string>
     [FilterKey.SlaPolicies]?: WithLogicalOperator<string>
-    [FilterKey.Tags]?: WithLogicalOperator<number>
+    [FilterKey.Tags]?: TagFilter[]
 }
 
 export type StatsFilters = LegacyStatsFilters | StatsFiltersWithLogicalOperator

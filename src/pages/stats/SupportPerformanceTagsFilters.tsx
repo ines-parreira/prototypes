@@ -1,5 +1,5 @@
 import React from 'react'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
+import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
@@ -9,11 +9,17 @@ import {
     getStatsFilters,
     getMessagingAndAppIntegrationsStatsFilter,
     getStatsMessagingAndAppIntegrations,
+    getPageStatsFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
 
 export const SupportPerformanceTagsFilters = () => {
+    const pageStatsFiltersWithLogicalOperators = useAppSelector(
+        getPageStatsFiltersWithLogicalOperators
+    )
+    useCleanStatsFiltersWithLogicalOperators(
+        pageStatsFiltersWithLogicalOperators
+    )
     const statsFilters = useAppSelector(getStatsFilters)
-    useCleanStatsFilters(statsFilters)
     const messagingIntegrations = useAppSelector(
         getStatsMessagingAndAppIntegrations
     )

@@ -28,7 +28,6 @@ import {
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useTimeSeries} from 'hooks/reporting/useTimeSeries'
 import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
@@ -59,9 +58,6 @@ const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 jest.mock('utils/file')
 jest.mock('services/reporting/supportPerformanceReportingService')
-
-jest.mock('hooks/reporting/useCleanStatsFilters')
-const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
 jest.mock('hooks/reporting/metricTrends')
 const useCustomerSatisfactionTrendMock = assumeMock(
@@ -247,7 +243,6 @@ describe('DownloadOverviewData', () => {
         useWorkloadPerChannelDistributionMock.mockReturnValue(
             workloadDistribution
         )
-        useCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
         }))
