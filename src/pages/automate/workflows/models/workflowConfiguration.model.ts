@@ -131,23 +131,8 @@ export function getTriggerNode(
                 instructions: entrypoint.settings.instructions,
                 requires_confirmation:
                     entrypoint.settings.requires_confirmation,
-                deactivated_datetime: entrypoint.deactivated_datetime,
-                inputs: [
-                    ...trigger.settings.custom_inputs,
-                    ...trigger.settings.object_inputs.filter(
-                        (
-                            input
-                        ): input is Extract<
-                            Extract<
-                                NonNullable<
-                                    WorkflowConfiguration['triggers']
-                                >[number],
-                                {kind: 'llm-prompt'}
-                            >['settings']['object_inputs'][number],
-                            {kind: 'product'}
-                        > => input.kind === 'product'
-                    ),
-                ],
+                custom_inputs: trigger.settings.custom_inputs,
+                object_inputs: trigger.settings.object_inputs,
                 conditionsType,
                 conditions,
             },
@@ -172,20 +157,6 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
     const nodes: VisualBuilderNode[] = [triggerNode]
     const edges: VisualBuilderEdge[] = []
     const nodeIdByStepId: Record<string, string> = {}
-
-    if (!c.initial_step_id) {
-        return {
-            name: c.name,
-            available_languages: c.available_languages,
-            nodes,
-            edges,
-            wfConfigurationOriginal: c,
-            apps: c.apps,
-            nodeEditingId: null,
-            choiceEventIdEditing: null,
-            branchIdsEditing: [],
-        }
-    }
 
     walkWorkflowConfigurationGraph(c, c.initial_step_id, (step, context) => {
         const {previousStep, incomingTransition} = context
@@ -336,8 +307,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     ).map(([name, value]) => ({name, value})),
                     json:
                         bodyContentType === 'application/json'
-                            ? step.settings.body ?? null
-                            : null,
+                            ? step.settings.body ?? undefined
+                            : undefined,
                     formUrlencoded:
                         bodyContentType === 'application/x-www-form-urlencoded'
                             ? Array.from(
@@ -345,8 +316,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                                       step.settings.body ?? undefined
                                   ).entries()
                               ).map(([key, value]) => ({key, value}))
-                            : null,
-                    bodyContentType: bodyContentType ?? null,
+                            : undefined,
+                    bodyContentType: bodyContentType,
                     variables: step.settings.variables.map((variable) => ({
                         ...variable,
                         data_type: variable.data_type ?? 'json',
@@ -547,12 +518,7 @@ export class WorkflowConfigurationBuilder {
               WorkflowConfiguration,
               'name' | 'entrypoint' | 'id' | 'triggers' | 'entrypoints'
           > &
-              Partial<
-                  Pick<
-                      WorkflowConfiguration,
-                      'is_draft' | 'available_languages'
-                  >
-              >) {
+              Partial<Pick<WorkflowConfiguration, 'is_draft'>>) {
         this.data = {
             internal_id: ulid(),
             name,

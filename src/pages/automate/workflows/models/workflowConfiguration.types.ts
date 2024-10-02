@@ -255,7 +255,7 @@ export type WorkflowConfiguration = {
     internal_id: string
     is_draft: boolean
     name: string
-    initial_step_id: string | null
+    initial_step_id: string
     updated_datetime?: string
     entrypoint?: {
         label: string
@@ -283,9 +283,6 @@ export type WorkflowConfiguration = {
                       | {
                             kind: 'product'
                             integration_id: number | string
-                            name: string
-                            instructions: string
-                            id: string
                         }
                   )[]
                   conditions?: ConditionsSchema | null
@@ -326,7 +323,6 @@ export type WorkflowConfiguration = {
     steps: WorkflowStep[]
     transitions: WorkflowTransition[]
     available_languages: LanguageCode[]
-    template_internal_id?: string | null
 }
 
 export type WorkflowConfigurationShallow = Omit<

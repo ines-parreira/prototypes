@@ -133,9 +133,6 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                                 data_type: 'string',
                             },
                         ],
-                        json: null,
-                        formUrlencoded: null,
-                        bodyContentType: null,
                     },
                 },
                 {
@@ -228,7 +225,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                         instructions:
                             'This action removes the item from the order',
                         requires_confirmation: false,
-                        inputs: [
+                        custom_inputs: [
                             {
                                 id: '01J7ZTR9XY9M0TQC99836A6PXC',
                                 name: 'Quantity',
@@ -242,15 +239,9 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                                 instructions: 'id of the product variant',
                             },
                         ],
-                        conditionsType: 'and',
-                        conditions: [
-                            {
-                                equals: [
-                                    {var: '{{objects.order.external_id}}'},
-                                    '123',
-                                ],
-                            },
-                        ],
+                        object_inputs: [],
+                        conditionsType: null,
+                        conditions: [],
                     },
                 },
                 {
@@ -360,16 +351,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                             integration_id: '{{store.helpdesk_integration_id}}',
                         },
                     ],
-                    conditions: {
-                        and: [
-                            {
-                                equals: [
-                                    {var: '{{objects.order.external_id}}'},
-                                    '123',
-                                ],
-                            },
-                        ],
-                    },
+                    conditions: null,
                     outputs: [
                         {
                             id: 'remove_item',

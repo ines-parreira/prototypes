@@ -1,0 +1,52 @@
+@import (reference) '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .inputVariables {
+        & > label {
+            margin-bottom: @layout-spacing-xxs;
+        }
+        & > p {
+            .body-regular();
+            padding-bottom: @layout-spacing-xs;
+            margin: 0;
+        }
+
+        .customInputsContainer {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            gap: @layout-spacing-xs;
+
+            .customInputItem {
+                display: grid;
+                grid-template-columns: 110px 160px 1fr 20px;
+                gap: @layout-spacing-xs;
+            }
+
+            .disabled {
+                input,
+                span {
+                    cursor: not-allowed !important;
+                    color: var(--neutral-grey-5) !important;
+                }
+                i {
+                    cursor: not-allowed !important;
+                }
+
+                button:hover,
+                button:active {
+                    background-color: unset !important;
+                }
+            }
+        }
+
+        .formInputFooterInfo {
+            .caption-regular();
+            color: var(--neutral-grey-5);
+            display: grid;
+            grid-template-columns: 110px 160px 1fr;
+            gap: @layout-spacing-xs;
+        }
+    }
+}

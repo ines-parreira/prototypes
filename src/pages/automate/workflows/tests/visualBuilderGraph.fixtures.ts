@@ -247,14 +247,8 @@ export const visualBuilderGraphLlmPromptTriggerFixture: VisualBuilderGraph = {
             data: {
                 instructions: 'Instructions',
                 requires_confirmation: false,
-                inputs: [
-                    {
-                        id: 'someid',
-                        name: 'some name',
-                        instructions: 'some instructions',
-                        data_type: 'string',
-                    },
-                ],
+                custom_inputs: [],
+                object_inputs: [],
                 conditionsType: null,
                 conditions: [],
             },
@@ -282,9 +276,6 @@ export const visualBuilderGraphLlmPromptTriggerFixture: VisualBuilderGraph = {
                         data_type: 'string',
                     },
                 ],
-                json: null,
-                formUrlencoded: null,
-                bodyContentType: null,
             },
         },
         {

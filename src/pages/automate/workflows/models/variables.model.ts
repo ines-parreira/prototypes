@@ -91,29 +91,6 @@ export function findManyVariables(
     return result
 }
 
-export function filterManyVariables(
-    variables: WorkflowVariableList,
-    fn: (v: WorkflowVariable) => boolean
-): WorkflowVariableList {
-    return variables.reduce<WorkflowVariableList>((acc, variable) => {
-        if ('value' in variable) {
-            if (fn(variable)) {
-                return [...acc, variable]
-            }
-
-            return acc
-        }
-
-        const variables = filterManyVariables(variable.variables, fn)
-
-        if (!variables.length) {
-            return acc
-        }
-
-        return [...acc, {...variable, variables}]
-    }, [])
-}
-
 export function parseWorkflowVariable(
     value: string,
     availableVariables: WorkflowVariableList
@@ -157,65 +134,20 @@ export const buildWorkflowVariableFromTrigger = (
 
     if (triggerNode.type === 'llm_prompt_trigger') {
         const {
-            data: {inputs},
+            data: {custom_inputs},
         } = triggerNode
 
         const customInputs: WorkflowVariableGroup = {
             name: 'Inputs',
             nodeType: 'custom_input',
-            variables: inputs
-                .filter((input) => !!input.name)
-                .map((input) =>
-                    'data_type' in input
-                        ? {
-                              name: input.name,
-                              value: `custom_inputs.${input.id}`,
-                              nodeType: 'custom_input',
-                              type: input.data_type,
-                          }
-                        : {
-                              name: input.name,
-                              nodeType: 'custom_input',
-                              variables: [
-                                  {
-                                      name: 'Product id',
-                                      value: `objects.products.${input.id}.external_id`,
-                                      nodeType: 'custom_input',
-                                      type: 'string',
-                                  },
-                                  {
-                                      name: 'Product name',
-                                      value: `objects.products.${input.id}.name`,
-                                      nodeType: 'custom_input',
-                                      type: 'string',
-                                  },
-                                  {
-                                      name: 'Product type',
-                                      value: `objects.products.${input.id}.external_type`,
-                                      nodeType: 'custom_input',
-                                      type: 'string',
-                                  },
-                                  {
-                                      name: 'Product variant id',
-                                      value: `objects.products.${input.id}.selected_variant.external_id`,
-                                      nodeType: 'custom_input',
-                                      type: 'string',
-                                  },
-                                  {
-                                      name: 'Product variant quantity in stock',
-                                      value: `objects.products.${input.id}.selected_variant.quantity`,
-                                      nodeType: 'custom_input',
-                                      type: 'number',
-                                  },
-                                  {
-                                      name: 'Product variant name',
-                                      value: `objects.products.${input.id}.selected_variant.name`,
-                                      nodeType: 'custom_input',
-                                      type: 'string',
-                                  },
-                              ],
-                          }
-                ),
+            variables: custom_inputs
+                .filter((input) => input && input.name)
+                .map((input) => ({
+                    name: input.name,
+                    value: `custom_inputs.${input.id}`,
+                    nodeType: 'custom_input',
+                    type: input.data_type,
+                })),
         }
 
         return [

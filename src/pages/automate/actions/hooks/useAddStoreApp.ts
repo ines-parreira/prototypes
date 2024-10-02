@@ -1,15 +1,17 @@
 import {useCallback} from 'react'
 import {useQueryClient} from '@tanstack/react-query'
-
 import {
     useUpsertStoreApps,
     storeWorkflowsAppDefinitionKeys,
 } from 'models/workflows/queries'
+
 import {Integration} from 'models/integration/types'
+import {ActionAppConfiguration} from '../types'
 
 type Props = {
     storeName: string
-    storeType: 'shopify'
+    storeType: string
+    appType?: ActionAppConfiguration['type']
     integration?: Integration
 }
 
@@ -30,7 +32,11 @@ export default function useAddStoreApp({
         },
     })
 
-    return useCallback(async () => {
+    const addStoreApp = useCallback(async () => {
+        if (storeType !== 'shopify') {
+            throw new Error('Unsupported store type')
+        }
+
         if (!integration || integration.type !== 'recharge') {
             return
         }
@@ -46,4 +52,6 @@ export default function useAddStoreApp({
             },
         ])
     }, [integration, mutateAsync, storeName, storeType])
+
+    return addStoreApp
 }

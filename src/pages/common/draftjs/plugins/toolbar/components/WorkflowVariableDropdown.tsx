@@ -11,12 +11,7 @@ import {
     WorkflowVariableGroup,
 } from 'pages/automate/workflows/models/variables.types'
 import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
-import {
-    filterManyVariables,
-    findManyVariables,
-} from 'pages/automate/workflows/models/variables.model'
 import Search from 'pages/common/components/Search'
-
 import {useToolbarContext} from '../ToolbarContext'
 
 import css from './WorkflowVariableDropdown.less'
@@ -47,21 +42,48 @@ const WorkflowVariableDropdown = ({
 
     const workflowVariables = useMemo(
         () =>
-            filterManyVariables(workflowVariablesProp, (variable) =>
-                workflowVariablesDataTypes.includes(variable.type)
-            ),
+            workflowVariablesProp
+                .map((variable) => {
+                    if ('variables' in variable) {
+                        return {
+                            ...variable,
+                            variables: variable.variables.filter((variable) =>
+                                workflowVariablesDataTypes.includes(
+                                    variable.type
+                                )
+                            ),
+                        }
+                    }
+
+                    return variable
+                })
+                .filter((variable) => {
+                    if ('variables' in variable) {
+                        return !!variable.variables.length
+                    }
+
+                    return workflowVariablesDataTypes.includes(variable.type)
+                }),
         [workflowVariablesProp, workflowVariablesDataTypes]
     )
     const allVariables = useMemo(
         () =>
-            findManyVariables(workflowVariables, (variable) => {
-                if (
-                    'value' in variable &&
-                    workflowVariablesDataTypes.includes(variable.type)
-                ) {
-                    return variable
+            workflowVariables.reduce<WorkflowVariable[]>((acc, value) => {
+                if ('variables' in value) {
+                    return [
+                        ...acc,
+                        ...value.variables.filter((variable) =>
+                            workflowVariablesDataTypes.includes(variable.type)
+                        ),
+                    ]
                 }
-            }),
+
+                if (workflowVariablesDataTypes.includes(value.type)) {
+                    return [...acc, value]
+                }
+
+                return acc
+            }, []),
         [workflowVariables, workflowVariablesDataTypes]
     )
 

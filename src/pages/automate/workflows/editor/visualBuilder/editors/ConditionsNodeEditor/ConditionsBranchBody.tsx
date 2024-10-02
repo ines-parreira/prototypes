@@ -1,6 +1,5 @@
 import React, {useCallback} from 'react'
 import {produce} from 'immer'
-
 import {
     BooleanSchema,
     ConditionKey,
@@ -23,8 +22,7 @@ import {Condition} from 'pages/common/components/Condition/Condition'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import WorkflowVariableDropdown from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
-import {findVariable} from 'pages/automate/workflows/models/variables.model'
-
+import css from './ConditionsNodeEditor.less'
 import {getOperatorListByVariable} from './constants'
 import {BooleanConditionType} from './conditions/BooleanConditionType'
 import {StringConditionType} from './conditions/StringConditionType'
@@ -35,8 +33,6 @@ import {
     isExistenceOperator,
     isStringOrNumberOperator,
 } from './utils'
-
-import css from './ConditionsNodeEditor.less'
 
 interface Props {
     type: 'and' | 'or' | null
@@ -273,17 +269,17 @@ export const ConditionsBranchBody = ({
                                 >
                             )[operator][0]
 
-                            const variable = findVariable(
-                                availableVariables,
-                                (variable) => {
-                                    if (
-                                        'value' in variable &&
-                                        variable.value === value.var
-                                    ) {
-                                        return variable
+                            const variable = availableVariables
+                                .map((vars) => {
+                                    if ('variables' in vars) {
+                                        return vars.variables.find(
+                                            (v) => v.value === value.var
+                                        )
                                     }
-                                }
-                            )
+                                    if (vars.value === value.var) return vars
+                                    return null
+                                })
+                                .find((v) => v?.value === value.var)
 
                             if (!variable) return null
                             if (!type) return null

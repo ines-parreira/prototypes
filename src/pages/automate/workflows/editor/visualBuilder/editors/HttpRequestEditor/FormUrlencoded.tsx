@@ -28,7 +28,7 @@ type Props = {
 
 const FormUrlencoded = ({
     variables,
-    items,
+    items = [],
     onChange,
     onDelete,
     onAdd,
@@ -39,7 +39,7 @@ const FormUrlencoded = ({
 }: Props) => {
     return (
         <div className={css.keyValueContainer}>
-            {items?.map((item, index) => (
+            {items.map((item, index) => (
                 <div key={index} className={css.keyValueRow}>
                     <TextInput
                         isDisabled={isDisabled}
@@ -76,7 +76,7 @@ const FormUrlencoded = ({
                     </IconButton>
                 </div>
             ))}
-            {items && items.length > 0 && (
+            {items.length > 0 && (
                 <div className={css.description}>Key and value pairs</div>
             )}
             <Button

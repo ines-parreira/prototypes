@@ -1,39 +1,31 @@
 import React from 'react'
 import {Label} from '@gorgias/ui-kit'
-import {useController, useFieldArray, useFormContext} from 'react-hook-form'
 
+import {useController, useFieldArray, useFormContext} from 'react-hook-form'
 import {ConditionsBranchBody} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
 import {buildConditionSchemaByVariableType} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import {WorkflowVariableGroup} from 'pages/automate/workflows/models/variables.types'
 import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
 
-import {ActionFormInputValues} from '../types'
-
-import css from './CustomActionForm.less'
+import {ConditionsFormValues} from '../types'
+import css from './CustomActionsForm.less'
 
 type Props = {
-    variables: WorkflowVariableList
+    inputVariables: WorkflowVariableGroup[]
 }
 
-export default function ActionFormInputConditions({variables}: Props) {
-    const {control} = useFormContext<ActionFormInputValues>()
+export default function ActionFormInputConditions({inputVariables}: Props) {
+    const {control, getValues} = useFormContext<ConditionsFormValues>()
     const {field: conditionsType} = useController({
         control,
-        name: 'trigger.conditionsType',
+        name: 'conditionsType',
     })
-    const {
-        remove,
-        update,
-        append,
-        fields: conditions,
-    } = useFieldArray({
+
+    const {remove, update, append} = useFieldArray({
         control,
-        name: 'trigger.conditions',
+        name: 'conditions',
         rules: {
-            validate: (
-                conditions: ConditionSchema[],
-                {trigger: {conditionsType}}
-            ) => {
+            validate: (conditions: ConditionSchema[], {conditionsType}) => {
                 if (!conditionsType) {
                     return true
                 }
@@ -79,11 +71,11 @@ export default function ActionFormInputConditions({variables}: Props) {
                 hasMultipleChildren={true}
                 canDeleteBranch={false}
                 branchId={''}
-                availableVariables={variables}
+                availableVariables={inputVariables}
                 showNoneOption={true}
                 shouldShowErrors={true}
                 type={conditionsType.value}
-                conditions={conditions}
+                conditions={getValues('conditions')}
                 onDeleteBranch={() => {}}
                 onConditionDelete={(index) => {
                     remove(index)

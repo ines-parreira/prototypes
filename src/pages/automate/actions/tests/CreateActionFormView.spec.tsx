@@ -1,6 +1,6 @@
 import React from 'react'
 import {createMemoryHistory} from 'history'
-import {screen, waitFor} from '@testing-library/react'
+import {screen} from '@testing-library/react'
 
 import {renderWithRouter} from 'utils/testing'
 import {
@@ -9,9 +9,8 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import {shopifyIntegration} from 'fixtures/integrations'
-import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 
+import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
 import useAddStoreApp from '../hooks/useAddStoreApp'
 import useUpsertAction from '../hooks/useUpsertAction'
@@ -72,37 +71,7 @@ mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
                     kind: 'llm-conversation',
                     trigger: 'llm-prompt',
                     settings: {
-                        instructions: 'test instructions',
-                        requires_confirmation: true,
-                    },
-                },
-            ],
-        },
-        {
-            id: 'testid2',
-            internal_id: 'testinternal_id2',
-            name: 'test2',
-            apps: [
-                {
-                    type: 'shopify',
-                },
-            ],
-            triggers: [
-                {
-                    kind: 'llm-prompt',
-                    settings: {
-                        custom_inputs: [],
-                        object_inputs: [],
-                        outputs: [],
-                    },
-                },
-            ],
-            entrypoints: [
-                {
-                    kind: 'llm-conversation',
-                    trigger: 'llm-prompt',
-                    settings: {
-                        instructions: 'test instructions',
+                        instructions: '',
                         requires_confirmation: true,
                     },
                 },
@@ -144,13 +113,14 @@ mockUseDeleteAction.mockReturnValue({
 mockUseGetAppImageUrl.mockReturnValue('https://example.com/app.png')
 mockUseApps.mockReturnValue({
     apps: [],
-    actionsApps: [],
 } as unknown as ReturnType<typeof useApps>)
-mockUseEnableAiAgent.mockReturnValue({
-    updateSettingsAfterAiAgentEnabled: jest.fn(),
-})
 
 describe('<CreateActionFormView />', () => {
+    beforeEach(() => {
+        mockUseEnableAiAgent.mockReturnValue({
+            updateSettingsAfterAiAgentEnabled: jest.fn(),
+        })
+    })
     it('should render template action form with prefilled API key', () => {
         const history = createMemoryHistory()
 
@@ -172,28 +142,5 @@ describe('<CreateActionFormView />', () => {
             screen.queryByText('Connect 3rd party app')
         ).not.toBeInTheDocument()
         expect(replaceStateSpy).toHaveBeenCalledWith(null, '')
-    })
-
-    it('should render template action form', async () => {
-        mockUseGetActionAppIntegration.mockReturnValue(shopifyIntegration)
-
-        renderWithRouter(<CreateActionFormView />, {
-            path: '/:shopType/:shopName/ai-agent/actions/new',
-            route: '/shopify/shopify-store/ai-agent/actions/new?template_id=testid2',
-        })
-
-        expect(screen.getByDisplayValue('test2')).toBeInTheDocument()
-        expect(
-            screen.getByDisplayValue('test instructions')
-        ).toBeInTheDocument()
-        expect(
-            screen.getByLabelText('No conditions required', {selector: 'input'})
-        ).toBeChecked()
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('button', {name: 'Create Action'})
-            ).toBeAriaEnabled()
-        })
     })
 })

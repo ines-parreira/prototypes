@@ -9,12 +9,8 @@ import NodeEditorDrawerContext from '../../NodeEditorDrawerContext'
 
 import LLMPromptTriggerEditor from '../LLMPromptTriggerEditor'
 
-jest.mock('common/flags', () => ({
-    useFlag: jest.fn(),
-}))
-
 describe('<LLMPromptTriggerEditor />', () => {
-    it('should render semi immutable inputs', () => {
+    it('should not fully editable custom inputs', () => {
         const nodeInEdition: LLMPromptTriggerNodeType = {
             ...buildNodeCommonProperties(),
             id: 'llm_prompt_trigger1',
@@ -22,7 +18,7 @@ describe('<LLMPromptTriggerEditor />', () => {
             data: {
                 instructions: '',
                 requires_confirmation: false,
-                inputs: [
+                custom_inputs: [
                     {
                         id: 'test',
                         name: 'test',
@@ -36,6 +32,7 @@ describe('<LLMPromptTriggerEditor />', () => {
                         data_type: 'string',
                     },
                 ],
+                object_inputs: [],
                 conditionsType: null,
                 conditions: [],
             },

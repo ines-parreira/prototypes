@@ -224,9 +224,6 @@ export const buildHttpRequestNode = (): HttpRequestNodeType => {
             method: 'GET',
             headers: [],
             variables: [],
-            json: null,
-            formUrlencoded: null,
-            bodyContentType: null,
         },
     }
 }
