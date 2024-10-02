@@ -1,6 +1,5 @@
 import React, {ReactNode, useMemo, useState} from 'react'
 import classNames from 'classnames'
-import {Container} from 'reactstrap'
 import {Link, useHistory} from 'react-router-dom'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -232,12 +231,11 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                 isConnectStoreLinkEnabled={isConnectStoreLinkEnabled}
             />
             {fluidContainer ? (
-                <Container
-                    fluid
+                <div
                     className={classNames(settingsCss.pageContainer, className)}
                 >
                     <div className={wrapperClassName}>{children}</div>
-                </Container>
+                </div>
             ) : (
                 children
             )}

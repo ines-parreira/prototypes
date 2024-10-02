@@ -7,7 +7,6 @@ import {
     useLocation,
     useRouteMatch,
 } from 'react-router-dom'
-import {Container} from 'reactstrap'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -115,9 +114,9 @@ const CurrentHelpCenter: React.FC = () => {
 
     if (!helpCenter || !client) {
         return (
-            <Container fluid className={settingsCss.pageContainer}>
+            <div className={settingsCss.pageContainer}>
                 <Loader />
-            </Container>
+            </div>
         )
     }
 

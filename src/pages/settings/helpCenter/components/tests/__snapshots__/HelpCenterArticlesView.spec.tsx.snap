@@ -139,7 +139,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
       </a>
     </nav>
     <div
-      class="pageContainer container-fluid"
+      class="pageContainer"
     >
       <h1>
         Start your help center here 

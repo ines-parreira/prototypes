@@ -6,7 +6,7 @@ import {produce} from 'immer'
 import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import * as integrationsSelectors from 'state/integrations/selectors'
@@ -320,9 +320,9 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
 
     if (isLoading) {
         return (
-            <Container fluid className={settingsCss.pageContainer}>
+            <div className={settingsCss.pageContainer}>
                 <Loader />
-            </Container>
+            </div>
         )
     }
 
@@ -342,7 +342,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                     </Breadcrumb>
                 }
             />
-            <Container fluid className={settingsCss.pageContainer}>
+            <div className={settingsCss.pageContainer}>
                 <div className={settingsCss.contentWrapper}>
                     <section className={css.sectionNameSubdomain}>
                         <div>
@@ -494,7 +494,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                         </Button>
                     </div>
                 </div>
-            </Container>
+            </div>
         </div>
     )
 }

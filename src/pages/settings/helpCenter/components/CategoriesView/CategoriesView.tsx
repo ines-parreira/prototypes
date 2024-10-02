@@ -1,5 +1,4 @@
 import React from 'react'
-import {Container} from 'reactstrap'
 import {NavLink} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
@@ -119,7 +118,7 @@ export const CategoriesViews = ({
                         onBackButtonClick={onShowTemplates}
                     />
                 ) : (
-                    <Container fluid className={settingsCss.pageContainer}>
+                    <div className={settingsCss.pageContainer}>
                         <h1>
                             Start your help center here&nbsp;
                             <span aria-label="books" role="img">
@@ -196,7 +195,7 @@ export const CategoriesViews = ({
                                 </Banner>
                             </div>
                         )}
-                    </Container>
+                    </div>
                 )
             ) : (
                 <CategoriesTable

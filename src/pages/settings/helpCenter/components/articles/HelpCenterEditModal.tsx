@@ -1,13 +1,11 @@
 import classnames from 'classnames'
 import React, {useEffect, useRef, useState} from 'react'
 import ReactDOM from 'react-dom'
-import {Container} from 'reactstrap'
 
-import {SCREEN_SIZE, useScreenSize} from '../../../../../hooks/useScreenSize'
-
-import Loader from '../../../../common/components/Loader/Loader'
-import settingsCss from '../../../settings.less'
-import {useEditionManager} from '../../providers/EditionManagerContext'
+import settingsCss from 'pages/settings/settings.less'
+import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
+import Loader from 'pages/common/components/Loader/Loader'
+import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 
 import css from './HelpCenterEditModal.less'
 
@@ -89,9 +87,9 @@ export const HelpCenterEditModal = ({
                 })}
             >
                 {isLoading ? (
-                    <Container fluid className={settingsCss.pageContainer}>
+                    <div className={settingsCss.pageContainer}>
                         <Loader />
-                    </Container>
+                    </div>
                 ) : (
                     children
                 )}

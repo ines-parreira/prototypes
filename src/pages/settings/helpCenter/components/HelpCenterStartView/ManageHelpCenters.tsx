@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {keyBy as _keyBy} from 'lodash'
 import moment from 'moment'
-import {Container} from 'reactstrap'
 import {useHistory} from 'react-router-dom'
 import settingsCss from 'pages/settings/settings.less'
 
@@ -147,7 +146,7 @@ export const ManageHelpCenters = ({
 
     if (!isLoading && !helpCenterList.length) {
         return (
-            <Container fluid className={settingsCss.pageContainer}>
+            <div className={settingsCss.pageContainer}>
                 <p>You have no Help Centers at the moment.</p>
                 <Button
                     isDisabled={isButtonDisabled}
@@ -157,7 +156,7 @@ export const ManageHelpCenters = ({
                         Create Help Center
                     </div>
                 </Button>
-            </Container>
+            </div>
         )
     }
 

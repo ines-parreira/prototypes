@@ -213,7 +213,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
       </a>
     </nav>
     <div
-      class="pageContainer wrapper container-fluid"
+      class="pageContainer wrapper"
     >
       <div
         class="contentWrapper"

@@ -139,7 +139,7 @@ exports[`<HelpCenterPageWrapper /> should render the component 1`] = `
       </a>
     </nav>
     <div
-      class="pageContainer container-fluid"
+      class="pageContainer"
     >
       <div
         class="contentWrapper"
