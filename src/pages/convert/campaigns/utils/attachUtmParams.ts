@@ -6,8 +6,6 @@ import {FeatureFlagKey} from 'config/featureFlags'
 
 import {CampaignProduct} from '../types/CampaignProduct'
 
-import {extractLinksFromText} from './extractLinksFromText'
-
 export function shouldAppendUtmParam(
     isConvertSubscriber: boolean,
     utmEnabled: boolean = true
@@ -73,36 +71,4 @@ export function attachUtmToCampaignProduct(
         utmEnabled,
         utmQueryString
     )
-}
-
-export function replaceUrlsWithUtmUrl(
-    html: string,
-    campaignName: string,
-    isConvertSubscriber: boolean,
-    canAddUtm: boolean
-) {
-    let output = html
-    const links = extractLinksFromText(html)
-
-    if (canAddUtm || !isConvertSubscriber) {
-        return output
-    }
-
-    if (!shouldAppendUtmParam(isConvertSubscriber, true)) {
-        links.forEach((url) => {
-            output = output.replace(url, removeRevenueUtmFromUrl(url))
-        })
-
-        return output
-    }
-
-    const linksWithUtm = links.map((url) =>
-        attachUtmToUrl(url, campaignName, isConvertSubscriber)
-    )
-
-    links.forEach((url, index) => {
-        output = output.replace(url, linksWithUtm[index])
-    })
-
-    return output
 }

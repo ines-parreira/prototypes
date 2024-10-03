@@ -132,7 +132,7 @@ export class AddLinkContainer extends Component<Props> {
         return attachUtmToUrl(
             url,
             '',
-            true,
+            this.context.canAddUtm,
             appliedUtmEnabled,
             appliedUtmQueryString
         )

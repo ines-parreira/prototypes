@@ -25,7 +25,6 @@ const useUtmMock = assumeMock(useUtm)
 
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
-jest.mock('pages/convert/common/hooks/useUtmFlag')
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')

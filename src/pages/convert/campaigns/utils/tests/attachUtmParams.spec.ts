@@ -7,7 +7,6 @@ import {
     attachUtmToCampaignProduct,
     removeRevenueUtmFromUrl,
     shouldAppendUtmParam,
-    replaceUrlsWithUtmUrl,
 } from '../attachUtmParams'
 
 jest.mock('utils/launchDarkly')
@@ -89,38 +88,5 @@ describe('removeRevenueUtmFromUrl', () => {
                 'https://jest-store.myshopify.com/?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=JestCampaign&anotherParam=someValue'
             )
         ).toEqual('https://jest-store.myshopify.com/?anotherParam=someValue')
-    })
-})
-
-describe('replaceUrlsWithUtmUrl', () => {
-    it('replaces the url with the utm url', () => {
-        const html = `<p><a href="${MOCK_PRODUCT.url}">Mock product</a></p>`
-
-        const campaignNameConcat = MOCK_CAMPAIGN_NAME.replace(' ', '%20')
-        const expectedFullUrl = `${MOCK_PRODUCT.url}?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignNameConcat}`
-
-        expect(
-            replaceUrlsWithUtmUrl(html, MOCK_CAMPAIGN_NAME, true, false)
-        ).toEqual(`<p><a href="${expectedFullUrl}">Mock product</a></p>`)
-    })
-
-    it('does not replace the url if the merchant does not accept utm params', () => {
-        allFlagsMock.mockReturnValueOnce({
-            [FeatureFlagKey.RevenueDisableUtmParams]: true,
-        })
-
-        const html = `<p><a href="${MOCK_PRODUCT.url}">Mock product</a></p>`
-
-        expect(
-            replaceUrlsWithUtmUrl(html, MOCK_CAMPAIGN_NAME, true, false)
-        ).toEqual(html)
-    })
-
-    it('should skip replacing completly if the canAddUtm flag is true', () => {
-        const html = `<p><a href="${MOCK_PRODUCT.url}">Mock product</a></p>`
-
-        expect(
-            replaceUrlsWithUtmUrl(html, MOCK_CAMPAIGN_NAME, true, true)
-        ).toEqual(html)
     })
 })

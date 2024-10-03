@@ -57,7 +57,6 @@ import {
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import useCanAddUtm from 'pages/convert/common/hooks/useUtmFlag'
 import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
@@ -442,7 +441,6 @@ export const CampaignDetailsForm = ({
 
     const utmProps = useUtm(channelConnection, campaignData.name)
     const {appliedUtmEnabled, appliedUtmQueryString} = utmProps
-    const canAddUtm = useCanAddUtm(isConvertSubscriber)
 
     const handleSaveCampaign = async (activate = false) => {
         if (!isCampaignValid) return
@@ -476,7 +474,6 @@ export const CampaignDetailsForm = ({
                 // we should have ability to decide whether we can activate campaign or not
                 canChangeStatus: displayScheduleSection ? true : !isEditMode,
                 isActive: activateCampaign,
-                canAddUtm: canAddUtm,
                 utmEnabled: appliedUtmEnabled,
                 utmQueryString: appliedUtmQueryString,
             })

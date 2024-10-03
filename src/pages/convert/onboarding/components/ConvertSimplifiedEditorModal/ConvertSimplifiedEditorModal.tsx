@@ -59,7 +59,6 @@ import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreview
 import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
 
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
-import useCanAddUtm from 'pages/convert/common/hooks/useUtmFlag'
 import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import css from './ConvertSimplifiedEditorModal.less'
@@ -209,7 +208,6 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
 
     const utmProps = useUtm(channelConnection, campaign?.name || '')
     const {appliedUtmEnabled, appliedUtmQueryString} = utmProps
-    const canAddUtm = useCanAddUtm(isConvertSubscriber)
 
     const onSubmit = async (activate = false) => {
         if (!campaign || !channelConnection) {
@@ -230,7 +228,6 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
             contactForm: contactForm,
             isActive: activate,
             canChangeStatus: !campaign?.id,
-            canAddUtm: canAddUtm,
             utmEnabled: appliedUtmEnabled,
             utmQueryString: appliedUtmQueryString,
         })

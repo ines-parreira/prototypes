@@ -13,7 +13,6 @@ import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus
 import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
 import {transformProductToAttachment} from 'pages/convert/campaigns/utils/transformProductToAttachment'
 import {transformDiscountOfferToAttachment} from 'pages/convert/campaigns/utils/transformDiscountOfferToAttachment'
-import {replaceUrlsWithUtmUrl} from 'pages/convert/campaigns/utils/attachUtmParams'
 import {
     CampaignContactFormAttachment,
     CampaignProductRecommendation,
@@ -31,7 +30,6 @@ type CreateCampaignPayloadType = {
     shopifyIntegration: Map<any, any>
     canChangeStatus: boolean
     isActive: boolean
-    canAddUtm: boolean
     utmEnabled: boolean
     utmQueryString: string
 }
@@ -48,7 +46,6 @@ export const createCampaignPayload = ({
     isConvertSubscriber = false,
     canChangeStatus = false,
     isActive = false,
-    canAddUtm = false,
     utmEnabled = true,
     utmQueryString = '',
 }: CreateCampaignPayloadType): Campaign => {
@@ -56,12 +53,6 @@ export const createCampaignPayload = ({
         const trimmedCampaignName = _trim(draft.name)
 
         draft.name = trimmedCampaignName
-        draft.message_html = replaceUrlsWithUtmUrl(
-            campaignData.message_html || '',
-            trimmedCampaignName,
-            isConvertSubscriber,
-            canAddUtm
-        )
         draft.triggers = triggers.filter((trigger) => {
             return trigger.type !== CampaignTriggerType.SingleInView
         })

@@ -57,7 +57,6 @@ describe('createCampaignPayload', () => {
             discountOffers: [],
             productRecommendations: [],
             contactForm: [],
-            canAddUtm: false,
             isActive: false,
             canChangeStatus: true,
             utmQueryString: '',
@@ -87,7 +86,6 @@ describe('createCampaignPayload', () => {
             contactForm: [],
             isActive: true,
             canChangeStatus: true,
-            canAddUtm: false,
             utmQueryString: '',
             utmEnabled: true,
         })
@@ -139,7 +137,6 @@ describe('createCampaignPayload', () => {
             productRecommendations: [campaignProductRecommendationAttachment],
             isActive: false,
             canChangeStatus: false,
-            canAddUtm: false,
             utmQueryString: '',
             utmEnabled: true,
         })

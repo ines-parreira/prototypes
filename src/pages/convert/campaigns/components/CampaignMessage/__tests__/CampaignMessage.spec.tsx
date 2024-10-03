@@ -24,7 +24,6 @@ import {CampaignMessage} from '../CampaignMessage'
 import {AddContactCaptureFormProps} from '../../ContactCaptureForm/AddContactCaptureForm'
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
-jest.mock('pages/convert/common/hooks/useUtmFlag')
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
 jest.mock('pages/convert/campaigns/components/ContactCaptureForm/utils')
 

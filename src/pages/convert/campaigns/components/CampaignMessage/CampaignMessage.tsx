@@ -36,7 +36,6 @@ import {
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {useAreConvertLLMProductRecommendationsEnabled} from 'pages/convert/common/hooks/useAreConvertLLMProductRecommendationsEnabled'
-import useCanAddUtm from 'pages/convert/common/hooks/useUtmFlag'
 import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
 import useCanAddContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
 import AddContactCaptureForm from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm'
@@ -249,7 +248,6 @@ export const CampaignMessage = memo(
             canAddContactForm,
         ])
 
-        const canAddUtm = useCanAddUtm(isConvertSubscriber)
         const contactFormAttachment = useMemo(
             () => transformAttachmentsToContactCaptureForms(attachments)[0],
             [attachments]
@@ -349,10 +347,10 @@ export const CampaignMessage = memo(
                         canAddProductAutomations={canAddProductRecommendation}
                         currentShopifyIntegration={shopifyIntegration}
                         sortAttachments={true}
-                        canAddUtm={canAddUtm}
                         contactFormButtonEnabled={contactFormButtonEnabled}
                         onContactFormOpenChange={onContactFormOpenChange}
                         placementType={RichFieldEditorPlacement.ConvertDetail}
+                        canAddUtm={isConvertSubscriber}
                     />
                     <TicketAttachments
                         context="campaign-message"
