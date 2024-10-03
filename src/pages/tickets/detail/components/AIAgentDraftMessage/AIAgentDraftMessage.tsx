@@ -126,7 +126,7 @@ const AIAgentDraftMessage = ({ticketId, message, isTrial}: Props) => {
             infoContent={
                 <div
                     dangerouslySetInnerHTML={{
-                        __html: feedbackMessage.summary,
+                        __html: feedbackMessage.summary ?? '',
                     }}
                 />
             }

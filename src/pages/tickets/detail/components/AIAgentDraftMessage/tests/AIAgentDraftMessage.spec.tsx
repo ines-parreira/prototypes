@@ -119,4 +119,26 @@ describe('AIAgentDraftMessage', () => {
             }
         )
     })
+
+    it('render empty message when feedbackMessage is not present', () => {
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {...messageFeedback, summary: undefined},
+                        mockMessage,
+                    ],
+                },
+            },
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetAiAgentFeedback>)
+
+        render(
+            <Provider store={store}>
+                <AIAgentDraftMessage {...defaultProps} />
+            </Provider>
+        )
+
+        expect(screen.queryByText('Copy to Editor')).toBeInTheDocument()
+    })
 })

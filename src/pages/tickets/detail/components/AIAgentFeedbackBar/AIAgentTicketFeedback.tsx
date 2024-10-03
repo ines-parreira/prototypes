@@ -61,10 +61,12 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
     const usedResourceCount = guidanceCount + actionCount + knowledgeCount
 
     const {shopType, shopName} = ticketFeedback.messages[0]
+    const ticketFeedbackSummary = ticketFeedback.messages[0].summary
 
     const isOnlyDraftMessage =
         aiMessages.length === 1 &&
-        ticketFeedback.messages[0].summary.includes(QA_FAILED_MESSAGE)
+        !!ticketFeedbackSummary &&
+        ticketFeedbackSummary.includes(QA_FAILED_MESSAGE)
 
     return (
         <>

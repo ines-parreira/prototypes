@@ -51,6 +51,8 @@ const AIAgentFeedbackBar = () => {
         )
     }
 
+    const ticketMessageFeedbackSummary = ticketFeedback?.messages[0].summary
+
     return (
         <>
             <div className={css.summaryContainer}>
@@ -61,10 +63,11 @@ const AIAgentFeedbackBar = () => {
                     className={css.summary}
                     data-testid={FEEDBACK_TICKET_SUMMARY_TEST_ID}
                     dangerouslySetInnerHTML={{
-                        __html: messageFeedback
-                            ? messageFeedback?.summary
-                            : ticketFeedback?.messages.length === 1
-                            ? ticketFeedback.messages[0].summary
+                        __html: messageFeedback?.summary
+                            ? messageFeedback.summary
+                            : ticketFeedback?.messages.length === 1 &&
+                              ticketMessageFeedbackSummary !== undefined
+                            ? ticketMessageFeedbackSummary
                             : ticketFeedbackSummary,
                     }}
                 />

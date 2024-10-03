@@ -38,6 +38,7 @@ const mockMessage = {
 } as unknown as TicketMessage
 
 const queryClient = mockQueryClient()
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     ui: {
@@ -96,7 +97,7 @@ describe('AIAgentFeedbackBar', () => {
 
         expect(
             screen.getByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID)
-        ).toHaveTextContent(messageFeedback.summary)
+        ).toHaveTextContent(messageFeedback.summary!)
         expect(screen.getByTestId('message-feedback')).toBeInTheDocument()
     })
 
@@ -110,5 +111,29 @@ describe('AIAgentFeedbackBar', () => {
         )
 
         expect(queryByText('AutoQA')).not.toBeInTheDocument()
+    })
+
+    it('should render ticket summary when ticket message summary is not present', () => {
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {...messageFeedback, summary: undefined},
+                        mockMessage,
+                    ],
+                },
+            },
+            isLoading: false,
+        } as any)
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <AIAgentFeedbackBar />
+                </Provider>
+            </QueryClientProvider>
+        )
+        expect(
+            screen.getByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID)
+        ).toHaveTextContent(ticketFeedbackSummary)
     })
 })
