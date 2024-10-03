@@ -1,25 +1,36 @@
 import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {useParams} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 
-import {assumeMock} from 'utils/testing'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 import {ticketInputFieldDefinition} from 'fixtures/customField'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {useUpdateCustomFieldDefinitions} from 'hooks/customField/useUpdateCustomFieldDefinitions'
 import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'models/customField/constants'
+import {assumeMock, getLastMockCall} from 'utils/testing'
 
 import CustomFields from '../CustomFields'
 
+jest.mock(
+    'common/segment',
+    () =>
+        ({
+            ...jest.requireActual('common/segment'),
+            logEvent: jest.fn(),
+        } as Record<string, unknown>)
+)
 jest.mock(
     'react-router-dom',
     () =>
         ({
             ...jest.requireActual('react-router-dom'),
             useParams: jest.fn(),
-            Link: ({children}: {children: React.ReactNode}) => children,
+            Link: jest.fn(
+                ({children}: {children: React.ReactNode}) => children
+            ),
             NavLink: ({children}: {children: React.ReactNode}) => children,
         } as Record<string, unknown>)
 )
@@ -38,6 +49,8 @@ const useUpdateCustomFieldDefinitionsMock = assumeMock(
     useUpdateCustomFieldDefinitions
 )
 const useDebouncedValueMock = assumeMock(useDebouncedValue)
+const mockedLogEvent = assumeMock(logEvent)
+const mockedLink = assumeMock(Link)
 
 const emptyFieldDefinitions = {
     isLoading: false,
@@ -64,6 +77,24 @@ describe('<CustomFields/>', () => {
 
         expect(screen.getByText(/Get started with Ticket Fields/)).toBeDefined()
         expect(screen.queryByTestId('custom-fields-list')).toBeNull()
+    })
+
+    it("should render a 'Create Field' button", () => {
+        render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
+
+        const createFieldButton = screen.getByRole('button', {
+            name: 'Create Field',
+        })
+        expect(createFieldButton).toBeInTheDocument()
+        getLastMockCall(mockedLink)[0].onClick?.(
+            {} as React.MouseEvent<HTMLAnchorElement, MouseEvent>
+        )
+        expect(mockedLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.CustomFieldCreateFieldClicked,
+            {
+                objectType: OBJECT_TYPES.TICKET,
+            }
+        )
     })
 
     it('should render no active ticket fields when there is at least one archived ticket field', () => {

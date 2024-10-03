@@ -117,8 +117,8 @@ describe('<DropdownCSVImport/>', () => {
             message: '2 values successfully imported.',
         })
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.CustomFieldTicketDropdownCsvImportSuccessful,
-            {count: 2}
+            SegmentEvent.CustomFieldDropdownCsvImportSuccessful,
+            {count: 2, objectType: OBJECT_TYPES.TICKET}
         )
     })
 
@@ -162,7 +162,10 @@ describe('<DropdownCSVImport/>', () => {
             allowHTML: true,
         })
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.CustomFieldTicketDropdownCsvImportError
+            SegmentEvent.CustomFieldDropdownCsvImportError,
+            {
+                objectType: OBJECT_TYPES.TICKET,
+            }
         )
     })
 
@@ -187,7 +190,10 @@ describe('<DropdownCSVImport/>', () => {
             message: 'Import was unsuccessful: File has duplicates',
         })
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.CustomFieldTicketDropdownCsvImportError
+            SegmentEvent.CustomFieldDropdownCsvImportError,
+            {
+                objectType: OBJECT_TYPES.TICKET,
+            }
         )
     })
 
@@ -213,7 +219,10 @@ describe('<DropdownCSVImport/>', () => {
             allowHTML: true,
         })
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.CustomFieldTicketDropdownCsvImportError
+            SegmentEvent.CustomFieldDropdownCsvImportError,
+            {
+                objectType: OBJECT_TYPES.TICKET,
+            }
         )
     })
 
@@ -239,7 +248,10 @@ describe('<DropdownCSVImport/>', () => {
             allowHTML: true,
         })
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.CustomFieldTicketDropdownCsvImportError
+            SegmentEvent.CustomFieldDropdownCsvImportError,
+            {
+                objectType: OBJECT_TYPES.TICKET,
+            }
         )
     })
 
@@ -265,7 +277,10 @@ describe('<DropdownCSVImport/>', () => {
                 'Import was unsuccessful: <ul><li>File has duplicates</li><li>Some values have more than 5 nested children levels</li></ul>',
         })
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.CustomFieldTicketDropdownCsvImportError
+            SegmentEvent.CustomFieldDropdownCsvImportError,
+            {
+                objectType: OBJECT_TYPES.TICKET,
+            }
         )
     })
 
@@ -284,6 +299,9 @@ describe('<DropdownCSVImport/>', () => {
         await waitFor(() => fireEvent.click(getByText('Import File')))
         await waitFor(() => props.onClose.mock.calls.length > 0)
 
-        expect(logEventMock).not.toHaveBeenCalled()
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.CustomFieldDropdownCsvImportSuccessful,
+            {count: 2, objectType: OBJECT_TYPES.CUSTOMER}
+        )
     })
 })

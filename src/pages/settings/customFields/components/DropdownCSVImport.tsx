@@ -13,7 +13,6 @@ import {
     DROPDOWN_CSV_TEMPLATE,
     DROPDOWN_NESTING_DELIMITER,
     OBJECT_TYPE_SETTINGS,
-    OBJECT_TYPES,
 } from 'models/customField/constants'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -97,12 +96,12 @@ export const DropdownCSVImport = ({
         // Report result
         if (errors.length === 0) {
             onImport(lines)
-            if (objectType === OBJECT_TYPES.TICKET) {
-                logEvent(
-                    SegmentEvent.CustomFieldTicketDropdownCsvImportSuccessful,
-                    {count: lines.length}
-                )
-            }
+
+            logEvent(SegmentEvent.CustomFieldDropdownCsvImportSuccessful, {
+                count: lines.length,
+                objectType,
+            })
+
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
@@ -110,9 +109,10 @@ export const DropdownCSVImport = ({
                 })
             )
         } else {
-            if (objectType === OBJECT_TYPES.TICKET) {
-                logEvent(SegmentEvent.CustomFieldTicketDropdownCsvImportError)
-            }
+            logEvent(SegmentEvent.CustomFieldDropdownCsvImportError, {
+                objectType,
+            })
+
             const errorMsg =
                 errors.length > 1
                     ? '<ul><li>' + errors.join('</li><li>') + '</li></ul>'

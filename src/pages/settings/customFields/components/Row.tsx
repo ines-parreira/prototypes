@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import {Tooltip} from '@gorgias/ui-kit'
 import {ulid} from 'ulidx'
 
+import {SegmentEvent, logEvent} from 'common/segment'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {CustomField, isCustomFieldAIManagedType} from 'models/customField/types'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -134,6 +135,12 @@ export default function Row({
                             onConfirm={() => {
                                 setArchiveModalVisible(false)
                                 mutate(true)
+                                logEvent(
+                                    SegmentEvent.CustomFieldArchivedFieldClicked,
+                                    {
+                                        objectType: customField.object_type,
+                                    }
+                                )
                             }}
                             onClose={() => setArchiveModalVisible(false)}
                             objectType={customField.object_type}

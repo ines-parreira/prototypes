@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {OBJECT_TYPES} from 'models/customField/constants'
 import {
     CustomFieldInput,
     CustomFieldObjectTypes,
@@ -36,11 +35,11 @@ export default function AddFieldForm({
     const close = () =>
         history.push(`/app/settings/${CUSTOM_FIELD_ROUTES[objectType]}`)
     const handleSubmit = async (field: CustomFieldInput) => {
-        if (objectType === OBJECT_TYPES.TICKET) {
-            logEvent(SegmentEvent.CustomFieldTicketSaveNewFieldClicked, {
-                fieldType: field.definition.input_settings.input_type,
-            })
-        }
+        logEvent(SegmentEvent.CustomFieldSaveNewFieldClicked, {
+            fieldType: field.definition.input_settings.input_type,
+            objectType,
+        })
+
         await mutateAsync([field])
     }
 

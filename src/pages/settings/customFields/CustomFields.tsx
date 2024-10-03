@@ -6,7 +6,7 @@ import useTitle from 'hooks/useTitle'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {useUpdateCustomFieldDefinitions} from 'hooks/customField/useUpdateCustomFieldDefinitions'
-import {OBJECT_TYPE_SETTINGS, OBJECT_TYPES} from 'models/customField/constants'
+import {OBJECT_TYPE_SETTINGS} from 'models/customField/constants'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import List from 'pages/settings/customFields/components/List'
@@ -92,11 +92,9 @@ export default function CustomFields({
             <Link
                 to={`/app/settings/${CUSTOM_FIELD_ROUTES[objectType]}/add`}
                 onClick={() => {
-                    if (objectType === OBJECT_TYPES.TICKET) {
-                        logEvent(
-                            SegmentEvent.CustomFieldTicketCreateFieldClicked
-                        )
-                    }
+                    logEvent(SegmentEvent.CustomFieldCreateFieldClicked, {
+                        objectType,
+                    })
                 }}
             >
                 <Button>Create Field</Button>

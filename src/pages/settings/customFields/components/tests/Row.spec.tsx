@@ -1,7 +1,8 @@
 import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
-
 import userEvent from '@testing-library/user-event'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     aiManagedTicketInputFieldDefinition,
     ticketInputFieldDefinition,
@@ -12,6 +13,14 @@ import {assumeMock} from 'utils/testing'
 
 import Row from '../Row'
 
+jest.mock(
+    'common/segment',
+    () =>
+        ({
+            ...jest.requireActual('common/segment'),
+            logEvent: jest.fn(),
+        } as Record<string, unknown>)
+)
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
@@ -27,6 +36,7 @@ const useUpdateCustomFieldArchiveStatusMock = assumeMock(
     useUpdateCustomFieldArchiveStatus
 )
 const TableBodyRowDraggableMock = assumeMock(TableBodyRowDraggable)
+const mockedLogEvent = assumeMock(logEvent)
 
 const updateMutateMock = jest.fn()
 
@@ -230,6 +240,12 @@ describe('<Row />', () => {
             ticketInputFieldDefinition.id
         )
         expect(updateMutateMock).toHaveBeenCalledWith(true)
+        expect(mockedLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.CustomFieldArchivedFieldClicked,
+            {
+                objectType: ticketInputFieldDefinition.object_type,
+            }
+        )
     })
 
     it('should unarchive correctly', async () => {
