@@ -7,6 +7,7 @@ import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import {useFlag} from 'common/flags'
+import {UserRole} from 'config/types/user'
 import {selectContext, fetchWidgets} from 'state/widgets/actions'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {RootState, StoreState} from 'state/types'
@@ -19,13 +20,14 @@ import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants
 import {getAIAgentMessages} from 'state/ticket/selectors'
 import {user} from 'fixtures/users'
 import {ticket} from 'fixtures/ticket'
+import {Infobar} from 'pages/common/components/infobar/Infobar/Infobar'
 import {useHasAIAgent} from 'pages/tickets/detail/components/TicketFeedback'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     CUSTOMER_INFORMATION_TAB,
     TICKET_FEEDBACK_TAB,
     TicketInfobarContainer,
 } from '../TicketInfobarContainer'
-import {Infobar} from '../../../common/components/infobar/Infobar/Infobar'
 import {TRIAL_MESSAGE_TAG} from '../components/AIAgentFeedbackBar/constants'
 
 jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
@@ -36,6 +38,9 @@ const useHasAIAgentMock = useHasAIAgent as jest.Mock
 
 jest.mock('common/flags', () => ({useFlag: jest.fn()}))
 const useFlagMock = useFlag as jest.Mock
+
+jest.mock('state/currentUser/selectors')
+const getCurrentUserMock = getCurrentUser as unknown as jest.Mock
 
 jest.mock('state/widgets/actions')
 
@@ -49,7 +54,7 @@ jest.mock(
         } as Record<string, unknown>)
 )
 jest.mock(
-    '../../../common/components/infobar/Infobar/Infobar',
+    'pages/common/components/infobar/Infobar/Infobar',
     () =>
         ({
             sources,
@@ -115,6 +120,12 @@ describe('<TicketInfobarContainer />', () => {
     } as unknown as ComponentProps<typeof TicketInfobarContainer>
 
     beforeEach(() => {
+        getCurrentUserMock.mockReturnValue(
+            fromJS({
+                id: 2,
+                role: {name: UserRole.BasicAgent},
+            })
+        )
         useFlagMock.mockReturnValue(false)
         useHasAIAgentMock.mockReturnValue(true)
         mockedGetAIAgentMessages.mockReturnValue([
@@ -237,6 +248,36 @@ describe('<TicketInfobarContainer />', () => {
 
         expect(mockedChangeTicketMessage).toHaveBeenCalledWith({
             message: undefined,
+        })
+    })
+
+    it('should switch to the Ticket Feedback tab if the user is a team lead and that tab is not yet selected', () => {
+        getCurrentUserMock.mockReturnValue(
+            fromJS({
+                id: 2,
+                role: {name: UserRole.Agent},
+            })
+        )
+        mockedGetActiveTab.mockReturnValue(
+            TicketAIAgentFeedbackTab.CustomerInformation
+        )
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            }
+        )
+
+        const customerInformationTab = screen.getByText(
+            CUSTOMER_INFORMATION_TAB
+        )
+        userEvent.click(customerInformationTab)
+
+        expect(mockedChangeActiveTab).toHaveBeenCalledWith({
+            activeTab: TicketAIAgentFeedbackTab.AIAgent,
         })
     })
 

@@ -9,6 +9,7 @@ import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {
     changeActiveTab,
     changeTicketMessage,
@@ -29,6 +30,8 @@ import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants
 import {logEventWithSampling} from 'common/segment/segment'
 import {SegmentEvent} from 'common/segment'
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {isTeamLead} from 'utils'
 import {DATE_FEATURE_AVAILABLE} from './components/AIAgentFeedbackBar/constants'
 
 import css from './TicketInfobarContainer.less'
@@ -55,6 +58,7 @@ export const TicketInfobarContainer = ({
     const params = useParams<{ticketId: string}>()
     const dispatch = useAppDispatch()
     const accountId = useAppSelector(getCurrentAccountId)
+    const currentUser = useAppSelector(getCurrentUser)
 
     const hasAIAgent = useHasAIAgent()
     const hasAutoQA = useFlag<boolean>(FeatureFlagKey.AutoQA, false)
@@ -82,6 +86,7 @@ export const TicketInfobarContainer = ({
     const aiMessages = useAppSelector(getAIAgentMessages).filter(
         (message) => new Date(message.created_datetime) > DATE_FEATURE_AVAILABLE
     )
+    const activeTab = useAppSelector(getActiveTab)
 
     const handleChangeTab = (tab: TicketAIAgentFeedbackTab) => {
         if (activeTab === tab) {
@@ -115,7 +120,12 @@ export const TicketInfobarContainer = ({
         })
     }
 
-    const activeTab = useAppSelector(getActiveTab)
+    useEffectOnce(() => {
+        if (isTeamLead(currentUser)) {
+            handleChangeTab(TicketAIAgentFeedbackTab.AIAgent)
+        }
+    })
+
     const showTicketFeedback = activeTab === TicketAIAgentFeedbackTab.AIAgent
 
     return (
