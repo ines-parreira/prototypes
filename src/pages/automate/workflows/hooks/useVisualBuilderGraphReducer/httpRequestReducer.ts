@@ -208,9 +208,9 @@ export function httpRequestReducer(
                     node.data.method = action.method
 
                     if (action.method === 'GET') {
-                        delete node.data.json
-                        delete node.data.formUrlencoded
-                        delete node.data.bodyContentType
+                        node.data.json = null
+                        node.data.formUrlencoded = null
+                        node.data.bodyContentType = null
                     } else {
                         if (!node.data.bodyContentType) {
                             node.data.bodyContentType = 'application/json'
@@ -265,11 +265,11 @@ export function httpRequestReducer(
                     switch (action.bodyContentType) {
                         case 'application/json':
                             node.data.json = '{}'
-                            delete node.data.formUrlencoded
+                            node.data.formUrlencoded = null
                             break
                         case 'application/x-www-form-urlencoded':
                             node.data.formUrlencoded = []
-                            delete node.data.json
+                            node.data.json = null
                             break
                     }
                 }

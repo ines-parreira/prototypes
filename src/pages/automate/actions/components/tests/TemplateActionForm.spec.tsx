@@ -6,99 +6,88 @@ import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {ulid} from 'ulidx'
-import {screen, fireEvent, act} from '@testing-library/react'
+import {act, fireEvent, screen, waitFor} from '@testing-library/react'
+import {createMemoryHistory} from 'history'
+
 import {useFlag} from 'common/flags'
-
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {IntegrationType} from 'models/integration/constants'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import {StoreIntegration} from 'models/integration/types'
+import {renderWithRouter} from 'utils/testing'
+import {shopifyIntegration} from 'fixtures/integrations'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import {useGetStoreApps} from 'models/workflows/queries'
+import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 
-import TemplateActionsForm from '../components/TemplateActionsForm'
+import useAddStoreApp from '../../hooks/useAddStoreApp'
+import useUpsertAction from '../../hooks/useUpsertAction'
+import useDeleteAction from '../../hooks/useDeleteAction'
+
+import TemplateActionForm from '../TemplateActionForm'
+
+import {TemplateConfiguration} from '../../types'
 
 jest.mock('launchdarkly-react-client-sdk')
-jest.mock('pages/automate/common/hooks/useStoreIntegrations')
-
 jest.mock('common/flags', () => ({
     useFlag: jest.fn(),
 }))
+jest.mock('pages/automate/actionsPlatform/hooks/useApps')
+jest.mock('models/workflows/queries')
+jest.mock('../../hooks/useAddStoreApp')
+jest.mock('../../hooks/useUpsertAction')
+jest.mock('../../hooks/useDeleteAction')
+
 const mockUseFlag = useFlag as jest.Mock
 
-const mockUseStoreIntegrations = assumeMock(useStoreIntegrations)
-const storeIntegrations = [
-    {
-        id: 1,
-        name: 'Shopify Store 1',
-        type: IntegrationType.Shopify,
-        meta: {shop_name: 'test-shop'},
-    },
-    {
-        id: 2,
-        name: 'Shopify Store 2',
-        type: IntegrationType.Shopify,
-        meta: {shop_name: 'Shop2'},
-    },
-    {
-        id: 3,
-        name: 'BigCommerce Store 1',
-        type: IntegrationType.BigCommerce,
-        meta: {store_hash: 'Shop3'},
-    },
-] as unknown as StoreIntegration[]
 const mockStore = configureMockStore([thunk])
 
-const MOCK_EMAIL_ADDRESS = 'test@mail.com'
-
 const defaultState = {
-    integrations: fromJS({
-        integrations: [
-            {
-                id: 1,
-                type: IntegrationType.Email,
-                name: 'My email integration',
-                meta: {
-                    address: MOCK_EMAIL_ADDRESS,
-                },
-            },
-            {
-                id: 1,
-                name: 'Shopify Store 1',
-                type: IntegrationType.Shopify,
-                meta: {shop_name: 'test-shop', oauth: {status: 'success'}},
-            },
-        ],
-    }),
-    entities: {
-        helpCenter: {
-            helpCenters: {
-                helpCentersById: {
-                    '1': {id: 1, name: 'help center 1', type: 'faq'},
-                    '2': {id: 2, name: 'help center 2', type: 'faq'},
-                },
-            },
-        },
-    },
+    integrations: fromJS({integrations: [shopifyIntegration]}),
 }
 
 const queryClient = mockQueryClient()
 
 const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+const mockUseApps = jest.mocked(useApps)
+const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
+const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
+const mockUseUpsertAction = jest.mocked(useUpsertAction)
+const mockUseDeleteAction = jest.mocked(useDeleteAction)
 
-describe('<TemplateActionsForm />', () => {
+describe('<TemplateActionForm />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        mockUseStoreIntegrations.mockReturnValue(storeIntegrations)
+
         mockUseFlags.mockReturnValue({})
         mockUseFlag.mockReturnValue(true)
+        mockUseApps.mockReturnValue({
+            isLoading: false,
+            apps: [],
+            actionsApps: [],
+        })
+        mockUseGetStoreApps.mockReturnValue({
+            data: [],
+            isInitialLoading: false,
+        } as unknown as ReturnType<typeof useGetStoreApps>)
+        mockUseAddStoreApp.mockReturnValue(jest.fn())
+        mockUseUpsertAction.mockReturnValue({
+            mutateAsync: jest.fn(),
+            isLoading: false,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+        mockUseDeleteAction.mockReturnValue({
+            mutate: jest.fn(),
+            isLoading: false,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useDeleteAction>)
     })
 
-    it('renders the form', () => {
+    it('should render template Action form', () => {
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <QueryClientProvider client={queryClient}>
-                    <TemplateActionsForm
-                        initialConfigurationData={{
+                    <TemplateActionForm
+                        configuration={{
+                            internal_id: ulid(),
+                            id: ulid(),
                             name: '',
                             initial_step_id: null,
                             available_languages: [],
@@ -128,7 +117,7 @@ describe('<TemplateActionsForm />', () => {
                             steps: [],
                             transitions: [],
                         }}
-                        templateConfiguration={{
+                        template={{
                             name: '',
                             internal_id: ulid(),
                             id: ulid(),
@@ -167,7 +156,7 @@ describe('<TemplateActionsForm />', () => {
             </Provider>,
             {
                 path: `/:shopType/:shopName/ai-agent/actions/new`,
-                route: '/shopify/test-shop/ai-agent/actions/new',
+                route: '/shopify/shopify-store/ai-agent/actions/new',
             }
         )
 
@@ -182,8 +171,10 @@ describe('<TemplateActionsForm />', () => {
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <QueryClientProvider client={queryClient}>
-                    <TemplateActionsForm
-                        initialConfigurationData={{
+                    <TemplateActionForm
+                        configuration={{
+                            internal_id: ulid(),
+                            id: ulid(),
                             name: '',
                             initial_step_id: null,
                             available_languages: [],
@@ -215,7 +206,7 @@ describe('<TemplateActionsForm />', () => {
                             steps: [],
                             transitions: [],
                         }}
-                        templateConfiguration={{
+                        template={{
                             name: '',
                             internal_id: ulid(),
                             id: ulid(),
@@ -255,8 +246,8 @@ describe('<TemplateActionsForm />', () => {
                 </QueryClientProvider>
             </Provider>,
             {
-                path: `/:shopType/:shopName/ai-agent/actions/new`,
-                route: '/shopify/test-shop/ai-agent/actions/new',
+                path: '/:shopType/:shopName/ai-agent/actions/new',
+                route: '/shopify/shopify-store/ai-agent/actions/new',
             }
         )
 
@@ -267,8 +258,10 @@ describe('<TemplateActionsForm />', () => {
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <QueryClientProvider client={queryClient}>
-                    <TemplateActionsForm
-                        initialConfigurationData={{
+                    <TemplateActionForm
+                        configuration={{
+                            internal_id: ulid(),
+                            id: ulid(),
                             name: '',
                             initial_step_id: null,
                             available_languages: [],
@@ -300,7 +293,7 @@ describe('<TemplateActionsForm />', () => {
                             steps: [],
                             transitions: [],
                         }}
-                        templateConfiguration={{
+                        template={{
                             name: '',
                             internal_id: ulid(),
                             id: ulid(),
@@ -341,7 +334,7 @@ describe('<TemplateActionsForm />', () => {
             </Provider>,
             {
                 path: `/:shopType/:shopName/ai-agent/actions/new`,
-                route: '/shopify/test-shop/ai-agent/actions/new',
+                route: '/shopify/shopify-store/ai-agent/actions/new',
             }
         )
 
@@ -355,11 +348,12 @@ describe('<TemplateActionsForm />', () => {
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <QueryClientProvider client={queryClient}>
-                    <TemplateActionsForm
-                        initialConfigurationData={{
+                    <TemplateActionForm
+                        configuration={{
+                            internal_id: ulid(),
+                            id: ulid(),
                             name: '',
                             initial_step_id: null,
-                            internal_id: ulid(),
                             available_languages: [],
                             is_draft: false,
                             apps: [
@@ -388,8 +382,9 @@ describe('<TemplateActionsForm />', () => {
                             ],
                             steps: [],
                             transitions: [],
+                            updated_datetime: new Date().toISOString(),
                         }}
-                        templateConfiguration={{
+                        template={{
                             name: '',
                             internal_id: ulid(),
                             id: ulid(),
@@ -455,5 +450,225 @@ describe('<TemplateActionsForm />', () => {
             'test'
         )
         expect(screen.queryByText('View Events')).toBeInTheDocument()
+    })
+
+    it('should redirect back to actions if native integration is missing', () => {
+        const history = createMemoryHistory({
+            initialEntries: ['/shopify/shopify-store/ai-agent/actions/new'],
+        })
+
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        renderWithRouter(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({integrations: []}),
+                })}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <TemplateActionForm
+                        configuration={{
+                            internal_id: ulid(),
+                            id: ulid(),
+                            name: '',
+                            initial_step_id: null,
+                            available_languages: [],
+                            is_draft: false,
+                            apps: [{type: 'shopify'}],
+                            entrypoints: [
+                                {
+                                    kind: 'llm-conversation',
+                                    trigger: 'llm-prompt',
+                                    settings: {
+                                        instructions: '',
+                                        requires_confirmation: false,
+                                    },
+                                    deactivated_datetime: null,
+                                },
+                            ],
+                            triggers: [
+                                {
+                                    kind: 'llm-prompt',
+                                    settings: {
+                                        custom_inputs: [],
+                                        object_inputs: [],
+                                        outputs: [],
+                                    },
+                                },
+                            ],
+                            steps: [],
+                            transitions: [],
+                        }}
+                        template={{
+                            name: '',
+                            internal_id: ulid(),
+                            id: ulid(),
+                            initial_step_id: '',
+                            is_draft: false,
+                            entrypoints: [
+                                {
+                                    kind: 'llm-conversation',
+                                    trigger: 'llm-prompt',
+                                    settings: {
+                                        instructions: '',
+                                        requires_confirmation: false,
+                                    },
+                                    deactivated_datetime: null,
+                                },
+                            ],
+                            triggers: [
+                                {
+                                    kind: 'llm-prompt',
+                                    settings: {
+                                        custom_inputs: [],
+                                        object_inputs: [],
+                                        outputs: [],
+                                    },
+                                },
+                            ],
+                            steps: [],
+                            transitions: [],
+                            available_languages: [],
+                            created_datetime: new Date().toISOString(),
+                            updated_datetime: new Date().toISOString(),
+                            apps: [{type: 'shopify'}],
+                        }}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/ai-agent/actions/new',
+                route: '/shopify/shopify-store/ai-agent/actions/new',
+                history,
+            }
+        )
+
+        expect(historyPushSpy).toHaveBeenCalledWith(
+            '/app/automation/shopify/shopify-store/ai-agent/actions'
+        )
+    })
+
+    it('should redirect back to actions after creating an Action', async () => {
+        const configuration: WorkflowConfiguration = {
+            internal_id: ulid(),
+            id: ulid(),
+            name: 'test',
+            initial_step_id: null,
+            available_languages: [],
+            is_draft: false,
+            apps: [{type: 'shopify'}],
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        instructions: 'test',
+                        requires_confirmation: false,
+                    },
+                    deactivated_datetime: null,
+                },
+            ],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
+                    },
+                },
+            ],
+            steps: [],
+            transitions: [],
+        }
+        const template: TemplateConfiguration = {
+            name: 'test',
+            internal_id: ulid(),
+            id: ulid(),
+            initial_step_id: '',
+            is_draft: false,
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        instructions: 'test',
+                        requires_confirmation: false,
+                    },
+                    deactivated_datetime: null,
+                },
+            ],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
+                    },
+                },
+            ],
+            steps: [],
+            transitions: [],
+            available_languages: [],
+            created_datetime: new Date().toISOString(),
+            updated_datetime: new Date().toISOString(),
+            apps: [{type: 'shopify'}],
+        }
+
+        const history = createMemoryHistory({
+            initialEntries: ['/shopify/shopify-store/ai-agent/actions/new'],
+        })
+
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        const {rerender} = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <TemplateActionForm
+                        configuration={configuration}
+                        template={template}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/ai-agent/actions/new',
+                route: '/shopify/shopify-store/ai-agent/actions/new',
+                history,
+            }
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: 'Create Action'})
+            ).toBeAriaEnabled()
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Create Action'))
+        })
+
+        mockUseUpsertAction.mockReturnValue({
+            mutateAsync: jest.fn(),
+            isLoading: false,
+            isSuccess: true,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        rerender(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <TemplateActionForm
+                        configuration={configuration}
+                        template={template}
+                    />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(historyPushSpy).toHaveBeenCalledWith(
+                '/app/automation/shopify/shopify-store/ai-agent/actions'
+            )
+        })
     })
 })

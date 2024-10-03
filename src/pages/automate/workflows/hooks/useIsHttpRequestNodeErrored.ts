@@ -19,7 +19,7 @@ export default function useIsHttpRequestNodeErrored(
         url,
         headers,
         json,
-        formUrlencoded = [],
+        formUrlencoded,
         bodyContentType,
         variables,
     } = node.data
@@ -46,7 +46,9 @@ export default function useIsHttpRequestNodeErrored(
             (header) =>
                 !validateHttpHeaderName(header.name) || !header.value.trim()
         ) ||
-        formUrlencoded.some((item) => !item.key.trim() || !item.value.trim()) ||
+        formUrlencoded?.some(
+            (item) => !item.key.trim() || !item.value.trim()
+        ) ||
         (!allowMissingVariables &&
             variables.some(
                 (variable) => !variable.name.trim() || !variable.jsonpath.trim()

@@ -1,0 +1,10 @@
+@import (reference) '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: grid;
+        grid-template-columns: 110px 160px 1fr 20px;
+        gap: @layout-spacing-xs;
+    }
+}

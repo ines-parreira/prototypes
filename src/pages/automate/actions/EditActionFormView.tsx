@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react'
-import {useParams, useHistory} from 'react-router-dom'
+import {useParams, useHistory, Redirect} from 'react-router-dom'
 import {useQueryClient} from '@tanstack/react-query'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {handleError} from 'pages/automate/actions/hooks/errorHandler'
@@ -10,17 +11,15 @@ import {
     storeWorkflowsConfigurationDefinitionKeys,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
+import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 
-import {
-    StoresWorkflowConfiguration,
-    CustomActionConfigurationFormInput,
-    TemplateConfigurationFormInput,
-} from './types'
-import CustomActionsForm from './components/CustomActionsForm'
-import TemplateActionsForm from './components/TemplateActionsForm'
+import {StoresWorkflowConfiguration} from './types'
+import CustomActionForm from './components/CustomActionForm'
+import TemplateActionForm from './components/TemplateActionForm'
+
 import css from './ActionsView.less'
 
-export default function EditActionFormView() {
+const EditActionFormView = () => {
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -38,8 +37,9 @@ export default function EditActionFormView() {
             storeType: shopType,
         })
 
-    const {data: configurationData, isInitialLoading} =
-        useGetWorkflowConfiguration(id, {
+    const {data: configuration, isInitialLoading} = useGetWorkflowConfiguration(
+        id,
+        {
             initialData: queryClient
                 .getQueryData<StoresWorkflowConfiguration>(
                     storeConfigurationQueryKey
@@ -53,48 +53,50 @@ export default function EditActionFormView() {
                 queryClient.getQueryState<StoresWorkflowConfiguration>(
                     storeConfigurationQueryKey
                 )?.dataUpdatedAt,
-        })
-
-    const {
-        data: templateConfigurations,
-        isInitialLoading: isTemplateConfigurationsLoading,
-    } = useGetWorkflowConfigurationTemplates(
-        {triggers: ['llm-prompt']},
-        {
-            enabled: !!configurationData?.template_internal_id,
         }
     )
 
-    const templateConfiguration = useMemo(
+    const {data: templates = [], isInitialLoading: isTemplatesLoading} =
+        useGetWorkflowConfigurationTemplates(
+            {triggers: ['llm-prompt']},
+            {enabled: !!configuration?.template_internal_id}
+        )
+
+    const template = useMemo(
         () =>
-            templateConfigurations?.find(
+            templates.find(
                 (template) =>
-                    template.internal_id ===
-                    configurationData?.template_internal_id
+                    template.internal_id === configuration?.template_internal_id
             ),
-        [templateConfigurations, configurationData]
+        [templates, configuration?.template_internal_id]
     )
+
+    if (
+        configuration?.template_internal_id &&
+        !template &&
+        !isTemplatesLoading
+    ) {
+        return <Redirect to={routes.actions} />
+    }
 
     return (
         <AiAgentLayout
-            isLoading={isInitialLoading || isTemplateConfigurationsLoading}
+            isLoading={isInitialLoading || isTemplatesLoading}
             shopName={shopName}
             className={css.actionsFormContainer}
         >
-            {templateConfiguration ? (
-                <TemplateActionsForm
-                    initialConfigurationData={
-                        configurationData as TemplateConfigurationFormInput
-                    }
-                    templateConfiguration={templateConfiguration}
+            {template ? (
+                <TemplateActionForm
+                    configuration={configuration as WorkflowConfiguration}
+                    template={template}
                 />
             ) : (
-                <CustomActionsForm
-                    initialConfigurationData={
-                        configurationData as CustomActionConfigurationFormInput
-                    }
+                <CustomActionForm
+                    configuration={configuration as WorkflowConfiguration}
                 />
             )}
         </AiAgentLayout>
     )
 }
+
+export default EditActionFormView

@@ -17,16 +17,16 @@ export type VisualBuilderLLMPromptTriggerAction =
           requiresConfirmation: boolean
       }
     | {
-          type: 'ADD_LLM_PROMPT_TRIGGER_CUSTOM_INPUT'
+          type: 'ADD_LLM_PROMPT_TRIGGER_INPUT'
       }
     | {
-          type: 'DELETE_LLM_PROMPT_TRIGGER_CUSTOM_INPUT'
+          type: 'DELETE_LLM_PROMPT_TRIGGER_INPUT'
           index: number
       }
     | {
-          type: 'SET_LLM_PROMPT_TRIGGER_CUSTOM_INPUT'
+          type: 'SET_LLM_PROMPT_TRIGGER_INPUT'
           index: number
-          input: LLMPromptTriggerNodeType['data']['custom_inputs'][number]
+          input: LLMPromptTriggerNodeType['data']['inputs'][number]
       }
     | {
           type: 'SET_LLM_PROMPT_TRIGGER_CONDITIONS_TYPE'
@@ -54,9 +54,9 @@ type ActionTypes = {
 const visualBuilderLLMPromptTriggerActionTypes: ActionTypes = {
     SET_LLM_PROMPT_TRIGGER_INSTRUCTIONS: true,
     SET_LLM_PROMPT_TRIGGER_REQUIRES_CONFIRMATION: true,
-    ADD_LLM_PROMPT_TRIGGER_CUSTOM_INPUT: true,
-    DELETE_LLM_PROMPT_TRIGGER_CUSTOM_INPUT: true,
-    SET_LLM_PROMPT_TRIGGER_CUSTOM_INPUT: true,
+    ADD_LLM_PROMPT_TRIGGER_INPUT: true,
+    DELETE_LLM_PROMPT_TRIGGER_INPUT: true,
+    SET_LLM_PROMPT_TRIGGER_INPUT: true,
     SET_LLM_PROMPT_TRIGGER_CONDITIONS_TYPE: true,
     DELETE_LLM_PROMPT_TRIGGER_CONDITION: true,
     ADD_LLM_PROMPT_TRIGGER_CONDITION: true,
@@ -93,12 +93,12 @@ export function llmPromptTriggerReducer(
                         action.requiresConfirmation
                 }
             })
-        case 'ADD_LLM_PROMPT_TRIGGER_CUSTOM_INPUT':
+        case 'ADD_LLM_PROMPT_TRIGGER_INPUT':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(isLLMPromptTriggerNodeType)
 
                 if (node) {
-                    node.data.custom_inputs.push({
+                    node.data.inputs.push({
                         id: ulid(),
                         name: '',
                         instructions: '',
@@ -106,20 +106,20 @@ export function llmPromptTriggerReducer(
                     })
                 }
             })
-        case 'DELETE_LLM_PROMPT_TRIGGER_CUSTOM_INPUT':
+        case 'DELETE_LLM_PROMPT_TRIGGER_INPUT':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(isLLMPromptTriggerNodeType)
 
                 if (node) {
-                    node.data.custom_inputs.splice(action.index, 1)
+                    node.data.inputs.splice(action.index, 1)
                 }
             })
-        case 'SET_LLM_PROMPT_TRIGGER_CUSTOM_INPUT':
+        case 'SET_LLM_PROMPT_TRIGGER_INPUT':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(isLLMPromptTriggerNodeType)
 
                 if (node) {
-                    node.data.custom_inputs[action.index] = action.input
+                    node.data.inputs[action.index] = action.input
                 }
             })
         case 'SET_LLM_PROMPT_TRIGGER_CONDITIONS_TYPE':

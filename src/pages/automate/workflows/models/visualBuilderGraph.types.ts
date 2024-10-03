@@ -21,28 +21,24 @@ export type LLMPromptTriggerNodeType = Node<
     {
         instructions: string
         requires_confirmation: boolean
-        custom_inputs: {
-            id: string
-            name: string
-            instructions: string
-            data_type: 'string' | 'number' | 'date' | 'boolean'
-        }[]
-        object_inputs: (
+        inputs: (
             | {
-                  kind: 'customer'
-                  integration_id: number | string
+                  id: string
+                  name: string
+                  instructions: string
+                  data_type: 'string' | 'number' | 'date' | 'boolean'
               }
             | {
-                  kind: 'order'
-                  integration_id: number | string
-              }
-            | {
+                  id: string
+                  name: string
+                  instructions: string
                   kind: 'product'
                   integration_id: number | string
               }
         )[]
         conditionsType: keyof ConditionsSchema | null
         conditions: ConditionSchema[]
+        deactivated_datetime?: string | null
         isGreyedOut?: boolean | null
     },
     'llm_prompt_trigger'
@@ -129,11 +125,12 @@ export type HttpRequestNodeType = Node<
         url: string
         method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
         headers: {name: string; value: string}[]
-        json?: string
-        formUrlencoded?: {key: string; value: string}[]
-        bodyContentType?:
+        json: string | null
+        formUrlencoded: {key: string; value: string}[] | null
+        bodyContentType:
             | 'application/json'
             | 'application/x-www-form-urlencoded'
+            | null
         variables: {
             id: string
             name: string

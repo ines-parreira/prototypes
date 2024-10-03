@@ -1,31 +1,34 @@
 import React from 'react'
 import {Label} from '@gorgias/ui-kit'
-
 import {useController, useFieldArray, useFormContext} from 'react-hook-form'
+
 import {ConditionsBranchBody} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
 import {buildConditionSchemaByVariableType} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'
-import {WorkflowVariableGroup} from 'pages/automate/workflows/models/variables.types'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
 
-import {ConditionsFormValues} from '../types'
-import css from './CustomActionsForm.less'
+import {ActionFormInputValues} from '../types'
+
+import css from './CustomActionForm.less'
 
 type Props = {
-    inputVariables: WorkflowVariableGroup[]
+    variables: WorkflowVariableList
 }
 
-export default function ActionFormInputConditions({inputVariables}: Props) {
-    const {control, getValues} = useFormContext<ConditionsFormValues>()
+export default function ActionFormInputConditions({variables}: Props) {
+    const {control, getValues} = useFormContext<ActionFormInputValues>()
     const {field: conditionsType} = useController({
         control,
-        name: 'conditionsType',
+        name: 'trigger.conditionsType',
     })
-
     const {remove, update, append} = useFieldArray({
         control,
-        name: 'conditions',
+        name: 'trigger.conditions',
         rules: {
-            validate: (conditions: ConditionSchema[], {conditionsType}) => {
+            validate: (
+                conditions: ConditionSchema[],
+                {trigger: {conditionsType}}
+            ) => {
                 if (!conditionsType) {
                     return true
                 }
@@ -71,11 +74,11 @@ export default function ActionFormInputConditions({inputVariables}: Props) {
                 hasMultipleChildren={true}
                 canDeleteBranch={false}
                 branchId={''}
-                availableVariables={inputVariables}
+                availableVariables={variables}
                 showNoneOption={true}
                 shouldShowErrors={true}
                 type={conditionsType.value}
-                conditions={getValues('conditions')}
+                conditions={getValues('trigger.conditions')}
                 onDeleteBranch={() => {}}
                 onConditionDelete={(index) => {
                     remove(index)
