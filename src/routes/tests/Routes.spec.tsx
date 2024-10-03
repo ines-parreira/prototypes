@@ -393,26 +393,29 @@ describe('<Routes/>', () => {
             expect(ServiceLevelAgreementsMock).toHaveBeenCalled()
         })
 
-        it('should render AutoQA page', () => {
-            const state = {
-                currentUser: fromJS({
-                    role: {name: UserRole.Admin},
-                }) as Map<any, any>,
+        it.each([UserRole.Agent, UserRole.Admin])(
+            'should render AutoQA page',
+            (role) => {
+                const state = {
+                    currentUser: fromJS({
+                        role: {name: role},
+                    }) as Map<any, any>,
+                }
+                mockFlags({
+                    [FeatureFlagKey.AnalyticsAutoQA]: true,
+                })
+
+                render(
+                    <Provider store={mockStore(state)}>
+                        <MemoryRouter initialEntries={['/app/stats/auto-qa']}>
+                            <Routes />
+                        </MemoryRouter>
+                    </Provider>
+                )
+
+                expect(AutoQAMock).toHaveBeenCalled()
             }
-            mockFlags({
-                [FeatureFlagKey.AnalyticsAutoQA]: true,
-            })
-
-            render(
-                <Provider store={mockStore(state)}>
-                    <MemoryRouter initialEntries={['/app/stats/auto-qa']}>
-                        <Routes />
-                    </MemoryRouter>
-                </Provider>
-            )
-
-            expect(AutoQAMock).toHaveBeenCalled()
-        })
+        )
 
         it('should render NewTagsPage page', () => {
             mockFlags({

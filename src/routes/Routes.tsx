@@ -575,7 +575,7 @@ export function StatsRoutes() {
                             <App
                                 content={withUserRoleRequired(
                                     AutoQA,
-                                    ADMIN_ROLE
+                                    AGENT_ROLE
                                 )}
                                 navbar={StatsNavbarContainer}
                             />

@@ -161,27 +161,30 @@ describe('StatsNavbarView', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render the link to the Auto QA', () => {
-        const state = {
-            ...defaultState,
-            currentUser: fromJS({
-                role: {name: UserRole.Admin},
-            }) as Map<any, any>,
+    it.each([UserRole.Admin, UserRole.Agent])(
+        'should render the link to the Auto QA',
+        (role) => {
+            const state = {
+                ...defaultState,
+                currentUser: fromJS({
+                    role: {name: role},
+                }) as Map<any, any>,
+            }
+            mockFlags({
+                [FeatureFlagKey.AnalyticsAutoQA]: true,
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore(state)}>
+                    <DndProvider backend={HTML5Backend}>
+                        <StatsNavbarView />
+                    </DndProvider>
+                </Provider>
+            )
+
+            expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
         }
-        mockFlags({
-            [FeatureFlagKey.AnalyticsAutoQA]: true,
-        })
-
-        renderWithRouter(
-            <Provider store={mockStore(state)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
-            </Provider>
-        )
-
-        expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
-    })
+    )
 
     it('should render the link to the New Tags Report page', () => {
         mockFlags({

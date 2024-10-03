@@ -14,7 +14,7 @@ import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavb
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import {isAdmin} from 'utils'
+import {isTeamLead} from 'utils'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
@@ -25,7 +25,7 @@ export const NEW_NAV_LABEL = 'NEW'
 
 export default function StatsNavbarView() {
     const user = useAppSelector(getCurrentUser)
-    const isAdminUser = isAdmin(user)
+    const isTeamLeadOrAdmin = isTeamLead(user)
     const isHelpCenterAnalyticsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
     const isAutoQAEnabled: boolean | undefined =
@@ -183,7 +183,7 @@ export default function StatsNavbarView() {
                             SLAs
                         </NavbarLink>
                     </div>
-                    {!!isAutoQAEnabled && isAdminUser && (
+                    {!!isAutoQAEnabled && isTeamLeadOrAdmin && (
                         <div
                             className={classNames(
                                 cssNavbar['link-wrapper'],
