@@ -160,7 +160,7 @@ export default function useAutoQA(ticketId: number) {
             })()
         },
         [newDimensionValue, ticketId, upsertTicketQaScoreDimension],
-        500
+        1500
     )
 
     return useMemo(

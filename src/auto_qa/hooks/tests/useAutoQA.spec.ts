@@ -139,7 +139,7 @@ describe('useAutoQA', () => {
             ](5, 'Excellent')
         })
         act(() => {
-            jest.advanceTimersByTime(500)
+            jest.advanceTimersByTime(1500)
         })
 
         expect(mutateAsync).toHaveBeenCalledWith(
