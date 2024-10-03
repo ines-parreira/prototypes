@@ -5,34 +5,6 @@ exports[`<RuleLibrary/> render should filter cards for the library 1`] = `
   class="container"
 >
   <div
-    class="libraryHeader autoResponders"
-  >
-    <div>
-      <div>
-        <div
-          class="d-flex align-items-center upgradeLink"
-        >
-          <button
-            aria-disabled="false"
-            class="wrapper fill primary medium"
-            type="button"
-          >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                bolt
-              </i>
-              Get Automate Features
-            </span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
     class="libraryHeader ruleTemplates"
   >
     <h1>
@@ -120,34 +92,6 @@ exports[`<RuleLibrary/> render should render cards for the library 1`] = `
 <div
   class="container"
 >
-  <div
-    class="libraryHeader autoResponders"
-  >
-    <div>
-      <div>
-        <div
-          class="d-flex align-items-center upgradeLink"
-        >
-          <button
-            aria-disabled="false"
-            class="wrapper fill primary medium"
-            type="button"
-          >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                bolt
-              </i>
-              Get Automate Features
-            </span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
   <div
     class="libraryHeader ruleTemplates"
   >

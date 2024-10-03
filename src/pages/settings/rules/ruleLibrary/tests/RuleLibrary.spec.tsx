@@ -56,15 +56,6 @@ describe('<RuleLibrary/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render Automate subscribe button', () => {
-            render(
-                <Provider store={defaultStore}>
-                    <RuleLibrary {...minProps} />
-                </Provider>
-            )
-            expect(screen.queryByText(/Get Automate Features/)).toBeTruthy()
-        })
-
         it('should display badge for installed autoresponder', () => {
             const autoCloseSpamRule = {
                 ...emptyRuleRecipeFixture,

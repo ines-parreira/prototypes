@@ -1,15 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
 
-import {useHistory} from 'react-router-dom'
-import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
 import {ManagedRule, Rule, RuleType} from 'state/rules/types'
 import {RuleRecipe} from 'models/ruleRecipe/types'
 
-import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
-
-import {SegmentEvent, logEvent} from 'common/segment'
 import RuleRecipeCard from './components/RuleRecipeCard'
 
 import css from './RuleLibrary.less'
@@ -31,8 +25,6 @@ export function RuleLibrary({
     rules,
     activeSlug = '',
 }: Props) {
-    const history = useHistory()
-    const hasAutomate = useAppSelector(getHasAutomate)
     const [filteredRecipes, setFilteredRecipes] = useState(recipes)
 
     const filterRecipes = useCallback(() => {
@@ -58,27 +50,6 @@ export function RuleLibrary({
 
     return (
         <div className={css.container}>
-            <div className={classnames(css.libraryHeader, css.autoResponders)}>
-                {!hasAutomate && (
-                    <div>
-                        <AutomateSubscriptionButton
-                            label="Get Automate Features"
-                            onClick={() => {
-                                logEvent(
-                                    SegmentEvent.AutomatePaywallFromRuleLibrary,
-                                    {
-                                        location: 'rule-library',
-                                    }
-                                )
-
-                                history.push('/app/automation')
-                            }}
-                            position="left"
-                        />
-                    </div>
-                )}
-            </div>
-
             <div className={classnames(css.libraryHeader, css.ruleTemplates)}>
                 <h1>Choose a template and customize it to fit your needs</h1>
             </div>
