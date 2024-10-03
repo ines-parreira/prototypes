@@ -61,6 +61,7 @@ export enum FeatureFlagKey {
     ConvertPerformanceView = 'convert-performance-view',
     ConvertUtmConfigurationTab = 'convert-utm-configuration-tab',
     ConvertContactForm = 'convert-contact-form',
+    ConvertCampaignProritization = 'convert-campaign-prioritization',
     CustomerTimelineButton = 'customer-timeline-button',
     CustomerFields = 'customer-fields',
     DefaultEmailAddress = 'default-email-address',
