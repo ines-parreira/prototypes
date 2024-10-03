@@ -205,7 +205,7 @@ export const CampaignMessage = memo(
             attachments,
             shopifyIntegration?.id,
         ])
-        const {campaign} = useCampaignDetailsContext()
+        const {campaign, updateCampaign} = useCampaignDetailsContext()
         const canAddContactForm =
             useCanAddContactFormFlag() &&
             !campaign.is_light &&
@@ -259,7 +259,10 @@ export const CampaignMessage = memo(
             [contactFormAttachment]
         )
         const [isContactFormOpen, onContactFormOpenChange] = useState(false)
-        const onContactFormSubmit = (newAttachmentExtra: CampaignFormExtra) => {
+        const onContactFormSubmit = (
+            newAttachmentExtra: CampaignFormExtra,
+            isEditing: boolean
+        ) => {
             handleContactFormSubmitted(
                 dispatch,
                 attachments,
@@ -267,6 +270,9 @@ export const CampaignMessage = memo(
                 ticket,
                 false
             )
+            if (!isEditing) {
+                updateCampaign('noReply', true)
+            }
         }
 
         return (

@@ -28,10 +28,13 @@ import {
     CampaignFormExtra,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 
-type AddContactCaptureFormProps = {
+export type AddContactCaptureFormProps = {
     open: boolean
     onOpenChange: (openState: boolean) => void
-    onSubmit?: (newAttachmentExtra: CampaignFormExtra) => void
+    onSubmit?: (
+        newAttachmentExtra: CampaignFormExtra,
+        isEditing: boolean
+    ) => void
     onCancel?: () => void
     onReset?: () => void
     buttonDisabled?: boolean
@@ -100,7 +103,9 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
     }, [initialAttachment])
 
     const handleSubmit = () => {
-        if (onSubmit) onSubmit(transformTransitoryToAttachment(data))
+        if (onSubmit) {
+            onSubmit(transformTransitoryToAttachment(data), isEditing)
+        }
         onOpenChange(false)
     }
 

@@ -3,7 +3,7 @@ import {fromJS, Map} from 'immutable'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {render, act} from '@testing-library/react'
+import {render, act, fireEvent} from '@testing-library/react'
 
 import {
     InventoryManagement as ShipifyInventoryManagement,
@@ -18,11 +18,41 @@ import {flushPromises} from 'utils/testing'
 import * as integrationHook from 'pages/convert/campaigns/containers/IntegrationProvider'
 import * as integrationHelpers from 'state/integrations/helpers'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import {CampaignDetailsFormContext} from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {CampaignMessage} from '../CampaignMessage'
+import {AddContactCaptureFormProps} from '../../ContactCaptureForm/AddContactCaptureForm'
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('pages/convert/common/hooks/useUtmFlag')
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
+jest.mock('pages/convert/campaigns/components/ContactCaptureForm/utils')
+
+jest.mock(
+    'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm',
+    () => ({
+        __esModule: true,
+        default: ({onSubmit}: AddContactCaptureFormProps) => {
+            const data = {
+                steps: [],
+                on_success_content: {message: 'test'},
+                targets: [],
+                disclaimer: 'test',
+                disclaimer_default_accepted: true,
+            }
+            return (
+                <>
+                    <button onClick={() => onSubmit && onSubmit(data, false)}>
+                        Add form
+                    </button>
+                    <button onClick={() => onSubmit && onSubmit(data, true)}>
+                        Update form
+                    </button>
+                </>
+            )
+        },
+    })
+)
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {
@@ -219,6 +249,89 @@ describe('<CampaignMessage>', () => {
                     'Your campaign is currently not displayed because there is no product stock for your first product card. Remove the first product card to see have your campaign displayed.'
                 )
             ).toBeNull()
+        })
+
+        it('it sets noReply on adding a form', async () => {
+            const updateCampaign = jest.fn()
+
+            const {getByText} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <CampaignDetailsFormContext.Provider
+                        value={{
+                            campaign: {} as Campaign,
+                            triggers: {},
+                            addTrigger: jest.fn(),
+                            updateTrigger: jest.fn(),
+                            deleteTrigger: jest.fn(),
+                            updateCampaign,
+                        }}
+                    >
+                        <CampaignMessage
+                            showContentWarning
+                            isConvertSubscriber={true}
+                            richAreaRef={jest.fn()}
+                            agents={[]}
+                            html=""
+                            text=""
+                            selectedAgent=""
+                            onSelectAgent={jest.fn()}
+                            onChangeMessage={jest.fn()}
+                            onDeleteAttachment={jest.fn()}
+                        />
+                    </CampaignDetailsFormContext.Provider>
+                </Provider>
+            )
+
+            await act(flushPromises)
+
+            const submitButton = getByText('Add form')
+            expect(submitButton).toBeInTheDocument()
+
+            fireEvent.click(submitButton)
+
+            // Check if updateCampaign was called with the correct arguments
+            expect(updateCampaign).toHaveBeenCalledWith('noReply', true)
+        })
+
+        it('it does not set noReply on updating a form', async () => {
+            const updateCampaign = jest.fn()
+
+            const {getByText} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <CampaignDetailsFormContext.Provider
+                        value={{
+                            campaign: {} as Campaign,
+                            triggers: {},
+                            addTrigger: jest.fn(),
+                            updateTrigger: jest.fn(),
+                            deleteTrigger: jest.fn(),
+                            updateCampaign,
+                        }}
+                    >
+                        <CampaignMessage
+                            showContentWarning
+                            isConvertSubscriber={true}
+                            richAreaRef={jest.fn()}
+                            agents={[]}
+                            html=""
+                            text=""
+                            selectedAgent=""
+                            onSelectAgent={jest.fn()}
+                            onChangeMessage={jest.fn()}
+                            onDeleteAttachment={jest.fn()}
+                        />
+                    </CampaignDetailsFormContext.Provider>
+                </Provider>
+            )
+
+            await act(flushPromises)
+
+            const submitButton = getByText('Update form')
+            expect(submitButton).toBeInTheDocument()
+
+            fireEvent.click(submitButton)
+
+            expect(updateCampaign).not.toHaveBeenCalled()
         })
     })
 })
