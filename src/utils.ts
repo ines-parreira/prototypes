@@ -706,6 +706,11 @@ export const hasAgentPrivileges = (user: Map<any, any>): boolean => {
     return hasRole(user, UserRole.Agent)
 }
 
+/**
+ * Including this alias for clarity, since `UserRole.Agent` is actually team lead
+ */
+export const isTeamLead = hasAgentPrivileges
+
 // Check if a user has a role
 export function hasRole(user: Map<any, any>, requiredRole: UserRole): boolean {
     const userRole = user.getIn(['role', 'name'])

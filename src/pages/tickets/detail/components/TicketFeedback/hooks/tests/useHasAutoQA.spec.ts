@@ -1,29 +1,29 @@
 import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
 
 import {useFlag} from 'common/flags'
-import useAppSelector from 'hooks/useAppSelector'
-import {isAdmin} from 'utils'
+import {UserRole} from 'config/types/user'
+import {getCurrentUser} from 'state/currentUser/selectors'
 
 import useHasAutoQA from '../useHasAutoQA'
 
 jest.mock('common/flags', () => ({useFlag: jest.fn()}))
 const useFlagMock = useFlag as jest.Mock
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
-const useAppSelectorMock = useAppSelector as jest.Mock
+jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
 
-jest.mock('state/currentUser/selectors', () => ({
-    getCurrentUser: jest.fn(),
-}))
-
-jest.mock('utils', () => ({isAdmin: jest.fn()}))
-const isAdminMock = isAdmin as jest.Mock
+jest.mock('state/currentUser/selectors', () => ({getCurrentUser: jest.fn()}))
+const getCurrentUserMock = getCurrentUser as unknown as jest.Mock
 
 describe('useHasAutoQA', () => {
     beforeEach(() => {
+        getCurrentUserMock.mockReturnValue(
+            fromJS({
+                id: 1,
+                role: {name: UserRole.BasicAgent},
+            })
+        )
         useFlagMock.mockReturnValue(false)
-        useAppSelectorMock.mockReturnValue({id: 1})
-        isAdminMock.mockReturnValue(false)
     })
 
     it('should return false if the flag is disabled', () => {
@@ -31,16 +31,27 @@ describe('useHasAutoQA', () => {
         expect(result.current).toBe(false)
     })
 
-    it('should return false if the current user is not an admin', () => {
+    it('should return false if the current user is not an admin, lead agent or account owner', () => {
         useFlagMock.mockReturnValue(true)
         const {result} = renderHook(() => useHasAutoQA())
         expect(result.current).toBe(false)
     })
 
-    it('should return true if the flag is enabled and the user is an admin', () => {
-        useFlagMock.mockReturnValue(true)
-        isAdminMock.mockReturnValue(true)
-        const {result} = renderHook(() => useHasAutoQA())
-        expect(result.current).toBe(true)
-    })
+    it.each([
+        ['a lead agent', UserRole.Agent],
+        ['an admin', UserRole.Admin],
+    ])(
+        'should return true if the flag is enabled and the user is %s',
+        (_roleStr, role) => {
+            useFlagMock.mockReturnValue(true)
+            getCurrentUserMock.mockReturnValue(
+                fromJS({
+                    id: 1,
+                    role: {name: role},
+                })
+            )
+            const {result} = renderHook(() => useHasAutoQA())
+            expect(result.current).toBe(true)
+        }
+    )
 })
