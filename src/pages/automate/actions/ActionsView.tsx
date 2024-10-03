@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import {useParams} from 'react-router-dom'
+
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
@@ -18,7 +19,9 @@ import {ACTIONS_DESCRIPTION} from './constants'
 
 import css from './ActionsView.less'
 
-export default function ActionView() {
+const MAX_TEMPLATES = 7
+
+const ActionsView = () => {
     const dispatch = useAppDispatch()
 
     const {shopName, shopType} = useParams<{
@@ -26,7 +29,7 @@ export default function ActionView() {
         shopName: string
     }>()
     const {
-        data: storeConfigurations,
+        data: storeConfigurations = [],
         isInitialLoading: isStoreConfigurationsInitialLoading,
         isError,
         error,
@@ -37,8 +40,8 @@ export default function ActionView() {
     })
 
     const {
-        data: templateConfigurations,
-        isInitialLoading: istemplateConfigurationsInitialLoading,
+        data: templateConfigurations = [],
+        isInitialLoading: isTemplateConfigurationsInitialLoading,
     } = useGetWorkflowConfigurationTemplates({triggers: ['llm-prompt']})
 
     useEffect(() => {
@@ -51,19 +54,16 @@ export default function ActionView() {
         }
     }, [dispatch, error, isError])
 
-    const hasActions =
-        (storeConfigurations && storeConfigurations.length > 0) ?? false
-
     return (
         <AiAgentLayout
             shopName={shopName}
             isLoading={
                 isStoreConfigurationsInitialLoading ||
-                istemplateConfigurationsInitialLoading
+                isTemplateConfigurationsInitialLoading
             }
             className={css.container}
         >
-            {hasActions && storeConfigurations ? (
+            {storeConfigurations.length > 0 ? (
                 <div className={css.actionsListContainer}>
                     <div className={css.actionListDescription}>
                         <div data-candu-id="custom-action-view-header">
@@ -84,29 +84,26 @@ export default function ActionView() {
                         description={ACTIONS_DESCRIPTION}
                         image={emptyState}
                     />
-                    {templateConfigurations &&
-                        templateConfigurations?.length > 0 && (
-                            <div className={css.templateCards}>
-                                <div className={css.templateHeader}>
-                                    <p>
-                                        Choose an Action and customize it to fit
-                                        your needs
-                                    </p>
-                                    <div className={css.actionButtons}>
-                                        <CreateCustomActionButton />
-                                        <BrowseAllActionsButton />
-                                    </div>
-                                </div>
-
-                                <ActionsTemplatesCards
-                                    templateConfigurations={
-                                        templateConfigurations
-                                    }
-                                />
+                    <div className={css.templateCards}>
+                        <div className={css.templateHeader}>
+                            <p>
+                                Choose an Action and customize it to fit your
+                                needs
+                            </p>
+                            <div className={css.actionButtons}>
+                                <CreateCustomActionButton />
+                                <BrowseAllActionsButton />
                             </div>
-                        )}
+                        </div>
+                        <ActionsTemplatesCards
+                            templateConfigurations={templateConfigurations}
+                            max={MAX_TEMPLATES}
+                        />
+                    </div>
                 </>
             )}
         </AiAgentLayout>
     )
 }
+
+export default ActionsView

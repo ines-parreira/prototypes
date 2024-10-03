@@ -13,13 +13,9 @@ import BackToActionButton from './components/BackToActionButton'
 
 import css from './ActionTemplatesView.less'
 
-export default function ActionTemplatesView() {
-    const {shopName} = useParams<{
-        shopType: string
-        shopName: string
-    }>()
-
-    const {data: templateConfigurations, isInitialLoading} =
+const ActionTemplatesView = () => {
+    const {shopName} = useParams<{shopName: string}>()
+    const {data: templateConfigurations = [], isInitialLoading} =
         useGetWorkflowConfigurationTemplates({
             triggers: ['llm-prompt'],
         })
@@ -34,36 +30,33 @@ export default function ActionTemplatesView() {
             isLoading={isInitialLoading}
             className={css.container}
         >
-            {templateConfigurations && templateConfigurations.length > 0 && (
-                <>
-                    <div className={css.backButtonContainer}>
-                        <BackToActionButton />
+            <div className={css.backButtonContainer}>
+                <BackToActionButton />
+            </div>
+            <div className={css.header}>
+                Choose an Action and customize it to fit your needs
+                <CreateCustomActionButton />
+            </div>
+            <ActionsTemplatesCards
+                templateConfigurations={templateConfigurations}
+                showCustomAction
+            />
+            <div className={css.requestBannerContainer}>
+                <div className={css.requestBannerContent}>
+                    <div className={css.requestBannerTitle}>
+                        Which Actions should we build next?
                     </div>
-                    <div className={css.header}>
-                        Choose an Action and customize it to fit your needs
-                        <CreateCustomActionButton />
-                    </div>
-                    <ActionsTemplatesCards
-                        showCustomAction
-                        templateConfigurations={templateConfigurations}
-                    />
-                    <div className={css.requestBannerContainer}>
-                        <div className={css.requestBannerContent}>
-                            <div className={css.requestBannerTitle}>
-                                Which Actions should we build next?
-                            </div>
-                            Let us know which Actions you would like AI Agent to
-                            handle.
-                        </div>
-                        <LinkButton
-                            intent="secondary"
-                            href="https://link.gorgias.com/actions"
-                        >
-                            Request action
-                        </LinkButton>
-                    </div>
-                </>
-            )}
+                    Let us know which Actions you would like AI Agent to handle.
+                </div>
+                <LinkButton
+                    intent="secondary"
+                    href="https://link.gorgias.com/actions"
+                >
+                    Request action
+                </LinkButton>
+            </div>
         </AiAgentLayout>
     )
 }
+
+export default ActionTemplatesView

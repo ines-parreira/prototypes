@@ -1,14 +1,15 @@
 import React from 'react'
-import _ from 'lodash'
 import {useHistory, useParams} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import classnames from 'classnames'
 
-import {TemplateCard} from 'pages/common/components/TemplateCard'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {TemplateCard} from 'pages/common/components/TemplateCard'
 
 import {TemplateConfiguration} from '../types'
+import useSortedActionTemplates from '../hooks/useSortedActionTemplates'
+import useEnabledActionTemplates from '../hooks/useEnabledActionTemplates'
 import AppActionTemplateCard from './AppActionTemplateCard'
 import NativeActionTemplateCard from './NativeActionTemplateCard'
 
@@ -17,40 +18,25 @@ import css from './ActionsTemplatesCards.less'
 type Props = {
     showCustomAction?: boolean
     templateConfigurations: TemplateConfiguration[]
+    max?: number
 }
 
-export default function ActionsTemplatesCards({
-    showCustomAction = false,
+const ActionsTemplatesCards = ({
+    showCustomAction,
     templateConfigurations,
-}: Props) {
-    const {shopName} = useParams<{
-        shopType: string
-        shopName: string
-    }>()
-    const {routes} = useAiAgentNavigation({shopName})
-    const enabledTemplates: string[] | Record<never, never> | undefined =
-        useFlags()[FeatureFlagKey.ActionTemplates]
-    const sortedTemplateConfigurations = _.chain<TemplateConfiguration>(
-        templateConfigurations
-    )
-        .filter(
-            (value) =>
-                !Array.isArray(enabledTemplates) ||
-                !!enabledTemplates.includes(value.internal_id)
-        )
-        .groupBy('apps[0].type')
-        .map((value, key) => ({
-            type: key,
-            items: _.orderBy(value, ['name'], ['asc']),
-        }))
-        .orderBy([(group) => group.type !== 'shopify', 'type'], ['asc', 'asc'])
-        .flatMap<TemplateConfiguration>('items')
-        .value()
+    max = Infinity,
+}: Props) => {
     const history = useHistory()
+
+    const {shopName} = useParams<{shopName: string}>()
+    const {routes} = useAiAgentNavigation({shopName})
+
+    const enabledTemplates = useEnabledActionTemplates(templateConfigurations)
+    const sortedTemplates = useSortedActionTemplates(enabledTemplates)
 
     return (
         <div className={css.container}>
-            {sortedTemplateConfigurations.map(({id, name, apps}) => {
+            {sortedTemplates.slice(0, max).map(({id, name, apps}) => {
                 const app = apps[0]
 
                 if (app.type === 'app') {
@@ -75,6 +61,21 @@ export default function ActionsTemplatesCards({
                     />
                 )
             })}
+            {sortedTemplates.length > max && (
+                <div className={css.seeAll}>
+                    <Button
+                        intent="secondary"
+                        fillStyle="ghost"
+                        onClick={() => {
+                            history.push(routes.actionsTemplates)
+                        }}
+                    >
+                        <ButtonIconLabel position="right" icon="arrow_forward">
+                            See all Actions
+                        </ButtonIconLabel>
+                    </Button>
+                </div>
+            )}
             {showCustomAction && (
                 <TemplateCard
                     onClick={() => {
@@ -97,3 +98,5 @@ export default function ActionsTemplatesCards({
         </div>
     )
 }
+
+export default ActionsTemplatesCards

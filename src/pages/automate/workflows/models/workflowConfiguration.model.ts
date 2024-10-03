@@ -516,7 +516,7 @@ export class WorkflowConfigurationBuilder {
               initialStep: WorkflowStep
           } & Pick<
               WorkflowConfiguration,
-              'name' | 'entrypoint' | 'id' | 'triggers' | 'entrypoints'
+              'name' | 'entrypoint' | 'id' | 'triggers' | 'entrypoints' | 'apps'
           > &
               Partial<Pick<WorkflowConfiguration, 'is_draft'>>) {
         this.data = {
@@ -949,8 +949,8 @@ export class WorkflowConfigurationBuilder {
         this._selection = step
     }
 
-    build(): WorkflowConfiguration {
-        return this.data
+    build<T extends WorkflowConfiguration>(): T {
+        return this.data as T
     }
 
     // getter for the current selection
