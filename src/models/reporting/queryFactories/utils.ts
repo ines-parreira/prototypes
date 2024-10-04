@@ -38,7 +38,7 @@ export const isCustomFieldFilter = (
     filter: OptionalFilter
 ): filter is CustomFieldFilter[] =>
     Array.isArray(filter) &&
-    filter.every(
+    filter.some(
         (subFilter) =>
             typeof subFilter === 'object' &&
             'operator' in subFilter &&
@@ -129,9 +129,7 @@ export const addOptionalFilter = (
                 if (
                     customFieldFilter.operator ===
                         LogicalOperatorEnum.NOT_ONE_OF &&
-                    (filterDefaults.member === TicketMember.CustomField ||
-                        filterDefaults.member === TicketMember.Tags ||
-                        filterDefaults.member === TicketMember.MessageSenderId)
+                    filterDefaults.member === TicketMember.CustomField
                 ) {
                     return {
                         member: NotEqualsMap[filterDefaults.member],
@@ -271,12 +269,12 @@ export function withDefaultLogicalOperator<T extends number | string>(
 }
 
 export function withLogicalOperator<T extends number | string>(
-    values?: T[],
+    values: T[],
     operator = LogicalOperatorEnum.ONE_OF
 ): WithLogicalOperator<T> {
     return {
         operator,
-        values: values ?? [],
+        values: values,
     }
 }
 

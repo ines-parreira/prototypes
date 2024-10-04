@@ -2,8 +2,12 @@ import {act, renderHook} from '@testing-library/react-hooks'
 import useCurrentFilters, {
     CURRENT_FILTERS,
     getShallowTypedFilters,
-} from 'hooks/useCurrentFilters'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+} from 'hooks/reporting/useCurrentFilters'
+import {
+    FilterKey,
+    StatsFiltersWithLogicalOperator,
+    TagFilterInstanceId,
+} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 const period = {
@@ -88,6 +92,13 @@ describe('getShallowTypedFilters', () => {
             end_datetime: '1970-01-01T00:00:00+00:00',
         },
     }
+
+    it('should return default filters if already equal', () => {
+        expect(
+            getShallowTypedFilters(JSON.stringify(defaultValue), defaultValue)
+        ).toStrictEqual(defaultValue)
+    })
+
     it('should check if the filters object is typed correctly', () => {
         const filters = {
             [FilterKey.Period]: {
@@ -105,6 +116,13 @@ describe('getShallowTypedFilters', () => {
                 values: ['Agent1', 'Agent2'],
                 operator: LogicalOperatorEnum.NOT_ONE_OF,
             },
+            [FilterKey.Tags]: [
+                {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [1, 2],
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+            ],
         }
 
         expect(
@@ -126,6 +144,12 @@ describe('getShallowTypedFilters', () => {
                 },
             ],
             [FilterKey.Agents]: ['Agent1', 'Agent2'],
+            [FilterKey.Tags]: [
+                {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [1, 2],
+                },
+            ],
         }
 
         expect(

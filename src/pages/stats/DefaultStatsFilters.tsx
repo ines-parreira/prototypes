@@ -11,7 +11,7 @@ import {
 } from 'state/stats/statsSlice'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {isCleanStatsDirty} from 'state/ui/stats/selectors'
-import useCurrentFilters from 'hooks/useCurrentFilters'
+import useCurrentFilters from 'hooks/reporting/useCurrentFilters'
 import {getTimezone} from 'state/currentUser/selectors'
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 

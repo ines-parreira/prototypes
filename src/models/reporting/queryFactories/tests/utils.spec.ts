@@ -73,6 +73,35 @@ describe('utils', () => {
             })
         })
 
+        it('should add Tags filter with ONE_Of operator', () => {
+            const filter: TagFilter[] = [
+                {
+                    values: [123, 456],
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+            ]
+            const filters: ReportingFilter[] = []
+            const filterDefaults = {
+                member: TicketMember.Tags,
+                operator: ReportingFilterOperator.Equals,
+            }
+
+            const updatedFilters = addOptionalFilter(
+                filters,
+                filter,
+                filterDefaults
+            )
+
+            expect(updatedFilters).toEqual([
+                {
+                    values: filter[0].values.map(toLowerCaseString),
+                    member: TicketMember.Tags,
+                    operator: ReportingFilterOperator.Equals,
+                },
+            ])
+        })
+
         it('should use TicketMember.AllTags for ALL_OF operator with Tags', () => {
             const filter: TagFilter[] = [
                 {
@@ -320,6 +349,13 @@ describe('utils', () => {
                 values: [],
                 operator: LogicalOperatorEnum.NOT_ONE_OF,
             },
+            [
+                {
+                    values: [],
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+            ],
         ])('should not add the new filter if empty', (filter) => {
             const filters: ReportingFilter[] = []
             const filterDefaults = {

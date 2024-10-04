@@ -7,6 +7,7 @@ import {
     AggregationWindow,
     LegacyStatsFilters,
     StatsFilters,
+    TagFilterInstanceId,
 } from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
@@ -25,10 +26,15 @@ const period = {
 }
 const aggregationWindow: AggregationWindow = ReportingGranularity.Day
 const customIds = [123, 456]
-const customValues = ['Field Name', 'Custom Field Name::Another']
+const customValues = [
+    'Field Name',
+    'Custom Field Name::Another',
+    'Custom Field Name::AnotherOne',
+]
 const customFields = [
     `${customIds[0]}::${customValues[0]}`,
     `${customIds[1]}::${customValues[1]}`,
+    `${customIds[1]}::${customValues[2]}`,
 ]
 const campaignStatuses = ['active']
 
@@ -46,6 +52,7 @@ describe('fromPartialLegacyStatsFilters', () => {
             channels: withDefaultLogicalOperator(channels),
         })
     })
+
     it('should transform partial LegacyCustomFilters into Partial StatsFiltersWithLogicalOperators', () => {
         const legacyFilters: Partial<LegacyStatsFilters> = {
             customFields,
@@ -59,12 +66,13 @@ describe('fromPartialLegacyStatsFilters', () => {
                 }),
                 withDefaultCustomFieldAndLogicalOperator({
                     customFieldId: customIds[1],
-                    values: [customValues[1]],
+                    values: [customValues[1], customValues[2]],
                 }),
             ],
             period: undefined,
         })
     })
+
     it('should transform any other filter into Partial StatsFiltersWithLogicalOperators', () => {
         const legacyFilters: Partial<LegacyStatsFilters> = {
             campaignStatuses,
@@ -110,7 +118,7 @@ describe('fromLegacyStatsFilters', () => {
                 }),
                 withDefaultCustomFieldAndLogicalOperator({
                     customFieldId: customIds[1],
-                    values: [customValues[1]],
+                    values: [customValues[1], customValues[2]],
                 }),
             ],
             period,
@@ -149,6 +157,18 @@ describe('fromFiltersWithLogicalOperators', () => {
                     operator: LogicalOperatorEnum.NOT_ONE_OF,
                 }),
             ],
+            tags: [
+                {
+                    values: [1, 2, 3],
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+                {
+                    values: [5, 6],
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    filterInstanceId: TagFilterInstanceId.Second,
+                },
+            ],
         }
         expect(
             fromFiltersWithLogicalOperators(statsFiltersWithLogicalOperators)
@@ -161,6 +181,7 @@ describe('fromFiltersWithLogicalOperators', () => {
             integrations: statsFiltersWithLogicalOperators.integrations.values,
             period: statsFiltersWithLogicalOperators.period,
             aggregationWindow,
+            tags: statsFiltersWithLogicalOperators.tags[0].values,
         })
     })
 })

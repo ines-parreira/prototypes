@@ -31,7 +31,7 @@ const getCustomFields = (statsFilters: Partial<LegacyStatsFilters>) => {
             }
         })
     }
-    return Object.values(customFieldFilters) // TODO: change the Filters type to map
+    return Object.values(customFieldFilters)
 }
 
 export const fromPartialLegacyStatsFilters = (
