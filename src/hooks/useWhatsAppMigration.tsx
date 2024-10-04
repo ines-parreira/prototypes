@@ -21,7 +21,6 @@ import {
     registerNumber,
 } from 'models/integration/resources/whatsapp'
 
-import useEffectOnce from './useEffectOnce'
 import useDebouncedEffect from './useDebouncedEffect'
 import useLocalStorage from './useLocalStorage'
 
@@ -217,13 +216,6 @@ function useMigration(): Migration {
     const isTargetValid = useMemo(() => {
         return validateTargetWithFriendlyErrors(target).isValid
     }, [target])
-
-    useEffectOnce(() => {
-        const stepFromStatus = getStepFromStatus(status)
-        if (step !== stepFromStatus) {
-            history.push(`?step=${stepFromStatus}`)
-        }
-    })
 
     const updateTarget = (key: keyof Target, value: string) => {
         clearError(key)
