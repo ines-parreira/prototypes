@@ -118,6 +118,7 @@ export enum FeatureFlagKey {
     Setup2FAWithRecentLoginInsteadOfPassword = 'setup-2fa-with-recent-login-instead-of-password',
     ShopifyDefaultAddressPhoneMatching = 'shopify-default-address-phone-matching',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
+    ShopifyOrderNotes = 'shopify-order-notes',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketNavigationArrows = 'ticket-navigation-arrows',
