@@ -1,10 +1,7 @@
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    changeTicketMessage,
-    getSelectedAIMessage,
-} from 'state/ui/ticketAIAgentFeedback'
+import {changeTicketMessage} from 'state/ui/ticketAIAgentFeedback'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import Button from 'pages/common/components/button/Button'
 
@@ -15,6 +12,7 @@ import {SegmentEvent} from 'common/segment'
 import AIAgentMessageFeedback from './AIAgentMessageFeedback'
 import AIAgentTicketFeedback from './AIAgentTicketFeedback'
 import css from './AIAgentFeedbackBar.less'
+import useAiAgentMessageFeedback from './hooks/useAiAgentMessageFeedback'
 
 export const FEEDBACK_TICKET_SUMMARY_TEST_ID = 'feedback-bar'
 export const FEEDBACK_MESSAGE_CONTAINER_TEST_ID = 'feedback-message-container'
@@ -24,10 +22,7 @@ export const ticketFeedbackSummary =
 
 const AIAgentFeedbackBar = () => {
     const dispatch = useAppDispatch()
-    const selectedAIMessage = useAppSelector(getSelectedAIMessage)
-
     const aiMessages = useAppSelector(getAIAgentMessages)
-
     const publicAIMessages = aiMessages.filter((message) => message.public)
 
     const {data} = useGetAiAgentFeedback({
@@ -36,12 +31,7 @@ const AIAgentFeedbackBar = () => {
 
     const ticketFeedback = data?.data
 
-    const messageFeedback = selectedAIMessage
-        ? ticketFeedback?.messages?.find(
-              (messageFeedback) =>
-                  messageFeedback.messageId === selectedAIMessage.id
-          )
-        : null
+    const messageFeedback = useAiAgentMessageFeedback()
 
     const handleSelectFirstMessage = () => {
         dispatch(changeTicketMessage({message: publicAIMessages[0]}))

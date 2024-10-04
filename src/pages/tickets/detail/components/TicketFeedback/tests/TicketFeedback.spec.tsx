@@ -1,16 +1,25 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 
+// import useAppDispatch from 'hooks/useAppDispatch'
+import useAiAgentMessageFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useAiAgentMessageFeedback'
+
 import useHasAIAgent from '../hooks/useHasAIAgent'
 import useHasAutoQA from '../hooks/useHasAutoQA'
 
 import TicketFeedback from '../TicketFeedback'
 
 jest.mock('auto_qa', () => ({AutoQA: () => <div>AutoQA</div>}))
+jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentFeedbackBar',
     () => () => <div>AIAgentFeedbackBar</div>
 )
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useAiAgentMessageFeedback',
+    () => jest.fn()
+)
+const useAiAgentMessageFeedbackMock = useAiAgentMessageFeedback as jest.Mock
 
 jest.mock('../hooks/useHasAIAgent', () => jest.fn())
 const useHasAIAgentMock = useHasAIAgent as jest.Mock
@@ -20,6 +29,7 @@ const useHasAutoQAMock = useHasAutoQA as jest.Mock
 
 describe('TicketFeedback', () => {
     beforeEach(() => {
+        useAiAgentMessageFeedbackMock.mockReturnValue(null)
         useHasAIAgentMock.mockReturnValue(false)
         useHasAutoQAMock.mockReturnValue(false)
     })
@@ -49,5 +59,12 @@ describe('TicketFeedback', () => {
         useHasAIAgentMock.mockReturnValue(true)
         const {container} = render(<TicketFeedback />)
         expect(container.children[0].children.length).toBe(3)
+    })
+
+    it('should render a back button when a message is selected', () => {
+        useAiAgentMessageFeedbackMock.mockReturnValue({messageId: 1})
+        useHasAutoQAMock.mockReturnValue(true)
+        const {getByText} = render(<TicketFeedback />)
+        expect(getByText('Back')).toBeInTheDocument()
     })
 })
