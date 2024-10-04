@@ -48,9 +48,6 @@ jest.mock('pages/stats/DefaultStatsFilters', () => () => (
 jest.mock('pages/settings/yourProfile/YourProfileContainer', () => () => (
     <div>YourProfileContainer</div>
 ))
-jest.mock('pages/tasks/detail/CreditShopifyBillingIntegration', () => () => (
-    <div>CreditShopifyBillingIntegration</div>
-))
 jest.mock(
     'pages/automate/actionsPlatform/ActionsPlatformAppsView',
     () => () => <div>ActionsPlatformAppsView</div>
@@ -179,44 +176,40 @@ describe('<Routes/>', () => {
         }
     )
 
-    it('should make Shopify route available for impersonated admin users', () => {
-        window.USER_IMPERSONATED = true
-
-        const {container} = renderWithRouter(
-            <Provider store={mockStore({currentUser: fromJS(user)})}>
-                <Routes />
-            </Provider>,
-            {
-                history: mockHistory,
-            }
-        )
-
-        act(() =>
-            mockHistory.push(
-                '/app/admin/tasks/credit-shopify-billing-integration'
+    describe.each([
+        {
+            route: 'credit-shopify-billing-integration',
+            title: 'Credit Shopify billing integration',
+        },
+        {route: 'create-shopify-charge', title: 'Create Shopify charge'},
+        {route: 'remove-shopify-billing', title: 'Remove Shopify Billing'},
+    ])('The route $route', ({route, title}) => {
+        const renderRoute = () => {
+            renderWithRouter(
+                <Provider store={mockStore({currentUser: fromJS(user)})}>
+                    <Routes />
+                </Provider>,
+                {
+                    history: mockHistory,
+                }
             )
-        )
 
-        expect(container).toMatchSnapshot()
-    })
+            act(() => mockHistory.push(`/app/admin/tasks/${route}`))
+        }
 
-    it('should not make Shopify route available for non-impersonated users', () => {
-        const {container} = renderWithRouter(
-            <Provider store={mockStore({})}>
-                <Routes />
-            </Provider>,
-            {
-                history: mockHistory,
-            }
-        )
+        it('should be available for impersonated admin users', () => {
+            window.USER_IMPERSONATED = true
+            renderRoute()
+            expect(screen.getByRole('heading', {name: title})).toBeVisible()
+        })
 
-        act(() =>
-            mockHistory.push(
-                '/app/admin/tasks/credit-shopify-billing-integration'
-            )
-        )
-
-        expect(container).toMatchSnapshot()
+        it('should not be available for non-impersonated users', () => {
+            window.USER_IMPERSONATED = null
+            renderRoute()
+            expect(
+                screen.queryByRole('heading', {name: title})
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('actions platform', () => {

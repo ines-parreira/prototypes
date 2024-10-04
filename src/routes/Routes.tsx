@@ -61,6 +61,7 @@ import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
 import TwilioSubaccountStatusForm from 'pages/tasks/detail/TwilioSubaccountStatusForm'
 import CreditShopifyBillingIntegration from 'pages/tasks/detail/CreditShopifyBillingIntegration'
 import CreateShopifyCharge from 'pages/tasks/detail/CreateShopifyCharge'
+import RemoveShopifyBilling from 'pages/tasks/detail/RemoveShopifyBilling'
 import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
 import {
     ROUTE_OLD_PERFORMANCE_BY_FEATURES,
@@ -1439,6 +1440,22 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                                 CreateShopifyCharge,
                                 ADMIN_ROLE,
                                 PageSection.CreateShopifyCharge
+                            )}
+                            navbar={SettingsNavbar}
+                        />
+                    )}
+                />
+            )}
+            {window.USER_IMPERSONATED && (
+                <Route
+                    path={`${path}/remove-shopify-billing`}
+                    exact
+                    render={() => (
+                        <App
+                            content={withUserRoleRequired(
+                                RemoveShopifyBilling,
+                                ADMIN_ROLE,
+                                PageSection.RemoveShopifyBilling
                             )}
                             navbar={SettingsNavbar}
                         />

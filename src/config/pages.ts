@@ -23,6 +23,7 @@ export enum PageSection {
     TwilioSubaccountStatus = 'twilio-subaccount-status',
     CreditShopifyBillingIntegration = 'credit-shopify-billing-integration',
     CreateShopifyCharge = 'create-shopify-charge',
+    RemoveShopifyBilling = 'remove-shopify-billing',
     SidebarSettings = 'sidebar-settings',
     SLAPolicies = 'sla-policies',
 }
@@ -54,5 +55,6 @@ export enum SectionPageHeader {
     CreditShopifyBillingIntegration = 'Credit Shopify billing integration',
     SidebarSettings = 'sidebar-settings',
     CreateShopifyCharge = 'Create Shopify Charge',
+    RemoveShopifyBilling = 'Remove Shopify Billing',
     SLAPolicies = 'SLAs',
 }
