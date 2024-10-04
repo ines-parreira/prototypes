@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import {TicketStatus} from 'business/types/ticket'
 import {useFlag} from 'common/flags'
 import {UserRole} from 'config/types/user'
 import {selectContext, fetchWidgets} from 'state/widgets/actions'
@@ -251,7 +252,12 @@ describe('<TicketInfobarContainer />', () => {
         })
     })
 
-    it('should switch to the Ticket Feedback tab if the user is a team lead and that tab is not yet selected', () => {
+    it('should switch to the Ticket Feedback tab if the user is a team lead and the ticket is closed', () => {
+        const store = mockStore({
+            ...state,
+            ticket: fromJS({...ticket, status: TicketStatus.Closed}),
+        })
+        store.dispatch = jest.fn()
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 id: 2,
