@@ -15,6 +15,7 @@ export const dimensionConfig: Record<
     DimensionConfig
 > = {
     [TicketQAScoreDimensionName.CommunicationSkills]: {
+        autoExpandThreshold: 4,
         label: 'Communication',
         options: [1, 2, 3, 4, 5].map((i) => ({label: `${i}/5`, value: i})),
         prefix: <i className={cn('material-icons-round', css.icon)}>star</i>,
@@ -22,6 +23,7 @@ export const dimensionConfig: Record<
             'On a scale of 1 to 5, 5 being best, did the agent demonstrate empathy, clarity of messaging, patience, positivity, and adaptability?',
     },
     [TicketQAScoreDimensionName.ResolutionCompleteness]: {
+        autoExpandThreshold: 0,
         label: 'Resolution',
         options: [
             {label: 'Incomplete', value: 0},

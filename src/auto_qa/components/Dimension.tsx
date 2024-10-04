@@ -25,7 +25,11 @@ type Props = {
 }
 
 export default function Dimension({config, dimension, onChange}: Props) {
-    const [isExpanded, setIsExpanded] = useState(false)
+    const [isExpanded, setIsExpanded] = useState(
+        () =>
+            config.autoExpandThreshold !== undefined &&
+            dimension.prediction <= config.autoExpandThreshold
+    )
     const [isSelectOpen, setIsSelectOpen] = useState(false)
     const floatingRef = useRef<HTMLDivElement>(null)
     const selectRef = useRef<HTMLDivElement>(null)

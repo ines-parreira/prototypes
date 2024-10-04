@@ -2,6 +2,7 @@ import type {TicketQAScoreDimension} from '@gorgias/api-queries'
 import type {ReactNode} from 'react'
 
 export type DimensionConfig = {
+    autoExpandThreshold?: number
     label: string
     options: DimensionOption[]
     prefix?: ReactNode

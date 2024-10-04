@@ -4,7 +4,7 @@ import {
     useListTicketQaScoreDimensions,
     useUpsertTicketQaScoreDimension,
 } from '@gorgias/api-queries'
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {useCallback, useMemo, useRef, useState} from 'react'
 
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {dimensionOrder} from '../config'
@@ -12,51 +12,20 @@ import type {DimensionSummary} from '../types'
 
 import useSaveState from './useSaveState'
 
-const defaultValues = dimensionOrder.reduce(
-    (acc, name) => ({
-        ...acc,
-        [name]: {
-            explanation: '',
-            prediction: 0,
-        },
-    }),
-    {} as Record<TicketQAScoreDimensionName, DimensionSummary>
-)
-
 export default function useAutoQA(ticketId: number) {
     const {data, isError, isLoading, refetch} =
         useListTicketQaScoreDimensions(ticketId)
     const {isLoading: isSaving, mutateAsync: upsertTicketQaScoreDimension} =
         useUpsertTicketQaScoreDimension()
 
-    const [values, setValues] =
-        useState<Record<TicketQAScoreDimensionName, DimensionSummary>>(
-            defaultValues
-        )
+    const [values, setValues] = useState<{
+        [key in TicketQAScoreDimensionName]?: DimensionSummary
+    }>({})
     const [newDimensionValue, setNewDimensionValue] = useState<
         {name: TicketQAScoreDimensionName} & DimensionSummary
     >()
     const dirtyRef = useRef(false)
-    const dimensionsData = data?.data.data?.dimensions
-
     const saveState = useSaveState(isSaving)
-
-    useEffect(() => {
-        if (!dimensionsData) return
-
-        setValues(
-            dimensionsData.reduce(
-                (acc, dim) => ({
-                    ...acc,
-                    [dim.name]: {
-                        explanation: dim.explanation,
-                        prediction: dim.prediction,
-                    },
-                }),
-                {} as Record<TicketQAScoreDimensionName, DimensionSummary>
-            )
-        )
-    }, [dimensionsData])
 
     const lastUpdated = useMemo(() => {
         if (!data?.data.data) return null

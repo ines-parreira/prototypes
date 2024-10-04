@@ -14,7 +14,7 @@ describe('Dimension', () => {
         created_datetime: '2024-01-20T10:00:00Z',
         updated_datetime: '2024-01-21T10:00:00Z',
         name: 'communication_skills',
-        prediction: 4,
+        prediction: 5,
         explanation: 'Beepity-boopity',
     } as TicketQAScoreDimension
 
@@ -22,7 +22,7 @@ describe('Dimension', () => {
 
     it('should render the component', () => {
         const onChange = jest.fn()
-        const {getByText} = render(
+        const {getByText, queryByText} = render(
             <Dimension
                 config={dimensionConfig.communication_skills}
                 dimension={defaultDimension}
@@ -30,7 +30,20 @@ describe('Dimension', () => {
             />
         )
         expect(getByText('Communication')).toBeInTheDocument()
-        expect(getByText('4/5')).toBeInTheDocument()
+        expect(getByText('5/5')).toBeInTheDocument()
+        expect(queryByText('Beepity-boopity')).not.toBeInTheDocument()
+    })
+
+    it('should automatically expand if the prediction is below the configured threshold', () => {
+        const onChange = jest.fn()
+        const {getByText} = render(
+            <Dimension
+                config={dimensionConfig.communication_skills}
+                dimension={{...defaultDimension, prediction: 4}}
+                onChange={onChange}
+            />
+        )
+        expect(getByText('Beepity-boopity')).toBeInTheDocument()
     })
 
     it('should call onChange when the prediction changes', () => {
@@ -45,8 +58,8 @@ describe('Dimension', () => {
 
         const el = getByRole('combobox')
         fireEvent.focus(el)
-        fireEvent.click(getByText('5/5'))
-        expect(onChange).toHaveBeenCalledWith(5, 'Beepity-boopity')
+        fireEvent.click(getByText('4/5'))
+        expect(onChange).toHaveBeenCalledWith(4, 'Beepity-boopity')
     })
 
     it('should call onChange when the explanation changes', () => {
@@ -61,6 +74,6 @@ describe('Dimension', () => {
 
         fireEvent.click(getByText('arrow_right'))
         fireEvent.change(getByText('Beepity-boopity'), {target: {value: 'Yup'}})
-        expect(onChange).toHaveBeenCalledWith(4, 'Yup')
+        expect(onChange).toHaveBeenCalledWith(5, 'Yup')
     })
 })
