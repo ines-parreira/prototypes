@@ -1,18 +1,16 @@
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {fromJS, Map} from 'immutable'
-import {shallow} from 'enzyme'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import _noop from 'lodash/noop'
 
-import MergeTicketsContainer from '../MergeTicketsContainer'
-
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+import {screen} from '@testing-library/react'
+import {renderWithStore} from 'utils/testing'
+import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
 
 describe('MergeTicketsContainer component', () => {
+    const ticketSubject = 'foo'
     const baseTicket = fromJS({
-        subject: 'foo',
+        subject: ticketSubject,
         assignee_user: {
             id: 1,
             name: 'John Smith',
@@ -23,40 +21,52 @@ describe('MergeTicketsContainer component', () => {
         },
     }) as Map<any, any>
 
-    let commonProps = {
+    const commonProps = {
         isOpen: true,
         toggleModal: _noop,
     }
 
-    beforeEach(() => {
-        commonProps = {...commonProps, ...{store: mockStore({})}}
-    })
-
     it('should render a closed modal because isOpen==false', () => {
         const props = {...commonProps}
         props.isOpen = false
-        const component = shallow(
-            <MergeTicketsContainer sourceTicket={baseTicket} {...props} />
-        ).dive()
 
-        expect(component).toMatchSnapshot()
+        const {container} = renderWithStore(
+            <MergeTicketsContainer sourceTicket={baseTicket} {...props} />,
+            {}
+        )
+        const modal = document.querySelector('.modal')
+
+        expect(modal).not.toBeInTheDocument()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the selection component if there is no selected ticket in the state', () => {
-        const component = shallow(
-            <MergeTicketsContainer sourceTicket={baseTicket} {...commonProps} />
-        ).dive()
+        renderWithStore(
+            <MergeTicketsContainer
+                sourceTicket={baseTicket}
+                {...commonProps}
+            />,
+            {}
+        )
+        const modal = document.querySelector('.modal')
 
-        expect(component).toMatchSnapshot()
+        expect(modal).toBeInTheDocument()
+        expect(modal).toMatchSnapshot()
     })
 
     it('should render the build component if there is a selected ticket in the state', () => {
-        const component = shallow(
-            <MergeTicketsContainer sourceTicket={baseTicket} {...commonProps} />
-        ).dive()
+        renderWithStore(
+            <MergeTicketsContainer
+                sourceTicket={baseTicket}
+                {...commonProps}
+            />,
+            {}
+        )
 
-        component.setState({targetTicket: baseTicket})
+        userEvent.click(screen.getByText(ticketSubject))
+        const modal = document.querySelector('.modal')
 
-        expect(component).toMatchSnapshot()
+        expect(modal).toBeInTheDocument()
+        expect(modal).toMatchSnapshot()
     })
 })

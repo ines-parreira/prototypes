@@ -1,119 +1,195 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MergeTicketsContainer component should render a closed modal because isOpen==false 1`] = `
-<ForwardRef(Modal)
-  isOpen={false}
-  onClose={[Function]}
-  size="huge"
->
-  <ModalHeader
-    title="Merge tickets"
-  />
-  <ForwardRef(ModalBody) />
-</ForwardRef(Modal)>
-`;
+exports[`MergeTicketsContainer component should render a closed modal because isOpen==false 1`] = `null`;
 
 exports[`MergeTicketsContainer component should render the build component if there is a selected ticket in the state 1`] = `
-<ForwardRef(Modal)
-  isOpen={true}
-  onClose={[Function]}
-  size="huge"
+<div
+  aria-describedby="modal-4-desc"
+  aria-labelledby="modal-4-title"
+  aria-modal="true"
+  class="modal"
+  role="dialog"
 >
-  <ModalHeader
-    title="Merge tickets"
-  />
-  <ForwardRef(ModalBody)>
-    <BuildFinalTicket
-      finalTicket={null}
-      sourceTicket={
-        Immutable.Map {
-          "subject": "foo",
-          "assignee_user": Immutable.Map {
-            "id": 1,
-            "name": "John Smith",
-          },
-          "customer": Immutable.Map {
-            "id": 22,
-            "name": "Maria Curie",
-          },
-        }
-      }
-      targetTicket={
-        Immutable.Map {
-          "subject": "foo",
-          "assignee_user": Immutable.Map {
-            "id": 1,
-            "name": "John Smith",
-          },
-          "customer": Immutable.Map {
-            "id": 22,
-            "name": "Maria Curie",
-          },
-        }
-      }
-      updateFinalTicket={[Function]}
-    />
-  </ForwardRef(ModalBody)>
-  <ModalActionsFooter
-    extra={
-      <ForwardRef(Button)
-        color="secondary"
-        isDisabled={false}
-        onClick={[Function]}
-      >
-        <ButtonIconLabel
-          icon="arrow_back"
-        >
-          Back
-        </ButtonIconLabel>
-      </ForwardRef(Button)>
-    }
+  <div
+    class="dialog huge"
   >
-    <ForwardRef(Button)
-      intent="secondary"
-      isDisabled={false}
-      onClick={[Function]}
+    <div
+      class="modalContent"
     >
-      Cancel
-    </ForwardRef(Button)>
-    <ConfirmButton
-      confirmationContent="This action is irreversible. Are you sure you want to merge these tickets?"
-      isLoading={false}
-      onConfirm={[Function]}
-    >
-      Merge tickets
-    </ConfirmButton>
-  </ModalActionsFooter>
-</ForwardRef(Modal)>
+      <div
+        class="wrapper"
+      >
+        <div>
+          <div
+            class="title"
+            id="modal-4-title"
+          >
+            Merge tickets
+          </div>
+          <div
+            class="subtitle"
+          />
+        </div>
+        <i
+          class="material-icons icon"
+        >
+          close
+        </i>
+      </div>
+      <div
+        class="wrapper"
+        id="modal-4-desc"
+      >
+        <div>
+          <p>
+            Select the ticket you want to merge
+             
+            <b>
+              foo
+            </b>
+             with:
+          </p>
+          <div
+            class="component search"
+          >
+            <div
+              class="wrapper input"
+            >
+              <span
+                class="prefix"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  search
+                </i>
+              </span>
+              <input
+                class="input"
+                id="input-text-5"
+                name="input-text-5"
+                placeholder="Search..."
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="table-wrapper"
+          >
+            <div
+              class="container"
+            >
+              <div
+                class="inner"
+                style="min-height: 500px;"
+              >
+                <i
+                  class="icon-custom icon-circle-o-notch md-spin"
+                  style="font-size: 40px;"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`MergeTicketsContainer component should render the selection component if there is no selected ticket in the state 1`] = `
-<ForwardRef(Modal)
-  isOpen={true}
-  onClose={[Function]}
-  size="huge"
+<div
+  aria-describedby="modal-2-desc"
+  aria-labelledby="modal-2-title"
+  aria-modal="true"
+  class="modal"
+  role="dialog"
 >
-  <ModalHeader
-    title="Merge tickets"
-  />
-  <ForwardRef(ModalBody)>
-    <Connect(SelectTargetTicket)
-      customerId={22}
-      sourceTicket={
-        Immutable.Map {
-          "subject": "foo",
-          "assignee_user": Immutable.Map {
-            "id": 1,
-            "name": "John Smith",
-          },
-          "customer": Immutable.Map {
-            "id": 22,
-            "name": "Maria Curie",
-          },
-        }
-      }
-      updateTargetTicket={[Function]}
-    />
-  </ForwardRef(ModalBody)>
-</ForwardRef(Modal)>
+  <div
+    class="dialog huge"
+  >
+    <div
+      class="modalContent"
+    >
+      <div
+        class="wrapper"
+      >
+        <div>
+          <div
+            class="title"
+            id="modal-2-title"
+          >
+            Merge tickets
+          </div>
+          <div
+            class="subtitle"
+          />
+        </div>
+        <i
+          class="material-icons icon"
+        >
+          close
+        </i>
+      </div>
+      <div
+        class="wrapper"
+        id="modal-2-desc"
+      >
+        <div>
+          <p>
+            Select the ticket you want to merge
+             
+            <b>
+              foo
+            </b>
+             with:
+          </p>
+          <div
+            class="component search"
+          >
+            <div
+              class="wrapper input"
+            >
+              <span
+                class="prefix"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  search
+                </i>
+              </span>
+              <input
+                class="input"
+                id="input-text-3"
+                name="input-text-3"
+                placeholder="Search..."
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="table-wrapper"
+          >
+            <div
+              class="container"
+            >
+              <div
+                class="inner"
+                style="min-height: 500px;"
+              >
+                <i
+                  class="icon-custom icon-circle-o-notch md-spin"
+                  style="font-size: 40px;"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
