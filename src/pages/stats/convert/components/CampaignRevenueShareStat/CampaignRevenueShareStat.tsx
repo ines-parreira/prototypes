@@ -24,6 +24,7 @@ export const CampaignRevenueShareStat = () => {
         selectedCampaignIds,
         selectedCampaignsOperator,
         selectedPeriod,
+        granularity,
     } = useCampaignStatsFilters()
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
@@ -37,7 +38,8 @@ export const CampaignRevenueShareStat = () => {
         selectedCampaignsOperator,
         selectedPeriod.start_datetime,
         selectedPeriod.end_datetime,
-        userTimezone
+        userTimezone,
+        granularity
     )
 
     const isLoading = isFetching || isError

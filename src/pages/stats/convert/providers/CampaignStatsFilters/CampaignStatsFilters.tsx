@@ -8,6 +8,7 @@ import React, {
 
 import {useParams} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 
@@ -29,6 +30,7 @@ import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegr
 import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
 
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {periodAndAggregationWindowToReportingGranularity} from 'utils/reporting'
 import {FiltersContext} from './context'
 
 type Props = {
@@ -52,6 +54,7 @@ export const CampaignStatsFilters = ({children}: Props) => {
     const legacyStatsFilters = useAppSelector(getStatsFilters)
 
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
+    useCleanStatsFiltersWithLogicalOperators(statsFilters)
 
     const storeIntegrationId = useMemo(
         () =>
@@ -194,6 +197,10 @@ export const CampaignStatsFilters = ({children}: Props) => {
         <FiltersContext.Provider
             value={{
                 campaigns,
+                granularity: periodAndAggregationWindowToReportingGranularity(
+                    statsFilters.period,
+                    statsFilters.aggregationWindow
+                ),
                 integrations,
                 isStorePreSelected: !!storeIntegrationId,
                 selectedCampaignIds,

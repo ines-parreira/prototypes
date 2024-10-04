@@ -100,6 +100,10 @@ export function useTimeSeriesPerDimension<TCube extends Cubes>(
     })
 }
 
+export const getMomentGranularityFromReportingGranularity = (
+    granularity: ReportingGranularity
+) => (granularity === ReportingGranularity.Week ? 'isoWeek' : granularity)
+
 export function getPeriodDateTimes(
     dateRange: string[],
     granularity: ReportingGranularity
@@ -110,7 +114,8 @@ export function getPeriodDateTimes(
     // By setting the granularity to isoWeek, we make sure that
     // start of the week returned by Moment.js is also Monday.
     const momentGranularity =
-        granularity === ReportingGranularity.Week ? 'isoWeek' : granularity
+        getMomentGranularityFromReportingGranularity(granularity)
+
     const dates = []
     const end = moment(dateRange[1])
     let currentDate = moment(dateRange[0])

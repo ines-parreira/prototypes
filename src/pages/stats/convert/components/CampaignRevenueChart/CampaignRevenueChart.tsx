@@ -22,6 +22,7 @@ const CampaignRevenueChart = () => {
         selectedCampaignIds,
         selectedCampaignsOperator,
         selectedPeriod,
+        granularity,
     } = useCampaignStatsFilters()
 
     const namespacedShopName =
@@ -39,7 +40,8 @@ const CampaignRevenueChart = () => {
         selectedCampaignsOperator,
         selectedPeriod.start_datetime,
         selectedPeriod.end_datetime,
-        userTimezone
+        userTimezone,
+        granularity
     )
 
     const isLoading = isFetching || isError

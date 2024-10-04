@@ -97,7 +97,7 @@ export default function CampaignStatusesFilter({
         handleFilterValuesChange([])
     }, [handleFilterValuesChange])
 
-    const onRemoveCompaignStatuses = useCallback(() => {
+    const onRemoveCampaignStatuses = useCallback(() => {
         dispatch(
             mergeStatsFiltersWithLogicalOperator({
                 campaignStatuses: emptyFilter,
@@ -124,7 +124,7 @@ export default function CampaignStatusesFilter({
             onChangeLogicalOperator={_noop}
             onSelectAll={onSelectAllFilters}
             onRemoveAll={onRemoveAllFilters}
-            onRemove={onRemoveCompaignStatuses}
+            onRemove={onRemoveCampaignStatuses}
             initializeAsOpen={initializeAsOpen}
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}

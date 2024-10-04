@@ -37,6 +37,7 @@ const CampaignPerformanceCharts = () => {
         selectedCampaignsOperator,
         selectedPeriod,
         channelConnectionExternalIds,
+        granularity,
     } = useCampaignStatsFilters()
 
     const currency = useGetCurrencyForStore(selectedIntegrations)
@@ -75,7 +76,8 @@ const CampaignPerformanceCharts = () => {
         selectedCampaignsOperator,
         selectedPeriod.start_datetime,
         selectedPeriod.end_datetime,
-        userTimezone
+        userTimezone,
+        granularity
     )
 
     const isLoading =

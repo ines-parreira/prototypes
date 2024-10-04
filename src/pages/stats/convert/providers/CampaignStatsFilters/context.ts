@@ -1,9 +1,10 @@
 import {createContext} from 'react'
+import {ReportingGranularity} from 'models/reporting/types'
 
 import {Integration} from 'models/integration/types'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {CampaignPreview} from 'models/convert/campaign/types'
-import {WithLogicalOperator} from 'models/stat/types'
+import {AggregationWindow, WithLogicalOperator} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 interface FilterContextSchema {
@@ -27,6 +28,7 @@ interface FilterContextSchema {
         statuses: Value[] | WithLogicalOperator<string>
     ) => void
     selectedCampaignsOperator: LogicalOperatorEnum
+    granularity: AggregationWindow
 }
 
 export const FiltersContext = createContext<FilterContextSchema>({
@@ -46,4 +48,5 @@ export const FiltersContext = createContext<FilterContextSchema>({
     onChangeCampaigns: () => null,
     onChangeCampaignsByStatus: () => null,
     selectedCampaignsOperator: LogicalOperatorEnum.ONE_OF,
+    granularity: ReportingGranularity.Day,
 })

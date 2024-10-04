@@ -8,6 +8,7 @@ import _pickBy from 'lodash/pickBy'
 import _bind from 'lodash/bind'
 import _divide from 'lodash/divide'
 import moment from 'moment'
+import {getMomentGranularityFromReportingGranularity} from 'hooks/reporting/useTimeSeries'
 
 import {ensureNumberValue, formatPercentage} from 'pages/common/utils/numbers'
 import {
@@ -22,7 +23,7 @@ import {
     StatData,
     StoreTotal,
 } from 'pages/stats/convert/services/types'
-import {Stat} from 'models/stat/types'
+import {AggregationWindow, Stat} from 'models/stat/types'
 import {
     CubeData,
     CubeMetric,
@@ -269,12 +270,18 @@ export const transformToChatConversionRateOverTime = (
     })
 }
 
-export const backfillGraphData = (
+export const backFillGraphData = (
     data: RevenueGraphDataPoint[][],
     startDate: string,
-    endDate: string
+    endDate: string,
+    granularity: AggregationWindow = ReportingGranularity.Day
 ): RevenueGraphDataPoint[][] => {
-    const allDates = _getDefaultsForAllDates(startDate, endDate, data.length)
+    const allDates = _getDefaultsForAllDates(
+        startDate,
+        endDate,
+        granularity,
+        data.length
+    )
     data.map((dataSet: RevenueGraphDataPoint[], i) => {
         dataSet.map((dataPoint: RevenueGraphDataPoint) => {
             // override default value in allDates with actual data
@@ -293,21 +300,24 @@ export const backfillGraphData = (
 const _getDefaultsForAllDates = (
     startDate: string,
     endDate: string,
+    granularity: AggregationWindow,
     defaultsLength: number
 ): {[key: string]: RevenueGraphDataPoint[]} => {
     let start = moment(startDate)
     const end = moment(endDate)
 
-    // allDates will contain `defaultsLength` long array
+    const momentGranularity =
+        getMomentGranularityFromReportingGranularity(granularity)
+
     const allDates = {} as {[key: string]: RevenueGraphDataPoint[]}
     while (start <= end) {
-        allDates[start.format(COMPARISON_DATA_FORMAT)] = new Array(
-            defaultsLength
-        ).fill({
-            x: start.format(GRAPH_LABEL_DATE_FORMAT),
+        allDates[
+            start.startOf(momentGranularity).format(COMPARISON_DATA_FORMAT)
+        ] = new Array(defaultsLength).fill({
+            x: start.startOf(momentGranularity).format(GRAPH_LABEL_DATE_FORMAT),
             y: 0,
         })
-        start = moment(start).add(1, 'days')
+        start = moment(start).add(1, granularity)
     }
     return allDates
 }

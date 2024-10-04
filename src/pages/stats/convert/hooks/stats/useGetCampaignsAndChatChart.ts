@@ -6,7 +6,7 @@ import {
 } from 'pages/stats/convert/clients/types'
 import {getCampaignsPerformanceGraphData} from 'pages/stats/convert/clients/CampaignCubeQueries'
 import {
-    backfillGraphData,
+    backFillGraphData,
     getDataFromResult,
     transformToCampaignConversionRateOverTime,
     transformToCampaignCTROverTime,
@@ -104,7 +104,7 @@ export const useGetCampaignsAndChatChart = (
 
         // make sure there are no gaps in the data to cause lines misalignment
         const [bfCampaignCTR, bfCampaignConversionRate, bfChatConversionRate] =
-            backfillGraphData(
+            backFillGraphData(
                 [campaignsCTR, campaignConversionRate, chatConversionRate],
                 startDate,
                 endDate

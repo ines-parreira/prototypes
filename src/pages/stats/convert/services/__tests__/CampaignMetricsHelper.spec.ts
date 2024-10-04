@@ -1,5 +1,6 @@
+import moment from 'moment'
 import {
-    backfillGraphData,
+    backFillGraphData,
     getDataFromResult,
     getDataFromStatResult,
     getMetricFromCubeData,
@@ -29,6 +30,7 @@ import {
 import {
     AbTestMetricNames,
     CampaignsTotalsMetricNames,
+    GRAPH_LABEL_DATE_FORMAT,
 } from 'pages/stats/convert/services/constants'
 import {RevenueByDate} from 'pages/stats/convert/services/types'
 import {ReportingGranularity} from 'models/reporting/types'
@@ -447,14 +449,14 @@ describe('Campaign metrics helper tests', () => {
         it('should backfill graph data for missing days', () => {
             const startDate = '2021-01-31'
             const endDate = '2021-02-03'
-            const result = backfillGraphData(data, startDate, endDate)
+            const result = backFillGraphData(data, startDate, endDate)
             expect(result).toMatchSnapshot()
         })
 
         it('should backfill graph data for inner empty data', () => {
             const startDate = '2021-02-01'
             const endDate = '2021-02-03'
-            const result = backfillGraphData(
+            const result = backFillGraphData(
                 [graphData1, []],
                 startDate,
                 endDate
@@ -465,19 +467,149 @@ describe('Campaign metrics helper tests', () => {
         it('should not backfill graph data for empty data', () => {
             const startDate = '2021-02-01'
             const endDate = '2021-02-03'
-            const result = backfillGraphData([], startDate, endDate)
+            const result = backFillGraphData([], startDate, endDate)
             expect(result).toStrictEqual([])
         })
 
         it('should not loop forever if dates are passed wrongly', () => {
             const startDate = '2021-02-03'
             const endDate = '2021-02-01'
-            const result = backfillGraphData(
+            const result = backFillGraphData(
                 [graphData1, []],
                 startDate,
                 endDate
             )
             expect(result).toStrictEqual([])
+        })
+
+        it('should handle data with weekly granularity', () => {
+            const startDate = '2024-10-09'
+            const endDate = '2024-10-23'
+            const weeklyData = [
+                [
+                    {
+                        x: '2024-10-07',
+                        y: 100,
+                    },
+                    {
+                        x: '2024-10-14',
+                        y: 200,
+                    },
+                ],
+                [
+                    {
+                        x: '2024-10-07',
+                        y: 100,
+                    },
+                    {
+                        x: '2024-10-21',
+                        y: 200,
+                    },
+                ],
+            ]
+            const granularity = ReportingGranularity.Week
+
+            const result = backFillGraphData(
+                weeklyData,
+                startDate,
+                endDate,
+                granularity
+            )
+            expect(result).toStrictEqual([
+                [
+                    {
+                        x: moment('2024-10-07').format(GRAPH_LABEL_DATE_FORMAT),
+                        y: 100,
+                    },
+                    {
+                        x: moment('2021-10-14').format(GRAPH_LABEL_DATE_FORMAT),
+                        y: 200,
+                    },
+                    {
+                        x: moment('2021-10-21').format(GRAPH_LABEL_DATE_FORMAT),
+                        y: 0,
+                    },
+                ],
+                [
+                    {
+                        x: moment('2024-10-07').format(GRAPH_LABEL_DATE_FORMAT),
+                        y: 100,
+                    },
+                    {
+                        x: moment('2021-10-14').format(GRAPH_LABEL_DATE_FORMAT),
+                        y: 0,
+                    },
+                    {
+                        x: moment('2024-10-21').format(GRAPH_LABEL_DATE_FORMAT),
+                        y: 200,
+                    },
+                ],
+            ])
+        })
+
+        it('should handle data with monthly granularity', () => {
+            const startDate = '2024-09-09'
+            const endDate = '2024-11-23'
+            const weeklyData = [
+                [
+                    {
+                        x: '2024-09-01',
+                        y: 100,
+                    },
+                    {
+                        x: '2024-10-01',
+                        y: 200,
+                    },
+                ],
+                [
+                    {
+                        x: '2024-10-01',
+                        y: 100,
+                    },
+                    {
+                        x: '2024-11-01',
+                        y: 200,
+                    },
+                ],
+            ]
+            const granularity = ReportingGranularity.Month
+
+            const result = backFillGraphData(
+                weeklyData,
+                startDate,
+                endDate,
+                granularity
+            )
+            expect(result).toStrictEqual([
+                [
+                    {
+                        x: moment('2024-09-01').format(GRAPH_LABEL_DATE_FORMAT),
+                        y: 100,
+                    },
+                    {
+                        x: moment('2021-10-01').format(GRAPH_LABEL_DATE_FORMAT),
+                        y: 200,
+                    },
+                    {
+                        x: moment('2021-11-01').format(GRAPH_LABEL_DATE_FORMAT),
+                        y: 0,
+                    },
+                ],
+                [
+                    {
+                        x: moment('2024-09-01').format(GRAPH_LABEL_DATE_FORMAT),
+                        y: 0,
+                    },
+                    {
+                        x: moment('2021-10-01').format(GRAPH_LABEL_DATE_FORMAT),
+                        y: 100,
+                    },
+                    {
+                        x: moment('2024-11-01').format(GRAPH_LABEL_DATE_FORMAT),
+                        y: 200,
+                    },
+                ],
+            ])
         })
     })
 

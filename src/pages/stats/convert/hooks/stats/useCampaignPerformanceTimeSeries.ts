@@ -1,4 +1,5 @@
 import {useMemo} from 'react'
+import {ReportingGranularity} from 'models/reporting/types'
 import {CubeFilterParams} from 'pages/stats/convert/clients/types'
 import {
     campaignImpressionTimeSeriesQueryFactory,
@@ -22,7 +23,8 @@ const useCampaignPerformanceTimeSeries = (
     campaignsOperator: LogicalOperatorEnum,
     startDate: string,
     endDate: string,
-    timezone: string
+    timezone: string,
+    granularity?: ReportingGranularity
 ): GetCampaignPerformance => {
     const attrs: CubeFilterParams = useMemo(
         () => ({
@@ -32,6 +34,7 @@ const useCampaignPerformanceTimeSeries = (
             startDate,
             endDate,
             timezone,
+            granularity,
         }),
         [
             namespacedShopName,
@@ -40,6 +43,7 @@ const useCampaignPerformanceTimeSeries = (
             endDate,
             timezone,
             campaignsOperator,
+            granularity,
         ]
     )
 

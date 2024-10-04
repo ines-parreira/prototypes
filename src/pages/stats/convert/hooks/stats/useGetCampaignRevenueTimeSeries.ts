@@ -1,4 +1,5 @@
 import {useMemo} from 'react'
+import {AggregationWindow} from 'models/stat/types'
 import {
     CubeData,
     CubeFilterParams,
@@ -6,7 +7,7 @@ import {
 } from 'pages/stats/convert/clients/types'
 import {getRevenueShareGraphData} from 'pages/stats/convert/clients/CampaignCubeQueries'
 import {
-    backfillGraphData,
+    backFillGraphData,
     getDataFromResult,
     transformToCampaignRevenueOverTime,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
@@ -32,7 +33,7 @@ const useGetCampaignRevenueTimeSeries = (
     startDate: string,
     endDate: string,
     timezone: string,
-    timeGranularity = ReportingGranularity.Day
+    timeGranularity: AggregationWindow = ReportingGranularity.Day
 ): GetCampaignRevenue => {
     const attrs: CubeFilterParams = useMemo(
         () => ({
@@ -42,6 +43,7 @@ const useGetCampaignRevenueTimeSeries = (
             startDate,
             endDate,
             timezone,
+            granularity: timeGranularity,
         }),
         [
             namespacedShopName,
@@ -50,6 +52,7 @@ const useGetCampaignRevenueTimeSeries = (
             endDate,
             timezone,
             campaignsOperator,
+            timeGranularity,
         ]
     )
 
@@ -71,10 +74,11 @@ const useGetCampaignRevenueTimeSeries = (
         const dataPoints = data.map((dataPoint: CubeMetric) =>
             transformToCampaignRevenueOverTime(dataPoint, timeGranularity)
         )
-        const [bfDataPoints] = backfillGraphData(
+        const [bfDataPoints] = backFillGraphData(
             [dataPoints],
             startDate,
-            endDate
+            endDate,
+            timeGranularity
         )
         // make sure there are no gaps in the data
         return bfDataPoints

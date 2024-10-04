@@ -1,39 +1,27 @@
+import {fromJS} from 'immutable'
 import React from 'react'
-import {render} from '@testing-library/react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import useAppSelector from 'hooks/useAppSelector'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {integrationsState} from 'fixtures/integrations'
 import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters/CampaignStatsFilters'
 import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
 import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
 import {campaign} from 'fixtures/campaign'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {FiltersContext} from 'pages/stats/convert/providers/CampaignStatsFilters/context'
+import {defaultStatsFilters} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
 
-jest.mock('hooks/useAppSelector')
-const useAppSelectorMock = useAppSelector as jest.MockedFunction<
-    typeof useAppSelector
->
-
-jest.mock('hooks/useAppDispatch')
-const useAppDispatchMock = useAppDispatch as jest.MockedFunction<
-    typeof useAppDispatch
->
-
 jest.mock('pages/stats/convert/hooks/useShopifyIntegrations')
+
 const useShopifyIntegrationsMock =
     useShopifyIntegrations as jest.MockedFunction<typeof useShopifyIntegrations>
-
 jest.mock('pages/stats/convert/hooks/useGetCampaignsForStore.ts')
-const useGetCampaignsForStoreMock =
-    useGetCampaignsForStore as jest.MockedFunction<
-        typeof useGetCampaignsForStore
-    >
-
+const useGetCampaignsForStoreMock = assumeMock(useGetCampaignsForStore)
 jest.mock('state/ui/stats/selectors')
 
 jest.mock('react-router-dom', () => ({
@@ -66,10 +54,13 @@ const TestComponent = () => (
     </FiltersContext.Consumer>
 )
 
+const state = {
+    integrations: fromJS(integrationsState),
+    stats: {filters: defaultStatsFilters},
+} as RootState
+
 describe('CampaignStatsFilters', () => {
     beforeEach(() => {
-        useAppSelectorMock.mockReturnValue({getIn: jest.fn()})
-        useAppDispatchMock.mockReturnValue(jest.fn())
         useShopifyIntegrationsMock.mockReturnValue([{id: 1} as any])
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AnalyticsNewFiltersConvert]: false,
@@ -79,10 +70,11 @@ describe('CampaignStatsFilters', () => {
     it('should provide the correct value for campaigns', () => {
         useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
 
-        const {getByText, queryByText} = render(
+        const {getByText, queryByText} = renderWithStore(
             <CampaignStatsFilters>
                 <TestComponent />
-            </CampaignStatsFilters>
+            </CampaignStatsFilters>,
+            state
         )
 
         expect(getByText(campaign.id)).toBeInTheDocument()
@@ -100,10 +92,11 @@ describe('CampaignStatsFilters', () => {
             </FiltersContext.Consumer>
         )
 
-        const {getByText} = render(
+        const {getByText} = renderWithStore(
             <CampaignStatsFilters>
                 <TestComponent />
-            </CampaignStatsFilters>
+            </CampaignStatsFilters>,
+            state
         )
 
         expect(getByText(channelConnectionExternalId)).toBeInTheDocument()
@@ -111,9 +104,11 @@ describe('CampaignStatsFilters', () => {
 })
 
 describe('CampaignStatsFilters without storeIntegrationId', () => {
+    const state = {
+        integrations: fromJS(integrationsState),
+        stats: {filters: defaultStatsFilters},
+    } as RootState
     beforeEach(() => {
-        useAppSelectorMock.mockReturnValue({getIn: jest.fn()})
-        useAppDispatchMock.mockReturnValue(jest.fn())
         useShopifyIntegrationsMock.mockReturnValue([{id: 1} as any])
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AnalyticsNewFiltersConvert]: false,
@@ -123,10 +118,11 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
     it('should provide the correct value for campaigns', () => {
         useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
 
-        const {getByText, queryByText} = render(
+        const {getByText, queryByText} = renderWithStore(
             <CampaignStatsFilters>
                 <TestComponent />
-            </CampaignStatsFilters>
+            </CampaignStatsFilters>,
+            state
         )
 
         expect(getByText(campaign.id)).toBeInTheDocument()
@@ -135,9 +131,11 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
 })
 
 describe('CampaignStatsFilters with AnalyticsNewFiltersConvert', () => {
+    const state = {
+        integrations: fromJS(integrationsState),
+        stats: {filters: defaultStatsFilters},
+    } as RootState
     beforeEach(() => {
-        useAppSelectorMock.mockReturnValue({getIn: jest.fn()})
-        useAppDispatchMock.mockReturnValue(jest.fn())
         useShopifyIntegrationsMock.mockReturnValue([{id: 1} as any])
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AnalyticsNewFiltersConvert]: true,
@@ -147,10 +145,11 @@ describe('CampaignStatsFilters with AnalyticsNewFiltersConvert', () => {
     it('should provide the correct value for campaigns', () => {
         useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
 
-        const {getByText, queryByText} = render(
+        const {getByText, queryByText} = renderWithStore(
             <CampaignStatsFilters>
                 <TestComponent />
-            </CampaignStatsFilters>
+            </CampaignStatsFilters>,
+            state
         )
 
         expect(getByText(campaign.id)).toBeInTheDocument()
@@ -168,10 +167,11 @@ describe('CampaignStatsFilters with AnalyticsNewFiltersConvert', () => {
             </FiltersContext.Consumer>
         )
 
-        const {getByText} = render(
+        const {getByText} = renderWithStore(
             <CampaignStatsFilters>
                 <TestComponent />
-            </CampaignStatsFilters>
+            </CampaignStatsFilters>,
+            state
         )
 
         expect(getByText(channelConnectionExternalId)).toBeInTheDocument()
