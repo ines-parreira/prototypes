@@ -46,7 +46,7 @@ jest.mock('hooks/useElementSize')
 
 const mockChildComponent = jest.fn()
 jest.mock(
-    '../../TicketFields/components/fields/DropdownField/MultiLevelSelect',
+    '../Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect',
     () => (props: MultiLevelSelectProps) => {
         mockChildComponent(props)
         return (

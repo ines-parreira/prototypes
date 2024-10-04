@@ -13,7 +13,7 @@ import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import {useAIAgentGetOtherResources} from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import {addTags, removeTag} from 'state/ticket/actions'
 
-import MultiLevelSelect from '../TicketFields/components/fields/DropdownField/MultiLevelSelect'
+import Deprecated_MultiLevelSelect from './Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
 
 import {RESOURCE_ICONS, RESOURCE_LABELS} from './constants'
 import css from './FeedbackOtherResourcesSelect.less'
@@ -246,12 +246,11 @@ const FeedbackOtherResourcesSelect = ({
 
     return (
         <div className={css.container}>
-            <MultiLevelSelect
+            <Deprecated_MultiLevelSelect
                 id={12}
                 dropdownClassName={css.dropdown}
                 inputId="test-input-id"
                 onChange={handleChange}
-                hasMultipleValues
                 choices={[
                     ...actionsOptions.map(
                         (action) => `${RESOURCE_LABELS.action}${action.label}`
@@ -274,7 +273,6 @@ const FeedbackOtherResourcesSelect = ({
                     NO_RELEVANT_RESOURCES_LABEL,
                 ]}
                 values={values}
-                label="dropdown"
                 isOpen={isOpen}
                 onToggle={() => setIsOpen(!isOpen)}
                 onApplyClick={handleApply}
@@ -298,7 +296,7 @@ const FeedbackOtherResourcesSelect = ({
                     placeholder="Select resource"
                     onToggle={onToggle}
                 />
-            </MultiLevelSelect>
+            </Deprecated_MultiLevelSelect>
             <div className={css.tags}>
                 {values.map((option, index) => {
                     const textArray = option.split('::')
