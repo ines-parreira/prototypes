@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {useParams} from 'react-router-dom'
+import {useParams, Link} from 'react-router-dom'
 
 import {
     useGetStoreWorkflowsConfigurations,
@@ -10,6 +10,7 @@ import emptyState from 'assets/img/actions/empty-state.png'
 import useAppDispatch from 'hooks/useAppDispatch'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 
+import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import ActionsTemplatesCards from './components/ActionsTemplatesCards'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
 import BrowseAllActionsButton from './components/BrowseAllActionsButton'
@@ -38,6 +39,7 @@ const ActionsView = () => {
         storeType: shopType,
         triggers: ['llm-prompt'],
     })
+    const {routes} = useAiAgentNavigation({shopName})
 
     const {
         data: templateConfigurations = [],
@@ -67,7 +69,9 @@ const ActionsView = () => {
                 <div className={css.actionsListContainer}>
                     <div className={css.actionListDescription}>
                         <div data-candu-id="custom-action-view-header">
-                            {ACTIONS_DESCRIPTION}
+                            {ACTIONS_DESCRIPTION} When enabled, you can preview
+                            this Action in the{' '}
+                            <Link to={routes.test}>test area</Link>.
                         </div>
                         <div className={css.actionButtons}>
                             <CreateCustomActionButton />

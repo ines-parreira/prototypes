@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo} from 'react'
 import {ulid} from 'ulidx'
-import {useParams, useHistory} from 'react-router-dom'
+import {useParams, useHistory, Link} from 'react-router-dom'
 import {useFieldArray, useForm, Controller, FormProvider} from 'react-hook-form'
 import _cloneDeep from 'lodash/cloneDeep'
 
@@ -278,6 +278,15 @@ const CustomActionForm = ({configuration}: Props) => {
                                     )
                                 }
                                 isToggled={!value}
+                                caption={
+                                    <span>
+                                        When enabled, you can preview this
+                                        Action in the{' '}
+                                        <Link to={routes.test} target="_blank">
+                                            test area
+                                        </Link>
+                                    </span>
+                                }
                             >
                                 Enable Action
                             </ToggleInput>
