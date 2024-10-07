@@ -25,8 +25,8 @@ import {Infobar} from 'pages/common/components/infobar/Infobar/Infobar'
 import {useHasAIAgent} from 'pages/tickets/detail/components/TicketFeedback'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
-    CUSTOMER_INFORMATION_TAB,
-    TICKET_FEEDBACK_TAB,
+    CUSTOMER_DETAILS_TAB,
+    AI_FEEDBACK_TAB,
     TicketInfobarContainer,
 } from '../TicketInfobarContainer'
 import {TRIAL_MESSAGE_TAG} from '../components/AIAgentFeedbackBar/constants'
@@ -151,7 +151,7 @@ describe('<TicketInfobarContainer />', () => {
 
         expect(mockedSelectContext).toHaveBeenCalledWith()
         expect(mockedFetchWidgets).toHaveBeenCalled()
-        expect(container.firstChild).toHaveTextContent(CUSTOMER_INFORMATION_TAB)
+        expect(container.firstChild).toHaveTextContent(CUSTOMER_DETAILS_TAB)
         expect(container.firstChild).toHaveTextContent('sources: {')
     })
 
@@ -166,14 +166,14 @@ describe('<TicketInfobarContainer />', () => {
             }
         )
 
-        const aiAgentTab = screen.getByText(TICKET_FEEDBACK_TAB)
+        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB)
         userEvent.click(aiAgentTab)
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
             activeTab: TicketAIAgentFeedbackTab.AIAgent,
         })
 
-        const customerTab = screen.getByText(CUSTOMER_INFORMATION_TAB)
+        const customerTab = screen.getByText(CUSTOMER_DETAILS_TAB)
         userEvent.click(customerTab)
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
@@ -200,7 +200,7 @@ describe('<TicketInfobarContainer />', () => {
             }
         )
 
-        const aiAgentTab = screen.getByText(TICKET_FEEDBACK_TAB)
+        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB)
         userEvent.click(aiAgentTab)
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
@@ -240,7 +240,7 @@ describe('<TicketInfobarContainer />', () => {
             }
         )
 
-        const aiAgentTab = screen.getByText(TICKET_FEEDBACK_TAB)
+        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB)
         userEvent.click(aiAgentTab)
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
@@ -277,9 +277,7 @@ describe('<TicketInfobarContainer />', () => {
             }
         )
 
-        const customerInformationTab = screen.getByText(
-            CUSTOMER_INFORMATION_TAB
-        )
+        const customerInformationTab = screen.getByText(CUSTOMER_DETAILS_TAB)
         userEvent.click(customerInformationTab)
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
@@ -301,9 +299,7 @@ describe('<TicketInfobarContainer />', () => {
             }
         )
 
-        const customerInformationTab = screen.getByText(
-            CUSTOMER_INFORMATION_TAB
-        )
+        const customerInformationTab = screen.getByText(CUSTOMER_DETAILS_TAB)
         userEvent.click(customerInformationTab)
 
         expect(mockedChangeActiveTab).not.toHaveBeenCalled()
@@ -323,7 +319,7 @@ describe('<TicketInfobarContainer />', () => {
             }
         )
 
-        expect(screen.queryByText(CUSTOMER_INFORMATION_TAB)).toBeNull()
+        expect(screen.queryByText(CUSTOMER_DETAILS_TAB)).toBeNull()
     })
 
     it('should not render secondary navbar if all AI messages on trial mode', () => {
@@ -347,6 +343,6 @@ describe('<TicketInfobarContainer />', () => {
             }
         )
 
-        expect(screen.queryByText(CUSTOMER_INFORMATION_TAB)).toBeNull()
+        expect(screen.queryByText(CUSTOMER_DETAILS_TAB)).toBeNull()
     })
 })

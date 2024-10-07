@@ -43,8 +43,8 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-export const CUSTOMER_INFORMATION_TAB = 'Customer Information'
-export const TICKET_FEEDBACK_TAB = 'Ticket Feedback'
+export const CUSTOMER_DETAILS_TAB = 'Customer Details'
+export const AI_FEEDBACK_TAB = '✨ AI Feedback'
 
 const SIDE_PANEL_VIEWED_EVENT_TYPE = 'summary'
 
@@ -143,7 +143,7 @@ export const TicketInfobarContainer = ({
                             )
                         }
                     >
-                        {CUSTOMER_INFORMATION_TAB}
+                        {CUSTOMER_DETAILS_TAB}
                     </div>
                     <div
                         className={classNames(css.link, {
@@ -151,7 +151,7 @@ export const TicketInfobarContainer = ({
                         })}
                         onClick={handleAIAgentTabClick}
                     >
-                        {TICKET_FEEDBACK_TAB}
+                        {AI_FEEDBACK_TAB}
                     </div>
                 </Navbar>
             )}
