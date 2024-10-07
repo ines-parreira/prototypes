@@ -50,6 +50,7 @@ export type Ticket = {
 }
 
 export type TicketPartial = Pick<Ticket, 'id' | 'updated_datetime'>
+export type NextPrevTicketPartial = Pick<Ticket, 'id'>
 
 export type TicketReplyOptions = Record<string, TicketReplyOption>
 export type TicketReplyOption = {

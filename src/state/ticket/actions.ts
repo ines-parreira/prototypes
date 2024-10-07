@@ -37,6 +37,7 @@ import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 
 import {
     Action,
+    NextPrevTicketPartial,
     SourceAddress,
     Ticket,
     TicketMessage,
@@ -1012,7 +1013,7 @@ export const _goToNextOrPrevTicket = (
         }
 
         return client
-            .put<Ticket>(url, payload_data)
+            .put<NextPrevTicketPartial>(url, payload_data)
             .then((json) => json?.data)
             .then(
                 (ticket) => {
@@ -1038,61 +1039,85 @@ export const _goToNextOrPrevTicket = (
                             return
                         }
 
-                        const customerId = (
-                            fromJS(ticket) as Map<any, any>
-                        ).getIn(['customer', 'id'])
+                        const ticketId = ticket.id
+                        const getTicketUrl = `/api/tickets/${ticketId}`
+                        return client
+                            .get<Ticket>(getTicketUrl)
+                            .then((fullTicket) => fullTicket?.data)
+                            .then((fullTicket) => {
+                                const customerId = (
+                                    fromJS(ticket) as Map<any, any>
+                                ).getIn(['customer', 'id'])
 
-                        if (ticketId) {
-                            socketManager.join(JoinEventType.Ticket, ticket.id)
-                        }
+                                if (ticketId) {
+                                    socketManager.join(
+                                        JoinEventType.Ticket,
+                                        fullTicket.id
+                                    )
+                                }
 
-                        if (customerId) {
-                            socketManager.join(
-                                JoinEventType.Customer,
-                                customerId
-                            )
-                        }
+                                if (customerId) {
+                                    socketManager.join(
+                                        JoinEventType.Customer,
+                                        customerId
+                                    )
+                                }
 
-                        dispatch({
-                            type: types.FETCH_TICKET_SUCCESS,
-                            response: ticket,
-                            ticketId: ticket.id,
-                        })
+                                dispatch({
+                                    type: types.FETCH_TICKET_SUCCESS,
+                                    response: fullTicket,
+                                    ticketId: fullTicket.id,
+                                })
 
-                        dispatch({
-                            type: newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
-                            resp: ticket,
-                        })
+                                dispatch({
+                                    type: newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
+                                    resp: fullTicket,
+                                })
 
-                        dispatch(newMessageActions.initializeMessageDraft())
+                                dispatch(
+                                    newMessageActions.initializeMessageDraft()
+                                )
 
-                        const sourceTypeOfResponse = getSourceTypeOfResponse(
-                            ticket.messages,
-                            ticket.via,
-                            ticket.id as unknown as string
-                        )
+                                const sourceTypeOfResponse =
+                                    getSourceTypeOfResponse(
+                                        fullTicket.messages,
+                                        fullTicket.via,
+                                        fullTicket.id as unknown as string
+                                    )
 
-                        if (
-                            [
-                                TicketMessageSourceType.InstagramComment,
-                                TicketMessageSourceType.InstagramAdComment,
-                            ].includes(sourceTypeOfResponse)
-                        ) {
-                            dispatch(
-                                newMessageActions.prepare(sourceTypeOfResponse)
-                            )
-                        }
+                                if (
+                                    [
+                                        TicketMessageSourceType.InstagramComment,
+                                        TicketMessageSourceType.InstagramAdComment,
+                                    ].includes(sourceTypeOfResponse)
+                                ) {
+                                    dispatch(
+                                        newMessageActions.prepare(
+                                            sourceTypeOfResponse
+                                        )
+                                    )
+                                }
 
-                        // Notify the server that we viewed this ticket
-                        if (ticket.is_unread) {
-                            socketManager.send(
-                                SocketEventType.TicketViewed,
-                                ticket.id
-                            )
-                        }
-                        dispatch(newMessageActions.resetReceiversAndSender)
+                                // Notify the server that we viewed this ticket
+                                if (fullTicket.is_unread) {
+                                    socketManager.send(
+                                        SocketEventType.TicketViewed,
+                                        fullTicket.id
+                                    )
+                                }
+                                dispatch(
+                                    newMessageActions.resetReceiversAndSender
+                                )
 
-                        history.push(`/app/ticket/${ticket.id}`)
+                                history.push(`/app/ticket/${fullTicket.id}`)
+                            })
+                            .catch((error) => {
+                                dispatch({
+                                    type: types.FETCH_TICKET_ERROR,
+                                    error,
+                                    reason: 'Failed to fetch complete ticket data',
+                                })
+                            })
                     })
                 },
                 (error: AxiosError) => {

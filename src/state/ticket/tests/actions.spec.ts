@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {fromJS, Map} from 'immutable'
 import {dismissNotification} from 'reapop'
 
+import _pick from 'lodash/pick'
 import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 import {notify} from 'state/notifications/actions'
@@ -935,7 +936,11 @@ describe('ticket actions', () => {
 
         it('should fetch next ticket and go to this ticket', (done) => {
             const ticket = {id: 2, customerId: 1, messages: [], events: []}
-            mockServer.onPut('/api/views/1/tickets/1/next').reply(200, ticket)
+            mockServer
+                .onPut('/api/views/1/tickets/1/next')
+                .reply(200, _pick(ticket, ['id']))
+            mockServer.onGet('/api/tickets/2').reply(200, ticket)
+
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {...defaultActiveView, id: 1}}),
@@ -964,7 +969,9 @@ describe('ticket actions', () => {
                 }
                 mockServer
                     .onPut('/api/views/1/tickets/1/next')
-                    .reply(200, ticket)
+                    .reply(200, _pick(ticket, ['id']))
+                mockServer.onGet('/api/tickets/2').reply(200, ticket)
+
                 store = mockStore({
                     ticket: initialState,
                     views: fromJS({active: {...defaultActiveView, id: 1}}),
@@ -983,9 +990,12 @@ describe('ticket actions', () => {
         )
 
         it('should fetch next ticket and wait for promise to be resolved to go to this ticket', (done) => {
+            const ticket = {id: 2, messages: [], events: []}
             mockServer
                 .onPut('/api/views/1/tickets/1/next')
-                .reply(200, {id: 2, messages: [], events: []})
+                .reply(200, _pick(ticket, ['id']))
+            mockServer.onGet('/api/tickets/2').reply(200, ticket)
+
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {...defaultActiveView, id: 1}}),
@@ -1004,13 +1014,18 @@ describe('ticket actions', () => {
         })
 
         it('should send ticket-viewed event when ticket is unread', () => {
-            mockServer.onPut('/api/views/1/tickets/1/next').reply(200, {
+            const ticket = {
                 id: 2,
                 customerId: 1,
                 messages: [],
                 is_unread: true,
                 events: [],
-            })
+            }
+            mockServer
+                .onPut('/api/views/1/tickets/1/next')
+                .reply(200, _pick(ticket, ['id']))
+            mockServer.onGet('/api/tickets/2').reply(200, ticket)
+
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {...defaultActiveView, id: 1}}),
@@ -1025,13 +1040,18 @@ describe('ticket actions', () => {
         })
 
         it('should not send ticket-viewed event when ticket is read', () => {
-            mockServer.onPut('/api/views/1/tickets/1/next').reply(200, {
+            const ticket = {
                 id: 2,
                 customerId: 1,
                 messages: [],
                 is_unread: false,
                 events: [],
-            })
+            }
+            mockServer
+                .onPut('/api/views/1/tickets/1/next')
+                .reply(200, _pick(ticket, ['id']))
+            mockServer.onGet('/api/tickets/2').reply(200, ticket)
+
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {...defaultActiveView, id: 1}}),
@@ -1103,7 +1123,11 @@ describe('ticket actions', () => {
 
         it('should fetch previous ticket and go to this ticket', (done) => {
             const ticket = {id: 1, customerId: 1, messages: [], events: []}
-            mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, ticket)
+            mockServer
+                .onPut('/api/views/1/tickets/2/prev')
+                .reply(200, _pick(ticket, ['id']))
+            mockServer.onGet('/api/tickets/1').reply(200, ticket)
+
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {...defaultActiveView, id: 1}}),
@@ -1132,7 +1156,9 @@ describe('ticket actions', () => {
                 }
                 mockServer
                     .onPut('/api/views/1/tickets/2/prev')
-                    .reply(200, ticket)
+                    .reply(200, _pick(ticket, ['id']))
+                mockServer.onGet('/api/tickets/1').reply(200, ticket)
+
                 store = mockStore({
                     ticket: initialState,
                     views: fromJS({active: {...defaultActiveView, id: 1}}),
@@ -1153,9 +1179,12 @@ describe('ticket actions', () => {
         )
 
         it('should fetch previous ticket and wait for promise to be resolved to go to this ticket', (done) => {
+            const ticket = {id: 1, messages: [], events: []}
             mockServer
                 .onPut('/api/views/1/tickets/2/prev')
-                .reply(200, {id: 1, messages: [], events: []})
+                .reply(200, _pick(ticket, ['id']))
+            mockServer.onGet('/api/tickets/1').reply(200, ticket)
+
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {...defaultActiveView, id: 1}}),
@@ -1176,13 +1205,18 @@ describe('ticket actions', () => {
         })
 
         it('should send ticket-viewed event when ticket is unread', () => {
-            mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, {
+            const ticket = {
                 id: 2,
                 customerId: 1,
                 messages: [],
                 is_unread: true,
                 events: [],
-            })
+            }
+            mockServer
+                .onPut('/api/views/1/tickets/2/prev')
+                .reply(200, _pick(ticket, ['id']))
+            mockServer.onGet('/api/tickets/2').reply(200, ticket)
+
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {...defaultActiveView, id: 1}}),
@@ -1197,13 +1231,18 @@ describe('ticket actions', () => {
         })
 
         it('should not send ticket-viewed event when ticket is read', () => {
-            mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, {
+            const ticket = {
                 id: 2,
                 customerId: 1,
                 messages: [],
                 is_unread: false,
                 events: [],
-            })
+            }
+            mockServer
+                .onPut('/api/views/1/tickets/2/prev')
+                .reply(200, _pick(ticket, ['id']))
+            mockServer.onGet('/api/tickets/2').reply(200, ticket)
+
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}}),
