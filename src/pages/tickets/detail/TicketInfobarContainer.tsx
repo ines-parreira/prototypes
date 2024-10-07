@@ -60,6 +60,7 @@ export const TicketInfobarContainer = ({
     const accountId = useAppSelector(getCurrentAccountId)
     const currentUser = useAppSelector(getCurrentUser)
     const ticket = useAppSelector(getTicket)
+    const activeTab = useAppSelector(getActiveTab)
 
     const hasAIAgent = useHasAIAgent()
     const hasAutoQA = useFlag<boolean>(FeatureFlagKey.AutoQA, false)
@@ -70,16 +71,18 @@ export const TicketInfobarContainer = ({
         void dispatch(actions.fetchWidgets())
     }, [dispatch])
 
-    useEffect(() => {
-        return () => {
-            dispatch(
-                changeActiveTab({
-                    activeTab: TicketAIAgentFeedbackTab.CustomerInformation,
-                })
-            )
-            dispatch(changeTicketMessage({message: undefined}))
+    const tabCheckId = useRef<number | null>(null)
+    if (ticket.id && tabCheckId.current !== ticket.id) {
+        tabCheckId.current = ticket.id
+        const nextTab =
+            isTeamLead(currentUser) && ticket.status === TicketStatus.Closed
+                ? TicketAIAgentFeedbackTab.AIAgent
+                : TicketAIAgentFeedbackTab.CustomerInformation
+        if (nextTab !== activeTab) {
+            dispatch(changeActiveTab({activeTab: nextTab}))
         }
-    }, [dispatch, params.ticketId])
+        dispatch(changeTicketMessage({message: undefined}))
+    }
 
     const customer =
         sources.getIn(['ticket', 'customer']) || (fromJS({}) as Map<any, any>)
@@ -87,7 +90,6 @@ export const TicketInfobarContainer = ({
     const aiMessages = useAppSelector(getAIAgentMessages).filter(
         (message) => new Date(message.created_datetime) > DATE_FEATURE_AVAILABLE
     )
-    const activeTab = useAppSelector(getActiveTab)
 
     const handleChangeTab = (tab: TicketAIAgentFeedbackTab) => {
         if (activeTab === tab) {
@@ -119,18 +121,6 @@ export const TicketInfobarContainer = ({
             type: SIDE_PANEL_VIEWED_EVENT_TYPE,
             accountId,
         })
-    }
-
-    const tabCheckDone = useRef(false)
-    if (
-        tabCheckDone.current === false &&
-        ticket.id &&
-        ticket.status === TicketStatus.Closed
-    ) {
-        tabCheckDone.current = true
-        if (isTeamLead(currentUser)) {
-            handleChangeTab(TicketAIAgentFeedbackTab.AIAgent)
-        }
     }
 
     const showTicketFeedback = activeTab === TicketAIAgentFeedbackTab.AIAgent
