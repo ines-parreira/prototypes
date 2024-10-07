@@ -10,14 +10,14 @@ import {
     ticketInputFieldDefinition,
     managedTicketInputFieldDefinition,
 } from 'fixtures/customField'
-import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
-import {OBJECT_TYPES} from 'models/customField/constants'
+import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import {OBJECT_TYPES} from 'custom-fields/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import EditTicketField from '../../EditCustomField'
 
 jest.mock('react-router')
-jest.mock('hooks/customField/useCustomFieldDefinition')
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinition')
 
 const mockedStore = configureMockStore([thunk])
 const useParamsMock = useParams as jest.Mock

@@ -83,7 +83,7 @@ import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import {mapNormalizedToArray} from 'models/ticket/mappers'
 import {isNewChannel} from 'services/channels'
 import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
-import {isCustomFieldValueEmpty} from 'utils/customFields'
+import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
 
 import {
     AttachmentPosition,

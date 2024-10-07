@@ -1,10 +1,10 @@
 import React from 'react'
 import {screen, render} from '@testing-library/react'
 
-import {OBJECT_TYPES} from 'models/customField/constants'
-import {CustomField} from 'models/customField/types'
+import {OBJECT_TYPES} from 'custom-fields/constants'
+import {CustomField} from 'custom-fields/types'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
-import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
+import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {
     aiManagedTicketInputFieldDefinition,
     productManagedTicketInputFieldDefinition,
@@ -23,7 +23,7 @@ jest.mock('react-router-dom', () => ({
 jest.mock('../components/EditFieldForm', () =>
     jest.fn(() => <div>They see me rollin', they hatiiin'</div>)
 )
-jest.mock('hooks/customField/useCustomFieldDefinition')
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinition')
 const useCustomFieldDefinitionMock = assumeMock(useCustomFieldDefinition)
 
 function setTicketFieldDefinition(definition: CustomField) {

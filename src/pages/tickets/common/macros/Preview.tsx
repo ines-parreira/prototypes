@@ -16,7 +16,7 @@ import {Action} from 'models/ticket/types'
 import {getIconFromActionType} from 'models/macroAction/helpers'
 import {actionTypeToName, MacroActionName} from 'models/macroAction/types'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
-import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
+import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {isRichType} from 'tickets/common/utils'
 import {
     AgentLabel,
@@ -34,7 +34,7 @@ import {getActionTemplate} from 'utils'
 import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
 import {ActionTemplateExecution} from 'config'
 
-import {CustomField} from 'models/customField/types'
+import {CustomField} from 'custom-fields/types'
 import css from './Preview.less'
 
 type Props = {

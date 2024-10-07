@@ -3,14 +3,14 @@ import uniqueId from 'lodash/uniqueId'
 import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import Caption from 'pages/common/forms/Caption/Caption'
-import {DROPDOWN_NESTING_DELIMITER} from 'models/customField/constants'
+import {DROPDOWN_NESTING_DELIMITER} from 'custom-fields/constants'
 import Button from 'pages/common/components/button/Button'
 import {
     CustomField,
     CustomFieldInput,
     CustomFieldObjectTypes,
     CustomFieldValue,
-} from 'models/customField/types'
+} from 'custom-fields/types'
 import DropdownCSVImport from './DropdownCSVImport'
 import DropdownInputRow from './DropdownInputRow'
 

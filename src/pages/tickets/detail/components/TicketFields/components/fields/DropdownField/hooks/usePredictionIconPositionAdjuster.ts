@@ -1,6 +1,6 @@
 import {useState, useRef, useEffect} from 'react'
 
-import {CustomFieldValue} from 'models/customField/types'
+import {CustomFieldValue} from 'custom-fields/types'
 
 import {getStealthLabel} from '../helpers/getLabels'
 

@@ -5,7 +5,7 @@ import {Provider} from 'react-redux'
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 import {ticketDropdownFieldDefinition} from 'fixtures/customField'
-import {useGetCustomFieldDefinitions} from 'models/customField/queries'
+import {useGetCustomFieldDefinitions} from 'custom-fields/hooks/queries/queries'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
@@ -32,7 +32,7 @@ const defaultState = {
     stats: initialState,
 } as RootState
 
-jest.mock('models/customField/queries')
+jest.mock('custom-fields/hooks/queries/queries')
 const useGetCustomFieldDefinitionsMock = assumeMock(
     useGetCustomFieldDefinitions
 )

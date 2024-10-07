@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import {OBJECT_TYPES} from 'models/customField/constants'
+import {OBJECT_TYPES} from 'custom-fields/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import AddCustomField from '../AddCustomField'

@@ -1,6 +1,6 @@
 import {appQueryClient} from 'api/queryClient'
-import {customFieldDefinitionKeys} from 'models/customField/queries'
-import {getCustomFields} from 'models/customField/resources'
+import {customFieldDefinitionKeys} from 'custom-fields/hooks/queries/queries'
+import {getCustomFields} from 'custom-fields/resources'
 import {getTicketFieldState} from 'state/ticket/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {getInvalidTicketFieldIds} from 'utils/customFields'

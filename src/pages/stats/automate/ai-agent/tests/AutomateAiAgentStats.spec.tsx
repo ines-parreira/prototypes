@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {useAutomateMetricsTrendV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
@@ -43,7 +43,7 @@ jest.mock('hooks/reporting/automate/useNewAutomateFilters', () => ({
 jest.mock('hooks/reporting/automate/utils')
 const calculateGreyAreaMock = calculateGreyArea as jest.Mock
 
-jest.mock('hooks/customField/useCustomFieldDefinitions')
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = useCustomFieldDefinitions as jest.Mock
 
 jest.mock('pages/stats/AutomateOverviewContent')

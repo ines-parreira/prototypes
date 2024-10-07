@@ -13,7 +13,7 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 
-import {CustomFieldDefinition} from 'models/customField/types'
+import {CustomFieldDefinition} from 'custom-fields/types'
 import TicketField from '../TicketField'
 
 const mockStore = configureMockStore()

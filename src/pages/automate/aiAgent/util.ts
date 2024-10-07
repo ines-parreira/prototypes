@@ -1,4 +1,4 @@
-import {CustomField} from 'models/customField/types'
+import {CustomField} from 'custom-fields/types'
 import {NonNullProperties} from './types'
 
 export const filterNonNull = <T extends object>(

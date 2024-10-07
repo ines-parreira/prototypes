@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react'
 
-import {VALUE_TYPES} from 'models/customField/constants'
+import {VALUE_TYPES} from 'custom-fields/constants'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'

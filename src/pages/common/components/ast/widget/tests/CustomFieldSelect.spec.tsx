@@ -5,11 +5,11 @@ import {
     ticketFieldDefinitions,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {assumeMock} from 'utils/testing'
 import CustomFieldSelect from '../CustomFieldSelect'
 
-jest.mock('hooks/customField/useCustomFieldDefinitions')
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
 describe('<CustomFieldSelect/>', () => {

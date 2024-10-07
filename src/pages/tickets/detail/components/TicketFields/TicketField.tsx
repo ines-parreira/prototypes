@@ -4,7 +4,7 @@ import {
     CustomField,
     CustomFieldState,
     isCustomFieldAIManagedType,
-} from 'models/customField/types'
+} from 'custom-fields/types'
 import NumberField, {
     Props as NumberFieldProps,
 } from 'pages/tickets/detail/components/TicketFields/components/fields/NumberField'

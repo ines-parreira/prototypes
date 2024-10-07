@@ -1,8 +1,8 @@
 import React from 'react'
 
-import {CustomField, CustomFieldInput} from 'models/customField/types'
+import {CustomField, CustomFieldInput} from 'custom-fields/types'
 import history from 'pages/history'
-import {useUpdateCustomFieldDefinition} from 'hooks/customField/useUpdateCustomFieldDefinition'
+import {useUpdateCustomFieldDefinition} from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 
 import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 import FieldForm from './FieldForm'

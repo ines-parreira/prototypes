@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import classNames from 'classnames'
 
-import {CustomField, CustomFieldValue} from 'models/customField/types'
+import {CustomField, CustomFieldValue} from 'custom-fields/types'
 import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import MultiLevelSelect from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField/MultiLevelSelect'

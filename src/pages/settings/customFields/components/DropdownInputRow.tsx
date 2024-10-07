@@ -9,7 +9,7 @@ import {
     CustomField,
     CustomFieldInput,
     CustomFieldManagedType,
-} from 'models/customField/types'
+} from 'custom-fields/types'
 
 import css from './DropdownInputRow.less'
 

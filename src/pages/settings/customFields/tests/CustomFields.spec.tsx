@@ -4,12 +4,12 @@ import userEvent from '@testing-library/user-event'
 import {Link, useParams} from 'react-router-dom'
 
 import {SegmentEvent, logEvent} from 'common/segment'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {useUpdateCustomFieldDefinitions} from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinitions'
+import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 import {ticketInputFieldDefinition} from 'fixtures/customField'
 import useDebouncedValue from 'hooks/useDebouncedValue'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
-import {useUpdateCustomFieldDefinitions} from 'hooks/customField/useUpdateCustomFieldDefinitions'
-import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'models/customField/constants'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
 import CustomFields from '../CustomFields'
@@ -34,8 +34,8 @@ jest.mock(
             NavLink: ({children}: {children: React.ReactNode}) => children,
         } as Record<string, unknown>)
 )
-jest.mock('hooks/customField/useCustomFieldDefinitions')
-jest.mock('hooks/customField/useUpdateCustomFieldDefinitions')
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
+jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldDefinitions')
 jest.mock('hooks/useDebouncedValue')
 jest.mock('../components/List', () =>
     jest.fn(() => {

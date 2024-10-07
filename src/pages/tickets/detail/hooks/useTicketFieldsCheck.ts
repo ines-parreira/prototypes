@@ -1,7 +1,7 @@
 import {useCallback} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {

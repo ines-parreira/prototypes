@@ -1,5 +1,5 @@
-import {DROPDOWN_NESTING_DELIMITER} from 'models/customField/constants'
-import {CustomFieldValue} from 'models/customField/types'
+import {DROPDOWN_NESTING_DELIMITER} from 'custom-fields/constants'
+import {CustomFieldValue} from 'custom-fields/types'
 
 export function getFullValueFromCurrentPath(
     currentPath: string[],

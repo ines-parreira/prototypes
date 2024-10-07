@@ -13,12 +13,12 @@ import {
     DROPDOWN_CSV_TEMPLATE,
     DROPDOWN_NESTING_DELIMITER,
     OBJECT_TYPE_SETTINGS,
-} from 'models/customField/constants'
+} from 'custom-fields/constants'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getText, saveFileAsDownloaded} from 'utils/file'
 
-import {CustomFieldObjectTypes} from 'models/customField/types'
+import {CustomFieldObjectTypes} from 'custom-fields/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'

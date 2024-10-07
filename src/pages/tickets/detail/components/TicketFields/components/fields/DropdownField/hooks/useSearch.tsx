@@ -1,6 +1,6 @@
 import {useState, useMemo} from 'react'
 
-import {CustomFieldValue} from 'models/customField/types'
+import {CustomFieldValue} from 'custom-fields/types'
 
 import {
     CHOICE_VALUES_SYMBOL,

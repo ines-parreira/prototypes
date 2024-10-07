@@ -1,11 +1,11 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 import {ticketInputFieldDefinition} from 'fixtures/customField'
-import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
+import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {assumeMock} from 'utils/testing'
 import CustomFieldInput from '../CustomFieldIdInput'
 
-jest.mock('hooks/customField/useCustomFieldDefinition')
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinition')
 const useCustomFieldDefinitionMock = assumeMock(useCustomFieldDefinition)
 
 describe('<CustomFieldIdInput/>', () => {

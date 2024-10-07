@@ -1,19 +1,19 @@
 import React, {ComponentProps, useCallback, useEffect} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
 
+import {CustomFieldState, CustomFieldValue} from 'custom-fields/types'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {useUpdateOrDeleteTicketFieldValue} from 'hooks/customField/useUpdateOrDeleteTicketFieldValue'
+import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {CustomFieldState, CustomFieldValue} from 'models/customField/types'
 import {
     updateCustomFieldError,
     updateCustomFieldState,
     updateCustomFieldValue,
 } from 'state/ticket/actions'
-import Label from 'pages/tickets/detail/components/TicketFields/components/Label'
+import Label from 'custom-fields/components/Label'
 import {getTicket} from 'state/ticket/selectors'
-import {isCustomFieldValueEmpty} from 'utils/customFields'
+import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
 
 import MultiLevelSelect from './MultiLevelSelect'
 import {getLabel} from './helpers/getLabels'

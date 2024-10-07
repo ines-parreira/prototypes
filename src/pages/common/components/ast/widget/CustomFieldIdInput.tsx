@@ -1,6 +1,6 @@
 import React, {ComponentProps} from 'react'
 
-import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
+import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import Loader from 'pages/common/components/Loader/Loader'
 
 import CustomFieldInput from './CustomFieldInput'

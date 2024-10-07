@@ -12,7 +12,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 import {billingState} from 'fixtures/billing'
 import {customFieldsMockResponse} from 'fixtures/customField'
-import {useGetCustomFieldDefinitions} from 'models/customField/queries'
+import {useGetCustomFieldDefinitions} from 'custom-fields/hooks/queries/queries'
 import {HelpCenter} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/constants'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
@@ -68,7 +68,7 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
 }))
 jest.mock('@gorgias/api-queries')
 const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
-jest.mock('models/customField/queries')
+jest.mock('custom-fields/hooks/queries/queries')
 const useGetCustomFieldDefinitionsMock = assumeMock(
     useGetCustomFieldDefinitions
 )

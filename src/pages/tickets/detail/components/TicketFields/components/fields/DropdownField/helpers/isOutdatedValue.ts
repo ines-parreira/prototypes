@@ -1,5 +1,5 @@
-import {CustomFieldValue} from 'models/customField/types'
-import {isCustomFieldValueEmpty} from 'utils/customFields'
+import {CustomFieldValue} from 'custom-fields/types'
+import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
 
 export function isOutdatedValue(
     value: CustomFieldValue | undefined,

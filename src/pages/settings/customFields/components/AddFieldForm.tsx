@@ -1,12 +1,9 @@
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {
-    CustomFieldInput,
-    CustomFieldObjectTypes,
-} from 'models/customField/types'
+import {CustomFieldInput, CustomFieldObjectTypes} from 'custom-fields/types'
 import history from 'pages/history'
-import {useCreateCustomFieldDefinition} from 'hooks/customField/useCreateCustomFieldDefinition'
+import {useCreateCustomFieldDefinition} from 'custom-fields/hooks/queries/useCreateCustomFieldDefinition'
 import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
 import FieldForm from './FieldForm'

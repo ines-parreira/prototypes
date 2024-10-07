@@ -1,4 +1,11 @@
-import {CustomField, CustomFieldInput} from 'models/customField/types'
+import {
+    CustomField,
+    CustomFieldInput,
+    CustomFieldInputSettingsDropdown,
+    CustomFieldInputSettingsText,
+    CustomTypeDefinitionNumber,
+    CustomTypeDefinitionText,
+} from 'custom-fields/types'
 
 export const customFieldInputDefinition: CustomFieldInput = {
     object_type: 'Ticket',
@@ -41,7 +48,7 @@ const archivedTicketFieldBaseDefinition = {
     object_type: 'Ticket',
 } as const
 
-export const ticketInputFieldDefinition: CustomField = {
+export const ticketInputFieldDefinition = {
     ...ticketFieldBaseDefinition,
     id: 123,
     priority: 1,
@@ -53,7 +60,7 @@ export const ticketInputFieldDefinition: CustomField = {
             input_type: 'input',
             placeholder: 'Some placeholder',
         },
-    },
+    } as CustomTypeDefinitionText<CustomFieldInputSettingsText>,
 }
 export const archivedTicketInputFieldDefinition: CustomField = {
     ...archivedTicketFieldBaseDefinition,
@@ -70,7 +77,7 @@ export const archivedTicketInputFieldDefinition: CustomField = {
     },
 }
 
-export const ticketNumberFieldDefinition: CustomField = {
+export const ticketNumberFieldDefinition = {
     ...ticketFieldBaseDefinition,
     id: 123,
     priority: 1,
@@ -83,10 +90,10 @@ export const ticketNumberFieldDefinition: CustomField = {
             min: '1',
             max: '10',
         },
-    },
+    } as CustomTypeDefinitionNumber,
 }
 
-export const ticketDropdownFieldDefinition: CustomField = {
+export const ticketDropdownFieldDefinition = {
     ...ticketFieldBaseDefinition,
     id: 2,
     priority: 2,
@@ -102,7 +109,7 @@ export const ticketDropdownFieldDefinition: CustomField = {
                 'Choice 3::Sub 2::Sub 3::Sub 4::Sub 5',
             ],
         },
-    },
+    } as CustomTypeDefinitionText<CustomFieldInputSettingsDropdown>,
 }
 
 export const aiAgentManagedTicketDropdownFieldDefinition: CustomField = {

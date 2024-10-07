@@ -9,8 +9,8 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import client from 'models/api/resources'
-import {customFieldDefinitionKeys} from 'models/customField/queries'
-import {getCustomFields} from 'models/customField/resources'
+import {customFieldDefinitionKeys} from 'custom-fields/hooks/queries/queries'
+import {getCustomFields} from 'custom-fields/resources'
 import {initialState as newMessageState} from 'state/newMessage/reducers'
 import {initialState as ticketState} from 'state/ticket/reducers'
 import {StoreDispatch} from 'state/types'

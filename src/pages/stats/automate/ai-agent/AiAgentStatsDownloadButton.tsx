@@ -1,5 +1,7 @@
 import React, {useMemo} from 'react'
 import moment from 'moment'
+
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -21,7 +23,6 @@ import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStat
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {getFilterDateRange} from 'utils/reporting'
 import {formatDates} from 'pages/stats/utils'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {activeParams} from 'pages/stats/CustomFieldSelect'
 import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'

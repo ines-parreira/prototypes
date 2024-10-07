@@ -14,7 +14,7 @@ import {fetchNewPhoneNumbers} from 'models/phoneNumber/resources'
 import {newPhoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {isMigrationInProgress} from 'hooks/useWhatsAppMigration'
 import {getEmailMigrations} from 'state/integrations/selectors'
-import {customFieldDefinitionKeys} from 'models/customField/queries'
+import {customFieldDefinitionKeys} from 'custom-fields/hooks/queries/queries'
 import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 
 import {shouldTicketBeDisplayedInRecentChats} from 'business/recentChats'

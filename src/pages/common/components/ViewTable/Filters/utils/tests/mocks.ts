@@ -1,6 +1,6 @@
 import {fromJS, Map} from 'immutable'
 
-import {CustomField} from 'models/customField/types'
+import {CustomField} from 'custom-fields/types'
 
 export const mockCustomField = {
     definition: {

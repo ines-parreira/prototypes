@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {OBJECT_TYPES} from 'models/customField/constants'
+import {OBJECT_TYPES} from 'custom-fields/constants'
 import * as notificationActions from 'state/notifications/actions'
 import * as fileUtils from 'utils/file'
 

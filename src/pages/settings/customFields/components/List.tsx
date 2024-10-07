@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {CustomField} from 'models/customField/types'
+import {CustomField} from 'custom-fields/types'
 import Row from 'pages/settings/customFields/components/Row'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableHead from 'pages/common/components/table/TableHead'

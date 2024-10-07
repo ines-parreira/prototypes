@@ -4,7 +4,7 @@ import {UploadType} from 'common/types'
 import {templateRegex} from 'pages/common/utils/template'
 import {ManagedRulesSlugs} from 'state/rules/types'
 import {isEmailList, findProperty} from 'utils'
-import {isCustomFieldValueEmpty} from 'utils/customFields'
+import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import {ACTION_TYPES, ActionType} from 'models/rule/types'
 
 type Email = {

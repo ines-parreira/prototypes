@@ -3,66 +3,9 @@ import {macroFixture, setCustomFieldValueAction} from 'fixtures/macro'
 import {Macro} from 'models/macro/types'
 
 import {
-    isCustomFieldValueEmpty,
-    isFieldErrored,
     getInvalidTicketFieldIds,
     mergeFieldsStateWithMacroValues,
 } from '../customFields'
-
-describe('isCustomFieldValueEmpty', () => {
-    it.each([
-        ['', true],
-        [undefined, true],
-        [' ', false],
-        ['a', false],
-        [0, false],
-        [1, false],
-    ])('should check if custom field value is empty', (input, result) => {
-        expect(isCustomFieldValueEmpty(input)).toBe(result)
-    })
-})
-
-describe('isFieldErrored', () => {
-    const fieldStateWithValue = {id: 1, value: 'ok'}
-    const fieldStateWithoutValue = {
-        ...fieldStateWithValue,
-        value: undefined,
-    }
-    const requiredCustomField = {...ticketInputFieldDefinition, required: true}
-    it.each([
-        [{}, false],
-        [
-            {
-                fieldState: fieldStateWithValue,
-                fieldDefinition: ticketInputFieldDefinition,
-            },
-            false,
-        ],
-        [
-            {
-                fieldState: fieldStateWithValue,
-                fieldDefinition: requiredCustomField,
-            },
-            false,
-        ],
-        [
-            {
-                fieldState: fieldStateWithoutValue,
-                fieldDefinition: ticketInputFieldDefinition,
-            },
-            false,
-        ],
-        [
-            {
-                fieldState: fieldStateWithoutValue,
-                fieldDefinition: requiredCustomField,
-            },
-            true,
-        ],
-    ])('should check if custom field is errored', (params, result) => {
-        expect(isFieldErrored(params)).toBe(result)
-    })
-})
 
 describe('getInvalidTicketFieldIds', () => {
     it('should return empty array if no fields are invalid', () => {

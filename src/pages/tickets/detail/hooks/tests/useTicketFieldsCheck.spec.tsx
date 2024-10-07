@@ -6,7 +6,7 @@ import {
     triggerTicketFieldsErrors,
 } from 'state/ticket/actions'
 import {getAppliedMacro, getTicketFieldState} from 'state/ticket/selectors'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {ticketInputFieldDefinition as mockTicketInputFieldDefinition} from 'fixtures/customField'
 import {setCustomFieldValueAction as mockSetCustomFieldValueAction} from 'fixtures/macro'
 import {assumeMock} from 'utils/testing'
@@ -28,7 +28,7 @@ jest.mock('state/ticket/selectors', () => ({
     getTicketFieldState: jest.fn(),
 }))
 
-jest.mock('hooks/customField/useCustomFieldDefinitions', () => ({
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(() => ({
         data: {
             data: [{...mockTicketInputFieldDefinition, required: true}],

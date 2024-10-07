@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {CustomFieldValue} from 'models/customField/types'
+import {CustomFieldValue} from 'custom-fields/types'
 
 import CheckIcon from '../CheckIcon'
 import dropdownCss from '../MultiLevelSelect.less'

@@ -3,7 +3,7 @@ import moment from 'moment'
 
 import {FETCH_TICKET_REPLY_MACRO} from 'common/state'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {CustomFieldState} from 'models/customField/types'
+import {CustomFieldState} from 'custom-fields/types'
 import {TICKET_EVENT_TYPES} from 'models/event/types'
 import {MacroActionName} from 'models/macroAction/types'
 import * as customerTypes from 'state/customers/constants'

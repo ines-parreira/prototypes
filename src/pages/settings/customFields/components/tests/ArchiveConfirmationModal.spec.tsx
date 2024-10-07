@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import noop from 'lodash/noop'
 
-import {OBJECT_TYPES} from 'models/customField/constants'
+import {OBJECT_TYPES} from 'custom-fields/constants'
 
 import ArchiveConfirmationModal from '../ArchiveConfirmationModal'
 

@@ -16,9 +16,9 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import TicketFields from '../TicketFields'
 
 const mockedMutate = jest.fn()
-jest.mock('models/customField/queries', () => {
+jest.mock('custom-fields/hooks/queries/queries', () => {
     return {
-        ...jest.requireActual('models/customField/queries'),
+        ...jest.requireActual('custom-fields/hooks/queries/queries'),
         useUpdateOrDeleteTicketFieldValue: () => ({mutate: mockedMutate}),
     } as Record<string, unknown>
 })

@@ -7,10 +7,10 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {CustomField, ListParams} from 'models/customField/types'
+import {CustomField, ListParams} from 'custom-fields/types'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
     getSelectedCustomField,
     setSelectedCustomField,

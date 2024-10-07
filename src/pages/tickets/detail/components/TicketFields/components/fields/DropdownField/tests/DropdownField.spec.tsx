@@ -15,7 +15,7 @@ import {
     updateCustomFieldValue,
 } from 'state/ticket/actions'
 
-import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
+import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'custom-fields/constants'
 import DropdownField from '../DropdownField'
 import {getLabel} from '../helpers/getLabels'
 

@@ -7,11 +7,11 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {ApiListResponseCursorPagination} from 'models/api/types'
-import {CustomField} from 'models/customField/types'
+import {CustomField} from 'custom-fields/types'
 import {CustomFieldSelect} from 'pages/stats/CustomFieldSelect'
 import {DownloadTicketFieldsDataButton} from 'pages/stats/DownloadTicketFieldsDataButton'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
@@ -50,7 +50,7 @@ const DownloadTicketFieldsDataButtonMock = assumeMock(
 )
 jest.mock('pages/stats/TicketFieldsBlankState.tsx')
 const TicketFieldsBlankStateMock = assumeMock(TicketFieldsBlankState)
-jest.mock('hooks/customField/useCustomFieldDefinitions')
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = assumeMock(useAppSelector)

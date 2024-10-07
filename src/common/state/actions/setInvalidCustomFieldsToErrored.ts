@@ -1,4 +1,4 @@
-import {CustomFieldState} from 'models/customField/types'
+import {CustomFieldState} from 'custom-fields/types'
 
 import {SET_INVALID_CUSTOM_FIELDS_TO_ERRORED} from '../constants'
 

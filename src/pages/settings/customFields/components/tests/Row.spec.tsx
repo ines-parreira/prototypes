@@ -7,7 +7,7 @@ import {
     aiManagedTicketInputFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
+import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {TableBodyRowDraggable} from 'pages/common/components/table/TableBodyRowDraggable'
 import {assumeMock} from 'utils/testing'
 
@@ -28,8 +28,7 @@ jest.mock(
             <div data-testid="DatetimeLabel">{dateTime}</div>
 )
 
-jest.mock('models/customField/resources')
-jest.mock('hooks/customField/useUpdateCustomFieldArchiveStatus')
+jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus')
 jest.mock('pages/common/components/table/TableBodyRowDraggable')
 
 const useUpdateCustomFieldArchiveStatusMock = assumeMock(

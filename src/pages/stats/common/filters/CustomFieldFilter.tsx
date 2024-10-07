@@ -1,6 +1,6 @@
 import _noop from 'lodash/noop'
 import React, {useEffect, useMemo} from 'react'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Filter from 'pages/stats/common/components/Filter'

@@ -9,7 +9,7 @@ import React, {
 } from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
 import {

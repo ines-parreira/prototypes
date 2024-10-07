@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
 
 import {ticketInputFieldDefinition} from 'fixtures/customField'
-import {OBJECT_TYPES} from 'models/customField/constants'
+import {OBJECT_TYPES} from 'custom-fields/constants'
 import client from 'models/api/resources'
 import history from 'pages/history'
 import {renderWithRouter} from 'utils/testing'

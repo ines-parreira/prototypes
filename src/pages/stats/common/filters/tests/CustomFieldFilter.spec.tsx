@@ -7,9 +7,9 @@ import {
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/stats/common/components/Filter/constants'
 import {ticketFieldDefinitions} from 'fixtures/customField'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {ApiListResponseCursorPagination} from 'models/api/types'
-import {CustomField} from 'models/customField/types'
+import {CustomField} from 'custom-fields/types'
 import {
     CUSTOM_FIELD_FILTER_NAME,
     CustomFieldFilter,
@@ -23,7 +23,7 @@ import {
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {SegmentEvent, logEvent} from 'common/segment'
 
-jest.mock('hooks/customField/useCustomFieldDefinitions')
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
 jest.mock('common/segment', () => ({

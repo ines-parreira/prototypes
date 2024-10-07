@@ -8,7 +8,7 @@ import uniqueId from 'lodash/uniqueId'
 import {
     OBJECT_TYPES,
     DROPDOWN_NESTING_DELIMITER as delimiter,
-} from 'models/customField/constants'
+} from 'custom-fields/constants'
 import {ticketDropdownFieldDefinition} from 'fixtures/customField'
 import {renderWithDnD} from 'utils/testing'
 

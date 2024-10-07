@@ -7,9 +7,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {ticketFieldDefinitions} from 'fixtures/customField'
 
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {ApiListResponseCursorPagination} from 'models/api/types'
-import {CustomField} from 'models/customField/types'
+import {CustomField} from 'custom-fields/types'
 import {
     CustomFieldSelect,
     SELECT_FIELD_LABEL,
@@ -24,7 +24,7 @@ import {
 } from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('hooks/customField/useCustomFieldDefinitions')
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
 const mockStore = configureMockStore([thunk])

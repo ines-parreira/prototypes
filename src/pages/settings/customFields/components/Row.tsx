@@ -6,7 +6,7 @@ import {ulid} from 'ulidx'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {DateAndTimeFormatting} from 'constants/datetime'
-import {CustomField, isCustomFieldAIManagedType} from 'models/customField/types'
+import {CustomField, isCustomFieldAIManagedType} from 'custom-fields/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
@@ -15,7 +15,7 @@ import {TableBodyRowDraggable} from 'pages/common/components/table/TableBodyRowD
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import {Callbacks} from 'pages/common/hooks/useReorderDnD'
-import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
+import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
 import css from './Row.less'

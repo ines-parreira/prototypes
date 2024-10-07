@@ -9,7 +9,7 @@ import {
 import {FacebookReactionType} from 'constants/integrations/facebook'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {Customer} from 'models/customer/types'
-import {CustomFields} from 'models/customField/types'
+import {CustomFields} from 'custom-fields/types'
 import {Event} from 'models/event/types'
 import {Integration} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'

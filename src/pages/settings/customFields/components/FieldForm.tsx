@@ -11,9 +11,9 @@ import {
     CustomFieldObjectTypes,
     isCustomField,
     isCustomFieldAIManagedType,
-} from 'models/customField/types'
-import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
-import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'models/customField/constants'
+} from 'custom-fields/types'
+import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
+import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
 import InputField from 'pages/common/forms/input/InputField'
 import CheckBox from 'pages/common/forms/CheckBox'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'

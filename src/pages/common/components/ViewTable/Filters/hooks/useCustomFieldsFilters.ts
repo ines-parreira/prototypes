@@ -1,7 +1,7 @@
 import {useCallback, useMemo} from 'react'
 
-import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {updateCustomFieldFilterId} from 'state/views/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {Schemas} from 'types'

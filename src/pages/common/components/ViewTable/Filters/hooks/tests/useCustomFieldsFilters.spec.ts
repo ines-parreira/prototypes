@@ -1,9 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
 
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {getDefaultCustomFieldOperator} from 'pages/common/components/ViewTable/Filters/utils'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
-import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ticketFieldDefinitions,
@@ -16,10 +16,10 @@ import useCustomFieldsFilters from '../useCustomFieldsFilters'
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
 
-jest.mock('hooks/customField/useCustomFieldDefinition')
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinition')
 const useCustomFieldDefinitionMock = useCustomFieldDefinition as jest.Mock
 
-jest.mock('hooks/customField/useCustomFieldDefinitions')
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = useCustomFieldDefinitions as jest.Mock
 
 jest.mock('state/views/actions')

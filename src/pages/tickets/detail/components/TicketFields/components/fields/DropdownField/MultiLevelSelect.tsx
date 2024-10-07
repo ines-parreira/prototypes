@@ -5,19 +5,19 @@ import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useDimensions from 'hooks/useDimensions'
-import {isCustomFieldValueEmpty} from 'utils/customFields'
+import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import {
     CustomFieldPrediction,
     CustomFieldState,
     CustomFieldValue,
-} from 'models/customField/types'
+} from 'custom-fields/types'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
-import StealthInput from 'pages/tickets/detail/components/TicketFields/components//StealthInput'
+import StealthInput from 'custom-fields/components/StealthInput'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {hasRole} from 'utils'
 import {UserRole} from 'config/types/user'

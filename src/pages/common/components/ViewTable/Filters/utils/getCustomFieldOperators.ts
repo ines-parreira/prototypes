@@ -1,8 +1,8 @@
-import {findProperty} from 'utils'
-import {Schemas} from 'types'
-import {CustomField} from 'models/customField/types'
-import {OperatorType} from 'pages/common/components/ViewTable/Filters/types'
 import {BASIC_OPERATORS} from 'config'
+import {CustomField} from 'custom-fields/types'
+import {OperatorType} from 'pages/common/components/ViewTable/Filters/types'
+import {Schemas} from 'types'
+import {findProperty} from 'utils'
 
 import {getFieldSchemaDefinitionKey} from './'
 

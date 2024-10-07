@@ -18,15 +18,15 @@ import {
     archivedTicketInputFieldDefinition,
 } from 'fixtures/customField'
 import {assumeMock, getLastMockCall, renderWithRouter} from 'utils/testing'
-import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
-import {OBJECT_TYPES} from 'models/customField/constants'
+import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
+import {OBJECT_TYPES} from 'custom-fields/constants'
 import FieldForm from 'pages/settings/customFields/components/FieldForm'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 
 import DropdownInput from '../DropdownInput'
 
 jest.mock('../DropdownInput', () => jest.fn(() => <div>Dropdown</div>))
-jest.mock('hooks/customField/useUpdateCustomFieldArchiveStatus')
+jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus')
 jest.mock(
     'pages/settings/customFields/components/ArchiveConfirmationModal',
     () => jest.fn(() => null)

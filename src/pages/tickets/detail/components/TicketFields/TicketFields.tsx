@@ -1,7 +1,7 @@
 import React, {memo, useEffect, useState} from 'react'
 import classNames from 'classnames'
 
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasWrapped from 'hooks/useHasWrapped'

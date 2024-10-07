@@ -1,4 +1,4 @@
-import {CustomField} from 'models/customField/types'
+import {CustomField} from 'custom-fields/types'
 
 export default function getFieldSchemaDefinitionKey(customField: CustomField) {
     const {

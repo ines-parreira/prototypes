@@ -1,6 +1,8 @@
 import React from 'react'
 import {render, fireEvent, act} from '@testing-library/react'
 import moment from 'moment'
+
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {assumeMock} from 'utils/testing'
 import useAppSelector from 'hooks/useAppSelector'
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
@@ -20,7 +22,6 @@ import {useAutomateMetricsTimeseriesV2} from 'hooks/reporting/automate/useAutoma
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'
 import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {saveReport} from 'services/reporting/automateAiAgentReportingService'
 import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
@@ -64,7 +65,7 @@ const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
     useCustomFieldsTicketCountTimeSeries
 )
 
-jest.mock('hooks/customField/useCustomFieldDefinitions')
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
 jest.mock('pages/automate/aiAgent/util')

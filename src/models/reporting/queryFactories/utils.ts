@@ -1,5 +1,5 @@
 import _flatMap from 'lodash/flatMap'
-import {CustomFieldValue} from 'models/customField/types'
+import {CustomFieldValue} from 'custom-fields/types'
 import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
