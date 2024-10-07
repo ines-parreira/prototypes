@@ -5,9 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {mockFlags} from 'jest-launchdarkly-mock'
 import {renderWithRouter} from 'utils/testing'
-import {FeatureFlagKey} from 'config/featureFlags'
 import * as actions from 'state/integrations/actions'
 import * as ToggleInput from 'pages/common/forms/ToggleInput'
 import Integration from '../Integration'
@@ -24,9 +22,6 @@ describe('<ShopifyIntegration/>', () => {
 
     beforeEach(() => {
         jest.restoreAllMocks()
-        mockFlags({
-            [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: false,
-        })
     })
 
     describe('render()', () => {
@@ -152,10 +147,6 @@ describe('<ShopifyIntegration/>', () => {
         ])(
             'should have a disabled update button that gets enabled when one of the options is enabled',
             (optionName: string) => {
-                mockFlags({
-                    [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: true,
-                })
-
                 renderWithRouter(
                     <Provider store={store}>
                         <Integration
@@ -223,52 +214,7 @@ describe('<ShopifyIntegration/>', () => {
             )
         })
 
-        it('should send only the sync_customer_notes option when the Shopify DSA phone matching FF is disabled', () => {
-            jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
-            const updateOrCreateIntegrationRequest =
-                actions.updateOrCreateIntegrationRequest as jest.Mock
-
-            mockFlags({
-                [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: false,
-            })
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <Integration
-                        {...minProps}
-                        integration={fromJS({
-                            meta: {
-                                sync_customer_notes: true,
-                            },
-                        })}
-                    />
-                </Provider>
-            )
-
-            expect(
-                screen.queryByRole('checkbox', {
-                    name: 'Match customer by Shopify default address phone number',
-                })
-            ).toBeNull()
-
-            fireEvent.click(
-                screen.getByRole('checkbox', {
-                    name: 'Synchronize customer notes between Gorgias and Shopify',
-                })
-            )
-
-            fireEvent.click(
-                screen.getByRole('button', {name: 'Update Connection'})
-            )
-            expect(
-                updateOrCreateIntegrationRequest.mock.calls
-            ).toMatchSnapshot()
-        })
-
         it('when enabling DSA phone matching, should send all the integration meta after asking for confirmation', () => {
-            mockFlags({
-                [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: true,
-            })
             jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
             const updateOrCreateIntegrationRequest =
                 actions.updateOrCreateIntegrationRequest as jest.Mock
@@ -311,9 +257,6 @@ describe('<ShopifyIntegration/>', () => {
         })
 
         it('when not enabling DSA phone matching, should send all the integration meta without asking for confirmation', () => {
-            mockFlags({
-                [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: true,
-            })
             jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
             const updateOrCreateIntegrationRequest =
                 actions.updateOrCreateIntegrationRequest as jest.Mock
@@ -355,9 +298,6 @@ describe('<ShopifyIntegration/>', () => {
         })
 
         it('when enabling DSA phone matching, the modal should allow to discard changes', () => {
-            mockFlags({
-                [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: true,
-            })
             jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
             const updateOrCreateIntegrationRequest =
                 actions.updateOrCreateIntegrationRequest as jest.Mock
@@ -395,14 +335,10 @@ describe('<ShopifyIntegration/>', () => {
                     name: 'Match customer by Shopify default address phone number',
                 })
             ).toHaveAttribute('aria-checked', 'false')
-
             expect(updateOrCreateIntegrationRequest.mock.calls).toEqual([])
         })
 
         it('when enabling DSA phone matching, the modal should allow to go back to editing', () => {
-            mockFlags({
-                [FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]: true,
-            })
             jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
             const updateOrCreateIntegrationRequest =
                 actions.updateOrCreateIntegrationRequest as jest.Mock

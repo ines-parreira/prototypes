@@ -495,6 +495,40 @@ exports[`<Shopify/> Integration should render 1`] = `
               </div>
             </div>
           </div>
+          <div
+            class="mb-4"
+          >
+            <div>
+              <label
+                aria-checked="false"
+                class="Label--label--QAnfT label"
+                for="default_address_phone_matching_enabled"
+                role="switch"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="default_address_phone_matching_enabled"
+                  name="default_address_phone_matching_enabled"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                Match customer by Shopify default address phone number
+              </label>
+              <div
+                class="caption caption"
+              >
+                Gorgias will search for Shopify customer’s default address for customer matching.
+                <br />
+                <b>
+                  Do not enable if you use the same phone number across multiple customers
+                </b>
+                , as this will lead to incorrect customer merges.
+              </div>
+            </div>
+          </div>
           <div>
             <button
               aria-disabled="true"

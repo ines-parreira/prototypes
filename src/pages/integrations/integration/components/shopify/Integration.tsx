@@ -2,7 +2,6 @@ import React, {FormEvent, useCallback, useEffect, useState} from 'react'
 import {Map} from 'immutable'
 import {Col, Container, Row} from 'reactstrap'
 import {Label} from '@gorgias/ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {
     deleteIntegration,
@@ -23,7 +22,6 @@ import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAu
 
 import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
 import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
-import {FeatureFlagKey} from 'config/featureFlags'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 
 type Props = {
@@ -37,9 +35,6 @@ export default function Integration({
     loading,
     redirectUri,
 }: Props) {
-    const isShopifyDefaultAddressPhoneMatchingEnabled =
-        useFlags()[FeatureFlagKey.ShopifyDefaultAddressPhoneMatching]
-
     const dispatch = useAppDispatch()
     useQueryNotify()
 
@@ -67,20 +62,17 @@ export default function Integration({
         await dispatch(
             updateOrCreateIntegrationRequest(
                 integration.mergeDeep({
-                    meta: isShopifyDefaultAddressPhoneMatchingEnabled
-                        ? {
-                              sync_customer_notes: syncCustomerNotes,
-                              default_address_phone_matching_enabled:
-                                  defaultAddressPhoneMatchingEnabled,
-                          }
-                        : {sync_customer_notes: syncCustomerNotes},
+                    meta: {
+                        sync_customer_notes: syncCustomerNotes,
+                        default_address_phone_matching_enabled:
+                            defaultAddressPhoneMatchingEnabled,
+                    },
                 })
             )
         )
     }, [
         dispatch,
         integration,
-        isShopifyDefaultAddressPhoneMatchingEnabled,
         syncCustomerNotes,
         defaultAddressPhoneMatchingEnabled,
     ])
@@ -213,39 +205,33 @@ export default function Integration({
                             </ToggleInput>
                         </div>
 
-                        {isShopifyDefaultAddressPhoneMatchingEnabled && (
-                            <div className="mb-4">
-                                <ToggleInput
-                                    name="default_address_phone_matching_enabled"
-                                    isToggled={
-                                        defaultAddressPhoneMatchingEnabled
-                                    }
-                                    onClick={(value) =>
-                                        setDefaultAddressPhoneMatchingEnabled(
-                                            value
-                                        )
-                                    }
-                                    caption={
-                                        <>
-                                            Gorgias will search for Shopify
-                                            customer’s default address for
-                                            customer matching.
-                                            <br />
-                                            <b>
-                                                Do not enable if you use the
-                                                same phone number across
-                                                multiple customers
-                                            </b>
-                                            , as this will lead to incorrect
-                                            customer merges.
-                                        </>
-                                    }
-                                >
-                                    Match customer by Shopify default address
-                                    phone number
-                                </ToggleInput>
-                            </div>
-                        )}
+                        <div className="mb-4">
+                            <ToggleInput
+                                name="default_address_phone_matching_enabled"
+                                isToggled={defaultAddressPhoneMatchingEnabled}
+                                onClick={(value) =>
+                                    setDefaultAddressPhoneMatchingEnabled(value)
+                                }
+                                caption={
+                                    <>
+                                        Gorgias will search for Shopify
+                                        customer’s default address for customer
+                                        matching.
+                                        <br />
+                                        <b>
+                                            Do not enable if you use the same
+                                            phone number across multiple
+                                            customers
+                                        </b>
+                                        , as this will lead to incorrect
+                                        customer merges.
+                                    </>
+                                }
+                            >
+                                Match customer by Shopify default address phone
+                                number
+                            </ToggleInput>
+                        </div>
 
                         <div>
                             {needScopeUpdate && (
