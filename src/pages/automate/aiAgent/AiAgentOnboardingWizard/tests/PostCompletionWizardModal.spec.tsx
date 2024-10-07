@@ -16,7 +16,7 @@ describe('<PostCompletionWizardModal />', () => {
         mockUseSearchParam.mockImplementation(() => [null, mockSetSearchParam])
     })
 
-    it('should renders Configuration tab SuccessModal with appropriate props', () => {
+    it('should render Configuration tab SuccessModal with appropriate props', () => {
         mockUseSearchParam.mockImplementation(() => [
             WIZARD_POST_COMPLETION_STATE.configuration,
             mockSetSearchParam,
@@ -33,7 +33,7 @@ describe('<PostCompletionWizardModal />', () => {
         expect(screen.getByText('Explore AI Agent')).toBeInTheDocument()
     })
 
-    it('should renders Test tab SuccessModal with appropriate props', () => {
+    it('should render Test tab SuccessModal with appropriate props', () => {
         mockUseSearchParam.mockImplementation(() => [
             WIZARD_POST_COMPLETION_STATE.test,
             mockSetSearchParam,
@@ -50,7 +50,7 @@ describe('<PostCompletionWizardModal />', () => {
         expect(screen.getByText('Try Test mode')).toBeInTheDocument()
     })
 
-    it('should renders Guidance tab HeroImageCarousel modal when slidesData is provided', () => {
+    it('should render Guidance tab HeroImageCarousel modal when slidesData is provided', () => {
         mockUseSearchParam.mockImplementation(() => [
             WIZARD_POST_COMPLETION_STATE.guidance,
             mockSetSearchParam,
@@ -71,7 +71,7 @@ describe('<PostCompletionWizardModal />', () => {
         expect(screen.getByText('Next')).toBeInTheDocument()
     })
 
-    it('should closes modal and clears search param when button is clicked', () => {
+    it('should close modal and clears search param when button is clicked', () => {
         mockUseSearchParam.mockImplementation(() => [
             WIZARD_POST_COMPLETION_STATE.test,
             mockSetSearchParam,
@@ -85,7 +85,7 @@ describe('<PostCompletionWizardModal />', () => {
         expect(mockSetSearchParam).toHaveBeenCalledWith(null)
     })
 
-    it('should closes modal and change search param to knowledge when in configuration tab and button is clicked', () => {
+    it('should close modal and display knowledge carousel when configuration modal is clicked', () => {
         mockUseSearchParam.mockImplementation(() => [
             WIZARD_POST_COMPLETION_STATE.configuration,
             mockSetSearchParam,
@@ -97,6 +97,33 @@ describe('<PostCompletionWizardModal />', () => {
             name: /Explore AI Agent/i,
         })
         fireEvent.click(closeButton)
+
+        expect(
+            screen.getByText(
+                'Before setting it live, you can power AI Agent with more knowledge using Guidance'
+            )
+        ).toBeInTheDocument()
+
+        expect(screen.getByText('Next')).toBeInTheDocument()
+    })
+
+    it('should close modal and change search param to knowledge', () => {
+        mockUseSearchParam.mockImplementation(() => [
+            WIZARD_POST_COMPLETION_STATE.knowledge,
+            mockSetSearchParam,
+        ])
+
+        render(<PostCompletionWizardModal />)
+
+        expect(
+            screen.getByText(
+                'Before setting it live, you can power AI Agent with more knowledge using Guidance'
+            )
+        ).toBeInTheDocument()
+
+        const closeIcon = screen.getByText('close')
+
+        fireEvent.click(closeIcon)
 
         expect(mockSetSearchParam).toHaveBeenCalledWith(
             WIZARD_POST_COMPLETION_STATE.knowledge

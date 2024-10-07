@@ -78,6 +78,36 @@ const getModalParams = (
                     },
                 ],
             }
+        case WIZARD_POST_COMPLETION_STATE.knowledge:
+            return {
+                slidesData: [
+                    {
+                        header: 'Before setting it live, you can power AI Agent with more knowledge using Guidance',
+                        imageUrl: assetsUrl(
+                            '/img/ai-agent/ai_agent_guidance.png'
+                        ),
+                        description:
+                            'Write text-based instructions that explains your policies and processes so it can perform like a real agent.',
+                        footerButton: 'Next',
+                    },
+                    {
+                        header: 'Connect 3rd party apps to automate requests with Actions',
+                        imageUrl: assetsUrl(
+                            '/img/ai-agent/ai_agent_actions.png'
+                        ),
+                        description:
+                            'Use your ecommerce tools to resolve common and repetitive asks from your customers, like changing their shipping address.',
+                        footerButton: 'Next',
+                    },
+                    {
+                        header: 'Assess AI Agent’s knowledge in the test area, then set it live!',
+                        imageUrl: assetsUrl('/img/ai-agent/ai_agent_test.png'),
+                        description:
+                            'Simulate real interactions in test mode to build confidence in AI Agent’s performance. Once you feel good about it’s responses, set it live!',
+                        footerButton: 'Done',
+                    },
+                ],
+            }
         default:
             return null
     }
@@ -94,17 +124,28 @@ const PostCompletionWizardModal = () => {
         WIZARD_POST_COMPLETION_QUERY_KEY
     )
 
-    const modalState = isWizardPostCompletionState(value) ? value : undefined
+    const [modalState, setModalState] = useState(
+        isWizardPostCompletionState(value) ? value : undefined
+    )
     const [isOpen, setIsOpen] = useState(modalState !== undefined)
 
-    const [modalParams] = useState(getModalParams(modalState))
+    const [modalParams, setModalParams] = useState(getModalParams(modalState))
     const onClose = () => {
         setIsOpen(false)
         setSearchParam(null)
 
         if (modalState === WIZARD_POST_COMPLETION_STATE.configuration) {
+            setIsOpen(true)
+            setModalParams(
+                getModalParams(WIZARD_POST_COMPLETION_STATE.knowledge)
+            )
+            setModalState(WIZARD_POST_COMPLETION_STATE.knowledge)
+        }
+
+        if (modalState === WIZARD_POST_COMPLETION_STATE.knowledge) {
             setSearchParam(WIZARD_POST_COMPLETION_STATE.knowledge)
         }
+
         if (modalState === WIZARD_POST_COMPLETION_STATE.test) {
             setSearchParam(WIZARD_POST_COMPLETION_STATE.test_subject)
         }
