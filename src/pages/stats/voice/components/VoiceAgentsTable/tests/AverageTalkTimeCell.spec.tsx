@@ -76,10 +76,6 @@ const renderComponent = () => {
 }
 
 describe('AverageTalkTimeCell', () => {
-    beforeEach(() => {
-        mockFlags({[FeatureFlagKey.VoiceCallsDrillDown]: true})
-    })
-
     it('should render not available label', () => {
         useMetricMock.mockReturnValue({
             isFetching: false,
@@ -129,31 +125,11 @@ describe('AverageTalkTimeCell', () => {
         const {container} = renderComponent()
         expect(container.getElementsByClassName('skeleton')).toHaveLength(1)
     })
-
-    it('should not open drill down modal when drill down FF is disabled', () => {
-        useMetricMock.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {value: 125, decile: null, allData: []},
-        })
-
-        mockFlags({[FeatureFlagKey.VoiceCallsDrillDown]: false})
-
-        renderComponent()
-
-        expect(DrillDownModalTriggerSpy).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                enabled: false,
-            }),
-            {}
-        )
-    })
 })
 
 describe('AverageTalkTimeCell with the new filters', () => {
     beforeEach(() => {
         mockFlags({
-            [FeatureFlagKey.VoiceCallsDrillDown]: true,
             [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
         })
     })

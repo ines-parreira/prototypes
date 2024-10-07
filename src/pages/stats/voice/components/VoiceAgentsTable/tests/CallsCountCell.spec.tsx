@@ -81,10 +81,6 @@ const renderComponent = (
 }
 
 describe('CallsCountCell', () => {
-    beforeEach(() => {
-        mockFlags({[FeatureFlagKey.VoiceCallsDrillDown]: true})
-    })
-
     it('should render not available label', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: false,
@@ -158,25 +154,6 @@ describe('CallsCountCell', () => {
         )
     })
 
-    it('should not open drill down modal when drill down FF is disabled', () => {
-        const useMetricMock = jest.fn().mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {value: 12, decile: null, allData: []},
-        })
-
-        mockFlags({[FeatureFlagKey.VoiceCallsDrillDown]: false})
-
-        renderComponent(useMetricMock)
-
-        expect(DrillDownModalTriggerSpy).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                enabled: false,
-            }),
-            {}
-        )
-    })
-
     it('should not render DrillDownModalTrigger when metricData is not provided', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: false,
@@ -194,7 +171,6 @@ describe('CallsCountCell', () => {
 describe('CallsCountCell with the new filters', () => {
     beforeEach(() => {
         mockFlags({
-            [FeatureFlagKey.VoiceCallsDrillDown]: true,
             [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
         })
     })

@@ -28,8 +28,6 @@ type Props = {
 }
 
 const AverageTalkTimeCell = ({agent, metricData}: Props) => {
-    const isVoiceCallsDrillDownEnabled =
-        useFlags()[FeatureFlagKey.VoiceCallsDrillDown]
     const isVoiceAgentsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
 
@@ -63,7 +61,7 @@ const AverageTalkTimeCell = ({agent, metricData}: Props) => {
                         perAgentId: agent.id,
                         title: `${metricData.title} | ${agent.name}`,
                     }}
-                    enabled={isVoiceCallsDrillDownEnabled && !!metricValue}
+                    enabled={!!metricValue}
                 >
                     {formatMetricValue(
                         metricValue,

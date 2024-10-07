@@ -35,9 +35,6 @@ const CallsCountCell = ({
     metricData,
     isDrillDownEnabled = true,
 }: Props) => {
-    const isVoiceCallsDrillDownEnabled =
-        useFlags()[FeatureFlagKey.VoiceCallsDrillDown]
-
     const isVoiceAgentsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
 
@@ -78,11 +75,7 @@ const CallsCountCell = ({
                         perAgentId: agent.id,
                         title: `${metricData.title} | ${agent.name}`,
                     }}
-                    enabled={
-                        isVoiceCallsDrillDownEnabled &&
-                        isDrillDownEnabled &&
-                        !!metricValue
-                    }
+                    enabled={isDrillDownEnabled && !!metricValue}
                     useNewFilterData={isVoiceAgentsNewFilters}
                 >
                     {formattedValue}

@@ -1,7 +1,6 @@
 import moment from 'moment'
 import React from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import TrendBadge from 'pages/stats/TrendBadge'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import {
@@ -15,7 +14,6 @@ import {getAdvancedVoicePeriodFilters} from 'models/reporting/queryFactories/voi
 import {getPreviousPeriod} from 'utils/reporting'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {VoiceMetrics} from 'state/ui/stats/drillDownSlice'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 
@@ -36,9 +34,6 @@ function VoiceCallCallerExperienceMetric({
     metricData,
     isAnalyticsNewFilters = false,
 }: VoiceCallCallerExperienceMetricProps) {
-    const isVoiceCallDrillDownEnabled =
-        useFlags()[FeatureFlagKey.VoiceCallsDrillDown]
-
     const voiceCallsAverageTime = metricTrend.data?.value
     const previousPeriod = getAdvancedVoicePeriodFilters(
         getPreviousPeriod(statsFilters.period)
@@ -75,9 +70,7 @@ function VoiceCallCallerExperienceMetric({
                 }
             >
                 <DrillDownModalTrigger
-                    enabled={
-                        isVoiceCallDrillDownEnabled && !!voiceCallsAverageTime
-                    }
+                    enabled={!!voiceCallsAverageTime}
                     metricData={metricData}
                     useNewFilterData={isAnalyticsNewFilters}
                 >

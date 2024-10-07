@@ -1,13 +1,11 @@
 import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import {StatsFilters} from 'models/stat/types'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {assumeMock, mockStore} from 'utils/testing'
 import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import {formatMetricValue} from 'pages/stats/common/utils'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {VoiceMetric} from 'state/ui/stats/types'
 import {VoiceMetrics} from 'state/ui/stats/drillDownSlice'
 import * as DrillDownModalTrigger from 'pages/stats/DrillDownModalTrigger'
@@ -75,7 +73,6 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
     }
 
     beforeEach(() => {
-        mockFlags({[FeatureFlagKey.VoiceCallsDrillDown]: true})
         store.clearActions()
     })
 
@@ -158,20 +155,6 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
         expect(DrillDownModalTriggerSpy).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 enabled: true,
-            }),
-            {}
-        )
-    })
-
-    it('should not be clickable when drill down FF is disabled', () => {
-        mockFlags({[FeatureFlagKey.VoiceCallsDrillDown]: false})
-
-        renderComponent(defaultTrendValue)
-
-        expect(DrillDownModalTriggerSpy).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                enabled: false,
-                metricData: averageWaitTimeMetricData,
             }),
             {}
         )
