@@ -35,6 +35,7 @@ const ConvertNavbarView = () => {
             `${convertPathPrefix}/campaigns`,
             `${convertPathPrefix}/click-tracking`,
             `${convertPathPrefix}/installation`,
+            `${convertPathPrefix}/settings`,
         ],
         exact: false,
     })

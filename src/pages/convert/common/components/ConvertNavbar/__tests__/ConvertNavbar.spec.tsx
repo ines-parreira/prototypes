@@ -17,6 +17,7 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
 import {IntegrationType} from 'models/integration/types'
+import useContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
 import ConvertNavbar from '../ConvertNavbar'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -34,6 +35,9 @@ jest.mock('common/notifications/components/Button', () => ({
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
+
+jest.mock('pages/convert/common/hooks/useContactFormFlag')
+const mockUseContactFormFlag = assumeMock(useContactFormFlag)
 
 const useGetOnboardingStatusMapSpy = assumeMock(useGetOnboardingStatusMap)
 
@@ -73,6 +77,7 @@ describe('<ConvertNavbar />', () => {
             isLoading: false,
             isError: false,
         })
+        mockUseContactFormFlag.mockReturnValue(false)
     })
 
     describe('render()', () => {
@@ -126,6 +131,26 @@ describe('<ConvertNavbar />', () => {
 
             // We expect 2 paywall icons per each integration
             expect(getAllByText('arrow_circle_up').length).toBe(2)
+        })
+
+        it('should render settings when ff is enabled', () => {
+            mockUseContactFormFlag.mockReturnValue(true)
+            const {getAllByText} = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                    })}
+                >
+                    <DndProvider backend={HTML5Backend}>
+                        <QueryClientProvider client={queryClient}>
+                            <ThemeProvider>
+                                <ConvertNavbar />
+                            </ThemeProvider>
+                        </QueryClientProvider>
+                    </DndProvider>
+                </Provider>
+            )
+            expect(getAllByText('Settings').length).toBe(1)
         })
 
         it('should render convert navbar with integrations without paywalls', () => {

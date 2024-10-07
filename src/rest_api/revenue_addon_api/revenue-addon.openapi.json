@@ -522,7 +522,14 @@
                 "responses": {
                     "202": {
                         "description": "Successful Response",
-                        "content": {"application/json": {"schema": {}}}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Response Submit Contact Form"
+                                }
+                            }
+                        }
                     },
                     "422": {
                         "description": "Validation Error",
@@ -3557,6 +3564,11 @@
                             {"type": "null"}
                         ]
                     },
+                    "settings": {
+                        "additionalProperties": {"type": "object"},
+                        "type": "object",
+                        "title": "Settings"
+                    },
                     "id": {"type": "string", "title": "Id"}
                 },
                 "type": "object",
@@ -3933,7 +3945,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-mariuszjanczyn.eu.ngrok.io/loader.js"
+                        "default": "https://bundle-joaotavares.eu.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",
@@ -4492,8 +4504,10 @@
             },
             "SettingType": {
                 "type": "string",
-                "enum": ["performance_report_visible_fields"],
-                "const": "performance_report_visible_fields",
+                "enum": [
+                    "performance_report_visible_fields",
+                    "email_disclaimer"
+                ],
                 "title": "SettingType"
             },
             "StatusEnum": {

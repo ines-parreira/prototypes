@@ -5,7 +5,10 @@ import {CampaignTableKeys} from '../../types/enums/CampaignTableKeys.enum'
 import {CampaignTableColumn} from '../../types/CampaignTableColumn'
 import {CampaignTableValueFormat} from '../../types/enums/CampaignTableValueFormat.enum'
 
-export const CampaignSettingIdentifier = 'performance_report_visible_fields'
+export const enum CampaignSettingType {
+    PerformanceReportVisibleFields = 'performance_report_visible_fields',
+    EmailDisclaimer = 'email_disclaimer',
+}
 
 export const CampaignTableColumnDefaultSelect: CampaignTableKeys[] = [
     CampaignTableKeys.CampaignName,
@@ -226,7 +229,7 @@ export const CampaignPerformanceTableViews: TableSetting<CampaignTableKeys> = {
 }
 
 export const CampaignPerformanceTableDefaultConfigurationViews = {
-    type: CampaignSettingIdentifier,
+    type: CampaignSettingType.PerformanceReportVisibleFields,
     metrics: campaignPerformanceMetrics,
 }
 

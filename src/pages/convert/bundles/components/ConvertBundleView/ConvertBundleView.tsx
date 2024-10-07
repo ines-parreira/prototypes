@@ -22,10 +22,14 @@ import {
 } from 'models/convert/bundle/types'
 import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
-import ConvertBundleDetail from '../ConvertBundleDetail'
+import ConvertBundleDetail from 'pages/convert/bundles/components/ConvertBundleDetail'
 import css from './ConvertBundleView.less'
 
-const ConvertBundleView = () => {
+type Props = {
+    renderHeader?: boolean
+}
+
+const ConvertBundleView = ({renderHeader = true}: Props) => {
     const {[CONVERT_ROUTE_PARAM_NAME]: paramIntegrationId} =
         useParams<ConvertRouteParams>()
 
@@ -134,7 +138,7 @@ const ConvertBundleView = () => {
         <Loader message="Loading..." minHeight={'400px'} />
     ) : (
         <div className="full-width">
-            <PageHeader title="Installation" />
+            {renderHeader && <PageHeader title="Installation" />}
             <Container fluid className={css.pageContainer}>
                 <div className={css.content}>
                     {isInstalled ? (

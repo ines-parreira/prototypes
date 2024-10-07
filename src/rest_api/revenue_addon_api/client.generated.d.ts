@@ -858,6 +858,12 @@ declare namespace Components {
             campaigns: PublicCampaignResponseSchema[]
             ab_test?: ABTestConfigurationResponseSchema | null
             /**
+             * Settings
+             */
+            settings?: {
+                [name: string]: {}
+            }
+            /**
              * Id
              */
             id: string
@@ -1584,7 +1590,9 @@ declare namespace Components {
         /**
          * SettingType
          */
-        export type SettingType = 'performance_report_visible_fields'
+        export type SettingType =
+            | 'performance_report_visible_fields'
+            | 'email_disclaimer'
         /**
          * StatusEnum
          */
@@ -2679,7 +2687,10 @@ declare namespace Paths {
         }
         export type RequestBody = Components.Schemas.VisitorFormSubmissionSchema
         namespace Responses {
-            export type $202 = any
+            /**
+             * Response Submit Contact Form
+             */
+            export interface $202 {}
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }

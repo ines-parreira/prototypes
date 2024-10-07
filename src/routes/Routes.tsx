@@ -153,6 +153,7 @@ import AiAgentStoreConfigurationProvider from 'pages/automate/aiAgent/providers/
 import AiAgentOnboardingWizard from 'pages/automate/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 
 import SettingsRoutes from 'routes/settings'
+import {ConvertSettingsView} from 'pages/convert/settings/ConvertSettingsView'
 
 export default function Routes() {
     return (
@@ -1369,6 +1370,14 @@ export function ConvertContent() {
                 exact
                 component={withUserRoleRequired(
                     ConvertBundleView as any,
+                    ADMIN_ROLE
+                )}
+            />
+            <Route
+                exact
+                path={`${convertPathPrefix}/settings`}
+                component={withUserRoleRequired(
+                    ConvertSettingsView as any,
                     ADMIN_ROLE
                 )}
             />

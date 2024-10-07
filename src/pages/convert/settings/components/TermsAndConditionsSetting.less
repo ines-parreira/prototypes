@@ -1,0 +1,44 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .richField {
+        &.onError {
+            border-color: var(--feedback-error);
+        }
+    }
+
+    .termsAndConditionsSetting {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+
+    .headingSection {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bodySection {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+        border: 2px solid var(--main-primary);
+        border-radius: 4px;
+        padding: 20px;
+
+        &.disabled {
+            border: 2px solid var(--neutral-grey-3);
+        }
+    }
+
+    .editorTabs {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .tabsDisabled {
+        pointer-events: none;
+        opacity: 0.4;
+    }
+}

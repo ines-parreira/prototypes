@@ -17,7 +17,7 @@ import {useGetChatForStore} from 'pages/stats/convert/hooks/useGetChatForStore'
 
 import {
     CampaignPerformanceTableDefaultConfigurationViews,
-    CampaignSettingIdentifier,
+    CampaignSettingType,
 } from 'pages/stats/convert/components/CampaignTableStats/constants'
 
 export const useCampaignPerformanceTableSetting = () => {
@@ -44,7 +44,7 @@ export const useCampaignPerformanceTableSetting = () => {
     const {data: settings, isLoading: isSettingsLoading} = useGetSettingsList(
         {
             channel_connection_id: channelConnection?.id as string,
-            setting_type: CampaignSettingIdentifier,
+            setting_type: CampaignSettingType.PerformanceReportVisibleFields,
         },
         {
             enabled: !!channelConnection,
@@ -70,7 +70,7 @@ export const useCampaignPerformanceTableSetting = () => {
                 .map((metric) => metric.id) || [],
         submitActiveView: async (activeView: TableView<CampaignTableKeys>) => {
             const payload: SettingRequest = {
-                type: CampaignSettingIdentifier,
+                type: CampaignSettingType.PerformanceReportVisibleFields,
                 data: {
                     metrics: activeView.metrics,
                 },

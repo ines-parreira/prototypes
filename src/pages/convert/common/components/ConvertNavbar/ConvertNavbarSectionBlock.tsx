@@ -5,6 +5,7 @@ import cssNavbar from 'assets/css/navbar.less'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import useCanAddContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
 import css from './ConvertNavbarSectionBlock.less'
 import ConvertNavbarPaywallNavbarLink from './ConvertNavbarPaywallNavbarLink'
 
@@ -24,6 +25,7 @@ const ConvertNavbarSectionBlock = ({
     ...props
 }: Props) => {
     const isConvertSubscriber = useIsConvertSubscriber()
+    const settingsEnabled = useCanAddContactFormFlag()
 
     return (
         <NavbarSectionBlock
@@ -110,23 +112,43 @@ const ConvertNavbarSectionBlock = ({
                         </ConvertNavbarPaywallNavbarLink>
                     )}
 
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
-                        )}
-                    >
-                        <NavbarLink
-                            to={{
-                                pathname: `/app/convert/${chatIntegrationId}/installation`,
-                                state: {from: FROM_LOCATION},
-                            }}
+                    {settingsEnabled ? (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
                         >
-                            <span className={cssNavbar['item-name']}>
-                                Installation
-                            </span>
-                        </NavbarLink>
-                    </div>
+                            <NavbarLink
+                                to={{
+                                    pathname: `/app/convert/${chatIntegrationId}/settings`,
+                                    state: {from: FROM_LOCATION},
+                                }}
+                            >
+                                <span className={cssNavbar['item-name']}>
+                                    Settings
+                                </span>
+                            </NavbarLink>
+                        </div>
+                    ) : (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                        >
+                            <NavbarLink
+                                to={{
+                                    pathname: `/app/convert/${chatIntegrationId}/installation`,
+                                    state: {from: FROM_LOCATION},
+                                }}
+                            >
+                                <span className={cssNavbar['item-name']}>
+                                    Installation
+                                </span>
+                            </NavbarLink>
+                        </div>
+                    )}
                 </>
             ) : (
                 <div
