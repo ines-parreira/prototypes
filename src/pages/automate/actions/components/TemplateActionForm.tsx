@@ -41,6 +41,7 @@ import AppConfirmationModal from './AppConfirmationModal'
 import ActionFormInputConditions from './ActionFormInputConditions'
 import TemplateActionBanner from './TemplateActionBanner'
 import ActionFormInputs from './ActionFormInputs'
+import TemplateCustomizationBanner from './TemplateCustomizationBanner'
 
 import css from './CustomActionForm.less'
 
@@ -265,6 +266,7 @@ const TemplateActionForm = ({configuration, template}: Props) => {
                                 <ViewActionEventsButton />
                             )}
                         </div>
+                        {isNewAction && <TemplateCustomizationBanner />}
                         <TemplateActionBanner
                             actionAppConfiguration={template.apps[0]}
                             description={template.description}
