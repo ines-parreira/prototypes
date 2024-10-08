@@ -5,7 +5,6 @@ import {TermsAndConditionsSetting} from 'pages/convert/settings/components/Terms
 import settingsCss from 'pages/settings/settings.less'
 import {SettingRequest} from 'models/convert/settings/types'
 import {CampaignSettingType} from 'pages/stats/convert/components/CampaignTableStats/constants'
-import {useUpdateSetting} from 'models/convert/settings/queries'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {useChatIntegration} from 'pages/convert/campaigns/hooks/useChatIntegration'
 import {toJS} from 'utils'
@@ -15,6 +14,7 @@ import {notify} from 'state/notifications/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {NotificationStatus} from 'state/notifications/types'
 import {DisclaimerSettings} from 'pages/convert/settings/types'
+import {useUpdateSetting} from 'pages/convert/settings/hooks/useUpdateSetting'
 import css from './GeneralSettingsView.less'
 
 export const GeneralSettingsView = () => {
