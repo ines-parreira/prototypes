@@ -335,11 +335,11 @@ export const getLanguagesFromChatConfig = (
 }
 
 export const getPrimaryLanguageFromChatConfig = (
-    meta: GorgiasChatIntegrationMeta
+    meta?: GorgiasChatIntegrationMeta
 ): string => {
     return (
-        meta.languages?.find((language) => language.primary)?.language ??
-        (meta.language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT)
+        meta?.languages?.find((language) => language.primary)?.language ??
+        (meta?.language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT)
     )
 }
 

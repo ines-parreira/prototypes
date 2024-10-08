@@ -22,8 +22,6 @@ describe('ContactCaptureFormPreview', () => {
             message: 'Success!',
         },
         targets: [],
-        disclaimer: 'Test disclaimer',
-        disclaimer_default_accepted: false,
     }
 
     it('calls onMessageHtmlChange when a step is submitted', () => {
@@ -33,6 +31,12 @@ describe('ContactCaptureFormPreview', () => {
             <ContactCaptureFormPreview
                 form={mockForm}
                 onMessageHtmlChange={onMessageHtmlChangeMock}
+                emailDisclaimerSettings={{
+                    enabled: true,
+                    disclaimer: {en: 'foo'},
+                    disclaimer_default_accepted: true,
+                }}
+                defaultLanguage="en-US"
             />
         )
 
@@ -42,5 +46,29 @@ describe('ContactCaptureFormPreview', () => {
         fireEvent.click(submitButton)
 
         expect(onMessageHtmlChangeMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders the component with non expected values', () => {
+        render(
+            <ContactCaptureFormPreview
+                form={mockForm}
+                onMessageHtmlChange={undefined}
+                emailDisclaimerSettings={undefined}
+                defaultLanguage={'en-US'}
+            />
+        )
+
+        render(
+            <ContactCaptureFormPreview
+                form={mockForm}
+                onMessageHtmlChange={undefined}
+                emailDisclaimerSettings={{
+                    enabled: true,
+                    disclaimer: {'': 'foo'},
+                    disclaimer_default_accepted: true,
+                }}
+                defaultLanguage={undefined}
+            />
+        )
     })
 })

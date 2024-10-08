@@ -315,14 +315,6 @@ declare namespace Components {
              * Targets
              */
             targets: VisitorFormTargetsSchema[]
-            /**
-             * Disclaimer
-             */
-            disclaimer?: string | null
-            /**
-             * Disclaimer Default Accepted
-             */
-            disclaimer_default_accepted?: boolean
         }
         /**
          * CampaignAttachmentVisitorFormExtraSchema
@@ -337,14 +329,6 @@ declare namespace Components {
              * Targets
              */
             targets: VisitorFormTargetsSchema[]
-            /**
-             * Disclaimer
-             */
-            disclaimer?: string | null
-            /**
-             * Disclaimer Default Accepted
-             */
-            disclaimer_default_accepted?: boolean
         }
         /**
          * CampaignAttachmentVisitorFormSchema

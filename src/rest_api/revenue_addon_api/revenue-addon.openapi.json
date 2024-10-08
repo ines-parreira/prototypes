@@ -2681,15 +2681,6 @@
                         },
                         "type": "array",
                         "title": "Targets"
-                    },
-                    "disclaimer": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "Disclaimer"
-                    },
-                    "disclaimer_default_accepted": {
-                        "type": "boolean",
-                        "title": "Disclaimer Default Accepted",
-                        "default": false
                     }
                 },
                 "type": "object",
@@ -2719,15 +2710,6 @@
                         },
                         "type": "array",
                         "title": "Targets"
-                    },
-                    "disclaimer": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "Disclaimer"
-                    },
-                    "disclaimer_default_accepted": {
-                        "type": "boolean",
-                        "title": "Disclaimer Default Accepted",
-                        "default": false
                     }
                 },
                 "type": "object",

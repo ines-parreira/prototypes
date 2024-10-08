@@ -10,6 +10,7 @@ import {
 import CustomizedChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/CustomizedChatLauncher'
 import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {CaptureFormDisclaimerSettings} from 'pages/convert/settings/types'
 import {CampaignProduct} from '../../types/CampaignProduct'
 import {ChatCampaign} from './components/ChatCampaign'
 import css from './CampaignPreview.less'
@@ -35,6 +36,8 @@ type Props = {
     shouldHideReplyInput?: boolean
     shouldHideRepositionImage?: boolean
     onCampaignContentChange?: (value: boolean) => void
+    emailDisclaimerSettings?: CaptureFormDisclaimerSettings
+    defaultLanguage?: string
 }
 
 const CampaignPreview = ({
@@ -54,6 +57,8 @@ const CampaignPreview = ({
     shouldHideReplyInput,
     shouldHideRepositionImage,
     onCampaignContentChange,
+    emailDisclaimerSettings,
+    defaultLanguage,
 }: Props) => (
     <CustomizedChatLauncher
         className={classnames(css.preview, className)}
@@ -75,6 +80,8 @@ const CampaignPreview = ({
             shouldHideRepositionImage={shouldHideRepositionImage}
             translatedTexts={translatedTexts}
             onCampaignContentChange={onCampaignContentChange}
+            emailDisclaimerSettings={emailDisclaimerSettings}
+            defaultLanguage={defaultLanguage}
         />
     </CustomizedChatLauncher>
 )

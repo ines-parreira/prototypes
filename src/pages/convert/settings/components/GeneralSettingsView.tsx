@@ -35,16 +35,16 @@ export const GeneralSettingsView = () => {
     const dispatch = useAppDispatch()
 
     const {data: emailDisclaimerServerData, isLoading} =
-        useEmailDisclaimerSettings()
+        useEmailDisclaimerSettings(integration.toJS())
 
     useEffect(() => {
         if (!emailDisclaimerServerData) return
         setDisclaimerSettings((state) => ({
             ...state,
-            disclaimerEnabled: emailDisclaimerServerData.data.enabled,
-            disclaimerMap: emailDisclaimerServerData.data.disclaimer,
+            disclaimerEnabled: emailDisclaimerServerData.enabled,
+            disclaimerMap: emailDisclaimerServerData.disclaimer,
             preSelectDisclaimer:
-                emailDisclaimerServerData.data.disclaimer_default_accepted,
+                emailDisclaimerServerData.disclaimer_default_accepted,
         }))
     }, [emailDisclaimerServerData])
 

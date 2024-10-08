@@ -20,9 +20,6 @@ export type TransitoryAttachmentSubscriber = {
 export type TransitoryAttachmentForm = {
     label: string
     cta: string
-    disclaimerEnabled: boolean
-    disclaimer: string
-    preSelectDisclaimer: boolean
 }
 
 export type TransitoryAttachmentData = {

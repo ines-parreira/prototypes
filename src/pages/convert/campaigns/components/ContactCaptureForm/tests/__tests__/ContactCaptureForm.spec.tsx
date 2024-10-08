@@ -14,6 +14,8 @@ import {UserRole} from 'config/types/user'
 import {Customisation} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customisation'
 import {PostSubmissionMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage'
 import {ContactFormCaptureFormIconButton} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
+import {assumeMock} from 'utils/testing'
+import {useEmailDisclaimerSettings} from 'pages/stats/convert/hooks/useEmailDisclaimerSettings'
 
 jest.mock('tags/useListTags')
 const mockStore = configureMockStore()
@@ -27,6 +29,9 @@ const store = mockStore({
     integrations: fromJS({integrations: []}),
 })
 const mockUseListTags = useListTags as jest.Mock
+
+jest.mock('pages/stats/convert/hooks/useEmailDisclaimerSettings')
+const mockUseEmailDisclaimerSettings = assumeMock(useEmailDisclaimerSettings)
 
 describe('ContactForm test suite', () => {
     const baseState = {
@@ -55,6 +60,14 @@ describe('ContactForm test suite', () => {
 
     beforeEach(() => {
         mockUseListTags.mockReturnValue([])
+        mockUseEmailDisclaimerSettings.mockReturnValue({
+            data: {
+                enabled: true,
+                disclaimer: {en: 'foo'},
+                disclaimer_default_accepted: true,
+            },
+            isLoading: false,
+        })
     })
 
     it('should have the correct behavior for step navigation buttons', () => {
@@ -163,33 +176,22 @@ describe('ContactForm test suite', () => {
             state.postSubmissionMessage = newState.postSubmissionMessage
         }
 
-        const {getByPlaceholderText, getAllByPlaceholderText, getByText} =
-            render(
-                <Provider store={store}>
-                    <Customisation
-                        setNextButtonActive={jest.fn()}
-                        setAttachmentData={setState as any}
-                        attachmentData={state}
-                    />
-                </Provider>
-            )
+        const {getByPlaceholderText, getAllByPlaceholderText} = render(
+            <Provider store={store}>
+                <Customisation
+                    setNextButtonActive={jest.fn()}
+                    setAttachmentData={setState as any}
+                    attachmentData={state}
+                />
+            </Provider>
+        )
         const fieldLabelInputs = getAllByPlaceholderText('Email')
         const buttonLabelInput = getByPlaceholderText('Subscribe')
-        const enablePrivacyPolicyToggle = getByText(
-            'Display privacy policy disclaimer'
-        ) as HTMLInputElement
-        const preSelectDisclaimerCheckbox = getByText(
-            'Pre-select sign-up option'
-        ) as HTMLInputElement
 
         await userEvent.type(fieldLabelInputs[0], 'Your email')
         expect(state.forms.email.label).toBe('Your email')
         await userEvent.type(buttonLabelInput, 'Subscribe now!')
         expect(state.forms.email.cta).toBe('Subscribe now!')
-        act(() => enablePrivacyPolicyToggle.click())
-        expect(state.forms.email.disclaimerEnabled).toBeFalsy()
-        act(() => preSelectDisclaimerCheckbox.click())
-        expect(state.forms.email.preSelectDisclaimer).toBeFalsy()
     })
 
     it('should render the thank you message', () => {
@@ -283,29 +285,6 @@ describe('ContactForm test suite', () => {
         const nextBtn = getByText('Next')
         expect(nextBtn).toBeDisabled()
         expect(getByText('You are allowed up to 5 tags.')).toBeInTheDocument()
-    })
-
-    it('should show error state when disclaimer text is too big on customisation step', () => {
-        const state = {...baseState}
-        state.forms.email.disclaimer = 'f'.repeat(281)
-        const mockSetActiveButton = jest.fn()
-
-        const {getByText} = render(
-            <Provider store={store}>
-                <Customisation
-                    setNextButtonActive={mockSetActiveButton}
-                    setAttachmentData={() => {}}
-                    attachmentData={state}
-                />
-            </Provider>
-        )
-
-        expect(mockSetActiveButton).toHaveBeenCalledWith(false)
-        expect(
-            getByText(
-                'The disclaimer should be under or equals to 280 characters.'
-            )
-        ).toBeInTheDocument()
     })
 
     it('should show error state when message is too long on post submission message step', () => {

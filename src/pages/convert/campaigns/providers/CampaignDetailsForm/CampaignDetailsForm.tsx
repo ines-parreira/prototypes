@@ -59,6 +59,7 @@ import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/Pr
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
+import {useEmailDisclaimerSettings} from 'pages/stats/convert/hooks/useEmailDisclaimerSettings'
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
 
 import {usePristineSteps} from '../../hooks/usePristineSteps'
@@ -644,6 +645,10 @@ export const CampaignDetailsForm = ({
         return isLightCampaign && isConvertSubscriber && isShopifyStore
     }, [isLightCampaign, isConvertSubscriber, isShopifyStore])
 
+    const {data: emailDisclaimerSettings} = useEmailDisclaimerSettings(
+        integration.toJS()
+    )
+
     return (
         <IntegrationProvider
             chatIntegration={integration}
@@ -874,6 +879,10 @@ export const CampaignDetailsForm = ({
                                         onCampaignContentChange={
                                             setShowContentWarning
                                         }
+                                        emailDisclaimerSettings={
+                                            emailDisclaimerSettings
+                                        }
+                                        defaultLanguage={defaultLanguage}
                                     />
                                 </>
                             )}

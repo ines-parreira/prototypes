@@ -16,6 +16,7 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import {LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS} from 'pages/convert/campaigns/templates/library/linkValuableResourcesToHelpVisitors'
 import {SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD} from 'pages/convert/campaigns/templates/library/suggestBundlesWhenSingleItemInCart'
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
+import {useEmailDisclaimerSettings} from 'pages/stats/convert/hooks/useEmailDisclaimerSettings'
 import CampaignTemplateCustomizeLibraryView from '../CampaignTemplateCustomizeLibraryView'
 
 const mockStore = configureMockStore()
@@ -40,6 +41,9 @@ const useCreateCampaignMock = assumeMock(useCreateCampaign)
 
 jest.mock('pages/convert/campaigns/hooks/useUpdateCampaign')
 const useUpdateCampaignMock = assumeMock(useUpdateCampaign)
+
+jest.mock('pages/stats/convert/hooks/useEmailDisclaimerSettings')
+const mockUseEmailDisclaimerSettings = assumeMock(useEmailDisclaimerSettings)
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -101,6 +105,14 @@ describe('CampaignTemplateCustomizeView', () => {
             return {
                 mutateAsync: jest.fn(),
             } as unknown as ReturnType<typeof useUpdateCampaign>
+        })
+        mockUseEmailDisclaimerSettings.mockReturnValue({
+            data: {
+                enabled: true,
+                disclaimer: {en: 'foo'},
+                disclaimer_default_accepted: true,
+            },
+            isLoading: false,
         })
         useUtmMock.mockReturnValue(utmConfiguration)
         jest.spyOn(

@@ -10,8 +10,6 @@ import {deleteAttachment} from 'state/newMessage/actions'
 describe('CampaignForm Utils', () => {
     describe('transformTransitoryToAttachment', () => {
         const baseExpectedAttachment = {
-            disclaimer: 'Lorem ipsum dolor',
-            disclaimer_default_accepted: true,
             on_success_content: {
                 message: 'Thanks for adding your information!',
             },
@@ -50,9 +48,6 @@ describe('CampaignForm Utils', () => {
                 email: {
                     label: 'Foo',
                     cta: 'Bar',
-                    disclaimerEnabled: true,
-                    disclaimer: 'Lorem ipsum dolor',
-                    preSelectDisclaimer: true,
                 },
             },
             postSubmissionMessage: {
@@ -83,27 +78,6 @@ describe('CampaignForm Utils', () => {
                 on_success_content: {message: undefined},
             })
         })
-
-        it('should transform as expected if disclaimer is disabled', () => {
-            const input = {
-                ...baseTransitoryAttachmentData,
-                forms: {
-                    email: {
-                        label: 'Foo',
-                        cta: 'Bar',
-                        disclaimerEnabled: false,
-                        disclaimer: 'Lorem ipsum dolor',
-                        preSelectDisclaimer: true,
-                    },
-                },
-            }
-            const output = transformTransitoryToAttachment(input)
-
-            expect(output).toMatchObject({
-                ...baseExpectedAttachment,
-                disclaimer: '',
-            })
-        })
     })
 
     describe('transformAttachmentToTransitory', () => {
@@ -121,9 +95,6 @@ describe('CampaignForm Utils', () => {
                     email: {
                         label: 'Foo',
                         cta: 'Bar',
-                        disclaimerEnabled: true,
-                        disclaimer: 'Lorem ipsum dolor',
-                        preSelectDisclaimer: true,
                     },
                 },
                 postSubmissionMessage: {

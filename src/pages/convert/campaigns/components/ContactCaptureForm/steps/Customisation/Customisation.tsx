@@ -1,16 +1,11 @@
 import React, {useState, useEffect, useMemo} from 'react'
 import {Label} from 'reactstrap'
 import {fromJS} from 'immutable'
-import classnames from 'classnames'
+import {Link} from 'react-router-dom'
 import {StepProps} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
-import InputField from 'pages/common/forms/input/InputField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import CheckBox from 'pages/common/forms/CheckBox'
-import RichField from 'pages/common/forms/RichField/RichField'
-import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
-import {convertFromHTML, convertToHTML} from 'utils/editor'
 import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import {
+    getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
@@ -19,55 +14,27 @@ import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
 import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewProps'
 import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
 import {transformTransitoryToAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
-import {ErrorMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/styled'
+import InputField from 'pages/common/forms/input/InputField'
+import {useEmailDisclaimerSettings} from 'pages/stats/convert/hooks/useEmailDisclaimerSettings'
 import css from './Customisation.less'
 
 export const Customisation = (props: StepProps) => {
-    const disclaimerCharacterLimit = 280
     const {attachmentData, setAttachmentData, setNextButtonActive} = props
 
     const {chatIntegration} = useIntegrationContext()
     const chatPreviewProps = useChatPreviewProps(fromJS(chatIntegration || {}))
     const {campaign} = useCampaignDetailsContext()
 
-    const [disclaimer, setDisclaimer] = useState<string>(
-        attachmentData.forms.email.disclaimer
-    )
-    const [disclaimerEnabled, setDisclaimerEnabled] = useState(
-        attachmentData.forms.email.disclaimerEnabled
-    )
     const [emailFieldLabel, setEmailFieldLabel] = useState(
         attachmentData.forms.email.label
     )
     const [cta, setCta] = useState(attachmentData.forms.email.cta)
-    const [preSelectDisclaimer, setPreSelectDisclaimer] = useState(
-        attachmentData.forms.email.preSelectDisclaimer
-    )
     const [nextButtonEnabled, setInnerNextButtonEnabled] = useState(false)
-
-    const disclaimerPureText = useMemo(() => {
-        const blocksFromHtml = convertFromHTML(disclaimer)
-        return blocksFromHtml.getPlainText()
-    }, [disclaimer])
-
-    const [onError, errorMessage] = useMemo(() => {
-        if (disclaimerPureText.length > disclaimerCharacterLimit) {
-            return [
-                true,
-                `The disclaimer should be under or equals to ${disclaimerCharacterLimit} characters.`,
-            ]
-        }
-        return [false, '']
-    }, [disclaimerPureText])
 
     const shouldEnableNextButton = useMemo(() => {
         const requiredFieldsFilled = !!emailFieldLabel && !!cta
-        const conditionalRequiredFieldsFilled =
-            !disclaimerEnabled || !!disclaimer
-        return (
-            requiredFieldsFilled && conditionalRequiredFieldsFilled && !onError
-        )
-    }, [emailFieldLabel, cta, disclaimerEnabled, disclaimer, onError])
+        return requiredFieldsFilled
+    }, [emailFieldLabel, cta])
 
     useEffect(() => {
         setAttachmentData((state) => ({
@@ -77,26 +44,22 @@ export const Customisation = (props: StepProps) => {
                 email: {
                     label: emailFieldLabel,
                     cta,
-                    disclaimerEnabled,
-                    disclaimer,
-                    preSelectDisclaimer,
                 },
             },
         }))
         setInnerNextButtonEnabled(shouldEnableNextButton)
-    }, [
-        disclaimer,
-        disclaimerEnabled,
-        cta,
-        emailFieldLabel,
-        preSelectDisclaimer,
-        setAttachmentData,
-        shouldEnableNextButton,
-    ])
+    }, [cta, emailFieldLabel, setAttachmentData, shouldEnableNextButton])
 
     useEffect(() => {
         setNextButtonActive(nextButtonEnabled)
     }, [nextButtonEnabled, setNextButtonActive])
+
+    const defaultLanguage = getPrimaryLanguageFromChatConfig(
+        chatIntegration?.meta
+    )
+
+    const {data: emailDisclaimerSettings} =
+        useEmailDisclaimerSettings(chatIntegration)
 
     return (
         <div className={css.container}>
@@ -127,54 +90,17 @@ export const Customisation = (props: StepProps) => {
                         isRequired={true}
                     ></InputField>
                 </div>
-
-                <ToggleInput
-                    isToggled={disclaimerEnabled}
-                    onClick={() => {
-                        setDisclaimerEnabled(
-                            (prevDisclaimerEnabled) => !prevDisclaimerEnabled
-                        )
-                    }}
-                >
-                    Display privacy policy disclaimer
-                </ToggleInput>
-
-                {disclaimerEnabled && (
-                    <div>
-                        <RichField
-                            onChange={(data) =>
-                                setDisclaimer(
-                                    convertToHTML(data.getCurrentContent())
-                                )
-                            }
-                            value={{
-                                html: disclaimer,
-                                text: disclaimer,
-                            }}
-                            isRequired={disclaimerEnabled}
-                            canInsertInlineImages={false}
-                            displayedActions={[
-                                ActionName.Bold,
-                                ActionName.Italic,
-                                ActionName.Underline,
-                                ActionName.Link,
-                                ActionName.Emoji,
-                            ]}
-                            maxLength={disclaimerCharacterLimit}
-                            className={classnames(css.richField, {
-                                [css.onError]: onError,
-                            })}
-                        />
-                        {onError && <ErrorMessage>{errorMessage}</ErrorMessage>}
-                    </div>
-                )}
-
-                <CheckBox
-                    isChecked={preSelectDisclaimer}
-                    onChange={setPreSelectDisclaimer}
-                >
-                    Pre-select sign-up option
-                </CheckBox>
+                <span>
+                    The privacy policy disclaimer for email capture should be
+                    set in Settings{' '}
+                    <Link
+                        to={`/app/convert/${chatIntegration?.id}/settings`}
+                        target="_blank"
+                    >
+                        here
+                    </Link>
+                    .
+                </span>
             </div>
             <div className={css.previewContainer}>
                 <CampaignPreview
@@ -198,6 +124,8 @@ export const Customisation = (props: StepProps) => {
                     }
                     shouldHideReplyInput={!!campaign.meta?.noReply}
                     onCampaignContentChange={() => {}}
+                    emailDisclaimerSettings={emailDisclaimerSettings}
+                    defaultLanguage={defaultLanguage}
                 />
             </div>
         </div>

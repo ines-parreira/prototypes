@@ -17,9 +17,6 @@ export const transformTransitoryToAttachment = (
     const output: CampaignFormExtra = {} as CampaignFormExtra
     const emailForm = transitoryAttachmentData.forms.email
     const postSubmissionMessage = transitoryAttachmentData.postSubmissionMessage
-    const disclaimer = emailForm.disclaimerEnabled ? emailForm.disclaimer : ''
-    output.disclaimer = disclaimer
-    output.disclaimer_default_accepted = emailForm.preSelectDisclaimer
     output.steps = [
         {
             cta: emailForm.cta,
@@ -67,12 +64,6 @@ export const transformAttachmentToTransitory = (
         output.forms[field.type as 'email'] = {
             cta: step.cta || '',
             label: field.label ?? '',
-            disclaimerEnabled:
-                (attachment.disclaimer && attachment.disclaimer !== '') ||
-                false,
-            disclaimer: attachment.disclaimer,
-            preSelectDisclaimer:
-                attachment.disclaimer_default_accepted || false,
         }
     })
 

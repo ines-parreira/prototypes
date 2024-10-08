@@ -39,6 +39,7 @@ import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGet
 import {channelConnection} from 'fixtures/channelConnection'
 import {utmConfiguration} from 'fixtures/utmConfiguration'
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
+import {useEmailDisclaimerSettings} from 'pages/stats/convert/hooks/useEmailDisclaimerSettings'
 import {Campaign} from '../../../types/Campaign'
 import {CampaignDetailsForm} from '../CampaignDetailsForm'
 
@@ -58,6 +59,7 @@ jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
 jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 jest.mock('pages/convert/campaigns/hooks/useUtm.ts')
+jest.mock('pages/stats/convert/hooks/useEmailDisclaimerSettings')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection
 )
@@ -65,6 +67,7 @@ const useUtmMock = assumeMock(useUtm)
 const useGetPreviewProductsMock = assumeMock(useGetPreviewProducts)
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {integrations: fromJS(integrationsState)} as RootState
+const mockUseEmailDisclaimerSettings = assumeMock(useEmailDisclaimerSettings)
 
 jest.mock('state/newMessage/selectors')
 const getNewMessageAttachmentsMock = assumeMock(getNewMessageAttachments)
@@ -121,6 +124,14 @@ describe('<CampaignDetailsForm />', () => {
             channelConnection: channelConnection,
         } as any)
         useUtmMock.mockReturnValue(utmConfiguration)
+        mockUseEmailDisclaimerSettings.mockReturnValue({
+            data: {
+                enabled: true,
+                disclaimer: {en: 'foo'},
+                disclaimer_default_accepted: true,
+            },
+            isLoading: false,
+        })
     })
 
     beforeEach(() => {

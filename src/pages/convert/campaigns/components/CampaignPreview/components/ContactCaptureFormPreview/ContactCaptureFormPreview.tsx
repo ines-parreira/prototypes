@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 
 import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {CaptureFormDisclaimerSettings} from 'pages/convert/settings/types'
 import {Wrapper} from './styled'
 import {ContactCaptureStep} from './ContactCaptureStep'
 
@@ -11,10 +12,18 @@ export type ContactCaptureFormPreviewProps = {
     form: CampaignFormExtra
     onMessageHtmlChange?: (value: string) => void
     mainColor?: string
+    emailDisclaimerSettings?: CaptureFormDisclaimerSettings
+    defaultLanguage?: string
 }
 
 export const ContactCaptureFormPreview: React.FC<ContactCaptureFormPreviewProps> =
-    ({form, mainColor, onMessageHtmlChange}) => {
+    ({
+        form,
+        mainColor,
+        onMessageHtmlChange,
+        emailDisclaimerSettings,
+        defaultLanguage,
+    }) => {
         const [isSubmitted, setIsSubmitted] = useState(false)
 
         const successMessage =
@@ -29,6 +38,9 @@ export const ContactCaptureFormPreview: React.FC<ContactCaptureFormPreviewProps>
             return null
         }
 
+        const disclaimer =
+            emailDisclaimerSettings?.disclaimer[defaultLanguage ?? '']
+
         return (
             <Wrapper>
                 {form.steps.map((step, index) => (
@@ -37,9 +49,12 @@ export const ContactCaptureFormPreview: React.FC<ContactCaptureFormPreviewProps>
                         step={step}
                         mainColor={mainColor}
                         onSubmit={handleSubmit}
-                        disclaimer={form.disclaimer}
+                        disclaimer={
+                            emailDisclaimerSettings?.enabled ? disclaimer : ''
+                        }
                         disclaimerDefaultAccepted={
-                            form.disclaimer_default_accepted
+                            emailDisclaimerSettings?.disclaimer_default_accepted ??
+                            false
                         }
                     />
                 ))}

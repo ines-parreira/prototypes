@@ -61,6 +61,7 @@ import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/Pr
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
 import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
+import {useEmailDisclaimerSettings} from 'pages/stats/convert/hooks/useEmailDisclaimerSettings'
 import css from './ConvertSimplifiedEditorModal.less'
 
 type Props = {
@@ -209,6 +210,10 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
     const utmProps = useUtm(channelConnection, campaign?.name || '')
     const {appliedUtmEnabled, appliedUtmQueryString} = utmProps
 
+    const {data: emailDisclaimerSettings} = useEmailDisclaimerSettings(
+        gorgiasChatIntegration
+    )
+
     const onSubmit = async (activate = false) => {
         if (!campaign || !channelConnection) {
             return
@@ -343,6 +348,10 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
                                         !!campaign.meta?.noReply
                                     }
                                     onCampaignContentChange={() => {}}
+                                    emailDisclaimerSettings={
+                                        emailDisclaimerSettings
+                                    }
+                                    defaultLanguage={defaultLanguage}
                                 />
                             </>
                         )}

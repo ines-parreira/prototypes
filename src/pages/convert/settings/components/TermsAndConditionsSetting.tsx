@@ -1,8 +1,8 @@
 import React, {useCallback, useEffect, useMemo} from 'react'
 import classnames from 'classnames'
-import {convertFromHTML, convertToHTML} from 'draft-convert'
 import {EditorState} from 'draft-js'
 import {fromJS, Map} from 'immutable'
+import {convertToHTML, convertFromHTML} from 'utils/editor'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import RichField from 'pages/common/forms/RichField/RichField'
@@ -11,6 +11,7 @@ import {ErrorMessage} from 'pages/convert/settings/components/styled'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {DisclaimerSettings} from 'pages/convert/settings/types'
 import {mapIntegrationLanguagesToLanguagePicker} from 'config/integrations/gorgias_chat'
+import {sanitizeHtmlDefault} from 'utils/html'
 import css from './TermsAndConditionsSetting.less'
 
 type TermsAndConditionsSettingProps = {
@@ -33,7 +34,7 @@ export const TermsAndConditionsSetting = ({
             disclaimerSettings.disclaimerMap[
                 disclaimerSettings.selectedLanguage
             ] || '',
-        [disclaimerSettings.selectedLanguage, disclaimerSettings.disclaimerMap]
+        [disclaimerSettings]
     )
 
     const selectedDisclaimerPureText = useMemo(() => {
@@ -79,8 +80,20 @@ export const TermsAndConditionsSetting = ({
     const onDisclaimerMapChange = (value: EditorState) => {
         onDisclaimerSettingsChange((state: DisclaimerSettings) => {
             const newState = {...state}
-            newState.disclaimerMap[disclaimerSettings.selectedLanguage] =
-                convertToHTML(value.getCurrentContent())
+
+            let html = convertToHTML(value.getCurrentContent())
+
+            // Sanitize the HTML to remove unwanted tags coming from draftjs.
+            // This is commonly done in the Helpdesk when extracting the HTML from the rich text editor.
+            // This one is especially useful to add `noreferrer noopener` to links.
+            html = sanitizeHtmlDefault(html)
+
+            // `TicketRichField` component can return a value of '<div><br></div>'/'<div><br /></div>' when the user deletes all the text.
+            if (html === `<div><br></div>'` || html === '<div><br /></div>') {
+                html = ''
+            }
+
+            newState.disclaimerMap[disclaimerSettings.selectedLanguage] = html
             return newState
         })
     }

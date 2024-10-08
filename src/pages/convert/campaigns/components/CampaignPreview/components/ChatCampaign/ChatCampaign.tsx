@@ -16,6 +16,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useMeasure from 'hooks/useMeasure'
 
 import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import {CaptureFormDisclaimerSettings} from 'pages/convert/settings/types'
 import {CAMPAIGN_MAX_HEIGHT} from '../../../../constants/visuals'
 import {CampaignProduct} from '../../../../types/CampaignProduct'
 
@@ -81,6 +82,8 @@ type Props = {
     shouldHideRepositionImage?: boolean
     translatedTexts: Record<string, string>
     onCampaignContentChange?: (value: boolean) => void
+    emailDisclaimerSettings?: CaptureFormDisclaimerSettings
+    defaultLanguage?: string
 }
 
 export const ChatCampaign = ({
@@ -97,6 +100,8 @@ export const ChatCampaign = ({
     shouldHideRepositionImage = false,
     translatedTexts,
     onCampaignContentChange,
+    emailDisclaimerSettings,
+    defaultLanguage,
 }: Props) => {
     const [measureRef, {height}] = useMeasure<HTMLDivElement>()
     const isAgentAvatarCustomizationEnabled =
@@ -198,6 +203,8 @@ export const ChatCampaign = ({
                     form={contactCaptureForm}
                     onMessageHtmlChange={setNewMessage}
                     mainColor={mainColor}
+                    emailDisclaimerSettings={emailDisclaimerSettings}
+                    defaultLanguage={defaultLanguage}
                 />
             )}
             {products.length > 0 && (

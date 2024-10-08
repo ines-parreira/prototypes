@@ -2,19 +2,15 @@ import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGet
 import {useGetSettingsList} from 'models/convert/settings/queries'
 
 import {CampaignSettingType} from 'pages/stats/convert/components/CampaignTableStats/constants'
-import {useChatIntegration} from 'pages/convert/campaigns/hooks/useChatIntegration'
+import {GorgiasChatIntegration} from 'models/integration/types'
+import {CaptureFormDisclaimerSettings} from 'pages/convert/settings/types'
 
-type EmailDisclaimerSetting = {
-    data: {
-        enabled: boolean
-        disclaimer_default_accepted: boolean
-        disclaimer: Record<string, string>
-    }
-}
-
-export const useEmailDisclaimerSettings = () => {
-    const integration = useChatIntegration().toJS()
-
+export const useEmailDisclaimerSettings = (
+    integration?: GorgiasChatIntegration
+): {
+    data?: CaptureFormDisclaimerSettings
+    isLoading: boolean
+} => {
     const {channelConnection, isLoading: isChannelConnectionLoading} =
         useGetOrCreateChannelConnection(integration)
 
@@ -29,8 +25,8 @@ export const useEmailDisclaimerSettings = () => {
     )
 
     return {
-        data: (settings || [])[0] as unknown as
-            | EmailDisclaimerSetting
+        data: (settings || [])[0]?.data as unknown as
+            | CaptureFormDisclaimerSettings
             | undefined,
         isLoading: isSettingsLoading || isChannelConnectionLoading,
     }

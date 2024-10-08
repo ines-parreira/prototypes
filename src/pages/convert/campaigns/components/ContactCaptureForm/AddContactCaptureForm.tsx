@@ -60,11 +60,6 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
             email: {
                 label: 'Email',
                 cta: 'Subscribe',
-                disclaimerEnabled: true,
-                disclaimer:
-                    'By entering the email address above, you opt in to receive marketing emails from [x]. ' +
-                    'You can unsubscribe at any time. Terms of Use and Private Policy.',
-                preSelectDisclaimer: false,
             },
         },
         postSubmissionMessage: {

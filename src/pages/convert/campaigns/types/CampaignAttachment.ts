@@ -124,8 +124,6 @@ export type CampaignFormExtra = {
     steps: ContactFormStep[]
     on_success_content: ContactFormOnSuccessContent
     targets: ContactFormTarget[]
-    disclaimer: string
-    disclaimer_default_accepted: boolean | undefined
 }
 /*
  * Types and enums below are used in the context of the editor and Chat preview components
