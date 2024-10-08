@@ -76,20 +76,6 @@ describe('billing selectors', () => {
         )
     })
 
-    it('contactEmail', () => {
-        expect(selectors.getContactEmail({} as RootState)).toBe('')
-        expect(selectors.getContactEmail(state)).toBe(
-            state.billing.getIn(['contact', 'email'])
-        )
-    })
-
-    it('contactShipping', () => {
-        expect(selectors.getContactShipping({} as RootState)).toBe(null)
-        expect(selectors.getContactShipping(state)).toEqualImmutable(
-            state.billing.getIn(['contact', 'shipping'])
-        )
-    })
-
     it('creditCard', () => {
         expect(selectors.creditCard({} as RootState)).toEqualImmutable(
             fromJS({})

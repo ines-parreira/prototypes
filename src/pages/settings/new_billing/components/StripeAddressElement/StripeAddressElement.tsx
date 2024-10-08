@@ -1,15 +1,13 @@
 import {AddressElement, AddressElementProps} from '@stripe/react-stripe-js'
 import React from 'react'
-import useAppSelector from 'hooks/useAppSelector'
-import {getContactShipping} from 'state/billing/selectors'
-import {BillingContact} from 'state/billing/types'
+import {useBillingContact} from 'models/billing/queries'
 
 export const StripeAddressElement: React.FC<Partial<AddressElementProps>> = ({
     options,
     ...props
 }) => {
-    const billingContactShipping: BillingContact['shipping'] =
-        useAppSelector(getContactShipping)?.toJS() || {}
+    const {data: {data: {shipping: billingContactShipping}} = {data: {}}} =
+        useBillingContact()
 
     return (
         <AddressElement

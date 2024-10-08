@@ -5,6 +5,7 @@ import {
     ChurnMitigationOfferDecisionEvent,
     SubscriptionCycle,
 } from 'models/billing/types'
+import {BillingContact} from 'state/billing/types'
 import {ApiListResponseCursorPagination} from '../api/types'
 
 export const fetchSubscription = async () => {
@@ -61,3 +62,9 @@ export async function reactivateTrial() {
     const res = await client.post(`/billing/reactivate-trial`)
     return res
 }
+
+export const getBillingContact = () =>
+    client.get<BillingContact>('/api/billing/contact/')
+
+export const updateBillingContact = (billingContact: BillingContact) =>
+    client.put<BillingContact>('/api/billing/contact/', billingContact)

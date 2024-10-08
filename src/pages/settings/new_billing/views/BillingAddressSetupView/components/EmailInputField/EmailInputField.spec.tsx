@@ -1,35 +1,27 @@
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import createMockStore from 'redux-mock-store'
-import {InitialRootState} from 'types'
+import MockAdapter from 'axios-mock-adapter'
+import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import client from 'models/api/resources'
 import {EmailInputField} from './EmailInputField'
+
+const mockedServer = new MockAdapter(client)
+
+mockedServer.onGet('/api/billing/contact/').reply(200, {
+    email: 'an.email@goprgias.com',
+})
 
 describe('EmailInputField', () => {
     it('should render the email input with the current billing contact email information, changes the current value on user input, and validates the value', async () => {
-        const mockInitialEmail = 'an.email@goprgias.com'
+        render(<EmailInputField />, {wrapper: mockQueryClientProvider()})
 
-        const mockStoreState: Partial<InitialRootState> = {
-            billing: fromJS({
-                contact: {
-                    email: 'an.email@goprgias.com',
-                },
-            }),
-        }
-
-        const store = createMockStore()(mockStoreState)
-
-        render(
-            <Provider store={store}>
-                <EmailInputField />
-            </Provider>
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('textbox', {name: 'Email required'})
+            ).toHaveValue('an.email@goprgias.com')
+        })
 
         expect(screen.getByText('Email')).toBeVisible()
-        expect(
-            screen.getByRole('textbox', {name: 'Email required'})
-        ).toHaveValue(mockInitialEmail)
         expect(
             screen.getByText('Invoices are sent to this email address.')
         ).toBeVisible()

@@ -1,4 +1,4 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 import {useElements} from '@stripe/react-stripe-js'
 import {
@@ -6,32 +6,40 @@ import {
     StripeElements,
 } from '@stripe/stripe-js'
 import {useHistory} from 'react-router-dom'
-import {fromJS} from 'immutable'
+import MockAdapter from 'axios-mock-adapter'
+import {AxiosError} from 'axios'
 import {reportError} from 'utils/errors'
-import {updateContact} from 'state/billing/actions'
 import {assumeMock} from 'utils/testing'
+import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import client from 'models/api/resources'
 import {Form} from './Form'
 
-jest.mock('react-redux')
+jest.mock('react-redux', () => ({
+    useDispatch: jest.fn(() => jest.fn()),
+}))
 jest.mock('@stripe/react-stripe-js')
 jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
 }))
 
 jest.mock('utils/errors')
-jest.mock('state/billing/actions', () => ({
-    updateContact: jest.fn(),
-}))
+
+const mockedServer = new MockAdapter(client)
 
 let addressElementChangeHandler: (
     event: StripeAddressElementChangeEvent
-) => any = () => {}
+) => void = () => {}
 
 assumeMock(useElements).mockReturnValue({
     getElement: jest.fn().mockReturnValue({
-        on: jest.fn().mockImplementation((_, handler) => {
-            addressElementChangeHandler = handler
-        }),
+        on: jest
+            .fn()
+            .mockImplementation((_, handler: (...args: any[]) => any) => {
+                addressElementChangeHandler = (...params) =>
+                    act(() => {
+                        handler(...params)
+                    })
+            }),
     }),
 } as unknown as StripeElements)
 
@@ -42,7 +50,8 @@ const renderForm = () =>
                 Email
                 <input name="email" />
             </label>
-        </Form>
+        </Form>,
+        {wrapper: mockQueryClientProvider()}
     )
 
 const getSubmitButton = () => screen.getByRole('button', {name: 'Set Address'})
@@ -51,7 +60,7 @@ const expectSubmitButton = () => expect(getSubmitButton())
 
 describe('BillingAddressSetupView::Form', () => {
     it('should render the billing address setup form', () => {
-        render(<Form>Form children</Form>)
+        render(<Form>Form children</Form>, {wrapper: mockQueryClientProvider()})
         expect(screen.getByText('Form children')).toBeVisible()
         expectSubmitButton().toBeVisible()
     })
@@ -118,11 +127,7 @@ describe('BillingAddressSetupView::Form', () => {
 
     describe('should be able to submit the form when it is complete, and', () => {
         it('should report the error if the request fails', async () => {
-            const error = new Error()
-
-            assumeMock(updateContact).mockImplementation(() =>
-                jest.fn().mockRejectedValue(error)
-            )
+            mockedServer.onPut('/api/billing/contact/').reply(500)
 
             renderForm()
 
@@ -142,13 +147,15 @@ describe('BillingAddressSetupView::Form', () => {
             fireEvent.click(getSubmitButton())
 
             await waitFor(() => {
-                expect(reportError).toHaveBeenCalledWith(error, {
-                    tags: {team: 'crm-growth'},
-                    extra: {
-                        context:
-                            'BillingAddressSetupView.SubmitButton.onSubmit :: Failed to update billing contact',
-                    },
-                })
+                expect(reportError).toHaveBeenCalledWith(
+                    expect.any(AxiosError),
+                    {
+                        tags: {team: 'crm-growth'},
+                        extra: {
+                            context: 'Failed to submit billing contact',
+                        },
+                    }
+                )
             })
         })
 
@@ -158,9 +165,8 @@ describe('BillingAddressSetupView::Form', () => {
             }
 
             assumeMock(useHistory).mockReturnValue(history as any)
-            assumeMock(updateContact).mockImplementation(() =>
-                jest.fn().mockResolvedValue({})
-            )
+
+            mockedServer.onPut('/api/billing/contact/').reply(200, {})
 
             renderForm()
 
@@ -180,59 +186,9 @@ describe('BillingAddressSetupView::Form', () => {
             fireEvent.click(getSubmitButton())
 
             await waitFor(() => {
-                expect(updateContact).toHaveBeenCalledWith(
-                    fromJS({
-                        email: 'valid.email@gorgias.com',
-                        shipping: {
-                            address: {postal_code: '12345', country: 'US'},
-                        },
-                    })
-                )
                 expect(history.push).toHaveBeenCalledWith(
                     '/app/settings/billing/payment'
                 )
-            })
-        })
-
-        it('should not change route when the response has a type that indicates that the update failed', async () => {
-            const history = {
-                push: jest.fn(),
-            }
-
-            assumeMock(useHistory).mockReturnValue(history as any)
-            assumeMock(updateContact).mockImplementation(() =>
-                jest
-                    .fn()
-                    .mockResolvedValue({type: 'UPDATE_BILLING_CONTACT_ERROR'})
-            )
-
-            renderForm()
-
-            fireEvent.change(screen.getByRole('textbox', {name: 'Email'}), {
-                target: {value: 'valid.email@gorgias.com'},
-            })
-
-            addressElementChangeHandler({
-                complete: true,
-                value: {address: {postal_code: '12345', country: 'US'}},
-            } as StripeAddressElementChangeEvent)
-
-            await waitFor(() => {
-                expectSubmitButton().not.toBeAriaDisabled()
-            })
-
-            fireEvent.click(getSubmitButton())
-
-            await waitFor(() => {
-                expect(updateContact).toHaveBeenCalledWith(
-                    fromJS({
-                        email: 'valid.email@gorgias.com',
-                        shipping: {
-                            address: {postal_code: '12345', country: 'US'},
-                        },
-                    })
-                )
-                expect(history.push).not.toHaveBeenCalled()
             })
         })
     })

@@ -1,11 +1,12 @@
 import React from 'react'
-import {render, fireEvent, screen, waitFor} from '@testing-library/react'
+import {render, fireEvent, screen, waitFor, act} from '@testing-library/react'
 import {useElements} from '@stripe/react-stripe-js'
 import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
 import {StripeElements} from '@stripe/stripe-js/dist'
-import useAppSelector from 'hooks/useAppSelector'
-import {getContactEmail} from 'state/billing/selectors'
+import MockAdapter from 'axios-mock-adapter'
 import {assumeMock} from 'utils/testing'
+import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import client from 'models/api/resources'
 import {BillingAddressSetupView} from './BillingAddressSetupView'
 
 jest.mock('react-redux')
@@ -19,9 +20,19 @@ let addressElementChangeHandler: (
 
 assumeMock(useElements).mockReturnValue({
     getElement: jest.fn().mockReturnValue({
-        on: jest.fn().mockImplementation((_, handler) => {
-            addressElementChangeHandler = handler
-        }),
+        on: jest
+            .fn()
+            .mockImplementation(
+                (
+                    _,
+                    handler: (event: StripeAddressElementChangeEvent) => any
+                ) => {
+                    addressElementChangeHandler = (event) =>
+                        act(() => {
+                            handler(event)
+                        })
+                }
+            ),
     }),
 } as unknown as StripeElements)
 
@@ -37,12 +48,23 @@ jest.mock(
         ),
     })
 )
-assumeMock(getContactEmail).mockReturnValue('test@example.com')
-assumeMock(useAppSelector).mockImplementation((selector) => selector({} as any))
+
+const mockedServer = new MockAdapter(client)
+
+mockedServer.onGet('/api/billing/contact/').reply(200, {
+    email: 'test@example.com',
+})
 
 describe('BillingAddressSetupView', () => {
-    it('should render the component correctly', () => {
-        render(<BillingAddressSetupView />)
+    it('should render the component correctly', async () => {
+        render(<BillingAddressSetupView />, {
+            wrapper: mockQueryClientProvider(),
+        })
+
+        await waitFor(() => {
+            expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
+        })
+
         expect(screen.getByText('Billing Information')).toBeVisible()
         expect(screen.getByText('Email')).toBeVisible()
         expect(screen.getByRole('button', {name: 'Set Address'})).toBeVisible()
@@ -50,7 +72,13 @@ describe('BillingAddressSetupView', () => {
     })
 
     it('should disable the submit button and show an error when the email is invalid', async () => {
-        render(<BillingAddressSetupView />)
+        render(<BillingAddressSetupView />, {
+            wrapper: mockQueryClientProvider(),
+        })
+
+        await waitFor(() => {
+            expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
+        })
 
         addressElementChangeHandler({
             complete: true,
@@ -72,8 +100,14 @@ describe('BillingAddressSetupView', () => {
         })
     })
 
-    it('should disable the submit button when the address is incomplete', () => {
-        render(<BillingAddressSetupView />)
+    it('should disable the submit button when the address is incomplete', async () => {
+        render(<BillingAddressSetupView />, {
+            wrapper: mockQueryClientProvider(),
+        })
+
+        await waitFor(() => {
+            expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
+        })
 
         // The initial email is valid, so it shouldn't show an email validationerror
         expect(screen.queryByText('Email is invalid')).not.toBeInTheDocument()
@@ -89,7 +123,13 @@ describe('BillingAddressSetupView', () => {
     })
 
     it('should enable the submit button when the address is complete and the email is valid', async () => {
-        render(<BillingAddressSetupView />)
+        render(<BillingAddressSetupView />, {
+            wrapper: mockQueryClientProvider(),
+        })
+
+        await waitFor(() => {
+            expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
+        })
 
         // The initial email is valid, so it shouldn't show an email validationerror
         expect(screen.queryByText('Email is invalid')).not.toBeInTheDocument()
@@ -113,9 +153,14 @@ describe('BillingAddressSetupView', () => {
     })
 
     it('should update the email state when input changes', async () => {
-        render(<BillingAddressSetupView />)
+        render(<BillingAddressSetupView />, {
+            wrapper: mockQueryClientProvider(),
+        })
 
-        expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
+        await waitFor(() => {
+            expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
+        })
+
         expect(
             screen.queryByDisplayValue('new@example.com')
         ).not.toBeInTheDocument()

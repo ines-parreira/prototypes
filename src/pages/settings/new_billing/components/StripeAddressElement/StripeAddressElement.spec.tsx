@@ -1,10 +1,9 @@
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {render, screen} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import {AddressElement} from '@stripe/react-stripe-js'
-import createMockStore from 'redux-mock-store'
-import {InitialRootState} from 'types'
+import MockAdapter from 'axios-mock-adapter'
+import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import client from 'models/api/resources'
 import {StripeAddressElement} from './StripeAddressElement'
 
 jest.mock('@stripe/react-stripe-js', () => ({
@@ -13,8 +12,10 @@ jest.mock('@stripe/react-stripe-js', () => ({
         .mockImplementation(() => <div>Address Element</div>),
 }))
 
+const mockedServer = new MockAdapter(client)
+
 describe('StripeAddressElement', () => {
-    it('should render the Stripe address element with billing information', () => {
+    it('should render the Stripe address element with billing information', async () => {
         const billingContactShipping = {
             address: {
                 city: 'San Francisco',
@@ -28,36 +29,28 @@ describe('StripeAddressElement', () => {
             phone: '1234567890',
         }
 
-        const initialStoreState: Partial<InitialRootState> = {
-            billing: fromJS({
-                contact: {
-                    email: '',
-                    shipping: fromJS(billingContactShipping),
-                },
-            }),
-        }
+        mockedServer.onGet('/api/billing/contact/').reply(200, {
+            email: 'an.email@goprgias.com',
+            shipping: billingContactShipping,
+        })
 
-        const store = createMockStore()(initialStoreState)
-
-        render(
-            <Provider store={store}>
-                <StripeAddressElement />
-            </Provider>
-        )
+        render(<StripeAddressElement />, {wrapper: mockQueryClientProvider()})
 
         expect(screen.getByText('Address Element')).toBeInTheDocument()
 
-        expect(AddressElement).toHaveBeenCalledWith(
-            {
-                options: {
-                    mode: 'billing',
-                    fields: {phone: 'always'},
-                    display: {name: 'organization'},
-                    validation: {phone: {required: 'always'}},
-                    defaultValues: billingContactShipping,
+        await waitFor(() => {
+            expect(AddressElement).toHaveBeenCalledWith(
+                {
+                    options: {
+                        mode: 'billing',
+                        fields: {phone: 'always'},
+                        display: {name: 'organization'},
+                        validation: {phone: {required: 'always'}},
+                        defaultValues: billingContactShipping,
+                    },
                 },
-            },
-            {}
-        )
+                {}
+            )
+        })
     })
 })

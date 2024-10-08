@@ -1,0 +1,39 @@
+import {useElements} from '@stripe/react-stripe-js'
+import {useEffect, useRef, useState} from 'react'
+import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
+import {validatePostalCode} from '../../utils/validations'
+
+export const useStripeAddressElement = () => {
+    const elements = useElements()
+
+    const valueRef = useRef<StripeAddressElementChangeEvent['value']>()
+
+    const [error, setError] = useState<string>()
+
+    const [isComplete, setIsComplete] = useState(false)
+
+    useEffect(() => {
+        elements?.getElement('address')?.on('change', (event) => {
+            valueRef.current = event.value
+
+            const postalCodeError = validatePostalCode(
+                event.value.address.postal_code,
+                event.value.address.country ?? ''
+            )
+
+            /* we're handling this validation as a "global" validation/error
+            // because we cannot show the error in the Stripe address field,
+            // so this will be shown below the submit button instead */
+            setError(postalCodeError)
+
+            setIsComplete(!postalCodeError && event.complete)
+        })
+    }, [elements])
+
+    return {
+        getSelf: () => elements?.getElement('address'),
+        getValue: () => valueRef.current,
+        error,
+        isComplete,
+    }
+}

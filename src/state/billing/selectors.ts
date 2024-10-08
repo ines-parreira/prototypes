@@ -23,7 +23,6 @@ import {
 import {RootState} from '../types'
 
 import {
-    BillingContact,
     BillingImmutableState,
     CurrentProductsUsages,
     ReduxBillingState,
@@ -320,16 +319,6 @@ export const invoices = createSelector(
 export const getContact = createSelector(
     DEPRECATED_getBillingState,
     (billing) => (billing.get('contact') as Map<any, any> | null) || null
-)
-
-export const getContactEmail = createSelector(
-    getContact,
-    (contact) => (contact?.get('email') as BillingContact['email'] | null) || ''
-)
-
-export const getContactShipping = createSelector(
-    getContact,
-    (contact) => (contact?.get('shipping') as Map<any, any> | null) || null
 )
 
 export const isMissingContactInformation = createSelector(
