@@ -16,9 +16,9 @@ import {useIntegrationContext} from 'pages/convert/campaigns/containers/Integrat
 import {transformTransitoryToAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import InputField from 'pages/common/forms/input/InputField'
 import {useEmailDisclaimerSettings} from 'pages/stats/convert/hooks/useEmailDisclaimerSettings'
-import css from './Customisation.less'
+import css from './Customization.less'
 
-export const Customisation = (props: StepProps) => {
+export const Customization = (props: StepProps) => {
     const {attachmentData, setAttachmentData, setNextButtonActive} = props
 
     const {chatIntegration} = useIntegrationContext()

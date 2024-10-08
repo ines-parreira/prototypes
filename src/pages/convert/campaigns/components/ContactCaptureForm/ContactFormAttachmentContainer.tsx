@@ -34,7 +34,7 @@ export const ContactFormAttachmentContainer = (props: {
 
             <div className={css.contactFormDataContainer}>
                 <span className={css.contactFormDataContainerTitle}>
-                    Contact Capture Form
+                    Email Capture Form
                 </span>
                 <span className={css.contactFormDataContainerBody}>
                     {flatFields.toString()}

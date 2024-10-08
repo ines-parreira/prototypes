@@ -1,7 +1,7 @@
 import React from 'react'
 import {StepProps} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import {SetUp} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/SetUp'
-import {Customisation} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customisation'
+import {Customization} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customization'
 import {PostSubmissionMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage'
 
 export const STEPS: {
@@ -10,8 +10,8 @@ export const STEPS: {
 }[] = [
     {label: 'Set up', getComponent: (props: StepProps) => <SetUp {...props} />},
     {
-        label: 'Customisation',
-        getComponent: (props: StepProps) => <Customisation {...props} />,
+        label: 'Customization',
+        getComponent: (props: StepProps) => <Customization {...props} />,
     },
     {
         label: 'Thank You Message',

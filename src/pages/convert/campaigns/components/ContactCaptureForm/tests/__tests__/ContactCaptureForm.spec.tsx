@@ -11,7 +11,7 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import useListTags from 'tags/useListTags'
 import {user} from 'fixtures/users'
 import {UserRole} from 'config/types/user'
-import {Customisation} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customisation'
+import {Customization} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customization'
 import {PostSubmissionMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage'
 import {ContactFormCaptureFormIconButton} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
 import {assumeMock} from 'utils/testing'
@@ -143,7 +143,7 @@ describe('ContactForm test suite', () => {
         act(() => getByText('Next').click())
     })
 
-    it('should render the customisation step', async () => {
+    it('should render the Customization step', async () => {
         const state = {
             subscriberTypes: {
                 shopify: {
@@ -178,7 +178,7 @@ describe('ContactForm test suite', () => {
 
         const {getByPlaceholderText, getAllByPlaceholderText} = render(
             <Provider store={store}>
-                <Customisation
+                <Customization
                     setNextButtonActive={jest.fn()}
                     setAttachmentData={setState as any}
                     attachmentData={state}

@@ -23,7 +23,7 @@ export const ContactFormCaptureFormIconButton = (props: Props) => {
             <Tooltip target="contactFormButton" placement="bottom">
                 {props.isDisabled
                     ? 'Only one contact form is allowed per campaign'
-                    : 'Insert Contact Capture Form'}
+                    : 'Insert Email Capture Form'}
             </Tooltip>
         </>
     )

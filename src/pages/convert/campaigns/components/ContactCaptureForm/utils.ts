@@ -98,7 +98,7 @@ export const handleContactFormSubmitted = (
             ticket,
             fromJS({
                 content_type: AttachmentEnum.ContactForm,
-                name: 'Contact Capture Form',
+                name: 'Email Capture Form',
                 extra: newAttachmentExtra,
             }),
             sortAttachments

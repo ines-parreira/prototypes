@@ -146,7 +146,7 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
 
     return (
         <Drawer
-            aria-label="Email Capture"
+            aria-label="Email Capture Form"
             fullscreen={false}
             open={open}
             isLoading={false}
@@ -156,7 +156,7 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
             containerZIndices={[1051, -1]}
         >
             <EditorDrawerHeader
-                label="Email Capture"
+                label="Email Capture Form"
                 onClose={() => onOpenChange(false)}
                 testId="drawer-header"
                 headerSaperator

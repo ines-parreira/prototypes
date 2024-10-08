@@ -34,7 +34,7 @@ describe('transformAttachmentsToContactForm', () => {
         const attachments = List([
             {
                 content_type: AttachmentEnum.ContactForm,
-                name: 'Contact Capture Form',
+                name: 'Email Capture Form',
                 extra: undefined,
             },
         ])
@@ -44,7 +44,7 @@ describe('transformAttachmentsToContactForm', () => {
         expect(result).toMatchObject([
             {
                 contentType: AttachmentEnum.ContactForm,
-                name: 'Contact Capture Form',
+                name: 'Email Capture Form',
                 extra: undefined,
             },
         ])
