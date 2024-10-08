@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {ulid} from 'ulidx'
+import {isAxiosError} from 'axios'
 import {useHistory, useParams, Link} from 'react-router-dom'
 import {Controller, FormProvider, useFieldArray, useForm} from 'react-hook-form'
 import _cloneDeep from 'lodash/cloneDeep'
@@ -74,7 +75,7 @@ const TemplateActionForm = ({configuration, template}: Props) => {
         },
     })
 
-    const {control, reset, getValues, formState, trigger} = methods
+    const {control, reset, getValues, formState, trigger, setError} = methods
 
     const isNewAction = !configuration.updated_datetime
 
@@ -155,10 +156,21 @@ const TemplateActionForm = ({configuration, template}: Props) => {
     const history = useHistory()
 
     const {
-        mutateAsync: upsertAction,
+        mutate: upsertAction,
+        error: upsertError,
         isLoading: isActionUpserting,
         isSuccess: isActionUpserted,
     } = useUpsertAction(isNewAction ? 'create' : 'update', shopName, shopType)
+
+    useEffect(() => {
+        if (isAxiosError(upsertError)) {
+            if (upsertError.response?.status === 409) {
+                setError('name', {
+                    message: 'An Action already exists with this name.',
+                })
+            }
+        }
+    }, [upsertError, setError])
 
     const {
         mutate: deleteAction,
@@ -203,7 +215,7 @@ const TemplateActionForm = ({configuration, template}: Props) => {
             false
         )
 
-        await upsertAction([
+        upsertAction([
             {
                 internal_id: configuration.internal_id,
                 store_name: shopName,
@@ -218,10 +230,10 @@ const TemplateActionForm = ({configuration, template}: Props) => {
     }, [
         getValues,
         graph,
+        connectedStoreApp,
         upsertAction,
         shopName,
         shopType,
-        connectedStoreApp,
         addStoreApp,
     ])
 

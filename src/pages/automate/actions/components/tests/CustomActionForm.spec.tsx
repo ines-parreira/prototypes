@@ -17,6 +17,7 @@ import {renderWithRouter} from 'utils/testing'
 
 import {getInitialConfiguration} from '../../utils'
 import useUpsertAction from '../../hooks/useUpsertAction'
+import useDeleteAction from '../../hooks/useDeleteAction'
 import CustomActionForm from '../CustomActionForm'
 
 jest.mock('launchdarkly-react-client-sdk')
@@ -24,9 +25,11 @@ jest.mock('common/flags', () => ({
     useFlag: jest.fn(),
 }))
 jest.mock('../../hooks/useUpsertAction')
+jest.mock('../../hooks/useDeleteAction')
 
 const mockStore = configureMockStore([thunk])
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
+const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseFlags = jest.mocked(useFlags)
 
 const queryClient = mockQueryClient()
@@ -43,6 +46,12 @@ describe('<CustomActionForm />', () => {
             isLoading: false,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
+
+        mockUseDeleteAction.mockReturnValue({
+            mutate: jest.fn(),
+            isLoading: false,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useDeleteAction>)
     })
 
     it('should render custom Action form ', () => {
@@ -188,6 +197,67 @@ describe('<CustomActionForm />', () => {
                     },
                 ],
             },
+        ])
+    })
+
+    it('should display validation error', () => {
+        mockUseUpsertAction.mockReturnValue({
+            mutate: jest.fn(),
+            isLoading: false,
+            isSuccess: false,
+            error: {response: {status: 409}, isAxiosError: true},
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        renderWithRouter(
+            <Provider store={mockStore()}>
+                <QueryClientProvider client={queryClient}>
+                    <CustomActionForm configuration={configuration} />,
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        expect(
+            screen.getByText('An Action already exists with this name.')
+        ).toBeVisible()
+    })
+
+    it('should delete Action', () => {
+        const mockDeleteAction = jest.fn()
+        mockUseDeleteAction.mockReturnValue({
+            mutate: mockDeleteAction,
+            isLoading: false,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useDeleteAction>)
+
+        renderWithRouter(
+            <Provider store={mockStore()}>
+                <QueryClientProvider client={queryClient}>
+                    <CustomActionForm
+                        configuration={{
+                            ...configuration,
+                            updated_datetime: new Date().toISOString(),
+                        }}
+                    />
+                    ,
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        expect(
+            screen.getByLabelText('Action name', {exact: false})
+        ).toBeInTheDocument()
+
+        expect(screen.getAllByText('Delete Action')[0]).toBeEnabled()
+        expect(screen.getAllByText('Delete Action')[0]).toBeVisible()
+        fireEvent.click(screen.getByText('Delete Action'))
+
+        expect(
+            screen.getByText(/Deleting this Action will remove/)
+        ).toBeVisible()
+        fireEvent.click(screen.getAllByText('Delete Action')[1])
+
+        expect(mockDeleteAction).toHaveBeenCalledWith([
+            {internal_id: configuration.internal_id},
         ])
     })
 })

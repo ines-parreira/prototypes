@@ -69,7 +69,7 @@ describe('<TemplateActionForm />', () => {
         } as unknown as ReturnType<typeof useGetStoreApps>)
         mockUseAddStoreApp.mockReturnValue(jest.fn())
         mockUseUpsertAction.mockReturnValue({
-            mutateAsync: jest.fn(),
+            mutate: jest.fn(),
             isLoading: false,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
@@ -649,7 +649,7 @@ describe('<TemplateActionForm />', () => {
         })
 
         mockUseUpsertAction.mockReturnValue({
-            mutateAsync: jest.fn(),
+            mutate: jest.fn(),
             isLoading: false,
             isSuccess: true,
         } as unknown as ReturnType<typeof useUpsertAction>)
@@ -670,5 +670,97 @@ describe('<TemplateActionForm />', () => {
                 '/app/automation/shopify/shopify-store/ai-agent/actions'
             )
         })
+    })
+
+    it('should display validation error', () => {
+        const configuration: WorkflowConfiguration = {
+            internal_id: ulid(),
+            id: ulid(),
+            name: 'test',
+            initial_step_id: null,
+            available_languages: [],
+            is_draft: false,
+            apps: [{type: 'shopify'}],
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        instructions: 'test',
+                        requires_confirmation: false,
+                    },
+                    deactivated_datetime: null,
+                },
+            ],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
+                    },
+                },
+            ],
+            steps: [],
+            transitions: [],
+            updated_datetime: new Date().toISOString(),
+        }
+        const template: TemplateConfiguration = {
+            name: 'test',
+            internal_id: ulid(),
+            id: ulid(),
+            initial_step_id: '',
+            is_draft: false,
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        instructions: 'test',
+                        requires_confirmation: false,
+                    },
+                    deactivated_datetime: null,
+                },
+            ],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
+                    },
+                },
+            ],
+            steps: [],
+            transitions: [],
+            available_languages: [],
+            created_datetime: new Date().toISOString(),
+            updated_datetime: new Date().toISOString(),
+            apps: [{type: 'shopify'}],
+        }
+
+        mockUseUpsertAction.mockReturnValue({
+            mutate: jest.fn(),
+            isLoading: false,
+            isSuccess: false,
+            error: {response: {status: 409}, isAxiosError: true},
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <TemplateActionForm
+                        configuration={configuration}
+                        template={template}
+                    />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        expect(
+            screen.getByText('An Action already exists with this name.')
+        ).toBeVisible()
     })
 })

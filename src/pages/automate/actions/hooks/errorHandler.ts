@@ -10,6 +10,17 @@ export function handleError(
     dispatch: StoreDispatch
 ) {
     if (axios.isAxiosError(error)) {
+        if (error.response?.status === 409) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'An Action already exists with this name. Choose a unique name in order to create this Action.',
+                })
+            )
+            return undefined
+        }
+
         const message = (error?.response?.data as {message: string} | undefined)
             ?.message
         if (message) {

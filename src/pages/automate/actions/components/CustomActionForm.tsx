@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react'
 import {ulid} from 'ulidx'
 import {useParams, useHistory, Link} from 'react-router-dom'
+import {isAxiosError} from 'axios'
 import {useFieldArray, useForm, Controller, FormProvider} from 'react-hook-form'
 import _cloneDeep from 'lodash/cloneDeep'
 
@@ -63,7 +64,7 @@ const CustomActionForm = ({configuration}: Props) => {
             http: (graph.nodes[1] as HttpRequestNodeType).data,
         },
     })
-    const {control, reset, getValues, formState} = methods
+    const {control, reset, getValues, formState, setError} = methods
     const {
         remove: removeInput,
         update: updateInput,
@@ -97,9 +98,20 @@ const CustomActionForm = ({configuration}: Props) => {
 
     const {
         mutate: upsertAction,
+        error: upsertError,
         isLoading: isActionUpserting,
         isSuccess: isActionUpserted,
     } = useUpsertAction(isNewAction ? 'create' : 'update', shopName, shopType)
+
+    useEffect(() => {
+        if (isAxiosError(upsertError)) {
+            if (upsertError.response?.status === 409) {
+                setError('name', {
+                    message: 'An Action already exists with this name.',
+                })
+            }
+        }
+    }, [setError, upsertError])
 
     const {
         mutate: deleteAction,

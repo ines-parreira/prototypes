@@ -39,4 +39,21 @@ describe('handleError', () => {
         })
         expect(mockedDispatch).toHaveBeenCalledTimes(1)
     })
+
+    it('should dispatch duplicate name error', () => {
+        const message = 'default message'
+        const error = {
+            response: {status: 409},
+            isAxiosError: true,
+        }
+
+        handleError(error, message, mockedDispatch)
+
+        expect(notify).toHaveBeenNthCalledWith(1, {
+            message:
+                'An Action already exists with this name. Choose a unique name in order to create this Action.',
+            status: NotificationStatus.Error,
+        })
+        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+    })
 })
