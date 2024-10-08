@@ -1,8 +1,11 @@
+import React from 'react'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {IntegrationType} from 'models/integration/types'
 import {CONTACT_FORM_PAGE_TITLE} from 'pages/settings/contactForm/constants'
 
+import cssNavbar from 'assets/css/navbar.less'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {Category} from './types'
 
 export const NavbarConfig: Category[] = [
@@ -71,6 +74,11 @@ export const NavbarConfig: Category[] = [
                 to: 'customer-fields',
                 text: 'Customer Fields',
                 requiredFeatureFlags: [FeatureFlagKey.CustomerFields],
+                extra: (
+                    <Badge type={ColorType.Blue} className={cssNavbar.badge}>
+                        NEW
+                    </Badge>
+                ),
             },
             {
                 requiredRole: ADMIN_ROLE,
