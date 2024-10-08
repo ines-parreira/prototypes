@@ -16,8 +16,6 @@ describe('CampaignPreferences', () => {
             />
         )
 
-        expect(getByText('Campaign preferences')).toBeInTheDocument()
-
         expect(
             getByText('Customers can reply to this campaign')
         ).toBeInTheDocument()

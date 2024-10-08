@@ -1,13 +1,13 @@
 import React, {useMemo} from 'react'
 
-import {CampaignPreferences} from '../CampaignPreferences/CampaignPreferences'
+import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 
-import {CampaignTriggerMap} from '../../types/CampaignTriggerMap'
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
-
-import {CampaignDelay} from '../CampaignDelay'
-import {CampaignDeviceType} from '../CampaignDeviceType'
-import {WithRevenuePaywall} from '../WithRevenuePaywall'
+import {CampaignPreferences} from 'pages/convert/campaigns/components/CampaignPreferences/CampaignPreferences'
+import {CampaignTriggerMap} from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import {CampaignDelay} from 'pages/convert/campaigns/components/CampaignDelay'
+import {CampaignDeviceType} from 'pages/convert/campaigns/components/CampaignDeviceType'
+import {WithRevenuePaywall} from 'pages/convert/campaigns/components/WithRevenuePaywall'
 
 import css from './CampaignDisplaySettings.less'
 
@@ -53,7 +53,7 @@ export const CampaignDisplaySettings = ({
     )
 
     const shouldRenderSettings = isConvertSubscriber || deviceTypeId || delay
-
+    const isCampaignProritizationEnabled = useIsCampaignProritizationEnabled()
     const deviceTypeTrigger = useMemo(() => {
         return triggers[deviceTypeId] ?? null
     }, [deviceTypeId, triggers])
@@ -63,6 +63,29 @@ export const CampaignDisplaySettings = ({
 
     if (!shouldRenderSettings) {
         return <></>
+    }
+
+    if (isCampaignProritizationEnabled) {
+        return (
+            <WithRevenuePaywall showPaywall={!isConvertSubscriber}>
+                <div className={css.settingsContainer}>
+                    <div className={css.sectionItem}>
+                        <CampaignPreferences
+                            triggers={triggers}
+                            isNoReply={isNoReply}
+                            onChangeNoReply={onChangeNoReply}
+                            onChangeIncognitoVisitor={onChangeIncognitoVisitor}
+                        />
+                    </div>
+                    <div className={css.sectionItem}>
+                        <CampaignDeviceType
+                            trigger={deviceTypeTrigger}
+                            onChange={handleChangeDeviceType}
+                        />
+                    </div>
+                </div>
+            </WithRevenuePaywall>
+        )
     }
 
     return (
@@ -82,6 +105,7 @@ export const CampaignDisplaySettings = ({
                     />
                 </div>
                 <div className={css.sectionItem}>
+                    <h5>Campaign preferences</h5>
                     <CampaignPreferences
                         triggers={triggers}
                         isNoReply={isNoReply}

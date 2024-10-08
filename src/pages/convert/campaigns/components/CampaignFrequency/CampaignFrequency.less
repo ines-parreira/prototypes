@@ -1,0 +1,27 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: @layout-spacing-m;
+
+        h5 {
+            .body-semibold();
+            margin-bottom: 0;
+        }
+    }
+
+    .helpIcon {
+        font-size: 16px;
+        color: var(--neutral-grey-4);
+        margin-left: @layout-spacing-xxs;
+    }
+
+    .settings {
+        display: grid;
+        gap: @layout-spacing-s;
+    }
+}

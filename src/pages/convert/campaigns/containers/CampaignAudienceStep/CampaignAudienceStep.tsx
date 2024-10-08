@@ -4,26 +4,37 @@ import {Map} from 'immutable'
 import {ulid} from 'ulidx'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
+import Accordion from 'pages/common/components/accordion/Accordion'
+import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import AccordionBody from 'pages/common/components/accordion/AccordionBody'
+import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
+
 import ConvertInfoBanner from 'pages/convert/campaigns/components/ConvertInfoBanner'
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 
 import ConvertSetupBanner from 'pages/convert/campaigns/components/ConvertSetupBanner'
-import {StatefulAccordion} from '../../components/StatefulAccordion'
-import {AdvancedTriggersForm} from '../../components/AdvancedTriggersForm'
-import {AdvancedTriggersSelect} from '../../components/AdvancedTriggersSelect'
-import {CampaignDisplaySettings} from '../../components/CampaignDisplaySettings'
+import {StatefulAccordion} from 'pages/convert/campaigns/components/StatefulAccordion'
+import {AdvancedTriggersForm} from 'pages/convert/campaigns/components/AdvancedTriggersForm'
+import {AdvancedTriggersSelect} from 'pages/convert/campaigns/components/AdvancedTriggersSelect'
+import {CampaignDisplaySettings} from 'pages/convert/campaigns/components/CampaignDisplaySettings'
+import {CampaignDelay} from 'pages/convert/campaigns/components/CampaignDelay'
+import CampaignFrequency from 'pages/convert/campaigns/components/CampaignFrequency'
+import {isAllowedToUpdateTrigger} from 'pages/convert/campaigns/utils/isAllowedToUpdateTrigger'
+import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
+import {useStepState} from 'pages/convert/campaigns/hooks/useStepState'
+import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import {createTrigger} from 'pages/convert/campaigns/utils/createTrigger'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import {
+    CampaignDisplaysInSession,
+    MinimumTimeBetweenCampaigns,
+} from 'pages/convert/campaigns/types/CampaignMeta'
+import {TriggersProvider} from 'pages/convert/campaigns/containers/TriggersProvider'
+import {isDeviceTypeValue} from 'pages/convert/campaigns/types/enums/CampaignTriggerDeviceTypeValue.enum'
 
-import {isAllowedToUpdateTrigger} from '../../utils/isAllowedToUpdateTrigger'
-
-import {useStepState} from '../../hooks/useStepState'
-import {useCampaignDetailsContext} from '../../hooks/useCampaignDetailsContext'
-import {createTrigger} from '../../utils/createTrigger'
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
-import {CampaignStepsKeys} from '../../types/CampaignSteps'
-
-import {TriggersProvider} from '../TriggersProvider'
-import {isDeviceTypeValue} from '../../types/enums/CampaignTriggerDeviceTypeValue.enum'
+import css from './CampaignAudienceStep.less'
 
 type Props = {
     key: CampaignStepsKeys
@@ -58,8 +69,15 @@ export const CampaignAudienceStep = ({
         deleteTrigger,
     } = useCampaignDetailsContext()
     const {isEditMode, getStepConfiguration} = useCampaignFormContext()
+    const isCampaignProritizationEnabled = useIsCampaignProritizationEnabled()
+
     const campaignWithNoReply = campaign.meta?.noReply ?? false
     const campaignDelay = campaign.meta?.delay ?? 0
+    const campaignMaxDisplaysInSession =
+        campaign.meta?.maxCampaignDisplaysInSession
+    const minimumTimeBetweenCampaigns =
+        campaign.meta?.minimumTimeBetweenCampaigns
+
     const stateProps = useStepState({
         count,
         isPristine,
@@ -79,6 +97,18 @@ export const CampaignAudienceStep = ({
 
     const handleUpdateNoReply = (value: boolean) =>
         updateCampaign('noReply', value)
+
+    const handleUpdateMaxDisplaysInSession = (
+        value: CampaignDisplaysInSession | null
+    ) => {
+        updateCampaign('maxCampaignDisplaysInSession', value)
+    }
+
+    const handleUpdateMinTimeBetweenCampaigns = (
+        value: MinimumTimeBetweenCampaigns | null
+    ) => {
+        updateCampaign('minimumTimeBetweenCampaigns', value)
+    }
 
     const handleChangeDeviceType = useCallback(
         (triggerId: string, value: string) => {
@@ -130,6 +160,104 @@ export const CampaignAudienceStep = ({
         },
         [addTrigger, updateTrigger, deleteTrigger]
     )
+
+    if (isCampaignProritizationEnabled) {
+        return (
+            <StatefulAccordion
+                {...stateProps}
+                id={CampaignStepsKeys.Audience}
+                title="Choose your audience"
+            >
+                <ConvertSetupBanner
+                    classes={'mb-4'}
+                    shopIntegrationId={integration.getIn([
+                        'meta',
+                        'shop_integration_id',
+                    ])}
+                    chatIntegrationId={integration.get('id')}
+                />
+
+                <Accordion defaultExpandedItem="conditions">
+                    <AccordionItem highlightOnExpand={false} id="conditions">
+                        <AccordionHeader>
+                            <h3 className={css.header}>Conditions</h3>
+                        </AccordionHeader>
+                        <AccordionBody>
+                            <div className="mb-4">
+                                <TriggersProvider
+                                    triggers={triggers}
+                                    onUpdateTrigger={updateTrigger}
+                                    onDeleteTrigger={deleteTrigger}
+                                >
+                                    <AdvancedTriggersForm
+                                        triggers={triggers}
+                                        onValidationChange={onValidationChange}
+                                    />
+                                    <AdvancedTriggersSelect
+                                        isShopifyStore={isShopifyStore}
+                                        isConvertSubscriber={
+                                            isConvertSubscriber
+                                        }
+                                        isLightCampaign={
+                                            isConsideredLightCampaign
+                                        }
+                                        onClick={addTrigger}
+                                    />
+                                </TriggersProvider>
+                            </div>
+                            <div className={css.delaySelector}>
+                                <CampaignDelay
+                                    delay={campaignDelay}
+                                    onChangeDelay={handleUpdateDelay}
+                                />
+                            </div>
+                        </AccordionBody>
+                    </AccordionItem>
+                    <AccordionItem
+                        highlightOnExpand={false}
+                        id="campaign-preferences"
+                    >
+                        <AccordionHeader>
+                            <h3 className={css.header}>Campaign preferences</h3>
+                        </AccordionHeader>
+                        <AccordionBody>
+                            {!isConsideredLightCampaign && (
+                                <CampaignDisplaySettings
+                                    isConvertSubscriber={isConvertSubscriber}
+                                    triggers={triggers}
+                                    isNoReply={campaignWithNoReply}
+                                    /* deprecated */
+                                    delay={campaignDelay}
+                                    onChangeDelay={handleUpdateDelay}
+                                    /* end deprecated */
+                                    onChangeDeviceType={handleChangeDeviceType}
+                                    onChangeIncognitoVisitor={
+                                        handleChangeIncognitoVisitor
+                                    }
+                                    onChangeNoReply={handleUpdateNoReply}
+                                />
+                            )}
+
+                            <CampaignFrequency
+                                maximumCampaignsDisplayed={
+                                    campaignMaxDisplaysInSession
+                                }
+                                timeBetweenCampaigns={
+                                    minimumTimeBetweenCampaigns
+                                }
+                                onChangeTimeBetweenCampaigns={
+                                    handleUpdateMinTimeBetweenCampaigns
+                                }
+                                onChangeMaximumCampaignDisplayed={
+                                    handleUpdateMaxDisplaysInSession
+                                }
+                            />
+                        </AccordionBody>
+                    </AccordionItem>
+                </Accordion>
+            </StatefulAccordion>
+        )
+    }
 
     return (
         <StatefulAccordion

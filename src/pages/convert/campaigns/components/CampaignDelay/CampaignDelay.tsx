@@ -25,12 +25,14 @@ export const CampaignDelay = ({delay, onChangeDelay}: Props): JSX.Element => {
                     Delay displaying the message after all triggers are valid
                 </IconTooltip>
             </div>
-            <SelectField
-                fullWidth
-                value={delay}
-                options={CAMPAIGN_DELAY}
-                onChange={handleChangeDelay}
-            />
+            <div className={css.select}>
+                <SelectField
+                    fullWidth
+                    value={delay}
+                    options={CAMPAIGN_DELAY}
+                    onChange={handleChangeDelay}
+                />
+            </div>
         </>
     )
 }

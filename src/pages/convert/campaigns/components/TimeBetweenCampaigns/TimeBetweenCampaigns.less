@@ -1,0 +1,41 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .inputContainer {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .label {
+        .body-semibold();
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        margin: 0;
+    }
+
+    .labelDescription {
+        .caption-regular();
+
+        color: var(--neutral-grey-5);
+    }
+
+    .settings {
+        display: flex;
+        flex-direction: row;
+        margin-top: @layout-spacing-xs;
+    }
+
+    .numberInput {
+        width: 100px;
+        margin-right: @layout-spacing-xs;
+    }
+}

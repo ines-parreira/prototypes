@@ -5,6 +5,7 @@ import {
     screen,
     waitFor,
     act,
+    fireEvent,
 } from '@testing-library/react'
 import userEvent, {TargetElement} from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
@@ -36,6 +37,7 @@ import {getNewMessageAttachments} from 'state/newMessage/selectors'
 import {AttachmentEnum} from 'common/types'
 
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 import {channelConnection} from 'fixtures/channelConnection'
 import {utmConfiguration} from 'fixtures/utmConfiguration'
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
@@ -60,8 +62,12 @@ jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 jest.mock('pages/convert/campaigns/hooks/useUtm.ts')
 jest.mock('pages/stats/convert/hooks/useEmailDisclaimerSettings')
+jest.mock('pages/convert/common/hooks/useIsCampaignProritizationEnabled')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection
+)
+const useIsCampaignProritizationEnabledMock = assumeMock(
+    useIsCampaignProritizationEnabled
 )
 const useUtmMock = assumeMock(useUtm)
 const useGetPreviewProductsMock = assumeMock(useGetPreviewProducts)
@@ -132,6 +138,8 @@ describe('<CampaignDetailsForm />', () => {
             },
             isLoading: false,
         })
+
+        useIsCampaignProritizationEnabledMock.mockImplementation(() => false)
     })
 
     beforeEach(() => {
@@ -438,6 +446,69 @@ describe('<CampaignDetailsForm />', () => {
                         }
                     )
                 ).toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('Campaign proritization feature flag is enabled', () => {
+        beforeEach(() => {
+            useIsCampaignProritizationEnabledMock.mockImplementation(() => true)
+            isConvertSubscriberSpy.mockImplementation(() => true)
+        })
+
+        it('renders campaign frequency section', () => {
+            const {getByText} = renderComponent(defaultProps)
+
+            expect(
+                getByText('Time required between campaigns')
+            ).toBeInTheDocument()
+
+            expect(
+                getByText('Maximum campaign display in a session')
+            ).toBeInTheDocument()
+        })
+
+        it('user can enable features', async () => {
+            const props = {
+                ...defaultProps,
+                isEditMode: true,
+                campaign: {
+                    ...campaignFixture,
+                } as Campaign,
+                displayScheduleSection: true,
+            }
+
+            const {container} = renderComponent(props)
+
+            act(() => {
+                fireEvent.click(
+                    container.querySelector(
+                        '#maximum-displayed-campaigns'
+                    ) as Element
+                )
+                fireEvent.click(
+                    container.querySelector(
+                        '#time-between-campaigns'
+                    ) as Element
+                )
+            })
+
+            userEvent.click(
+                screen.getByRole('button', {name: 'Update Campaign'})
+            )
+            await waitFor(() => {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                expect(toJS(onUpdateCampaign.mock.calls[0][0])).toEqual(
+                    expect.objectContaining({
+                        meta: expect.objectContaining({
+                            maxCampaignDisplaysInSession: {value: 3},
+                            minimumTimeBetweenCampaigns: {
+                                value: 30,
+                                unit: 'seconds',
+                            },
+                        }),
+                    })
+                )
             })
         })
     })

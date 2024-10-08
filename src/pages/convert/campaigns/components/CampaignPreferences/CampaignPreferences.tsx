@@ -24,7 +24,6 @@ export const CampaignPreferences = ({
 }: Props) => {
     return (
         <>
-            <h5>Campaign preferences</h5>
             <div className={css.items}>
                 <CampaignWithNoReply
                     value={isNoReply}

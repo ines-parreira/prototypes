@@ -1,11 +1,16 @@
 import React from 'react'
 
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 
-import {CampaignTrigger} from '../../types/CampaignTrigger'
-import {DEVICE_TYPE_VALUES} from '../../constants/triggerValueLabels'
-import {TRIGGERS_CONFIG} from '../../constants/triggers'
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
+import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
+
+import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
+import {DEVICE_TYPE_VALUES} from 'pages/convert/campaigns/constants/triggerValueLabels'
+import {TRIGGERS_CONFIG} from 'pages/convert/campaigns/constants/triggers'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+
+import css from './CampaignDeviceType.less'
 
 type Props = {
     trigger?: CampaignTrigger
@@ -15,6 +20,29 @@ type Props = {
 export const CampaignDeviceType = ({trigger, onChange}: Props): JSX.Element => {
     const defaultValue =
         TRIGGERS_CONFIG[CampaignTriggerType.DeviceType].defaults.value
+
+    const isCampaignProritizationEnabled = useIsCampaignProritizationEnabled()
+
+    const onSelectChange = (value: any) => {
+        onChange(value as string)
+    }
+
+    if (isCampaignProritizationEnabled) {
+        return (
+            <>
+                <h5 className={css.title}>Device type</h5>
+                <div className={css.select}>
+                    <SelectField
+                        value={trigger?.value ?? defaultValue}
+                        options={DEVICE_TYPE_VALUES}
+                        onChange={onSelectChange}
+                        fullWidth={false}
+                        fixedWidth={true}
+                    />
+                </div>
+            </>
+        )
+    }
 
     return (
         <>

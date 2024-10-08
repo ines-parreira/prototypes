@@ -436,6 +436,36 @@ export const CampaignDetailsForm = ({
                     })
                 )
             }
+
+            if (key === 'maxCampaignDisplaysInSession') {
+                setCampaignData(
+                    produce((draft) => {
+                        if (payload === null) {
+                            delete draft.meta?.maxCampaignDisplaysInSession
+                        } else {
+                            draft.meta = {
+                                ...draft.meta,
+                                maxCampaignDisplaysInSession: payload,
+                            }
+                        }
+                    })
+                )
+            }
+
+            if (key === 'minimumTimeBetweenCampaigns') {
+                setCampaignData(
+                    produce((draft) => {
+                        if (payload === null) {
+                            delete draft.meta?.minimumTimeBetweenCampaigns
+                        } else {
+                            draft.meta = {
+                                ...draft.meta,
+                                minimumTimeBetweenCampaigns: payload,
+                            }
+                        }
+                    })
+                )
+            }
         },
         [agents]
     )
