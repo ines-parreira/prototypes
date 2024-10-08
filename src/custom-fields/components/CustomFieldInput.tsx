@@ -5,7 +5,7 @@ import {
     CustomFieldPrediction,
     CustomFieldValue,
 } from 'custom-fields/types'
-import MultiLevelSelect from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField/MultiLevelSelect'
+import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import {getNumberOrUndefined} from 'custom-fields/helpers/getNumberOrUndefined'
 import {
     isDropdownInput,

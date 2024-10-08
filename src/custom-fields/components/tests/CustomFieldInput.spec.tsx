@@ -7,7 +7,7 @@ import {
     ticketDropdownFieldDefinition,
 } from 'fixtures/customField'
 import StealthInput from 'custom-fields/components/StealthInput'
-import MultiLevelSelect from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField/MultiLevelSelect'
+import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
 import {CustomField, CustomFieldPrediction} from 'custom-fields/types'
@@ -16,12 +16,9 @@ import CustomFieldInput from '../CustomFieldInput'
 jest.mock('custom-fields/components/StealthInput', () => {
     return jest.fn(() => <div>stealth input</div>)
 })
-jest.mock(
-    'pages/tickets/detail/components/TicketFields/components/fields/DropdownField/MultiLevelSelect',
-    () => {
-        return jest.fn(() => <div>multiselect</div>)
-    }
-)
+jest.mock('custom-fields/components/MultiLevelSelect', () => {
+    return jest.fn(() => <div>multiselect</div>)
+})
 
 const mockedStealthInput = assumeMock(StealthInput)
 

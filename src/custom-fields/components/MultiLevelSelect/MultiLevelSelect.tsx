@@ -34,8 +34,8 @@ import {getCurrentPathFromFullValue} from './helpers/getCurrentPathFromFullValue
 import {CHOICE_VALUES_SYMBOL, PREVIOUS_BUTTON_ID} from './constants'
 import {SearchResult} from './search/SearchResult'
 import {SearchInput} from './search/SearchInput'
-import css from './MultiLevelSelect.less'
 import {usePredictionIconPositionAdjuster} from './hooks/usePredictionIconPositionAdjuster'
+import css from './MultiLevelSelect.less'
 
 type Props = {
     id: CustomFieldState['id']

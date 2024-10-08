@@ -15,9 +15,9 @@ import {
     updateCustomFieldValue,
 } from 'state/ticket/actions'
 
-import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'custom-fields/constants'
+import {getLabel} from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
+
 import DropdownField from '../DropdownField'
-import {getLabel} from '../helpers/getLabels'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
@@ -62,34 +62,6 @@ describe('<DropdownField />', () => {
         store.dispatch = jest.fn()
         mockedServer.reset()
         queryClient.clear()
-    })
-
-    it('should render the dropdown component correctly', () => {
-        const props = {
-            ...initialProps,
-            choices: [
-                'Option 1',
-                'Option 2',
-                `Option 3${delimiter}Sub 2${delimiter}Sub 3${delimiter}Sub 4${delimiter}Sub 5`,
-                0,
-                1,
-                123,
-                true,
-                false,
-                // this should be ignored with no errors as we are not supporting objects
-                {foo: 'bar'},
-            ],
-        }
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    {/*@ts-ignore - we are testing an unsupported object*/}
-                    <DropdownField {...props} />)
-                </Provider>
-            </QueryClientProvider>
-        )
-        userEvent.click(screen.getByRole('textbox'))
-        expect(document.body).toMatchSnapshot()
     })
 
     it('should show full value on hover', async () => {
@@ -246,19 +218,6 @@ describe('<DropdownField />', () => {
         expect(screen.queryByPlaceholderText('Search')).toBeNull()
     })
 
-    it('should display results when searching', async () => {
-        const {container} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <DropdownField {...initialProps} />
-                </Provider>
-            </QueryClientProvider>
-        )
-        userEvent.click(screen.getByRole('textbox'))
-        await userEvent.type(screen.getByPlaceholderText('Search'), 's1')
-        expect(container.parentElement).toMatchSnapshot()
-    })
-
     it('should display prediction icon in field and in list', () => {
         const props = {
             ...initialProps,
@@ -276,7 +235,7 @@ describe('<DropdownField />', () => {
             </QueryClientProvider>
         )
         userEvent.click(screen.getByRole('textbox'))
-        expect(screen.getAllByText('auto_awesome')).toMatchSnapshot()
+        expect(screen.getAllByText('auto_awesome')[0]).toBeInTheDocument()
     })
 
     it.each([

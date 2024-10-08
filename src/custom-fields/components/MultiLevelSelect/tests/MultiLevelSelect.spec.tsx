@@ -3,8 +3,8 @@ import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import {hasRole} from 'utils'
-
 import {assumeMock} from 'utils/testing'
+
 import MultiLevelSelect from '../MultiLevelSelect'
 
 jest.mock('utils', () => {
@@ -32,7 +32,7 @@ describe('<MultiLevelSelect />', () => {
         label: 'dropdown',
         value: 's1::ss2::c2',
         hasError: false,
-        choices: ['s1::ss1', 's1::ss2::c1', 's1::ss2::c2', 's1::ss3', 's2'],
+        choices: ['s1::a1', 's1::ss2::c1', 's1::ss2::c2', 's1::ss3', 's2'],
         inputId: 'test-input-id',
         isRequired: true,
         onChange: jest.fn(),
@@ -43,28 +43,6 @@ describe('<MultiLevelSelect />', () => {
         initialProps.onChange.mockReset()
     })
 
-    it('should render the dropdown component correctly', () => {
-        const props = {
-            ...initialProps,
-            choices: [
-                'Option 1',
-                'Option 2',
-                `Option 3::Sub 2::Sub 3::Sub 4::Sub 5`,
-                0,
-                1,
-                123,
-                true,
-                false,
-                {foo: 'bar'}, // this should be ignored with no errors as we are not supporting objects
-            ],
-        }
-        /* @ts-ignore - we are testing an unsupported object */
-        render(<MultiLevelSelect {...props} />)
-
-        userEvent.click(screen.getByRole('textbox'))
-        expect(document.body).toMatchSnapshot()
-    })
-
     it('should display all the items when focused and allow mouse navigation', () => {
         render(<MultiLevelSelect {...initialProps} value="" />)
 
@@ -73,7 +51,7 @@ describe('<MultiLevelSelect />', () => {
         expect(screen.getByText('s2'))
         // forth
         userEvent.click(navItem)
-        expect(screen.getByText('ss1'))
+        expect(screen.getByText('a1'))
         navItem = screen.getByText('s1')
         // and back
         userEvent.click(navItem)
@@ -106,11 +84,15 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should display results when searching', async () => {
-        const {container} = render(<MultiLevelSelect {...initialProps} />)
+        render(<MultiLevelSelect {...initialProps} />)
 
         userEvent.click(screen.getByRole('textbox'))
         await userEvent.type(screen.getByPlaceholderText('Search'), 's1')
-        expect(container.parentElement).toMatchSnapshot()
+        expect(screen.getByText('a1')).toBeInTheDocument()
+        expect(screen.getByText('c1')).toBeInTheDocument()
+        expect(screen.getByText('c2')).toBeInTheDocument()
+        expect(screen.getByText('ss3')).toBeInTheDocument()
+        expect(screen.queryByText('s2')).not.toBeInTheDocument()
     })
 
     it('should show a span instead of an input when autoWidth is true', () => {

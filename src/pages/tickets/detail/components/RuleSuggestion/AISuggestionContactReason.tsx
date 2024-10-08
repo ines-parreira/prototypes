@@ -1,7 +1,7 @@
 import React, {useState, useMemo, useEffect} from 'react'
 import {Collapse} from 'reactstrap'
 import {updateCustomFieldState} from 'state/ticket/actions'
-import {createInputId} from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField/DropdownField'
+import {createInputId} from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField'
 import {Ticket} from 'models/ticket/types'
 import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
 import Button from 'pages/common/components/button/Button'

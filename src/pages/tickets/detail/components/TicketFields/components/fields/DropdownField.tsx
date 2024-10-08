@@ -2,8 +2,12 @@ import React, {ComponentProps, useCallback, useEffect} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
 
 import {CustomFieldState, CustomFieldValue} from 'custom-fields/types'
-import {logEvent, SegmentEvent} from 'common/segment'
 import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
+import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
+import {getLabel} from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
+import {isOutdatedValue} from 'custom-fields/components/MultiLevelSelect/helpers/isOutdatedValue'
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -13,11 +17,6 @@ import {
 } from 'state/ticket/actions'
 import Label from 'custom-fields/components/Label'
 import {getTicket} from 'state/ticket/selectors'
-import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
-
-import MultiLevelSelect from './MultiLevelSelect'
-import {getLabel} from './helpers/getLabels'
-import {isOutdatedValue} from './helpers/isOutdatedValue'
 
 import css from './DropdownField.less'
 

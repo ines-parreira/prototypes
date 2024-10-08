@@ -1,5 +1,6 @@
 import {DROPDOWN_NESTING_DELIMITER} from 'custom-fields/constants'
 import {CustomFieldValue} from 'custom-fields/types'
+
 import {CHOICE_VALUES_SYMBOL} from '../constants'
 import {ChoicesTree} from '../types'
 
