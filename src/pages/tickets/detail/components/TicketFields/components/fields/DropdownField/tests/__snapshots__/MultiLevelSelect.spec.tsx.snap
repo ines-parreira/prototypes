@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<MultiLevelSelect /> should display display results when searching 1`] = `
+exports[`<MultiLevelSelect /> should display results when searching 1`] = `
 <body>
   <div>
     <span
@@ -184,19 +184,6 @@ exports[`<MultiLevelSelect /> should display display results when searching 1`] 
           >
             <span>
               Clear Selection
-            </span>
-          </button>
-        </div>
-        <div
-          class="applyButtonContainer"
-        >
-          <button
-            aria-disabled="false"
-            class="wrapper ghost primary medium"
-            type="button"
-          >
-            <span>
-              Apply
             </span>
           </button>
         </div>

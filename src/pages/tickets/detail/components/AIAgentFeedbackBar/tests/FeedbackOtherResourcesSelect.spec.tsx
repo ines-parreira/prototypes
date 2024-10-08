@@ -9,7 +9,7 @@ import {
 } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import {assumeMock} from 'utils/testing'
 
-import {MultiLevelSelectProps} from '../../TicketFields/components/fields/DropdownField/MultiLevelSelect'
+import {MultiLevelSelectProps} from '../Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
 import FeedbackOtherResourcesSelect, {
     NO_RELEVANT_RESOURCES_LABEL,
 } from '../FeedbackOtherResourcesSelect'

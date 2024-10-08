@@ -37,9 +37,8 @@ import {SearchInput} from './search/SearchInput'
 import css from './MultiLevelSelect.less'
 import {usePredictionIconPositionAdjuster} from './hooks/usePredictionIconPositionAdjuster'
 
-export type MultiLevelSelectProps = {
+type Props = {
     id: CustomFieldState['id']
-    dropdownClassName?: string
     label: string
     value?: CustomFieldValue
     placeholder?: string
@@ -49,20 +48,13 @@ export type MultiLevelSelectProps = {
     showFullValue?: boolean
     autoWidth?: boolean
     inputId: string
-    hasMultipleValues?: boolean
     onChange: (value: CustomFieldValue) => void
     onFocus?: () => void
-    children?: React.ReactNode
-    onToggle?: () => void
-    isOpen?: boolean
     isDisabled?: boolean
-    values?: string[]
-    onApplyClick?: () => void
 }
 
 export default function MultiLevelSelect({
     id,
-    dropdownClassName,
     label,
     value,
     placeholder = '+Add',
@@ -72,16 +64,10 @@ export default function MultiLevelSelect({
     showFullValue = false,
     autoWidth = false,
     inputId,
-    hasMultipleValues = false,
     onChange,
     onFocus,
-    children,
-    onToggle,
-    isOpen,
     isDisabled = false,
-    values,
-    onApplyClick,
-}: MultiLevelSelectProps) {
+}: Props) {
     const containerRef = useRef<HTMLSpanElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
     const [inputRef, inputDimensions] = useDimensions()
@@ -143,10 +129,10 @@ export default function MultiLevelSelect({
 
     const handleChange = useCallback(
         (newValue: CustomFieldValue) => {
-            !hasMultipleValues && setActive(false)
+            setActive(false)
             onChange(newValue)
         },
-        [hasMultipleValues, setActive, onChange]
+        [setActive, onChange]
     )
 
     const handleFocus = useCallback(() => {
@@ -180,71 +166,55 @@ export default function MultiLevelSelect({
 
     return (
         <>
-            {children ? (
-                <span ref={containerRef}>{children}</span>
-            ) : (
-                <span
-                    id={inputId}
-                    className={classNames(css.wrapper, {
-                        [css.autoWidthInputContainer]: autoWidth,
-                        [css.placeholder]: isValueEmpty,
-                    })}
-                    ref={containerRef}
-                >
-                    {autoWidth && (
-                        <span
-                            onClick={isDisabled ? undefined : handleFocus}
-                            className={css.autoWidthSpan}
-                        >
-                            {isValueEmpty ? placeholder : displayValue}
-                        </span>
-                    )}
-                    <StealthInput
-                        id={inputId + '-input'}
-                        className={
-                            isPredictionCorrect && hiddenRef.current
-                                ? css.inputWithPredictionIcon
-                                : undefined
-                        }
-                        ref={inputRef}
-                        name={label}
-                        value={displayValue}
-                        isDisabled={isDisabled}
-                        placeholder={placeholder}
-                        isActive={false}
-                        onFocus={handleFocus}
-                        hasError={hasError}
-                    />
-                    <span ref={hiddenRef} className={css.hiddenInputValue} />
-                    {isPredictionCorrect && hiddenRef.current && (
-                        <i
-                            className={`material-icons ${css.predictionIcon}`}
-                            style={{left: `${iconLeft}px`}}
-                        >
-                            auto_awesome
-                        </i>
-                    )}
-                </span>
-            )}
-            {!children && !choices.length && (
-                <EmptyHelper target={containerRef} id={id} />
-            )}
-            <Dropdown
-                isOpen={isOpen ?? isActive}
-                onToggle={(isActiveNext) => {
-                    if (!isActiveNext) {
-                        setCurrentPath(getCurrentPathFromFullValue(value))
+            <span
+                ref={containerRef}
+                id={inputId}
+                className={classNames(css.wrapper, {
+                    [css.autoWidthInputContainer]: autoWidth,
+                    [css.placeholder]: isValueEmpty,
+                })}
+            >
+                {autoWidth && (
+                    <span
+                        onClick={isDisabled ? undefined : handleFocus}
+                        className={css.autoWidthSpan}
+                    >
+                        {isValueEmpty ? placeholder : displayValue}
+                    </span>
+                )}
+                <StealthInput
+                    id={inputId + '-input'}
+                    className={
+                        isPredictionCorrect && hiddenRef.current
+                            ? css.inputWithPredictionIcon
+                            : undefined
                     }
-                    setActive(isActiveNext)
-                    onToggle?.()
-                }}
+                    ref={inputRef}
+                    name={label}
+                    value={displayValue}
+                    isDisabled={isDisabled}
+                    placeholder={placeholder}
+                    isActive={false}
+                    onFocus={handleFocus}
+                    hasError={hasError}
+                />
+                <span ref={hiddenRef} className={css.hiddenInputValue} />
+                {isPredictionCorrect && hiddenRef.current && (
+                    <i
+                        className={`material-icons ${css.predictionIcon}`}
+                        style={{left: `${iconLeft}px`}}
+                    >
+                        auto_awesome
+                    </i>
+                )}
+            </span>
+            {!choices.length && <EmptyHelper target={containerRef} id={id} />}
+            <Dropdown
+                isOpen={isActive}
+                onToggle={setActive}
                 target={containerRef}
                 ref={modalRef}
-                className={classNames(dropdownClassName, {
-                    [css.dropdown]: !children,
-                })}
-                isMultiple={hasMultipleValues}
-                value={values}
+                className={css.dropdown}
             >
                 {currentPath.length > 0 && !isSearching && (
                     <DropdownHeader>
@@ -309,7 +279,6 @@ export default function MultiLevelSelect({
                                         tag="button"
                                         onClick={() => goNext(key)}
                                         option={{label, value: key}}
-                                        hasSubItems
                                     >
                                         <span className={css.choiceButton}>
                                             <span className={css.ellipsis}>
@@ -341,7 +310,7 @@ export default function MultiLevelSelect({
                                         }}
                                         option={{
                                             label,
-                                            value: fullValue,
+                                            value: choice,
                                         }}
                                     >
                                         {fullValue === prediction?.predicted &&
@@ -375,16 +344,6 @@ export default function MultiLevelSelect({
                             Clear Selection
                         </Button>
                     </DropdownFooter>
-                )}
-
-                {/* Apply Button */}
-                {onApplyClick && currentBranch[CHOICE_VALUES_SYMBOL].size > 0 && (
-                    <div
-                        className={css.applyButtonContainer}
-                        onClick={onApplyClick}
-                    >
-                        <Button fillStyle={'ghost'}>Apply</Button>
-                    </div>
                 )}
             </Dropdown>
         </>
