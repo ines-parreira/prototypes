@@ -1,4 +1,4 @@
-import React, {FC, useMemo} from 'react'
+import React, {FC} from 'react'
 import classNames from 'classnames'
 
 import IconButton from 'pages/common/components/button/IconButton'
@@ -103,15 +103,6 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
             ))
     const hasNegativeFeedback = feedbackOnMessage?.feedback === 'thumbs_down'
 
-    const showThumbsUp = useMemo(() => {
-        return !!(
-            !isMessagePublic ||
-            messageFeedback?.actions.length ||
-            messageFeedback?.guidance.length ||
-            messageFeedback?.knowledge.length
-        )
-    }, [isMessagePublic, messageFeedback])
-
     const handleImproveResponse = () => {
         dispatch(
             changeActiveTab({
@@ -134,6 +125,18 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
             type: 'detail',
             accountId,
         })
+    }
+
+    const getFeedbackPayloadForMessage = (feedback: Feedback) => {
+        return {
+            feedbackOnResource: [],
+            feedbackOnMessage: [
+                {
+                    type: 'binary',
+                    feedback,
+                },
+            ],
+        } as SubmitMessageFeedback
     }
 
     const handleSubmitFeedback = (feedback: Feedback) => {
@@ -177,25 +180,26 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                         } as FeedbackOnResource)
                 )
 
-            feedbackPayload = {
-                feedbackOnResource: [
-                    ...actionFeedbackOnResource,
-                    ...guidanceFeedbackOnResource,
-                    ...knowledgeFeedbackOnResource,
-                ],
-                feedbackOnMessage: [],
+            if (
+                actionFeedbackOnResource.length === 0 &&
+                guidanceFeedbackOnResource.length === 0 &&
+                knowledgeFeedbackOnResource.length === 0
+            ) {
+                // If no feedback on resources, then feedback is on message
+                feedbackPayload = getFeedbackPayloadForMessage(feedback)
+            } else {
+                feedbackPayload = {
+                    feedbackOnResource: [
+                        ...actionFeedbackOnResource,
+                        ...guidanceFeedbackOnResource,
+                        ...knowledgeFeedbackOnResource,
+                    ],
+                    feedbackOnMessage: [],
+                }
             }
         } else {
             bannerType = BANNER_TYPE.THUMBS_UP_AND_DOWN
-            feedbackPayload = {
-                feedbackOnResource: [],
-                feedbackOnMessage: [
-                    {
-                        type: 'binary',
-                        feedback,
-                    },
-                ],
-            }
+            feedbackPayload = getFeedbackPayloadForMessage(feedback)
         }
 
         logEventWithSampling(SegmentEvent.AiAgentFeedbackBannerClicked, {
@@ -213,22 +217,37 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                 {isMessagePublic ? CORRECT_RESPONSE : ACCURATE_RESPONSE}
             </div>
             <div className={css.feedbackButtons}>
-                {showThumbsUp && (
-                    <FeedbackIconButton
-                        hasFeedback={hasPositiveFeedback}
-                        iconType="thumb_up"
-                        onClick={() => {
-                            if (hasPositiveFeedback) {
-                                return
-                            }
-                            handleSubmitFeedback('thumbs_up')
-                        }}
-                        aria-label="Thumbs up button"
-                        isMessagePublic={isMessagePublic}
-                    />
+                {messageFeedback?.allowsFeedback && (
+                    <>
+                        <FeedbackIconButton
+                            hasFeedback={hasPositiveFeedback}
+                            iconType="thumb_up"
+                            onClick={() => {
+                                if (hasPositiveFeedback) {
+                                    return
+                                }
+                                handleSubmitFeedback('thumbs_up')
+                            }}
+                            aria-label="Thumbs up button"
+                            isMessagePublic={isMessagePublic}
+                        />
+
+                        <FeedbackIconButton
+                            hasFeedback={hasNegativeFeedback}
+                            iconType="thumb_down"
+                            onClick={() => {
+                                if (hasNegativeFeedback) {
+                                    return
+                                }
+
+                                handleSubmitFeedback('thumbs_down')
+                            }}
+                            aria-label="Thumbs down button"
+                        />
+                    </>
                 )}
 
-                {isMessagePublic ? (
+                {isMessagePublic && (
                     <Button
                         intent="secondary"
                         size="small"
@@ -239,19 +258,6 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                     >
                         {REVIEW_RESPONSE}
                     </Button>
-                ) : (
-                    <FeedbackIconButton
-                        hasFeedback={hasNegativeFeedback}
-                        iconType="thumb_down"
-                        onClick={() => {
-                            if (hasNegativeFeedback) {
-                                return
-                            }
-
-                            handleSubmitFeedback('thumbs_down')
-                        }}
-                        aria-label="Thumbs down button"
-                    />
                 )}
             </div>
         </div>

@@ -19,6 +19,7 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {logEventWithSampling} from 'common/segment/segment'
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {SegmentEvent} from 'common/segment'
+import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
 import AIAgentFeedback, {
     CORRECT_RESPONSE,
     ACCURATE_RESPONSE,
@@ -29,6 +30,7 @@ import {BANNER_TYPE} from '../../AIAgentFeedbackBar/constants'
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('common/segment/segment')
 jest.mock('state/currentAccount/selectors')
+jest.mock('pages/tickets/detail/hooks/useAIAgentSendFeedback')
 const queryClient = mockQueryClient()
 
 const mockAccountId = 1
@@ -41,7 +43,9 @@ const mockedChangeActiveTab = assumeMock(changeActiveTab)
 const mockedChangeTicketMessage = assumeMock(changeTicketMessage)
 const mockedGetSelectedAIMessage = assumeMock(getSelectedAIMessage)
 const logEventMock = assumeMock(logEventWithSampling)
+const useAIAgentSendFeedbackMock = assumeMock(useAIAgentSendFeedback)
 assumeMock(getCurrentAccountId).mockReturnValue(mockAccountId)
+const aiAgentSendFeedbackMock = jest.fn()
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
@@ -54,6 +58,12 @@ const store = mockStore({
 store.dispatch = jest.fn()
 
 describe('AIAgentFeedback', () => {
+    beforeEach(() => {
+        useAIAgentSendFeedbackMock.mockReturnValue({
+            aiAgentSendFeedback: aiAgentSendFeedbackMock,
+            aiAgentDeleteFeedback: jest.fn(),
+        })
+    })
     it('renders the component with accurate response message', () => {
         render(
             <QueryClientProvider client={queryClient}>
@@ -262,5 +272,185 @@ describe('AIAgentFeedback', () => {
                 outcome: 'thumbs_down',
             })
         )
+    })
+
+    it('call submit with feedbackOnResource payload if action feedback is present', () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <AIAgentFeedback
+                        message={mockMessage}
+                        messageFeedback={
+                            {
+                                messageId: mockMessage.id,
+                                actions: [
+                                    {
+                                        feedback: 'thumbs_up',
+                                        id: '1',
+                                        type: 'action',
+                                    },
+                                ],
+                                guidance: [],
+                                knowledge: [],
+                                allowsFeedback: true,
+                                feedbackOnMessage: [],
+                                feedbackOnResource: [],
+                            } as unknown as MessageFeedback
+                        }
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        userEvent.click(screen.getByLabelText('Thumbs up button'))
+        expect(aiAgentSendFeedbackMock).toHaveBeenCalledWith(mockMessage, {
+            feedbackOnResource: [
+                {
+                    feedback: 'thumbs_up',
+                    resourceId: '1',
+                    resourceType: 'action',
+                    type: 'binary',
+                },
+            ],
+            feedbackOnMessage: [],
+        })
+    })
+
+    it('call submit with feedbackOnMessage payload if no action, guidance and knowledge feedback is present', () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <AIAgentFeedback
+                        message={mockMessage}
+                        messageFeedback={
+                            {
+                                messageId: mockMessage.id,
+                                actions: [],
+                                guidance: [],
+                                knowledge: [],
+                                allowsFeedback: true,
+                                feedbackOnMessage: [],
+                                feedbackOnResource: [],
+                            } as unknown as MessageFeedback
+                        }
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        userEvent.click(screen.getByLabelText('Thumbs up button'))
+        expect(aiAgentSendFeedbackMock).toHaveBeenCalledWith(mockMessage, {
+            feedbackOnResource: [],
+            feedbackOnMessage: [
+                {
+                    feedback: 'thumbs_up',
+                    type: 'binary',
+                },
+            ],
+        })
+    })
+
+    it('do not call submit on thumbs up if positive feedback is already given on message', () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <AIAgentFeedback
+                        message={mockMessage}
+                        messageFeedback={
+                            {
+                                messageId: mockMessage.id,
+                                actions: [{feedback: 'thumbs_up'}],
+                                guidance: [{feedback: 'thumbs_up'}],
+                                knowledge: [{feedback: 'thumbs_up'}],
+                                allowsFeedback: true,
+                                feedbackOnMessage: [
+                                    {feedback: 'thumbs_up', type: 'binary'},
+                                ],
+                                feedbackOnResource: [],
+                            } as unknown as MessageFeedback
+                        }
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        userEvent.click(screen.getByLabelText('Thumbs up button'))
+        expect(logEventMock).not.toHaveBeenCalled()
+        expect(aiAgentSendFeedbackMock).not.toHaveBeenCalled()
+    })
+
+    it('do not call submit on thumbs up if positive feedback is already given on all resources', () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <AIAgentFeedback
+                        message={mockMessage}
+                        messageFeedback={
+                            {
+                                messageId: mockMessage.id,
+                                actions: [{feedback: 'thumbs_up'}],
+                                guidance: [{feedback: 'thumbs_up'}],
+                                knowledge: [{feedback: 'thumbs_up'}],
+                                allowsFeedback: true,
+                                feedbackOnMessage: [],
+                                feedbackOnResource: [
+                                    {
+                                        feedback: 'thumbs_up',
+                                        type: 'binary',
+                                        resourceId: '1',
+                                        resourceType: 'action',
+                                    },
+                                    {
+                                        feedback: 'thumbs_up',
+                                        type: 'binary',
+                                        resourceId: '2',
+                                        resourceType: 'guidance',
+                                    },
+                                    {
+                                        feedback: 'thumbs_up',
+                                        type: 'binary',
+                                        resourceId: '3',
+                                        resourceType: 'knowledge',
+                                    },
+                                ],
+                            } as unknown as MessageFeedback
+                        }
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        userEvent.click(screen.getByLabelText('Thumbs up button'))
+        expect(logEventMock).not.toHaveBeenCalled()
+        expect(aiAgentSendFeedbackMock).not.toHaveBeenCalled()
+    })
+
+    it('do not call submit on thumbs down if negative feedback is already given on message', () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <AIAgentFeedback
+                        message={mockMessage}
+                        messageFeedback={
+                            {
+                                messageId: mockMessage.id,
+                                actions: [{feedback: 'thumbs_down'}],
+                                guidance: [{feedback: 'thumbs_down'}],
+                                knowledge: [{feedback: 'thumbs_down'}],
+                                allowsFeedback: true,
+                                feedbackOnMessage: [
+                                    {feedback: 'thumbs_down', type: 'binary'},
+                                ],
+                                feedbackOnResource: [],
+                            } as unknown as MessageFeedback
+                        }
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        userEvent.click(screen.getByLabelText('Thumbs down button'))
+        expect(logEventMock).not.toHaveBeenCalled()
+        expect(aiAgentSendFeedbackMock).not.toHaveBeenCalled()
     })
 })
