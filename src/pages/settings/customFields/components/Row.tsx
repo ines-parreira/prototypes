@@ -1,21 +1,21 @@
-import React, {useState} from 'react'
-import classnames from 'classnames'
-import {Link} from 'react-router-dom'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React, {useState} from 'react'
+import {Link} from 'react-router-dom'
 import {ulid} from 'ulidx'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {DateAndTimeFormatting} from 'constants/datetime'
+import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {CustomField, isCustomFieldAIManagedType} from 'custom-fields/types'
-import IconButton from 'pages/common/components/button/IconButton'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
+import IconButton from 'pages/common/components/button/IconButton'
 import {TableBodyRowDraggable} from 'pages/common/components/table/TableBodyRowDraggable'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import {Callbacks} from 'pages/common/hooks/useReorderDnD'
-import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
 import css from './Row.less'
@@ -89,7 +89,7 @@ export default function Row({
                                 </>
                             )}
                         </strong>
-                        <span className="d-inline-flex text-faded">
+                        <span className="d-inline-flex text-faded justify-content-center flex-grow-1">
                             <span className={css.description}>
                                 {customField.description}
                             </span>
