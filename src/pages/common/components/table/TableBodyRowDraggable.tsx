@@ -20,7 +20,7 @@ type RowEventListeners = {
 type TableBodyRowDraggableProps = RowEventListeners & {
     children: ReactNode
     dragItem: DragItem
-    shouldRenderDragHandle?: boolean
+    isDragIndicatorInvisible?: boolean
     isDisabled?: boolean
     className?: string
 }
@@ -32,7 +32,7 @@ export type DragItem = DragItemRequired & {
 export const TableBodyRowDraggable = ({
     children,
     dragItem,
-    shouldRenderDragHandle = true,
+    isDragIndicatorInvisible = false,
     isDisabled = false,
     onMoveEntity,
     onDropEntity,
@@ -59,26 +59,22 @@ export const TableBodyRowDraggable = ({
 
     return (
         <TableBodyRow {...rowProps}>
-            {shouldRenderDragHandle && (
-                <BodyCell className={classNames('align-middle', css.bodyCell)}>
-                    <div
-                        ref={
-                            isDisabled
-                                ? undefined
-                                : (dragRef as RefObject<HTMLDivElement>)
-                        }
-                        className={classNames(
-                            'material-icons',
-                            css.dragIndicator,
-                            {
-                                [css.dragIndicatorDisabled]: isDisabled,
-                            }
-                        )}
-                    >
-                        drag_indicator
-                    </div>
-                </BodyCell>
-            )}
+            <BodyCell className={classNames('align-middle', css.bodyCell)}>
+                <div
+                    ref={
+                        isDisabled
+                            ? undefined
+                            : (dragRef as RefObject<HTMLDivElement>)
+                    }
+                    className={classNames('material-icons', css.dragIndicator, {
+                        [css.dragIndicatorDisabled]: isDisabled,
+                        invisible: isDragIndicatorInvisible,
+                    })}
+                >
+                    drag_indicator
+                </div>
+            </BodyCell>
+
             {children}
         </TableBodyRow>
     )

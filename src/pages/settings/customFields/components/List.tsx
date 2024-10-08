@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {CustomField} from 'custom-fields/types'
-import Row from 'pages/settings/customFields/components/Row'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableHead from 'pages/common/components/table/TableHead'
 import TableBody from 'pages/common/components/table/TableBody'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import Row from 'pages/settings/customFields/components/Row'
 
 import css from './List.less'
 
@@ -70,7 +70,7 @@ export default function List({customFields, canReorder, onReorder}: Props) {
     return (
         <TableWrapper>
             <TableHead>
-                {canReorder && <HeaderCell size="smallest" />}
+                <HeaderCell size="smallest" />
                 <HeaderCell className={css.headerCell}>FIELD</HeaderCell>
                 <HeaderCell size="smallest"></HeaderCell>
                 <HeaderCell size="smallest" className={css.headerCell}>

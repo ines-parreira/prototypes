@@ -1,8 +1,8 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 
-import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 
 import {TableBodyRowDraggable} from '../TableBodyRowDraggable'
 
@@ -36,7 +36,6 @@ const defaultProps = {
     onDropEntity: jest.fn(),
     onCancelDnD: jest.fn(),
     className: 'className',
-    shouldRenderDragHandle: true,
 }
 
 describe('TableBodyRowDraggable', () => {
@@ -57,6 +56,9 @@ describe('TableBodyRowDraggable', () => {
     it('should render drag handle', () => {
         render(<TableBodyRowDraggable {...defaultProps} />)
         screen.getByText('drag_indicator')
+        expect(
+            screen.getByText('drag_indicator').classList.contains('invisible')
+        ).toBe(false)
     })
 
     it("should call TableBodyRow with correct props when it's disabled", () => {
@@ -83,8 +85,22 @@ describe('TableBodyRowDraggable', () => {
 
     it("should add correct class to drag handle when it's disabled", () => {
         render(<TableBodyRowDraggable {...defaultProps} isDisabled />)
-        screen
-            .getByText('drag_indicator')
-            .classList.contains('dragIndicatorDisabled')
+        expect(
+            screen
+                .getByText('drag_indicator')
+                .classList.contains('dragIndicatorDisabled')
+        ).toBe(true)
+    })
+
+    it('should render drag handle and make it invisible', () => {
+        render(
+            <TableBodyRowDraggable
+                {...defaultProps}
+                isDragIndicatorInvisible={true}
+            />
+        )
+        expect(
+            screen.getByText('drag_indicator').classList.contains('invisible')
+        ).toBe(true)
     })
 })

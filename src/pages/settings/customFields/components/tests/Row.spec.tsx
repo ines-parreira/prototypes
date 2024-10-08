@@ -1,13 +1,13 @@
-import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
     aiManagedTicketInputFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {TableBodyRowDraggable} from 'pages/common/components/table/TableBodyRowDraggable'
 import {assumeMock} from 'utils/testing'
 
@@ -78,7 +78,8 @@ describe('<Row />', () => {
 
             expect(TableBodyRowDraggableMock).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    shouldRenderDragHandle: canReorder,
+                    isDisabled: !canReorder,
+                    isDragIndicatorInvisible: !canReorder,
                     onMoveEntity: props.onMoveEntity,
                     onDropEntity: props.onDropEntity,
                     dragItem: {

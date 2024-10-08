@@ -1,5 +1,5 @@
+import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {screen, render} from '@testing-library/react'
 
 import {ticketInputFieldDefinition} from 'fixtures/customField'
 import {assumeMock} from 'utils/testing'
@@ -44,9 +44,7 @@ describe('<List />', () => {
 
             render(<List {...props} />)
 
-            expect(screen.getAllByRole('columnheader')).toHaveLength(
-                canReorder ? 5 : 4
-            )
+            expect(screen.getAllByRole('columnheader')).toHaveLength(5)
         }
     )
 

@@ -57,7 +57,8 @@ export default function Row({
                 position,
                 type: 'custom-fields-row',
             }}
-            shouldRenderDragHandle={canReorder}
+            isDisabled={!canReorder}
+            isDragIndicatorInvisible={!canReorder}
             onMoveEntity={onMoveEntity}
             onDropEntity={onDropEntity}
         >
