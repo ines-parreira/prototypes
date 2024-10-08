@@ -23,6 +23,7 @@ import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/wor
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
+import Alert from 'pages/common/components/Alert/Alert'
 
 import {
     StoreWorkflowsConfiguration,
@@ -359,6 +360,12 @@ const TemplateActionForm = ({configuration, template}: Props) => {
                             }}
                             disabled={isActionUpserting}
                         />
+                        {getValues('trigger.requires_confirmation') && (
+                            <Alert icon>
+                                AI Agent will always confirm details with the
+                                customer before performing this Action.
+                            </Alert>
+                        )}
                         <Controller
                             control={control}
                             name="trigger.inputs"
