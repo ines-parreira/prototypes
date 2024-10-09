@@ -1,17 +1,22 @@
 import {useQueryClient} from '@tanstack/react-query'
 import moment from 'moment'
 
-import {errorToChildren} from 'utils'
+import {CustomFieldObjectType} from '@gorgias/api-queries'
+import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
+import {
+    customFieldDefinitionKeys,
+    useUpdatePartialCustomField,
+} from 'custom-fields/hooks/queries/queries'
+import {CustomField} from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {CustomField} from 'custom-fields/types'
-import {
-    useUpdatePartialCustomField,
-    customFieldDefinitionKeys,
-} from 'custom-fields/hooks/queries/queries'
+import {errorToChildren} from 'utils'
 
-export const useUpdateCustomFieldArchiveStatus = (id: number) => {
+export const useUpdateCustomFieldArchiveStatus = (
+    id: number,
+    objectType: CustomFieldObjectType
+) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
@@ -23,8 +28,12 @@ export const useUpdateCustomFieldArchiveStatus = (id: number) => {
                 })
                 void dispatch(
                     notify({
-                        message: `Ticket field has been successfully ${
-                            deactivated_datetime ? 'archived' : 'unarchived'
+                        message: `${
+                            OBJECT_TYPE_SETTINGS[objectType].TITLE_LABEL
+                        } field has been successfully ${
+                            deactivated_datetime
+                                ? 'archived'
+                                : 'moved to active'
                         }.`,
                         status: NotificationStatus.Success,
                     })

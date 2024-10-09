@@ -1,10 +1,11 @@
 import {useQueryClient} from '@tanstack/react-query'
 
-import {errorToChildren} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {errorToChildren} from 'utils'
 
+import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
 import {
     customFieldDefinitionKeys,
     useCreateCustomField,
@@ -16,13 +17,15 @@ export const useCreateCustomFieldDefinition = () => {
     const queryClient = useQueryClient()
 
     return useCreateCustomField({
-        onSuccess: () => {
+        onSuccess: (_, [data]) => {
             void queryClient.invalidateQueries({
                 queryKey: customFieldDefinitionKeys.all(),
             })
             void dispatch(
                 notify({
-                    message: 'Ticket field created successfully.',
+                    message: `${
+                        OBJECT_TYPE_SETTINGS[data.object_type].TITLE_LABEL
+                    } field created successfully.`,
                     status: NotificationStatus.Success,
                 })
             )

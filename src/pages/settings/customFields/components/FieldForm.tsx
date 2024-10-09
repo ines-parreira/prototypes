@@ -60,7 +60,8 @@ export default function FieldForm(props: FieldFormProps) {
     const isAIManaged = isCustomFieldAIManagedType(props.field.managed_type)
     const {mutateAsync} = useUpdateCustomFieldArchiveStatus(
         // this `: 0` case should never happen
-        isCustomField(props.field) ? props.field.id : 0
+        isCustomField(props.field) ? props.field.id : 0,
+        props.field.object_type
     )
 
     const formRef = useRef<HTMLFormElement>(null)

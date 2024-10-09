@@ -35,7 +35,8 @@ export default function Row({
     onDropEntity,
 }: Props) {
     const {mutate, isLoading} = useUpdateCustomFieldArchiveStatus(
-        customField.id
+        customField.id,
+        customField.object_type
     )
 
     const link = `/app/settings/${

@@ -1,27 +1,30 @@
 import {useQueryClient} from '@tanstack/react-query'
+import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
 
-import {errorToChildren} from 'utils'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import {
     customFieldDefinitionKeys,
     useUpdateCustomField,
 } from 'custom-fields/hooks/queries/queries'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {isGorgiasApiError} from 'models/api/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {errorToChildren} from 'utils'
 
 export const useUpdateCustomFieldDefinition = () => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
     return useUpdateCustomField({
-        onSuccess: () => {
+        onSuccess: (_, [, data]) => {
             void queryClient.invalidateQueries({
                 queryKey: customFieldDefinitionKeys.all(),
             })
             void dispatch(
                 notify({
-                    message: 'Ticket field updated successfully.',
+                    message: `${
+                        OBJECT_TYPE_SETTINGS[data.object_type].TITLE_LABEL
+                    } field updated successfully.`,
                     status: NotificationStatus.Success,
                 })
             )

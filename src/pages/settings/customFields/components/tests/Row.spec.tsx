@@ -237,7 +237,8 @@ describe('<Row />', () => {
         })
 
         expect(useUpdateCustomFieldArchiveStatusMock).toHaveBeenCalledWith(
-            ticketInputFieldDefinition.id
+            ticketInputFieldDefinition.id,
+            ticketInputFieldDefinition.object_type
         )
         expect(updateMutateMock).toHaveBeenCalledWith(true)
         expect(mockedLogEvent).toHaveBeenCalledWith(
@@ -271,7 +272,8 @@ describe('<Row />', () => {
         unArchiveModalButton.click() // there is no modal
 
         expect(useUpdateCustomFieldArchiveStatusMock).toHaveBeenCalledWith(
-            ticketInputFieldDefinition.id
+            ticketInputFieldDefinition.id,
+            ticketInputFieldDefinition.object_type
         )
         await waitFor(
             () => {
