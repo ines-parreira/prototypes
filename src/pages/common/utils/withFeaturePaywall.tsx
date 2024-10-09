@@ -8,13 +8,12 @@ import {AccountFeature} from 'state/currentAccount/types'
 import useAppSelector from 'hooks/useAppSelector'
 
 export function withFeaturePaywall<P extends Record<string, unknown>>(
-    feature?: AccountFeature,
+    feature: AccountFeature,
     CustomPaywall?: ComponentType<any>,
     paywallConfigs?: typeof defaultPaywallConfigs
 ) {
     return (Component: ComponentType<P>) => {
         return (ownProps: P) => {
-            if (!feature) return <Component {...ownProps} />
             const hasFeature = useAppSelector<boolean>(
                 currentAccountHasFeature(feature)
             )

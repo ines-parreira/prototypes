@@ -35,17 +35,6 @@ describe('withFeaturePaywall', () => {
         billing: fromJS(billingState),
     }
 
-    it('should render the passed component when the feature is not specified', () => {
-        const PaywalledComponent = withFeaturePaywall()(AnyComponent)
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <PaywalledComponent />
-            </Provider>
-        )
-
-        expect(screen.getByText('Not paywalled')).toBeInTheDocument()
-    })
-
     it('should render the passed component when the feature is available', () => {
         const PaywalledComponent = withFeaturePaywall(
             AccountFeature.InstagramComment

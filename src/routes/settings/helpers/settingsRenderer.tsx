@@ -34,14 +34,23 @@ export function renderApp<C extends ComponentType<any>>(
         ...roleSettings
     )
 
-    const PaywallRestrictedComponent = withFeaturePaywall(
-        ...(settings.paywallParams ||
-            ([] as Parameters<typeof withFeaturePaywall>))
-    )(UserRestrictedComponent)
+    if (settings.paywallParams) {
+        const PaywallRestrictedComponent = withFeaturePaywall(
+            ...settings.paywallParams
+        )(UserRestrictedComponent)
+
+        return (
+            <App {...settings.appProps}>
+                <PaywallRestrictedComponent
+                    {...(settings.componentProps || {})}
+                />
+            </App>
+        )
+    }
 
     return (
         <App {...settings.appProps}>
-            <PaywallRestrictedComponent {...(settings.componentProps || {})} />
+            <UserRestrictedComponent {...(settings.componentProps || {})} />
         </App>
     )
 }

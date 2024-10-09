@@ -41,7 +41,6 @@ describe('renderAppSettings', () => {
         render(renderAppSettings(PageComponent))
 
         expect(mockedWithUserRoleRequired).toHaveBeenCalledWith(PageComponent)
-        expect(mockedwithFeaturePaywall).toHaveBeenCalledWith()
         expect(mockedApp).toHaveBeenCalledWith(
             {
                 navbar: SettingsNavbar,
@@ -78,6 +77,7 @@ describe('renderAppSettings', () => {
         expect(mockedInBetweenFeaturePaywall).toHaveBeenCalledWith(
             mockedUserRoleRequiredComponent
         )
+        expect(screen.getByText('paywalledContent')).toBeInTheDocument()
     })
 
     it('should render App with passed props and enforced SettingsNavbar', () => {
@@ -88,7 +88,7 @@ describe('renderAppSettings', () => {
         )
 
         expect(screen.getByText('App')).toBeInTheDocument()
-        expect(screen.getByText('paywalledContent')).toBeInTheDocument()
+        expect(screen.getByText('roleContent')).toBeInTheDocument()
         expect(mockedApp).toHaveBeenCalledWith(
             {
                 navbar: SettingsNavbar,
