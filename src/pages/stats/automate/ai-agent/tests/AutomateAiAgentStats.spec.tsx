@@ -140,17 +140,20 @@ describe('AutomateAiAgentStats', () => {
                 prevValue: 140,
             },
         },
-        customFieldLabels = [
-            'AI Agent Contact Reason',
-            'AI Agent Outcome',
-            'My custom field',
+        customFields = [
+            {label: 'AI Intent', managed_type: 'ai_intent'},
+            {label: 'AI Agent Outcome', managed_type: 'ai_outcome'},
+            {label: 'My custom field', managed_type: null},
         ],
-        customFieldLabelsIsLoading = false,
+        customFieldsIsLoading = false,
     }: {
         statsFilters?: StatsFiltersWithLogicalOperator
         automatedInteractionTrend?: MetricTrend
-        customFieldLabels?: string[]
-        customFieldLabelsIsLoading?: boolean
+        customFields?: Array<{
+            label: string
+            managed_type: string | null
+        }>
+        customFieldsIsLoading?: boolean
     } = {}) => {
         calculateGreyAreaMock.mockReturnValue({
             from: moment(new Date('2024-09-17')),
@@ -169,10 +172,10 @@ describe('AutomateAiAgentStats', () => {
         })
 
         useCustomFieldDefinitionsMock.mockReturnValue(
-            customFieldLabelsIsLoading
+            customFieldsIsLoading
                 ? {isLoading: true}
                 : {
-                      data: {data: customFieldLabels.map((x) => ({label: x}))},
+                      data: {data: customFields},
                   }
         )
 
@@ -253,7 +256,10 @@ describe('AutomateAiAgentStats', () => {
 
     it('should not show the ticket insights if there are no AI Agent custom fields', () => {
         renderComponent({
-            customFieldLabels: ['My custom field', 'Another custom field'],
+            customFields: [
+                {label: 'My custom field', managed_type: null},
+                {label: 'Another custom field', managed_type: null},
+            ],
         })
 
         expect(
@@ -272,7 +278,7 @@ describe('AutomateAiAgentStats', () => {
 
     it('should not show the ticket insights when custom fields are still loading', () => {
         renderComponent({
-            customFieldLabelsIsLoading: true,
+            customFieldsIsLoading: true,
         })
 
         expect(
