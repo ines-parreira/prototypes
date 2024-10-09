@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import {HelpCenter} from 'models/helpCenter/types'
 import {StoreIntegration} from 'models/integration/types'
-import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {isAIArticleWithoutReviewAction} from './utils'
 import {StoreWithHelpCenters} from './useTopQuestionsStoresWithHelpCenters'
 import {useHasEmailToStoreConnection} from './useHasEmailToStoreConnection'
@@ -44,13 +44,12 @@ export const useFirstStoreAndHelpCenterWithTopQuestions = (
         !hasEmailToStoreConnection ||
         isLoadingEmailToStoreConnection
 
-    const {fetchedArticles, isLoading: isLoadingAIArticles} =
-        useConditionalGetAIArticles({
-            helpCenterId: helpCenter?.id ?? null,
-            storeIntegrationId: store?.store.id ?? null,
-            locale: helpCenter?.default_locale ?? 'en-US',
-            ...(disableRequest ? {enabled: false} : {}),
-        })
+    const {fetchedArticles, isLoading: isLoadingAIArticles} = useGetAIArticles({
+        helpCenterId: helpCenter?.id ?? null,
+        storeIntegrationId: store?.store.id ?? null,
+        locale: helpCenter?.default_locale ?? 'en-US',
+        ...(disableRequest ? {enabled: false} : {}),
+    })
 
     useEffect(() => {
         if (

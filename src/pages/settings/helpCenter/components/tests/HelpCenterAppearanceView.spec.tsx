@@ -6,7 +6,6 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 
 import _keyBy from 'lodash/keyBy'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
@@ -19,7 +18,6 @@ import {useSupportedLocales} from 'pages/settings/helpCenter/providers/Supported
 import {billingState} from 'fixtures/billing'
 import {FontCatalogueModal} from 'pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {HelpCenterAppearanceView} from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
 import {getHelpCenterTranslationsResponseFixture} from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import {HelpCenterTranslationProvider} from '../../providers/HelpCenterTranslation'
@@ -113,10 +111,6 @@ jest.mock(
 ;(FontCatalogueModal as jest.Mock).mockReturnValue(
     <div id="FontCatalogueModal-mocked"></div>
 )
-
-mockFlags({
-    [FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore]: true,
-})
 
 const route = {
     path: '/app/settings/help-center/:helpCenterId/appearance',

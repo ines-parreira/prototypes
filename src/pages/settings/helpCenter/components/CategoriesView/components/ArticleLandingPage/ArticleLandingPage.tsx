@@ -16,7 +16,7 @@ import {ErrorBoundary} from 'pages/ErrorBoundary'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {getStoreIntegrations} from 'state/integrations/selectors'
 import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
@@ -57,7 +57,7 @@ const ArticleLandingPageComponent = ({
         helpCenter.shop_name
     )
     const {fetchedArticles: aiArticles, isLoading: isAIArticlesLoading} =
-        useConditionalGetAIArticles({
+        useGetAIArticles({
             helpCenterId: helpCenter.id,
             storeIntegrationId,
             locale: viewLanguage,

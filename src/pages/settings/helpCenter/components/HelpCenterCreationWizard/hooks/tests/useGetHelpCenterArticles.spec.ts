@@ -13,7 +13,7 @@ import {
     AIArticlesGroupedFixture,
     AIArticlesListFixture,
 } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
-import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/constants'
 import {StoreState} from 'state/types'
@@ -22,16 +22,14 @@ import {findArticleByKey} from '../../HelpCenterCreationWizardUtils'
 
 jest.mock('pages/settings/helpCenter/queries')
 jest.mock('models/helpCenter/queries')
-jest.mock('pages/settings/helpCenter/hooks/useConditionalGetAIArticles')
+jest.mock('pages/settings/helpCenter/hooks/useGetAIArticles')
 jest.mock('hooks/useAppSelector')
 
 const mockedUseGetArticleTemplates = assumeMock(useGetArticleTemplates)
 const mockedUseGetHelpCenterArticleList = assumeMock(
     useGetHelpCenterArticleList
 )
-const mockedUseConditionalGetAIArticles = assumeMock(
-    useConditionalGetAIArticles
-)
+const mockedUseConditionalGetAIArticles = assumeMock(useGetAIArticles)
 const mockedUseAppSelector = assumeMock(useAppSelector)
 
 describe('useGetHelpCenterArticles', () => {
@@ -67,7 +65,7 @@ describe('useGetHelpCenterArticles', () => {
                 return {
                     fetchedArticles: [],
                     isLoading: false,
-                } as unknown as ReturnType<typeof useConditionalGetAIArticles>
+                } as unknown as ReturnType<typeof useGetAIArticles>
             })
         })
         it('should return template articles grouped by category when no articles created', () => {
@@ -187,7 +185,7 @@ describe('useGetHelpCenterArticles', () => {
                 return {
                     fetchedArticles: AIArticlesListFixture,
                     isLoading: false,
-                } as unknown as ReturnType<typeof useConditionalGetAIArticles>
+                } as unknown as ReturnType<typeof useGetAIArticles>
             })
         })
 
@@ -232,7 +230,7 @@ describe('useGetHelpCenterArticles', () => {
                 return {
                     fetchedArticles: null,
                     isLoading: false,
-                } as unknown as ReturnType<typeof useConditionalGetAIArticles>
+                } as unknown as ReturnType<typeof useGetAIArticles>
             })
 
             const {result} = renderHook(() =>

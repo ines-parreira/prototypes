@@ -7,7 +7,7 @@ import {
 } from 'models/helpCenter/types'
 import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
 import {DEFAULT_ARTICLE_GROUP} from 'pages/settings/helpCenter/constants'
-import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getStoreIntegrations} from 'state/integrations/selectors'
@@ -34,7 +34,7 @@ export const useGetHelpCenterArticles = (
         helpCenterShopName
     )
     const {fetchedArticles: aiArticles, isLoading: isGetAIArticlesLoading} =
-        useConditionalGetAIArticles({
+        useGetAIArticles({
             helpCenterId,
             storeIntegrationId,
             locale,

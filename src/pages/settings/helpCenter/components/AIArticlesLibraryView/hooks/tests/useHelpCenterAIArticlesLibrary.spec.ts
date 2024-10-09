@@ -1,28 +1,24 @@
 import {renderHook, act} from '@testing-library/react-hooks'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import {fromJS} from 'immutable'
 import {assumeMock} from 'utils/testing'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     AIArticlesListFixture,
     AILibraryArticleItemsFixture,
 } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {AIArticleToggleOptionValue} from 'models/helpCenter/types'
-import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {useListStoreMappings} from 'models/storeMapping/queries'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/constants'
 import {StoreState} from 'state/types'
 import {useHelpCenterAIArticlesLibrary} from '../useHelpCenterAIArticlesLibrary'
 
-jest.mock('pages/settings/helpCenter/hooks/useConditionalGetAIArticles')
+jest.mock('pages/settings/helpCenter/hooks/useGetAIArticles')
 jest.mock('models/storeMapping/queries')
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/automate/common/hooks/useShopifyIntegrations')
 
-const mockedUseConditionalGetAIArticles = assumeMock(
-    useConditionalGetAIArticles
-)
+const mockedUseConditionalGetAIArticles = assumeMock(useGetAIArticles)
 const mockedUseListStoreMappings = assumeMock(useListStoreMappings)
 const mockedUseAppSelector = assumeMock(useAppSelector)
 
@@ -33,7 +29,7 @@ describe('useHelpCenterAIArticlesLibrary', () => {
             return {
                 fetchedArticles: AIArticlesListFixture,
                 isLoading: false,
-            } as unknown as ReturnType<typeof useConditionalGetAIArticles>
+            } as unknown as ReturnType<typeof useGetAIArticles>
         })
         mockedUseListStoreMappings.mockImplementation(
             () =>
@@ -50,10 +46,6 @@ describe('useHelpCenterAIArticlesLibrary', () => {
                 }),
             } as unknown as StoreState)
         )
-        mockFlags({
-            [FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore]:
-                true,
-        })
     })
 
     it('should return the new AI articles with the correct counters', () => {
@@ -182,7 +174,7 @@ describe('useHelpCenterAIArticlesLibrary', () => {
             return {
                 fetchedArticles: null,
                 isLoading: false,
-            } as unknown as ReturnType<typeof useConditionalGetAIArticles>
+            } as unknown as ReturnType<typeof useGetAIArticles>
         })
 
         const {result} = renderHook(() =>

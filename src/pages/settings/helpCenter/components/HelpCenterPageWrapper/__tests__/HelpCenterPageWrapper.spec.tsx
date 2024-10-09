@@ -5,7 +5,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 
-import {mockFlags} from 'jest-launchdarkly-mock'
 import {RootState, StoreDispatch} from 'state/types'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
@@ -17,7 +16,6 @@ import {
 import {renderWithRouter} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {FeatureFlagKey} from 'config/featureFlags'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 import {useHasAccessToAILibrary} from '../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 
@@ -86,10 +84,6 @@ const store = mockStore(defaultState)
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
-
-mockFlags({
-    [FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore]: true,
-})
 
 describe('<HelpCenterPageWrapper />', () => {
     const props: ComponentProps<typeof HelpCenterPageWrapper> = {

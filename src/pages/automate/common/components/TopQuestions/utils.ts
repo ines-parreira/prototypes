@@ -1,13 +1,11 @@
 import {Dispatch, SetStateAction} from 'react'
-import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {sortAIArticlesByTicketsCount} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/AIArticlesLibraryUtils'
 import {StoreIntegration} from 'models/integration/types'
 import {AIArticle, HelpCenter} from 'models/helpCenter/types'
 import {TopQuestion, TopQuestionsSectionProps} from './TopQuestionsSection'
 
-type FetchedArticles = ReturnType<
-    typeof useConditionalGetAIArticles
->['fetchedArticles']
+type FetchedArticles = ReturnType<typeof useGetAIArticles>['fetchedArticles']
 
 export const isAIArticleWithoutReviewAction = (article: AIArticle): boolean =>
     article.review_action === undefined

@@ -12,7 +12,7 @@ import axios from 'axios'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {AIArticle, LocalArticleTranslation} from 'models/helpCenter/types'
 import {assumeMock} from 'utils/testing'
-import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     aiArticleKeys,
@@ -69,8 +69,8 @@ const mockArticles: AIArticle[] = [
     },
 ]
 
-jest.mock('pages/settings/helpCenter/hooks/useConditionalGetAIArticles')
-const mockUseConditionalGetAIArticles = assumeMock(useConditionalGetAIArticles)
+jest.mock('pages/settings/helpCenter/hooks/useGetAIArticles')
+const mockUseConditionalGetAIArticles = assumeMock(useGetAIArticles)
 
 jest.mock('pages/settings/helpCenter/hooks/useCreateAIArticle')
 const mockUseCreateAIArticle = assumeMock(useCreateAIArticle)

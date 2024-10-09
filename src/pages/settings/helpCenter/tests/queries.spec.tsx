@@ -3,10 +3,8 @@ import _get from 'lodash/get'
 import {renderHook} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import {
     useGetShopifyPages,
@@ -378,12 +376,6 @@ describe('useGetAIGeneratedArticlesByHelpCenter', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
     const locale = 'en-US'
     const helpCenterId = 1
-    const isAIArticlesForMultiStoreEnabled = false
-
-    mockFlags({
-        [FeatureFlagKey.ObservabilityAIArticles]: true,
-        [FeatureFlagKey.ObservabilityShowAILibraryForMultiBrands]: true,
-    })
 
     beforeEach(async () => {
         sdkMocks = await buildSDKMocks()
@@ -400,12 +392,7 @@ describe('useGetAIGeneratedArticlesByHelpCenter', () => {
         })
 
         const {result, waitFor} = renderHook(
-            () =>
-                useGetAIArticlesByHelpCenter(
-                    helpCenterId,
-                    locale,
-                    isAIArticlesForMultiStoreEnabled
-                ),
+            () => useGetAIArticlesByHelpCenter(helpCenterId, locale),
             {
                 wrapper,
             }
@@ -422,12 +409,7 @@ describe('useGetAIGeneratedArticlesByHelpCenter', () => {
         const useQuerySpy = jest.spyOn(reactQuery, 'useQuery')
 
         const {result} = renderHook(
-            () =>
-                useGetAIArticlesByHelpCenter(
-                    null,
-                    locale,
-                    isAIArticlesForMultiStoreEnabled
-                ),
+            () => useGetAIArticlesByHelpCenter(null, locale),
             {
                 wrapper,
             }
@@ -461,12 +443,7 @@ describe('useGetAIGeneratedArticlesByHelpCenter', () => {
         })
 
         const {result, waitFor} = renderHook(
-            () =>
-                useGetAIArticlesByHelpCenter(
-                    helpCenterId,
-                    locale,
-                    isAIArticlesForMultiStoreEnabled
-                ),
+            () => useGetAIArticlesByHelpCenter(helpCenterId, locale),
             {
                 wrapper,
             }
@@ -486,12 +463,6 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
     const locale = 'en-US'
     const helpCenterId = 1
     const storeIntegrationId = 2
-    const isAIArticlesForMultiStoreEnabled = true
-
-    mockFlags({
-        [FeatureFlagKey.ObservabilityAIArticles]: true,
-        [FeatureFlagKey.ObservabilityShowAILibraryForMultiBrands]: true,
-    })
 
     beforeEach(async () => {
         sdkMocks = await buildSDKMocks()
@@ -512,8 +483,7 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
                 useGetAIArticlesByHelpCenterAndStore(
                     helpCenterId,
                     storeIntegrationId,
-                    locale,
-                    isAIArticlesForMultiStoreEnabled
+                    locale
                 ),
             {
                 wrapper,
@@ -535,8 +505,7 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
                 useGetAIArticlesByHelpCenterAndStore(
                     null,
                     storeIntegrationId,
-                    locale,
-                    isAIArticlesForMultiStoreEnabled
+                    locale
                 ),
             {
                 wrapper,
@@ -575,8 +544,7 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
                 useGetAIArticlesByHelpCenterAndStore(
                     helpCenterId,
                     null,
-                    locale,
-                    isAIArticlesForMultiStoreEnabled
+                    locale
                 ),
             {
                 wrapper,
@@ -617,8 +585,7 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
                 useGetAIArticlesByHelpCenterAndStore(
                     helpCenterId,
                     storeIntegrationId,
-                    locale,
-                    isAIArticlesForMultiStoreEnabled
+                    locale
                 ),
             {
                 wrapper,

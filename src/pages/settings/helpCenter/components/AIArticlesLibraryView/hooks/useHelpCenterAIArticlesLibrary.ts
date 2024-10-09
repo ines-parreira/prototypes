@@ -1,5 +1,4 @@
 import {useEffect, useMemo, useState} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     AIArticle,
     AIArticleToggleOptionValue,
@@ -7,8 +6,7 @@ import {
     ArticleTemplateReviewAction,
     Locale,
 } from 'models/helpCenter/types'
-import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {useHasEmailToStoreConnection} from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
 import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import useAppSelector from 'hooks/useAppSelector'
@@ -26,11 +24,6 @@ export const useHelpCenterAIArticlesLibrary = (
         AILibraryArticleItem[]
     >([])
 
-    const isAIArticlesForMultiStoreEnabled: boolean | undefined =
-        useFlags()[
-            FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore
-        ]
-
     const allStoreIntegrations = useAppSelector(getStoreIntegrations)
     const hasMultiStores = allStoreIntegrations.length > 1
 
@@ -46,11 +39,9 @@ export const useHelpCenterAIArticlesLibrary = (
 
     const showLinkToConnectEmailToStore = useMemo(
         () =>
-            isAIArticlesForMultiStoreEnabled &&
             hasMultiStores &&
             (!hasEmailToStoreConnection || isLoadingEmailToStoreConnection),
         [
-            isAIArticlesForMultiStoreEnabled,
             hasMultiStores,
             hasEmailToStoreConnection,
             isLoadingEmailToStoreConnection,
@@ -58,7 +49,7 @@ export const useHelpCenterAIArticlesLibrary = (
     )
 
     const {fetchedArticles: fetchedArticles, isLoading: isLoading} =
-        useConditionalGetAIArticles({
+        useGetAIArticles({
             helpCenterId,
             storeIntegrationId,
             locale,

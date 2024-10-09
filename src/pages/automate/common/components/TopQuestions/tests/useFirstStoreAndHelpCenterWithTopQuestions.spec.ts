@@ -4,7 +4,7 @@ import {StoreIntegration} from 'models/integration/types'
 import {AIArticle, HelpCenter} from 'models/helpCenter/types'
 import {assumeMock} from 'utils/testing'
 import {NonEmptyArray} from 'types'
-import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {useFirstStoreAndHelpCenterWithTopQuestions} from '../useFirstStoreAndHelpCenterWithTopQuestions'
 import {useHasEmailToStoreConnection} from '../useHasEmailToStoreConnection'
 import {StoreWithHelpCenters} from '../useTopQuestionsStoresWithHelpCenters'
@@ -14,8 +14,8 @@ const mockUseHasEmailToStoreConnection = assumeMock(
     useHasEmailToStoreConnection
 )
 
-jest.mock('pages/settings/helpCenter/hooks/useConditionalGetAIArticles')
-const mockUseConditionalGetAIArticles = assumeMock(useConditionalGetAIArticles)
+jest.mock('pages/settings/helpCenter/hooks/useGetAIArticles')
+const mockUseConditionalGetAIArticles = assumeMock(useGetAIArticles)
 
 const mockArticles: AIArticle[] = [
     {

@@ -6,7 +6,7 @@ import {
     LocaleCode,
 } from 'models/helpCenter/types'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {
     aiArticleKeys,
     useUpsertArticleTemplateReview,
@@ -24,7 +24,7 @@ export const useTopQuestionsArticles = (
     const appDispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
-    const {fetchedArticles, isLoading} = useConditionalGetAIArticles({
+    const {fetchedArticles, isLoading} = useGetAIArticles({
         helpCenterId,
         storeIntegrationId,
         locale,

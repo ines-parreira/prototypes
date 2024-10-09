@@ -246,7 +246,6 @@ export const useGetAIArticlesByHelpCenter = <
 >(
     helpCenterId: Paths.ListAIArticleTemplatesByHelpCenter.Parameters.HelpCenterId | null,
     locale: Paths.ListArticleTemplates.Parameters.Locale,
-    isAIArticlesForMultiStoreEnabled: boolean,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getAIGeneratedArticlesByHelpCenter>>,
         unknown,
@@ -265,11 +264,7 @@ export const useGetAIArticlesByHelpCenter = <
                 help_center_id: helpCenterId,
             })
         },
-        enabled:
-            !!client &&
-            locale === 'en-US' &&
-            !isAIArticlesForMultiStoreEnabled &&
-            helpCenterId !== null,
+        enabled: !!client && locale === 'en-US' && helpCenterId !== null,
         ...overrides,
     })
 }
@@ -282,7 +277,6 @@ export const useGetAIArticlesByHelpCenterAndStore = <
     helpCenterId: Paths.ListAIArticleTemplatesByHelpCenterAndStore.Parameters.HelpCenterId | null,
     storeIntegrationId: Paths.ListAIArticleTemplatesByHelpCenterAndStore.Parameters.StoreIntegrationId | null,
     locale: Paths.ListArticleTemplates.Parameters.Locale,
-    isAIArticlesForMultiStoreEnabled: boolean,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getAIGeneratedArticlesByHelpCenterAndStore>>,
         unknown,
@@ -305,7 +299,6 @@ export const useGetAIArticlesByHelpCenterAndStore = <
         enabled:
             !!client &&
             locale === 'en-US' &&
-            isAIArticlesForMultiStoreEnabled &&
             storeIntegrationId !== null &&
             helpCenterId !== null,
         ...overrides,
