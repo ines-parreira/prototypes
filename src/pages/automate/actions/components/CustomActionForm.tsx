@@ -356,7 +356,7 @@ const CustomActionForm = ({configuration}: Props) => {
                         )}
                     />
                 </section>
-                <section>
+                <div className={css.footer}>
                     <div className={css.buttonGroup}>
                         <div>
                             <Button
@@ -431,7 +431,7 @@ const CustomActionForm = ({configuration}: Props) => {
                             </ConfirmModalAction>
                         )}
                     </div>
-                </section>
+                </div>
             </div>
         </ToolbarProvider>
     )

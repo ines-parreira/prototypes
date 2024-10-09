@@ -77,13 +77,21 @@
             }
         }
 
-        .buttonGroup {
-            display: flex;
-            justify-content: space-between;
+        .footer {
+            position: sticky;
+            bottom: 0;
+            background-color: var(--neutral-grey-0);
+            padding: @layout-spacing-m 0;
+            z-index: 1;
 
-            & > div {
+            .buttonGroup {
                 display: flex;
-                gap: @layout-spacing-xs;
+                justify-content: space-between;
+
+                & > div {
+                    display: flex;
+                    gap: @layout-spacing-xs;
+                }
             }
         }
 

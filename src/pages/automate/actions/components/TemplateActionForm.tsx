@@ -499,7 +499,7 @@ const TemplateActionForm = ({configuration, template}: Props) => {
                         )}
                     />
                 </section>
-                <section>
+                <div className={css.footer}>
                     <div className={css.buttonGroup}>
                         <div>
                             <Button
@@ -578,7 +578,7 @@ const TemplateActionForm = ({configuration, template}: Props) => {
                             </ConfirmModalAction>
                         )}
                     </div>
-                </section>
+                </div>
             </div>
             <div>
                 <div data-candu-id={`template-action-video-${template.id}`} />
