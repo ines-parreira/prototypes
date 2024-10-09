@@ -39,12 +39,12 @@ const ActionFormInputs = ({
     return (
         <div>
             <Label className={css.label}>
-                Collect information from the customer (optional)
+                Collect information from customers to use as variables in this
+                Action
             </Label>
             <div className={css.description}>
-                List any information AI Agent should ask the customer before
-                performing this Action. Note: AI Agent already knows the
-                customer’s email and order number.
+                Note: AI Agent already has access to the customer’s email
+                address and order number.
             </div>
             <div className={css.inputs}>
                 {templateInputs.map((input) => (
@@ -78,10 +78,10 @@ const ActionFormInputs = ({
                 {inputs.length > 0 && (
                     <div className={css.footer}>
                         <span>Data type/format</span>
-                        <span>Variable name</span>
+                        <span>Variable name e.g. opened</span>
                         <span>
-                            Instructions for AI Agent to collect this
-                            information
+                            Variable description e.g. If customer has opened the
+                            product
                         </span>
                     </div>
                 )}
@@ -93,7 +93,7 @@ const ActionFormInputs = ({
                         size="small"
                     >
                         <ButtonIconLabel icon="add">
-                            Add information
+                            Add Variable
                         </ButtonIconLabel>
                     </Button>
                 </div>

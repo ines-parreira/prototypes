@@ -21,7 +21,7 @@ type Props = {
     error?: string
     isDisabled?: boolean
     isRequired?: boolean
-    label?: string
+    label?: ReactNode
     onChange: (nextValue: string) => void
 
     /**

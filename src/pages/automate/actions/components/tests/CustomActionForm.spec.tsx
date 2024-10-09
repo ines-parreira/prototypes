@@ -103,7 +103,7 @@ describe('<CustomActionForm />', () => {
                 }
             )
             fireEvent.change(
-                screen.getByLabelText('Instructions for AI Agent', {
+                screen.getByLabelText('Action description', {
                     exact: false,
                 }),
                 {

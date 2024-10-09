@@ -5,6 +5,7 @@ import {useHistory, useParams, Link} from 'react-router-dom'
 import {Controller, FormProvider, useFieldArray, useForm} from 'react-hook-form'
 import _cloneDeep from 'lodash/cloneDeep'
 
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
@@ -337,12 +338,26 @@ const TemplateActionForm = ({configuration, template}: Props) => {
                             render={({field, fieldState}) => (
                                 <InputField
                                     className={css.formItem}
-                                    label="Name"
-                                    isRequired
+                                    label={
+                                        <div className={css.labelContainer}>
+                                            Action name
+                                            <span>*</span>
+                                            <IconTooltip
+                                                className={css.tooltip}
+                                                tooltipProps={{
+                                                    placement: 'top-start',
+                                                }}
+                                            >
+                                                AI Agent uses the Action name to
+                                                identify and match it with a
+                                                customer’s question.
+                                            </IconTooltip>
+                                        </div>
+                                    }
                                     isDisabled={field.disabled}
                                     type="text"
                                     placeholder="e.g. Update shipping address"
-                                    caption="Provide an internal name for this Action."
+                                    caption="Provide a name for this Action. e.g. Cancel order in Shopify"
                                     error={fieldState.error?.message}
                                     {...field}
                                 />
@@ -358,17 +373,53 @@ const TemplateActionForm = ({configuration, template}: Props) => {
                             render={({field, fieldState}) => (
                                 <TextArea
                                     className={css.formItem}
-                                    label="Instructions for AI Agent"
-                                    isRequired
+                                    label={
+                                        <div className={css.labelContainer}>
+                                            Action description
+                                            <span>*</span>
+                                            <IconTooltip
+                                                className={css.tooltip}
+                                                tooltipProps={{
+                                                    placement: 'right',
+                                                }}
+                                            >
+                                                The Action description
+                                                complements the Action name to
+                                                help AI Agent match this Action
+                                                with a customer’s question.
+                                                <ul>
+                                                    <li>
+                                                        Describe what the Action
+                                                        does and doesn't do
+                                                        (e.g. This Action
+                                                        cancels the order and
+                                                        refunds the customer
+                                                        with the full amount. It
+                                                        does not partially
+                                                        cancel orders).
+                                                    </li>
+                                                    <li>
+                                                        Describe scenario(s) in
+                                                        which the Action is
+                                                        needed. It's also
+                                                        helpful to include
+                                                        examples of a customer
+                                                        question that requires
+                                                        this Action.
+                                                    </li>
+                                                </ul>
+                                            </IconTooltip>
+                                        </div>
+                                    }
                                     placeholder="e.g. Cancel the customer’s full order and refund the full order amount. When a customer wants to cancel part of the order, hand over to an agent."
                                     isDisabled={field.disabled}
-                                    caption="Describe what the Action does and give AI Agent additional directions on how to perform this Action."
+                                    caption="Describe what the Action does. e.g. This Action will cancel the customer’s order in Shopify upon request."
                                     error={fieldState.error?.message}
                                     {...field}
                                 />
                             )}
                             rules={{
-                                required: 'Instructions are required',
+                                required: 'Action description is required',
                             }}
                             disabled={isActionUpserting}
                         />

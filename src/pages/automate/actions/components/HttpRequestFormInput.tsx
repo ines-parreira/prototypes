@@ -8,7 +8,6 @@ import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilde
 import TextareaWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextareaWithVariables'
 import MethodSelect from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/MethodSelect'
 import Headers from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/Headers'
-import TextArea from 'pages/common/forms/TextArea'
 import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -93,11 +92,6 @@ export default function HttpRequestFormInput({
     const hasBody =
         httpContentType.value === 'application/json' ||
         httpContentType.value === 'application/x-www-form-urlencoded'
-
-    const {field: outputDescription} = useController({
-        name: 'http.outputs.0.description',
-        control,
-    })
 
     return (
         <section>
@@ -218,14 +212,6 @@ export default function HttpRequestFormInput({
                         </div>
                     </div>
                 )}
-                <TextArea
-                    className={css.formItem}
-                    label="Request results explanation for AI Agent (optional)"
-                    isDisabled={disabled}
-                    onChange={outputDescription.onChange}
-                    value={outputDescription.value}
-                    caption="Provide additional guidance for AI Agent to interpret the HTTP request results."
-                />
             </div>
         </section>
     )

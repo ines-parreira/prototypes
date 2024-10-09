@@ -257,7 +257,7 @@ describe('<EditActionFormView />', () => {
             }
         )
 
-        expect(screen.getByLabelText(/Name/)).toHaveValue('test1')
+        expect(screen.getByLabelText(/Action name/)).toHaveValue('test1')
     })
 
     it('should redirect back to actions if template does not exist', () => {
