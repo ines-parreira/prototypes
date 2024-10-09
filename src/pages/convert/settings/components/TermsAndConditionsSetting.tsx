@@ -23,6 +23,9 @@ type TermsAndConditionsSettingProps = {
     chatIntegration: Map<any, any>
 }
 
+const defaultDisclaimerMessage =
+    'By entering the email address above, you opt in to receive marketing emails from us. You can unsubscribe at any time.'
+
 export const TermsAndConditionsSetting = ({
     disclaimerSettings,
     onDisclaimerSettingsChange,
@@ -33,7 +36,7 @@ export const TermsAndConditionsSetting = ({
         () =>
             disclaimerSettings.disclaimerMap[
                 disclaimerSettings.selectedLanguage
-            ] || '',
+            ] ?? defaultDisclaimerMessage,
         [disclaimerSettings]
     )
 

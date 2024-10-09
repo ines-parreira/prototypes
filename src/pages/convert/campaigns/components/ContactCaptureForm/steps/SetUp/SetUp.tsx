@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {UncontrolledTooltip} from 'reactstrap'
 import classnames from 'classnames'
+import {Link} from 'react-router-dom'
 import {
     StepProps,
     TransitoryAttachmentData,
@@ -10,11 +11,14 @@ import {getIconFromType} from 'state/integrations/helpers'
 import {IntegrationType} from 'models/integration/constants'
 import {ShopifyCustomerTagsInput} from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
 import {ErrorMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/styled'
+import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
 import css from './SetUp.less'
 
 export const SetUp = (props: StepProps) => {
     const tagsLimit = 5
     const {attachmentData, setAttachmentData, setNextButtonActive} = props
+
+    const {chatIntegration} = useIntegrationContext()
 
     const [shopifyTarget, setShopifyTarget] =
         useState<TransitoryAttachmentSubscriber>({
@@ -79,7 +83,15 @@ export const SetUp = (props: StepProps) => {
                     <span className={css.subText}>
                         To collect Email marketing consent, you must set up
                         terms of service and a privacy policy in line with your
-                        region’s regulations. You’ll do this in the next step.
+                        region’s regulations. Manage your privacy policy
+                        disclaimer in{' '}
+                        <Link
+                            to={`/app/convert/${chatIntegration?.id}/settings`}
+                            target="_blank"
+                        >
+                            Settings
+                        </Link>
+                        .
                     </span>
                     <div className={css.tagsContainer}>
                         <span className={css.text}>
