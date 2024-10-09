@@ -109,7 +109,7 @@ export const OverviewMetricConfig: Record<
     [OverviewMetric.TicketsCreated]: {
         title: TICKETS_CREATED_LABEL,
         hint: {
-            title: 'Number of inbound and outbound tickets created within the selected timeframe.\nWhen filtering by an agent, only tickets created by the agent are counted.',
+            title: 'Number of inbound and outbound tickets created within the selected timeframe.',
             link: 'https://link.gorgias.com/bji',
         },
         interpretAs: 'neutral',
