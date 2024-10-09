@@ -7,6 +7,7 @@ import {customFieldsTicketCountTimeSeriesQueryFactory} from 'models/reporting/qu
 import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {tagsTicketCountTimeSeriesFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
@@ -22,6 +23,7 @@ import {
     useBillableTicketDatasetTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
     useMessagesSentTimeSeries,
+    useTagsTicketCountTimeSeries,
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
@@ -168,6 +170,34 @@ describe('time series', () => {
                     timezone,
                     granularity,
                     customFieldId
+                )
+            )
+        })
+    })
+
+    describe('useTagsTicketCountTimeSeries', () => {
+        it('should render expected query', () => {
+            renderHook(
+                ({statsFilters, timezone, granularity}) =>
+                    useTagsTicketCountTimeSeries(
+                        statsFilters,
+                        timezone,
+                        granularity
+                    ),
+                {
+                    initialProps: {
+                        statsFilters,
+                        timezone,
+                        granularity,
+                    },
+                }
+            )
+
+            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+                tagsTicketCountTimeSeriesFactory(
+                    statsFilters,
+                    timezone,
+                    granularity
                 )
             )
         })

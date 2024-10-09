@@ -1,0 +1,208 @@
+import {OrderDirection} from 'models/api/types'
+import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {
+    TicketTagsEnrichedDimension,
+    TicketTagsEnrichedMeasure,
+} from 'models/reporting/cubes/TicketTagsEnrichedCube'
+import {
+    tagsTicketCountDrillDownQueryFactory,
+    tagsTicketCountQueryFactory,
+    tagsTicketCountTimeSeriesFactory,
+} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'models/reporting/types'
+import {StatsFilters, TagFilterInstanceId} from 'models/stat/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
+    formatReportingQueryDate,
+    getFilterDateRange,
+    NotSpamNorTrashedTicketsFilter,
+    statsFiltersToReportingFilters,
+    TicketStatsFiltersMembers,
+} from 'utils/reporting'
+
+describe('tagsTicketCount query factories', () => {
+    const periodStart = '2021-05-29T00:00:00.000'
+    const periodEnd = '2021-06-04T23:59:59.000'
+    const statsFilters = {
+        period: {
+            start_datetime: periodStart,
+            end_datetime: periodEnd,
+        },
+    }
+    const granularity = ReportingGranularity.Day
+    const tagId = '123'
+    const timezone = 'UTC'
+    const sorting = OrderDirection.Asc
+
+    describe('tagsTicketCountQueryFactory', () => {
+        it('should build a query', () => {
+            const query = tagsTicketCountQueryFactory(statsFilters, timezone)
+
+            expect(query).toEqual({
+                measures: [TicketTagsEnrichedMeasure.TicketCount],
+                dimensions: [TicketTagsEnrichedDimension.TagId],
+                timezone,
+                filters: [
+                    ...NotSpamNorTrashedTicketsFilter,
+                    ...statsFiltersToReportingFilters(
+                        TicketStatsFiltersMembers,
+                        statsFilters
+                    ),
+                ],
+            })
+        })
+
+        it('should build a query with sorting', () => {
+            const query = tagsTicketCountQueryFactory(
+                statsFilters,
+                timezone,
+                sorting
+            )
+
+            expect(query).toEqual({
+                measures: [TicketTagsEnrichedMeasure.TicketCount],
+                dimensions: [TicketTagsEnrichedDimension.TagId],
+                timezone,
+                filters: [
+                    ...NotSpamNorTrashedTicketsFilter,
+                    ...statsFiltersToReportingFilters(
+                        TicketStatsFiltersMembers,
+                        statsFilters
+                    ),
+                ],
+                order: [[TicketMeasure.TicketCount, sorting]],
+            })
+        })
+    })
+
+    describe('tagsTicketCountTimeSeriesFactory', () => {
+        it('should build a query with Time dimensions', () => {
+            const query = tagsTicketCountTimeSeriesFactory(
+                statsFilters,
+                timezone,
+                granularity,
+                sorting
+            )
+
+            expect(query).toEqual({
+                ...tagsTicketCountQueryFactory(statsFilters, timezone, sorting),
+                timeDimensions: [
+                    {
+                        dimension: TicketTagsEnrichedDimension.Timestamp,
+                        granularity,
+                        dateRange: getFilterDateRange(statsFilters.period),
+                    },
+                ],
+            })
+        })
+    })
+
+    describe('tagsTicketCountTimeSeriesFactory', () => {
+        it('should build a query with tagId and Tagging timestamp', () => {
+            const periodStart = '2021-05-30T00:00:00.000'
+            const periodEnd = '2021-05-30T23:59:59.000'
+            const tagNarrowedPeriod = {
+                start_datetime: periodStart,
+                end_datetime: periodEnd,
+            }
+
+            const query = tagsTicketCountDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                tagId,
+                tagNarrowedPeriod,
+                sorting
+            )
+
+            expect(query).toEqual({
+                ...tagsTicketCountQueryFactory(statsFilters, timezone, sorting),
+                dimensions: [TicketDimension.TicketId],
+                filters: [
+                    ...tagsTicketCountQueryFactory(
+                        statsFilters,
+                        timezone,
+                        sorting
+                    ).filters,
+                    {
+                        member: TicketTagsEnrichedDimension.TagId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [tagId],
+                    },
+                    {
+                        member: TicketTagsEnrichedDimension.Timestamp,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [
+                            formatReportingQueryDate(
+                                tagNarrowedPeriod.start_datetime
+                            ),
+                            formatReportingQueryDate(
+                                tagNarrowedPeriod.end_datetime
+                            ),
+                        ],
+                    },
+                ],
+            })
+        })
+
+        it('should build a query with tagId and Tagging timestamp and tag filters', () => {
+            const periodStart = '2021-05-30T00:00:00.000'
+            const periodEnd = '2021-05-30T23:59:59.000'
+            const tagNarrowedPeriod = {
+                start_datetime: periodStart,
+                end_datetime: periodEnd,
+            }
+            const filters: StatsFilters = {
+                ...statsFilters,
+                tags: [
+                    {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [1, 2],
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                    {
+                        operator: LogicalOperatorEnum.NOT_ONE_OF,
+                        values: [4, 5],
+                        filterInstanceId: TagFilterInstanceId.Second,
+                    },
+                ],
+            }
+
+            const query = tagsTicketCountDrillDownQueryFactory(
+                filters,
+                timezone,
+                tagId,
+                tagNarrowedPeriod,
+                sorting
+            )
+
+            expect(query).toEqual({
+                ...tagsTicketCountQueryFactory(filters, timezone, sorting),
+                dimensions: [TicketDimension.TicketId],
+                filters: [
+                    ...tagsTicketCountQueryFactory(filters, timezone, sorting)
+                        .filters,
+                    {
+                        member: TicketTagsEnrichedDimension.TagId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [tagId],
+                    },
+                    {
+                        member: TicketTagsEnrichedDimension.Timestamp,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [
+                            formatReportingQueryDate(
+                                tagNarrowedPeriod.start_datetime
+                            ),
+                            formatReportingQueryDate(
+                                tagNarrowedPeriod.end_datetime
+                            ),
+                        ],
+                    },
+                ],
+            })
+        })
+    })
+})

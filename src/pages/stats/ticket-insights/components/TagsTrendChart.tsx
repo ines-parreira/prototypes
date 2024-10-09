@@ -1,21 +1,20 @@
 import React from 'react'
 
 import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
-import {useTicketsFieldTrend} from 'hooks/reporting/useTicketsFieldTrend'
-import {LINES_COLORS} from 'pages/stats/constants'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import css from 'pages/stats/TicketInsightsFieldTrend.less'
+import {LINES_COLORS} from 'pages/stats/constants'
+import {useTagsTrend} from 'pages/stats/ticket-insights/hooks/useTagsChartTrend'
 
-export function TicketInsightsFieldTrend() {
+export function TagsTrendChart() {
     const {data, legendInfo, legendDatasetVisibility, granularity, isFetching} =
-        useTicketsFieldTrend()
+        useTagsTrend()
 
     return (
         <ChartCard
             title="Trend"
             hint={{
-                title: 'Evolution of the top 10 used values during the selected timeframe. Values are grouped by the date the value was added to a ticket.',
+                title: 'Evolution of the top 10 used tags during the selected timeframe. Values are grouped by the date the tag was added to a ticket.',
             }}
         >
             <LineChart
@@ -29,7 +28,7 @@ export function TicketInsightsFieldTrend() {
                 displayLegend
                 toggleLegend
                 legendOnLeft
-                wrapperclassNames={css.chart}
+                wrapperclassNames="full-width"
                 skeletonHeight={328}
                 defaultDatasetVisibility={legendDatasetVisibility}
                 options={{

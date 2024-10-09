@@ -5,15 +5,16 @@ import {FilterKey} from 'models/stat/types'
 import DashboardSection from 'pages/stats/DashboardSection'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import {TagsTrendChart} from 'pages/stats/ticket-insights/components/TagsTrendChart'
 
-export const NEW_TAGS_TITLE = 'Tags'
+export const TAGS_TITLE = 'Tags'
 
 export function Tags() {
     const getGridCellSize = useGridSize()
 
     return (
         <div className="full-width">
-            <StatsPage title={NEW_TAGS_TITLE}>
+            <StatsPage title={TAGS_TITLE}>
                 <DashboardSection>
                     <DashboardGridCell
                         size={getGridCellSize(12)}
@@ -34,6 +35,15 @@ export function Tags() {
                                 },
                             }}
                         />
+                    </DashboardGridCell>
+                </DashboardSection>
+
+                <DashboardSection>
+                    <DashboardGridCell
+                        size={getGridCellSize(12)}
+                        className="pb-0"
+                    >
+                        <TagsTrendChart />
                     </DashboardGridCell>
                 </DashboardSection>
             </StatsPage>

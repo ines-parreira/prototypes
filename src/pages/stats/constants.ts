@@ -1,3 +1,4 @@
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {Moment} from 'moment'
 import {TicketChannel} from 'business/types/ticket'
 import {
@@ -77,3 +78,16 @@ export const getNewSetOfRanges = (): {[key: string]: [Moment, Moment]} => {
         'Past year': [last365DaysStartingFromToday(), endOfToday()],
     }
 }
+
+export const LINES_COLORS = [
+    colors['🖥 Modern'].Main.Variations.Primary_2.value,
+    colors['🖥 Modern'].Feedback.Variations.Warning_4.value,
+    colors['📺 Classic'].Accessory.Purple_text.value,
+    colors['📺 Classic'].Accessory.Yellow_text.value,
+    colors['📺 Classic'].Accessory.Blue_text.value,
+    colors['📺 Classic'].Accessory.Brown_text.value,
+    colors['🖥 Modern'].Neutral.Grey_5.value,
+    colors['📺 Classic'].Feedback.Variations.Success_4.value,
+    colors['📺 Classic'].Accessory.Navy_text.value,
+    colors['🖤 Dark'].Main.Secondary.value,
+]

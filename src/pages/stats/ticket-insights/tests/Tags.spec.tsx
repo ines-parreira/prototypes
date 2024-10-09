@@ -1,6 +1,6 @@
 import React from 'react'
 import {screen} from '@testing-library/react'
-import {Tags, NEW_TAGS_TITLE} from 'pages/stats/ticket-insights/components/Tags'
+import {Tags, TAGS_TITLE} from 'pages/stats/ticket-insights/components/Tags'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {RootState} from 'state/types'
@@ -8,10 +8,13 @@ import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
 import {defaultStatsFilters} from 'state/stats/statsSlice'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {TagsTrendChart} from 'pages/stats/ticket-insights/components/TagsTrendChart'
 
 jest.mock('pages/stats/common/filters/FiltersPanel')
+jest.mock('pages/stats/ticket-insights/components/TagsTrendChart')
 
 const filtersPanelMock = assumeMock(FiltersPanel)
+const TagsTrendChartMock = assumeMock(TagsTrendChart)
 
 describe('<Tags>', () => {
     const defaultState = {
@@ -26,12 +29,13 @@ describe('<Tags>', () => {
 
     beforeEach(() => {
         filtersPanelMock.mockImplementation(() => <div>FilterPanel</div>)
+        TagsTrendChartMock.mockImplementation(() => <div />)
     })
 
     it('should render new tags page', () => {
         renderWithStore(<Tags />, defaultState)
 
-        expect(screen.getByText(NEW_TAGS_TITLE)).toBeInTheDocument()
+        expect(screen.getByText(TAGS_TITLE)).toBeInTheDocument()
     })
 
     it('should contain filters panel component', () => {

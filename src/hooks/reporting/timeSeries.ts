@@ -17,6 +17,7 @@ import {
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
+import {tagsTicketCountTimeSeriesFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 
 export function useTicketsCreatedTimeSeries(
     filters: StatsFilters,
@@ -71,6 +72,22 @@ export const useCustomFieldsTicketCountTimeSeries = (
             timezone,
             granularity,
             customFieldId,
+            sorting
+        )
+    )
+}
+
+export const useTagsTicketCountTimeSeries = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    sorting?: OrderDirection
+) => {
+    return useTimeSeriesPerDimension(
+        tagsTicketCountTimeSeriesFactory(
+            filters,
+            timezone,
+            granularity,
             sorting
         )
     )
