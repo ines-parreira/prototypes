@@ -30,10 +30,13 @@ import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShouto
 import {SHORT_FORMAT} from 'pages/stats/common/utils'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import {useGridSize} from 'hooks/useGridSize'
-import {activeParams, CustomFieldSelect} from 'pages/stats/CustomFieldSelect'
-import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
-import {TicketInsightsFieldTrend} from 'pages/stats/TicketInsightsFieldTrend'
-import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/CustomFieldsTicketCountBreakdownReport'
+import {
+    activeParams,
+    CustomFieldSelect,
+} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
+import {TicketDistributionTable} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
+import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
+import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {FilterKey} from 'models/stat/types'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'

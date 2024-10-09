@@ -2,7 +2,7 @@ import React from 'react'
 
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import MetricCard from 'pages/stats/MetricCard'
-import TrendBadge from 'pages/stats/TrendBadge'
+import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 
 import {TIME_SAVED_BY_AGENTS} from './constants'

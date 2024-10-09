@@ -4,7 +4,7 @@ import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMet
 import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
 import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
-import {TREND_BADGE_FORMAT} from 'pages/stats/TrendBadge'
+import {TREND_BADGE_FORMAT} from 'pages/stats/common/components/TrendBadge'
 import {RootState} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {AutoQAMetric} from 'state/ui/stats/types'

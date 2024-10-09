@@ -19,7 +19,7 @@ import {account} from 'fixtures/account'
 
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
-import TrendBadge from 'pages/stats/TrendBadge'
+import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
 import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
@@ -85,7 +85,7 @@ const useAutomateMetricsTrendV2Mock = assumeMock(useAutomateMetricsTrendV2)
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
-jest.mock('pages/stats/TrendBadge')
+jest.mock('pages/stats/common/components/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({

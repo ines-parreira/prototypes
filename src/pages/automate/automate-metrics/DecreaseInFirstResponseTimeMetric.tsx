@@ -1,7 +1,7 @@
 import React from 'react'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import MetricCard from 'pages/stats/MetricCard'
-import TrendBadge from 'pages/stats/TrendBadge'
+import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {DECREASE_IN_FIRST_RESPONSE} from './constants'
 import {BaseAutomateMetricProps} from './types'
 import {getTrendProps, toDuration} from './utils'

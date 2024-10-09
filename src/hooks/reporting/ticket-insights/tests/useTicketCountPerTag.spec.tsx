@@ -1,0 +1,369 @@
+import {act, renderHook} from '@testing-library/react-hooks'
+import _keyBy from 'lodash/keyBy'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import {OrderDirection} from 'models/api/types'
+import {tags} from 'fixtures/tag'
+import {useTicketCountPerTag} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
+import {useTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
+import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
+import {ReportingGranularity} from 'models/reporting/types'
+import {Period} from 'models/stat/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {getFilterDateRange} from 'utils/reporting'
+import {assumeMock} from 'utils/testing'
+
+jest.mock('hooks/reporting/timeSeries')
+const useTagsTicketCountTimeSeriesMock = assumeMock(
+    useTagsTicketCountTimeSeries
+)
+const mockStore = configureMockStore<RootState, StoreDispatch>()
+
+describe('useTicketCountPerTag', () => {
+    const period: Period = {
+        start_datetime: '2024-09-26T00:00:00.000',
+        end_datetime: '2024-09-27T00:00:00.000',
+    }
+    const defaultState = {
+        entities: {
+            tags: _keyBy(tags, 'id'),
+        },
+        stats: {
+            filters: {period},
+        },
+        ui: {
+            stats: {
+                cleanStatsFilters: {period},
+            },
+        },
+    } as RootState
+
+    const granularity = ReportingGranularity.Day
+    const tagId = '1'
+    const anotherTagId = '2'
+    const thirdTagId = '3'
+    const exampleResponse = {
+        [tagId]: [
+            [
+                {
+                    dateTime: '2024-09-26T00:00:00.000',
+                    value: 37,
+                    label: 'TicketTagsEnriched.ticketCount',
+                },
+
+                {
+                    dateTime: '2024-09-27T00:00:00.000',
+                    value: 18,
+                    label: 'TicketTagsEnriched.ticketCount',
+                },
+            ],
+        ],
+        [anotherTagId]: [
+            [
+                {
+                    dateTime: '2024-09-26T00:00:00.000',
+                    value: 12,
+                    label: 'TicketTagsEnriched.ticketCount',
+                },
+
+                {
+                    dateTime: '2024-09-27T00:00:00.000',
+                    value: 45,
+                    label: 'TicketTagsEnriched.ticketCount',
+                },
+            ],
+        ],
+        [thirdTagId]: [
+            [
+                {
+                    dateTime: '2024-09-26T00:00:00.000',
+                    value: 24,
+                    label: 'TicketTagsEnriched.ticketCount',
+                },
+
+                {
+                    dateTime: '2024-09-27T00:00:00.000',
+                    value: 30,
+                    label: 'TicketTagsEnriched.ticketCount',
+                },
+            ],
+        ],
+    }
+    beforeEach(() => {
+        useTagsTicketCountTimeSeriesMock.mockReturnValue({
+            data: exampleResponse,
+            isLoading: false,
+        } as any)
+    })
+
+    it('should return formatted data and dateTimes', () => {
+        const {result} = renderHook(() => useTicketCountPerTag(), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+
+        expect(result.current.dateTimes).toEqual(
+            getPeriodDateTimes(getFilterDateRange(period), granularity)
+        )
+
+        expect(result.current.data).toContainEqual({
+            tagId,
+            tag: tags.find((tag) => String(tag.id) === tagId),
+            total: exampleResponse[tagId][0].reduce(
+                (sum, item) => sum + item.value,
+                0
+            ),
+            timeSeries: exampleResponse[tagId][0],
+        })
+        expect(result.current.data).toContainEqual({
+            tagId: anotherTagId,
+            tag: tags.find((tag) => String(tag.id) === anotherTagId),
+            total: exampleResponse[anotherTagId][0].reduce(
+                (sum, item) => sum + item.value,
+                0
+            ),
+            timeSeries: exampleResponse[anotherTagId][0],
+        })
+    })
+
+    it('should return loading and empty array when no data', () => {
+        useTagsTicketCountTimeSeriesMock.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+        } as any)
+        const {result} = renderHook(() => useTicketCountPerTag(), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+
+        expect(result.current.dateTimes).toEqual(
+            getPeriodDateTimes(getFilterDateRange(period), granularity)
+        )
+
+        expect(result.current.data).toEqual([])
+        expect(result.current.isLoading).toEqual(true)
+    })
+
+    it('should return tags with no data items', () => {
+        useTagsTicketCountTimeSeriesMock.mockReturnValue({
+            data: {[tagId]: []},
+            isLoading: false,
+        } as any)
+        const {result} = renderHook(() => useTicketCountPerTag(), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+
+        expect(result.current.dateTimes).toEqual(
+            getPeriodDateTimes(getFilterDateRange(period), granularity)
+        )
+
+        expect(result.current.data).toEqual([
+            expect.objectContaining({
+                tagId: tagId,
+                tag: tags.find((tag) => String(tag.id) === tagId),
+                total: 0,
+                timeSeries: [],
+            }),
+        ])
+        expect(result.current.isLoading).toEqual(false)
+    })
+
+    describe('sorting', () => {
+        it('should sort by tag name', () => {
+            const {result} = renderHook(() => useTicketCountPerTag(), {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            })
+
+            act(() => {
+                result.current.setOrdering('tag')
+            })
+
+            expect(result.current.data).toEqual([
+                expect.objectContaining({
+                    tag: expect.objectContaining({
+                        name: 'rejected',
+                    }),
+                }),
+                expect.objectContaining({
+                    tag: expect.objectContaining({
+                        name: 'refund',
+                    }),
+                }),
+                expect.objectContaining({
+                    tag: expect.objectContaining({
+                        name: 'billing',
+                    }),
+                }),
+            ])
+
+            act(() => {
+                result.current.setOrdering('tag')
+            })
+
+            expect(result.current.data).toEqual([
+                expect.objectContaining({
+                    tag: expect.objectContaining({
+                        name: 'billing',
+                    }),
+                }),
+                expect.objectContaining({
+                    tag: expect.objectContaining({
+                        name: 'refund',
+                    }),
+                }),
+
+                expect.objectContaining({
+                    tag: expect.objectContaining({
+                        name: 'rejected',
+                    }),
+                }),
+            ])
+        })
+
+        it('should sort by total column', () => {
+            const {result} = renderHook(() => useTicketCountPerTag(), {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            })
+
+            act(() => {
+                result.current.setOrdering('total')
+            })
+
+            expect(result.current.data).toEqual([
+                expect.objectContaining({
+                    total: 57,
+                }),
+                expect.objectContaining({
+                    total: 55,
+                }),
+                expect.objectContaining({
+                    total: 54,
+                }),
+            ])
+
+            act(() => {
+                result.current.setOrdering('total')
+            })
+
+            expect(result.current.data).toEqual([
+                expect.objectContaining({
+                    total: 54,
+                }),
+                expect.objectContaining({
+                    total: 55,
+                }),
+                expect.objectContaining({
+                    total: 57,
+                }),
+            ])
+        })
+
+        it('should sort by specific data column', () => {
+            const {result} = renderHook(() => useTicketCountPerTag(), {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            })
+
+            act(() => {
+                result.current.setOrdering(0)
+            })
+
+            expect(result.current.data).toEqual([
+                expect.objectContaining({
+                    timeSeries: expect.arrayContaining([
+                        expect.objectContaining({
+                            value: 37,
+                        }),
+                    ]),
+                }),
+                expect.objectContaining({
+                    timeSeries: expect.arrayContaining([
+                        expect.objectContaining({
+                            value: 24,
+                        }),
+                    ]),
+                }),
+                expect.objectContaining({
+                    timeSeries: expect.arrayContaining([
+                        expect.objectContaining({
+                            value: 12,
+                        }),
+                    ]),
+                }),
+            ])
+
+            act(() => {
+                result.current.setOrdering(0)
+            })
+
+            expect(result.current.data).toEqual([
+                expect.objectContaining({
+                    timeSeries: expect.arrayContaining([
+                        expect.objectContaining({
+                            value: 12,
+                        }),
+                    ]),
+                }),
+                expect.objectContaining({
+                    timeSeries: expect.arrayContaining([
+                        expect.objectContaining({
+                            value: 24,
+                        }),
+                    ]),
+                }),
+                expect.objectContaining({
+                    timeSeries: expect.arrayContaining([
+                        expect.objectContaining({
+                            value: 37,
+                        }),
+                    ]),
+                }),
+            ])
+        })
+
+        it('should allow changing the sorting', () => {
+            const {result} = renderHook(() => useTicketCountPerTag(), {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            })
+            expect(result.current.order).toEqual({
+                column: 'tag',
+                direction: OrderDirection.Asc,
+            })
+
+            act(() => {
+                result.current.setOrdering('total')
+            })
+            expect(result.current.order).toEqual({
+                column: 'total',
+                direction: OrderDirection.Desc,
+            })
+            act(() => {
+                result.current.setOrdering('total')
+            })
+            expect(result.current.order).toEqual({
+                column: 'total',
+                direction: OrderDirection.Asc,
+            })
+        })
+    })
+})

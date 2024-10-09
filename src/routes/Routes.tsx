@@ -9,7 +9,10 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
 
+import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
+import AutomateAiAgentStats from 'pages/stats/automate/ai-agent/AutomateAiAgentStats'
 import {logPageChange} from 'common/segment'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {PageSection} from 'config/pages'
@@ -100,7 +103,7 @@ import SelfServiceHelpCentersProvider from 'pages/automate/common/providers/Self
 import OrderManagementPreviewProvider from 'pages/automate/orderManagement/OrderManagementPreviewProvider'
 import ConnectedChannelsViewContainer from 'pages/automate/connectedChannels/ConnectedChannelsViewContainer'
 import SelfServiceContactFormsProvider from 'pages/automate/common/providers/SelfServiceContactFormsProvider'
-import {SupportPerformanceTicketInsights} from 'pages/stats/SupportPerformanceTicketInsights'
+import {SupportPerformanceTicketInsights} from 'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
 import AutomateStatsPaywall from 'pages/stats/AutomateStatsPaywall'
 import TrainMyAiViewContainer from 'pages/automate/trainMyAi/TrainMyAiViewContainer'
 import ActionsViewContainer from 'pages/automate/actions/ActionsViewContainer'
@@ -148,9 +151,6 @@ import {AiAgentGuidanceLibraryContainer} from 'pages/automate/aiAgent/AiAgentGui
 import {AiAgentGuidanceAiSuggestionNewContainer} from 'pages/automate/aiAgent/AiAgentGuidanceAiSuggestionNewContainer'
 import AiAgentStoreConfigurationProvider from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationProvider'
 import AiAgentOnboardingWizard from 'pages/automate/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
-import {Tags} from 'pages/stats/ticket-insights/components/Tags'
-import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
-import AutomateAiAgentStats from 'pages/stats/automate/ai-agent/AutomateAiAgentStats'
 import SettingsRoutes from 'routes/settings'
 import {ConvertSettingsView} from 'pages/convert/settings/ConvertSettingsView'
 

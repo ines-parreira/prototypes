@@ -23,7 +23,7 @@ import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStat
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {getFilterDateRange} from 'utils/reporting'
 import {formatDates} from 'pages/stats/utils'
-import {activeParams} from 'pages/stats/CustomFieldSelect'
+import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'
 import {useAutomateMetricsTimeseriesV2} from 'hooks/reporting/automate/useAutomationDatasetV2'

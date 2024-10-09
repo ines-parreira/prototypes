@@ -19,7 +19,7 @@ import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {
     activeParams,
     selectDropdownTextFields,
-} from 'pages/stats/CustomFieldSelect'
+} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {DropdownOption} from 'pages/stats/types'
 import {getCustomFieldFilterById} from 'state/stats/selectors'
 import {mergeCustomFieldsFilter} from 'state/stats/statsSlice'

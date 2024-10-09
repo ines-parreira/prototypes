@@ -5,7 +5,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import css from 'pages/stats/CustomFieldSelect.less'
+import css from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect.less'
 import {
     metricLabels,
     metrics,

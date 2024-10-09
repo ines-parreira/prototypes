@@ -1,7 +1,7 @@
 import moment from 'moment'
 import React from 'react'
 
-import TrendBadge from 'pages/stats/TrendBadge'
+import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import {
     NOT_AVAILABLE_PLACEHOLDER,

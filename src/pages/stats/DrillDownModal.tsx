@@ -20,7 +20,7 @@ import {
     VoiceMetric,
 } from 'state/ui/stats/types'
 import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
-import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
+import {TicketDrillDownTableContent} from 'pages/stats/ticket-insights/ticket-fields/TicketDrillDownTableContent'
 import {getDrillDownHook} from 'pages/stats/DrillDownHookConfig'
 import {DrillDownTable} from './DrillDownTable'
 import VoiceCallDrillDownTableContent from './voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'

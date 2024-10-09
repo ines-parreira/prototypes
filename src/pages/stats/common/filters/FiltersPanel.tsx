@@ -47,7 +47,7 @@ import {CampaignStatusesFilterFromContext} from 'pages/stats/convert/components/
 import {
     activeParams,
     selectDropdownTextFields,
-} from 'pages/stats/CustomFieldSelect'
+} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 
 type Props = {

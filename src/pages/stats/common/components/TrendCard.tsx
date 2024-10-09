@@ -9,7 +9,7 @@ import {
 } from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
-import TrendBadge from 'pages/stats/TrendBadge'
+import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {TooltipData} from 'pages/stats/types'
 import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
 import {

@@ -12,7 +12,7 @@ import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
 import {AutomatedInteractionsMetric} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'
-import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
+import {TicketDistributionTable} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import AutomateAiAgentStats from '../AutomateAiAgentStats'
 
 jest.mock(
@@ -84,26 +84,38 @@ jest.mock('pages/stats/support-performance/agents/AgentsTable', () => ({
     AgentsTable: () => <div>agents-table</div>,
 }))
 
-jest.mock('pages/stats/CustomFieldSelect', () => ({
-    CustomFieldSelect: () => <div>custom-field-select</div>,
-}))
+jest.mock(
+    'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect',
+    () => ({
+        CustomFieldSelect: () => <div>custom-field-select</div>,
+    })
+)
 
-jest.mock('pages/stats/TicketDistributionTable', () => ({
-    TicketDistributionTable: jest.fn(() => (
-        <div>ticket-distribution-table</div>
-    )),
-}))
+jest.mock(
+    'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable',
+    () => ({
+        TicketDistributionTable: jest.fn(() => (
+            <div>ticket-distribution-table</div>
+        )),
+    })
+)
 const TicketDistributionTableMock = TicketDistributionTable as jest.Mock
 
-jest.mock('pages/stats/TicketInsightsFieldTrend', () => ({
-    TicketInsightsFieldTrend: () => <div>ticket-insights-field-trend</div>,
-}))
+jest.mock(
+    'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend',
+    () => ({
+        TicketInsightsFieldTrend: () => <div>ticket-insights-field-trend</div>,
+    })
+)
 
-jest.mock('pages/stats/CustomFieldsTicketCountBreakdownReport', () => ({
-    CustomFieldsTicketCountBreakdownReport: () => (
-        <div>custom-fields-ticket-count-breakdown-report</div>
-    ),
-}))
+jest.mock(
+    'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport',
+    () => ({
+        CustomFieldsTicketCountBreakdownReport: () => (
+            <div>custom-fields-ticket-count-breakdown-report</div>
+        ),
+    })
+)
 
 jest.mock(
     'pages/automate/automate-metrics/AutomatedInteractionsMetric',

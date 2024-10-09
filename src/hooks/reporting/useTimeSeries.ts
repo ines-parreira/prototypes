@@ -67,7 +67,7 @@ const objectMap = <T, S>(
     return mapped
 }
 
-type TimeSeriesPerDimension = Record<string, TimeSeriesDataItem[][]>
+export type TimeSeriesPerDimension = Record<string, TimeSeriesDataItem[][]>
 
 const selectPerDimension =
     <TCube extends Cubes>(query: TimeSeriesQuery<TCube>) =>

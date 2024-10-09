@@ -34,7 +34,7 @@ import {
     SlaMetric,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
-import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
+import {TicketDrillDownTableContent} from 'pages/stats/ticket-insights/ticket-fields/TicketDrillDownTableContent'
 import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
 
 import {

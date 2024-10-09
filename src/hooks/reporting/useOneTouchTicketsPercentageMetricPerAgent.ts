@@ -13,7 +13,7 @@ import {
     matchAndCalculateAllEntries,
     sortAllData,
 } from 'utils/reporting'
-import {calculateDecile} from './useCustomFieldsTicketCountPerCustomFields'
+import {calculateDecile} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 
 export const useOneTouchTicketsPercentageMetricPerAgent = (
     statsFilters: StatsFilters,

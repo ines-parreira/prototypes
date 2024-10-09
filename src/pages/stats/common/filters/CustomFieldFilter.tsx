@@ -7,7 +7,7 @@ import Filter from 'pages/stats/common/components/Filter'
 import {
     activeParams,
     selectDropdownTextFields,
-} from 'pages/stats/CustomFieldSelect'
+} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {DropdownOption} from 'pages/stats/types'
 import {
     getSelectedCustomField,

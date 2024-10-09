@@ -9,7 +9,7 @@ import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
 } from 'hooks/reporting/useMessagesSentPerHour'
-import {calculateDecile} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
+import {calculateDecile} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import {OrderDirection} from 'models/api/types'
 import {
     AgentTimeTrackingDimension,

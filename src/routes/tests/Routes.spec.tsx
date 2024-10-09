@@ -19,7 +19,7 @@ import {assumeMock, renderWithRouter} from 'utils/testing'
 import {useFlag} from 'common/flags'
 
 import Routes from 'routes/Routes'
-import {Tags} from 'pages/stats/ticket-insights/components/Tags'
+import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
 
 jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
 jest.mock('common/segment')
@@ -110,7 +110,7 @@ jest.mock('pages/stats/support-performance/auto-qa/AutoQA')
 const AutoQAMock = assumeMock(AutoQA)
 jest.mock('pages/stats/LiveOverview')
 const LiveOverviewMock = assumeMock(LiveOverview)
-jest.mock('pages/stats/ticket-insights/components/Tags')
+jest.mock('pages/stats/ticket-insights/tags/Tags')
 const TagsMock = assumeMock(Tags)
 
 const mockHistory = createBrowserHistory()

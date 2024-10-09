@@ -18,7 +18,9 @@ import {
 } from 'hooks/reporting/metricTrends'
 import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {TrendCard} from 'pages/stats/common/components/TrendCard'
-import TrendBadge, {DEFAULT_BADGE_TEXT} from 'pages/stats/TrendBadge'
+import TrendBadge, {
+    DEFAULT_BADGE_TEXT,
+} from 'pages/stats/common/components/TrendBadge'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
@@ -49,7 +51,7 @@ jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,
 }))
 
-jest.mock('pages/stats/TrendBadge')
+jest.mock('pages/stats/common/components/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
