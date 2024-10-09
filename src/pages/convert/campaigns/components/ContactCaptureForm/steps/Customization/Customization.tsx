@@ -92,12 +92,12 @@ export const Customization = (props: StepProps) => {
                 </div>
                 <span>
                     The privacy policy disclaimer for email capture should be
-                    set in Settings{' '}
+                    set in{' '}
                     <Link
                         to={`/app/convert/${chatIntegration?.id}/settings`}
                         target="_blank"
                     >
-                        here
+                        Settings
                     </Link>
                     .
                 </span>
