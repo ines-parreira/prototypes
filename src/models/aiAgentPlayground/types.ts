@@ -199,6 +199,25 @@ export type CustomerSearchResponse = {
     data: CustomerList
 }
 
+export type GetPlaygroundCustomerRequest = {
+    customer_email: string
+    account_id: number
+    http_integration_id: number
+}
+
+export type GetPlaygroundCustomerResponse = {
+    ticket: {
+        customer: {
+            id: number
+            email: string
+            firstname: string
+            lastname: string
+            name: string
+            integrations: string
+        }
+    }
+}
+
 export type CustomerList = {
     id: number
     address: string

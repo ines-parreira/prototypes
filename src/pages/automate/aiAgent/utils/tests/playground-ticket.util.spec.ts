@@ -1,6 +1,6 @@
 import {AxiosResponse} from 'axios'
-import {getCustomer} from 'models/customer/resources'
-import {Customer} from 'models/customer/types'
+import {getAiAgentCustomer} from 'models/aiAgentPlayground/resources'
+import {GetPlaygroundCustomerResponse} from 'models/aiAgentPlayground/types'
 import {
     createMockHttpIntegrationPayload,
     getTicketCustomer,
@@ -11,10 +11,10 @@ import {
     PLAYGROUND_CUSTOMER_MOCK,
 } from '../../constants'
 
-jest.mock('models/customer/resources', () => ({
-    getCustomer: jest.fn(),
+jest.mock('models/aiAgentPlayground/resources', () => ({
+    getAiAgentCustomer: jest.fn(),
 }))
-const mockGetCustomer = jest.mocked(getCustomer)
+const mockGetAiAgentCustomer = jest.mocked(getAiAgentCustomer)
 
 describe('playground-ticket util', () => {
     it('should create mock http payload', () => {
@@ -102,28 +102,38 @@ describe('playground-ticket util', () => {
                 id: '0',
             }
 
-            const result = await getTicketCustomer(
-                DEFAULT_PLAYGROUND_CUSTOMER.id
-            )
+            const result = await getTicketCustomer({
+                customer_email: DEFAULT_PLAYGROUND_CUSTOMER.email,
+                account_id: 0,
+                http_integration_id: 0,
+            })
 
             expect(result).toEqual(expected)
         })
 
         it('should return customer from API', async () => {
-            mockGetCustomer.mockResolvedValue(
+            mockGetAiAgentCustomer.mockResolvedValue(
                 Promise.resolve({
                     data: {
-                        name: 'Oliver Smith',
-                        email: 'oliver@mail.com',
-                        firstname: 'Oliver',
-                        lastname: 'Smith',
-                        integrations: {},
-                        id: 601409,
+                        ticket: {
+                            customer: {
+                                name: 'Oliver Smith',
+                                email: 'oliver@mail.com',
+                                firstname: 'Oliver',
+                                lastname: 'Smith',
+                                integrations: '{}',
+                                id: 601409,
+                            },
+                        },
                     },
-                }) as unknown as AxiosResponse<Customer>
+                }) as unknown as AxiosResponse<GetPlaygroundCustomerResponse>
             )
 
-            const result = await getTicketCustomer(601409)
+            const result = await getTicketCustomer({
+                customer_email: 'test@mail.com',
+                account_id: 0,
+                http_integration_id: 0,
+            })
 
             expect(result).toEqual({
                 name: 'Oliver Smith',

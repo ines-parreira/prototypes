@@ -1,9 +1,10 @@
 import {
     AiAgentInput,
     CreatePlaygroundBody,
+    GetPlaygroundCustomerRequest,
     MockTicketMessage,
 } from 'models/aiAgentPlayground/types'
-import {getCustomer} from 'models/customer/resources'
+import {getAiAgentCustomer} from 'models/aiAgentPlayground/resources'
 import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
@@ -144,11 +145,11 @@ export const createMockHttpIntegrationPayload = ({
 })
 
 export const getTicketCustomer = async (
-    playgroundCustomerId: number
+    body: GetPlaygroundCustomerRequest
 ): Promise<TicketCustomer> => {
-    if (playgroundCustomerId === DEFAULT_PLAYGROUND_CUSTOMER.id) {
+    if (body.customer_email === DEFAULT_PLAYGROUND_CUSTOMER.email) {
         return {
-            id: String(playgroundCustomerId),
+            id: String(DEFAULT_PLAYGROUND_CUSTOMER.id),
             name: CustomerHttpIntegrationDataMock.name,
             email: CustomerHttpIntegrationDataMock.address,
             firstname: CustomerHttpIntegrationDataMock.firstname,
@@ -157,7 +158,8 @@ export const getTicketCustomer = async (
         }
     }
 
-    const {data: customerData} = await getCustomer(playgroundCustomerId)
+    const {data} = await getAiAgentCustomer(body)
+    const customerData = data.ticket.customer
 
     return {
         id: String(customerData.id),
@@ -165,6 +167,6 @@ export const getTicketCustomer = async (
         email: customerData.email ?? '',
         firstname: customerData.firstname,
         lastname: customerData.lastname,
-        integrations: JSON.stringify(customerData.integrations),
+        integrations: customerData.integrations,
     }
 }

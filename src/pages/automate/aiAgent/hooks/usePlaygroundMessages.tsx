@@ -103,7 +103,11 @@ export const usePlaygroundMessages = ({
 
             let messageCustomer = PLAYGROUND_CUSTOMER_MOCK
             try {
-                messageCustomer = await getTicketCustomer(customer.id)
+                messageCustomer = await getTicketCustomer({
+                    customer_email: customer.email,
+                    account_id: accountId,
+                    http_integration_id: httpIntegrationId,
+                })
             } catch (error) {
                 reportError(error, {
                     tags: {team: AI_AGENT_SENTRY_TEAM},
