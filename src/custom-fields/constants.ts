@@ -1,4 +1,4 @@
-import {CustomFieldObjectTypes} from './types'
+import {CustomFieldManagedType, CustomFieldObjectTypes} from './types'
 
 export const OBJECT_TYPES = {
     TICKET: 'Ticket',
@@ -10,17 +10,41 @@ export const OBJECT_TYPE_SETTINGS: {
         LABEL: string
         TITLE_LABEL: string
         MAX_FIELDS: number
+        PLACEHOLDERS: {
+            LABEL: string
+            DESCRIPTION: string
+            DROPDOWN: Record<CustomFieldManagedType, string> & {DEFAULT: string}
+        }
     }
 } = {
     [OBJECT_TYPES.TICKET]: {
         LABEL: 'ticket',
         TITLE_LABEL: 'Ticket',
         MAX_FIELDS: 25,
+        PLACEHOLDERS: {
+            LABEL: 'e.g. Contact Reason',
+            DESCRIPTION: 'e.g. Reasons why customers reach out to us',
+            DROPDOWN: {
+                DEFAULT: 'e.g. Shipping issue::Delay',
+                contact_reason: 'e.g. Shipping issue::Delay',
+                product: 'e.g. Men::Tops::Polo shirt',
+                resolution: 'e.g. Order actions::Refund::Partial refund',
+            },
+        },
     },
     [OBJECT_TYPES.CUSTOMER]: {
         LABEL: 'customer',
         TITLE_LABEL: 'Customer',
         MAX_FIELDS: 4,
+        PLACEHOLDERS: {
+            LABEL: 'e.g. Customer Type',
+            DESCRIPTION:
+                'e.g. Capture customer type for easy recognition in future communications',
+            DROPDOWN: {
+                DEFAULT: 'e.g. Status::Membership::VIP',
+                customer_type: 'e.g. Status::Membership::VIP',
+            },
+        },
     },
 }
 
@@ -60,6 +84,7 @@ export const MANAGED_TYPES = {
     CONTACT_REASON: 'contact_reason',
     PRODUCT: 'product',
     RESOLUTION: 'resolution',
+    CUSTOMER_TYPE: 'customer_type',
     ...AI_MANAGED_TYPES,
 }
 

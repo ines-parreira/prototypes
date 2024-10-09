@@ -1,9 +1,9 @@
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useCreateCustomFieldDefinition} from 'custom-fields/hooks/queries/useCreateCustomFieldDefinition'
 import {CustomFieldInput, CustomFieldObjectTypes} from 'custom-fields/types'
 import history from 'pages/history'
-import {useCreateCustomFieldDefinition} from 'custom-fields/hooks/queries/useCreateCustomFieldDefinition'
 import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
 import FieldForm from './FieldForm'
@@ -46,7 +46,6 @@ export default function AddFieldForm({
             onSubmit={handleSubmit}
             onClose={close}
             submitLabel="Create field"
-            objectType={objectType}
         />
     )
 }

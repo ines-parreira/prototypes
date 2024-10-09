@@ -1,5 +1,3 @@
-import React from 'react'
-import {omit} from 'lodash'
 import {
     createEvent,
     fireEvent,
@@ -8,20 +6,22 @@ import {
     waitFor,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {omit} from 'lodash'
+import React from 'react'
 
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import {OBJECT_TYPE_SETTINGS, OBJECT_TYPES} from 'custom-fields/constants'
+import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
-    ticketInputFieldDefinition,
-    customFieldInputDefinition,
-    ticketDropdownFieldDefinition,
     aiManagedTicketInputFieldDefinition,
     archivedTicketInputFieldDefinition,
+    customFieldInputDefinition,
+    ticketDropdownFieldDefinition,
+    ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import {assumeMock, getLastMockCall, renderWithRouter} from 'utils/testing'
-import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import FieldForm from 'pages/settings/customFields/components/FieldForm'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
+import FieldForm from 'pages/settings/customFields/components/FieldForm'
+import {assumeMock, getLastMockCall, renderWithRouter} from 'utils/testing'
 
 import DropdownInput from '../DropdownInput'
 
@@ -258,6 +258,35 @@ describe('<FieldForm/>', () => {
             {}
         )
     })
+
+    it.each(Object.values(OBJECT_TYPES))(
+        'should show the correct placeholders when object_type=%s',
+        (objectType) => {
+            render(
+                <FieldForm
+                    {...{
+                        ...defaultProps,
+                        field: {...defaultProps.field, object_type: objectType},
+                        objectType,
+                    }}
+                />
+            )
+
+            const namePlaceholder = screen
+                .getByLabelText(/Name/)
+                .getAttribute('placeholder')
+            expect(namePlaceholder).toEqual(
+                OBJECT_TYPE_SETTINGS[objectType].PLACEHOLDERS.LABEL
+            )
+
+            const descriptionPlaceholder = screen
+                .getByLabelText(/Description/)
+                .getAttribute('placeholder')
+            expect(descriptionPlaceholder).toEqual(
+                OBJECT_TYPE_SETTINGS[objectType].PLACEHOLDERS.DESCRIPTION
+            )
+        }
+    )
 
     describe('Archived field', () => {
         it('should have an unarchive button calling update mutation', () => {

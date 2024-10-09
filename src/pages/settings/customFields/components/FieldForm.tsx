@@ -1,28 +1,27 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {set, pick} from 'lodash'
-import {Location} from 'history'
 import {Label, Tooltip} from '@gorgias/ui-kit'
+import {Location} from 'history'
+import {pick, set} from 'lodash'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import history from 'pages/history'
 
+import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
+import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
     CustomField,
     CustomFieldInput,
-    CustomFieldObjectTypes,
     isCustomField,
     isCustomFieldAIManagedType,
 } from 'custom-fields/types'
-import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
-import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
-import InputField from 'pages/common/forms/input/InputField'
-import CheckBox from 'pages/common/forms/CheckBox'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
+import CheckBox from 'pages/common/forms/CheckBox'
+import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import DropdownInput from './DropdownInput'
 import TypeSelectInput from './TypeSelectInput'
@@ -36,7 +35,6 @@ interface FieldFormProps {
     onSubmit: (field: CustomFieldInput) => Promise<void>
     onClose: () => void
     submitLabel?: string
-    objectType: CustomFieldObjectTypes
 }
 
 const pickMap = {
@@ -56,9 +54,9 @@ function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
 }
 
 export default function FieldForm(props: FieldFormProps) {
-    const customFieldTypeLabel = OBJECT_TYPE_SETTINGS[props.objectType].LABEL
-    const customFieldTitleLabel =
-        OBJECT_TYPE_SETTINGS[props.objectType].TITLE_LABEL
+    const objectTypeSettings = OBJECT_TYPE_SETTINGS[props.field.object_type]
+    const customFieldTypeLabel = objectTypeSettings.LABEL
+    const customFieldTitleLabel = objectTypeSettings.TITLE_LABEL
     const isAIManaged = isCustomFieldAIManagedType(props.field.managed_type)
     const {mutateAsync} = useUpdateCustomFieldArchiveStatus(
         // this `: 0` case should never happen
@@ -157,7 +155,7 @@ export default function FieldForm(props: FieldFormProps) {
             <InputField
                 name="label"
                 label="Name"
-                placeholder="e.g. Contact Reason"
+                placeholder={objectTypeSettings.PLACEHOLDERS.LABEL}
                 caption="Visible to agents"
                 value={form.label}
                 onChange={(val) => setValue('label', val)}
@@ -168,7 +166,7 @@ export default function FieldForm(props: FieldFormProps) {
             <TextArea
                 name="description"
                 label="Description"
-                placeholder="e.g. Reasons why customers reach out to us"
+                placeholder={objectTypeSettings.PLACEHOLDERS.DESCRIPTION}
                 caption="Not visible to agents"
                 rows={1}
                 value={form.description || undefined}
@@ -176,7 +174,7 @@ export default function FieldForm(props: FieldFormProps) {
                 className={css.formRow}
                 isDisabled={isAIManaged}
             />
-            {props.objectType === OBJECT_TYPES.TICKET && !isAIManaged && (
+            {props.field.object_type === OBJECT_TYPES.TICKET && !isAIManaged && (
                 <CheckBox
                     isChecked={form.required}
                     caption={`Enable to prevent agents from closing the ${customFieldTypeLabel} if the field is left empty. Snooze and Send actions will still work.`}
@@ -238,7 +236,7 @@ export default function FieldForm(props: FieldFormProps) {
                             value={form.definition.input_settings.choices}
                             onChange={handleChoiceChange}
                             isDisabled={isAIManaged}
-                            objectType={props.objectType}
+                            objectType={props.field.object_type}
                         />
                     </div>
                 )}
@@ -268,7 +266,8 @@ export default function FieldForm(props: FieldFormProps) {
                             <Tooltip
                                 disabled={
                                     !isFormDirty ||
-                                    props.objectType === OBJECT_TYPES.CUSTOMER
+                                    props.field.object_type ===
+                                        OBJECT_TYPES.CUSTOMER
                                 }
                                 target={SAVE_BUTTON_ID}
                             >
@@ -305,7 +304,7 @@ export default function FieldForm(props: FieldFormProps) {
                                     onClose={() =>
                                         setArchiveModalVisible(false)
                                     }
-                                    objectType={props.objectType}
+                                    objectType={props.field.object_type}
                                 />
                             </div>
                         )}

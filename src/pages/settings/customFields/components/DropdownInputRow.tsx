@@ -1,24 +1,14 @@
 import React, {memo, useCallback, useEffect, useRef} from 'react'
 
 import classnames from 'classnames'
+import {CustomField, CustomFieldInput} from 'custom-fields/types'
 import IconButton from 'pages/common/components/button/IconButton'
-import TextInput from 'pages/common/forms/input/TextInput'
 import Caption from 'pages/common/forms/Caption/Caption'
+import TextInput from 'pages/common/forms/input/TextInput'
 import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
-import {
-    CustomField,
-    CustomFieldInput,
-    CustomFieldManagedType,
-} from 'custom-fields/types'
 
+import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
 import css from './DropdownInputRow.less'
-
-const defaultPlaceholder = 'e.g. Shipping issue::Delay'
-const placeholders: Record<CustomFieldManagedType, string> = {
-    contact_reason: defaultPlaceholder,
-    product: 'e.g. Men::Tops::Polo shirt',
-    resolution: 'e.g. Order actions::Refund::Partial refund',
-}
 
 interface DropdownInputRowProps {
     field: CustomField | CustomFieldInput
@@ -49,6 +39,7 @@ export function DropdownInputRow({
     onHover,
     onRemove,
 }: DropdownInputRowProps) {
+    const objectTypeSettings = OBJECT_TYPE_SETTINGS[field.object_type]
     const nextInputRef = useRef<HTMLInputElement | null>(null)
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {
@@ -129,8 +120,10 @@ export function DropdownInputRow({
                     value={value}
                     placeholder={
                         field.managed_type
-                            ? placeholders[field.managed_type]
-                            : defaultPlaceholder
+                            ? objectTypeSettings.PLACEHOLDERS.DROPDOWN[
+                                  field.managed_type
+                              ]
+                            : objectTypeSettings.PLACEHOLDERS.DROPDOWN.DEFAULT
                     }
                     onChange={(val) => onChange(position, val)}
                     hasError={!!error}

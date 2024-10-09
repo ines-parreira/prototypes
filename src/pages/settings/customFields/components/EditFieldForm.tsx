@@ -1,8 +1,8 @@
 import React from 'react'
 
+import {useUpdateCustomFieldDefinition} from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 import {CustomField, CustomFieldInput} from 'custom-fields/types'
 import history from 'pages/history'
-import {useUpdateCustomFieldDefinition} from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 
 import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 import FieldForm from './FieldForm'
@@ -27,7 +27,6 @@ export default function EditFieldForm(props: EditFieldFormProps) {
             field={props.field}
             onSubmit={handleSubmit}
             onClose={close}
-            objectType={props.field.object_type}
         />
     )
 }

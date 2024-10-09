@@ -1,8 +1,9 @@
+import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
-import {render, fireEvent, screen} from '@testing-library/react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 
+import {OBJECT_TYPE_SETTINGS, OBJECT_TYPES} from 'custom-fields/constants'
 import {ticketDropdownFieldDefinition} from 'fixtures/customField'
 import DropdownInputRow from '../DropdownInputRow'
 
@@ -110,4 +111,28 @@ describe('<DropdownInputRow/>', () => {
 
         expect(props.onRemove).toHaveBeenCalled()
     })
+
+    it.each(Object.values(OBJECT_TYPES))(
+        'should render the correct placeholder based when object_type=%s',
+        (objectType) => {
+            const props = {
+                ...commonProps,
+                field: {
+                    ...ticketDropdownFieldDefinition,
+                    object_type: objectType,
+                },
+                value: 'Test value',
+            }
+
+            render(
+                <DndProvider backend={HTML5Backend}>
+                    <DropdownInputRow {...props} />
+                </DndProvider>
+            )
+            const input = screen.getByTestId(props.id)
+            expect(input.getAttribute('placeholder')).toEqual(
+                OBJECT_TYPE_SETTINGS[objectType].PLACEHOLDERS.DROPDOWN.DEFAULT
+            )
+        }
+    )
 })
