@@ -2,9 +2,9 @@ import {OrderDirection} from 'models/api/types'
 import {
     TicketCubeWithJoins,
     TicketDimension,
-    TicketMeasure,
 } from 'models/reporting/cubes/TicketCube'
 import {
+    TicketTagsEnrichedCube,
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
@@ -16,6 +16,7 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
@@ -27,17 +28,18 @@ export const tagsTicketCountQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-): ReportingQuery<TicketCubeWithJoins> => ({
+): ReportingQuery<TicketTagsEnrichedCube> => ({
     measures: [TicketTagsEnrichedMeasure.TicketCount],
     dimensions: [TicketTagsEnrichedDimension.TagId],
     timezone,
+    segments: [],
     filters: [
         ...NotSpamNorTrashedTicketsFilter,
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
     ],
     ...(sorting
         ? {
-              order: [[TicketMeasure.TicketCount, sorting]],
+              order: [[TicketTagsEnrichedMeasure.TicketCount, sorting]],
           }
         : {}),
 })
@@ -83,4 +85,5 @@ export const tagsTicketCountDrillDownQueryFactory = (
             ],
         },
     ],
+    limit: DRILLDOWN_QUERY_LIMIT,
 })

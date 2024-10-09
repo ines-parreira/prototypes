@@ -5,13 +5,14 @@ import useId from 'hooks/useId'
 
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
+import css from 'pages/stats/TrendBadge/TrendBadge.less'
+import {getTrendColorFromSign} from 'pages/stats/TrendBadge/helper'
 import {
     formatMetricTrend,
     formatMetricValue,
     MetricTrendFormat,
-} from './common/utils'
-import css from './TrendBadge.less'
-import {getIconNameBySign} from './utils'
+} from 'pages/stats/common/utils'
+import {TrenIcon} from 'pages/stats/TrendBadge/TrendIcon'
 
 const getTooltipText = (prevValue: string, period: string) => (
     <>
@@ -22,16 +23,19 @@ const getTooltipText = (prevValue: string, period: string) => (
 export const TREND_BADGE_FORMAT = 'percent'
 export const DEFAULT_BADGE_TEXT = '0%'
 
+export type InterpretAs = 'more-is-better' | 'less-is-better' | 'neutral'
+
 type Props = {
     className?: string
     isLoading?: boolean
-    interpretAs?: 'more-is-better' | 'less-is-better' | 'neutral'
+    interpretAs?: InterpretAs
     value?: number | null
     prevValue?: number | null
     tooltipData?: {
         period: string
     }
     metricFormat?: MetricTrendFormat
+    basicStyle?: boolean
 }
 
 export default function TrendBadge({
@@ -51,12 +55,7 @@ export default function TrendBadge({
             ? formatMetricTrend(value, prevValue, TREND_BADGE_FORMAT)
             : {formattedTrend: null}
 
-    let trendColor = sign > 0 || sign < 0 ? 'neutral' : 'unchanged'
-    if (interpretAs === 'more-is-better') {
-        trendColor = sign > 0 ? 'positive' : sign < 0 ? 'negative' : 'unchanged'
-    } else if (interpretAs === 'less-is-better') {
-        trendColor = sign > 0 ? 'negative' : sign < 0 ? 'positive' : 'unchanged'
-    }
+    const trendColor = getTrendColorFromSign(sign, interpretAs)
 
     if (isLoading) {
         return <Skeleton height={18} width={50} />
@@ -68,14 +67,7 @@ export default function TrendBadge({
                 className={classnames(css.trend, css[trendColor], className)}
                 id={badgeId}
             >
-                {!!sign ? (
-                    <i
-                        className="material-icons-round mr-1 icon"
-                        style={{fontSize: 12}}
-                    >
-                        {getIconNameBySign(sign)}
-                    </i>
-                ) : null}
+                <TrenIcon sign={sign} />
                 {`${formattedTrend ?? DEFAULT_BADGE_TEXT}`}
             </div>
             {tooltipData && formattedTrend && (

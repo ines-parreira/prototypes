@@ -46,8 +46,10 @@ describe('ticketInsightsSlice', () => {
             },
         } as unknown as RootState
 
-        expect(getSelectedCustomField(state)).toEqual(field)
-        expect(getSelectedCustomField(state).id).toEqual(fieldId)
-        expect(getSelectedCustomField(state).label).toEqual(fieldLabel)
+        it('getSelectedCustomField', () => {
+            expect(getSelectedCustomField(state)).toEqual(field)
+            expect(getSelectedCustomField(state).id).toEqual(fieldId)
+            expect(getSelectedCustomField(state).label).toEqual(fieldLabel)
+        })
     })
 })

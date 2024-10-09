@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
-import TrendBadge from './TrendBadge'
+import TrendBadge from 'pages/stats/TrendBadge'
 
 const storyConfig: Meta = {
     title: 'Stats/TrendBadge',

@@ -58,6 +58,10 @@ export enum TicketFieldsMetric {
     TicketCustomFieldsTicketCount = 'ticket_custom_fields_ticket_count',
 }
 
+export enum TagsMetric {
+    TicketCount = 'ticket_tags_fields_ticket_count',
+}
+
 export enum SlaMetric {
     AchievementRate = 'sla-achievement-rate',
     BreachedTicketsRate = 'sla-breached-tickets-rate',

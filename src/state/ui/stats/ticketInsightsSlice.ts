@@ -42,7 +42,6 @@ export const ticketInsightsSlice = createSlice({
             action: PayloadAction<TicketInsightsState['selectedCustomField']>
         ) {
             state.selectedCustomField = action.payload
-            state.selectedCustomField = action.payload
         },
         toggleValueMode(state) {
             state.valueMode =

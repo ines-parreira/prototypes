@@ -1,5 +1,5 @@
 import {OrderDirection} from 'models/api/types'
-import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
@@ -16,6 +16,7 @@ import {
 import {StatsFilters, TagFilterInstanceId} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
@@ -52,6 +53,7 @@ describe('tagsTicketCount query factories', () => {
                         statsFilters
                     ),
                 ],
+                segments: [],
             })
         })
 
@@ -73,7 +75,8 @@ describe('tagsTicketCount query factories', () => {
                         statsFilters
                     ),
                 ],
-                order: [[TicketMeasure.TicketCount, sorting]],
+                order: [[TicketTagsEnrichedMeasure.TicketCount, sorting]],
+                segments: [],
             })
         })
     })
@@ -144,6 +147,7 @@ describe('tagsTicketCount query factories', () => {
                         ],
                     },
                 ],
+                limit: DRILLDOWN_QUERY_LIMIT,
             })
         })
 
@@ -202,6 +206,7 @@ describe('tagsTicketCount query factories', () => {
                         ],
                     },
                 ],
+                limit: DRILLDOWN_QUERY_LIMIT,
             })
         })
     })

@@ -37,6 +37,8 @@ import {LegacyStatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
+jest.mock('models/reporting/queryFactories/ticket-insights/tagsTicketCount')
+
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 const useCustomTicketFieldWithBreakdownMock = assumeMock(
     useMetricPerDimensionWithBreakdown

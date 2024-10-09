@@ -1,41 +1,35 @@
 import {act, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     PERCENTAGE_LABEL,
     TicketInsightsValueModeSwitch,
     TOTAL_COUNT_LABEL,
 } from 'pages/stats/TicketInsightsValueModeSwitch'
-import {initialState} from 'state/stats/statsSlice'
-import {RootState, StoreDispatch} from 'state/types'
-import {
-    ticketInsightsSlice,
-    toggleValueMode,
-    ValueMode,
-} from 'state/ui/stats/ticketInsightsSlice'
+import {toggleValueMode, ValueMode} from 'state/ui/stats/ticketInsightsSlice'
+import {assumeMock} from 'utils/testing'
+import useAppSelector from 'hooks/useAppSelector'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+jest.mock('hooks/useAppSelector')
+jest.mock('state/ui/stats/ticketInsightsSlice')
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+
+const useAppSelectorMock = useAppSelector as jest.Mock
+const useAppDispatchMock = useAppDispatch as jest.Mock
+const toggleValueModeMock = assumeMock(toggleValueMode)
 
 describe('<TicketInsightsValueModeSwitch />', () => {
-    it('should render TotalCount mode as active when selected', () => {
-        const state = {
-            stats: initialState,
-            ui: {
-                [ticketInsightsSlice.name]: {
-                    ...initialState,
-                    valueMode: ValueMode.TotalCount,
-                },
-            },
-        } as unknown as RootState
+    const dispatch: jest.Mock = jest.fn()
 
-        render(
-            <Provider store={mockStore(state)}>
-                <TicketInsightsValueModeSwitch />
-            </Provider>
-        )
+    beforeEach(() => {
+        useAppDispatchMock.mockReturnValue(dispatch)
+    })
+
+    it('should render TotalCount mode as active when selected', () => {
+        useAppSelectorMock.mockReturnValue(ValueMode.TotalCount)
+
+        render(<TicketInsightsValueModeSwitch />)
 
         expect(
             screen.getByRole('radio', {name: TOTAL_COUNT_LABEL})
@@ -43,21 +37,9 @@ describe('<TicketInsightsValueModeSwitch />', () => {
     })
 
     it('should render Percentage mode as active when selected', () => {
-        const state = {
-            stats: initialState,
-            ui: {
-                [ticketInsightsSlice.name]: {
-                    ...initialState,
-                    valueMode: ValueMode.Percentage,
-                },
-            },
-        } as unknown as RootState
+        useAppSelectorMock.mockReturnValue(ValueMode.Percentage)
 
-        render(
-            <Provider store={mockStore(state)}>
-                <TicketInsightsValueModeSwitch />
-            </Provider>
-        )
+        render(<TicketInsightsValueModeSwitch />)
 
         expect(
             screen.getByRole('radio', {name: PERCENTAGE_LABEL})
@@ -65,22 +47,9 @@ describe('<TicketInsightsValueModeSwitch />', () => {
     })
 
     it('should dispatch mode toggle action on click', async () => {
-        const state = {
-            stats: initialState,
-            ui: {
-                [ticketInsightsSlice.name]: {
-                    ...initialState,
-                    valueMode: ValueMode.TotalCount,
-                },
-            },
-        } as unknown as RootState
-        const store = mockStore(state)
+        useAppSelectorMock.mockReturnValue(ValueMode.TotalCount)
 
-        render(
-            <Provider store={store}>
-                <TicketInsightsValueModeSwitch />
-            </Provider>
-        )
+        render(<TicketInsightsValueModeSwitch />)
 
         act(() => {
             const radioButton = screen.getByRole('radio', {
@@ -90,7 +59,7 @@ describe('<TicketInsightsValueModeSwitch />', () => {
         })
 
         await waitFor(() => {
-            expect(store.getActions()).toContainEqual(toggleValueMode())
+            expect(toggleValueModeMock).toHaveBeenCalled()
         })
     })
 })

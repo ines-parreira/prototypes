@@ -1,6 +1,6 @@
 import React, {useRef} from 'react'
-import {useDispatch} from 'react-redux'
 import {Tooltip} from '@gorgias/ui-kit'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import {
@@ -17,7 +17,8 @@ export const PERCENTAGE_LABEL = '%'
 export const TicketInsightsValueModeSwitch = () => {
     const valueMode = useAppSelector(getValueMode)
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
+
     const toggleHandler = () => dispatch(toggleValueMode())
 
     const totalCountRef = useRef(null)

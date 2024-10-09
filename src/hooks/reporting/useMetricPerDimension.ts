@@ -39,6 +39,13 @@ export type MetricWithDecile<TCube extends Cubes = Cubes> = Requested & {
     } | null
 }
 
+export type MetricPerDimensionTrend<TCube extends Cubes = Cubes> = Requested & {
+    data: {
+        value: QueryReturnType<TCube>
+        prevValue: QueryReturnType<TCube>
+    }
+}
+
 export type MetricWithBreakdown = Requested & {
     data: {
         allData: WithChildren<TicketCustomFieldsTicketCountData>[]

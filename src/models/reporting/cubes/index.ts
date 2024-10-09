@@ -12,6 +12,7 @@ import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
 import {WorkflowDatasetCube} from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
 import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 import {ConvertOrderEventsCube} from 'models/reporting/cubes/ConvertOrderEventsCube'
+import {TicketTagsEnrichedCube} from 'models/reporting/cubes/TicketTagsEnrichedCube'
 
 export type Cubes =
     | AgentTimeTrackingCube
@@ -28,3 +29,4 @@ export type Cubes =
     | VoiceCallCube
     | VoiceEventsByAgentCube
     | WorkflowDatasetCube
+    | TicketTagsEnrichedCube

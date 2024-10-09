@@ -5,6 +5,7 @@ import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
 import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
 import {ReportingQuery} from 'models/reporting/types'
 import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
+import {TicketTagsEnrichedCube} from 'models/reporting/cubes/TicketTagsEnrichedCube'
 
 export enum JobStatus {
     CancelRequested = 'cancel_requested',
@@ -62,6 +63,7 @@ export type DrillDownReportingQuery = ReportingQuery<
     | TicketQAScoreCubeWithJoins
     | TicketSLACubeWithJoins
     | VoiceCallCube
+    | TicketTagsEnrichedCube
 >
 
 export type ReportingQueryJobParams = {

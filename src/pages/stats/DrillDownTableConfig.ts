@@ -20,6 +20,7 @@ import {openTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryF
 import {ticketsCreatedPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {customFieldsTicketCountPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {tagsTicketCountDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import {
     isFilterWithLogicalOperator,
     withDefaultLogicalOperator,
@@ -52,6 +53,7 @@ import {
     ConvertMetric,
     OverviewMetric,
     SlaMetric,
+    TagsMetric,
     TicketFieldsMetric,
     VoiceAgentsMetric,
     VoiceMetric,
@@ -237,6 +239,19 @@ export const getDrillDownQuery = (
                 metricName.perChannel,
                 ChannelColumnConfig[metricName.metricName].drillDownQuery
             )
+        case TagsMetric.TicketCount:
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection
+            ) =>
+                tagsTicketCountDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    metricName.tagId,
+                    metricName.dateRange || statsFilters.period,
+                    sorting
+                )
         case TicketFieldsMetric.TicketCustomFieldsTicketCount:
             return (
                 statsFilters: StatsFilters,

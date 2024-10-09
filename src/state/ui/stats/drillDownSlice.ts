@@ -37,6 +37,7 @@ import {
     ConvertMetric,
     OverviewMetric,
     SlaMetric,
+    TagsMetric,
     TicketFieldsMetric,
     VoiceAgentsMetric,
     VoiceMetric,
@@ -121,6 +122,15 @@ export type TicketFieldsMetrics = {
     }
 } & CommonMetrics
 
+export type TagsFieldsMetrics = {
+    metricName: TagsMetric.TicketCount
+    tagId: string
+    dateRange?: {
+        end_datetime: string
+        start_datetime: string
+    }
+} & CommonMetrics
+
 export type SlaMetrics = {
     metricName: SlaMetric
 } & CommonMetrics
@@ -154,6 +164,7 @@ export type DrillDownMetric =
     | ConvertMetrics
     | VoiceMetrics
     | VoiceAgentsMetrics
+    | TagsFieldsMetrics
 
 export type DrillDownState = {
     isOpen: boolean
@@ -175,6 +186,7 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     OverviewMetric.MessagesSent,
     OverviewMetric.OneTouchTickets,
     TicketFieldsMetric.TicketCustomFieldsTicketCount,
+    TagsMetric.TicketCount,
     AgentsTableColumn.ClosedTickets,
     AgentsTableColumn.PercentageOfClosedTickets,
     AgentsTableColumn.RepliedTickets,
@@ -371,7 +383,8 @@ export const getDrillDownMetricColumn = (
     } else if (
         metricData.metricName === ConvertMetric.CampaignSalesCount ||
         metricData.metricName === VoiceMetric.AverageWaitTime ||
-        metricData.metricName === VoiceMetric.AverageTalkTime
+        metricData.metricName === VoiceMetric.AverageTalkTime ||
+        metricData.metricName === TagsMetric.TicketCount
     ) {
         metricTitle = ''
     } else if ('perAgentId' in metricData) {

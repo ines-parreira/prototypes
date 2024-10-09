@@ -19,11 +19,6 @@ import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-const MOCK_SKELETON_TEST_ID = 'skeleton'
-
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div data-testid={MOCK_SKELETON_TEST_ID} />
-))
 jest.mock('state/ui/stats/ticketInsightsSlice')
 const getSelectedCustomFieldMock = assumeMock(getSelectedCustomField)
 jest.mock('hooks/reporting/useTicketsDistribution')
@@ -171,7 +166,7 @@ describe('<TicketDistributionTable>', () => {
             ...useTicketsDistributionReturnValue,
             isFetching: true,
         })
-        render(
+        const {container} = render(
             <Provider store={mockStore({})}>
                 <TicketDistributionTable
                     selectedCustomField={selectedCustomField}
@@ -180,6 +175,6 @@ describe('<TicketDistributionTable>', () => {
         )
 
         expect(screen.getByRole('table')).toBeInTheDocument()
-        expect(screen.getAllByTestId(MOCK_SKELETON_TEST_ID).length).not.toBe(0)
+        expect(container.getElementsByClassName('skeleton')).not.toHaveLength(0)
     })
 })

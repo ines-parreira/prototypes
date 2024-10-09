@@ -6,6 +6,7 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {TagsTrendChart} from 'pages/stats/ticket-insights/components/TagsTrendChart'
+import {TopUsedTagsChart} from 'pages/stats/ticket-insights/components/TopUsedTagsChart'
 
 export const TAGS_TITLE = 'Tags'
 
@@ -40,7 +41,13 @@ export function Tags() {
 
                 <DashboardSection>
                     <DashboardGridCell
-                        size={getGridCellSize(12)}
+                        size={getGridCellSize(1)}
+                        className="pb-0"
+                    >
+                        <TopUsedTagsChart />
+                    </DashboardGridCell>
+                    <DashboardGridCell
+                        size={getGridCellSize(11)}
                         className="pb-0"
                     >
                         <TagsTrendChart />
