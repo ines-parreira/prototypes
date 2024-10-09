@@ -1,10 +1,6 @@
 import {render, waitFor} from '@testing-library/react'
 import React from 'react'
-import {
-    basicMonthlyAutomationPlan,
-    convertPlan0,
-    legacyBasicAutomatePlan,
-} from 'fixtures/productPrices'
+import {basicMonthlyAutomationPlan, convertPlan0} from 'fixtures/productPrices'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import CounterText from 'pages/settings/new_billing/components/CounterText/CounterText'
 import {PRODUCT_INFO} from 'pages/settings/new_billing/constants'
@@ -21,21 +17,6 @@ describe('CounterText', () => {
 
         expect(getByText('$1')).toBeInTheDocument()
         expect(getByText('per click')).toBeInTheDocument()
-    })
-
-    it('should render the legacy price text', () => {
-        const interval = PlanInterval.Month
-
-        const props = {
-            plan: legacyBasicAutomatePlan,
-            type: ProductType.Automation,
-            interval: interval,
-        }
-
-        const {getByText} = render(<CounterText {...props} />)
-
-        expect(getByText('$15')).toBeInTheDocument()
-        expect(getByText(interval, {exact: false})).toBeInTheDocument()
     })
 
     it('should render the regular price text', async () => {

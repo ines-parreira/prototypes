@@ -5,8 +5,6 @@ import {
     ConvertPlan,
     HelpdeskPlan,
     HelpdeskPlanFeatures,
-    MeteredAutomatePlan,
-    Plan,
     PlanInterval,
     Product,
     ProductType,
@@ -209,30 +207,12 @@ export const basicMonthlyHelpdeskPlan: HelpdeskPlan = {
     integrations: 150,
     interval: PlanInterval.Month,
     is_legacy: false,
-    legacy_id: 'basic-monthly-usd-4',
     internal_id: 'basic-monthly-usd-4',
-    limits: {
-        messages: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-        tickets: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-    },
     name: 'Basic',
-    order: 2,
-    phone_limits: {
-        billing: 50,
-    },
     product: ProductType.Helpdesk,
     product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjWI9qXomtXqSPZn8LqlD',
     public: true,
-    trial_period_days: 7,
 }
 
 export const basicYearlyHelpdeskPlan: HelpdeskPlan = {
@@ -246,30 +226,12 @@ export const basicYearlyHelpdeskPlan: HelpdeskPlan = {
     integrations: 150,
     interval: PlanInterval.Year,
     is_legacy: false,
-    legacy_id: 'basic-yearly-usd-4',
     internal_id: 'basic-yearly-usd-4',
-    limits: {
-        messages: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-        tickets: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-    },
     name: 'Basic',
-    order: 2,
-    phone_limits: {
-        billing: 50,
-    },
     product: ProductType.Helpdesk,
     product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjYI9qXomtXqSLEjOrpmV',
     public: true,
-    trial_period_days: 7,
 }
 
 export const proMonthlyHelpdeskPlan: HelpdeskPlan = {
@@ -283,30 +245,12 @@ export const proMonthlyHelpdeskPlan: HelpdeskPlan = {
     integrations: 150,
     interval: PlanInterval.Month,
     is_legacy: false,
-    legacy_id: 'pro-monthly-usd-4',
     internal_id: 'pro-monthly-usd-4',
-    limits: {
-        messages: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-        tickets: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-    },
     name: 'Pro',
-    order: 3,
-    phone_limits: {
-        billing: 200,
-    },
     product: ProductType.Helpdesk,
     product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjaI9qXomtXqSvYfzmmEU',
     public: true,
-    trial_period_days: 7,
 }
 
 export const proYearlyHelpdeskPlan: HelpdeskPlan = {
@@ -320,30 +264,12 @@ export const proYearlyHelpdeskPlan: HelpdeskPlan = {
     integrations: 150,
     interval: PlanInterval.Year,
     is_legacy: false,
-    legacy_id: 'pro-yearly-usd-4',
     internal_id: 'pro-yearly-usd-4',
-    limits: {
-        messages: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-        tickets: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-    },
     name: 'Pro',
-    order: 3,
-    phone_limits: {
-        billing: 200,
-    },
     product: ProductType.Helpdesk,
     product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjbI9qXomtXqShB9YLy7V',
     public: true,
-    trial_period_days: 7,
 }
 
 export const advancedMonthlyHelpdeskPlan: HelpdeskPlan = {
@@ -357,30 +283,12 @@ export const advancedMonthlyHelpdeskPlan: HelpdeskPlan = {
     integrations: 150,
     interval: PlanInterval.Month,
     is_legacy: false,
-    legacy_id: 'advanced-monthly-usd-4',
     internal_id: 'advanced-monthly-usd-4',
-    limits: {
-        messages: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-        tickets: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-    },
     name: 'Advanced',
-    order: 4,
-    phone_limits: {
-        billing: 750,
-    },
     product: ProductType.Helpdesk,
     product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjdI9qXomtXqS8RzPPA7K',
     public: true,
-    trial_period_days: 7,
 }
 
 export const advancedYearlyHelpdeskPlan: HelpdeskPlan = {
@@ -394,30 +302,12 @@ export const advancedYearlyHelpdeskPlan: HelpdeskPlan = {
     integrations: 150,
     interval: PlanInterval.Year,
     is_legacy: false,
-    legacy_id: 'advanced-yearly-usd-4',
     internal_id: 'advanced-yearly-usd-4',
-    limits: {
-        messages: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-        tickets: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-    },
     name: 'Advanced',
-    order: 4,
-    phone_limits: {
-        billing: 750,
-    },
     product: ProductType.Helpdesk,
     product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjfI9qXomtXqSeKJ5lJjD',
     public: true,
-    trial_period_days: 7,
 }
 
 export const basicMonthlyAutomationPlan: AutomatePlan = {
@@ -427,16 +317,11 @@ export const basicMonthlyAutomationPlan: AutomatePlan = {
     cadence: PlanInterval.Month,
     extra_ticket_cost: 0.2,
     num_quota_tickets: 30,
-    automation_addon_discount: 0,
-    automation_addon_included: true,
-    base_price_id: 'price_1LJBjWI9qXomtXqSPZn8LqlD',
     currency: 'usd',
     features: automatePlanFeatures,
     interval: PlanInterval.Month,
-    legacy_id: 'basic-automation-full-price-monthly-usd-4',
     internal_id: 'aut-addon-basic-full-price-monthly-usd-4',
     name: 'Basic',
-    order: 2,
     product: ProductType.Automation,
     product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjXI9qXomtXqSSX34F3we',
@@ -449,16 +334,11 @@ export const basicYearlyAutomationPlan: AutomatePlan = {
     cadence: PlanInterval.Year,
     extra_ticket_cost: 0.2,
     num_quota_tickets: 360,
-    automation_addon_discount: 0,
-    automation_addon_included: true,
-    base_price_id: 'price_1LJBjYI9qXomtXqSLEjOrpmV',
     currency: 'usd',
     features: automatePlanFeatures,
     interval: PlanInterval.Year,
-    legacy_id: 'basic-automation-full-price-yearly-usd-4',
     internal_id: 'aut-addon-basic-full-price-yearly-usd-4',
     name: 'Basic',
-    order: 2,
     product: ProductType.Automation,
     product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjZI9qXomtXqSPNgkEZpl',
@@ -471,16 +351,11 @@ export const proMonthlyAutomationPlan: AutomatePlan = {
     cadence: PlanInterval.Month,
     num_quota_tickets: 190,
     amount: 18000,
-    automation_addon_discount: 0,
-    automation_addon_included: true,
-    base_price_id: 'price_1LJBjaI9qXomtXqSvYfzmmEU',
     currency: 'usd',
     features: automatePlanFeatures,
     interval: PlanInterval.Month,
-    legacy_id: 'pro-automation-full-price-monthly-usd-4',
     internal_id: 'aut-addon-pro-full-price-monthly-usd-4',
     name: 'Pro',
-    order: 3,
     product: ProductType.Automation,
     product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjbI9qXomtXqS2sfi1J7P',
@@ -493,16 +368,11 @@ export const proYearlyAutomationPlan: AutomatePlan = {
     num_quota_tickets: 2280,
     cadence: PlanInterval.Year,
     amount: 180000,
-    automation_addon_discount: 0,
-    automation_addon_included: true,
-    base_price_id: 'price_1LJBjbI9qXomtXqShB9YLy7V',
     currency: 'usd',
     features: automatePlanFeatures,
     interval: PlanInterval.Year,
-    legacy_id: 'pro-automation-full-price-yearly-usd-4',
     internal_id: 'aut-addon-pro-full-price-yearly-usd-4',
     name: 'Pro',
-    order: 3,
     product: ProductType.Automation,
     product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjdI9qXomtXqSlp9sh6iQ',
@@ -515,16 +385,11 @@ export const advancedMonthlyAutomatePlan: AutomatePlan = {
     num_quota_tickets: 530,
     cadence: PlanInterval.Month,
     amount: 45000,
-    automation_addon_discount: 0,
-    automation_addon_included: true,
-    base_price_id: 'price_1LJBjdI9qXomtXqS8RzPPA7K',
     currency: 'usd',
     features: automatePlanFeatures,
     interval: PlanInterval.Month,
-    legacy_id: 'advanced-automation-full-price-monthly-usd-4',
     internal_id: 'aut-addon-advanced-full-price-monthly-usd-4',
     name: 'Advanced',
-    order: 4,
     product: ProductType.Automation,
     product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjeI9qXomtXqSXRjmhPsL',
@@ -537,22 +402,17 @@ export const advancedYearlyAutomatePlan: AutomatePlan = {
     num_quota_tickets: 6360,
     cadence: PlanInterval.Year,
     amount: 450000,
-    automation_addon_discount: 0,
-    automation_addon_included: true,
-    base_price_id: 'price_1LJBjfI9qXomtXqSeKJ5lJjD',
     currency: 'usd',
     features: automatePlanFeatures,
     interval: PlanInterval.Year,
-    legacy_id: 'advanced-automation-full-price-yearly-usd-4',
     internal_id: 'aut-addon-advanced-full-price-yearly-usd-4',
     name: 'Advanced',
-    order: 4,
     product: ProductType.Automation,
     product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjgI9qXomtXqSBZoBcg7G',
 }
 
-export const automate02MonthlyMeteredPlan: MeteredAutomatePlan = {
+export const automate02MonthlyMeteredPlan: AutomatePlan = {
     name: 'Automation 02 monthly usd-5',
     amount: 180_00,
     num_quota_tickets: 190,
@@ -569,7 +429,7 @@ export const automate02MonthlyMeteredPlan: MeteredAutomatePlan = {
     price_id: 'price_1NDljFI9qXomtXqSLfW8eTwt',
 }
 
-export const automate05YearlyMeteredPlan: MeteredAutomatePlan = {
+export const automate05YearlyMeteredPlan: AutomatePlan = {
     name: 'Automation 05 yearly usd-5',
     amount: 15000_00,
     num_quota_tickets: 24_000,
@@ -596,51 +456,12 @@ export const legacyBasicHelpdeskPlan: HelpdeskPlan = {
     integrations: 7,
     interval: PlanInterval.Month,
     is_legacy: true,
-    legacy_id: 'basic-usd-1',
     internal_id: 'basic-usd-1',
-    limits: {
-        messages: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-        tickets: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-    },
     name: 'Basic Plan',
-    phone_limits: {
-        billing: 50,
-    },
     product: ProductType.Helpdesk,
     product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBlXI9qXomtXqSddDEgsDA',
     public: false,
-    trial_period_days: 7,
-}
-
-export const legacyBasicAutomatePlan: AutomatePlan = {
-    custom: false,
-    order: 0,
-    public: true,
-    extra_ticket_cost: 0,
-    num_quota_tickets: null,
-    cadence: PlanInterval.Month,
-    amount: 1500,
-    automation_addon_discount: 0.5,
-    automation_addon_included: true,
-    base_price_id: 'price_1LJBlXI9qXomtXqSddDEgsDA',
-    currency: 'usd',
-    features: automatePlanFeatures,
-    interval: PlanInterval.Month,
-    legacy_id: 'basic-automation-usd-1',
-    internal_id: 'basic-automation-usd-1',
-    name: 'Basic Plan',
-    product: ProductType.Automation,
-    product_id: 'prod_LsHD5xmSqoFBBs',
-    price_id: 'price_1LJBlbI9qXomtXqSvvtgyZ1z',
 }
 
 export const customHelpdeskPlan: HelpdeskPlan = {
@@ -654,29 +475,12 @@ export const customHelpdeskPlan: HelpdeskPlan = {
     integrations: 150,
     interval: PlanInterval.Month,
     is_legacy: false,
-    legacy_id: 'custom-monthly-usd-4-1',
     internal_id: 'custom-monthly-usd-4-1',
-    limits: {
-        messages: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-        tickets: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-    },
     name: 'Custom',
-    phone_limits: {
-        billing: 2000,
-    },
     product: ProductType.Helpdesk,
     product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjhI9qXomtXqSAUwsyU2z',
     public: true,
-    trial_period_days: 7,
 }
 
 export const starterHelpdeskPlan: HelpdeskPlan = {
@@ -690,30 +494,12 @@ export const starterHelpdeskPlan: HelpdeskPlan = {
     integrations: 150,
     interval: PlanInterval.Month,
     is_legacy: false,
-    legacy_id: 'starter-monthly-usd-4',
     internal_id: 'starter-monthly-usd-4',
-    limits: {
-        messages: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-        tickets: {
-            default: 100,
-            max: 100,
-            min: 75,
-        },
-    },
     name: 'Starter',
-    order: 1,
-    phone_limits: {
-        billing: 50,
-    },
     product: ProductType.Helpdesk,
     product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LVt4TI9qXomtXqSeHydKB9S',
     public: false,
-    trial_period_days: 7,
 }
 
 export const voicePlan0: SMSOrVoicePlan = {
@@ -969,7 +755,7 @@ export const VOICE_PRODUCT_ID = 'prod_MT6fyh00TCFRGZ'
 export const SMS_PRODUCT_ID = 'prod_MT8Fzk7vmcT73m'
 export const CONVERT_PRODUCT_ID = 'prod_Mwy3exdalDFouZ'
 
-export const helpdeskProduct: Product<HelpdeskPlan> = {
+export const helpdeskProduct: Product<ProductType.Helpdesk> = {
     id: HELPDESK_PRODUCT_ID,
     type: ProductType.Helpdesk,
     prices: [
@@ -982,7 +768,7 @@ export const helpdeskProduct: Product<HelpdeskPlan> = {
     ],
 }
 
-export const automationProduct: Product<AutomatePlan> = {
+export const automationProduct: Product<ProductType.Automation> = {
     id: AUTOMATION_PRODUCT_ID,
     type: ProductType.Automation,
     prices: [
@@ -995,13 +781,13 @@ export const automationProduct: Product<AutomatePlan> = {
     ],
 }
 
-export const voiceProduct: Product<SMSOrVoicePlan> = {
+export const voiceProduct: Product<ProductType.Voice> = {
     id: VOICE_PRODUCT_ID,
     type: ProductType.Voice,
     prices: [voicePlan1, voicePlan2, voicePlan3, voicePlan0],
 }
 
-export const smsProduct: Product<SMSOrVoicePlan> = {
+export const smsProduct: Product<ProductType.SMS> = {
     id: SMS_PRODUCT_ID,
     type: ProductType.SMS,
     prices: [smsPlan1, smsPlan2, smsPlan3, smsPlan0],
@@ -1017,13 +803,13 @@ export const convertAvailablePlans = [
     convertPlan6,
 ]
 
-export const convertProduct: Product<ConvertPlan> = {
+export const convertProduct: Product<ProductType.Convert> = {
     id: CONVERT_PRODUCT_ID,
     type: ProductType.Convert,
     prices: convertAvailablePlans,
 }
 
-export const products: Product<Plan>[] = [
+export const products: Product<ProductType>[] = [
     helpdeskProduct,
     automationProduct,
     smsProduct,

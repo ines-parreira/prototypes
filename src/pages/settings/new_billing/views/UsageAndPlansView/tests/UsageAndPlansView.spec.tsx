@@ -9,15 +9,12 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {RootState, StoreDispatch} from 'state/types'
 import {
-    AUTOMATION_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
     CONVERT_PRODUCT_ID,
     convertPlan1,
     currentProductsUsage,
     HELPDESK_PRODUCT_ID,
-    helpdeskProduct,
-    legacyBasicAutomatePlan,
     products,
     SMS_PRODUCT_ID,
     smsPlan1,
@@ -463,108 +460,6 @@ describe('UsageAndPlansView', () => {
                 autohide: false,
                 children:
                     'To change billing frequency, upgrade your Helpdesk plan to Basic or higher',
-                className: 'tooltip',
-                placement: 'top',
-                target: 'update-billing-frequency',
-            },
-            {}
-        )
-    })
-
-    it('should render with active subscription containing Automate legacy product', () => {
-        const alteredBilling = {
-            ...mockedBilling,
-            products: [
-                helpdeskProduct,
-                {
-                    id: AUTOMATION_PRODUCT_ID,
-                    type: ProductType.Automation,
-                    prices: [legacyBasicAutomatePlan],
-                },
-                ...products.slice(2),
-            ],
-            currentProductsUsage: {
-                [ProductType.Helpdesk]:
-                    currentProductsUsage[ProductType.Helpdesk],
-                [ProductType.Automation]: {
-                    data: {
-                        extra_tickets_cost_in_cents: 0,
-                        num_tickets: 0,
-                        num_extra_tickets: 0,
-                    },
-                    meta: {
-                        subscription_start_datetime:
-                            '2024-01-22T00:46:32+00:00',
-                        subscription_end_datetime: '2025-01-22T00:46:32+00:00',
-                    },
-                },
-                [ProductType.Voice]: null,
-                [ProductType.SMS]: null,
-                [ProductType.Convert]: null,
-            },
-        }
-        const alteredStore = mockedStore({
-            billing: fromJS(alteredBilling),
-            currentAccount: fromJS({
-                ...mockedAccount,
-                current_subscription: {
-                    ...mockedAccount.current_subscription,
-                    products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
-                        [AUTOMATION_PRODUCT_ID]:
-                            legacyBasicAutomatePlan.price_id,
-                    },
-                },
-            }),
-        })
-
-        const {container} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={alteredStore}>
-                    <UsageAndPlansView
-                        contactBilling={jest.fn()}
-                        periodEnd="2021-01-01"
-                        currentUsage={alteredBilling.currentProductsUsage}
-                    />
-                </Provider>
-            </QueryClientProvider>
-        )
-        expect(ProductCardMock).toHaveBeenCalledTimes(5)
-        expect(ProductCardMock).toHaveBeenNthCalledWith(
-            1,
-            {
-                type: ProductType.Helpdesk,
-                plan: basicMonthlyHelpdeskPlan,
-                usage: alteredBilling.currentProductsUsage[
-                    ProductType.Helpdesk
-                ],
-                isDisabled: false,
-            },
-            {}
-        )
-        expect(ProductCardMock).toHaveBeenNthCalledWith(
-            2,
-            {
-                type: ProductType.Automation,
-                plan: legacyBasicAutomatePlan,
-                usage: alteredBilling.currentProductsUsage[
-                    ProductType.Automation
-                ],
-                isDisabled: false,
-            },
-            {}
-        )
-        const updateBillingFrequencyButton = container.querySelector(
-            '#update-billing-frequency'
-        )
-        expect(updateBillingFrequencyButton).toHaveClass('disabledText')
-        expect(updateBillingFrequencyButton).toHaveTextContent('Update')
-        expect(MockTooltip).toHaveBeenCalledWith(
-            {
-                autohide: false,
-                children:
-                    'To change billing frequency, update Automate to a non-legacy plan',
                 className: 'tooltip',
                 placement: 'top',
                 target: 'update-billing-frequency',

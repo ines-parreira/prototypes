@@ -6,7 +6,6 @@ import {
     basicYearlyHelpdeskPlan,
     convertPlan0,
     voicePlan0,
-    legacyBasicAutomatePlan,
 } from 'fixtures/productPrices'
 
 import {
@@ -76,7 +75,6 @@ describe('getProductLabel', () => {
     it.each([
         [basicMonthlyHelpdeskPlan, undefined],
         [voicePlan0, 'Trial'],
-        [legacyBasicAutomatePlan, 'Legacy'],
         [convertPlan0, 'Pay as you go'],
     ])(
         'should return the product label for the given price and type',
@@ -114,9 +112,6 @@ describe('getPlanUnitsPerCadence', () => {
     it('returns the correct string', () => {
         expect(getPlanUnitsPerCadence(basicMonthlyHelpdeskPlan)).toEqual(
             '300 tickets/month'
-        )
-        expect(getPlanUnitsPerCadence(legacyBasicAutomatePlan)).toEqual(
-            '0 extra for helpdesk tickets overages'
         )
     })
 })

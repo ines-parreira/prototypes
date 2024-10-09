@@ -29,23 +29,23 @@ export type ProductId = string
 
 export type Plan = HelpdeskPlan | AutomatePlan | SMSOrVoicePlan | ConvertPlan
 
-export type Product<T = Plan> = {
+export type Product<T extends ProductType = ProductType> = {
     id: string
-    type: T extends HelpdeskPlan
-        ? ProductType.Helpdesk
-        : T extends AutomatePlan
-        ? ProductType.Automation
-        : T extends SMSOrVoicePlan
-        ? ProductType.Voice | ProductType.SMS
-        : T extends ConvertPlan
-        ? ProductType.Convert
+    type: T
+    prices: T extends ProductType.Helpdesk
+        ? HelpdeskPlan[]
+        : T extends ProductType.Automation
+        ? AutomatePlan[]
+        : T extends ProductType.Voice | ProductType.SMS
+        ? SMSOrVoicePlan[]
+        : T extends ProductType.Convert
+        ? ConvertPlan[]
         : never
-    prices: T[]
 }
 
 type BasePlan = {
     product: ProductType
-    num_quota_tickets: number | null // Integers only, is None for the legacy Automate usd-4 plans
+    num_quota_tickets: number // Integers only
     amount: number
     currency: string
     custom: boolean
@@ -68,17 +68,7 @@ export type HelpdeskPlan = BasePlan & {
     num_quota_tickets: number
     integrations: number
     is_legacy: boolean
-    legacy_id: string
-    order?: number
     features: HelpdeskPlanFeatures
-    limits: {
-        messages: PlanLimits
-        tickets: PlanLimits
-    }
-    phone_limits: {
-        billing: number
-    }
-    trial_period_days: number
 }
 
 export type AutomatePlanFeatures = Record<
@@ -92,16 +82,6 @@ export type AutomatePlanFeatures = Record<
 >
 
 export type AutomatePlan = BasePlan & {
-    automation_addon_discount: number
-    automation_addon_included?: boolean
-    base_price_id: string
-    features: AutomatePlanFeatures
-    legacy_id: string
-    order: number
-    num_quota_tickets: number | null
-}
-
-export type MeteredAutomatePlan = BasePlan & {
     features: AutomatePlanFeatures
 }
 
@@ -194,7 +174,7 @@ type CustomerSummary = {
 
 export type CurrentPlans = {
     helpdesk: HelpdeskPlan
-    automate: AutomatePlan | MeteredAutomatePlan | null
+    automate: AutomatePlan | null
     voice: SMSOrVoicePlan | null
     sms: SMSOrVoicePlan | null
     convert: ConvertPlan | null

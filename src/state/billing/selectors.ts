@@ -50,7 +50,7 @@ export const getAvailableHelpdeskPlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const helpdeskProduct = products.find(
-            (product): product is Product<HelpdeskPlan> =>
+            (product): product is Product<ProductType.Helpdesk> =>
                 product.type === ProductType.Helpdesk
         )
         if (!helpdeskProduct) {
@@ -64,7 +64,7 @@ export const getAvailableAutomatePlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const autProduct = products.find(
-            (product): product is Product<AutomatePlan> =>
+            (product): product is Product<ProductType.Automation> =>
                 product.type === ProductType.Automation
         )
         if (!autProduct) {
@@ -78,7 +78,7 @@ export const getAvailableVoicePlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const voiceProduct = products.find(
-            (product): product is Product<SMSOrVoicePlan> =>
+            (product): product is Product<ProductType.Voice> =>
                 product.type === ProductType.Voice
         )
         if (!voiceProduct) {
@@ -92,7 +92,7 @@ export const getAvailableSmsPlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const smsProduct = products.find(
-            (product): product is Product<SMSOrVoicePlan> =>
+            (product): product is Product<ProductType.SMS> =>
                 product.type === ProductType.SMS
         )
         if (!smsProduct) {
@@ -106,7 +106,7 @@ export const getAvailableConvertPlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const convertProduct = products.find(
-            (product): product is Product<ConvertPlan> =>
+            (product): product is Product<ProductType.Convert> =>
                 product.type === ProductType.Convert
         )
         if (!convertProduct) {
