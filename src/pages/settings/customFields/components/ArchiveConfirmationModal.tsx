@@ -32,9 +32,9 @@ export default function ArchiveConfirmationModal({
             onClose={onClose}
         >
             <p>
-                Archiving <b>{customFieldLabel}</b> will make it unavailable in
-                new {customFieldTypeLabel}s. {customFieldTypeTitleLabel}s that
-                already have it will keep the values associated to them.
+                Archiving <b>{customFieldLabel}</b> will make it unavailable to
+                new {customFieldTypeLabel}s. {customFieldTypeTitleLabel}s with
+                existing fields will keep the values associated to them.
             </p>
             {objectType === OBJECT_TYPES.TICKET && (
                 <p>
