@@ -13,7 +13,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {CustomField} from 'custom-fields/types'
 import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {DownloadTicketFieldsDataButton} from 'pages/stats/DownloadTicketFieldsDataButton'
+import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {
@@ -48,7 +48,9 @@ jest.mock(
     'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend.tsx'
 )
 const TicketInsightsFieldTrendMock = assumeMock(TicketInsightsFieldTrend)
-jest.mock('pages/stats/DownloadTicketFieldsDataButton.tsx')
+jest.mock(
+    'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton.tsx'
+)
 const DownloadTicketFieldsDataButtonMock = assumeMock(
     DownloadTicketFieldsDataButton
 )

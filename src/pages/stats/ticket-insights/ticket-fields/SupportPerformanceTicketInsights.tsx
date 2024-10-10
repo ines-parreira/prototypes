@@ -11,7 +11,7 @@ import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/Custo
 import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import {DownloadTicketFieldsDataButton} from 'pages/stats/DownloadTicketFieldsDataButton'
+import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
 import StatsPage from 'pages/stats/StatsPage'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {TicketDistributionTable} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'

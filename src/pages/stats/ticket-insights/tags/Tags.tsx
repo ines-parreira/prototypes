@@ -1,5 +1,6 @@
 import React from 'react'
 import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
+import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
@@ -21,7 +22,10 @@ export function Tags() {
 
     return (
         <div className="full-width">
-            <StatsPage title={TAGS_TITLE}>
+            <StatsPage
+                title={TAGS_TITLE}
+                titleExtra={<TagsReportDownloadDataButton />}
+            >
                 <DashboardSection>
                     <DashboardGridCell
                         size={getGridCellSize(12)}

@@ -5,7 +5,6 @@ import {formatMetricValue} from 'pages/stats/common/utils'
 import {formatDates} from 'pages/stats/utils'
 import {TOTAL_COLUMN_LABEL} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
 import {tags} from 'fixtures/tag'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useTicketCountPerTag} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
 import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
@@ -20,14 +19,30 @@ import {ValueMode} from 'state/ui/stats/types'
 import {calculatePercentage} from 'utils/reporting'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
-
 jest.mock('hooks/reporting/ticket-insights/useTicketCountPerTag')
 const useTicketCountPerTagMock = assumeMock(useTicketCountPerTag)
 
 describe('<AllUsedTagsTable />', () => {
-    const defaultState = {} as RootState
+    const defaultState = {
+        stats: {
+            filters: {
+                period: {
+                    start_datetime: '2024-05-01T00:00:00+00:00',
+                    end_datetime: '2024-05-03T00:00:00+00:00',
+                },
+            },
+        },
+        ui: {
+            stats: {
+                cleanStatsFilters: {
+                    period: {
+                        start_datetime: '2024-05-01T00:00:00+00:00',
+                        end_datetime: '2024-05-03T00:00:00+00:00',
+                    },
+                },
+            },
+        },
+    } as RootState
     const tag = tags[0]
     const someDateTimes = ['2024-05-01', '2024-05-02', '2024-05-03']
     const granularity = ReportingGranularity.Day
@@ -79,12 +94,6 @@ describe('<AllUsedTagsTable />', () => {
     const columnTotals = [150, 46, 0]
 
     beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: defaultStatsFilters,
-            granularity,
-            userTimezone: 'UTC',
-            isAnalyticsNewFilters: true,
-        })
         useTicketCountPerTagMock.mockReturnValue({
             data: [exampleDataRow, anotherExampleDataRow],
             grandTotal,
@@ -96,6 +105,8 @@ describe('<AllUsedTagsTable />', () => {
                 direction: OrderDirection.Desc,
             },
             setOrdering: jest.fn(),
+            cleanStatsFilters: defaultStatsFilters,
+            granularity,
         })
     })
 
@@ -123,6 +134,8 @@ describe('<AllUsedTagsTable />', () => {
                 direction: OrderDirection.Desc,
             },
             setOrdering: jest.fn(),
+            cleanStatsFilters: defaultStatsFilters,
+            granularity,
         })
 
         renderWithStore(
@@ -180,6 +193,8 @@ describe('<AllUsedTagsTable />', () => {
                 direction: OrderDirection.Desc,
             },
             setOrdering: jest.fn(),
+            cleanStatsFilters: defaultStatsFilters,
+            granularity,
         })
 
         renderWithStore(
@@ -211,6 +226,8 @@ describe('<AllUsedTagsTable />', () => {
                 direction: OrderDirection.Asc,
             },
             setOrdering: sortingCallbackSpy,
+            cleanStatsFilters: defaultStatsFilters,
+            granularity,
         })
 
         renderWithStore(
@@ -232,7 +249,7 @@ describe('<AllUsedTagsTable />', () => {
                     heatmapMode={false}
                     valueMode={ValueMode.TotalCount}
                 />,
-                {}
+                defaultState
             )
             act(() => {
                 const tableRow = document.getElementsByClassName('container')[0]
@@ -250,7 +267,7 @@ describe('<AllUsedTagsTable />', () => {
                     heatmapMode={false}
                     valueMode={ValueMode.TotalCount}
                 />,
-                {}
+                defaultState
             )
             act(() => {
                 const tableRow = document.getElementsByClassName('container')[0]

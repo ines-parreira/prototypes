@@ -1,5 +1,6 @@
 import React from 'react'
 import {screen} from '@testing-library/react'
+import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
 import {AllUsedTagsTableChart} from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
 import {Tags, TAGS_TITLE} from 'pages/stats/ticket-insights/tags/Tags'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
@@ -20,6 +21,10 @@ jest.mock('pages/stats/ticket-insights/tags/TopUsedTagsChart')
 const TopUsedTagsChartMock = assumeMock(TopUsedTagsChart)
 jest.mock('pages/stats/ticket-insights/tags/AllUsedTagsTableChart')
 const allUsedTagsTableChartMock = assumeMock(AllUsedTagsTableChart)
+jest.mock('pages/stats/ticket-insights/tags/TagsReportDownloadDataButton')
+const TagsReportDownloadDataButtonMock = assumeMock(
+    TagsReportDownloadDataButton
+)
 
 const componentMock = () => <div />
 
@@ -39,6 +44,7 @@ describe('<Tags>', () => {
         allUsedTagsTableChartMock.mockImplementation(() => <div></div>)
         TagsTrendChartMock.mockImplementation(componentMock)
         TopUsedTagsChartMock.mockImplementation(componentMock)
+        TagsReportDownloadDataButtonMock.mockImplementation(componentMock)
     })
 
     it('should render new tags page', () => {

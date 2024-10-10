@@ -10,7 +10,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {assumeMock} from 'utils/testing'
 import {saveReport} from 'services/reporting/ticketFieldsReportingService'
 import {OrderDirection} from 'models/api/types'
-import {DownloadTicketFieldsDataButton} from 'pages/stats/DownloadTicketFieldsDataButton'
+import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {formatDates} from 'pages/stats/utils'
 import {ReportingGranularity} from 'models/reporting/types'
@@ -107,8 +107,8 @@ describe('DownloadTicketFieldsDataButton', () => {
                 />
             </Provider>
         )
-
         fireEvent.click(screen.getByRole('button'))
+
         expect(saveReportMock).toHaveBeenCalledWith(
             data,
             dateTimes.map((date) => formatDates(granularity, date)),

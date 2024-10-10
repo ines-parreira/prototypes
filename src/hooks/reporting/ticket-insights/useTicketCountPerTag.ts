@@ -17,7 +17,7 @@ import {
 } from 'state/ui/stats/tagsReportSlice'
 import {getFilterDateRange} from 'utils/reporting'
 
-type FormattedDataItem = {
+export type FormattedDataItem = {
     tagId: string
     tag: Tag
     total: number
@@ -119,5 +119,7 @@ export const useTicketCountPerTag = () => {
         isLoading,
         order,
         setOrdering,
+        cleanStatsFilters,
+        granularity,
     }
 }
