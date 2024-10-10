@@ -17,9 +17,9 @@ import {
 import {
     getHeatmapMode,
     getValueMode,
-    ValueMode,
     getSelectedCustomField,
 } from 'state/ui/stats/ticketInsightsSlice'
+import {ValueMode} from 'state/ui/stats/types'
 import {
     assumeMock,
     mockRequestAnimationFrame,

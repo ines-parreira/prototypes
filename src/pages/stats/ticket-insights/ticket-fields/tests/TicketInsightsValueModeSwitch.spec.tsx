@@ -4,10 +4,11 @@ import React from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     PERCENTAGE_LABEL,
-    TicketInsightsValueModeSwitch,
     TOTAL_COUNT_LABEL,
-} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsValueModeSwitch'
-import {toggleValueMode, ValueMode} from 'state/ui/stats/ticketInsightsSlice'
+} from 'pages/stats/common/components/Table/TableValueModeSwitch'
+import {TicketInsightsValueModeSwitch} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsValueModeSwitch'
+import {toggleValueMode} from 'state/ui/stats/ticketInsightsSlice'
+import {ValueMode} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import useAppSelector from 'hooks/useAppSelector'
 

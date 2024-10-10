@@ -1,6 +1,6 @@
 import {Tag} from '@gorgias/api-queries'
 import {orderBy} from 'lodash'
-import {useState} from 'react'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {useTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {
     getPeriodDateTimes,
@@ -8,15 +8,14 @@ import {
     TimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
-import {opposite, OrderDirection} from 'models/api/types'
 import {getEntitiesTags} from 'state/entities/tags/selectors'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+import {
+    getTagsOrder,
+    setOrder,
+    TagsTableOrder,
+} from 'state/ui/stats/tagsReportSlice'
 import {getFilterDateRange} from 'utils/reporting'
-
-type TagsTableOrder = {
-    direction: OrderDirection
-    column: 'tag' | 'total' | number
-}
 
 type FormattedDataItem = {
     tagId: string
@@ -64,11 +63,34 @@ const getOrderBy = (order: TagsTableOrder) => {
     }
 }
 
+const getFormattedDataWithTotals = (
+    timeSeriesData: TimeSeriesPerDimension | undefined,
+    tags: Record<string, Tag>,
+    order: TagsTableOrder
+) => {
+    const timeData = timeSeriesData
+        ? getOrderBy(order)(formatTimeSeriesPerDimension(timeSeriesData, tags))
+        : []
+
+    const grandTotal = timeData.reduce((sum, item) => sum + item.total, 0)
+    const columnTotals = timeData.reduce<number[]>((totals, item) => {
+        item.timeSeries.forEach(
+            (dataPoint, index) =>
+                (totals[index] = dataPoint.value + (totals[index] ?? 0))
+        )
+        return totals
+    }, [])
+
+    return {
+        data: timeData,
+        grandTotal,
+        columnTotals,
+    }
+}
+
 export const useTicketCountPerTag = () => {
-    const [order, setOrder] = useState<TagsTableOrder>({
-        direction: OrderDirection.Asc,
-        column: 'tag',
-    })
+    const dispatch = useAppDispatch()
+    const order = useAppSelector(getTagsOrder)
     const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(
         getCleanStatsFiltersWithLogicalOperatorsWithTimezone
     )
@@ -78,31 +100,21 @@ export const useTicketCountPerTag = () => {
         userTimezone,
         granularity
     )
-
     const dateTimes = getPeriodDateTimes(
         getFilterDateRange(cleanStatsFilters.period),
         granularity
     )
-    const timeData = timeSeriesData
-        ? getOrderBy(order)(formatTimeSeriesPerDimension(timeSeriesData, tags))
-        : []
+
+    const timeData = getFormattedDataWithTotals(timeSeriesData, tags, order)
 
     const setOrdering = (column: 'tag' | 'total' | number) => {
-        setOrder((prevState: TagsTableOrder) => {
-            const defaultColumnDirection =
-                column === 'tag' ? OrderDirection.Asc : OrderDirection.Desc
-            return {
-                direction:
-                    prevState.column === column
-                        ? opposite(prevState.direction)
-                        : defaultColumnDirection,
-                column: column,
-            }
-        })
+        dispatch(setOrder({column}))
     }
 
     return {
-        data: timeData,
+        data: timeData.data,
+        grandTotal: timeData.grandTotal,
+        columnTotals: timeData.columnTotals,
         dateTimes,
         isLoading,
         order,

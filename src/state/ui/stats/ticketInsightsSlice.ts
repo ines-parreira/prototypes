@@ -1,11 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {OrderDirection} from 'models/api/types'
 import {RootState} from 'state/types'
-
-export enum ValueMode {
-    TotalCount = 'totalCount',
-    Percentage = 'percentage',
-}
+import {ValueMode} from 'state/ui/stats/types'
 
 export type TicketInsightsOrder = {
     direction: OrderDirection

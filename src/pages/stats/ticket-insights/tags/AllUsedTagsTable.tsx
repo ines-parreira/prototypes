@@ -2,38 +2,47 @@ import {Tag} from '@gorgias/api-queries'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import React, {UIEventHandler, useEffect, useMemo, useState} from 'react'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {AggregationWindow} from 'models/stat/types'
-import TicketTag from 'pages/common/components/TicketTag'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {calculateDecile} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
+import {useTicketCountPerTag} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import useMeasure from 'hooks/useMeasure'
+import {opposite, OrderDirection} from 'models/api/types'
+import {AggregationWindow} from 'models/stat/types'
+import {NumberedPagination} from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import TicketTag from 'pages/common/components/TicketTag'
+import css from 'pages/stats/BreakdownTable.less'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import heatmapCss from 'pages/stats/heatmap.less'
+import {LoadingRow} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
 import {
     formatDates,
     getUtcPeriodFromDateAndGranularity,
 } from 'pages/stats/utils'
-import {useTicketCountPerTag} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {opposite, OrderDirection} from 'models/api/types'
-import {NumberedPagination} from 'pages/common/components/Paginations'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import {LoadingRow} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
-import useMeasure from 'hooks/useMeasure'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import css from 'pages/stats/BreakdownTable.less'
-import {TagsMetric} from 'state/ui/stats/types'
+import {TagsMetric, ValueMode} from 'state/ui/stats/types'
+import {calculatePercentage} from 'utils/reporting'
 
 export const TAG_COLUMN_LABEL = 'Tag name'
 const TOTAL_COLUMN_LABEL = 'Total'
 const TAGS_PER_PAGE = 15
 
-export const AllUsedTagsTable = () => {
+export const AllUsedTagsTable = ({
+    heatmapMode,
+    valueMode,
+}: {
+    heatmapMode: boolean
+    valueMode: ValueMode
+}) => {
     const {granularity, isAnalyticsNewFilters} = useNewStatsFilters()
     const [currentPage, setCurrentPage] = useState(1)
     const [ref, {width}] = useMeasure<HTMLDivElement>()
@@ -45,8 +54,15 @@ export const AllUsedTagsTable = () => {
             setIsTableScrolled(false)
         }
     }
-    const {data, dateTimes, isLoading, order, setOrdering} =
-        useTicketCountPerTag()
+    const {
+        data,
+        grandTotal,
+        columnTotals,
+        dateTimes,
+        isLoading,
+        order,
+        setOrdering,
+    } = useTicketCountPerTag()
 
     useEffect(() => {
         setCurrentPage(1)
@@ -130,6 +146,10 @@ export const AllUsedTagsTable = () => {
                                       isAnalyticsNewFilters={
                                           isAnalyticsNewFilters
                                       }
+                                      isHeatmapMode={heatmapMode}
+                                      valueMode={valueMode}
+                                      grandTotal={grandTotal}
+                                      columnTotals={columnTotals}
                                   />
                               ))}
                     </TableBody>
@@ -149,10 +169,10 @@ export const AllUsedTagsTable = () => {
     )
 }
 
-const format = (value: number) =>
+const format = (valueMode: ValueMode) => (value: number) =>
     formatMetricValue(
         value !== 0 ? value : null,
-        'integer',
+        valueMode === ValueMode.Percentage ? 'percent-refined' : 'integer',
         NOT_AVAILABLE_PLACEHOLDER
     )
 
@@ -164,6 +184,10 @@ const TableRow = ({
     isTableScrolled,
     granularity,
     isAnalyticsNewFilters,
+    isHeatmapMode,
+    valueMode,
+    grandTotal,
+    columnTotals,
 }: {
     tagId: string
     tag: Tag
@@ -172,6 +196,10 @@ const TableRow = ({
     isTableScrolled: boolean
     granularity: AggregationWindow
     isAnalyticsNewFilters: boolean
+    isHeatmapMode: boolean
+    valueMode: ValueMode
+    grandTotal: number
+    columnTotals: number[]
 }) => {
     return (
         <TableBodyRow>
@@ -203,13 +231,22 @@ const TableRow = ({
                     }}
                     useNewFilterData={isAnalyticsNewFilters}
                 >
-                    {format(total)}
+                    {format(valueMode)(
+                        valueMode === ValueMode.TotalCount
+                            ? total
+                            : calculatePercentage(total, grandTotal)
+                    )}
                 </DrillDownModalTrigger>
             </BodyCell>
-            {timeSeries.map((data) => (
+            {timeSeries.map((data, index) => (
                 <BodyCell
                     key={data.dateTime}
-                    className={classNames(css.BodyCell)}
+                    className={classNames(
+                        css.BodyCell,
+                        isHeatmapMode && [heatmapCss.heatmap],
+                        isHeatmapMode &&
+                            heatmapCss[`p${calculateDecile(data.value, total)}`]
+                    )}
                     innerClassName={classNames(
                         css.BodyCellContent,
                         data.value === 0 && css.emptyValue
@@ -232,7 +269,14 @@ const TableRow = ({
                         }}
                         useNewFilterData={isAnalyticsNewFilters}
                     >
-                        {format(data.value)}
+                        {format(valueMode)(
+                            valueMode === ValueMode.TotalCount
+                                ? data.value
+                                : calculatePercentage(
+                                      data.value,
+                                      columnTotals[index]
+                                  )
+                        )}
                     </DrillDownModalTrigger>
                 </BodyCell>
             ))}

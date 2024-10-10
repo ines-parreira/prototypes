@@ -41,10 +41,10 @@ describe('ticketInsightsSlice', () => {
                         label: fieldLabel,
                         isLoading: false,
                     },
-                    order: OrderDirection.Asc,
+                    order: {column: 'label', direction: OrderDirection.Asc},
                 },
             },
-        } as unknown as RootState
+        } as RootState
 
         it('getSelectedCustomField', () => {
             expect(getSelectedCustomField(state)).toEqual(field)

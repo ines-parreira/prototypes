@@ -1,7 +1,7 @@
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 
 import {AgentPerformanceState} from 'state/ui/stats/agentPerformanceSlice'
 import {
@@ -121,4 +121,9 @@ export type TableColumnSet =
 export type StatsTablesState = {
     [AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AgentsTableColumn>
     [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AutoQAAgentsTableColumn>
+}
+
+export enum ValueMode {
+    TotalCount = 'totalCount',
+    Percentage = 'percentage',
 }

@@ -23,8 +23,8 @@ import {
 import {
     getCustomFieldsOrder,
     getValueMode,
-    ValueMode,
 } from 'state/ui/stats/ticketInsightsSlice'
+import {ValueMode} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {notUndefined} from 'utils/types'
 

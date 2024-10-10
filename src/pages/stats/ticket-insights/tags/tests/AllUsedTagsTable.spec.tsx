@@ -1,6 +1,7 @@
 import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+import {formatMetricValue} from 'pages/stats/common/utils'
 import {formatDates} from 'pages/stats/utils'
 import {TOTAL_COLUMN_LABEL} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
 import {tags} from 'fixtures/tag'
@@ -14,6 +15,9 @@ import {
 } from 'pages/stats/ticket-insights/tags/AllUsedTagsTable'
 import {defaultStatsFilters} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
+
+import {ValueMode} from 'state/ui/stats/types'
+import {calculatePercentage} from 'utils/reporting'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
@@ -49,6 +53,30 @@ describe('<AllUsedTagsTable />', () => {
             },
         ],
     }
+    const anotherExampleDataRow = {
+        tagId: String(tag.id),
+        tag: tag,
+        total: 123,
+        timeSeries: [
+            {
+                dateTime: '2024-05-01',
+                value: 50,
+                label: '2024-05-01',
+            },
+            {
+                dateTime: '2024-05-02',
+                value: 23,
+                label: '2024-05-02',
+            },
+            {
+                dateTime: '2024-05-02',
+                value: 0,
+                label: '2024-05-02',
+            },
+        ],
+    }
+    const grandTotal = 196
+    const columnTotals = [150, 46, 0]
 
     beforeEach(() => {
         useNewStatsFiltersMock.mockReturnValue({
@@ -58,7 +86,9 @@ describe('<AllUsedTagsTable />', () => {
             isAnalyticsNewFilters: true,
         })
         useTicketCountPerTagMock.mockReturnValue({
-            data: [exampleDataRow],
+            data: [exampleDataRow, anotherExampleDataRow],
+            grandTotal,
+            columnTotals,
             dateTimes: someDateTimes,
             isLoading: false,
             order: {
@@ -70,14 +100,22 @@ describe('<AllUsedTagsTable />', () => {
     })
 
     it('should render a table with tag data', () => {
-        renderWithStore(<AllUsedTagsTable />, defaultState)
+        renderWithStore(
+            <AllUsedTagsTable
+                heatmapMode={false}
+                valueMode={ValueMode.TotalCount}
+            />,
+            defaultState
+        )
 
         expect(screen.getByText(TAG_COLUMN_LABEL)).toBeInTheDocument()
     })
 
     it('should render loading skeletons', () => {
         useTicketCountPerTagMock.mockReturnValue({
-            data: [exampleDataRow],
+            data: [exampleDataRow, exampleDataRow],
+            grandTotal,
+            columnTotals,
             dateTimes: someDateTimes,
             isLoading: true,
             order: {
@@ -87,14 +125,54 @@ describe('<AllUsedTagsTable />', () => {
             setOrdering: jest.fn(),
         })
 
-        renderWithStore(<AllUsedTagsTable />, defaultState)
+        renderWithStore(
+            <AllUsedTagsTable
+                heatmapMode={false}
+                valueMode={ValueMode.TotalCount}
+            />,
+            defaultState
+        )
 
         expect(document.querySelector('.skeleton')).toBeInTheDocument()
+    })
+
+    it('should render heatmap mode', () => {
+        renderWithStore(
+            <AllUsedTagsTable
+                heatmapMode={true}
+                valueMode={ValueMode.TotalCount}
+            />,
+            defaultState
+        )
+
+        expect(document.querySelector('.heatmap')).toBeInTheDocument()
+    })
+
+    it('should render percentage mode', () => {
+        const percentageValue = calculatePercentage(
+            exampleDataRow.timeSeries[0].value,
+            columnTotals[0]
+        )
+        renderWithStore(
+            <AllUsedTagsTable
+                heatmapMode={false}
+                valueMode={ValueMode.Percentage}
+            />,
+            defaultState
+        )
+
+        expect(
+            screen.getByText(
+                formatMetricValue(percentageValue, 'percent-refined')
+            )
+        ).toBeInTheDocument()
     })
 
     it('should render with pagination', () => {
         useTicketCountPerTagMock.mockReturnValue({
             data: new Array(16).fill(exampleDataRow),
+            grandTotal: 16 * grandTotal,
+            columnTotals: [16 * 100, 16 * 23, 0],
             dateTimes: someDateTimes,
             isLoading: false,
             order: {
@@ -104,7 +182,13 @@ describe('<AllUsedTagsTable />', () => {
             setOrdering: jest.fn(),
         })
 
-        renderWithStore(<AllUsedTagsTable />, defaultState)
+        renderWithStore(
+            <AllUsedTagsTable
+                heatmapMode={false}
+                valueMode={ValueMode.TotalCount}
+            />,
+            defaultState
+        )
 
         const nextPageButton = screen.getByText('keyboard_arrow_right')
         expect(nextPageButton).toBeInTheDocument()
@@ -118,6 +202,8 @@ describe('<AllUsedTagsTable />', () => {
         const sortingCallbackSpy = jest.fn()
         useTicketCountPerTagMock.mockReturnValue({
             data: [exampleDataRow],
+            grandTotal: 123,
+            columnTotals: [100, 23, 0],
             dateTimes: someDateTimes,
             isLoading: false,
             order: {
@@ -127,7 +213,13 @@ describe('<AllUsedTagsTable />', () => {
             setOrdering: sortingCallbackSpy,
         })
 
-        renderWithStore(<AllUsedTagsTable />, defaultState)
+        renderWithStore(
+            <AllUsedTagsTable
+                heatmapMode={false}
+                valueMode={ValueMode.TotalCount}
+            />,
+            defaultState
+        )
         userEvent.click(screen.getByText(columnHeader))
 
         expect(sortingCallbackSpy).toHaveBeenCalled()
@@ -135,7 +227,13 @@ describe('<AllUsedTagsTable />', () => {
 
     describe('scrolling', () => {
         it('should handle table scrolling', async () => {
-            renderWithStore(<AllUsedTagsTable />, {})
+            renderWithStore(
+                <AllUsedTagsTable
+                    heatmapMode={false}
+                    valueMode={ValueMode.TotalCount}
+                />,
+                {}
+            )
             act(() => {
                 const tableRow = document.getElementsByClassName('container')[0]
                 fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
@@ -147,7 +245,13 @@ describe('<AllUsedTagsTable />', () => {
         })
 
         it('should handle table scrolling to the left border', async () => {
-            renderWithStore(<AllUsedTagsTable />, {})
+            renderWithStore(
+                <AllUsedTagsTable
+                    heatmapMode={false}
+                    valueMode={ValueMode.TotalCount}
+                />,
+                {}
+            )
             act(() => {
                 const tableRow = document.getElementsByClassName('container')[0]
                 fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})

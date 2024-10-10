@@ -14,6 +14,7 @@ import {ChannelsSlice, channelsSlice} from 'state/ui/stats/channelsSlice'
 import {drillDownSlice, DrillDownState} from 'state/ui/stats/drillDownSlice'
 import stats from 'state/ui/stats/reducer'
 import {statsTablesReducer} from 'state/ui/stats/statsTablesReducer'
+import {tagsReportSlice, TagsReportState} from 'state/ui/stats/tagsReportSlice'
 import {
     ticketInsightsSlice,
     TicketInsightsState,
@@ -36,6 +37,7 @@ const uiReducers = combineReducers<{
     ticketAIAgentFeedback: TicketAIAgentFeedbackState
     statsTables: StatsTablesState
     [channelsSlice.name]: ChannelsSlice
+    [tagsReportSlice.name]: TagsReportState
     [ticketInsightsSlice.name]: TicketInsightsState
     [drillDownSlice.name]: DrillDownState
     [busiestTimesSlice.name]: BusiestTimesState
@@ -50,6 +52,7 @@ const uiReducers = combineReducers<{
     statsTables: statsTablesReducer,
     [busiestTimesSlice.name]: busiestTimesSlice.reducer,
     [channelsSlice.name]: channelsSlice.reducer,
+    [tagsReportSlice.name]: tagsReportSlice.reducer,
     [ticketInsightsSlice.name]: ticketInsightsSlice.reducer,
     [drillDownSlice.name]: drillDownSlice.reducer,
 })
