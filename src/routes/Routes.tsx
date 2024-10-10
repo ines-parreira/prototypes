@@ -529,25 +529,22 @@ export function StatsRoutes() {
                         />
                     )}
                 />
+
                 <Route
                     exact
                     path={`${path}/tags`}
-                    render={() => (
-                        <App
-                            content={SupportPerformanceTags}
-                            navbar={StatsNavbarContainer}
-                        />
-                    )}
-                />
-                {!!isNewTagsReportEnabled && (
-                    <Route
-                        exact
-                        path={`${path}/new-tags`}
-                        render={() => (
+                    render={() =>
+                        !!isNewTagsReportEnabled ? (
                             <App content={Tags} navbar={StatsNavbarContainer} />
-                        )}
-                    />
-                )}
+                        ) : (
+                            <App
+                                content={SupportPerformanceTags}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )
+                    }
+                />
+
                 <Route
                     exact
                     path={`${path}/channels`}

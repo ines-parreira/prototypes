@@ -20,6 +20,7 @@ import {useFlag} from 'common/flags'
 
 import Routes from 'routes/Routes'
 import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
+import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
 
 jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
 jest.mock('common/segment')
@@ -112,6 +113,8 @@ jest.mock('pages/stats/LiveOverview')
 const LiveOverviewMock = assumeMock(LiveOverview)
 jest.mock('pages/stats/ticket-insights/tags/Tags')
 const TagsMock = assumeMock(Tags)
+jest.mock('pages/stats/SupportPerformanceTags')
+const OldTagsMock = assumeMock(SupportPerformanceTags)
 
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
@@ -126,6 +129,7 @@ describe('<Routes/>', () => {
         ServiceLevelAgreementsMock.mockImplementation(() => <div />)
         AutoQAMock.mockImplementation(() => <div />)
         TagsMock.mockImplementation(() => <div />)
+        OldTagsMock.mockImplementation(() => <div />)
         LiveOverviewMock.mockImplementation(() => <div />)
     })
 
@@ -417,13 +421,31 @@ describe('<Routes/>', () => {
 
             render(
                 <Provider store={mockStore({})}>
-                    <MemoryRouter initialEntries={['/app/stats/new-tags']}>
+                    <MemoryRouter initialEntries={['/app/stats/tags']}>
                         <Routes />
                     </MemoryRouter>
                 </Provider>
             )
 
             expect(TagsMock).toHaveBeenCalled()
+            expect(OldTagsMock).not.toHaveBeenCalled()
+        })
+
+        it('should render OldTagsPage page', () => {
+            mockFlags({
+                [FeatureFlagKey.NewTagsReport]: false,
+            })
+
+            render(
+                <Provider store={mockStore({})}>
+                    <MemoryRouter initialEntries={['/app/stats/tags']}>
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>
+            )
+
+            expect(OldTagsMock).toHaveBeenCalled()
+            expect(TagsMock).not.toHaveBeenCalled()
         })
 
         it('should render Automate AI Agent page', () => {

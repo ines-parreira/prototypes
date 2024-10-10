@@ -221,6 +221,7 @@ export default function StatsNavbarView() {
                             Ticket Fields
                         </NavbarLink>
                     </div>
+
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
@@ -231,30 +232,18 @@ export default function StatsNavbarView() {
                             {...COMMON_NAV_LINK_PROPS}
                             to="/app/stats/tags"
                         >
-                            Tags
-                        </NavbarLink>
-                    </div>
-                    {!!isNewTagsReportEnabled && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
-                            )}
-                        >
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/new-tags"
-                            >
-                                Tags{' '}
+                            Tags{' '}
+                            {isNewTagsReportEnabled && (
                                 <Badge
                                     type={ColorType.Blue}
                                     className={cssNavbar.badge}
                                 >
                                     {NEW_NAV_LABEL}
                                 </Badge>
-                            </NavbarLink>
-                        </div>
-                    )}
+                            )}
+                        </NavbarLink>
+                    </div>
+
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
