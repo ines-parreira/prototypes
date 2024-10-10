@@ -1,6 +1,13 @@
 import 'draft-js/dist/Draft.css'
 
-import React, {useCallback, useMemo, useRef, useState, useEffect} from 'react'
+import React, {
+    useCallback,
+    useMemo,
+    useRef,
+    useState,
+    useEffect,
+    memo,
+} from 'react'
 import {ContentState, EditorState} from 'draft-js'
 import createSingleLinePlugin from 'draft-js-single-line-plugin'
 import Editor from 'draft-js-plugins-editor'
@@ -183,4 +190,4 @@ const TextInputWithVariables = ({
     )
 }
 
-export default TextInputWithVariables
+export default memo(TextInputWithVariables)
