@@ -55,6 +55,14 @@ describe('<ActionFormInputConditions />', () => {
             screen.getByLabelText('No conditions required', {selector: 'div'})
         ).toHaveAttribute('aria-checked', 'true')
 
+        expect(
+            screen.queryByText('Add condition', {exact: false})
+        ).not.toBeInTheDocument()
+
+        expect(
+            screen.queryByText('clear', {exact: false})
+        ).not.toBeInTheDocument()
+
         act(() => {
             fireEvent.click(
                 screen.getByLabelText('All conditions are met', {

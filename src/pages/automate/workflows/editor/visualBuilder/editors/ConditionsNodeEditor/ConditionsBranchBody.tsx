@@ -252,73 +252,76 @@ export const ConditionsBranchBody = ({
                 />
             </div>
 
+            {emptyBranchErrorMessage &&
+                !conditions.length &&
+                shouldShowErrors && (
+                    <p className={css.errorMessage}>
+                        {emptyBranchErrorMessage}
+                    </p>
+                )}
+
             {type && (
                 <>
-                    <div className={css.conditionListWrapper}>
-                        {emptyBranchErrorMessage &&
-                            !conditions.length &&
-                            shouldShowErrors && (
-                                <p className={css.errorMessage}>
-                                    {emptyBranchErrorMessage}
-                                </p>
-                            )}
-                        {conditions.map((condition, index) => {
-                            const operator = Object.keys(
-                                condition
-                            )[0] as ConditionKey
-                            const value = (
-                                condition as unknown as Record<
-                                    ConditionKey,
-                                    [VarSchema]
-                                >
-                            )[operator][0]
-
-                            const variable = findVariable(
-                                availableVariables,
-                                (variable) => {
-                                    if (
-                                        'value' in variable &&
-                                        variable.value === value.var
-                                    ) {
-                                        return variable
-                                    }
-                                }
-                            )
-
-                            if (!variable) return null
-                            if (!type) return null
-
-                            const operators =
-                                getOperatorListByVariable(variable)
-
-                            return (
-                                <div
-                                    className={css.conditionList}
-                                    key={`${variable.name}_${index}`}
-                                >
-                                    <Condition
-                                        label={variable.name}
-                                        isFirst={index === 0}
-                                        type={type}
-                                        onDelete={() =>
-                                            onConditionDelete(index)
-                                        }
-                                        selectedOperatorValue={
-                                            Object.keys(condition)[0]
-                                        }
-                                        operators={operators}
-                                        onOperatorSelect={handleOperatorSelect(
-                                            condition,
-                                            index
-                                        )}
-                                        isDisabled={isDisabled}
+                    {conditions.length > 0 && (
+                        <div className={css.conditionListWrapper}>
+                            {conditions.map((condition, index) => {
+                                const operator = Object.keys(
+                                    condition
+                                )[0] as ConditionKey
+                                const value = (
+                                    condition as unknown as Record<
+                                        ConditionKey,
+                                        [VarSchema]
                                     >
-                                        {renderInput(variable, index)}
-                                    </Condition>
-                                </div>
-                            )
-                        })}
-                    </div>
+                                )[operator][0]
+
+                                const variable = findVariable(
+                                    availableVariables,
+                                    (variable) => {
+                                        if (
+                                            'value' in variable &&
+                                            variable.value === value.var
+                                        ) {
+                                            return variable
+                                        }
+                                    }
+                                )
+
+                                if (!variable) return null
+                                if (!type) return null
+
+                                const operators =
+                                    getOperatorListByVariable(variable)
+
+                                return (
+                                    <div
+                                        className={css.conditionList}
+                                        key={`${variable.name}_${index}`}
+                                    >
+                                        <Condition
+                                            label={variable.name}
+                                            isFirst={index === 0}
+                                            type={type}
+                                            onDelete={() =>
+                                                onConditionDelete(index)
+                                            }
+                                            selectedOperatorValue={
+                                                Object.keys(condition)[0]
+                                            }
+                                            operators={operators}
+                                            onOperatorSelect={handleOperatorSelect(
+                                                condition,
+                                                index
+                                            )}
+                                            isDisabled={isDisabled}
+                                        >
+                                            {renderInput(variable, index)}
+                                        </Condition>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    )}
                     <div className={css.cta}>
                         <WorkflowVariablePicker
                             label="Add Condition"

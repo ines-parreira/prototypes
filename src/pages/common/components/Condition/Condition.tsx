@@ -51,9 +51,7 @@ export const Condition = ({
     return (
         <div className={css.container}>
             {!isFirst && (
-                <Button intent="destructive" className={css.type}>
-                    {type.toUpperCase()}
-                </Button>
+                <Button className={css.type}>{type.toUpperCase()}</Button>
             )}
             <div className={css.labelWrapper}>
                 <span className={css.label}>{label}</span>
