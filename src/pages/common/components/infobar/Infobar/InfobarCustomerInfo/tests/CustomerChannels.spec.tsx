@@ -1,23 +1,21 @@
 import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
+import {clone} from 'lodash'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-
-import {screen, waitFor} from '@testing-library/react'
+import {fireEvent, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
+import * as segmentTracker from 'common/segment'
 import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,
 } from 'constants/user'
 import {initialState} from 'state/twilio/voiceDevice'
-import {UserSettingType} from 'config/types/user'
-import {
-    DateFormatType,
-    DateTimeFormatMapper,
-    DateTimeFormatType,
-    TimeFormatType,
-} from 'constants/datetime'
+import {useFlag} from 'common/flags'
+import {UserRole, UserSettingType} from 'config/types/user'
+import {DateFormatType, TimeFormatType} from 'constants/datetime'
 import {CustomerChannel} from 'models/customerChannel/types'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {CustomerChannels} from '../CustomerChannels'
@@ -33,6 +31,14 @@ jest.mock(
     () => () => <div>Add phone number</div>
 )
 
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
+
+const logEventSpy = jest.spyOn(segmentTracker, 'logEvent')
+const {SegmentEvent} = segmentTracker
+
 const mockStore = configureMockStore([thunk])
 
 const minProps: ComponentProps<typeof CustomerChannels> = {
@@ -41,30 +47,31 @@ const minProps: ComponentProps<typeof CustomerChannels> = {
     channels: fromJS([]),
     customerLocationInfo: fromJS({}),
     customerLastSeenOnChat: null,
-    datetimeFormat:
-        DateTimeFormatMapper[DateTimeFormatType.TIME_DOUBLE_DIGIT_HOUR_24HOUR],
-    dispatch: jest.fn(),
 }
 
-const defaultState = {
-    currentUser: fromJS({
-        id: 1,
-        email: 'steve@acme.gorgias.io',
-        settings: [
-            {
-                data: {
-                    date_format: DateFormatType.en_GB,
-                    time_format: TimeFormatType.TwentyFourHour,
-                },
-                id: 21,
-                type: UserSettingType.Preferences,
+const defaultUser = {
+    id: 1,
+    email: 'steve@acme.gorgias.io',
+    role: {name: UserRole.Agent},
+    settings: [
+        {
+            data: {
+                date_format: DateFormatType.en_GB,
+                time_format: TimeFormatType.TwentyFourHour,
             },
-        ],
-    }),
+            id: 21,
+            type: UserSettingType.Preferences,
+        },
+    ],
+}
+const defaultState = {
+    currentUser: fromJS(defaultUser),
 }
 
 describe('CustomerChannels component', () => {
     beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
+
         const mockDate = new Date('2019-01-26T12:34:56.000Z')
         global.Date.now = jest.fn(() => mockDate) as unknown as typeof Date.now
     })
@@ -151,6 +158,60 @@ describe('CustomerChannels component', () => {
             expect(queryByText(/Show more/)).toBeNull()
         }
     )
+
+    it('should not display the button "show more" because all channels are invalid', () => {
+        renderWithQueryClientProvider(
+            <Provider store={mockStore(defaultState)}>
+                <CustomerChannels
+                    {...minProps}
+                    channels={fromJS([
+                        {
+                            type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                            preferred: true,
+                        },
+                        {
+                            type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                            preferred: false,
+                        },
+                        {
+                            type: PHONE_CUSTOMER_CHANNEL_TYPE,
+                            address: '',
+                            preferred: false,
+                        },
+                    ])}
+                />
+            </Provider>
+        )
+
+        expect(screen.queryByText(/Show more/)).toBeNull()
+    })
+
+    it('should also display channels others than phone and email', () => {
+        renderWithQueryClientProvider(
+            <Provider store={mockStore(defaultState)}>
+                <CustomerChannels
+                    {...minProps}
+                    channels={fromJS([
+                        {
+                            type: 'aircall',
+                            address: 'AircallHandle',
+                            preferred: false,
+                        },
+                        {
+                            type: 'twilio',
+                            address: 'TwilioHandle',
+                            preferred: false,
+                        },
+                    ])}
+                />
+            </Provider>
+        )
+
+        userEvent.click(screen.getByText(/Show more/))
+
+        expect(screen.getByText('AircallHandle')).toBeInTheDocument()
+        expect(screen.getByText('TwilioHandle')).toBeInTheDocument()
+    })
 
     it(
         `should display all passed channels and not display the button "show more" because there is only 2 passed ` +
@@ -341,6 +402,7 @@ describe('CustomerChannels component', () => {
         })
         expect(getByText(/Location: Paris, France/)).toBeInTheDocument()
         expect(getByText(/Local time:/)).toBeInTheDocument()
+        expect(screen.queryByText(/Customer Fields/)).not.toBeInTheDocument()
     })
 
     it('should display "Add phone number button', async () => {
@@ -360,5 +422,40 @@ describe('CustomerChannels component', () => {
             </Provider>
         )
         await waitFor(() => expect(getByText(/Add phone number/)).toBeVisible())
+    })
+
+    describe('Customer Fields', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+        })
+
+        it('should show an empty custom fields indicator at the bottom of the channels list', () => {
+            renderWithQueryClientProvider(
+                <Provider store={mockStore(defaultState)}>
+                    <CustomerChannels {...minProps} />
+                </Provider>
+            )
+
+            expect(screen.getByText('Customer Fields')).toBeInTheDocument()
+        })
+
+        it('should show a link to admins at the bottom of the channels list', () => {
+            const adminUser = clone(defaultUser)
+            adminUser.role.name = UserRole.Admin
+            const adminState = {currentUser: fromJS(adminUser)}
+
+            renderWithQueryClientProvider(
+                <Provider store={mockStore(adminState)}>
+                    <CustomerChannels {...minProps} />
+                </Provider>
+            )
+
+            expect(screen.getByText('Add Customer Fields')).toBeInTheDocument()
+
+            fireEvent.click(screen.getByText('Add Customer Fields'))
+            expect(logEventSpy).toHaveBeenCalledWith(
+                SegmentEvent.CustomFieldInfobarAddFieldsClicked
+            )
+        })
     })
 })

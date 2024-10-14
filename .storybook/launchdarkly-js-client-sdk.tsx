@@ -6,6 +6,14 @@ let _flags =  (Object.keys(FeatureFlagKey).reduce((acc, key) => {
     acc[key] = false
     return acc
 }, {}))
+
+let _mockClient = {
+    waitForInitialization: () => Promise.resolve(),
+    on: () => {},
+    off: () => {},
+    variation: (flag: FeatureFlagKey, defaultValue: any) => _flags[flag] || defaultValue,
+}
+
 export const useFlags = () => _flags
 export const withLDConsumer = (options) => (WrappedComponent) => (props) => {
     const allProps = { ...props}
@@ -16,4 +24,8 @@ export function decorator(story, {parameters}) {
         _flags = parameters.flags
     }
     return story()
+}
+
+export function initialize() {
+    return _mockClient;
 }

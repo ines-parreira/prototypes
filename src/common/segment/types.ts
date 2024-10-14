@@ -118,6 +118,7 @@ export enum SegmentEvent {
     CustomFieldCreateFieldClicked = 'custom-fields/create-field-clicked',
     CustomFieldDropdownCsvImportError = 'custom-fields/dropdown-csv-import-error',
     CustomFieldDropdownCsvImportSuccessful = 'custom-fields/dropdown-csv-import-successful',
+    CustomFieldInfobarAddFieldsClicked = 'custom-fields/infobar-add-field-clicked',
     CustomFieldSaveNewFieldClicked = 'custom-fields/save-new-field-clicked',
     CustomFieldArchivedFieldClicked = 'custom-fields/archived-field-clicked',
     CustomFieldTicketValueDropdownFocused = 'custom-fields/ticket/dropdown-focused',

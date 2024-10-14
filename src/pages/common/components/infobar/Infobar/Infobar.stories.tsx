@@ -11,6 +11,9 @@ import {HTTP_INTEGRATION_TYPE} from 'constants/integration'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import {ThemeProvider, useTheme} from 'theme'
 import {appQueryClient} from 'api/queryClient'
+import {initLaunchDarkly} from 'utils/launchDarkly'
+
+initLaunchDarkly(null as any, null as any)
 
 const defaultState = {
     currentUser: Map({
