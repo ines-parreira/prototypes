@@ -29,7 +29,7 @@ import {
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Modal from 'pages/common/components/modal/Modal'
 import {DateAndTimeFormatting} from 'constants/datetime'
@@ -362,7 +362,9 @@ export function DraftOrderModalContainer({
                     )}
                 </div>
             ) : (
-                <Loader />
+                <div className={css.spinner}>
+                    <Spinner size="medium" />
+                </div>
             )}
             <ModalFooter className={css.footer}>
                 <div className={css.buttonGroup}>
@@ -375,11 +377,7 @@ export function DraftOrderModalContainer({
                     </Button>
                     {loading && (
                         <div className={css.buttonGroup}>
-                            <Loader
-                                className={css.spinner}
-                                minHeight="20px"
-                                size="20px"
-                            />
+                            <Spinner size="small" />
                             <span>{loadingMessage}</span>
                         </div>
                     )}

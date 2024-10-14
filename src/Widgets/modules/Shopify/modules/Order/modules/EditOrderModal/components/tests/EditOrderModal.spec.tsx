@@ -1,6 +1,6 @@
 import React, {ReactNode, ComponentProps} from 'react'
 import {fromJS, Map, List} from 'immutable'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, screen} from '@testing-library/react'
 
 import {initDraftOrderPayload} from 'business/shopify/draftOrder'
 import {integrationsStateWithShopify} from 'fixtures/integrations'
@@ -198,11 +198,11 @@ describe('<EditOrderModal/>', () => {
             </CustomerContext.Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(container.firstChild).toBeNull()
     })
 
     it('should render a spinner when missing data', () => {
-        const {container} = render(
+        render(
             <CustomerContext.Provider value={{customerId: 2}}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer {...minProps} />
@@ -210,7 +210,7 @@ describe('<EditOrderModal/>', () => {
             </CustomerContext.Provider>
         )
 
-        expect(container).toMatchSnapshot()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render with a populated order table when data is populated', () => {
@@ -237,7 +237,7 @@ describe('<EditOrderModal/>', () => {
         const products = fromJS([])
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
-        const {container} = render(
+        render(
             <CustomerContext.Provider value={{customerId: 2}}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
@@ -249,14 +249,17 @@ describe('<EditOrderModal/>', () => {
             </CustomerContext.Provider>
         )
 
-        expect(container).toMatchSnapshot()
+        expect(screen.getByText('No items')).toBeInTheDocument()
     })
 
     it('should render with a default currency if missing from integrations', () => {
         const integrations = (
             integrationsStateWithShopify.get('integrations') as List<any>
-        ).toJS()
-        const {container} = render(
+        )
+            .setIn([0, 'meta', 'currency'], null)
+            .toJS()
+        const defaultCurrency = 'YEN'
+        render(
             <CustomerContext.Provider value={{customerId: 2}}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
@@ -264,12 +267,15 @@ describe('<EditOrderModal/>', () => {
                         integrations={integrations}
                         products={products}
                         payload={payload}
+                        defaultCurrency={defaultCurrency}
                     />
                 </IntegrationContext.Provider>
             </CustomerContext.Provider>
         )
 
-        expect(container).toMatchSnapshot()
+        expect(
+            screen.getAllByText(new RegExp(defaultCurrency)).length
+        ).toBeTruthy()
     })
 
     it('should call onInit when modal is opened', () => {
@@ -299,7 +305,7 @@ describe('<EditOrderModal/>', () => {
             </CustomerContext.Provider>
         )
 
-        expect(minProps.onInit).toBeCalledWith(
+        expect(minProps.onInit).toHaveBeenCalledWith(
             1,
             order,
             customer,

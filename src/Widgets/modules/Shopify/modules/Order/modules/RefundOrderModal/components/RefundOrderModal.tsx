@@ -22,7 +22,7 @@ import {
 } from 'business/shopify/order'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {getRefundAmount} from 'business/shopify/refund'
 import Modal from 'pages/common/components/modal/Modal'
@@ -182,11 +182,7 @@ export const RefundOrderModalContainer = ({
                         </Button>
                         {loading && (
                             <div className={css.buttonGroup}>
-                                <Loader
-                                    className={css.spinner}
-                                    minHeight="20px"
-                                    size="20px"
-                                />
+                                <Spinner size="small" />
                                 <span>{loadingMessage}</span>
                             </div>
                         )}

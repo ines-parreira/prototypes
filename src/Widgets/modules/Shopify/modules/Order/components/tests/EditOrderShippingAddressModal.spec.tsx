@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react'
 import {fromJS, Map, List} from 'immutable'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, screen} from '@testing-library/react'
 
 import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {shopifyCustomerFixture} from 'fixtures/shopify'
@@ -12,7 +12,7 @@ jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
         ({dateTime}: {dateTime: string}) =>
-            <div data-testid="DatetimeLabel">{dateTime}</div>
+            <div>{dateTime}</div>
 )
 
 jest.mock(
@@ -97,11 +97,11 @@ describe('<EditOrderShippingAddressModal/>', () => {
             </CustomerContext.Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(container.firstChild).toBeNull()
     })
 
     it('should render the modal', () => {
-        const {container} = render(
+        render(
             <CustomerContext.Provider value={{customerId: 2}}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderShippingAddressModal {...minProps} />
@@ -109,11 +109,12 @@ describe('<EditOrderShippingAddressModal/>', () => {
             </CustomerContext.Provider>
         )
 
-        expect(container).toMatchSnapshot()
+        expect(screen.getByText('Edit Address')).toBeInTheDocument()
+        expect(screen.getByText('Select another address')).toBeInTheDocument()
     })
 
     it('should render the modal with an extra province field', () => {
-        const {container} = render(
+        render(
             <CustomerContext.Provider value={{customerId: 2}}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderShippingAddressModal
@@ -124,7 +125,7 @@ describe('<EditOrderShippingAddressModal/>', () => {
             </CustomerContext.Provider>
         )
 
-        expect(container).toMatchSnapshot()
+        expect(screen.getByLabelText('Province')).toBeInTheDocument()
     })
 
     it('should call onInit when modal is opened', () => {
@@ -147,7 +148,7 @@ describe('<EditOrderShippingAddressModal/>', () => {
             </CustomerContext.Provider>
         )
 
-        expect(minProps.onInit).toBeCalledWith(
+        expect(minProps.onInit).toHaveBeenCalledWith(
             1,
             customer.get('id'),
             expect.any(Function)

@@ -36,7 +36,7 @@ import {states} from 'fixtures/states'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
@@ -461,6 +461,7 @@ export function EditOrderShippingAddressModal({
                                         Province
                                     </Label>
                                     <SelectField
+                                        aria-label="Province value"
                                         id="province"
                                         options={provinces.map((option) => ({
                                             value: option,
@@ -542,11 +543,7 @@ export function EditOrderShippingAddressModal({
                         </Button>
                         {loading && (
                             <div className={css.buttonGroup}>
-                                <Loader
-                                    className={css.spinner}
-                                    minHeight="20px"
-                                    size="20px"
-                                />
+                                <Spinner size="small" />
                                 <span>{loadingMessage}</span>
                             </div>
                         )}

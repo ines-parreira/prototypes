@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react'
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {fromJS, List, Map} from 'immutable'
 
 import {
@@ -110,27 +110,27 @@ describe('<RefundOrderModal />', () => {
             </IntegrationContext.Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(container.firstChild).toBeNull()
     })
 
     it('should render a spinner when missing data', () => {
-        const {container} = render(
+        render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer {...minProps} loading />
             </IntegrationContext.Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render with an empty order table when data is empty', () => {
-        const {container} = render(
+        render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer {...minProps} payload={payload} />
             </IntegrationContext.Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(document.getElementsByTagName('tbody')[0]).toBeEmptyDOMElement()
     })
 
     it('should render with a populated order table when data is populated', () => {

@@ -25,7 +25,7 @@ import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {getFinalCancelOrderPayload} from 'business/shopify/order'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import Modal from 'pages/common/components/modal/Modal'
 import {aggregateMaximumRefundableByGateway} from 'business/shopify/refund'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
@@ -166,7 +166,7 @@ export const CancelOrderModalContainer = ({
         >
             <ModalHeader title={title} />
             <Form onSubmit={handleSubmit}>
-                {payload && lineItems && (
+                {payload && lineItems ? (
                     <OrderForm
                         shopName={shopName}
                         actionName={data.actionName}
@@ -183,6 +183,10 @@ export const CancelOrderModalContainer = ({
                         onReasonChange={handleReasonChange}
                         onNotifyChange={handleNotifyChange}
                     />
+                ) : (
+                    <div className={css.spinner}>
+                        <Spinner size="medium" />
+                    </div>
                 )}
                 <ModalFooter className={css.footer}>
                     <Button
@@ -196,11 +200,7 @@ export const CancelOrderModalContainer = ({
                     </Button>
                     {loading && (
                         <div className={css.loading}>
-                            <Loader
-                                className={css.spinner}
-                                minHeight="20px"
-                                size="20px"
-                            />
+                            <Spinner size="small" />
                             <span>{loadingMessage}</span>
                         </div>
                     )}

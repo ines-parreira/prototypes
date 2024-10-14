@@ -13,7 +13,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import {notificationSounds} from 'services'
 import {defaultSound, SoundValue} from 'services/NotificationSounds'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 
 import useSettings from '../hooks/useSettings'
 import {LegacyNotificationType, NotificationType} from '../types'
@@ -76,7 +76,9 @@ export default function Settings() {
         <div className="full-width">
             <PageHeader title="Notifications" />
             {isLoading ? (
-                <Loader className={css.loader} />
+                <div className={css.spinner}>
+                    <Spinner size="big" />
+                </div>
             ) : (
                 <form
                     className={cn(

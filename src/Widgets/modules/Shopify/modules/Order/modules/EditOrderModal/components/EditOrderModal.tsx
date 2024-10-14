@@ -22,7 +22,7 @@ import {RootState} from 'state/types'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import Modal from 'pages/common/components/modal/Modal'
@@ -273,11 +273,15 @@ export function EditOrderModalContainer({
                             }}
                         />
                     ) : (
-                        <Loader />
+                        <div className={css.spinner}>
+                            <Spinner size="medium" />
+                        </div>
                     )}
                 </div>
             ) : (
-                <Loader />
+                <div className={css.spinner}>
+                    <Spinner size="medium" />
+                </div>
             )}
             <ModalFooter className={css.footer}>
                 <div className={css.buttonGroup}>
@@ -290,11 +294,7 @@ export function EditOrderModalContainer({
                     </Button>
                     {loading && (
                         <div className={css.buttonGroup}>
-                            <Loader
-                                className={css.spinner}
-                                minHeight="20px"
-                                size="20px"
-                            />
+                            <Spinner size="small" />
                             <span>{loadingMessage}</span>
                         </div>
                     )}
