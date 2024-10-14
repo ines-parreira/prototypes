@@ -13,16 +13,19 @@ import {notify} from 'state/notifications/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {NotificationStatus} from 'state/notifications/types'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 import {channelConnection} from 'fixtures/channelConnection'
 import * as queries from 'models/convert/settings/queries'
 import {useChatIntegration} from 'pages/convert/campaigns/hooks/useChatIntegration'
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
+import {CampaignSettingType} from 'pages/stats/convert/components/CampaignTableStats/constants'
 
 jest.mock('models/convert/settings/queries')
 jest.mock('state/notifications/actions')
 jest.mock('pages/convert/campaigns/hooks/useChatIntegration')
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 jest.mock('pages/convert/campaigns/hooks/useChatIntegration')
+jest.mock('pages/convert/common/hooks/useIsCampaignProritizationEnabled')
 jest.mock('hooks/useAppDispatch')
 
 const mockUseAppDispatch = assumeMock(useAppDispatch)
@@ -33,6 +36,10 @@ const mockUseGetOrCreateChannelConnection = assumeMock(
 )
 const mockChatIntegration = assumeMock(useChatIntegration)
 const queryClient = mockQueryClient()
+
+const mockUseIsCampaignProritizationEnabled = assumeMock(
+    useIsCampaignProritizationEnabled
+)
 
 const mockStore = configureMockStore([thunk])
 
@@ -48,6 +55,7 @@ describe('<GeneralSettingsView />', () => {
             }) as Map<any, any>
         )
         mockUseAppDispatch.mockReturnValue(jest.fn())
+        mockUseIsCampaignProritizationEnabled.mockReturnValue(false)
     })
 
     it('should handle submission when its successful', async () => {
@@ -139,6 +147,7 @@ describe('<GeneralSettingsView />', () => {
         mockQuery.mockReturnValue({
             data: [
                 {
+                    type: CampaignSettingType.EmailDisclaimer,
                     data: {
                         enabled: true,
                         disclaimer: {en: 'foo'},
@@ -161,5 +170,19 @@ describe('<GeneralSettingsView />', () => {
         )
         const toggle = getByText('Email privacy policy disclaimer')
         expect(toggle).toBeChecked()
+    })
+
+    it('campaign frequency section is visible', () => {
+        mockUseIsCampaignProritizationEnabled.mockReturnValue(true)
+
+        const {getByText} = render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore({})}>
+                    <GeneralSettingsView />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        expect(getByText('Frequency Settings')).toBeInTheDocument()
     })
 })

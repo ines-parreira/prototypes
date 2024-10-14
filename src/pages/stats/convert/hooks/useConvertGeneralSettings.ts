@@ -1,14 +1,19 @@
+import {useMemo} from 'react'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {useGetSettingsList} from 'models/convert/settings/queries'
 
 import {CampaignSettingType} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {GorgiasChatIntegration} from 'models/integration/types'
-import {CaptureFormDisclaimerSettings} from 'pages/convert/settings/types'
+import {
+    CaptureFormDisclaimerSettings,
+    CampaignFrequencySettings,
+} from 'pages/convert/settings/types'
 
-export const useEmailDisclaimerSettings = (
+export const useConvertGeneralSettings = (
     integration?: GorgiasChatIntegration
 ): {
-    data?: CaptureFormDisclaimerSettings
+    emailDisclaimer?: CaptureFormDisclaimerSettings
+    campaignFrequency?: CampaignFrequencySettings
     isLoading: boolean
 } => {
     const {channelConnection, isLoading: isChannelConnectionLoading} =
@@ -17,17 +22,27 @@ export const useEmailDisclaimerSettings = (
     const {data: settings, isLoading: isSettingsLoading} = useGetSettingsList(
         {
             channel_connection_id: channelConnection?.id as string,
-            setting_type: CampaignSettingType.EmailDisclaimer,
         },
         {
             enabled: !!channelConnection,
         }
     )
 
+    const data = useMemo(() => {
+        return (settings || []).reduce((accValue, currentValue) => {
+            accValue[currentValue.type] = currentValue?.data
+
+            return accValue
+        }, {} as Record<CampaignSettingType, any>)
+    }, [settings])
+
     return {
-        data: (settings || [])[0]?.data as unknown as
-            | CaptureFormDisclaimerSettings
-            | undefined,
+        emailDisclaimer: data[
+            CampaignSettingType.EmailDisclaimer
+        ] as unknown as CaptureFormDisclaimerSettings | undefined,
+        campaignFrequency: data[
+            CampaignSettingType.CampaignFrequency
+        ] as unknown as CampaignFrequencySettings | undefined,
         isLoading: isSettingsLoading || isChannelConnectionLoading,
     }
 }

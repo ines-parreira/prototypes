@@ -1,12 +1,6 @@
 @import '~@gorgias/design-tokens/dist/css/layout';
 
 :local {
-    .richField {
-        &.onError {
-            border-color: var(--feedback-error);
-        }
-    }
-
     .settingSection {
         display: flex;
         flex-direction: column;
@@ -29,16 +23,5 @@
         &.disabled {
             border: 2px solid var(--neutral-grey-3);
         }
-    }
-
-    .editorTabs {
-        display: flex;
-        flex-direction: column;
-        gap: @layout-spacing-s;
-    }
-
-    .tabsDisabled {
-        pointer-events: none;
-        opacity: 0.4;
     }
 }

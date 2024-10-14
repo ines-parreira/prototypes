@@ -620,7 +620,18 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/RequestSettingSchema"
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/RequestSettingSchema"
+                                    },
+                                    {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/RequestSettingSchema"
+                                        }
+                                    }
+                                ],
+                                "title": "Payload"
                             }
                         }
                     }
@@ -631,7 +642,18 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/SettingResponseSchema"
+                                    "anyOf": [
+                                        {
+                                            "$ref": "#/components/schemas/SettingResponseSchema"
+                                        },
+                                        {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SettingResponseSchema"
+                                            }
+                                        }
+                                    ],
+                                    "title": "Response Update Setting"
                                 }
                             }
                         }
@@ -3927,7 +3949,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-joaotavares.eu.ngrok.io/loader.js"
+                        "default": "https://bundle-mariuszjanczyn.eu.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",
@@ -4488,7 +4510,8 @@
                 "type": "string",
                 "enum": [
                     "performance_report_visible_fields",
-                    "email_disclaimer"
+                    "email_disclaimer",
+                    "campaign_frequency"
                 ],
                 "title": "SettingType"
             },

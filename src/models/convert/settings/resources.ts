@@ -5,7 +5,7 @@ import {SettingsParams, SettingRequest} from './types'
 export const updateSettings = async (
     client: RevenueAddonClient | undefined,
     params: SettingsParams,
-    data: SettingRequest
+    data: SettingRequest | SettingRequest[]
 ) => {
     if (!client) return null
 

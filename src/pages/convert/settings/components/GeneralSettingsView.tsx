@@ -2,19 +2,25 @@ import React, {useCallback, useEffect, useState} from 'react'
 import cn from 'classnames'
 import Button from 'pages/common/components/button/Button'
 import {TermsAndConditionsSetting} from 'pages/convert/settings/components/TermsAndConditionsSetting'
-import settingsCss from 'pages/settings/settings.less'
 import {SettingRequest} from 'models/convert/settings/types'
 import {CampaignSettingType} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
+import {CampaignFrequencySetting} from 'pages/convert/settings/components/CampaignFrequencySetting'
 import {useChatIntegration} from 'pages/convert/campaigns/hooks/useChatIntegration'
 import {toJS} from 'utils'
-import {useEmailDisclaimerSettings} from 'pages/stats/convert/hooks/useEmailDisclaimerSettings'
+import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import Loader from 'pages/common/components/Loader/Loader'
 import {notify} from 'state/notifications/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {NotificationStatus} from 'state/notifications/types'
-import {DisclaimerSettings} from 'pages/convert/settings/types'
 import {useUpdateSetting} from 'pages/convert/settings/hooks/useUpdateSetting'
+import {
+    DisclaimerSettings,
+    CampaignFrequencySettings,
+} from 'pages/convert/settings/types'
+
+import settingsCss from 'pages/settings/settings.less'
 import css from './GeneralSettingsView.less'
 
 export const GeneralSettingsView = () => {
@@ -25,6 +31,9 @@ export const GeneralSettingsView = () => {
             selectedLanguage: 'en',
             preSelectDisclaimer: false,
         })
+    const [campaignFrequencySetting, setCampaignFrequencySettings] =
+        useState<CampaignFrequencySettings>({})
+
     const {mutateAsync: updateSetting, isLoading: isSubmitLoading} =
         useUpdateSetting()
     const integration = useChatIntegration()
@@ -34,8 +43,13 @@ export const GeneralSettingsView = () => {
     const [disclaimerOnError, setDisclaimerOnError] = useState(false)
     const dispatch = useAppDispatch()
 
-    const {data: emailDisclaimerServerData, isLoading} =
-        useEmailDisclaimerSettings(integration.toJS())
+    const {
+        emailDisclaimer: emailDisclaimerServerData,
+        campaignFrequency: campaignFrequencyServerData,
+        isLoading,
+    } = useConvertGeneralSettings(integration.toJS())
+
+    const isCampaignProritizationEnabled = useIsCampaignProritizationEnabled()
 
     useEffect(() => {
         if (!emailDisclaimerServerData) return
@@ -48,16 +62,35 @@ export const GeneralSettingsView = () => {
         }))
     }, [emailDisclaimerServerData])
 
+    useEffect(() => {
+        if (!campaignFrequencyServerData) return
+        setCampaignFrequencySettings((state) => ({
+            ...state,
+            ...campaignFrequencyServerData,
+        }))
+    }, [campaignFrequencyServerData])
+
     const handleSubmit = useCallback(async () => {
-        const payload: SettingRequest = {
-            type: CampaignSettingType.EmailDisclaimer,
-            data: {
-                enabled: disclaimerSettings.disclaimerEnabled,
-                disclaimer: disclaimerSettings.disclaimerMap,
-                disclaimer_default_accepted:
-                    disclaimerSettings.preSelectDisclaimer,
+        const payload: SettingRequest[] = [
+            {
+                type: CampaignSettingType.EmailDisclaimer,
+                data: {
+                    enabled: disclaimerSettings.disclaimerEnabled,
+                    disclaimer: disclaimerSettings.disclaimerMap,
+                    disclaimer_default_accepted:
+                        disclaimerSettings.preSelectDisclaimer,
+                },
             },
-        }
+            {
+                type: CampaignSettingType.CampaignFrequency,
+                data: {
+                    max_campaign_in_session:
+                        campaignFrequencySetting.max_campaign_in_session,
+                    min_time_between_campaigns:
+                        campaignFrequencySetting.min_time_between_campaigns,
+                },
+            },
+        ]
 
         try {
             await updateSetting([
@@ -87,9 +120,8 @@ export const GeneralSettingsView = () => {
         return Promise.resolve(true)
     }, [
         channelConnection?.id,
-        disclaimerSettings.disclaimerEnabled,
-        disclaimerSettings.disclaimerMap,
-        disclaimerSettings.preSelectDisclaimer,
+        disclaimerSettings,
+        campaignFrequencySetting,
         dispatch,
         updateSetting,
     ])
@@ -105,12 +137,20 @@ export const GeneralSettingsView = () => {
             {isLoading ? (
                 <Loader />
             ) : (
-                <TermsAndConditionsSetting
-                    disclaimerSettings={disclaimerSettings}
-                    onDisclaimerSettingsChange={setDisclaimerSettings}
-                    onErrorChange={setDisclaimerOnError}
-                    chatIntegration={integration}
-                />
+                <>
+                    {isCampaignProritizationEnabled && (
+                        <CampaignFrequencySetting
+                            campaignFrequencySettings={campaignFrequencySetting}
+                            onSettingsChange={setCampaignFrequencySettings}
+                        />
+                    )}
+                    <TermsAndConditionsSetting
+                        disclaimerSettings={disclaimerSettings}
+                        onDisclaimerSettingsChange={setDisclaimerSettings}
+                        onErrorChange={setDisclaimerOnError}
+                        chatIntegration={integration}
+                    />
+                </>
             )}
             <div className={css.ctaContainer}>
                 <Button

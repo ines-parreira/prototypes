@@ -127,7 +127,7 @@ export const TermsAndConditionsSetting = ({
     }, [defaultLanguage.value, onSelectedLanguageChange])
 
     return (
-        <div className={css.termsAndConditionsSetting}>
+        <div className={css.settingSection}>
             <div className={css.headingSection}>
                 <span className={'heading-section-semibold'}>
                     Privacy Policy Disclaimer

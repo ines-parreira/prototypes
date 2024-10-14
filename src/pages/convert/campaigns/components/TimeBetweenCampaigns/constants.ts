@@ -11,3 +11,7 @@ export const SELECT_OPTIONS = [
         value: 'minutes',
     },
 ]
+
+export const DEFAULT_LABEL = 'Time required between campaigns'
+export const DEFAULT_DESCRIPTION =
+    'Set the time interval between two campaigns displayed in a session.'

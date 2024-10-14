@@ -7,6 +7,7 @@ describe('<MaximumCampaignDisplayed />', () => {
     it('renders', () => {
         render(
             <CampaignFrequency
+                integrationId={'1'}
                 maximumCampaignsDisplayed={undefined}
                 onChangeMaximumCampaignDisplayed={jest.fn()}
                 timeBetweenCampaigns={undefined}

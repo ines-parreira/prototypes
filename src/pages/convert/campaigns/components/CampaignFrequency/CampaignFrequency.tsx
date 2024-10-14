@@ -13,6 +13,7 @@ import {
 import css from './CampaignFrequency.less'
 
 type Props = {
+    integrationId: string
     maximumCampaignsDisplayed?: CampaignDisplaysInSession | null
     timeBetweenCampaigns?: MinimumTimeBetweenCampaigns | null
     onChangeMaximumCampaignDisplayed: (
@@ -24,6 +25,7 @@ type Props = {
 }
 
 const CampaignFrequency: React.FC<Props> = ({
+    integrationId,
     maximumCampaignsDisplayed,
     onChangeMaximumCampaignDisplayed,
     timeBetweenCampaigns,
@@ -43,7 +45,10 @@ const CampaignFrequency: React.FC<Props> = ({
                 >
                     Setting how often this campaign is shown to a customer in a
                     session will override your account settings{' '}
-                    <Link to={'add-url'}>here</Link>.
+                    <Link to={`/app/convert/${integrationId}/settings`}>
+                        here
+                    </Link>
+                    .
                 </Tooltip>
             </div>
             <div className={css.settings}>

@@ -27,8 +27,8 @@ jest.mock('pages/convert/bundles/hooks/useGetConvertBundle', () => ({
     }),
 }))
 
-jest.mock('pages/stats/convert/hooks/useEmailDisclaimerSettings', () => ({
-    useEmailDisclaimerSettings: () => ({data: undefined, isLoading: false}),
+jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings', () => ({
+    useConvertGeneralSettings: () => ({data: undefined, isLoading: false}),
 }))
 
 const mockStore = configureMockStore([thunk])

@@ -5,18 +5,28 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {MinimumTimeBetweenCampaigns} from 'pages/convert/campaigns/types/CampaignMeta'
-import {SELECT_OPTIONS, DEFAULT_TIME, DEFAULT_TIME_UNIT} from './constants'
+import {
+    SELECT_OPTIONS,
+    DEFAULT_TIME,
+    DEFAULT_TIME_UNIT,
+    DEFAULT_DESCRIPTION,
+    DEFAULT_LABEL,
+} from './constants'
 
 import css from './TimeBetweenCampaigns.less'
 
 type Props = {
     config?: MinimumTimeBetweenCampaigns | null
     onChange: (value: MinimumTimeBetweenCampaigns | null) => void
+    label?: string
+    description?: string
 }
 
 export const TimeBetweenCampaigns: React.FC<Props> = ({
     config,
     onChange,
+    label,
+    description,
 }): JSX.Element => {
     const [isEnabled, setEnabled] = useState<boolean>(!!config?.value)
     const [internalValue, setInternalValue] = useState<number>(
@@ -70,7 +80,7 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
                     <ToggleInput
                         id="time-between-campaigns"
                         isToggled={isEnabled}
-                        aria-label="Time required between campaigns"
+                        aria-label={label ?? DEFAULT_LABEL}
                         onClick={handleClickToggle}
                     />
                     <div>
@@ -78,11 +88,10 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
                             htmlFor="time-between-campaigns"
                             className={css.label}
                         >
-                            Time required between campaigns
+                            {label ?? DEFAULT_LABEL}
                         </label>
                         <span className={css.labelDescription}>
-                            Set the time interval between two campaigns
-                            displayed in a session.
+                            {description ?? DEFAULT_DESCRIPTION}
                         </span>
 
                         {isEnabled && (

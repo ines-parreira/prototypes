@@ -15,7 +15,7 @@ import {Customization} from 'pages/convert/campaigns/components/ContactCaptureFo
 import {PostSubmissionMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage'
 import {ContactFormCaptureFormIconButton} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
 import {assumeMock} from 'utils/testing'
-import {useEmailDisclaimerSettings} from 'pages/stats/convert/hooks/useEmailDisclaimerSettings'
+import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 
 jest.mock('tags/useListTags')
 const mockStore = configureMockStore()
@@ -30,8 +30,8 @@ const store = mockStore({
 })
 const mockUseListTags = useListTags as jest.Mock
 
-jest.mock('pages/stats/convert/hooks/useEmailDisclaimerSettings')
-const mockUseEmailDisclaimerSettings = assumeMock(useEmailDisclaimerSettings)
+jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings')
+const mockUseConvertGeneralSettings = assumeMock(useConvertGeneralSettings)
 
 describe('ContactForm test suite', () => {
     const baseState = {
@@ -60,8 +60,8 @@ describe('ContactForm test suite', () => {
 
     beforeEach(() => {
         mockUseListTags.mockReturnValue([])
-        mockUseEmailDisclaimerSettings.mockReturnValue({
-            data: {
+        mockUseConvertGeneralSettings.mockReturnValue({
+            emailDisclaimer: {
                 enabled: true,
                 disclaimer: {en: 'foo'},
                 disclaimer_default_accepted: true,

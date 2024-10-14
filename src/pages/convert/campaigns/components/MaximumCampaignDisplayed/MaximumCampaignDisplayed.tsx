@@ -7,15 +7,22 @@ import {CampaignDisplaysInSession} from 'pages/convert/campaigns/types/CampaignM
 import css from './MaximumCampaignDisplayed.less'
 
 const DEFAULT_MAX_CAMPAIGN_DISPLAYED = 3
+const DEFAULT_LABEL = 'Maximum campaign display in a session'
+const DEFAULT_DESCRIPTION =
+    'Set how often this campaign is displayed to a customer in a session.'
 
 type Props = {
     config: CampaignDisplaysInSession | null | undefined
     onChange: (newValue: CampaignDisplaysInSession | null) => void
+    label?: string
+    description?: string
 }
 
 export const MaximumCampaignDisplayed = ({
     config,
     onChange,
+    label,
+    description,
 }: Props): JSX.Element => {
     const [isEnabled, setEnabled] = useState<boolean>(!!config?.value)
     const [internalValue, setInternalValue] = useState<number>(
@@ -58,7 +65,7 @@ export const MaximumCampaignDisplayed = ({
                     <ToggleInput
                         id="maximum-displayed-campaigns"
                         isToggled={isEnabled}
-                        aria-label="Maximum campaign display in a session"
+                        aria-label={label ?? DEFAULT_LABEL}
                         onClick={handleClickToggle}
                     />
                     <div>
@@ -66,11 +73,10 @@ export const MaximumCampaignDisplayed = ({
                             htmlFor="maximum-displayed-campaigns"
                             className={css.label}
                         >
-                            Maximum campaign display in a session
+                            {label ?? DEFAULT_LABEL}
                         </label>
                         <span className={css.labelDescription}>
-                            Set how often this campaign is displayed to a
-                            customer in a session.
+                            {description ?? DEFAULT_DESCRIPTION}
                         </span>
                         {isEnabled && (
                             <div className={css.settings}>

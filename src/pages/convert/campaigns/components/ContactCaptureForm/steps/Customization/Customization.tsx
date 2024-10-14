@@ -15,7 +15,7 @@ import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewP
 import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
 import {transformTransitoryToAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import InputField from 'pages/common/forms/input/InputField'
-import {useEmailDisclaimerSettings} from 'pages/stats/convert/hooks/useEmailDisclaimerSettings'
+import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import css from './Customization.less'
 
 export const Customization = (props: StepProps) => {
@@ -58,8 +58,8 @@ export const Customization = (props: StepProps) => {
         chatIntegration?.meta
     )
 
-    const {data: emailDisclaimerSettings} =
-        useEmailDisclaimerSettings(chatIntegration)
+    const {emailDisclaimer: emailDisclaimerSettings} =
+        useConvertGeneralSettings(chatIntegration)
 
     return (
         <div className={css.container}>

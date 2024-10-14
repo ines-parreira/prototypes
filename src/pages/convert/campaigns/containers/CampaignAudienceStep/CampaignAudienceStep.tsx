@@ -239,6 +239,7 @@ export const CampaignAudienceStep = ({
                             )}
 
                             <CampaignFrequency
+                                integrationId={integration.get('id')}
                                 maximumCampaignsDisplayed={
                                     campaignMaxDisplaysInSession
                                 }

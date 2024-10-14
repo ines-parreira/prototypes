@@ -1577,6 +1577,7 @@ declare namespace Components {
         export type SettingType =
             | 'performance_report_visible_fields'
             | 'email_disclaimer'
+            | 'campaign_frequency'
         /**
          * StatusEnum
          */
@@ -2712,9 +2713,19 @@ declare namespace Paths {
         export interface PathParameters {
             channel_connection_id: Parameters.ChannelConnectionId
         }
-        export type RequestBody = Components.Schemas.RequestSettingSchema
+        /**
+         * Payload
+         */
+        export type RequestBody =
+            | Components.Schemas.RequestSettingSchema
+            | Components.Schemas.RequestSettingSchema[]
         namespace Responses {
-            export type $202 = Components.Schemas.SettingResponseSchema
+            /**
+             * Response Update Setting
+             */
+            export type $202 =
+                | Components.Schemas.SettingResponseSchema
+                | Components.Schemas.SettingResponseSchema[]
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }

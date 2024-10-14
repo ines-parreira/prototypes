@@ -16,7 +16,7 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
 import {utmConfiguration} from 'fixtures/utmConfiguration'
-import {useEmailDisclaimerSettings} from 'pages/stats/convert/hooks/useEmailDisclaimerSettings'
+import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import CampaignTemplateCustomizeRecommendationsView from '../CampaignTemplateCustomizeRecommendationsView'
 
 const mockStore = configureMockStore()
@@ -26,8 +26,8 @@ jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
 
-jest.mock('pages/stats/convert/hooks/useEmailDisclaimerSettings')
-const mockUseEmailDisclaimerSettings = assumeMock(useEmailDisclaimerSettings)
+jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings')
+const mockUseConvertGeneralSettings = assumeMock(useConvertGeneralSettings)
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
@@ -84,8 +84,8 @@ describe('CampaignTemplateCustomizeView', () => {
                 mutateAsync: jest.fn(),
             } as unknown as ReturnType<typeof useUpdateCampaign>
         })
-        mockUseEmailDisclaimerSettings.mockReturnValue({
-            data: {
+        mockUseConvertGeneralSettings.mockReturnValue({
+            emailDisclaimer: {
                 enabled: true,
                 disclaimer: {en: 'foo'},
                 disclaimer_default_accepted: true,
