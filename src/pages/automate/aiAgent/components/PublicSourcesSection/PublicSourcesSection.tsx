@@ -8,7 +8,6 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
-import {logEvent, SegmentEvent} from 'common/segment'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {usePublicResourceMutation} from '../../hooks/usePublicResourcesMutation'
 import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
@@ -30,7 +29,7 @@ type Props = {
     onPublicURLsChanged: (publicURLs: string[]) => void
     sourceItems?: SourceItem[]
     selectedHelpCenterId?: number
-    shouldLogEventOnSync?: boolean
+    logConnectedPublicUrl?: (url: string) => void
     setPendingResourcesCount?: (pendingResourcesCount: number) => void
     setIsSuccessResources?: (isSuccessResources: boolean) => void
     setIsFailedResources?: (isFailedResources: boolean) => void
@@ -45,7 +44,7 @@ export const PublicSourcesSection = ({
     onPublicURLsChanged,
     sourceItems,
     selectedHelpCenterId,
-    shouldLogEventOnSync = false,
+    logConnectedPublicUrl,
     setPendingResourcesCount,
     setIsSuccessResources,
     setIsFailedResources,
@@ -111,14 +110,6 @@ export const PublicSourcesSection = ({
         onPublicURLsChanged(publicURLs)
     }
 
-    const logConnectedPublicUrl = (url: string) => {
-        if (shouldLogEventOnSync) {
-            logEvent(SegmentEvent.AiAgentOnboardingWizardPublicUrlIngested, {
-                url,
-            })
-        }
-    }
-
     const onAddClick = () => {
         const newResource: SourceItem = {
             id: Math.random(),
@@ -166,7 +157,9 @@ export const PublicSourcesSection = ({
 
             setSources(newSources)
             handleAddPublicResource(newSources)
-            logConnectedPublicUrl(url)
+            if (logConnectedPublicUrl) {
+                logConnectedPublicUrl(url)
+            }
             await addPublicResource([url])
         } catch (error) {
             setSources((prev) =>

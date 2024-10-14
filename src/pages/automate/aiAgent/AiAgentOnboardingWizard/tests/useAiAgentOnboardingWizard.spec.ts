@@ -5,7 +5,10 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import {fromJS} from 'immutable'
 import {notify} from 'state/notifications/actions'
 import history from 'pages/history'
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+import {
+    AiAgentOnboardingWizardStep,
+    AiAgentOnboardingWizardType,
+} from 'models/aiAgent/types'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {assumeMock} from 'utils/testing'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
@@ -464,7 +467,11 @@ describe('useAiAgentOnboardingWizard', () => {
         await waitFor(() => {
             expect(logEvent).toHaveBeenCalledWith(
                 SegmentEvent.AiAgentOnboardingWizardHelpCenterConnected,
-                {helpCenterId: 1}
+                {
+                    step: AiAgentOnboardingWizardStep.Knowledge,
+                    version: AiAgentOnboardingWizardType.TwoSteps,
+                    helpCenterId: 1,
+                }
             )
         })
     })
@@ -486,7 +493,11 @@ describe('useAiAgentOnboardingWizard', () => {
         await waitFor(() => {
             expect(logEvent).not.toHaveBeenCalledWith(
                 SegmentEvent.AiAgentOnboardingWizardHelpCenterConnected,
-                {helpCenterId: 1}
+                {
+                    step: AiAgentOnboardingWizardStep.Knowledge,
+                    version: AiAgentOnboardingWizardType.TwoSteps,
+                    helpCenterId: 1,
+                }
             )
         })
     })

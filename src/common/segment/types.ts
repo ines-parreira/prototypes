@@ -42,6 +42,7 @@ export enum SegmentEvent {
     AutomateChannelUpdateFromHelpCenterWizard = 'automate/channel-update-from-help-center-wizard',
     AutomateFlowsVisited = 'automate/flows-visited',
     AutomateOrderManagementVisited = 'automate/order-management-visited',
+    AutomateOverviewPageViewed = 'automate/overview-page-viewed',
     AutomatePaywallFromRuleLibrary = 'automate/paywall-from-rule-library',
     AutomatePaywallLearnMore = 'automate/paywall-learn-more',
     AutomatePaywallModalUpsell = 'automate/paywall-modal-upsell',

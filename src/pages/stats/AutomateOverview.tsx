@@ -16,11 +16,17 @@ import {
     PAGE_TITLE_AUTOMATE_PAYWALL,
     PAGE_TITLE_OVERVIEW,
 } from 'pages/stats/self-service/constants'
+import useEffectOnce from 'hooks/useEffectOnce'
+import {logEvent, SegmentEvent} from 'common/segment'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 
 export function AutomateOverview() {
     const {statsFilters, userTimezone, granularity} = useNewAutomateFilters()
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.AutomateOverviewPageViewed)
+    })
 
     return (
         <AutomateOverviewV2

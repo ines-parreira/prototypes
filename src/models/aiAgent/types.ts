@@ -96,6 +96,11 @@ export enum AiAgentOnboardingWizardStep {
     Knowledge = 'knowledge',
 }
 
+export enum AiAgentOnboardingWizardType {
+    TwoSteps = '2-steps',
+    ThreeSteps = '3-steps',
+}
+
 export type WizardStepData = {
     hasEducationStepEnabled: boolean | null
     enabledChannels: AiAgentChannel[] | null

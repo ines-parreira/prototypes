@@ -11,11 +11,15 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import {createMemoryHistory} from 'history'
 import {Router} from 'react-router-dom'
 import {assumeMock, renderWithRouter} from 'utils/testing'
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+import {
+    AiAgentOnboardingWizardStep,
+    AiAgentOnboardingWizardType,
+} from 'models/aiAgent/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {logEvent, SegmentEvent} from 'common/segment'
 import AiAgentOnboardingWizardStepKnowledge from '../AiAgentOnboardingWizardKnowledge'
 import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
 import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
@@ -33,6 +37,14 @@ const mockUseAiAgentOnboardingWizard = assumeMock(useAiAgentOnboardingWizard)
 
 const mockedHelpCenters = getHelpCentersResponseFixture.data
 const mockedStoreConfiguration = getStoreConfigurationFixture()
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {
+        AiAgentOnboardingWizardPublicUrlIngested:
+            'ai-agent-onboarding-wizard-public-url-ingested',
+    },
+}))
 
 const mockedUseAiAgentOnboardingWizard = {
     storeFormValues: getStoreConfigurationFormValuesFixture(),
@@ -277,21 +289,13 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
     })
 
     it('should include public URL changed in handleSave', async () => {
-        const mockedUseAiAgentOnboardingWizard = {
-            storeFormValues: getStoreConfigurationFormValuesFixture(),
-            faqHelpCenters: mockedHelpCenters,
+        const mockedUseAiAgentOnboardingWizardWithSnippet = {
+            ...mockedUseAiAgentOnboardingWizard,
             snippetHelpCenter: mockedHelpCenters[0],
-            isLoading: false,
-            isUpdateWizardSetup: false,
-            handleFormUpdate: jest.fn(),
-            handleSave: jest.fn(),
-            handleAction: jest.fn(),
-            updateValue: jest.fn(),
-            storeConfiguration: mockedStoreConfiguration,
         }
 
         mockUseAiAgentOnboardingWizard.mockReturnValue(
-            mockedUseAiAgentOnboardingWizard
+            mockedUseAiAgentOnboardingWizardWithSnippet
         )
 
         renderComponent({})
@@ -313,6 +317,55 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             publicUrls: ['https://example.com/faqs'],
             redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
         })
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentOnboardingWizardPublicUrlIngested,
+            {
+                step: AiAgentOnboardingWizardStep.Knowledge,
+                version: AiAgentOnboardingWizardType.ThreeSteps,
+                url: 'https://example.com/faqs',
+            }
+        )
+    })
+
+    it('should log event when new url is ingested', async () => {
+        const defaultWizard = getStoreConfigurationFormValuesFixture().wizard!
+        const mockedUseAiAgentOnboardingWizardWithSnippet = {
+            ...mockedUseAiAgentOnboardingWizard,
+            snippetHelpCenter: mockedHelpCenters[0],
+            storeFormValues: getStoreConfigurationFormValuesFixture({
+                wizard: {
+                    ...defaultWizard,
+                    hasEducationStepEnabled: false,
+                },
+            }),
+        }
+
+        mockUseAiAgentOnboardingWizard.mockReturnValue(
+            mockedUseAiAgentOnboardingWizardWithSnippet
+        )
+
+        renderComponent({})
+
+        const addButton = screen.getByText('Add URL')
+        userEvent.click(addButton)
+
+        const syncButton = screen.getByRole('button', {name: /Sync URL/})
+        const input = screen.getByLabelText('Public URL')
+
+        await userEvent.type(input, 'https://example.com/faqs')
+        userEvent.click(syncButton)
+
+        userEvent.click(screen.getByText('Save & Customize Later'))
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentOnboardingWizardPublicUrlIngested,
+            {
+                step: AiAgentOnboardingWizardStep.Knowledge,
+                version: AiAgentOnboardingWizardType.TwoSteps,
+                url: 'https://example.com/faqs',
+            }
+        )
     })
 
     it('should display confirmation dialog modal when user tries to leave after changes help center select', () => {

@@ -63,6 +63,11 @@ export const AIAgentWelcomePageView = (props: Props) => {
     }
 
     const onOnboardingWizardClick = useCallback(() => {
+        logEvent(SegmentEvent.AiAgentWelcomePageCtaClicked, {
+            version: 'Dynamic',
+            store: props.shopName,
+        })
+
         history.push({
             pathname: `/app/automation/${props.shopType}/${props.shopName}/ai-agent/new`,
             search: isOnUpdateOnboardingWizard
@@ -93,11 +98,10 @@ export const AIAgentWelcomePageView = (props: Props) => {
     }
 
     useEffect(() => {
-        if (props.state === 'loading' || props.state === 'onboardingWizard')
-            return
+        if (props.state === 'loading') return
 
         logEvent(SegmentEvent.AiAgentWelcomePageViewed, {
-            version: props.state === 'dynamic' ? 'Dynamic' : 'Basic',
+            version: props.state === 'static' ? 'Basic' : 'Dynamic',
             store: props.shopName,
         })
     }, [props.state, props.shopName])

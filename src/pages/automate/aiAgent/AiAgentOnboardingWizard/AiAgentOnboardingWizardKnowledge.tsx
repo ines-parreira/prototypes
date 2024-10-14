@@ -1,7 +1,10 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Label} from '@gorgias/ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+import {
+    AiAgentOnboardingWizardStep,
+    AiAgentOnboardingWizardType,
+} from 'models/aiAgent/types'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
 import WizardFooter, {
     FOOTER_BUTTONS,
@@ -11,6 +14,7 @@ import HelpCenterSelect, {
 } from 'pages/automate/common/components/HelpCenterSelect'
 import {FeatureFlagKey} from 'config/featureFlags'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     AI_AGENT_STEPS_DESCRIPTIONS,
     AI_AGENT_STEPS_LABELS,
@@ -140,6 +144,16 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
         }
     }
 
+    const logConnectedPublicUrl = (url: string) => {
+        logEvent(SegmentEvent.AiAgentOnboardingWizardPublicUrlIngested, {
+            step: AiAgentOnboardingWizardStep.Knowledge,
+            version: storeFormValues.wizard?.hasEducationStepEnabled
+                ? AiAgentOnboardingWizardType.ThreeSteps
+                : AiAgentOnboardingWizardType.TwoSteps,
+            url,
+        })
+    }
+
     return (
         <>
             <UnsavedChangesPrompt
@@ -188,7 +202,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
                         selectedHelpCenterId={selectedHelpCenter?.id}
                         onPublicURLsChanged={handlePublicURLsChange}
                         shopName={shopName}
-                        shouldLogEventOnSync
+                        logConnectedPublicUrl={logConnectedPublicUrl}
                         setPendingResourcesCount={setPendingUrlCount}
                         setIsPristine={setIsPublicUrlsPristine}
                         syncUrlOnCommand={synchingPublicUrls}

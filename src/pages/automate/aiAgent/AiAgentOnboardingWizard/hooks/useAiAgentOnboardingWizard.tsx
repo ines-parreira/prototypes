@@ -4,6 +4,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import {
     AiAgentOnboardingWizardStep,
+    AiAgentOnboardingWizardType,
     StoreConfiguration,
 } from 'models/aiAgent/types'
 import history from 'pages/history'
@@ -173,30 +174,48 @@ export const useAiAgentOnboardingWizard = ({
     const handleAction = (redirectTo: WIZARD_BUTTON_ACTIONS) => {
         if (!shopType || !shopName) return
 
+        const version = formValues.wizard?.hasEducationStepEnabled
+            ? AiAgentOnboardingWizardType.ThreeSteps
+            : AiAgentOnboardingWizardType.TwoSteps
+
         switch (redirectTo) {
             case WIZARD_BUTTON_ACTIONS.CANCEL:
-                logEvent(SegmentEvent.AiAgentOnboardingWizardCancelClicked)
+                logEvent(SegmentEvent.AiAgentOnboardingWizardCancelClicked, {
+                    step,
+                    version,
+                })
                 history.replace(
                     `/app/automation/${shopType}/${shopName}/ai-agent`
                 )
                 break
             case WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER:
-                logEvent(SegmentEvent.AiAgentOnboardingWizardSaveClicked)
+                logEvent(SegmentEvent.AiAgentOnboardingWizardSaveClicked, {
+                    step,
+                    version,
+                })
                 history.replace(
                     `/app/automation/${shopType}/${shopName}/ai-agent`
                 )
                 break
             case WIZARD_BUTTON_ACTIONS.PREVIOUS_STEP:
-                logEvent(SegmentEvent.AiAgentOnboardingWizardBackClicked)
+                logEvent(SegmentEvent.AiAgentOnboardingWizardBackClicked, {
+                    step,
+                    version,
+                })
                 navigateWizardSteps.goToPreviousStep()
                 break
             case WIZARD_BUTTON_ACTIONS.NEXT_STEP:
-                logEvent(SegmentEvent.AiAgentOnboardingWizardNextClicked)
+                logEvent(SegmentEvent.AiAgentOnboardingWizardNextClicked, {
+                    step,
+                    version,
+                })
                 setWizardUpdate(isOnWizardUpdate ? 'true' : null)
                 navigateWizardSteps.goToNextStep()
                 break
             case WIZARD_BUTTON_ACTIONS.FINISH_TO_KNOWLEDGE:
                 logEvent(SegmentEvent.AiAgentOnboardingWizardFinishClicked, {
+                    step,
+                    version,
                     redirectTo: 'knowledge',
                 })
                 history.replace({
@@ -209,6 +228,8 @@ export const useAiAgentOnboardingWizard = ({
                 break
             case WIZARD_BUTTON_ACTIONS.FINISH_TO_TEST:
                 logEvent(SegmentEvent.AiAgentOnboardingWizardFinishClicked, {
+                    step,
+                    version,
                     redirectTo: 'test',
                 })
                 history.replace({
@@ -220,6 +241,8 @@ export const useAiAgentOnboardingWizard = ({
                 break
             case WIZARD_BUTTON_ACTIONS.FINISH_TO_GUIDANCE:
                 logEvent(SegmentEvent.AiAgentOnboardingWizardFinishClicked, {
+                    step,
+                    version,
                     redirectTo: 'guidance',
                 })
                 history.replace({
@@ -236,7 +259,12 @@ export const useAiAgentOnboardingWizard = ({
 
     const logConnectedHelpCenterEvent = (helpCenterId: number | null) => {
         if (!helpCenterId) return
+
         logEvent(SegmentEvent.AiAgentOnboardingWizardHelpCenterConnected, {
+            step: AiAgentOnboardingWizardStep.Knowledge,
+            version: formValues.wizard?.hasEducationStepEnabled
+                ? AiAgentOnboardingWizardType.ThreeSteps
+                : AiAgentOnboardingWizardType.TwoSteps,
             helpCenterId,
         })
     }
