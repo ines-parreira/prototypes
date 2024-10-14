@@ -1,6 +1,4 @@
 import React from 'react'
-import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
-import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
@@ -10,8 +8,10 @@ import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import {AllUsedTagsTableChart} from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
+import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
 import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 
 export const TAGS_TITLE = 'Tags'
 
@@ -37,9 +37,11 @@ export function Tags() {
                                 FilterKey.AggregationWindow,
                             ]}
                             optionalFilters={[
+                                FilterKey.Agents,
                                 FilterKey.Channels,
                                 FilterKey.Integrations,
                                 FilterKey.Tags,
+                                FilterKey.CustomFields,
                             ]}
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {

@@ -31,7 +31,7 @@ import {
 
 export const TAGS_CARD_TITLE = 'Top used tags'
 const TAGS_CARD_HINT =
-    'Follow Ticket Fields filters with slight differences: \n - No “outside used” or “Total “ summarizing numbers\n - Columns show “Tags, Total, Delta” Changes at the header (this does not exist for TF)'
+    'Top 10 used tags: number of tickets labeled with one of the tags within the selected timeframe, and the delta compared to the previous period.'
 
 export const TopUsedTagsChart = () => {
     const {isFetching, data} = useTagsDistribution()
