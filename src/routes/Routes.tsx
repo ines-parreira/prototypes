@@ -153,6 +153,7 @@ import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilte
 import AutomateAiAgentStats from 'pages/stats/automate/ai-agent/AutomateAiAgentStats'
 import SettingsRoutes from 'routes/settings'
 import {ConvertSettingsView} from 'pages/convert/settings/ConvertSettingsView'
+import {OverviewView} from 'pages/convert/overview/OverviewView'
 
 export default function Routes() {
     return (
@@ -1228,6 +1229,11 @@ export function ConvertContent() {
     const convertPathPrefix = `${path}/${CONVERT_ROUTING_PARAM}`
     return (
         <Switch>
+            <Route
+                exact
+                path={`${path}/overview`}
+                component={withUserRoleRequired(OverviewView, ADMIN_ROLE)}
+            />
             <Route
                 exact
                 path={`${path}/setup`}

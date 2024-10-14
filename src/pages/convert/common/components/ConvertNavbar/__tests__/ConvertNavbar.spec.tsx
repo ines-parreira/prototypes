@@ -18,11 +18,16 @@ import {assumeMock} from 'utils/testing'
 import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
 import {IntegrationType} from 'models/integration/types'
 import useContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
+import {useIsOverviewPageEnabled} from 'pages/convert/common/hooks/useIsOverviewPageEnabled'
 import ConvertNavbar from '../ConvertNavbar'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
 jest.mock('react-router')
+
+jest.mock('pages/convert/common/hooks/useIsOverviewPageEnabled')
+const useIsOverviewPageEnabledSpy = assumeMock(useIsOverviewPageEnabled)
+
 jest.mock('pages/common/hooks/useIsConvertSubscriber')
 
 jest.mock('pages/convert/channelConnections/hooks/useGetOnboardingStatusMap')
@@ -37,6 +42,7 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 ))
 
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
+
 const mockUseContactFormFlag = assumeMock(useContactFormFlag)
 
 const useGetOnboardingStatusMapSpy = assumeMock(useGetOnboardingStatusMap)
@@ -81,6 +87,28 @@ describe('<ConvertNavbar />', () => {
     })
 
     describe('render()', () => {
+        it('should render overview tab when ff is enabled', () => {
+            useIsOverviewPageEnabledSpy.mockReturnValue(true)
+            const {queryByText} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <ConvertNavbar />
+                </Provider>
+            )
+
+            expect(queryByText('Overview')).toBeInTheDocument()
+        })
+
+        it('should not render overview tab when ff is disabled', () => {
+            useIsOverviewPageEnabledSpy.mockReturnValue(false)
+            const {queryByText} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <ConvertNavbar />
+                </Provider>
+            )
+
+            expect(queryByText('Overview')).not.toBeInTheDocument()
+        })
+
         it('should render empty convert navbar when no integrations', () => {
             const {queryByText} = render(
                 <Provider store={mockStore(defaultState)}>
