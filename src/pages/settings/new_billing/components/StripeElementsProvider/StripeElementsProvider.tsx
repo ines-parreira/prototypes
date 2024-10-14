@@ -5,13 +5,21 @@ import {ThemeContext} from 'theme'
 
 const stripePromise = loadStripe(window.STRIPE_PUBLIC_KEY!)
 
-export const StripeElementsProvider: React.FC = ({children}) => {
+interface IStripeElementsProviderProps {
+    clientSecret?: string
+}
+
+export const StripeElementsProvider: React.FC<IStripeElementsProviderProps> = ({
+    children,
+    clientSecret,
+}) => {
     const {colorTokens} = useContext(ThemeContext) ?? {}
 
     return (
         <Elements
             stripe={stripePromise}
             options={{
+                clientSecret,
                 appearance: {
                     theme: 'stripe',
                     variables: {

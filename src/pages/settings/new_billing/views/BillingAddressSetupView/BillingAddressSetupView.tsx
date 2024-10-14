@@ -3,9 +3,9 @@ import {StripeAddressElement} from '../../components/StripeAddressElement/Stripe
 import {StripeElementsProvider} from '../../components/StripeElementsProvider/StripeElementsProvider'
 import BackLink from '../../components/BackLink/BackLink'
 
+import {EmailInputField} from '../../components/EmailInputField/EmailInputField'
 import css from './BillingAddressSetupView.less'
 import {Form} from './components/Form/Form'
-import {EmailInputField} from './components/EmailInputField/EmailInputField'
 
 export const BillingAddressSetupView: React.FC = () => {
     return (
