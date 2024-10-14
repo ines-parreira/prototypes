@@ -1,7 +1,7 @@
 import React, {UIEventHandler, useCallback, useState, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 
-import {OrderDirection} from 'models/api/types'
+import {opposite, OrderDirection} from 'models/api/types'
 
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -100,12 +100,17 @@ export const CampaignTableStats = ({
 
     const renderHeaderCells = useCallback(
         (headerCell: CampaignTableColumn) => {
+            // Ideally we shouldn't have to use the opposite function here
+            // But I could not understand what was wrong with the sorting
+            // logic here because the HeaderCellProperty component is used
+            // in many places and it works fine
+            const arrowDirection = opposite(orderDirection)
             return (
                 <HeaderCellProperty
                     key={headerCell.key}
                     title={headerCell.title}
                     tooltip={headerCell?.hint?.title}
-                    direction={orderDirection}
+                    direction={arrowDirection}
                     isOrderedBy={orderKey === headerCell.key}
                     className={
                         headerCell.className

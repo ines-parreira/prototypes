@@ -101,4 +101,39 @@ describe('CampaignTableStats', () => {
         expect(getByText('Variant A')).toBeInTheDocument()
         expect(getByText('$456.00')).toBeInTheDocument()
     })
+
+    it('should render the sorting arrow indicators properly when clicking header cell', () => {
+        const {getByText} = renderWithStore(
+            <CampaignTableStats
+                chatIntegrationId={8}
+                isLoading={false}
+                rows={rows}
+                offset={0}
+                onClickNextPage={jest.fn()}
+                onClickPrevPage={jest.fn()}
+            />,
+            {}
+        )
+        const engagementSpan = getByText('Engagement')
+        const engagementTh = engagementSpan.closest('th')!
+        const arrowIcon = engagementTh.querySelector(
+            'i[class*="directionIcon"]'
+        )!
+        expect(arrowIcon).toBeInTheDocument()
+
+        fireEvent.click(engagementTh)
+
+        expect(arrowIcon.textContent).toBe('arrow_upward')
+        expect(arrowIcon).not.toHaveStyle({display: 'none'})
+
+        fireEvent.click(engagementTh)
+
+        expect(arrowIcon.textContent).toBe('arrow_downward')
+        expect(arrowIcon).not.toHaveStyle({display: 'none'})
+
+        fireEvent.click(engagementTh)
+
+        expect(arrowIcon.textContent).toBe('arrow_upward')
+        expect(arrowIcon).not.toHaveStyle({display: 'none'})
+    })
 })
