@@ -1,4 +1,5 @@
 import React from 'react'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
@@ -67,14 +68,12 @@ export function Tags() {
                     >
                         <TagsTrendChart />
                     </DashboardGridCell>
-                </DashboardSection>
-
-                <DashboardSection>
                     <DashboardGridCell>
                         <AllUsedTagsTableChart />
                     </DashboardGridCell>
                 </DashboardSection>
             </StatsPage>
+            <AnalyticsFooter />
         </div>
     )
 }
