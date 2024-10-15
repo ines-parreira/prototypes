@@ -27,8 +27,7 @@ export const TrendCardConfig: Record<
     [AutoQAMetric.ReviewedClosedTickets]: {
         title: REVIEWED_CLOSED_TICKETS_LABEL,
         hint: {
-            title: 'Number of closed tickets that were reviewed (automatically or manually) during the period.\n\nNote: Only closed tickets with at least 1 customer message and 1 agent/rule message are auto-evaluated.',
-            link: 'https://link.gorgias.com/xxn',
+            title: 'Number of closed tickets that were reviewed (automatically or manually) during the period.\n\nNote: Only closed tickets with at least 1 customer message and 1 agent message are auto-evaluated.',
         },
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
@@ -38,8 +37,8 @@ export const TrendCardConfig: Record<
     [AutoQAMetric.ResolutionCompleteness]: {
         title: RESOLUTION_COMPLETENESS_LABEL,
         hint: {
-            title: 'Percentage of tickets where the agent addressed ALL customer inquiries. \n\nNote: Only closed tickets with at least 1 customer message and 1 agent/rule message are auto-evaluated for response completeness.',
-            link: 'https://link.gorgias.com/e4a',
+            title: 'Percentage of tickets where the agent addressed ALL customer inquiries. \n\nNote: Only closed tickets with at least 1 customer message and 1 agent message are auto-evaluated for response completeness.',
+            link: 'https://link.gorgias.com/oau',
         },
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
@@ -49,8 +48,8 @@ export const TrendCardConfig: Record<
     [AutoQAMetric.CommunicationSkills]: {
         title: COMMUNICATION_SKILLS_LABEL,
         hint: {
-            title: 'Average score assessing agent’s empathy, clarity, patience, positivity, and adaptability.\n\nNote: Only closed tickets with at least 1 customer message and 1 agent/rule message are auto-evaluated for communication.',
-            link: 'https://link.gorgias.com/8iz',
+            title: 'Average score assessing agent’s empathy, clarity, patience, positivity, and adaptability.\n\nNote: Only closed tickets with at least 1 customer message and 1 agent message are auto-evaluated for communication.',
+            link: 'https://link.gorgias.com/oau',
         },
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
