@@ -1,13 +1,15 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {render} from '@testing-library/react'
+
 import {
+    ticketBooleanFieldDefinition,
+    ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
-    ticketBooleanDefinition,
-    ticketDropdownFieldDefinition,
 } from 'fixtures/customField'
+
 import CustomFieldInput from '../CustomFieldInput'
 
 const store = configureMockStore()()
@@ -37,7 +39,7 @@ describe('<CustomFieldInput/>', () => {
         const {container} = render(
             <Provider store={store}>
                 <CustomFieldInput
-                    customField={ticketBooleanDefinition}
+                    customField={ticketBooleanFieldDefinition}
                     onChange={jest.fn()}
                 />
             </Provider>

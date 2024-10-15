@@ -1,22 +1,22 @@
-import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
-import {clone} from 'lodash'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import {fireEvent, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
+import {clone} from 'lodash'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import {useFlag} from 'common/flags'
 import * as segmentTracker from 'common/segment'
+import {UserRole, UserSettingType} from 'config/types/user'
+import {DateFormatType, TimeFormatType} from 'constants/datetime'
 import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,
 } from 'constants/user'
-import {initialState} from 'state/twilio/voiceDevice'
-import {useFlag} from 'common/flags'
-import {UserRole, UserSettingType} from 'config/types/user'
-import {DateFormatType, TimeFormatType} from 'constants/datetime'
 import {CustomerChannel} from 'models/customerChannel/types'
+import {initialState} from 'state/twilio/voiceDevice'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {CustomerChannels} from '../CustomerChannels'
 
@@ -454,7 +454,7 @@ describe('CustomerChannels component', () => {
 
             fireEvent.click(screen.getByText('Add Customer Fields'))
             expect(logEventSpy).toHaveBeenCalledWith(
-                SegmentEvent.CustomFieldInfobarAddFieldsClicked
+                SegmentEvent.CustomFieldCustomerAddFieldsClicked
             )
         })
     })

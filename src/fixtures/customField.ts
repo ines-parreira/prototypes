@@ -1,14 +1,16 @@
+import {OBJECT_TYPES} from 'custom-fields/constants'
 import {
     CustomField,
     CustomFieldInput,
     CustomFieldInputSettingsDropdown,
     CustomFieldInputSettingsText,
+    CustomTypeDefinitionBoolean,
     CustomTypeDefinitionNumber,
     CustomTypeDefinitionText,
 } from 'custom-fields/types'
 
 export const customFieldInputDefinition: CustomFieldInput = {
-    object_type: 'Ticket',
+    object_type: OBJECT_TYPES.TICKET,
     label: 'Test field',
     priority: 123,
     required: false,
@@ -23,33 +25,26 @@ export const customFieldInputDefinition: CustomFieldInput = {
 }
 
 const fieldBaseDefinition = {
+    object_type: OBJECT_TYPES.TICKET,
+    required: false,
+    managed_type: null,
     created_datetime: '2022-01-02T03:04:05.123456+00:00',
     updated_datetime: '2022-01-02T03:04:05.123456+00:00',
     deactivated_datetime: null,
 }
 
-const archivedFieldBaseDefinition = {
-    created_datetime: '2022-01-02T03:04:05.123456+00:00',
-    updated_datetime: '2022-01-02T03:04:05.123456+00:00',
+const customerFieldBaseDefinition = {
+    object_type: OBJECT_TYPES.CUSTOMER,
+}
+
+const archivedFieldBaseDefinitions = {
     deactivated_datetime: '2022-01-02T03:04:05.123456+00:00',
 }
 
-const ticketFieldBaseDefinition = {
+export const ticketInputFieldDefinition: CustomField & {
+    definition: CustomTypeDefinitionText<CustomFieldInputSettingsText>
+} = {
     ...fieldBaseDefinition,
-    required: false,
-    managed_type: null,
-    object_type: 'Ticket',
-} as const
-
-const archivedTicketFieldBaseDefinition = {
-    ...archivedFieldBaseDefinition,
-    required: false,
-    managed_type: null,
-    object_type: 'Ticket',
-} as const
-
-export const ticketInputFieldDefinition = {
-    ...ticketFieldBaseDefinition,
     id: 123,
     priority: 1,
     label: 'Input field',
@@ -62,23 +57,11 @@ export const ticketInputFieldDefinition = {
         },
     } as CustomTypeDefinitionText<CustomFieldInputSettingsText>,
 }
-export const archivedTicketInputFieldDefinition: CustomField = {
-    ...archivedTicketFieldBaseDefinition,
-    id: 123,
-    priority: 1,
-    label: 'Input field',
-    description: 'This is an input field',
-    definition: {
-        data_type: 'text',
-        input_settings: {
-            input_type: 'input',
-            placeholder: 'Some placeholder',
-        },
-    },
-}
 
-export const ticketNumberFieldDefinition = {
-    ...ticketFieldBaseDefinition,
+export const ticketNumberFieldDefinition: CustomField & {
+    definition: CustomTypeDefinitionNumber
+} = {
+    ...fieldBaseDefinition,
     id: 123,
     priority: 1,
     label: 'Number field',
@@ -93,8 +76,10 @@ export const ticketNumberFieldDefinition = {
     } as CustomTypeDefinitionNumber,
 }
 
-export const ticketDropdownFieldDefinition = {
-    ...ticketFieldBaseDefinition,
+export const ticketDropdownFieldDefinition: CustomField & {
+    definition: CustomTypeDefinitionText<CustomFieldInputSettingsDropdown>
+} = {
+    ...fieldBaseDefinition,
     id: 2,
     priority: 2,
     label: 'Dropdown field',
@@ -112,8 +97,76 @@ export const ticketDropdownFieldDefinition = {
     } as CustomTypeDefinitionText<CustomFieldInputSettingsDropdown>,
 }
 
+export const ticketBooleanFieldDefinition: CustomField & {
+    definition: CustomTypeDefinitionBoolean
+} = {
+    ...fieldBaseDefinition,
+    id: 2,
+    priority: 2,
+    label: 'Yes/No field',
+    description: 'This is a boolean field',
+    definition: {
+        data_type: 'boolean',
+        input_settings: {
+            input_type: 'dropdown',
+            choices: [true, false],
+        },
+    } as CustomTypeDefinitionBoolean,
+}
+
+export const customerInputFieldDefinition: CustomField & {
+    definition: CustomTypeDefinitionText<CustomFieldInputSettingsText>
+} = {
+    ...ticketInputFieldDefinition,
+    ...customerFieldBaseDefinition,
+}
+
+export const archivedTicketInputFieldDefinition: CustomField & {
+    definition: CustomTypeDefinitionText<CustomFieldInputSettingsText>
+} = {
+    ...ticketInputFieldDefinition,
+    ...archivedFieldBaseDefinitions,
+}
+
+export const ticketFieldDefinitions: CustomField[] = [
+    ticketInputFieldDefinition,
+    ticketDropdownFieldDefinition,
+    ticketBooleanFieldDefinition,
+    ticketNumberFieldDefinition,
+]
+
+export const customerFieldDefinitions: CustomField[] =
+    ticketFieldDefinitions.map((definition) => ({
+        ...definition,
+        ...customerFieldBaseDefinition,
+    }))
+
+export const managedTicketInputFieldDefinition: CustomField = {
+    ...ticketInputFieldDefinition,
+    managed_type: 'contact_reason',
+}
+
+export const productManagedTicketInputFieldDefinition: CustomField = {
+    ...ticketInputFieldDefinition,
+    managed_type: 'product',
+}
+
+export const aiManagedTicketInputFieldDefinition: CustomField = {
+    ...ticketInputFieldDefinition,
+    managed_type: 'ai_intent',
+    label: 'Contact reason',
+    description: 'This is a managed input field',
+    definition: {
+        data_type: 'text',
+        input_settings: {
+            input_type: 'input',
+            placeholder: 'Some placeholder',
+        },
+    },
+}
+
 export const aiAgentManagedTicketDropdownFieldDefinition: CustomField = {
-    ...ticketFieldBaseDefinition,
+    ...ticketInputFieldDefinition,
     id: 2,
     priority: 2,
     label: 'Dropdown field',
@@ -132,76 +185,6 @@ export const aiAgentManagedTicketDropdownFieldDefinition: CustomField = {
     },
 }
 
-export const ticketBooleanDefinition: CustomField = {
-    ...ticketFieldBaseDefinition,
-    id: 2,
-    priority: 2,
-    label: 'Yes/No field',
-    description: 'This is a boolean field',
-    definition: {
-        data_type: 'boolean',
-        input_settings: {
-            input_type: 'dropdown',
-            choices: [true, false],
-        },
-    },
-}
-
-export const ticketFieldDefinitions: CustomField[] = [
-    ticketInputFieldDefinition,
-    ticketDropdownFieldDefinition,
-    ticketBooleanDefinition,
-    ticketNumberFieldDefinition,
-]
-
-export const managedTicketInputFieldDefinition: CustomField = {
-    ...ticketFieldBaseDefinition,
-    managed_type: 'contact_reason',
-    id: 123,
-    priority: 1,
-    label: 'Contact reason',
-    description: 'This is a managed input field',
-    definition: {
-        data_type: 'text',
-        input_settings: {
-            input_type: 'input',
-            placeholder: 'Some placeholder',
-        },
-    },
-}
-
-export const productManagedTicketInputFieldDefinition: CustomField = {
-    ...ticketFieldBaseDefinition,
-    managed_type: 'product',
-    id: 123,
-    priority: 1,
-    label: 'Contact reason',
-    description: 'This is a managed input field',
-    definition: {
-        data_type: 'text',
-        input_settings: {
-            input_type: 'input',
-            placeholder: 'Some placeholder',
-        },
-    },
-}
-
-export const aiManagedTicketInputFieldDefinition: CustomField = {
-    ...ticketFieldBaseDefinition,
-    managed_type: 'ai_intent',
-    id: 123,
-    priority: 1,
-    label: 'Contact reason',
-    description: 'This is a managed input field',
-    definition: {
-        data_type: 'text',
-        input_settings: {
-            input_type: 'input',
-            placeholder: 'Some placeholder',
-        },
-    },
-}
-
 export const customFieldsMockResponse = {
     object: 'list',
     uri: '/api/custom-fields/?archived=false&object_type=Ticket',
@@ -209,7 +192,7 @@ export const customFieldsMockResponse = {
         {
             id: 5081,
             external_id: null,
-            object_type: 'Ticket',
+            object_type: OBJECT_TYPES.TICKET,
             label: 'ZAI Agent Contact Reason',
             description: 'AI Agent contact reason categories',
             priority: 8,
@@ -241,7 +224,7 @@ export const customFieldsMockResponse = {
         {
             id: 4979,
             external_id: null,
-            object_type: 'Ticket',
+            object_type: OBJECT_TYPES.TICKET,
             label: 'AI Agent Outcome',
             description: 'AI Agent computed outcome for ticket',
             priority: 7,

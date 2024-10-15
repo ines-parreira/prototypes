@@ -1,31 +1,32 @@
-import React, {useEffect, useState, useMemo} from 'react'
 import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import {Link} from 'react-router-dom'
 import Clipboard from 'clipboard'
+import {List, Map, fromJS} from 'immutable'
+import React, {useEffect, useMemo, useState} from 'react'
+import {Link} from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import * as actions from 'state/widgets/actions'
 import {IntegrationType} from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
-import {CustomerTimelineButton} from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
 import Avatar from 'pages/common/components/Avatar/Avatar'
+import Button from 'pages/common/components/button/Button'
 import css from 'pages/common/components/infobar/Infobar.less'
 import {
     areSourcesReady,
     jsonToWidgets,
 } from 'pages/common/components/infobar/utils'
-import {EditionContext} from 'providers/infobar/EditionContext'
+import {CustomerTimelineButton} from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
-import {itemsWithContext} from 'state/widgets/utils'
+import {EditionContext} from 'providers/infobar/EditionContext'
 import {getDisplayName} from 'state/customers/helpers'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import * as actions from 'state/widgets/actions'
+import {itemsWithContext} from 'state/widgets/utils'
 
+import AddAppSuggestion from './AddAppSuggestion'
 import CustomerChannels from './CustomerChannels'
+import CustomerFields from './CustomerFields'
 import CustomerNote from './CustomerNote'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
-import AddAppSuggestion from './AddAppSuggestion'
 
 type GenerateButtonProps = {
     widgets?: Maybe<Map<any, any>>
@@ -251,6 +252,7 @@ const InfobarCustomerInfo = ({
                     </Link>
                 </div>
                 <div className={css.detail}>
+                    <CustomerFields />
                     <CustomerChannels
                         channels={customer.get('channels') || fromJS([])}
                         customerLocationInfo={customer.getIn([

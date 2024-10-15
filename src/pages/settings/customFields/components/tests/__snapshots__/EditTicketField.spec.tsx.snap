@@ -44,7 +44,7 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
           aria-current="page"
           class="active breadcrumb-item"
         >
-          Contact reason
+          Input field
         </li>
       </ol>
     </nav>
@@ -128,7 +128,7 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
               placeholder="e.g. Contact Reason"
               required=""
               type="text"
-              value="Contact reason"
+              value="Input field"
             />
           </div>
           <div
@@ -155,7 +155,7 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
             placeholder="e.g. Reasons why customers reach out to us"
             rows="1"
           >
-            This is a managed input field
+            This is an input field
           </textarea>
           <div
             class="caption"

@@ -1,0 +1,21 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .title {
+        .body-semibold();
+        margin-right: @layout-spacing-xxs;
+    }
+
+    .icon {
+        display: inline-block;
+        font-size: 1.1em !important;
+        color: var(--neutral-grey-5) !important;
+    }
+}

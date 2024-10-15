@@ -37,6 +37,9 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
       class="detail"
     >
       <div>
+        CustomerFields
+      </div>
+      <div>
         CustomerChannels
       </div>
     </div>
@@ -86,6 +89,9 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
     <div
       class="detail"
     >
+      <div>
+        CustomerFields
+      </div>
       <div>
         CustomerChannels
       </div>

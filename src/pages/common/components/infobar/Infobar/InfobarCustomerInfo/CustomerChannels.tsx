@@ -1,20 +1,21 @@
-import React, {ReactNode} from 'react'
-import {fromJS, List, Map} from 'immutable'
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {fromJS, List, Map} from 'immutable'
+import React, {ReactNode} from 'react'
 
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {DateAndTimeFormatting} from 'constants/datetime'
+import {OBJECT_TYPES} from 'custom-fields/constants'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {OBJECT_TYPES} from 'custom-fields/constants'
 import ClickablePhoneNumber from 'pages/common/components/ClickablePhoneNumber/ClickablePhoneNumber'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isAdmin} from 'utils'
 
@@ -46,7 +47,7 @@ export const CustomerChannels = ({
     const currentUser = useAppSelector(getCurrentUser)
     const userIsAdmin = isAdmin(currentUser)
 
-    const hasCustomerFieldsEnabled = useFlag(
+    const isCustomerFieldsEnabled = useFlag(
         FeatureFlagKey.CustomerFields,
         false
     )
@@ -141,7 +142,7 @@ export const CustomerChannels = ({
     })
 
     const handleAddCustomerFields = () => {
-        logEvent(SegmentEvent.CustomFieldInfobarAddFieldsClicked)
+        logEvent(SegmentEvent.CustomFieldCustomerAddFieldsClicked)
     }
 
     return (
@@ -187,7 +188,7 @@ export const CustomerChannels = ({
                     </p>
                 )}
 
-                {hasCustomerFieldsEnabled && !customFields.data?.data.length && (
+                {isCustomerFieldsEnabled && !customFields.data?.data.length && (
                     <p className={css.customerChannel}>
                         <i
                             className={classnames(
@@ -200,7 +201,9 @@ export const CustomerChannels = ({
                         </i>
                         {userIsAdmin ? (
                             <a
-                                href="/app/settings/customer-fields/add"
+                                href={`/app/settings/${
+                                    CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER]
+                                }/add`}
                                 onClick={handleAddCustomerFields}
                                 target="_blank"
                                 rel="noopener noreferrer"

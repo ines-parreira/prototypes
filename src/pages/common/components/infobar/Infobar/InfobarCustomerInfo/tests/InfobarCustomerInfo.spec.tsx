@@ -1,21 +1,21 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {mockFlags} from 'jest-launchdarkly-mock'
 
-import {CustomerTimelineButton} from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
-import {StoreDispatch, RootState} from 'state/types'
 import {
+    BIGCOMMERCE_INTEGRATION_TYPE,
     HTTP_INTEGRATION_TYPE,
     MAGENTO2_INTEGRATION_TYPE,
     RECHARGE_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
-    BIGCOMMERCE_INTEGRATION_TYPE,
 } from 'constants/integration'
+import {CustomerTimelineButton} from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
+import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -26,6 +26,7 @@ jest.mock(
 )
 jest.mock('../CustomerChannels', () => () => <div>CustomerChannels</div>)
 jest.mock('../AddAppSuggestion', () => () => <div>Add app</div>)
+jest.mock('../CustomerFields', () => () => <div>CustomerFields</div>)
 jest.mock('../InfobarWidgets/InfobarWidgets', () => () => (
     <div>InfobarWidgets</div>
 ))
@@ -76,6 +77,16 @@ describe('<InfobarCustomerInfo/>', () => {
         )
 
         expect(container.firstChild).toBeNull()
+    })
+
+    it('should render CustomerFields', () => {
+        render(
+            <Provider store={store}>
+                <InfobarCustomerInfo {...minProps} />
+            </Provider>
+        )
+
+        expect(screen.getByText('CustomerFields')).toBeInTheDocument()
     })
 
     it(
