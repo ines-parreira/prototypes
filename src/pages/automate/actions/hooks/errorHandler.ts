@@ -13,6 +13,7 @@ export function handleError(
         if (error.response?.status === 409) {
             void dispatch(
                 notify({
+                    showDismissButton: true,
                     status: NotificationStatus.Error,
                     message:
                         'An Action already exists with this name. Choose a unique name in order to create this Action.',

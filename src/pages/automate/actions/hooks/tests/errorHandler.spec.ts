@@ -52,6 +52,7 @@ describe('handleError', () => {
         expect(notify).toHaveBeenNthCalledWith(1, {
             message:
                 'An Action already exists with this name. Choose a unique name in order to create this Action.',
+            showDismissButton: true,
             status: NotificationStatus.Error,
         })
         expect(mockedDispatch).toHaveBeenCalledTimes(1)
