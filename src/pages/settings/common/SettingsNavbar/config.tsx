@@ -76,7 +76,7 @@ export const NavbarConfig: Category[] = [
                 requiredFeatureFlags: [FeatureFlagKey.CustomerFields],
                 extra: (
                     <Badge type={ColorType.Blue} className={cssNavbar.badge}>
-                        NEW
+                        BETA
                     </Badge>
                 ),
             },
