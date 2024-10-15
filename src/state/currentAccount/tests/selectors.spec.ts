@@ -236,7 +236,7 @@ describe('current account selectors', () => {
             selectors.DEPRECATED_getViewsOrderingSetting,
             fromJS({type: AccountSettingType.ViewsOrdering}),
         ],
-    ])('%s', (testName, selector, expectedResult) => {
+    ])('%s', (_testName, selector, expectedResult) => {
         it('should return the setting', () => {
             const state = setStateWith(
                 defaultState,
@@ -513,6 +513,55 @@ describe('current account selectors', () => {
                     )
                 )
             ).toBe(undefined)
+        })
+    })
+
+    describe('getIsCurrentSubscriptionCanceled', () => {
+        it('should return true when subscription state is empty', () => {
+            expect(
+                selectors.getIsCurrentSubscriptionCanceled({} as RootState)
+            ).toEqual(true)
+        })
+
+        it('should return false when there is a subscription', () => {
+            expect(
+                selectors.getIsCurrentSubscriptionCanceled(defaultState)
+            ).toEqual(false)
+        })
+    })
+
+    describe('getIsCurrentSubscriptionTrialingOrCanceled', () => {
+        it('should return true when subscription state is empty', () => {
+            expect(
+                selectors.getIsCurrentSubscriptionTrialingOrCanceled(
+                    {} as RootState
+                )
+            ).toEqual(true)
+        })
+
+        it('should return true when there is a trial subscription', () => {
+            expect(
+                selectors.getIsCurrentSubscriptionTrialingOrCanceled(
+                    defaultState
+                )
+            ).toEqual(true)
+        })
+
+        it('should return false when there is a non trialing subscription', () => {
+            expect(
+                selectors.getIsCurrentSubscriptionTrialingOrCanceled({
+                    ...defaultState,
+                    currentAccount: fromJS({
+                        ...defaultState.currentAccount.toJS(),
+                        current_subscription: {
+                            ...defaultState.currentAccount.get(
+                                'current_subscription'
+                            ),
+                            status: 'active',
+                        },
+                    }),
+                })
+            ).toEqual(false)
         })
     })
 })

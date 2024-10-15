@@ -78,9 +78,20 @@ export const getCurrentSubscription = createSelector(
         (state.get('current_subscription') as Map<any, any>) || fromJS({})
 )
 
+export const getIsCurrentSubscriptionCanceled = createSelector(
+    getCurrentSubscription,
+    (state) => state.isEmpty()
+)
+
 export const isTrialing = createSelector(
     getCurrentSubscription,
     (state) => state.get('status') === 'trialing'
+)
+
+export const getIsCurrentSubscriptionTrialingOrCanceled = createSelector(
+    isTrialing,
+    getIsCurrentSubscriptionCanceled,
+    (trialing, canceled) => trialing || canceled
 )
 
 export const hasCreditCard = createSelector(
