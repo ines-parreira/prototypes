@@ -12,6 +12,7 @@ import {initialState} from 'state/ui/stats/drillDownSlice'
 import {IntegrationType} from 'models/integration/constants'
 import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import {useTopQuestionsFilters} from '../TopQuestions/useTopQuestionsFilters'
 import AutomateAllRecommendationsPage from '../AutomateAllRecommendationsPage'
 import {useAIArticleRecommendationItems} from '../../hooks/useAIArticleRecommendationItems'
@@ -459,6 +460,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
             helpCenterId: 11,
             itemsPerPage: 15,
             locale: undefined,
+            origin: ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
             statusFilter: 'all',
             storeIntegrationId: 1,
         })

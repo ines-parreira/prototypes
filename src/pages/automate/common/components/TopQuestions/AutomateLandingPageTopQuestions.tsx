@@ -4,6 +4,7 @@ import moment from 'moment'
 import {StoreIntegration} from 'models/integration/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import {useTopQuestionsFilters} from './useTopQuestionsFilters'
 
 import css from './AutomateLandingPageTopQuestions.less'
@@ -77,7 +78,10 @@ const TopQuestionsSectionWithFilters = ({
     const onCreateArticle = useCallback(
         async (templateKey: string) => {
             try {
-                await createArticle(templateKey)
+                await createArticle(
+                    templateKey,
+                    ArticleOrigin.TOP_QUESTIONS_SECTION
+                )
                 logEvent(SegmentEvent.AutomateTopQuestionsSectionCreateArticle)
             } catch (error) {
                 console.error(error)

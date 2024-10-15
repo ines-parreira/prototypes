@@ -15,6 +15,7 @@ import {useCreateAIArticle} from 'pages/settings/helpCenter/hooks/useCreateAIArt
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import {AIArticleArchiveModalHandle} from '../components/AIArticleArchiveModal/AIArticleArchiveModal'
 
 export type onEditorSaveProps = {
@@ -103,6 +104,7 @@ const useAILibraryActions = (
                     editorPayloadDetails.current?.visibilityStatus || 'PUBLIC',
                 categoryId: editorPayloadDetails.current?.categoryId || null,
                 publish: !editorPayloadDetails.current?.saveAsDraft,
+                origin: ArticleOrigin.AI_LIBRARY_TAB,
             })
 
             editorPayloadDetails.current = null

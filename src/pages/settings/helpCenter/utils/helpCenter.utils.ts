@@ -21,6 +21,7 @@ import {
     ARTICLE_HASH_PREFIX,
 } from '../constants'
 import {HelpCenterLayout, isHelpCenterLayout} from '../types/layout.enum'
+import {ArticleOrigin} from '../types/articleOrigin.enum'
 
 export const articleRequiredFields: Partial<
     keyof CreateArticleTranslationDto
@@ -285,6 +286,7 @@ export const mapHelpCenterArticleItemToArticle = (
     return {
         ...hcArticle,
         template_key: article.key,
+        origin: article.origin,
     }
 }
 
@@ -294,12 +296,14 @@ type AILibraryArticleItemParams = {
     categoryId?: number | null
     visibilityStatus?: 'PUBLIC' | 'UNLISTED'
     publish: boolean
+    origin?: ArticleOrigin
 }
 
 export const mapAILibraryArticleItemToArticle = (
     params: AILibraryArticleItemParams
 ): CreateArticleDto | null => {
-    const {article, locale, categoryId, visibilityStatus, publish} = params
+    const {article, locale, categoryId, visibilityStatus, publish, origin} =
+        params
 
     if (!article.title || !article.html_content) return null
 
@@ -323,6 +327,7 @@ export const mapAILibraryArticleItemToArticle = (
     return {
         ...hcArticle,
         template_key: article.key,
+        origin,
     }
 }
 

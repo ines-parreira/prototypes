@@ -18,6 +18,7 @@ import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import {useGetHelpCenterArticles} from '../../hooks/useGetHelpCenterArticles'
 
 import ArticleSection from '../HelpCenterWizardArticleSection/HelpCenterWizardArticleSection'
@@ -68,7 +69,11 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
         handleEditorClose,
 
         handleNavigationSave,
-    } = useHelpCenterArticlesForm(helpCenter, fetchedArticles)
+    } = useHelpCenterArticlesForm(
+        helpCenter,
+        fetchedArticles,
+        ArticleOrigin.HELP_CENTER_WIZARD
+    )
 
     const isLoading = useMemo(() => {
         return (

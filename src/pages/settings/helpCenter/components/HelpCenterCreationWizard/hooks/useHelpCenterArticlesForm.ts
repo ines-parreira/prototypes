@@ -12,6 +12,7 @@ import {useCreateArticleUsingTemplate} from 'pages/settings/helpCenter/hooks/use
 import {useCreateArticleTranslationUsingTemplate} from 'pages/settings/helpCenter/hooks/useCreateArticleTranslationUsingTemplate'
 import {useUpdateArticleTranslationUsingTemplate} from 'pages/settings/helpCenter/hooks/useUpdateArticleTranslationUsingTemplate'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import {
     findArticleByKey,
     handleOnError,
@@ -37,7 +38,8 @@ type HelpCenterArticlesFormOutput = {
 }
 export const useHelpCenterArticlesForm = (
     helpCenter: HelpCenter,
-    articles: Record<string, HelpCenterArticleItem[]>
+    articles: Record<string, HelpCenterArticleItem[]>,
+    origin?: ArticleOrigin
 ): HelpCenterArticlesFormOutput => {
     const [newArticles, setArticles] = useState<
         Record<string, HelpCenterArticleItem[]>
@@ -174,7 +176,7 @@ export const useHelpCenterArticlesForm = (
     const handleEditorSave = async (title: string, content: string) => {
         if (!selectedArticle?.key) return
 
-        const article = {...selectedArticle, title, content}
+        const article = {...selectedArticle, title, content, origin}
 
         logEvent(SegmentEvent.WizardArticleEdited, {
             type: article.type,
@@ -257,7 +259,7 @@ export const useHelpCenterArticlesForm = (
                     item.type === ArticleTemplateType.AI
                         ? true
                         : !!item.isTouched
-                return createArticle(item, shouldPublish)
+                return createArticle({...item, origin}, shouldPublish)
             }
         )
 

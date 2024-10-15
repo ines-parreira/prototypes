@@ -22,6 +22,7 @@ import {useCreateAIArticle} from 'pages/settings/helpCenter/hooks/useCreateAIArt
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import {useTopQuestionsArticles} from '../useTopQuestionsArticles'
 
 jest.mock('common/segment')
@@ -274,7 +275,12 @@ describe('useTopQuestionsArticles', () => {
             }
         )
 
-        await act(() => result.current.createArticle('ai_article_1'))
+        await act(() =>
+            result.current.createArticle(
+                'ai_article_1',
+                ArticleOrigin.TOP_QUESTIONS_SECTION
+            )
+        )
 
         expect(mockCreateArticle).toHaveBeenCalledWith({
             articleTemplate: {
@@ -290,6 +296,7 @@ describe('useTopQuestionsArticles', () => {
                 title: 'AI Article 1',
             },
             categoryId: null,
+            origin: ArticleOrigin.TOP_QUESTIONS_SECTION,
             publish: false,
             visibilityStatus: 'PUBLIC',
         })
@@ -363,7 +370,12 @@ describe('useTopQuestionsArticles', () => {
             }
         )
 
-        await act(() => result.current.createArticle('i_do_not_exist'))
+        await act(() =>
+            result.current.createArticle(
+                'i_do_not_exist',
+                ArticleOrigin.TOP_QUESTIONS_SECTION
+            )
+        )
 
         expect(
             mockUpsertArticleTemplateReviewMutateAsync
@@ -403,7 +415,12 @@ describe('useTopQuestionsArticles', () => {
             }
         )
 
-        await act(() => result.current.createArticle('ai_article_1'))
+        await act(() =>
+            result.current.createArticle(
+                'ai_article_1',
+                ArticleOrigin.TOP_QUESTIONS_SECTION
+            )
+        )
 
         expect(mockCreateArticle).toHaveBeenCalledTimes(1)
 

@@ -1,3 +1,4 @@
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import {Components} from 'rest_api/help_center_api/client.generated'
 
 // GENERAL
@@ -237,6 +238,7 @@ export type HelpCenterArticleItem = Partial<LocalArticleTranslation> &
         availableLocales?: LocaleCode[]
         shouldCreateTranslation?: boolean
         type: ArticleTemplateType
+        origin?: ArticleOrigin
     }
 
 export enum AIArticleToggleOptionValue {

@@ -1,6 +1,7 @@
 import {useCreateArticle} from 'models/helpCenter/queries'
 import {AIArticle, LocaleCode} from 'models/helpCenter/types'
 import {mapAILibraryArticleItemToArticle} from '../utils/helpCenter.utils'
+import {ArticleOrigin} from '../types/articleOrigin.enum'
 
 export const useCreateAIArticle = (
     helpCenterId: number,
@@ -16,6 +17,7 @@ export const useCreateAIArticle = (
         visibilityStatus: 'PUBLIC' | 'UNLISTED'
         categoryId: number | null
         publish: boolean
+        origin?: ArticleOrigin
     }
 
     const createArticle = ({
@@ -23,6 +25,7 @@ export const useCreateAIArticle = (
         visibilityStatus,
         categoryId,
         publish,
+        origin,
     }: createArticleProps) => {
         const payload = mapAILibraryArticleItemToArticle({
             article: articleTemplate,
@@ -30,6 +33,7 @@ export const useCreateAIArticle = (
             visibilityStatus,
             categoryId,
             publish,
+            origin,
         })
         if (!payload)
             return Promise.reject(

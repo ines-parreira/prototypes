@@ -132,6 +132,7 @@ declare namespace Components {
       available_locales: ("cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE")[];
       help_center_id: number;
       template_key?: string | null;
+      origin?: "aiLibraryTab" | "allRecommendationsPage" | "helpCenterWizard" | "topQuestionsSection";
       id: number;
     }
     export interface ArticleIngestionLogDto {
@@ -166,6 +167,7 @@ declare namespace Components {
       category_id: number | null;
       help_center_id: number;
       template_key?: string | null;
+      origin?: "aiLibraryTab" | "allRecommendationsPage" | "helpCenterWizard" | "topQuestionsSection";
       available_locales: ("cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE")[];
       rating: {
         up: number;
@@ -334,6 +336,7 @@ declare namespace Components {
       category_id: number | null;
       help_center_id: number;
       template_key?: string | null;
+      origin?: "aiLibraryTab" | "allRecommendationsPage" | "helpCenterWizard" | "topQuestionsSection";
       id: number;
       translation: LocalArticleTranslation;
     }
@@ -472,6 +475,7 @@ declare namespace Components {
       category_id: number | null;
       help_center_id: number;
       template_key?: string | null;
+      origin?: "aiLibraryTab" | "allRecommendationsPage" | "helpCenterWizard" | "topQuestionsSection";
       available_locales: ("cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE")[];
       translation_versions: {
         current: {
@@ -944,6 +948,7 @@ declare namespace Components {
       };
       category_id?: number | null;
       template_key?: string | null;
+      origin?: "aiLibraryTab" | "allRecommendationsPage" | "helpCenterWizard" | "topQuestionsSection";
     }
     export interface CreateArticleTranslationDto {
       /**

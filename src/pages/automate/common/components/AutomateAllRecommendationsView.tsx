@@ -5,6 +5,7 @@ import {Card} from '@gorgias/analytics-ui-kit'
 import StatsPage from 'pages/stats/StatsPage'
 import {StoreIntegration} from 'models/integration/types'
 import {HelpCenter} from 'models/helpCenter/types'
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import {
     AllRecommendationsStatus,
     useAIArticleRecommendationItems,
@@ -61,6 +62,7 @@ const AutomateAllRecommendationsContent = ({
         statusFilter: currentStatus,
         currentPage,
         itemsPerPage: ITEMS_PER_PAGE,
+        origin: ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
     })
 
     const viewedOnPage = useTopQuestionsViewedOnPage(

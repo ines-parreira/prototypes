@@ -2,34 +2,37 @@ import React from 'react'
 
 import {renderHook} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {assumeMock} from 'utils/testing'
 import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
 import {AIArticlesRecommendationFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import {
     useAIArticleRecommendationItems,
     AllRecommendationsStatus,
     isAllRecommendationStatus,
 } from '../useAIArticleRecommendationItems'
+import {useTopQuestionsArticles} from '../../components/TopQuestions/useTopQuestionsArticles'
 
 const queryClient = mockQueryClient()
 
-jest.mock('pages/settings/helpCenter/hooks/useGetAIArticles')
+jest.mock('../../components/TopQuestions/useTopQuestionsArticles')
+const mockedUseTopQuestionsArticles = assumeMock(useTopQuestionsArticles)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
-const mockedUseConditionalGetAIArticles = assumeMock(useGetAIArticles)
-
 describe('useAIArticleRecommendationItems', () => {
+    const mockedCreateArticle = jest.fn()
     beforeEach(() => {
         jest.resetAllMocks()
-        mockedUseConditionalGetAIArticles.mockImplementation(
-            (): ReturnType<typeof useGetAIArticles> => {
+        mockedUseTopQuestionsArticles.mockImplementation(
+            (): ReturnType<typeof useTopQuestionsArticles> => {
                 return {
-                    fetchedArticles: AIArticlesRecommendationFixture,
+                    articles: AIArticlesRecommendationFixture,
                     isLoading: false,
+                    createArticle: mockedCreateArticle,
+                    dismissArticle: jest.fn(),
                 }
             }
         )
@@ -45,6 +48,7 @@ describe('useAIArticleRecommendationItems', () => {
                     statusFilter: AllRecommendationsStatus.All,
                     currentPage: 1,
                     itemsPerPage: ITEMS_PER_PAGE,
+                    origin: ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
                 }),
             {
                 wrapper: ({children}) => (
@@ -92,6 +96,7 @@ describe('useAIArticleRecommendationItems', () => {
                     statusFilter: AllRecommendationsStatus.ArticleCreated,
                     currentPage: 1,
                     itemsPerPage: ITEMS_PER_PAGE,
+                    origin: ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
                 }),
             {
                 wrapper: ({children}) => (
@@ -125,6 +130,7 @@ describe('useAIArticleRecommendationItems', () => {
                     statusFilter: AllRecommendationsStatus.All,
                     currentPage: 2,
                     itemsPerPage: 2,
+                    origin: ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
                 }),
             {
                 wrapper: ({children}) => (
@@ -148,10 +154,41 @@ describe('useAIArticleRecommendationItems', () => {
         expect(result.current.isLoading).toBe(false)
     })
 
+    it('should call createArticle with correct arguments', async () => {
+        const {result} = renderHook(
+            () =>
+                useAIArticleRecommendationItems({
+                    helpCenterId: 1,
+                    storeIntegrationId: 1,
+                    locale: 'en-US',
+                    statusFilter: AllRecommendationsStatus.All,
+                    currentPage: 1,
+                    itemsPerPage: ITEMS_PER_PAGE,
+                    origin: ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
+                }),
+            {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            }
+        )
+
+        await result.current.paginatedItems[0].createArticle()
+
+        expect(mockedCreateArticle).toHaveBeenCalledWith(
+            'ai_Generated_3',
+            ArticleOrigin.ALL_RECOMMENDATIONS_PAGE
+        )
+    })
+
     it('should return isLoading as true when articles are loading', () => {
-        mockedUseConditionalGetAIArticles.mockReturnValue({
-            fetchedArticles: null,
+        mockedUseTopQuestionsArticles.mockReturnValue({
+            articles: [],
             isLoading: true,
+            createArticle: jest.fn(),
+            dismissArticle: jest.fn(),
         })
 
         const {result} = renderHook(
@@ -163,6 +200,7 @@ describe('useAIArticleRecommendationItems', () => {
                     statusFilter: AllRecommendationsStatus.All,
                     currentPage: 1,
                     itemsPerPage: ITEMS_PER_PAGE,
+                    origin: ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
                 }),
             {
                 wrapper: ({children}) => (

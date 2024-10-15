@@ -1,6 +1,7 @@
 import {useMemo} from 'react'
 import {AIArticle, LocaleCode} from 'models/helpCenter/types'
 import {sortAIArticlesByTicketsCount} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/AIArticlesLibraryUtils'
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import {useTopQuestionsArticles} from '../components/TopQuestions/useTopQuestionsArticles'
 
 export enum AllRecommendationsStatus {
@@ -57,6 +58,7 @@ type Props = {
     statusFilter: AllRecommendationsStatus
     currentPage: number
     itemsPerPage: number
+    origin: ArticleOrigin
 }
 
 export const useAIArticleRecommendationItems = ({
@@ -66,6 +68,7 @@ export const useAIArticleRecommendationItems = ({
     statusFilter,
     currentPage,
     itemsPerPage,
+    origin,
 }: Props) => {
     if (currentPage < 1) {
         throw new Error('Current page must be greater than or equal to 1')
@@ -93,9 +96,9 @@ export const useAIArticleRecommendationItems = ({
             templateKey: article.key,
             ticketsCount: article.related_tickets_count ?? 0,
             reviewAction: article.review_action,
-            createArticle: () => createArticle(article.key),
+            createArticle: () => createArticle(article.key, origin),
         }))
-    }, [sortedFetchedArticles, statusFilter, createArticle])
+    }, [sortedFetchedArticles, statusFilter, createArticle, origin])
 
     return useMemo(() => {
         const startIndex = (currentPage - 1) * itemsPerPage

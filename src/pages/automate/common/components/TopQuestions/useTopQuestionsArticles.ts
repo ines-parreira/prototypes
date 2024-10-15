@@ -15,6 +15,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {useCreateAIArticle} from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 
 export const useTopQuestionsArticles = (
     storeIntegrationId: number,
@@ -113,7 +114,7 @@ export const useTopQuestionsArticles = (
     )
 
     const createArticle = useCallback(
-        async (templateKey: string): Promise<void> => {
+        async (templateKey: string, origin: ArticleOrigin): Promise<void> => {
             const articleTemplate = articles.find(
                 ({key}) => key === templateKey
             )
@@ -130,6 +131,7 @@ export const useTopQuestionsArticles = (
                     visibilityStatus: 'PUBLIC',
                     categoryId: null,
                     publish: false,
+                    origin,
                 })
             } catch (error) {
                 void appDispatch(
