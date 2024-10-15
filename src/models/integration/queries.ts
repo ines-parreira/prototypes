@@ -1,5 +1,11 @@
-import {useQuery, UseQueryOptions, useQueries} from '@tanstack/react-query'
+import {
+    useQuery,
+    UseQueryOptions,
+    useQueries,
+    useInfiniteQuery,
+} from '@tanstack/react-query'
 
+import {useEffect} from 'react'
 import {reportError} from 'utils/errors'
 
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT} from 'constants/integration'
@@ -15,6 +21,9 @@ import {
 import GorgiasApi from 'services/gorgiasApi'
 
 import {Product} from 'constants/integrations/types/shopify'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {handleError} from 'hooks/agents/errorHandler'
+import {fetchIntegrationProducts} from 'models/integration/resources'
 import {AppData, AppListData} from './types/app'
 
 import {
@@ -87,6 +96,29 @@ export const useProductsFromShopifyIntegration = (
         },
         enabled,
     })
+}
+
+export const useListProducts = (integrationId: number, enabled = true) => {
+    const dispatch = useAppDispatch()
+    const response = useInfiniteQuery({
+        queryKey: ['integration', 'shopify', integrationId, 'products', 'list'],
+        queryFn: async ({pageParam}) =>
+            fetchIntegrationProducts(integrationId, {
+                cursor: pageParam,
+            }),
+        getNextPageParam: (lastPage) => {
+            return lastPage.data.meta.next_cursor
+        },
+        enabled,
+    })
+
+    useEffect(() => {
+        if (response.error) {
+            handleError(response.error, 'Failed to fetch products', dispatch)
+        }
+    }, [dispatch, response])
+
+    return response
 }
 
 export const useShopifyTags = (

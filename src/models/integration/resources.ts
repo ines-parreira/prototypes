@@ -5,6 +5,7 @@ import {
 } from 'models/api/types'
 import client from 'models/api/resources'
 
+import {Product} from 'constants/integrations/types/shopify'
 import {
     AppListData,
     AppData,
@@ -14,7 +15,12 @@ import {
     DisconnectResponse,
     Category,
 } from './types/app'
-import {Integration, IntegrationRequest, IntegrationType} from './types'
+import {
+    Integration,
+    IntegrationDataItem,
+    IntegrationRequest,
+    IntegrationType,
+} from './types'
 
 export const appListDataToAppListMapper = (data: AppListData): AppListItem => {
     const categories = data.categories || []
@@ -113,3 +119,11 @@ export const requestNewIntegration = async (payload: IntegrationRequest) => {
     )
     return data
 }
+
+export const fetchIntegrationProducts = async (
+    integrationId: number,
+    params: ApiPaginationParams = {}
+) =>
+    await client.get<
+        ApiListResponseCursorPagination<IntegrationDataItem<Product>[]>
+    >(`/api/integrations/${integrationId}/product`, {params})

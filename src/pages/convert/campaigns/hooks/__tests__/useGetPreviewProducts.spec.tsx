@@ -8,7 +8,6 @@ import {
 import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
 import {shopifyIntegration} from 'fixtures/integrations'
 import {AttachmentEnum} from 'common/types'
-import {useProductsFromShopifyIntegration} from 'models/integration/queries'
 import {assumeMock} from 'utils/testing'
 import {
     shopifyProductFixture,
@@ -23,16 +22,16 @@ import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transf
 import {campaignProductAttachment} from 'fixtures/campaign'
 import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
 import {pickNRandomShopifyProducts} from 'pages/convert/campaigns/utils/pickNRandomShopifyProducts'
+import {useListProducts} from 'models/integration/queries'
 
 jest.mock('models/integration/queries')
-const useProductsFromShopifyIntegrationMock = assumeMock(
-    useProductsFromShopifyIntegration
-)
+const useListProductsMock = assumeMock(useListProducts)
 
 jest.mock('pages/convert/campaigns/utils/pickNRandomShopifyProducts')
 const pickNRandomShopifyProductsMock = assumeMock(pickNRandomShopifyProducts)
 
 describe('useGetPreviewProducts', () => {
+    const mockFetchNextPage = jest.fn()
     const storeIntegration = fromJS(shopifyIntegration)
     const productCount = 1
     const product = transformAttachmentToProduct(
@@ -45,8 +44,18 @@ describe('useGetPreviewProducts', () => {
     ) as unknown as CampaignProduct
 
     beforeEach(() => {
-        useProductsFromShopifyIntegrationMock.mockReturnValue({
-            data: shopifyProductResult(),
+        useListProductsMock.mockReturnValue({
+            data: {
+                pages: [
+                    {
+                        data: {
+                            data: shopifyProductResult(),
+                        },
+                    },
+                ],
+            },
+            hasNextPage: true,
+            fetchNextPage: mockFetchNextPage,
         } as any)
 
         pickNRandomShopifyProductsMock.mockReturnValue([
@@ -162,8 +171,18 @@ describe('useGetPreviewProducts', () => {
                 },
             },
         ]
-        useProductsFromShopifyIntegrationMock.mockReturnValue({
-            data: shopifyProducts,
+        useListProductsMock.mockReturnValue({
+            data: {
+                pages: [
+                    {
+                        data: {
+                            data: shopifyProducts,
+                        },
+                    },
+                ],
+            },
+            hasNextPage: false,
+            fetchNextPage: mockFetchNextPage,
         } as any)
         const productRecommendations: CampaignProductRecommendation[] = [
             {

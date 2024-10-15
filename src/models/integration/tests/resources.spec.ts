@@ -4,6 +4,7 @@ import {dummyAppListData, dummyAppData} from 'fixtures/apps'
 import {dummyErrorLogList} from 'fixtures/appErrors'
 import {integrationsState} from 'fixtures/integrations'
 import client from 'models/api/resources'
+import {integrationDataItemProductFixture} from 'fixtures/shopify'
 import {
     disconnectApp,
     fetchApp,
@@ -12,6 +13,7 @@ import {
     fetchIntegrations,
     fetchInstalledApps,
     requestNewIntegration,
+    fetchIntegrationProducts,
 } from '../resources'
 import {fetchShopifyCollections} from '../resources/shopify'
 import {IntegrationRequest, ShopifyCollectionResponse} from '../types'
@@ -19,6 +21,7 @@ import {IntegrationRequest, ShopifyCollectionResponse} from '../types'
 const mockedServer = new MockAdapter(client)
 
 const appId = dummyAppData.id
+const integrationId = 123
 
 describe('integration resource', () => {
     beforeEach(() => {
@@ -204,6 +207,26 @@ describe('integration resource', () => {
             return expect(fetchShopifyCollections(1)).rejects.toEqual(
                 new Error('Request failed with status code 503')
             )
+        })
+    })
+
+    describe('fetchIntegrationProducts', () => {
+        it('should return products data', async () => {
+            const data = integrationDataItemProductFixture()
+            mockedServer
+                .onGet(`/api/integrations/${integrationId}/product`)
+                .reply(200, [data])
+            const res = await fetchIntegrationProducts(integrationId)
+            expect(res.data).toEqual([data])
+        })
+
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onGet(`/api/integrations/${integrationId}/product`)
+                .reply(503, {message: 'error'})
+            return expect(
+                fetchIntegrationProducts(integrationId)
+            ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
 })
