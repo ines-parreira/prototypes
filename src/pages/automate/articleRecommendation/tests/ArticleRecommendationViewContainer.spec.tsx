@@ -1,0 +1,127 @@
+import React from 'react'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import {screen} from '@testing-library/react'
+import {QueryClientProvider} from '@tanstack/react-query'
+import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
+import {account} from 'fixtures/account'
+import {renderWithRouter} from 'utils/testing'
+import {RootState, StoreDispatch} from 'state/types'
+import {
+    AUTOMATION_PRODUCT_ID,
+    HELPDESK_PRODUCT_ID,
+    basicMonthlyAutomationPlan,
+    basicMonthlyHelpdeskPlan,
+} from 'fixtures/productPrices'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
+import {billingState} from 'fixtures/billing'
+import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import ArticleRecommendationViewContainer from '../ArticleRecommendationViewContainer'
+
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList')
+jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
+
+const queryClient = mockQueryClient()
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+const defaultState = {
+    billing: fromJS(billingState),
+    integrations: fromJS({
+        integrations: [{type: 'email', meta: {address: 'test@gorgias.com'}}],
+    }),
+    entities: {
+        chatsApplicationAutomationSettings: {},
+    },
+} as RootState
+
+describe('<ArticleRecommendationPreview />', () => {
+    beforeEach(() => {
+        ;(
+            useHelpCenterList as jest.MockedFn<typeof useHelpCenterList>
+        ).mockReturnValue({
+            helpCenters: [],
+            isLoading: false,
+            fetchMore: jest.fn(),
+            hasMore: false,
+        })
+        ;(
+            useSelfServiceConfiguration as jest.MockedFn<
+                typeof useSelfServiceConfiguration
+            >
+        ).mockReturnValue({
+            isFetchPending: false,
+            isUpdatePending: false,
+            storeIntegration: undefined,
+            selfServiceConfiguration: {
+                ...selfServiceConfiguration1,
+                articleRecommendationHelpCenterId: 1,
+            },
+            handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
+        })
+    })
+
+    it('should display paywall', () => {
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                    })}
+                >
+                    <ArticleRecommendationViewContainer />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: `/app/automation/:shopType/:shopName/article-recommendation`,
+                route: '/app/automation/shopify/test-shop/article-recommendation',
+            }
+        )
+        expect(
+            screen.getByText(
+                'Automate 60%+ of your support with AI and grow your brand'
+            )
+        ).toBeInTheDocument()
+    })
+
+    it('should render article recommendation', () => {
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        currentAccount: fromJS({
+                            ...account,
+                            current_subscription: {
+                                products: {
+                                    [HELPDESK_PRODUCT_ID]:
+                                        basicMonthlyHelpdeskPlan.price_id,
+                                    [AUTOMATION_PRODUCT_ID]:
+                                        basicMonthlyAutomationPlan.price_id,
+                                },
+                                status: 'active',
+                            },
+                        }),
+                    })}
+                >
+                    <ArticleRecommendationViewContainer />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: `/app/automation/:shopType/:shopName/article-recommendation`,
+                route: '/app/automation/shopify/test-shop/article-recommendation',
+            }
+        )
+
+        expect(
+            screen.queryByText(
+                'Automate 60%+ of your support with AI and grow your brand'
+            )
+        ).toBeNull()
+        expect(
+            screen.getByText('Learn About Article Recommendation In Chat')
+        ).toBeInTheDocument()
+    })
+})
