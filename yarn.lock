@@ -2978,21 +2978,21 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/analytics-ui-kit/0.1.0/9a906d573ac77701f1dced97a32f6e43aaf70c8a#9a906d573ac77701f1dced97a32f6e43aaf70c8a"
   integrity sha512-KuYrCkyo/3dZVM4GGopjGs6fQkU8WgFtb70+OgUZmadIVlszl2BQxSaGBweuTQ+nTXaKulP3cPYmhiP9gGFj/A==
 
-"@gorgias/api-client@^0.2.5":
-  version "0.2.5"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.2.5/c7b373282e46c393ac483c9300bc36c2d78f96fd#c7b373282e46c393ac483c9300bc36c2d78f96fd"
-  integrity sha512-kT1lYd/Ej9CKbLJKsevZzfDNBWCkn/Yn658zV+dw2lPrBDk+49kKSig4lWCoSBLEegob8G+UdH2gpdM2XQd/ew==
+"@gorgias/api-client@^0.2.7":
+  version "0.2.7"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.2.7/bcd50bbb56727e10b66ba533b4d2b347634ba936#bcd50bbb56727e10b66ba533b4d2b347634ba936"
+  integrity sha512-VchtikaSys8iB5N6imsmidmyL7aevEcliadLGw61Wr4n7T75XivTNsU9CCwciHgpG+FtkKf8pNjMHFZDBctD7Q==
   dependencies:
-    "@gorgias/api-types" "^0.2.5"
+    "@gorgias/api-types" "^0.2.7"
     axios "^1.7.7"
 
-"@gorgias/api-queries@0.2.5":
-  version "0.2.5"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.2.5/1ec9925847e12001679d31fb7418fa29530ab69d#1ec9925847e12001679d31fb7418fa29530ab69d"
-  integrity sha512-eCamVeROTnyOPBYOZwSozlMltqNao+yy/AWrDcbTIIjY8xnKQkRw5ZjbQjUqMnhycVRSet7RIjCho3XOBhX/4w==
+"@gorgias/api-queries@0.2.7":
+  version "0.2.7"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.2.7/d3b1bcc1634d41fd73647881a4425ba4d494fadb#d3b1bcc1634d41fd73647881a4425ba4d494fadb"
+  integrity sha512-T649rwyOMeFrKf36TwnYm5CSDeUZaOMoYAaRnV9dTqoghZwT6iroaa7GvlZnan2av8SIJSZJs1v8LmIipsehhg==
   dependencies:
-    "@gorgias/api-client" "^0.2.5"
-    "@gorgias/api-types" "^0.2.5"
+    "@gorgias/api-client" "^0.2.7"
+    "@gorgias/api-types" "^0.2.7"
 
 "@gorgias/api-spec@^0.2.4":
   version "0.2.4"
@@ -3004,10 +3004,10 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.2.4/9bd0c278259ce99a5007cd5707107aa81e41549b#9bd0c278259ce99a5007cd5707107aa81e41549b"
   integrity sha512-e77pRwLJMVoRi7scbn1CRQd4aIuHpcaaNp0kd6X6OruqHuNpts7aKUeuKRwg3fyPB4y2K7ta0Q9pTeSdKL5vAw==
 
-"@gorgias/api-types@^0.2.5":
-  version "0.2.5"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.2.5/c746289e3c5c7e378b46d485e21adc1947b4a5d5#c746289e3c5c7e378b46d485e21adc1947b4a5d5"
-  integrity sha512-xkgJ+/OezgQ8mV2U7Xk+rW05gfwA9fG5I7Zk5VSJaFcSeXxWHLc/AG1e8DvJnfv46DJDeWmgStZwqArMNyDf+w==
+"@gorgias/api-types@^0.2.7":
+  version "0.2.7"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.2.7/d05d07aa8c39e396c22799443e617b60b3f6c6b2#d05d07aa8c39e396c22799443e617b60b3f6c6b2"
+  integrity sha512-o+NX0sRRVpqsHxg/qF/MDP/Pbl7dbRvA/3DS7Gcdlg5XdlkLuiMTtIehEUSFOkezsUSBmgjXkNyntN6b5Szuew==
 
 "@gorgias/api-validators@0.2.4":
   version "0.2.4"
