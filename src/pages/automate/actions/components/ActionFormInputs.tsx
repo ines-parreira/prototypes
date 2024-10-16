@@ -75,7 +75,7 @@ const ActionFormInputs = ({
                         isSemiImmutable={semiImmutableInputIdsSet.has(input.id)}
                     />
                 ))}
-                {inputs.length > 0 && (
+                {(inputs.length > 0 || templateInputs.length > 0) && (
                     <div className={css.footer}>
                         <span>Data type/format</span>
                         <span>Variable name e.g. opened</span>
