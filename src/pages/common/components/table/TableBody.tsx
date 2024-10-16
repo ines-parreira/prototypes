@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import React, {ForwardedRef, forwardRef, HTMLProps, ReactNode} from 'react'
 
-import css from './TableBody.less'
+import css from 'pages/common/components/table/TableBody.less'
 
 type Props = HTMLProps<HTMLTableSectionElement> & {
     children: ReactNode

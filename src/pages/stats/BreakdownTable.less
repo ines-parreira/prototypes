@@ -4,19 +4,70 @@
 
 @table-max-height: 744px;
 
+@table-header: 130px;
+@table-header-row: 47px;
+@pagination: 40px;
+@table-margin-bottom: @layout-spacing-xs;
+
+@tags-table-row-height: 43px;
+@tags-table-max-rows-height: 15 * @tags-table-row-height;
+@tags-table-max-height: @table-header + @table-header-row +
+    @tags-table-max-rows-height + @table-margin-bottom;
+@tags-table-max-height-with-pagination: @tags-table-max-height + @pagination;
+
+@responsive-table-header: 168px;
+@responsive-tags-table-max-height: @responsive-table-header + @table-header-row +
+    @tags-table-max-rows-height;
+
 :local {
     .wrapper {
         display: grid;
     }
 
+    .tagsTableWrapperHeight {
+        max-height: calc(100vh - @table-header);
+        overflow: hidden;
+        @media @mobiles {
+            max-height: @responsive-tags-table-max-height;
+        }
+    }
+
+    .tagsTableContainer {
+        width: 100%;
+        max-height: calc(100vh - @table-header - @table-header-row);
+        @media @mobiles {
+            max-height: calc(
+                @responsive-tags-table-max-height - @table-header-row -
+                    @responsive-table-header
+            );
+            margin-bottom: 0;
+        }
+        overflow: auto;
+
+        &.withPagination {
+            max-height: calc(
+                100vh - @table-header-row - @table-header - @pagination
+            );
+            margin-bottom: 0;
+
+            @media @mobiles {
+                max-height: calc(
+                    @responsive-tags-table-max-height - @table-header-row -
+                        @responsive-table-header - @pagination
+                );
+            }
+        }
+    }
+
     .container {
         width: 100%;
         max-height: calc(100vh - 300px);
+        margin-bottom: @layout-spacing-m;
         @media (min-height: @table-max-height) {
             max-height: calc(@table-max-height - 300px);
+            margin-bottom: 0;
         }
         overflow: auto;
-        margin-bottom: @layout-spacing-m;
 
         &.withPagination {
             max-height: calc(100vh - 412px);
@@ -39,7 +90,7 @@
 
     .table {
         box-sizing: border-box;
-        margin-bottom: @layout-spacing-xs;
+        margin-bottom: @table-margin-bottom;
 
         .header,
         thead {
@@ -62,6 +113,7 @@
 
         tr {
             height: 40px;
+
             th,
             td {
                 &.withShadow {

@@ -81,7 +81,7 @@ export const AllUsedTagsTable = ({
         <>
             <div
                 ref={ref}
-                className={classNames(css.container, {
+                className={classNames(css.tagsTableContainer, {
                     [css.withPagination]: hasPagination,
                 })}
                 onScroll={handleScroll}

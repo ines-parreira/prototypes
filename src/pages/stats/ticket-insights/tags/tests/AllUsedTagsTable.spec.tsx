@@ -252,7 +252,8 @@ describe('<AllUsedTagsTable />', () => {
                 defaultState
             )
             act(() => {
-                const tableRow = document.getElementsByClassName('container')[0]
+                const tableRow =
+                    document.getElementsByClassName('tagsTableContainer')[0]
                 fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
             })
 
@@ -270,7 +271,8 @@ describe('<AllUsedTagsTable />', () => {
                 defaultState
             )
             act(() => {
-                const tableRow = document.getElementsByClassName('container')[0]
+                const tableRow =
+                    document.getElementsByClassName('tagsTableContainer')[0]
                 fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})
             })
 

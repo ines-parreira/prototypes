@@ -30,7 +30,7 @@ export const AllUsedTagsTableChart = () => {
             title={REPORT_TITLE}
             hint={{title: REPORT_HINT}}
             noPadding={true}
-            className={css.limitedHeight}
+            className={css.tagsTableWrapperHeight}
             titleExtra={
                 <div className={css.switches}>
                     <TableValueModeSwitch
