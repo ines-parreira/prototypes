@@ -3,7 +3,7 @@ import {act, cleanup, fireEvent, render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import {resetLDMocks} from 'jest-launchdarkly-mock'
 import {RootState, StoreDispatch} from 'state/types'
 import {phoneNumbers, capabilities} from 'fixtures/phoneNumber'
 import {fetchPhoneCapabilities} from 'models/phoneNumber/resources'
@@ -12,7 +12,6 @@ import * as apiCalls from 'models/phoneNumber/resources'
 import * as notificationActions from 'state/notifications/actions'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
 import * as phoneNumberUtils from '../utils'
 
@@ -51,9 +50,6 @@ describe('<PhoneNumberCreateForm/>', () => {
         jest.resetAllMocks()
         assumeMock(fetchPhoneCapabilities).mockResolvedValue(capabilities)
         resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.NewBillingInterface]: false,
-        })
     })
 
     afterEach(cleanup)

@@ -4,13 +4,11 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import LD from 'launchdarkly-react-client-sdk'
 
 import {UserRole} from 'config/types/user'
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {RootState, StoreDispatch} from 'state/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {assumeMock} from 'utils/testing'
 import {SegmentEvent, logEvent} from 'common/segment'
 
@@ -41,11 +39,6 @@ const minProps: ComponentProps<typeof AutomateSubscriptionModal> = {
 }
 
 describe('<AutomateSubscriptionModal />', () => {
-    beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockReturnValue({
-            [FeatureFlagKey.NewBillingInterface]: true,
-        })
-    })
     it('should not render the modal', () => {
         const {baseElement} = render(
             <Provider store={mockStore(defaultState)}>

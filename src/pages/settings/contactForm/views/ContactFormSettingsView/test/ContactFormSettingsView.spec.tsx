@@ -27,7 +27,6 @@ import {renderWithRouter} from 'utils/testing'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {billingState} from 'fixtures/billing'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -100,9 +99,7 @@ describe('<ContactFormSettingsView />', () => {
             handleContactFormAutomationSettingsFetch: jest.fn(),
             handleContactFormAutomationSettingsUpdate: jest.fn(),
         })
-        jest.spyOn(LD, 'useFlags').mockReturnValue({
-            [FeatureFlagKey.NewBillingInterface]: true,
-        })
+        jest.spyOn(LD, 'useFlags').mockReturnValue({})
     })
 
     it('should redirect to CUSTOMIZATION page if just form id provided', () => {

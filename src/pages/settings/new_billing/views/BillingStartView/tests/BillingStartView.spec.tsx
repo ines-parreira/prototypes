@@ -93,11 +93,7 @@ describe('BillingStartView', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should show the "Gorgias internal" tab if user is impersonated AND feature flag is ON', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.InternalBillingInterface]: true,
-            }))
-
+        it('should show the "Gorgias internal" tab if user is impersonated', () => {
             window.USER_IMPERSONATED = true
 
             renderWithRouter(
@@ -111,11 +107,7 @@ describe('BillingStartView', () => {
             expect(screen.getByText(/Gorgias Internal/i)).toBeInTheDocument()
         })
 
-        it('should NOT show the "Gorgias internal" tab if user is NOT impersonated AND feature flag is ON', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.InternalBillingInterface]: true,
-            }))
-
+        it('should NOT show the "Gorgias internal" tab if user is NOT impersonated', () => {
             window.USER_IMPERSONATED = null
 
             renderWithRouter(

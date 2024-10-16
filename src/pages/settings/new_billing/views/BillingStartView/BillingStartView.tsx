@@ -365,9 +365,6 @@ const BillingStartView = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentConvertPlan, convertStatus])
 
-    const isInternalUIEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.InternalBillingInterface]
-
     const isStripeElementsIntegrationEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.BillingStripeElementsPaymentIntegration]
 
@@ -377,7 +374,7 @@ const BillingStartView = () => {
             {
                 <SecondaryNavbar>
                     {/* Only show the 'Gorgias Internal' tab when user is impersonated and feature flag is ON*/}
-                    {window.USER_IMPERSONATED && isInternalUIEnabled ? (
+                    {window.USER_IMPERSONATED ? (
                         <NavLink to={BILLING_INTERNAL_PATH}>
                             Gorgias Internal
                         </NavLink>
@@ -415,7 +412,7 @@ const BillingStartView = () => {
                 {isUsageFetched ? (
                     <Switch>
                         <Route exact path={BILLING_INTERNAL_PATH}>
-                            {window.USER_IMPERSONATED && isInternalUIEnabled ? (
+                            {window.USER_IMPERSONATED ? (
                                 <BillingInternalView />
                             ) : (
                                 <div>You cannot access this page</div>

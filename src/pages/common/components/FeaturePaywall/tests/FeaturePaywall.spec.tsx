@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
 
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import {resetLDMocks} from 'jest-launchdarkly-mock'
 import {AccountFeature} from 'state/currentAccount/types'
 import {billingState} from 'fixtures/billing'
 import {
@@ -19,7 +19,6 @@ import {account} from 'fixtures/account'
 import {PaywallConfig} from 'config/paywalls'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import FeaturePaywall from '../FeaturePaywall'
 
 jest.mock('react-images', () => {
@@ -88,9 +87,6 @@ describe('<FeaturePaywall />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.NewBillingInterface]: false,
-        })
     })
 
     it.each<
