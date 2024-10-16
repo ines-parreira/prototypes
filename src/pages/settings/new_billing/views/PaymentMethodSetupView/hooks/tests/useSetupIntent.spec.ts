@@ -2,7 +2,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import {waitFor} from '@testing-library/react'
 import {useCreateBillingPaymentMethodSetup} from '@gorgias/api-queries'
 import {assumeMock} from 'utils/testing'
-import {useSetupIntent} from './useSetupIntent'
+import {useSetupIntent} from '../useSetupIntent'
 
 jest.mock('@gorgias/api-queries')
 

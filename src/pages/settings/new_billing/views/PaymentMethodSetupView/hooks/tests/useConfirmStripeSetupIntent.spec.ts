@@ -4,7 +4,7 @@ import {waitFor} from '@testing-library/react'
 import {useBillingContact} from 'models/billing/queries'
 import {assumeMock} from 'utils/testing'
 import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {useConfirmStripeSetupIntent} from './useConfirmStripeSetupIntent'
+import {useConfirmStripeSetupIntent} from '../useConfirmStripeSetupIntent'
 
 jest.mock('@stripe/react-stripe-js')
 

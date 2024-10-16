@@ -1,7 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 import client from 'models/api/resources'
 import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {useHasCreditCard} from './useHasCreditCard'
+import {useHasCreditCard} from '../useHasCreditCard'
 
 const mockedServer = new MockAdapter(client)
 

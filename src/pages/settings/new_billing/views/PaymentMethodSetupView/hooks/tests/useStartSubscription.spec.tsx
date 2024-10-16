@@ -11,7 +11,7 @@ import * as selectors from 'state/currentAccount/selectors'
 import {NotificationStatus} from 'state/notifications/types'
 import {assumeMock} from 'utils/testing'
 import * as actions from 'state/notifications/actions'
-import {useStartSubscription} from './useStartSubscription'
+import {useStartSubscription} from '../useStartSubscription'
 
 jest.useFakeTimers()
 
