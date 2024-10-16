@@ -42,6 +42,7 @@ export type PhoneIntegrationPreferences = {
         recordings: boolean
         voicemails: boolean
     }
+    ring_time?: number
 }
 
 type VoicemailOutsideBusinessHoursBasicSettings = {

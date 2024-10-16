@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {Form, Label} from 'reactstrap'
 
 import classNames from 'classnames'
-import {isEqual} from 'lodash'
+import {isEmpty, isEqual} from 'lodash'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     PhoneIntegration,
@@ -38,6 +38,7 @@ import VoiceIntegrationPreferencesInboundCalls from './VoiceIntegrationPreferenc
 import VoiceIntegrationPreferencesCallRecordings from './VoiceIntegrationPreferencesCallRecordings'
 import VoiceIntegrationPreferencesTranscription from './VoiceIntegrationPreferencesTranscription'
 import css from './VoiceIntegrationPreferences.less'
+import {isValueInRange} from './utils'
 
 type Props = {
     integration: PhoneIntegration
@@ -107,7 +108,23 @@ export default function VoiceIntegrationPreferences({
         setIsInitialized(true)
     }, [integration, isInitialized])
 
+    const validationErrors = useMemo(() => {
+        const errors: Record<string, string> = {}
+        if (
+            preferences.ring_time !== undefined &&
+            !isValueInRange(preferences.ring_time, 10, 600)
+        ) {
+            errors.ring_time =
+                'Ring time must be between 10 and 600 seconds (10 minutes).'
+        }
+        return errors
+    }, [preferences])
+
     const canSubmit = () => {
+        if (!isEmpty(validationErrors)) {
+            return false
+        }
+
         const unsubmittedSettings = {
             name: title,
             meta: {
@@ -205,6 +222,7 @@ export default function VoiceIntegrationPreferences({
                         onPreferencesChange={handlePreferencesChange}
                         phoneTeamId={phoneTeamId}
                         onPhoneTeamIdChange={setPhoneTeamId}
+                        errors={validationErrors}
                     />
                 </div>
 

@@ -12,6 +12,8 @@ import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import settingsCss from 'pages/settings/settings.less'
+import InputField from 'pages/common/forms/input/InputField'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
 import VoiceIntegrationPreferencesTeamSelect from './VoiceIntegrationPreferencesTeamSelect'
 import css from './VoiceIntegrationPreferences.less'
 
@@ -23,6 +25,7 @@ type Props = {
     ) => void
     phoneTeamId: Maybe<number | undefined>
     onPhoneTeamIdChange: (teamId: number | null) => void
+    errors: Record<string, string>
 }
 
 export default function VoiceIntegrationPreferencesInboundCalls({
@@ -31,9 +34,13 @@ export default function VoiceIntegrationPreferencesInboundCalls({
     onPreferencesChange,
     phoneTeamId,
     onPhoneTeamIdChange,
+    errors,
 }: Props): JSX.Element {
     const useCallRecordings: boolean | undefined =
         useFlags()[FeatureFlagKey.RecordingTranscriptions]
+    const showCustomizableAgentRingTime: boolean | undefined =
+        useFlags()[FeatureFlagKey.CustomizableAgentRingTime]
+
     return (
         <>
             <h2
@@ -83,6 +90,27 @@ export default function VoiceIntegrationPreferencesInboundCalls({
                             selectedValue={preferences.ringing_behaviour}
                         />
                     </div>
+                    {showCustomizableAgentRingTime && (
+                        <div>
+                            <InputField
+                                label={
+                                    <>
+                                        <span>Ring Time</span>
+                                        <HintTooltip title="The time in seconds we ring each individual agent before moving to the next one." />
+                                    </>
+                                }
+                                type="number"
+                                value={preferences.ring_time ?? 60}
+                                onChange={(value) =>
+                                    onPreferencesChange({
+                                        ring_time: Number(value),
+                                    })
+                                }
+                                caption="Set a time between 10 and 600 seconds (10 minutes)."
+                                error={errors?.ring_time}
+                            />
+                        </div>
+                    )}
                 </>
             )}
             <div>

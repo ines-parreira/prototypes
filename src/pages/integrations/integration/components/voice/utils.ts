@@ -9,3 +9,11 @@ export function getAudioFileDuration(url: string): Promise<number> {
         )
     })
 }
+
+export const isValueInRange = (
+    value: number,
+    minValue: number,
+    maxValue: number
+) => {
+    return value >= minValue && value <= maxValue
+}

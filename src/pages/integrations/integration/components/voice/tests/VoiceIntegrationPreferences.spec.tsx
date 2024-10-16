@@ -14,6 +14,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {mockStore} from 'utils/testing'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import VoiceIntegrationPreferences from '../VoiceIntegrationPreferences'
+import {isValueInRange} from '../utils'
 
 const phoneIntegration = integrationsState.integrations.find(
     (integration) => integration.type === IntegrationType.Phone
@@ -25,9 +26,11 @@ jest.mock(
         ({
             onPreferencesChange,
             onPhoneTeamIdChange,
+            errors,
         }: {
             onPreferencesChange: (value: any) => void
             onPhoneTeamIdChange: (value: string | number) => void
+            errors: Record<string, string>
         }) =>
             (
                 <>
@@ -41,9 +44,22 @@ jest.mock(
                             onPhoneTeamIdChange(event.target.value)
                         }
                     />
+                    <div data-testid="errors">
+                        {Object.keys(errors).map((key) => (
+                            <span key={key} data-testid={`errors-${key}`}>
+                                {errors[key]}
+                            </span>
+                        ))}
+                    </div>
                 </>
             )
 )
+
+jest.mock('../utils', () => {
+    return {
+        isValueInRange: jest.fn(),
+    }
+})
 
 describe('<VoiceIntegrationPreferences />', () => {
     const props = {
@@ -266,5 +282,80 @@ describe('<VoiceIntegrationPreferences />', () => {
                 screen.getByRole('button', {name: 'Save changes'})
             ).toBeAriaEnabled()
         })
+    })
+
+    it('should allow to save changes button if there is a valid ring time', async () => {
+        const ringTime = 40
+
+        ;(isValueInRange as jest.Mock).mockReturnValue(true)
+
+        mockFlags({RecordingTranscriptions: true})
+
+        renderComponent({
+            integration: {
+                ...phoneIntegration,
+                meta: {
+                    ...(phoneIntegration?.meta ?? {}),
+                    phone_team_id: 1,
+                    preferences: {ring_time: ringTime},
+                },
+            },
+        })
+
+        // change the preferences, so that the submit button becomes enabled
+        const preferencesInput = screen.getByTestId('preferencesInput')
+        fireEvent.change(preferencesInput, {
+            target: {value: 'new value'},
+        })
+
+        // the save changes button stays enabled since the ring time is valid
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: 'Save changes'})
+            ).toBeAriaEnabled()
+        })
+
+        expect(isValueInRange).toHaveBeenCalledWith(ringTime, 10, 600)
+    })
+
+    it('should disable save changes button if there is an invalid ring time', async () => {
+        const ringTime: number = 5
+
+        ;(isValueInRange as jest.Mock).mockReturnValue(false)
+
+        mockFlags({RecordingTranscriptions: true})
+
+        renderComponent({
+            integration: {
+                ...phoneIntegration,
+                meta: {
+                    ...(phoneIntegration?.meta ?? {}),
+                    phone_team_id: 1,
+                    preferences: {ring_time: ringTime},
+                },
+            },
+        })
+
+        // change the preferences, so that the submit button becomes enabled
+        const preferencesInput = screen.getByTestId('preferencesInput')
+        fireEvent.change(preferencesInput, {
+            target: {value: 'new value'},
+        })
+
+        // however, it is still disabled because of the invalid ring time
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: 'Save changes'})
+            ).toBeAriaDisabled()
+        })
+
+        // and we also show the corresponding error message
+        await waitFor(() => {
+            expect(screen.getByTestId('errors-ring_time')).toHaveTextContent(
+                'Ring time must be between 10 and 600 seconds (10 minutes).'
+            )
+        })
+
+        expect(isValueInRange).toHaveBeenCalledWith(ringTime, 10, 600)
     })
 })

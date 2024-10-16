@@ -36,6 +36,7 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         isIvr: false,
         preferences: {
             ringing_behaviour: PhoneRingingBehaviour.RoundRobin,
+            ring_time: 30,
         },
         onPreferencesChange: jest.fn(),
         phoneTeamId: 1,
@@ -52,7 +53,10 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
     }
 
     beforeEach(() => {
-        mockFlags({RecordingTranscriptions: false})
+        mockFlags({
+            RecordingTranscriptions: false,
+            CustomizableAgentRingTime: false,
+        })
     })
 
     afterEach(() => {
@@ -116,5 +120,43 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         renderComponent(props)
 
         expect(screen.queryByText('Start recording automatically')).toBeNull()
+    })
+
+    it('should not display ring time input when customizable agent ring time FF is off', () => {
+        renderComponent(props)
+
+        expect(screen.queryByLabelText(/Ring Time/i)).toBeNull()
+    })
+
+    it('should call onPreferencesChange when ring time is changed', () => {
+        mockFlags({CustomizableAgentRingTime: true})
+
+        renderComponent(props)
+
+        fireEvent.input(screen.getByLabelText(/Ring Time/i), {
+            target: {value: '40'},
+        })
+
+        expect(props.onPreferencesChange).toHaveBeenCalledWith({
+            ring_time: 40,
+        })
+    })
+
+    it('should show ring time-related errors', () => {
+        mockFlags({CustomizableAgentRingTime: true})
+
+        renderComponent({
+            ...props,
+            errors: {
+                ring_time:
+                    'Ring time must be between 10 and 600 seconds (10 minutes).',
+            },
+        })
+
+        expect(
+            screen.getByText(
+                'Ring time must be between 10 and 600 seconds (10 minutes).'
+            )
+        ).toBeInTheDocument()
     })
 })

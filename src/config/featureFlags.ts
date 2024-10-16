@@ -63,6 +63,7 @@ export enum FeatureFlagKey {
     ConvertCampaignProritization = 'convert-campaign-prioritization',
     CustomerTimelineButton = 'customer-timeline-button',
     CustomerFields = 'customer-fields',
+    CustomizableAgentRingTime = 'customizable-agent-ring-time',
     DefaultEmailAddress = 'default-email-address',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',
