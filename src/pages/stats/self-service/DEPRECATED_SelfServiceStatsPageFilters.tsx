@@ -6,15 +6,15 @@ import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStats
 import DEPRECATED_SelfServiceIntegrationsFilter from 'pages/stats/self-service/DEPRECATED_SelfServiceIntegrationsFilter'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {
-    getPageStatsFiltersWithLogicalOperators,
     getStatsFilters,
+    getStatsFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
 
 export const DEPRECATED_SelfServiceStatsPageFilters = () => {
     const dispatch = useAppDispatch()
 
     const pageStatsFiltersWithLogicalOperators = useAppSelector(
-        getPageStatsFiltersWithLogicalOperators
+        getStatsFiltersWithLogicalOperators
     )
     useCleanStatsFiltersWithLogicalOperators(
         pageStatsFiltersWithLogicalOperators
