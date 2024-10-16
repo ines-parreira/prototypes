@@ -10,7 +10,6 @@ import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFact
 import {medianResolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
-import {tagsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 
 import {TicketChannel} from 'business/types/ticket'
 import {
@@ -25,7 +24,6 @@ import {
     useOneTouchTicketsMetricPerAgent,
     useOnlineTimePerAgent,
     useTicketAverageHandleTimePerAgent,
-    useTagsTicketCount,
 } from 'hooks/reporting/metricsPerAgent'
 import {
     useMetricPerDimension,
@@ -317,19 +315,6 @@ describe('metricsPerAgent', () => {
                     sorting
                 ),
                 agentId
-            )
-        })
-    })
-
-    describe('useTagsTicketCount', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () => useTagsTicketCount(statsFilters, timezone, sorting),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                tagsTicketCountQueryFactory(statsFilters, timezone, sorting)
             )
         })
     })

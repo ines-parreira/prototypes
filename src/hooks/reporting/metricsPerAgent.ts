@@ -15,7 +15,6 @@ import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFact
 import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {tagsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import {StatsFilters} from 'models/stat/types'
 
 export const useMedianFirstResponseTimeMetricPerAgent = (
@@ -165,13 +164,4 @@ export const useTicketAverageHandleTimePerAgent = (
             sorting
         ),
         agentAssigneeId
-    )
-
-export const useTagsTicketCount = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection
-): MetricWithDecile =>
-    useMetricPerDimension(
-        tagsTicketCountQueryFactory(statsFilters, timezone, sorting)
     )

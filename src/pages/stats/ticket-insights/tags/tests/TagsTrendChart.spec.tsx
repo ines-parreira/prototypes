@@ -4,14 +4,14 @@ import {render, screen} from '@testing-library/react'
 import {ReportingGranularity} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
 import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
-import {useTagsTrend} from 'pages/stats/ticket-insights/hooks/useTagsChartTrend'
+import {useTagsTimeSeries} from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid="skeleton" />
 ))
 
-jest.mock('pages/stats/ticket-insights/hooks/useTagsChartTrend')
-const useTagsTrendMock = assumeMock(useTagsTrend)
+jest.mock('hooks/reporting/ticket-insights/useTagsTimeSeries')
+const useTagsTrendMock = assumeMock(useTagsTimeSeries)
 
 describe('<TagsTrendChart>', () => {
     const data = [
@@ -25,7 +25,7 @@ describe('<TagsTrendChart>', () => {
         ],
     ]
 
-    const useTagsTrendReturnValue: ReturnType<typeof useTagsTrend> = {
+    const useTagsTrendReturnValue: ReturnType<typeof useTagsTimeSeries> = {
         data: data,
         granularity: ReportingGranularity.Month,
         isFetching: false,

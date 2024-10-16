@@ -7,12 +7,12 @@ import thunk from 'redux-thunk'
 import {assumeMock} from 'utils/testing'
 import {ReportingGranularity} from 'models/reporting/types'
 import {useTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {useTagsTicketCount} from 'hooks/reporting/metricsPerAgent'
+import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
 import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
 import {RootState} from 'state/types'
 import {initialState} from 'state/stats/statsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {useTagsTrend} from 'pages/stats/ticket-insights/hooks/useTagsChartTrend'
+import {useTagsTimeSeries} from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
@@ -24,11 +24,14 @@ jest.mock('hooks/reporting/timeSeries')
 const useTagsTicketCountTimeSeriesMock = assumeMock(
     useTagsTicketCountTimeSeries
 )
-jest.mock('hooks/reporting/metricsPerAgent')
+jest.mock('hooks/reporting/metricsPerPeriod')
 const useTagsTicketCountMock = assumeMock(useTagsTicketCount)
 
-describe('useTagsTrend', () => {
+describe('useTagsTimeSeries', () => {
     const fakeTagName = 'fake-tag-name'
+    const anotherTagName = 'fake-tag-name'
+    const tagId = 1010
+    const anotherTagId = 1011
     const defaultState = {
         stats: initialState,
         ui: {
@@ -39,15 +42,27 @@ describe('useTagsTrend', () => {
         },
         entities: {
             tags: {
-                '1010': {
+                [tagId]: {
                     created_datetime: '2022-01-01T12:00:00.000000+00:00',
                     decoration: {
                         color: '#FF0000',
                     },
                     deleted_datetime: null,
                     description: 'This is a fake tag',
-                    id: 1010,
+                    id: tagId,
                     name: fakeTagName,
+                    uri: '/api/tags/123/',
+                    usage: 80,
+                },
+                [anotherTagId]: {
+                    created_datetime: '2022-01-01T12:00:00.000000+00:00',
+                    decoration: {
+                        color: '#FF0000',
+                    },
+                    deleted_datetime: null,
+                    description: 'This is a fake tag',
+                    id: anotherTagId,
+                    name: anotherTagName,
                     uri: '/api/tags/123/',
                     usage: 80,
                 },
@@ -57,11 +72,18 @@ describe('useTagsTrend', () => {
 
     useTagsTicketCountTimeSeriesMock.mockReturnValue({
         data: {
-            '1010': [
+            [tagId]: [
                 [
                     {dateTime: '2023-04-07T00:00:00.000', value: 10},
                     {dateTime: '2023-04-08T00:00:00.000', value: 15},
                     {dateTime: '2023-04-09T00:00:00.000', value: 20},
+                ],
+            ],
+            [anotherTagId]: [
+                [
+                    {dateTime: '2023-04-07T00:00:00.000', value: 11},
+                    {dateTime: '2023-04-08T00:00:00.000', value: 16},
+                    {dateTime: '2023-04-09T00:00:00.000', value: 21},
                 ],
             ],
         },
@@ -70,21 +92,33 @@ describe('useTagsTrend', () => {
 
     useTagsTicketCountMock.mockReturnValue({
         data: {
-            allData: [
+            value: [
                 {
-                    [TicketTagsEnrichedDimension.TagId]: '1010',
+                    [TicketTagsEnrichedDimension.TagId]: String(anotherTagId),
+                    [TicketTagsEnrichedMeasure.TicketCount]: '35',
+                },
+                {
+                    [TicketTagsEnrichedDimension.TagId]: String(tagId),
                     [TicketTagsEnrichedMeasure.TicketCount]: '45',
                 },
             ],
-            value: 45,
-            decile: null,
+            prevValue: [
+                {
+                    [TicketTagsEnrichedDimension.TagId]: String(tagId),
+                    [TicketTagsEnrichedMeasure.TicketCount]: '25',
+                },
+                {
+                    [TicketTagsEnrichedDimension.TagId]: String(anotherTagId),
+                    [TicketTagsEnrichedMeasure.TicketCount]: '15',
+                },
+            ],
         },
         isError: false,
         isFetching: false,
     })
 
     it('should return tags trend', () => {
-        const {result} = renderHook(() => useTagsTrend(), {
+        const {result} = renderHook(() => useTagsTimeSeries(), {
             wrapper: ({children}) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
@@ -94,6 +128,11 @@ describe('useTagsTrend', () => {
             isFetching: false,
             data: [
                 [
+                    {dateTime: '2023-04-07T00:00:00.000', value: 11},
+                    {dateTime: '2023-04-08T00:00:00.000', value: 16},
+                    {dateTime: '2023-04-09T00:00:00.000', value: 21},
+                ],
+                [
                     {dateTime: '2023-04-07T00:00:00.000', value: 10},
                     {dateTime: '2023-04-08T00:00:00.000', value: 15},
                     {dateTime: '2023-04-09T00:00:00.000', value: 20},
@@ -101,14 +140,14 @@ describe('useTagsTrend', () => {
             ],
             granularity: ReportingGranularity.Hour,
             legendInfo: {
-                labels: [fakeTagName],
-                tooltips: [fakeTagName],
+                labels: [fakeTagName, anotherTagName],
+                tooltips: [fakeTagName, anotherTagName],
             },
-            legendDatasetVisibility: {0: true},
+            legendDatasetVisibility: {0: true, 1: true},
         })
     })
 
-    it('should return tags trend with tag id instead of name', () => {
+    it('should return sorted tags trend with tag id instead of name', () => {
         const tagId = '1010'
         const state = {
             ...defaultState,
@@ -130,7 +169,7 @@ describe('useTagsTrend', () => {
             },
         } as unknown as RootState
 
-        const {result} = renderHook(() => useTagsTrend(), {
+        const {result} = renderHook(() => useTagsTimeSeries(), {
             wrapper: ({children}) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
@@ -140,6 +179,11 @@ describe('useTagsTrend', () => {
             isFetching: false,
             data: [
                 [
+                    {dateTime: '2023-04-07T00:00:00.000', value: 11},
+                    {dateTime: '2023-04-08T00:00:00.000', value: 16},
+                    {dateTime: '2023-04-09T00:00:00.000', value: 21},
+                ],
+                [
                     {dateTime: '2023-04-07T00:00:00.000', value: 10},
                     {dateTime: '2023-04-08T00:00:00.000', value: 15},
                     {dateTime: '2023-04-09T00:00:00.000', value: 20},
@@ -147,10 +191,10 @@ describe('useTagsTrend', () => {
             ],
             granularity: ReportingGranularity.Hour,
             legendInfo: {
-                labels: [tagId],
-                tooltips: [tagId],
+                labels: [String(anotherTagId), tagId],
+                tooltips: [String(anotherTagId), tagId],
             },
-            legendDatasetVisibility: {0: true},
+            legendDatasetVisibility: {0: true, 1: true},
         })
     })
 
@@ -160,7 +204,7 @@ describe('useTagsTrend', () => {
             isFetching: false,
         } as any)
 
-        const {result} = renderHook(() => useTagsTrend(), {
+        const {result} = renderHook(() => useTagsTimeSeries(), {
             wrapper: ({children}) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
