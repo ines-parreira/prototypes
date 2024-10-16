@@ -66,7 +66,7 @@ export default function Row({
             <td id={`custom-field-label-${customField.id}`}>
                 <Link to={link}>
                     <BodyCellContent>
-                        <strong className={classnames('mr-4', css.label)}>
+                        <strong>
                             {customField.label}
                             {isAIManaged && (
                                 <>
@@ -91,10 +91,19 @@ export default function Row({
                                 </>
                             )}
                         </strong>
-                        <span className="d-inline-flex text-faded justify-content-center flex-grow-1">
-                            <span className={css.description}>
-                                {customField.description}
-                            </span>
+                    </BodyCellContent>
+                </Link>
+            </td>
+            <td>
+                <Link to={link}>
+                    <BodyCellContent>
+                        <span
+                            className={classnames(
+                                'text-faded',
+                                css.description
+                            )}
+                        >
+                            {customField.description}
                         </span>
                     </BodyCellContent>
                 </Link>

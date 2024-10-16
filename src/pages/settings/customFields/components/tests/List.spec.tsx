@@ -44,7 +44,7 @@ describe('<List />', () => {
 
             render(<List {...props} />)
 
-            expect(screen.getAllByRole('columnheader')).toHaveLength(5)
+            expect(screen.getAllByRole('columnheader')).toHaveLength(6)
         }
     )
 

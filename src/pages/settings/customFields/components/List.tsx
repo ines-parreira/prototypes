@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React, {useEffect, useState} from 'react'
 import {CustomField} from 'custom-fields/types'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -71,7 +72,12 @@ export default function List({customFields, canReorder, onReorder}: Props) {
         <TableWrapper>
             <TableHead>
                 <HeaderCell size="smallest" />
-                <HeaderCell className={css.headerCell}>FIELD</HeaderCell>
+                <HeaderCell
+                    className={classNames(css.headerCell, css.halfWidth)}
+                >
+                    FIELD
+                </HeaderCell>
+                <HeaderCell className={css.halfWidth}></HeaderCell>
                 <HeaderCell size="smallest"></HeaderCell>
                 <HeaderCell size="smallest" className={css.headerCell}>
                     LAST UPDATED
