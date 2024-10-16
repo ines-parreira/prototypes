@@ -26,7 +26,6 @@ import {
     getGreyAreaHint,
     useTimeSeriesFormattedData,
 } from 'pages/stats/AutomateOverviewContent'
-import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShoutouts'
 import {SHORT_FORMAT} from 'pages/stats/common/utils'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import {useGridSize} from 'hooks/useGridSize'
@@ -146,9 +145,6 @@ export default function AutomateAiAgentStats() {
             </DashboardSection>
 
             <DashboardSection title="Performance">
-                <DashboardGridCell size={12}>
-                    <AgentsShoutouts />
-                </DashboardGridCell>
                 <DashboardGridCell size={12}>
                     <ChartCard
                         title={AGENT_PERFORMANCE_SECTION_TITLE}

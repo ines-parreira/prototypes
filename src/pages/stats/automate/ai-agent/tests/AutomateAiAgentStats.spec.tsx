@@ -67,11 +67,6 @@ jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
 }))
 
 jest.mock(
-    'pages/stats/support-performance/agents/AgentsShoutouts',
-    () => () => <div>agents-shoutouts</div>
-)
-
-jest.mock(
     'pages/stats/support-performance/agents/AgentsPerformanceCardExtra',
     () => ({
         AgentsPerformanceCardExtra: () => (
@@ -207,7 +202,6 @@ describe('AutomateAiAgentStats', () => {
         expect(screen.queryByText('stats-page')).toBeInTheDocument()
         expect(screen.queryByText('filters-panel')).toBeInTheDocument()
 
-        expect(screen.queryByText('agents-shoutouts')).toBeInTheDocument()
         expect(
             screen.queryByText('agents-performance-card-extra')
         ).toBeInTheDocument()
