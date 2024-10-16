@@ -4,6 +4,7 @@ import {
     CouponForSales,
     ChurnMitigationOfferDecisionEvent,
     SubscriptionCycle,
+    ICard,
 } from 'models/billing/types'
 import {BillingContact} from 'state/billing/types'
 import {ApiListResponseCursorPagination} from '../api/types'
@@ -68,3 +69,6 @@ export const getBillingContact = () =>
 
 export const updateBillingContact = (billingContact: BillingContact) =>
     client.put<BillingContact>('/api/billing/contact/', billingContact)
+
+export const getCreditCard = () =>
+    client.get<ICard | Record<string, never>>('/api/billing/credit-card/')

@@ -1,7 +1,7 @@
 // Import the functions to test
 import MockAdapter from 'axios-mock-adapter'
 import client from 'models/api/resources'
-import {trackBillingEvent} from '../resources'
+import {getCreditCard, trackBillingEvent} from '../resources'
 import {ProductType} from '../types' // Update this path based on your project structure
 
 const mockedServer = new MockAdapter(client)
@@ -23,5 +23,36 @@ describe('trackBillingEvent', () => {
         const res = await trackBillingEvent(eventName, event)
         expect(res.status).toEqual(201)
         expect(res.data).toEqual({any: 'response'})
+    })
+})
+
+describe('getCreditCard', () => {
+    it('should resolve with a card on success', async () => {
+        const card = {
+            brand: 'visa',
+            last4: '4242',
+            exp_month: 12,
+            exp_year: 2026,
+        }
+
+        mockedServer.onGet('/api/billing/credit-card/').reply(200, card)
+
+        expect((await getCreditCard()).data).toEqual(card)
+    })
+
+    it('should reject an error on fail', async () => {
+        mockedServer
+            .onGet('/api/billing/credit-card/')
+            .reply(503, {message: 'error'})
+
+        let error
+
+        try {
+            await getCreditCard()
+        } catch (e) {
+            error = e
+        }
+
+        expect(error).toEqual(new Error('Request failed with status code 503'))
     })
 })

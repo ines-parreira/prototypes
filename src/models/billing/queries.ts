@@ -5,6 +5,7 @@ import {
     getBillingContact,
     getBillingState,
     getCouponsForSales,
+    getCreditCard,
     reactivateTrial,
     updateBillingContact,
 } from './resources'
@@ -12,6 +13,7 @@ import {
 export const billingKeys = {
     all: ['billing'] as const,
     contact: () => [...billingKeys.all, 'contact'] as const,
+    creditCard: () => [...billingKeys.all, 'creditCard'] as const,
 }
 
 export const getBillingStateQuery = {
@@ -78,5 +80,14 @@ export const useUpdateBillingContact = (
 ) =>
     useMutation({
         mutationFn: (params) => updateBillingContact(...params),
+        ...overrides,
+    })
+
+export const useCreditCard = (
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getCreditCard>>>
+) =>
+    useQuery({
+        queryKey: billingKeys.creditCard(),
+        queryFn: getCreditCard,
         ...overrides,
     })
