@@ -1,5 +1,6 @@
 import React, {useRef, useState} from 'react'
 
+import {capitalize} from 'lodash'
 import IconButton from 'pages/common/components/button/IconButton'
 import SelectInputBox, {
     SelectInputBoxContext,
@@ -51,7 +52,7 @@ export const Condition = ({
     return (
         <div className={css.container}>
             {!isFirst && (
-                <Button className={css.type}>{type.toUpperCase()}</Button>
+                <Button className={css.type}>{capitalize(type)}</Button>
             )}
             <div className={css.labelWrapper}>
                 <span className={css.label}>{label}</span>
