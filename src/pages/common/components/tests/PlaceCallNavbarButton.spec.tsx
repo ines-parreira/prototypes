@@ -1,12 +1,22 @@
 import React from 'react'
-import {cleanup, fireEvent, render, screen} from '@testing-library/react'
+import {
+    cleanup,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react'
 import {isDesktopDevice, isDeviceReady} from 'utils/device'
 import {assumeMock} from 'utils/testing'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useHasPhone from 'core/app/hooks/useHasPhone'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
+import * as platform from 'utils/platform'
+import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
+
 import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
 
+jest.mock('hooks/useConditionalShortcuts')
 jest.mock('utils/device')
 jest.mock('../DeactivatedViewIcon', () => () => (
     <div data-testid="deactivated-view-icon" />
@@ -20,6 +30,7 @@ const useVoiceDeviceMock = assumeMock(useVoiceDevice)
 const useHasPhoneMock = assumeMock(useHasPhone)
 const PhoneDeviceMock = assumeMock(PhoneDevice)
 const isDeviceReadyMock = assumeMock(isDeviceReady)
+const useConditionalShortcutsMock = assumeMock(useConditionalShortcuts)
 
 describe('<PlaceCallNavbarButton />', () => {
     const renderComponent = () => render(<PlaceCallNavbarButton />)
@@ -47,6 +58,16 @@ describe('<PlaceCallNavbarButton />', () => {
 
         expect(placeCallButton).toBeInTheDocument()
         expect(phoneIcon).toBeInTheDocument()
+
+        expect(useConditionalShortcutsMock).toHaveBeenCalledWith(
+            true,
+            'Dialpad',
+            {
+                OPEN_DIALPAD: {
+                    action: expect.any(Function),
+                },
+            }
+        )
     })
 
     it('should not render on mobile devices', () => {
@@ -61,6 +82,17 @@ describe('<PlaceCallNavbarButton />', () => {
 
         renderComponent()
         expect(screen.queryByText('Place call')).toBeNull()
+        expect(useConditionalShortcutsMock.mock.lastCall?.[0]).toBe(false)
+    })
+
+    it('should open PhoneDevice on shortcut', () => {
+        renderComponent()
+
+        useConditionalShortcutsMock.mock.calls[0][2]?.OPEN_DIALPAD?.action?.({
+            preventDefault: jest.fn(),
+        } as unknown as Event)
+
+        expect(screen.getByTestId('phone-device')).toHaveTextContent('visible')
     })
 
     it('should open PhoneDevice on button click', () => {
@@ -83,6 +115,7 @@ describe('<PlaceCallNavbarButton />', () => {
         expect(
             screen.getByRole('button', {name: /Place call/})
         ).toBeAriaDisabled()
+        expect(useConditionalShortcutsMock.mock.lastCall?.[0]).toBe(false)
     })
 
     it('should close PhoneDevice when device is removed', () => {
@@ -97,5 +130,41 @@ describe('<PlaceCallNavbarButton />', () => {
         rerender(<PlaceCallNavbarButton />)
 
         expect(screen.getByTestId('phone-device')).toHaveTextContent('hidden')
+    })
+
+    it('should display keyboard shortcut tooltip when hovered on non-MacOS', async () => {
+        Object.defineProperty(platform, 'isMacOs', {
+            value: false,
+            writable: true,
+        })
+        renderComponent()
+
+        const button = screen.getByText('Place call')
+        fireEvent.mouseOver(button)
+
+        await waitFor(() => {
+            screen.getByRole('tooltip')
+        })
+
+        expect(screen.getByText('Open the dialpad')).toBeInTheDocument()
+        expect(screen.getByText('ctrl')).toBeInTheDocument()
+    })
+
+    it('should display keyboard shortcut tooltip when hovered on MacOS', async () => {
+        Object.defineProperty(platform, 'isMacOs', {
+            value: true,
+            writable: true,
+        })
+        renderComponent()
+
+        const button = screen.getByText('Place call')
+        fireEvent.mouseOver(button)
+
+        await waitFor(() => {
+            screen.getByRole('tooltip')
+        })
+
+        expect(screen.getByText('Open the dialpad')).toBeInTheDocument()
+        expect(screen.getByText('⌘')).toBeInTheDocument()
     })
 })

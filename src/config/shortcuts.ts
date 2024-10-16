@@ -250,6 +250,21 @@ const shortcuts: Record<string, KeyMap> = {
             },
         },
     },
+    Dialpad: {
+        description: 'Dialpad',
+        actions: {
+            OPEN_DIALPAD: {
+                key: 'mod+e',
+                description: 'Open the dialpad.',
+            },
+            CLOSE_DIALPAD: {
+                // the action is handled internally by the Modal component
+                // this is only a placeholder to show the shortcut in the KeyboardHelp menu
+                key: 'esc',
+                description: 'Close the dialpad.',
+            },
+        },
+    },
 }
 
 export default shortcuts

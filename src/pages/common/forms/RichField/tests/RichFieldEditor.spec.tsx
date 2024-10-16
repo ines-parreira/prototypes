@@ -151,7 +151,7 @@ describe('RichFieldEditor', () => {
         expect(detectGrammarly).toBeCalledTimes(1)
     })
 
-    describe('should blacklist spotlight shortcuts when editor is focused', () => {
+    describe('should blacklist navbar shortcuts when editor is focused', () => {
         const onFocus = jest.fn()
 
         const component = shallow(
@@ -166,10 +166,11 @@ describe('RichFieldEditor', () => {
         component.find(Editor).simulate('focus')
         expect(shortcutManager.denylist).toHaveBeenCalledWith([
             'SpotlightModal',
+            'Dialpad',
         ])
     })
 
-    describe('should clear spotlight shortcuts when editor is focused', () => {
+    describe('should clear navbar shortcuts when editor is focused', () => {
         const onFocus = jest.fn()
 
         const component = shallow(
@@ -183,7 +184,10 @@ describe('RichFieldEditor', () => {
 
         component.find(Editor).simulate('focus')
         component.find(Editor).simulate('blur')
-        expect(shortcutManager.clear).toHaveBeenCalledWith(['SpotlightModal'])
+        expect(shortcutManager.clear).toHaveBeenCalledWith([
+            'SpotlightModal',
+            'Dialpad',
+        ])
     })
 
     it('should handle shortcuts', () => {
