@@ -60,6 +60,7 @@ type Props = {
     onLetterEntered?: (input: string) => void
     isClearable?: boolean
     isLoading?: boolean
+    onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void
 } & ComponentProps<typeof TextInput>
 
 const PhoneNumberInput = (
@@ -79,6 +80,7 @@ const PhoneNumberInput = (
         caption,
         isClearable,
         isLoading,
+        onKeyDown,
         ...other
     }: Props,
     ref: ForwardedRef<PhoneNumberInputHandle>
@@ -256,6 +258,7 @@ const PhoneNumberInput = (
                         setIsPhoneNumberTooLong(false)
                         handleNumberChange(value, currentCountry)
                     }}
+                    onKeyDown={onKeyDown}
                     autoFocus={autoFocus}
                     suffix={
                         <>

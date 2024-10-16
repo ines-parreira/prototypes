@@ -3,9 +3,9 @@ import classNames from 'classnames'
 import {UserSearchResult} from 'models/search/types'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
-import Avatar from 'pages/common/components/Avatar/Avatar'
 import css from './PhoneDevice.less'
 import DialPad from './DialPad'
+import PhoneDeviceDialerBodyResultsList from './PhoneDeviceDialerBodyResultsList'
 
 type Props = {
     value: string
@@ -15,6 +15,7 @@ type Props = {
     isSearchTypeCustomer: boolean
     selectedCustomer: UserSearchResult | null
     onCustomerSelect: (customer: UserSearchResult) => void
+    highlightedResultIndex: number | null
 }
 
 export default function PhoneDeviceDialerBody({
@@ -25,6 +26,7 @@ export default function PhoneDeviceDialerBody({
     isSearchTypeCustomer,
     selectedCustomer,
     onCustomerSelect,
+    highlightedResultIndex,
 }: Props) {
     const noSearchTriggered = !isLoading && !results
 
@@ -58,21 +60,11 @@ export default function PhoneDeviceDialerBody({
 
     if (results?.length) {
         return (
-            <div className={classNames(css.results, css.resultsFound)}>
-                {results.map((result) => (
-                    <div
-                        key={result.id}
-                        className={css.result}
-                        onClick={() => onCustomerSelect(result)}
-                    >
-                        <Avatar name={result.customer.name} size={20} />
-                        <div className={css.resultDetails}>
-                            <div>{result.customer.name}</div>
-                            <div className={css.address}>{result.address}</div>
-                        </div>
-                    </div>
-                ))}
-            </div>
+            <PhoneDeviceDialerBodyResultsList
+                results={results}
+                onCustomerSelect={onCustomerSelect}
+                highlightedResultIndex={highlightedResultIndex}
+            />
         )
     }
 

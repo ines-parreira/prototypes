@@ -1,4 +1,4 @@
-import {fireEvent, screen} from '@testing-library/react'
+import {screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import PhoneDeviceDialerBody from '../PhoneDeviceDialerBody'
@@ -39,6 +39,7 @@ const defaultProps = {
     isSearchTypeCustomer: false,
     selectedCustomer: null,
     onCustomerSelect: jest.fn(),
+    highlightedResultIndex: null,
 }
 
 const renderComponent = (props: ComponentProps<typeof PhoneDeviceDialerBody>) =>
@@ -92,26 +93,5 @@ describe('PhoneDeviceDialerBody', () => {
         }
         renderComponent(props)
         expect(screen.getByText('No results')).toBeInTheDocument()
-    })
-
-    it('should render results when results are found', () => {
-        const customer = {
-            id: 1,
-            customer: {
-                name: 'John Doe',
-            },
-            address: '+123',
-        }
-        const props = {
-            ...defaultProps,
-            results: [customer] as any[],
-        }
-        renderComponent(props)
-        expect(screen.getByText('John Doe')).toBeInTheDocument()
-        expect(screen.getByText('+123')).toBeInTheDocument()
-        expect(screen.getByTestId('avatar')).toBeInTheDocument()
-
-        fireEvent.click(screen.getByText('John Doe'))
-        expect(props.onCustomerSelect).toHaveBeenCalledWith(customer)
     })
 })
