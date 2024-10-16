@@ -2,7 +2,15 @@ import {act, renderHook} from '@testing-library/react-hooks'
 import useCurrentFilters, {
     CURRENT_FILTERS,
     getShallowTypedFilters,
+    getValidator,
 } from 'hooks/reporting/useCurrentFilters'
+import {
+    isAggregationWindowFilter,
+    isCustomFieldFilter,
+    isFilterWithLogicalOperator,
+    isPeriodFilter,
+    isTagFilter,
+} from 'models/reporting/queryFactories/utils'
 import {
     FilterKey,
     StatsFiltersWithLogicalOperator,
@@ -172,5 +180,46 @@ describe('getShallowTypedFilters', () => {
                 defaultValue
             )
         ).toStrictEqual(defaultValue)
+    })
+})
+
+describe('getValidator', () => {
+    const similarKeyTypes = [
+        FilterKey.Agents,
+        FilterKey.CampaignStatuses,
+        FilterKey.Campaigns,
+        FilterKey.Channels,
+        FilterKey.HelpCenters,
+        FilterKey.Integrations,
+        FilterKey.LocaleCodes,
+        FilterKey.Score,
+        FilterKey.SlaPolicies,
+    ]
+
+    it.each(similarKeyTypes)(
+        'should test every similar FilterKey type',
+        (filterKey) => {
+            expect(getValidator(filterKey)).toEqual(isFilterWithLogicalOperator)
+        }
+    )
+
+    it('should test FilterKey.AggregationWindow', () => {
+        expect(getValidator(FilterKey.AggregationWindow)).toEqual(
+            isAggregationWindowFilter
+        )
+    })
+
+    it('should test FilterKey.Tags', () => {
+        expect(getValidator(FilterKey.Tags)).toEqual(isTagFilter)
+    })
+
+    it('should test FilterKey.CustomFields', () => {
+        expect(getValidator(FilterKey.CustomFields)).toEqual(
+            isCustomFieldFilter
+        )
+    })
+
+    it('should test FilterKey.Period', () => {
+        expect(getValidator(FilterKey.Period)).toEqual(isPeriodFilter)
     })
 })

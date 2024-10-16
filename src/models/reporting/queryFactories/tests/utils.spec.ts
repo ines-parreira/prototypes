@@ -6,12 +6,17 @@ import {
     getCustomFieldValueSerializer,
     hasFilter,
     injectDrillDownCustomFieldId,
+    isAggregationWindowFilter,
     isCustomFieldFilter,
     isPeriodFilter,
     toLowerCaseString,
     withDefaultLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
-import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
+import {
+    ReportingFilter,
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'models/reporting/types'
 import {
     CustomFieldFilter,
     FilterKey,
@@ -491,5 +496,15 @@ describe('utils', () => {
                 ] as any)
             ).toBe(false)
         })
+    })
+
+    describe('isAggregationWindowFilter', () => {
+        expect(isAggregationWindowFilter(123)).toEqual(false)
+        expect(isAggregationWindowFilter(ReportingGranularity.Week)).toEqual(
+            true
+        )
+        expect(isAggregationWindowFilter(ReportingGranularity.Second)).toEqual(
+            false
+        )
     })
 })

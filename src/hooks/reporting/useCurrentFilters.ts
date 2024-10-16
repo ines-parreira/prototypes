@@ -3,6 +3,7 @@ import _isEqual from 'lodash/isEqual'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import useSessionStorage from 'hooks/useSessionStorage'
 import {
+    isAggregationWindowFilter,
     isCustomFieldFilter,
     isFilterWithLogicalOperator,
     isPeriodFilter,
@@ -12,6 +13,31 @@ import {
 import {defaultStatsFilters} from 'state/stats/statsSlice'
 
 export const CURRENT_FILTERS = 'current-filters'
+
+export const getValidator = (
+    filterKey: FilterKey
+): ((filter: any) => boolean) => {
+    switch (filterKey) {
+        case FilterKey.Period:
+            return isPeriodFilter
+        case FilterKey.CustomFields:
+            return isCustomFieldFilter
+        case FilterKey.Tags:
+            return isTagFilter
+        case FilterKey.AggregationWindow:
+            return isAggregationWindowFilter
+        case FilterKey.Agents:
+        case FilterKey.CampaignStatuses:
+        case FilterKey.Campaigns:
+        case FilterKey.Channels:
+        case FilterKey.HelpCenters:
+        case FilterKey.Integrations:
+        case FilterKey.LocaleCodes:
+        case FilterKey.Score:
+        case FilterKey.SlaPolicies:
+            return isFilterWithLogicalOperator
+    }
+}
 
 export const getShallowTypedFilters = (
     sessionFilters: string,
@@ -35,16 +61,7 @@ export const getShallowTypedFilters = (
                 ) {
                     return false
                 }
-                switch (filterKey) {
-                    case FilterKey.Period:
-                        return isPeriodFilter(filter)
-                    case FilterKey.CustomFields:
-                        return isCustomFieldFilter(filter)
-                    case FilterKey.Tags:
-                        return isTagFilter(filter)
-                    default:
-                        return isFilterWithLogicalOperator(filter)
-                }
+                return getValidator(filterKey as FilterKey)(filter)
             })
 
         if (!isCorrectlyTypes) {

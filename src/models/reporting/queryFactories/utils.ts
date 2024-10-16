@@ -2,7 +2,11 @@ import _flatMap from 'lodash/flatMap'
 import {CustomFieldValue} from 'custom-fields/types'
 import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
-import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
+import {
+    ReportingFilter,
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'models/reporting/types'
 import {
     CustomFieldFilter,
     FilterKey,
@@ -20,6 +24,14 @@ export type OptionalFilter =
     | WithLogicalOperator<string>
     | WithLogicalOperator<number>
     | undefined
+
+export const isAggregationWindowFilter = (filter: any) =>
+    [
+        ReportingGranularity.Hour,
+        ReportingGranularity.Day,
+        ReportingGranularity.Week,
+        ReportingGranularity.Month,
+    ].includes(filter)
 
 export const isFilterWithLogicalOperator = (
     filter: OptionalFilter
