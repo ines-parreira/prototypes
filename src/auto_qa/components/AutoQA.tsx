@@ -1,11 +1,13 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import cn from 'classnames'
 import moment from 'moment'
 import React, {useMemo} from 'react'
-import cn from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
+import {Link} from 'react-router-dom'
 
+import {TicketStatus} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {getTicketId} from 'state/ticket/selectors'
+import {getTicket} from 'state/ticket/selectors'
 
 import {dimensionConfig} from '../config'
 import useAutoQA from '../hooks/useAutoQA'
@@ -15,9 +17,9 @@ import SaveBadge from './SaveBadge'
 import css from './AutoQA.less'
 
 export default function AutoQA() {
-    const ticketId = useAppSelector(getTicketId)
+    const ticket = useAppSelector(getTicket)
     const {changeHandlers, dimensions, isLoading, lastUpdated, saveState} =
-        useAutoQA(ticketId)
+        useAutoQA(ticket.id)
 
     const lastUpdatedString = useMemo(
         () => moment(lastUpdated).calendar(),
@@ -46,7 +48,37 @@ export default function AutoQA() {
             {isLoading ? (
                 <AutoQASkeleton />
             ) : !lastUpdated ? (
-                <p className={css.unavailable}>Score not available.</p>
+                <div className={css.unavailable}>
+                    {ticket.status === TicketStatus.Open ? (
+                        <>
+                            <p>
+                                Auto QA results will be available 12 hours after
+                                ticket closure.
+                            </p>
+                            <p>
+                                In the meantime, you can review the{' '}
+                                <Link to="/app/stats/auto-qa">
+                                    Auto QA report
+                                </Link>
+                                .
+                            </p>
+                        </>
+                    ) : (
+                        <p>
+                            Only tickets that meet certain requirements are
+                            scored by Auto QA. This ticket might be scored 12h
+                            after closure. To learn more, please refer to
+                            <a
+                                href="https://link.gorgias.com/fpc"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                this article
+                            </a>
+                            .
+                        </p>
+                    )}
+                </div>
             ) : (
                 <>
                     {dimensions.map((dim) => (

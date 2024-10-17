@@ -1,6 +1,7 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 
+import {TicketStatus} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 
 import useAutoQA from '../../hooks/useAutoQA'
@@ -17,7 +18,7 @@ jest.mock('../Dimension', () => () => <p>Dimension</p>)
 
 describe('AutoQA', () => {
     beforeEach(() => {
-        useAppSelectorMock.mockReturnValue(1)
+        useAppSelectorMock.mockReturnValue({id: 1, status: TicketStatus.Open})
         useAutoQAMock.mockReturnValue({
             changeHandlers: [],
             dimensions: [],
@@ -43,7 +44,7 @@ describe('AutoQA', () => {
         expect(getByText('Loading...')).toBeInTheDocument()
     })
 
-    it('should render a message if there is no data available', () => {
+    it('should render a message if there is no data available on open tickets', () => {
         useAutoQAMock.mockReturnValue({
             changeHandlers: [],
             dimensions: [],
@@ -52,7 +53,28 @@ describe('AutoQA', () => {
         })
 
         const {getByText} = render(<AutoQA />)
-        expect(getByText('Score not available.')).toBeInTheDocument()
+        expect(
+            getByText(
+                'Auto QA results will be available 12 hours after ticket closure.'
+            )
+        ).toBeInTheDocument()
+    })
+
+    it('should render a message if there is no data available on closed tickets', () => {
+        useAppSelectorMock.mockReturnValue({id: 1, status: TicketStatus.Closed})
+        useAutoQAMock.mockReturnValue({
+            changeHandlers: [],
+            dimensions: [],
+            isLoading: false,
+            lastUpdated: null,
+        })
+
+        const {getByText} = render(<AutoQA />)
+        expect(
+            getByText(
+                /Only tickets that meet certain requirements are scored by Auto QA./
+            )
+        ).toBeInTheDocument()
     })
 
     it('should render each returned dimension', () => {
