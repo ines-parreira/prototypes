@@ -23,13 +23,14 @@ export const StyledCaption = styled.div<CaptionProps>`
 /**
  * A component to display additional information about a field.
  */
-export const Caption: React.FC<HTMLAttributes<HTMLDivElement> & CaptionProps> =
-    ({isValid, children, ...props}) => {
-        return (
-            <StyledCaption data-invalid={!isValid} {...props}>
-                {children}
-            </StyledCaption>
-        )
-    }
+export const Caption: React.FC<
+    HTMLAttributes<HTMLDivElement> & CaptionProps
+> = ({isValid, children, ...props}) => {
+    return (
+        <StyledCaption data-invalid={!isValid} {...props}>
+            {children}
+        </StyledCaption>
+    )
+}
 
 export default Caption

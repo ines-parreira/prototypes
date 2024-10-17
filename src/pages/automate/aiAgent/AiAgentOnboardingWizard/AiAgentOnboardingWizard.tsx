@@ -47,8 +47,8 @@ const AiAgentOnboardingWizardComponent = (
         stepName && isAiAgentOnboardingWizardStep(stepName)
             ? stepName
             : isAiAgentOnboardingWizardEducationalStepEnabled
-            ? AiAgentOnboardingWizardStep.Education
-            : AiAgentOnboardingWizardStep.Personalize
+              ? AiAgentOnboardingWizardStep.Education
+              : AiAgentOnboardingWizardStep.Personalize
 
     return (
         <>

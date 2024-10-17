@@ -319,7 +319,7 @@ describe('html util', () => {
     describe('focusElement()', () => {
         it('should focus given element', (done) => {
             const focus = jest.fn()
-            focusElement(() => ({focus} as unknown as HTMLElement))
+            focusElement(() => ({focus}) as unknown as HTMLElement)
 
             setTimeout(() => {
                 expect(focus).toHaveBeenCalled()

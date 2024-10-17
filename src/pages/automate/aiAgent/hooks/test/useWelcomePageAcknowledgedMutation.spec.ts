@@ -57,7 +57,7 @@ describe('useWelcomePageAcknowledgedMutation', () => {
         renderHook(() => useWelcomePageAcknowledgedMutation({shopName}))
         ;(
             (useCreateWelcomePageAcknowledged as jest.Mock).mock.calls[0] as [
-                {onSuccess: () => void}
+                {onSuccess: () => void},
             ]
         )[0].onSuccess()
 

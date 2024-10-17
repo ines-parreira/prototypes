@@ -10,7 +10,7 @@ jest.mock(
         ({
             ...jest.requireActual('lodash'),
             debounce: jest.fn((fn: () => void) => fn),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 jest.mock('@gorgias/api-queries')
 

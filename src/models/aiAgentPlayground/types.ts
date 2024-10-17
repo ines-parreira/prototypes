@@ -58,7 +58,7 @@ export type MockTicketMessage = {
             {
                 address: string
                 name: string
-            }
+            },
         ]
         type: 'email'
     }

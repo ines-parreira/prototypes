@@ -54,7 +54,7 @@ describe('useGuidanceAiSuggestions', () => {
             () =>
                 ({
                     invalidateQueries: invalidateQueriesMock,
-                } as unknown as QueryClient)
+                }) as unknown as QueryClient
         )
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles,

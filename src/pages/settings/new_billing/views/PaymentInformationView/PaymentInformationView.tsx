@@ -66,8 +66,8 @@ const PaymentInformationView = ({
     const hasAddress = !!contact?.shipping
     const address = contact?.shipping?.address
     const country = address
-        ? countries.find((country) => country.value === address.country)
-              ?.label ?? address.country
+        ? (countries.find((country) => country.value === address.country)
+              ?.label ?? address.country)
         : ''
 
     const displayedAddress = hasAddress

@@ -38,7 +38,7 @@ describe('useGetAgentWithEffects', () => {
                     data: agents[0],
                     isLoading: false,
                     error: undefined,
-                } as ReturnType<typeof useGetAgent>)
+                }) as ReturnType<typeof useGetAgent>
         )
         const {result} = renderHook(() => useGetAgentWithEffects(params))
 
@@ -54,7 +54,7 @@ describe('useGetAgentWithEffects', () => {
                     data: undefined,
                     isLoading: false,
                     error: true,
-                } as ReturnType<typeof useGetAgent>)
+                }) as ReturnType<typeof useGetAgent>
         )
         const {result} = renderHook(() => useGetAgentWithEffects(params))
 
@@ -70,7 +70,7 @@ describe('useGetAgentWithEffects', () => {
                     data: agents[0],
                     isLoading: false,
                     error: false,
-                } as ReturnType<typeof useGetAgent>)
+                }) as ReturnType<typeof useGetAgent>
         )
         renderHook(() => useGetAgentWithEffects(params))
         expect(setAgentState).toHaveBeenNthCalledWith(1, {

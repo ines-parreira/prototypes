@@ -217,8 +217,8 @@ export function TicketNavbarContainer({
                 nextIndex >= allViews.length
                     ? allViews[0]
                     : nextIndex < 0
-                    ? allViews[allViews.length - 1]
-                    : allViews[nextIndex]
+                      ? allViews[allViews.length - 1]
+                      : allViews[nextIndex]
 
             activeViewIdSet(nextView.id)
             updateUrl(

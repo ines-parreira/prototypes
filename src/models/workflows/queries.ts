@@ -584,8 +584,8 @@ export const useGetConfigurationExecutions = (
                 success === true
                     ? 'true'
                     : success === false
-                    ? 'false'
-                    : undefined
+                      ? 'false'
+                      : undefined
             const response =
                 await client.WfConfigurationController_getExecutions({
                     internal_id: configurationInternalId,

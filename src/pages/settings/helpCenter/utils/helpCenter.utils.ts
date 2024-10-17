@@ -354,5 +354,5 @@ export const getValidStoreIntegrationId = (
 
     return !hasMultiStores
         ? allStoreIntegrations[0].id
-        : storeIntegration?.id ?? null
+        : (storeIntegration?.id ?? null)
 }

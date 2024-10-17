@@ -16,7 +16,7 @@ jest.mock(
         ({
             ...jest.requireActual('react-router'),
             useParams: jest.fn(),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 const mockUseParams = jest.spyOn(ReactRouterDom, 'useParams')
 

@@ -78,11 +78,11 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
     const data: Pick<User, 'id' | 'name' | 'email'>[] | User[] = useMemo(
         () =>
             search
-                ? (searchResponse.data?.data.data as Pick<
+                ? ((searchResponse.data?.data.data as Pick<
                       User,
                       'id' | 'name' | 'email'
-                  >[]) ?? []
-                : aggregatedUsersData ?? [],
+                  >[]) ?? [])
+                : (aggregatedUsersData ?? []),
         [search, searchResponse, aggregatedUsersData]
     )
 

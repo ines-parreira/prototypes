@@ -29,11 +29,10 @@ import {FormValues} from '../../types'
 const mockStore = configureMockStore([thunk])
 jest.mock(
     'pages/automate/common/hooks/useSelfServiceChatChannels',
-    () => () =>
-        [
-            {name: '1', meta: {app_id: 1}, id: 1},
-            {name: '2', meta: {app_id: 2}, id: 2},
-        ]
+    () => () => [
+        {name: '1', meta: {app_id: 1}, id: 1},
+        {name: '2', meta: {app_id: 2}, id: 2},
+    ]
 )
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 jest.mock('hooks/useAppSelector')

@@ -60,7 +60,7 @@ export const withVisualBuilderContext =
             visualBuilderGraph: VisualBuilderGraph
             dispatch: Dispatch<VisualBuilderGraphAction>
             shouldShowErrors: boolean
-        }
+        },
     >(
         Component: React.FC<WrappedProps>
     ) =>
@@ -114,7 +114,7 @@ export function useVisualBuilder(
                 .map((edge) => ({
                     conditions: edge?.data?.conditions?.and
                         ? edge?.data.conditions?.and
-                        : edge.data?.conditions?.or ?? [],
+                        : (edge.data?.conditions?.or ?? []),
                     name: edge.data?.name,
                 }))
 

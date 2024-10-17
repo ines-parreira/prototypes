@@ -31,7 +31,7 @@ describe('useCreateAgent', () => {
             () =>
                 ({
                     invalidateQueries: invalidateQueriesMock,
-                } as unknown as QueryClient)
+                }) as unknown as QueryClient
         )
     })
 

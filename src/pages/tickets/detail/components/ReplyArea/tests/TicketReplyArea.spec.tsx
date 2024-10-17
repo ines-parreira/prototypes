@@ -64,14 +64,13 @@ jest.mock(
         ({
             showMacros,
             handleSearchKeyDown,
-        }: ComponentProps<typeof TicketMacrosSearch>) =>
-            (
-                <input
-                    data-testid="ticket-macro-search"
-                    onKeyDown={handleSearchKeyDown}
-                    onFocus={() => showMacros()}
-                />
-            )
+        }: ComponentProps<typeof TicketMacrosSearch>) => (
+            <input
+                data-testid="ticket-macro-search"
+                onKeyDown={handleSearchKeyDown}
+                onFocus={() => showMacros()}
+            />
+        )
 )
 
 const minProps = {

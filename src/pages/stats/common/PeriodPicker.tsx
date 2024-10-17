@@ -357,8 +357,8 @@ export const PeriodPickerContainer = ({
                         >
                             {tooltipTarget?.classList.contains('future-date')
                                 ? 'There is no data available on this date yet.'
-                                : tooltipMessageForPreviousPeriod ??
-                                  `You can't select a period longer than ${maxSpanDays} days.`}
+                                : (tooltipMessageForPreviousPeriod ??
+                                  `You can't select a period longer than ${maxSpanDays} days.`)}
                         </Tooltip>
                     )}
                 </>

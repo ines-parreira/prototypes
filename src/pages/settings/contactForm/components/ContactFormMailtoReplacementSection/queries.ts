@@ -16,7 +16,7 @@ export const contactFormMailtoReplacementConfigKeys = {
 }
 
 export const useGetContactFormMailtoReplacementConfig = <
-    TData = Awaited<ReturnType<typeof getMailtoReplacementConfig>>
+    TData = Awaited<ReturnType<typeof getMailtoReplacementConfig>>,
 >(
     contactFormId: Paths.GetContactFormMailtoReplacementConfig.Parameters.ContactFormId,
     overrides?: UseQueryOptions<

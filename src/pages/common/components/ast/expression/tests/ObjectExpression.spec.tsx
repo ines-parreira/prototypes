@@ -15,13 +15,12 @@ jest.mock(
         }: {
             leftsiblings?: List<any>
             parent: List<any>
-        }) =>
-            (
-                <div>
-                    PropertyMock: {JSON.stringify(leftsiblings?.toJS())}
-                    {JSON.stringify(parent?.toJS())}
-                </div>
-            )
+        }) => (
+            <div>
+                PropertyMock: {JSON.stringify(leftsiblings?.toJS())}
+                {JSON.stringify(parent?.toJS())}
+            </div>
+        )
 )
 
 const commonProps = {

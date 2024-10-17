@@ -22,7 +22,7 @@ export const AutoReplyReturnEditor = ({
 
     const setSettingsField = <Key extends keyof typeof settingsFields>(
         key: Key,
-        value: typeof settings[Key]
+        value: (typeof settings)[Key]
     ) => setSettingsFields((prev) => ({...prev, [key]: value}))
 
     const returnPortalUrlError = useMemo(() => {

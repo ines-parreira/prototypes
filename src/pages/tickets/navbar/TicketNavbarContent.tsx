@@ -168,8 +168,8 @@ export function TicketNavbarContentContainer({
                 return item.type === TicketNavbarElementType.Section
                     ? sections[item.id].private === isPrivate
                     : isPrivate
-                    ? views[item.id].visibility === ViewVisibility.Private
-                    : views[item.id].visibility !== ViewVisibility.Private
+                      ? views[item.id].visibility === ViewVisibility.Private
+                      : views[item.id].visibility !== ViewVisibility.Private
             }}
             className={css.wrapper}
             onDrop={handleDrop}

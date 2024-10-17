@@ -19,16 +19,13 @@ const mockItemsIds = fromJS([])
 jest.mock(
     'pages/tickets/common/macros/MacroContainer',
     () =>
-        ({onComplete, closeModal}: ComponentProps<typeof MacroContainer>) =>
-            (
-                <div>
-                    MacroContainerMock
-                    <div onClick={closeModal}>closeModal</div>
-                    <div onClick={() => onComplete?.(mockItemsIds)}>
-                        onComplete
-                    </div>
-                </div>
-            )
+        ({onComplete, closeModal}: ComponentProps<typeof MacroContainer>) => (
+            <div>
+                MacroContainerMock
+                <div onClick={closeModal}>closeModal</div>
+                <div onClick={() => onComplete?.(mockItemsIds)}>onComplete</div>
+            </div>
+        )
 )
 
 describe('<ApplyMacro />', () => {

@@ -1,4 +1,3 @@
-import React from 'react'
 import {
     RenderResult,
     cleanup,
@@ -7,12 +6,13 @@ import {
     waitFor,
 } from '@testing-library/react'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import React from 'react'
 import {Provider} from 'react-redux'
 import {BrowserRouter} from 'react-router-dom'
-import {integrationsState} from 'fixtures/integrations'
 import {IntegrationType} from 'models/integration/constants'
-import {mockStore} from 'utils/testing'
+import {integrationsState} from 'fixtures/integrations'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {mockStore} from 'utils/testing'
 import VoiceIntegrationPreferences from '../VoiceIntegrationPreferences'
 import {isValueInRange} from '../utils'
 
@@ -31,28 +31,27 @@ jest.mock(
             onPreferencesChange: (value: any) => void
             onPhoneTeamIdChange: (value: string | number) => void
             errors: Record<string, string>
-        }) =>
-            (
-                <>
-                    <input
-                        data-testid="preferencesInput"
-                        onChange={onPreferencesChange}
-                    />
-                    <input
-                        data-testid="phoneTeamIdInput"
-                        onChange={(event) =>
-                            onPhoneTeamIdChange(event.target.value)
-                        }
-                    />
-                    <div data-testid="errors">
-                        {Object.keys(errors).map((key) => (
-                            <span key={key} data-testid={`errors-${key}`}>
-                                {errors[key]}
-                            </span>
-                        ))}
-                    </div>
-                </>
-            )
+        }) => (
+            <>
+                <input
+                    data-testid="preferencesInput"
+                    onChange={onPreferencesChange}
+                />
+                <input
+                    data-testid="phoneTeamIdInput"
+                    onChange={(event) =>
+                        onPhoneTeamIdChange(event.target.value)
+                    }
+                />
+                <div data-testid="errors">
+                    {Object.keys(errors).map((key) => (
+                        <span key={key} data-testid={`errors-${key}`}>
+                            {errors[key]}
+                        </span>
+                    ))}
+                </div>
+            </>
+        )
 )
 
 jest.mock('../utils', () => {

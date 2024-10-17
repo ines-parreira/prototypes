@@ -16,7 +16,7 @@ export const macroKeys = {
  */
 
 export const useGetAICompatibleMacros = <
-    TData = Awaited<ReturnType<typeof fetchMacros>>
+    TData = Awaited<ReturnType<typeof fetchMacros>>,
 >(
     overrides?: UseInfiniteQueryOptions<
         Awaited<ReturnType<typeof fetchMacros>>,

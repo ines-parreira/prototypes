@@ -19,13 +19,14 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) =>
+        ({dateTime}: {dateTime: string}) => (
             <div data-testid="DatetimeLabel">{dateTime}</div>
+        )
 )
 
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus')

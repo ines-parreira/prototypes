@@ -135,7 +135,7 @@ const getTotals = ({
                 ({id}) =>
                     id === checkout.consignments[0].selected_shipping_option?.id
             )
-                ? checkout?.shipping_cost_total_ex_tax ?? 0
+                ? (checkout?.shipping_cost_total_ex_tax ?? 0)
                 : 0
         const total =
             cartAmountWithTax + (checkout?.shipping_cost_total_inc_tax ?? 0)

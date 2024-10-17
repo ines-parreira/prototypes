@@ -50,7 +50,7 @@ jest.mock(
             useHistory: () => ({
                 push: mockHistoryPush,
             }),
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')

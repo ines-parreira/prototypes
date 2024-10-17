@@ -349,8 +349,8 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                             isInline
                                                 ? null
                                                 : args.label === undefined
-                                                ? key
-                                                : args.label
+                                                  ? key
+                                                  : args.label
                                         }
                                     />
                                 </div>

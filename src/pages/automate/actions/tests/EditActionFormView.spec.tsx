@@ -124,7 +124,9 @@ describe('<EditActionFormView />', () => {
         mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
             data: [],
             isInitialLoading: false,
-        } as unknown as ReturnType<typeof mockUseGetWorkflowConfigurationTemplates>)
+        } as unknown as ReturnType<
+            typeof mockUseGetWorkflowConfigurationTemplates
+        >)
         mockUseAiAgentEnabled.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
@@ -243,7 +245,9 @@ describe('<EditActionFormView />', () => {
                 },
             ],
             isInitialLoading: false,
-        } as unknown as ReturnType<typeof mockUseGetWorkflowConfigurationTemplates>)
+        } as unknown as ReturnType<
+            typeof mockUseGetWorkflowConfigurationTemplates
+        >)
 
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>

@@ -130,7 +130,7 @@ export default function OrderTable({
                     {Object.entries(productRefundData).map(
                         ([refundedProductId, refundData]: [
                             string,
-                            ProductItemRefundData
+                            ProductItemRefundData,
                         ]) => {
                             return (
                                 <OrderLineItemRow

@@ -10,7 +10,7 @@ export interface CopyToClipboardState {
 
 export default function useCopyToClipboard(): [
     CopyToClipboardState,
-    (value: string) => void
+    (value: string) => void,
 ] {
     const isMounted = useIsMounted()
     const [state, setState] = useState<CopyToClipboardState>({

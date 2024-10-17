@@ -122,7 +122,7 @@ export const getSystemTicketNavbarElementsByCategory = (
                     ({
                         data: view,
                         type: TicketNavbarElementType.View,
-                    } as unknown as TicketNavbarElement)
+                    }) as unknown as TicketNavbarElement
             )
         }
     )
@@ -444,7 +444,7 @@ export const getExpiredViewsCounts = () =>
             return (
                 recentViews.entrySeq().toArray() as [
                     string,
-                    Map<string, unknown>
+                    Map<string, unknown>,
                 ][]
             )
                 .filter(([viewId, recentView]) => {

@@ -56,31 +56,32 @@ const Template: Story<ComponentProps<typeof PreviewRadioButton>> = (props) => {
     )
 }
 
-const TemplateWithoutPreview: Story<ComponentProps<typeof PreviewRadioButton>> =
-    (props) => {
-        const [selectedValue, setSelectedValue] = useState<string | null>(null)
+const TemplateWithoutPreview: Story<
+    ComponentProps<typeof PreviewRadioButton>
+> = (props) => {
+    const [selectedValue, setSelectedValue] = useState<string | null>(null)
 
-        const update = (value?: string) => setSelectedValue(value!)
+    const update = (value?: string) => setSelectedValue(value!)
 
-        return (
-            <div style={{display: 'flex', gap: '20px'}}>
-                <PreviewRadioButton
-                    {...props}
-                    isSelected={selectedValue === 'light'}
-                    label="Light"
-                    onClick={() => update('light')}
-                    value="light"
-                />
-                <PreviewRadioButton
-                    {...props}
-                    isSelected={selectedValue === 'dark'}
-                    label="Dark"
-                    onClick={() => update('dark')}
-                    value="dark"
-                />
-            </div>
-        )
-    }
+    return (
+        <div style={{display: 'flex', gap: '20px'}}>
+            <PreviewRadioButton
+                {...props}
+                isSelected={selectedValue === 'light'}
+                label="Light"
+                onClick={() => update('light')}
+                value="light"
+            />
+            <PreviewRadioButton
+                {...props}
+                isSelected={selectedValue === 'dark'}
+                label="Dark"
+                onClick={() => update('dark')}
+                value="dark"
+            />
+        </div>
+    )
+}
 
 const templateParameters = {
     controls: {

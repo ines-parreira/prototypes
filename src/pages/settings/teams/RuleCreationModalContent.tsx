@@ -131,12 +131,12 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
             keyRule === 'ticket.channel'
                 ? channelOptions
                 : keyRule === 'message.integration_id'
-                ? integrationOptions
-                : keyRule === 'ticket.tags.name'
-                ? tagOptions
-                : keyRule === 'ticket.language'
-                ? languageOptions
-                : [],
+                  ? integrationOptions
+                  : keyRule === 'ticket.tags.name'
+                    ? tagOptions
+                    : keyRule === 'ticket.language'
+                      ? languageOptions
+                      : [],
         [integrationOptions, keyRule, tagOptions]
     )
     const valueDataSet = useMemo(
@@ -147,32 +147,32 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
         return value.length === 0
             ? undefined
             : value.length > 3
-            ? `${value.length} ${keyPlural}`
-            : value
-                  .reduce((acc: string[], item) => {
-                      let label: string | undefined
+              ? `${value.length} ${keyPlural}`
+              : value
+                    .reduce((acc: string[], item) => {
+                        let label: string | undefined
 
-                      if (keyRule === 'message.integration_id') {
-                          const integration = integrations.find(
-                              (integration) => item === integration?.get('id')
-                          )
+                        if (keyRule === 'message.integration_id') {
+                            const integration = integrations.find(
+                                (integration) => item === integration?.get('id')
+                            )
 
-                          label = integration?.get(
-                              'name',
-                              integration.get('address')
-                          ) as string
-                      } else {
-                          label = optionsDataSet.find(
-                              (option) => option.value === item
-                          )?.label
-                      }
+                            label = integration?.get(
+                                'name',
+                                integration.get('address')
+                            ) as string
+                        } else {
+                            label = optionsDataSet.find(
+                                (option) => option.value === item
+                            )?.label
+                        }
 
-                      if (label != null) {
-                          acc.push(label)
-                      }
-                      return acc
-                  }, [])
-                  .join(', ')
+                        if (label != null) {
+                            acc.push(label)
+                        }
+                        return acc
+                    }, [])
+                    .join(', ')
     }, [integrations, keyPlural, keyRule, optionsDataSet, value])
 
     useUpdateEffect(() => {

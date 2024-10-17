@@ -15,7 +15,7 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 
 const commonProps: ComponentProps<typeof InfobarCustomerActions> = {

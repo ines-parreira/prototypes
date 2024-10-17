@@ -35,12 +35,12 @@ export type Product<T extends ProductType = ProductType> = {
     prices: T extends ProductType.Helpdesk
         ? HelpdeskPlan[]
         : T extends ProductType.Automation
-        ? AutomatePlan[]
-        : T extends ProductType.Voice | ProductType.SMS
-        ? SMSOrVoicePlan[]
-        : T extends ProductType.Convert
-        ? ConvertPlan[]
-        : never
+          ? AutomatePlan[]
+          : T extends ProductType.Voice | ProductType.SMS
+            ? SMSOrVoicePlan[]
+            : T extends ProductType.Convert
+              ? ConvertPlan[]
+              : never
 }
 
 type BasePlan = {

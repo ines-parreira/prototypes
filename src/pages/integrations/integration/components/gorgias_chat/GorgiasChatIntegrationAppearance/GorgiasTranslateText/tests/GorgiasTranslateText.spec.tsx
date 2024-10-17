@@ -29,7 +29,7 @@ jest.mock(
                 push: mockHistoryPush,
                 replace: mockHistoryReplace,
             }),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 
 const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')

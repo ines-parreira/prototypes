@@ -21,10 +21,9 @@ export const ContactFormAttachmentContainer = (props: {
                     (fields) => (fields as Map<any, any>).get('name') as string
                 )
             )
-            .reduce<string[]>(
-                (prev, step) => (prev || []).concat(step?.toArray() || []),
-                []
-            )
+            .reduce<
+                string[]
+            >((prev, step) => (prev || []).concat(step?.toArray() || []), [])
     }, [attachment])
     return (
         <div className={css.contactForm}>

@@ -86,14 +86,12 @@ export const saveReport = async (
 
     return saveZippedFiles(
         {
-            [`${periodPrefix}-overview-${export_datetime}.csv`]: createCsv(
-                overview()
-            ),
+            [`${periodPrefix}-overview-${export_datetime}.csv`]:
+                createCsv(overview()),
             [`${periodPrefix}-tickets-in-policy-${export_datetime}.csv`]:
                 createCsv(ticketsInPolicy()),
-            [`${periodPrefix}-trend-${export_datetime}.csv`]: createCsv(
-                trend()
-            ),
+            [`${periodPrefix}-trend-${export_datetime}.csv`]:
+                createCsv(trend()),
         },
         `${periodPrefix}-sla-report-${export_datetime}`
     )

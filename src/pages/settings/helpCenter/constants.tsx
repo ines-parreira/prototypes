@@ -40,8 +40,8 @@ export const HELP_CENTER_DEFAULT_LOCALE: LocaleCode = 'en-US'
 export const HELP_CENTER_DOMAIN = isProduction()
     ? '.gorgias.help'
     : isStaging()
-    ? '.gorgias.rehab'
-    : '.gorgias.docker:4000'
+      ? '.gorgias.rehab'
+      : '.gorgias.docker:4000'
 
 export const HELP_CENTER_MAX_ARTICLES = 1500
 
@@ -113,7 +113,7 @@ export const ARTICLE_ROW_ACTIONS = [
         tooltip: 'Copy link to clipboard',
     },
 ] as const
-export type ArticleRowActionTypes = typeof ARTICLE_ROW_ACTIONS[number]['name']
+export type ArticleRowActionTypes = (typeof ARTICLE_ROW_ACTIONS)[number]['name']
 
 export const HELP_CENTER_TITLE_MAX_LENGTH = 250
 
@@ -140,7 +140,8 @@ export const CATEGORY_ROW_ACTIONS = [
         tooltip: 'Create article',
     },
 ] as const
-export type CategoryRowActionTypes = typeof CATEGORY_ROW_ACTIONS[number]['name']
+export type CategoryRowActionTypes =
+    (typeof CATEGORY_ROW_ACTIONS)[number]['name']
 
 export const DRAWER_TRANSITION_DURATION_MS = 300
 

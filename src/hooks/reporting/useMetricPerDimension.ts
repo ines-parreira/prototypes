@@ -54,7 +54,7 @@ export type MetricWithBreakdown = Requested & {
 
 export type MetricWithEnrichment<
     T extends string,
-    ID extends string
+    ID extends string,
 > = Requested & {
     data: {
         allData: (MergedRecord<
@@ -163,43 +163,46 @@ export function useMetricPerDimensionWithEnrichment(
     enrichmentFields: EnrichmentFields[],
     enrichmentIdField: EnrichmentFields
 ): MetricWithEnrichment<
-    typeof query['measures'][0],
-    typeof query['dimensions'][0]
+    (typeof query)['measures'][0],
+    (typeof query)['dimensions'][0]
 > {
     const idField = query.dimensions[0]
     const metricData = useEnrichedPostReporting<
         {
-            data: (MergedRecord<typeof query['measures'][0], EnrichmentFields> &
-                IDRecord<typeof query['dimensions'][0]>)[]
+            data: (MergedRecord<
+                (typeof query)['measures'][0],
+                EnrichmentFields
+            > &
+                IDRecord<(typeof query)['dimensions'][0]>)[]
         },
-        (MergedRecord<typeof query['measures'][0], EnrichmentFields> &
-            IDRecord<typeof query['dimensions'][0]>)[]
+        (MergedRecord<(typeof query)['measures'][0], EnrichmentFields> &
+            IDRecord<(typeof query)['dimensions'][0]>)[]
     >(
         {query, enrichment_fields: enrichmentFields},
         {
             select: (
                 data: UseEnrichedPostReportingQueryData<{
                     data: (MergedRecord<
-                        typeof query['measures'][0],
+                        (typeof query)['measures'][0],
                         EnrichmentFields
                     > &
-                        IDRecord<typeof query['dimensions'][0]>)[]
+                        IDRecord<(typeof query)['dimensions'][0]>)[]
                 }>
             ): UseEnrichedPostReportingQueryData<{
                 data: (MergedRecord<
-                    typeof query['measures'][0],
+                    (typeof query)['measures'][0],
                     EnrichmentFields
                 > &
-                    IDRecord<typeof query['dimensions'][0]>)[]
+                    IDRecord<(typeof query)['dimensions'][0]>)[]
             }>['data']['data'] => {
                 return data.data.data
             },
             queryFn: () => {
                 return postEnrichedReporting<{
-                    data: (KeyedRecord<typeof query['measures'][0]> &
-                        IDRecord<typeof query['dimensions'][0]>)[]
+                    data: (KeyedRecord<(typeof query)['measures'][0]> &
+                        IDRecord<(typeof query)['dimensions'][0]>)[]
                     enrichment: (KeyedRecord<EnrichmentFields> &
-                        IDRecord<typeof query['dimensions'][0]>)[]
+                        IDRecord<(typeof query)['dimensions'][0]>)[]
                 }>(query, enrichmentFields).then((data) =>
                     withEnrichment(
                         data,

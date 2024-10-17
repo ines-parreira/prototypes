@@ -85,7 +85,7 @@ const getState = (featureEnabled: boolean) =>
             },
         },
         entities: {tags: {[tags[0].id]: tags[0]}},
-    } as RootState)
+    }) as RootState
 
 const renderVoiceAgents = (featureEnabled = true) => {
     return render(

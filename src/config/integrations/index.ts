@@ -38,12 +38,12 @@ const CHAT_AUTO_RESPONDER_TEXTS: Record<
 export {CHAT_AUTO_RESPONDER_TEXTS}
 
 const getIntegrationVariables = (variableStoreName: string) => {
-    let variables: Array<ValueOf<typeof allIntegrations[number]>> = []
+    let variables: Array<ValueOf<(typeof allIntegrations)[number]>> = []
 
     allIntegrations.forEach((integration) => {
         const selectedVariables =
             integration[
-                variableStoreName as keyof typeof allIntegrations[number]
+                variableStoreName as keyof (typeof allIntegrations)[number]
             ]
         if (selectedVariables) {
             variables = variables.concat(selectedVariables)

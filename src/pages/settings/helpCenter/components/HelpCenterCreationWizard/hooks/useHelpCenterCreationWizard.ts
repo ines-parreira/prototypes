@@ -86,8 +86,8 @@ const getNewHelpCenterSearchParams = (
         successModalParams.articlesCount > 0
             ? HELP_CENTER_WIZARD_COMPLETED_STATE.AllSet
             : successModalParams.isArticleRecommendationEnabled
-            ? HELP_CENTER_WIZARD_COMPLETED_STATE.AlmostDone
-            : undefined
+              ? HELP_CENTER_WIZARD_COMPLETED_STATE.AlmostDone
+              : undefined
 
     if (!helpCenterCompletedState) return undefined
 

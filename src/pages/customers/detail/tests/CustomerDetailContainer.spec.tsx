@@ -21,8 +21,7 @@ jest.mock('../../common/components/CustomerForm', () => () => (
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) =>
-            <div>{dateTime}</div>
+        ({dateTime}: {dateTime: string}) => <div>{dateTime}</div>
 )
 
 const mockSetRecentItem = jest.fn()

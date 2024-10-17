@@ -8,8 +8,9 @@ type Props = {
 }
 
 export default function DimensionUser({userId}: Props) {
-    const {data, isError, isLoading} =
-        useGetUser<{data: {name: string}}>(userId)
+    const {data, isError, isLoading} = useGetUser<{data: {name: string}}>(
+        userId
+    )
 
     if (isLoading) return <>Loading...</>
 

@@ -218,8 +218,8 @@ export const OneClickInstallationCardStoreRow = ({
                         {hasLegacyInstallations
                             ? 'Disconnecting this store from the chat integration will disconnect all other stores'
                             : isLegacyInstallation
-                            ? 'Disconnecting this store from the chat integration will only disconnect this store'
-                            : 'Disconnect this store from chat integration'}
+                              ? 'Disconnecting this store from the chat integration will only disconnect this store'
+                              : 'Disconnect this store from chat integration'}
                     </Tooltip>
                 </>
             </div>

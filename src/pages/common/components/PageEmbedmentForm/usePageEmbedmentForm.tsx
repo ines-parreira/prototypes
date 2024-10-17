@@ -81,7 +81,7 @@ export const pageEmbedmentFormReducer = (
                     action.payload.value === ''
                         ? // If the slug is empty, we don't want to mark it as touched
                           false
-                        : action.payload.isTouched ?? state.isSlugTouched,
+                        : (action.payload.isTouched ?? state.isSlugTouched),
                 pageSlug: action.payload,
             }
         case 'setSelectedPage':

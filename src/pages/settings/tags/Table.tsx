@@ -132,8 +132,8 @@ const Table = ({
                                             sortValue !== column.field
                                                 ? ''
                                                 : reverse
-                                                ? 'arrow_drop_down'
-                                                : 'arrow_drop_up'
+                                                  ? 'arrow_drop_down'
+                                                  : 'arrow_drop_up'
                                         }
                                     >
                                         {column.title}

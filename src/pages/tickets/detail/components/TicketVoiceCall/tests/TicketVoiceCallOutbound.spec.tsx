@@ -12,8 +12,9 @@ import TicketVoiceCallOutbound from '../TicketVoiceCallOutbound'
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({agentId}: {agentId: number}) =>
+        ({agentId}: {agentId: number}) => (
             <div>VoiceCallAgentLabel {agentId}</div>
+        )
 )
 
 jest.mock('pages/common/utils/DatetimeLabel', () => () => (
@@ -40,8 +41,9 @@ jest.mock('pages/tickets/detail/components/TicketVoiceCall/hooks', () => ({
 jest.mock(
     'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallOutboundStatus',
     () =>
-        ({voiceCall}: {voiceCall: VoiceCall}) =>
+        ({voiceCall}: {voiceCall: VoiceCall}) => (
             <div>TicketVoiceCallOutboundStatus {voiceCall.status}</div>
+        )
 )
 jest.mock(
     'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallDuration',

@@ -210,8 +210,8 @@ const CancelProductModal = ({
                                         {
                                             product_type: productType,
                                             primary_reason:
-                                                cancellationReasonsState.primaryReason!
-                                                    .label,
+                                                cancellationReasonsState
+                                                    .primaryReason!.label,
                                             secondary_reason:
                                                 cancellationReasonsState
                                                     .secondaryReason?.label ||

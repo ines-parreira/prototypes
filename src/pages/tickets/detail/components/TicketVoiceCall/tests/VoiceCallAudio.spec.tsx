@@ -16,8 +16,9 @@ jest.mock('../../PhoneEvent/DownloadableDeletableRecording', () =>
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({agentId}: {agentId: number}) =>
+        ({agentId}: {agentId: number}) => (
             <div>VoiceCallAgentLabel {agentId}</div>
+        )
 )
 
 const renderComponent = (audio: VoiceCallRecording) => {

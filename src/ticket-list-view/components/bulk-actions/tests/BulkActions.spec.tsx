@@ -22,38 +22,37 @@ const logEventMock = assumeMock(logEvent)
 jest.mock(
     '../AssignUser',
     () =>
-        ({onClick}: ComponentProps<typeof AssignUser>) =>
+        ({onClick}: ComponentProps<typeof AssignUser>) => (
             <button onClick={onClick}>AssignUserMock</button>
+        )
 )
 jest.mock(
     '../CloseTickets',
     () =>
-        ({isDisabled, onClick}: ComponentProps<typeof CloseTickets>) =>
-            (
-                <button disabled={isDisabled} onClick={onClick}>
-                    CloseTicketsMock
-                </button>
-            )
+        ({isDisabled, onClick}: ComponentProps<typeof CloseTickets>) => (
+            <button disabled={isDisabled} onClick={onClick}>
+                CloseTicketsMock
+            </button>
+        )
 )
 const mockJobType = JobType.DeleteTicket
 jest.mock(
     '../MoreActions',
     () =>
-        ({isDisabled, launchJob}: ComponentProps<typeof MoreActions>) =>
-            (
-                <button
-                    disabled={isDisabled}
-                    onClick={() =>
-                        launchJob({
-                            label: 'Delete',
-                            type: mockJobType,
-                            event: 'delete',
-                        })
-                    }
-                >
-                    MoreActionsMock
-                </button>
-            )
+        ({isDisabled, launchJob}: ComponentProps<typeof MoreActions>) => (
+            <button
+                disabled={isDisabled}
+                onClick={() =>
+                    launchJob({
+                        label: 'Delete',
+                        type: mockJobType,
+                        event: 'delete',
+                    })
+                }
+            >
+                MoreActionsMock
+            </button>
+        )
 )
 
 const mockCreateJob = jest.fn()

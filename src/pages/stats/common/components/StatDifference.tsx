@@ -24,16 +24,16 @@ export default function StatDifference({
         value > 0
             ? 'arrow_upward'
             : value < 0
-            ? 'arrow_downward'
-            : 'arrow_forward'
+              ? 'arrow_downward'
+              : 'arrow_forward'
     const colorLabel =
         moreIsBetter == null
             ? ''
             : value === 0
-            ? 'neutral'
-            : (value > 0 && moreIsBetter) || (value < 0 && !moreIsBetter)
-            ? 'positive'
-            : 'negative'
+              ? 'neutral'
+              : (value > 0 && moreIsBetter) || (value < 0 && !moreIsBetter)
+                ? 'positive'
+                : 'negative'
     return (
         <span>
             <i

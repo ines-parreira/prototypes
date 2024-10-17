@@ -5,8 +5,9 @@ import {Channel} from './types'
 export async function listChannels(): Promise<
     ApiListResponseCursorPagination<Channel[]>
 > {
-    const response = await client.get<
-        ApiListResponseCursorPagination<Channel[]>
-    >('/channels')
+    const response =
+        await client.get<ApiListResponseCursorPagination<Channel[]>>(
+            '/channels'
+        )
     return response.data
 }

@@ -42,7 +42,9 @@ describe('CustomFieldFilter', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: {data: ticketFieldDefinitions},
             isLoading: false,
-        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+        } as unknown as UseQueryResult<
+            ApiListResponseCursorPagination<CustomField[]>
+        >)
     })
 
     it('should render CustomFieldFilter component', () => {
@@ -55,7 +57,9 @@ describe('CustomFieldFilter', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: {data: ticketFieldDefinitions},
             isLoading: true,
-        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+        } as unknown as UseQueryResult<
+            ApiListResponseCursorPagination<CustomField[]>
+        >)
 
         renderWithStore(<CustomFieldFilter />, defaultState)
 
@@ -66,7 +70,9 @@ describe('CustomFieldFilter', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: {data: undefined},
             isLoading: false,
-        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+        } as unknown as UseQueryResult<
+            ApiListResponseCursorPagination<CustomField[]>
+        >)
 
         renderWithStore(<CustomFieldFilter />, defaultState)
 
@@ -77,7 +83,9 @@ describe('CustomFieldFilter', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: undefined,
             isLoading: false,
-        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+        } as unknown as UseQueryResult<
+            ApiListResponseCursorPagination<CustomField[]>
+        >)
 
         renderWithStore(<CustomFieldFilter />, defaultState)
 

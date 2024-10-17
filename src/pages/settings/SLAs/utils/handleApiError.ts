@@ -26,10 +26,10 @@ export default function handleApiError(error: Error) {
                         ? `<ul>${metricsErrorMessage}</ul>` +
                           `<ul>${targetChannelsErrorMessage}</ul>`
                         : !!metricsErrorMessage
-                        ? `<ul>${metricsErrorMessage}</ul>`
-                        : !!targetChannelsErrorMessage
-                        ? `<ul>${targetChannelsErrorMessage}</ul>`
-                        : '')
+                          ? `<ul>${metricsErrorMessage}</ul>`
+                          : !!targetChannelsErrorMessage
+                            ? `<ul>${targetChannelsErrorMessage}</ul>`
+                            : '')
                 )
             }
             return error.response.data.error.msg

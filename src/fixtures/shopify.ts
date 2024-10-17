@@ -184,7 +184,7 @@ export const shopifyCustomerFixture = () =>
         email: 'apu@gorgias.com',
         default_address: shopifyAddressFixture(),
         currency: 'USD',
-    } as Customer)
+    }) as Customer
 
 export const shopifyOrderFixture = ({
     shippingLines = [],
@@ -398,7 +398,7 @@ export const shopifyOrderFixture = ({
         buyer_accepts_marketing: false,
         total_shipping_price_set: shopifyPriceSetFixture({amount: '0.00'}),
         total_line_items_price_set: shopifyPriceSetFixture({amount: '5.00'}),
-    } as Order)
+    }) as Order
 
 export const shopifyMultiCurrencyOrderFixture = (): Order =>
     ({
@@ -762,7 +762,7 @@ export const shopifyMultiCurrencyOrderFixture = (): Order =>
                 currency_code: 'USD',
             },
         },
-    } as unknown as Order)
+    }) as unknown as Order
 
 export const shopifyAddressFixture = () =>
     ({
@@ -783,7 +783,7 @@ export const shopifyAddressFixture = () =>
         country_code: 'FR',
         country_name: 'France',
         province_code: null,
-    } as Address)
+    }) as Address
 
 export const shopifyDraftOrderPayloadFixture = () =>
     ({
@@ -845,7 +845,7 @@ export const shopifyDraftOrderPayloadFixture = () =>
             admin_graphql_api_id: 'gid://shopify/Customer/2721145061399',
         },
         currency: 'USD',
-    } as unknown as DraftOrder)
+    }) as unknown as DraftOrder
 
 export const shopifyLineItemFixture = ({
     quantity = 1,
@@ -1063,7 +1063,7 @@ export const shopifyDraftOrderFixture = () =>
             tax_exemptions: [],
             multipass_identifier: null,
         },
-    } as unknown as DraftOrder)
+    }) as unknown as DraftOrder
 
 export const shopifyAppliedDiscountFixture = ({
     value = '100.0',
@@ -1076,7 +1076,7 @@ export const shopifyAppliedDiscountFixture = ({
         title: '',
         amount,
         value_type: valueType,
-    } as unknown as AppliedDiscount)
+    }) as unknown as AppliedDiscount
 
 export const shopifyShippingLineFixture = ({price = '12.00'} = {}) => ({
     custom: false,
@@ -1124,7 +1124,7 @@ export const shopifyCustomLineItemFixture = () =>
         taxable: true,
         requires_shipping: true,
         product_exists: false,
-    } as LineItem)
+    }) as LineItem
 
 export const shopifyTaxLineFixture = ({
     rate = 0.2,
@@ -1170,7 +1170,7 @@ export const shopifyRefundFixture = ({
     ({
         refund_line_items: refundLineItems,
         order_adjustments: orderAdjustments,
-    } as unknown as Refund)
+    }) as unknown as Refund
 
 export const shopifyRefundLineItemFixture = (): RefundLineItem => ({
     id: 139749457943,
@@ -1207,7 +1207,7 @@ export const shopifyRefundOrderPayloadFixture = ({notify = true} = {}) =>
         transactions: [
             {gateway: 'bogus', amount: '1.00', maximum_refundable: '1.20'},
         ],
-    } as unknown as RefundOrderPayload)
+    }) as unknown as RefundOrderPayload
 
 export const shopifySuggestedRefundFixture = ({
     locationId = 123,
@@ -1244,7 +1244,7 @@ export const shopifySuggestedRefundFixture = ({
             },
         ],
         currency: 'USD',
-    } as unknown as Refund)
+    }) as unknown as Refund
 
 export const shopifyCalculatedDraftOrderFixture = () => ({
     appliedDiscount: {

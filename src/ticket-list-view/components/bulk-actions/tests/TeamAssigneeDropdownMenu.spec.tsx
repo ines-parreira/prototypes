@@ -26,8 +26,9 @@ const queryClient = mockQueryClient()
 jest.mock(
     '../TeamDropdownItem',
     () =>
-        ({item}: ComponentProps<typeof TeamDropdownItem>) =>
+        ({item}: ComponentProps<typeof TeamDropdownItem>) => (
             <div>{item.name}</div>
+        )
 )
 
 const mockContext: ContextType<typeof DropdownContext> = {

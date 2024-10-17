@@ -5,11 +5,13 @@ import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 
-type NarrowedWithUserRoleParams = Parameters<
-    typeof withUserRoleRequired
-> extends [infer __Enforced, ...infer NarrowedWithUserRoleParams]
-    ? NarrowedWithUserRoleParams
-    : never
+type NarrowedWithUserRoleParams =
+    Parameters<typeof withUserRoleRequired> extends [
+        infer __Enforced,
+        ...infer NarrowedWithUserRoleParams,
+    ]
+        ? NarrowedWithUserRoleParams
+        : never
 
 type SettingsType<C extends ComponentType<any>> = {
     componentProps?: ComponentProps<C> extends Record<string, unknown>

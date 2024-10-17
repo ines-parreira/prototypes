@@ -17,7 +17,7 @@ export type ChannelLanguageCode =
 
 type GetShortCode<
     C extends string,
-    Acc extends string = ''
+    Acc extends string = '',
 > = C extends `${infer H}${infer T}`
     ? H extends '-'
         ? Acc

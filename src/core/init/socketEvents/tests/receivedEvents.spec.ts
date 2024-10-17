@@ -180,7 +180,7 @@ describe('receivedEvents', () => {
                     ({
                         [mockedProMonthlyHelpdeskPlan.price_id]:
                             mockedProMonthlyHelpdeskPlan,
-                    } as Record<PriceId, HelpdeskPlan>)
+                    }) as Record<PriceId, HelpdeskPlan>
             )
         })
 

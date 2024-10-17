@@ -61,8 +61,8 @@ const TicketNavbarView = ({className, view, viewCount}: Props) => {
                     item.type === TicketNavbarElementType.View
                         ? views[item.id].visibility
                         : sections[item.id].private
-                        ? ViewVisibility.Private
-                        : ViewVisibility.Public
+                          ? ViewVisibility.Private
+                          : ViewVisibility.Public
 
                 return view.visibility !== ViewVisibility.Private
                     ? dragTargetVisibility !== ViewVisibility.Private

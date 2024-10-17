@@ -20,7 +20,7 @@ jest.mock(
                     />
                 </div>
             ),
-        } as Record<any, any>)
+        }) as Record<any, any>
 )
 
 describe('SingleSenderVerificationFormModal', () => {

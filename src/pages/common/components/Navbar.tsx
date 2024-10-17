@@ -338,8 +338,8 @@ export class Navbar extends Component<Props, State> {
                 navbarWidth < MIN_WIDTH
                     ? MIN_WIDTH
                     : navbarWidth > MAX_WIDTH
-                    ? MAX_WIDTH
-                    : navbarWidth
+                      ? MAX_WIDTH
+                      : navbarWidth
 
             this.setState({navbarWidth: newWidth})
         }

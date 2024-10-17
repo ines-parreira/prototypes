@@ -20,13 +20,12 @@ const AnyComponent = () => <div>OK</div>
 
 jest.mock(
     'pages/common/components/RestrictedPage',
-    () => (props: ComponentProps<typeof RestrictedPage>) =>
-        (
-            <div>
-                <span>Required role: {props.requiredRole}</span>
-                <span>Page: {props.page}</span>
-            </div>
-        )
+    () => (props: ComponentProps<typeof RestrictedPage>) => (
+        <div>
+            <span>Required role: {props.requiredRole}</span>
+            <span>Page: {props.page}</span>
+        </div>
+    )
 )
 
 describe('rootWithUserRoleRequired', () => {

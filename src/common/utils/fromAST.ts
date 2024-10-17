@@ -10,6 +10,6 @@ export default function fromAST<T>(js: T): any {
     return typeof js !== 'object' || js === null
         ? js
         : Array.isArray(js)
-        ? Immutable.Seq(js).map(fromAST).toList()
-        : Immutable.Seq(js).map(fromAST).toMap()
+          ? Immutable.Seq(js).map(fromAST).toList()
+          : Immutable.Seq(js).map(fromAST).toMap()
 }

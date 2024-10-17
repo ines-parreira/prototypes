@@ -32,16 +32,15 @@ jest.mock(
             viewName,
             children,
             ...linkProps
-        }: ComponentProps<typeof ViewLink>) =>
-            (
-                <a data-testid="view-link" {...linkProps}>
-                    <span aria-label="view name">{viewName}</span>
-                    <span aria-label="filters">
-                        {JSON.stringify(filters, null, 2)}
-                    </span>
-                    <span aria-label="children">{children}</span>
-                </a>
-            )
+        }: ComponentProps<typeof ViewLink>) => (
+            <a data-testid="view-link" {...linkProps}>
+                <span aria-label="view name">{viewName}</span>
+                <span aria-label="filters">
+                    {JSON.stringify(filters, null, 2)}
+                </span>
+                <span aria-label="children">{children}</span>
+            </a>
+        )
 )
 jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
 
@@ -64,12 +63,13 @@ describe('TicketDetailsStat', () => {
         agentId: 1,
         agentName: 'John Doe',
         openTickets: 0,
-        channelsBreakdown: channelsService
-            .getChannels()
-            .reduce((acc, channel) => {
+        channelsBreakdown: channelsService.getChannels().reduce(
+            (acc, channel) => {
                 acc[channel.slug] = 0
                 return acc
-            }, {} as Record<string, number>),
+            },
+            {} as Record<string, number>
+        ),
     }
 
     it('should render a message when no assigned tickets', () => {

@@ -22,8 +22,9 @@ jest.mock('@twilio/voice-sdk')
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({agentId}: {agentId: number}) =>
+        ({agentId}: {agentId: number}) => (
             <div>VoiceCallAgentLabel {agentId}</div>
+        )
 )
 
 describe('<IncomingPhoneCall />', () => {

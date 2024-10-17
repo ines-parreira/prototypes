@@ -1,9 +1,11 @@
 import {Components, Paths} from 'rest_api/revenue_addon_api/client.generated'
 
-export type ABTestParams =
-    | (Paths.GetAbTest.PathParameters | Paths.PatchAbTest.PathParameters) & {
-          channelConnectionId?: string
-      }
+export type ABTestParams = (
+    | Paths.GetAbTest.PathParameters
+    | Paths.PatchAbTest.PathParameters
+) & {
+    channelConnectionId?: string
+}
 
 export type ABTestListParams = Paths.GetAbTests.QueryParameters
 

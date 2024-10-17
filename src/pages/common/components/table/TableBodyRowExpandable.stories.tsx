@@ -103,36 +103,35 @@ const CustomFieldsDataRow = (dataRow: WithChildren<Data>) => {
     )
 }
 
-const TableWithExpandableRows: Story<ComponentProps<typeof TableWrapper>> =
-    () => (
-        <TableWrapper>
-            <TableHead>
-                {tableColumns.map((column, index) => (
-                    <HeaderCellProperty
-                        key={column.key}
-                        title={column.title}
-                        colSpan={index === 0 ? 2 : undefined}
-                        style={
-                            index === 0
-                                ? {width: '250px', minWidth: '250px'}
-                                : {}
-                        }
-                    />
-                ))}
+const TableWithExpandableRows: Story<
+    ComponentProps<typeof TableWrapper>
+> = () => (
+    <TableWrapper>
+        <TableHead>
+            {tableColumns.map((column, index) => (
+                <HeaderCellProperty
+                    key={column.key}
+                    title={column.title}
+                    colSpan={index === 0 ? 2 : undefined}
+                    style={
+                        index === 0 ? {width: '250px', minWidth: '250px'} : {}
+                    }
+                />
+            ))}
 
-                {/*<HeaderCellProperty title={'Value'} />*/}
-            </TableHead>
-            <TableBody>
-                {sampleData.map((tag, index) => (
-                    <TableBodyRowExpandable<WithChildren<Data>>
-                        key={index}
-                        RowContentComponent={CustomFieldsDataRow}
-                        rowContentProps={tag}
-                    />
-                ))}
-            </TableBody>
-        </TableWrapper>
-    )
+            {/*<HeaderCellProperty title={'Value'} />*/}
+        </TableHead>
+        <TableBody>
+            {sampleData.map((tag, index) => (
+                <TableBodyRowExpandable<WithChildren<Data>>
+                    key={index}
+                    RowContentComponent={CustomFieldsDataRow}
+                    rowContentProps={tag}
+                />
+            ))}
+        </TableBody>
+    </TableWrapper>
+)
 
 export const Default = TableWithExpandableRows.bind({})
 

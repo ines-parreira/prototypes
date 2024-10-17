@@ -12,14 +12,13 @@ const mockStore = configureMockStore([thunk])()
 
 jest.mock(
     'pages/common/forms/DatePicker',
-    () => (props: React.ComponentProps<typeof DatePicker>) =>
-        (
-            <div className="DatePicker">
-                {Object.entries(props).map(
-                    ([key, value]) => `${key}: ${JSON.stringify(value)}`
-                )}
-            </div>
-        )
+    () => (props: React.ComponentProps<typeof DatePicker>) => (
+        <div className="DatePicker">
+            {Object.entries(props).map(
+                ([key, value]) => `${key}: ${JSON.stringify(value)}`
+            )}
+        </div>
+    )
 )
 
 describe('<TicketSnoozePicker/>', () => {

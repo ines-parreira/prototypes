@@ -175,16 +175,17 @@ export default function FieldForm(props: FieldFormProps) {
                 className={css.formRow}
                 isDisabled={isAIManaged}
             />
-            {props.field.object_type === OBJECT_TYPES.TICKET && !isAIManaged && (
-                <CheckBox
-                    isChecked={form.required}
-                    caption={`Enable to prevent agents from closing the ${customFieldTypeLabel} if the field is left empty. Snooze and Send actions will still work.`}
-                    onChange={(val) => setValue('required', val)}
-                    className={css.formRow}
-                >
-                    Required to close {customFieldTypeLabel}
-                </CheckBox>
-            )}
+            {props.field.object_type === OBJECT_TYPES.TICKET &&
+                !isAIManaged && (
+                    <CheckBox
+                        isChecked={form.required}
+                        caption={`Enable to prevent agents from closing the ${customFieldTypeLabel} if the field is left empty. Snooze and Send actions will still work.`}
+                        onChange={(val) => setValue('required', val)}
+                        className={css.formRow}
+                    >
+                        Required to close {customFieldTypeLabel}
+                    </CheckBox>
+                )}
             <div className={css.formRow}>
                 <Label
                     htmlFor="type"

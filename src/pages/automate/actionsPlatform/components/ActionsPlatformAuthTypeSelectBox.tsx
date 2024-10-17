@@ -52,7 +52,7 @@ const ActionsPlatformAuthTypeSelectBox = ({
                                 {(
                                     Object.entries(AUTH_TYPE_LABEL_BY_TYPE) as [
                                         ActionsApp['auth_type'],
-                                        string
+                                        string,
                                     ][]
                                 ).map(([value, label]) => (
                                     <DropdownItem

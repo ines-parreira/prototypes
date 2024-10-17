@@ -35,7 +35,7 @@ describe('useHelpCenterAIArticlesLibrary', () => {
             () =>
                 ({
                     data: [{store_id: 1}, {store_id: 2}],
-                } as unknown as ReturnType<typeof useListStoreMappings>)
+                }) as unknown as ReturnType<typeof useListStoreMappings>
         )
         mockedUseAppSelector.mockImplementation((selector) =>
             selector({
@@ -125,7 +125,7 @@ describe('useHelpCenterAIArticlesLibrary', () => {
             () =>
                 ({
                     data: [{store_id: 3}],
-                } as unknown as ReturnType<typeof useListStoreMappings>)
+                }) as unknown as ReturnType<typeof useListStoreMappings>
         )
         const {result} = renderHook(() =>
             useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
@@ -139,7 +139,7 @@ describe('useHelpCenterAIArticlesLibrary', () => {
             () =>
                 ({
                     data: [{store_id: 3}],
-                } as unknown as ReturnType<typeof useListStoreMappings>)
+                }) as unknown as ReturnType<typeof useListStoreMappings>
         )
         mockedUseAppSelector.mockImplementation((selector) =>
             selector({

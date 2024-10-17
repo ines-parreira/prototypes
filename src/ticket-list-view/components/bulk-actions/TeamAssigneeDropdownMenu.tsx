@@ -79,11 +79,11 @@ const TeamAssigneeDropdownMenu = ({onClick}: Props) => {
     const data = useMemo(
         () =>
             search
-                ? (searchResponse.data?.data.data as Pick<
+                ? ((searchResponse.data?.data.data as Pick<
                       Team,
                       'id' | 'name'
-                  >[]) ?? []
-                : aggregatedTeamsData ?? [],
+                  >[]) ?? [])
+                : (aggregatedTeamsData ?? []),
         [search, searchResponse, aggregatedTeamsData]
     )
 

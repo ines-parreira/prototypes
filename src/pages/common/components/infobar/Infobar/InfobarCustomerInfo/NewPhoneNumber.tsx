@@ -1,4 +1,3 @@
-import React from 'react'
 import {
     TicketChannel,
     UpdateCustomerBodyChannelsItem,
@@ -6,18 +5,20 @@ import {
     useUpdateCustomer,
 } from '@gorgias/api-queries'
 import {isValidPhoneNumber} from 'libphonenumber-js'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import Button from 'pages/common/components/button/Button'
+import React from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
+import SourceIcon from 'pages/common/components/SourceIcon'
+import Button from 'pages/common/components/button/Button'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import {SUBMIT_CUSTOMER_SUCCESS} from 'state/customers/constants'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-import SourceIcon from 'pages/common/components/SourceIcon'
-import {SUBMIT_CUSTOMER_SUCCESS} from 'state/customers/constants'
 import css from '../../Infobar.less'
 
 type Props = {

@@ -148,12 +148,12 @@ const TextareaWithVariables = ({
                     variable.type === 'date'
                         ? 'date'
                         : variable.type === 'array'
-                        ? 'json'
-                        : variable.type === 'string'
-                        ? 'json_escape'
-                        : variable.type === 'json'
-                        ? 'json'
-                        : undefined,
+                          ? 'json'
+                          : variable.type === 'string'
+                            ? 'json_escape'
+                            : variable.type === 'json'
+                              ? 'json'
+                              : undefined,
             })
         )
         handleChange(

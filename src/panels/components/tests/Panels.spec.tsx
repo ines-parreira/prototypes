@@ -13,19 +13,19 @@ jest.mock('../../hooks', () => ({
 jest.mock(
     '../Handle',
     () =>
-        ({onResizeStart}: {onResizeStart: (ev: ReactMouseEvent) => void}) =>
+        ({onResizeStart}: {onResizeStart: (ev: ReactMouseEvent) => void}) => (
             <div onMouseDown={onResizeStart}>Handle</div>
+        )
 )
 jest.mock(
     '../Panel',
     () =>
-        ({children, width}: {children: ReactNode; width: number}) =>
-            (
-                <div>
-                    <p>Panel width: {width}</p>
-                    {children}
-                </div>
-            )
+        ({children, width}: {children: ReactNode; width: number}) => (
+            <div>
+                <p>Panel width: {width}</p>
+                {children}
+            </div>
+        )
 )
 
 const usePanelsMock = usePanels as jest.Mock

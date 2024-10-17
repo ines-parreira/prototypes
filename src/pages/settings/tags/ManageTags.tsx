@@ -93,9 +93,9 @@ const ManageTags = () => {
                     meta?.prev_cursor
                         ? meta.prev_cursor
                         : direction === CursorDirection.NextCursor &&
-                          meta?.next_cursor
-                        ? meta.next_cursor
-                        : undefined,
+                            meta?.next_cursor
+                          ? meta.next_cursor
+                          : undefined,
                 order_by: `${orderBy}:${orderDir}` as OrderByOrderDir,
                 search,
             }

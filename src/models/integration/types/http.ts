@@ -23,7 +23,7 @@ export type HttpIntegrationMeta = {
     request_content_type: ContentType
     response_content_type: ContentType
     triggers: {
-        [key in typeof EventType[keyof typeof EventType]]?: boolean
+        [key in (typeof EventType)[keyof typeof EventType]]?: boolean
     }
     url: string
 }

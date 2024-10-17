@@ -370,7 +370,7 @@ function translateDeep<T>(
                         translationDict[_get(el, tkey)] ??
                         (options?.doNotFallback
                             ? ''
-                            : _get(el, translatedKey) ?? '')
+                            : (_get(el, translatedKey) ?? ''))
                     return {
                         ...acc,
                         [translatedKey]: translatedValue,

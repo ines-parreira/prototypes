@@ -219,9 +219,8 @@ export default function Card(props: Props) {
         enrichedEditionHiddenField.push('pictureUrl', 'color')
     }
 
-    const orderByOptions = childTemplates
-        .filter(isSimpleTemplateWidget)
-        .reduce((acc, {title = '', path}) => {
+    const orderByOptions = childTemplates.filter(isSimpleTemplateWidget).reduce(
+        (acc, {title = '', path}) => {
             ;['-', '+'].forEach((order) =>
                 acc.push({
                     value: `${order}${typeof path === 'string' ? path : ''}`,
@@ -229,7 +228,9 @@ export default function Card(props: Props) {
                 })
             )
             return acc
-        }, [] as {value: string; label: string}[])
+        },
+        [] as {value: string; label: string}[]
+    )
 
     return (
         <UICard

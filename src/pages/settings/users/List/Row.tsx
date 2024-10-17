@@ -34,8 +34,8 @@ const Row = ({agent, isAccountOwner = false}: Props) => {
                             availability === AvailabilityStatusTag.Offline
                                 ? 'var(--neutral-grey-4)'
                                 : availability === AvailabilityStatusTag.Busy
-                                ? 'var(--feedback-warning)'
-                                : 'var(--feedback-success)'
+                                  ? 'var(--feedback-warning)'
+                                  : 'var(--feedback-success)'
                         }
                     />
                     <div className={css.name}>{agent.name}</div>

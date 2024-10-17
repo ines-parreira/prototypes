@@ -43,9 +43,8 @@ export const getPageEmbedments = async (
 ) => {
     if (!client) return null
 
-    const res = await client.listContactFormShopifyPageEmbedments(
-        pathParameters
-    )
+    const res =
+        await client.listContactFormShopifyPageEmbedments(pathParameters)
 
     return res.data
 }

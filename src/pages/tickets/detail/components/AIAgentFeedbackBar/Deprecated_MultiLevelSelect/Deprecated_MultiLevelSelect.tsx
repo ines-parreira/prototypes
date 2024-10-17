@@ -155,14 +155,15 @@ export default function MultiLevelSelect({
                         }
                     )}
                 </DropdownBody>
-                {onApplyClick && currentBranch[CHOICE_VALUES_SYMBOL].size > 0 && (
-                    <div
-                        className={css.applyButtonContainer}
-                        onClick={onApplyClick}
-                    >
-                        <Button fillStyle={'ghost'}>Apply</Button>
-                    </div>
-                )}
+                {onApplyClick &&
+                    currentBranch[CHOICE_VALUES_SYMBOL].size > 0 && (
+                        <div
+                            className={css.applyButtonContainer}
+                            onClick={onApplyClick}
+                        >
+                            <Button fillStyle={'ghost'}>Apply</Button>
+                        </div>
+                    )}
             </Dropdown>
         </>
     )

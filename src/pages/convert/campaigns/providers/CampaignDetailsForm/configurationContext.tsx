@@ -21,9 +21,9 @@ export const CampaignFormConfigurationContext =
     createContext<CampaignFormConfigurationType>({
         isEditMode: false,
         configuration: {} as WizardConfiguration,
-        getStepConfiguration: () => ({} as WizardStepConfiguration),
+        getStepConfiguration: () => ({}) as WizardStepConfiguration,
         getTourConfiguration: () =>
-            ({} as Record<string, ToolbarActionConfiguration>),
+            ({}) as Record<string, ToolbarActionConfiguration>,
     })
 
 type OwnProps = {

@@ -59,7 +59,7 @@ type State<ResultType extends SearchResultType, SubResultType> = {
 
 export default class SearchInput<
     ResultType extends SearchResultType,
-    SubResultType extends SearchResultType
+    SubResultType extends SearchResultType,
 > extends Component<
     Props<ResultType, SubResultType>,
     State<ResultType, SubResultType>

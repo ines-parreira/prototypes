@@ -44,7 +44,7 @@ function decorateLocaleLinks(
 }
 
 function draftRemoveLink<
-    T extends LocalNavigationLink | LocalSocialNavigationLink
+    T extends LocalNavigationLink | LocalSocialNavigationLink,
 >(state: T[], id: number) {
     return produce(state, (draft: Draft<T[]>) => {
         const index = state.findIndex((link) => link.id === id)
@@ -53,7 +53,7 @@ function draftRemoveLink<
 }
 
 function draftUpdateLink<
-    T extends LocalNavigationLink | LocalSocialNavigationLink
+    T extends LocalNavigationLink | LocalSocialNavigationLink,
 >(links: T[], value: string, id: number, key: 'label' | 'value') {
     return produce(links, (draft) => {
         const index = links.findIndex((link) => link.id === id)

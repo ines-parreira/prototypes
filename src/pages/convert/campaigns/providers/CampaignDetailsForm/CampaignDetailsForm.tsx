@@ -180,8 +180,8 @@ export const CampaignDetailsForm = ({
         return isEditMode
             ? CampaignStepsKeys.Audience
             : wizardConfiguration && wizardConfiguration.defaultStepOpened
-            ? wizardConfiguration.defaultStepOpened
-            : CampaignStepsKeys.Basics
+              ? wizardConfiguration.defaultStepOpened
+              : CampaignStepsKeys.Basics
     }, [isEditMode, wizardConfiguration, openedStep])
 
     const isConvertSubscriber = useIsConvertSubscriber()
@@ -601,7 +601,8 @@ export const CampaignDetailsForm = ({
         }
 
         return wizardConfiguration?.stepConfiguration
-            ? wizardConfiguration?.stepConfiguration[step]?.isDisabled ?? false
+            ? (wizardConfiguration?.stepConfiguration[step]?.isDisabled ??
+                  false)
             : false
     }
 
@@ -666,7 +667,7 @@ export const CampaignDetailsForm = ({
                 isEditMode,
                 configuration: wizardConfiguration,
                 utmConfiguration: utmProps,
-            } as CampaignFormConfigurationType),
+            }) as CampaignFormConfigurationType,
         [isEditMode, wizardConfiguration, utmProps]
     )
 

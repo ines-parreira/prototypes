@@ -7,7 +7,7 @@ type UseMeasureRect = Pick<
 type UseMeasureRef<E extends Element = Element> = (element: E) => void
 type UseMeasureResult<E extends Element = Element> = [
     UseMeasureRef<E>,
-    UseMeasureRect
+    UseMeasureRect,
 ]
 
 const defaultState: UseMeasureRect = {
@@ -22,7 +22,7 @@ const defaultState: UseMeasureRect = {
 }
 
 export default function useMeasure<
-    E extends Element = Element
+    E extends Element = Element,
 >(): UseMeasureResult<E> {
     const [element, ref] = useState<E | null>(null)
     const [rect, setRect] = useState<UseMeasureRect>(defaultState)

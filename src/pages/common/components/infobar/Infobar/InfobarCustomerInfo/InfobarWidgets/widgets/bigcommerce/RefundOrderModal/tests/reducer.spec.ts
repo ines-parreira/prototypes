@@ -301,7 +301,8 @@ describe('bigcommerceRefundOrderReducer', () => {
                             item_type: BigCommerceRefundableItemType.product,
                             item_id: bigcommerceOrder.bc_products[0].id,
                             quantity:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .PRODUCT[
                                     String(bigcommerceOrder.bc_products[0].id)
                                 ].available_quantity,
@@ -312,7 +313,8 @@ describe('bigcommerceRefundOrderReducer', () => {
                                 BigCommerceRefundableItemType.gift_wrapping,
                             item_id: bigcommerceOrder.bc_products[0].id,
                             quantity:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .GIFT_WRAPPING[
                                     String(bigcommerceOrder.bc_products[0].id)
                                 ].available_quantity,
@@ -336,18 +338,21 @@ describe('bigcommerceRefundOrderReducer', () => {
                     shippingRefundData: {
                         [String(bigcommerceOrder.bc_shipping[0].id)]: {
                             initial_amount:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .SHIPPING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].available_amount,
                             refunded_amount:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .SHIPPING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].refunded_amount,
 
                             available_amount:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .SHIPPING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].available_amount,
@@ -364,8 +369,8 @@ describe('bigcommerceRefundOrderReducer', () => {
                         {
                             item_type: BigCommerceRefundableItemType.shipping,
                             item_id: bigcommerceOrder.bc_shipping[0].id,
-                            amount: bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
-                                .SHIPPING[
+                            amount: bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                .individual_items_level_refund_data!.SHIPPING[
                                 String(bigcommerceOrder.bc_shipping[0].id)
                             ].available_amount,
                         },
@@ -384,7 +389,8 @@ describe('bigcommerceRefundOrderReducer', () => {
                                 item_type:
                                     BigCommerceRefundableItemType.shipping,
                                 item_id: bigcommerceOrder.bc_shipping[0].id,
-                                amount: bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                amount: bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .SHIPPING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].available_amount,
@@ -398,18 +404,21 @@ describe('bigcommerceRefundOrderReducer', () => {
                     shippingRefundData: {
                         [String(bigcommerceOrder.bc_shipping[0].id)]: {
                             initial_amount:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .SHIPPING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].available_amount,
                             refunded_amount:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .SHIPPING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].refunded_amount,
 
                             available_amount:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .SHIPPING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].available_amount,
@@ -441,18 +450,21 @@ describe('bigcommerceRefundOrderReducer', () => {
                     handlingRefundData: {
                         [String(bigcommerceOrder.bc_shipping[0].id)]: {
                             initial_amount:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .HANDLING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].available_amount,
                             refunded_amount:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .HANDLING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].refunded_amount,
 
                             available_amount:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .HANDLING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].available_amount,
@@ -467,8 +479,8 @@ describe('bigcommerceRefundOrderReducer', () => {
                         {
                             item_type: BigCommerceRefundableItemType.handling,
                             item_id: bigcommerceOrder.bc_shipping[0].id,
-                            amount: bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
-                                .HANDLING[
+                            amount: bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                .individual_items_level_refund_data!.HANDLING[
                                 String(bigcommerceOrder.bc_shipping[0].id)
                             ].available_amount,
                         },
@@ -487,7 +499,8 @@ describe('bigcommerceRefundOrderReducer', () => {
                                 item_type:
                                     BigCommerceRefundableItemType.handling,
                                 item_id: bigcommerceOrder.bc_shipping[0].id,
-                                amount: bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                amount: bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .HANDLING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].available_amount,
@@ -501,18 +514,21 @@ describe('bigcommerceRefundOrderReducer', () => {
                     handlingRefundData: {
                         [String(bigcommerceOrder.bc_shipping[0].id)]: {
                             initial_amount:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .HANDLING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].available_amount,
                             refunded_amount:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .HANDLING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].refunded_amount,
 
                             available_amount:
-                                bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data!
+                                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                                    .individual_items_level_refund_data!
                                     .HANDLING[
                                     String(bigcommerceOrder.bc_shipping[0].id)
                                 ].available_amount,

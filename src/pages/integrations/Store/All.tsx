@@ -94,8 +94,10 @@ export default function All() {
         ...helpdeskAvailablePlans,
     ]
 
-    const search =
-        useSearch<{[SEARCH_URL_PARAM]: string; [CATEGORY_URL_PARAM]: string}>()
+    const search = useSearch<{
+        [SEARCH_URL_PARAM]: string
+        [CATEGORY_URL_PARAM]: string
+    }>()
     const activeSearch = search[SEARCH_URL_PARAM]
     const categoryParam = search[CATEGORY_URL_PARAM]
     const activeCategory = isCategory(categoryParam) ? categoryParam : undefined

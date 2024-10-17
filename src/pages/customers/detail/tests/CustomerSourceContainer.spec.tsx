@@ -9,14 +9,13 @@ import SourceWrapper from '../../../common/components/sourceWidgets/SourceWrappe
 jest.mock(
     '../../../common/components/sourceWidgets/SourceWrapper',
     () =>
-        ({context, identifier}: ComponentProps<typeof SourceWrapper>) =>
-            (
-                <div>
-                    SourceWrapper
-                    <div>context: {context}</div>
-                    <div>identifier: {identifier}</div>
-                </div>
-            )
+        ({context, identifier}: ComponentProps<typeof SourceWrapper>) => (
+            <div>
+                SourceWrapper
+                <div>context: {context}</div>
+                <div>identifier: {identifier}</div>
+            </div>
+        )
 )
 
 describe('<CustomerSourceContainer />', () => {

@@ -25,10 +25,10 @@ describe('useSearchParams hook', () => {
             ({
                 data: {},
                 isFetching: false,
-            } as UseQueryResult<
+            }) as UseQueryResult<
                 AxiosResponse<ApiListResponseCursorPagination<any>>,
                 unknown
-            >)
+            >
     )
     beforeEach(() => {
         mockedUseSearchParam.mockReturnValue([currentCursor, mockedSetCursor])

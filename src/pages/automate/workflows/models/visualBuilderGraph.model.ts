@@ -56,11 +56,13 @@ export const buildEdgeCommonProperties: () => Pick<
     data: {},
 })
 
-export const buildNodeCommonProperties: () => Pick<Node, 'id' | 'position'> =
-    () => ({
-        id: ulid(),
-        position: {x: 0, y: 0},
-    })
+export const buildNodeCommonProperties: () => Pick<
+    Node,
+    'id' | 'position'
+> = () => ({
+    id: ulid(),
+    position: {x: 0, y: 0},
+})
 
 export function areGraphsEqual(
     g1: VisualBuilderGraph,
@@ -374,11 +376,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                                               node.data.conditions,
                                       }
                                     : node.data.conditionsType === 'and'
-                                    ? {
-                                          [node.data.conditionsType]:
-                                              node.data.conditions,
-                                      }
-                                    : null,
+                                      ? {
+                                            [node.data.conditionsType]:
+                                                node.data.conditions,
+                                        }
+                                      : null,
                             outputs: [],
                         },
                     },

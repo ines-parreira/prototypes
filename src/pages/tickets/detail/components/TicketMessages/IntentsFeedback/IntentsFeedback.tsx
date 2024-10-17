@@ -201,8 +201,8 @@ export const IntentsFeedback = ({
         numActiveIntents === 0
             ? 'No intents detected'
             : numActiveIntents === 1
-            ? activeIntentsNames[0]
-            : `${numActiveIntents} intents detected`
+              ? activeIntentsNames[0]
+              : `${numActiveIntents} intents detected`
 
     return !loading ? (
         <IntentsFeedbackDropdown

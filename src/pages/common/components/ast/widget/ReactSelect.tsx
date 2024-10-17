@@ -126,12 +126,13 @@ export default class Select extends Component<Props> {
                         focusedPlaceholder={focusedPlaceholder}
                     />
                 </div>
-                {newValue && deprecatedOptions?.includes(newValue.toString()) && (
-                    <Errors inline>
-                        <span className="material-icons mr-1">warning</span>
-                        Deprecated items: {deprecatedOptions.join(',')}
-                    </Errors>
-                )}
+                {newValue &&
+                    deprecatedOptions?.includes(newValue.toString()) && (
+                        <Errors inline>
+                            <span className="material-icons mr-1">warning</span>
+                            Deprecated items: {deprecatedOptions.join(',')}
+                        </Errors>
+                    )}
             </>
         )
     }

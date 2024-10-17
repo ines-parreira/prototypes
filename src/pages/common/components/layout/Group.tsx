@@ -65,10 +65,10 @@ export default function Group({
                             validChildren.length < 2
                                 ? null
                                 : index > 0 && index < validChildren.length - 1
-                                ? appendPosition[1]
-                                : index === 0
-                                ? appendPosition[0]
-                                : appendPosition[2]
+                                  ? appendPosition[1]
+                                  : index === 0
+                                    ? appendPosition[0]
+                                    : appendPosition[2]
                         }
                     >
                         {child}

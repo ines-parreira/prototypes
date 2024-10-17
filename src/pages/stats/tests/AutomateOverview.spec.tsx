@@ -55,8 +55,9 @@ jest.mock('react-chartjs-2')
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',
     () =>
-        ({value}: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) =>
+        ({value}: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
+        )
 )
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
@@ -70,7 +71,7 @@ jest.mock('react-router-dom', () => ({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         ({
             pathname: '/app/stats/automate-overview',
-        } as any),
+        }) as any,
 }))
 
 // Timeseries

@@ -24,8 +24,9 @@ jest.mock('pages/common/components/Spinner', () => () => 'SpinnerMock')
 jest.mock(
     '../UserDropdownItem',
     () =>
-        ({item}: ComponentProps<typeof UserDropdownItem>) =>
+        ({item}: ComponentProps<typeof UserDropdownItem>) => (
             <div>{item.name}</div>
+        )
 )
 
 const queryClient = mockQueryClient()

@@ -40,10 +40,10 @@ export const getActionAndTagsFromMessage = (
     const actionType = isClosed
         ? TicketEventEnum.CLOSE
         : isSnoozed
-        ? TicketEventEnum.SNOOZE
-        : isHandover
-        ? TicketEventEnum.ASSIGN_TICKET
-        : null
+          ? TicketEventEnum.SNOOZE
+          : isHandover
+            ? TicketEventEnum.ASSIGN_TICKET
+            : null
 
     return {tags: messageTags, action: actionType}
 }

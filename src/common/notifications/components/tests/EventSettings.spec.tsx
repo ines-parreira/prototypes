@@ -13,17 +13,16 @@ import EventSettings from '../EventSettings'
 jest.mock(
     '../SoundSelect',
     () =>
-        ({onChange}: {onChange: (sound: string) => void}) =>
-            (
-                <select
-                    onChange={(e) => {
-                        onChange(e.target.value)
-                    }}
-                >
-                    <option value="sound 1">sound 1</option>
-                    <option value="sound 2">sound 2</option>
-                </select>
-            )
+        ({onChange}: {onChange: (sound: string) => void}) => (
+            <select
+                onChange={(e) => {
+                    onChange(e.target.value)
+                }}
+            >
+                <option value="sound 1">sound 1</option>
+                <option value="sound 2">sound 2</option>
+            </select>
+        )
 )
 
 jest.mock('common/flags', () => ({

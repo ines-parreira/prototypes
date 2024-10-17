@@ -172,14 +172,14 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         translation.locale === updatedTranslation.locale
                             ? updatedTranslation
                             : batchApply
-                            ? {
-                                  ...translation,
-                                  banner_image_url:
-                                      updatedTranslation.banner_image_url,
-                                  banner_image_vertical_offset:
-                                      updatedTranslation.banner_image_vertical_offset,
-                              }
-                            : translation
+                              ? {
+                                    ...translation,
+                                    banner_image_url:
+                                        updatedTranslation.banner_image_url,
+                                    banner_image_vertical_offset:
+                                        updatedTranslation.banner_image_vertical_offset,
+                                }
+                              : translation
                 )
 
                 dispatch(
@@ -253,10 +253,11 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             }
                         )
 
-                    translations = helpCenter.translations?.map((translation) =>
-                        translation.locale === updatedTranslation.locale
-                            ? updatedTranslation
-                            : translation
+                    translations = helpCenter.translations?.map(
+                        (translation) =>
+                            translation.locale === updatedTranslation.locale
+                                ? updatedTranslation
+                                : translation
                     )
                 }
 
@@ -609,9 +610,8 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         const callback = async () => {
                             setIsSavingBannerImage(true)
                             try {
-                                const bannerImageUrl = await getFileUploadURL(
-                                    bannerImage
-                                )
+                                const bannerImageUrl =
+                                    await getFileUploadURL(bannerImage)
                                 if (batchApply) {
                                     const otherTranslations =
                                         helpCenter.translations

@@ -133,9 +133,8 @@ export const getAIGeneratedArticlesByHelpCenterAndStore = async (
 ) => {
     if (!client) return null
 
-    const res = await client.listAIArticleTemplatesByHelpCenterAndStore(
-        pathParameters
-    )
+    const res =
+        await client.listAIArticleTemplatesByHelpCenterAndStore(pathParameters)
 
     return res.data
 }

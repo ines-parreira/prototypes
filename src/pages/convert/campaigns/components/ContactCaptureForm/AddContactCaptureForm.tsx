@@ -163,10 +163,13 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
             />
             <Drawer.Content className={css.drawerContent}>
                 <WizardProgressHeader
-                    labels={steps.reduce((acc, step) => {
-                        acc[step.label] = step.label
-                        return acc
-                    }, {} as Record<string, string>)}
+                    labels={steps.reduce(
+                        (acc, step) => {
+                            acc[step.label] = step.label
+                            return acc
+                        },
+                        {} as Record<string, string>
+                    )}
                     className={css.wizardHeaderContainer}
                 />
                 {steps.map((step, idx) => (

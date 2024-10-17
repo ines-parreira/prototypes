@@ -155,9 +155,8 @@ export const saveReport = async (
         {
             [`${periodPrefix}-customer-experience-${export_datetime}.csv`]:
                 createCsv(customerExperienceData()),
-            [`${periodPrefix}-workload-${export_datetime}.csv`]: createCsv(
-                workloadData()
-            ),
+            [`${periodPrefix}-workload-${export_datetime}.csv`]:
+                createCsv(workloadData()),
             [`${periodPrefix}-ticket-volume-${export_datetime}.csv`]:
                 createCsv(ticketVolumeData),
         },

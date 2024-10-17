@@ -32,8 +32,8 @@ export const ActionButton = ({
                     variant === 'danger'
                         ? 'destructive'
                         : variant === 'neutral'
-                        ? 'secondary'
-                        : 'primary'
+                          ? 'secondary'
+                          : 'primary'
                 }
             >
                 {children}

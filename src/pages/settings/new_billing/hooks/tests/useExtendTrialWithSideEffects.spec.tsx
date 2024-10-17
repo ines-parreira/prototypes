@@ -22,7 +22,7 @@ useQueryClientMock.mockImplementation(
     () =>
         ({
             invalidateQueries: invalidateQueriesMock,
-        } as unknown as QueryClient)
+        }) as unknown as QueryClient
 )
 
 jest.mock('models/billing/queries')

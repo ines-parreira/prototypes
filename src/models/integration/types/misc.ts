@@ -22,17 +22,17 @@ export type IntegrationAuthentication<T extends IntegrationType> =
               webhook_url_new: string
           }
         : T extends IntegrationType.Email
-        ? {
-              forwarding_email_address: string
-          }
-        : T extends IntegrationType.Facebook
-        ? {
-              redirect_uri: string
-              redirect_uri_reconnect: string
-          }
-        : {
-              redirect_uri: string
-          }
+          ? {
+                forwarding_email_address: string
+            }
+          : T extends IntegrationType.Facebook
+            ? {
+                  redirect_uri: string
+                  redirect_uri_reconnect: string
+              }
+            : {
+                  redirect_uri: string
+              }
 
 export type IntegrationExtra<T extends IntegrationType> =
     T extends IntegrationType.GorgiasChat

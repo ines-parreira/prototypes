@@ -30,8 +30,8 @@ export default function PhoneEventDetailsVoicemail({
     const fullRecordingURL = gorgiasRecordingURL
         ? gorgiasRecordingURL
         : twilioRecordingURL
-        ? `${twilioRecordingURL}.mp3`
-        : null
+          ? `${twilioRecordingURL}.mp3`
+          : null
     const publicURL = eventData.getIn(['recording', 'file', 'public'], true)
     const deletedBy = eventData.get('deleted_by') as string
 

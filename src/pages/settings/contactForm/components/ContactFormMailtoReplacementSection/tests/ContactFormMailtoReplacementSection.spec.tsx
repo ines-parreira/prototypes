@@ -45,7 +45,7 @@ const createGmailIntegration = (id: number, email: string): GmailIntegration =>
         id,
         name: email,
         meta: {address: email},
-    } as GmailIntegration)
+    }) as GmailIntegration
 
 const SHOPIFY_INTEGRATION = {
     id: 2,

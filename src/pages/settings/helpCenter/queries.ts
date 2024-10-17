@@ -119,7 +119,7 @@ export const aiArticleKeys = {
  */
 
 export const useGetShopifyPages = <
-    TData = Awaited<ReturnType<typeof getShopifyPages>>
+    TData = Awaited<ReturnType<typeof getShopifyPages>>,
 >(
     helpCenterId: Paths.ListHelpCenterShopifyPageEmbedments.Parameters.HelpCenterId,
     overrides?: UseQueryOptions<
@@ -142,7 +142,7 @@ export const useGetShopifyPages = <
 }
 
 export const useGetPageEmbedments = <
-    TData = Awaited<ReturnType<typeof getPageEmbedments>>
+    TData = Awaited<ReturnType<typeof getPageEmbedments>>,
 >(
     helpCenterId: Paths.ListContactFormShopifyPageEmbedments.Parameters.ContactFormId,
     overrides?: UseQueryOptions<
@@ -165,7 +165,7 @@ export const useGetPageEmbedments = <
 }
 
 export const useGetArticleTemplates = <
-    TData = Awaited<ReturnType<typeof getArticleTemplates>>
+    TData = Awaited<ReturnType<typeof getArticleTemplates>>,
 >(
     locale: Paths.ListArticleTemplates.Parameters.Locale,
     overrides?: UseQueryOptions<
@@ -188,7 +188,7 @@ export const useGetArticleTemplates = <
 }
 
 export const useGetArticleTemplate = <
-    TData = Awaited<ReturnType<typeof getArticleTemplate>>
+    TData = Awaited<ReturnType<typeof getArticleTemplate>>,
 >(
     key: Paths.GetArticleTemplate.Parameters.TemplateKey | null,
     locale: Paths.GetArticleTemplate.Parameters.Locale,
@@ -218,7 +218,7 @@ export const useGetArticleTemplate = <
 }
 
 export const useGetAIArticles = <
-    TData = Awaited<ReturnType<typeof getAIGeneratedArticles>>
+    TData = Awaited<ReturnType<typeof getAIGeneratedArticles>>,
 >(
     locale: Paths.ListArticleTemplates.Parameters.Locale,
     overrides?: UseQueryOptions<
@@ -242,7 +242,7 @@ export const useGetAIArticles = <
 }
 
 export const useGetAIArticlesByHelpCenter = <
-    TData = Awaited<ReturnType<typeof getAIGeneratedArticlesByHelpCenter>>
+    TData = Awaited<ReturnType<typeof getAIGeneratedArticlesByHelpCenter>>,
 >(
     helpCenterId: Paths.ListAIArticleTemplatesByHelpCenter.Parameters.HelpCenterId | null,
     locale: Paths.ListArticleTemplates.Parameters.Locale,
@@ -272,7 +272,7 @@ export const useGetAIArticlesByHelpCenter = <
 export const useGetAIArticlesByHelpCenterAndStore = <
     TData = Awaited<
         ReturnType<typeof getAIGeneratedArticlesByHelpCenterAndStore>
-    >
+    >,
 >(
     helpCenterId: Paths.ListAIArticleTemplatesByHelpCenterAndStore.Parameters.HelpCenterId | null,
     storeIntegrationId: Paths.ListAIArticleTemplatesByHelpCenterAndStore.Parameters.StoreIntegrationId | null,

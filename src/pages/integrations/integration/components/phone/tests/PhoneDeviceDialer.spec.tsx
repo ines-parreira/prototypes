@@ -25,17 +25,16 @@ jest.mock(
             onChange: (value: string) => void
             value: string
             suffix?: React.ReactNode
-        }) =>
-            (
-                <>
-                    <input
-                        value={value}
-                        onChange={(e) => onChange(e.target.value)}
-                        data-testid="mock-text-input"
-                    />
-                    {suffix}
-                </>
-            )
+        }) => (
+            <>
+                <input
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    data-testid="mock-text-input"
+                />
+                {suffix}
+            </>
+        )
 )
 
 jest.mock('pages/common/forms/PhoneNumberInput/PhoneNumberInput', () => {

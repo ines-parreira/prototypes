@@ -44,9 +44,12 @@ export default function SupportPerformanceTags() {
         })
 
     const tagColors = useMemo(() => {
-        return tags.reduce((tagColors, tag) => {
-            return tagColors!.set(tag!.get('name'), tag!.get('decoration'))
-        }, fromJS({}) as Map<any, any>)
+        return tags.reduce(
+            (tagColors, tag) => {
+                return tagColors!.set(tag!.get('name'), tag!.get('decoration'))
+            },
+            fromJS({}) as Map<any, any>
+        )
     }, [tags])
 
     return (

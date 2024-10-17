@@ -23,12 +23,11 @@ const DefaultTemplate: (
     context?: ContextType<typeof DropdownContext>
 ) => Story<ComponentProps<typeof DropdownQuickSelect>> =
     (context = mockContext) =>
-    (props) =>
-        (
-            <DropdownContext.Provider value={context}>
-                <DropdownQuickSelect {...props} />
-            </DropdownContext.Provider>
-        )
+    (props) => (
+        <DropdownContext.Provider value={context}>
+            <DropdownQuickSelect {...props} />
+        </DropdownContext.Provider>
+    )
 
 const defaultProps: Omit<
     ComponentProps<typeof DropdownQuickSelect>,

@@ -150,7 +150,7 @@ export const aiGeneratedGuidanceKeys = {
 }
 
 export const useGetAIGeneratedGuidances = <
-    TData = Awaited<ReturnType<typeof getAIGeneratedGuidances>>
+    TData = Awaited<ReturnType<typeof getAIGeneratedGuidances>>,
 >(
     helpCenterId: Paths.ListAIGuidancesByHelpCenterAndStore.Parameters.HelpCenterId | null,
     storeIntegrationId: Paths.ListAIGuidancesByHelpCenterAndStore.Parameters.StoreIntegrationId | null,

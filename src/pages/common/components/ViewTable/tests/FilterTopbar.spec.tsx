@@ -69,10 +69,13 @@ const defaultState = {
     currentUser: fromJS({first_name: 'Steve', id: 2, settings: []}),
     entities: {
         sections: {},
-        views: views.reduce((acc, view) => {
-            acc[view.id] = view
-            return acc
-        }, {} as Record<number, View>),
+        views: views.reduce(
+            (acc, view) => {
+                acc[view.id] = view
+                return acc
+            },
+            {} as Record<number, View>
+        ),
     },
     schemas: fromJS({}),
     teams: fromJS({}),

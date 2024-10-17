@@ -20,33 +20,32 @@ const makePrivateReplyAction: (props: {
     isFacebookComment: boolean
 }) => PrivateReplyActionComponent =
     ({isFacebookComment}) =>
-    ({id, onClick, disabled}) =>
-        (
-            <CollapsedAction
-                id={id}
-                icon={
-                    <img
-                        className={
-                            isFacebookComment
-                                ? css.messengerIcon
-                                : css.instagramDirectMessageIcon
-                        }
-                        src={
-                            isFacebookComment
-                                ? messengerIcon
-                                : instagramDirectMessageIcon
-                        }
-                        alt="private message icon"
-                    />
-                }
-                title={'Message'}
-                description={`Respond with a ${
-                    isFacebookComment ? '' : 'direct'
-                } message`}
-                onClick={onClick}
-                disabled={disabled}
-            />
-        )
+    ({id, onClick, disabled}) => (
+        <CollapsedAction
+            id={id}
+            icon={
+                <img
+                    className={
+                        isFacebookComment
+                            ? css.messengerIcon
+                            : css.instagramDirectMessageIcon
+                    }
+                    src={
+                        isFacebookComment
+                            ? messengerIcon
+                            : instagramDirectMessageIcon
+                    }
+                    alt="private message icon"
+                />
+            }
+            title={'Message'}
+            description={`Respond with a ${
+                isFacebookComment ? '' : 'direct'
+            } message`}
+            onClick={onClick}
+            disabled={disabled}
+        />
+    )
 
 type PrivateReplyActionProps = {
     message: TicketMessage

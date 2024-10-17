@@ -20,26 +20,22 @@ jest.mock(
         ({
             fetchPrevItems,
             fetchNextItems,
-        }: Partial<ComponentProps<typeof Navigation>>) =>
-            (
-                <>
-                    <div id="previous" onClick={() => fetchPrevItems?.()} />
-                    <div id="next" onClick={() => fetchNextItems?.()} />
-                </>
-            )
+        }: Partial<ComponentProps<typeof Navigation>>) => (
+            <>
+                <div id="previous" onClick={() => fetchPrevItems?.()} />
+                <div id="next" onClick={() => fetchNextItems?.()} />
+            </>
+        )
 )
 jest.mock(
     'pages/common/components/Search',
     () =>
-        ({onChange}: {onChange: (value: string) => void}) =>
-            (
-                <input
-                    placeholder={'Search macros...'}
-                    onChange={(e) =>
-                        onChange((e.target as HTMLInputElement).value)
-                    }
-                />
-            )
+        ({onChange}: {onChange: (value: string) => void}) => (
+            <input
+                placeholder={'Search macros...'}
+                onChange={(e) => onChange((e.target as HTMLInputElement).value)}
+            />
+        )
 )
 jest.mock(
     '../MacrosSettingsTable',

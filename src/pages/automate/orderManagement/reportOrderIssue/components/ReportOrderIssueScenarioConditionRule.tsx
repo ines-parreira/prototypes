@@ -62,7 +62,7 @@ type JsonLogicRule<T extends ReportIssueVariable> =
     JsonLogicRuleOverVariable<T>[keyof JsonLogicRuleOverVariable<T>]
 
 const ReportOrderIssueScenarioConditionRule = <
-    T extends ReportIssueVariable = ReportIssueVariable
+    T extends ReportIssueVariable = ReportIssueVariable,
 >({
     value,
     onChange,

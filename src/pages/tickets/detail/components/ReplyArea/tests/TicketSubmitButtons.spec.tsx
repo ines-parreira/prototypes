@@ -21,12 +21,11 @@ jest.mock(
             children,
             id,
             isDisabled,
-        }: Partial<ComponentProps<typeof ConfirmButton>>) =>
-            (
-                <button disabled={isDisabled} id={id}>
-                    ConfirmButtonMock: {children}
-                </button>
-            )
+        }: Partial<ComponentProps<typeof ConfirmButton>>) => (
+            <button disabled={isDisabled} id={id}>
+                ConfirmButtonMock: {children}
+            </button>
+        )
 )
 
 const mockStore = configureMockStore([thunk])

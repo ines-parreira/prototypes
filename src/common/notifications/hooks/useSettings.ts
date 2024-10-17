@@ -85,44 +85,49 @@ export default function useSettings() {
 
         const setting = {
             volume: notificationSound.volume,
-            events: allEvents.reduce((eventsAcc, event) => {
-                const eventSettings = allSettings?.data.events?.[
-                    event.type
-                ] || {sound: defaultSound.sound}
+            events: allEvents.reduce(
+                (eventsAcc, event) => {
+                    const eventSettings = allSettings?.data.events?.[
+                        event.type
+                    ] || {sound: defaultSound.sound}
 
-                const workflowPreferences =
-                    event.type !== 'legacy-chat-and-messaging'
-                        ? preferences.workflows?.[workflowMap[event.type]]
-                        : undefined
+                    const workflowPreferences =
+                        event.type !== 'legacy-chat-and-messaging'
+                            ? preferences.workflows?.[workflowMap[event.type]]
+                            : undefined
 
-                return {
-                    ...eventsAcc,
-                    [event.type]: {
-                        sound:
-                            event.type === 'legacy-chat-and-messaging'
-                                ? notificationSound.enabled
-                                    ? notificationSound.sound
-                                    : ''
-                                : eventSettings.sound,
-                        channels: channels.reduce(
-                            (channelsAcc, channel) => ({
-                                ...channelsAcc,
-                                [channel.type]:
-                                    event.type === 'legacy-chat-and-messaging'
-                                        ? true
-                                        : !workflowPreferences ||
-                                          typeof workflowPreferences ===
-                                              'boolean'
-                                        ? true
-                                        : workflowPreferences.channel_types[
-                                              channel.type
-                                          ],
-                            }),
-                            eventsAcc[event.type]?.channels || {}
-                        ),
-                    },
-                }
-            }, {} as Settings['events']),
+                    return {
+                        ...eventsAcc,
+                        [event.type]: {
+                            sound:
+                                event.type === 'legacy-chat-and-messaging'
+                                    ? notificationSound.enabled
+                                        ? notificationSound.sound
+                                        : ''
+                                    : eventSettings.sound,
+                            channels: channels.reduce(
+                                (channelsAcc, channel) => ({
+                                    ...channelsAcc,
+                                    [channel.type]:
+                                        event.type ===
+                                        'legacy-chat-and-messaging'
+                                            ? true
+                                            : !workflowPreferences ||
+                                                typeof workflowPreferences ===
+                                                    'boolean'
+                                              ? true
+                                              : workflowPreferences
+                                                    .channel_types[
+                                                    channel.type
+                                                ],
+                                }),
+                                eventsAcc[event.type]?.channels || {}
+                            ),
+                        },
+                    }
+                },
+                {} as Settings['events']
+            ),
         }
 
         setSettings(setting)

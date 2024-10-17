@@ -181,7 +181,7 @@ export function formatPhoneNumberInternational(number?: string): string {
     if (!number) return ''
 
     return number && isValidPhoneNumber(number)
-        ? parsePhoneNumber(number)?.formatInternational() ?? ''
+        ? (parsePhoneNumber(number)?.formatInternational() ?? '')
         : number
 }
 

@@ -30,8 +30,7 @@ jest.mock(
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) =>
-            <div>{dateTime}</div>
+        ({dateTime}: {dateTime: string}) => <div>{dateTime}</div>
 )
 
 jest.mock('models/voiceCall/utils', () => ({

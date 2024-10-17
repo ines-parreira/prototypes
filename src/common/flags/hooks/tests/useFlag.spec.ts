@@ -58,7 +58,7 @@ describe('useFlag', () => {
         )
 
         const [[, onChange]] = ldClientMock.on.mock.calls as [
-            [string, (newValue: boolean) => void]
+            [string, (newValue: boolean) => void],
         ]
 
         act(() => {

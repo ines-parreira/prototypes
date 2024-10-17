@@ -667,7 +667,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
         const textFieldsToUpdate: [
             'introductionText',
-            'offlineIntroductionText'
+            'offlineIntroductionText',
         ] = ['introductionText', 'offlineIntroductionText']
         textFieldsToUpdate.forEach((textName) => {
             if (
@@ -844,8 +844,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     const launcherLabel =
         'label' in state.launcher
             ? state.launcher.label
-            : texts[state.language as LanguageChat]?.texts?.chatWithUs ??
-              GORGIAS_CHAT_WIDGET_TEXTS[state.language].chatWithUs
+            : (texts[state.language as LanguageChat]?.texts?.chatWithUs ??
+              GORGIAS_CHAT_WIDGET_TEXTS[state.language].chatWithUs)
 
     const onHeaderLogoUrlChange = (headerPictureUrl?: string) => {
         setState((prevState) => ({

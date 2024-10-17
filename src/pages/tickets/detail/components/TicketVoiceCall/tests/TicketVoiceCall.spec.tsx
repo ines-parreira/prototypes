@@ -7,15 +7,17 @@ import TicketVoiceCall from '../TicketVoiceCall'
 jest.mock(
     'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallInbound',
     () =>
-        ({voiceCall}: {voiceCall: VoiceCall}) =>
+        ({voiceCall}: {voiceCall: VoiceCall}) => (
             <div>TicketVoiceCallInbound {voiceCall.id}</div>
+        )
 )
 
 jest.mock(
     'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallOutbound',
     () =>
-        ({voiceCall}: {voiceCall: VoiceCall}) =>
+        ({voiceCall}: {voiceCall: VoiceCall}) => (
             <div>TicketVoiceCallOutbound {voiceCall.id}</div>
+        )
 )
 
 const isOutboundVoiceCall = jest.spyOn(voiceCall, 'isOutboundVoiceCall')

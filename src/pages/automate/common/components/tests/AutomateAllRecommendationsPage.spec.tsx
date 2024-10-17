@@ -180,8 +180,8 @@ describe('<AutomateAllRecommendationsPage />', () => {
             param === 'store_integration_id'
                 ? ['1', jest.fn()]
                 : param === 'help_center_id'
-                ? ['11', jest.fn()]
-                : [null, jest.fn()]
+                  ? ['11', jest.fn()]
+                  : [null, jest.fn()]
         )
         mockUseTopQuestionsFilters.mockReturnValue({
             isLoading: false,
@@ -436,8 +436,8 @@ describe('<AutomateAllRecommendationsPage />', () => {
             param === 'status'
                 ? ['all', jest.fn()]
                 : param === 'page'
-                ? ['2', jest.fn()]
-                : [null, jest.fn()]
+                  ? ['2', jest.fn()]
+                  : [null, jest.fn()]
         )
         mockUseLocation.mockReturnValue({
             pathname: '/app/automation/ai-recommendations',
@@ -535,8 +535,8 @@ describe('<AutomateAllRecommendationsPage />', () => {
             param === 'status'
                 ? ['article-created', jest.fn()]
                 : param === 'page'
-                ? ['1', jest.fn()]
-                : [null, jest.fn()]
+                  ? ['1', jest.fn()]
+                  : [null, jest.fn()]
         )
         mockUseLocation.mockReturnValue({
             pathname: '/app/automation/ai-recommendations',
@@ -573,8 +573,8 @@ describe('<AutomateAllRecommendationsPage />', () => {
             param === 'status'
                 ? ['article-created', jest.fn()]
                 : param === 'page'
-                ? ['1', jest.fn()]
-                : [null, jest.fn()]
+                  ? ['1', jest.fn()]
+                  : [null, jest.fn()]
         )
         mockUseLocation.mockReturnValue({
             pathname: '/app/automation/ai-recommendations',
@@ -610,8 +610,8 @@ describe('<AutomateAllRecommendationsPage />', () => {
             param === 'status'
                 ? ['article-created', jest.fn()]
                 : param === 'page'
-                ? ['1', jest.fn()]
-                : [null, jest.fn()]
+                  ? ['1', jest.fn()]
+                  : [null, jest.fn()]
         )
         mockUseLocation.mockReturnValue({
             pathname: '/app/automation/ai-recommendations',

@@ -27,8 +27,9 @@ jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',
     () =>
-        ({value}: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) =>
+        ({value}: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
+        )
 )
 jest.mock(
     'pages/common/components/FeaturePaywall/FeaturePaywall',

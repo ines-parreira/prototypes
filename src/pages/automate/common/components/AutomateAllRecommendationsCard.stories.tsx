@@ -74,28 +74,29 @@ export default meta
 
 type Story = StoryObj<typeof AutomateAllRecommendationsCard>
 
-const Template: StoryFn<ComponentProps<typeof AutomateAllRecommendationsCard>> =
-    (args) => {
-        const [statusFilter, setStatusFilter] = useState(
-            AllRecommendationsStatus.All
-        )
-        const [currentPage, setCurrentPage] = useState(1)
+const Template: StoryFn<
+    ComponentProps<typeof AutomateAllRecommendationsCard>
+> = (args) => {
+    const [statusFilter, setStatusFilter] = useState(
+        AllRecommendationsStatus.All
+    )
+    const [currentPage, setCurrentPage] = useState(1)
 
-        const onPageChange = (page: number) => {
-            setCurrentPage(page)
-        }
-
-        return (
-            <AutomateAllRecommendationsCard
-                {...args}
-                statusFilter={statusFilter}
-                setStatusFilter={setStatusFilter}
-                currentPage={currentPage}
-                onPageChange={onPageChange}
-                helpCenterId={1}
-            />
-        )
+    const onPageChange = (page: number) => {
+        setCurrentPage(page)
     }
+
+    return (
+        <AutomateAllRecommendationsCard
+            {...args}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            currentPage={currentPage}
+            onPageChange={onPageChange}
+            helpCenterId={1}
+        />
+    )
+}
 
 const articles: AIArticleRecommendationItem[] = [
     {

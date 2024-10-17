@@ -13,7 +13,7 @@ export type MergedRecord<AKeys extends string, BKeys extends string> = {
 export const withEnrichment = <
     T extends string,
     K extends string,
-    ID extends string
+    ID extends string,
 >(
     res: UseEnrichedPostReportingQueryData<{
         data: (KeyedRecord<T> & IDRecord<ID>)[]
@@ -41,7 +41,7 @@ export const withEnrichment = <
 const selectWithEnrichment = <
     T extends string,
     K extends string,
-    ID extends string
+    ID extends string,
 >(
     data: {
         data: (KeyedRecord<T> & IDRecord<ID>)[]

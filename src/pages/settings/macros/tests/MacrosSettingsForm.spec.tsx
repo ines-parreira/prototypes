@@ -26,8 +26,9 @@ jest.mock('models/macro/resources')
 jest.mock(
     'pages/common/components/button/ConfirmButton',
     () =>
-        ({children, onConfirm}: ComponentProps<typeof ConfirmButton>) =>
+        ({children, onConfirm}: ComponentProps<typeof ConfirmButton>) => (
             <div onClick={onConfirm}>{children}</div>
+        )
 )
 const mockActions = fromJS([
     {
@@ -49,15 +50,14 @@ jest.mock('pages/common/components/Loader/Loader', () => () => (
 jest.mock(
     'pages/tickets/common/macros/components/MacroEdit',
     () =>
-        ({actions, setActions}: ComponentProps<typeof MacroEdit>) =>
-            (
-                <div onClick={() => setActions(mockActions)}>
-                    <span>MacroEditMock</span>
-                    {actions?.map((action: Map<any, any>, i) => (
-                        <span key={i}>{action.get('name') as string}</span>
-                    ))}
-                </div>
-            )
+        ({actions, setActions}: ComponentProps<typeof MacroEdit>) => (
+            <div onClick={() => setActions(mockActions)}>
+                <span>MacroEditMock</span>
+                {actions?.map((action: Map<any, any>, i) => (
+                    <span key={i}>{action.get('name') as string}</span>
+                ))}
+            </div>
+        )
 )
 jest.mock('hooks/useHasAgentPrivileges')
 jest.mock(
@@ -66,7 +66,7 @@ jest.mock(
         ({
             ...jest.requireActual('react-router'),
             useParams: jest.fn(),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 
 const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<

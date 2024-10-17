@@ -39,7 +39,7 @@ export function useTemplateContext(source?: Source) {
     // nothing.
     const mappedIntegrationData = useMemo(() => {
         const mappedIntegrationData: {
-            [key in typeof MAPPED_INTEGRATIONS[number]]?: CustomerIntegration
+            [key in (typeof MAPPED_INTEGRATIONS)[number]]?: CustomerIntegration
         } = {}
         for (const type of MAPPED_INTEGRATIONS) {
             const integrationData = Object.values(
@@ -64,7 +64,7 @@ export function useTemplateContext(source?: Source) {
             unknown
         >
         const trimmedCurrentUserData: Partial<
-            Record<typeof CURRENT_USER_TEMPLATE_FIELDS[number], unknown>
+            Record<(typeof CURRENT_USER_TEMPLATE_FIELDS)[number], unknown>
         > = {}
 
         CURRENT_USER_TEMPLATE_FIELDS.forEach((field) => {

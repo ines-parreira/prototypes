@@ -32,8 +32,8 @@ const Accordion = <T extends string | string[] | null>({
         expandedItemProp !== undefined
             ? expandedItemProp
             : isMulti
-            ? ([''] as T)
-            : defaultExpandedItem
+              ? ([''] as T)
+              : defaultExpandedItem
     )
 
     useEffect(() => {

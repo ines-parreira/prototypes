@@ -84,9 +84,12 @@ export function fileIconFromContentType(contentType: string): string {
  */
 export const getSortedIntegrationActionsNames = (actions: ActionTemplate[]) =>
     fromJS(
-        actions.reduce((sorted, {integrationType: type, name}) => {
-            return {...sorted, [type!]: [...(sorted[type!] || []), name]}
-        }, {} as {[key: string]: string[]})
+        actions.reduce(
+            (sorted, {integrationType: type, name}) => {
+                return {...sorted, [type!]: [...(sorted[type!] || []), name]}
+            },
+            {} as {[key: string]: string[]}
+        )
     ) as Map<string, any>
 
 /**
@@ -100,9 +103,12 @@ export const getSortedIntegrationActions = (
     actions: List<Map<string, any>>
 ): Map<any, any> =>
     fromJS(
-        actions.reduce((sorted, action) => {
-            const name: string = action!.get('name')
-            const type = getActionTemplate(name)?.integrationType || name
-            return {...sorted, [type]: [...(sorted![type] || []), action]}
-        }, {} as {[key: string]: any[]})
+        actions.reduce(
+            (sorted, action) => {
+                const name: string = action!.get('name')
+                const type = getActionTemplate(name)?.integrationType || name
+                return {...sorted, [type]: [...(sorted![type] || []), action]}
+            },
+            {} as {[key: string]: any[]}
+        )
     ) as Map<string, any>

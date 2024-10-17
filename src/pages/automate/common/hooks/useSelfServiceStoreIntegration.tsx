@@ -30,7 +30,7 @@ export const withSelfServiceStoreIntegrationContext =
             shopName: string
             children?: React.ReactNode
             notReadyFallback?: React.ReactNode
-        }
+        },
     >(
         Component: React.FC<WrappedProps>
     ) =>

@@ -185,7 +185,7 @@ jest.mock(
                 'US/Pacific',
                 'Australia/AUR',
             ]),
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 
 jest.mock(
@@ -204,7 +204,7 @@ jest.mock(
                 />
             ),
             /* eslint-enable */
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 
 jest.mock('chart.js')

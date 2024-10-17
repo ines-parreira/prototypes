@@ -33,7 +33,7 @@ jest.mock(
         ({
             ...jest.requireActual('react-router'),
             useLocation: jest.fn(),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 const useLocationSpy = (
     jest.spyOn(ReactRouterDom, 'useLocation') as jest.SpyInstance<

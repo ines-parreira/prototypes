@@ -4,7 +4,7 @@ describe('getFullValueFromCurrentPath', () => {
     const testValues: Array<
         [
             Parameters<typeof getFullValueFromCurrentPath>,
-            ReturnType<typeof getFullValueFromCurrentPath>
+            ReturnType<typeof getFullValueFromCurrentPath>,
         ]
     > = [
         [[[], 'foo'], 'foo'],

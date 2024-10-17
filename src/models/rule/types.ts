@@ -203,4 +203,4 @@ export const ACTION_TYPES = [
     'trashTicket',
 ] as const
 
-export type ActionType = typeof ACTION_TYPES[number]
+export type ActionType = (typeof ACTION_TYPES)[number]

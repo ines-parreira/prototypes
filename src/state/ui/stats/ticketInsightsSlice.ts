@@ -57,8 +57,8 @@ export const ticketInsightsSlice = createSlice({
                             ? OrderDirection.Desc
                             : OrderDirection.Asc
                         : action.payload.column === 'label'
-                        ? OrderDirection.Asc
-                        : OrderDirection.Desc,
+                          ? OrderDirection.Asc
+                          : OrderDirection.Desc,
             }
         },
         toggleHeatmapMode(state) {

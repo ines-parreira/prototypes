@@ -20,7 +20,7 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 jest.mock(
     'react-router-dom',
@@ -32,7 +32,7 @@ jest.mock(
                 ({children}: {children: React.ReactNode}) => children
             ),
             NavLink: ({children}: {children: React.ReactNode}) => children,
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldDefinitions')

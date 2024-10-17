@@ -18,15 +18,14 @@ jest.mock('models/team/queries', () => ({
 jest.mock(
     '../VoiceIntegrationPreferencesTeamSelect',
     () =>
-        ({onChange}: {onChange: (e: any) => void}) =>
-            (
-                <input
-                    onChange={(e) => {
-                        onChange(e.target.value)
-                    }}
-                    data-testid="team-select"
-                />
-            )
+        ({onChange}: {onChange: (e: any) => void}) => (
+            <input
+                onChange={(e) => {
+                    onChange(e.target.value)
+                }}
+                data-testid="team-select"
+            />
+        )
 )
 
 describe('<VoiceIntegrationPreferencesInboundCalls />', () => {

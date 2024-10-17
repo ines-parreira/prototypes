@@ -15,20 +15,20 @@ type InjectedRequest<T> = T extends (
     ? F extends CancelToken
         ? (a: A, b: B, c: C, d: D, e: E) => R
         : E extends CancelToken
-        ? (a: A, b: B, c: C, d: D) => R
-        : D extends CancelToken
-        ? (a: A, b: B, c: C) => R
-        : C extends CancelToken
-        ? (a: A, b: B) => R
-        : B extends CancelToken
-        ? (a: A) => R
-        : never
+          ? (a: A, b: B, c: C, d: D) => R
+          : D extends CancelToken
+            ? (a: A, b: B, c: C) => R
+            : C extends CancelToken
+              ? (a: A, b: B) => R
+              : B extends CancelToken
+                ? (a: A) => R
+                : never
     : never
 
 export type CancellableRequestInjectedProps<
     RequestName extends string,
     CancelName extends string,
-    Request
+    Request,
 > = {
     [requestName in RequestName]: InjectedRequest<Request>
 } & {[cancelName in CancelName]: () => void}
@@ -37,7 +37,9 @@ const withCancellableRequest =
     <
         RequestName extends string,
         CancelName extends string,
-        Request extends (...args: any[]) => (...args: any[]) => Promise<unknown>
+        Request extends (
+            ...args: any[]
+        ) => (...args: any[]) => Promise<unknown>,
     >(
         requestName: RequestName,
         request: Request

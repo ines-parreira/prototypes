@@ -1,17 +1,17 @@
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {changeTicketMessage} from 'state/ui/ticketAIAgentFeedback'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import Button from 'pages/common/components/button/Button'
+import {changeTicketMessage} from 'state/ui/ticketAIAgentFeedback'
 
+import {SegmentEvent} from 'common/segment'
+import {logEventWithSampling} from 'common/segment/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {getAIAgentMessages} from 'state/ticket/selectors'
-import {logEventWithSampling} from 'common/segment/segment'
-import {SegmentEvent} from 'common/segment'
+import css from './AIAgentFeedbackBar.less'
 import AIAgentMessageFeedback from './AIAgentMessageFeedback'
 import AIAgentTicketFeedback from './AIAgentTicketFeedback'
-import css from './AIAgentFeedbackBar.less'
 import useAiAgentMessageFeedback from './hooks/useAiAgentMessageFeedback'
 
 export const FEEDBACK_TICKET_SUMMARY_TEST_ID = 'feedback-bar'
@@ -56,9 +56,9 @@ const AIAgentFeedbackBar = () => {
                         __html: messageFeedback?.summary
                             ? messageFeedback.summary
                             : ticketFeedback?.messages.length === 1 &&
-                              ticketMessageFeedbackSummary !== undefined
-                            ? ticketMessageFeedbackSummary
-                            : ticketFeedbackSummary,
+                                ticketMessageFeedbackSummary !== undefined
+                              ? ticketMessageFeedbackSummary
+                              : ticketFeedbackSummary,
                     }}
                 />
                 {aiMessages.length > 1 && !messageFeedback && (

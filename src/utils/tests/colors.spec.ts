@@ -20,7 +20,7 @@ jest.mock(
                     jest.requireActual('color2k')
                 return actualGetContrast(...props)
             },
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 
 describe('getEnoughContrastedColor', () => {

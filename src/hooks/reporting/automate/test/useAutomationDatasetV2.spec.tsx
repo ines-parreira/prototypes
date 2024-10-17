@@ -247,7 +247,9 @@ describe('useAutomationDatasetV2', () => {
             useAutomationDatasetByEventTypeTimeSeriesMock.mockReturnValue({
                 data: automatedInteractionsDataByEventType,
                 isFetched: true,
-            } as unknown as UseQueryResult<Record<string, TimeSeriesDataItem[][]>>)
+            } as unknown as UseQueryResult<
+                Record<string, TimeSeriesDataItem[][]>
+            >)
 
             jest.spyOn(queryClient, 'invalidateQueries')
             const {result} = renderHook(

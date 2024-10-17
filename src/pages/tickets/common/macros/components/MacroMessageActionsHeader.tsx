@@ -47,48 +47,45 @@ type MacroMessageActionsHeaderDropdownItemProps = {
     onSelect: (type: MacroResponseActionName) => void
 }
 
-const MacroMessageActionsHeaderDropdownItem: React.FC<MacroMessageActionsHeaderDropdownItemProps> =
-    ({type, current, used, onSelect}) => {
-        const id = `macro-action-header-item-${type}`
-        const disabled = !current && used
-        const onClick = useCallback(() => onSelect(type), [onSelect, type])
-        const flags = useFlags()
+const MacroMessageActionsHeaderDropdownItem: React.FC<
+    MacroMessageActionsHeaderDropdownItemProps
+> = ({type, current, used, onSelect}) => {
+    const id = `macro-action-header-item-${type}`
+    const disabled = !current && used
+    const onClick = useCallback(() => onSelect(type), [onSelect, type])
+    const flags = useFlags()
 
-        const {title, icon, featureFlagKey} = optionsConfig[type]
+    const {title, icon, featureFlagKey} = optionsConfig[type]
 
-        if (featureFlagKey && !flags[featureFlagKey]) {
-            return null
-        }
-
-        return (
-            <>
-                <DropdownItem
-                    type="button"
-                    className={classNames(css.dropdownItem, {
-                        [css.dropdownItemDisabled]: disabled,
-                    })}
-                    onClick={current || disabled ? undefined : onClick}
-                    toggle={!disabled}
-                    id={id}
-                >
-                    <i className="material-icons">{icon}</i>
-                    <span>{title}</span>
-                    {(current || used) && (
-                        <i className="material-icons">check</i>
-                    )}
-                </DropdownItem>
-                {disabled && (
-                    <UncontrolledTooltip target={id}>
-                        There’s already
-                        {type === MacroActionName.AddInternalNote
-                            ? ' an '
-                            : ' '}
-                        {title.toLowerCase()} added to this macro.
-                    </UncontrolledTooltip>
-                )}
-            </>
-        )
+    if (featureFlagKey && !flags[featureFlagKey]) {
+        return null
     }
+
+    return (
+        <>
+            <DropdownItem
+                type="button"
+                className={classNames(css.dropdownItem, {
+                    [css.dropdownItemDisabled]: disabled,
+                })}
+                onClick={current || disabled ? undefined : onClick}
+                toggle={!disabled}
+                id={id}
+            >
+                <i className="material-icons">{icon}</i>
+                <span>{title}</span>
+                {(current || used) && <i className="material-icons">check</i>}
+            </DropdownItem>
+            {disabled && (
+                <UncontrolledTooltip target={id}>
+                    There’s already
+                    {type === MacroActionName.AddInternalNote ? ' an ' : ' '}
+                    {title.toLowerCase()} added to this macro.
+                </UncontrolledTooltip>
+            )}
+        </>
+    )
+}
 
 const MacroMessageActionsHeaderDropdown: typeof MacroMessageActionsHeader = ({
     actions,

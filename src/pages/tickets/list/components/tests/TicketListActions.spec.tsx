@@ -56,12 +56,11 @@ const mockStore = configureMockStore()
 jest.mock(
     'tags/TagDropdownMenu',
     () =>
-        ({onClick}: ComponentProps<typeof TagDropdownMenu>) =>
-            (
-                <div onClick={() => onClick({name: 'tag added'})}>
-                    TagDropdownMenuMock
-                </div>
-            )
+        ({onClick}: ComponentProps<typeof TagDropdownMenu>) => (
+            <div onClick={() => onClick({name: 'tag added'})}>
+                TagDropdownMenuMock
+            </div>
+        )
 )
 
 describe('TicketListActions component', () => {
@@ -512,7 +511,7 @@ describe('TicketListActions component', () => {
         ) => ComponentProps<typeof TicketListActions>,
         (renderResult: RenderResult) => void | Promise<void>,
         {updates: XOR<Update>},
-        string
+        string,
     ]
 
     describe.each([

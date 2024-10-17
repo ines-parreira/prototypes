@@ -36,7 +36,7 @@ export type PaginationMeta = {
 
 export type ApiListResponseCursorPagination<
     T,
-    U = CursorMeta
+    U = CursorMeta,
 > = ApiListResponse<T, U>
 
 export type CursorMeta = {

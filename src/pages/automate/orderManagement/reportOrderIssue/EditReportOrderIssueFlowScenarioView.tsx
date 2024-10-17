@@ -20,8 +20,10 @@ import ReportOrderIssueFlowScenarioPreview from './ReportOrderIssueFlowScenarioP
 import css from './EditReportOrderIssueFlowScenarioView.less'
 
 const EditReportOrderIssueFlowScenarioView = () => {
-    const {shopName, scenarioIndex} =
-        useParams<{shopName: string; scenarioIndex: string}>()
+    const {shopName, scenarioIndex} = useParams<{
+        shopName: string
+        scenarioIndex: string
+    }>()
     const {
         isUpdatePending,
         isFallback,

@@ -8,14 +8,13 @@ import InfiniteScroll from '../InfiniteScroll'
 jest.mock(
     'pages/common/components/Spinner',
     () =>
-        ({size, width}: ComponentProps<typeof Spinner>) =>
-            (
-                <div>
-                    SpinnerMock
-                    <div>size-{size}</div>
-                    <div>width-{width}</div>
-                </div>
-            )
+        ({size, width}: ComponentProps<typeof Spinner>) => (
+            <div>
+                SpinnerMock
+                <div>size-{size}</div>
+                <div>width-{width}</div>
+            </div>
+        )
 )
 
 describe('<InfiniteScroll />', () => {

@@ -87,7 +87,7 @@ useQueryClientMock.mockImplementation(
     () =>
         ({
             invalidateQueries: invalidateQueriesMock,
-        } as unknown as QueryClient)
+        }) as unknown as QueryClient
 )
 
 // Mock useExtendTrialMock

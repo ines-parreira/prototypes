@@ -5,8 +5,7 @@ import IconButtonTooltip from '../IconButtonTooltip'
 jest.mock(
     'pages/common/components/button/IconButton',
     () =>
-        ({children, ...rest}: any) =>
-            <div {...rest}>{children}</div>
+        ({children, ...rest}: any) => <div {...rest}>{children}</div>
 )
 
 describe('<IconButtonTooltip />', () => {

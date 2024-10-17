@@ -34,7 +34,7 @@ describe('<CampaignFooter />', () => {
                 ({
                     isDismissed: false,
                     dismiss: jest.fn(),
-                } as any)
+                }) as any
         )
     })
 
@@ -124,7 +124,7 @@ describe('<CampaignFooter />', () => {
                     ({
                         isDismissed: false,
                         dismiss: jest.fn(),
-                    } as any)
+                    }) as any
             )
         })
 
@@ -232,7 +232,7 @@ describe('<CampaignFooter />', () => {
                     ({
                         isDismissed: true,
                         dismiss: jest.fn(),
-                    } as any)
+                    }) as any
             )
 
             const {getByRole} = renderComponent({

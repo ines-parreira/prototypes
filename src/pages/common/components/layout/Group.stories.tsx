@@ -24,15 +24,16 @@ const WithButtonTemplate: Story<ComponentProps<typeof Group>> = () => (
 
 export const WithButtons = WithButtonTemplate.bind({})
 
-const WithVerticalOrientationTemplate: Story<ComponentProps<typeof Group>> =
-    () => (
-        <Group orientation="vertical">
-            <IconButton>add</IconButton>
-            <Button>Foo</Button>
-            <Button>Bar</Button>
-            <ConfirmButton>I'm a long button label</ConfirmButton>
-        </Group>
-    )
+const WithVerticalOrientationTemplate: Story<
+    ComponentProps<typeof Group>
+> = () => (
+    <Group orientation="vertical">
+        <IconButton>add</IconButton>
+        <Button>Foo</Button>
+        <Button>Bar</Button>
+        <ConfirmButton>I'm a long button label</ConfirmButton>
+    </Group>
+)
 
 export const WithVerticalOrientation = WithVerticalOrientationTemplate.bind({})
 

@@ -22,15 +22,14 @@ jest.mock(
 jest.mock(
     'pages/common/forms/FileField',
     () =>
-        ({onChange}: {onChange: (files: Attachment[]) => void}) =>
-            (
-                <input
-                    onClick={() =>
-                        onChange([{name: 'attachement name'} as Attachment])
-                    }
-                    value="FileFieldMock"
-                />
-            )
+        ({onChange}: {onChange: (files: Attachment[]) => void}) => (
+            <input
+                onClick={() =>
+                    onChange([{name: 'attachement name'} as Attachment])
+                }
+                value="FileFieldMock"
+            />
+        )
 )
 
 const mockStore = configureMockStore([thunk])

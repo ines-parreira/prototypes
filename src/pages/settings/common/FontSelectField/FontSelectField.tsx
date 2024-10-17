@@ -49,7 +49,7 @@ export const FontSelectField = ({
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [selectedFont, setSelectedFont] = useState(value) as [
         string,
-        (value: string) => void
+        (value: string) => void,
     ]
     const [fontsFromLocalStorage, setFontsFromLocalStorage] = useState(() =>
         getFontsFromLocalStorage()

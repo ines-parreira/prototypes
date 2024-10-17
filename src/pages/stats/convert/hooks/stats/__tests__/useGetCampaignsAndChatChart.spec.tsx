@@ -37,7 +37,7 @@ describe('useGetTotalsStat', () => {
         string,
         number,
         string,
-        ReportingGranularity
+        ReportingGranularity,
     ] = [
         'shopify:square-wheels-company',
         ['campaign1', 'campaign2'],

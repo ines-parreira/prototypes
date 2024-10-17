@@ -68,8 +68,8 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
             : ''
     const [isPhoneNumberCopied, setIsPhoneNumberCopied] = useState(false)
     const countryName = numberCountryCode
-        ? countries.find((c) => c.value === numberCountryCode)?.label ??
-          numberCountryCode
+        ? (countries.find((c) => c.value === numberCountryCode)?.label ??
+          numberCountryCode)
         : ''
 
     const [{loading: isDeletePending}, handleDelete] = useAsyncFn(async () => {

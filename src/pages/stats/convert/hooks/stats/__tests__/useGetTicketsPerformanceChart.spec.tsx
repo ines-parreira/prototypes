@@ -16,7 +16,7 @@ describe('useTicketsPerformanceChart', () => {
         string,
         number[],
         LogicalOperatorEnum,
-        TicketChannel[]
+        TicketChannel[],
     ] = [
         ['campaign1', 'campaign2'],
         startDate,

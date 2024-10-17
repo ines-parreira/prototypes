@@ -72,7 +72,7 @@ export type Cell<T extends typeof BodyCell | typeof HeaderCellProperty> = {
 }
 
 export const filterAndOrderCells = <
-    T extends typeof BodyCell | typeof HeaderCellProperty
+    T extends typeof BodyCell | typeof HeaderCellProperty,
 >(
     allColumns: Record<VoiceCallTableColumnName, Pick<Cell<T>, 'props'>>,
     requiredColumns: VoiceCallTableColumnName[] = getVoiceDrillDownColumns()

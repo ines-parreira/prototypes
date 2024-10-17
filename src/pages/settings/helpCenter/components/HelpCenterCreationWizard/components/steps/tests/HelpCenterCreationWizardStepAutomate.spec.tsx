@@ -500,7 +500,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             // Hack to check what is being passed to the draft function
             const draftFunction = (
                 mockSelfServiceConfigUpdate.mock.calls[0] as [
-                    (draft: unknown) => void
+                    (draft: unknown) => void,
                 ]
             )[0]
             draftFunction(draft)
@@ -548,7 +548,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             // Hack to check what is being passed to the draft function
             const draftFunction = (
                 mockSelfServiceConfigUpdate.mock.calls[0] as [
-                    (draft: unknown) => void
+                    (draft: unknown) => void,
                 ]
             )[0]
             draftFunction(draft)

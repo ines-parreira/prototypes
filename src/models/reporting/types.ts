@@ -60,7 +60,7 @@ export type Cube<
     ReportingDimension = unknown,
     ReportingSegment = unknown,
     ReportingFilterMember = unknown,
-    ReportingTimeDimension = unknown
+    ReportingTimeDimension = unknown,
 > = {
     measures: ReportingMeasure
     dimensions: ReportingDimension
@@ -71,7 +71,7 @@ export type Cube<
 
 export type JoinedCubesWithMapping<
     BaseCube extends Cube,
-    JoinedCube extends Cube
+    JoinedCube extends Cube,
 > = {
     [Property in keyof Cube]: BaseCube[Property] | JoinedCube[Property]
 }

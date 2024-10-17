@@ -44,15 +44,14 @@ const mockActions = fromJS([
 jest.mock(
     '../MacroEdit',
     () =>
-        ({actions, setActions}: ComponentProps<typeof MacroEdit>) =>
-            (
-                <div onClick={() => setActions(mockActions)}>
-                    MacroEditMock
-                    {actions?.map((action: Map<any, any>, i) => (
-                        <div key={i}>{action.get('name')}</div>
-                    ))}
-                </div>
-            )
+        ({actions, setActions}: ComponentProps<typeof MacroEdit>) => (
+            <div onClick={() => setActions(mockActions)}>
+                MacroEditMock
+                {actions?.map((action: Map<any, any>, i) => (
+                    <div key={i}>{action.get('name')}</div>
+                ))}
+            </div>
+        )
 )
 
 jest.mock('pages/common/components/modal/Modal', () => {

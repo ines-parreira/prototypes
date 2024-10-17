@@ -73,7 +73,7 @@ export const getRuleSuggestionContent = (
                     title: actionsConfig[action.name]?.name,
                     status: ActionStatus.Pending,
                     type: MacroActionType.User,
-                } as MacroAction)
+                }) as MacroAction
         )
 
     const text = suggestion.actions?.find(

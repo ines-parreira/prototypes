@@ -44,8 +44,8 @@ export const tagsReportSlice = createSlice({
                     action.payload.column === state.order.column
                         ? opposite(state.order.direction)
                         : action.payload.column === 'tag'
-                        ? OrderDirection.Asc
-                        : OrderDirection.Desc,
+                          ? OrderDirection.Asc
+                          : OrderDirection.Desc,
             }
         },
         toggleHeatmapMode(state) {

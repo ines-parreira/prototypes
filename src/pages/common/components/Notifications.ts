@@ -66,14 +66,14 @@ const theme: Theme = {
             background: state.isHovered
                 ? 'var(--main-primary-2)'
                 : state.isActive
-                ? 'var(--main-primary-3)'
-                : 'var(--main-primary)',
+                  ? 'var(--main-primary-3)'
+                  : 'var(--main-primary)',
             border: '1px solid',
             borderColor: state.isHovered
                 ? 'var(--main-primary)'
                 : state.isActive
-                ? 'var(--main-primary-4)'
-                : 'var(--main-primary-3)',
+                  ? 'var(--main-primary-4)'
+                  : 'var(--main-primary-3)',
             borderRadius: 4,
             color: 'var(--neutral-grey-0)',
             padding: '1px 8px',

@@ -17,12 +17,12 @@ export const useArticleRowActions = (articleId: number) => {
             name === 'copyToClipboard'
                 ? false
                 : isPassingRulesCheck(
-                      ({can}) =>
-                          can('create', 'ArticleEntity') &&
-                          can('update', 'ArticleEntity')
-                  )
-                ? limitations[name]?.disabled
-                : true
+                        ({can}) =>
+                            can('create', 'ArticleEntity') &&
+                            can('update', 'ArticleEntity')
+                    )
+                  ? limitations[name]?.disabled
+                  : true
 
         return {
             icon,

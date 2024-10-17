@@ -15,7 +15,7 @@ const USAGE_ORDER_BYS = [
     `${ListTagsOrderBy.Usage}:${OrderDirection.Asc}`,
     `${ListTagsOrderBy.Usage}:${OrderDirection.Desc}`,
 ] as const
-type UsageOrderBy = typeof USAGE_ORDER_BYS[number]
+type UsageOrderBy = (typeof USAGE_ORDER_BYS)[number]
 
 function isMissingSecondOrderBy(value?: string): value is UsageOrderBy {
     return !!USAGE_ORDER_BYS.find((orderBy) => orderBy === value)

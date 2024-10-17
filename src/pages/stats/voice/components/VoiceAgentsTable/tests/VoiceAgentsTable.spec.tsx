@@ -19,14 +19,14 @@ import {VoiceAgentsTable} from '../VoiceAgentsTable'
 jest.mock(
     'pages/stats/voice/components/VoiceAgentsTable/AverageTalkTimeCell',
     () =>
-        ({agentId}: {agentId: number}) =>
+        ({agentId}: {agentId: number}) => (
             <div>AverageTalkTimeCell {agentId}</div>
+        )
 )
 jest.mock(
     'pages/stats/voice/components/VoiceAgentsTable/CallsCountCell',
     () =>
-        ({agentId}: {agentId: number}) =>
-            <div>CallsCountCell {agentId}</div>
+        ({agentId}: {agentId: number}) => <div>CallsCountCell {agentId}</div>
 )
 jest.mock(
     'pages/stats/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell',
@@ -43,7 +43,7 @@ jest.mock(
             ...jest.requireActual('state/ui/stats/agentPerformanceSlice'),
             getSortedAgents: jest.fn(),
             getPaginatedAgents: jest.fn(),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 jest.mock(
     'state/ui/stats/selectors',
@@ -51,7 +51,7 @@ jest.mock(
         ({
             ...jest.requireActual('state/ui/stats/selectors'),
             getCleanStatsFilters: jest.fn(),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 
 const getSortedAgentsMock = assumeMock(getSortedAgents)

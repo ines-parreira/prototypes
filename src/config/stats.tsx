@@ -114,21 +114,24 @@ const getIntentsOptions = (): Record<string, IntentOption> => {
     let lightenAmount: number
     let currentCategory = ''
 
-    return Object.values(IntentName).reduce((linesOptions, intent) => {
-        const category = intent.split('/')[0] ?? intent
-        if (category !== currentCategory) {
-            currentCategory = category
-            lightenAmount = 20
-            colorIdx += 1
-        } else {
-            lightenAmount -= 20
-        }
-        linesOptions[intent] = {
-            color: lightenDarkenColor(colors[colorIdx], lightenAmount),
-            label: humanizeString(intent),
-        }
-        return linesOptions
-    }, {} as Record<IntentName, {color: string; label: string}>)
+    return Object.values(IntentName).reduce(
+        (linesOptions, intent) => {
+            const category = intent.split('/')[0] ?? intent
+            if (category !== currentCategory) {
+                currentCategory = category
+                lightenAmount = 20
+                colorIdx += 1
+            } else {
+                lightenAmount -= 20
+            }
+            linesOptions[intent] = {
+                color: lightenDarkenColor(colors[colorIdx], lightenAmount),
+                label: humanizeString(intent),
+            }
+            return linesOptions
+        },
+        {} as Record<IntentName, {color: string; label: string}>
+    )
 }
 
 const intentsOptions = getIntentsOptions()
@@ -356,7 +359,7 @@ export const stats = toImmutable<
                             type: 'user'
                             value: {id: number; name: string}
                         },
-                        {type: 'bool'; value: boolean}
+                        {type: 'bool'; value: boolean},
                     ][]
                     const dataLength = formattedData.length
 
@@ -409,7 +412,7 @@ export const stats = toImmutable<
                             type: 'user'
                             value: {id: number; name: string}
                         },
-                        {type: 'bool'; value: boolean}
+                        {type: 'bool'; value: boolean},
                     ][]
                     const dataLength = formattedData.length
 

@@ -18,7 +18,7 @@ jest.mock(
                 push: mockHistoryPush,
                 goBack: mockHistoryGoBack,
             }),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 jest.mock('pages/common/hooks/useReorderDnD', () => {
     return {

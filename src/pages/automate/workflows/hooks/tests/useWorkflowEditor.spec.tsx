@@ -47,15 +47,21 @@ describe('useWorkflowEditor()', () => {
             mutateAsync: jest.fn().mockResolvedValue({
                 data: {},
             }),
-        } as unknown as ReturnType<typeof useFetchWorkflowConfigurationTranslations>)
+        } as unknown as ReturnType<
+            typeof useFetchWorkflowConfigurationTranslations
+        >)
         mockUseDeleteWorkflowConfigurationTranslations.mockReturnValue({
             mutateAsync: jest.fn(),
-        } as unknown as ReturnType<typeof useDeleteWorkflowConfigurationTranslations>)
+        } as unknown as ReturnType<
+            typeof useDeleteWorkflowConfigurationTranslations
+        >)
         mockUseUpsertWorkflowConfigurationTranslations.mockReturnValue({
             mutateAsync: jest.fn().mockResolvedValue({
                 data: {},
             }),
-        } as unknown as ReturnType<typeof useUpsertWorkflowConfigurationTranslations>)
+        } as unknown as ReturnType<
+            typeof useUpsertWorkflowConfigurationTranslations
+        >)
         mockUseSelfServiceStoreIntegrationContext.mockReturnValue(
             shopifyIntegration
         )

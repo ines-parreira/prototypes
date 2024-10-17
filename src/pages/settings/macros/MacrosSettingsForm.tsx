@@ -231,8 +231,8 @@ export function MacrosSettingsFormContainer({
                             {!macroId
                                 ? 'Add macro'
                                 : !macros[macroId]
-                                ? 'Edit'
-                                : `Edit: ${macros[macroId].name}`}
+                                  ? 'Edit'
+                                  : `Edit: ${macros[macroId].name}`}
                         </BreadcrumbItem>
                     </Breadcrumb>
                 }

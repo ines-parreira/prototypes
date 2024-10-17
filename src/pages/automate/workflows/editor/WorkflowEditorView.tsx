@@ -80,8 +80,10 @@ function WorkflowEditorViewWrapped({
     goToWorkflowAnalyticsPage,
     logActionOnFlowBuilder,
 }: WorkflowEditorViewProps) {
-    const {template: templateSlug, from: fromView} =
-        useSearch<{template: string | undefined; from: string | undefined}>()
+    const {template: templateSlug, from: fromView} = useSearch<{
+        template: string | undefined
+        from: string | undefined
+    }>()
     const workflowEditorContext = useWorkflowEditorContext()
     const location = useLocation<{doShowDisplayInChannels: boolean}>()
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
@@ -243,9 +245,8 @@ function WorkflowEditorViewWrapped({
     })
 
     const upsertWorkflow = async (isDraft = true) => {
-        const configurationError = workflowEditorContext.handleValidate(
-            !isDraft
-        )
+        const configurationError =
+            workflowEditorContext.handleValidate(!isDraft)
         if (configurationError) {
             workflowEditorContext.setShouldShowErrors(true)
             notifyMerchant({

@@ -64,20 +64,20 @@ jest.mock(
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo.tsx',
     () =>
-        ({customer}: ComponentProps<typeof InfobarCustomerInfo>) =>
-            (
-                <div data-testid="InfobarCustomerInfo">
-                    InfobarCustomerInfo
-                    <div>customer: {JSON.stringify(customer)}</div>
-                </div>
-            )
+        ({customer}: ComponentProps<typeof InfobarCustomerInfo>) => (
+            <div data-testid="InfobarCustomerInfo">
+                InfobarCustomerInfo
+                <div>customer: {JSON.stringify(customer)}</div>
+            </div>
+        )
 )
 
 jest.mock(
     'pages/common/components/infobar/InfobarLayout',
     () =>
-        ({children}: ComponentProps<typeof InfobarLayout>) =>
+        ({children}: ComponentProps<typeof InfobarLayout>) => (
             <div data-testid="InfobarLayout">{children}</div>
+        )
 )
 
 jest.mock(

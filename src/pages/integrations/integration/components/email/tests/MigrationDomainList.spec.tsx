@@ -34,18 +34,17 @@ jest.mock(
         ({
             verification,
             onVerificationMethodSwitch,
-        }: ComponentProps<typeof DomainVerificationAccordionItem>) =>
-            (
-                <div data-testid="domain-accordion">
-                    <button
-                        onClick={() =>
-                            onVerificationMethodSwitch(verification.name)
-                        }
-                    >
-                        verify
-                    </button>
-                </div>
-            )
+        }: ComponentProps<typeof DomainVerificationAccordionItem>) => (
+            <div data-testid="domain-accordion">
+                <button
+                    onClick={() =>
+                        onVerificationMethodSwitch(verification.name)
+                    }
+                >
+                    verify
+                </button>
+            </div>
+        )
 )
 
 jest.mock(
@@ -54,18 +53,17 @@ jest.mock(
         ({
             verification,
             onVerificationMethodSwitch,
-        }: ComponentProps<typeof SingleSenderVerificationAccordionItem>) =>
-            (
-                <div data-testid="single-sender-accordion">
-                    <button
-                        onClick={() =>
-                            onVerificationMethodSwitch(verification.name)
-                        }
-                    >
-                        verify
-                    </button>
-                </div>
-            )
+        }: ComponentProps<typeof SingleSenderVerificationAccordionItem>) => (
+            <div data-testid="single-sender-accordion">
+                <button
+                    onClick={() =>
+                        onVerificationMethodSwitch(verification.name)
+                    }
+                >
+                    verify
+                </button>
+            </div>
+        )
 )
 
 describe('MigrationDomainList', () => {

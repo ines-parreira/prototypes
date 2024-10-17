@@ -98,8 +98,8 @@ export const ImageRepositioningModal = ({
                             dividedY > MAX_ABSOLUTE_OFFSET
                                 ? MAX_ABSOLUTE_OFFSET
                                 : dividedY < -MAX_ABSOLUTE_OFFSET
-                                ? -MAX_ABSOLUTE_OFFSET
-                                : dividedY
+                                  ? -MAX_ABSOLUTE_OFFSET
+                                  : dividedY
                         )
                     }}
                 >

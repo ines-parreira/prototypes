@@ -26,16 +26,21 @@ jest.mock('state/notifications/actions')
 jest.mock(
     'pages/common/forms/PhoneNumberInput/PhoneNumberInput',
     () =>
-        ({onChange, error}: {onChange: (value: any) => void; error?: string}) =>
-            (
-                <>
-                    <input
-                        data-testid="phoneNumberInput"
-                        onChange={(evt) => onChange(evt.target.value)}
-                    />
-                    <div>{error}</div>
-                </>
-            )
+        ({
+            onChange,
+            error,
+        }: {
+            onChange: (value: any) => void
+            error?: string
+        }) => (
+            <>
+                <input
+                    data-testid="phoneNumberInput"
+                    onChange={(evt) => onChange(evt.target.value)}
+                />
+                <div>{error}</div>
+            </>
+        )
 )
 
 const useGetCustomerMock = assumeMock(useGetCustomer)

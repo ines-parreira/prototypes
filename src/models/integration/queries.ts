@@ -200,9 +200,10 @@ export const useGetApps = (
     return useQuery({
         queryKey: ['apps', 'list'],
         queryFn: async () => {
-            const response = await client.get<
-                ApiListResponse<AppListData[], never>
-            >('/api/apps/')
+            const response =
+                await client.get<ApiListResponse<AppListData[], never>>(
+                    '/api/apps/'
+                )
             return response.data.data
         },
         staleTime: STALE_TIME_MS,

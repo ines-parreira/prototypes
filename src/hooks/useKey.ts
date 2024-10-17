@@ -16,10 +16,10 @@ const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate =>
     typeof keyFilter === 'function'
         ? keyFilter
         : typeof keyFilter === 'string'
-        ? (event: KeyboardEvent) => event.key === keyFilter
-        : keyFilter
-        ? () => true
-        : () => false
+          ? (event: KeyboardEvent) => event.key === keyFilter
+          : keyFilter
+            ? () => true
+            : () => false
 
 export default function useKey(
     key: KeyFilter,

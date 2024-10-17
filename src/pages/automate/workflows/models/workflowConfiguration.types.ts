@@ -248,7 +248,7 @@ export const supportedLanguages = [
     {code: 'pt-BR', label: 'Portuguese - BR'} as const,
     {code: 'sv-SE', label: 'Swedish'} as const,
 ] as const
-export type LanguageCode = typeof supportedLanguages[number]['code']
+export type LanguageCode = (typeof supportedLanguages)[number]['code']
 
 export type WorkflowConfiguration = {
     id: string

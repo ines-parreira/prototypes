@@ -6,8 +6,9 @@ import {TicketVoiceCallInboundStatus} from '../TicketVoiceCallInboundStatus'
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({agentId}: {agentId: number}) =>
+        ({agentId}: {agentId: number}) => (
             <div>VoiceCallAgentLabel {agentId}</div>
+        )
 )
 
 jest.mock('../TicketVoiceCallEvents', () => ({callId}: any) => (

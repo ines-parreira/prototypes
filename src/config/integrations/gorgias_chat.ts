@@ -149,7 +149,7 @@ export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_OPTIONS = [
 
 export const isAutoresponderReply = (
     option: any
-): option is typeof GORGIAS_CHAT_AUTO_RESPONDER_REPLY_OPTIONS[number] => {
+): option is (typeof GORGIAS_CHAT_AUTO_RESPONDER_REPLY_OPTIONS)[number] => {
     return GORGIAS_CHAT_AUTO_RESPONDER_REPLY_OPTIONS.includes(option)
 }
 

@@ -23,15 +23,17 @@ import {RefundOrderModalContainer} from '../RefundOrderModal'
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) =>
+        ({dateTime}: {dateTime: string}) => (
             <div data-testid="DatetimeLabel">{dateTime}</div>
+        )
 )
 
 jest.mock(
     'pages/common/components/modal/ModalHeader',
     () =>
-        ({title}: {title: ReactNode}) =>
+        ({title}: {title: ReactNode}) => (
             <div data-testid="Modal-Header">{title}</div>
+        )
 )
 
 jest.mock(

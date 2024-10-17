@@ -55,8 +55,8 @@ export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
                     message:
                         error.response?.status === 413
                             ? 'Failed to upload file because its size is bigger than 10MB. Try splitting it into several smaller files.'
-                            : error.response?.data.error.msg ??
-                              'Failed to upload file. Please try again later.',
+                            : (error.response?.data.error.msg ??
+                              'Failed to upload file. Please try again later.'),
                 })
             )
             return

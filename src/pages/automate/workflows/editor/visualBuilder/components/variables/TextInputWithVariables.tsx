@@ -96,8 +96,8 @@ const TextInputWithVariables = ({
                     variable.type === 'date'
                         ? 'date'
                         : variable.type === 'array'
-                        ? 'json'
-                        : undefined,
+                          ? 'json'
+                          : undefined,
             })
         )
 

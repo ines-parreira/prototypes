@@ -24,7 +24,7 @@ jest.mock(
             WidgetContextProvider: jest.fn(
                 ({children}: {children: ReactNode}) => children
             ),
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 const TemplateMock = assumeMock(Template)
 const PlaceholderMock = assumeMock(Placeholder)

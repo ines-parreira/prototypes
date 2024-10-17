@@ -26,7 +26,7 @@ describe('useGetTotalsStat', () => {
         string,
         string,
         string,
-        string
+        string,
     ] = [
         'shopify:slow-formulas-for-sale',
         ['campaign231', 'campaign232'],

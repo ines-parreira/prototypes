@@ -35,7 +35,7 @@ const createJobResponse = () =>
     ({
         isLoading: false,
         mutateAsync: mutateCreateJobMock,
-    } as unknown as ReturnType<typeof useCreateJob>)
+    }) as unknown as ReturnType<typeof useCreateJob>
 
 const mutateCancelJobMock = jest.fn()
 

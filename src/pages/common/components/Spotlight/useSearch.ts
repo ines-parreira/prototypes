@@ -401,9 +401,9 @@ export const useSearch = () => {
                 ? (customersSearchMeta as CursorMeta)?.next_cursor ||
                   (customersSearchMeta as OldSearchPaginationMeta)?.next_items
                 : searchItemsType === ViewType.TicketList
-                ? (ticketsSearchMeta as CursorMeta)?.next_cursor ||
-                  (ticketsSearchMeta as OldSearchPaginationMeta)?.next_items
-                : undefined,
+                  ? (ticketsSearchMeta as CursorMeta)?.next_cursor ||
+                    (ticketsSearchMeta as OldSearchPaginationMeta)?.next_items
+                  : undefined,
         [searchItemsType, customersSearchMeta, ticketsSearchMeta]
     )
 

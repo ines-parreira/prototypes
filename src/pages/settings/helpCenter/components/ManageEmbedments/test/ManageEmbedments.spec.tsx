@@ -36,7 +36,7 @@ jest.mock(
             ...jest.requireActual('pages/settings/helpCenter/queries'),
             useUpdatePageEmbedment: jest.fn(),
             useDeletePageEmbedment: jest.fn(),
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 const mockUpdatePageEmbedment = jest.fn()
 const mockDeletePageEmbedment = jest.fn()

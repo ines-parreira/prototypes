@@ -23,7 +23,7 @@ const mutateCancelJobMock = jest.fn()
 const cancelJobResponse = () =>
     ({
         mutate: mutateCancelJobMock,
-    } as unknown as ReturnType<typeof useCancelJobQuery>)
+    }) as unknown as ReturnType<typeof useCancelJobQuery>
 
 describe('useBulkAction', () => {
     useCancelJobMock.mockReturnValue(cancelJobResponse())

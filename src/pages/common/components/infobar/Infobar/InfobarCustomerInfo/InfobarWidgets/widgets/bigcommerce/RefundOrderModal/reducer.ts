@@ -119,7 +119,7 @@ export const bigcommerceRefundOrderReducer: Reducer<
                 Object.entries(productRefundData).forEach(
                     ([refundedProductId, refundData]: [
                         string,
-                        ProductItemRefundData
+                        ProductItemRefundData,
                     ]) => {
                         if (refundData.available_quantity > 0) {
                             productItems.push({
@@ -134,7 +134,7 @@ export const bigcommerceRefundOrderReducer: Reducer<
                 Object.entries(giftWrappingRefundData).forEach(
                     ([refundedProductId, refundData]: [
                         string,
-                        GiftWrappingItemRefundData
+                        GiftWrappingItemRefundData,
                     ]) => {
                         if (refundData.available_quantity > 0) {
                             giftWrappingItems.push({
@@ -163,7 +163,7 @@ export const bigcommerceRefundOrderReducer: Reducer<
                 Object.entries(action.shippingRefundData).forEach(
                     ([refundedShippingId, refundData]: [
                         string,
-                        ShippingItemRefundData
+                        ShippingItemRefundData,
                     ]) => {
                         if (!action.isShippingCostRefunded) {
                             if (draft.refundItemsPayload?.items.length) {
@@ -208,7 +208,7 @@ export const bigcommerceRefundOrderReducer: Reducer<
                 Object.entries(action.handlingRefundData).forEach(
                     ([refundedShippingId, refundData]: [
                         string,
-                        HandlingItemRefundData
+                        HandlingItemRefundData,
                     ]) => {
                         if (!action.isHandlingFeeRefunded) {
                             if (draft.refundItemsPayload?.items.length) {

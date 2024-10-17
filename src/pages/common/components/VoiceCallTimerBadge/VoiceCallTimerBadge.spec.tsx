@@ -12,7 +12,7 @@ jest.mock(
         ({
             ...jest.requireActual('pages/common/components/Badge/Badge'),
             default: ({children}: any) => <div>{children}</div>,
-        } as Record<any, any>)
+        }) as Record<any, any>
 )
 jest.mock('models/voiceCall/utils')
 jest.mock('hooks/useInterval')

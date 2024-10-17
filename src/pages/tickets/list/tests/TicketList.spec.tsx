@@ -49,15 +49,17 @@ const updateSelectedItemsIdsMock = assumeMock(updateSelectedItemsIds)
 jest.mock(
     'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider',
     () =>
-        ({children}: {children: ReactNode}) =>
+        ({children}: {children: ReactNode}) => (
             <div data-testid="search-rank-scenario-provider">{children}</div>
+        )
 )
 const mockItemsIds = fromJS([111])
 jest.mock(
     'pages/tickets/common/macros/MacroContainer',
     () =>
-        ({onComplete}: ComponentProps<typeof MacroContainer>) =>
+        ({onComplete}: ComponentProps<typeof MacroContainer>) => (
             <div onClick={() => onComplete?.(mockItemsIds)}>MacroContainer</div>
+        )
 )
 
 const mockHistoryPush = jest.fn()
@@ -70,7 +72,7 @@ jest.mock(
             useHistory: () => ({
                 push: mockHistoryPush,
             }),
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 
 jest.mock('common/segment')

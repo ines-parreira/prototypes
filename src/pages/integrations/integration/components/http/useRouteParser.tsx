@@ -12,8 +12,11 @@ import {
 } from './constants'
 
 export function useRouteParser() {
-    const {integrationId, extra, subId} =
-        useParams<{integrationId: string; extra: string; subId: string}>()
+    const {integrationId, extra, subId} = useParams<{
+        integrationId: string
+        extra: string
+        subId: string
+    }>()
 
     const isDetail = !integrationId
     const isList = integrationId === INTEGRATIONS_LIST_PATH

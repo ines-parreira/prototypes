@@ -19,8 +19,9 @@ const SummaryBodyMock = assumeMock(SummaryBody)
 
 jest.mock('../../UI/SummaryHeader')
 const SummaryHeaderMock = assumeMock(SummaryHeader)
-const componentMockFactory = (testId: string) => () =>
+const componentMockFactory = (testId: string) => () => (
     <div data-testid={testId} />
+)
 
 describe('CancellationSummary', () => {
     SummaryBodyMock.mockImplementation(componentMockFactory('summary-body'))

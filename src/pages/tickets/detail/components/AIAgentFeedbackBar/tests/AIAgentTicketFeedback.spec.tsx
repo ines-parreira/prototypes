@@ -31,17 +31,16 @@ jest.mock(
             isFirst: boolean
             isLast: boolean
             eventType: TicketEventEnum
-        }) =>
-            (
-                <div
-                    data-testid="ticket-event"
-                    data-is-first={isFirst}
-                    data-is-last={isLast}
-                    data-event-type={eventType}
-                >
-                    {children}
-                </div>
-            )
+        }) => (
+            <div
+                data-testid="ticket-event"
+                data-is-first={isFirst}
+                data-is-last={isLast}
+                data-event-type={eventType}
+            >
+                {children}
+            </div>
+        )
 )
 
 const getAIAgentMessagesMock = assumeMock(getAIAgentMessages)

@@ -42,15 +42,18 @@ export default function GaugeChart({
             .slice(0, STAT_COLORS.length - 1)
             .map((item) => item.label)
         return [
-            ...data.reduce((acc, item) => {
-                if (displayLabels.includes(item.label)) {
-                    acc.push({
-                        ...item,
-                        color: STAT_COLORS[acc.length],
-                    })
-                }
-                return acc
-            }, [] as (OneDimensionalDataItem & {color: string})[]),
+            ...data.reduce(
+                (acc, item) => {
+                    if (displayLabels.includes(item.label)) {
+                        acc.push({
+                            ...item,
+                            color: STAT_COLORS[acc.length],
+                        })
+                    }
+                    return acc
+                },
+                [] as (OneDimensionalDataItem & {color: string})[]
+            ),
             {
                 label: restLabel,
                 value: sortedItems

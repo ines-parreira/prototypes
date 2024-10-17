@@ -23,7 +23,7 @@ export const ParameterTypes = {
     Dropdown: 'dropdown',
 } as const
 
-export type ParameterType = typeof ParameterTypes[keyof typeof ParameterTypes]
+export type ParameterType = (typeof ParameterTypes)[keyof typeof ParameterTypes]
 
 export type Parameter = {
     id?: string

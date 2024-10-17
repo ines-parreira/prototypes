@@ -26,13 +26,12 @@ const customer = fromJS({
 jest.mock(
     'pages/common/components/Avatar/Avatar',
     () =>
-        ({badgeColor}: ComponentProps<typeof Avatar>) =>
-            (
-                <div>
-                    Avatar
-                    <div>badgeColor: {badgeColor}</div>
-                </div>
-            )
+        ({badgeColor}: ComponentProps<typeof Avatar>) => (
+            <div>
+                Avatar
+                <div>badgeColor: {badgeColor}</div>
+            </div>
+        )
 )
 
 jest.mock('pages/tickets/detail/components/TicketMessages/Footer', () => () => (

@@ -97,7 +97,9 @@ describe('useTimeSeries', () => {
         expect(
             select?.({
                 data: defaultResult,
-            } as unknown as AxiosResponse<ReportingResponse<typeof defaultData>>)
+            } as unknown as AxiosResponse<
+                ReportingResponse<typeof defaultData>
+            >)
         ).toEqual([
             [
                 {
@@ -187,7 +189,9 @@ describe('useTimeSeries', () => {
                         },
                     ],
                 },
-            } as unknown as AxiosResponse<ReportingResponse<typeof defaultData>>)
+            } as unknown as AxiosResponse<
+                ReportingResponse<typeof defaultData>
+            >)
         ).toEqual([
             [
                 {
@@ -258,7 +262,9 @@ describe('useTimeSeriesPerDimension', () => {
         expect(
             select?.({
                 data: defaultResult,
-            } as unknown as AxiosResponse<ReportingResponse<typeof defaultData>>)
+            } as unknown as AxiosResponse<
+                ReportingResponse<typeof defaultData>
+            >)
         ).toEqual({
             [`${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`]: [
                 [

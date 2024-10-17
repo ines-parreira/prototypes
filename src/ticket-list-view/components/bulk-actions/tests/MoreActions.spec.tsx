@@ -21,28 +21,27 @@ const logEventMock = assumeMock(logEvent)
 jest.mock(
     'tags/TagDropdownMenu',
     () =>
-        ({onClick}: ComponentProps<typeof TagDropdownMenu>) =>
-            (
-                <button onClick={() => onClick({name: 'tag'})}>
-                    TagDropdownMenuMock
-                </button>
-            )
+        ({onClick}: ComponentProps<typeof TagDropdownMenu>) => (
+            <button onClick={() => onClick({name: 'tag'})}>
+                TagDropdownMenuMock
+            </button>
+        )
 )
 jest.mock(
     '../TeamAssigneeDropdownMenu',
     () =>
-        ({onClick}: ComponentProps<typeof TeamAssigneeDropdownMenu>) =>
-            (
-                <button onClick={() => onClick({id: 8})}>
-                    TeamAssigneeDropdownMenuMock
-                </button>
-            )
+        ({onClick}: ComponentProps<typeof TeamAssigneeDropdownMenu>) => (
+            <button onClick={() => onClick({id: 8})}>
+                TeamAssigneeDropdownMenuMock
+            </button>
+        )
 )
 jest.mock(
     '../ApplyMacro',
     () =>
-        ({onApplyMacro}: ComponentProps<typeof ApplyMacro>) =>
+        ({onApplyMacro}: ComponentProps<typeof ApplyMacro>) => (
             <button onClick={() => onApplyMacro()}>ApplyMacroMock</button>
+        )
 )
 
 const mockStore = configureMockStore([thunk])

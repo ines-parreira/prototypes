@@ -19,7 +19,7 @@ describe('updatePhoneVoicemailConfiguration', () => {
                     id: 1,
                 },
             }),
-        } as RootState)
+        }) as RootState
     const payload = {}
 
     beforeEach(() => {

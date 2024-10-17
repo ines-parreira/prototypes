@@ -105,8 +105,8 @@ export const bigcommerceDataMappers = {
             subtitle: product.sku
                 ? `SKU: ${product.sku}`
                 : product.variants.length > 1
-                ? `${product.variants.length} variants`
-                : '',
+                  ? `${product.variants.length} variants`
+                  : '',
             stock: {
                 tracked: ['variant', 'product'].includes(
                     product.inventory_tracking

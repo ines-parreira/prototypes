@@ -77,12 +77,15 @@ export default function useTickets(
     )
     const visibleNewPartialsMap = useMemo(
         () =>
-            newPartials.reduce((acc, p) => {
-                if (visiblePartialsMap[p.id]) {
-                    acc[p.id] = p
-                }
-                return acc
-            }, {} as Record<string, TicketPartial>),
+            newPartials.reduce(
+                (acc, p) => {
+                    if (visiblePartialsMap[p.id]) {
+                        acc[p.id] = p
+                    }
+                    return acc
+                },
+                {} as Record<string, TicketPartial>
+            ),
         [newPartials, visiblePartialsMap]
     )
 

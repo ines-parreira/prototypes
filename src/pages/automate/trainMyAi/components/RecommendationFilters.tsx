@@ -37,8 +37,8 @@ function getFeedbackOptionLabel(feedbackOption: FeedbackOptions) {
     return feedbackOption === 'helpful'
         ? 'Helpful'
         : feedbackOption === 'no-feedback'
-        ? 'No Feedback'
-        : 'Needed More Help'
+          ? 'No Feedback'
+          : 'Needed More Help'
 }
 
 export default function RecommendationFilter({

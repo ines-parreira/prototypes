@@ -20,17 +20,16 @@ jest.mock(
             light: boolean
             width: number | string
             height: number | string
-        }) =>
-            (
-                <div
-                    data-mocked-react-player-here
-                    data-url={url}
-                    data-controls={controls}
-                    data-light={light}
-                    data-width={width}
-                    data-height={height}
-                />
-            )
+        }) => (
+            <div
+                data-mocked-react-player-here
+                data-url={url}
+                data-controls={controls}
+                data-light={light}
+                data-width={width}
+                data-height={height}
+            />
+        )
 )
 
 const sharedProps: ComponentProps<typeof Content> = {

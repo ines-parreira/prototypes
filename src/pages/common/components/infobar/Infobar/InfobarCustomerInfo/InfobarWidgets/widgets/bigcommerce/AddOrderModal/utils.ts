@@ -608,8 +608,8 @@ export function computeLineItemErrorMessage(
               addStyling
           )
         : defaultError.startsWith('Product')
-        ? defaultError.substring(defaultError.indexOf(' ') + 1)
-        : defaultError
+          ? defaultError.substring(defaultError.indexOf(' ') + 1)
+          : defaultError
 }
 
 export const computeLineItemErrorKey = ({

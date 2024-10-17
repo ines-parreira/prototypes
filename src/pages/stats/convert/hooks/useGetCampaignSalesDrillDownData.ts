@@ -17,10 +17,13 @@ export const useGetCampaignSalesDrillDownData = (
     return useMemo(() => {
         if (!metricData.length || !campaigns.length) return []
 
-        const campaignData = campaigns.reduce((acc, campaign) => {
-            acc[campaign.id] = campaign.name
-            return acc
-        }, {} as Record<string, string>)
+        const campaignData = campaigns.reduce(
+            (acc, campaign) => {
+                acc[campaign.id] = campaign.name
+                return acc
+            },
+            {} as Record<string, string>
+        )
 
         return metricData.map((row) => {
             return {

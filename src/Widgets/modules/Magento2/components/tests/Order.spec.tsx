@@ -19,8 +19,7 @@ const TitleWrapper = orderWidgets.TitleWrapper!
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) =>
-            <div>{dateTime}</div>
+        ({dateTime}: {dateTime: string}) => <div>{dateTime}</div>
 )
 
 describe('Order', () => {

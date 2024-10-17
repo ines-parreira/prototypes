@@ -26,5 +26,5 @@ export function useCleanStatsFiltersWithLogicalOperators(
 
     return cleanStatsShouldUpdate
         ? statsFilters
-        : cleanStatsFilters ?? statsFilters
+        : (cleanStatsFilters ?? statsFilters)
 }

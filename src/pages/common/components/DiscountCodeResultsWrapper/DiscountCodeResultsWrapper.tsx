@@ -30,43 +30,44 @@ export type DiscountCodeResultsWrapperProps = DiscountResultsBaseProps<
     DiscountCode | UniqueDiscountOffer
 >
 
-export const DiscountCodeResultsWrapper: React.FC<DiscountCodeResultsWrapperProps> =
-    (props: DiscountCodeResultsWrapperProps) => {
-        const {canAddUniqueDiscountOffer, supportsUniqueDiscountOffer} =
-            useToolbarContext()
-        const currentAccount = useAppSelector(getCurrentAccountState)
+export const DiscountCodeResultsWrapper: React.FC<
+    DiscountCodeResultsWrapperProps
+> = (props: DiscountCodeResultsWrapperProps) => {
+    const {canAddUniqueDiscountOffer, supportsUniqueDiscountOffer} =
+        useToolbarContext()
+    const currentAccount = useAppSelector(getCurrentAccountState)
 
-        const [activeTab, setActiveTab] = useState(DiscountCodesTabs.Generic)
+    const [activeTab, setActiveTab] = useState(DiscountCodesTabs.Generic)
 
-        const onTabChange = (tab: string) => {
-            setActiveTab(tab as DiscountCodesTabs)
+    const onTabChange = (tab: string) => {
+        setActiveTab(tab as DiscountCodesTabs)
 
-            if (tab === DiscountCodesTabs.Unique) {
-                logEvent(SegmentEvent.InsertUniqueDiscountCodeOpen, {
-                    account_domain: currentAccount?.get('domain'),
-                })
-            }
+        if (tab === DiscountCodesTabs.Unique) {
+            logEvent(SegmentEvent.InsertUniqueDiscountCodeOpen, {
+                account_domain: currentAccount?.get('domain'),
+            })
         }
-
-        if (!supportsUniqueDiscountOffer) {
-            return <DiscountCodeResults {...props} />
-        }
-
-        return (
-            <div>
-                <TabNavigator
-                    tabs={navigatorTabs}
-                    activeTab={activeTab}
-                    onTabChange={onTabChange}
-                />
-                {activeTab === DiscountCodesTabs.Generic ? (
-                    <DiscountCodeResults {...props} />
-                ) : (
-                    <UniqueDiscountCodeResults
-                        {...props}
-                        canAddUniqueDiscountOffer={canAddUniqueDiscountOffer}
-                    />
-                )}
-            </div>
-        )
     }
+
+    if (!supportsUniqueDiscountOffer) {
+        return <DiscountCodeResults {...props} />
+    }
+
+    return (
+        <div>
+            <TabNavigator
+                tabs={navigatorTabs}
+                activeTab={activeTab}
+                onTabChange={onTabChange}
+            />
+            {activeTab === DiscountCodesTabs.Generic ? (
+                <DiscountCodeResults {...props} />
+            ) : (
+                <UniqueDiscountCodeResults
+                    {...props}
+                    canAddUniqueDiscountOffer={canAddUniqueDiscountOffer}
+                />
+            )}
+        </div>
+    )
+}

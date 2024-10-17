@@ -23,133 +23,131 @@ export type DraggablePreviewImageProps = {
     setShowActionButtons: (value: boolean) => void
 }
 
-export const DraggablePreviewImage: FunctionComponent<DraggablePreviewImageProps> =
-    ({
-        defaultPreview,
-        verticalOffset = 0,
-        onSubmit,
-        repositioningInProgress,
-        setRepositioningInProgress,
-        offset,
-        setOffset,
-        showActionButtons,
-        setShowActionButtons,
-    }: DraggablePreviewImageProps) => {
-        const [top, setTop] = useState(0)
+export const DraggablePreviewImage: FunctionComponent<
+    DraggablePreviewImageProps
+> = ({
+    defaultPreview,
+    verticalOffset = 0,
+    onSubmit,
+    repositioningInProgress,
+    setRepositioningInProgress,
+    offset,
+    setOffset,
+    showActionButtons,
+    setShowActionButtons,
+}: DraggablePreviewImageProps) => {
+    const [top, setTop] = useState(0)
 
-        const defaultPreviewUrl = defaultPreview
-            ? replaceUploadUrls(defaultPreview)
-            : undefined
+    const defaultPreviewUrl = defaultPreview
+        ? replaceUploadUrls(defaultPreview)
+        : undefined
 
-        return (
-            <>
-                <div
-                    className={classNames(css.imageContainer, {
-                        [css.repositioning]: repositioningInProgress,
-                    })}
-                    onMouseEnter={() => setShowActionButtons(true)}
-                    onMouseLeave={() => setShowActionButtons(false)}
-                    data-testid="draggable-container"
-                >
-                    <img
-                        className={classNames(
-                            imageRepositioningModalCss.image,
-                            css.image
+    return (
+        <>
+            <div
+                className={classNames(css.imageContainer, {
+                    [css.repositioning]: repositioningInProgress,
+                })}
+                onMouseEnter={() => setShowActionButtons(true)}
+                onMouseLeave={() => setShowActionButtons(false)}
+                data-testid="draggable-container"
+            >
+                <img
+                    className={classNames(
+                        imageRepositioningModalCss.image,
+                        css.image
+                    )}
+                    alt={defaultPreviewUrl}
+                    src={defaultPreviewUrl}
+                    style={{
+                        objectPosition: `center ${50 - offset}%`,
+                    }}
+                />
+                {(showActionButtons || repositioningInProgress) && (
+                    <div
+                        className={classNames({
+                            [css.actionButtonContainer]: true,
+                            [css.actionButtonContainerRepositioning]:
+                                repositioningInProgress,
+                        })}
+                    >
+                        {!repositioningInProgress && (
+                            <span
+                                onClick={() => {
+                                    setRepositioningInProgress(true)
+                                }}
+                                className={css.actionButton}
+                            >
+                                Reposition
+                            </span>
                         )}
-                        alt={defaultPreviewUrl}
-                        src={defaultPreviewUrl}
-                        style={{
-                            objectPosition: `center ${50 - offset}%`,
-                        }}
-                    />
-                    {(showActionButtons || repositioningInProgress) && (
-                        <div
-                            className={classNames({
-                                [css.actionButtonContainer]: true,
-                                [css.actionButtonContainerRepositioning]:
-                                    repositioningInProgress,
-                            })}
-                        >
-                            {!repositioningInProgress && (
+                        {repositioningInProgress && (
+                            <>
                                 <span
                                     onClick={() => {
-                                        setRepositioningInProgress(true)
+                                        setRepositioningInProgress(false)
+                                        setTop(0)
+                                        setOffset(verticalOffset)
                                     }}
                                     className={css.actionButton}
                                 >
-                                    Reposition
+                                    Cancel
                                 </span>
-                            )}
-                            {repositioningInProgress && (
-                                <>
-                                    <span
-                                        onClick={() => {
-                                            setRepositioningInProgress(false)
-                                            setTop(0)
-                                            setOffset(verticalOffset)
-                                        }}
-                                        className={css.actionButton}
-                                    >
-                                        Cancel
-                                    </span>
-                                    <span
-                                        onClick={() => {
-                                            setRepositioningInProgress(false)
-                                            setTop(0)
-                                            onSubmit(Math.round(offset))
-                                        }}
-                                        className={css.actionButton}
-                                    >
-                                        Save Position
-                                    </span>
-                                </>
-                            )}
-                        </div>
-                    )}
-                    {repositioningInProgress && (
-                        <Draggable
-                            axis="y"
-                            handle=".handle"
-                            defaultPosition={{x: 0, y: 0}}
-                            grid={[
-                                PIXEL_TO_OFFSET_RATIO,
-                                PIXEL_TO_OFFSET_RATIO,
-                            ]}
-                            scale={1}
-                            onDrag={(_, data) => {
-                                const {y} = data
-                                setTop(y)
-                                const dividedY =
-                                    y / PIXEL_TO_OFFSET_RATIO + verticalOffset
-                                setOffset(
-                                    dividedY > MAX_ABSOLUTE_OFFSET
-                                        ? MAX_ABSOLUTE_OFFSET
-                                        : dividedY < -MAX_ABSOLUTE_OFFSET
-                                        ? -MAX_ABSOLUTE_OFFSET
-                                        : dividedY
-                                )
-                            }}
-                        >
-                            <div className="handle">
-                                <div
-                                    className={classNames(
-                                        imageRepositioningModalCss.boundingBox,
-                                        css.boundingBox
-                                    )}
-                                    style={{top: `${0 - top}px`}}
+                                <span
+                                    onClick={() => {
+                                        setRepositioningInProgress(false)
+                                        setTop(0)
+                                        onSubmit(Math.round(offset))
+                                    }}
+                                    className={css.actionButton}
                                 >
-                                    <p
-                                        className={
-                                            imageRepositioningModalCss.tooltip
-                                        }
-                                    >
-                                        Drag image to reposition
-                                    </p>
-                                </div>
+                                    Save Position
+                                </span>
+                            </>
+                        )}
+                    </div>
+                )}
+                {repositioningInProgress && (
+                    <Draggable
+                        axis="y"
+                        handle=".handle"
+                        defaultPosition={{x: 0, y: 0}}
+                        grid={[PIXEL_TO_OFFSET_RATIO, PIXEL_TO_OFFSET_RATIO]}
+                        scale={1}
+                        onDrag={(_, data) => {
+                            const {y} = data
+                            setTop(y)
+                            const dividedY =
+                                y / PIXEL_TO_OFFSET_RATIO + verticalOffset
+                            setOffset(
+                                dividedY > MAX_ABSOLUTE_OFFSET
+                                    ? MAX_ABSOLUTE_OFFSET
+                                    : dividedY < -MAX_ABSOLUTE_OFFSET
+                                      ? -MAX_ABSOLUTE_OFFSET
+                                      : dividedY
+                            )
+                        }}
+                    >
+                        <div className="handle">
+                            <div
+                                className={classNames(
+                                    imageRepositioningModalCss.boundingBox,
+                                    css.boundingBox
+                                )}
+                                style={{top: `${0 - top}px`}}
+                            >
+                                <p
+                                    className={
+                                        imageRepositioningModalCss.tooltip
+                                    }
+                                >
+                                    Drag image to reposition
+                                </p>
                             </div>
-                        </Draggable>
-                    )}
-                </div>
-            </>
-        )
-    }
+                        </div>
+                    </Draggable>
+                )}
+            </div>
+        </>
+    )
+}

@@ -80,7 +80,7 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('pages/stats/common/filters/PeriodFilter'),
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 
 const defaultState = {

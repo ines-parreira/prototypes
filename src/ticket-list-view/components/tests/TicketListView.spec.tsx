@@ -235,7 +235,7 @@ describe('<TicketListView />', () => {
             </Provider>
         )
         const [[{endReached}]] = VirtuosoMock.mock.calls as [
-            [{endReached: () => void}]
+            [{endReached: () => void}],
         ]
 
         endReached()

@@ -118,9 +118,9 @@ const ChatIntegrationAvatar = (props: Props) => {
                     GorgiasChatAvatarImageType.AGENT_INITIALS
                         ? undefined
                         : avatar?.imageType ===
-                          GorgiasChatAvatarImageType.AGENT_PICTURE
-                        ? agent.getIn(['meta', 'profile_picture_url'])
-                        : avatar?.companyLogoUrl
+                            GorgiasChatAvatarImageType.AGENT_PICTURE
+                          ? agent.getIn(['meta', 'profile_picture_url'])
+                          : avatar?.companyLogoUrl
 
                 return (
                     <div

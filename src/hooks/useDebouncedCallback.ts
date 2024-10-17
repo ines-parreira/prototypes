@@ -15,12 +15,14 @@ export type DebouncedFunction<Fn extends (...args: any[]) => any> = (
  * it's invoked. 0 means no max wait.
  */
 export default function useDebouncedCallback<
-    Fn extends (...args: any[]) => any
+    Fn extends (...args: any[]) => any,
 >(callback: Fn, delay: number, maxWait = 0): DebouncedFunction<Fn> {
     const timeout = useRef<ReturnType<typeof setTimeout>>()
     const waitTimeout = useRef<ReturnType<typeof setTimeout>>()
-    const lastCall =
-        useRef<{args: Parameters<Fn>; this: ThisParameterType<Fn>}>()
+    const lastCall = useRef<{
+        args: Parameters<Fn>
+        this: ThisParameterType<Fn>
+    }>()
 
     const clear = () => {
         if (timeout.current) {

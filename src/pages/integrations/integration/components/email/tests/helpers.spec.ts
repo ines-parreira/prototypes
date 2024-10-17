@@ -453,9 +453,8 @@ describe('helpers', () => {
                 },
             ] as DomainDNSRecord[]
 
-            const populatedRecords = await populateCurrentValuesForDNSRecords(
-                records
-            )
+            const populatedRecords =
+                await populateCurrentValuesForDNSRecords(records)
             populatedRecords.forEach((record) => {
                 expect(record.current_values).toEqual([
                     `resolved.${record.host}.with-trailing-dot`,

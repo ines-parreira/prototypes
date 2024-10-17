@@ -544,7 +544,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 preferences: preferences,
             }),
             deactivated_datetime: this.state.hide
-                ? integration.get('deactivated_datetime') ?? moment().format()
+                ? (integration.get('deactivated_datetime') ?? moment().format())
                 : null,
         })
 

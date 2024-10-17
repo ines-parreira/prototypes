@@ -21,7 +21,7 @@ export type InputFieldProps<T = any> = {
 export type InputFieldState = Record<string, unknown>
 export default class InputField<
     T extends InputFieldProps = InputFieldProps,
-    U extends InputFieldState = InputFieldState
+    U extends InputFieldState = InputFieldState,
 > extends React.Component<T, U> {
     static defaultProps: Pick<InputFieldProps, 'type'> = {
         type: 'text',

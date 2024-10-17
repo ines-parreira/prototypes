@@ -53,7 +53,7 @@ jest.mock(
             useHistory: () => ({
                 push: mockHistoryPush,
             }),
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 
 const mockHistoryPush = jest.fn()

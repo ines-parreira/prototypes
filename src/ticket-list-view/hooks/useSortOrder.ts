@@ -39,7 +39,7 @@ export const sortOrderOptions = [
 
 const sortOrderValues = sortOrderOptions.map((o) => o.value)
 
-export type SortOrder = typeof sortOrderValues[number]
+export type SortOrder = (typeof sortOrderValues)[number]
 
 const initialSortOrders: Record<number, SortOrder> = {}
 

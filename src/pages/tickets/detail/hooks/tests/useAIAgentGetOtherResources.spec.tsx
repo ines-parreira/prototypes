@@ -62,7 +62,9 @@ describe('useAIAgentGetOtherResources', () => {
             mockedUseGetStoreWorkflowsConfigurations.mockReturnValue({
                 data: [],
                 isLoading: false,
-            } as unknown as ReturnType<typeof useGetStoreWorkflowsConfigurations>)
+            } as unknown as ReturnType<
+                typeof useGetStoreWorkflowsConfigurations
+            >)
         })
 
         it('should return empty arrays when no data is available', () => {
@@ -149,7 +151,9 @@ describe('useAIAgentGetOtherResources', () => {
                     {id: 10, name: 'test2'},
                 ],
                 isLoading: false,
-            } as unknown as ReturnType<typeof useGetStoreWorkflowsConfigurations>)
+            } as unknown as ReturnType<
+                typeof useGetStoreWorkflowsConfigurations
+            >)
         })
 
         it('should return data when available', () => {

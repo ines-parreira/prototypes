@@ -22,7 +22,7 @@ export type MetricTrendHook = (
 ) => MetricTrend
 
 export type QueryReturnType<Measure extends Cubes['measures']> = [
-    Record<Measure, string | null>
+    Record<Measure, string | null>,
 ]
 
 export const selectMeasure = <Measure extends Cubes['measures']>(

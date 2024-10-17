@@ -2,14 +2,17 @@ import {isEqual, isObject, cloneDeep} from 'lodash'
 import {TextsPerLanguage} from 'rest_api/gorgias_chat_protected_api/types'
 
 const removeUndefinedProperties = (obj: any): any => {
-    return Object.entries(obj).reduce((acc, [key, value]) => {
-        if (value !== undefined) {
-            acc[key] = isObject(value)
-                ? removeUndefinedProperties(value)
-                : value
-        }
-        return acc
-    }, {} as Record<string, any>)
+    return Object.entries(obj).reduce(
+        (acc, [key, value]) => {
+            if (value !== undefined) {
+                acc[key] = isObject(value)
+                    ? removeUndefinedProperties(value)
+                    : value
+            }
+            return acc
+        },
+        {} as Record<string, any>
+    )
 }
 
 /**

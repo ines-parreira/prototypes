@@ -109,7 +109,7 @@ export const withWorkflowEditorContext =
         WrappedProps extends JSX.IntrinsicAttributes & {
             workflowId: string
             isNewWorkflow: boolean
-        }
+        },
     >(
         Component: React.FC<WrappedProps>
     ) =>
@@ -660,7 +660,7 @@ export function validateConfiguration(
             name: transition.name,
             conditions: transition.conditions?.and
                 ? transition?.conditions?.and
-                : transition.conditions?.or ?? [],
+                : (transition.conditions?.or ?? []),
         }))
     )
 
@@ -674,7 +674,7 @@ export function validateConfiguration(
                 return validateConditions(
                     trigger.settings.conditions?.and
                         ? trigger.settings.conditions?.and
-                        : trigger.settings.conditions?.or ?? []
+                        : (trigger.settings.conditions?.or ?? [])
                 )
             }
 

@@ -153,7 +153,7 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                             resourceType: action.type,
                             resourceId: action.id,
                             feedback,
-                        } as FeedbackOnResource)
+                        }) as FeedbackOnResource
                 )
 
             const guidanceFeedbackOnResource = guidance
@@ -165,7 +165,7 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                             resourceType: 'guidance',
                             resourceId: guide.id,
                             feedback,
-                        } as FeedbackOnResource)
+                        }) as FeedbackOnResource
                 )
 
             const knowledgeFeedbackOnResource = knowledge
@@ -177,7 +177,7 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                             resourceType: knowledge.type,
                             resourceId: knowledge.id,
                             feedback,
-                        } as FeedbackOnResource)
+                        }) as FeedbackOnResource
                 )
 
             if (

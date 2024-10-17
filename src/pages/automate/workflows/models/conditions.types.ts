@@ -23,7 +23,7 @@ type BaseConditionSchema = {
 }
 
 export type EqualsSchema<
-    T extends string | number | boolean = string | number | boolean
+    T extends string | number | boolean = string | number | boolean,
 > = Omit<BaseConditionSchema, 'equals'> & {
     equals: [VarSchema, T | null | undefined]
 }
@@ -69,7 +69,7 @@ export type LessThanSchema<T extends number | string = number | string> = Omit<
 export type LessThanInterval = Omit<BaseConditionSchema, 'lessThanInterval'> & {
     lessThanInterval: [
         VarSchema,
-        `${IntervalSign}${number}${IntervalUnit}` | null | undefined
+        `${IntervalSign}${number}${IntervalUnit}` | null | undefined,
     ]
 }
 
@@ -79,7 +79,7 @@ export type GreaterThanInterval = Omit<
 > & {
     greaterThanInterval: [
         VarSchema,
-        `${IntervalSign}${number}${IntervalUnit}` | null | undefined
+        `${IntervalSign}${number}${IntervalUnit}` | null | undefined,
     ]
 }
 

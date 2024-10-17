@@ -29,7 +29,7 @@ jest.mock(
                 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
             ),
             default: () => <div>TemplateTypeFilterDropdown</div>,
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 
 describe('WhatsAppMessageTemplateSearch', () => {

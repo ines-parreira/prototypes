@@ -40,7 +40,7 @@ export const ConnectedChannelsHelpCenterView = ({
     }>()
 
     const shopType = helpCenter ? 'shopify' : shopTypeParam
-    const shopName = helpCenter ? helpCenter.shop_name ?? '' : shopNameParam
+    const shopName = helpCenter ? (helpCenter.shop_name ?? '') : shopNameParam
 
     const {
         selfServiceConfiguration,
@@ -56,7 +56,9 @@ export const ConnectedChannelsHelpCenterView = ({
 
     const [selectedChannel, setSelectedChannel] = React.useState<number | null>(
         () =>
-            helpCenter ? helpCenter.id : helpCenterChannels[0]?.value.id ?? null
+            helpCenter
+                ? helpCenter.id
+                : (helpCenterChannels[0]?.value.id ?? null)
     )
 
     const currentChannel =
@@ -180,8 +182,8 @@ export const ConnectedChannelsHelpCenterView = ({
                             action === 'add'
                                 ? 'added'
                                 : action === 'remove'
-                                ? 'removed'
-                                : 'order updated'
+                                  ? 'removed'
+                                  : 'order updated'
 
                         logEvent(
                             SegmentEvent.AutomateChannelUpdateFromChannels,

@@ -29,7 +29,7 @@ type StateFromFunctionReturningPromise<T extends FunctionReturningPromise> =
     AsyncFnState<Awaited<ReturnType<T>>>
 
 type AsyncFnResult<
-    T extends FunctionReturningPromise = FunctionReturningPromise
+    T extends FunctionReturningPromise = FunctionReturningPromise,
 > = [StateFromFunctionReturningPromise<T>, T]
 
 export default function useAsyncFn<T extends FunctionReturningPromise>(

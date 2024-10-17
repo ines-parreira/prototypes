@@ -30,7 +30,7 @@ export default function TrackOrderFlowPreview({
         useState(true)
     const [policyKey, setPolicyKey] = useState<PolicyKey>('trackOrderPolicy')
     const [currentLocation, setCurrentLocation] = useState<
-        typeof SELF_SERVICE_PREVIEW_ROUTES[keyof typeof SELF_SERVICE_PREVIEW_ROUTES]
+        (typeof SELF_SERVICE_PREVIEW_ROUTES)[keyof typeof SELF_SERVICE_PREVIEW_ROUTES]
     >(SELF_SERVICE_PREVIEW_ROUTES.ORDERS)
     const previousLocation = useRef(currentLocation)
 
@@ -49,7 +49,7 @@ export default function TrackOrderFlowPreview({
     useEffect(() => {
         const unregister = history.listen((location) => {
             setCurrentLocation(
-                location.pathname as typeof SELF_SERVICE_PREVIEW_ROUTES[keyof typeof SELF_SERVICE_PREVIEW_ROUTES]
+                location.pathname as (typeof SELF_SERVICE_PREVIEW_ROUTES)[keyof typeof SELF_SERVICE_PREVIEW_ROUTES]
             )
         })
 

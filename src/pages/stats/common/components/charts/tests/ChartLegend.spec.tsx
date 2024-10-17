@@ -15,7 +15,7 @@ jest.mock(
                 {
                     label: string
                     onChange: () => void
-                }
+                },
             ]
             className: string
             toggleLegend: boolean

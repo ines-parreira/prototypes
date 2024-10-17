@@ -2,7 +2,7 @@ import {ApiPaginationParams} from 'models/api/types'
 import {AI_MANAGED_TYPES, MANAGED_TYPES, OBJECT_TYPES} from './constants'
 
 export type CustomFieldObjectTypes =
-    typeof OBJECT_TYPES[keyof typeof OBJECT_TYPES]
+    (typeof OBJECT_TYPES)[keyof typeof OBJECT_TYPES]
 
 export type ListParams = ApiPaginationParams & {
     archived?: boolean
@@ -20,7 +20,7 @@ export type CustomFieldDefinition =
 export interface CustomTypeDefinitionText<
     InputSettings =
         | CustomFieldInputSettingsText
-        | CustomFieldInputSettingsDropdown
+        | CustomFieldInputSettingsDropdown,
 > {
     data_type: 'text'
     input_settings: InputSettings
@@ -52,10 +52,10 @@ interface CustomFieldInputSettingsNumber {
 }
 
 export type CustomFieldAIManagedType =
-    typeof AI_MANAGED_TYPES[keyof typeof AI_MANAGED_TYPES]
+    (typeof AI_MANAGED_TYPES)[keyof typeof AI_MANAGED_TYPES]
 
 export type CustomFieldManagedType =
-    typeof MANAGED_TYPES[keyof typeof MANAGED_TYPES]
+    (typeof MANAGED_TYPES)[keyof typeof MANAGED_TYPES]
 
 export function isCustomFieldAIManagedType(
     managedType: string | null

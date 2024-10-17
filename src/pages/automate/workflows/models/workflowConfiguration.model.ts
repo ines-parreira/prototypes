@@ -1,6 +1,7 @@
-import {ulid} from 'ulidx'
-import _omit from 'lodash/omit'
 import _isNil from 'lodash/isNil'
+import _omit from 'lodash/omit'
+import {ulid} from 'ulidx'
+
 import {getFallibleNodeSuccessConditions} from '../hooks/useVisualBuilderGraphReducer/utils'
 import {
     buildEdgeCommonProperties,
@@ -35,15 +36,15 @@ import {
     WorkflowStep,
     WorkflowStepAttachmentsInput,
     WorkflowStepChoices,
+    WorkflowStepEnd,
     WorkflowStepHandover,
-    WorkflowStepMessage,
-    WorkflowStepHttpRequest,
-    WorkflowStepTextInput,
-    WorkflowTransition,
     WorkflowStepHelpfulPrompt,
+    WorkflowStepHttpRequest,
+    WorkflowStepMessage,
     WorkflowStepOrderSelection,
     WorkflowStepShopperAuthentication,
-    WorkflowStepEnd,
+    WorkflowStepTextInput,
+    WorkflowTransition,
 } from './workflowConfiguration.types'
 
 export function walkWorkflowConfigurationGraph(
@@ -336,7 +337,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     ).map(([name, value]) => ({name, value})),
                     json:
                         bodyContentType === 'application/json'
-                            ? step.settings.body ?? null
+                            ? (step.settings.body ?? null)
                             : null,
                     formUrlencoded:
                         bodyContentType === 'application/x-www-form-urlencoded'
@@ -540,19 +541,15 @@ export class WorkflowConfigurationBuilder {
         name,
         initialStep,
         ...configuration
-    }:
-        | {
-              initialStep: WorkflowStep
-          } & Pick<
-              WorkflowConfiguration,
-              'name' | 'entrypoint' | 'id' | 'triggers' | 'entrypoints' | 'apps'
-          > &
-              Partial<
-                  Pick<
-                      WorkflowConfiguration,
-                      'is_draft' | 'available_languages'
-                  >
-              >) {
+    }: {
+        initialStep: WorkflowStep
+    } & Pick<
+        WorkflowConfiguration,
+        'name' | 'entrypoint' | 'id' | 'triggers' | 'entrypoints' | 'apps'
+    > &
+        Partial<
+            Pick<WorkflowConfiguration, 'is_draft' | 'available_languages'>
+        >) {
         this.data = {
             internal_id: ulid(),
             name,

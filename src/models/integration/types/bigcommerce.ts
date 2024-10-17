@@ -232,7 +232,7 @@ export type BigCommerceOrderShipping = {
 }
 
 export interface BigCommerceProductModifiersBase<
-    ValueData extends Record<string, unknown> | null
+    ValueData extends Record<string, unknown> | null,
     // Type extends
     //     | 'checkbox' // Show checkbox component
     //     | 'swatch' // Show dropdown with colors
@@ -269,7 +269,7 @@ export const bigCommerceProductCheckboxModifierTypes = ['checkbox'] as const
 
 export interface BigCommerceProductCheckboxModifier
     extends BigCommerceProductModifiersBase<{checked_value: boolean}> {
-    type: typeof bigCommerceProductCheckboxModifierTypes[number]
+    type: (typeof bigCommerceProductCheckboxModifierTypes)[number]
     config: {checked_by_default: boolean; checkbox_label: string}
 }
 
@@ -280,7 +280,7 @@ export interface BigCommerceProductSwatchModifier
         | {colors: [string] | [string, string] | [string, string, string]}
         | {image_url: string}
     > {
-    type: typeof bigCommerceProductSwatchModifierTypes[number]
+    type: (typeof bigCommerceProductSwatchModifierTypes)[number]
     config: []
 }
 
@@ -294,7 +294,7 @@ export const bigCommerceProductSelectModifierTypes = [
 
 export interface BigCommerceProductSelectModifier
     extends BigCommerceProductModifiersBase<null> {
-    type: typeof bigCommerceProductSelectModifierTypes[number]
+    type: (typeof bigCommerceProductSelectModifierTypes)[number]
     config: []
 }
 

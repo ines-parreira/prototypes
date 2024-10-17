@@ -129,8 +129,8 @@ const AutomateExploreDataModal = forwardRef<
             hasAgentCosts
                 ? '****'
                 : agentCosts?.data.agent_cost_type === 'yearly'
-                ? annualSalaryCostValue
-                : hourlyCostValue
+                  ? annualSalaryCostValue
+                  : hourlyCostValue
         )
 
         const [initialValues, setInitialValues] = useState({
@@ -145,8 +145,8 @@ const AutomateExploreDataModal = forwardRef<
                 costValue === '****'
                     ? '****'
                     : val === 'yearly'
-                    ? annualSalaryCostValue
-                    : hourlyCostValue
+                      ? annualSalaryCostValue
+                      : hourlyCostValue
             )
         }
 

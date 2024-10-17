@@ -19,7 +19,7 @@ jest.mock(
             startEmailMigration: jest.fn(() => ({
                 forwarding_email_address: 'test@gorgias.com',
             })),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 const getMomentSpy = jest.spyOn(dateUtils, 'getMoment')
 
@@ -42,7 +42,7 @@ jest.mock(
                 push: mockHistoryPush,
                 goBack: mockHistoryGoBack,
             }),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
 

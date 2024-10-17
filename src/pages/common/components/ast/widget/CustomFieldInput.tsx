@@ -64,8 +64,8 @@ function CustomFieldInput({
                 typeof value === 'number'
                     ? value
                     : typeof value === 'string'
-                    ? parseInt(value, 10)
-                    : undefined,
+                      ? parseInt(value, 10)
+                      : undefined,
         }
         if (definition.input_settings.min !== undefined) {
             numberFieldProps.min = Number(definition.input_settings.min)

@@ -8,7 +8,7 @@ export const ComposedElements = <
     P extends {
         elements: React.ReactNode[]
         children?: React.ReactNode
-    }
+    },
 >(
     props: P
 ) => {

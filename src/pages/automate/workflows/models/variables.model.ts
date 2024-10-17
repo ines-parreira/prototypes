@@ -1183,7 +1183,7 @@ export function extractVariablesFromNode(
                     .reduce<string[]>((acc, edge) => {
                         const conditions = edge.data?.conditions?.and
                             ? edge.data.conditions.and
-                            : edge.data?.conditions?.or ?? []
+                            : (edge.data?.conditions?.or ?? [])
 
                         for (const condition of conditions) {
                             const key = Object.keys(condition)[0] as AllKeys<

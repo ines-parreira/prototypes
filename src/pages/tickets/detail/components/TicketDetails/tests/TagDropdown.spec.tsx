@@ -16,16 +16,15 @@ const useConditionalShortcutsMock = assumeMock(useConditionalShortcuts)
 jest.mock(
     'tags/TagDropdownMenu',
     () =>
-        ({filterBy, onClick}: ComponentProps<typeof TagDropdownMenu>) =>
-            (
-                <div onClick={onClick}>
-                    {'filterBy test: angry ' +
-                        filterBy?.({name: 'angry'} as Tag).toString()}
-                    {'filterBy test: pop ' +
-                        filterBy?.({name: 'pop'} as Tag).toString()}
-                    TagDropdownMenuMock
-                </div>
-            )
+        ({filterBy, onClick}: ComponentProps<typeof TagDropdownMenu>) => (
+            <div onClick={onClick}>
+                {'filterBy test: angry ' +
+                    filterBy?.({name: 'angry'} as Tag).toString()}
+                {'filterBy test: pop ' +
+                    filterBy?.({name: 'pop'} as Tag).toString()}
+                TagDropdownMenuMock
+            </div>
+        )
 )
 
 describe('<TagDropdown />', () => {

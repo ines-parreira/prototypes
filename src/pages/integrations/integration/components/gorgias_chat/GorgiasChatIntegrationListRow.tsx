@@ -199,14 +199,14 @@ const GorgiasChatIntegrationListRow = ({
                                     chatStatus === GorgiasChatStatusEnum.ONLINE
                                         ? dotSuccess
                                         : chatStatus ===
-                                              GorgiasChatStatusEnum.HIDDEN ||
-                                          chatStatus ===
-                                              GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS
-                                        ? dotNeutral
-                                        : chatStatus ===
-                                          GorgiasChatStatusEnum.OFFLINE
-                                        ? dotWarning
-                                        : dotErrorCross
+                                                GorgiasChatStatusEnum.HIDDEN ||
+                                            chatStatus ===
+                                                GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS
+                                          ? dotNeutral
+                                          : chatStatus ===
+                                              GorgiasChatStatusEnum.OFFLINE
+                                            ? dotWarning
+                                            : dotErrorCross
                                 }
                                 className={css.chatStatusDot}
                             />

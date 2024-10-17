@@ -64,7 +64,7 @@ describe('AlertNotifications', () => {
 
         const {dismissNotification} = (
             NotificationsSystemMock.mock.calls as [
-                [{dismissNotification: (id: number) => void}]
+                [{dismissNotification: (id: number) => void}],
             ]
         )[0][0]
 

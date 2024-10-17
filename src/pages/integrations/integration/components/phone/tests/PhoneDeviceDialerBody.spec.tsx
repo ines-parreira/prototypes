@@ -12,15 +12,14 @@ jest.mock(
         }: {
             onChange: (value: string) => void
             value: string
-        }) =>
-            (
-                <div data-testid="mock-dialpad">
-                    <div
-                        onClick={() => onChange(value + '1')}
-                        data-testid="mock-dialpad-digit"
-                    />
-                </div>
-            )
+        }) => (
+            <div data-testid="mock-dialpad">
+                <div
+                    onClick={() => onChange(value + '1')}
+                    data-testid="mock-dialpad-digit"
+                />
+            </div>
+        )
 )
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (

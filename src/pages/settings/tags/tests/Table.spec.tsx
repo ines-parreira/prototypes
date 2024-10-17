@@ -14,14 +14,13 @@ const mockStore = configureMockStore()
 jest.mock(
     'pages/settings/tags/Row',
     () =>
-        ({meta, row, refresh}: ComponentProps<typeof Row>) =>
-            (
-                <div>
-                    RowMock
-                    <div onClick={refresh}>{row.name}</div>
-                    <div>{JSON.stringify(meta.toJS())}</div>
-                </div>
-            )
+        ({meta, row, refresh}: ComponentProps<typeof Row>) => (
+            <div>
+                RowMock
+                <div onClick={refresh}>{row.name}</div>
+                <div>{JSON.stringify(meta.toJS())}</div>
+            </div>
+        )
 )
 
 jest.mock('pages/settings/tags/TableActions/TableActions', () => () => (

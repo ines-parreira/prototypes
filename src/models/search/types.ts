@@ -71,7 +71,7 @@ export const pickedTicketFields = [
     'assignee_user',
     'created_datetime',
 ] as const
-export type PickedTicket = Pick<Ticket, typeof pickedTicketFields[number]> & {
+export type PickedTicket = Pick<Ticket, (typeof pickedTicketFields)[number]> & {
     customer: Pick<Customer, 'id' | 'name' | 'email'>
 }
 export const isTicket = (
@@ -135,7 +135,10 @@ export enum TicketSearchSortableProperties {
 }
 
 export const pickedCustomerFields = ['email', 'id', 'name', 'channels'] as const
-export type PickedCustomer = Pick<Customer, typeof pickedCustomerFields[number]>
+export type PickedCustomer = Pick<
+    Customer,
+    (typeof pickedCustomerFields)[number]
+>
 
 export type PickedCustomerWithHighlights = PickedCustomer & {
     highlights?: CustomerHighlights

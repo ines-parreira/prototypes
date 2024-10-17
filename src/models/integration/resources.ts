@@ -65,9 +65,8 @@ export const appDataToAppDetailMapper = (data: AppData): AppDetail => ({
 })
 
 export const fetchApps = async (): Promise<AppListItem[]> => {
-    const response = await client.get<ApiListResponse<AppListData[], never>>(
-        '/api/apps/'
-    )
+    const response =
+        await client.get<ApiListResponse<AppListData[], never>>('/api/apps/')
     return (response.data?.data || []).map(appListDataToAppListMapper)
 }
 

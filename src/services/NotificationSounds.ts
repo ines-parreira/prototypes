@@ -20,7 +20,7 @@ export const sounds = [
     {label: 'That Was Quick', url: audioThatWasQuick, value: 'that-was-quick'},
 ] as const
 
-export type SoundValue = typeof sounds[number]['value']
+export type SoundValue = (typeof sounds)[number]['value']
 
 export const defaultSound = {
     enabled: true,

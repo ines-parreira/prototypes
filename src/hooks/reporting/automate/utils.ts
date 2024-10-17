@@ -185,7 +185,7 @@ export function addNonExistingEventTypesForGraph(
     interactionsDataByEventType: Record<string, TimeSeriesDataItem[][]>,
     filter: StatsFilters,
     granularity: ReportingGranularity,
-    skipList?: typeof AutomateEventType[keyof typeof AutomateEventType][]
+    skipList?: (typeof AutomateEventType)[keyof typeof AutomateEventType][]
 ) {
     const dateTimes = getPeriodDateTimesByGranularity(
         [filter.period.start_datetime, filter.period.end_datetime],

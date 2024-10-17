@@ -73,12 +73,11 @@ export function calculateEditDiff(
         })
     } else {
         // a variant line has been changed (quantity)
-        const changed_item_index = newListArray.findIndex(function (
-            newVariant,
-            index
-        ) {
-            return !_isEqual(newVariant, oldListArray[index])
-        })
+        const changed_item_index = newListArray.findIndex(
+            function (newVariant, index) {
+                return !_isEqual(newVariant, oldListArray[index])
+            }
+        )
 
         if (changed_item_index !== -1) {
             const changed_item = newListArray[changed_item_index]

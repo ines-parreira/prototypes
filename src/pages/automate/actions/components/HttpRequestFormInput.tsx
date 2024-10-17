@@ -1,16 +1,16 @@
+import {Label} from '@gorgias/ui-kit'
 import React from 'react'
 import {UseControllerProps, useController, useFieldArray} from 'react-hook-form'
-import {Label} from '@gorgias/ui-kit'
 
-import BodyContentTypeSelect from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/BodyContentTypeSelect'
-import {validateJSONWithVariables} from 'pages/automate/workflows/models/variables.model'
 import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
 import TextareaWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextareaWithVariables'
-import MethodSelect from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/MethodSelect'
+import BodyContentTypeSelect from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/BodyContentTypeSelect'
 import Headers from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/Headers'
-import {validateHttpHeaderName, validateWebhookURL} from 'utils'
+import MethodSelect from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/MethodSelect'
+import {validateJSONWithVariables} from 'pages/automate/workflows/models/variables.model'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import Caption from 'pages/common/forms/Caption/Caption'
+import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 
 import {CustomActionFormInputValues} from '../types'
 

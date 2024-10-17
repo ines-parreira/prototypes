@@ -6,16 +6,16 @@ const deepMapKeys = (formatter: (value: string) => string) => {
         return !params || typeof params !== 'object'
             ? params
             : Array.isArray(params)
-            ? params.map(format)
-            : Object.keys(params).reduce(
-                  (acc, key) => ({
-                      ...acc,
-                      [formatter(key)]: format(
-                          (params as Record<string, unknown>)[key]
-                      ),
-                  }),
-                  {}
-              )
+              ? params.map(format)
+              : Object.keys(params).reduce(
+                    (acc, key) => ({
+                        ...acc,
+                        [formatter(key)]: format(
+                            (params as Record<string, unknown>)[key]
+                        ),
+                    }),
+                    {}
+                )
     }
     /* eslint-enable */
     return format

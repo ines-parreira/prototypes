@@ -52,7 +52,7 @@ jest.mock(
         ({
             ...jest.requireActual('state/ticket/selectors'),
             getAIAgentMessages: jest.fn(),
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 jest.mock(
     'pages/common/components/infobar/Infobar/Infobar',
@@ -64,18 +64,17 @@ jest.mock(
             customer,
             widgets,
             context,
-        }: ComponentProps<typeof Infobar>) =>
-            (
-                <div>
-                    <div>Infobar</div>
-                    <div>sources: {JSON.stringify(sources)}</div>
-                    <div>isRouteEditingWidgets: {isRouteEditingWidgets}</div>
-                    <div>identifier: {identifier}</div>
-                    <div>customer: {customer}</div>
-                    <div>widgets: {JSON.stringify(widgets)}</div>
-                    <div>context: {context}</div>
-                </div>
-            )
+        }: ComponentProps<typeof Infobar>) => (
+            <div>
+                <div>Infobar</div>
+                <div>sources: {JSON.stringify(sources)}</div>
+                <div>isRouteEditingWidgets: {isRouteEditingWidgets}</div>
+                <div>identifier: {identifier}</div>
+                <div>customer: {customer}</div>
+                <div>widgets: {JSON.stringify(widgets)}</div>
+                <div>context: {context}</div>
+            </div>
+        )
 )
 
 const mockedGetAIAgentMessages = assumeMock(getAIAgentMessages)

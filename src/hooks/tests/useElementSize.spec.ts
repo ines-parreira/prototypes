@@ -22,7 +22,7 @@ describe('useElementSize', () => {
         expect(observe).toHaveBeenCalledWith(element)
 
         const [[cb]] = (ResizeObserver as jest.Mock).mock.calls as [
-            [(entries: ResizeObserverEntry[]) => void]
+            [(entries: ResizeObserverEntry[]) => void],
         ]
         act(() => {
             cb([

@@ -29,11 +29,14 @@ export const useConvertGeneralSettings = (
     )
 
     const data = useMemo(() => {
-        return (settings || []).reduce((accValue, currentValue) => {
-            accValue[currentValue.type] = currentValue?.data
+        return (settings || []).reduce(
+            (accValue, currentValue) => {
+                accValue[currentValue.type] = currentValue?.data
 
-            return accValue
-        }, {} as Record<CampaignSettingType, any>)
+                return accValue
+            },
+            {} as Record<CampaignSettingType, any>
+        )
     }, [settings])
 
     return {

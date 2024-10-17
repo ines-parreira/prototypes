@@ -94,12 +94,16 @@ describe('useAIAgentSendFeedback', () => {
         mockedUseSubmitAIAgentTicketMessagesFeedback.mockReturnValue({
             mutateAsync: jest.fn().mockReturnValue({data: {}}),
             isLoading: false,
-        } as unknown as ReturnType<typeof useSubmitAIAgentTicketMessagesFeedback>)
+        } as unknown as ReturnType<
+            typeof useSubmitAIAgentTicketMessagesFeedback
+        >)
 
         mockedUseDeleteAIAgentTicketMessagesFeedback.mockReturnValue({
             mutateAsync: jest.fn().mockReturnValue({data: {}}),
             isLoading: false,
-        } as unknown as ReturnType<typeof useDeleteAIAgentTicketMessagesFeedback>)
+        } as unknown as ReturnType<
+            typeof useDeleteAIAgentTicketMessagesFeedback
+        >)
         mockedSetAgentFeedbackMessageStatus.mockImplementation(
             mockSetAgentFeedbackMessageStatus
         )

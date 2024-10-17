@@ -164,4 +164,4 @@ export const ARTICLE_INGESTION_LOGS_STATUS = {
 } as const
 
 export type ArticleIngestionLogsStatus =
-    typeof ARTICLE_INGESTION_LOGS_STATUS[keyof typeof ARTICLE_INGESTION_LOGS_STATUS]
+    (typeof ARTICLE_INGESTION_LOGS_STATUS)[keyof typeof ARTICLE_INGESTION_LOGS_STATUS]

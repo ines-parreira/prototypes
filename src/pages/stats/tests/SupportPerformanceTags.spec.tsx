@@ -21,8 +21,9 @@ import TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilt
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',
     () =>
-        ({value}: ComponentProps<typeof TagsStatsFilter>) =>
+        ({value}: ComponentProps<typeof TagsStatsFilter>) => (
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
+        )
 )
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,

@@ -83,8 +83,8 @@ const createTicketNavbarElementsSelector = (viewVisibility: ViewVisibility) => {
                               .display_order
                         : setting.view_sections[element.data.id]?.display_order
                     : optimisticSettings.views[element.data.id]
-                    ? optimisticSettings.views[element.data.id].display_order
-                    : setting.views?.[element.data.id]?.display_order
+                      ? optimisticSettings.views[element.data.id].display_order
+                      : setting.views?.[element.data.id]?.display_order
             }
             return [...viewElements, ...sectionElements]
                 .filter(

@@ -20,7 +20,9 @@ export const VALUE_FIELD =
     TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
 
 export const withBreakdown = <
-    TData extends UsePostReportingQueryData<TicketCustomFieldsTicketCountData[]>
+    TData extends UsePostReportingQueryData<
+        TicketCustomFieldsTicketCountData[]
+    >,
 >(
     res: TData,
     breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
@@ -157,7 +159,7 @@ export const selectTimeSeriesWithBreakdown = (
 const compact = <
     Data extends
         | TicketCustomFieldsTicketCountData
-        | TicketCustomFieldsTicketCountTimeSeriesData
+        | TicketCustomFieldsTicketCountTimeSeriesData,
 >(
     data: WithChildren<Data>[],
     merge: (

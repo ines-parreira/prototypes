@@ -34,7 +34,7 @@ export const reportingKeys = {
 export const usePostReporting = <
     TData extends unknown[],
     SelectData = UsePostReportingQueryData<TData>,
-    TCube extends Cube = Cube
+    TCube extends Cube = Cube,
 >(
     data: ReportingParams<TCube>,
     overrides?: UseQueryOptions<
@@ -54,7 +54,7 @@ export const usePostReporting = <
 export const useEnrichedPostReporting = <
     TData,
     SelectData,
-    TCube extends Cube = Cube
+    TCube extends Cube = Cube,
 >(
     data: {
         query: ReportingQuery<TCube>

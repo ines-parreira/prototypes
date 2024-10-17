@@ -65,7 +65,7 @@ export const TestFlowEditor = ({
 
     const [selectedTestLanguage, setSelectedTestLanguage] =
         // one of the languages from available_languages
-        useState<typeof available_languages[number]>()
+        useState<(typeof available_languages)[number]>()
     const [isFlowInterpreterStarted, setIsFlowInterpreterStarted] =
         useState<boolean>(false)
     const [
@@ -78,8 +78,8 @@ export const TestFlowEditor = ({
     const chatIFrameElement = useRef<HTMLIFrameElement | null>(null)
 
     const selectedChannelApplicationId = selectedChatChannel
-        ? selectedChatChannel.value.meta?.app_id ?? ''
-        : availableChatChannels?.[0]?.value.meta?.app_id ?? ''
+        ? (selectedChatChannel.value.meta?.app_id ?? '')
+        : (availableChatChannels?.[0]?.value.meta?.app_id ?? '')
 
     const {data: installationSnippet} = useGetInstallationSnippet({
         applicationId: selectedChannelApplicationId,
@@ -99,7 +99,7 @@ export const TestFlowEditor = ({
 
     const selectedLanguage = selectedTestLanguage
         ? selectedTestLanguage
-        : currentLanguage ?? available_languages[0]
+        : (currentLanguage ?? available_languages[0])
 
     const label =
         translateKey(

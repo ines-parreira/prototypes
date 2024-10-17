@@ -432,7 +432,7 @@ describe('agentPerformanceSlice', () => {
                         stats: initialUiStatsState,
                     },
                     stats: initialStatsFiltersState,
-                } as unknown as RootState)
+                }) as unknown as RootState
 
             expect(
                 getSortedAutoQAAgents(

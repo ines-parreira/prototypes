@@ -154,8 +154,8 @@ export default function TicketListView({
             areViewFiltersInvalid
                 ? listInfoProps.INVALID_FILTERS
                 : isViewNull
-                ? listInfoProps.INACCESSIBLE
-                : listInfoProps.DEFAULT,
+                  ? listInfoProps.INACCESSIBLE
+                  : listInfoProps.DEFAULT,
         [areViewFiltersInvalid, isViewNull]
     )
 

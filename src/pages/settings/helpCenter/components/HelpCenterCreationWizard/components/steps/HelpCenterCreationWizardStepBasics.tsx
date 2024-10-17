@@ -396,9 +396,9 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
                             {isAutomate
                                 ? 'Connect a store to use Automate features and to enable auto-embedding to your website.'
                                 : newHelpCenter.platformType ===
-                                  PlatformType.ECOMMERCE
-                                ? 'Connect a store to enable auto-embedding (Shopify only) to your website.'
-                                : ''}
+                                    PlatformType.ECOMMERCE
+                                  ? 'Connect a store to enable auto-embedding (Shopify only) to your website.'
+                                  : ''}
                         </div>
                         <SelectField
                             fullWidth

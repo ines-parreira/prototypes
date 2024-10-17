@@ -61,95 +61,95 @@ const getMeaningfulDiscountOfferInfo = (
     return {id: asyncOffer.id, name: asyncOffer.prefix, summary}
 }
 
-export const DiscountOfferTicketAttachment: React.FC<DiscountOfferTicketAttachmentType> =
-    ({discountOffer, supportsEdit, onRemove}) => {
-        const {data: asyncDiscountOffer} = useGetDiscountOffer(
-            {
-                discount_offer_id: discountOffer.extra.discount_offer_id,
-            },
-            {
-                enabled:
-                    !!discountOffer.extra.discount_offer_id && !!supportsEdit,
-            }
-        )
-
-        const integration = useAppSelector(
-            getIntegrationById(Number(asyncDiscountOffer?.store_integration_id))
-        )
-
-        const editDiscountModal = useModalManager(UNIQUE_DISCOUNT_MODAL_NAME, {
-            autoDestroy: false,
-        })
-
-        const handleCloseModal = useCallback(() => {
-            editDiscountModal.closeModal(UNIQUE_DISCOUNT_MODAL_NAME)
-        }, [editDiscountModal])
-
-        const handleOpenModal = useCallback(() => {
-            editDiscountModal.openModal(
-                UNIQUE_DISCOUNT_MODAL_NAME,
-                false,
-                asyncDiscountOffer
-            )
-        }, [editDiscountModal, asyncDiscountOffer])
-
-        const {
-            id: __id,
-            summary,
-            name,
-        } = getMeaningfulDiscountOfferInfo(
-            discountOffer,
-            asyncDiscountOffer,
-            integration
-        )
-
-        const renderRemoveIcon = () => {
-            return (
-                <i
-                    data-testid={testIds.removeBtn}
-                    className={classNames(css.actionItem, 'material-icons')}
-                    onClick={(e) => onRemove?.(e)}
-                >
-                    close
-                </i>
-            )
+export const DiscountOfferTicketAttachment: React.FC<
+    DiscountOfferTicketAttachmentType
+> = ({discountOffer, supportsEdit, onRemove}) => {
+    const {data: asyncDiscountOffer} = useGetDiscountOffer(
+        {
+            discount_offer_id: discountOffer.extra.discount_offer_id,
+        },
+        {
+            enabled: !!discountOffer.extra.discount_offer_id && !!supportsEdit,
         }
+    )
 
-        const renderEditIcon = () => {
-            return (
-                <i
-                    data-testid={testIds.editIntentBtn}
-                    className={classNames(css.actionItem, 'material-icons')}
-                    onClick={handleOpenModal}
-                >
-                    edit
-                </i>
-            )
-        }
+    const integration = useAppSelector(
+        getIntegrationById(Number(asyncDiscountOffer?.store_integration_id))
+    )
 
+    const editDiscountModal = useModalManager(UNIQUE_DISCOUNT_MODAL_NAME, {
+        autoDestroy: false,
+    })
+
+    const handleCloseModal = useCallback(() => {
+        editDiscountModal.closeModal(UNIQUE_DISCOUNT_MODAL_NAME)
+    }, [editDiscountModal])
+
+    const handleOpenModal = useCallback(() => {
+        editDiscountModal.openModal(
+            UNIQUE_DISCOUNT_MODAL_NAME,
+            false,
+            asyncDiscountOffer
+        )
+    }, [editDiscountModal, asyncDiscountOffer])
+
+    const {
+        id: __id,
+        summary,
+        name,
+    } = getMeaningfulDiscountOfferInfo(
+        discountOffer,
+        asyncDiscountOffer,
+        integration
+    )
+
+    const renderRemoveIcon = () => {
         return (
-            <>
-                <div className={css.item} data-testid={testIds.wrapper}>
-                    <div className={css.itemMeta}>
-                        <div className={css.metaName}>{name}</div>
-                        <div data-testid={testIds.summary}>{summary}</div>
-                        {supportsEdit && (
-                            <div className={css.actions}>
-                                {asyncDiscountOffer && renderEditIcon()}
-                                {renderRemoveIcon()}
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                {!integration.isEmpty() && (
-                    <UniqueDiscountOfferCreateModal
-                        isOpen={editDiscountModal.isOpen()}
-                        integration={integration}
-                        onClose={handleCloseModal}
-                        onSubmit={handleCloseModal}
-                    />
-                )}
-            </>
+            <i
+                data-testid={testIds.removeBtn}
+                className={classNames(css.actionItem, 'material-icons')}
+                onClick={(e) => onRemove?.(e)}
+            >
+                close
+            </i>
         )
     }
+
+    const renderEditIcon = () => {
+        return (
+            <i
+                data-testid={testIds.editIntentBtn}
+                className={classNames(css.actionItem, 'material-icons')}
+                onClick={handleOpenModal}
+            >
+                edit
+            </i>
+        )
+    }
+
+    return (
+        <>
+            <div className={css.item} data-testid={testIds.wrapper}>
+                <div className={css.itemMeta}>
+                    <div className={css.metaName}>{name}</div>
+                    <div data-testid={testIds.summary}>{summary}</div>
+                    {supportsEdit && (
+                        <div className={css.actions}>
+                            {asyncDiscountOffer && renderEditIcon()}
+                            {renderRemoveIcon()}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {!integration.isEmpty() && (
+                <UniqueDiscountOfferCreateModal
+                    isOpen={editDiscountModal.isOpen()}
+                    integration={integration}
+                    onClose={handleCloseModal}
+                    onSubmit={handleCloseModal}
+                />
+            )}
+        </>
+    )
+}

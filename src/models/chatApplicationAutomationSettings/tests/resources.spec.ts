@@ -32,9 +32,8 @@ describe('resources.ts', () => {
                 mockClient as any
             )
 
-            const result = await fetchChatApplicationAutomationSettings(
-                'app_id_123'
-            )
+            const result =
+                await fetchChatApplicationAutomationSettings('app_id_123')
 
             expect(
                 mockedGetGorgiasChatProtectedApiClient
@@ -65,9 +64,8 @@ describe('resources.ts', () => {
             )
 
             const applicationIds = ['app_id_123', 'app_id_456']
-            const result = await fetchChatsApplicationAutomationSettings(
-                applicationIds
-            )
+            const result =
+                await fetchChatsApplicationAutomationSettings(applicationIds)
 
             expect(
                 mockedGetGorgiasChatProtectedApiClient

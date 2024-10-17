@@ -13,7 +13,7 @@ jest.mock(
         ({
             ...jest.requireActual('utils/colors'),
             getEnoughContrastedColor: jest.fn(),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 
 describe('<TicketTag />', () => {

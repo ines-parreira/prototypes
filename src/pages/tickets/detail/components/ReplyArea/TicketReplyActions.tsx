@@ -50,9 +50,9 @@ export default function TicketReplyActions({
             showFirst.includes(a.get('name')) || a.get('name') < b.get('name')
                 ? -1
                 : showFirst.includes(b.get('name')) ||
-                  a.get('name') > b.get('name')
-                ? 1
-                : 0
+                    a.get('name') > b.get('name')
+                  ? 1
+                  : 0
     )
 
     return (

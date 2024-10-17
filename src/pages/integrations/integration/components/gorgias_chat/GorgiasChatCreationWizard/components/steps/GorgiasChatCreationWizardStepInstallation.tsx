@@ -85,11 +85,11 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
         })
 
     const installationMethod = isOneClickInstallationAllowed
-        ? currentInstallationMethod ??
+        ? (currentInstallationMethod ??
           integration.getIn(
               ['meta', 'wizard', 'installation_method'],
               GorgiasChatCreationWizardInstallationMethod.OneClick
-          )
+          ))
         : GorgiasChatCreationWizardInstallationMethod.Manual
 
     const isOneClickInstallation =

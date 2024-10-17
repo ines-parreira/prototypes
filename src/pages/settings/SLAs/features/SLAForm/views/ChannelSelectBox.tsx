@@ -37,15 +37,21 @@ export default forwardRef(function ChannelSelectBox(
     const [isOpen, setIsOpen] = useState(false)
     const channelsMap = getChannels()
         .sort((a, b) => a.name.localeCompare(b.name))
-        .reduce((acc, channel) => {
-            return {
-                ...acc,
-                [channel.slug]: {
-                    label: channel.name,
-                    value: channel.slug,
-                },
-            }
-        }, {} as Record<Channel['slug'], {label: Channel['name']; value: Channel['slug']}>)
+        .reduce(
+            (acc, channel) => {
+                return {
+                    ...acc,
+                    [channel.slug]: {
+                        label: channel.name,
+                        value: channel.slug,
+                    },
+                }
+            },
+            {} as Record<
+                Channel['slug'],
+                {label: Channel['name']; value: Channel['slug']}
+            >
+        )
 
     const channelsLabel = useMemo(() => {
         if (value && value.length > 5) {

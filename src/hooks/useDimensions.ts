@@ -2,7 +2,7 @@ import {useCallback, useLayoutEffect, useState} from 'react'
 
 export default function useDimensions(): [
     (element: HTMLElement | null) => void,
-    DOMRect | null
+    DOMRect | null,
 ] {
     const [dimensions, setDimensions] = useState<DOMRect | null>(null)
     const [element, setElement] = useState<HTMLElement | null>(null)

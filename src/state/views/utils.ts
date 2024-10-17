@@ -512,8 +512,8 @@ export function getViewFilters(node: BaseNode = {} as BaseNode) {
                 key === 'arguments'
                     ? acc.concat(nodeObj as BaseCallExpression)
                     : _isObject(value)
-                    ? acc.concat(findCallExpressions(value as BaseNode))
-                    : acc,
+                      ? acc.concat(findCallExpressions(value as BaseNode))
+                      : acc,
             [] as BaseCallExpression[]
         )
 
@@ -536,8 +536,8 @@ export function getViewFilters(node: BaseNode = {} as BaseNode) {
                 firstExpression.object.property.type === Syntax.Identifier
                     ? `${firstExpression.object.object.name}.${firstExpression.object.property.name}`
                     : firstExpression.object.type === Syntax.Identifier
-                    ? `${firstExpression.object.name}`
-                    : ''
+                      ? `${firstExpression.object.name}`
+                      : ''
 
             const fieldName = `${objectName}.${
                 firstExpression.property.type === Syntax.Identifier

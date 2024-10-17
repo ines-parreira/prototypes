@@ -143,7 +143,7 @@ export const TagsSelectContainer = ({
                         ({
                             label: value,
                             value,
-                        } as Option)
+                        }) as Option
                 )
         }
         return value.map((val) => ({label: val, value: val}))

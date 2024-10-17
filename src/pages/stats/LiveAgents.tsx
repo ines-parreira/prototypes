@@ -187,39 +187,46 @@ const formatUserPerformanceData = (
         data.axes.x[onlineTimeTypeIndex].type = StatType.OnlineState
 
         data.lines = data.lines.map((line) =>
-            line.reduce((acc, value, index) => {
-                if (!acc || !value) {
-                    return acc
-                }
+            line.reduce(
+                (acc, value, index) => {
+                    if (!acc || !value) {
+                        return acc
+                    }
 
-                if (index === openTicketsIndex) {
-                    acc.push({
-                        ...value,
-                        details: line[ticketsDetailsIndex].value,
-                    } as TicketDetailStatCell)
-                } else if (index === onlineTimeIndex) {
-                    acc.push({
-                        ...value,
-                        extra: {
-                            timezone: line[agentTimezoneIndex].value,
-                            isOnline: line[onlineIndex].value,
-                            firstSession: line[firstSessionIndex].value,
-                            lastSession: line[lastSessionIndex].value,
-                        },
-                    } as OnlineTimeDetailStatCell)
-                } else if (
-                    ![
-                        ticketsDetailsIndex,
-                        agentTimezoneIndex,
-                        onlineIndex,
-                        firstSessionIndex,
-                        lastSessionIndex,
-                    ].includes(index)
-                ) {
-                    acc.push(value)
-                }
-                return acc
-            }, [] as (NumericStatCell | OnlineTimeDetailStatCell | TicketDetailStatCell)[])
+                    if (index === openTicketsIndex) {
+                        acc.push({
+                            ...value,
+                            details: line[ticketsDetailsIndex].value,
+                        } as TicketDetailStatCell)
+                    } else if (index === onlineTimeIndex) {
+                        acc.push({
+                            ...value,
+                            extra: {
+                                timezone: line[agentTimezoneIndex].value,
+                                isOnline: line[onlineIndex].value,
+                                firstSession: line[firstSessionIndex].value,
+                                lastSession: line[lastSessionIndex].value,
+                            },
+                        } as OnlineTimeDetailStatCell)
+                    } else if (
+                        ![
+                            ticketsDetailsIndex,
+                            agentTimezoneIndex,
+                            onlineIndex,
+                            firstSessionIndex,
+                            lastSessionIndex,
+                        ].includes(index)
+                    ) {
+                        acc.push(value)
+                    }
+                    return acc
+                },
+                [] as (
+                    | NumericStatCell
+                    | OnlineTimeDetailStatCell
+                    | TicketDetailStatCell
+                )[]
+            )
         )
     })
 }

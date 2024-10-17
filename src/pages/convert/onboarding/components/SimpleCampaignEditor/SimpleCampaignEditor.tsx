@@ -44,7 +44,7 @@ export const SimpleCampaignEditor: React.FC<Props> = (props) => {
                 isEditMode: false,
                 configuration: wizardConfiguration,
                 utmConfiguration: utmConfiguration,
-            } as CampaignFormConfigurationType),
+            }) as CampaignFormConfigurationType,
         [wizardConfiguration, utmConfiguration]
     )
 

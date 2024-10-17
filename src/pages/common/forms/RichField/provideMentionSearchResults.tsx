@@ -17,7 +17,7 @@ export type InjectedProps = {
 }
 
 export default function provideMentionSearchResults<
-    Props extends RequiredProps
+    Props extends RequiredProps,
 >(
     WrappedComponent: ComponentType<Props & InjectedProps>
 ): ComponentType<Props> {

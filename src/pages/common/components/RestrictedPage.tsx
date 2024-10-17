@@ -32,8 +32,8 @@ const RestrictedPage = ({requiredRole, page}: Props) => {
                 index === 0
                     ? role
                     : index === requiredRoles.length - 1
-                    ? ` or ${role}`
-                    : `, ${role}`
+                      ? ` or ${role}`
+                      : `, ${role}`
             )
         }, '')
     }, [requiredRole])

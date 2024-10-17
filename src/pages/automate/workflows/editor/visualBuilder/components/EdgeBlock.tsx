@@ -512,17 +512,17 @@ const CancelOrderMenuItem = ({
                 !isNodeUniquePerPath('cancel_order', visualBuilderGraph, nodeId)
                     ? 'This step can only be used once per path in a Flow.'
                     : !isNodeUniquePerPath(
-                          'refund_order',
-                          visualBuilderGraph,
-                          nodeId
-                      ) ||
-                      !isNodeUniquePerPath(
-                          'update_shipping_address',
-                          visualBuilderGraph,
-                          nodeId
-                      )
-                    ? 'This step cannot be used if Refund order or Update shipping address step was already added.'
-                    : undefined
+                            'refund_order',
+                            visualBuilderGraph,
+                            nodeId
+                        ) ||
+                        !isNodeUniquePerPath(
+                            'update_shipping_address',
+                            visualBuilderGraph,
+                            nodeId
+                        )
+                      ? 'This step cannot be used if Refund order or Update shipping address step was already added.'
+                      : undefined
             }
         />
     )
@@ -563,17 +563,17 @@ const RefundOrderMenuItem = ({
                 !isNodeUniquePerPath('refund_order', visualBuilderGraph, nodeId)
                     ? 'This step can only be used once per path in a Flow.'
                     : !isNodeUniquePerPath(
-                          'cancel_order',
-                          visualBuilderGraph,
-                          nodeId
-                      ) ||
-                      !isNodeUniquePerPath(
-                          'update_shipping_address',
-                          visualBuilderGraph,
-                          nodeId
-                      )
-                    ? 'This step cannot be used if Cancel order or Update shipping address step was already added.'
-                    : undefined
+                            'cancel_order',
+                            visualBuilderGraph,
+                            nodeId
+                        ) ||
+                        !isNodeUniquePerPath(
+                            'update_shipping_address',
+                            visualBuilderGraph,
+                            nodeId
+                        )
+                      ? 'This step cannot be used if Cancel order or Update shipping address step was already added.'
+                      : undefined
             }
         />
     )
@@ -618,17 +618,17 @@ const UpdateShippingAddressMenuItem = ({
                 )
                     ? 'This step can only be used once per path in a Flow.'
                     : !isNodeUniquePerPath(
-                          'refund_order',
-                          visualBuilderGraph,
-                          nodeId
-                      ) ||
-                      !isNodeUniquePerPath(
-                          'cancel_order',
-                          visualBuilderGraph,
-                          nodeId
-                      )
-                    ? 'This step cannot be used if Cancel order or Refund order step was already added.'
-                    : undefined
+                            'refund_order',
+                            visualBuilderGraph,
+                            nodeId
+                        ) ||
+                        !isNodeUniquePerPath(
+                            'cancel_order',
+                            visualBuilderGraph,
+                            nodeId
+                        )
+                      ? 'This step cannot be used if Cancel order or Refund order step was already added.'
+                      : undefined
             }
         />
     )
@@ -715,12 +715,12 @@ const CancelSubscriptionMenuItem = ({
                 )
                     ? 'This step can only be used once per path in a Flow.'
                     : !isNodeUniquePerPath(
-                          'skip_charge',
-                          visualBuilderGraph,
-                          nodeId
-                      )
-                    ? 'This step cannot be used if Skip next subscription shipment step was already added.'
-                    : undefined
+                            'skip_charge',
+                            visualBuilderGraph,
+                            nodeId
+                        )
+                      ? 'This step cannot be used if Skip next subscription shipment step was already added.'
+                      : undefined
             }
         />
     )
@@ -758,12 +758,12 @@ const SkipChargeMenuItem = ({
                 !isNodeUniquePerPath('skip_charge', visualBuilderGraph, nodeId)
                     ? 'This step can only be used once per path in a Flow.'
                     : !isNodeUniquePerPath(
-                          'cancel_subscription',
-                          visualBuilderGraph,
-                          nodeId
-                      )
-                    ? 'This step cannot be used if Cancel subscription step was already added.'
-                    : undefined
+                            'cancel_subscription',
+                            visualBuilderGraph,
+                            nodeId
+                        )
+                      ? 'This step cannot be used if Cancel subscription step was already added.'
+                      : undefined
             }
         />
     )

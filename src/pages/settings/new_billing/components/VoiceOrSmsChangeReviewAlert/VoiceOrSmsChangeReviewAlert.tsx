@@ -15,44 +15,45 @@ interface VoiceOrSmsChangeReviewAlertProps {
     selectedPlans: SelectedPlans
 }
 
-const VoiceOrSmsChangeReviewAlert: React.FC<VoiceOrSmsChangeReviewAlertProps> =
-    ({selectedPlans}) => {
-        const isVettedForPhone = useAppSelector(getIsVettedForPhone)
+const VoiceOrSmsChangeReviewAlert: React.FC<
+    VoiceOrSmsChangeReviewAlertProps
+> = ({selectedPlans}) => {
+    const isVettedForPhone = useAppSelector(getIsVettedForPhone)
 
-        const isPhoneSelfServeEnabled =
-            useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe]
+    const isPhoneSelfServeEnabled =
+        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe]
 
-        const voiceOrSMSChanged = useAppSelector(
-            getVoiceOrSmsPlanChanged({
-                selectedVoicePlan: selectedPlans[ProductType.Voice].plan,
-                selectedSmsPlan: selectedPlans[ProductType.SMS].plan,
-            })
-        )
-        const voiceOrSMSText = useMemo(() => {
-            if (
-                selectedPlans[ProductType.Voice].isSelected &&
-                selectedPlans[ProductType.SMS].isSelected
-            ) {
-                return 'Voice & SMS'
-            } else if (selectedPlans[ProductType.SMS].isSelected) {
-                return 'SMS'
-            }
-            return 'Voice'
-        }, [selectedPlans])
-
-        const shouldHideVoiceOrSmsChangeReviewAlert =
-            isVettedForPhone && isPhoneSelfServeEnabled
-
-        if (voiceOrSMSChanged && !shouldHideVoiceOrSmsChangeReviewAlert) {
-            return (
-                <Alert className={css.alert} icon>
-                    Your {voiceOrSMSText} subscription will have to be reviewed
-                    by our team before you can start using it
-                </Alert>
-            )
+    const voiceOrSMSChanged = useAppSelector(
+        getVoiceOrSmsPlanChanged({
+            selectedVoicePlan: selectedPlans[ProductType.Voice].plan,
+            selectedSmsPlan: selectedPlans[ProductType.SMS].plan,
+        })
+    )
+    const voiceOrSMSText = useMemo(() => {
+        if (
+            selectedPlans[ProductType.Voice].isSelected &&
+            selectedPlans[ProductType.SMS].isSelected
+        ) {
+            return 'Voice & SMS'
+        } else if (selectedPlans[ProductType.SMS].isSelected) {
+            return 'SMS'
         }
+        return 'Voice'
+    }, [selectedPlans])
 
-        return null
+    const shouldHideVoiceOrSmsChangeReviewAlert =
+        isVettedForPhone && isPhoneSelfServeEnabled
+
+    if (voiceOrSMSChanged && !shouldHideVoiceOrSmsChangeReviewAlert) {
+        return (
+            <Alert className={css.alert} icon>
+                Your {voiceOrSMSText} subscription will have to be reviewed by
+                our team before you can start using it
+            </Alert>
+        )
     }
+
+    return null
+}
 
 export default VoiceOrSmsChangeReviewAlert

@@ -50,7 +50,9 @@ describe('<ActionsList />', () => {
         mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
             data: [],
             isInitialLoading: false,
-        } as unknown as ReturnType<typeof mockUseGetWorkflowConfigurationTemplates>)
+        } as unknown as ReturnType<
+            typeof mockUseGetWorkflowConfigurationTemplates
+        >)
 
         mockUseDeleteAction.mockReturnValue({
             mutate: jest.fn(),

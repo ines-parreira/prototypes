@@ -41,7 +41,7 @@ jest.mock(
         ({
             ...jest.requireActual('state/ui/stats/agentPerformanceSlice'),
             getCleanStatsFiltersWithTimezone: jest.fn(),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 
 const getValueModeMock = assumeMock(getValueMode)

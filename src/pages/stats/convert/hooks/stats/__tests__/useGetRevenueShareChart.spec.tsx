@@ -25,7 +25,7 @@ describe('useGetTotalsStat', () => {
         LogicalOperatorEnum,
         string,
         string,
-        string
+        string,
     ] = [
         'shopify:square-wheels-company',
         ['campaign1', 'campaign2'],

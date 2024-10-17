@@ -38,17 +38,16 @@ jest.mock(
             onConfirm,
         }: {
             onConfirm: (values: typeof mockNewSenderDetails) => void
-        }) =>
-            (
-                <div data-testid="single-sender-verification-form-modal">
-                    <button
-                        data-testid="confirm-submit-details-button"
-                        onClick={() => onConfirm(mockNewSenderDetails)}
-                    >
-                        confirm
-                    </button>
-                </div>
-            )
+        }) => (
+            <div data-testid="single-sender-verification-form-modal">
+                <button
+                    data-testid="confirm-submit-details-button"
+                    onClick={() => onConfirm(mockNewSenderDetails)}
+                >
+                    confirm
+                </button>
+            </div>
+        )
 )
 
 const failedIntegration = {

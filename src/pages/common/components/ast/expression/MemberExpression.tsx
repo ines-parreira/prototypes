@@ -99,14 +99,14 @@ export function MemberExpressionContainer({
         const integrationName = displayedValue.value.includes('shopify')
             ? IntegrationType.Shopify
             : displayedValue.value.includes('recharge')
-            ? IntegrationType.Recharge
-            : displayedValue.value.includes('magento')
-            ? IntegrationType.Magento2
-            : displayedValue.value.includes('smile')
-            ? IntegrationType.Smile
-            : displayedValue.value.includes('bigcommerce')
-            ? IntegrationType.BigCommerce
-            : null
+              ? IntegrationType.Recharge
+              : displayedValue.value.includes('magento')
+                ? IntegrationType.Magento2
+                : displayedValue.value.includes('smile')
+                  ? IntegrationType.Smile
+                  : displayedValue.value.includes('bigcommerce')
+                    ? IntegrationType.BigCommerce
+                    : null
         const integrationUrl = integrationName
             ? getIconFromUrl(`integrations/${integrationName}-mono.svg`)
             : null

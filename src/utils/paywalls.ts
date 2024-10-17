@@ -22,17 +22,17 @@ export const convertLegacyPlanNameToPublicPlanName = (
     return name === 'Standard'
         ? PlanName.Basic
         : name === 'Team'
-        ? PlanName.Pro
-        : ![
-              PlanName.Starter,
-              PlanName.Basic,
-              PlanName.Pro,
-              PlanName.Advanced,
-              PlanName.Custom,
-              PlanName.Free,
-          ].includes(name as PlanName)
-        ? PlanName.Enterprise
-        : (name as PlanName)
+          ? PlanName.Pro
+          : ![
+                  PlanName.Starter,
+                  PlanName.Basic,
+                  PlanName.Pro,
+                  PlanName.Advanced,
+                  PlanName.Custom,
+                  PlanName.Free,
+              ].includes(name as PlanName)
+            ? PlanName.Enterprise
+            : (name as PlanName)
 }
 
 export const getCheapestPriceNameForFeature = (

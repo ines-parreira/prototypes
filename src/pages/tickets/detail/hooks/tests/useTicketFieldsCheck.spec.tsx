@@ -123,7 +123,7 @@ describe('useTicketFieldsCheck', () => {
                         data: [mockTicketInputFieldDefinition],
                     },
                     isLoading: true,
-                } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
+                }) as unknown as ReturnType<typeof useCustomFieldDefinitions>
         )
 
         const {result} = renderHook(() => useTicketFieldsCheck(TICKET_ID))
@@ -144,7 +144,7 @@ describe('useTicketFieldsCheck', () => {
                         data: [mockTicketInputFieldDefinition],
                     },
                     isLoading: false,
-                } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
+                }) as unknown as ReturnType<typeof useCustomFieldDefinitions>
         )
 
         const {result} = renderHook(() => useTicketFieldsCheck(TICKET_ID))

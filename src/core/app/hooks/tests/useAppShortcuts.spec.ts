@@ -46,7 +46,7 @@ describe('useAppShortcuts', () => {
 
         const {action: goView} = (
             useShortcutsMock.mock.calls as [
-                [string, {GO_VIEW: {action: (e: Event) => void}}]
+                [string, {GO_VIEW: {action: (e: Event) => void}}],
             ]
         )[0][1].GO_VIEW
 
@@ -62,7 +62,7 @@ describe('useAppShortcuts', () => {
 
         const {action: undoMessage} = (
             useShortcutsMock.mock.calls as [
-                [string, {UNDO_MESSAGE: {action: () => void}}]
+                [string, {UNDO_MESSAGE: {action: () => void}}],
             ]
         )[0][1].UNDO_MESSAGE
 

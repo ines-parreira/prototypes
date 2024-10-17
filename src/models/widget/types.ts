@@ -38,7 +38,7 @@ export function isSourceArray(source: Source): source is Source[] {
     return Array.isArray(source)
 }
 
-export type LeafType = typeof LEAF_TYPES[keyof typeof LEAF_TYPES]
+export type LeafType = (typeof LEAF_TYPES)[keyof typeof LEAF_TYPES]
 
 export function isLeafType(type: string): type is LeafType {
     return Object.values(LEAF_TYPES).includes(type as LeafType)

@@ -54,8 +54,8 @@ const FeaturePaywall = ({
     const requiredPlanName = isCustomPlan
         ? 'Enterprise'
         : shouldKeepPlan
-        ? currentHelpdeskPlanName?.split(' ')[0]
-        : getCheapestPriceNameForFeature(feature, availablePlans || {})
+          ? currentHelpdeskPlanName?.split(' ')[0]
+          : getCheapestPriceNameForFeature(feature, availablePlans || {})
     const config = paywallConfigs[feature]!
 
     return config && requiredPlanName ? (

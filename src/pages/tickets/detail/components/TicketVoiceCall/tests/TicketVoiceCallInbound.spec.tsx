@@ -8,15 +8,15 @@ import TicketVoiceCallInbound from '../TicketVoiceCallInbound'
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
     () =>
-        ({customerId}: {customerId: number}) =>
+        ({customerId}: {customerId: number}) => (
             <div>VoiceCallCustomerLabel {customerId}</div>
+        )
 )
 
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) =>
-            <div>{dateTime}</div>
+        ({dateTime}: {dateTime: string}) => <div>{dateTime}</div>
 )
 
 jest.mock('pages/tickets/detail/components/TicketVoiceCall/hooks', () => ({

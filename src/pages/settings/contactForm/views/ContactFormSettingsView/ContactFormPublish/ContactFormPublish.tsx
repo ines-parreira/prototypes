@@ -165,7 +165,7 @@ const ContactFormPublish = (): JSX.Element => {
                                 pageEmbedments={
                                     isLoading || !isWorking
                                         ? []
-                                        : getPageEmbedments.data ?? []
+                                        : (getPageEmbedments.data ?? [])
                                 }
                             />
 

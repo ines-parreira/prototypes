@@ -7,12 +7,11 @@ import UserAssigneeDropdownMenu from '../UserAssigneeDropdownMenu'
 jest.mock(
     '../UserAssigneeDropdownMenu',
     () =>
-        ({onClick}: ComponentProps<typeof UserAssigneeDropdownMenu>) =>
-            (
-                <button onClick={() => onClick({id: 3, name: 'user'})}>
-                    UserAssigneeDropdownMenuMock
-                </button>
-            )
+        ({onClick}: ComponentProps<typeof UserAssigneeDropdownMenu>) => (
+            <button onClick={() => onClick({id: 3, name: 'user'})}>
+                UserAssigneeDropdownMenuMock
+            </button>
+        )
 )
 
 describe('<AssignUser />', () => {

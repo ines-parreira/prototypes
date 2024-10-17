@@ -31,24 +31,23 @@ jest.mock(
             selectable,
             item,
             onItemClick,
-        }: ComponentProps<typeof Row>) =>
-            (
-                <tr>
-                    <td>
-                        Row:
-                        <div>selectable: {selectable?.toString()}</div>
-                        <div>isSelected: {isSelected?.toString()}</div>
-                        {item && (
-                            <button
-                                data-testid={`click-item-${
-                                    item?.get('id') as string
-                                }`}
-                                onClick={() => onItemClick?.(item)}
-                            />
-                        )}
-                    </td>
-                </tr>
-            )
+        }: ComponentProps<typeof Row>) => (
+            <tr>
+                <td>
+                    Row:
+                    <div>selectable: {selectable?.toString()}</div>
+                    <div>isSelected: {isSelected?.toString()}</div>
+                    {item && (
+                        <button
+                            data-testid={`click-item-${
+                                item?.get('id') as string
+                            }`}
+                            onClick={() => onItemClick?.(item)}
+                        />
+                    )}
+                </td>
+            </tr>
+        )
 )
 jest.mock(
     '../Table/HeaderCell',
@@ -57,24 +56,22 @@ jest.mock(
             shouldRenderShowMoreDropdown,
         }: {
             shouldRenderShowMoreDropdown: boolean
-        }) =>
-            (
-                <td>
-                    HeaderCell - shouldRenderShowMoreDropdown :{' '}
-                    {String(shouldRenderShowMoreDropdown)}
-                </td>
-            )
+        }) => (
+            <td>
+                HeaderCell - shouldRenderShowMoreDropdown :{' '}
+                {String(shouldRenderShowMoreDropdown)}
+            </td>
+        )
 )
 jest.mock(
     '../../BlankState/BlankState',
     () =>
-        ({message}: ComponentProps<typeof BlankState>) =>
-            (
-                <div>
-                    BlankState
-                    <div>{message}</div>
-                </div>
-            )
+        ({message}: ComponentProps<typeof BlankState>) => (
+            <div>
+                BlankState
+                <div>{message}</div>
+            </div>
+        )
 )
 jest.mock('services/shortcutManager/shortcutManager')
 

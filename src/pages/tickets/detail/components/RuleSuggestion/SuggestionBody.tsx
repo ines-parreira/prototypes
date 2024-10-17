@@ -49,11 +49,11 @@ export default function SuggestionBody({
                   left: '-999px',
               }
             : state === 'preview'
-            ? {
-                  display: 'block',
-                  height: PREVIEW_HEIGHT,
-              }
-            : {}
+              ? {
+                    display: 'block',
+                    height: PREVIEW_HEIGHT,
+                }
+              : {}
 
     const content = useMemo(() => {
         if (!text) {

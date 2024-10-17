@@ -41,13 +41,17 @@ describe('<CustomFieldSelect />', () => {
     useCustomFieldDefinitionsMock.mockReturnValue({
         data: {data: ticketFieldDefinitions},
         isLoading: false,
-    } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+    } as unknown as UseQueryResult<
+        ApiListResponseCursorPagination<CustomField[]>
+    >)
 
     it('should render loading Skeleton when CustomFields loading', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: {data: ticketFieldDefinitions},
             isLoading: true,
-        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+        } as unknown as UseQueryResult<
+            ApiListResponseCursorPagination<CustomField[]>
+        >)
 
         const store = mockStore(defaultState)
 
@@ -71,7 +75,9 @@ describe('<CustomFieldSelect />', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: {data: ticketFieldDefinitions},
             isLoading: false,
-        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+        } as unknown as UseQueryResult<
+            ApiListResponseCursorPagination<CustomField[]>
+        >)
 
         const store = mockStore(defaultState)
 
@@ -105,7 +111,9 @@ describe('<CustomFieldSelect />', () => {
             useCustomFieldDefinitionsMock.mockReturnValue({
                 data: response,
                 isLoading: false,
-            } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+            } as unknown as UseQueryResult<
+                ApiListResponseCursorPagination<CustomField[]>
+            >)
 
             render(
                 <Provider store={mockStore(state)}>
@@ -129,7 +137,9 @@ describe('<CustomFieldSelect />', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: {data: ticketFieldDefinitions},
             isLoading: false,
-        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+        } as unknown as UseQueryResult<
+            ApiListResponseCursorPagination<CustomField[]>
+        >)
 
         render(
             <Provider store={mockStore(state)}>
@@ -149,7 +159,9 @@ describe('<CustomFieldSelect />', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: {data: ticketFieldDefinitions},
             isLoading: false,
-        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+        } as unknown as UseQueryResult<
+            ApiListResponseCursorPagination<CustomField[]>
+        >)
         const selectField = ticketFieldDefinitions[1]
         const store = mockStore(state)
 

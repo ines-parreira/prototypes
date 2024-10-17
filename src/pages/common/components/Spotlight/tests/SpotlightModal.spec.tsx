@@ -53,31 +53,29 @@ jest.mock('pages/common/components/SkeletonLoader', () => () => (
 jest.mock(
     'pages/common/components/Spotlight/SpotlightTicketRow',
     () =>
-        ({onClick, onHover}: ComponentProps<typeof SpotlightTicketRow>) =>
-            (
-                <div
-                    onClick={onClick}
-                    onMouseEnter={onHover}
-                    data-testid={TICKET_SPOTLIGHT_ROW_TEST_ID}
-                >
-                    MockedSpotlightTicketRow
-                </div>
-            )
+        ({onClick, onHover}: ComponentProps<typeof SpotlightTicketRow>) => (
+            <div
+                onClick={onClick}
+                onMouseEnter={onHover}
+                data-testid={TICKET_SPOTLIGHT_ROW_TEST_ID}
+            >
+                MockedSpotlightTicketRow
+            </div>
+        )
 )
 
 jest.mock(
     'pages/common/components/Spotlight/SpotlightCustomerRow',
     () =>
-        ({onClick, onHover}: ComponentProps<typeof SpotlightCustomerRow>) =>
-            (
-                <div
-                    onClick={onClick}
-                    onMouseEnter={onHover}
-                    data-testid={CUSTOMER_SPOTLIGHT_ROW_TEST_ID}
-                >
-                    MockedSpotlightCustomerRow
-                </div>
-            )
+        ({onClick, onHover}: ComponentProps<typeof SpotlightCustomerRow>) => (
+            <div
+                onClick={onClick}
+                onMouseEnter={onHover}
+                data-testid={CUSTOMER_SPOTLIGHT_ROW_TEST_ID}
+            >
+                MockedSpotlightCustomerRow
+            </div>
+        )
 )
 
 jest.spyOn(ReactDOM, 'createPortal').mockImplementation(

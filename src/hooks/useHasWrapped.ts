@@ -4,7 +4,7 @@ import useStatefulRef from 'hooks/useStatefulRef'
 
 export default function useHasWrapped<E extends Element = Element>(): [
     MutableRefObject<E>,
-    boolean
+    boolean,
 ] {
     const ref = useStatefulRef<E>()
     const [hasWrapped, setHasWrapped] = useState(false)

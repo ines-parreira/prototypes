@@ -9,24 +9,22 @@ import {CustomerNavbarContainer} from '../CustomerNavbarContainer'
 jest.mock(
     '../../../common/components/Navbar',
     () =>
-        ({children}: ComponentProps<typeof Navbar>) =>
-            (
-                <div>
-                    Navbar: <div>children: {children}</div>
-                </div>
-            )
+        ({children}: ComponentProps<typeof Navbar>) => (
+            <div>
+                Navbar: <div>children: {children}</div>
+            </div>
+        )
 )
 
 jest.mock(
     '../../../common/components/ViewNavbarView/ViewNavbarView',
     () =>
-        ({settingType, isLoading}: ComponentProps<typeof ViewNavbarView>) =>
-            (
-                <div>
-                    <div>isLoading: {JSON.stringify(isLoading)}</div>
-                    <div>settingType: {settingType}</div>
-                </div>
-            )
+        ({settingType, isLoading}: ComponentProps<typeof ViewNavbarView>) => (
+            <div>
+                <div>isLoading: {JSON.stringify(isLoading)}</div>
+                <div>settingType: {settingType}</div>
+            </div>
+        )
 )
 
 describe('<CustomerNavbarContainer />', () => {

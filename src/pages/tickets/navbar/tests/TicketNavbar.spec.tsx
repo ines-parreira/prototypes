@@ -32,8 +32,7 @@ jest.mock('launchdarkly-react-client-sdk', () => ({
 jest.mock(
     'pages/common/components/Navbar',
     () =>
-        ({children}: {children: ReactNode}) =>
-            <div>{children}</div>
+        ({children}: {children: ReactNode}) => <div>{children}</div>
 )
 jest.mock('pages/common/components/RecentChats', () => () => (
     <div>RecentChats</div>
@@ -41,22 +40,21 @@ jest.mock('pages/common/components/RecentChats', () => () => (
 jest.mock(
     'pages/common/components/navbar/NavbarBlock',
     () =>
-        ({actions, children}: ComponentProps<typeof NavbarBlock>) =>
-            (
-                <div data-testid="NavbarBlock">
-                    NavbarBlock:{' '}
-                    {actions?.map((value) => (
-                        <span
-                            data-testid={`NavbarBlock-${value.label}`}
-                            key={value.label}
-                            onClick={value.onClick}
-                        >
-                            {value.label}
-                        </span>
-                    ))}
-                    {children}
-                </div>
-            )
+        ({actions, children}: ComponentProps<typeof NavbarBlock>) => (
+            <div data-testid="NavbarBlock">
+                NavbarBlock:{' '}
+                {actions?.map((value) => (
+                    <span
+                        data-testid={`NavbarBlock-${value.label}`}
+                        key={value.label}
+                        onClick={value.onClick}
+                    >
+                        {value.label}
+                    </span>
+                ))}
+                {children}
+            </div>
+        )
 )
 
 jest.mock('split-ticket-view-toggle')
@@ -76,27 +74,23 @@ jest.mock(
             onClose,
             onSubmit,
             sectionForm,
-        }: ComponentProps<typeof SectionFormModal>) =>
-            (
-                <div data-testid="SectionFormModal">
-                    <input
-                        type="text"
-                        data-testid="SectionModal-change"
-                        onChange={(e) => {
-                            onChange(
-                                e.target.name as any,
-                                e.target.value as any
-                            )
-                        }}
-                    />
-                    <div data-testid="SectionModal-close" onClick={onClose} />
-                    <div data-testid="SectionModal-submit" onClick={onSubmit} />
-                    <div>isNewSection: {isNewSection.toString()}</div>
-                    <div>isOpen: {isOpen.toString()}</div>
-                    <div>isSubmitting: {isSubmitting.toString()}</div>
-                    <div>sectionForm: {JSON.stringify(sectionForm)}</div>
-                </div>
-            )
+        }: ComponentProps<typeof SectionFormModal>) => (
+            <div data-testid="SectionFormModal">
+                <input
+                    type="text"
+                    data-testid="SectionModal-change"
+                    onChange={(e) => {
+                        onChange(e.target.name as any, e.target.value as any)
+                    }}
+                />
+                <div data-testid="SectionModal-close" onClick={onClose} />
+                <div data-testid="SectionModal-submit" onClick={onSubmit} />
+                <div>isNewSection: {isNewSection.toString()}</div>
+                <div>isOpen: {isOpen.toString()}</div>
+                <div>isSubmitting: {isSubmitting.toString()}</div>
+                <div>sectionForm: {JSON.stringify(sectionForm)}</div>
+            </div>
+        )
 )
 jest.mock(
     '../DeleteSectionModal',
@@ -107,16 +101,15 @@ jest.mock(
             onClose,
             onSubmit,
             section,
-        }: ComponentProps<typeof DeleteSectionModal>) =>
-            (
-                <div data-testid="DeleteSectionModal">
-                    <div data-testid="DeleteModal-close" onClick={onClose} />
-                    <div data-testid="DeleteModal-submit" onClick={onSubmit} />
-                    <div>isOpen: {isOpen.toString()}</div>
-                    <div>isSubmitting: {isSubmitting.toString()}</div>
-                    <div>section: {JSON.stringify(section)}</div>
-                </div>
-            )
+        }: ComponentProps<typeof DeleteSectionModal>) => (
+            <div data-testid="DeleteSectionModal">
+                <div data-testid="DeleteModal-close" onClick={onClose} />
+                <div data-testid="DeleteModal-submit" onClick={onSubmit} />
+                <div>isOpen: {isOpen.toString()}</div>
+                <div>isSubmitting: {isSubmitting.toString()}</div>
+                <div>section: {JSON.stringify(section)}</div>
+            </div>
+        )
 )
 jest.mock(
     '../TicketNavbarContent',
@@ -125,28 +118,27 @@ jest.mock(
             elements,
             onSectionDeleteClick,
             onSectionRenameClick,
-        }: ComponentProps<typeof TicketNavbarContent>) =>
-            (
-                <div data-testid="TicketNavbarContent">
-                    {elements.map((element) => (
-                        <div key={element.data.id}>
-                            element: {JSON.stringify(element)}
-                        </div>
-                    ))}
-                    {onSectionDeleteClick && (
-                        <div
-                            data-testid="TicketNavbarContent-delete"
-                            onClick={() => onSectionDeleteClick(1)}
-                        />
-                    )}
-                    {onSectionRenameClick && (
-                        <div
-                            data-testid="TicketNavbarContent-rename"
-                            onClick={() => onSectionRenameClick(1)}
-                        />
-                    )}
-                </div>
-            )
+        }: ComponentProps<typeof TicketNavbarContent>) => (
+            <div data-testid="TicketNavbarContent">
+                {elements.map((element) => (
+                    <div key={element.data.id}>
+                        element: {JSON.stringify(element)}
+                    </div>
+                ))}
+                {onSectionDeleteClick && (
+                    <div
+                        data-testid="TicketNavbarContent-delete"
+                        onClick={() => onSectionDeleteClick(1)}
+                    />
+                )}
+                {onSectionRenameClick && (
+                    <div
+                        data-testid="TicketNavbarContent-rename"
+                        onClick={() => onSectionRenameClick(1)}
+                    />
+                )}
+            </div>
+        )
 )
 const mockedServer = new MockAdapter(client)
 

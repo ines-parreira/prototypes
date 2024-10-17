@@ -19,14 +19,16 @@ const useVoiceCallCountMock = assumeMock(useVoiceCallCount)
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
     () =>
-        ({customerId}: {customerId: number}) =>
+        ({customerId}: {customerId: number}) => (
             <div>VoiceCallCustomerLabel {customerId}</div>
+        )
 )
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({agentId}: {agentId: number}) =>
+        ({agentId}: {agentId: number}) => (
             <div>VoiceCallAgentLabel {agentId}</div>
+        )
 )
 jest.mock(
     'pages/common/components/VoiceIntegrationBasicLabel/VoiceIntegrationBasicLabel',

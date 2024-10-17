@@ -219,7 +219,7 @@ export type StoreDispatch = ThunkDispatch<StoreState, void, AnyAction>
 export type ConnectedAction<
     T extends (
         ...args: any
-    ) => (dispatch: StoreDispatch, getState: () => RootState) => any
+    ) => (dispatch: StoreDispatch, getState: () => RootState) => any,
 > = (...args: ArgumentsOf<T>) => ReturnType<ReturnType<T>>
 
 export type RootState = ReturnType<typeof rootReducer>

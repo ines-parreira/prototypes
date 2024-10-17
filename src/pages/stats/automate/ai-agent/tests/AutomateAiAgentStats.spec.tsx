@@ -53,13 +53,12 @@ const useTimeSeriesFormattedDataMock =
 jest.mock(
     'pages/stats/StatsPage',
     () =>
-        ({children}: PropsWithChildren<any>) =>
-            (
-                <>
-                    <div>stats-page</div>
-                    <>{children}</>
-                </>
-            )
+        ({children}: PropsWithChildren<any>) => (
+            <>
+                <div>stats-page</div>
+                <>{children}</>
+            </>
+        )
 )
 
 jest.mock('pages/stats/common/filters/FiltersPanel', () => ({

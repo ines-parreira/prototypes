@@ -9,7 +9,7 @@ export const HTTPEventKeys = {
 }
 
 export const useGetHTTPEvents = <
-    TData = Awaited<ReturnType<typeof getHTTPEvents>>
+    TData = Awaited<ReturnType<typeof getHTTPEvents>>,
 >(
     integrationId: number,
     overrides?: UseQueryOptions<
@@ -26,7 +26,7 @@ export const useGetHTTPEvents = <
 }
 
 export const useGetHTTPEvent = <
-    TData = Awaited<ReturnType<typeof getHTTPEvent>>
+    TData = Awaited<ReturnType<typeof getHTTPEvent>>,
 >(
     {integrationId, eventId}: {integrationId: number; eventId: number},
     overrides?: UseQueryOptions<

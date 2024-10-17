@@ -192,7 +192,7 @@ export type OneDimensionalUnionChart = {
 export type TwoDimensionalChart<
     X = AnyStatAxisValue,
     L = AnyStatLine,
-    Y = AnyStatAxisValue
+    Y = AnyStatAxisValue,
 > = {
     data: {
         axes: {

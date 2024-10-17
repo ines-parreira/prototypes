@@ -124,22 +124,27 @@ export default class Actions extends Component<Props, State> {
                             <b>{arg}:</b> {action.arguments!.params![arg]}
                         </p>
                     ))}
-                {!!action.arguments!.form && contentType === ContentType.Form && (
-                    <div className="mt-3">
-                        <h3>Form Data</h3>
-                        {Object.keys(action.arguments!.form).map((arg, idx) => (
-                            <p key={idx}>
-                                <b>{arg}:</b> {action.arguments!.form![arg]}
-                            </p>
-                        ))}
-                    </div>
-                )}
-                {!!action.arguments!.json && contentType === ContentType.Json && (
-                    <div className="mt-3">
-                        <h3>JSON Data</h3>
-                        <JSONTree data={fromJS(action.arguments!.json)} />
-                    </div>
-                )}
+                {!!action.arguments!.form &&
+                    contentType === ContentType.Form && (
+                        <div className="mt-3">
+                            <h3>Form Data</h3>
+                            {Object.keys(action.arguments!.form).map(
+                                (arg, idx) => (
+                                    <p key={idx}>
+                                        <b>{arg}:</b>{' '}
+                                        {action.arguments!.form![arg]}
+                                    </p>
+                                )
+                            )}
+                        </div>
+                    )}
+                {!!action.arguments!.json &&
+                    contentType === ContentType.Json && (
+                        <div className="mt-3">
+                            <h3>JSON Data</h3>
+                            <JSONTree data={fromJS(action.arguments!.json)} />
+                        </div>
+                    )}
                 {!!action.response && (
                     <div className="mt-3">
                         <h2>Response</h2>
@@ -227,7 +232,7 @@ export default class Actions extends Component<Props, State> {
 
                     const isHttpAction = action.name === 'http'
                     const isShopifyAction = SHOPIFY_ACTION_NAMES.includes(
-                        action.name as typeof SHOPIFY_ACTION_NAMES[number]
+                        action.name as (typeof SHOPIFY_ACTION_NAMES)[number]
                     )
                     const isExternalTemplateAction =
                         action.name === MacroActionName.ApplyExternalTemplate

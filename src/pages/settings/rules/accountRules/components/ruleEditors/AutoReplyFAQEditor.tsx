@@ -34,7 +34,7 @@ const HelpCenterSelectField = ({
                 value: helpCenter.id,
                 label: helpCenter.name,
                 text: helpCenter.name,
-            } as Option)
+            }) as Option
     )
     return (
         <SelectField

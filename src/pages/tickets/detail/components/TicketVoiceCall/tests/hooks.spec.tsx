@@ -21,20 +21,19 @@ const agentDetailsWrapper = ({children}: any) => (
 
 const createCustomerDetailsWrapper =
     (storeCustomerData: Partial<User> = {}) =>
-    ({children}: any) =>
-        (
-            <Provider
-                store={mockStore({
-                    ticket: fromJS({
-                        customer: storeCustomerData,
-                    }),
-                } as any)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            </Provider>
-        )
+    ({children}: any) => (
+        <Provider
+            store={mockStore({
+                ticket: fromJS({
+                    customer: storeCustomerData,
+                }),
+            } as any)}
+        >
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
+        </Provider>
+    )
 
 describe('hooks', () => {
     describe('useCustomerDetails', () => {

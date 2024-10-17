@@ -27,7 +27,7 @@ jest.mock(
         ({
             ...jest.requireActual('state/queries/selectors'),
             getQueryData: jest.fn(() => jest.fn()),
-        } as Record<string, unknown>)
+        }) as Record<string, unknown>
 )
 
 const mockShouldMessagesBeGrouped = assumeMock(shouldMessagesBeGrouped)

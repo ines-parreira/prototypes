@@ -221,7 +221,7 @@ export const ARTICLE_TEMPLATES_KEYS = [
     'wrongItem',
 ] as const
 
-export type ArticleTemplateKey = typeof ARTICLE_TEMPLATES_KEYS[number]
+export type ArticleTemplateKey = (typeof ARTICLE_TEMPLATES_KEYS)[number]
 
 export enum ArticleTemplateType {
     Template = 'template',

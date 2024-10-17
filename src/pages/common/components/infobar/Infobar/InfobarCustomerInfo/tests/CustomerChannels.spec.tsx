@@ -23,8 +23,7 @@ import {CustomerChannels} from '../CustomerChannels'
 jest.mock(
     'pages/common/components/ClickablePhoneNumber/ClickablePhoneNumber',
     () =>
-        ({address}: {address: string}) =>
-            <div>{address}</div>
+        ({address}: {address: string}) => <div>{address}</div>
 )
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/NewPhoneNumber',

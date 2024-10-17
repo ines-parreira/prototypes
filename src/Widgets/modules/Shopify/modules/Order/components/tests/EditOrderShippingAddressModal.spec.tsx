@@ -1,6 +1,6 @@
+import {fireEvent, render, screen} from '@testing-library/react'
+import {List, Map, fromJS} from 'immutable'
 import React, {ReactNode} from 'react'
-import {fromJS, Map, List} from 'immutable'
-import {render, fireEvent, screen} from '@testing-library/react'
 
 import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {shopifyCustomerFixture} from 'fixtures/shopify'
@@ -11,15 +11,15 @@ import {EditOrderShippingAddressModal} from '../EditOrderShippingAddressModal'
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) =>
-            <div>{dateTime}</div>
+        ({dateTime}: {dateTime: string}) => <div>{dateTime}</div>
 )
 
 jest.mock(
     'pages/common/components/modal/ModalHeader',
     () =>
-        ({title}: {title: ReactNode}) =>
+        ({title}: {title: ReactNode}) => (
             <div data-testid="Modal-Header">{title}</div>
+        )
 )
 
 jest.mock(

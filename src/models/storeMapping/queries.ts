@@ -16,7 +16,7 @@ export const storeMappingKeys = {
 }
 
 export const useListStoreMappings = <
-    TData = Awaited<ReturnType<typeof listStoreMappings>>
+    TData = Awaited<ReturnType<typeof listStoreMappings>>,
 >(
     integrationIds: number[],
     overrides?: UseQueryOptions<

@@ -84,24 +84,22 @@ jest.mock('pages/stats/automate/ai-agent/AutomateAiAgentStats', () => () => (
 jest.mock(
     'pages/stats/DefaultStatsFilters',
     () =>
-        ({children}: PropsWithChildren<any>) =>
-            (
-                <>
-                    <div>Default stats filters</div>
-                    <>{children}</>
-                </>
-            )
+        ({children}: PropsWithChildren<any>) => (
+            <>
+                <div>Default stats filters</div>
+                <>{children}</>
+            </>
+        )
 )
 jest.mock(
     'pages/stats/automate/ai-agent/AiAgentStatsFilters',
     () =>
-        ({children}: PropsWithChildren<any>) =>
-            (
-                <>
-                    <div>AI Agent stats filters</div>
-                    <>{children}</>
-                </>
-            )
+        ({children}: PropsWithChildren<any>) => (
+            <>
+                <div>AI Agent stats filters</div>
+                <>{children}</>
+            </>
+        )
 )
 jest.mock('pages/stats/support-performance/channels/ChannelsReport')
 const ChannelsReportMock = assumeMock(ChannelsReport)

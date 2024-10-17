@@ -6,8 +6,10 @@ import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {AiAgentGuidanceDetailView} from './AiAgentGuidanceDetailView'
 
 export const AiAgentGuidanceDetailContainer = () => {
-    const {shopName, articleId} =
-        useParams<{shopName: string; articleId: string}>()
+    const {shopName, articleId} = useParams<{
+        shopName: string
+        articleId: string
+    }>()
     const guidanceHelpCenter = useAiAgentHelpCenter({
         shopName,
         helpCenterType: 'guidance',

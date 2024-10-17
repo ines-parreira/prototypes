@@ -13,7 +13,7 @@ import useAppSelector from 'hooks/useAppSelector'
 // check user role before rendering the desired component
 // You can discard RouteComponentProps if we ever change react-router
 export function rootWithUserRoleRequired<
-    P extends Record<string, unknown> | RouteComponentProps
+    P extends Record<string, unknown> | RouteComponentProps,
 >(
     Component: ComponentType<P>,
     requiredRole?: UserRole,

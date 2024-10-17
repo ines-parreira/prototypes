@@ -248,8 +248,8 @@ export const CampaignsTable = ({
                                     {campaign.ab_group
                                         ? TOGGLE_TOOLTIP_AB_TEST_COMPLETED
                                         : campaign.schedule && hasCampaignEnded
-                                        ? TOGGLE_TOOLTIP_SCHEDULE
-                                        : TOGGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS}
+                                          ? TOGGLE_TOOLTIP_SCHEDULE
+                                          : TOGGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS}
                                 </Tooltip>
                             )}
                         </BodyCell>

@@ -51,7 +51,7 @@ describe('<List />', () => {
         mockedUseAppDispatch.mockImplementation(() => mockedDispatch)
         mockedGetAccountOwnerId.mockImplementation(() => agents[0].id)
         mockedUsePaginatedQuery.mockImplementation(
-            () => ({} as ReturnType<typeof usePaginatedQuery>)
+            () => ({}) as ReturnType<typeof usePaginatedQuery>
         )
     })
 
@@ -76,7 +76,7 @@ describe('<List />', () => {
             () =>
                 ({
                     isLoading: true,
-                } as ReturnType<typeof usePaginatedQuery>)
+                }) as ReturnType<typeof usePaginatedQuery>
         )
         render(<UserList />)
         expect(screen.getByText('Loading...')).toBeInTheDocument()
@@ -87,7 +87,7 @@ describe('<List />', () => {
             () =>
                 ({
                     error: {},
-                } as ReturnType<typeof usePaginatedQuery>)
+                }) as ReturnType<typeof usePaginatedQuery>
         )
         render(<UserList />)
         expect(mockedDispatch).toHaveBeenCalledTimes(1)
@@ -111,7 +111,7 @@ describe('<List />', () => {
                     fetchPreviousPage,
                     hasNextPage,
                     fetchNextPage,
-                } as unknown as ReturnType<typeof usePaginatedQuery>)
+                }) as unknown as ReturnType<typeof usePaginatedQuery>
         )
         render(<UserList />)
         expect(Navigation).toHaveBeenNthCalledWith(
@@ -135,7 +135,7 @@ describe('<List />', () => {
                             data: agents,
                         },
                     },
-                } as unknown as ReturnType<typeof usePaginatedQuery>)
+                }) as unknown as ReturnType<typeof usePaginatedQuery>
         )
         render(<UserList />)
         expect(mockedRow.mock.calls).toEqual([

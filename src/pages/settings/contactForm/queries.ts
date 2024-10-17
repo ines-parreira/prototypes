@@ -85,7 +85,7 @@ export const contactFormPageEmbedmentsKeys = {
  */
 
 export const useGetContactFormList = <
-    TData = Awaited<ReturnType<typeof getContactForms>>
+    TData = Awaited<ReturnType<typeof getContactForms>>,
 >(
     overrides?: UseInfiniteQueryOptions<
         Awaited<ReturnType<typeof getContactForms>>,
@@ -112,7 +112,7 @@ export const useGetContactFormList = <
 }
 
 export const useGetShopifyPages = <
-    TData = Awaited<ReturnType<typeof getShopifyPages>>
+    TData = Awaited<ReturnType<typeof getShopifyPages>>,
 >(
     contactFormId: Paths.ListContactFormShopifyPages.Parameters.ContactFormId,
     overrides?: UseQueryOptions<
@@ -136,7 +136,7 @@ export const useGetShopifyPages = <
 }
 
 export const useGetPageEmbedments = <
-    TData = Awaited<ReturnType<typeof getPageEmbedments>>
+    TData = Awaited<ReturnType<typeof getPageEmbedments>>,
 >(
     contactFormId: Paths.ListContactFormShopifyPageEmbedments.Parameters.ContactFormId,
     overrides?: UseQueryOptions<

@@ -347,53 +347,54 @@ export default function ShopifyProductLine({
                                 })}
                             </ListGroup>
                         )}
-                        {shopifyProducts.length > 0 && subResults.length > 0 && (
-                            <ListGroup flush>
-                                {(subResults as Array<Variant>).map(
-                                    (subResult: Variant, index: number) => {
-                                        if (clickedResult === null) {
-                                            return
-                                        }
+                        {shopifyProducts.length > 0 &&
+                            subResults.length > 0 && (
+                                <ListGroup flush>
+                                    {(subResults as Array<Variant>).map(
+                                        (subResult: Variant, index: number) => {
+                                            if (clickedResult === null) {
+                                                return
+                                            }
 
-                                        const productDetails =
-                                            shopifyDataMappers.variants(
-                                                clickedResult,
-                                                subResult
+                                            const productDetails =
+                                                shopifyDataMappers.variants(
+                                                    clickedResult,
+                                                    subResult
+                                                )
+                                            return (
+                                                <ListGroupItem
+                                                    key={index}
+                                                    tag="button"
+                                                    action
+                                                    className={classnames({
+                                                        [css.outOfStock]:
+                                                            disableOutOfStockProducts
+                                                                ? !productDetails
+                                                                      .stock
+                                                                      .isAvailable
+                                                                : false,
+                                                    })}
+                                                    onClick={(event) => {
+                                                        event.preventDefault()
+                                                        handleSubResultClicked(
+                                                            index
+                                                        )
+                                                    }}
+                                                >
+                                                    {clickedResult && (
+                                                        <Result
+                                                            {...generateResultProps(
+                                                                disableOutOfStockProducts,
+                                                                productDetails
+                                                            )}
+                                                        />
+                                                    )}
+                                                </ListGroupItem>
                                             )
-                                        return (
-                                            <ListGroupItem
-                                                key={index}
-                                                tag="button"
-                                                action
-                                                className={classnames({
-                                                    [css.outOfStock]:
-                                                        disableOutOfStockProducts
-                                                            ? !productDetails
-                                                                  .stock
-                                                                  .isAvailable
-                                                            : false,
-                                                })}
-                                                onClick={(event) => {
-                                                    event.preventDefault()
-                                                    handleSubResultClicked(
-                                                        index
-                                                    )
-                                                }}
-                                            >
-                                                {clickedResult && (
-                                                    <Result
-                                                        {...generateResultProps(
-                                                            disableOutOfStockProducts,
-                                                            productDetails
-                                                        )}
-                                                    />
-                                                )}
-                                            </ListGroupItem>
-                                        )
-                                    }
-                                )}
-                            </ListGroup>
-                        )}
+                                        }
+                                    )}
+                                </ListGroup>
+                            )}
                         {!shopifyProducts.length && !subResults.length && (
                             <div className={css.noResultContainer}>
                                 <p className={css.noResultText}>

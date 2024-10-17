@@ -100,7 +100,7 @@ export default function useAutoQA(ticketId: number) {
                         ({
                             ...dimensionsMap[name],
                             ...values[name],
-                        } as TicketQAScoreDimension)
+                        }) as TicketQAScoreDimension
                 ),
         [dimensionsMap, values]
     )

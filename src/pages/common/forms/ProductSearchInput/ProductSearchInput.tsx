@@ -14,7 +14,7 @@ import Result, {Props as ResultProps} from './Result'
 
 export default function ProductSearchInput<
     ItemType extends IntegrationDataItem<unknown>,
-    Variant extends SearchResultType
+    Variant extends SearchResultType,
 >({
     className,
     autoFocus = true,

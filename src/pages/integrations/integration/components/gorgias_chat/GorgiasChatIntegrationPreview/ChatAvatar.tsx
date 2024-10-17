@@ -39,8 +39,8 @@ const ChatAvatar: React.FC<Props> = ({
         ? avatar?.imageType === GorgiasChatAvatarImageType.AGENT_PICTURE
             ? agentAvatarUrl
             : avatar?.imageType === GorgiasChatAvatarImageType.COMPANY_LOGO
-            ? avatar.companyLogoUrl
-            : undefined
+              ? avatar.companyLogoUrl
+              : undefined
         : agentAvatarUrl
 
     const formattedAgentName =

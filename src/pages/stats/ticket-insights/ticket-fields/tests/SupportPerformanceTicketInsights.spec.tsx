@@ -178,7 +178,9 @@ describe('<SupportPerformanceTicketInsights />', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             ...useCustomFieldDefinitionsMockReturnValue,
             isLoading: false,
-        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+        } as unknown as UseQueryResult<
+            ApiListResponseCursorPagination<CustomField[]>
+        >)
         useAppSelectorMock.mockReturnValue({id: null, isLoading: false})
 
         render(
@@ -196,7 +198,9 @@ describe('<SupportPerformanceTicketInsights />', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             ...useCustomFieldDefinitionsMockReturnValue,
             isLoading: true,
-        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+        } as unknown as UseQueryResult<
+            ApiListResponseCursorPagination<CustomField[]>
+        >)
 
         render(
             <Provider store={mockStore(defaultState)}>

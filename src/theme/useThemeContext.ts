@@ -32,8 +32,8 @@ export default function useThemeContext() {
                     ? Theme.Dark
                     : Theme.Light
                 : savedTheme === 'modern'
-                ? Theme.Modern
-                : savedTheme,
+                  ? Theme.Modern
+                  : savedTheme,
         [prefersDarkTheme, savedTheme]
     )
 

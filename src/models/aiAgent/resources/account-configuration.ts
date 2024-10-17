@@ -20,8 +20,8 @@ import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 const baseURL = isProduction()
     ? `https://ai-config.gorgias.help`
     : isStaging()
-    ? 'https://ai-config.gorgias.rehab'
-    : `http://localhost:8096`
+      ? 'https://ai-config.gorgias.rehab'
+      : `http://localhost:8096`
 
 // eslint-disable-next-line no-restricted-properties
 export const apiClient = axios.create({

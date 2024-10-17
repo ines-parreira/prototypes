@@ -8,8 +8,7 @@ import TicketVoiceCallSource from '../TicketVoiceCallSource'
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) =>
-            <div>{dateTime}</div>
+        ({dateTime}: {dateTime: string}) => <div>{dateTime}</div>
 )
 
 describe('TicketVoiceCallSource', () => {

@@ -213,8 +213,8 @@ export const ConnectedChannelsChatView = ({
                             action === 'add'
                                 ? 'added'
                                 : action === 'remove'
-                                ? 'removed'
-                                : 'order updated'
+                                  ? 'removed'
+                                  : 'order updated'
                         logEvent(
                             SegmentEvent.AutomateChannelUpdateFromChannels,
                             {

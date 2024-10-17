@@ -26,7 +26,7 @@ describe('useCampaignPerformanceTimeSeries', () => {
         LogicalOperatorEnum,
         string,
         string,
-        string
+        string,
     ] = [
         'shopify:awesome-shop',
         ['campaign1', 'campaign2'],

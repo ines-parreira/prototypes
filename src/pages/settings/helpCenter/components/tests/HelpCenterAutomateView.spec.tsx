@@ -20,8 +20,9 @@ jest.mock(
 jest.mock(
     '../HelpCenterPageWrapper',
     () =>
-        ({children}: {children: React.ReactNode}) =>
+        ({children}: {children: React.ReactNode}) => (
             <div data-testid="HelpCenterPageWrapper">{children}</div>
+        )
 )
 
 jest.mock('../../hooks/useCurrentHelpCenter', () => {

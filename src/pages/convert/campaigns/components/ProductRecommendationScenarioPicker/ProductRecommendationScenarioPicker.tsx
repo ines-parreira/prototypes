@@ -27,7 +27,7 @@ const createAttachment = (
             scenario,
             description: SCENARIO_CONFIG[scenario].description,
         },
-    } as ProductRecommendationAttachment)
+    }) as ProductRecommendationAttachment
 
 type Props = {
     onClick: (attachment: ProductRecommendationAttachment) => void

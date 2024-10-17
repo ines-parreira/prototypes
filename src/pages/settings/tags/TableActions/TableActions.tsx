@@ -23,7 +23,7 @@ const TableActions = ({onBulkDelete, onMerge, selectedTagsIds}: Props) => {
             Object.assign(
                 {},
                 ...(tags.toJS() as Tag[]).map(
-                    (tag) => ({[tag.id]: tag} as Record<number, Tag>)
+                    (tag) => ({[tag.id]: tag}) as Record<number, Tag>
                 )
             ) as Record<number, Tag>,
         [tags]

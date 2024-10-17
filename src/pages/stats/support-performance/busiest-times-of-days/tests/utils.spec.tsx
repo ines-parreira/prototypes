@@ -327,7 +327,7 @@ describe('businessHourToNewTimeZone', () => {
                 from_time: string
                 to_time: string
             }[]
-        }
+        },
     ][] = [
         [
             {

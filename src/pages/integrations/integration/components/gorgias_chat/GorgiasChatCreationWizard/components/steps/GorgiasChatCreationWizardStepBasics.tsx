@@ -176,8 +176,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                       integration.getIn(['meta', 'shop_integration_id'])
               )
             : storeIntegrations.size === 1
-            ? storeIntegrations.first()
-            : undefined)
+              ? storeIntegrations.first()
+              : undefined)
 
     const isStoreOfShopifyType = storeIntegration
         ? storeIntegration?.get('type') === IntegrationType.Shopify

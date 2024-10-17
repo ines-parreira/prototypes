@@ -47,7 +47,7 @@ export default function useGroupedElements() {
 
                 return (
                     contentfulEventTypesValues.includes(
-                        element.type as typeof contentfulEventTypesValues[number]
+                        element.type as (typeof contentfulEventTypesValues)[number]
                     ) ||
                     (PHONE_EVENTS as string[]).includes(element.type) ||
                     (!!actionName &&

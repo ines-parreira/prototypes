@@ -41,7 +41,7 @@ export const helpCenterRedirectsKey = {
  */
 
 export const useGetHelpCenterRedirectList = <
-    TData = Awaited<ReturnType<typeof getHelpCenterRedirects>>
+    TData = Awaited<ReturnType<typeof getHelpCenterRedirects>>,
 >(
     helpCenterId: Paths.ListRedirects.Parameters.HelpCenterId,
     overrides?: UseQueryOptions<

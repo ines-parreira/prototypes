@@ -34,8 +34,8 @@ const QuickSelectionOption = ({
             {selectedItemsCount === 0
                 ? `Select ${isPartial ? 'displayed' : 'all'}`
                 : selectedItemsCount === 1
-                ? 'Deselect'
-                : 'Deselect all'}
+                  ? 'Deselect'
+                  : 'Deselect all'}
             <div
                 className={classnames(css.badge, {
                     [css['badge--unselect']]: selectedItemsCount > 0,

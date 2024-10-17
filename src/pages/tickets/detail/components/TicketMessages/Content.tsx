@@ -82,8 +82,8 @@ const Content = ({
         sanitizedHtml && isHtml
             ? videosData.htmlCleaned
             : sanitizedHtml !== 'null'
-            ? sanitizedHtml
-            : ''
+              ? sanitizedHtml
+              : ''
 
     const videoUrls = sanitizedHtml && isHtml ? videosData.videoUrls : []
 
@@ -105,8 +105,8 @@ const Content = ({
                 ? meta?.body_html_truncated
                 : meta?.body_text_truncated
             : trimmedHtml
-            ? meta?.body_html_truncated
-            : meta?.body_text_truncated
+              ? meta?.body_html_truncated
+              : meta?.body_text_truncated
 
     return (
         <>

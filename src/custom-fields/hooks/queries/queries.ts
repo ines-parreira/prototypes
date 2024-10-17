@@ -40,7 +40,7 @@ export type UseGetCustomFieldDefinitions = Awaited<
 >
 
 export const useGetCustomFieldDefinitions = <
-    TData = UseGetCustomFieldDefinitions
+    TData = UseGetCustomFieldDefinitions,
 >(
     params: ListParams,
     overrides?: UseQueryOptions<UseGetCustomFieldDefinitions, unknown, TData>
@@ -53,7 +53,7 @@ export const useGetCustomFieldDefinitions = <
 }
 
 export const useGetCustomFieldDefinition = <
-    TData = Awaited<ReturnType<typeof getCustomField>>
+    TData = Awaited<ReturnType<typeof getCustomField>>,
 >(
     id: number,
     overrides?: UseQueryOptions<
@@ -108,7 +108,7 @@ export const useUpdatePartialCustomField = (
 // values
 
 export const useGetCustomFieldValues = <
-    TData = Awaited<ReturnType<typeof getCustomFieldValues>>
+    TData = Awaited<ReturnType<typeof getCustomFieldValues>>,
 >(
     {
         object_type,

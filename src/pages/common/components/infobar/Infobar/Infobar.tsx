@@ -386,96 +386,110 @@ export const Infobar = ({
                                 sources={sources}
                                 customer={customer}
                             />
-                            {!suggestedCustomer.isEmpty() && !isWidgetEditing && (
-                                <>
-                                    <div className="d-none d-md-block">
-                                        <div
-                                            className={
-                                                css.infobarSectionSeparator
-                                            }
-                                        />
-                                        <div className={css.suggestedCustomer}>
-                                            <h4>Merge customer profiles?</h4>
-                                            <p>
-                                                Another customer profile looks
-                                                similar to this one. Merging
-                                                customer profiles gives you a
-                                                unified customer view.
-                                            </p>
-                                            <Button
-                                                className="mr-2"
-                                                onClick={() => {
-                                                    logEvent(
-                                                        SegmentEvent.CustomerMergeClicked,
-                                                        {
-                                                            location: 'infobar',
-                                                            account_domain:
-                                                                window
-                                                                    .GORGIAS_STATE
-                                                                    .currentAccount
-                                                                    .domain,
-                                                            user_id:
-                                                                window
-                                                                    .GORGIAS_STATE
-                                                                    .currentAccount
-                                                                    .id,
-                                                            timestamp:
-                                                                Date.now(),
-                                                        }
+                            {!suggestedCustomer.isEmpty() &&
+                                !isWidgetEditing && (
+                                    <>
+                                        <div className="d-none d-md-block">
+                                            <div
+                                                className={
+                                                    css.infobarSectionSeparator
+                                                }
+                                            />
+                                            <div
+                                                className={
+                                                    css.suggestedCustomer
+                                                }
+                                            >
+                                                <h4>
+                                                    Merge customer profiles?
+                                                </h4>
+                                                <p>
+                                                    Another customer profile
+                                                    looks similar to this one.
+                                                    Merging customer profiles
+                                                    gives you a unified customer
+                                                    view.
+                                                </p>
+                                                <Button
+                                                    className="mr-2"
+                                                    onClick={() => {
+                                                        logEvent(
+                                                            SegmentEvent.CustomerMergeClicked,
+                                                            {
+                                                                location:
+                                                                    'infobar',
+                                                                account_domain:
+                                                                    window
+                                                                        .GORGIAS_STATE
+                                                                        .currentAccount
+                                                                        .domain,
+                                                                user_id:
+                                                                    window
+                                                                        .GORGIAS_STATE
+                                                                        .currentAccount
+                                                                        .id,
+                                                                timestamp:
+                                                                    Date.now(),
+                                                            }
+                                                        )
+                                                        setShowMergeCustomerModal(
+                                                            true
+                                                        )
+                                                    }}
+                                                >
+                                                    <ButtonIconLabel icon="call_merge">
+                                                        Merge
+                                                    </ButtonIconLabel>
+                                                </Button>
+                                            </div>
+                                        </div>
+                                        <ActionButtonContext.Provider
+                                            value={{
+                                                actionError:
+                                                    MERGE_ERROR_MESSAGE,
+                                            }}
+                                        >
+                                            <InfobarCustomerInfo
+                                                isEditing={isEditing}
+                                                widgets={widgets}
+                                                sources={sources
+                                                    .setIn(
+                                                        ['ticket', 'customer'],
+                                                        suggestedCustomer
                                                     )
+                                                    .set(
+                                                        'customer',
+                                                        suggestedCustomer
+                                                    )}
+                                                customer={suggestedCustomer}
+                                                displayTabs={false}
+                                            />
+                                            <MergeCustomersContainer
+                                                isTicketContext={
+                                                    !(
+                                                        sources.get(
+                                                            'ticket',
+                                                            fromJS({})
+                                                        ) as Map<any, any>
+                                                    ).isEmpty()
+                                                }
+                                                display={showMergeCustomerModal}
+                                                destinationCustomer={customer}
+                                                sourceCustomer={
+                                                    suggestedCustomer
+                                                }
+                                                onSuccess={
+                                                    handleCustomerHistoryFetch
+                                                }
+                                                onClose={() => {
                                                     setShowMergeCustomerModal(
-                                                        true
+                                                        false
                                                     )
                                                 }}
-                                            >
-                                                <ButtonIconLabel icon="call_merge">
-                                                    Merge
-                                                </ButtonIconLabel>
-                                            </Button>
-                                        </div>
-                                    </div>
-                                    <ActionButtonContext.Provider
-                                        value={{
-                                            actionError: MERGE_ERROR_MESSAGE,
-                                        }}
-                                    >
-                                        <InfobarCustomerInfo
-                                            isEditing={isEditing}
-                                            widgets={widgets}
-                                            sources={sources
-                                                .setIn(
-                                                    ['ticket', 'customer'],
-                                                    suggestedCustomer
-                                                )
-                                                .set(
-                                                    'customer',
-                                                    suggestedCustomer
-                                                )}
-                                            customer={suggestedCustomer}
-                                            displayTabs={false}
-                                        />
-                                        <MergeCustomersContainer
-                                            isTicketContext={
-                                                !(
-                                                    sources.get(
-                                                        'ticket',
-                                                        fromJS({})
-                                                    ) as Map<any, any>
-                                                ).isEmpty()
-                                            }
-                                            display={showMergeCustomerModal}
-                                            destinationCustomer={customer}
-                                            sourceCustomer={suggestedCustomer}
-                                            onSuccess={
-                                                handleCustomerHistoryFetch
-                                            }
-                                            onClose={() => {
-                                                setShowMergeCustomerModal(false)
-                                            }}
-                                        />
-                                    </ActionButtonContext.Provider>
-                                </>
-                            )}
+                                            />
+                                        </ActionButtonContext.Provider>
+                                    </>
+                                )}
                         </>
                     ) : null}
                 </div>

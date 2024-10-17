@@ -3,7 +3,7 @@ import {TemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCu
 
 const TEMPLATE_VARIABLES = ['listIndex', 'integrationId', 'appId'] as const
 
-type TemplateVariables = typeof TEMPLATE_VARIABLES[number]
+type TemplateVariables = (typeof TEMPLATE_VARIABLES)[number]
 
 export type TemplateValues = Partial<Record<TemplateVariables, string>>
 

@@ -1156,7 +1156,7 @@ describe('TicketDetailContainer component', () => {
             string,
             string,
             () => {goToTicket: jest.Mock; isEnabled: boolean},
-            SegmentEvent
+            SegmentEvent,
         ]
     >([
         [

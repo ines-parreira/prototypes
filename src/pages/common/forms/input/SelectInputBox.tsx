@@ -79,8 +79,8 @@ const SelectInputBox = (
             isPlaceholder
                 ? placeholder
                 : Array.isArray(label)
-                ? label.join(', ')
-                : label,
+                  ? label.join(', ')
+                  : label,
         [isPlaceholder, label, placeholder]
     )
     const [isFocused, setIsFocused] = useState(false)

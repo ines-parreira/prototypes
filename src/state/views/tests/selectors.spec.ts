@@ -175,10 +175,13 @@ describe('selectors', () => {
                 currentUser: fromJS({settings: []}),
                 entities: {
                     sections: {},
-                    views: views.reduce((acc, view) => {
-                        acc[view.id] = view as View
-                        return acc
-                    }, {} as Record<number, View>),
+                    views: views.reduce(
+                        (acc, view) => {
+                            acc[view.id] = view as View
+                            return acc
+                        },
+                        {} as Record<number, View>
+                    ),
                 },
                 ui: {ticketNavbar: {}},
                 views: initialState.set('items', fromJS(views)),
@@ -195,10 +198,13 @@ describe('selectors', () => {
                 currentUser: fromJS({settings: []}),
                 entities: {
                     sections: {},
-                    views: views.reduce((acc, view) => {
-                        acc[view.id] = view as View
-                        return acc
-                    }, {} as Record<number, View>),
+                    views: views.reduce(
+                        (acc, view) => {
+                            acc[view.id] = view as View
+                            return acc
+                        },
+                        {} as Record<number, View>
+                    ),
                 },
                 ui: {ticketNavbar: {}},
                 views: initialState.set('items', fromJS(views)),
@@ -226,10 +232,13 @@ describe('selectors', () => {
                     currentUser: fromJS({settings: []}),
                     entities: {
                         sections: {},
-                        views: views.reduce((acc, view) => {
-                            acc[view.id] = view as View
-                            return acc
-                        }, {} as Record<number, View>),
+                        views: views.reduce(
+                            (acc, view) => {
+                                acc[view.id] = view as View
+                                return acc
+                            },
+                            {} as Record<number, View>
+                        ),
                     },
                     ui: {ticketNavbar: {}},
                     views: initialState.set('items', fromJS(views)),

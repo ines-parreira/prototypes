@@ -18,8 +18,9 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({agentId}: {agentId: number}) =>
+        ({agentId}: {agentId: number}) => (
             <div>VoiceCallAgentLabel {agentId}</div>
+        )
 )
 
 const useListRecordingSpy = jest.spyOn(voiceCallQueries, 'useListRecordings')

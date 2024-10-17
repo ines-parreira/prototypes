@@ -20,9 +20,8 @@ export const getMailtoReplacementConfig = async (
     pathParameters: Paths.GetContactFormMailtoReplacementConfig.PathParameters
 ) => {
     if (!client) return null
-    const res = await client.getContactFormMailtoReplacementConfig(
-        pathParameters
-    )
+    const res =
+        await client.getContactFormMailtoReplacementConfig(pathParameters)
 
     return res.data
 }

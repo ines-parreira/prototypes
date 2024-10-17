@@ -7,10 +7,9 @@ import {
     CustomTypeDefinitionText,
 } from 'custom-fields/types'
 
-export function isTextInput(field: CustomField): field is
-    | CustomField & {
-          definition: CustomTypeDefinitionText<CustomFieldInputSettingsText>
-      } {
+export function isTextInput(field: CustomField): field is CustomField & {
+    definition: CustomTypeDefinitionText<CustomFieldInputSettingsText>
+} {
     return (
         field.definition.input_settings.input_type === 'input' &&
         field.definition.data_type === 'text'

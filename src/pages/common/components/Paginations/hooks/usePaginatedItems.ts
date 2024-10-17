@@ -84,8 +84,8 @@ export function usePaginatedItems({
             ...(siblingsStart > boundaryCount + 2
                 ? ['start-ellipsis']
                 : boundaryCount + 1 < count - boundaryCount
-                ? [boundaryCount + 1]
-                : []),
+                  ? [boundaryCount + 1]
+                  : []),
 
             // Sibling pages
             ..._range(siblingsStart, siblingsEnd),
@@ -94,8 +94,8 @@ export function usePaginatedItems({
             ...(siblingsEnd < count - boundaryCount - 1
                 ? ['end-ellipsis']
                 : count - boundaryCount > boundaryCount
-                ? [count - boundaryCount]
-                : []),
+                  ? [count - boundaryCount]
+                  : []),
 
             ...endPages,
             'next',

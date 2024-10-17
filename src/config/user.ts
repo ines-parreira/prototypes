@@ -47,7 +47,7 @@ export const ORDERED_ROLES_META_BY_USER_ROLE: Readonly<
         Readonly<{
             caption: string
             label: string
-        }>
+        }>,
     ][]
 > = Object.freeze([
     [UserRole.ObserverAgent, OBSERVER_AGENT_ROLE_META],

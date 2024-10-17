@@ -16,11 +16,13 @@ type ThrottledFunction<Fn extends (...args: any[]) => any> = (
  * after the last throttled-function call.
  */
 export default function useThrottledCallback<
-    Fn extends (...args: any[]) => any
+    Fn extends (...args: any[]) => any,
 >(callback: Fn, delay: number, noTrailing = false): ThrottledFunction<Fn> {
     const timeout = useRef<ReturnType<typeof setTimeout>>()
-    const lastCall =
-        useRef<{args: Parameters<Fn>; this: ThisParameterType<Fn>}>()
+    const lastCall = useRef<{
+        args: Parameters<Fn>
+        this: ThisParameterType<Fn>
+    }>()
 
     useUnmount(() => {
         if (timeout.current) {

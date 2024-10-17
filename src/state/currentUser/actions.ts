@@ -205,9 +205,8 @@ export const setIsAvailable = createAction<boolean>(constants.SET_IS_AVAILABLE)
 export const update2FAEnabled =
     (status: boolean) =>
     (dispatch: StoreDispatch, getState: () => RootState) => {
-        const currentStatus: boolean = currentUserSelectors.has2FaEnabled(
-            getState()
-        )
+        const currentStatus: boolean =
+            currentUserSelectors.has2FaEnabled(getState())
 
         let action = status ? 'activated' : 'disabled'
 

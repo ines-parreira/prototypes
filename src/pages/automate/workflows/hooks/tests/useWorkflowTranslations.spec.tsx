@@ -39,20 +39,26 @@ function updateMock() {
     mocedkUseUpsertWorkflowConfigurationTranslations.mockReturnValue({
         mutateAsync: ([{lang}, translations]: [
             {lang: string},
-            Record<string, string>
+            Record<string, string>,
         ]) => {
             mockStore[lang] = translations
             return Promise.resolve({data: translations})
         },
-    } as unknown as ReturnType<typeof useUpsertWorkflowConfigurationTranslations>)
+    } as unknown as ReturnType<
+        typeof useUpsertWorkflowConfigurationTranslations
+    >)
     mockedUseFetchWorkflowConfigurationTranslations.mockReturnValue({
         mutateAsync: ([{lang}]: [{lang: string}]) => {
             return Promise.resolve({data: mockStore[lang]})
         },
-    } as unknown as ReturnType<typeof useFetchWorkflowConfigurationTranslations>)
+    } as unknown as ReturnType<
+        typeof useFetchWorkflowConfigurationTranslations
+    >)
     mockedUseDeleteWorkflowConfigurationTranslations.mockReturnValue({
         mutateAsync: jest.fn(),
-    } as unknown as ReturnType<typeof useDeleteWorkflowConfigurationTranslations>)
+    } as unknown as ReturnType<
+        typeof useDeleteWorkflowConfigurationTranslations
+    >)
 }
 
 const queryClient = mockQueryClient()

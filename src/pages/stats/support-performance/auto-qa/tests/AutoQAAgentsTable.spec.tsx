@@ -38,7 +38,7 @@ jest.mock(
             getPaginatedAutoQAAgents: jest.fn(),
             getHeatmapMode: jest.fn(),
             isSortingMetricLoading: jest.fn(),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 jest.mock(
     'state/stats/selectors',
@@ -46,7 +46,7 @@ jest.mock(
         ({
             ...jest.requireActual('state/stats/selectors'),
             getPageStatsFilters: jest.fn(),
-        } as Record<string, any>)
+        }) as Record<string, any>
 )
 jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
     DrillDownModalTrigger: ({

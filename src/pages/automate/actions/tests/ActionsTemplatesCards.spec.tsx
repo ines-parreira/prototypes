@@ -11,14 +11,16 @@ import ActionsTemplatesCards from '../components/ActionsTemplatesCards'
 jest.mock(
     '../components/AppActionTemplateCard',
     () =>
-        ({templateName}: {templateName: string}) =>
+        ({templateName}: {templateName: string}) => (
             <div>app template: {templateName}</div>
+        )
 )
 jest.mock(
     '../components/NativeActionTemplateCard',
     () =>
-        ({templateName}: {templateName: string}) =>
+        ({templateName}: {templateName: string}) => (
             <div>native template: {templateName}</div>
+        )
 )
 
 describe('<ActionsTemplatesCards />', () => {

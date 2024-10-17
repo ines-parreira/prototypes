@@ -121,8 +121,8 @@ export function MacrosSettingsTableContainer({
                     ? OrderDirection.Desc
                     : OrderDirection.Asc
                 : defaultDescendingSort.includes(orderBy)
-                ? OrderDirection.Desc
-                : OrderDirection.Asc
+                  ? OrderDirection.Desc
+                  : OrderDirection.Asc
         )
     }
 

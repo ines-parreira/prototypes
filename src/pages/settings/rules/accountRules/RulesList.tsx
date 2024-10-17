@@ -47,14 +47,14 @@ export function RulesList({
                 ({
                     id: parseInt(id),
                     priority: orders.length - index,
-                } as RulePriority)
+                }) as RulePriority
         )
         const oldPriorities = rules.map(
             (rule) =>
                 ({
                     id: rule.id,
                     priority: rule.priority,
-                } as RulePriority)
+                }) as RulePriority
         )
         try {
             await reorderRules(priorities)

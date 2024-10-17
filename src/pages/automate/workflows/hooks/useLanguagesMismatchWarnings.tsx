@@ -65,8 +65,8 @@ export default function useLanguagesMismatchWarnings(
         channelType === TicketChannel.Chat
             ? chatLanguageSettingsLink
             : channelType === TicketChannel.HelpCenter
-            ? helpCenterLanguageSettingsLink
-            : contactFormLanguageSettingsLink
+              ? helpCenterLanguageSettingsLink
+              : contactFormLanguageSettingsLink
 
     const hasChatMultiLanguagesFeatureFlag =
         useFlags()[FeatureFlagKey.ChatMultiLanguages] || false

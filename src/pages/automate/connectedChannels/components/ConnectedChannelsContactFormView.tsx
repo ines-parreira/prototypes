@@ -33,7 +33,7 @@ export const ConnectedChannelsContactFormView = ({
     }>()
 
     const shopType = contactForm ? 'shopify' : shopTypeParam
-    const shopName = contactForm ? contactForm.shop_name ?? '' : shopNameParam
+    const shopName = contactForm ? (contactForm.shop_name ?? '') : shopNameParam
 
     const {
         selfServiceConfiguration,
@@ -149,8 +149,8 @@ export const ConnectedChannelsContactFormView = ({
                             action === 'add'
                                 ? 'added'
                                 : action === 'remove'
-                                ? 'removed'
-                                : 'order updated'
+                                  ? 'removed'
+                                  : 'order updated'
                         logEvent(
                             SegmentEvent.AutomateChannelUpdateFromChannels,
                             {
