@@ -1,6 +1,5 @@
 import React from 'react'
 import {waitFor, render, screen, fireEvent} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {assumeMock} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -78,17 +77,17 @@ describe('<CollectionSelector />', () => {
             onChange: jest.fn(),
         }
 
-        const {getByText} = render(
+        render(
             <QueryClientProvider client={queryClient}>
                 <CollectionSelector {...props} />
             </QueryClientProvider>
         )
 
-        const element = getByText('Select a product collection')
+        const element = screen.getByText('Select a product collection')
         fireEvent.focus(element)
 
         const input = screen.getByRole('textbox')
-        await userEvent.type(input, 'product')
+        fireEvent.change(input, {target: {value: 'product'}})
 
         await waitFor(() => {
             expect(
