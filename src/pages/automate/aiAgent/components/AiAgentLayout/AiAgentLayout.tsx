@@ -30,6 +30,8 @@ export const AiAgentLayout = ({
     const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
     const isAiAgentOnboardingWizardEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
+    const isAiAgentMultichannelEnablementEnabled =
+        useFlags()[FeatureFlagKey.AiAgentMultiChannelEnablement]
 
     const {headerNavbarItems} = useAiAgentNavigation({shopName})
 
@@ -48,6 +50,10 @@ export const AiAgentLayout = ({
     const globalToggleAiAgentId = `global-toggle-ai-agent-${useId()}`
 
     const globalToggleAction = useMemo(() => {
+        if (isAiAgentMultichannelEnablementEnabled) {
+            return undefined
+        }
+
         if (isLoadingStoreConfiguration || storeConfiguration === undefined) {
             return undefined
         }
@@ -86,14 +92,15 @@ export const AiAgentLayout = ({
             </ToggleInput>
         )
     }, [
+        isAiAgentMultichannelEnablementEnabled,
         isLoadingStoreConfiguration,
         storeConfiguration,
-        updateStoreConfiguration,
-        globalToggleAiAgentId,
-        isPendingCreateOrUpdate,
         trialModeAvailable,
-        shopName,
+        isPendingCreateOrUpdate,
+        globalToggleAiAgentId,
+        updateStoreConfiguration,
         isAiAgentOnboardingWizardEnabled,
+        shopName,
         updateSettingsAfterAiAgentEnabled,
     ])
 

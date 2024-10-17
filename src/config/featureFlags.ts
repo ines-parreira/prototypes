@@ -9,6 +9,7 @@ export enum FeatureFlagKey {
     AiAgentAIGeneratedGuidances = 'ai-agent-ai-generated-guidances',
     AiAgentChat = 'ai-agent-for-chat',
     AiAgentChatTestMode = 'ai-agent-chat-test-mode',
+    AiAgentMultiChannelEnablement = 'ai-agent-multi-channel-enablement',
     AiAgentOnboardingWizard = 'ai-agent-onboarding-wizard',
     AiAgentOnboardingWizardEducationalStep = 'ai-agent-onboarding-wizard-educational-step',
     AiAgentOnboardingWizardKnowledgeRedirect = 'ai-agent-onboarding-wizard-knowledge-redirect',

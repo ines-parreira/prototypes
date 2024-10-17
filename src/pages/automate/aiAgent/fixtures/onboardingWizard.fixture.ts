@@ -5,6 +5,8 @@ import {ToneOfVoice} from '../constants'
 export const getStoreConfigurationFormValuesFixture = (
     props?: Partial<FormValues>
 ): FormValues => ({
+    chatChannelDeactivatedDatetime: '2024-06-05T11:27:06.939Z',
+    emailChannelDeactivatedDatetime: '2024-06-05T11:27:06.939Z',
     deactivatedDatetime: '2024-06-05T11:27:06.939Z',
     trialModeActivatedDatetime: null,
     ticketSampleRate: null,

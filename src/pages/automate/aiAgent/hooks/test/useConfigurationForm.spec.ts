@@ -25,6 +25,8 @@ import {useStoreConfigurationMutation} from '../useStoreConfigurationMutation'
 const INITIAL_FORM_VALUES: FormValues = {
     toneOfVoice: null,
     customToneOfVoiceGuidance: null,
+    chatChannelDeactivatedDatetime: undefined,
+    emailChannelDeactivatedDatetime: undefined,
     deactivatedDatetime: undefined,
     trialModeActivatedDatetime: null,
     excludedTopics: null,

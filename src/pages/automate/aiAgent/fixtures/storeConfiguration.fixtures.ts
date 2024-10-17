@@ -9,6 +9,8 @@ export const getStoreConfigurationFixture = (
         email: 'bot@gorgias.com',
     },
     deactivatedDatetime: null,
+    emailChannelDeactivatedDatetime: null,
+    chatChannelDeactivatedDatetime: null,
     trialModeActivatedDatetime: null,
     storeName: 'test-store',
     helpCenterId: 1,

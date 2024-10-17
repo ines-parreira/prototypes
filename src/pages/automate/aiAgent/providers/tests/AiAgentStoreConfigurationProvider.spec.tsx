@@ -12,7 +12,7 @@ import AiAgentStoreConfigurationProvider from '../AiAgentStoreConfigurationProvi
 import AiAgentStoreConfigurationContext from '../AiAgentStoreConfigurationContext'
 import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
 import {useStoreConfiguration} from '../../hooks/useStoreConfiguration'
-import {ToneOfVoice} from '../../constants'
+import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -37,31 +37,7 @@ const AiAgentStoreConfigurationConsumer = createContextConsumer(
     AiAgentStoreConfigurationContext
 )
 
-const mockStoreConfiguration: StoreConfiguration = {
-    deactivatedDatetime: null,
-    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
-    storeName: 'test-shop',
-    helpCenterId: 1,
-    snippetHelpCenterId: 1,
-    guidanceHelpCenterId: 1,
-    toneOfVoice: ToneOfVoice.Friendly,
-    customToneOfVoiceGuidance:
-        "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
-    signature: 'This response was created by AI',
-    excludedTopics: [],
-    tags: [],
-    conversationBot: {
-        id: 1,
-        email: 'test@mail.com',
-    },
-    monitoredEmailIntegrations: [],
-    silentHandover: false,
-    ticketSampleRate: 100,
-    dryRun: false,
-    isDraft: false,
-    monitoredChatIntegrations: [],
-    wizardId: null,
-}
+const mockStoreConfiguration = getStoreConfigurationFixture()
 
 describe('AiAgentStoreConfigurationProvider', () => {
     beforeAll(() => {
@@ -131,7 +107,7 @@ describe('AiAgentStoreConfigurationProvider', () => {
 
         const mockCreateStoreConfiguration = jest
             .fn()
-            .mockResolvedValue(mockStoreConfiguration)
+            .mockResolvedValue(getStoreConfigurationFixture)
 
         useStoreConfigurationMutationMock.mockReturnValue({
             isLoading: false,
@@ -155,6 +131,8 @@ describe('AiAgentStoreConfigurationProvider', () => {
 
         const createConfigurationPayload = {
             deactivatedDatetime: null,
+            emailChannelDeactivatedDatetime: null,
+            chatChannelDeactivatedDatetime: null,
             trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
             storeName: 'test-shop',
             helpCenterId: 1,

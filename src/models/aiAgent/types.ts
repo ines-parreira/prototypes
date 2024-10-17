@@ -54,6 +54,9 @@ export type StoreConfiguration = {
 
     wizardId: number | null
     wizard?: Wizard
+
+    chatChannelDeactivatedDatetime: string | null
+    emailChannelDeactivatedDatetime: string | null
 }
 
 export type CreateStoreConfigurationPayload = Pick<
@@ -66,6 +69,8 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'customToneOfVoiceGuidance'
     | 'signature'
     | 'monitoredChatIntegrations'
+    | 'chatChannelDeactivatedDatetime'
+    | 'emailChannelDeactivatedDatetime'
 > &
     WizardProps
 

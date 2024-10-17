@@ -38,6 +38,7 @@ export const AiAgentConfigurationView = ({
             {type: 'faq', per_page: HELP_CENTER_MAX_CREATION},
             {
                 staleTime: 1000 * 60 * 5,
+                refetchOnWindowFocus: false,
             }
         )
 

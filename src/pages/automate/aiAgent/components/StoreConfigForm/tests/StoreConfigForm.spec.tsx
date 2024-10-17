@@ -38,10 +38,18 @@ import {applicationsAutomationSettingsAiAgentEnabledFixture} from 'pages/automat
 import {useSearchParam} from 'hooks/useSearchParam'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {StoreConfigForm} from '../StoreConfigForm'
 import {ToneOfVoice} from '../../../constants'
 
 const queryClient = mockQueryClient()
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+jest.mock('common/segment', () => ({
+    ...jest.requireActual('common/segment'),
+    logEvent: jest.fn(),
+}))
+const mockLogEvent = jest.mocked(logEvent)
 
 jest.mock('state/notifications/actions')
 jest.mock(
@@ -178,6 +186,8 @@ const renderComponent = (
 describe('<StoreConfigForm />', () => {
     const storeConfiguration = {
         deactivatedDatetime: null,
+        chatChannelDeactivatedDatetime: null,
+        emailChannelDeactivatedDatetime: null,
         trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
         storeName: 'test-shop',
         helpCenterId: 1,
@@ -209,6 +219,8 @@ describe('<StoreConfigForm />', () => {
 
     const initialFormValues: FormValues = {
         deactivatedDatetime: null,
+        chatChannelDeactivatedDatetime: null,
+        emailChannelDeactivatedDatetime: null,
         trialModeActivatedDatetime: '2024-07-30T12:55:07.585Z',
         ticketSampleRate: null,
         silentHandover: false,
@@ -237,6 +249,7 @@ describe('<StoreConfigForm />', () => {
 
     beforeEach(() => {
         updateValueMocked.mockReset()
+        mockLogEvent.mockClear()
         mockedUseAiAgentStoreConfigurationContext.mockReset()
         mockedUseSelfServiceChatChannels.mockReturnValue(mockChatChannels)
         mockGetHasAutomate.mockReturnValue(true)
@@ -284,6 +297,8 @@ describe('<StoreConfigForm />', () => {
         expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
             ...storeConfiguration,
             deactivatedDatetime: expect.any(String),
+            emailChannelDeactivatedDatetime: expect.any(String),
+            chatChannelDeactivatedDatetime: expect.any(String),
             trialModeActivatedDatetime: null,
         })
 
@@ -308,6 +323,8 @@ describe('<StoreConfigForm />', () => {
         expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
             ...storeConfiguration,
             deactivatedDatetime: expect.any(String),
+            chatChannelDeactivatedDatetime: expect.any(String),
+            emailChannelDeactivatedDatetime: expect.any(String),
             trialModeActivatedDatetime: null,
         })
 
@@ -396,6 +413,8 @@ describe('<StoreConfigForm />', () => {
             expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
                 ...mockStoreIntegration,
                 deactivatedDatetime: expect.any(String),
+                chatChannelDeactivatedDatetime: expect.any(String),
+                emailChannelDeactivatedDatetime: expect.any(String),
                 trialModeActivatedDatetime: null,
             })
 
@@ -661,6 +680,7 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(radioButton)
 
         // Check that updateValue was called with the correct arguments
+        expect(updateValueMocked).toHaveBeenCalledTimes(2)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
             null
@@ -692,6 +712,7 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(radioButton)
 
         // Check that updateValue was called with the correct arguments
+        expect(updateValueMocked).toHaveBeenCalledTimes(2)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
             null
@@ -706,6 +727,7 @@ describe('<StoreConfigForm />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: true,
             [FeatureFlagKey.AiAgentChat]: false,
+            [FeatureFlagKey.AiAgentMultiChannelEnablement]: false,
         })
         renderComponent({})
 
@@ -714,12 +736,118 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(radioButton)
 
         // Check that updateValue was called with the correct arguments
+        expect(updateValueMocked).toHaveBeenCalledTimes(2)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
             expect.any(String)
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
             'trialModeActivatedDatetime',
+            null
+        )
+    })
+
+    it('should call segment event when disabling email channel', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentMultiChannelEnablement]: false,
+        })
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                deactivatedDatetime: null,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest
+                .fn()
+                .mockRejectedValue(new Error('Test error')),
+            isPendingCreateOrUpdate: false,
+        })
+
+        renderComponent({})
+
+        const toggleCheckbox = screen.getByLabelText('Enable AI Agent')
+        // Toggle working only with fire event
+        fireEvent.click(toggleCheckbox)
+
+        expect(mockLogEvent).toHaveBeenCalledTimes(1)
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentConfigurationDisabled
+        )
+    })
+
+    it('should deactivate email channel', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
+        })
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                chatChannelDeactivatedDatetime: null,
+            },
+        })
+
+        renderComponent()
+        const emailChannelCheckbox = screen.getByLabelText(
+            'Enable AI Agent on Email'
+        )
+        fireEvent.click(emailChannelCheckbox)
+
+        expect(updateValueMocked).toHaveBeenCalledWith(
+            'emailChannelDeactivatedDatetime',
+            expect.any(String)
+        )
+    })
+
+    it('should deactivate chat channel', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
+            [FeatureFlagKey.AiAgentChat]: true,
+        })
+
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                chatChannelDeactivatedDatetime: null,
+            },
+        })
+        renderComponent()
+        const chatChannelCheckbox = screen.getByLabelText(
+            'Enable AI Agent on Chat'
+        )
+        fireEvent.click(chatChannelCheckbox)
+        expect(updateValueMocked).toHaveBeenCalledWith(
+            'chatChannelDeactivatedDatetime',
+            expect.any(String)
+        )
+    })
+
+    it('should activate chat channel', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
+            [FeatureFlagKey.AiAgentChat]: true,
+        })
+
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                trialModeActivatedDatetime: null,
+                chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+            },
+        })
+
+        renderComponent()
+        const chatChannelCheckbox = screen.getByLabelText(
+            'Enable AI Agent on Chat'
+        )
+        fireEvent.click(chatChannelCheckbox)
+
+        expect(updateValueMocked).toHaveBeenCalledTimes(1)
+        expect(updateValueMocked).toHaveBeenLastCalledWith(
+            'chatChannelDeactivatedDatetime',
             null
         )
     })

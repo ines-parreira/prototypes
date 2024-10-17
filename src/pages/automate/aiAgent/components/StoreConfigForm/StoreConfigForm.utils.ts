@@ -48,6 +48,10 @@ export const getStoreConfigurationFromFormValues = (
         ...dirtyFormValues,
         deactivatedDatetime: deactivatedDatetime as string | null,
         trialModeActivatedDatetime: trialModeActivatedDatetime,
+        chatChannelDeactivatedDatetime:
+            formValues.chatChannelDeactivatedDatetime ?? null,
+        emailChannelDeactivatedDatetime:
+            formValues.emailChannelDeactivatedDatetime ?? null,
         customToneOfVoiceGuidance:
             formValues.toneOfVoice === ToneOfVoice.Custom
                 ? formValues.customToneOfVoiceGuidance
@@ -69,6 +73,9 @@ export const getFormValuesFromStoreConfiguration = (
     storeConfig: StoreConfiguration
 ): FormValues => ({
     deactivatedDatetime: storeConfig.deactivatedDatetime,
+    chatChannelDeactivatedDatetime: storeConfig.chatChannelDeactivatedDatetime,
+    emailChannelDeactivatedDatetime:
+        storeConfig.emailChannelDeactivatedDatetime,
     trialModeActivatedDatetime: storeConfig.trialModeActivatedDatetime,
     silentHandover: storeConfig.silentHandover,
     ticketSampleRate: null, // deprecated

@@ -72,6 +72,7 @@ import {EmailFormComponent} from './FormComponents/EmailFormComponent'
 import {ChatSettingsFormComponent} from './FormComponents/ChatSettingsFormComponent'
 import {SettingsBanner} from './FormComponents/SettingsBanner'
 import {SettingsBannerType} from './constants'
+import {ChannelToggleInput} from './FormComponents/ChannelToggleInput'
 
 type Props = {
     shopName: string
@@ -91,6 +92,9 @@ export const StoreConfigForm = ({
         useFlags()[FeatureFlagKey.AiAgentChat]
     const isAiAgentOnboardingWizardEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
+    const isAiAgentMultichannelEnablementEnabled =
+        useFlags()[FeatureFlagKey.AiAgentMultiChannelEnablement]
+
     const dispatch = useAppDispatch()
 
     const [isUrlSyncSuccess, setIsUrlSyncSuccess] = useState(false)
@@ -212,6 +216,18 @@ export const StoreConfigForm = ({
             : INITIAL_FORM_VALUES.deactivatedDatetime
     )
 
+    const isEmailChannelEnabled = isAiAgentEnabled(
+        formValues.emailChannelDeactivatedDatetime !== undefined
+            ? formValues.emailChannelDeactivatedDatetime
+            : INITIAL_FORM_VALUES.emailChannelDeactivatedDatetime
+    )
+
+    const isChatChannelEnabled = isAiAgentEnabled(
+        formValues.chatChannelDeactivatedDatetime !== undefined
+            ? formValues.chatChannelDeactivatedDatetime
+            : INITIAL_FORM_VALUES.chatChannelDeactivatedDatetime
+    )
+
     const aiAgentMode = useMemo(() => {
         if (isAIAgentToggled) {
             if (formValues.trialModeActivatedDatetime === null) {
@@ -235,12 +251,16 @@ export const StoreConfigForm = ({
 
             const deactivatedDatetime = new Date().toISOString()
             updateValue('deactivatedDatetime', deactivatedDatetime)
+            updateValue('emailChannelDeactivatedDatetime', deactivatedDatetime)
+            updateValue('chatChannelDeactivatedDatetime', deactivatedDatetime)
             updateValue('trialModeActivatedDatetime', null)
 
             try {
                 await updateStoreConfiguration({
                     ...storeConfiguration,
                     deactivatedDatetime,
+                    chatChannelDeactivatedDatetime: deactivatedDatetime,
+                    emailChannelDeactivatedDatetime: deactivatedDatetime,
                     trialModeActivatedDatetime: null,
                 })
                 if (!silentUpdate) {
@@ -379,62 +399,64 @@ export const StoreConfigForm = ({
                         </h2>
                         <span>How should AI Agent send responses?</span>
                     </div>
-                    <div className={css.formGroup}>
-                        {trialModeAvailable ? (
-                            <RadioFieldSet
-                                name="ai-agent-trial-mode"
-                                dataCanduId="ai-agent-trial-mode-toggle"
-                                options={[
-                                    {
-                                        caption:
-                                            'Answer customer questions immediately, even outside business hours.',
-                                        label: 'Directly respond to customers',
-                                        disabled: !hasAutomate,
-                                        value: 'enabled',
-                                    },
-                                    {
-                                        caption:
-                                            'Draft messages for your agents to review and edit before sending. This mode is only available for a limited period of time.',
-                                        label: 'Draft responses for agents to review before sending',
-                                        value: 'trial',
-                                    },
-                                    {
-                                        caption:
-                                            'AI Agent won’t generate any responses.',
-                                        label: 'Disabled',
-                                        value: 'disabled',
-                                    },
-                                ]}
-                                selectedValue={aiAgentMode}
-                                onChange={(value) => {
-                                    handleAiAgentTrialModeChange(value)
-                                }}
-                            />
-                        ) : (
-                            <ToggleInput
-                                isToggled={isAIAgentToggled}
-                                onClick={() => {
-                                    updateValue(
-                                        'deactivatedDatetime',
-                                        isAIAgentToggled
-                                            ? new Date().toISOString()
-                                            : null
-                                    )
-
-                                    if (isAIAgentToggled) {
-                                        logEvent(
-                                            SegmentEvent.AiAgentConfigurationDisabled
+                    {!isAiAgentMultichannelEnablementEnabled ? (
+                        <div className={css.formGroup}>
+                            {trialModeAvailable ? (
+                                <RadioFieldSet
+                                    name="ai-agent-trial-mode"
+                                    dataCanduId="ai-agent-trial-mode-toggle"
+                                    options={[
+                                        {
+                                            caption:
+                                                'Answer customer questions immediately, even outside business hours.',
+                                            label: 'Directly respond to customers',
+                                            disabled: !hasAutomate,
+                                            value: 'enabled',
+                                        },
+                                        {
+                                            caption:
+                                                'Draft messages for your agents to review and edit before sending. This mode is only available for a limited period of time.',
+                                            label: 'Draft responses for agents to review before sending',
+                                            value: 'trial',
+                                        },
+                                        {
+                                            caption:
+                                                'AI Agent won’t generate any responses.',
+                                            label: 'Disabled',
+                                            value: 'disabled',
+                                        },
+                                    ]}
+                                    selectedValue={aiAgentMode}
+                                    onChange={(value) => {
+                                        handleAiAgentTrialModeChange(value)
+                                    }}
+                                />
+                            ) : (
+                                <ToggleInput
+                                    isToggled={isAIAgentToggled}
+                                    onClick={() => {
+                                        updateValue(
+                                            'deactivatedDatetime',
+                                            isAIAgentToggled
+                                                ? new Date().toISOString()
+                                                : null
                                         )
-                                    }
-                                }}
-                                caption="When enabled, you can find tickets handled by AI Agent in your ticket views."
-                                name={toggleAiAgentId}
-                                dataCanduId="ai-agent-configuration-toggle"
-                            >
-                                Enable AI Agent
-                            </ToggleInput>
-                        )}
-                    </div>
+
+                                        if (isAIAgentToggled) {
+                                            logEvent(
+                                                SegmentEvent.AiAgentConfigurationDisabled
+                                            )
+                                        }
+                                    }}
+                                    caption="When enabled, you can find tickets handled by AI Agent in your ticket views."
+                                    name={toggleAiAgentId}
+                                    dataCanduId="ai-agent-configuration-toggle"
+                                >
+                                    Enable AI Agent
+                                </ToggleInput>
+                            )}
+                        </div>
+                    ) : null}
 
                     <ToneOfVoiceFormComponent
                         toneOfVoice={formValues.toneOfVoice}
@@ -482,8 +504,29 @@ export const StoreConfigForm = ({
                     <ConfigurationSection title="Chat settings">
                         <SettingsBanner
                             type={SettingsBannerType.Chat}
-                            deactivatedDatetime={formValues.deactivatedDatetime}
+                            deactivatedDatetime={
+                                isAiAgentMultichannelEnablementEnabled
+                                    ? formValues.chatChannelDeactivatedDatetime
+                                    : formValues.deactivatedDatetime
+                            }
                         />
+                        {isAiAgentMultichannelEnablementEnabled ? (
+                            <div className={css.sectionBlock}>
+                                <ChannelToggleInput
+                                    isToggled={isChatChannelEnabled}
+                                    onUpdate={(isToggled) => {
+                                        updateValue(
+                                            'chatChannelDeactivatedDatetime',
+                                            isToggled
+                                                ? null
+                                                : new Date().toISOString()
+                                        )
+                                    }}
+                                    channel="chat"
+                                />
+                            </div>
+                        ) : null}
+
                         <ChatSettingsFormComponent
                             monitoredChatIntegrations={
                                 formValues.monitoredChatIntegrations
@@ -503,8 +546,29 @@ export const StoreConfigForm = ({
                     </h2>
                     <SettingsBanner
                         type={SettingsBannerType.Email}
-                        deactivatedDatetime={formValues.deactivatedDatetime}
+                        deactivatedDatetime={
+                            isAiAgentMultichannelEnablementEnabled
+                                ? formValues.emailChannelDeactivatedDatetime
+                                : formValues.deactivatedDatetime
+                        }
                     />
+                    {isAiAgentMultichannelEnablementEnabled ? (
+                        <div className={css.sectionBlock}>
+                            <ChannelToggleInput
+                                isToggled={isEmailChannelEnabled}
+                                onUpdate={(isToggled) => {
+                                    updateValue(
+                                        'emailChannelDeactivatedDatetime',
+                                        isToggled
+                                            ? null
+                                            : new Date().toISOString()
+                                    )
+                                }}
+                                channel="email"
+                            />
+                        </div>
+                    ) : null}
+
                     <EmailFormComponent
                         updateValue={updateValue}
                         monitoredEmailIntegrations={

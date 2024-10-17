@@ -15,6 +15,8 @@ describe('getStoreConfigurationFromFormValues', () => {
     const formValuesPartial = {
         helpCenterId: 123,
         deactivatedDatetime: '2024-01-01',
+        chatChannelDeactivatedDatetime: '2024-01-01',
+        emailChannelDeactivatedDatetime: '2024-01-01',
         trialModeActivatedDatetime: '2024-02-01',
         monitoredEmailIntegrations: [
             {id: 1, email: 'email1@example.com'},
