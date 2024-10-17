@@ -191,6 +191,17 @@ describe('integration resource', () => {
             expect(res).toHaveLength(1)
         })
 
+        it('should reutrns values with filter', async () => {
+            mockedServer
+                .onGet('/api/integrations/shopify/1/collections/', {
+                    params: {search: 'adidas'},
+                })
+                .reply(200, collectionResponse)
+
+            const res = await fetchShopifyCollections(1, {search: 'adidas'})
+            expect(res).toHaveLength(1)
+        })
+
         it('should return empty list', async () => {
             mockedServer
                 .onGet('/api/integrations/shopify/1/collections/')

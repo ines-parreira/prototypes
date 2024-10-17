@@ -181,7 +181,7 @@ export const useCollectionsFromShopifyIntegration = (
             filter,
         ],
         queryFn: async () => {
-            return await fetchShopifyCollections(integrationId)
+            return await fetchShopifyCollections(integrationId, filter)
         },
         keepPreviousData: true,
         onError: () => {

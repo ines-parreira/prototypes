@@ -1,4 +1,5 @@
-import React, {useMemo, useRef, useState} from 'react'
+import React, {useCallback, useMemo, useRef, useState} from 'react'
+import _debounce from 'lodash/debounce'
 
 import {useCollectionsFromShopifyIntegration} from 'models/integration/queries'
 
@@ -35,9 +36,18 @@ const CollectionSelector: React.FC<Props> = ({
     const [search, setSearch] = useState<string>('')
     const [isSelectOpen, setIsSelectOpen] = useState(false)
 
-    const {data: collectionData} =
-        useCollectionsFromShopifyIntegration(integrationId)
+    const {data: collectionData} = useCollectionsFromShopifyIntegration(
+        integrationId,
+        {search: search}
+    )
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const debounceOnSearchChange = useCallback(
+        _debounce((value: string) => {
+            setSearch(value)
+        }, 250),
+        [setSearch]
+    )
     const productCollections = useMemo<Option[]>(() => {
         return (
             collectionData?.map(
@@ -86,7 +96,7 @@ const CollectionSelector: React.FC<Props> = ({
                         <DropdownSearch
                             ref={searchRef}
                             value={search}
-                            onChange={setSearch}
+                            onChange={debounceOnSearchChange}
                             autoFocus
                         />
                         <DropdownBody>

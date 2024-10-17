@@ -47,11 +47,14 @@ export const fetchCustomerSegments = async (
 }
 
 export const fetchShopifyCollections = async (
-    integrationId: number
+    integrationId: number,
+    params?: Record<string, string>
 ): Promise<ShopifyCollection[]> => {
     const url = `/api/integrations/shopify/${integrationId}/collections/`
-
-    const response = await client.get(url)
+    const queryParams = params ? {...params} : {}
+    const response = await client.get(url, {
+        params: queryParams,
+    })
     const collections = response.data as ShopifyCollectionResponse
     return collections.data || []
 }
