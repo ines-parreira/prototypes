@@ -1,10 +1,5 @@
 import React from 'react'
 
-import {
-    CustomField,
-    CustomFieldPrediction,
-    CustomFieldValue,
-} from 'custom-fields/types'
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import {getNumberOrUndefined} from 'custom-fields/helpers/getNumberOrUndefined'
 import {
@@ -12,6 +7,11 @@ import {
     isNumberInput,
     isTextInput,
 } from 'custom-fields/helpers/typeGuards'
+import {
+    CustomField,
+    CustomFieldPrediction,
+    CustomFieldValue,
+} from 'custom-fields/types'
 import StealthInput from './StealthInput'
 
 type Props = {
@@ -45,7 +45,7 @@ export default function CustomFieldInput({
                 id={id}
                 name={field.label}
                 type="text"
-                value={value?.toString()}
+                value={value?.toString() || ''}
                 onChange={onChange}
                 hasError={hasError}
                 isDisabled={isDisabled}

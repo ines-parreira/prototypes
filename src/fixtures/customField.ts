@@ -121,6 +121,20 @@ export const customerInputFieldDefinition: CustomField & {
     ...customerFieldBaseDefinition,
 }
 
+export const customerNumberFieldDefinition: CustomField & {
+    definition: CustomTypeDefinitionNumber
+} = {
+    ...ticketNumberFieldDefinition,
+    ...customerFieldBaseDefinition,
+}
+
+export const customerDropdownFieldDefinition: CustomField & {
+    definition: CustomTypeDefinitionText<CustomFieldInputSettingsDropdown>
+} = {
+    ...ticketDropdownFieldDefinition,
+    ...customerFieldBaseDefinition,
+}
+
 export const archivedTicketInputFieldDefinition: CustomField & {
     definition: CustomTypeDefinitionText<CustomFieldInputSettingsText>
 } = {

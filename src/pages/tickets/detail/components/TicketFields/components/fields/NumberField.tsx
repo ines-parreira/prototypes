@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useState} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {useCallback, useEffect, useState} from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomFieldState} from 'custom-fields/types'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     updateCustomFieldError,
     updateCustomFieldState,
@@ -12,10 +12,10 @@ import {
 import {logEvent, SegmentEvent} from 'common/segment'
 import Label from 'custom-fields/components/Label'
 import StealthInput from 'custom-fields/components/StealthInput'
-import useAppSelector from 'hooks/useAppSelector'
-import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
-import {getTicket} from 'state/ticket/selectors'
 import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
+import useAppSelector from 'hooks/useAppSelector'
+import {getTicket} from 'state/ticket/selectors'
 
 import css from './Field.less'
 
@@ -131,9 +131,9 @@ export default function NumberField({
                     value={
                         typeof currentValue === 'undefined' ? '' : currentValue
                     }
-                    onChange={(nextValue) =>
+                    onChange={(nextValue) => {
                         handleChange(numberOrUndefined(nextValue))
-                    }
+                    }}
                     hasError={hasError}
                     isDisabled={isDisabled}
                     onFocus={() => {

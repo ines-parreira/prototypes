@@ -64,7 +64,7 @@ export function Heading() {
                 </>
             )}
             <Badge type={ColorType.Blue} className="">
-                NEW
+                BETA
             </Badge>
         </div>
     )

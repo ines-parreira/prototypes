@@ -1,12 +1,12 @@
 import {ApiPaginationParams} from 'models/api/types'
-import {AI_MANAGED_TYPES, OBJECT_TYPES, MANAGED_TYPES} from './constants'
+import {AI_MANAGED_TYPES, MANAGED_TYPES, OBJECT_TYPES} from './constants'
 
 export type CustomFieldObjectTypes =
     typeof OBJECT_TYPES[keyof typeof OBJECT_TYPES]
 
 export type ListParams = ApiPaginationParams & {
     archived?: boolean
-    object_type: CustomFieldInput['object_type']
+    object_type: CustomFieldObjectTypes
     search?: string
 }
 

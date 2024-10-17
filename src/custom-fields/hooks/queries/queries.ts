@@ -1,17 +1,19 @@
 // Will be autogenerate with API SDK
-import {useQuery, useMutation, UseQueryOptions} from '@tanstack/react-query'
+import {CustomFieldObjectType} from '@gorgias/api-queries'
+import {useMutation, useQuery, UseQueryOptions} from '@tanstack/react-query'
 
-import {ListParams} from 'custom-fields/types'
 import {
     createCustomField,
     deleteCustomFieldValue,
     getCustomField,
     getCustomFields,
+    getCustomFieldValues,
     updateCustomField,
     updateCustomFields,
     updateCustomFieldValue,
     updatePartialCustomField,
 } from 'custom-fields/resources'
+import {ListParams} from 'custom-fields/types'
 import {MutationOverrides} from 'types/query'
 
 export const customFieldDefinitionKeys = {
@@ -28,6 +30,8 @@ export const customFieldDefinitionKeys = {
 
 export const customFieldValueKeys = {
     all: () => ['customFieldValues'] as const,
+    objectType: (objectType: CustomFieldObjectType, holderId: number) =>
+        [...customFieldValueKeys.all(), objectType, holderId] as const,
     value: (id: number) => [...customFieldValueKeys.all(), id] as const,
 }
 
@@ -97,6 +101,31 @@ export const useUpdatePartialCustomField = (
 ) => {
     return useMutation({
         mutationFn: (params) => updatePartialCustomField(...params),
+        ...overrides,
+    })
+}
+
+// values
+
+export const useGetCustomFieldValues = <
+    TData = Awaited<ReturnType<typeof getCustomFieldValues>>
+>(
+    {
+        object_type,
+        holderId,
+    }: {
+        object_type: CustomFieldObjectType
+        holderId: number
+    },
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getCustomFieldValues>>,
+        unknown,
+        TData
+    >
+) => {
+    return useQuery({
+        queryKey: customFieldValueKeys.objectType(object_type, holderId),
+        queryFn: () => getCustomFieldValues({object_type, holderId}),
         ...overrides,
     })
 }

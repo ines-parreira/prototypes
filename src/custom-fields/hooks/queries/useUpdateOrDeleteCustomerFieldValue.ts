@@ -1,5 +1,5 @@
+import {CustomFieldObjectType} from '@gorgias/api-queries'
 import {useQueryClient} from '@tanstack/react-query'
-import {useEffect} from 'react'
 
 import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import {
@@ -14,16 +14,15 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {updateCustomFieldPrediction} from 'state/ticket/actions'
 import {StoreDispatch} from 'state/types'
 import {MutationOverrides} from 'types/query'
 import {errorToChildren} from 'utils'
 
-const onErrorCreator =
+const createOnErrorHandler =
     (dispatch: StoreDispatch) => (error: Record<string, unknown>) => {
         void dispatch(
             notify({
-                title: `Failed to update ticket field value. Please try again in a few seconds.`,
+                title: `Failed to update customer field value. Please try again in a few seconds.`,
                 message: errorToChildren(error) || undefined,
                 allowHTML: true,
                 status: NotificationStatus.Error,
@@ -31,9 +30,10 @@ const onErrorCreator =
         )
     }
 
-// This is only doable because we know that delete extends update params
-// And we don’t need to type the return value because we don’t use it
-export const useUpdateOrDeleteTicketFieldValue = (
+// Beware, we purposefully discarded the return type of the mutation
+// to unknown, because updateCustomFieldValue and deleteCustomFieldValue have
+// different return types and we don't want to deal with that in this hook.
+export const useUpdateOrDeleteCustomerFieldValue = (
     providedOverrides: MutationOverrides<
         typeof updateCustomFieldValue & typeof deleteCustomFieldValue,
         true
@@ -42,13 +42,17 @@ export const useUpdateOrDeleteTicketFieldValue = (
 ) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
-    const internalErrorHandler = onErrorCreator(dispatch)
+    const internalErrorHandler = createOnErrorHandler(dispatch)
     const overrides = {
-        onSuccess: (data: unknown, params: [{fieldId: number}]) => {
-            // queryClient.setQueryData(customFieldValueKeys.value(params[0].id), {...})
-            // or the following if we ever fetch value with react query
+        onSuccess: (
+            data: unknown,
+            params: [{fieldType: CustomFieldObjectType; holderId: number}]
+        ) => {
             void queryClient.invalidateQueries({
-                queryKey: customFieldValueKeys.value(params[0].fieldId),
+                queryKey: customFieldValueKeys.objectType(
+                    params[0].fieldType,
+                    params[0].holderId
+                ),
             })
         },
         ...providedOverrides,
@@ -63,23 +67,15 @@ export const useUpdateOrDeleteTicketFieldValue = (
         },
     }
 
-    const {mutate: updateMutate, data: updateData} =
-        useUpdateCustomFieldValue(overrides)
+    const {mutate: updateMutate} = useUpdateCustomFieldValue(overrides)
     const {mutate: deleteMutate} = useDeleteCustomFieldValue(overrides)
 
-    useEffect(() => {
-        if (updateData?.data.prediction) {
-            const {field, prediction} = updateData.data
-            dispatch(updateCustomFieldPrediction(field.id, prediction))
-        }
-    }, [updateData, dispatch])
-
     return {
-        mutate: (
+        mutate: function mutate(
             params:
                 | Parameters<typeof updateCustomFieldValue>
                 | Parameters<typeof deleteCustomFieldValue>
-        ) => {
+        ): unknown {
             if (isDisabled) return
             if (
                 !('value' in params[0]) ||

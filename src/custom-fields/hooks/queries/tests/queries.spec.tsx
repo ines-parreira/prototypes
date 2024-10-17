@@ -1,26 +1,28 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {act, renderHook} from '@testing-library/react-hooks'
 import MockAdapter from 'axios-mock-adapter'
-import {renderHook, act} from '@testing-library/react-hooks'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {Provider} from 'react-redux'
-import React from 'react'
 
-import client from 'models/api/resources'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {OBJECT_TYPES} from 'custom-fields/constants'
 import {
     useCreateCustomField,
     useDeleteCustomFieldValue,
     useGetCustomFieldDefinition,
     useGetCustomFieldDefinitions,
+    useGetCustomFieldValues,
     useUpdateCustomField,
+    useUpdateCustomFieldValue,
     useUpdateCustomFields,
     useUpdatePartialCustomField,
-    useUpdateCustomFieldValue,
 } from 'custom-fields/hooks/queries/queries'
-import {ticketInputFieldDefinition} from 'fixtures/customField'
 import {CustomFieldInput, PartialCustomFieldWithId} from 'custom-fields/types'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
+import {ticketInputFieldDefinition} from 'fixtures/customField'
+import client from 'models/api/resources'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()
@@ -267,6 +269,102 @@ describe('queries.spec.tsx', () => {
             expect(result.current.data?.data).toEqual(
                 ticketInputFieldDefinition
             )
+        })
+    })
+
+    describe('useGetCustomFieldValues', () => {
+        it('should succeed and return proper data', async () => {
+            const mockStore = configureMockStore([thunk])()
+
+            mockedServer
+                .onGet(
+                    `/api/tickets/${ticketInputFieldDefinition.id}/custom-fields`
+                )
+                .reply(200, [{field: ticketInputFieldDefinition, value: 'ok'}])
+
+            const {result, waitFor} = renderHook(
+                () =>
+                    useGetCustomFieldValues({
+                        holderId: ticketInputFieldDefinition.id,
+                        object_type: OBJECT_TYPES.TICKET,
+                    }),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+            })
+            expect(result.current.data?.data).toEqual([
+                {
+                    field: ticketInputFieldDefinition,
+                    value: 'ok',
+                },
+            ])
+        })
+
+        it("should adapt if object_type is 'Customer'", async () => {
+            const mockStore = configureMockStore([thunk])()
+
+            mockedServer
+                .onGet(
+                    `/api/customers/${ticketInputFieldDefinition.id}/custom-fields`
+                )
+                .reply(200, [{field: ticketInputFieldDefinition, value: 'ok'}])
+
+            const {result, waitFor} = renderHook(
+                () =>
+                    useGetCustomFieldValues({
+                        holderId: ticketInputFieldDefinition.id,
+                        object_type: OBJECT_TYPES.CUSTOMER,
+                    }),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+            })
+        })
+
+        it('should fail and return proper error', async () => {
+            const mockStore = configureMockStore([thunk])()
+
+            mockedServer
+                .onGet(
+                    `/api/tickets/${ticketInputFieldDefinition.id}/custom-fields`
+                )
+                .reply(404, {message: 'error'})
+
+            const {result, waitFor} = renderHook(
+                () =>
+                    useGetCustomFieldValues({
+                        holderId: ticketInputFieldDefinition.id,
+                        object_type: OBJECT_TYPES.TICKET,
+                    }),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+
+            await waitFor(() => {
+                expect(result.current.isError).toBe(true)
+                expect(result.current.error).toBeDefined()
+            })
         })
     })
 

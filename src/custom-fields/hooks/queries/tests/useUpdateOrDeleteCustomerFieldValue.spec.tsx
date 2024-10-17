@@ -10,13 +10,13 @@ import {
     useDeleteCustomFieldValue,
     useUpdateCustomFieldValue,
 } from 'custom-fields/hooks/queries/queries'
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {ticketDropdownFieldDefinition} from 'fixtures/customField'
 import {NotificationStatus} from 'state/notifications/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {useUpdateOrDeleteTicketFieldValue} from '../useUpdateOrDeleteTicketFieldValue'
+import {useUpdateOrDeleteCustomerFieldValue} from '../useUpdateOrDeleteCustomerFieldValue'
 
 const queryClient = mockQueryClient()
 
@@ -29,7 +29,7 @@ const deleteMutateMock = jest.fn()
 
 const mockStore = configureMockStore([thunk])()
 
-describe('useUpdateOrDeleteTicketFieldValue', () => {
+describe('useUpdateOrDeleteCustomerFieldValue', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         useUpdateCustomFieldValueMock.mockImplementation(() => {
@@ -54,7 +54,7 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
     it('should not do any mutation if disabled', () => {
         const {result} = renderHook(
             () =>
-                useUpdateOrDeleteTicketFieldValue(undefined, {
+                useUpdateOrDeleteCustomerFieldValue(undefined, {
                     isDisabled: true,
                 }),
             {
@@ -73,13 +73,16 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
     })
 
     it('should call the correct mutation with passed params according to the existence of a value', () => {
-        const {result} = renderHook(() => useUpdateOrDeleteTicketFieldValue(), {
-            wrapper: ({children}) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
-                </QueryClientProvider>
-            ),
-        })
+        const {result} = renderHook(
+            () => useUpdateOrDeleteCustomerFieldValue(),
+            {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore}>{children}</Provider>
+                    </QueryClientProvider>
+                ),
+            }
+        )
 
         result.current.mutate([dataToMutate])
         expect(updateMutateMock).not.toHaveBeenCalled()
@@ -100,7 +103,7 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
         const cacheTime = 101
         renderHook(
             () =>
-                useUpdateOrDeleteTicketFieldValue(
+                useUpdateOrDeleteCustomerFieldValue(
                     {cacheTime},
                     {isDisabled: true}
                 ),
@@ -122,8 +125,8 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
         const {rerender} = renderHook<
             {onSuccess?: jest.Mock},
-            ReturnType<typeof useUpdateOrDeleteTicketFieldValue>
-        >((props) => useUpdateOrDeleteTicketFieldValue(props, {}), {
+            ReturnType<typeof useUpdateOrDeleteCustomerFieldValue>
+        >((props) => useUpdateOrDeleteCustomerFieldValue(props, {}), {
             wrapper: ({children}) => (
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore}>{children}</Provider>
@@ -135,7 +138,17 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
         expect(useUpdateCustomFieldValueMock.mock.calls[0][0]?.onSuccess).toBe(
             onSuccess
         )
+        useUpdateCustomFieldValueMock.mock.calls[0][0]?.onSuccess!(
+            axiosSuccessResponse({
+                field: ticketDropdownFieldDefinition,
+                value: undefined,
+                prediction: null,
+            }),
+            [dataToMutate],
+            undefined
+        )
         expect(invalidateQueryMock).not.toHaveBeenCalled()
+
         // we can’t only provide undefined here because it would then keep the old params 🤷
         rerender({})
         useUpdateCustomFieldValueMock.mock.calls[1][0]?.onSuccess!(
@@ -148,13 +161,16 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
             undefined
         )
         expect(invalidateQueryMock).toHaveBeenLastCalledWith({
-            queryKey: customFieldValueKeys.value(dataToMutate.fieldId),
+            queryKey: customFieldValueKeys.objectType(
+                dataToMutate.fieldType,
+                dataToMutate.holderId
+            ),
         })
     })
 
     it('should provide a onError param that calls the notify action even if an onError param is provided', () => {
         const onError = jest.fn()
-        renderHook(() => useUpdateOrDeleteTicketFieldValue({onError}), {
+        renderHook(() => useUpdateOrDeleteCustomerFieldValue({onError}), {
             wrapper: ({children}) => (
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore}>{children}</Provider>
@@ -179,33 +195,5 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
                 },
             },
         ])
-    })
-    it('should update the prediction value when the value is mutated', () => {
-        useUpdateCustomFieldValueMock.mockImplementation(() => {
-            return {
-                mutate: updateMutateMock,
-                data: axiosSuccessResponse({
-                    field: ticketDropdownFieldDefinition,
-                    value: undefined,
-                    prediction: {
-                        predicted: 'Subscription::Cancel',
-                        confidence: 80,
-                        display: true,
-                        confirmed: false,
-                        modified: false,
-                    },
-                }),
-            } as unknown as ReturnType<typeof useUpdateCustomFieldValue>
-        })
-
-        renderHook(() => useUpdateOrDeleteTicketFieldValue(), {
-            wrapper: ({children}) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
-                </QueryClientProvider>
-            ),
-        })
-
-        expect(mockStore.getActions()[1]).toMatchSnapshot()
     })
 })

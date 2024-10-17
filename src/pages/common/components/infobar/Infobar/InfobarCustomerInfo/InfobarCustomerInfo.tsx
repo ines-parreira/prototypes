@@ -252,7 +252,7 @@ const InfobarCustomerInfo = ({
                     </Link>
                 </div>
                 <div className={css.detail}>
-                    <CustomerFields />
+                    <CustomerFields customerId={Number(customer.get('id'))} />
                     <CustomerChannels
                         channels={customer.get('channels') || fromJS([])}
                         customerLocationInfo={customer.getIn([

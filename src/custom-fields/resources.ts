@@ -2,10 +2,13 @@
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 
+import {OBJECT_TYPES} from './constants'
 import {
     CustomField,
     CustomFieldInput,
+    CustomFieldObjectTypes,
     CustomFieldState,
+    CustomFieldValue,
     ListParams,
     PartialCustomFieldWithId,
 } from './types'
@@ -53,13 +56,34 @@ export async function updatePartialCustomField(
     return response
 }
 
+// Values
+
+export async function getCustomFieldValues({
+    object_type,
+    holderId,
+}: {
+    object_type: CustomFieldObjectTypes
+    holderId: number
+}) {
+    const response = await client.get<
+        ApiListResponseCursorPagination<
+            Array<{field: CustomField; value: CustomFieldValue}>
+        >
+    >(
+        `/api/${
+            object_type === OBJECT_TYPES.TICKET ? 'tickets' : 'customers'
+        }/${holderId}/custom-fields`
+    )
+    return response
+}
+
 export async function updateCustomFieldValue({
     fieldType,
     holderId,
     fieldId,
     value,
 }: {
-    fieldType: CustomFieldInput['object_type']
+    fieldType: CustomFieldObjectTypes
     holderId: number
     fieldId: CustomField['id']
     value?: CustomFieldState['value']
@@ -70,7 +94,7 @@ export async function updateCustomFieldValue({
         prediction: CustomFieldState['prediction'] | null
     }>(
         `/api/${
-            fieldType === 'Ticket' ? 'tickets' : 'customers'
+            fieldType === OBJECT_TYPES.TICKET ? 'tickets' : 'customers'
         }/${holderId}/custom-fields/${fieldId}`,
         JSON.stringify(value),
         {
@@ -87,13 +111,13 @@ export async function deleteCustomFieldValue({
     holderId,
     fieldId,
 }: {
-    fieldType: CustomFieldInput['object_type']
+    fieldType: CustomFieldObjectTypes
     holderId: number
     fieldId: CustomField['id']
 }) {
     await client.delete(
         `/api/${
-            fieldType === 'Ticket' ? 'tickets' : 'customers'
+            fieldType === OBJECT_TYPES.TICKET ? 'tickets' : 'customers'
         }/${holderId}/custom-fields/${fieldId}`
     )
     return undefined
