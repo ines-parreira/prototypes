@@ -67,7 +67,7 @@ export default function AutoQA() {
                         <p>
                             Only tickets that meet certain requirements are
                             scored by Auto QA. This ticket might be scored 12h
-                            after closure. To learn more, please refer to
+                            after closure. To learn more, please refer to{' '}
                             <a
                                 href="https://link.gorgias.com/fpc"
                                 rel="noreferrer"
