@@ -6,11 +6,15 @@ import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 
-import {renderWithRouter} from 'utils/testing'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 import {getHasAutomate} from 'state/billing/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {IntegrationType} from 'models/integration/constants'
 
+import {account} from 'fixtures/account'
+import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
+import {StoreConfiguration} from 'models/aiAgent/types'
+import {getStoreConfigurationFixture} from 'pages/automate/aiAgent/fixtures/storeConfiguration.fixtures'
 import AutomateNavbarSectionBlock from '../AutomateNavbarSectionBlock'
 
 jest.mock('state/billing/selectors', () => ({
@@ -21,7 +25,14 @@ const mockGetHasAutomate = jest.mocked(getHasAutomate)
 const mockStore = configureMockStore([thunk])
 const MOCK_EMAIL_ADDRESS = 'test@mail.com'
 
+jest.mock('pages/automate/aiAgent/hooks/useStoreConfiguration')
+const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
+
+const defaultStoreConfiguration: StoreConfiguration =
+    getStoreConfigurationFixture()
+
 const defaultState = {
+    currentAccount: fromJS(account),
     integrations: fromJS({
         integrations: [
             {
@@ -61,44 +72,219 @@ describe('AutomateNavbarSectionBlock', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-    })
-    it('should render the component with AI Agent link when hasAiAgentTrial is true and hasAutomate is false', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentTrialMode]: true,
-        })
-        mockGetHasAutomate.mockReturnValue(false)
 
-        renderComponent(
-            <AutomateNavbarSectionBlock
-                shopType={shopType}
-                shopName={shopName}
-                onToggle={onToggle}
-                name={name}
-                isExpanded={isExpanded}
-                shouldRenderCanduIds={shouldRenderCanduIds}
-            />
-        )
-
-        expect(screen.getByText('AI Agent')).toBeInTheDocument()
-    })
-
-    it('should not render the component with Flows link when hasAutomate is false', () => {
-        mockGetHasAutomate.mockReturnValue(false)
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: true,
         })
 
-        renderComponent(
-            <AutomateNavbarSectionBlock
-                shopType={shopType}
-                shopName={shopName}
-                onToggle={onToggle}
-                name={name}
-                isExpanded={isExpanded}
-                shouldRenderCanduIds={shouldRenderCanduIds}
-            />
-        )
+        useStoreConfigurationMock.mockReturnValue({
+            storeConfiguration: defaultStoreConfiguration,
+            isLoading: false,
+        })
+    })
 
-        expect(screen.queryByText('Flows')).not.toBeInTheDocument()
+    describe('when hasAutomate is true', () => {
+        beforeEach(() => {
+            mockGetHasAutomate.mockReturnValue(true)
+        })
+
+        it('should render the Preview badge when trial mode is activated', () => {
+            useStoreConfigurationMock.mockReturnValue({
+                storeConfiguration: {
+                    ...defaultStoreConfiguration,
+                    trialModeActivatedDatetime: '2024-10-01T00:00:00Z',
+                },
+                isLoading: false,
+            })
+
+            renderComponent(
+                <AutomateNavbarSectionBlock
+                    shopType={shopType}
+                    shopName={shopName}
+                    onToggle={onToggle}
+                    name={name}
+                    isExpanded={isExpanded}
+                    shouldRenderCanduIds={shouldRenderCanduIds}
+                />
+            )
+
+            expect(screen.getByText('PREVIEW')).toBeInTheDocument()
+        })
+
+        it('should render the Live badge when AI Agent is enabled', () => {
+            useStoreConfigurationMock.mockReturnValue({
+                storeConfiguration: {
+                    ...defaultStoreConfiguration,
+                    deactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
+                    chatChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
+                },
+                isLoading: false,
+            })
+
+            renderComponent(
+                <AutomateNavbarSectionBlock
+                    shopType={shopType}
+                    shopName={shopName}
+                    onToggle={onToggle}
+                    name={name}
+                    isExpanded={isExpanded}
+                    shouldRenderCanduIds={shouldRenderCanduIds}
+                />
+            )
+
+            expect(screen.getByText('LIVE')).toBeInTheDocument()
+        })
+
+        it('should render the Live badge when AI Agent is enabled in email channel', () => {
+            useStoreConfigurationMock.mockReturnValue({
+                storeConfiguration: {
+                    ...defaultStoreConfiguration,
+                    deactivatedDatetime: '2024-10-01T00:00:00Z',
+                    emailChannelDeactivatedDatetime: null,
+                    chatChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
+                },
+                isLoading: false,
+            })
+
+            renderComponent(
+                <AutomateNavbarSectionBlock
+                    shopType={shopType}
+                    shopName={shopName}
+                    onToggle={onToggle}
+                    name={name}
+                    isExpanded={isExpanded}
+                    shouldRenderCanduIds={shouldRenderCanduIds}
+                />
+            )
+
+            expect(screen.getByText('LIVE')).toBeInTheDocument()
+        })
+
+        it('should render the Live badge when AI Agent is enabled in chat channel', () => {
+            useStoreConfigurationMock.mockReturnValue({
+                storeConfiguration: {
+                    ...defaultStoreConfiguration,
+                    deactivatedDatetime: '2024-10-01T00:00:00Z',
+                    emailChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
+                    chatChannelDeactivatedDatetime: null,
+                },
+                isLoading: false,
+            })
+
+            renderComponent(
+                <AutomateNavbarSectionBlock
+                    shopType={shopType}
+                    shopName={shopName}
+                    onToggle={onToggle}
+                    name={name}
+                    isExpanded={isExpanded}
+                    shouldRenderCanduIds={shouldRenderCanduIds}
+                />
+            )
+
+            expect(screen.getByText('LIVE')).toBeInTheDocument()
+        })
+
+        it('should not render any badge when AI Agent is not enabled nor in preview mode', () => {
+            useStoreConfigurationMock.mockReturnValue({
+                storeConfiguration: {
+                    ...defaultStoreConfiguration,
+                    deactivatedDatetime: '2024-10-01T00:00:00Z',
+                    chatChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
+                    emailChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
+                },
+                isLoading: false,
+            })
+
+            renderComponent(
+                <AutomateNavbarSectionBlock
+                    shopType={shopType}
+                    shopName={shopName}
+                    onToggle={onToggle}
+                    name={name}
+                    isExpanded={isExpanded}
+                    shouldRenderCanduIds={shouldRenderCanduIds}
+                />
+            )
+
+            expect(screen.queryByText('LIVE')).not.toBeInTheDocument()
+            expect(screen.queryByText('PREVIEW')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('when hasAutomate is false', () => {
+        beforeEach(() => {
+            mockGetHasAutomate.mockReturnValue(false)
+        })
+
+        it('should render AI Agent link when hasAiAgentTrial feature flag is true ', () => {
+            renderComponent(
+                <AutomateNavbarSectionBlock
+                    shopType={shopType}
+                    shopName={shopName}
+                    onToggle={onToggle}
+                    name={name}
+                    isExpanded={isExpanded}
+                    shouldRenderCanduIds={shouldRenderCanduIds}
+                />
+            )
+
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        })
+
+        it('should not render the Preview badge when trial mode is not activated ', () => {
+            renderComponent(
+                <AutomateNavbarSectionBlock
+                    shopType={shopType}
+                    shopName={shopName}
+                    onToggle={onToggle}
+                    name={name}
+                    isExpanded={isExpanded}
+                    shouldRenderCanduIds={shouldRenderCanduIds}
+                />
+            )
+
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
+            expect(screen.queryByText('PREVIEW')).not.toBeInTheDocument()
+        })
+
+        it('should render the Preview badge when trial mode is activated', () => {
+            useStoreConfigurationMock.mockReturnValue({
+                storeConfiguration: {
+                    ...defaultStoreConfiguration,
+                    trialModeActivatedDatetime: '2024-10-01T00:00:00Z',
+                },
+                isLoading: false,
+            })
+
+            renderComponent(
+                <AutomateNavbarSectionBlock
+                    shopType={shopType}
+                    shopName={shopName}
+                    onToggle={onToggle}
+                    name={name}
+                    isExpanded={isExpanded}
+                    shouldRenderCanduIds={shouldRenderCanduIds}
+                />
+            )
+
+            expect(screen.getByText('PREVIEW')).toBeInTheDocument()
+        })
+
+        it('should not render the component with Flows link', () => {
+            renderComponent(
+                <AutomateNavbarSectionBlock
+                    shopType={shopType}
+                    shopName={shopName}
+                    onToggle={onToggle}
+                    name={name}
+                    isExpanded={isExpanded}
+                    shouldRenderCanduIds={shouldRenderCanduIds}
+                />
+            )
+
+            expect(screen.queryByText('Flows')).not.toBeInTheDocument()
+        })
     })
 })

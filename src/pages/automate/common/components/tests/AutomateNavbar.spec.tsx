@@ -17,6 +17,9 @@ import {integrationsState} from 'fixtures/integrations'
 import {ThemeProvider} from 'theme'
 import {useFlag} from 'common/flags'
 
+import {assumeMock} from 'utils/testing'
+import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
+import {getStoreConfigurationFixture} from 'pages/automate/aiAgent/fixtures/storeConfiguration.fixtures'
 import AutomateNavbar from '../AutomateNavbar'
 
 jest.mock('utils/launchDarkly')
@@ -25,12 +28,16 @@ jest.mock('common/flags', () => ({
     useFlag: jest.fn(),
 }))
 
+jest.mock('pages/automate/aiAgent/hooks/useStoreConfiguration')
+
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})
 const useParamsMock = useParams as jest.Mock
 useParamsMock.mockReturnValue({})
 
 const mockStore = configureMockStore()
+const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
+const defaultStoreConfiguration = getStoreConfigurationFixture()
 
 const mockUseFlag = useFlag as jest.Mock
 
@@ -42,6 +49,10 @@ jest.mock('common/notifications/components/Button', () => ({
 describe('<AutomateNavbar />', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
+        useStoreConfigurationMock.mockReturnValue({
+            storeConfiguration: defaultStoreConfiguration,
+            isLoading: false,
+        })
     })
 
     const defaultState: Partial<RootState> = {

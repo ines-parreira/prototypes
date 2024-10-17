@@ -13,6 +13,8 @@ import {IntegrationType} from 'models/integration/constants'
 import {assetsUrl} from 'utils'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import AutomateNavbarPaywallNavbarLink from './AutomateNavbarPaywallNavbarLink'
 import css from './AutomateNavbarSectionBlock.less'
 import {
@@ -41,6 +43,23 @@ const AutomateNavbarSectionBlock = ({
 }: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
 
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const {storeConfiguration} = useStoreConfiguration({
+        shopName,
+        accountDomain,
+    })
+
+    const hasAiAgentTrialEnabled =
+        !!storeConfiguration?.trialModeActivatedDatetime
+    const hasAiAgentEnabled = !!(
+        storeConfiguration &&
+        (!storeConfiguration.deactivatedDatetime ||
+            !storeConfiguration.emailChannelDeactivatedDatetime ||
+            !storeConfiguration.chatChannelDeactivatedDatetime) &&
+        !hasAiAgentTrialEnabled
+    )
+
     const hasAiAgentTrial = useFlags()[FeatureFlagKey.AiAgentTrialMode]
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
@@ -53,6 +72,18 @@ const AutomateNavbarSectionBlock = ({
                 return getIconFromType(shopType)
         }
     }
+
+    const PreviewBadge: React.FC = () => (
+        <Badge type={ColorType.Magenta} className={cssNavbar.badge}>
+            PREVIEW
+        </Badge>
+    )
+
+    const LiveBadge: React.FC = () => (
+        <Badge type={ColorType.LightSuccess} className={cssNavbar.badge}>
+            LIVE
+        </Badge>
+    )
 
     if (hasAiAgentTrial && !hasAutomate) {
         return (
@@ -86,12 +117,7 @@ const AutomateNavbarSectionBlock = ({
                             <span className={cssNavbar['item-name']}>
                                 {AI_AGENT}
                             </span>
-                            <Badge
-                                type={ColorType.Blue}
-                                className={cssNavbar.badge}
-                            >
-                                NEW
-                            </Badge>
+                            {hasAiAgentTrialEnabled && <PreviewBadge />}
                         </NavbarLink>
                     </div>
                 )}
@@ -131,12 +157,8 @@ const AutomateNavbarSectionBlock = ({
                                 <span className={cssNavbar['item-name']}>
                                     {AI_AGENT}
                                 </span>
-                                <Badge
-                                    type={ColorType.Blue}
-                                    className={cssNavbar.badge}
-                                >
-                                    NEW
-                                </Badge>
+                                {hasAiAgentTrialEnabled && <PreviewBadge />}
+                                {hasAiAgentEnabled && <LiveBadge />}
                             </NavbarLink>
                         </div>
                     )}
