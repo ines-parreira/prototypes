@@ -133,36 +133,6 @@ export const getOperatorListByVariable = (
                         label: 'Is not',
                         key: 'notEqual',
                     },
-                    {
-                        label: 'Starts with',
-                        key: 'startsWith',
-                        isDisabled: true,
-                    },
-                    {
-                        label: 'Ends with',
-                        key: 'endsWith',
-                        isDisabled: true,
-                    },
-                    {
-                        label: 'Contains',
-                        key: 'contains',
-                        isDisabled: true,
-                    },
-                    {
-                        label: 'Does not contain',
-                        key: 'doesNotContain',
-                        isDisabled: true,
-                    },
-                    {
-                        label: 'Does not exist',
-                        key: 'doesNotExist',
-                        isDisabled: true,
-                    },
-                    {
-                        label: 'Exists',
-                        key: 'exists',
-                        isDisabled: true,
-                    },
                 ]
             }
 

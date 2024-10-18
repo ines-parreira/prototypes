@@ -30,36 +30,6 @@ describe('getOperatorListByVariable()', () => {
                 key: 'notEqual',
                 label: 'Is not',
             },
-            {
-                isDisabled: true,
-                key: 'startsWith',
-                label: 'Starts with',
-            },
-            {
-                isDisabled: true,
-                key: 'endsWith',
-                label: 'Ends with',
-            },
-            {
-                isDisabled: true,
-                key: 'contains',
-                label: 'Contains',
-            },
-            {
-                isDisabled: true,
-                key: 'doesNotContain',
-                label: 'Does not contain',
-            },
-            {
-                isDisabled: true,
-                key: 'doesNotExist',
-                label: 'Does not exist',
-            },
-            {
-                isDisabled: true,
-                key: 'exists',
-                label: 'Exists',
-            },
         ])
     })
 
