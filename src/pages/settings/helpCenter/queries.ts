@@ -14,7 +14,6 @@ import {
     getArticleTemplates,
     getArticleTemplate,
     upsertArticleTemplateReview,
-    getAIGeneratedArticlesByHelpCenter,
     getAIGeneratedArticlesByHelpCenterAndStore,
     getAIGeneratedArticles,
 } from './resources'
@@ -237,34 +236,6 @@ export const useGetAIArticles = <
             return getAIGeneratedArticles(client)
         },
         enabled: !!client && isAIArticlesEnabled && locale === 'en-US',
-        ...overrides,
-    })
-}
-
-export const useGetAIArticlesByHelpCenter = <
-    TData = Awaited<ReturnType<typeof getAIGeneratedArticlesByHelpCenter>>,
->(
-    helpCenterId: Paths.ListAIArticleTemplatesByHelpCenter.Parameters.HelpCenterId | null,
-    locale: Paths.ListArticleTemplates.Parameters.Locale,
-    overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof getAIGeneratedArticlesByHelpCenter>>,
-        unknown,
-        TData
-    >
-) => {
-    const {client} = useHelpCenterApi()
-
-    return useQuery({
-        queryKey: aiArticleKeys.list(helpCenterId),
-        queryFn: async () => {
-            if (helpCenterId === null) {
-                return Promise.resolve(null)
-            }
-            return getAIGeneratedArticlesByHelpCenter(client, {
-                help_center_id: helpCenterId,
-            })
-        },
-        enabled: !!client && locale === 'en-US' && helpCenterId !== null,
         ...overrides,
     })
 }

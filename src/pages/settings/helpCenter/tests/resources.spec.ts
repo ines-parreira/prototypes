@@ -234,51 +234,6 @@ describe('getArticleTemplate', () => {
     })
 })
 
-describe('getAIGeneratedArticlesByHelpCenter', () => {
-    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
-    const helpCenterId = 1
-
-    beforeEach(async () => {
-        sdkMocks = await buildSDKMocks()
-    })
-
-    it('resolves with a list of AI articles on success', async () => {
-        mockResourceServerReplies(sdkMocks.mockedServer, {
-            getAIGeneratedArticlesByHelpCenter: 'success',
-        })
-
-        const data =
-            await helpCenterResourceMethods.getAIGeneratedArticlesByHelpCenter(
-                sdkMocks.client,
-                {help_center_id: helpCenterId}
-            )
-        expect(data).toEqual(AIArticlesListFixture)
-        expect(sdkMocks.mockedServer.history).toMatchSnapshot()
-    })
-
-    it('rejects if the server returns an error', async () => {
-        mockResourceServerReplies(sdkMocks.mockedServer, {
-            getArticleTemplates: 'error',
-        })
-
-        sdkMocks.mockedServer
-            .onGet(`/api/help-center/ai-articles`)
-            .reply(500, AIArticlesGeneric500ErrorFixture)
-
-        await expect(
-            helpCenterResourceMethods.getAIGeneratedArticlesByHelpCenter(
-                sdkMocks.client,
-                {
-                    help_center_id: helpCenterId,
-                }
-            )
-        ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 404]`
-        )
-        expect(sdkMocks.mockedServer.history).toMatchSnapshot()
-    })
-})
-
 describe('getAIGeneratedArticlesByHelpCenterAndStore', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
     const helpCenterId = 1

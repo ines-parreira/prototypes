@@ -2,22 +2,13 @@ import {useMemo} from 'react'
 import {LocaleCode} from 'models/helpCenter/types'
 import {doNotRetry40XErrorsHandler} from 'api/utils'
 import {useGetAIArticlesByHelpCenterAndStore} from '../queries'
-import {
-    getAIGeneratedArticlesByHelpCenter,
-    getAIGeneratedArticlesByHelpCenterAndStore,
-} from '../resources'
+import {getAIGeneratedArticlesByHelpCenterAndStore} from '../resources'
 
-type AIArticlesByHelpCenter = Awaited<
-    ReturnType<typeof getAIGeneratedArticlesByHelpCenter>
->
 type AIArticlesByHelpCenterAndStore = Awaited<
     ReturnType<typeof getAIGeneratedArticlesByHelpCenterAndStore>
 >
 
-type FetchedArticles =
-    | AIArticlesByHelpCenter
-    | AIArticlesByHelpCenterAndStore
-    | null
+type FetchedArticles = AIArticlesByHelpCenterAndStore | null
 
 type Props = {
     helpCenterId: number | null

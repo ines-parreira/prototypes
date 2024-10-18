@@ -13,7 +13,6 @@ import {
     useUpdatePageEmbedment,
     useGetArticleTemplates,
     useGetArticleTemplate,
-    useGetAIArticlesByHelpCenter,
     useGetAIArticlesByHelpCenterAndStore,
     useUpsertArticleTemplateReview,
 } from '../queries'
@@ -25,10 +24,6 @@ const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
     typeof useHelpCenterApi
 >
 
-const getAIGeneratedArticlesByHelpCenter = jest.spyOn(
-    resources,
-    'getAIGeneratedArticlesByHelpCenter'
-)
 const getAIGeneratedArticlesByHelpCenterAndStore = jest.spyOn(
     resources,
     'getAIGeneratedArticlesByHelpCenterAndStore'
@@ -367,92 +362,6 @@ describe('useGetArticleTemplate', () => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
                 `[Error: Request failed with status code 500]`
-            )
-        })
-    })
-})
-
-describe('useGetAIGeneratedArticlesByHelpCenter', () => {
-    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
-    const locale = 'en-US'
-    const helpCenterId = 1
-
-    beforeEach(async () => {
-        sdkMocks = await buildSDKMocks()
-        queryClient.getQueryCache().clear()
-        mockedUseHelpCenterApi.mockReturnValue({
-            client: sdkMocks.client,
-            isReady: true,
-        })
-    })
-
-    it('resolves with the list of AIArticles', async () => {
-        const mocks = mockResourceServerReplies(sdkMocks.mockedServer, {
-            getAIGeneratedArticlesByHelpCenter: 'success',
-        })
-
-        const {result, waitFor} = renderHook(
-            () => useGetAIArticlesByHelpCenter(helpCenterId, locale),
-            {
-                wrapper,
-            }
-        )
-
-        await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
-
-        expect(result.current.data).toEqual(
-            mocks.fixtures.AIArticlesListFixture
-        )
-    })
-
-    it('disables query if helpCenterId is null', async () => {
-        const useQuerySpy = jest.spyOn(reactQuery, 'useQuery')
-
-        const {result} = renderHook(
-            () => useGetAIArticlesByHelpCenter(null, locale),
-            {
-                wrapper,
-            }
-        )
-
-        expect(getAIGeneratedArticlesByHelpCenter).toHaveBeenCalledTimes(0)
-
-        expect(result.current.data).toBeUndefined()
-
-        expect(useQuerySpy).toHaveBeenCalledTimes(1)
-
-        expect(useQuerySpy.mock.calls[0][0]).toEqual({
-            enabled: false,
-            queryFn: expect.any(Function),
-            queryKey: ['aiArticle', 'list', null],
-        })
-
-        const queryFn = (
-            useQuerySpy.mock.calls[0][0] as unknown as {
-                queryFn: () => Promise<any>
-            }
-        )?.queryFn
-
-        const queryFnResult = await queryFn()
-        expect(queryFnResult).toBeNull()
-    })
-
-    it('returns the error', async () => {
-        mockResourceServerReplies(sdkMocks.mockedServer, {
-            getAIGeneratedArticlesByHelpCenter: 'error',
-        })
-
-        const {result, waitFor} = renderHook(
-            () => useGetAIArticlesByHelpCenter(helpCenterId, locale),
-            {
-                wrapper,
-            }
-        )
-
-        await waitFor(() => {
-            expect(result.current.isError).toBeTruthy()
-            expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 404]`
             )
         })
     })
