@@ -7,7 +7,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import LD from 'launchdarkly-react-client-sdk'
+import LD, {useFlags} from 'launchdarkly-react-client-sdk'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
@@ -28,13 +28,29 @@ import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {billingState} from 'fixtures/billing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {getHasAutomate} from 'state/billing/selectors'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+jest.mock('state/billing/selectors', () => ({
+    ...jest.requireActual('state/billing/selectors'),
+    __esModule: true,
+    getHasAutomate: jest.fn(),
+}))
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 jest.mock('pages/automate/common/hooks/useContactFormAutomationSettings')
 
 const queryClient = mockQueryClient()
+
+jest.mock('launchdarkly-react-client-sdk')
+
+const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+const mockGetHasAutomate = getHasAutomate as jest.MockedFunction<
+    typeof getHasAutomate
+>
 
 describe('<ContactFormSettingsView />', () => {
     const FORM_ID = '1'
@@ -179,5 +195,49 @@ describe('<ContactFormSettingsView />', () => {
         })
 
         await screen.findByLabelText('contact form preview')
+    })
+
+    it('should display "Automate" tab', () => {
+        const history = createMemoryHistory({
+            initialEntries: [
+                insertContactFormIdParam(CONTACT_FORM_SETTINGS_PATH, FORM_ID),
+            ],
+        })
+
+        mockGetHasAutomate.mockReturnValue(true)
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.NewChannelsView]: true,
+        })
+
+        renderView({
+            path: CONTACT_FORM_SETTINGS_PATH,
+            history,
+        })
+
+        expect(
+            screen.getByRole('link', {name: /Automate/i})
+        ).toBeInTheDocument()
+    })
+
+    it('should hide the "Automate" tab', () => {
+        const history = createMemoryHistory({
+            initialEntries: [
+                insertContactFormIdParam(CONTACT_FORM_SETTINGS_PATH, FORM_ID),
+            ],
+        })
+
+        mockGetHasAutomate.mockReturnValue(false)
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.NewChannelsView]: true,
+        })
+
+        renderView({
+            path: CONTACT_FORM_SETTINGS_PATH,
+            history,
+        })
+
+        expect(
+            screen.queryByRole('link', {name: /Automate/i})
+        ).not.toBeInTheDocument()
     })
 })

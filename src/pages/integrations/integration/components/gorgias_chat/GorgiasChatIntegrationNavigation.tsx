@@ -8,6 +8,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
 import dotError from 'assets/img/icons/dot-error.svg'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import {getHasAutomate} from 'state/billing/selectors'
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 import {IntegrationType} from '../../../../../models/integration/types'
 
@@ -30,6 +31,7 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
         ['meta', 'shop_integration_id'],
         null
     )
+    const hasAutomate = useAppSelector(getHasAutomate)
     const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
     const storeIntegration = storeIntegrations.find(
         (integration) => integration.id === shopIntegrationId
@@ -79,7 +81,7 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
                 )}
             </NavLink>
 
-            {newChannelsView && (
+            {newChannelsView && hasAutomate && (
                 <NavLink to={`${baseURL}/automate`} exact>
                     Automate
                     {isStoreNotConnected && (

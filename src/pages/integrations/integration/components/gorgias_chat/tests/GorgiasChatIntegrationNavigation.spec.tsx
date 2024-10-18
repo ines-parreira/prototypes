@@ -1,20 +1,29 @@
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {getHasAutomate} from 'state/billing/selectors'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
 import {entitiesInitialState} from 'fixtures/entities'
 import {RootState, StoreDispatch} from 'state/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 
 jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
     return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
 })
 
+jest.mock('state/billing/selectors', () => ({
+    __esModule: true,
+    getHasAutomate: jest.fn(),
+}))
+
+jest.mock('launchdarkly-react-client-sdk')
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
     default: () => [
@@ -25,6 +34,9 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
         },
     ],
 }))
+
+const mockGetHasAutomate = jest.mocked(getHasAutomate)
+const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 
 describe('<GorgiasChatIntegrationNavigation />', () => {
     const integration = {
@@ -48,6 +60,36 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
                 minimumSnippetVersion: null,
             },
         },
+    })
+
+    it('should render automate tab', () => {
+        mockGetHasAutomate.mockReturnValue(true)
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.NewChannelsView]: true,
+        })
+        render(
+            <Provider store={store}>
+                <GorgiasChatIntegrationNavigation
+                    integration={fromJS(integration)}
+                ></GorgiasChatIntegrationNavigation>
+            </Provider>
+        )
+        expect(screen.getByText('Automate')).toBeInTheDocument()
+    })
+
+    it('should not render automate tab', () => {
+        mockGetHasAutomate.mockReturnValue(false)
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.NewChannelsView]: true,
+        })
+        render(
+            <Provider store={store}>
+                <GorgiasChatIntegrationNavigation
+                    integration={fromJS(integration)}
+                ></GorgiasChatIntegrationNavigation>
+            </Provider>
+        )
+        expect(screen.queryByText('Automate')).not.toBeInTheDocument()
     })
 
     it('should render GorgiasChatIntegrationNavigation', () => {

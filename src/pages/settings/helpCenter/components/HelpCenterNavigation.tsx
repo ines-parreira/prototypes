@@ -93,7 +93,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
                 Customization
             </NavLink>
             <NavLink to={`${baseURL}/publish-track`}>Publish & Track</NavLink>
-            {newChannelsView && (
+            {newChannelsView && hasAutomate && (
                 <NavLink to={`${baseURL}/automate`}>
                     Automate
                     {!helpCenterShopName && (

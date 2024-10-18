@@ -90,7 +90,21 @@ describe('HelpCenterNavigation', () => {
         )
     })
 
+    it('should not render the automate tab when `hasAutomate` is false', () => {
+        mockGetHasAutomate.mockReturnValue(false)
+        render(
+            <Provider store={mockedStore}>
+                <HelpCenterNavigation
+                    helpCenterId={1}
+                    helpCenterShopName={'shopName'}
+                />
+            </Provider>
+        )
+        expect(screen.queryByText(/Automate/i)).not.toBeInTheDocument()
+    })
+
     it('should display automate menu item', () => {
+        mockGetHasAutomate.mockReturnValue(true)
         render(
             <Provider store={mockedStore}>
                 <HelpCenterNavigation
@@ -119,6 +133,7 @@ describe('HelpCenterNavigation', () => {
 
         const log = jest.spyOn(segment, 'logEvent')
 
+        mockGetHasAutomate.mockReturnValue(false)
         render(
             <Provider store={mockedStore}>
                 <HelpCenterNavigation helpCenterId={1} />

@@ -226,7 +226,7 @@ const ContactFormSettingsView = (): JSX.Element => {
             <SecondaryNavbar>
                 {Object.entries({
                     ...navLinks,
-                    ...(newChannelsView
+                    ...(newChannelsView && hasAutomate
                         ? {Automate: CONTACT_FORM_AUTOMATE_PATH}
                         : {}),
                 }).map(([name, to]) => (
