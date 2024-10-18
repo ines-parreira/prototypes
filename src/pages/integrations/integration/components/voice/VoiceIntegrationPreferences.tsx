@@ -39,6 +39,11 @@ import VoiceIntegrationPreferencesCallRecordings from './VoiceIntegrationPrefere
 import VoiceIntegrationPreferencesTranscription from './VoiceIntegrationPreferencesTranscription'
 import css from './VoiceIntegrationPreferences.less'
 import {isValueInRange} from './utils'
+import {
+    RING_TIME_DEFAULT_VALUE,
+    WAIT_TIME_DEFAULT_ENABLED,
+    WAIT_TIME_DEFAULT_VALUE,
+} from './constants'
 
 type Props = {
     integration: PhoneIntegration
@@ -117,15 +122,51 @@ export default function VoiceIntegrationPreferences({
             errors.ring_time =
                 'Ring time must be between 10 and 600 seconds (10 minutes).'
         }
+        if (
+            preferences.wait_time?.value !== undefined &&
+            !isValueInRange(preferences.wait_time.value, 10, 3600)
+        ) {
+            errors.wait_time =
+                'Wait time must be between 10 and 3600 seconds (1 hour).'
+        }
         return errors
     }, [preferences])
+
+    const preferencesWithDefaultValues = (
+        inputPreferences: PhoneIntegrationPreferences
+    ): PhoneIntegrationPreferences => {
+        return {
+            ring_time: RING_TIME_DEFAULT_VALUE,
+            ...inputPreferences,
+            transcribe: {
+                recordings: false,
+                voicemails: false,
+                ...(inputPreferences.transcribe ?? {}),
+            },
+            wait_time: {
+                enabled: WAIT_TIME_DEFAULT_ENABLED,
+                value: WAIT_TIME_DEFAULT_VALUE,
+                ...(inputPreferences.wait_time ?? {}),
+            },
+        }
+    }
 
     const canSubmit = () => {
         if (!isEmpty(validationErrors)) {
             return false
         }
 
-        const unsubmittedSettings = {
+        const integrationWithDefaults = {
+            ...integration,
+            meta: {
+                ...integration.meta,
+                preferences: preferencesWithDefaultValues(
+                    integration.meta.preferences
+                ),
+            },
+        }
+
+        const unsubmittedSettingsWithDefaults = {
             name: title,
             meta: {
                 ...integration.meta,
@@ -133,30 +174,15 @@ export default function VoiceIntegrationPreferences({
                     ? {phone_team_id: phoneTeamId}
                     : {}),
                 emoji,
-                preferences,
+                preferences: preferencesWithDefaultValues(preferences),
             },
         }
 
-        // handle the case where the transcribe flags are not present at all
-        const integrationWithTranscribe = {
+        const updatedIntegration = {
             ...integration,
-            meta: {
-                ...integration.meta,
-                preferences: {
-                    ...integration.meta.preferences,
-                    transcribe: {
-                        recordings: false,
-                        voicemails: false,
-                        ...(integration.meta.preferences.transcribe ?? {}),
-                    },
-                },
-            },
+            ...unsubmittedSettingsWithDefaults,
         }
-        const updatedIntegration = {...integration, ...unsubmittedSettings}
-        return !(
-            isEqual(integration, updatedIntegration) ||
-            isEqual(integrationWithTranscribe, updatedIntegration)
-        )
+        return !isEqual(integrationWithDefaults, updatedIntegration)
     }
 
     const isSubmittable = canSubmit()

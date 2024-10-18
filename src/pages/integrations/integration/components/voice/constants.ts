@@ -1,0 +1,4 @@
+export const RING_TIME_DEFAULT_VALUE = 60
+
+export const WAIT_TIME_DEFAULT_VALUE = 120
+export const WAIT_TIME_DEFAULT_ENABLED = true

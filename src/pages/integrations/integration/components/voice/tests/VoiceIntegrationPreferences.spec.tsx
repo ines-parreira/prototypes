@@ -94,6 +94,10 @@ describe('<VoiceIntegrationPreferences />', () => {
         )
     }
 
+    beforeEach(() => {
+        mockFlags({RecordingTranscriptions: true})
+    })
+
     afterEach(() => {
         resetLDMocks()
         cleanup()
@@ -105,8 +109,6 @@ describe('<VoiceIntegrationPreferences />', () => {
     })
 
     it('should render the component with transcription FF on', () => {
-        mockFlags({RecordingTranscriptions: true})
-
         renderComponent(props)
 
         expect(screen.getByText('App title')).toBeInTheDocument()
@@ -212,8 +214,6 @@ describe('<VoiceIntegrationPreferences />', () => {
     ])(
         'should enable submit when transcription fields are changed',
         async ({label, props}) => {
-            mockFlags({RecordingTranscriptions: true})
-
             renderComponent(props)
 
             const callRecordingToggle = screen.getByLabelText(label)
@@ -247,8 +247,6 @@ describe('<VoiceIntegrationPreferences />', () => {
     ])(
         'should disable submit when transcription fields are reset',
         async ({label, props}) => {
-            mockFlags({RecordingTranscriptions: true})
-
             renderComponent(props)
 
             // click toggle twice to reset it
@@ -265,8 +263,6 @@ describe('<VoiceIntegrationPreferences />', () => {
     )
 
     it('should enable submit when recording fields are changed', async () => {
-        mockFlags({RecordingTranscriptions: true})
-
         renderComponent(props)
 
         const recordingToggles = screen.getAllByLabelText(
@@ -287,8 +283,6 @@ describe('<VoiceIntegrationPreferences />', () => {
         const ringTime = 40
 
         ;(isValueInRange as jest.Mock).mockReturnValue(true)
-
-        mockFlags({RecordingTranscriptions: true})
 
         renderComponent({
             integration: {
@@ -318,11 +312,9 @@ describe('<VoiceIntegrationPreferences />', () => {
     })
 
     it('should disable save changes button if there is an invalid ring time', async () => {
-        const ringTime: number = 5
+        const ringTime = 5
 
         ;(isValueInRange as jest.Mock).mockReturnValue(false)
-
-        mockFlags({RecordingTranscriptions: true})
 
         renderComponent({
             integration: {
@@ -356,5 +348,76 @@ describe('<VoiceIntegrationPreferences />', () => {
         })
 
         expect(isValueInRange).toHaveBeenCalledWith(ringTime, 10, 600)
+    })
+
+    it('should allow to save changes button if there is a valid wait time', async () => {
+        const waitTime = 20
+
+        ;(isValueInRange as jest.Mock).mockReturnValue(true)
+
+        renderComponent({
+            integration: {
+                ...phoneIntegration,
+                meta: {
+                    ...(phoneIntegration?.meta ?? {}),
+                    phone_team_id: 1,
+                    preferences: {wait_time: {enabled: true, value: waitTime}},
+                },
+            },
+        })
+
+        // change the preferences, so that the submit button becomes enabled
+        const preferencesInput = screen.getByTestId('preferencesInput')
+        fireEvent.change(preferencesInput, {
+            target: {value: 'new value'},
+        })
+
+        // the save changes button stays enabled since the wait time is valid
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: 'Save changes'})
+            ).toBeAriaEnabled()
+        })
+
+        expect(isValueInRange).toHaveBeenCalledWith(waitTime, 10, 3600)
+    })
+
+    it('should disable save changes button if there is an invalid wait time', async () => {
+        const waitTime = 5
+
+        ;(isValueInRange as jest.Mock).mockReturnValue(false)
+
+        renderComponent({
+            integration: {
+                ...phoneIntegration,
+                meta: {
+                    ...(phoneIntegration?.meta ?? {}),
+                    phone_team_id: 1,
+                    preferences: {wait_time: {enabled: true, value: waitTime}},
+                },
+            },
+        })
+
+        // change the preferences, so that the submit button becomes enabled
+        const preferencesInput = screen.getByTestId('preferencesInput')
+        fireEvent.change(preferencesInput, {
+            target: {value: 'new value'},
+        })
+
+        // however, it is still disabled because of the invalid ring time
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: 'Save changes'})
+            ).toBeAriaDisabled()
+        })
+
+        // and we also show the corresponding error message
+        await waitFor(() => {
+            expect(screen.getByTestId('errors-wait_time')).toHaveTextContent(
+                'Wait time must be between 10 and 3600 seconds (1 hour).'
+            )
+        })
+
+        expect(isValueInRange).toHaveBeenCalledWith(waitTime, 10, 3600)
     })
 })

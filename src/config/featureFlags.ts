@@ -66,6 +66,7 @@ export enum FeatureFlagKey {
     CustomerTimelineButton = 'customer-timeline-button',
     CustomerFields = 'customer-fields',
     CustomizableAgentRingTime = 'customizable-agent-ring-time',
+    CustomizableWaitTime = 'customizable-wait-time',
     DefaultEmailAddress = 'default-email-address',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',

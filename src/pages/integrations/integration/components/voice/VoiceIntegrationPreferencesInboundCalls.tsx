@@ -14,8 +14,14 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import settingsCss from 'pages/settings/settings.less'
 import InputField from 'pages/common/forms/input/InputField'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import VoiceIntegrationPreferencesTeamSelect from './VoiceIntegrationPreferencesTeamSelect'
 import css from './VoiceIntegrationPreferences.less'
+import {
+    RING_TIME_DEFAULT_VALUE,
+    WAIT_TIME_DEFAULT_ENABLED,
+    WAIT_TIME_DEFAULT_VALUE,
+} from './constants'
 
 type Props = {
     isIvr: boolean
@@ -40,6 +46,14 @@ export default function VoiceIntegrationPreferencesInboundCalls({
         useFlags()[FeatureFlagKey.RecordingTranscriptions]
     const showCustomizableAgentRingTime: boolean | undefined =
         useFlags()[FeatureFlagKey.CustomizableAgentRingTime]
+    const showCustomizableWaitTime: boolean | undefined =
+        useFlags()[FeatureFlagKey.CustomizableWaitTime]
+
+    const preferencesRingTime = preferences.ring_time ?? RING_TIME_DEFAULT_VALUE
+    const preferencesWaitTimeValue =
+        preferences.wait_time?.value ?? WAIT_TIME_DEFAULT_VALUE
+    const preferencesWaitTimeEnabled =
+        preferences.wait_time?.enabled ?? WAIT_TIME_DEFAULT_ENABLED
 
     return (
         <>
@@ -100,7 +114,7 @@ export default function VoiceIntegrationPreferencesInboundCalls({
                                     </>
                                 }
                                 type="number"
-                                value={preferences.ring_time ?? 60}
+                                value={preferencesRingTime}
                                 onChange={(value) =>
                                     onPreferencesChange({
                                         ring_time: Number(value),
@@ -108,6 +122,40 @@ export default function VoiceIntegrationPreferencesInboundCalls({
                                 }
                                 caption="Set a time between 10 and 600 seconds (10 minutes)."
                                 error={errors?.ring_time}
+                            />
+                        </div>
+                    )}
+                    {showCustomizableWaitTime && (
+                        <div className={css.toggleInputCombo}>
+                            <ToggleInput
+                                isToggled={preferencesWaitTimeEnabled}
+                                onClick={(value) =>
+                                    onPreferencesChange({
+                                        wait_time: {
+                                            enabled: value,
+                                            value: preferencesWaitTimeValue,
+                                        },
+                                    })
+                                }
+                                caption="Time before a call is forwarded to voicemail"
+                            >
+                                Enable wait time
+                            </ToggleInput>
+                            <InputField
+                                label="Wait Time"
+                                type="number"
+                                value={preferencesWaitTimeValue}
+                                onChange={(value) =>
+                                    onPreferencesChange({
+                                        wait_time: {
+                                            enabled: preferencesWaitTimeEnabled,
+                                            value: Number(value),
+                                        },
+                                    })
+                                }
+                                caption="Set a time between 10 and 3600 seconds (1 hour)."
+                                isDisabled={!preferencesWaitTimeEnabled}
+                                error={errors?.wait_time}
                             />
                         </div>
                     )}

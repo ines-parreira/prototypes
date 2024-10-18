@@ -43,6 +43,10 @@ export type PhoneIntegrationPreferences = {
         voicemails: boolean
     }
     ring_time?: number
+    wait_time?: {
+        enabled: boolean
+        value: number
+    }
 }
 
 type VoicemailOutsideBusinessHoursBasicSettings = {
