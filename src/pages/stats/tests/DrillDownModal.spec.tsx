@@ -9,7 +9,7 @@ import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
 import {RootState, StoreDispatch} from 'state/types'
 import {closeDrillDownModal} from 'state/ui/stats/drillDownSlice'
 import {assumeMock} from 'utils/testing'
-import {TicketDrillDownTableContent} from 'pages/stats/ticket-insights/ticket-fields/TicketDrillDownTableContent'
+import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
 import {
     ConvertMetric,
     TicketFieldsMetric,

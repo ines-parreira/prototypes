@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {HintTooltipContent} from 'pages/stats/common/HintTooltip'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {AutoQACompletenessCell} from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
@@ -57,6 +58,15 @@ const tooltipHints = {
         </span>
     ),
 }
+
+const getOnClickHandler =
+    (ticketId: string | number, metricName: DrillDownMetric['metricName']) =>
+    () => {
+        logEvent(SegmentEvent.StatDrillDownTicketClicked, {
+            metric: metricName,
+        })
+        window.open(`/app/ticket/${ticketId}`, '_blank')
+    }
 
 export const TicketDrillDownTableContent = ({
     metricData,
@@ -183,12 +193,10 @@ export const TicketDrillDownTableContent = ({
                             className={classNames(css.tableRow, {
                                 [css.isHighlighted]: !item.ticket.isRead,
                             })}
-                            onClick={() =>
-                                window.open(
-                                    `/app/ticket/${item.ticket.id}`,
-                                    '_blank'
-                                )
-                            }
+                            onClick={getOnClickHandler(
+                                item.ticket.id,
+                                metricData.metricName
+                            )}
                         >
                             <DrillDownTicketDetailsCell
                                 ticketDetails={item.ticket}

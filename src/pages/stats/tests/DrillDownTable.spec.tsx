@@ -4,6 +4,7 @@ import React, {FunctionComponent} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     COMMUNICATION_SKILLS_LABEL,
     COMPLETENESS_STATUS_COMPLETE,
@@ -34,7 +35,7 @@ import {
     SlaMetric,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
-import {TicketDrillDownTableContent} from 'pages/stats/ticket-insights/ticket-fields/TicketDrillDownTableContent'
+import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
 import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
 
 import {
@@ -62,6 +63,9 @@ jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 describe('<DrillDownTable />', () => {
     const defaultState = {
@@ -223,6 +227,26 @@ describe('<DrillDownTable />', () => {
             expect(window.open).toHaveBeenCalledWith(
                 `/app/ticket/${exampleRow.ticket.id}`,
                 '_blank'
+            )
+        })
+
+        it('should should log segment event on ticket row click', () => {
+            const autoQAMetricData = {
+                metricName: AutoQAMetric.ReviewedClosedTickets,
+            }
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+            } as any)
+
+            renderTableForTicket(autoQAMetricData)
+            act(() => {
+                userEvent.click(screen.getAllByRole('row')[1])
+            })
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.StatDrillDownTicketClicked,
+                {metric: autoQAMetricData.metricName}
             )
         })
 
