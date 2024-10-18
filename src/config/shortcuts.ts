@@ -265,15 +265,6 @@ const shortcuts: Record<string, KeyMap> = {
             },
         },
     },
-    PhoneCall: {
-        description: 'Phone call',
-        actions: {
-            ACCEPT_CALL: {
-                key: 'a c',
-                description: 'Accept incoming call.',
-            },
-        },
-    },
 }
 
 export default shortcuts

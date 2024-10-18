@@ -1,11 +1,10 @@
 import React, {useCallback} from 'react'
 import classNames from 'classnames'
 
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import useBeforeUnload from 'hooks/useBeforeUnload'
 import {useTheme} from 'theme'
 
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'
 import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'
 import OutgoingPhoneCall from './OutgoingPhoneCall/OutgoingPhoneCall'
@@ -23,17 +22,6 @@ export default function PhoneIntegrationBar(): JSX.Element | null {
     )
 
     useBeforeUnload(isInProgress)
-
-    useConditionalShortcuts(!!call, 'PhoneCall', {
-        ACCEPT_CALL: {
-            action: (e) => {
-                e.preventDefault()
-                if (isRinging) {
-                    call?.accept()
-                }
-            },
-        },
-    })
 
     if (!call) {
         return null
