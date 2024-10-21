@@ -43,6 +43,7 @@ import {handleContactFormSubmitted} from 'pages/convert/campaigns/components/Con
 import useAppDispatch from 'hooks/useAppDispatch'
 import {getTicketState} from 'state/ticket/selectors'
 import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import {AICopyAssistant} from 'pages/convert/campaigns/components/AICopyAssistant/AICopyAssistant'
 import css from './CampaignMessage.less'
 
 type Props = {
@@ -352,6 +353,7 @@ export const CampaignMessage = memo(
                         placementType={RichFieldEditorPlacement.ConvertDetail}
                         canAddUtm={isConvertSubscriber}
                     />
+                    {isConvertSubscriber && <AICopyAssistant />}
                     <TicketAttachments
                         context="campaign-message"
                         removable

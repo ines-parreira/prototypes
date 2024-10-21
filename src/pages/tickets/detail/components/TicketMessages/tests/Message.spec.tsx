@@ -4,7 +4,9 @@ import {render} from '@testing-library/react'
 import Message from 'pages/tickets/detail/components/TicketMessages/Message'
 import {TicketMessage} from 'models/ticket/types'
 
-jest.mock('../AIBanner', () => () => <div>AIBanner</div>)
+jest.mock('pages/common/components/AIBanner/AIBanner', () => () => (
+    <div>AIBanner</div>
+))
 jest.mock('../Body', () => () => <div>Body</div>)
 jest.mock('../Actions', () => () => <div>Actions</div>)
 jest.mock('../Attachments', () => () => <div>Attachments</div>)

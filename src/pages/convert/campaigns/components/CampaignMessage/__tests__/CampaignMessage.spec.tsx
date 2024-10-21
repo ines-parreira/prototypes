@@ -3,7 +3,7 @@ import {fromJS, Map} from 'immutable'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {render, act, fireEvent} from '@testing-library/react'
+import {render, act, fireEvent, screen} from '@testing-library/react'
 
 import {
     InventoryManagement as ShipifyInventoryManagement,
@@ -26,6 +26,13 @@ import {AddContactCaptureFormProps} from '../../ContactCaptureForm/AddContactCap
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
 jest.mock('pages/convert/campaigns/components/ContactCaptureForm/utils')
+jest.mock(
+    'pages/convert/campaigns/components/AICopyAssistant/AICopyAssistant',
+    () => ({
+        __esModule: true,
+        AICopyAssistant: () => <div>AI Copy Assistant placeholder</div>,
+    })
+)
 
 jest.mock(
     'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm',
@@ -78,6 +85,41 @@ describe('<CampaignMessage>', () => {
     window.IMAGE_PROXY_URL = 'http://proxy-url/'
     window.IMAGE_PROXY_SIGN_KEY = 'test-key'
 
+    const updateCampaign = jest.fn()
+
+    const renderCampaignMessage = (
+        storeState: Partial<RootState>,
+        isConvertSubscriber: boolean
+    ) => {
+        return render(
+            <Provider store={mockStore({...defaultState, ...storeState})}>
+                <CampaignDetailsFormContext.Provider
+                    value={{
+                        campaign: {} as Campaign,
+                        triggers: {},
+                        addTrigger: jest.fn(),
+                        updateTrigger: jest.fn(),
+                        deleteTrigger: jest.fn(),
+                        updateCampaign,
+                    }}
+                >
+                    <CampaignMessage
+                        showContentWarning
+                        isConvertSubscriber={isConvertSubscriber}
+                        richAreaRef={jest.fn()}
+                        agents={[]}
+                        html=""
+                        text=""
+                        selectedAgent=""
+                        onSelectAgent={jest.fn()}
+                        onChangeMessage={jest.fn()}
+                        onDeleteAttachment={jest.fn()}
+                    />
+                </CampaignDetailsFormContext.Provider>
+            </Provider>
+        )
+    }
+
     describe('is not convert subscriber', () => {
         beforeEach(() => {
             jest.spyOn(
@@ -87,22 +129,7 @@ describe('<CampaignMessage>', () => {
         })
 
         it('renders the warning if the content is too big and merchant is a revenue subscriber', () => {
-            const {getByText} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignMessage
-                        showContentWarning
-                        isConvertSubscriber
-                        richAreaRef={jest.fn()}
-                        agents={[]}
-                        html=""
-                        text=""
-                        selectedAgent=""
-                        onSelectAgent={jest.fn()}
-                        onChangeMessage={jest.fn()}
-                        onDeleteAttachment={jest.fn()}
-                    />
-                </Provider>
-            )
+            const {getByText} = renderCampaignMessage({}, true)
 
             expect(
                 getByText(
@@ -112,28 +139,32 @@ describe('<CampaignMessage>', () => {
         })
 
         it('does not render the warning if the content is too big and merchant is not a revenue subscriber', () => {
-            const {queryByText} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignMessage
-                        showContentWarning
-                        isConvertSubscriber={false}
-                        richAreaRef={jest.fn()}
-                        agents={[]}
-                        html=""
-                        text=""
-                        selectedAgent=""
-                        onSelectAgent={jest.fn()}
-                        onChangeMessage={jest.fn()}
-                        onDeleteAttachment={jest.fn()}
-                    />
-                </Provider>
-            )
+            const {queryByText} = renderCampaignMessage({}, false)
 
             expect(
                 queryByText(
                     'Your campaign might be too large for mobile devices or small screens. We advise limiting the content to maximum 170 characters and maximum 5 lines of text.'
                 )
             ).toBeNull()
+        })
+
+        it('it does not display AI copy assistant banner', async () => {
+            renderCampaignMessage(
+                {
+                    newMessage: fromJS({
+                        newMessage: {
+                            attachments: attachments,
+                        },
+                    }),
+                },
+                false
+            )
+
+            await act(flushPromises)
+
+            expect(
+                screen.queryByText('AI Copy Assistant placeholder')
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -167,30 +198,15 @@ describe('<CampaignMessage>', () => {
                 'fetchIntegrationProducts'
             ).mockReturnValue(new Promise((resolve) => resolve([Map(product)])))
 
-            const {queryByText} = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        newMessage: fromJS({
-                            newMessage: {
-                                attachments: attachments,
-                            },
-                        }),
-                    })}
-                >
-                    <CampaignMessage
-                        showContentWarning
-                        isConvertSubscriber={true}
-                        richAreaRef={jest.fn()}
-                        agents={[]}
-                        html=""
-                        text=""
-                        selectedAgent=""
-                        onSelectAgent={jest.fn()}
-                        onChangeMessage={jest.fn()}
-                        onDeleteAttachment={jest.fn()}
-                    />
-                </Provider>
+            const {queryByText} = renderCampaignMessage(
+                {
+                    newMessage: fromJS({
+                        newMessage: {
+                            attachments: attachments,
+                        },
+                    }),
+                },
+                true
             )
 
             await act(flushPromises)
@@ -215,30 +231,15 @@ describe('<CampaignMessage>', () => {
                 'fetchIntegrationProducts'
             ).mockReturnValue(new Promise((resolve) => resolve([Map(product)])))
 
-            const {queryByText} = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        newMessage: fromJS({
-                            newMessage: {
-                                attachments: attachments,
-                            },
-                        }),
-                    })}
-                >
-                    <CampaignMessage
-                        showContentWarning
-                        isConvertSubscriber={true}
-                        richAreaRef={jest.fn()}
-                        agents={[]}
-                        html=""
-                        text=""
-                        selectedAgent=""
-                        onSelectAgent={jest.fn()}
-                        onChangeMessage={jest.fn()}
-                        onDeleteAttachment={jest.fn()}
-                    />
-                </Provider>
+            const {queryByText} = renderCampaignMessage(
+                {
+                    newMessage: fromJS({
+                        newMessage: {
+                            attachments: attachments,
+                        },
+                    }),
+                },
+                true
             )
 
             await act(flushPromises)
@@ -251,35 +252,7 @@ describe('<CampaignMessage>', () => {
         })
 
         it('it sets noReply on adding a form', async () => {
-            const updateCampaign = jest.fn()
-
-            const {getByText} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignDetailsFormContext.Provider
-                        value={{
-                            campaign: {} as Campaign,
-                            triggers: {},
-                            addTrigger: jest.fn(),
-                            updateTrigger: jest.fn(),
-                            deleteTrigger: jest.fn(),
-                            updateCampaign,
-                        }}
-                    >
-                        <CampaignMessage
-                            showContentWarning
-                            isConvertSubscriber={true}
-                            richAreaRef={jest.fn()}
-                            agents={[]}
-                            html=""
-                            text=""
-                            selectedAgent=""
-                            onSelectAgent={jest.fn()}
-                            onChangeMessage={jest.fn()}
-                            onDeleteAttachment={jest.fn()}
-                        />
-                    </CampaignDetailsFormContext.Provider>
-                </Provider>
-            )
+            const {getByText} = renderCampaignMessage({}, true)
 
             await act(flushPromises)
 
@@ -293,35 +266,7 @@ describe('<CampaignMessage>', () => {
         })
 
         it('it does not set noReply on updating a form', async () => {
-            const updateCampaign = jest.fn()
-
-            const {getByText} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignDetailsFormContext.Provider
-                        value={{
-                            campaign: {} as Campaign,
-                            triggers: {},
-                            addTrigger: jest.fn(),
-                            updateTrigger: jest.fn(),
-                            deleteTrigger: jest.fn(),
-                            updateCampaign,
-                        }}
-                    >
-                        <CampaignMessage
-                            showContentWarning
-                            isConvertSubscriber={true}
-                            richAreaRef={jest.fn()}
-                            agents={[]}
-                            html=""
-                            text=""
-                            selectedAgent=""
-                            onSelectAgent={jest.fn()}
-                            onChangeMessage={jest.fn()}
-                            onDeleteAttachment={jest.fn()}
-                        />
-                    </CampaignDetailsFormContext.Provider>
-                </Provider>
-            )
+            const {getByText} = renderCampaignMessage({}, true)
 
             await act(flushPromises)
 
@@ -331,6 +276,25 @@ describe('<CampaignMessage>', () => {
             fireEvent.click(submitButton)
 
             expect(updateCampaign).not.toHaveBeenCalled()
+        })
+
+        it('it displays AI copy assistant banner', async () => {
+            renderCampaignMessage(
+                {
+                    newMessage: fromJS({
+                        newMessage: {
+                            attachments: attachments,
+                        },
+                    }),
+                },
+                true
+            )
+
+            await act(flushPromises)
+
+            expect(
+                screen.getByText('AI Copy Assistant placeholder')
+            ).toBeInTheDocument()
         })
     })
 })

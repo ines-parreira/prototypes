@@ -6,9 +6,9 @@ import classNames from 'classnames'
 import {TicketMessage} from 'models/ticket/types'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import Body from 'pages/tickets/detail/components/TicketMessages/Body'
+import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 
 import css from './AIAgentBanner.less'
-import AIBanner from './AIBanner'
 import AIAgentFeedback from './AIAgentFeedback'
 
 export type AIAgentBannerProps = {

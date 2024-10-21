@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 import css from './AIBanner.less'
 
-type Props = {
+export type Props = {
     className?: string
     hasError?: boolean
 }
