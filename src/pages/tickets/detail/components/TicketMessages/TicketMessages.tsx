@@ -59,9 +59,6 @@ export default function TicketMessages({
     const isFeedbackToAiAgentEnabled =
         useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViews]
 
-    const isAIAgentTrialMessageEnabled =
-        useFlags()[FeatureFlagKey.AiAgentTrialMode]
-
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
     const accountId = useAppSelector(getCurrentAccountId)
 
@@ -156,7 +153,7 @@ export default function TicketMessages({
         return <AIAgentDraftMessage ticketId={ticketId} message={message} />
     }
 
-    if (isAIAgentTrialMessage && isAIAgentTrialMessageEnabled) {
+    if (isAIAgentTrialMessage) {
         return (
             <AIAgentDraftMessage
                 ticketId={ticketId}

@@ -88,7 +88,6 @@ describe('TicketMessages', () => {
         getShouldDisplayAuditLogEventsMock.mockReturnValue(true)
 
         mockFlags({
-            [FeatureFlagKey.AiAgentTrialMode]: false,
             [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: false,
         })
     })
@@ -131,7 +130,6 @@ describe('TicketMessages', () => {
     })
 
     it('should identify and render AiAgentTrialMessage', () => {
-        mockFlags({[FeatureFlagKey.AiAgentTrialMode]: true})
         const trialMessageProps = {
             ...defaultProps,
             messages: [
@@ -199,7 +197,6 @@ describe('TicketMessages', () => {
     it('should log AiAgentTicketViewed event with bannerType trial for Trial message', async () => {
         mockFlags({
             [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
-            [FeatureFlagKey.AiAgentTrialMode]: true,
         })
         const props = {
             ...defaultProps,
@@ -236,7 +233,6 @@ describe('TicketMessages', () => {
     it('should log AiAgentTicketViewed event with bannerType thumbs_up_and_down for ai agent message', async () => {
         mockFlags({
             [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
-            [FeatureFlagKey.AiAgentTrialMode]: false,
         })
         const props = {
             ...defaultProps,
@@ -274,7 +270,6 @@ describe('TicketMessages', () => {
     it('should log AiAgentTicketViewed event with bannerType thumbs_up_improve_response for ai agent message', async () => {
         mockFlags({
             [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
-            [FeatureFlagKey.AiAgentTrialMode]: false,
         })
         const props = {
             ...defaultProps,
