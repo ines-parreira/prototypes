@@ -92,7 +92,7 @@ exports[`<EmailIntegrationCreate/> should render 1`] = `
         OR
       </div>
       <a
-        to="/app/settings/channels/email/new/custom"
+        to="/app/settings/channels/email/new/onboarding"
       >
         <button
           aria-disabled="false"

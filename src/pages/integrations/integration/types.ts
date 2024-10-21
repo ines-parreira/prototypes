@@ -4,7 +4,6 @@ export enum Tab {
     EmailVerification = 'verification',
     EmailDomainVerification = 'dns',
     EmailOutboundVerification = 'outbound-verification',
-    EmailCustom = 'custom',
     FacebookCustomerChat = 'customer_chat',
     Preferences = 'preferences',
     FacebookAds = 'ads',

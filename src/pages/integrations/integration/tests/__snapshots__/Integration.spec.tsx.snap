@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<IntegrationDetail /> email should render the custom creation page 1`] = `
-<div>
-  EmailIntegrationCreateCustom
-</div>
-`;
-
 exports[`<IntegrationDetail /> email should render the forwarding page for a specific integration 1`] = `
 <div>
   EmailIntegrationCreateForwarding
+</div>
+`;
+
+exports[`<IntegrationDetail /> email should render the onboarding page 1`] = `
+<div>
+  EmailIntegrationOnboarding
 </div>
 `;
 

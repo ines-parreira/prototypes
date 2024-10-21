@@ -35,8 +35,6 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import {EmailProvider} from 'models/integration/constants'
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     chatInstallationStatusFetched,
@@ -86,7 +84,6 @@ import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/Em
 import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/EmailIntegrationCreate'
 import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding'
 import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification'
-import EmailIntegrationCreateCustom from './components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom'
 import EmailIntegrationLayout from './components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout'
 import EmailDomainVerificationContainer from './components/email/EmailDomainVerification/EmailDomainVerificationContainer'
 import EmailOutboundVerification from './components/email/EmailOutboundVerification/EmailOutboundVerification'
@@ -140,11 +137,6 @@ export const IntegrationDetail = ({
     const isUpdate = useMemo(
         () => !!integrationId && isIntegrationId,
         [integrationId, isIntegrationId]
-    )
-
-    const isNewEmailOnboardingEnabled = useFlag(
-        FeatureFlagKey.NewEmailOnboarding,
-        false
     )
 
     const redirectUri = useMemo(
@@ -630,7 +622,6 @@ export const IntegrationDetail = ({
 
                 if (isUpdate) {
                     if (
-                        isNewEmailOnboardingEnabled &&
                         integration.get('type') === 'email' &&
                         integration.getIn(['meta', 'verified']) === false
                     ) {
@@ -692,15 +683,8 @@ export const IntegrationDetail = ({
                     )
                 }
 
-                if (
-                    extra === Tab.EmailOnboarding &&
-                    isNewEmailOnboardingEnabled
-                ) {
+                if (extra === Tab.EmailOnboarding) {
                     return <EmailIntegrationOnboarding />
-                }
-
-                if (extra === Tab.EmailCustom) {
-                    return <EmailIntegrationCreateCustom loading={loading} />
                 }
 
                 return <EmailIntegrationCreate />

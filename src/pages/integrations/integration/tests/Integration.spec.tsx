@@ -46,10 +46,6 @@ jest.mock(
     '../components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification',
     () => () => <div>EmailIntegrationCreateVerification</div>
 )
-jest.mock(
-    '../components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom',
-    () => () => <div>EmailIntegrationCreateCustom</div>
-)
 
 jest.mock('../components/facebook/FacebookIntegrationDetail', () => () => (
     <div>FacebookIntegrationDetail</div>
@@ -405,7 +401,7 @@ describe('<IntegrationDetail />', () => {
     })
 
     describe(`${IntegrationType.Email}`, () => {
-        it('should render the custom creation page', () => {
+        it('should render the onboarding page', () => {
             const {container} = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
@@ -414,7 +410,7 @@ describe('<IntegrationDetail />', () => {
                 </QueryClientProvider>,
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/channels/${IntegrationType.Email}/new/${Tab.EmailCustom}`,
+                    route: `/channels/${IntegrationType.Email}/new/${Tab.EmailOnboarding}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()

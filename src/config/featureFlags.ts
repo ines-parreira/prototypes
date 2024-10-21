@@ -94,7 +94,6 @@ export enum FeatureFlagKey {
     MLFeaturesKillswitch = 'ml-features-killswitch',
     MLFlowsRecommendation = 'ml-flows-recommendation',
     NewChannelsView = 'new-channels-view',
-    NewEmailOnboarding = 'new-email-onboarding',
     NewSenderSelect = 'new-sender-select',
     NewTagsReport = 'new-tags-report',
     NotificationsTicketAssigned = 'notifications-ticket-assigned',
