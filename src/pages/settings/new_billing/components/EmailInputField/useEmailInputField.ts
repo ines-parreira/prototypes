@@ -2,7 +2,9 @@ import {useEffect, useState} from 'react'
 import {emailError as validateEmail} from 'pages/settings/new_billing/utils/validations'
 
 export const useEmailInputField = (form: HTMLFormElement | null) => {
-    const [isComplete, setIsComplete] = useState(false)
+    const [isComplete, setIsComplete] = useState(() =>
+        form ? !validateEmailInput(form) : false
+    )
 
     useEffect(() => {
         if (form) {
@@ -13,8 +15,12 @@ export const useEmailInputField = (form: HTMLFormElement | null) => {
 
             onChange()
 
+            form.addEventListener('input', onChange)
             form.addEventListener('change', onChange)
-            return () => form.removeEventListener('change', onChange)
+            return () => {
+                form.removeEventListener('input', onChange)
+                form.removeEventListener('change', onChange)
+            }
         }
     }, [form])
 

@@ -8,6 +8,7 @@ import {assumeMock, renderWithRouter} from 'utils/testing'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
+    BILLING_PAYMENT_CARD_PATH,
     BILLING_PAYMENT_PATH,
 } from 'pages/settings/new_billing/constants'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
@@ -48,6 +49,16 @@ jest.mock('../../BillingAddressSetupView/BillingAddressSetupView', () => ({
         <div data-testid="billing-address-setup-view" />
     ),
 }))
+
+jest.mock('../../PaymentMethodSetupView/PaymentMethodSetupView', () => ({
+    PaymentMethodSetupView: () => (
+        <div data-testid="payment-method-setup-view" />
+    ),
+}))
+
+jest.mock('../../PaymentMethodView/PaymentMethodView', () => () => (
+    <div data-testid="payment-method-view" />
+))
 
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
@@ -241,51 +252,75 @@ describe('BillingStartView', () => {
     })
 
     describe('Billing Stripe Elements Integration', () => {
-        it('should NOT show the new Stripe elements address form if the integration flag is off', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.BillingStripeElementsPaymentIntegration]: false,
-            }))
-
-            jest.mock(
-                '../../BillingAddressSetupView/BillingAddressSetupView',
-                () => ({
-                    BillingAddressSetupView: () => (
-                        <div data-testid="billing-address-setup-view" />
-                    ),
-                })
-            )
-
-            renderWithRouter(
+        const renderBillingStartViewWithRouterAndProviderOnRoute = (
+            route: string
+        ) => {
+            return renderWithRouter(
                 <Provider store={storeWithCanceledSubscription}>
                     <BillingStartView />
                 </Provider>,
                 {
-                    route: BILLING_INFORMATION_PATH,
+                    route,
                 }
             )
+        }
 
-            expect(
-                screen.queryByTestId('billing-address-setup-view')
-            ).not.toBeInTheDocument()
+        describe('If the integration flag is off', () => {
+            beforeEach(() => {
+                jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                    [FeatureFlagKey.BillingStripeElementsPaymentIntegration]:
+                        false,
+                }))
+            })
+
+            it('should NOT show the new Stripe elements address form', () => {
+                renderBillingStartViewWithRouterAndProviderOnRoute(
+                    BILLING_INFORMATION_PATH
+                )
+
+                expect(
+                    screen.queryByTestId('billing-address-setup-view')
+                ).not.toBeInTheDocument()
+            })
+
+            it('should NOT show the new Stripe elements payment method form', () => {
+                renderBillingStartViewWithRouterAndProviderOnRoute(
+                    BILLING_PAYMENT_CARD_PATH
+                )
+
+                expect(
+                    screen.queryByTestId('payment-method-setup-view')
+                ).not.toBeInTheDocument()
+            })
         })
 
-        it('should show the new Stripe elements address form if the integration flag is on', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.BillingStripeElementsPaymentIntegration]: true,
-            }))
+        describe('If the integration flag is on', () => {
+            beforeEach(() => {
+                jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                    [FeatureFlagKey.BillingStripeElementsPaymentIntegration]:
+                        true,
+                }))
+            })
 
-            renderWithRouter(
-                <Provider store={storeWithCanceledSubscription}>
-                    <BillingStartView />
-                </Provider>,
-                {
-                    route: BILLING_INFORMATION_PATH,
-                }
-            )
+            it('should show the new Stripe elements address form', () => {
+                renderBillingStartViewWithRouterAndProviderOnRoute(
+                    BILLING_INFORMATION_PATH
+                )
 
-            expect(
-                screen.getByTestId('billing-address-setup-view')
-            ).toBeInTheDocument()
+                expect(
+                    screen.getByTestId('billing-address-setup-view')
+                ).toBeInTheDocument()
+            })
+
+            it('should show the new Stripe elements payment method form', () => {
+                renderBillingStartViewWithRouterAndProviderOnRoute(
+                    BILLING_PAYMENT_CARD_PATH
+                )
+
+                expect(
+                    screen.getByTestId('payment-method-setup-view')
+                ).toBeInTheDocument()
+            })
         })
     })
 })

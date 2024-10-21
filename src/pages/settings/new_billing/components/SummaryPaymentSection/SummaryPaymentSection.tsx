@@ -91,7 +91,9 @@ const SummaryPaymentSection = ({
                 setIsPaymentEnabled?.(false)
                 void dispatch(
                     notify({
-                        message: `${brand} ending with ${last4} is expired`,
+                        message: `${
+                            brand[0].toUpperCase() + brand.slice(1)
+                        } ending with ${last4} is expired`,
                         status: NotificationStatus.Warning,
                         style: NotificationStyle.Banner,
                         showIcon: true,
@@ -324,8 +326,11 @@ const SummaryPaymentSection = ({
                         >
                             warning
                         </i>
-                        <strong>{card.get('brand')}</strong> ending with{' '}
-                        <strong>{card.get('last4')}</strong> is expired
+                        <strong className={css.cardBrand}>
+                            {card.get('brand')}
+                        </strong>{' '}
+                        ending with <strong>{card.get('last4')}</strong> is
+                        expired
                     </div>
                     <Link to={BILLING_PAYMENT_CARD_PATH}>Change Card</Link>
                 </div>
@@ -347,8 +352,10 @@ const SummaryPaymentSection = ({
                     <i className={classNames('material-icons', css.cardIcon)}>
                         credit_card
                     </i>
-                    <strong>{card.get('brand')}</strong> ending with{' '}
-                    <strong>{card.get('last4')}</strong>
+                    <strong className={css.cardBrand}>
+                        {card.get('brand')}
+                    </strong>{' '}
+                    ending with <strong>{card.get('last4')}</strong>
                 </div>
                 <Link to={BILLING_PAYMENT_CARD_PATH}>Change Card</Link>
             </div>

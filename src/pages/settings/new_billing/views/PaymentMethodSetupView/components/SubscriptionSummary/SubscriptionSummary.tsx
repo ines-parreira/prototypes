@@ -5,16 +5,16 @@ import useSessionStorage from 'hooks/useSessionStorage'
 import {TicketPurpose} from 'state/billing/types'
 import {ProductType} from 'models/billing/types'
 import useAppSelector from 'hooks/useAppSelector'
-import Card from '../../../../components/Card'
-import SummaryItem from '../../../../components/SummaryItem'
-import SummaryTotal from '../../../../components/SummaryTotal'
-import SummaryFooter from '../../../../components/SummaryFooter'
-import {SELECTED_PRODUCTS_SESSION_STORAGE_KEY} from '../../../../constants'
-import {SelectedPlans} from '../../../BillingProcessView/BillingProcessView'
-import {useBillingPlans} from '../../../../hooks/useBillingPlan'
+import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter'
+import SummaryItem from 'pages/settings/new_billing/components/SummaryItem'
+import SummaryTotal from 'pages/settings/new_billing/components/SummaryTotal'
+import {SELECTED_PRODUCTS_SESSION_STORAGE_KEY} from 'pages/settings/new_billing/constants'
+import {useBillingPlans} from 'pages/settings/new_billing/hooks/useBillingPlan'
+import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import Card from 'pages/settings/new_billing/components/Card'
 import css from './SubscriptionSummary.less'
 
-export interface ISubscriptionSummaryProps {
+export type ISubscriptionSummaryProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
     dispatchBillingError: () => void
     isPaymentMethodValid: boolean

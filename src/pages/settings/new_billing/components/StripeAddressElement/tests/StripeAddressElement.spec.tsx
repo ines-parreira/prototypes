@@ -4,7 +4,7 @@ import {AddressElement} from '@stripe/react-stripe-js'
 import MockAdapter from 'axios-mock-adapter'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import client from 'models/api/resources'
-import {StripeAddressElement} from './StripeAddressElement'
+import {StripeAddressElement} from '../StripeAddressElement'
 
 jest.mock('@stripe/react-stripe-js', () => ({
     AddressElement: jest
@@ -45,7 +45,7 @@ describe('StripeAddressElement', () => {
                         mode: 'billing',
                         fields: {phone: 'always'},
                         display: {name: 'organization'},
-                        validation: {phone: {required: 'always'}},
+                        validation: {phone: {required: 'never'}},
                         defaultValues: billingContactShipping,
                     },
                 },

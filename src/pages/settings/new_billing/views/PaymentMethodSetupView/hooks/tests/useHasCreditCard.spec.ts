@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter'
 import client from 'models/api/resources'
-import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {renderHookWithStoreAndQueryClientProvider} from 'tests/renderHookWithStoreAndQueryClientProvider'
 import {useHasCreditCard} from '../useHasCreditCard'
 
 const mockedServer = new MockAdapter(client)
@@ -17,7 +17,7 @@ describe('useHasCreditCard', () => {
         mockedServer.onGet('/api/billing/credit-card/').reply(200, card)
 
         const {result, waitFor} =
-            renderHookWithQueryClientProvider(useHasCreditCard)
+            renderHookWithStoreAndQueryClientProvider(useHasCreditCard)
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
@@ -28,7 +28,7 @@ describe('useHasCreditCard', () => {
         mockedServer.onGet('/api/billing/credit-card/').reply(200, {})
 
         const {result, waitFor} =
-            renderHookWithQueryClientProvider(useHasCreditCard)
+            renderHookWithStoreAndQueryClientProvider(useHasCreditCard)
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 

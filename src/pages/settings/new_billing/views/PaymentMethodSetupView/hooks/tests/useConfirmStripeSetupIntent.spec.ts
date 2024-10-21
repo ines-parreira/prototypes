@@ -1,14 +1,14 @@
 import {act} from '@testing-library/react-hooks'
 import {useElements, useStripe} from '@stripe/react-stripe-js'
 import {waitFor} from '@testing-library/react'
-import {useBillingContact} from 'models/billing/queries'
+import MockAdapter from 'axios-mock-adapter'
+import * as queries from 'models/billing/queries'
+import {renderHookWithStoreAndQueryClientProvider} from 'tests/renderHookWithStoreAndQueryClientProvider'
+import client from 'models/api/resources'
 import {assumeMock} from 'utils/testing'
-import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {useConfirmStripeSetupIntent} from '../useConfirmStripeSetupIntent'
 
 jest.mock('@stripe/react-stripe-js')
-
-jest.mock('models/billing/queries')
 
 const mockShipping = {
     name: 'Test User',
@@ -23,17 +23,26 @@ const mockShipping = {
     phone: '1234567890',
 }
 
+const mockedServer = new MockAdapter(client)
+
 const mockBillingContactResponse = {
     data: {
-        data: {
-            shipping: mockShipping,
-            email: 'test@example.com',
-        },
+        shipping: mockShipping,
+        email: 'test@example.com',
     },
 }
 
-describe('useConfirmStripeSetupIntent hook', () => {
+mockedServer
+    .onGet('/api/billing/contact/')
+    .reply(200, mockBillingContactResponse)
+
+describe('useConfirmStripeSetupIntent', () => {
     it('should call stripe.confirmSetup with correct params', async () => {
+        jest.spyOn(queries, 'useBillingContact').mockReturnValue({
+            data: mockBillingContactResponse,
+            isLoading: false,
+        } as any)
+
         const mockConfirmStripe = jest.fn()
 
         assumeMock(useStripe).mockReturnValue({
@@ -42,11 +51,7 @@ describe('useConfirmStripeSetupIntent hook', () => {
 
         assumeMock(useElements).mockReturnValue('mockElements' as any)
 
-        assumeMock(useBillingContact).mockReturnValue(
-            mockBillingContactResponse as any
-        )
-
-        const {result} = renderHookWithQueryClientProvider(
+        const {result} = renderHookWithStoreAndQueryClientProvider(
             useConfirmStripeSetupIntent
         )
 
@@ -73,9 +78,7 @@ describe('useConfirmStripeSetupIntent hook', () => {
     it('should reject if stripe is not initialized', async () => {
         assumeMock(useStripe).mockReturnValue(null)
 
-        assumeMock(useBillingContact).mockReturnValue({} as any)
-
-        const {result} = renderHookWithQueryClientProvider(
+        const {result} = renderHookWithStoreAndQueryClientProvider(
             useConfirmStripeSetupIntent
         )
 
@@ -84,7 +87,7 @@ describe('useConfirmStripeSetupIntent hook', () => {
                 await result.current.mutateAsync([])
             })
         } catch (e) {
-            expect(e).toBe('Stripe not initialized')
+            expect(e).toEqual(new Error('Stripe is not initialized'))
         }
     })
 
@@ -97,11 +100,7 @@ describe('useConfirmStripeSetupIntent hook', () => {
 
         assumeMock(useElements).mockReturnValue(null)
 
-        assumeMock(useBillingContact).mockReturnValue(
-            mockBillingContactResponse as any
-        )
-
-        const {result} = renderHookWithQueryClientProvider(
+        const {result} = renderHookWithStoreAndQueryClientProvider(
             useConfirmStripeSetupIntent
         )
 
@@ -110,7 +109,7 @@ describe('useConfirmStripeSetupIntent hook', () => {
                 await result.current.mutateAsync([])
             })
         } catch (e) {
-            expect(e).toBe('Stripe not initialized')
+            expect(e).toEqual(new Error('Stripe is not initialized'))
         }
 
         expect(mockConfirmStripe).not.toHaveBeenCalled()

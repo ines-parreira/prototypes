@@ -15,7 +15,7 @@ export const StripeAddressElement: React.FC<Partial<AddressElementProps>> = ({
                 mode: 'billing',
                 fields: {phone: 'always'},
                 display: {name: 'organization'},
-                validation: {phone: {required: 'always'}},
+                validation: {phone: {required: 'never'}},
                 defaultValues: billingContactShipping,
                 ...options,
             }}

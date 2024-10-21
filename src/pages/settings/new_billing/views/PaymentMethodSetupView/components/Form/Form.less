@@ -1,0 +1,28 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/new/mixins';
+
+:local {
+    .form {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+        justify-content: space-between;
+        align-items: start;
+
+        @media @large-desktops {
+            flex-direction: row;
+        }
+    }
+
+    .container {
+        max-width: 570px;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        padding: 28px @layout-spacing-s @layout-spacing-s;
+    }
+
+    .submitButton {
+        margin-top: @layout-spacing-l;
+    }
+}

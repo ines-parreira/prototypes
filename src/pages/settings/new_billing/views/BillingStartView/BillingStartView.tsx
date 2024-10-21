@@ -45,6 +45,7 @@ import useGetConvertStatus, {
     BundleOnboardingStatus,
     UsageStatus,
 } from 'pages/convert/common/hooks/useGetConvertStatus'
+import {PaymentMethodSetupView} from 'pages/settings/new_billing/views/PaymentMethodSetupView/PaymentMethodSetupView'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
@@ -483,6 +484,11 @@ const BillingStartView = () => {
                         <Route exact path={BILLING_PAYMENT_CARD_PATH}>
                             {payment === 'shopify' ? (
                                 <Redirect to={BILLING_PAYMENT_PATH} />
+                            ) : isStripeElementsIntegrationEnabled ? (
+                                <PaymentMethodSetupView
+                                    contactBilling={contactBilling}
+                                    dispatchBillingError={dispatchBillingError}
+                                />
                             ) : (
                                 <PaymentMethodView
                                     contactBilling={contactBilling}

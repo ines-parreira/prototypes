@@ -1,7 +1,7 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {ThemeContext} from 'theme'
-import {StripeElementsProvider} from './StripeElementsProvider'
+import {StripeElementsProvider} from '../StripeElementsProvider'
 
 jest.mock('@stripe/react-stripe-js', () => ({
     Elements: jest.fn().mockImplementation(({children}) => (

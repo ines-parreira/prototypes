@@ -7,7 +7,7 @@ import MockAdapter from 'axios-mock-adapter'
 import {assumeMock} from 'utils/testing'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import client from 'models/api/resources'
-import {BillingAddressSetupView} from './BillingAddressSetupView'
+import {BillingAddressSetupView} from '../BillingAddressSetupView'
 
 jest.mock('react-redux')
 jest.mock('@stripe/react-stripe-js')
@@ -36,12 +36,17 @@ assumeMock(useElements).mockReturnValue({
     }),
 } as unknown as StripeElements)
 
-jest.mock('../../components/StripeAddressElement/StripeAddressElement', () => ({
-    StripeAddressElement: () => <div data-testid="stripe-address-element" />,
-}))
+jest.mock(
+    'pages/settings/new_billing/components/StripeAddressElement/StripeAddressElement',
+    () => ({
+        StripeAddressElement: () => (
+            <div data-testid="stripe-address-element" />
+        ),
+    })
+)
 
 jest.mock(
-    '../../components/StripeElementsProvider/StripeElementsProvider',
+    'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider',
     () => ({
         StripeElementsProvider: ({children}: any) => (
             <div data-testid="stripe-elements-provider">{children}</div>

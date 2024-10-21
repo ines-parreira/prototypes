@@ -1,6 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {VerificationChargeDisclaimer} from './VerificationChargeDisclaimer'
+import {VerificationChargeDisclaimer} from '../VerificationChargeDisclaimer'
 
 describe('VerificationChargeDisclaimer', () => {
     it('should display the one dollar charge disclaimer', () => {

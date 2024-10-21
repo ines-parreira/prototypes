@@ -1,13 +1,21 @@
 import React from 'react'
-import {StripeAddressElement} from '../../components/StripeAddressElement/StripeAddressElement'
-import {StripeElementsProvider} from '../../components/StripeElementsProvider/StripeElementsProvider'
-import BackLink from '../../components/BackLink/BackLink'
+import {useBillingContact} from 'models/billing/queries'
+import Loader from 'pages/common/components/Loader/Loader'
 
-import {EmailInputField} from '../../components/EmailInputField/EmailInputField'
+import {EmailInputField} from 'pages/settings/new_billing/components/EmailInputField/EmailInputField'
+import {StripeAddressElement} from 'pages/settings/new_billing/components/StripeAddressElement/StripeAddressElement'
+import {StripeElementsProvider} from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'
+import {Form} from 'pages/settings/new_billing/views/BillingAddressSetupView/components/Form/Form'
+import BackLink from 'pages/settings/new_billing/components/BackLink'
 import css from './BillingAddressSetupView.less'
-import {Form} from './components/Form/Form'
 
 export const BillingAddressSetupView: React.FC = () => {
+    const billingContact = useBillingContact()
+
+    if (billingContact.isLoading) {
+        return <Loader />
+    }
+
     return (
         <StripeElementsProvider>
             <Form>

@@ -3,8 +3,8 @@ import Button from 'pages/common/components/button/Button'
 import {BillingContact} from 'state/billing/types'
 import Caption from 'pages/common/forms/Caption/Caption'
 import {useStripeAddressElement} from 'pages/settings/new_billing/components/StripeAddressElement/useStripeAddressElement'
-import {useSubmitBillingAddress} from '../../hooks/useSubmitBillingAddress'
-import {useEmailInputField} from '../../../../components/EmailInputField/useEmailInputField'
+import {useEmailInputField} from 'pages/settings/new_billing/components/EmailInputField/useEmailInputField'
+import {useSubmitBillingAddress} from 'pages/settings/new_billing/views/BillingAddressSetupView/hooks/useSubmitBillingAddress'
 import css from './Form.less'
 
 export const Form: React.FC<

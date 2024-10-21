@@ -6,16 +6,16 @@ import {assumeMock, renderWithRouter} from 'utils/testing'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import * as selectors from 'state/currentAccount/selectors'
 import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
-import {useBillingPlans} from '../../../../hooks/useBillingPlan'
-import {SelectedPlans} from '../../../BillingProcessView/BillingProcessView'
+import {useBillingPlans} from 'pages/settings/new_billing/hooks/useBillingPlan'
+import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import {
     SubscriptionSummary,
     ISubscriptionSummaryProps,
-} from './SubscriptionSummary'
+} from '../SubscriptionSummary'
 
 jest.mock('hooks/useAppSelector', () => (selector: () => any) => selector())
 jest.mock('hooks/useSessionStorage')
-jest.mock('../../../../hooks/useBillingPlan')
+jest.mock('pages/settings/new_billing/hooks/useBillingPlan')
 jest.mock('react-redux', () => ({
     useDispatch: jest.fn(() => jest.fn()),
 }))
