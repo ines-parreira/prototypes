@@ -1,16 +1,25 @@
 import React, {ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
 import {Provider} from 'react-redux'
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {SelectInput} from '@gorgias/ui-kit'
 
 import {user} from 'fixtures/users'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
 import {YourProfileView} from 'pages/settings/yourProfile/components/YourProfileView'
 import {Theme, ThemeColors} from 'theme/types'
+import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -20,19 +29,61 @@ const minProps: ComponentProps<typeof YourProfileView> = {
     updateCurrentUser: jest.fn(),
     currentUser: fromJS(user),
     submitSetting: jest.fn(),
-    preferences: fromJS({data: {}}),
+    preferences: fromJS({data: {date_format: 'en_GB', time_format: '24-hour'}}),
     setTheme: jest.fn(),
     savedTheme: Theme.Dark,
     theme: Theme.Dark,
     colorTokens: {} as ThemeColors,
 }
+
+const TIMEZONES = ['UTC', 'EST']
 jest.mock('moment-timezone', () => {
+    const tz = (timezone: string) => ({
+        utcOffset: () => (timezone === TIMEZONES[0] ? '+0' : '+1'),
+        format: () => (timezone === TIMEZONES[0] ? '+0' : '+1'),
+    })
+    tz.names = () => TIMEZONES
     return {
-        tz: {names: () => []},
+        tz,
     }
 })
 
+jest.mock('@gorgias/ui-kit', () => {
+    return {
+        ...jest.requireActual('@gorgias/ui-kit'),
+        SelectInput: ({
+            label,
+            options,
+            selectedOption,
+            optionMapper,
+        }: ComponentProps<typeof SelectInput>) => (
+            <label>
+                {label}
+                <select defaultValue={selectedOption as string}>
+                    {(options as string[]).map((option) => (
+                        <option key={option} value={option}>
+                            {optionMapper!(option).value}
+                        </option>
+                    ))}
+                </select>
+            </label>
+        ),
+    } as Record<string, unknown>
+})
+
 jest.mock('pages/common/components/UnsavedChangesPrompt', () => () => null)
+jest.mock(
+    'pages/common/forms/PhoneNumberInput/PhoneNumberInput',
+    () =>
+        ({value, disabled}: ComponentProps<typeof PhoneNumberInput>) => (
+            <input
+                type="text"
+                value={value}
+                data-testid="phone-input"
+                disabled={disabled}
+            />
+        )
+)
 
 const defaultState = {}
 
@@ -57,26 +108,166 @@ describe('YourProfileView', () => {
     })
 
     describe('render', () => {
-        it('should render current user profile form', () => {
-            const {container} = render(
-                <Provider store={mockedStore(defaultState)}>
-                    <YourProfileView {...minProps} />
-                </Provider>
-            )
+        describe('personal information section', () => {
+            it('should render name input', () => {
+                const {getByLabelText} = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                )
+                const yourName = getByLabelText(/Your name/)
 
-            expect(container.firstChild).toMatchSnapshot()
+                expect(yourName).toHaveAttribute('placeholder', 'John Doe')
+                expect(yourName).toHaveAttribute('name', 'name')
+                expect(yourName).toHaveAttribute('type', 'text')
+                expect(yourName).toHaveValue(user.name)
+                expect(yourName).toBeRequired()
+            })
+
+            it('should render email input', () => {
+                const {getByLabelText} = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                )
+                const yourEmail = getByLabelText(/Your email/)
+
+                expect(yourEmail).toHaveAttribute(
+                    'placeholder',
+                    'john.doe@acme.com'
+                )
+                expect(yourEmail).toHaveAttribute('name', 'email')
+                expect(yourEmail).toHaveAttribute('type', 'email')
+                expect(yourEmail).toHaveValue(user.email)
+                expect(yourEmail).toBeRequired()
+            })
+
+            it('should render bio input', () => {
+                const {getByLabelText} = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                )
+                const yourBio = getByLabelText(/Your bio/)
+
+                expect(yourBio).toHaveAttribute('name', 'bio')
+                expect(yourBio).toHaveAttribute('type', 'text')
+                expect(yourBio).toHaveValue(user.bio)
+                expect(yourBio).not.toBeRequired()
+            })
         })
 
-        it('should expand to show the phone number field when enabling call forwarding', async () => {
-            const {findByText, getByLabelText} = render(
-                <Provider store={mockedStore(defaultState)}>
-                    <YourProfileView {...minProps} />
-                </Provider>
-            )
+        describe('date and time settings', () => {
+            it('should render timezone select', () => {
+                const {getByLabelText} = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                )
+                const timezone = getByLabelText(/Timezone/)
+                const options = within(timezone).getAllByRole('option')
+                expect(options).toHaveLength(2)
 
-            fireEvent.click(getByLabelText(/Enable call forwarding/i))
-            const countrySelector = await findByText('+1')
-            expect(countrySelector).toMatchSnapshot()
+                const [utcOption, estOption] = options as HTMLOptionElement[]
+                expect(utcOption).toHaveTextContent('(UTC+0) UTC')
+                expect(utcOption.selected).toBe(false)
+                expect(estOption).toHaveTextContent('(UTC+1) EST')
+                expect(estOption.selected).toBe(true)
+            })
+
+            it('should render date format', () => {
+                const {getByText} = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                )
+                const legend = getByText('Date format')
+                const fieldset = legend.closest('fieldset')!
+                const radios = within(fieldset).getAllByRole('radio')
+                expect(radios).toHaveLength(2)
+
+                expect(
+                    within(fieldset).getByLabelText('Day/Month/Year')
+                ).toHaveAttribute('checked')
+                expect(
+                    within(fieldset).getByLabelText('Month/Day/Year')
+                ).not.toHaveAttribute('checked')
+            })
+
+            it('should render time format', () => {
+                const {getByText} = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                )
+                const legend = getByText('Time format')
+                const fieldset = legend.closest('fieldset')!
+                const radios = within(fieldset).getAllByRole('radio')
+                expect(radios).toHaveLength(2)
+
+                expect(
+                    within(fieldset).getByLabelText('24-hour')
+                ).toHaveAttribute('checked')
+                expect(
+                    within(fieldset).getByLabelText('AM/PM')
+                ).not.toHaveAttribute('checked')
+            })
+        })
+
+        describe('account preferences', () => {
+            it('should render theme select', () => {
+                const {getByLabelText} = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                )
+
+                expect(getByLabelText(/System/)).not.toHaveAttribute('checked')
+                expect(getByLabelText(/Dark/)).toHaveAttribute('checked')
+                expect(getByLabelText(/Light/)).not.toHaveAttribute('checked')
+                expect(getByLabelText(/Classic/)).not.toHaveAttribute('checked')
+            })
+
+            it('should render macro display', () => {
+                const {getByLabelText} = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                )
+
+                expect(getByLabelText(/Macro prediction/)).not.toHaveAttribute(
+                    'checked'
+                )
+                expect(getByLabelText(/Macro suggestions/)).toHaveAttribute(
+                    'checked'
+                )
+                expect(
+                    getByLabelText(/Display macro search view by default/)
+                ).not.toHaveAttribute('checked')
+            })
+
+            it('should expand to show the phone number field when enabling call forwarding', () => {
+                const {getByLabelText, getByTestId} = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                )
+
+                fireEvent.click(getByLabelText(/Enable call forwarding/i))
+                expect(getByTestId('phone-input')).toBeEnabled()
+            })
+        })
+
+        describe('profile picture', () => {
+            it('should render avatar upload input', () => {
+                const {getByText} = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView {...minProps} />
+                    </Provider>
+                )
+
+                expect(getByText('Select a file')).toBeInTheDocument()
+            })
         })
     })
 

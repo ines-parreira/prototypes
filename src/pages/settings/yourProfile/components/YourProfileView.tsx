@@ -8,6 +8,7 @@ import moment from 'moment-timezone'
 import {Form, FormGroup, FormText, Label} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
+import {SelectInput} from '@gorgias/ui-kit'
 
 import _isEqual from 'lodash/isEqual'
 import {UploadType} from 'common/types'
@@ -17,7 +18,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import FileField from 'pages/common/forms/FileField'
 import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Group from 'pages/common/components/layout/Group'
 import settingsCss from 'pages/settings/settings.less'
@@ -27,6 +27,25 @@ import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 import ForwardingCallsPreferences from './ForwardingCallsPreferences'
+
+const timezones = _sortBy(
+    moment.tz
+        .names()
+        /*
+    US/Pacific-New is not supposed to be a valid timezone and as such, pytz
+    (the validator on backend) doesn't allow it, so we skip it.
+    More info at: https://github.com/moment/moment-timezone/issues/498
+    */
+        .filter((name) => name !== 'US/Pacific-New'),
+    (item) => moment.tz(item).utcOffset()
+)
+
+const timezoneToOptionMap = new global.Map(
+    timezones.map((timezone) => [
+        timezone,
+        {value: `(UTC${moment.tz(timezone).format('Z')}) ${timezone}`},
+    ])
+)
 
 const defaultContent: Pick<
     State,
@@ -287,44 +306,21 @@ export class YourProfileView extends Component<Props, State> {
                                     <FormGroup
                                         className={settingsCss.inputField}
                                     >
-                                        <Label className="control-label">
-                                            Timezone
-                                        </Label>
-                                        <SelectField
-                                            value={this.state.timezone}
-                                            options={_sortBy(
-                                                moment.tz
-                                                    .names()
-                                                    .filter(
-                                                        (name) =>
-                                                            name !==
-                                                            'US/Pacific-New'
-                                                    )
-                                                    /*
-                                                US/Pacific-New is not supposed to be a valid timezone and as such, pytz
-                                                (the validator on backend) doesn't allow it, so we skip it.
-                                                More info at: https://github.com/moment/moment-timezone/issues/498
-                                                */
-                                                    .map((name) => ({
-                                                        value: name,
-                                                        label: `(UTC${moment
-                                                            .tz(name)
-                                                            .format(
-                                                                'Z'
-                                                            )}) ${name}`,
-                                                    })),
-                                                (item) =>
-                                                    moment
-                                                        .tz(item.value)
-                                                        .utcOffset()
-                                            )}
-                                            onChange={(value) => {
+                                        <SelectInput
+                                            label="Timezone"
+                                            options={timezones}
+                                            optionMapper={(timezone) =>
+                                                timezoneToOptionMap.get(
+                                                    timezone
+                                                )!
+                                            }
+                                            selectedOption={this.state.timezone}
+                                            onChange={(timezone) => {
                                                 this.isDirty = true
                                                 this.setState({
-                                                    timezone: value.toString(),
+                                                    timezone,
                                                 })
                                             }}
-                                            fullWidth
                                         />
                                     </FormGroup>
                                     <DateAndTimeFormatting
