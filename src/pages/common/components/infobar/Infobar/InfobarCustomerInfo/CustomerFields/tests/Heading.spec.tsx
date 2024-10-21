@@ -56,9 +56,7 @@ describe('Heading', () => {
         expect(screen.getByText('Customer Fields')).toBeInTheDocument()
         userEvent.hover(screen.getByText('info'))
         await waitFor(() => {
-            expect(
-                screen.getByText(/Add customer attributes/)
-            ).toBeInTheDocument()
+            expect(screen.getByText(/Add customer fields/)).toBeInTheDocument()
         })
     })
 })

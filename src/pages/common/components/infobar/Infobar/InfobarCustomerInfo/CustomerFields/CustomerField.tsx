@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 
 import CustomFieldInput from 'custom-fields/components/CustomFieldInput'
 import Label from 'custom-fields/components/Label'
+import {getLabel} from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
 import {OBJECT_TYPES} from 'custom-fields/constants'
 import {getNumberOrUndefined} from 'custom-fields/helpers/getNumberOrUndefined'
 import {
@@ -12,7 +13,6 @@ import {
 } from 'custom-fields/helpers/typeGuards'
 import {useUpdateOrDeleteCustomerFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteCustomerFieldValue'
 import {CustomField, CustomFieldValue} from 'custom-fields/types'
-
 import css from './CustomerField.less'
 
 export default function CustomerField({
@@ -91,7 +91,7 @@ export default function CustomerField({
         <Label label={field.label} className={css.customerFieldWrapper}>
             {!!currentValue && !isActive && (
                 <Tooltip placement="top" target={inputId} autohide={false}>
-                    {currentValue}
+                    {getLabel(currentValue)}
                 </Tooltip>
             )}
             <CustomFieldInput

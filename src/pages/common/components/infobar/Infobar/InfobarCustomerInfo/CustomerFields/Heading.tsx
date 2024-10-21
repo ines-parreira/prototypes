@@ -31,7 +31,7 @@ export function Heading() {
                 <a
                     href={`/app/settings/${
                         CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER]
-                    }/add`}
+                    }`}
                     onClick={handleAddCustomerFields}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -56,7 +56,7 @@ export function Heading() {
                             info
                         </i>
                         <Tooltip target={tooltipId}>
-                            Add customer attributes here.
+                            Add customer fields.
                             <br />
                             Reach out to your admin for setup.
                         </Tooltip>
